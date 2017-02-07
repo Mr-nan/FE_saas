@@ -1,0 +1,25 @@
+<SGListView
+                dataSource={this.getDataSource() } //data source
+                ref={'listview'} //标识
+                initialListSize={1}//初始加载条数
+                stickyHeaderIndices={[]}//仅ios
+                onEndReachedThreshold={1}//
+                onEndReached={()=>{}}//触底事件
+                scrollRenderAheadDistance={1}//如果我们有一个2000个元素的列表，并且立刻全部渲染出来的话，
+                                             //无论是内存还是计算资源都会显得很匮乏。还很可能导致非常可怕的阻塞。
+                                             //因此scrollRenderAheadDistance允许我们来指定一个超过视野范围之外所需要渲染的行数。
+                pageSize={1}//决定每一帧所渲染的行数  默认值为1
+                renderRow={(item) =>
+                  <Text>{item}</Text>
+                }
+/>
+sglistview使用文档
+
+dataSource格式：
+ this.state = {
+            dataSource: ds.cloneWithRows([
+                'John', 'Joel', 'James', 'Jimmy', 'Jackson', 'Jillian', 'Julie', 'Devin'
+            ])
+        };
+
+
