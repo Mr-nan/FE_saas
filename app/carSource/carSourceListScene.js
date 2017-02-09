@@ -33,7 +33,9 @@ export  default  class  carSourceListScene extends  Component{
 
         <View style={styles.contaier}>
 
-            <View style={{height:50}}>
+            <View style={{height:64,backgroundColor:'#22C4C1'}}></View>
+
+            <View style={{height:40}}>
                 <HeadView/>
 
             </View>
@@ -68,9 +70,7 @@ export  default  class  carSourceListScene extends  Component{
 const styles = StyleSheet.create({
 
  contaier:{
-
      flex:1,
-     marginTop:64,
 
  },
     cell:{

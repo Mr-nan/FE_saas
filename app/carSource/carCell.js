@@ -51,14 +51,14 @@ const styles = StyleSheet.create({
         flex:1,
         flexDirection:'row',
         height:110,
-        backgroundColor:'gray',
+        // backgroundColor:'gray',
 
     },
 
     lineBottom:{
 
         borderBottomWidth:0.5,
-        borderColor:'#fff',
+        borderColor:'#EAEAEA',
 
     },
 
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
 
         width:147,
         justifyContent:'center',
-        backgroundColor:'blue'
+        // backgroundColor:'blue'
 
 
     },
@@ -76,13 +76,13 @@ const styles = StyleSheet.create({
         marginLeft:15,
         width:120,
         height:80,
-        backgroundColor:'red',
+        backgroundColor:'#FFF45C',
 
     },
 
     textContainer:{
 
-        backgroundColor:'#FF0067',
+        // backgroundColor:'#FF0067',
         flex:1,
         justifyContent:'space-around'
     }
