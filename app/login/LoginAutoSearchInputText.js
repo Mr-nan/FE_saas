@@ -7,27 +7,10 @@
 import React, {Component, PropTypes} from "react";
 import {AppRegistry, StyleSheet, Text, View, PixelRatio, TextInput, Image} from "react-native";
 
-var onePT = 1 / PixelRatio.get(); //一个像素
-
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 
 export default class Search extends Component {
-
-    static defaultProps = {
-        leftIconShow: true,
-        inputPlaceholder: "请输入用户名",
-        // saveData: ["aaaaaa", "bbbbbbb", "cccccccccc"],
-        leftIconUri: './../images/login_icon.png',
-    };
-
-    static propTypes = {
-        leftIconShow: PropTypes.bool,
-        inputPlaceholder: PropTypes.string,
-        inputTextStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
-        leftIconStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
-        callBackSearchResult: PropTypes.func,//定义搜索结果控件
-    }
 
     constructor(props) {
         super(props);
@@ -36,6 +19,23 @@ export default class Search extends Component {
             show: false,
             value: ""
         }
+    }
+
+    static defaultProps = {
+        leftIconShow: true,
+        inputPlaceholder: "请输入用户名",
+        leftIconUri: './../images/login_icon.png',
+    };
+
+    static propTypes = {
+        leftIconShow: PropTypes.bool,
+        inputPlaceholder: PropTypes.string,
+
+        inputTextStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
+        leftIconStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
+        itemStyel: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
+
+        callBackSearchResult: PropTypes.func,//定义搜索结果控件
     }
 
     //执行搜索操作搜索
@@ -75,7 +75,7 @@ export default class Search extends Component {
 
     render() {
         return (
-            <View style={[{width: width * 0.9}]}>
+            <View style={[styles.width, this.props.itemStyel]}>
                 <View style={[styles.flexDirection, styles.inputHeight]}>
                     {this.props.leftIconShow ?
                         <Image source={require('./../../images/test.jpg')}
@@ -130,4 +130,7 @@ const styles = StyleSheet.create({
         height: 30,
         backgroundColor: '#cc092f'
     },
+    width: {
+        width: width * 0.9
+    }
 });

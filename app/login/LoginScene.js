@@ -8,13 +8,11 @@ import LoginAutoSearchInputText from "./LoginAutoSearchInputText";
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var onePT = 1 / PixelRatio.get(); //一个像素
+var itemWidth = width * 0.88;
+var loginTitleImage = height * 0.35;
 
 
 export default class LoginScene extends BaseComponent {
-
-    static defaultProps = {
-        saveData: ["aaaaaa", "bbbbbbb", "cccccccccc"],
-    };
 
     constructor(props) {
         super(props);
@@ -23,7 +21,17 @@ export default class LoginScene extends BaseComponent {
             show: false,
             value: ""
         }
+
+        //初始化参数
+        userName: '';
+        passWord: '';
+        verifyCode: '';
+        smsCode: '';
     }
+
+    static defaultProps = {
+        saveData: ["aaaaaa", "bbbbbbb", "cccccccccc"],
+    };
 
     initFinish = () => {
 
@@ -49,11 +57,12 @@ export default class LoginScene extends BaseComponent {
         return (
             <View style={styles.container}>
                 <Image source={require('./../../images/test.jpg')} style={styles.iconStyle}/>
-                <View>
+                <View style={styles.width}>
                     <LoginAutoSearchInputText
-                        ref="logininput"
+                        ref="loginUsername"
                         searchBtShow={true}
                         inputPlaceholder={"请输入用户名"}
+                        itemStyel={[styles.itemStyel, styles.width]}
                         callBackSearchResult={(isShow) => {
                             if (isShow) {
                                 this.setState({
@@ -67,30 +76,50 @@ export default class LoginScene extends BaseComponent {
                         }}/>
 
                     <LoginInputText
+                        ref="loginPassword"
                         textPlaceholder={'请输入密码'}
                         rightIcon={false}
-                        viewStytle={styles.itemStyel}/>
+                        viewStytle={styles.itemStyel}
+                        keyBoard={'phone-pad'}/>
 
                     <LoginInputText
+                        ref="loginVerifycode"
                         textPlaceholder={'请输入验证码'}
                         viewStytle={styles.itemStyel}
-                        rightIconUri={require('./../../images/test.jpg')}/>
+                        rightIconUri={require('./../../images/test.jpg')}
+                        rightIconClick={this.Verifycode}/>
 
                     <LoginInputText
+                        ref="loginSmscode"
                         textPlaceholder={'请输入短信验证码'}
                         viewStytle={styles.itemStyel}
-                        rightIconUri={require('./../../images/test.jpg')}/>
+                        rightIconUri={require('./../../images/test.jpg')}
+                        rightIconClick={this.Smscode}/>
 
-                    <View style={styles.loginBtnStyle}>
-                        <Text style={{color: 'white', fontSize: 16}}>登录</Text>
-                    </View>
+                    <TouchableOpacity style={styles.loginBtnStyle} onPress={() => {
+                        alert(this.refs.loginPassword.getInputTextValue());
+                    }}>
+                        <Text style={{color: 'white', fontSize: 18}}>登录</Text>
+                    </TouchableOpacity>
 
                     <View style={styles.settingStyle}>
-                        <Text style={styles.bottomTestSytle}>登录遇到问题></Text>
-                        <Text style={styles.bottomTestSytle}>修改地址></Text>
+
+                        <TouchableOpacity onPress={() => {
+                            alert('登录遇到问题');
+                        }}>
+                            <Text style={styles.bottomTestSytle}>登录遇到问题></Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity onPress={() => {
+                            alert('修改地址');
+                        }}>
+                            <Text style={styles.bottomTestSytle}>修改地址></Text>
+                        </TouchableOpacity>
+
                     </View>
-                    {/* //结果列表*/}
+
                     {
+                        //结果列表
                         this.state.show ?
                             <View style={[styles.result]}>
                                 {views}
@@ -106,15 +135,22 @@ export default class LoginScene extends BaseComponent {
 
     //隐藏
     hide(val) {
-        this.refs.logininput.setValue(val);
+        this.refs.loginUsername.setValue(val);
         this.setState({
             show: false,
             value: val
         });
     }
 
-}
+    Smscode = () => {
+        alert("Smscode")
+    }
 
+    Verifycode = () => {
+        this.refs.loginVerifycode.lodingStatus(true);
+    }
+
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -123,12 +159,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#FEFDFB'
     },
     iconStyle: {
-        height: 220,
+        height: loginTitleImage,
         resizeMode: 'cover'
     },
     loginBtnStyle: {
         height: 38,
-        width: width * 0.9,
+        width: itemWidth,
         backgroundColor: '#C39849',
         marginTop: 8,
         marginBottom: 20,
@@ -138,11 +174,10 @@ const styles = StyleSheet.create({
     },
     settingStyle: {
         flexDirection: 'column',
-        width: width * 0.9,
+        width: itemWidth,
         alignItems: 'center'
     },
     itemStyel: {
-        width: width * 0.9,
         marginTop: 2,
         marginBottom: 2,
         paddingBottom: 1,
@@ -157,9 +192,9 @@ const styles = StyleSheet.create({
         borderTopWidth: onePT,
         position: 'absolute',
         backgroundColor: "#000000",
-        width: width * 0.9-30,
-        top:45,
-        left:30,
+        width: itemWidth - 32,
+        top: 45,
+        left: 31,
 
     },
     item: {
@@ -171,5 +206,8 @@ const styles = StyleSheet.create({
         borderColor: '#ddd',
         borderTopWidth: 0,
         backgroundColor: "#ffffff",
+    },
+    width: {
+        width: itemWidth,
     }
 });
