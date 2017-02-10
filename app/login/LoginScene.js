@@ -2,8 +2,12 @@ import React, {Component} from "react";
 import {AppRegistry, View, Text, TouchableOpacity, ListView, StyleSheet, Image, PixelRatio} from "react-native";
 import BaseComponent from "../component/BaseComponent";
 //import SGListView from 'react-native-sglistview';
-import LoginInputText from "./LoginInputText";
-import LoginAutoSearchInputText from "./LoginAutoSearchInputText";
+import LoginInputText from "./LoginView/LoginInputText";
+import LoginAutoSearchInputText from "./LoginView/LoginAutoSearchInputText";
+import {request} from "../utils/RequestUtil";
+import * as AppUrls from "../constant/appUrls";
+import LoginFail from "./LoginFail";
+import ModifyAddress from "./ModifyAddress";
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -23,10 +27,10 @@ export default class LoginScene extends BaseComponent {
         }
 
         //初始化参数
-        userName: '';
-        passWord: '';
-        verifyCode: '';
-        smsCode: '';
+        this.userName = "";
+        this.passWord = "";
+        this.verifyCode = "";
+        this.smsCode = "";
     }
 
     static defaultProps = {
@@ -34,7 +38,6 @@ export default class LoginScene extends BaseComponent {
     };
 
     initFinish = () => {
-
     }
 
     onPress = () => {
@@ -56,7 +59,7 @@ export default class LoginScene extends BaseComponent {
         }
         return (
             <View style={styles.container}>
-                <Image source={require('./../../images/test.jpg')} style={styles.iconStyle}/>
+                <Image source={require('./../../images/test.png')} style={styles.iconStyle}/>
                 <View style={styles.width}>
                     <LoginAutoSearchInputText
                         ref="loginUsername"
@@ -86,46 +89,50 @@ export default class LoginScene extends BaseComponent {
                         ref="loginVerifycode"
                         textPlaceholder={'请输入验证码'}
                         viewStytle={styles.itemStyel}
-                        rightIconUri={require('./../../images/test.jpg')}
+                        rightIconUri={require('./../../images/test.png')}
                         rightIconClick={this.Verifycode}/>
 
                     <LoginInputText
                         ref="loginSmscode"
                         textPlaceholder={'请输入短信验证码'}
                         viewStytle={styles.itemStyel}
-                        rightIconUri={require('./../../images/test.jpg')}
+                        rightIconUri={require('./../../images/test.png')}
                         rightIconClick={this.Smscode}/>
 
-                    <TouchableOpacity style={styles.loginBtnStyle} onPress={() => {
-                        alert(this.refs.loginPassword.getInputTextValue());
-                    }}>
+                    <TouchableOpacity style={styles.loginBtnStyle} onPress={this.login}>
                         <Text style={{color: 'white', fontSize: 18}}>登录</Text>
                     </TouchableOpacity>
 
                     <View style={styles.settingStyle}>
 
                         <TouchableOpacity onPress={() => {
-                            alert('登录遇到问题');
+                            this.toNextPage({
+                                name: 'LoginFail',
+                                component: LoginFail,
+                                params: {},
+                            })
                         }}>
                             <Text style={styles.bottomTestSytle}>登录遇到问题></Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => {
-                            alert('修改地址');
+                            this.toNextPage({
+                                name: 'ModifyAddress',
+                                component: ModifyAddress,
+                                params: {},
+                            });
                         }}>
                             <Text style={styles.bottomTestSytle}>修改地址></Text>
                         </TouchableOpacity>
 
                     </View>
-
                     {
                         //结果列表
                         this.state.show ?
                             <View style={[styles.result]}>
                                 {views}
                             </View>
-                            :
-                            null
+                            : null
                     }
                 </View>
             </View>
@@ -150,6 +157,19 @@ export default class LoginScene extends BaseComponent {
         this.refs.loginVerifycode.lodingStatus(true);
     }
 
+    login = () => {
+        let maps = {
+            useName: this.userName,
+            passWord: this.passWord,
+        };
+        request(AppUrls.LOGIN, 'Post', maps)
+            .then((response) => {
+                    alert(response.mjson.retmsg)
+                },
+                (error) => {
+                    alert(error)
+                });
+    }
 }
 
 const styles = StyleSheet.create({

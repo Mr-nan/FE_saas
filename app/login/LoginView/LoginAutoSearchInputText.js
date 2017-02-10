@@ -1,9 +1,3 @@
-/**
- * searchBtShow 设置输入框是否有搜索按钮
- * inputPlaceholder 输入框提示语
- * inputTextStyle 输入框样式
- * btnStyle 搜索按钮样式
- */
 import React, {Component, PropTypes} from "react";
 import {AppRegistry, StyleSheet, Text, View, PixelRatio, TextInput, Image} from "react-native";
 
@@ -27,6 +21,12 @@ export default class Search extends Component {
         leftIconUri: './../images/login_icon.png',
     };
 
+    /**
+     * searchBtShow 设置输入框是否有搜索按钮
+     * inputPlaceholder 输入框提示语
+     * inputTextStyle 输入框样式
+     * btnStyle 搜索按钮样式
+     */
     static propTypes = {
         leftIconShow: PropTypes.bool,
         inputPlaceholder: PropTypes.string,
@@ -78,7 +78,7 @@ export default class Search extends Component {
             <View style={[styles.width, this.props.itemStyel]}>
                 <View style={[styles.flexDirection, styles.inputHeight]}>
                     {this.props.leftIconShow ?
-                        <Image source={require('./../../images/test.jpg')}
+                        <Image source={require('./../../../images/test.png')}
                                style={[styles.iconStyle, this.props.leftIconStyle]}/>
                         : null
                     }
