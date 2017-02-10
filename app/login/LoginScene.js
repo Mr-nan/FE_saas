@@ -1,22 +1,16 @@
 import React, {Component} from 'react';
 import {
     AppRegistry,
-    View,
-    Text,
-    TouchableOpacity,
-    ListView,
+    View
 } from 'react-native';
 import BaseComponent from '../component/BaseComponent';
-import SGListView from 'react-native-sglistview';
-
+import ViewPagers from './ViewPager';
+import SQLite from '../utils/SQLiteUtil';
+var sqLite = new SQLite();
 export default class LoginScene extends BaseComponent {
     initFinish = () => {
-
+         sqLite.createTable();
     }
-
-    onPress = () => {
-    }
-
 
     render() {
         return (
