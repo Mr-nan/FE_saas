@@ -9,17 +9,24 @@ import {
     View,
     Text,
     Image,
+    TouchableOpacity,
 } from 'react-native';
+
 
 
 export default class CarCell extends Component {
 
+    cellClick=()=>{
 
+       this.props.onPress(this.props.carMainText);
+
+    };
     render(){
 
         return(
 
-            <View style={[styles.container,styles.lineBottom]}>
+            <TouchableOpacity onPress={this.cellClick}>
+            <View style={[styles.container,styles.lineBottom]} >
 
                 <View style={styles.imageView}>
                     <Image style={styles.image}/>
@@ -38,6 +45,7 @@ export default class CarCell extends Component {
                 </View>
 
             </View>
+            </TouchableOpacity>
 
         )
     }
