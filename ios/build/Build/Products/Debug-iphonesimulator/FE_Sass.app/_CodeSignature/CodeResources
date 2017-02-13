@@ -5,9 +5,14 @@
 	<key>files</key>
 	<dict>
 		<key>Base.lproj/LaunchScreen.nib</key>
-		<data>
-		zfvw7sP877Rk0yz4j9GZzheAHzE=
-		</data>
+		<dict>
+			<key>hash</key>
+			<data>
+			WSl0tLHRdbrveQc40IpveQz86w0=
+			</data>
+			<key>optional</key>
+			<true/>
+		</dict>
 		<key>Frameworks/IDEBundleInjection.framework/IDEBundleInjection</key>
 		<data>
 		aUm0c1LLvF5BD7IVSBsGgwX3iyY=
@@ -203,7 +208,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		sG9+z8ELgVBh+dUg4ygAwgOmKro=
+		C+EhlcddkWnCt23VFIZVgi1axio=
 		</data>
 		<key>PkgInfo</key>
 		<data>
@@ -211,7 +216,7 @@
 		</data>
 		<key>PlugIns/FE_SassTests.xctest/FE_SassTests</key>
 		<data>
-		HRGhdHoIJ1/3VVwlZ42Po0PpFlQ=
+		9ZuT7szvEddAg0bSrEdadEnamnw=
 		</data>
 		<key>PlugIns/FE_SassTests.xctest/Info.plist</key>
 		<data>
@@ -228,12 +233,14 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			zfvw7sP877Rk0yz4j9GZzheAHzE=
+			WSl0tLHRdbrveQc40IpveQz86w0=
 			</data>
 			<key>hash2</key>
 			<data>
-			32OkDHGtJg0quUyNDdRxggOMmNf2F75Xcxb7U7nODQ0=
+			rm6P2FA1XwNAX2vzHOMKR+qfIsYdsc1x2mEyu+0N6RU=
 			</data>
+			<key>optional</key>
+			<true/>
 		</dict>
 		<key>Frameworks/IDEBundleInjection.framework/IDEBundleInjection</key>
 		<dict>
@@ -763,11 +770,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			HRGhdHoIJ1/3VVwlZ42Po0PpFlQ=
+			9ZuT7szvEddAg0bSrEdadEnamnw=
 			</data>
 			<key>hash2</key>
 			<data>
-			AFlCveAj/vC+0wXIaY65AQaaMPic7ek8ToV78+sePYk=
+			k81t417x1ZPRS5xZt5pHVRs6z8O060RQx2l4sVBtaZg=
 			</data>
 		</dict>
 		<key>PlugIns/FE_SassTests.xctest/Info.plist</key>
@@ -810,11 +817,6 @@
 			<true/>
 			<key>weight</key>
 			<real>1100</real>
-		</dict>
-		<key>^Base\.lproj/</key>
-		<dict>
-			<key>weight</key>
-			<real>1010</real>
 		</dict>
 		<key>^version.plist$</key>
 		<true/>
@@ -860,11 +862,6 @@
 			<true/>
 			<key>weight</key>
 			<real>1100</real>
-		</dict>
-		<key>^Base\.lproj/</key>
-		<dict>
-			<key>weight</key>
-			<real>1010</real>
 		</dict>
 		<key>^Info\.plist$</key>
 		<dict>
