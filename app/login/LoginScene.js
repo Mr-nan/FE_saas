@@ -4,13 +4,15 @@ import {
     View
 } from 'react-native';
 import BaseComponent from '../component/BaseComponent';
-import ViewPagers from './ViewPager';
 import SQLite from '../utils/SQLiteUtil';
 var sqLite = new SQLite();
 export default class LoginScene extends BaseComponent {
     initFinish = () => {
-         sqLite.createTable();
+        sqLite.createTable();
+        sqLite.insertData('INSERT INTO CarName VALUES (?)', [ "a"]);
+        sqLite.selectData('SELECT *  FROM Collection');
     }
+
 
     render() {
         return (

@@ -2,12 +2,12 @@ import React from 'react';
 import SQLiteStorage from 'react-native-sqlite-storage';
 
 SQLiteStorage.DEBUG(true);
-var database_name = "xifan.db";
+var database_name = "saas.db";
 var database_version = "1.0";
 var database_displayname = "MySQLite";
 var database_size = -1;
 var db;
-const Collection_TABLE_NAME = "Collection";//收藏表
+const Collection_TABLE_NAME = "CarName";//收藏表
 
 const SQLite = React.createClass({
 
@@ -15,66 +15,88 @@ const SQLite = React.createClass({
         return null;
     },
     componentWillUnmount(){
-        if(db){
+        if (db) {
             this._successCB('close');
             db.close();
-        }else {
+        } else {
             console.log("SQLiteStorage not open");
         }
     },
     open(){
         db = SQLiteStorage.openDatabase(
-            database_name,
-            database_version,
-            database_displayname,
-            database_size,
-            ()=>{
+            {name:"mydata",createFromLocation:'~data/mydata.db'},
+            () => {
                 this._successCB('open');
             },
-            (err)=>{
-                this._errorCB('open',err);
+            (err) => {
+                this._errorCB('open', err);
             });
     },
-    createTable(){
+    createTable(sql){
         if (!db) {
             this.open();
         }
         //创建收藏表
-        db.transaction((tx)=> {
+        db.transaction((tx) => {
             tx.executeSql('CREATE TABLE IF NOT EXISTS ' + Collection_TABLE_NAME + '(' +
-                'id INTEGER PRIMARY KEY NOT NULL,' +
-                'name VARCHAR,' +
-                'actor VARCHAR,' +
-                'time VARCHAR,' +
-                'pic VARCHAR,' +
-                'url VARCHAR,' +
-                'title VARCHAR'
+                'name VARCHAR'
                 + ');'
-                , [], ()=> {
+                , [], () => {
                     this._successCB('executeSql');
-                }, (err)=> {
+                }, (err) => {
                     this._errorCB('executeSql', err);
                 });
-        }, (err)=> {
+        }, (err) => {
             this._errorCB('transaction', err);
-        }, ()=> {
+        }, () => {
             this._successCB('transaction');
         })
     },
     close(){
-        if(db){
+        if (db) {
             this._successCB('close');
             db.close();
-        }else {
+        } else {
             console.log("SQLiteStorage not open");
         }
         db = null;
     },
     _successCB(name){
-        console.log("SQLiteStorage "+name+" success");
+        console.log("SQLiteStorage " + name + " success");
     },
     _errorCB(name, err){
-        console.log("SQLiteStorage "+name+" error:"+err);
+        console.log("SQLiteStorage " + name + " error:" + err);
+    },
+    selectData(sql){
+        if (!db) {
+            this.open();
+        }
+        db.executeSql(sql, [], function (rs) {
+            for (let i = 0; i < rs.rows.length; i++) {
+                console.log('Record count (expected to be 2): ' + rs.rows.item(i).name);
+            }
+        }, function (error) {
+            console.log('SELECT SQL statement ERROR: ' + error.message);
+        });
+    },
+    /**
+     * from @zhaojian
+     * 插入数据
+     * params:插入语句
+     **/
+    insertData(sql, array){
+        if (!db) {
+            this.open();
+        }
+        db.transaction(
+            function (tx) {
+                tx.executeSql(sql, array);
+            }, function (error) {
+                console.log('shibai' + error.message);
+            }, function () {
+                console.log('chenggong');
+            }
+        );
     }
 });
 
