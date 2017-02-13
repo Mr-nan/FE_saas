@@ -1,20 +1,16 @@
 import React, {Component} from 'react';
 import {
     AppRegistry,
-    View,
-    Text,
-    TouchableOpacity,
-    ListView,
+    View
 } from 'react-native';
 import BaseComponent from '../component/BaseComponent';
-import SGListView from 'react-native-sglistview';
-
+import SQLite from '../utils/SQLiteUtil';
+var sqLite = new SQLite();
 export default class LoginScene extends BaseComponent {
     initFinish = () => {
-
-    }
-
-    onPress = () => {
+        sqLite.createTable();
+        sqLite.insertData('INSERT INTO CarName VALUES (?)', [ "a"]);
+        sqLite.selectData('SELECT *  FROM Collection');
     }
 
 

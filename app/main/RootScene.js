@@ -12,6 +12,9 @@ import StorageUtil from '../utils/StorageUtil';
 import LoginScene from '../login/LoginScene';
 var {height, width} = Dimensions.get('window');
 var KeyNames = require("../constant/storageKeyNames");
+var carName = require('../../json/carName.json');
+import SQLite from '../utils/SQLiteUtil';
+var sqLite = new SQLite();
 
 export default class RootScene extends BaseComponent {
     initFinish = () => {
