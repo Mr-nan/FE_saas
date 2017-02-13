@@ -43,6 +43,7 @@ export default class RootScene extends BaseComponent {
             }, 1500
         );
     }
+
     onPress = () => {
         this.toNextPage(this.mProps)
     }
