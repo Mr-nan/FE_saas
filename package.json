@@ -11,6 +11,8 @@
     "react-native": "0.41.1",
     "react-native-sglistview": "^0.3.2",
     "react-native-wechat": "^1.8.0"
+    "react-native-sqlite-storage": "^3.2.2",
+    "react-native-viewpager": "^0.2.13"
   },
   "devDependencies": {
     "babel-jest": "18.0.0",

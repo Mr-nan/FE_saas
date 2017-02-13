@@ -38,13 +38,18 @@ export default class Search extends Component {
         callBackSearchResult: PropTypes.func,//定义搜索结果控件
     }
 
-    //执行搜索操作搜索
+    //执行搜索操作搜索--此处执行搜索操作时隐藏
     goSearch = (text) => {
         var value = text;
+        this.props.callBackSearchResult(false);
         this.setState({
-            show: true,
+            show: false,
             value: value
         });
+    }
+
+    getInputTextValue() {
+        return this.state.value
     }
 
     //显示默认内容 组件获取焦点时执行

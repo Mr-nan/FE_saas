@@ -14,6 +14,8 @@ var {width, height} = Dimensions.get('window');
 var onePT = 1 / PixelRatio.get(); //一个像素
 var itemWidth = width * 0.88;
 var loginTitleImage = height * 0.35;
+import SQLite from '../utils/SQLiteUtil';
+var sqLite = new SQLite();
 
 
 export default class LoginScene extends BaseComponent {
@@ -25,20 +27,17 @@ export default class LoginScene extends BaseComponent {
             show: false,
             value: ""
         }
+    }
 
-        //初始化参数
-        this.userName = "";
-        this.passWord = "";
-        this.verifyCode = "";
-        this.smsCode = "";
+    initFinish = () => {
+        sqLite.createTable();
+        sqLite.insertData('INSERT INTO CarName VALUES (?)', ["a"]);
+        sqLite.selectData('SELECT *  FROM Collection');
     }
 
     static defaultProps = {
         saveData: ["aaaaaa", "bbbbbbb", "cccccccccc"],
     };
-
-    initFinish = () => {
-    }
 
     render() {
         let views = [];
@@ -139,7 +138,7 @@ export default class LoginScene extends BaseComponent {
 
     }
 
-    //隐藏
+    //隐藏 用户名输入框的搜索结果
     hide(val) {
         this.refs.loginUsername.setValue(val);
         this.setState({
@@ -158,15 +157,15 @@ export default class LoginScene extends BaseComponent {
 
     login = () => {
         let maps = {
-            useName: this.userName,
-            passWord: this.passWord,
+            useName: /*this.userName  */      this.refs.loginUsername.getInputTextValue(),
+            passWord: /* this.passWord*/       this.refs.loginPassword.getInputTextValue(),
         };
         request(AppUrls.LOGIN, 'Post', maps)
             .then((response) => {
-                    alert(response.mjson.retmsg)
+                    alert(response.mjson.retmsg);
                 },
                 (error) => {
-                    alert(error)
+                    alert(error);
                 });
     }
 }

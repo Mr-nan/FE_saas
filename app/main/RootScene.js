@@ -2,26 +2,21 @@ import React from 'react';
 import {
     AppRegistry,
     View,
-    Text,
-    TouchableOpacity
+    StyleSheet,
+    Dimensions
 } from 'react-native';
 
-import LoginScene from '../login/LoginScene';
 import BaseComponent from '../component/BaseComponent';
-var KeyNames = require("../constant/storageKeyNames");
+import MyButton from '../component/MyButton';
 import StorageUtil from '../utils/StorageUtil';
+import LoginScene from '../login/LoginScene';
+var {height, width} = Dimensions.get('window');
+var KeyNames = require("../constant/storageKeyNames");
+var carName = require('../../json/carName.json');
+import SQLite from '../utils/SQLiteUtil';
+var sqLite = new SQLite();
 
-
-export default class SplashScene extends BaseComponent {
-    mProps = {
-        name: 'login',
-        component: LoginScene,
-        params: {
-            showname: 'login',
-            dataSource: [1, 2, 3, 4, 5, 6, 7, 8, 9, 123, 123, 123]
-        }
-    };
-
+export default class RootScene extends BaseComponent {
     initFinish = () => {
         let that = this;
         setTimeout(
@@ -68,11 +63,30 @@ export default class SplashScene extends BaseComponent {
         params: {}
     }
 
+    buttonParams = {
+        buttonType: MyButton.IMAGEBUTTON,
+        parentStyle: styles.parentStyle,
+        childStyle: styles.childStyle,
+        opacity: 1,
+        content: require("../../images/welcome.jpg")
+    }
+
     render() {
         return (
-            <View style={{backgroundColor: '#ff8800', flex: 1, paddingTop: 20}}>
-
+            <View style={{flex: 1}}>
+                <MyButton {...this.buttonParams}/>
             </View>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    parentStyle: {
+        flex: 1
+    },
+    childStyle: {
+        width: width,
+        height: height
+    },
+});
+
