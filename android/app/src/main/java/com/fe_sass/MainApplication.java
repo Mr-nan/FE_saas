@@ -9,11 +9,8 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-<<<<<<< HEAD
 import com.theweflex.react.WeChatPackage;
-=======
 import org.pgsqlite.SQLitePluginPackage;
->>>>>>> 787588e9f0f07ff2c74d89bb014cb8e88cd29b25
 
 import java.util.Arrays;
 import java.util.List;
