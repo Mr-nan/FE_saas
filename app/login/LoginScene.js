@@ -139,7 +139,7 @@ export default class LoginScene extends BaseComponent {
 
     }
 
-    //隐藏
+    //隐藏 用户名输入框的搜索结果
     hide(val) {
         this.refs.loginUsername.setValue(val);
         this.setState({
@@ -158,15 +158,15 @@ export default class LoginScene extends BaseComponent {
 
     login = () => {
         let maps = {
-            useName: this.userName,
-            passWord: this.passWord,
+            useName: /*this.userName  */      this.refs.loginUsername.getInputTextValue(),
+            passWord: /* this.passWord*/       this.refs.loginPassword.getInputTextValue(),
         };
         request(AppUrls.LOGIN, 'Post', maps)
             .then((response) => {
-                    alert(response.mjson.retmsg)
+                    alert(response.mjson.retmsg);
                 },
                 (error) => {
-                    alert(error)
+                    alert(error);
                 });
     }
 }
