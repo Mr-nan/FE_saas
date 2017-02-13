@@ -2,8 +2,8 @@ import React, {Component} from "react";
 import {AppRegistry, View, Text, TouchableOpacity, ListView, StyleSheet, Image, PixelRatio} from "react-native";
 import BaseComponent from "../component/BaseComponent";
 //import SGListView from 'react-native-sglistview';
-import LoginInputText from "./LoginView/LoginInputText";
-import LoginAutoSearchInputText from "./LoginView/LoginAutoSearchInputText";
+import LoginInputText from "./loginView/LoginInputText";
+import LoginAutoSearchInputText from "./loginView/LoginAutoSearchInputText";
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 import LoginFail from "./LoginFail";
@@ -38,9 +38,6 @@ export default class LoginScene extends BaseComponent {
     };
 
     initFinish = () => {
-    }
-
-    onPress = () => {
     }
 
     render() {
@@ -90,14 +87,16 @@ export default class LoginScene extends BaseComponent {
                         textPlaceholder={'请输入验证码'}
                         viewStytle={styles.itemStyel}
                         rightIconUri={require('./../../images/test.png')}
-                        rightIconClick={this.Verifycode}/>
+                        rightIconClick={this.Verifycode}
+                        rightIconStyle={{width: 60}}/>
 
                     <LoginInputText
                         ref="loginSmscode"
                         textPlaceholder={'请输入短信验证码'}
                         viewStytle={styles.itemStyel}
                         rightIconUri={require('./../../images/test.png')}
-                        rightIconClick={this.Smscode}/>
+                        rightIconClick={this.Smscode}
+                        rightIconStyle={{width: 60}}/>
 
                     <TouchableOpacity style={styles.loginBtnStyle} onPress={this.login}>
                         <Text style={{color: 'white', fontSize: 18}}>登录</Text>

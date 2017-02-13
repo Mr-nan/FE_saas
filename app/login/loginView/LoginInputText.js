@@ -69,7 +69,7 @@ export default class LoginInputText extends Component {
 
     renderLoading() {
         return (
-            <ActivityIndicator size='small'/>
+            <ActivityIndicator size='small' style={[styles.iconStyle, this.props.rightIconStyle]}/>
         );
     }
 
@@ -137,7 +137,6 @@ const styles = StyleSheet.create({
     iconStyle: {
         width: 30,
         height: 30,
-        backgroundColor: '#cc092f'
     },
 
 });

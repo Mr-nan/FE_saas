@@ -9,7 +9,7 @@ export default class ModifyAddress extends BaseComponent {
     render() {
         return (
             <View style={styles.container}>
-                <Text>ModifyAddress</Text>
+                <Text style={styles.fontStyle}>ModifyAddress</Text>
             </View>
         );
     }
@@ -21,5 +21,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#ffffff'
+    },
+    fontStyle: {
+        color: '#cc092f',
+        alignSelf: 'center',
+        fontSize: 30,
+        marginTop: 50
     }
 });

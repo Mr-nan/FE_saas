@@ -9,7 +9,7 @@ export default class Register extends BaseComponent {
     render() {
         return (
             <View style={styles.container}>
-                <Text>Register</Text>
+                <Text style={styles.fontStyle}>Register</Text>
             </View>
         );
     }
@@ -21,5 +21,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#ffffff'
+    }, fontStyle: {
+        color: '#cc092f',
+        alignSelf: 'center',
+        fontSize: 30,
+        marginTop: 50
     }
 });
