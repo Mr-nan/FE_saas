@@ -14,8 +14,7 @@ var {width, height} = Dimensions.get('window');
 var onePT = 1 / PixelRatio.get(); //一个像素
 var itemWidth = width * 1;
 var loginTitleImage = height * 0.35;
-import SQLite from '../utils/SQLiteUtil';
-var sqLite = new SQLite();
+import * as FontAndColor from "../constant/fontAndColor";
 
 export default class LoginScene extends BaseComponent {
 
@@ -29,9 +28,6 @@ export default class LoginScene extends BaseComponent {
     }
 
     initFinish = () => {
-        sqLite.createTable();
-        sqLite.insertData('INSERT INTO CarName VALUES (?)', ["a"]);
-        sqLite.selectData('SELECT *  FROM Collection');
     }
 
     static defaultProps = {
@@ -123,17 +119,6 @@ export default class LoginScene extends BaseComponent {
                     }}>
                         <Text style={styles.bottomTestSytle}>登录遇到问题></Text>
                     </TouchableOpacity>
-
-                    <TouchableOpacity onPress={() => {
-                        this.toNextPage({
-                            name: 'ModifyAddress',
-                            component: ModifyAddress,
-                            params: {},
-                        });
-                    }}>
-                        <Text style={styles.bottomTestSytle}>修改地址></Text>
-                    </TouchableOpacity>
-
                 </View>
             </View>
         );
@@ -185,7 +170,7 @@ const styles = StyleSheet.create({
     loginBtnStyle: {
         height: 44,
         width: itemWidth - 20,
-        backgroundColor: '#C39849',
+        backgroundColor: FontAndColor.COLORB0,
         marginTop: 30,
         marginBottom: 15,
         justifyContent: 'center',
