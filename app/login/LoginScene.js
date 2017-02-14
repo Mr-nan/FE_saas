@@ -7,7 +7,7 @@ import LoginAutoSearchInputText from "./loginView/LoginAutoSearchInputText";
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 import LoginFail from "./LoginFail";
-import ModifyAddress from "./ModifyAddress";
+// import ModifyAddress from "./ModifyAddress";
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -54,7 +54,7 @@ export default class LoginScene extends BaseComponent {
         }
         return (
             <View style={styles.container}>
-                <Image source={require('./../../images/test.png')} style={styles.iconStyle}/>
+                <Image source={require('../../images/welcome.jpg')} style={styles.iconStyle}/>
                 <View style={styles.width}>
                     <LoginAutoSearchInputText
                         ref="loginUsername"
@@ -84,7 +84,7 @@ export default class LoginScene extends BaseComponent {
                         ref="loginVerifycode"
                         textPlaceholder={'请输入验证码'}
                         viewStytle={styles.itemStyel}
-                        rightIconUri={require('./../../images/test.png')}
+                        rightIconUri={require('../../images/welcome.jpg')}
                         rightIconClick={this.Verifycode}
                         rightIconStyle={{width: 60}}/>
 
@@ -92,7 +92,7 @@ export default class LoginScene extends BaseComponent {
                         ref="loginSmscode"
                         textPlaceholder={'请输入短信验证码'}
                         viewStytle={styles.itemStyel}
-                        rightIconUri={require('./../../images/test.png')}
+                        rightIconUri={require('../../images/welcome.jpg')}
                         rightIconClick={this.Smscode}
                         rightIconStyle={{width: 60}}/>
 
@@ -112,13 +112,7 @@ export default class LoginScene extends BaseComponent {
                             <Text style={styles.bottomTestSytle}>登录遇到问题></Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={() => {
-                            this.toNextPage({
-                                name: 'ModifyAddress',
-                                component: ModifyAddress,
-                                params: {},
-                            });
-                        }}>
+                        <TouchableOpacity >
                             <Text style={styles.bottomTestSytle}>修改地址></Text>
                         </TouchableOpacity>
 

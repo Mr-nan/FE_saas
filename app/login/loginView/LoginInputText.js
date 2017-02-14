@@ -28,8 +28,8 @@ export default class LoginInputText extends Component {
         rightIcon: true,
 
 
-        leftIconUri: require('./../../../images/test.png'),
-        rightIconUri: require('./../../../images/test.png'),
+        leftIconUri: require('../../../images/welcome.jpg'),
+        rightIconUri: require('../../../images/welcome.jpg'),
 
         textPlaceholder: '请输入',
         keyBoard: 'default'

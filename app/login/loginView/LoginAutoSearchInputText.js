@@ -92,7 +92,7 @@ export default class Search extends Component {
             <View style={[styles.width, this.props.itemStyel]}>
                 <View style={[styles.flexDirection, styles.inputHeight]}>
                     {this.props.leftIconShow ?
-                        <Image source={require('./../../../images/test.png')}
+                        <Image source={require('../../../images/welcome.jpg')}
                                style={[styles.iconStyle, this.props.leftIconStyle]}/>
                         : null
                     }

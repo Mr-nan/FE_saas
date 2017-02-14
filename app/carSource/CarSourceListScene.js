@@ -16,9 +16,11 @@ import {
 } from 'react-native';
 
 import * as fontAndColor from '../constant/fontAndColor';
-import HeadView     from './carSourceSelectHeadView';
+import BaseComponent from '../component/BaseComponent';
+import HeadView     from './znComponent/CarSourceSelectHeadView';
 import SGListView   from 'react-native-sglistview';
-import CarCell      from './carCell';
+import CarCell      from './znComponent/CarCell';
+import CarInfoScene from './CarInfoScene';
 
 const carAgeSource = [
     {
@@ -88,7 +90,7 @@ const sequencingDataSource = [
     },
 ];
 
-export  default  class  carSourceListScene extends  Component{
+export  default  class  carSourceListScene extends  BaseComponent{
     // 构造
     constructor(props) {
         super(props);
@@ -111,6 +113,10 @@ export  default  class  carSourceListScene extends  Component{
         };
 
     }
+
+    initFinish=()=>{
+
+    };
 
     //  筛选条件选择
     _headViewOnPres = (index,isHighlighted,setImgHighlighted)=> {
@@ -202,10 +208,16 @@ export  default  class  carSourceListScene extends  Component{
         });
     };
 
+navigatorParams={
+    name:"CarInfoScene",
+    component:CarInfoScene,
+    params:{
+
+    }
+}
     _onPres = (str)=>{
 
-        alert(str);
-
+this.toNextPage(this.navigatorParams);
     };
 
     render(){
