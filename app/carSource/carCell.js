@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 
 
+import * as fontAndColor from '../constant/fontAndColor';
 
 export default class CarCell extends Component {
 
@@ -35,11 +36,11 @@ export default class CarCell extends Component {
                 <View style={[styles.textContainer]}>
 
                     <View style={{backgroundColor:'white'}}>
-                        <Text >{this.props.carMainText}</Text>
+                        <Text style={styles.mainText}>{this.props.carMainText}</Text>
 
                     </View>
                     <View style={{backgroundColor:'white'}}>
-                        <Text>{this.props.carSubText}</Text>
+                        <Text style={styles.subTitleText}>{this.props.carSubText}</Text>
                     </View>
 
                 </View>
@@ -65,8 +66,8 @@ const styles = StyleSheet.create({
 
     lineBottom:{
 
-        borderBottomWidth:0.5,
-        borderColor:'#EAEAEA',
+        borderBottomWidth:StyleSheet.hairlineWidth,
+        borderColor:fontAndColor.COLORA4,
 
     },
 
@@ -92,9 +93,20 @@ const styles = StyleSheet.create({
 
         // backgroundColor:'#FF0067',
         flex:1,
-        justifyContent:'space-around'
-    }
+        justifyContent:'space-around',
+    },
 
+    mainText:{
+
+        color:fontAndColor.COLORA0,
+        fontSize:fontAndColor.LITTLEFONT,
+    },
+
+    subTitleText:{
+
+        color:fontAndColor.COLORA1,
+        fontSize:fontAndColor.CONTENTFONT,
+    },
 
 
 });

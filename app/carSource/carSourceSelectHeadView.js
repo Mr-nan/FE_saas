@@ -14,6 +14,9 @@ import {
 
 } from 'react-native';
 
+
+import * as fontAndColor from '../constant/fontAndColor';
+
 export default class carSourceSelectHeadView extends Component{
 
 
@@ -100,9 +103,9 @@ class SelectButton extends  Component{
     render(){
         return(
             <TouchableOpacity onPress={this._btnClick}>
-            <View style={{width:90,height:40,alignItems:'center',justifyContent:'center',flexDirection:'row'}}>
+            <View style={styles.selectBtn}>
                     <View>
-                        <Text>{this.props.title}</Text>
+                        <Text style={styles.selectBtnText}>{this.props.title}</Text>
                     </View>
                     <View style={{marginLeft:5}}>
                         <Image source={this.state.imgSource}></Image>
@@ -123,34 +126,65 @@ const  styles = StyleSheet.create({
         height:40,
 
     },
+
     selectView:{
+
         flex:1,
         flexDirection:'row',
         alignItems:'center',
         justifyContent:'space-between'
     },
+
     lineView:{
-        width:1,
+
+        width:StyleSheet.hairlineWidth,
         justifyContent:'center'
     },
+
     line:{
+
         height:15,
-        backgroundColor:'#C3C3C3'
+        backgroundColor:fontAndColor.COLORA1,
     },
+
     countView:{
+
         marginLeft:10,
         justifyContent:'center'
     },
-    countText:{
-        color:'#FDB800'
+
+    selectBtn:{
+
+        width:90,
+        height:40,
+        alignItems:'center',
+        justifyContent:'center',
+        flexDirection:'row'
+
     },
+    selectBtnText:{
+
+        color:fontAndColor.COLORA0,
+        fontSize:fontAndColor.LITTLEFONT,
+    },
+
+    countText:{
+
+        color:fontAndColor.COLORB3,
+        fontSize:fontAndColor.LITTLEFONT,
+    },
+
     unitsView:{
+
         marginRight:15,
         justifyContent:'center'
     },
-    unitsText:{
 
+    unitsText:{
+        color:fontAndColor.COLORA0,
+        fontSize:fontAndColor.LITTLEFONT,
     },
+
     bottomLine:{
         borderBottomWidth:2,
         borderColor:'#EAEAEA'
