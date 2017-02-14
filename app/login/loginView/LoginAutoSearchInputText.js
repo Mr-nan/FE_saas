@@ -40,12 +40,21 @@ export default class Search extends Component {
 
     //执行搜索操作搜索--此处执行搜索操作时隐藏
     goSearch = (text) => {
-        var value = text;
-        this.props.callBackSearchResult(false);
-        this.setState({
-            show: false,
-            value: value
-        });
+        if (text === "") {
+            var value = text;
+            this.props.callBackSearchResult(true);
+            this.setState({
+                show: true,
+                value: value
+            });
+        } else {
+            var value = text;
+            this.props.callBackSearchResult(false);
+            this.setState({
+                show: false,
+                value: value
+            });
+        }
     }
 
     getInputTextValue() {
@@ -133,7 +142,6 @@ const styles = StyleSheet.create({
     iconStyle: {
         width: 30,
         height: 30,
-        backgroundColor: '#cc092f'
     },
     width: {
         width: width * 0.9

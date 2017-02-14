@@ -9,17 +9,25 @@ import {
     View,
     Text,
     Image,
+    TouchableOpacity,
 } from 'react-native';
 
 
+import * as fontAndColor from '../constant/fontAndColor';
+
 export default class CarCell extends Component {
 
+    cellClick=()=>{
 
+       this.props.onPress(this.props.carMainText);
+
+    };
     render(){
 
         return(
 
-            <View style={[styles.container,styles.lineBottom]}>
+            <TouchableOpacity onPress={this.cellClick}>
+            <View style={[styles.container,styles.lineBottom]} >
 
                 <View style={styles.imageView}>
                     <Image style={styles.image}/>
@@ -28,16 +36,17 @@ export default class CarCell extends Component {
                 <View style={[styles.textContainer]}>
 
                     <View style={{backgroundColor:'white'}}>
-                        <Text >{this.props.carMainText}</Text>
+                        <Text style={styles.mainText}>{this.props.carMainText}</Text>
 
                     </View>
                     <View style={{backgroundColor:'white'}}>
-                        <Text>{this.props.carSubText}</Text>
+                        <Text style={styles.subTitleText}>{this.props.carSubText}</Text>
                     </View>
 
                 </View>
 
             </View>
+            </TouchableOpacity>
 
         )
     }
@@ -51,14 +60,14 @@ const styles = StyleSheet.create({
         flex:1,
         flexDirection:'row',
         height:110,
-        backgroundColor:'gray',
+        // backgroundColor:'gray',
 
     },
 
     lineBottom:{
 
-        borderBottomWidth:0.5,
-        borderColor:'#fff',
+        borderBottomWidth:StyleSheet.hairlineWidth,
+        borderColor:fontAndColor.COLORA4,
 
     },
 
@@ -67,7 +76,7 @@ const styles = StyleSheet.create({
 
         width:147,
         justifyContent:'center',
-        backgroundColor:'blue'
+        // backgroundColor:'blue'
 
 
     },
@@ -76,17 +85,28 @@ const styles = StyleSheet.create({
         marginLeft:15,
         width:120,
         height:80,
-        backgroundColor:'red',
+        backgroundColor:'#FFF45C',
 
     },
 
     textContainer:{
 
-        backgroundColor:'#FF0067',
+        // backgroundColor:'#FF0067',
         flex:1,
-        justifyContent:'space-around'
-    }
+        justifyContent:'space-around',
+    },
 
+    mainText:{
+
+        color:fontAndColor.COLORA0,
+        fontSize:fontAndColor.LITTLEFONT,
+    },
+
+    subTitleText:{
+
+        color:fontAndColor.COLORA1,
+        fontSize:fontAndColor.CONTENTFONT,
+    },
 
 
 });

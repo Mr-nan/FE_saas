@@ -41,10 +41,9 @@ export default class LoginScene extends BaseComponent {
                 <Text
                     key={x}
                     style={styles.item}
-                    onPress={this.hide.bind(this, this.state.value ? this.state.value : this.props.saveData[x])}
-                    numberOfLines={1}
-                >
-                    {this.state.value ? this.state.value : this.props.saveData[x]}
+                    onPress={this.hide.bind(this, this.props.saveData[x])}
+                    numberOfLines={1}>
+                    { this.props.saveData[x]}
                 </Text>
             );
         }

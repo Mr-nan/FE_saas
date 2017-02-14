@@ -1,6 +1,7 @@
 package com.fe_sass;
 
 import com.facebook.react.ReactActivity;
+import com.theweflex.react.WeChatPackage;
 
 public class MainActivity extends ReactActivity {
 
