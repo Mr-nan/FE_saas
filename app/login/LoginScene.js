@@ -2,19 +2,20 @@ import React, {Component} from "react";
 import {AppRegistry, View, Text, TouchableOpacity, ListView, StyleSheet, Image, PixelRatio} from "react-native";
 import BaseComponent from "../component/BaseComponent";
 //import SGListView from 'react-native-sglistview';
-import LoginInputText from "./loginView/LoginInputText";
-import LoginAutoSearchInputText from "./loginView/LoginAutoSearchInputText";
+import LoginInputText from "./component/LoginInputText";
+import LoginAutoSearchInputText from "./component/LoginAutoSearchInputText";
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 import LoginFail from "./LoginFail";
 import ModifyAddress from "./ModifyAddress";
-import MainScene from "../main/MainScene";
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var onePT = 1 / PixelRatio.get(); //一个像素
-var itemWidth = width * 0.88;
+var itemWidth = width * 1;
 var loginTitleImage = height * 0.35;
+import SQLite from '../utils/SQLiteUtil';
+var sqLite = new SQLite();
 
 export default class LoginScene extends BaseComponent {
 
@@ -28,6 +29,9 @@ export default class LoginScene extends BaseComponent {
     }
 
     initFinish = () => {
+        sqLite.createTable();
+        sqLite.insertData('INSERT INTO CarName VALUES (?)', ["a"]);
+        sqLite.selectData('SELECT *  FROM Collection');
     }
 
     static defaultProps = {
@@ -49,13 +53,17 @@ export default class LoginScene extends BaseComponent {
         }
         return (
             <View style={styles.container}>
-                <Image source={require('./../../images/test.png')} style={styles.iconStyle}/>
-                <View style={styles.width}>
+                <View style={styles.titleStyle}>
+                    <Text style={styles.titleTextStyle}>取消</Text>
+                    <Text style={styles.titleTextStyle}>登录</Text>
+                    <Text style={styles.titleTextStyle}>注册</Text>
+                </View>
+                <View style={styles.inputTextSytle}>
                     <LoginAutoSearchInputText
                         ref="loginUsername"
                         searchBtShow={true}
                         inputPlaceholder={"请输入用户名"}
-                        itemStyel={[styles.itemStyel, styles.width]}
+                        itemStyel={[styles.itemStyel]}
                         callBackSearchResult={(isShow) => {
                             if (isShow) {
                                 this.setState({
@@ -73,51 +81,24 @@ export default class LoginScene extends BaseComponent {
                         textPlaceholder={'请输入密码'}
                         rightIcon={false}
                         viewStytle={styles.itemStyel}
-                        keyBoard={'phone-pad'}/>
+                        keyBoard={'phone-pad'}
+                        leftIconUri={require('./../../images/login/password.png')}/>
 
                     <LoginInputText
                         ref="loginVerifycode"
                         textPlaceholder={'请输入验证码'}
                         viewStytle={styles.itemStyel}
-                        rightIconUri={require('./../../images/test.png')}
+                        leftIconUri={require('./../../images/login/virty.png')}
                         rightIconClick={this.Verifycode}
-                        rightIconStyle={{width: 60}}/>
+                        rightIconStyle={{width: 100, height: 32}}/>
 
                     <LoginInputText
                         ref="loginSmscode"
                         textPlaceholder={'请输入短信验证码'}
                         viewStytle={styles.itemStyel}
-                        rightIconUri={require('./../../images/test.png')}
+                        leftIconUri={require('./../../images/login/sms.png')}
                         rightIconClick={this.Smscode}
-                        rightIconStyle={{width: 60}}/>
-
-                    <TouchableOpacity style={styles.loginBtnStyle} onPress={this.login}>
-                        <Text style={{color: 'white', fontSize: 18}}>登录</Text>
-                    </TouchableOpacity>
-
-                    <View style={styles.settingStyle}>
-
-                        <TouchableOpacity onPress={() => {
-                            this.toNextPage({
-                                name: 'LoginFail',
-                                component: LoginFail,
-                                params: {},
-                            })
-                        }}>
-                            <Text style={styles.bottomTestSytle}>登录遇到问题></Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity onPress={() => {
-                            this.toNextPage({
-                                name: 'ModifyAddress',
-                                component: ModifyAddress,
-                                params: {},
-                            });
-                        }}>
-                            <Text style={styles.bottomTestSytle}>修改地址></Text>
-                        </TouchableOpacity>
-
-                    </View>
+                        rightIconStyle={{width: 100, height: 32}}/>
                     {
                         //结果列表
                         this.state.show ?
@@ -126,6 +107,33 @@ export default class LoginScene extends BaseComponent {
                             </View>
                             : null
                     }
+                </View>
+                <TouchableOpacity style={styles.loginBtnStyle} onPress={this.login}>
+                    <Text style={{color: 'white', fontSize: 18}}>登录</Text>
+                </TouchableOpacity>
+
+                <View style={styles.settingStyle}>
+
+                    <TouchableOpacity onPress={() => {
+                        this.toNextPage({
+                            name: 'LoginFail',
+                            component: LoginFail,
+                            params: {},
+                        })
+                    }}>
+                        <Text style={styles.bottomTestSytle}>登录遇到问题></Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => {
+                        this.toNextPage({
+                            name: 'ModifyAddress',
+                            component: ModifyAddress,
+                            params: {},
+                        });
+                    }}>
+                        <Text style={styles.bottomTestSytle}>修改地址></Text>
+                    </TouchableOpacity>
+
                 </View>
             </View>
         );
@@ -149,27 +157,18 @@ export default class LoginScene extends BaseComponent {
         this.refs.loginVerifycode.lodingStatus(true);
     }
 
-    navigatorParams={
-        name:"MainScene",
-        component:MainScene,
-        params:{
-
-        }
-    }
-
     login = () => {
-        // let maps = {
-        //     useName: /*this.userName  */      this.refs.loginUsername.getInputTextValue(),
-        //     passWord: /* this.passWord*/       this.refs.loginPassword.getInputTextValue(),
-        // };
-        // request(AppUrls.LOGIN, 'Post', maps)
-        //     .then((response) => {
-        //             alert(response.mjson.retmsg);
-        //         },
-        //         (error) => {
-        //             alert(error);
-        //         });
-        this.toNextPage(this.navigatorParams);
+        let maps = {
+            useName: /*this.userName  */      this.refs.loginUsername.getInputTextValue(),
+            passWord: /* this.passWord*/       this.refs.loginPassword.getInputTextValue(),
+        };
+        request(AppUrls.LOGIN, 'Post', maps)
+            .then((response) => {
+                    alert(response.mjson.retmsg);
+                },
+                (error) => {
+                    alert(error);
+                });
     }
 }
 
@@ -177,18 +176,18 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: '#FEFDFB'
+        backgroundColor: '#F0EFF5'
     },
     iconStyle: {
         height: loginTitleImage,
         resizeMode: 'cover'
     },
     loginBtnStyle: {
-        height: 38,
-        width: itemWidth,
+        height: 44,
+        width: itemWidth - 20,
         backgroundColor: '#C39849',
-        marginTop: 8,
-        marginBottom: 20,
+        marginTop: 30,
+        marginBottom: 15,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 4,
@@ -213,9 +212,9 @@ const styles = StyleSheet.create({
         borderTopWidth: onePT,
         position: 'absolute',
         backgroundColor: "#000000",
-        width: itemWidth - 32,
+        width: itemWidth - 20,
         top: 45,
-        left: 31,
+        left: 10,
 
     },
     item: {
@@ -228,7 +227,22 @@ const styles = StyleSheet.create({
         borderTopWidth: 0,
         backgroundColor: "#ffffff",
     },
-    width: {
+    inputTextSytle: {
         width: itemWidth,
+        backgroundColor: '#ffffff',
+        paddingLeft: 10,
+        paddingRight: 10,
+        marginTop: 10,
+    },
+    titleStyle: {
+        height: 60,
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#05C5C2',
+        paddingTop: 30
+    },
+    titleTextStyle: {
+        flex: 1,
+        textAlign: 'center',
     }
 });

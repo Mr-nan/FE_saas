@@ -88,8 +88,6 @@ export default class LoginInputText extends Component {
                     {
                         flex: 1,
                         flexDirection: 'row',
-                        borderBottomWidth: 1,
-                        borderBottomColor: 'lightgrey',
                         alignItems: 'center'
                     }}>
 
@@ -126,17 +124,20 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
+        borderBottomWidth: 1,
+        borderBottomColor: 'lightgrey',
     },
     textInputStyle: {
-        height: 40,
+        height: 44,
         textAlign: 'left',
         alignSelf: 'center',
-        fontSize: 15,
+        fontSize: 14,
         flex: 1,
+        paddingLeft: 15,
     },
     iconStyle: {
-        width: 30,
-        height: 30,
+        width: 25,
+        height: 25,
     },
 
 });

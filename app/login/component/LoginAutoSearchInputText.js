@@ -18,7 +18,7 @@ export default class Search extends Component {
     static defaultProps = {
         leftIconShow: true,
         inputPlaceholder: "请输入用户名",
-        leftIconUri: './../images/login_icon.png',
+        leftIconUri: './../images/login/phone.png',
     };
 
     /**
@@ -92,7 +92,7 @@ export default class Search extends Component {
             <View style={[styles.width, this.props.itemStyel]}>
                 <View style={[styles.flexDirection, styles.inputHeight]}>
                     {this.props.leftIconShow ?
-                        <Image source={require('./../../../images/test.png')}
+                        <Image source={require('./../../../images/login/phone.png')}
                                style={[styles.iconStyle, this.props.leftIconStyle]}/>
                         : null
                     }
@@ -121,29 +121,29 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
+        borderBottomColor: 'lightgrey',
+        borderBottomWidth: 1,
     },
     inputHeight: {
-        height: 45,
+        height: 44,
     },
     //输入框样式
     inputs: {
-        height: 45,
-        paddingLeft: 2,
+        height: 44,
+        paddingLeft: 15,
         paddingRight: 2,
         paddingTop: 0,
         paddingBottom: 0,
         marginTop: 0,
         marginBottom: 0,
-        fontSize: 15,
-        borderBottomColor: 'lightgrey',
-        borderBottomWidth: 1,
+        fontSize: 14,
         flex: 1,
     },
     iconStyle: {
-        width: 30,
-        height: 30,
+        width: 25,
+        height: 25,
     },
     width: {
-        width: width * 0.9
+        width: width - 20,
     }
 });
