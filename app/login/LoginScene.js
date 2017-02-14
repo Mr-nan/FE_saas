@@ -17,7 +17,6 @@ var loginTitleImage = height * 0.35;
 import SQLite from '../utils/SQLiteUtil';
 var sqLite = new SQLite();
 
-
 export default class LoginScene extends BaseComponent {
 
     constructor(props) {

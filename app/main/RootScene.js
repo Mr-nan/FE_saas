@@ -9,12 +9,12 @@ import {
 import BaseComponent from '../component/BaseComponent';
 import MyButton from '../component/MyButton';
 import StorageUtil from '../utils/StorageUtil';
-import LoginScene from '../login/LoginScene';
 var {height, width} = Dimensions.get('window');
 var KeyNames = require("../constant/storageKeyNames");
 var carName = require('../../json/carName.json');
 import SQLite from '../utils/SQLiteUtil';
 var sqLite = new SQLite();
+import LoginAndRegister from '../login/LoginAndRegister';
 
 export default class RootScene extends BaseComponent {
     initFinish = () => {
@@ -24,17 +24,17 @@ export default class RootScene extends BaseComponent {
                 StorageUtil.mGetItem(KeyNames.ISLOGIN, (result) => {
                     if (result !== StorageUtil.ERRORCODE) {
                         if (result == null) {
-                            that.navigatorParams.component = LoginScene;
+                            that.navigatorParams.component = LoginAndRegister;
                             that.toNextPage(that.navigatorParams);
                         } else {
                             if (result == "true") {
-                                that.navigatorParams.component = LoginScene;
+                                that.navigatorParams.component = LoginAndRegister;
                                 that.navigatorParams.params = {
 
                                 }
                                 that.toNextPage(that.navigatorParams);
                             } else {
-                                that.navigatorParams.component = LoginScene;
+                                that.navigatorParams.component = LoginAndRegister;
                                 that.toNextPage(that.navigatorParams);
                             }
                         }
@@ -58,8 +58,8 @@ export default class RootScene extends BaseComponent {
     }
 
     navigatorParams = {
-        name: 'LoginScene',
-        component: LoginScene,
+        name: 'LoginAndRegister',
+        component: LoginAndRegister,
         params: {}
     }
 

@@ -142,7 +142,6 @@ const styles = StyleSheet.create({
     iconStyle: {
         width: 30,
         height: 30,
-        backgroundColor: '#cc092f'
     },
     width: {
         width: width * 0.9
