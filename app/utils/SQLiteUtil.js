@@ -2,10 +2,6 @@ import React from 'react';
 import SQLiteStorage from 'react-native-sqlite-storage';
 
 SQLiteStorage.DEBUG(true);
-var database_name = "saas.db";
-var database_version = "1.0";
-var database_displayname = "MySQLite";
-var database_size = -1;
 var db;
 const Collection_TABLE_NAME = "CarName";//收藏表
 
@@ -24,7 +20,7 @@ const SQLite = React.createClass({
     },
     open(){
         db = SQLiteStorage.openDatabase(
-            {name:"mydata",createFromLocation:'~data/mydata.db'},
+            {name: "mydata", createFromLocation: '~data/mydata.db'},
             () => {
                 this._successCB('open');
             },
@@ -36,21 +32,21 @@ const SQLite = React.createClass({
         if (!db) {
             this.open();
         }
-        //创建收藏表
-        db.transaction((tx) => {
-            tx.executeSql('CREATE TABLE IF NOT EXISTS ' + Collection_TABLE_NAME + '(' +
-                'name VARCHAR'
-                + ');'
-                , [], () => {
-                    this._successCB('executeSql');
-                }, (err) => {
-                    this._errorCB('executeSql', err);
-                });
-        }, (err) => {
-            this._errorCB('transaction', err);
-        }, () => {
-            this._successCB('transaction');
-        })
+        // //创建收藏表
+        // db.transaction((tx) => {
+        //     tx.executeSql('CREATE TABLE IF NOT EXISTS ' + Collection_TABLE_NAME + '(' +
+        //         'name VARCHAR'
+        //         + ');'
+        //         , [], () => {
+        //             this._successCB('executeSql');
+        //         }, (err) => {
+        //             this._errorCB('executeSql', err);
+        //         });
+        // }, (err) => {
+        //     this._errorCB('transaction', err);
+        // }, () => {
+        //     this._successCB('transaction');
+        // })
     },
     close(){
         if (db) {
@@ -67,24 +63,27 @@ const SQLite = React.createClass({
     _errorCB(name, err){
         console.log("SQLiteStorage " + name + " error:" + err);
     },
-    selectData(sql){
+    /**
+     * from @zhaojian
+     * 查询数据
+     * params sql:操作语句 array:参数 callBack:回调
+     **/
+    selectData(sql, array, callBack){
         if (!db) {
             this.open();
         }
-        db.executeSql(sql, [], function (rs) {
-            for (let i = 0; i < rs.rows.length; i++) {
-                console.log('Record count (expected to be 2): ' + rs.rows.item(i).name);
-            }
+        db.executeSql(sql, array, function (rs) {
+            callBack({code:1,result:rs});
         }, function (error) {
-            console.log('SELECT SQL statement ERROR: ' + error.message);
+            callBack({code:-1,error:error});
         });
     },
     /**
      * from @zhaojian
-     * 插入数据
-     * params:插入语句
+     * 增删改数据
+     * params sql:操作语句 array：参数
      **/
-    insertData(sql, array){
+    changeData(sql, array){
         if (!db) {
             this.open();
         }

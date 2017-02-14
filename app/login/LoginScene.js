@@ -8,15 +8,13 @@ import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 import LoginFail from "./LoginFail";
 import ModifyAddress from "./ModifyAddress";
+import MainScene from "../main/MainScene";
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var onePT = 1 / PixelRatio.get(); //一个像素
 var itemWidth = width * 0.88;
 var loginTitleImage = height * 0.35;
-import SQLite from '../utils/SQLiteUtil';
-var sqLite = new SQLite();
-
 
 export default class LoginScene extends BaseComponent {
 
@@ -30,9 +28,6 @@ export default class LoginScene extends BaseComponent {
     }
 
     initFinish = () => {
-        sqLite.createTable();
-        sqLite.insertData('INSERT INTO CarName VALUES (?)', ["a"]);
-        sqLite.selectData('SELECT *  FROM Collection');
     }
 
     static defaultProps = {
@@ -155,18 +150,27 @@ export default class LoginScene extends BaseComponent {
         this.refs.loginVerifycode.lodingStatus(true);
     }
 
+    navigatorParams={
+        name:"MainScene",
+        component:MainScene,
+        params:{
+
+        }
+    }
+
     login = () => {
-        let maps = {
-            useName: /*this.userName  */      this.refs.loginUsername.getInputTextValue(),
-            passWord: /* this.passWord*/       this.refs.loginPassword.getInputTextValue(),
-        };
-        request(AppUrls.LOGIN, 'Post', maps)
-            .then((response) => {
-                    alert(response.mjson.retmsg);
-                },
-                (error) => {
-                    alert(error);
-                });
+        // let maps = {
+        //     useName: /*this.userName  */      this.refs.loginUsername.getInputTextValue(),
+        //     passWord: /* this.passWord*/       this.refs.loginPassword.getInputTextValue(),
+        // };
+        // request(AppUrls.LOGIN, 'Post', maps)
+        //     .then((response) => {
+        //             alert(response.mjson.retmsg);
+        //         },
+        //         (error) => {
+        //             alert(error);
+        //         });
+        this.toNextPage(this.navigatorParams);
     }
 }
 

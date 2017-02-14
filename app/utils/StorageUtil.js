@@ -22,9 +22,9 @@ export default class StorageUtil {
         AsyncStorage.getItem(keyName, function (errs, result) {
                 //TODO:错误处理
                 if (!errs) {
-                    callBack(result);
+                    callBack({code:1,result:result});
                 } else {
-                    callBack(StorageUtil.ERRORCODE);
+                    callBack({code:-1,error:StorageUtil.ERRORCODE});
                 }
             }
         );
