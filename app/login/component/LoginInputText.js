@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
         height: Pixel.getPixel(44),
         textAlign: 'left',
         alignSelf: 'center',
-        fontSize: Pixel.getPixel(14),
+        fontSize: Pixel.getPixel(FontAndColor.LITTLEFONT),
         paddingLeft: Pixel.getPixel(15),
         paddingTop: 0,
         paddingBottom: 0,

@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
         paddingBottom: 0,
         marginTop: 0,
         marginBottom: 0,
-        fontSize: Pixel.getPixel(14),
+        fontSize: Pixel.getPixel(FontAndColor.LITTLEFONT),
         flex: 1,
         color: FontAndColor.COLORA0
     },

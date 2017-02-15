@@ -2,6 +2,8 @@ import React, {Component, PropTypes} from "react";
 import {AppRegistry, StyleSheet, View, Text} from "react-native";
 import MyButton from "./MyButton";
 import * as FontAndColor from "../constant/fontAndColor";
+import PixelUtil from "../utils/PixelUtil";
+var Pixel = new PixelUtil();
 
 export default class NavigationBar extends Component {
 
@@ -57,8 +59,8 @@ export default class NavigationBar extends Component {
                     <MyButton buttonType={MyButton.IMAGEBUTTON}
                               content={this.props.leftImage}
                               parentStyle={[styles.buttonStyle, {
-                                  paddingLeft: 15,
-                                  paddingRight: 15,
+                                  paddingLeft: Pixel.getPixel(15),
+                                  paddingRight: Pixel.getPixel(15),
                               }]}
                               childStyle={[styles.leftImageStyle, this.props.leftImageStyle]}
                               mOnPress={this.props.leftImageCallBack}/>
@@ -82,8 +84,8 @@ export default class NavigationBar extends Component {
 const styles = StyleSheet.create({
     buttonStyle: {},
     titleStyle: {
-        height: 64,
-        paddingTop: 20,
+        height: Pixel.getPixel(64),
+        paddingTop: Pixel.getPixel(20),
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -91,21 +93,21 @@ const styles = StyleSheet.create({
     },
     titleTextStyle: {
         textAlign: 'center',
-        fontSize: 15,
-        paddingLeft: 15,
-        paddingRight: 15,
+        fontSize: Pixel.getPixel(FontAndColor.BUTTONFONT),
+        paddingLeft: Pixel.getPixel(15),
+        paddingRight: Pixel.getPixel(15),
         color: FontAndColor.COLORA3,
     },
     centerTextStyle: {
         flex: 1,
         textAlign: 'center',
-        fontSize: 17,
-        paddingLeft: 15,
-        paddingRight: 15,
+        fontSize: FontAndColor.NAVIGATORFONT,
+        paddingLeft: Pixel.getPixel(15),
+        paddingRight: Pixel.getPixel(15),
         color: FontAndColor.COLORA3,
     },
     leftImageStyle: {
-        width: 20,
-        height: 20,
+        width: Pixel.getPixel(20),
+        height: Pixel.getPixel(20),
     }
 });

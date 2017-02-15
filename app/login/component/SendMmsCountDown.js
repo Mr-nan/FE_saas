@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     },
     textStyle: {
         color: FontAndColor.COLORB0,
-        fontSize: Pixel.getPixel(14),
+        fontSize: Pixel.getPixel(FontAndColor.LITTLEFONT),
     },
     pressButtonStyle: {
         borderWidth: 1,
@@ -104,6 +104,6 @@ const styles = StyleSheet.create({
     },
     pressTextStyle: {
         color: FontAndColor.COLORA1,
-        fontSize: Pixel.getPixel(14),
+        fontSize: Pixel.getPixel(FontAndColor.LITTLEFONT),
     },
 });

@@ -134,7 +134,7 @@ export default class LoginScene extends BaseComponent {
                         }
                     </View>
                     <TouchableOpacity style={styles.loginBtnStyle} onPress={this.login}>
-                        <Text style={{color: FontAndColor.COLORA3, fontSize: 15}}>登录</Text>
+                        <Text style={{color: FontAndColor.COLORA3, fontSize: FontAndColor.BUTTONFONT}}>登录</Text>
                     </TouchableOpacity>
 
                     <View style={styles.settingStyle}>
@@ -193,10 +193,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: FontAndColor.COLORA3,
     },
-    iconStyle: {
-        height: loginTitleImage,
-        resizeMode: 'cover'
-    },
     loginBtnStyle: {
         height: Pixel.getPixel(44),
         width: itemWidth - Pixel.getPixel(20),
@@ -216,7 +212,7 @@ const styles = StyleSheet.create({
         marginBottom: Pixel.getPixel(2),
     },
     bottomTestSytle: {
-        fontSize: Pixel.getPixel(14),
+        fontSize: Pixel.getPixel(FontAndColor.LITTLEFONT),
         color: FontAndColor.COLORA2,
         marginRight: Pixel.getPixel(10),
     },
