@@ -147,16 +147,16 @@ const
             flex: 1,
         },
         img: {
-            width: 30,
-            height: 30,
+            width: 26,
+            height: 26,
         },
         center: {
             justifyContent: 'center',
             alignItems: 'center',
         },
         bigimg: {
-            width: 50,
-            height: 50,
+            width: 40,
+            height: 40,
         },
         selectedTitleStyle: {
             color: fontAndClolr.COLORB0

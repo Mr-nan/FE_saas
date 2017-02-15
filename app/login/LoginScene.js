@@ -7,7 +7,6 @@ import LoginAutoSearchInputText from "./component/LoginAutoSearchInputText";
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 import LoginFail from "./LoginFail";
-import ModifyAddress from "./ModifyAddress";
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');

@@ -11,6 +11,7 @@ import  {
     StyleSheet,
     Dimensions,
     Image,
+    TouchableOpacity
 } from  'react-native'
 
 
@@ -60,31 +61,7 @@ export default class MyListView extends Component {
     }
 
 
-    _renderRow(movie) {
 
-        return (
-            <View style={cellSheet.row}>
-
-                <Image style={cellSheet.thumnail} source={{uri: movie.images.large}}/>
-                <View style={cellSheet.rightContainer}>
-
-                    <View style={cellSheet.rightContainerTop}>
-
-                        <Text style={cellSheet.title}>{movie.title}</Text>
-                        <Text style={cellSheet.year}>{movie.year}</Text>
-                    </View>
-                    <View style={cellSheet.rightContainerBottom}>
-                        <Text style={cellSheet.despriton}>{movie.casts[0].avatars.medium}</Text>
-                    </View>
-
-                </View>
-
-
-            </View>
-
-
-        )
-    }
 
     _renderSeparator(sectionId, rowId) {
 
@@ -143,30 +120,59 @@ export default class MyListView extends Component {
                 </View>
 
 
+                <View style={{
+                    flexDirection: 'row',
+                    width: width,
+                    height: 40,
+                    backgroundColor: 'white',
+                    alignItems: 'center',
+                }}>
 
-                <View   style={{flexDirection:'row',width:width,height:30,backgroundColor:'yellow',alignItems:'center',}}>
-
-                    <View style={{marginLeft:20,flex:1}}>
+                    <View style={{marginLeft: 20, flex: 1}}>
                         <Text>
                             意向车源
                         </Text>
 
                     </View>
+                    <TouchableOpacity style={{marginRight: 20}} onPress={()=>{
 
-                    <View style={{marginRight:20,flexDirection:'row',justifyContent:'center'}}>
-
-                            <Text>
+                    }}>
+                        <View style={{
+                            flexDirection: 'row',
+                            alignItems: 'center'
+                        }}>
+                            <Text style={{color:'gray',fontSize:12}}>
                                 更多
                             </Text>
-                        <Image source={require('../../images/mainImage/shouche.png')} style={{marginRight:20,flexDirection:'row',justifyContent:'center'}}/>
+
+                            <Image source={require('../../images/mainImage/more.png')} style={{
+                                width: 5,
+                                height: 10,
+                                marginLeft:2,
+                            }}/>
 
 
-                    </View>
+                        </View>
+                    </TouchableOpacity>
 
 
                 </View>
 
             </View>
+
+        )
+    }
+    _renderRow(movie) {
+
+        return (
+
+            <View style={{width:150,height:280,margin:5,backgroundColor:'red'}}>
+                <Image style={cellSheet.thumnail} source={{uri: movie.images.large}}/>
+                <Text style={cellSheet.despriton}>{movie.casts[0].avatars.medium}</Text>
+                <Text style={cellSheet.title}>{movie.title}</Text>
+
+            </View>
+
 
         )
     }
@@ -207,8 +213,13 @@ const cellSheet = StyleSheet.create({
 
     thumnail: {
 
-        width: 80,
-        height: 81,
+        width: 150,
+        height: 110,
+    },
+    listStyle:{
+        flexDirection:'row',
+        flexWrap:'wrap'
+
     },
 
     rightContainer: {

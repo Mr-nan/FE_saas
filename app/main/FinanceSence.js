@@ -17,7 +17,7 @@ export default class Testview22 extends Component {
         return (
             <View style={styles.container}>
                 <Text style={styles.welcome}>
-                    Welcome to React Native!
+                    Welcome to Finance!
                 </Text>
                 <Text style={styles.instructions}>
                     To get started, edit index.ios.js
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'red',
+        backgroundColor: 'blue',
     },
     welcome: {
         fontSize: 20,
