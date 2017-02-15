@@ -1,6 +1,6 @@
 dependencies: \
-  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTKeyCommands.m \
-  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTKeyCommands.h \
-  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTDefines.h \
-  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTUtils.h \
-  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTAssert.h
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/React/Base/RCTKeyCommands.m \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/React/Base/RCTKeyCommands.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/React/Base/RCTDefines.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/React/Base/RCTUtils.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/React/Base/RCTAssert.h

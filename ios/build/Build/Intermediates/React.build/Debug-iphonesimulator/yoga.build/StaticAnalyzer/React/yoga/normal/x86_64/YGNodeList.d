@@ -1,6 +1,6 @@
 dependencies: \
-  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/ReactCommon/yoga/yoga/YGNodeList.c \
-  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/ReactCommon/yoga/yoga/YGNodeList.h \
-  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/ReactCommon/yoga/yoga/YGMacros.h \
-  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/ReactCommon/yoga/yoga/Yoga.h \
-  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/ReactCommon/yoga/yoga/YGEnums.h
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/ReactCommon/yoga/yoga/YGNodeList.c \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/ReactCommon/yoga/yoga/YGNodeList.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/ReactCommon/yoga/yoga/YGMacros.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/ReactCommon/yoga/yoga/Yoga.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/ReactCommon/yoga/yoga/YGEnums.h

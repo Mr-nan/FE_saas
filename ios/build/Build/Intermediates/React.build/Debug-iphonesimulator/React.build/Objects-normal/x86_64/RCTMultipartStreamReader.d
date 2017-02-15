@@ -1,3 +1,3 @@
 dependencies: \
-  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTMultipartStreamReader.m \
-  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTMultipartStreamReader.h
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/React/Base/RCTMultipartStreamReader.m \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/React/Base/RCTMultipartStreamReader.h

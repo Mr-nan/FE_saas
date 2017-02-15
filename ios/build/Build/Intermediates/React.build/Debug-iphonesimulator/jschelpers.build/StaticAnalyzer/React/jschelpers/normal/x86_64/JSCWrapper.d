@@ -1,3 +1,3 @@
 dependencies: \
-  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/ReactCommon/jschelpers/JSCWrapper.cpp \
-  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/ReactCommon/jschelpers/JSCWrapper.h
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/ReactCommon/jschelpers/JSCWrapper.cpp \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/ReactCommon/jschelpers/JSCWrapper.h
