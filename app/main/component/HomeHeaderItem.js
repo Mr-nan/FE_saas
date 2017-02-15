@@ -67,8 +67,6 @@ const styles = StyleSheet.create({
 
     },
     imageStyle:{
-
-
         width:Pixel.getPixel(46),
         height:Pixel.getPixel(46),
         marginLeft:5
