@@ -4,9 +4,11 @@ import BaseComponent from "../component/BaseComponent";
 import MyButton from "../component/MyButton";
 import * as FontAndColor from "../constant/fontAndColor";
 import LoginInputText from "./component/LoginInputText";
+import NavigationBar from "../component/NavigationBar";
+import PixelUtil from "../utils/PixelUtil";
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
-import NavigationBar from '../component/NavigationBar';
+var Pixel = new PixelUtil();
 
 export default class Register extends BaseComponent {
     initFinish = () => {
@@ -81,9 +83,10 @@ export default class Register extends BaseComponent {
                     </View>
                     <View style={styles.inputTextLine}/>
                     <View style={styles.imageButtonsStyle}>
-                        <Text style={{flex: 1, color: FontAndColor.COLORA1, fontSize: 14}}>添加身份证照片</Text>
+                        <Text
+                            style={{flex: 1, color: FontAndColor.COLORA1, fontSize: Pixel.getPixel(14)}}>添加身份证照片</Text>
                         <MyButton buttonType={MyButton.IMAGEBUTTON} content={require('../../images/login/idcard.png')}
-                                  parentStyle={[styles.buttonStyle, {marginRight: 10}]}
+                                  parentStyle={[styles.buttonStyle, {marginRight: Pixel.getPixel(10)}]}
                                   childStyle={styles.imageButtonStyle} mOnPress={() => {
                             alert("请上传身份证照片")
                         }}/>
@@ -96,7 +99,7 @@ export default class Register extends BaseComponent {
                     </View>
                     <View style={styles.inputTextLine}/>
                     <View style={styles.imageButtonsStyle}>
-                        <Text style={{flex: 1, color: FontAndColor.COLORA1, fontSize: 14}}>添加营业执照</Text>
+                        <Text style={{flex: 1, color: FontAndColor.COLORA1, fontSize: Pixel.getPixel(14)}}>添加营业执照</Text>
                         <MyButton buttonType={MyButton.IMAGEBUTTON} content={require('../../images/login/idcard.png')}
                                   parentStyle={styles.buttonStyle}
                                   childStyle={styles.imageButtonStyle} mOnPress={() => {
@@ -122,8 +125,8 @@ const styles = StyleSheet.create({
     itemStyel: {},
     inputTextsStyle: {
         backgroundColor: '#ffffff',
-        paddingLeft: 15,
-        paddingRight: 15,
+        paddingLeft: Pixel.getPixel(15),
+        paddingRight: Pixel.getPixel(15),
     },
     inputTextStyle: {
         backgroundColor: '#ffffff',
@@ -132,21 +135,21 @@ const styles = StyleSheet.create({
     },
     inputTextLine: {
         backgroundColor: FontAndColor.COLORA3,
-        height: 10,
+        height: Pixel.getPixel(10),
         width: width,
     },
     imageButtonsStyle: {
         width: width,
-        height: 88,
+        height: Pixel.getPixel(88),
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: '#ffffff',
-        paddingLeft: 15,
-        paddingRight: 15,
+        paddingLeft: Pixel.getPixel(15),
+        paddingRight: Pixel.getPixel(15),
 
     },
     imageButtonStyle: {
-        width: 80,
-        height: 60,
+        width: Pixel.getPixel(80),
+        height: Pixel.getPixel(60),
     }
 });

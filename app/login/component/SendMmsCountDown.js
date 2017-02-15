@@ -11,6 +11,8 @@ import {
 import MyButton from '../../component/MyButton';
 import  * as FontAndColor from '../../constant/fontAndColor';
 import BaseComponent from '../../component/BaseComponent';
+import PixelUtil from '../../utils/PixelUtil';
+var Pixel = new PixelUtil();
 
 var countTime = 6;
 export default class sendMmsCountDown extends BaseComponent {
@@ -75,13 +77,13 @@ export default class sendMmsCountDown extends BaseComponent {
 
 const styles = StyleSheet.create({
     container: {
-        width: 50,
-        height: 20,
+        width: Pixel.getPixel(50),
+        height: Pixel.getPixel(20),
     },
     buttonStyle: {
         borderWidth: 1,
-        width: 100,
-        height: 32,
+        width: Pixel.getPixel(100),
+        height: Pixel.getPixel(32),
         alignItems: 'center',
         justifyContent: 'center',
         borderWidth: 1,
@@ -89,12 +91,12 @@ const styles = StyleSheet.create({
     },
     textStyle: {
         color: FontAndColor.COLORB0,
-        fontSize: 14,
+        fontSize: Pixel.getPixel(14),
     },
     pressButtonStyle: {
         borderWidth: 1,
-        width: 100,
-        height: 32,
+        width: Pixel.getPixel(100),
+        height: Pixel.getPixel(32),
         alignItems: 'center',
         justifyContent: 'center',
         borderWidth: 1,
@@ -102,6 +104,6 @@ const styles = StyleSheet.create({
     },
     pressTextStyle: {
         color: FontAndColor.COLORA1,
-        fontSize: 14,
+        fontSize: Pixel.getPixel(14),
     },
 });

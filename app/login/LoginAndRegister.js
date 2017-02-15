@@ -5,6 +5,8 @@ import MyButton from "../component/MyButton";
 import * as FontAndColor from "../constant/fontAndColor";
 import LoginScene from "./LoginScene";
 import Register from './Register';
+import PixelUtil from "../utils/PixelUtil";
+var Pixel = new PixelUtil();
 
 export default class LoginAndRegister extends BaseComponent {
     initFinish = () => {
@@ -43,28 +45,28 @@ const styles = StyleSheet.create({
     }, fontStyle: {
         color: '#cc092f',
         alignSelf: 'center',
-        fontSize: 30,
-        marginTop: 50
+        fontSize: Pixel.getPixel(30),
+        marginTop: Pixel.getPixel(50),
     },
     iconStyle: {
-        height: 100,
-        width: 100,
+        height: Pixel.getPixel(100),
+        width: Pixel.getPixel(100),
         resizeMode: 'cover',
-        marginTop: 150,
-        marginBottom: 30,
+        marginTop: Pixel.getPixel(150),
+        marginBottom: Pixel.getPixel(30),
 
     },
     buttonStyle: {
         borderColor: FontAndColor.COLORA1,
         borderWidth: 1,
-        width: 200,
-        height: 35,
+        width: Pixel.getPixel(200),
+        height: Pixel.getPixel(35),
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 10,
-        marginBottom: 10,
+        marginTop: Pixel.getPixel(10),
+        marginBottom: Pixel.getPixel(10),
     },
     buttonTextStyle: {
-        fontSize: 18,
+        fontSize: Pixel.getPixel(18),
     }
 });

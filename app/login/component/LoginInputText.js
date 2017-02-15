@@ -12,6 +12,8 @@ import {
 } from "react-native";
 import  * as FontAndColor from '../../constant/fontAndColor';
 import SendMmsCountDown from './SendMmsCountDown';
+import PixelUtil from '../../utils/PixelUtil';
+var Pixel = new PixelUtil();
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -139,18 +141,18 @@ const styles = StyleSheet.create({
     },
     textInputStyle: {
         flex: 1,
-        height: 44,
+        height: Pixel.getPixel(44),
         textAlign: 'left',
         alignSelf: 'center',
-        fontSize: 14,
-        paddingLeft: 15,
+        fontSize: Pixel.getPixel(14),
+        paddingLeft: Pixel.getPixel(15),
         paddingTop: 0,
         paddingBottom: 0,
         color: FontAndColor.COLORA0,
     },
     iconStyle: {
-        width: 25,
-        height: 25,
+        width: Pixel.getPixel(25),
+        height: Pixel.getPixel(25),
     },
 
 });
