@@ -17,7 +17,8 @@ import {
  * 获取字体型号,和颜色的文件
  **/
 import * as fontAndClolr from '../../constant/fontAndColor';
-
+import  PixelUtil from '../../utils/PixelUtil'
+var Pixel = new PixelUtil();
 /*
 * 获取屏幕的宽和高
 **/
@@ -59,36 +60,32 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
         width:width/2.0,
-        height:75,
-        backgroundColor:'red',
+        height:Pixel.getPixel(75),
+        backgroundColor:'#ffffff',
         borderWidth:0.5,
-        borderColor:'gray'
+        borderColor:fontAndClolr.COLORA4
 
     },
     imageStyle:{
 
 
-        width:46,
-        height:46,
+        width:Pixel.getPixel(46),
+        height:Pixel.getPixel(46),
         marginLeft:5
     },
     titleStytle:{
-
         justifyContent: 'center',
-        marginLeft:11,
-
-
+        marginLeft:Pixel.getPixel(11),
     },
     functionTitleStytle:{
-
-        marginBottom:7,
-        fontSize:fontAndClolr.LITTLEFONT,
+        marginBottom:Pixel.getPixel(7),
+        fontSize:Pixel.getPixel(fontAndClolr.LITTLEFONT),
         color:fontAndClolr.COLORA0,
 
     },
     describeTitleStytle:{
-        fontSize:fontAndClolr.CONTENTFONT,
-        color:fontAndClolr.COLORA0,
+        fontSize:Pixel.getPixel(fontAndClolr.CONTENTFONT),
+        color:fontAndClolr.COLORA1,
 
     },
 
