@@ -180,7 +180,7 @@ const
         },
         outImageStyle: {
             position: 'absolute',
-            bottom: 19 * (PixelRatio.get() / 2),
+            bottom: 16 * (PixelRatio.get() / 2),
             left: width / 2 - 56 * (PixelRatio.get() / 2) / 2
         }
     });

@@ -43,12 +43,10 @@ export default class ViewPagers extends Component {
              number = 2;
         }
         this.setState({ numberss: number });
-        // console.log(this.state.numberss);
         console.log(number);
     }
 
     render() {
-        console.log(this.state.numberss);
         return (
 
             <ViewPager

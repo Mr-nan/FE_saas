@@ -1,6 +1,4 @@
-/**
- * Created by yujinzhong on 2017/2/8.
- */
+
 
 import  React, {Component, PropTypes} from  'react'
 import  {
@@ -11,14 +9,23 @@ import  {
     StyleSheet,
     Dimensions,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    ScrollView,
 } from  'react-native'
 
-import * as fontAndClolr from '../constant/fontAndColor';
+/*
+ * 获取模拟数据
+ **/
 
 let MovleData = require('./MoveData.json');
 let movies = MovleData.subjects;
+
 import  HomeHeaderItem from './component/HomeHeaderItem';
+
+
+/*
+ * 获取轮播图组件
+ **/
 import  ViewPagers from './component/ViewPager'
 /*
  * 获取屏幕的宽和高
@@ -26,6 +33,9 @@ import  ViewPagers from './component/ViewPager'
 const {width, height} = Dimensions.get('window');
 
 
+/*
+ * 构造数据源
+ **/
 export class HomeHeaderItemInfo {
     constructor(ref, key, functionTitle, describeTitle, functionImage) {
 
@@ -61,32 +71,10 @@ export default class MyListView extends Component {
         };
     }
 
-
     _renderSeparator(sectionId, rowId) {
 
         return (
             <View style={cellSheet.Separator} key={sectionId + rowId}>
-            </View>
-        )
-    }
-
-
-    render() {
-
-        return (
-
-            <View style={cellSheet.container}>
-
-                <ListView
-
-                    contentContainerStyle={cellSheet.listStyle}
-                    dataSource={this.state.source}
-                    renderRow={this._renderRow}
-                    renderSeparator={this._renderSeparator}
-                    renderHeader={this._renderHeader}
-                    bounces={false}
-                />
-
             </View>
         )
     }
@@ -112,12 +100,11 @@ export default class MyListView extends Component {
         return (
             <View>
 
-                <View style={{flexDirection: 'row'}}>
+                <View>
                     <ViewPagers/>
                 </View>
 
                 <View style={cellSheet.header}>
-
                     {items}
                 </View>
 
@@ -136,21 +123,21 @@ export default class MyListView extends Component {
                         </Text>
 
                     </View>
-                    <TouchableOpacity style={{marginRight: 20}} onPress={()=> {
+                    <TouchableOpacity style={{marginRight: 20}} onPress={()=>{
 
                     }}>
                         <View style={{
                             flexDirection: 'row',
                             alignItems: 'center'
                         }}>
-                            <Text style={{color: 'gray', fontSize: 12}}>
+                            <Text style={{color:'gray',fontSize:12}}>
                                 更多
                             </Text>
 
                             <Image source={require('../../images/mainImage/more.png')} style={{
                                 width: 5,
                                 height: 10,
-                                marginLeft: 2,
+                                marginLeft:2,
                             }}/>
 
 
@@ -164,36 +151,54 @@ export default class MyListView extends Component {
 
         )
     }
-
     _renderRow(movie) {
 
         return (
-            <View style={{
-                width: width / 2,
-                backgroundColor: 'white',
-                borderWidth: 0,
-                borderColor: 'black',
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginBottom:12,
-            }}>
-                <View style={{width: 166, height: 180, backgroundColor: 'white', justifyContent: 'center'}}>
-                    <Image style={cellSheet.imageStyle} source={{uri: movie.images.large}}/>
-                    <Text style={cellSheet.despritonStyle}>我不是盘简历我不是盘简历</Text>
-                    <Text style={cellSheet.timeStyle}>{movie.title}</Text>
 
-                </View>
+            <View style={{width:100,height:280,margin:5,backgroundColor:'red'}}>
+                <Image style={cellSheet.imageStyle} source={{uri: movie.images.large}}/>
+                <Text style={cellSheet.despriton}>{movie.casts[0].avatars.medium}</Text>
+                <Text style={cellSheet.titleStyle}>{movie.title}</Text>
+
             </View>
+
 
         )
     }
+    render() {
+
+        return (
+
+            <ScrollView style={cellSheet.container}>
+
+                <View>
+                    <ViewPagers/>
+
+                </View>
+
+                <View>
+                    <ListView
+                        contentContainerStyle={cellSheet.listStyle}
+
+                        dataSource={this.state.source}
+                        renderRow={this._renderRow}
+                        renderSeparator={this._renderSeparator}
+                        bounces={false}
+                    />
+
+                </View>
+
+
+
+            </ScrollView>
+        )
+    }
 }
-
-
 const cellSheet = StyleSheet.create({
 
 
     header: {
+        flex: 1,
 
         backgroundColor: 'green',
         flexDirection: 'row',
@@ -211,7 +216,7 @@ const cellSheet = StyleSheet.create({
 
         flex: 1,
         marginTop: 0,   //设置listView 顶在最上面
-        backgroundColor: 'white',
+        backgroundColor: 'red',
     },
 
     row: {
@@ -223,42 +228,67 @@ const cellSheet = StyleSheet.create({
 
     imageStyle: {
 
-        width: 166,
-        height: 111,
+        width: 100,
+        height: 100,
     },
-    listStyle: {
-        justifyContent: 'space-between',
+    listStyle:{
+        // flexDirection:'row',
+        // flexWrap:'wrap',
+
+        justifyContent:'space-between',
+        flexDirection:'row',
+        flexWrap:'wrap',
+        alignItems:'flex-end',
+
+    },
+
+    rightContainer: {
+
+        marginLeft: 20,
+        flex: 1,
+        alignItems: 'flex-start',
+    },
+    rightContainerTop: {
+
+        marginLeft: 10,
+        flex: 1,
+        alignItems: 'center',
         flexDirection: 'row',
-        flexWrap: 'wrap',
-        alignItems: 'flex-end',
-
     },
 
-    timeStyle: {
+    rightContainerBottom: {
+
+        marginLeft: 10,
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    titleStyle: {
 
         flex: 1,
         fontSize: 15,
         textAlign: 'left',
-        color:fontAndClolr.COLORA1,
-        fontSize:fontAndClolr.MARKFONT,
 
     },
-
+    year: {
+        fontSize: 15,
+        textAlign: 'center',
+        marginRight: 20,
+    },
     Separator: {
 
         backgroundColor: 'white',
         height: 2,
 
     },
-    despritonStyle: {
+    despriton: {
 
         textAlign: 'left',
-        marginTop:8,
-        marginBottom:13,
-        color:fontAndClolr.COLORA0,
-        fontSize:fontAndClolr.BUTTONFONT,
-
 
     }
 
 });
+
+
+
+
