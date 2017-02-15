@@ -9,8 +9,15 @@
   "dependencies": {
     "react": "~15.4.0-rc.4",
     "react-native": "0.41.1",
+<<<<<<< HEAD
     "react-native-tab-navigator": "^0.3.3",
     "react-native-tabs": "^1.0.9",
+=======
+    "react-native-sglistview": "^0.3.2",
+
+    "react-native-wechat": "^1.8.0",
+    "react-native-sqlite-storage": "^3.2.2",
+>>>>>>> ba90cef0ff201800f3f12c76c729bc1b6361c2b3
     "react-native-viewpager": "^0.2.13"
   },
   "devDependencies": {

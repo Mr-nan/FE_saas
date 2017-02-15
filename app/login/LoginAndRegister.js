@@ -1,0 +1,70 @@
+import React, {Component} from "react";
+import {AppRegistry, View, Text, StyleSheet, Image} from "react-native";
+import BaseComponent from "../component/BaseComponent";
+import MyButton from "../component/MyButton";
+import * as FontAndColor from "../constant/fontAndColor";
+import LoginScene from "./LoginScene";
+import Register from './Register';
+
+export default class LoginAndRegister extends BaseComponent {
+    initFinish = () => {
+    }
+
+    render() {
+        return (
+            <View style={styles.container}>
+                <Image source={require('./../../images/test.png')} style={styles.iconStyle}/>
+                <MyButton buttonType={MyButton.TEXTBUTTON} content="登录" parentStyle={styles.buttonStyle}
+                          childStyle={styles.buttonTextStyle} mOnPress={() => {
+                    this.toNextPage({
+                        name: 'LoginScene',
+                        component: LoginScene,
+                        params: {},
+                    })
+                }}/>
+                <MyButton buttonType={MyButton.TEXTBUTTON} content="注册" parentStyle={styles.buttonStyle}
+                          childStyle={styles.buttonTextStyle} mOnPress={() => {
+                    this.toNextPage({
+                        name: 'Register',
+                        component: Register,
+                        params: {},
+                    })
+                }}/>
+            </View>
+        );
+    }
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        backgroundColor: '#F0F0F2'
+    }, fontStyle: {
+        color: '#cc092f',
+        alignSelf: 'center',
+        fontSize: 30,
+        marginTop: 50
+    },
+    iconStyle: {
+        height: 100,
+        width: 100,
+        resizeMode: 'cover',
+        marginTop: 150,
+        marginBottom: 30,
+
+    },
+    buttonStyle: {
+        borderColor: FontAndColor.COLORA1,
+        borderWidth: 1,
+        width: 200,
+        height: 35,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 10,
+        marginBottom: 10,
+    },
+    buttonTextStyle: {
+        fontSize: 18,
+    }
+});

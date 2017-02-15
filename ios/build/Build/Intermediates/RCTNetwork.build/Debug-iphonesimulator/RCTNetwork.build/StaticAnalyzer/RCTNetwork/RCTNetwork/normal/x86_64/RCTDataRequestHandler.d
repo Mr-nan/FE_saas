@@ -1,4 +1,5 @@
 dependencies: \
+<<<<<<< HEAD
   /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/Libraries/Network/RCTDataRequestHandler.m \
   /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/Libraries/Network/RCTDataRequestHandler.h \
   /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTInvalidating.h \
@@ -6,3 +7,12 @@ dependencies: \
   /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridgeModule.h \
   /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTDefines.h \
   /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTURLRequestDelegate.h
+=======
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/Libraries/Network/RCTDataRequestHandler.m \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/Libraries/Network/RCTDataRequestHandler.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTInvalidating.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTURLRequestHandler.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridgeModule.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTDefines.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTURLRequestDelegate.h
+>>>>>>> ba90cef0ff201800f3f12c76c729bc1b6361c2b3
