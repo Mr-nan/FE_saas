@@ -6,6 +6,7 @@ import * as FontAndColor from "../constant/fontAndColor";
 import LoginInputText from "./component/LoginInputText";
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
+import NavigationBar from './component/NavigationBar';
 
 export default class Register extends BaseComponent {
     initFinish = () => {
@@ -14,15 +15,12 @@ export default class Register extends BaseComponent {
     render() {
         return (
             <View style={styles.container}>
-                <View style={styles.titleStyle}>
-                    <MyButton buttonType={MyButton.TEXTBUTTON} content="<" parentStyle={styles.buttonStyle}
-                              childStyle={styles.titleTextStyle} mOnPress={this.backPage}/>
-                    <Text style={[styles.titleTextStyle, {flex: 1, fontSize: 17}]}>注册</Text>
-                    <MyButton buttonType={MyButton.TEXTBUTTON} content="提交" parentStyle={styles.buttonStyle}
-                              childStyle={styles.titleTextStyle} mOnPress={() => {
-                        alert("提交");
-                    }}/>
-                </View>
+                <NavigationBar
+                    leftImageCallBack={this.backPage}
+                    rightTextCallBack={() => {
+                        alert("提交")
+                    }}
+                />
                 <ScrollView>
                     <View style={styles.inputTextLine}/>
                     <View style={styles.inputTextsStyle}>
@@ -119,27 +117,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: FontAndColor.COLORA3
-    },
-    fontStyle: {
-        color: '#cc092f',
-        alignSelf: 'center',
-        fontSize: 30,
-        marginTop: 50
-    },
-    titleStyle: {
-        height: 64,
-        paddingTop: 20,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#05C5C2',
-    },
-    titleTextStyle: {
-        textAlign: 'center',
-        fontSize: 15,
-        paddingLeft: 15,
-        paddingRight: 15,
-        color: FontAndColor.COLORA3,
     },
     buttonStyle: {},
     itemStyel: {},

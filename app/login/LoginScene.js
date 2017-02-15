@@ -19,6 +19,7 @@ import LoginFail from "./LoginFail";
 import * as FontAndColor from "../constant/fontAndColor";
 import MyButton from "../component/MyButton";
 import Register from "./Register";
+import NavigationBar from './component/NavigationBar';
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -64,19 +65,21 @@ export default class LoginScene extends BaseComponent {
                 });
             }}>
                 <View style={styles.container}>
-                    <View style={styles.titleStyle}>
-                        <MyButton buttonType={MyButton.TEXTBUTTON} content="取消" parentStyle={styles.buttonStyle}
-                                  childStyle={styles.titleTextStyle} mOnPress={this.backPage}/>
-                        <Text style={[styles.titleTextStyle, {flex: 1, fontSize: 17}]}>登录</Text>
-                        <MyButton buttonType={MyButton.TEXTBUTTON} content="注册" parentStyle={styles.buttonStyle}
-                                  childStyle={styles.titleTextStyle} mOnPress={() => {
+                    <NavigationBar
+                        leftImageShow={false}
+                        leftTextShow={true}
+                        leftText={"取消"}
+                        centerText={"登录"}
+                        rightText={"注册"}
+                        leftTextCallBack={this.backPage}
+                        rightTextCallBack={() => {
                             this.toNextPage({
                                 name: 'Register',
                                 component: Register,
                                 params: {},
                             })
-                        }}/>
-                    </View>
+                        }}
+                    />
 
                     <View style={styles.inputTextSytle}>
                         <LoginAutoSearchInputText
@@ -246,20 +249,4 @@ const styles = StyleSheet.create({
         marginTop: 15,
         paddingBottom: 0,
     },
-    titleStyle: {
-        height: 64,
-        paddingTop: 20,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#05C5C2',
-    },
-    titleTextStyle: {
-        textAlign: 'center',
-        fontSize: 15,
-        paddingLeft: 15,
-        paddingRight: 15,
-        color: FontAndColor.COLORA3,
-    },
-    buttonStyle: {},
 });
