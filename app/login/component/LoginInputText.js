@@ -9,6 +9,7 @@ import {
     TouchableWithoutFeedback,
     ActivityIndicator,
 } from "react-native";
+import  * as FontAndColor from '../../constant/fontAndColor';
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -95,7 +96,7 @@ export default class LoginInputText extends Component {
                         ref="inputText"
                         underlineColorAndroid={"#00000000"}
                         placeholder={this.props.textPlaceholder}
-                        placeholderTextColor={'#848484'}
+                        placeholderTextColor={FontAndColor.COLORA1}
                         keyboardType={this.props.keyBoard}
                         style={[styles.textInputStyle, this.props.inputTextStyle]}
                         onChangeText={(text) => {
@@ -125,15 +126,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderBottomWidth: 1,
-        borderBottomColor: 'lightgrey',
+        borderBottomColor: FontAndColor.COLORA4,
     },
     textInputStyle: {
+        flex: 1,
         height: 44,
         textAlign: 'left',
         alignSelf: 'center',
         fontSize: 14,
-        flex: 1,
         paddingLeft: 15,
+        paddingTop: 0,
+        paddingBottom: 0,
+        color: FontAndColor.COLORA0,
     },
     iconStyle: {
         width: 25,

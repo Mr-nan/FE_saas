@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from "react";
 import {AppRegistry, StyleSheet, Text, View, PixelRatio, TextInput, Image} from "react-native";
+import  * as FontAndColor from '../../constant/fontAndColor';
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -100,7 +101,7 @@ export default class Search extends Component {
                         <TextInput style={[styles.inputs, this.props.inputTextStyle]}
                                    returnKeyType={"search"}
                                    placeholder={this.props.inputPlaceholder}
-                                   placeholderTextColor={'#848484'}
+                                   placeholderTextColor={FontAndColor.COLORA1}
                                    underlineColorAndroid={"#00000000"}
                                    onEndEditing={this.hide.bind(this, this.state.value)}
                                    value={this.state.value}
@@ -121,7 +122,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        borderBottomColor: 'lightgrey',
+        borderBottomColor: FontAndColor.COLORA4,
         borderBottomWidth: 1,
     },
     inputHeight: {
@@ -138,6 +139,7 @@ const styles = StyleSheet.create({
         marginBottom: 0,
         fontSize: 14,
         flex: 1,
+        color:FontAndColor.COLORA0
     },
     iconStyle: {
         width: 25,
