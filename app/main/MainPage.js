@@ -8,7 +8,9 @@ import {
     Text,
     Image,
     StyleSheet,
-    Dimensions
+    Dimensions,
+    PixelRatio,
+    TouchableOpacity
 } from 'react-native';
 const {width, height} = Dimensions.get('window');
 
@@ -34,7 +36,8 @@ export class tableItemInfo {
 
     }
 
-};
+}
+;
 const employerTabArray = [
     new tableItemInfo('firstpage', 'page11', '首页', require('../../images/mainImage/homeSelect.png'), require('../../images/mainImage/homeUnSelect.png'),
         <HomeSence/>),
@@ -51,7 +54,7 @@ const bossTabArray = [
         <HomeSence/>),
     new tableItemInfo('carpage', 'page2', '车源', require('../../images/mainImage/carSelect.png'), require('../../images/mainImage/carUnSelect.png'),
         <CarSourceSence/>),
-    new tableItemInfo('sendpage', 'page3', '发布', require('../../images/mainImage/bossPublish.png'), require('../../images/mainImage/bossPublish.png'),
+    new tableItemInfo('sendpage', 'page3', '发布', require('../../images/mainImage/sendButton.png'), require('../../images/mainImage/sendButton.png'),
         <PublishSence/>),
     new tableItemInfo('financePage', 'page4', '金融', require('../../images/mainImage/moneySelect.png'), require('../../images/mainImage/moneyUnSelect.png'),
         <FinanceSence/>),
@@ -103,7 +106,7 @@ export default class MainPage extends Component {
     render() {
         let items = [];
 
-        tabArray.map((data)=> {
+        tabArray.map((data) => {
             let tabItem;
             tabItem = <TabNavigator.Item
                 selected={this.state.selectedTab === data.ref}
@@ -115,6 +118,7 @@ export default class MainPage extends Component {
                                          source={data.defaultImg}/>}
                 onPress={() => this.setState({selectedTab: data.ref})}
                 selectedTitleStyle={styles.selectedTitleStyle}
+
             >
                 {data.topView}
             </TabNavigator.Item>
@@ -134,7 +138,11 @@ export default class MainPage extends Component {
 
                 </TabNavigator>
                 <View style={[styles.imageStyle, this.props.identity == "finance" ? {width: 1} : {width: 0}]}></View>
-
+                <TouchableOpacity activeOpacity={1} style={[styles.bigimg, styles.outImageStyle]}
+                                  onPress={() => this.setState({selectedTab: 'sendpage'})}>
+                    <Image style={{flex: 1}}
+                           source={require('../../images/mainImage/sendButton.png')}/>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -147,16 +155,17 @@ const
             flex: 1,
         },
         img: {
-            width: 26,
-            height: 26,
+
+            width: 26 * (PixelRatio.get() / 2),
+            height: 26 * (PixelRatio.get() / 2),
         },
         center: {
             justifyContent: 'center',
             alignItems: 'center',
         },
         bigimg: {
-            width: 40,
-            height: 40,
+            width: 56 * (PixelRatio.get() / 2),
+            height: 56 * (PixelRatio.get() / 2),
         },
         selectedTitleStyle: {
             color: fontAndClolr.COLORB0
@@ -166,7 +175,12 @@ const
             bottom: 10,
             left: width / 2.0 - 0.5,
             width: 1,
-            height: 30,
+            height: 30* (PixelRatio.get() / 2),
             backgroundColor: "lightgray",
         },
+        outImageStyle: {
+            position: 'absolute',
+            bottom: 19 * (PixelRatio.get() / 2),
+            left: width / 2 - 56 * (PixelRatio.get() / 2) / 2
+        }
     });

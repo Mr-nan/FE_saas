@@ -3,7 +3,8 @@ import {
     AppRegistry,
     View,
     StyleSheet,
-    Dimensions
+    Dimensions,
+    TouchableOpacity
 } from 'react-native';
 
 import BaseComponent from '../component/BaseComponent';
