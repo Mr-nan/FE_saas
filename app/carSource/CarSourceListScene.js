@@ -203,6 +203,8 @@ export  default  class  carSourceListScene extends  BaseComponent{
     };
 
     _sequencingCheckedClick=(title)=>{
+
+        this._hideSequencingView();
         this.setState({
             sequencingType:title,
         });

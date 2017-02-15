@@ -20,12 +20,12 @@ export default class CarInfoNavigationView extends Component{
 
     render(){
 
-        const {backIconClik,storeIconClick,shareIconClick} = this.props;
+        const {backIconClick,storeIconClick,shareIconClick} = this.props;
 
         return(
 
             <View style={styles.content}>
-                <TouchableOpacity style={{width:80}} onPress={backIconClik}>
+                <TouchableOpacity style={{width:80}} onPress={backIconClick}>
                     <Image style={styles.backIcon}/>
                 </TouchableOpacity>
                 <Text style={styles.titleText}>车辆详情</Text>
@@ -59,8 +59,8 @@ const styles = StyleSheet.create({
     backIcon:{
 
         marginLeft:12,
-        height:30,
-        width:30,
+        height:20,
+        width:20,
         backgroundColor:'red',
     },
 
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
         color:'white',
         fontSize:fontAndColor.BUTTONFONT,
         textAlign:'center',
-        // backgroundColor:'red',
+        backgroundColor:'transparent',
 
     },
     imageFoot:{

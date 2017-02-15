@@ -5,6 +5,11 @@
 	<key>files</key>
 	<dict>
 		<key>Base.lproj/LaunchScreen.nib</key>
+<<<<<<< HEAD
+		<data>
+		1o6TEVrdKJkdnRb30jJfADkS52U=
+		</data>
+=======
 		<dict>
 			<key>hash</key>
 			<data>
@@ -13,6 +18,7 @@
 			<key>optional</key>
 			<true/>
 		</dict>
+>>>>>>> 74d8eb10f196d9bad7f37afddaf730c262365967
 		<key>Frameworks/IDEBundleInjection.framework/IDEBundleInjection</key>
 		<data>
 		aUm0c1LLvF5BD7IVSBsGgwX3iyY=
@@ -233,11 +239,19 @@
 		<dict>
 			<key>hash</key>
 			<data>
+<<<<<<< HEAD
+			1o6TEVrdKJkdnRb30jJfADkS52U=
+			</data>
+			<key>hash2</key>
+			<data>
+			JL1bGbYrhORa7qifuWaXXGSUWp1pKC2An99TzvDOnro=
+=======
 			WSl0tLHRdbrveQc40IpveQz86w0=
 			</data>
 			<key>hash2</key>
 			<data>
 			rm6P2FA1XwNAX2vzHOMKR+qfIsYdsc1x2mEyu+0N6RU=
+>>>>>>> 74d8eb10f196d9bad7f37afddaf730c262365967
 			</data>
 			<key>optional</key>
 			<true/>
