@@ -1,18 +1,27 @@
 import React from 'react';
 import {
     PixelRatio,
-    Platform
+    Platform,
+    Dimensions
 } from 'react-native';
+const {width, height} = Dimensions.get('window');
 const PixelUtil = React.createClass({
 
     render(){
         return null;
     },
     getPixel(px){
-        if(Platform.os==='ios'){
-            return px * (PixelRatio.get() / 2);
-        }else{
-            return px * (PixelRatio.get() / 3);
+        if (Platform.OS === 'android') {
+            return ((px / 375.0) * width);
+        } else {
+            return ((px / 375.0) * width);
+        }
+    },
+    getFontPixel(px){
+        if (Platform.OS === 'android') {
+            return ((px / 375.0) * width) + 2;
+        } else {
+            return ((px / 375.0) * width) + 2;
         }
     }
 });
