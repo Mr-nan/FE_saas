@@ -19,7 +19,9 @@ import LoginFail from "./LoginFail";
 import * as FontAndColor from "../constant/fontAndColor";
 import MyButton from "../component/MyButton";
 import Register from "./Register";
-import NavigationBar from './component/NavigationBar';
+import NavigationBar from '../component/NavigationBar';
+import PixelUtil from '../utils/PixelUtil';
+var Pixel = new PixelUtil();
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -197,7 +199,7 @@ const styles = StyleSheet.create({
         resizeMode: 'cover'
     },
     loginBtnStyle: {
-        height: 44,
+        height: Pixel.getPixel(44),
         width: itemWidth - 20,
         backgroundColor: FontAndColor.COLORB0,
         marginTop: 30,

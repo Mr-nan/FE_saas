@@ -6,7 +6,7 @@ import * as FontAndColor from "../constant/fontAndColor";
 import LoginInputText from "./component/LoginInputText";
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
-import NavigationBar from './component/NavigationBar';
+import NavigationBar from '../component/NavigationBar';
 
 export default class Register extends BaseComponent {
     initFinish = () => {

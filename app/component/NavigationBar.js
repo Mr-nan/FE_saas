@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import {AppRegistry, StyleSheet, View, Text} from "react-native";
-import MyButton from "../../component/MyButton";
-import * as FontAndColor from "../../constant/fontAndColor";
+import MyButton from "./MyButton";
+import * as FontAndColor from "../constant/fontAndColor";
 
 export default class NavigationBar extends Component {
 
@@ -12,7 +12,7 @@ export default class NavigationBar extends Component {
         rightTextShow: true,
 
         leftText: "",
-        leftImage: require('../../../images/login/navigotion_back.png'),
+        leftImage: require('../../images/login/navigotion_back.png'),
         centerText: "注册",
         rightText: "提交",
     };
