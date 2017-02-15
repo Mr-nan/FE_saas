@@ -11,15 +11,14 @@ import {
     TouchableWithoutFeedback
 } from "react-native";
 import BaseComponent from "../component/BaseComponent";
-//import SGListView from 'react-native-sglistview';
 import LoginInputText from "./component/LoginInputText";
 import LoginAutoSearchInputText from "./component/LoginAutoSearchInputText";
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 import LoginFail from "./LoginFail";
 import * as FontAndColor from "../constant/fontAndColor";
-import MyButton from '../component/MyButton';
-import Register from './Register';
+import MyButton from "../component/MyButton";
+import Register from "./Register";
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -68,7 +67,7 @@ export default class LoginScene extends BaseComponent {
                     <View style={styles.titleStyle}>
                         <MyButton buttonType={MyButton.TEXTBUTTON} content="取消" parentStyle={styles.buttonStyle}
                                   childStyle={styles.titleTextStyle} mOnPress={this.backPage}/>
-                        <Text style={[styles.titleTextStyle, {flex: 1}]}>登录</Text>
+                        <Text style={[styles.titleTextStyle, {flex: 1, fontSize: 17}]}>登录</Text>
                         <MyButton buttonType={MyButton.TEXTBUTTON} content="注册" parentStyle={styles.buttonStyle}
                                   childStyle={styles.titleTextStyle} mOnPress={() => {
                             this.toNextPage({
@@ -78,6 +77,7 @@ export default class LoginScene extends BaseComponent {
                             })
                         }}/>
                     </View>
+
                     <View style={styles.inputTextSytle}>
                         <LoginAutoSearchInputText
                             ref="loginUsername"
@@ -117,8 +117,9 @@ export default class LoginScene extends BaseComponent {
                             textPlaceholder={'请输入短信验证码'}
                             viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
                             leftIconUri={require('./../../images/login/sms.png')}
-                            rightIconClick={this.Smscode}
-                            rightIconStyle={{width: 100, height: 32}}/>
+                            rightIcon={false}
+                            rightButton={true}
+                            callBackSms={this.Smscode}/>
                         {
                             //结果列表
                             this.state.show ?
@@ -141,7 +142,7 @@ export default class LoginScene extends BaseComponent {
                                 params: {},
                             })
                         }}>
-                            <Text style={styles.bottomTestSytle}>登录遇到问题></Text>
+                            <Text style={styles.bottomTestSytle}>登录遇到问题 ></Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -246,7 +247,7 @@ const styles = StyleSheet.create({
         paddingBottom: 0,
     },
     titleStyle: {
-        height: 60,
+        height: 64,
         paddingTop: 20,
         flexDirection: 'row',
         alignItems: 'center',
@@ -255,7 +256,7 @@ const styles = StyleSheet.create({
     },
     titleTextStyle: {
         textAlign: 'center',
-        fontSize: 17,
+        fontSize: 15,
         paddingLeft: 15,
         paddingRight: 15,
         color: FontAndColor.COLORA3,

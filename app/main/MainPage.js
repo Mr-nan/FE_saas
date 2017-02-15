@@ -21,7 +21,8 @@ import CarSourceSence from '../main/CarSourceSence'
 import MineSence from '../main/MineSence'
 import FinanceSence from '../main/FinanceSence'
 import PublishSence from '../main/PublishSence'
-
+import  PixelUtil from '../utils/PixelUtil'
+var Pixel = new PixelUtil();
 import * as fontAndClolr from '../constant/fontAndColor';
 
 export class tableItemInfo {
@@ -130,7 +131,7 @@ export default class MainPage extends Component {
                 <TabNavigator
                     tabBarShadowStyle={{backgroundColor: "#00000000"}}
                     sceneStyle={{borderColor: 'red'}}
-                    tabBarStyle={{overflow: 'visible'}}
+                    tabBarStyle={{overflow: 'visible',height:Pixel.getPixel(50)}}
                     tabStyle={{borderColor: 'red'}}
                 >
 
@@ -140,7 +141,7 @@ export default class MainPage extends Component {
                 <View style={[styles.imageStyle, this.props.identity == "finance" ? {width: 1} : {width: 0}]}></View>
                 <TouchableOpacity activeOpacity={1} style={[styles.bigimg, styles.outImageStyle]}
                                   onPress={() => this.setState({selectedTab: 'sendpage'})}>
-                    <Image style={{flex: 1}}
+                    <Image style={styles.bigimg}
                            source={require('../../images/mainImage/sendButton.png')}/>
                 </TouchableOpacity>
             </View>
@@ -156,31 +157,33 @@ const
         },
         img: {
 
-            width: 26 * (PixelRatio.get() / 2),
-            height: 26 * (PixelRatio.get() / 2),
+            width: Pixel.getPixel(26),
+            height: Pixel.getPixel(26),
+
         },
         center: {
             justifyContent: 'center',
             alignItems: 'center',
         },
         bigimg: {
-            width: 56 * (PixelRatio.get() / 2),
-            height: 56 * (PixelRatio.get() / 2),
+            width:Pixel.getPixel(56),
+            height: Pixel.getPixel(56),
         },
         selectedTitleStyle: {
             color: fontAndClolr.COLORB0
         },
         imageStyle: {
             position: 'absolute',
-            bottom: 10,
+            bottom: Pixel.getPixel(10),
             left: width / 2.0 - 0.5,
             width: 1,
-            height: 30* (PixelRatio.get() / 2),
+            height: Pixel.getPixel(30),
             backgroundColor: "lightgray",
         },
         outImageStyle: {
             position: 'absolute',
-            bottom: 16 * (PixelRatio.get() / 2),
-            left: width / 2 - 56 * (PixelRatio.get() / 2) / 2
+
+            bottom: Pixel.getPixel(16),
+            left: width / 2 - Pixel.getPixel(56) / 2
         }
     });

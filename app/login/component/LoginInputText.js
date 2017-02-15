@@ -8,11 +8,14 @@ import {
     Image,
     TouchableWithoutFeedback,
     ActivityIndicator,
+    PixelRatio,
 } from "react-native";
 import  * as FontAndColor from '../../constant/fontAndColor';
+import SendMmsCountDown from './SendMmsCountDown';
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
+var onePT = 1 / PixelRatio.get(); //一个像素
 
 export default class LoginInputText extends Component {
 
@@ -27,6 +30,7 @@ export default class LoginInputText extends Component {
     static defaultProps = {
         leftIcon: true,
         rightIcon: true,
+        rightButton: false,
 
 
         leftIconUri: require('./../../../images/test.png'),
@@ -39,6 +43,7 @@ export default class LoginInputText extends Component {
     static propTypes = {
         leftIcon: PropTypes.bool,
         rightIcon: PropTypes.bool,
+        rightButton: PropTypes.bool,
 
         leftIconUri: PropTypes.number,
         rightIconUri: PropTypes.number,
@@ -51,6 +56,7 @@ export default class LoginInputText extends Component {
         viewStytle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
 
         rightIconClick: PropTypes.func,//定义搜索结果控件
+        callBackSms: PropTypes.func,//发送短语验证码
     }
 
     clickBtn() {
@@ -114,6 +120,9 @@ export default class LoginInputText extends Component {
                                 : this.renderLoading()
                             : null
                     }
+                    {
+                        this.props.rightButton ? <SendMmsCountDown callBackSms={this.props.callBackSms}/> : null
+                    }
                 </View>
             </View>
         );
@@ -125,7 +134,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        borderBottomWidth: 1,
+        borderBottomWidth: onePT,
         borderBottomColor: FontAndColor.COLORA4,
     },
     textInputStyle: {

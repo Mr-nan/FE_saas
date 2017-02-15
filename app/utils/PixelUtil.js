@@ -1,6 +1,7 @@
 import React from 'react';
 import {
     PixelRatio,
+    Platform
 } from 'react-native';
 const PixelUtil = React.createClass({
 
@@ -8,7 +9,11 @@ const PixelUtil = React.createClass({
         return null;
     },
     getPixel(px){
-        return px * (PixelRatio.get() / 2);
+        if(Platform.os==='ios'){
+            return px * (PixelRatio.get() / 2);
+        }else{
+            return px * (PixelRatio.get() / 3);
+        }
     }
 });
 
