@@ -4,6 +4,7 @@ import  * as FontAndColor from '../../constant/fontAndColor';
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
+var onePT = 1 / PixelRatio.get(); //一个像素
 
 export default class Search extends Component {
 
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderBottomColor: FontAndColor.COLORA4,
-        borderBottomWidth: 1,
+        borderBottomWidth: onePT,
     },
     inputHeight: {
         height: 44,
@@ -139,7 +140,7 @@ const styles = StyleSheet.create({
         marginBottom: 0,
         fontSize: 14,
         flex: 1,
-        color:FontAndColor.COLORA0
+        color: FontAndColor.COLORA0
     },
     iconStyle: {
         width: 25,
