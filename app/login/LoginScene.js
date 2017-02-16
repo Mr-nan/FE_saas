@@ -18,8 +18,10 @@ import * as AppUrls from "../constant/appUrls";
 import LoginFail from "./LoginFail";
 import MainScene from "../main/MainScene";
 import * as FontAndColor from "../constant/fontAndColor";
-import MyButton from "../component/MyButton";
 import Register from "./Register";
+import NavigationBar from "../component/NavigationBar";
+import PixelUtil from "../utils/PixelUtil";
+var Pixel = new PixelUtil();
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -66,19 +68,21 @@ export default class LoginScene extends BaseComponent {
                 });
             }}>
                 <View style={styles.container}>
-                    <View style={styles.titleStyle}>
-                        <MyButton buttonType={MyButton.TEXTBUTTON} content="取消" parentStyle={styles.buttonStyle}
-                                  childStyle={styles.titleTextStyle} mOnPress={this.backPage}/>
-                        <Text style={[styles.titleTextStyle, {flex: 1, fontSize: 17}]}>登录</Text>
-                        <MyButton buttonType={MyButton.TEXTBUTTON} content="注册" parentStyle={styles.buttonStyle}
-                                  childStyle={styles.titleTextStyle} mOnPress={() => {
+                    <NavigationBar
+                        leftImageShow={false}
+                        leftTextShow={true}
+                        leftText={"取消"}
+                        centerText={"登录"}
+                        rightText={"注册"}
+                        leftTextCallBack={this.backPage}
+                        rightTextCallBack={() => {
                             this.toNextPage({
                                 name: 'Register',
                                 component: Register,
                                 params: {},
                             })
-                        }}/>
-                    </View>
+                        }}
+                    />
 
 
                     <View style={styles.inputTextSytle}>
@@ -133,7 +137,7 @@ export default class LoginScene extends BaseComponent {
                         }
                     </View>
                     <TouchableOpacity style={styles.loginBtnStyle} onPress={this.login}>
-                        <Text style={{color: FontAndColor.COLORA3, fontSize: 15}}>登录</Text>
+                        <Text style={{color: FontAndColor.COLORA3, fontSize: FontAndColor.BUTTONFONT}}>登录</Text>
                     </TouchableOpacity>
 
                     <View style={styles.settingStyle}>
@@ -193,50 +197,44 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: FontAndColor.COLORA3,
     },
-    iconStyle: {
-        height: loginTitleImage,
-        resizeMode: 'cover'
-    },
     loginBtnStyle: {
-        height: 44,
-        width: itemWidth - 20,
+        height: Pixel.getPixel(44),
+        width: itemWidth - Pixel.getPixel(20),
         backgroundColor: FontAndColor.COLORB0,
-        marginTop: 30,
-        marginBottom: 15,
+        marginTop: Pixel.getPixel(30),
+        marginBottom: Pixel.getPixel(15),
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 4,
+        borderRadius: Pixel.getPixel(4),
     },
     settingStyle: {
         flexDirection: 'row',
         width: itemWidth,
     },
     itemStyel: {
-        marginTop: 2,
-        marginBottom: 2,
-        paddingBottom: 1,
-
+        marginTop: Pixel.getPixel(2),
+        marginBottom: Pixel.getPixel(2),
     },
     bottomTestSytle: {
-        fontSize: 14,
+        fontSize: Pixel.getPixel(FontAndColor.LITTLEFONT),
         color: FontAndColor.COLORA2,
-        marginRight: 10,
+        marginRight: Pixel.getPixel(10),
     },
     result: {
         borderColor: '#ccc',
         borderTopWidth: onePT,
         position: 'absolute',
         backgroundColor: "#000000",
-        width: itemWidth - 20,
-        top: 45,
-        left: 10,
+        width: itemWidth - Pixel.getPixel(20),
+        top: Pixel.getPixel(45),
+        left: Pixel.getPixel(10),
 
     },
     item: {
-        fontSize: 16,
-        padding: 5,
-        paddingTop: 10,
-        paddingBottom: 10,
+        fontSize: Pixel.getPixel(16),
+        padding: Pixel.getPixel(5),
+        paddingTop: Pixel.getPixel(10),
+        paddingBottom: Pixel.getPixel(10),
         borderWidth: onePT,
         borderColor: '#ddd',
         borderTopWidth: 0,
@@ -245,25 +243,9 @@ const styles = StyleSheet.create({
     inputTextSytle: {
         width: itemWidth,
         backgroundColor: '#ffffff',
-        paddingLeft: 10,
-        paddingRight: 10,
-        marginTop: 15,
+        paddingLeft: Pixel.getPixel(10),
+        paddingRight: Pixel.getPixel(10),
+        marginTop: Pixel.getPixel(15),
         paddingBottom: 0,
     },
-    titleStyle: {
-        height: 64,
-        paddingTop: 20,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#05C5C2',
-    },
-    titleTextStyle: {
-        textAlign: 'center',
-        fontSize: 15,
-        paddingLeft: 15,
-        paddingRight: 15,
-        color: FontAndColor.COLORA3,
-    },
-    buttonStyle: {},
 });

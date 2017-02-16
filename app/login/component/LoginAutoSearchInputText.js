@@ -5,6 +5,8 @@ import  * as FontAndColor from '../../constant/fontAndColor';
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var onePT = 1 / PixelRatio.get(); //一个像素
+import PixelUtil from '../../utils/PixelUtil';
+var Pixel = new PixelUtil();
 
 export default class Search extends Component {
 
@@ -127,26 +129,26 @@ const styles = StyleSheet.create({
         borderBottomWidth: onePT,
     },
     inputHeight: {
-        height: 44,
+        height: Pixel.getPixel(44),
     },
     //输入框样式
     inputs: {
-        height: 44,
-        paddingLeft: 15,
-        paddingRight: 2,
+        height: Pixel.getPixel(44),
+        paddingLeft: Pixel.getPixel(15),
+        paddingRight: Pixel.getPixel(2),
         paddingTop: 0,
         paddingBottom: 0,
         marginTop: 0,
         marginBottom: 0,
-        fontSize: 14,
+        fontSize: Pixel.getPixel(FontAndColor.LITTLEFONT),
         flex: 1,
         color: FontAndColor.COLORA0
     },
     iconStyle: {
-        width: 25,
-        height: 25,
+        width: Pixel.getPixel(25),
+        height: Pixel.getPixel(25),
     },
     width: {
-        width: width - 20,
+        width: width - Pixel.getPixel(20),
     }
 });

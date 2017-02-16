@@ -134,9 +134,17 @@ export default class FinanceSence extends Component {
         return (
             <View>
 
-                <View style={{width: width, height: Pixel.getPixel(230)}}>
-                    <Image style={{width: width, height: Pixel.getPixel(230)}}
+                <View style={[cellSheet.titleStyle,cellSheet.titleViewStyle]} source={require('../../images/financeImages/dinancebg.png')}>
+                    <Image style={[cellSheet.titleStyle,cellSheet.titleImageStyle]}
                            source={require('../../images/financeImages/dinancebg.png')}/>
+                    <Text style={{fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
+                        color:fontAndColor.COLORA3,marginTop:Pixel.getPixel(71)}}>可用额度(万)</Text>
+                    <Text style={{fontSize:Pixel.getFontPixel(24),
+                        color:fontAndColor.COLORA3,marginTop:Pixel.getPixel(8),fontWeight: 'bold'}}>500</Text>
+                    <Text style={{fontSize:Pixel.getPixel(fontAndColor.LITTLEFONT),
+                        color:fontAndColor.COLORA3,marginTop:Pixel.getPixel(71)}}>贷款余额(万)</Text>
+                    <Text style={{fontSize:Pixel.getPixel(fontAndColor.LITTLEFONT),
+                        color:fontAndColor.COLORA3,marginTop:Pixel.getPixel(71)}}>200</Text>
                 </View>
 
                 <View style={cellSheet.header}>
@@ -261,6 +269,18 @@ const cellSheet = StyleSheet.create({
 
         textAlign: 'left',
 
-    }
+    },
+    titleStyle: {
+        width: width,
+        height: Pixel.getPixel(230)
+    },
+    titleViewStyle: {
+        alignItems:'center',
+        flexDirection:'column',
+    },
+    titleImageStyle: {
+        position:'absolute'
+    },
+
 
 });
