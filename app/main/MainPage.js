@@ -47,7 +47,10 @@ const employerTabArray = [
     new tableItemInfo('sendpage', 'page13', '发布', require('../../images/mainImage/publishSelect.png'), require('../../images/mainImage/publishUnSelect.png'),
         <PublishSence/>),
     new tableItemInfo('mypage', 'page14', '我的', require('../../images/mainImage/mineSelect.png'), require('../../images/mainImage/mineUnSelect.png'),
-        <MineSence/>)
+        <MineSence/>),
+
+
+
 ];
 
 const bossTabArray = [
@@ -60,7 +63,8 @@ const bossTabArray = [
     new tableItemInfo('financePage', 'page4', '金融', require('../../images/mainImage/moneySelect.png'), require('../../images/mainImage/moneyUnSelect.png'),
         <FinanceSence/>),
     new tableItemInfo('mypage', 'page5', '我的', require('../../images/mainImage/mineSelect.png'), require('../../images/mainImage/mineUnSelect.png'),
-        <MineSence/>)
+        <MineSence/>),
+
 ];
 
 const financeTabArray = [
@@ -120,6 +124,7 @@ export default class MainPage extends Component {
                 onPress={() => this.setState({selectedTab: data.ref})}
                 selectedTitleStyle={styles.selectedTitleStyle}
 
+
             >
                 {data.topView}
             </TabNavigator.Item>
@@ -130,9 +135,8 @@ export default class MainPage extends Component {
             <View style={styles.flex}>
                 <TabNavigator
                     tabBarShadowStyle={{backgroundColor: fontAndClolr.COLORA4}}
-                    sceneStyle={{borderColor: 'red'}}
                     tabBarStyle={{overflow: 'visible',height:Pixel.getPixel(50)}}
-                    tabStyle={{borderColor: 'red'}}
+
                 >
 
                     {items}

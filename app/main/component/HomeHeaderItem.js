@@ -29,7 +29,9 @@ export default class HomeHeaderItem extends Component {
 
     render() {
         return (
-            <TouchableOpacity style={styles.container}>
+            <TouchableOpacity activeOpacity={0.7} style={styles.container} onPress={()=>{
+                this.props.callBack(this.props.functionTitle);
+            }}>
 
 
                     <Image
@@ -56,27 +58,27 @@ const styles = StyleSheet.create({
         width: width / 2.0,
         height: Pixel.getPixel(75),
         backgroundColor: '#ffffff',
-        borderWidth: 0.5,
-        borderColor: fontAndClolr.COLORA4
+        borderWidth: Pixel.getPixel(0.5),
+        borderColor: fontAndClolr.COLORA3,
 
     },
     imageStyle: {
         width: Pixel.getPixel(46),
         height: Pixel.getPixel(46),
-        marginLeft: Pixel.getPixel(10)
+        marginLeft: Pixel.getPixel(7)
     },
     titleStytle: {
         justifyContent: 'center',
-        marginLeft: Pixel.getPixel(11),
+        marginLeft: Pixel.getPixel(7),
     },
     functionTitleStytle: {
         marginBottom: Pixel.getPixel(7),
-        fontSize: Pixel.getPixel(fontAndClolr.LITTLEFONT),
+        fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT28),
         color: fontAndClolr.COLORA0,
 
     },
     describeTitleStytle: {
-        fontSize: Pixel.getPixel(fontAndClolr.CONTENTFONT),
+        fontSize: Pixel.getFontPixel(fontAndClolr.CONTENTFONT24),
         color: fontAndClolr.COLORA1,
 
     },

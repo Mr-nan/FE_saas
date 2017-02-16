@@ -92,10 +92,12 @@ export default class MyListView extends Component {
             </View>
         )
     }
+    homeOnPress=(title)=> {
+       alert(title+"11");
+    }
 
-    _renderHeader() {
+    _renderHeader=()=> {
         let tablist;
-
         tablist = bossFuncArray;
         let items = [];
         tablist.map((data)=> {
@@ -107,6 +109,9 @@ export default class MyListView extends Component {
                 functionTitle={data.functionTitle}
                 describeTitle={data.describeTitle}
                 functionImage={data.functionImage}
+                callBack={(title)=>{
+                    this.homeOnPress(title);
+                }}
             />
             items.push(tabItem);
         });
@@ -133,7 +138,7 @@ export default class MyListView extends Component {
                 }}>
 
                     <View style={{marginLeft: Pixel.getPixel(20), flex: 1}}>
-                        <Text style={{fontSize: Pixel.getPixel(15)}}>
+                        <Text style={{fontSize: Pixel.getFontPixel(15)}}>
                             意向车源
                         </Text>
 
@@ -145,7 +150,7 @@ export default class MyListView extends Component {
                             flexDirection: 'row',
                             alignItems: 'center'
                         }}>
-                            <Text style={{color: 'gray', fontSize: Pixel.getPixel(12)}}>
+                            <Text style={{color: 'gray', fontSize: Pixel.getFontPixel(12)}}>
                                 更多
                             </Text>
 
@@ -197,7 +202,7 @@ const cellSheet = StyleSheet.create({
 
     header: {
 
-        backgroundColor: 'green',
+        backgroundColor:fontAndClolr.COLORA3,
         flexDirection: 'row',
         flexWrap: 'wrap',
         paddingBottom: Pixel.getPixel(10),
@@ -206,7 +211,7 @@ const cellSheet = StyleSheet.create({
 
     headerTitle: {
 
-        fontSize: Pixel.getPixel(20),
+        fontSize: Pixel.getFontPixel(20),
     },
 
     container: {
@@ -241,7 +246,7 @@ const cellSheet = StyleSheet.create({
         flex: 1,
         textAlign: 'left',
         color:fontAndClolr.COLORA1,
-        fontSize: Pixel.getPixel(fontAndClolr.MARKFONT),
+        fontSize: Pixel.getFontPixel(fontAndClolr.MARKFONT),
 
     },
 
@@ -257,7 +262,7 @@ const cellSheet = StyleSheet.create({
         marginTop:Pixel.getPixel(8),
         marginBottom:Pixel.getPixel(13),
         color:fontAndClolr.COLORA0,
-        fontSize: Pixel.getPixel(fontAndClolr.BUTTONFONT),
+        fontSize: Pixel.getFontPixel(fontAndClolr.BUTTONFONT),
 
 
     }
