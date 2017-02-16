@@ -9,7 +9,7 @@ const PixelUtil = React.createClass({
         return null;
     },
     getPixel(px){
-        if(Platform.os==='ios'){
+        if(Platform.OS==='ios'){
             return px * (PixelRatio.get() / 2);
         }else{
             return px * (PixelRatio.get() / 3);

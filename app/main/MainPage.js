@@ -12,8 +12,10 @@ import {
     PixelRatio,
     TouchableOpacity
 } from 'react-native';
-const {width, height} = Dimensions.get('window');
 
+const {width, height} = Dimensions.get('window');
+import  PixelUtil from '../utils/PixelUtil'
+var Pixel = new PixelUtil();
 import TabNavigator from 'react-native-tab-navigator';
 
 import HomeSence  from '../main/HomeSence'
@@ -21,8 +23,6 @@ import CarSourceSence from '../main/CarSourceSence'
 import MineSence from '../main/MineSence'
 import FinanceSence from '../main/FinanceSence'
 import PublishSence from '../main/PublishSence'
-import  PixelUtil from '../utils/PixelUtil'
-var Pixel = new PixelUtil();
 import * as fontAndClolr from '../constant/fontAndColor';
 
 export class tableItemInfo {
@@ -138,7 +138,7 @@ export default class MainPage extends Component {
                     {items}
 
                 </TabNavigator>
-                <View style={[styles.imageStyle, this.props.identity == "finance" ? {width: 1} : {width: 0}]}></View>
+                <View style={[styles.imageStyle, this.props.identity == "finance" ? {width: Pixel.getPixel(1)} : {width: 0}]}></View>
                 <TouchableOpacity activeOpacity={1} style={[styles.bigimg, styles.outImageStyle]}
                                   onPress={() => this.setState({selectedTab: 'sendpage'})}>
                     <Image style={styles.bigimg}

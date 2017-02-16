@@ -189,7 +189,7 @@ const cellSheet = StyleSheet.create({
         backgroundColor: 'green',
         flexDirection: 'row',
         flexWrap: 'wrap',
-        paddingBottom: 10,
+        paddingBottom: Pixel.getPixel(10),
 
     },
 

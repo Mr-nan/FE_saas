@@ -13,6 +13,8 @@ import {
 
 import ViewPager from 'react-native-viewpager';
 const {width, height} = Dimensions.get('window');
+import  PixelUtil from '../../utils/PixelUtil'
+var Pixel = new PixelUtil();
 var IMGS = [
     'https://images.unsplash.com/photo-1441260038675-7329ab4cc264?h=1024',
     'https://images.unsplash.com/photo-1441126270775-739547c8680c?h=1024',
@@ -76,6 +78,6 @@ export default class ViewPagers extends Component {
 const styles = StyleSheet.create({
     postPosition:{
         width:width,
-        height:225,
+        height: Pixel.getPixel(225),
     },
 });

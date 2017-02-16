@@ -15,6 +15,8 @@ import  {
 } from  'react-native'
 
 import * as fontAndClolr from '../constant/fontAndColor';
+import  PixelUtil from '../utils/PixelUtil'
+var Pixel = new PixelUtil();
 
 let MovleData = require('./MoveData.json');
 let movies = MovleData.subjects;
@@ -125,32 +127,32 @@ export default class MyListView extends Component {
                 <View style={{
                     flexDirection: 'row',
                     width: width,
-                    height: 40,
+                    height: Pixel.getPixel(40),
                     backgroundColor: 'white',
                     alignItems: 'center',
                 }}>
 
-                    <View style={{marginLeft: 20, flex: 1}}>
-                        <Text>
+                    <View style={{marginLeft: Pixel.getPixel(20), flex: 1}}>
+                        <Text style={{fontSize: Pixel.getPixel(15)}}>
                             意向车源
                         </Text>
 
                     </View>
-                    <TouchableOpacity style={{marginRight: 20}} onPress={()=> {
+                    <TouchableOpacity style={{marginRight: Pixel.getPixel(20)}} onPress={()=> {
 
                     }}>
                         <View style={{
                             flexDirection: 'row',
                             alignItems: 'center'
                         }}>
-                            <Text style={{color: 'gray', fontSize: 12}}>
+                            <Text style={{color: 'gray', fontSize: Pixel.getPixel(12)}}>
                                 更多
                             </Text>
 
                             <Image source={require('../../images/mainImage/more.png')} style={{
-                                width: 5,
-                                height: 10,
-                                marginLeft: 2,
+                                width: Pixel.getPixel(5),
+                                height: Pixel.getPixel(10),
+                                marginLeft: Pixel.getPixel(2),
                             }}/>
 
 
@@ -175,9 +177,9 @@ export default class MyListView extends Component {
                 borderColor: 'black',
                 justifyContent: 'center',
                 alignItems: 'center',
-                marginBottom:12,
+                marginBottom:Pixel.getPixel(12),
             }}>
-                <View style={{width: 166, height: 180, backgroundColor: 'white', justifyContent: 'center'}}>
+                <View style={{width: Pixel.getPixel(166), height: Pixel.getPixel(180), backgroundColor: 'white', justifyContent: 'center'}}>
                     <Image style={cellSheet.imageStyle} source={{uri: movie.images.large}}/>
                     <Text style={cellSheet.despritonStyle}>我不是盘简历我不是盘简历</Text>
                     <Text style={cellSheet.timeStyle}>{movie.title}</Text>
@@ -198,19 +200,19 @@ const cellSheet = StyleSheet.create({
         backgroundColor: 'green',
         flexDirection: 'row',
         flexWrap: 'wrap',
-        paddingBottom: 10,
+        paddingBottom: Pixel.getPixel(10),
 
     },
 
     headerTitle: {
 
-        fontSize: 20,
+        fontSize: Pixel.getPixel(20),
     },
 
     container: {
 
         flex: 1,
-        marginTop: 0,   //设置listView 顶在最上面
+        marginTop: Pixel.getPixel(0),   //设置listView 顶在最上面
         backgroundColor: 'white',
     },
 
@@ -223,8 +225,8 @@ const cellSheet = StyleSheet.create({
 
     imageStyle: {
 
-        width: 166,
-        height: 111,
+        width: Pixel.getPixel(166),
+        height: Pixel.getPixel(111),
     },
     listStyle: {
         justifyContent: 'space-between',
@@ -237,26 +239,25 @@ const cellSheet = StyleSheet.create({
     timeStyle: {
 
         flex: 1,
-        fontSize: 15,
         textAlign: 'left',
         color:fontAndClolr.COLORA1,
-        fontSize:fontAndClolr.MARKFONT,
+        fontSize: Pixel.getPixel(fontAndClolr.MARKFONT),
 
     },
 
     Separator: {
 
         backgroundColor: 'white',
-        height: 2,
+        height: Pixel.getPixel(2),
 
     },
     despritonStyle: {
 
         textAlign: 'left',
-        marginTop:8,
-        marginBottom:13,
+        marginTop:Pixel.getPixel(8),
+        marginBottom:Pixel.getPixel(13),
         color:fontAndClolr.COLORA0,
-        fontSize:fontAndClolr.BUTTONFONT,
+        fontSize: Pixel.getPixel(fontAndClolr.BUTTONFONT),
 
 
     }
