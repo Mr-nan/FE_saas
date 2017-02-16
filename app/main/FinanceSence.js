@@ -176,7 +176,7 @@ const cellSheet = StyleSheet.create({
         backgroundColor: fontAndColor.COLORA3,
         flexDirection: 'row',
         flexWrap: 'wrap',
-        paddingBottom: 10,
+        paddingBottom: Pixel.getPixel(10),
 
     },
 
@@ -195,6 +195,7 @@ const cellSheet = StyleSheet.create({
     row: {
 
         alignItems: 'center',
+
         flexDirection: 'row',
         backgroundColor: '#F5FCFF',
     },

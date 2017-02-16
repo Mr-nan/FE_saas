@@ -18,6 +18,7 @@ var KeyNames = require("../constant/storageKeyNames");
 var carName = require('../../json/carName.json');
 import LoginAndRegister from '../login/LoginAndRegister';
 import MainPage from './MainPage';
+
 export default class RootScene extends BaseComponent {
     initFinish = () => {
         let that = this;
@@ -36,14 +37,12 @@ export default class RootScene extends BaseComponent {
                 //                 }
                 //                 that.toNextPage(that.navigatorParams);
                 //             } else {
-                //
-                //                 that.navigatorParams.component = MainPage;
+                //                 that.navigatorParams.component = LoginAndRegister;
                 //                 that.toNextPage(that.navigatorParams);
                 //             }
                 //         }
                 //     }
                 // });
-
                 that.navigatorParams.component = MainPage;
                 that.toNextPage(that.navigatorParams);
             }, 500

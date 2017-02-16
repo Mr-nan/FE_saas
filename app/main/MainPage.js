@@ -12,8 +12,10 @@ import {
     PixelRatio,
     TouchableOpacity
 } from 'react-native';
-const {width, height} = Dimensions.get('window');
 
+const {width, height} = Dimensions.get('window');
+import  PixelUtil from '../utils/PixelUtil'
+var Pixel = new PixelUtil();
 import TabNavigator from 'react-native-tab-navigator';
 
 import HomeSence  from '../main/HomeSence'
@@ -21,8 +23,6 @@ import CarSourceSence from '../carSource/CarSourceListScene'
 import MineSence from '../main/MineSence'
 import FinanceSence from '../main/FinanceSence'
 import PublishSence from '../main/PublishSence'
-import  PixelUtil from '../utils/PixelUtil'
-var Pixel = new PixelUtil();
 import * as fontAndClolr from '../constant/fontAndColor';
 import BaseComponent from '../component/BaseComponent';
 
@@ -125,6 +125,7 @@ export default class MainPage extends BaseComponent {
                 onPress={() => this.setState({selectedTab: data.ref})}
                 selectedTitleStyle={styles.selectedTitleStyle}
 
+
             >
                 {data.topView}
             </TabNavigator.Item>
@@ -135,15 +136,14 @@ export default class MainPage extends BaseComponent {
             <View style={styles.flex}>
                 <TabNavigator
                     tabBarShadowStyle={{backgroundColor: fontAndClolr.COLORA4}}
-                    sceneStyle={{borderColor: 'red'}}
                     tabBarStyle={{overflow: 'visible',height:Pixel.getPixel(50)}}
-                    tabStyle={{borderColor: 'red'}}
+
                 >
 
                     {items}
 
                 </TabNavigator>
-                <View style={[styles.imageStyle, this.props.identity == "finance" ? {width: 1} : {width: 0}]}></View>
+                <View style={[styles.imageStyle, this.props.identity == "finance" ? {width: Pixel.getPixel(1)} : {width: 0}]}></View>
                 <TouchableOpacity activeOpacity={1} style={[styles.bigimg, styles.outImageStyle]}
                                   onPress={() => this.setState({selectedTab: 'sendpage'})}>
                     <Image style={styles.bigimg}
@@ -161,8 +161,10 @@ const
             flex: 1,
         },
         img: {
+
             width: Pixel.getPixel(26),
             height: Pixel.getPixel(26),
+
         },
         center: {
             justifyContent: 'center',
@@ -185,6 +187,7 @@ const
         },
         outImageStyle: {
             position: 'absolute',
+
             bottom: Pixel.getPixel(16),
             left: width / 2 - Pixel.getPixel(56) / 2
         }
