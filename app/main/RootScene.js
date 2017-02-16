@@ -26,39 +26,26 @@ export default class RootScene extends BaseComponent {
                 StorageUtil.mGetItem(KeyNames.ISLOGIN, (result) => {
                     if (result !== StorageUtil.ERRORCODE) {
                         if (result == null) {
-<<<<<<< HEAD
-                            that.navigatorParams.component = CarSourceScene;
+                            that.navigatorParams.component = MainPage;
                             that.toNextPage(that.navigatorParams);
                         } else {
                             if (result == "true") {
-                                that.navigatorParams.component = CarSourceScene;
-=======
-                            that.navigatorParams.component = LoginAndRegister;
-                            that.toNextPage(that.navigatorParams);
-                        } else {
-                            if (result == "true") {
-                                that.navigatorParams.component = LoginAndRegister;
->>>>>>> 3e145433a22fba6596084cec2909e2b1d6a471f3
+                                that.navigatorParams.component = MainPage;
                                 that.navigatorParams.params = {
 
                                 }
                                 that.toNextPage(that.navigatorParams);
                             } else {
-<<<<<<< HEAD
-                                that.navigatorParams.component = CarSourceScene;
-=======
-                                that.navigatorParams.component = LoginAndRegister;
->>>>>>> 3e145433a22fba6596084cec2909e2b1d6a471f3
+
+                                that.navigatorParams.component = MainPage;
                                 that.toNextPage(that.navigatorParams);
                             }
                         }
                     }
                 });
-<<<<<<< HEAD
-=======
+
                 // that.navigatorParams.component = MainPage;
                 // that.toNextPage(that.navigatorParams);
->>>>>>> 3e145433a22fba6596084cec2909e2b1d6a471f3
             }, 500
         );
     }

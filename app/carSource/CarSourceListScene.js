@@ -219,7 +219,7 @@ navigatorParams={
 }
     _onPres = (str)=>{
 
-this.toNextPage(this.navigatorParams);
+this.props.callBack(this.navigatorParams);
     };
 
     render(){
