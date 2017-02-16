@@ -13,8 +13,8 @@ import {
     Image,
     Modal,
 } from 'react-native';
-const shareIconWechat = require('./../../images/share_icon_wechat.png');
-const shareIconMoments = require('./../../images/share_icon_moments.png');
+const shareIconWechat = require('../../images/welcome.jpg');
+const shareIconMoments = require('../../images/welcome.jpg');
 import toast from '././toast/Toast';
 var WeChat = require('react-native-wechat');
 export  default class ShareSpanner extends Component {

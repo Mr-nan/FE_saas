@@ -5,24 +5,14 @@
 	<key>files</key>
 	<dict>
 		<key>Base.lproj/LaunchScreen.nib</key>
-<<<<<<< HEAD
-		<data>
-<<<<<<< HEAD
-		bM5RIjFAlrGvZglNXo8LsF3ZOhw=
-=======
-		1o6TEVrdKJkdnRb30jJfADkS52U=
->>>>>>> ba90cef0ff201800f3f12c76c729bc1b6361c2b3
-		</data>
-=======
 		<dict>
 			<key>hash</key>
 			<data>
-			WSl0tLHRdbrveQc40IpveQz86w0=
+			VWW917QNK8z0u3DQxXSgJteVcfE=
 			</data>
 			<key>optional</key>
 			<true/>
 		</dict>
->>>>>>> 74d8eb10f196d9bad7f37afddaf730c262365967
 		<key>Frameworks/IDEBundleInjection.framework/IDEBundleInjection</key>
 		<data>
 		aUm0c1LLvF5BD7IVSBsGgwX3iyY=
@@ -226,11 +216,7 @@
 		</data>
 		<key>PlugIns/FE_SassTests.xctest/FE_SassTests</key>
 		<data>
-<<<<<<< HEAD
-		9ZuT7szvEddAg0bSrEdadEnamnw=
-=======
-		P1YlycslgfxPuNuzUFTg2U5Acwk=
->>>>>>> ba90cef0ff201800f3f12c76c729bc1b6361c2b3
+		4mNcw0oDH2ukygefyskwCgOToSY=
 		</data>
 		<key>PlugIns/FE_SassTests.xctest/Info.plist</key>
 		<data>
@@ -247,27 +233,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-<<<<<<< HEAD
-			bM5RIjFAlrGvZglNXo8LsF3ZOhw=
+			VWW917QNK8z0u3DQxXSgJteVcfE=
 			</data>
 			<key>hash2</key>
 			<data>
-			wBpPg4I6apORjUDOFbpO5g92iIrIddC/Yi/MLMm5Zrk=
-=======
-<<<<<<< HEAD
-			1o6TEVrdKJkdnRb30jJfADkS52U=
-			</data>
-			<key>hash2</key>
-			<data>
-			JL1bGbYrhORa7qifuWaXXGSUWp1pKC2An99TzvDOnro=
-=======
-			WSl0tLHRdbrveQc40IpveQz86w0=
-			</data>
-			<key>hash2</key>
-			<data>
-			rm6P2FA1XwNAX2vzHOMKR+qfIsYdsc1x2mEyu+0N6RU=
->>>>>>> 74d8eb10f196d9bad7f37afddaf730c262365967
->>>>>>> ba90cef0ff201800f3f12c76c729bc1b6361c2b3
+			7shLHjHOR39OPIbNzGCR9VcikTuBYTw7nxcTnsRb53I=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -800,19 +770,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-<<<<<<< HEAD
-			9ZuT7szvEddAg0bSrEdadEnamnw=
+			4mNcw0oDH2ukygefyskwCgOToSY=
 			</data>
 			<key>hash2</key>
 			<data>
-			k81t417x1ZPRS5xZt5pHVRs6z8O060RQx2l4sVBtaZg=
-=======
-			P1YlycslgfxPuNuzUFTg2U5Acwk=
-			</data>
-			<key>hash2</key>
-			<data>
-			pQG0RlKSiI3b6pNuqObaO404v96tIid3DbkodDAU03g=
->>>>>>> ba90cef0ff201800f3f12c76c729bc1b6361c2b3
+			33ObdcTIlnaHq14XAfW6aix5Ks5gRDMP8V2pk5Ey9iw=
 			</data>
 		</dict>
 		<key>PlugIns/FE_SassTests.xctest/Info.plist</key>

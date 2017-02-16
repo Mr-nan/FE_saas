@@ -1,23 +1,3 @@
-<<<<<<< HEAD
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTAnimation.build/Debug-iphonesimulator/RCTAnimation.build/Objects-normal/x86_64/RCTFrameAnimation.o
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTAnimation.build/Debug-iphonesimulator/RCTAnimation.build/Objects-normal/x86_64/RCTSpringAnimation.o
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTAnimation.build/Debug-iphonesimulator/RCTAnimation.build/Objects-normal/x86_64/RCTNativeAnimatedNodesManager.o
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTAnimation.build/Debug-iphonesimulator/RCTAnimation.build/Objects-normal/x86_64/RCTValueAnimatedNode.o
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTAnimation.build/Debug-iphonesimulator/RCTAnimation.build/Objects-normal/x86_64/RCTModuloAnimatedNode.o
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTAnimation.build/Debug-iphonesimulator/RCTAnimation.build/Objects-normal/x86_64/RCTDiffClampAnimatedNode.o
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTAnimation.build/Debug-iphonesimulator/RCTAnimation.build/Objects-normal/x86_64/RCTEventAnimation.o
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTAnimation.build/Debug-iphonesimulator/RCTAnimation.build/Objects-normal/x86_64/RCTStyleAnimatedNode.o
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTAnimation.build/Debug-iphonesimulator/RCTAnimation.build/Objects-normal/x86_64/RCTAnimationUtils.o
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTAnimation.build/Debug-iphonesimulator/RCTAnimation.build/Objects-normal/x86_64/RCTNativeAnimatedModule.o
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTAnimation.build/Debug-iphonesimulator/RCTAnimation.build/Objects-normal/x86_64/RCTMultiplicationAnimatedNode.o
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTAnimation.build/Debug-iphonesimulator/RCTAnimation.build/Objects-normal/x86_64/RCTPropsAnimatedNode.o
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTAnimation.build/Debug-iphonesimulator/RCTAnimation.build/Objects-normal/x86_64/RCTAnimatedNode.o
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTAnimation.build/Debug-iphonesimulator/RCTAnimation.build/Objects-normal/x86_64/RCTInterpolationAnimatedNode.o
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTAnimation.build/Debug-iphonesimulator/RCTAnimation.build/Objects-normal/x86_64/RCTAdditionAnimatedNode.o
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTAnimation.build/Debug-iphonesimulator/RCTAnimation.build/Objects-normal/x86_64/RCTDivisionAnimatedNode.o
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTAnimation.build/Debug-iphonesimulator/RCTAnimation.build/Objects-normal/x86_64/RCTTransformAnimatedNode.o
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTAnimation.build/Debug-iphonesimulator/RCTAnimation.build/Objects-normal/x86_64/RCTViewPropertyMapper.o
-=======
 /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Intermediates/RCTAnimation.build/Debug-iphonesimulator/RCTAnimation.build/Objects-normal/x86_64/RCTFrameAnimation.o
 /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Intermediates/RCTAnimation.build/Debug-iphonesimulator/RCTAnimation.build/Objects-normal/x86_64/RCTSpringAnimation.o
 /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Intermediates/RCTAnimation.build/Debug-iphonesimulator/RCTAnimation.build/Objects-normal/x86_64/RCTNativeAnimatedNodesManager.o
@@ -36,4 +16,3 @@
 /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Intermediates/RCTAnimation.build/Debug-iphonesimulator/RCTAnimation.build/Objects-normal/x86_64/RCTDivisionAnimatedNode.o
 /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Intermediates/RCTAnimation.build/Debug-iphonesimulator/RCTAnimation.build/Objects-normal/x86_64/RCTTransformAnimatedNode.o
 /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Intermediates/RCTAnimation.build/Debug-iphonesimulator/RCTAnimation.build/Objects-normal/x86_64/RCTViewPropertyMapper.o
->>>>>>> ba90cef0ff201800f3f12c76c729bc1b6361c2b3

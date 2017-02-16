@@ -10,6 +10,9 @@ import {
 import BaseComponent from '../component/BaseComponent';
 import MyButton from '../component/MyButton';
 import StorageUtil from '../utils/StorageUtil';
+
+import CarSourceScene from '../carSource/CarSourceListScene';
+
 var {height, width} = Dimensions.get('window');
 var KeyNames = require("../constant/storageKeyNames");
 var carName = require('../../json/carName.json');
@@ -20,27 +23,29 @@ export default class RootScene extends BaseComponent {
         let that = this;
         setTimeout(
             () => {
-                // StorageUtil.mGetItem(KeyNames.ISLOGIN, (result) => {
-                //     if (result !== StorageUtil.ERRORCODE) {
-                //         if (result == null) {
-                //             that.navigatorParams.component = LoginAndRegister;
-                //             that.toNextPage(that.navigatorParams);
-                //         } else {
-                //             if (result == "true") {
-                //                 that.navigatorParams.component = LoginAndRegister;
-                //                 that.navigatorParams.params = {
-                //
-                //                 }
-                //                 that.toNextPage(that.navigatorParams);
-                //             } else {
-                //                 that.navigatorParams.component = LoginAndRegister;
-                //                 that.toNextPage(that.navigatorParams);
-                //             }
-                //         }
-                //     }
-                // });
-                that.navigatorParams.component = MainPage;
-                that.toNextPage(that.navigatorParams);
+                StorageUtil.mGetItem(KeyNames.ISLOGIN, (result) => {
+                    if (result !== StorageUtil.ERRORCODE) {
+                        if (result == null) {
+                            that.navigatorParams.component = MainPage;
+                            that.toNextPage(that.navigatorParams);
+                        } else {
+                            if (result == "true") {
+                                that.navigatorParams.component = MainPage;
+                                that.navigatorParams.params = {
+
+                                }
+                                that.toNextPage(that.navigatorParams);
+                            } else {
+
+                                that.navigatorParams.component = MainPage;
+                                that.toNextPage(that.navigatorParams);
+                            }
+                        }
+                    }
+                });
+
+                // that.navigatorParams.component = MainPage;
+                // that.toNextPage(that.navigatorParams);
             }, 500
         );
     }
@@ -59,8 +64,8 @@ export default class RootScene extends BaseComponent {
     }
 
     navigatorParams = {
-        name: 'LoginAndRegister',
-        component: LoginAndRegister,
+        name: 'CarSourceScene',
+        component: CarSourceScene,
         params: {}
     }
 

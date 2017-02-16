@@ -41,7 +41,9 @@ export default class MainScene extends BaseComponent {
                     resultStyle={styles.resultStyle}
                     inputTextStyle={styles.inputTextStyle}
                     itemStyle={styles.itemStyle}
-                    submitEditing=""
+                    submitEditing={(text)=>{
+
+                    }}
                     btnStyle={styles.btnStyle}
                 />
             </View>
