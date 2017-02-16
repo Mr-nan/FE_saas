@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
         width: width / 2.0,
         height: Pixel.getPixel(75),
         backgroundColor: '#ffffff',
-        borderWidth: Pixel.getPixel(0.5),
+        borderWidth: Pixel.getPixel(0.3),
         borderColor: fontAndClolr.COLORA3,
 
     },
