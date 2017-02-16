@@ -3,7 +3,8 @@ import {
     AppRegistry,
     View,
     StyleSheet,
-    Dimensions
+    Dimensions,
+    TouchableOpacity
 } from 'react-native';
 
 import BaseComponent from '../component/BaseComponent';
@@ -16,7 +17,7 @@ var {height, width} = Dimensions.get('window');
 var KeyNames = require("../constant/storageKeyNames");
 var carName = require('../../json/carName.json');
 import LoginAndRegister from '../login/LoginAndRegister';
-
+import MainPage from './MainPage';
 export default class RootScene extends BaseComponent {
     initFinish = () => {
         let that = this;

@@ -1,8 +1,10 @@
 import React, {Component, PropTypes} from "react";
 import {AppRegistry, StyleSheet, Text, View, PixelRatio, TextInput, Image} from "react-native";
+import  * as FontAndColor from '../../constant/fontAndColor';
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
+var onePT = 1 / PixelRatio.get(); //一个像素
 
 export default class Search extends Component {
 
@@ -18,7 +20,7 @@ export default class Search extends Component {
     static defaultProps = {
         leftIconShow: true,
         inputPlaceholder: "请输入用户名",
-        leftIconUri: './../images/login_icon.png',
+        leftIconUri: './../images/login/phone.png',
     };
 
     /**
@@ -92,7 +94,7 @@ export default class Search extends Component {
             <View style={[styles.width, this.props.itemStyel]}>
                 <View style={[styles.flexDirection, styles.inputHeight]}>
                     {this.props.leftIconShow ?
-                        <Image source={require('../../../images/welcome.jpg')}
+                        <Image source={require('./../../../images/login/phone.png')}
                                style={[styles.iconStyle, this.props.leftIconStyle]}/>
                         : null
                     }
@@ -100,7 +102,7 @@ export default class Search extends Component {
                         <TextInput style={[styles.inputs, this.props.inputTextStyle]}
                                    returnKeyType={"search"}
                                    placeholder={this.props.inputPlaceholder}
-                                   placeholderTextColor={'#848484'}
+                                   placeholderTextColor={FontAndColor.COLORA1}
                                    underlineColorAndroid={"#00000000"}
                                    onEndEditing={this.hide.bind(this, this.state.value)}
                                    value={this.state.value}
@@ -121,29 +123,30 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
+        borderBottomColor: FontAndColor.COLORA4,
+        borderBottomWidth: onePT,
     },
     inputHeight: {
-        height: 45,
+        height: 44,
     },
     //输入框样式
     inputs: {
-        height: 45,
-        paddingLeft: 2,
+        height: 44,
+        paddingLeft: 15,
         paddingRight: 2,
         paddingTop: 0,
         paddingBottom: 0,
         marginTop: 0,
         marginBottom: 0,
-        fontSize: 15,
-        borderBottomColor: 'lightgrey',
-        borderBottomWidth: 1,
+        fontSize: 14,
         flex: 1,
+        color: FontAndColor.COLORA0
     },
     iconStyle: {
-        width: 30,
-        height: 30,
+        width: 25,
+        height: 25,
     },
     width: {
-        width: width * 0.9
+        width: width - 20,
     }
 });

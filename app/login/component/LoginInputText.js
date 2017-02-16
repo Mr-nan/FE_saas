@@ -8,10 +8,14 @@ import {
     Image,
     TouchableWithoutFeedback,
     ActivityIndicator,
+    PixelRatio,
 } from "react-native";
+import  * as FontAndColor from '../../constant/fontAndColor';
+import SendMmsCountDown from './SendMmsCountDown';
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
+var onePT = 1 / PixelRatio.get(); //一个像素
 
 export default class LoginInputText extends Component {
 
@@ -26,6 +30,7 @@ export default class LoginInputText extends Component {
     static defaultProps = {
         leftIcon: true,
         rightIcon: true,
+        rightButton: false,
 
 
         leftIconUri: require('../../../images/welcome.jpg'),
@@ -38,6 +43,7 @@ export default class LoginInputText extends Component {
     static propTypes = {
         leftIcon: PropTypes.bool,
         rightIcon: PropTypes.bool,
+        rightButton: PropTypes.bool,
 
         leftIconUri: PropTypes.number,
         rightIconUri: PropTypes.number,
@@ -50,6 +56,7 @@ export default class LoginInputText extends Component {
         viewStytle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
 
         rightIconClick: PropTypes.func,//定义搜索结果控件
+        callBackSms: PropTypes.func,//发送短语验证码
     }
 
     clickBtn() {
@@ -88,8 +95,6 @@ export default class LoginInputText extends Component {
                     {
                         flex: 1,
                         flexDirection: 'row',
-                        borderBottomWidth: 1,
-                        borderBottomColor: 'lightgrey',
                         alignItems: 'center'
                     }}>
 
@@ -97,7 +102,7 @@ export default class LoginInputText extends Component {
                         ref="inputText"
                         underlineColorAndroid={"#00000000"}
                         placeholder={this.props.textPlaceholder}
-                        placeholderTextColor={'#848484'}
+                        placeholderTextColor={FontAndColor.COLORA1}
                         keyboardType={this.props.keyBoard}
                         style={[styles.textInputStyle, this.props.inputTextStyle]}
                         onChangeText={(text) => {
@@ -115,6 +120,9 @@ export default class LoginInputText extends Component {
                                 : this.renderLoading()
                             : null
                     }
+                    {
+                        this.props.rightButton ? <SendMmsCountDown callBackSms={this.props.callBackSms}/> : null
+                    }
                 </View>
             </View>
         );
@@ -126,17 +134,23 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
+        borderBottomWidth: onePT,
+        borderBottomColor: FontAndColor.COLORA4,
     },
     textInputStyle: {
-        height: 40,
+        flex: 1,
+        height: 44,
         textAlign: 'left',
         alignSelf: 'center',
-        fontSize: 15,
-        flex: 1,
+        fontSize: 14,
+        paddingLeft: 15,
+        paddingTop: 0,
+        paddingBottom: 0,
+        color: FontAndColor.COLORA0,
     },
     iconStyle: {
-        width: 30,
-        height: 30,
+        width: 25,
+        height: 25,
     },
 
 });

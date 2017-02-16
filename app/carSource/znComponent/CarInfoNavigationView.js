@@ -34,7 +34,7 @@ export default class CarInfoNavigationView extends Component{
                         <Image source={require('../../../images/carSourceImages/store.png')}></Image>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={shareIconClick}>
-                        <Image style={{marginLeft:10}} source={require('../../../images/carSourceImages/share.png')}></Image>
+                        <Image style={{marginLeft:10}} source={require('../../../images/carSourceImages/share_nil.png')}></Image>
                     </TouchableOpacity>
                 </View>
             </View>

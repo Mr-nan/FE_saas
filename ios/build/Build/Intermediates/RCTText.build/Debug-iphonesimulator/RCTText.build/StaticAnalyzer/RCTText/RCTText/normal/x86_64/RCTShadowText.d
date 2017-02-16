@@ -1,4 +1,39 @@
 dependencies: \
+<<<<<<< HEAD
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/Libraries/Text/RCTShadowText.m \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/Libraries/Text/RCTShadowText.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTShadowView.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/Yoga.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/YGEnums.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/YGMacros.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTComponent.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTRootView.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridge.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridgeDelegate.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTJavaScriptLoader.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTDefines.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridgeModule.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTFrameUpdate.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTInvalidating.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTTextDecorationLineType.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTAccessibilityManager.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTConvert.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTAnimationType.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBorderStyle.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTLog.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTAssert.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTPointerEvents.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTFont.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTUIManager.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTViewManager.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTEventDispatcher.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/UIView+React.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTUtils.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/Libraries/Text/RCTShadowRawText.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/Libraries/Text/RCTText.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/Libraries/Text/RCTTextView.h \
+  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTView.h
+=======
   /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/Libraries/Text/RCTShadowText.m \
   /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/Libraries/Text/RCTShadowText.h \
   /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTShadowView.h \
@@ -32,3 +67,4 @@ dependencies: \
   /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/Libraries/Text/RCTText.h \
   /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/Libraries/Text/RCTTextView.h \
   /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTView.h
+>>>>>>> ba90cef0ff201800f3f12c76c729bc1b6361c2b3

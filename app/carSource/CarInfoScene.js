@@ -5,17 +5,18 @@ import {
     Text,
     TouchableOpacity,
     Image,
-    ScrollView
+    ScrollView,
+    Linking,
 
 } from 'react-native';
 
 import *as fontAndColor from '../constant/fontAndColor';
 import BaseComponent from '../component/BaseComponent';
 import NavigationView from './znComponent/CarInfoNavigationView';
-
+import PixelUtil from '../utils/PixelUtil';
+var Pixel = new PixelUtil();
 
 const carParameterData=[
-
     '迎宾灯',
     '全时四驱',
     '定速巡航',
@@ -75,6 +76,29 @@ const carIconsData=[
 
 ];
 
+
+const carIconsContentData=[
+    {
+        title:'2013-05-10',
+    },
+    {
+        title:'2013-11-10',
+    },
+    {
+        title:'10.8万公里',
+    },
+    {
+        title:'2次',
+    },
+    {
+        title:'',
+    },
+    {
+        title:'',
+    },
+
+];
+
 export default class CarInfoScene extends  BaseComponent {
 
     initFinish=()=>{
@@ -86,13 +110,18 @@ export default class CarInfoScene extends  BaseComponent {
         this.backPage();
     };
 
+    _callClick=()=>{
+
+        Linking.openURL('tel:10086');
+    };
+
 
     render(){
 
         return(
             <View style={{flex:1,backgroundColor:'white'}}>
 
-                <ScrollView>
+                <ScrollView style={{marginBottom:44}}>
                     <Image style={styles.carImage}/>
                     <View style={styles.contentContainer}>
                         <View style={styles.contentView}>
@@ -114,7 +143,14 @@ export default class CarInfoScene extends  BaseComponent {
                     <View style={styles.contentContainer}>
                         <View style={styles.contentView}>
                             <View style={styles.carParameterView}>
+                                {
+                                    carParameterData.map((data,index)=>{
+                                        return(<View style={[styles.carParameterItem,{backgroundColor:carParameterViewColor[index%3]}]} key={index}>
+                                                <Text style={[styles.carParameterText,{color:carParameterTextColor[index%3]}]}>{data}</Text>
+                                            </View>)
 
+                                    })
+                                }
                             </View>
                             <View style={styles.carDepictView}>
                                 <Text style={styles.carDepictText}>综合车况较好,全车结构件无损伤,加强件无严重损伤,也许覆盖件有修复</Text>
@@ -137,7 +173,7 @@ export default class CarInfoScene extends  BaseComponent {
                                carIconsData.map((data,index)=>{
 
                                    return(
-                                       <View style={{backgroundColor:fontAndColor.COLORB0,width:50,height:50,marginTop:25}} key={index}/>
+                                      <CarIconView imageData = {data.image} imageHighData={data.imageHigh} content={carIconsContentData[index].title} title={data.title} key={index}/>
                                    )
 
                                })
@@ -145,15 +181,15 @@ export default class CarInfoScene extends  BaseComponent {
                        </View>
                     </View>
                 </ScrollView>
+                <TouchableOpacity onPress={this._callClick}>
                     <View style={styles.callView}>
                         <Image source={require('../../images/carSourceImages/phone.png')}/>
                         <Text style={styles.callText}>电话咨询</Text>
                     </View>
-                    <View style={styles.navigation}>
-                        <NavigationView backIconClick={this._backIconClick}/>
-                    </View>
-
-
+                </TouchableOpacity>
+                <View style={styles.navigation}>
+                    <NavigationView backIconClick={this._backIconClick}/>
+                </View>
             </View>
         )
     }
@@ -164,12 +200,12 @@ class CarIconView extends Component{
 
     render(){
 
-       const {imageData,title,content} = this.props;
+       const {imageData,imageHighData,title,content} = this.props;
 
         return(
             <View style={styles.carIconItem}>
-                <Image source={require(imageData)}/>
-                <Text style={styles.carIconItemContentText}>{content}</Text>
+                <Image source={content? imageHighData:imageData}/>
+                <Text style={[styles.carIconItemContentText,content && {color:fontAndColor.COLORA0}]}>{content?content:'暂无'}</Text>
                 <Text style={styles.carIconItemTitleText}>{title}</Text>
             </View>
         )
@@ -178,11 +214,13 @@ class CarIconView extends Component{
 
 }
 
+
 const styles = StyleSheet.create({
 
     navigation:{
 
-        height:64,
+        height:Pixel.getPixel(64),
+        // height:64,
         backgroundColor:fontAndColor.COLORB0,
         left:0,
         right:0,
@@ -325,20 +363,28 @@ const styles = StyleSheet.create({
 
         marginBottom:15,
         marginHorizontal:15,
-        backgroundColor:'red'
+        backgroundColor:'white',
+
 
     },
     carIconsView:{
 
-        backgroundColor:'yellow',
+        backgroundColor:'white',
         flexDirection:'row',
-        justifyContent:'space-between',
         flexWrap: 'wrap',
+        justifyContent:'center',
+        alignItems:'center',
 
     },
     carIconItem:{
 
         alignItems:'center',
+        marginTop:25,
+        backgroundColor:'white',
+        width:90,
+        height:90,
+        marginRight:10,
+        marginLeft:10,
     },
     carIconItemTitleText:{
 
@@ -348,9 +394,10 @@ const styles = StyleSheet.create({
     },
     carIconItemContentText:{
 
-        color:fontAndColor.COLORA0,
+        color:fontAndColor.COLORA1,
         fontSize:fontAndColor.LITTLEFONT,
-        marginTop:10,
+        marginTop:5,
+        marginBottom:5,
 
     },
     callView:{
