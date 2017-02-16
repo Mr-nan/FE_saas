@@ -21,27 +21,27 @@ export default class RootScene extends BaseComponent {
         let that = this;
         setTimeout(
             () => {
-                // StorageUtil.mGetItem(KeyNames.ISLOGIN, (result) => {
-                //     if (result !== StorageUtil.ERRORCODE) {
-                //         if (result == null) {
-                //             that.navigatorParams.component = LoginAndRegister;
-                //             that.toNextPage(that.navigatorParams);
-                //         } else {
-                //             if (result == "true") {
-                //                 that.navigatorParams.component = LoginAndRegister;
-                //                 that.navigatorParams.params = {
-                //
-                //                 }
-                //                 that.toNextPage(that.navigatorParams);
-                //             } else {
-                //                 that.navigatorParams.component = LoginAndRegister;
-                //                 that.toNextPage(that.navigatorParams);
-                //             }
-                //         }
-                //     }
-                // });
-                that.navigatorParams.component = MainPage;
-                that.toNextPage(that.navigatorParams);
+                StorageUtil.mGetItem(KeyNames.ISLOGIN, (result) => {
+                    if (result !== StorageUtil.ERRORCODE) {
+                        if (result == null) {
+                            that.navigatorParams.component = LoginAndRegister;
+                            that.toNextPage(that.navigatorParams);
+                        } else {
+                            if (result == "true") {
+                                that.navigatorParams.component = LoginAndRegister;
+                                that.navigatorParams.params = {
+
+                                }
+                                that.toNextPage(that.navigatorParams);
+                            } else {
+                                that.navigatorParams.component = LoginAndRegister;
+                                that.toNextPage(that.navigatorParams);
+                            }
+                        }
+                    }
+                });
+                // that.navigatorParams.component = MainPage;
+                // that.toNextPage(that.navigatorParams);
             }, 500
         );
     }

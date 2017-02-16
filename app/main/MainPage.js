@@ -129,7 +129,7 @@ export default class MainPage extends Component {
         return (
             <View style={styles.flex}>
                 <TabNavigator
-                    tabBarShadowStyle={{backgroundColor: "#00000000"}}
+                    tabBarShadowStyle={{backgroundColor: fontAndClolr.COLORA4}}
                     sceneStyle={{borderColor: 'red'}}
                     tabBarStyle={{overflow: 'visible',height:Pixel.getPixel(50)}}
                     tabStyle={{borderColor: 'red'}}
