@@ -35,8 +35,8 @@ export default class LoginInputText extends Component {
         rightButton: false,
 
 
-        leftIconUri: require('./../../../images/test.png'),
-        rightIconUri: require('./../../../images/test.png'),
+        leftIconUri: require('../../../images/welcome.jpg'),
+        rightIconUri: require('../../../images/welcome.jpg'),
 
         textPlaceholder: '请输入',
         keyBoard: 'default'
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
         height: Pixel.getPixel(44),
         textAlign: 'left',
         alignSelf: 'center',
-        fontSize: Pixel.getPixel(FontAndColor.LITTLEFONT),
+        fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT),
         paddingLeft: Pixel.getPixel(15),
         paddingTop: 0,
         paddingBottom: 0,

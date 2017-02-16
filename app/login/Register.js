@@ -84,7 +84,11 @@ export default class Register extends BaseComponent {
                     <View style={styles.inputTextLine}/>
                     <View style={styles.imageButtonsStyle}>
                         <Text
-                            style={{flex: 1, color: FontAndColor.COLORA1, fontSize: Pixel.getPixel(14)}}>添加身份证照片</Text>
+                            style={{
+                                flex: 1,
+                                color: FontAndColor.COLORA1,
+                                fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT)
+                            }}>添加身份证照片</Text>
                         <MyButton buttonType={MyButton.IMAGEBUTTON} content={require('../../images/login/idcard.png')}
                                   parentStyle={[styles.buttonStyle, {marginRight: Pixel.getPixel(10)}]}
                                   childStyle={styles.imageButtonStyle} mOnPress={() => {
@@ -99,7 +103,11 @@ export default class Register extends BaseComponent {
                     </View>
                     <View style={styles.inputTextLine}/>
                     <View style={styles.imageButtonsStyle}>
-                        <Text style={{flex: 1, color: FontAndColor.COLORA1, fontSize: Pixel.getPixel(14)}}>添加营业执照</Text>
+                        <Text style={{
+                            flex: 1,
+                            color: FontAndColor.COLORA1,
+                            fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT)
+                        }}>添加营业执照</Text>
                         <MyButton buttonType={MyButton.IMAGEBUTTON} content={require('../../images/login/idcard.png')}
                                   parentStyle={styles.buttonStyle}
                                   childStyle={styles.imageButtonStyle} mOnPress={() => {

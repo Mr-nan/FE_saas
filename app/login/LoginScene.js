@@ -26,7 +26,6 @@ var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var onePT = 1 / PixelRatio.get(); //一个像素
 var itemWidth = width * 1;
-var loginTitleImage = height * 0.35;
 
 export default class LoginScene extends BaseComponent {
 
@@ -60,6 +59,7 @@ export default class LoginScene extends BaseComponent {
             );
         }
         return (
+
             <TouchableWithoutFeedback onPress={() => {
                 this.setState({
                     show: false,
@@ -81,6 +81,7 @@ export default class LoginScene extends BaseComponent {
                             })
                         }}
                     />
+
 
                     <View style={styles.inputTextSytle}>
                         <LoginAutoSearchInputText
@@ -114,7 +115,7 @@ export default class LoginScene extends BaseComponent {
                             viewStytle={styles.itemStyel}
                             leftIconUri={require('./../../images/login/virty.png')}
                             rightIconClick={this.Verifycode}
-                            rightIconStyle={{width: 100, height: 32}}/>
+                            rightIconStyle={{width: Pixel.getPixel(100), height: Pixel.getPixel(32)}}/>
 
                         <LoginInputText
                             ref="loginSmscode"
@@ -134,7 +135,10 @@ export default class LoginScene extends BaseComponent {
                         }
                     </View>
                     <TouchableOpacity style={styles.loginBtnStyle} onPress={this.login}>
-                        <Text style={{color: FontAndColor.COLORA3, fontSize: FontAndColor.BUTTONFONT}}>登录</Text>
+                        <Text style={{
+                            color: FontAndColor.COLORA3,
+                            fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT)
+                        }}>登录</Text>
                     </TouchableOpacity>
 
                     <View style={styles.settingStyle}>
@@ -146,6 +150,7 @@ export default class LoginScene extends BaseComponent {
                                 params: {},
                             })
                         }}>
+
                             <Text style={styles.bottomTestSytle}>登录遇到问题 ></Text>
                         </TouchableOpacity>
                     </View>
@@ -212,7 +217,7 @@ const styles = StyleSheet.create({
         marginBottom: Pixel.getPixel(2),
     },
     bottomTestSytle: {
-        fontSize: Pixel.getPixel(FontAndColor.LITTLEFONT),
+        fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT),
         color: FontAndColor.COLORA2,
         marginRight: Pixel.getPixel(10),
     },
@@ -227,7 +232,7 @@ const styles = StyleSheet.create({
 
     },
     item: {
-        fontSize: Pixel.getPixel(16),
+        fontSize: Pixel.getFontPixel(16),
         padding: Pixel.getPixel(5),
         paddingTop: Pixel.getPixel(10),
         paddingBottom: Pixel.getPixel(10),

@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 
 
-import * as fontAndColor from '../constant/fontAndColor';
+import * as fontAndColor from '../../constant/fontAndColor';
 
 export default class carSourceSelectHeadView extends Component{
 
@@ -73,7 +73,7 @@ class SelectButton extends  Component{
         // 初始状态
         this.state = {
 
-            imgSource:require('../../images/carSourceImages/btnIcon@2x.png'),
+            imgSource:require('../../../images/carSourceImages/btnIcon@2x.png'),
             isHighlighted:false,
         };
       }
@@ -95,7 +95,7 @@ class SelectButton extends  Component{
 
         const {imgSource,isHighlighted} = this.state;
         this.setState({
-            imgSource :  bool? (require('../../images/carSourceImages/btnIconHigh@2x.png')):(require('../../images/carSourceImages/btnIcon@2x.png')),
+            imgSource :  bool? (require('../../../images/carSourceImages/btnIconHigh@2x.png')):(require('../../../images/carSourceImages/btnIcon@2x.png')),
             isHighlighted :bool,
         })
     }

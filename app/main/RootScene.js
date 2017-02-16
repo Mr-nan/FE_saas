@@ -10,6 +10,9 @@ import {
 import BaseComponent from '../component/BaseComponent';
 import MyButton from '../component/MyButton';
 import StorageUtil from '../utils/StorageUtil';
+
+import CarSourceScene from '../carSource/CarSourceListScene';
+
 var {height, width} = Dimensions.get('window');
 var KeyNames = require("../constant/storageKeyNames");
 var carName = require('../../json/carName.json');
@@ -21,6 +24,7 @@ export default class RootScene extends BaseComponent {
         let that = this;
         setTimeout(
             () => {
+
                 // StorageUtil.mGetItem(KeyNames.ISLOGIN, (result) => {
                 //     if (result !== StorageUtil.ERRORCODE) {
                 //         if (result == null) {
@@ -60,8 +64,8 @@ export default class RootScene extends BaseComponent {
     }
 
     navigatorParams = {
-        name: 'LoginAndRegister',
-        component: LoginAndRegister,
+        name: 'CarSourceScene',
+        component: CarSourceScene,
         params: {}
     }
 
