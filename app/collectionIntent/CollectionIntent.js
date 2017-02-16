@@ -7,10 +7,14 @@ import {
     Text,
     Button,
     StyleSheet,
-    AppRegistry
+    AppRegistry,
+    TouchableOpacity
 } from 'react-native';
 import LabelSelect from './LabelSelect/LabelSelect';
 import NavigationBar from "../component/NavigationBar";
+import * as FontAndColor from "../constant/fontAndColor";
+import PixelUtil from "../utils/PixelUtil";
+var Pixel = new PixelUtil();
 
 export default class CollectionIntent extends Component {
     constructor(props) {
@@ -30,6 +34,10 @@ export default class CollectionIntent extends Component {
                 value: 3
             }, {
                 name: '高尔夫',
+                isSelected: false,
+                value: 4
+            },{
+                name: '帕萨特',
                 isSelected: false,
                 value: 4
             }],
@@ -71,14 +79,18 @@ export default class CollectionIntent extends Component {
                 isSelected: true,
                 value: 3
             }, {
-                name: '5-10万公里以内',
+                name: '5-8万公里',
                 isSelected: false,
                 value: 4
             }, {
-                name: '10万公里以上',
-                isSelected: true,
-                value: 5
-            }]
+                    name: '8-10万公里',
+                    isSelected: false,
+                    value: 4
+                }, {
+                    name: '10万公里以上',
+                    isSelected: true,
+                    value: 5
+                }]
         };
         this.selectConfirm = this.selectConfirm.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
@@ -106,71 +118,88 @@ export default class CollectionIntent extends Component {
             <View style={styles.container}>
                 <NavigationBar
                     centerText={'收车意向'}
-                    rightText={'提交'}
+                    rightText={''}
                     leftImageCallBack={this.backPage}
-                    rightTextCallBack={() => {
-                        alert("提交")
-                    }}
+
                 />
-                <View style={ [styles.container, {marginHorizontal: 10}]}>
-                    <View style={{flexDirection:'row', marginTop: 15}}>
-                        <Text style={styles.carSelect}>
-                            *品牌、车系
-                        </Text>
-                        <Text style={{fontSize: 17}} onPress={()=>{this.select.setModalVisible(true)}}>
-                            请选择>
-                        </Text>
+                <View style={ styles.container1}>
+                    <View style={styles.containerChild}>
+                        <View style={{flexDirection: 'row', marginTop: 10}}>
+                            <Text style={styles.carSelect}>
+                                *品牌、车系
+                            </Text>
+                            <Text style={{fontSize: 15, marginRight: 10, color: FontAndColor.COLORA2}} onPress={() => {
+                                this.select.setModalVisible(true)
+                            }}>
+                                请选择>
+                            </Text>
+                        </View>
+                        <LabelSelect
+                            title="Checkbox"
+                            ref={(select) => {
+                                this.select = select
+                            }}
+                            style={styles.labelSelect}
+                            readOnly={false}
+                            onConfirm={this.selectConfirm}
+                        >
+                            {this.state.arr.filter(item => item.isSelected).map((item, index) =>
+                                <LabelSelect.Label
+                                    key={'label-' + index}
+                                    data={item}
+                                    onCancel={() => {
+                                        this.deleteItem(item);
+                                    }}
+                                >{item.name}</LabelSelect.Label>
+                            )}
+                            {this.state.arr.filter(item => !item.isSelected).map((item, index) =>
+                                <LabelSelect.ModalItem
+                                    key={'modal-item-' + index}
+                                    data={item}
+                                >{item.name}</LabelSelect.ModalItem>
+                            )}
+                        </LabelSelect>
                     </View>
-                    <LabelSelect
-                        title="Checkbox"
-                        ref={(select)=>{this.select = select}}
-                        style={styles.labelSelect}
-                        readOnly= {false}
-                        onConfirm={this.selectConfirm}
-                    >
-                        {this.state.arr.filter(item => item.isSelected).map((item, index) =>
-                            <LabelSelect.Label
-                                key={'label-' + index}
-                                data={item}
-                                onCancel={() => {this.deleteItem(item);}}
-                            >{item.name}</LabelSelect.Label>
-                        )}
-                        {this.state.arr.filter(item => !item.isSelected).map((item, index) =>
-                            <LabelSelect.ModalItem
-                                key={'modal-item-' + index}
-                                data={item}
-                            >{item.name}</LabelSelect.ModalItem>
-                        )}
-                    </LabelSelect>
-                    <Text style={styles.carType}>车龄区间（单位：年）</Text>
-                    <LabelSelect
-                        style={styles.labelSelect}
-                        title="Checkbox"
-                        readOnly={true}
-                    >
-                        {this.state.arr1.map((item, index) =>
-                            <LabelSelect.Label
-                                key={'label-' + index}
-                                data={item}
-                            >{item.name}</LabelSelect.Label>
-                        )}
-                    </LabelSelect>
-                    <Text style={styles.carType}>里程区间（单位：万公里）</Text>
-                    <LabelSelect
-                        style={styles.labelSelect}
-                        title="Checkbox"
-                        readOnly={true}
-                        isBigSize={true}
-                    >
-                        {this.state.arr2.map((item, index) =>
-                            <LabelSelect.Label
-                                key={'label-' + index}
-                                data={item}
-                            >{item.name}</LabelSelect.Label>
-                        )}
-                    </LabelSelect>
+                    <View style={styles.containerChild}>
+                        <Text style={styles.carType}>车龄区间（单位：年）</Text>
+                        <LabelSelect
+                            style={styles.labelSelect}
+                            title="Checkbox"
+                            readOnly={true}
+                        >
+                            {this.state.arr1.map((item, index) =>
+                                <LabelSelect.Label
+                                    key={'label-' + index}
+                                    data={item}
+                                >{item.name}</LabelSelect.Label>
+                            )}
+                        </LabelSelect>
+                    </View>
+                    <View style={styles.containerChild}>
+                        <Text style={styles.carType}>里程区间（单位：万公里）</Text>
+                        <LabelSelect
+                            style={styles.labelSelect}
+                            title="Checkbox"
+                            readOnly={true}
+                            isBigSize={true}
+                        >
+                            {this.state.arr2.map((item, index) =>
+                                <LabelSelect.Label
+                                    key={'label-' + index}
+                                    data={item}
+                                >{item.name}</LabelSelect.Label>
+                            )}
+                        </LabelSelect>
+                    </View>
+                    <Text style={styles.bottomText}>根据您提报的收车意向，我们会给您相关车源。请关注首页意向车源。</Text>
+                    <TouchableOpacity style={styles.btnStyle} onPress={()=>{}}>
+                        <Text style={{
+                            color: FontAndColor.COLORA3,
+                            fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT),
+                            textAlign: 'center'
+                        }}>提交</Text>
+                    </TouchableOpacity>
                 </View>
-                <Text style={styles.bottomText}>根据您提报的收车意向，我们会给您相关车源。请关注首页意向车源。</Text>
             </View>
         );
     }
@@ -184,8 +213,7 @@ const styles = StyleSheet.create({
     //     backgroundColor: '#e3eeee'
     // },
     labelSelect: {
-        marginTop: 5,
-        marginBottom: 10,
+        marginTop: 10,
     },
     text: {
         fontSize: 16,
@@ -193,23 +221,11 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: '#ffffff'
     },
-    headerStyle: {
-        flexDirection: 'row',
-        height: 50,
-        backgroundColor: '#9e9e9e',
-        alignItems: 'center'
-    },
-    headerText: {
+    container1: {
         flex: 1,
-        fontSize: 20,
-        textAlign: 'center'
-    },
-    headerR: {
-        fontSize: 17,
-        color: 'blue',
-        marginRight: 10
+        backgroundColor: FontAndColor.COLORA3,
+        paddingTop: 10,
     },
     carSelect: {
         flex: 1,
@@ -220,10 +236,22 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
     bottomText: {
-        alignSelf: 'flex-end',
         marginHorizontal: 10,
-        marginBottom: 20
-    }
+    },
+    containerChild: {
+        backgroundColor: '#ffffff',
+        height: 125,
+        paddingLeft: 12,
+        marginBottom: 10
+    },
+    btnStyle: {
+        height: 40,
+        backgroundColor: FontAndColor.COLORB0,
+        marginTop: 30,
+        borderRadius: 3,
+        marginHorizontal:15,
+        justifyContent: 'center'
+    },
 });
 
 

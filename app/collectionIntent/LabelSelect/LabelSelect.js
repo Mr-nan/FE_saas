@@ -186,21 +186,22 @@ class Label extends Component {
                 <TouchableOpacity onPress={()=>{this.setPressDown()}}>
                 <View style={[Styles.selectedItem, readOnly &&this.state.enable && Styles.disableColor, isBigSize && Styles.layoutSize]}>
                     <Text style={[Styles.labelText, readOnly&&this.state.enable && Styles.disableText]}>{this.props.children}</Text>
+
+                    {enable && !readOnly && <TouchableOpacity
+                        style={Styles.closeContainer}
+                        underlayColor="transparent"
+                        activeOpacity={0.5}
+                        onPress={onCancel}>
+                        <View>
+                            <Image
+                                style={Styles.closeIcon}
+                                source={require('../../../images/deleteIcon2x.png')}
+                                resizeMode="cover"/>
+                        </View>
+                    </TouchableOpacity>}
                 </View>
                 </TouchableOpacity>
 
-                {enable && !readOnly && <TouchableOpacity
-                    style={Styles.closeContainer}
-                    underlayColor="transparent"
-                    activeOpacity={0.5}
-                    onPress={onCancel}>
-                    <View>
-                        <Image
-                            style={Styles.closeIcon}
-                            source={this.closeIcon}
-                            resizeMode="cover"/>
-                    </View>
-                </TouchableOpacity>}
             </View>
         );
     }

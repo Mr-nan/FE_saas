@@ -5,6 +5,7 @@
 import {Dimensions, StyleSheet} from 'react-native';
 const window = Dimensions.get('window');
 const {width, height, scale} = window;
+import * as FontAndColor from "../../constant/fontAndColor";
 
 export const Color = {
     disableColor: '#40cca2',
@@ -23,39 +24,40 @@ export default StyleSheet.create({
         flexWrap: 'wrap'
     },
     selectedItem: {
-        margin: 4,
+        marginBottom: 15,
+        marginRight: 6,
         width: width/4-13,
-        height: 40,
+        height: 24,
         borderWidth: 2 / scale,
-        borderRadius: 6,
-        borderColor: '#aaa',
+        borderRadius: 3,
+        borderColor: FontAndColor.COLORA2,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         overflow: 'hidden',
-        backgroundColor: '#f6f6f6'
     },
     addItem: {
         padding: 7
     },
     disableColor: {
-        backgroundColor: Color.disableColor
+        borderColor: FontAndColor.COLORB0,
     },
     layoutSize:{
         width: width/3-15,
     },
     labelText: {
         fontSize: 13,
-        lineHeight: 13
+        lineHeight: 13,
+        color: FontAndColor.COLORA2
     },
     closeContainer: {
-        position: 'absolute',
-        top: 0,
-        right:0
+        paddingLeft: 13,
+        paddingRight: 3,
+
     },
     closeIcon: {
-        width: 10,
-        height: 10
+        width: 12,
+        height: 12
     },
     addIcon: {
         width: 12,
@@ -134,7 +136,7 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     enableCircle: {
-        borderColor: Color.main
+        borderColor: FontAndColor.COLORB0
     },
     innerCircle: {
         backgroundColor: Color.main,
@@ -144,6 +146,6 @@ export default StyleSheet.create({
         overflow: 'hidden'
     },
     disableText: {
-        color: '#999'
+        color: FontAndColor.COLORB0
     }
 });
