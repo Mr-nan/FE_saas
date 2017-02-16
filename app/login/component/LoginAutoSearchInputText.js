@@ -1,11 +1,11 @@
 import React, {Component, PropTypes} from "react";
 import {AppRegistry, StyleSheet, Text, View, PixelRatio, TextInput, Image} from "react-native";
-import  * as FontAndColor from '../../constant/fontAndColor';
+import * as FontAndColor from "../../constant/fontAndColor";
+import PixelUtil from "../../utils/PixelUtil";
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var onePT = 1 / PixelRatio.get(); //一个像素
-import PixelUtil from '../../utils/PixelUtil';
 var Pixel = new PixelUtil();
 
 export default class Search extends Component {
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
         paddingBottom: 0,
         marginTop: 0,
         marginBottom: 0,
-        fontSize: Pixel.getPixel(FontAndColor.LITTLEFONT),
+        fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT),
         flex: 1,
         color: FontAndColor.COLORA0
     },

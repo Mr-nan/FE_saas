@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     }, fontStyle: {
         color: '#cc092f',
         alignSelf: 'center',
-        fontSize: Pixel.getPixel(30),
+        fontSize: Pixel.getFontPixel(30),
         marginTop: Pixel.getPixel(50),
     },
     iconStyle: {
@@ -67,6 +67,6 @@ const styles = StyleSheet.create({
         marginBottom: Pixel.getPixel(10),
     },
     buttonTextStyle: {
-        fontSize: Pixel.getPixel(18),
+        fontSize: Pixel.getFontPixel(18),
     }
 });
