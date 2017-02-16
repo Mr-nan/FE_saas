@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
         width:width/2.0,
         height:Pixel.getPixel(75),
         backgroundColor:'#ffffff',
-        borderWidth:0.5,
+        borderWidth:0.3,
         borderColor:fontAndClolr.COLORA4
 
     },
