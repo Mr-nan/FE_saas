@@ -122,7 +122,7 @@ export default class CarInfoScene extends  BaseComponent {
             <View style={{flex:1,backgroundColor:'white'}}>
 
                 <ScrollView style={{marginBottom:44}}>
-                    <Image style={styles.carImage}/>
+                    <View style={styles.carImage}/>
                     <View style={styles.contentContainer}>
                         <View style={styles.contentView}>
                         <View style={styles.titleView}>
@@ -181,11 +181,11 @@ export default class CarInfoScene extends  BaseComponent {
                        </View>
                     </View>
                 </ScrollView>
-                <TouchableOpacity onPress={this._callClick}>
-                    <View style={styles.callView}>
+                <TouchableOpacity style={styles.callView} onPress={this._callClick}>
+
                         <Image source={require('../../images/carSourceImages/phone.png')}/>
                         <Text style={styles.callText}>电话咨询</Text>
-                    </View>
+
                 </TouchableOpacity>
                 <View style={styles.navigation}>
                     <NavigationView backIconClick={this._backIconClick}/>
@@ -232,6 +232,7 @@ const styles = StyleSheet.create({
 
         backgroundColor:'yellow',
         height:250,
+        width:300
 
     },
     contentContainer:{

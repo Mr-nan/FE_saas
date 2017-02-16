@@ -23,29 +23,29 @@ export default class RootScene extends BaseComponent {
         let that = this;
         setTimeout(
             () => {
-                StorageUtil.mGetItem(KeyNames.ISLOGIN, (result) => {
-                    if (result !== StorageUtil.ERRORCODE) {
-                        if (result == null) {
-                            that.navigatorParams.component = MainPage;
-                            that.toNextPage(that.navigatorParams);
-                        } else {
-                            if (result == "true") {
-                                that.navigatorParams.component = MainPage;
-                                that.navigatorParams.params = {
+                // StorageUtil.mGetItem(KeyNames.ISLOGIN, (result) => {
+                //     if (result !== StorageUtil.ERRORCODE) {
+                //         if (result == null) {
+                //             that.navigatorParams.component = MainPage;
+                //             that.toNextPage(that.navigatorParams);
+                //         } else {
+                //             if (result == "true") {
+                //                 that.navigatorParams.component = MainPage;
+                //                 that.navigatorParams.params = {
+                //
+                //                 }
+                //                 that.toNextPage(that.navigatorParams);
+                //             } else {
+                //
+                //                 that.navigatorParams.component = MainPage;
+                //                 that.toNextPage(that.navigatorParams);
+                //             }
+                //         }
+                //     }
+                // });
 
-                                }
-                                that.toNextPage(that.navigatorParams);
-                            } else {
-
-                                that.navigatorParams.component = MainPage;
-                                that.toNextPage(that.navigatorParams);
-                            }
-                        }
-                    }
-                });
-
-                // that.navigatorParams.component = MainPage;
-                // that.toNextPage(that.navigatorParams);
+                that.navigatorParams.component = MainPage;
+                that.toNextPage(that.navigatorParams);
             }, 500
         );
     }
