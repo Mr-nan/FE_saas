@@ -20,6 +20,11 @@ import * as FontAndColor from "../constant/fontAndColor";
 import Register from "./Register";
 import NavigationBar from "../component/NavigationBar";
 import PixelUtil from "../utils/PixelUtil";
+import StorageUtil from "../utils/StorageUtil";
+import * as ISLOGIN from "../constant/storageKeyNames";
+import * as USER_INFO from "../constant/storageKeyNames";
+import SAToast from '../component/toast/Toast';
+import ShowToast from '../component/toast/ShowToast';
 var Pixel = new PixelUtil();
 
 var Dimensions = require('Dimensions');
@@ -154,6 +159,7 @@ export default class LoginScene extends BaseComponent {
                             <Text style={styles.bottomTestSytle}>登录遇到问题 ></Text>
                         </TouchableOpacity>
                     </View>
+                    <ShowToast ref='toast' msg={this.props.msg}></ShowToast>
                 </View>
             </TouchableWithoutFeedback>
         );
@@ -178,17 +184,34 @@ export default class LoginScene extends BaseComponent {
     }
 
     login = () => {
-        let maps = {
-            useName: this.refs.loginUsername.getInputTextValue(),
-            passWord: this.refs.loginPassword.getInputTextValue(),
-        };
-        request(AppUrls.LOGIN, 'Post', maps)
-            .then((response) => {
-                    alert(response.mjson.retmsg);
-                },
-                (error) => {
-                    alert(error);
+        let userName = this.refs.loginUsername.getInputTextValue();
+        let passWord = this.refs.loginPassword.getInputTextValue();
+        let verifyCode = this.refs.loginVerifycode.getInputTextValue();
+        let smsCode = this.refs.loginSmscode.getInputTextValue();
+        if (userName == "") {
+            this.refs.toast.changeType(ShowToast.TOAST, "请输入正确的用户名");
+        } else if (typeof(passWord) == "undefined" || passWord == "") {
+            this.refs.toast.changeType(ShowToast.TOAST, "密码不能为空");
+        } else if (typeof(verifyCode) == "undefined" || verifyCode == "") {
+            this.refs.toast.changeType(ShowToast.TOAST, "验证码不能为空");
+        } else if (typeof(smsCode) == "undefined" || smsCode == "") {
+            this.refs.toast.changeType(ShowToast.TOAST, "短信验证码不能为空");
+        } else {
+            let maps = {
+                useName: userName,
+                passWord: passWord,
+            };
+            request(AppUrls.LOGIN, 'Post', maps)
+                .then((response) => {
+                    // console.log(response);
+                    this.refs.toast.changeType(ShowToast.TOAST, "登录成功");
+                    // StorageUtil.mSetItem(ISLOGIN, 'true');
+                    // StorageUtil.mSetItem(USER_INFO, response);
+                }, (error) => {
+                    // console.log(error);
+                    this.refs.toast.changeType(ShowToast.TOAST, "登录失败");
                 });
+        }
     }
 }
 
