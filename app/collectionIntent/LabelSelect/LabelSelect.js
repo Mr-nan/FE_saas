@@ -109,7 +109,8 @@ class LabelSelect extends Component {
                 <Modal
                     transparent={true}
                     visible={this.state.isModalVisible}
-                    onRequestClose={() => {}}>
+                    onRequestClose={() => {
+                    }}>
                     <View style={{flex: 1}}>
                         <TouchableHighlight
                             style={Styles.modalMask}
@@ -173,9 +174,9 @@ class Label extends Component {
         };
     }
 
-    setPressDown =()=> {
+    setPressDown = () => {
         let en = this.state.enable;
-        console.log(en+"");
+        console.log(en + "");
         this.setState({enable: !en});
     }
 
@@ -183,24 +184,33 @@ class Label extends Component {
         const {enable, readOnly, onCancel, isBigSize} = this.props;
         return (
             <View>
-                <TouchableOpacity onPress={()=>{this.setPressDown()}}>
-                <View style={[Styles.selectedItem, readOnly &&this.state.enable && Styles.disableColor, isBigSize && Styles.layoutSize]}>
-                    <Text style={[Styles.labelText, readOnly&&this.state.enable && Styles.disableText]}>{this.props.children}</Text>
-                </View>
+                <TouchableOpacity onPress={() => {
+                    if (!readOnly) {
+                        onCancel();
+                    } else {
+                        this.setPressDown()
+                        onCancel();
+                    }
+                }}>
+                    <View
+                        style={[Styles.selectedItem, readOnly && this.state.enable && Styles.disableColor, !isBigSize && Styles.layoutSize]}>
+                        <Text
+                            style={[Styles.labelText, readOnly && this.state.enable && Styles.disableText]}>{this.props.children}</Text>
+
+                        {enable && !readOnly && <TouchableOpacity
+                            style={Styles.closeContainer}
+                            underlayColor="transparent"
+                            activeOpacity={0.5}>
+                            <View>
+                                <Image
+                                    style={Styles.closeIcon}
+                                    source={require('../../../images/deleteIcon2x.png')}
+                                    resizeMode="cover"/>
+                            </View>
+                        </TouchableOpacity>}
+                    </View>
                 </TouchableOpacity>
 
-                {enable && !readOnly && <TouchableOpacity
-                    style={Styles.closeContainer}
-                    underlayColor="transparent"
-                    activeOpacity={0.5}
-                    onPress={onCancel}>
-                    <View>
-                        <Image
-                            style={Styles.closeIcon}
-                            source={this.closeIcon}
-                            resizeMode="cover"/>
-                    </View>
-                </TouchableOpacity>}
             </View>
         );
     }

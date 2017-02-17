@@ -11,8 +11,12 @@ import  {
     StyleSheet,
     Dimensions,
     Image,
+    TouchableOpacity
 } from  'react-native'
 
+import * as fontAndClolr from '../constant/fontAndColor';
+import  PixelUtil from '../utils/PixelUtil'
+var Pixel = new PixelUtil();
 
 let MovleData = require('./MoveData.json');
 let movies = MovleData.subjects;
@@ -60,32 +64,6 @@ export default class MyListView extends Component {
     }
 
 
-    _renderRow(movie) {
-
-        return (
-            <View style={cellSheet.row}>
-
-                <Image style={cellSheet.thumnail} source={{uri: movie.images.large}}/>
-                <View style={cellSheet.rightContainer}>
-
-                    <View style={cellSheet.rightContainerTop}>
-
-                        <Text style={cellSheet.title}>{movie.title}</Text>
-                        <Text style={cellSheet.year}>{movie.year}</Text>
-                    </View>
-                    <View style={cellSheet.rightContainerBottom}>
-                        <Text style={cellSheet.despriton}>{movie.casts[0].avatars.medium}</Text>
-                    </View>
-
-                </View>
-
-
-            </View>
-
-
-        )
-    }
-
     _renderSeparator(sectionId, rowId) {
 
         return (
@@ -102,6 +80,8 @@ export default class MyListView extends Component {
             <View style={cellSheet.container}>
 
                 <ListView
+
+                    contentContainerStyle={cellSheet.listStyle}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
@@ -112,10 +92,12 @@ export default class MyListView extends Component {
             </View>
         )
     }
+    homeOnPress=(title)=> {
+       alert(title+"11");
+    }
 
-    _renderHeader() {
+    _renderHeader=()=> {
         let tablist;
-
         tablist = bossFuncArray;
         let items = [];
         tablist.map((data)=> {
@@ -127,6 +109,9 @@ export default class MyListView extends Component {
                 functionTitle={data.functionTitle}
                 describeTitle={data.describeTitle}
                 functionImage={data.functionImage}
+                callBack={(title)=>{
+                    this.homeOnPress(title);
+                }}
             />
             items.push(tabItem);
         });
@@ -134,38 +119,77 @@ export default class MyListView extends Component {
         return (
             <View>
 
-                <View>
+                <View style={{flexDirection: 'row'}}>
                     <ViewPagers/>
                 </View>
 
                 <View style={cellSheet.header}>
+
                     {items}
                 </View>
 
 
+                <View style={{
+                    flexDirection: 'row',
+                    width: width,
+                    height: Pixel.getPixel(40),
+                    backgroundColor: 'white',
+                    alignItems: 'center',
+                }}>
 
-                <View   style={{flexDirection:'row',width:width,height:30,backgroundColor:'yellow',alignItems:'center',}}>
-
-                    <View style={{marginLeft:20,flex:1}}>
-                        <Text>
+                    <View style={{marginLeft: Pixel.getPixel(20), flex: 1}}>
+                        <Text style={{fontSize: Pixel.getFontPixel(15)}}>
                             意向车源
                         </Text>
 
                     </View>
+                    <TouchableOpacity style={{marginRight: Pixel.getPixel(20)}} onPress={()=> {
 
-                    <View style={{marginRight:20,flexDirection:'row',justifyContent:'center'}}>
-
-                            <Text>
+                    }}>
+                        <View style={{
+                            flexDirection: 'row',
+                            alignItems: 'center'
+                        }}>
+                            <Text style={{color: 'gray', fontSize: Pixel.getFontPixel(12)}}>
                                 更多
                             </Text>
-                        <Image source={require('../../images/mainImage/shouche.png')} style={{marginRight:20,flexDirection:'row',justifyContent:'center'}}/>
+
+                            <Image source={require('../../images/mainImage/more.png')} style={{
+                                width: Pixel.getPixel(5),
+                                height: Pixel.getPixel(10),
+                                marginLeft: Pixel.getPixel(2),
+                            }}/>
 
 
-                    </View>
+                        </View>
+                    </TouchableOpacity>
 
 
                 </View>
 
+            </View>
+
+        )
+    }
+
+    _renderRow(movie) {
+
+        return (
+            <View style={{
+                width: width / 2,
+                backgroundColor: 'white',
+                borderWidth: 0,
+                borderColor: 'black',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginBottom:Pixel.getPixel(12),
+            }}>
+                <View style={{width: Pixel.getPixel(166), height: Pixel.getPixel(180), backgroundColor: 'white', justifyContent: 'center'}}>
+                    <Image style={cellSheet.imageStyle} source={{uri: movie.images.large}}/>
+                    <Text style={cellSheet.despritonStyle}>我不是盘简历我不是盘简历</Text>
+                    <Text style={cellSheet.timeStyle}>{movie.title}</Text>
+
+                </View>
             </View>
 
         )
@@ -177,25 +201,24 @@ const cellSheet = StyleSheet.create({
 
 
     header: {
-        flex: 1,
 
-        backgroundColor: 'green',
+        backgroundColor:fontAndClolr.COLORA3,
         flexDirection: 'row',
         flexWrap: 'wrap',
-        paddingBottom: 10,
+        paddingBottom: Pixel.getPixel(10),
 
     },
 
     headerTitle: {
 
-        fontSize: 20,
+        fontSize: Pixel.getFontPixel(20),
     },
 
     container: {
 
         flex: 1,
-        marginTop: 0,   //设置listView 顶在最上面
-        backgroundColor: '#F5FCFF',
+        marginTop: Pixel.getPixel(0),   //设置listView 顶在最上面
+        backgroundColor: 'white',
     },
 
     row: {
@@ -205,54 +228,42 @@ const cellSheet = StyleSheet.create({
         backgroundColor: '#F5FCFF',
     },
 
-    thumnail: {
+    imageStyle: {
 
-        width: 80,
-        height: 81,
+        width: Pixel.getPixel(166),
+        height: Pixel.getPixel(111),
     },
-
-    rightContainer: {
-
-        marginLeft: 20,
-        flex: 1,
-        alignItems: 'flex-start',
-    },
-    rightContainerTop: {
-
-        marginLeft: 10,
-        flex: 1,
-        alignItems: 'center',
+    listStyle: {
+        justifyContent: 'space-between',
         flexDirection: 'row',
+        flexWrap: 'wrap',
+        alignItems: 'flex-end',
+
     },
 
-    rightContainerBottom: {
-
-        marginLeft: 10,
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    title: {
+    timeStyle: {
 
         flex: 1,
-        fontSize: 15,
         textAlign: 'left',
+        color:fontAndClolr.COLORA1,
+        fontSize: Pixel.getFontPixel(fontAndClolr.MARKFONT),
 
     },
-    year: {
-        fontSize: 15,
-        textAlign: 'center',
-        marginRight: 20,
-    },
+
     Separator: {
 
         backgroundColor: 'white',
-        height: 2,
+        height: Pixel.getPixel(2),
 
     },
-    despriton: {
+    despritonStyle: {
 
         textAlign: 'left',
+        marginTop:Pixel.getPixel(8),
+        marginBottom:Pixel.getPixel(13),
+        color:fontAndClolr.COLORA0,
+        fontSize: Pixel.getFontPixel(fontAndClolr.BUTTONFONT),
+
 
     }
 

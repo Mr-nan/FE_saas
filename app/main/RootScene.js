@@ -18,34 +18,33 @@ var KeyNames = require("../constant/storageKeyNames");
 var carName = require('../../json/carName.json');
 import LoginAndRegister from '../login/LoginAndRegister';
 import MainPage from './MainPage';
+
 export default class RootScene extends BaseComponent {
     initFinish = () => {
         let that = this;
         setTimeout(
             () => {
-                StorageUtil.mGetItem(KeyNames.ISLOGIN, (result) => {
-                    if (result !== StorageUtil.ERRORCODE) {
-                        if (result == null) {
-                            that.navigatorParams.component = MainPage;
-                            that.toNextPage(that.navigatorParams);
-                        } else {
-                            if (result == "true") {
-                                that.navigatorParams.component = MainPage;
-                                that.navigatorParams.params = {
-
-                                }
-                                that.toNextPage(that.navigatorParams);
-                            } else {
-
-                                that.navigatorParams.component = MainPage;
-                                that.toNextPage(that.navigatorParams);
-                            }
-                        }
-                    }
-                });
-
-                // that.navigatorParams.component = MainPage;
-                // that.toNextPage(that.navigatorParams);
+                // StorageUtil.mGetItem(KeyNames.ISLOGIN, (result) => {
+                //     if (result !== StorageUtil.ERRORCODE) {
+                //         if (result == null) {
+                //             that.navigatorParams.component = MainPage;
+                //             that.toNextPage(that.navigatorParams);
+                //         } else {
+                //             if (result == "true") {
+                //                 that.navigatorParams.component = MainPage;
+                //                 that.navigatorParams.params = {
+                //
+                //                 }
+                //                 that.toNextPage(that.navigatorParams);
+                //             } else {
+                //                 that.navigatorParams.component = LoginAndRegister;
+                //                 that.toNextPage(that.navigatorParams);
+                //             }
+                //         }
+                //     }
+                // });
+                that.navigatorParams.component = MainPage;
+                that.toNextPage(that.navigatorParams);
             }, 500
         );
     }
