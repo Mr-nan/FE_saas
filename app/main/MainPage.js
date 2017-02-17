@@ -51,7 +51,8 @@ export default class MainPage extends BaseComponent {
         identity: 'boss'
     };
 
-    initFinish=()=>{}
+    initFinish = () => {
+    }
 
     /**
      * 初始化,指定tab及页面被选中
@@ -73,13 +74,15 @@ export default class MainPage extends BaseComponent {
             new tableItemInfo('firstpage', 'page1', '首页', require('../../images/mainImage/homeSelect.png'), require('../../images/mainImage/homeUnSelect.png'),
                 <HomeSence/>),
             new tableItemInfo('carpage', 'page2', '车源', require('../../images/mainImage/carSelect.png'), require('../../images/mainImage/carUnSelect.png'),
-                <CarSourceSence callBack={(params)=>{
+                <CarSourceSence callBack={(params) => {
                     this.toNextPage(params);
                 }}/>),
             new tableItemInfo('sendpage', 'page3', '发布', require('../../images/mainImage/sendButton.png'), require('../../images/mainImage/sendButton.png'),
                 <PublishSence/>),
             new tableItemInfo('financePage', 'page4', '金融', require('../../images/mainImage/moneySelect.png'), require('../../images/mainImage/moneyUnSelect.png'),
-                <FinanceSence/>),
+                <FinanceSence callBack={(params) => {
+                    this.toNextPage(params);
+                }}/>),
             new tableItemInfo('mypage', 'page5', '我的', require('../../images/mainImage/mineSelect.png'), require('../../images/mainImage/mineUnSelect.png'),
                 <MineSence/>)
         ];
@@ -135,24 +138,20 @@ export default class MainPage extends BaseComponent {
         return (
             <View style={styles.flex}>
                 <TabNavigator
-                    tabBarShadowStyle={{backgroundColor: fontAndClolr.COLORA4}}
-                    tabBarStyle={{overflow: 'visible',height:Pixel.getPixel(50)}}
+                    sceneStyle={{backgroundColor: '#00000000'}}
+                    tabBarShadowStyle={{backgroundColor: '#00000000'}}
+                    tabBarStyle={{overflow: 'visible', height: Pixel.getPixel(75), backgroundColor: '#00000000'}}
 
                 >
-
                     {items}
-
                 </TabNavigator>
-                <View style={[styles.imageStyle, this.props.identity == "finance" ? {width: Pixel.getPixel(1)} : {width: 0}]}></View>
-                <TouchableOpacity activeOpacity={1} style={[styles.bigimg, styles.outImageStyle]}
-                                  onPress={() => this.setState({selectedTab: 'sendpage'})}>
-                    <Image style={styles.bigimg}
-                           source={require('../../images/mainImage/sendButton.png')}/>
-                </TouchableOpacity>
+                <View
+                    style={[styles.imageStyle, this.props.identity == "finance" ? {width: Pixel.getPixel(1)} : {width: 0}]}></View>
             </View>
         );
     }
 }
+
 
 const
     styles = StyleSheet.create({
@@ -171,7 +170,7 @@ const
             alignItems: 'center',
         },
         bigimg: {
-            width:Pixel.getPixel(56),
+            width: Pixel.getPixel(56),
             height: Pixel.getPixel(56),
         },
         selectedTitleStyle: {

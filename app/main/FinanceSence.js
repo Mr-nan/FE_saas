@@ -20,10 +20,14 @@ import  HomeHeaderItem from './component/HomeHeaderItem';
 import * as fontAndColor from '../constant/fontAndColor';
 import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
+import MainScene from './MainScene';
 /*
  * 获取屏幕的宽和高
  **/
 const {width, height} = Dimensions.get('window');
+import LendMoneySence from '../finance/LendMoneySence';
+import MyButton from '../component/MyButton';
+import RepaymentScene from '../finance/RepaymentScene';
 
 
 export class HomeHeaderItemInfo {
@@ -39,8 +43,8 @@ export class HomeHeaderItemInfo {
 }
 
 const bossFuncArray = [
-    new HomeHeaderItemInfo('jiekuan', 'page1', '借款', '购车贷款一键搞定', require('../../images/financeImages/borrowicon.png')),
-    new HomeHeaderItemInfo('huankuan', 'page2', '还款', '还款简单便捷', require('../../images/financeImages/repaymenticon.png')),
+    new HomeHeaderItemInfo('jiekuan', 'page1', '借款', '一步快速搞定', require('../../images/financeImages/borrowicon.png')),
+    new HomeHeaderItemInfo('huankuan', 'page2', '还款', '智能自动提醒', require('../../images/financeImages/repaymenticon.png')),
 ];
 const employerFuncArray = [bossFuncArray[0], bossFuncArray[1]];
 
@@ -64,27 +68,53 @@ export default class FinanceSence extends Component {
         };
     }
 
+    initFinish = () => {
+    }
 
-    _renderRow(movie) {
+    buttonParams = {
+        buttonType: MyButton.TEXTBUTTON,
+        parentStyle: cellSheet.parentStyle,
+        childStyle: cellSheet.childStyle,
+        opacity: 1,
+    }
+
+    typeButtonParams = {
+        buttonType: MyButton.TEXTBUTTON,
+        parentStyle: cellSheet.typeParentStyle,
+        childStyle: cellSheet.typeChildStyle,
+        opacity: 1,
+    }
+
+    _renderRow = (movie) => {
 
         return (
-            <View style={cellSheet.row}>
-
-                <Image style={cellSheet.thumnail} source={{uri: movie.images.large}}/>
-                <View style={cellSheet.rightContainer}>
-
-                    <View style={cellSheet.rightContainerTop}>
-
-                        <Text style={cellSheet.title}>{movie.title}</Text>
-                        <Text style={cellSheet.year}>{movie.year}</Text>
+            <View style={[cellSheet.row, cellSheet.padding]}>
+                <View style={cellSheet.rowViewStyle}>
+                    <View style={[cellSheet.rowTopViewStyle, {justifyContent: 'flex-start', flex: 3,}]}>
+                        <MyButton {...this.buttonParams} content="单车"/>
+                        <Text style={cellSheet.rowTopTextStyle}>源之宝汽车经销公司</Text>
                     </View>
-                    <View style={cellSheet.rightContainerBottom}>
-                        <Text style={cellSheet.despriton}>{movie.casts[0].avatars.medium}</Text>
+                    <View style={[cellSheet.rowTopViewStyle, {
+                        flex: 2,
+                        justifyContent: 'flex-end'
+                    }]}>
+                        <Text style={cellSheet.rowTopGrayTextStyle}>201701100225</Text>
                     </View>
-
                 </View>
-
-
+                <View style={{height: 0.5, backgroundColor: fontAndColor.COLORA4}}></View>
+                <View style={cellSheet.rowBottomViewStyle}>
+                    <View style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-start'}]}>
+                        <Text style={cellSheet.rowBottomLittleStyle}>借款金额</Text>
+                        <Text style={[cellSheet.rowBottomBigStyle, {color: fontAndColor.COLORB2}]}>30万</Text>
+                    </View>
+                    <View style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-start'}]}>
+                        <Text style={cellSheet.rowBottomLittleStyle}>借款期限</Text>
+                        <Text style={[cellSheet.rowBottomBigStyle, {color: fontAndColor.COLORA0}]}>3个月</Text>
+                    </View>
+                    <View style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-end', justifyContent: 'center'}]}>
+                        <MyButton {...this.typeButtonParams} content="处理中"/>
+                    </View>
+                </View>
             </View>
 
 
@@ -115,6 +145,23 @@ export default class FinanceSence extends Component {
         )
     }
 
+    navigatorParams = {
+        name: 'LendMoneySence',
+        component: LendMoneySence,
+        params: {}
+    }
+
+    homeItemOnPress = (title) => {
+        if (title === '借款') {
+            this.props.callBack(this.navigatorParams);
+        } else {
+            this.navigatorParams.name = "RepaymentScene";
+            this.navigatorParams.component = RepaymentScene;
+            this.props.callBack(this.navigatorParams);
+        }
+    }
+
+
     _renderHeader = () => {
         let tablist;
         tablist = bossFuncArray;
@@ -128,6 +175,7 @@ export default class FinanceSence extends Component {
                 functionTitle={data.functionTitle}
                 describeTitle={data.describeTitle}
                 functionImage={data.functionImage}
+                callBack={this.homeItemOnPress}
             />
             items.push(tabItem);
         });
@@ -193,11 +241,8 @@ const cellSheet = StyleSheet.create({
     },
 
     row: {
-
-        alignItems: 'center',
-
-        flexDirection: 'row',
-        backgroundColor: '#F5FCFF',
+        backgroundColor: '#ffffff',
+        height: Pixel.getPixel(111)
     },
     rightContainer: {
 
@@ -268,21 +313,82 @@ const cellSheet = StyleSheet.create({
         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
         color: fontAndColor.COLORA3
     },
-    titleOneTextStyle:{
+    titleOneTextStyle: {
         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
         color: fontAndColor.COLORA3, marginTop: Pixel.getPixel(64)
     },
-    titleTwoTextStyle:{
+    titleTwoTextStyle: {
         fontSize: Pixel.getFontPixel(24),
         color: fontAndColor.COLORA3, marginTop: Pixel.getPixel(4), fontWeight: 'bold'
     },
-    titleThreeTextStyle:{
+    titleThreeTextStyle: {
         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
         color: fontAndColor.COLORA3, marginTop: Pixel.getPixel(12)
     },
-    titleFourTextStyle:{
+    titleFourTextStyle: {
         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24), fontWeight: 'bold',
         color: fontAndColor.COLORA3, marginTop: Pixel.getPixel(4)
+    },
+    parentStyle: {
+        borderWidth: 1,
+        borderColor: fontAndColor.COLORB0,
+        borderRadius: 3,
+        height: Pixel.getPixel(16),
+        width: Pixel.getPixel(34),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    childStyle: {
+        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+        color: fontAndColor.COLORB0,
+    },
+    typeParentStyle: {
+        borderWidth: 1,
+        borderColor: fontAndColor.COLORA4,
+        borderRadius: 100,
+        height: Pixel.getPixel(23),
+        width: Pixel.getPixel(72),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    typeChildStyle: {
+        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+        color: fontAndColor.COLORB3,
+    },
+    padding: {
+        paddingLeft: Pixel.getPixel(15), paddingRight: Pixel.getPixel(15)
+    },
+    rowViewStyle: {
+        height: Pixel.getPixel(40),
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    rowTopViewStyle: {
+        height: Pixel.getPixel(40),
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    rowTopTextStyle: {
+        marginLeft: Pixel.getPixel(7), fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+        color: fontAndColor.COLORA0
+    },
+    rowTopGrayTextStyle: {
+        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT20),
+        color: fontAndColor.COLORA1
+    },
+    rowBottomViewStyle: {
+        height: Pixel.getPixel(71), flexDirection: 'row'
+    },
+    rowBottomChildStyle: {
+        height: Pixel.getPixel(71),
+        flex: 1,
+    },
+    rowBottomLittleStyle: {
+        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+        color: fontAndColor.COLORA1, marginTop: Pixel.getPixel(16)
+    },
+    rowBottomBigStyle: {
+        fontSize: Pixel.getFontPixel(16),
+        marginTop: Pixel.getPixel(6)
     }
-
 });
