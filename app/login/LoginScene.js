@@ -95,6 +95,8 @@ export default class LoginScene extends BaseComponent {
                             searchBtShow={true}
                             inputPlaceholder={"请输入用户名"}
                             itemStyel={[styles.itemStyel]}
+                            keyboardType={'phone-pad'}
+                            clearValue={true}
                             callBackSearchResult={(isShow) => {
                                 if (isShow) {
                                     this.setState({
@@ -112,8 +114,8 @@ export default class LoginScene extends BaseComponent {
                             textPlaceholder={'请输入密码'}
                             rightIcon={false}
                             viewStytle={styles.itemStyel}
-                            keyboardType={'phone-pad'}
                             secureTextEntry={true}
+                            clearValue={true}
                             leftIconUri={require('./../../images/login/password.png')}/>
 
                         <LoginInputText

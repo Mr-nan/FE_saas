@@ -28,15 +28,15 @@ export default class LoginFailSmsVerify extends BaseComponent {
                 />
                 <View style={{width: width, height: Pixel.getPixel(15)} }/>
                 <LoginInputText
-                    ref="loginPassword"
+                    ref="phone"
                     textPlaceholder={'请输入手机号码'}
                     rightIcon={false}
                     viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
-                    keyBoard={'phone-pad'}
+                    keyboardType={'phone-pad'}
                     leftIconUri={require('./../../images/login/phone.png')}/>
                 <View style={{width: width, height: Pixel.getPixel(10)} }/>
                 <LoginInputText
-                    ref="loginVerifycode"
+                    ref="verifycode"
                     textPlaceholder={'请输入验证码'}
                     viewStytle={styles.itemStyel}
                     leftIconUri={require('./../../images/login/virty.png')}
@@ -44,7 +44,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
                     rightIconStyle={{width: Pixel.getPixel(100), height: Pixel.getPixel(32)}}/>
 
                 <LoginInputText
-                    ref="loginSmscode"
+                    ref="smscode"
                     textPlaceholder={'请输入短信验证码'}
                     viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
                     leftIconUri={require('./../../images/login/sms.png')}

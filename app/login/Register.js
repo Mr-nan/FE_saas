@@ -46,6 +46,7 @@ export default class Register extends BaseComponent {
                             rightButton={true}
                             rightIcon={false}
                             callBackSms={this.sendSms}
+                            keyboardType={'phone-pad'}
                             leftIcon={false}/>
                         <LoginInputText
                             ref="verifycode"
@@ -62,17 +63,17 @@ export default class Register extends BaseComponent {
                             textPlaceholder={'请输入密码'}
                             viewStytle={styles.itemStyel}
                             inputTextStyle={styles.inputTextStyle}
+                            secureTextEntry={true}
                             leftIcon={false}
-                            rightIcon={false}
-                        />
+                            rightIcon={false}/>
                         <LoginInputText
-                            ref="passwoedtwo"
+                            ref="passwoedAgain"
                             textPlaceholder={'请再次输入密码'}
                             viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
                             inputTextStyle={styles.inputTextStyle}
+                            secureTextEntry={true}
                             leftIcon={false}
-                            rightIcon={false}
-                        />
+                            rightIcon={false}/>
                     </View>
                     <View style={styles.inputTextLine}/>
                     <View style={styles.inputTextsStyle}>
@@ -82,16 +83,14 @@ export default class Register extends BaseComponent {
                             viewStytle={styles.itemStyel}
                             inputTextStyle={styles.inputTextStyle}
                             leftIcon={false}
-                            rightIcon={false}
-                        />
+                            rightIcon={false}/>
                         <LoginInputText
                             ref="businessName"
                             textPlaceholder={'请输入商家名称'}
                             viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
                             inputTextStyle={styles.inputTextStyle}
                             leftIcon={false}
-                            rightIcon={false}
-                        />
+                            rightIcon={false}/>
                     </View>
                     <View style={styles.inputTextLine}/>
                     <View style={styles.imageButtonsStyle}>
