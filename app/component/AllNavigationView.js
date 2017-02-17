@@ -59,9 +59,9 @@ const styles = StyleSheet.create({
     },
     backIcon: {
 
-        marginLeft: 12,
-        height: 20,
-        width: 20,
+        marginLeft: Pixel.getPixel(12),
+        height: Pixel.getPixel(20),
+        width: Pixel.getPixel(20),
     },
 
     titleText: {
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         // backgroundColor:'red',
-        width: 80,
+        width: Pixel.getPixel(80),
 
 
     },
