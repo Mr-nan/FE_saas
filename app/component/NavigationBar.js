@@ -85,8 +85,7 @@ const styles = StyleSheet.create({
         paddingRight: Pixel.getPixel(15),
     },
     titleStyle: {
-        height: Pixel.getPixel(64),
-        paddingTop: Pixel.getPixel(20),
+        height: Pixel.getTitlePixel(64),
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',

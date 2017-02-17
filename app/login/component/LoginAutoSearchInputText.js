@@ -118,7 +118,6 @@ export default class Search extends Component {
                                    placeholder={this.props.inputPlaceholder}
                                    placeholderTextColor={FontAndColor.COLORA1}
                                    underlineColorAndroid={"#00000000"}
-                                   onEndEditing={this.hide.bind(this, this.state.value)}
                                    value={this.state.value}
                                    onFocus={this.showDefultContext}
                                    keyboardType={this.props.keyboardType}
