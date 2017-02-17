@@ -18,7 +18,7 @@ import {
 
 import BaseComponent from '../component/BaseComponent';
 import *as fontAnColor from '../constant/fontAndColor';
-import NavigationView from './znComponent/CarInfoNavigationView';
+import NavigationView from '../component/AllNavigationView';
 import PixelUtil from '../utils/PixelUtil';
 var Pixel = new PixelUtil();
 

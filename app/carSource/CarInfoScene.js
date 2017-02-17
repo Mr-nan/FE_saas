@@ -12,7 +12,7 @@ import {
 
 import *as fontAndColor from '../constant/fontAndColor';
 import BaseComponent from '../component/BaseComponent';
-import NavigationView from './znComponent/CarInfoNavigationView';
+import NavigationView from '../component/AllNavigationView';
 import PixelUtil from '../utils/PixelUtil';
 var Pixel = new PixelUtil();
 
@@ -139,9 +139,6 @@ export default class CarInfoScene extends  BaseComponent {
                         <View style={styles.contentView}>
 
                                 <Text style={styles.titleText}>凯迪拉克SRX(进口)12款3.0L手自一体 豪华版
-                                    <View style={styles.subTitleView}>
-                                        <Text style={styles.subText}>车龄4年</Text>
-                                    </View>
                                 </Text>
                         <View style={styles.titleFootView}>
                             <View style={styles.browseView}>
