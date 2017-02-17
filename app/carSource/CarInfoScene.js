@@ -112,16 +112,28 @@ export default class CarInfoScene extends  BaseComponent {
 
     _callClick=()=>{
 
-        Linking.openURL('tel:10086');
+        Linking.openURL('tel:4006561290,100001#');
     };
 
+    _navigatorRightView=()=>{
+        return (
+            <View style={{flexDirection:'row'}}>
+                <TouchableOpacity>
+                    <Image source={require('../../images/carSourceImages/store.png')}></Image>
+                </TouchableOpacity>
+                <TouchableOpacity style={{marginLeft:10}}>
+                    <Image  source={require('../../images/carSourceImages/share_nil.png')}></Image>
+                </TouchableOpacity>
+            </View>
+        );
+    };
 
     render(){
 
         return(
             <View style={{flex:1,backgroundColor:'white'}}>
 
-                <ScrollView style={{marginBottom:44}}>
+                <ScrollView style={{marginBottom:44}} onMomentumScrollEnd = {(e)=>{console.log(e.nativeEvent.contentOffset.y)}}>
                     <Image style={styles.carImage}/>
                     <View style={styles.contentContainer}>
                         <View style={styles.contentView}>
@@ -181,14 +193,16 @@ export default class CarInfoScene extends  BaseComponent {
                        </View>
                     </View>
                 </ScrollView>
-                <TouchableOpacity onPress={this._callClick}>
-                    <View style={styles.callView}>
+                <TouchableOpacity style={styles.callView} onPress={this._callClick}>
                         <Image source={require('../../images/carSourceImages/phone.png')}/>
                         <Text style={styles.callText}>电话咨询</Text>
-                    </View>
                 </TouchableOpacity>
                 <View style={styles.navigation}>
-                    <NavigationView backIconClick={this._backIconClick}/>
+                    <NavigationView
+                                    title="车源详情"
+                                    backIconClick={this._backIconClick}
+                                    renderRihtFootView={this._navigatorRightView}
+                    />
                 </View>
             </View>
         )

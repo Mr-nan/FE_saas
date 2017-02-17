@@ -21,6 +21,7 @@ import HeadView     from './znComponent/CarSourceSelectHeadView';
 import SGListView   from 'react-native-sglistview';
 import CarCell      from './znComponent/CarCell';
 import CarInfoScene from './CarInfoScene';
+import CarBrandSelectScene from './CarBrandSelectScene';
 
 const carAgeSource = [
     {
@@ -122,7 +123,19 @@ export  default  class  carSourceListScene extends  BaseComponent{
     _headViewOnPres = (index,isHighlighted,setImgHighlighted)=> {
 
 
-        if(index===1) return;
+        if(index===1) {
+
+            let navigatorParams =   {
+
+                name:"CarBrandSelectScene",
+                component:CarBrandSelectScene,
+                params:{
+
+                }
+            };
+            this.props.callBack(navigatorParams);
+            return;
+        }
 
         this.refs.headView.checkSelect(this.state.currentCheckedIndex); // 取消之前选择按钮状态
 
@@ -130,9 +143,7 @@ export  default  class  carSourceListScene extends  BaseComponent{
         if(!isHighlighted)
         {
             switch(index) {
-                case 1:
 
-                    break;
                 case 2:
                     checkedSource = carAgeSource;
                     break;
@@ -210,16 +221,18 @@ export  default  class  carSourceListScene extends  BaseComponent{
         });
     };
 
-navigatorParams={
-    name:"CarInfoScene",
-    component:CarInfoScene,
-    params:{
 
-    }
-}
     _onPres = (str)=>{
 
-this.props.callBack(this.navigatorParams);
+       let navigatorParams =   {
+
+            name:"CarInfoScene",
+            component:CarInfoScene,
+            params:{
+
+            }
+        };
+        this.props.callBack(navigatorParams);
     };
 
     render(){
@@ -398,11 +411,9 @@ class SequencingButton extends  Component{
 
         const {buttonClick} = this.props;
         return(
-            <TouchableOpacity onPress={buttonClick}>
-                <View style={styles.sequencingButton}>
+            <TouchableOpacity style={styles.sequencingButton} onPress={buttonClick}>
                     <Image  source={require('../../images/carSourceImages/sort@2x.png')}/>
                     <Text style={styles.sequencingText}>排序</Text>
-                </View>
             </TouchableOpacity>
         )
     }
@@ -549,7 +560,7 @@ const styles = StyleSheet.create({
         backgroundColor:'rgba(0, 0, 0,0.7)',
         justifyContent:'center',
         alignItems:'center',
-        bottom:70,
+        bottom:15,
     },
     sequencingText:{
 

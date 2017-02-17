@@ -20,7 +20,7 @@ export default class CarInfoNavigationView extends Component{
 
     render(){
 
-        const {backIconClick,storeIconClick,shareIconClick} = this.props;
+        const {title,backIconClick,renderRihtFootView} = this.props;
 
         return(
 
@@ -28,14 +28,13 @@ export default class CarInfoNavigationView extends Component{
                 <TouchableOpacity style={{width:80}} onPress={backIconClick}>
                     <Image style={styles.backIcon}/>
                 </TouchableOpacity>
-                <Text style={styles.titleText}>车辆详情</Text>
+                <Text style={styles.titleText}>{title}</Text>
                 <View style={styles.imageFoot}>
-                    <TouchableOpacity onPress={storeIconClick}>
-                        <Image source={require('../../../images/carSourceImages/store.png')}></Image>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={shareIconClick}>
-                        <Image style={{marginLeft:10}} source={require('../../../images/carSourceImages/share_nil.png')}></Image>
-                    </TouchableOpacity>
+                    {
+                        renderRihtFootView&&renderRihtFootView()
+                    }
+
+
                 </View>
             </View>
         )
