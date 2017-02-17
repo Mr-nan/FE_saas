@@ -137,12 +137,12 @@ export default class CarInfoScene extends  BaseComponent {
                     <Image style={styles.carImage}/>
                     <View style={styles.contentContainer}>
                         <View style={styles.contentView}>
-                        <View style={styles.titleView}>
-                            <Text style={styles.titleText}>凯迪拉克SRX(进口)12款3.0L手自一体 豪华版</Text>
-                        </View>
-                        <View style={styles.subTitleView}>
-                            <Text style={styles.subText}>车龄4年</Text>
-                        </View>
+
+                                <Text style={styles.titleText}>凯迪拉克SRX(进口)12款3.0L手自一体 豪华版
+                                    <View style={styles.subTitleView}>
+                                        <Text style={styles.subText}>车龄4年</Text>
+                                    </View>
+                                </Text>
                         <View style={styles.titleFootView}>
                             <View style={styles.browseView}>
                                 <Image style={{marginRight:5}} source={require('../../images/carSourceImages/browse.png')}/>
@@ -261,22 +261,28 @@ const styles = StyleSheet.create({
         marginTop:10,
         marginRight:15,
         marginBottom:15,
+        backgroundColor:'white'
 
     },
     titleText:{
         color:fontAndColor.COLORA0,
         fontSize:fontAndColor.TITLEFONT,
+        backgroundColor:'transparent',
+
     },
     subTitleView:{
 
         borderWidth:StyleSheet.hairlineWidth,
-        borderRadius:5,
+        borderRadius:3,
         borderColor:fontAndColor.COLORB0,
         justifyContent:'center',
         alignItems:'center',
-        height:20,
-        width:50,
-        marginTop:10,
+        width:52,
+        marginLeft:5,
+
+        marginTop:15,
+        height:30,
+
 
     },
     subText:{

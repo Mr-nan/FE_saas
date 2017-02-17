@@ -122,7 +122,6 @@ export  default  class  carSourceListScene extends  BaseComponent{
     //  筛选条件选择
     _headViewOnPres = (index,isHighlighted,setImgHighlighted)=> {
 
-
         if(index===1) {
 
             let navigatorParams =   {
@@ -130,7 +129,8 @@ export  default  class  carSourceListScene extends  BaseComponent{
                 name:"CarBrandSelectScene",
                 component:CarBrandSelectScene,
                 params:{
-
+                    checkedCarType:this.state.checkedCarType,
+                    checkedCarClick:this._checkedCarClick,
                 }
             };
             this.props.callBack(navigatorParams);
@@ -164,6 +164,11 @@ export  default  class  carSourceListScene extends  BaseComponent{
 
         setImgHighlighted(!isHighlighted); // 回调按钮状态
 
+    };
+    _checkedCarClick=(carType)=>{
+        this.setState({
+            checkedCarType:carType,
+        });
     };
 
     _sequencingClick=()=>{
