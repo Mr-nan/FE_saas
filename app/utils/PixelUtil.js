@@ -25,6 +25,14 @@ const PixelUtil = React.createClass({
             return ((px / 375.0) * width) + 2;
 
         }
+    },
+    getTitlePixel(px){
+        if (Platform.OS === 'android') {
+            return (((px - 20) / 375.0) * width);
+        } else {
+            return ((px / 375.0) * width);
+
+        }
     }
 });
 
