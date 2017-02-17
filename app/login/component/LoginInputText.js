@@ -33,24 +33,30 @@ export default class LoginInputText extends Component {
         leftIcon: true,
         rightIcon: true,
         rightButton: false,
+        maxLength: 1000,
 
 
         leftIconUri: require('../../../images/welcome.jpg'),
         rightIconUri: require('../../../images/welcome.jpg'),
 
         textPlaceholder: '请输入',
-        keyBoard: 'default'
+        keyboardType: 'default',
+        leftText: null,
+        secureTextEntry: false,//设置是否为密码安全输入框	bool，默认为false
     };
 
     static propTypes = {
         leftIcon: PropTypes.bool,
         rightIcon: PropTypes.bool,
         rightButton: PropTypes.bool,
+        secureTextEntry: PropTypes.bool,
 
         leftIconUri: PropTypes.number,
         rightIconUri: PropTypes.number,
+        maxLength: PropTypes.number,//限制文本输入框最大的输入字符长度
         textPlaceholder: PropTypes.string,
-        keyBoard: PropTypes.string,  //键盘类型
+        leftText: PropTypes.string,
+        keyboardType: PropTypes.string,  //键盘类型：用来选择默认弹出键盘类型
 
         inputTextStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
         leftIconStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
@@ -92,6 +98,10 @@ export default class LoginInputText extends Component {
                                style={[styles.iconStyle, this.props.leftIconStyle]}/>
                         : null
                 }
+                {this.props.leftText ?
+                    <Text style={styles.leftTextStyle}>{this.props.leftText}</Text>
+                    : null
+                }
 
                 <View style={
                     {
@@ -105,8 +115,10 @@ export default class LoginInputText extends Component {
                         underlineColorAndroid={"#00000000"}
                         placeholder={this.props.textPlaceholder}
                         placeholderTextColor={FontAndColor.COLORA1}
-                        keyboardType={this.props.keyBoard}
+                        keyboardType={this.props.keyboardType}
                         style={[styles.textInputStyle, this.props.inputTextStyle]}
+                        maxLength={this.props.maxLength}
+                        secureTextEntry={this.props.secureTextEntry}
                         onChangeText={(text) => {
                             this.values = text;
                         }}/>
@@ -154,5 +166,10 @@ const styles = StyleSheet.create({
         width: Pixel.getPixel(25),
         height: Pixel.getPixel(25),
     },
+    leftTextStyle: {
+        fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT),
+        color: FontAndColor.COLORA0,
+        paddingRight: 5,
+    }
 
 });

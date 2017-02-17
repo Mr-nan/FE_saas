@@ -6,11 +6,23 @@ import * as FontAndColor from "../constant/fontAndColor";
 import LoginInputText from "./component/LoginInputText";
 import NavigationBar from "../component/NavigationBar";
 import PixelUtil from "../utils/PixelUtil";
+import ImagePicker from "react-native-image-picker";
+import {imageUploadUtil} from "../utils/FileUpload";
+
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
 
 export default class Register extends BaseComponent {
+    constructor(props) {
+        super(props);
+        this.state = {
+            idcard: null,
+            idcardBack: null,
+            businessLicense: null,
+        }
+    }
+
     initFinish = () => {
     }
 
@@ -89,17 +101,21 @@ export default class Register extends BaseComponent {
                                 color: FontAndColor.COLORA1,
                                 fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT)
                             }}>添加身份证照片</Text>
-                        <MyButton buttonType={MyButton.IMAGEBUTTON} content={require('../../images/login/idcard.png')}
-                                  parentStyle={[styles.buttonStyle, {marginRight: Pixel.getPixel(10)}]}
-                                  childStyle={styles.imageButtonStyle} mOnPress={() => {
-                            alert("请上传身份证照片")
-                        }}/>
                         <MyButton buttonType={MyButton.IMAGEBUTTON}
-                                  content={require('../../images/login/idcard_back.png')}
+                                  content={this.state.idcard === null ?
+                                      require('../../images/login/idcard.png') : this.state.idcard
+                                  }
+                                  parentStyle={[styles.buttonStyle, {marginRight: Pixel.getPixel(10)}]}
+                                  childStyle={styles.imageButtonStyle}
+                                  mOnPress={this.selectPhotoTapped.bind(this, 'idcard')}/>
+
+                        <MyButton buttonType={MyButton.IMAGEBUTTON}
+                                  content={this.state.idcardBack === null ?
+                                      require('../../images/login/idcard_back.png') : this.state.idcardBack
+                                  }
                                   parentStyle={styles.buttonStyle}
-                                  childStyle={styles.imageButtonStyle} mOnPress={() => {
-                            alert("请上传身份证照片")
-                        }}/>
+                                  childStyle={styles.imageButtonStyle}
+                                  mOnPress={this.selectPhotoTapped.bind(this, 'idcardBack')}/>
                     </View>
                     <View style={styles.inputTextLine}/>
                     <View style={styles.imageButtonsStyle}>
@@ -108,11 +124,13 @@ export default class Register extends BaseComponent {
                             color: FontAndColor.COLORA1,
                             fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT)
                         }}>添加营业执照</Text>
-                        <MyButton buttonType={MyButton.IMAGEBUTTON} content={require('../../images/login/idcard.png')}
+                        <MyButton buttonType={MyButton.IMAGEBUTTON}
+                                  content={this.state.businessLicense === null ?
+                                      require('../../images/login/idcard.png') : this.state.businessLicense
+                                  }
                                   parentStyle={styles.buttonStyle}
-                                  childStyle={styles.imageButtonStyle} mOnPress={() => {
-                            alert("请上传营业执照")
-                        }}/>
+                                  childStyle={styles.imageButtonStyle}
+                                  mOnPress={this.selectPhotoTapped.bind(this, 'businessLicense')}/>
                     </View>
                 </ScrollView>
             </View>
@@ -121,6 +139,56 @@ export default class Register extends BaseComponent {
 
     sendSms = () => {
         alert("发送短信验证码");
+    }
+
+    selectPhotoTapped(id) {
+        const options = {
+            //弹出框选项
+            title: '请选择',
+            cancelButtonTitle: '取消',
+            takePhotoButtonTitle: '拍照',
+            chooseFromLibraryButtonTitle: '选择相册',
+            allowsEditing: true,
+            noData: true,
+            quality: 1.0,
+            maxWidth: 500,
+            maxHeight: 500,
+            storageOptions: {
+                skipBackup: true,
+                path: 'images',
+            }
+        };
+
+        ImagePicker.showImagePicker(options, (response) => {
+            console.log('Response = ', response);
+
+            if (response.didCancel) {
+                console.log('User cancelled photo picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
+                let source = {uri: response.uri};
+                console.log('source : ', source.uri);
+                // You can also display the image using data:
+                // let source = { uri: 'data:image/jpeg;base64,' + response.data };
+                if (id === 'idcard') {
+                    this.setState({
+                        idcard: source
+                    });
+                } else if (id === 'idcardBack') {
+                    this.setState({
+                        idcardBack: source
+                    });
+                } else if (id === 'businessLicense') {
+                    this.setState({
+                        businessLicense: source
+                    });
+                }
+                imageUploadUtil([response.uri]);
+            }
+        });
     }
 }
 
@@ -138,8 +206,8 @@ const styles = StyleSheet.create({
     },
     inputTextStyle: {
         backgroundColor: '#ffffff',
-        paddingLeft: 1,
-        paddingRight: 1,
+        paddingLeft: 0,
+        paddingRight: 0,
     },
     inputTextLine: {
         backgroundColor: FontAndColor.COLORA3,

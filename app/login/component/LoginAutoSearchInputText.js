@@ -133,6 +133,7 @@ const styles = StyleSheet.create({
     },
     //输入框样式
     inputs: {
+        flex: 1,
         height: Pixel.getPixel(44),
         paddingLeft: Pixel.getPixel(15),
         paddingRight: Pixel.getPixel(2),
@@ -141,7 +142,6 @@ const styles = StyleSheet.create({
         marginTop: 0,
         marginBottom: 0,
         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT),
-        flex: 1,
         color: FontAndColor.COLORA0
     },
     iconStyle: {
@@ -149,6 +149,6 @@ const styles = StyleSheet.create({
         height: Pixel.getPixel(25),
     },
     width: {
-        width: width - Pixel.getPixel(20),
+        width: width - Pixel.getPixel(30),
     }
 });

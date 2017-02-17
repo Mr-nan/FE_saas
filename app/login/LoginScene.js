@@ -20,12 +20,18 @@ import * as FontAndColor from "../constant/fontAndColor";
 import Register from "./Register";
 import NavigationBar from "../component/NavigationBar";
 import PixelUtil from "../utils/PixelUtil";
+import StorageUtil from "../utils/StorageUtil";
+import * as ISLOGIN from "../constant/storageKeyNames";
+import * as USER_INFO from "../constant/storageKeyNames";
+import SAToast from '../component/toast/Toast';
+import ShowToast from '../component/toast/ShowToast';
+import MyButton from '../component/MyButton';
 var Pixel = new PixelUtil();
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var onePT = 1 / PixelRatio.get(); //一个像素
-var itemWidth = width * 1;
+var itemWidth = width;
 
 export default class LoginScene extends BaseComponent {
 
@@ -106,7 +112,8 @@ export default class LoginScene extends BaseComponent {
                             textPlaceholder={'请输入密码'}
                             rightIcon={false}
                             viewStytle={styles.itemStyel}
-                            keyBoard={'phone-pad'}
+                            keyboardType={'phone-pad'}
+                            secureTextEntry={true}
                             leftIconUri={require('./../../images/login/password.png')}/>
 
                         <LoginInputText
@@ -134,12 +141,11 @@ export default class LoginScene extends BaseComponent {
                                 : null
                         }
                     </View>
-                    <TouchableOpacity style={styles.loginBtnStyle} onPress={this.login}>
-                        <Text style={{
-                            color: FontAndColor.COLORA3,
-                            fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT)
-                        }}>登录</Text>
-                    </TouchableOpacity>
+                    <MyButton buttonType={MyButton.TEXTBUTTON}
+                              content={'登录'}
+                              parentStyle={styles.loginBtnStyle}
+                              childStyle={styles.loginButtonTextStyle}
+                              mOnPress={this.login}/>
 
                     <View style={styles.settingStyle}>
                         <View style={{flex: 1}}></View>
@@ -150,10 +156,10 @@ export default class LoginScene extends BaseComponent {
                                 params: {},
                             })
                         }}>
-
                             <Text style={styles.bottomTestSytle}>登录遇到问题 ></Text>
                         </TouchableOpacity>
                     </View>
+                    <ShowToast ref='toast' msg={this.props.msg}></ShowToast>
                 </View>
             </TouchableWithoutFeedback>
         );
@@ -178,17 +184,34 @@ export default class LoginScene extends BaseComponent {
     }
 
     login = () => {
-        let maps = {
-            useName: this.refs.loginUsername.getInputTextValue(),
-            passWord: this.refs.loginPassword.getInputTextValue(),
-        };
-        request(AppUrls.LOGIN, 'Post', maps)
-            .then((response) => {
-                    alert(response.mjson.retmsg);
-                },
-                (error) => {
-                    alert(error);
+        let userName = this.refs.loginUsername.getInputTextValue();
+        let passWord = this.refs.loginPassword.getInputTextValue();
+        let verifyCode = this.refs.loginVerifycode.getInputTextValue();
+        let smsCode = this.refs.loginSmscode.getInputTextValue();
+        if (userName == "") {
+            this.refs.toast.changeType(ShowToast.TOAST, "请输入正确的用户名");
+        } else if (typeof(passWord) == "undefined" || passWord == "") {
+            this.refs.toast.changeType(ShowToast.TOAST, "密码不能为空");
+        } else if (typeof(verifyCode) == "undefined" || verifyCode == "") {
+            this.refs.toast.changeType(ShowToast.TOAST, "验证码不能为空");
+        } else if (typeof(smsCode) == "undefined" || smsCode == "") {
+            this.refs.toast.changeType(ShowToast.TOAST, "短信验证码不能为空");
+        } else {
+            let maps = {
+                useName: userName,
+                passWord: passWord,
+            };
+            request(AppUrls.LOGIN, 'Post', maps)
+                .then((response) => {
+                    // console.log(response);
+                    this.refs.toast.changeType(ShowToast.TOAST, "登录成功");
+                    StorageUtil.mSetItem(ISLOGIN, 'true');
+                    // StorageUtil.mSetItem(USER_INFO, response);
+                }, (error) => {
+                    // console.log(error);
+                    this.refs.toast.changeType(ShowToast.TOAST, "登录失败");
                 });
+        }
     }
 }
 
@@ -200,7 +223,7 @@ const styles = StyleSheet.create({
     },
     loginBtnStyle: {
         height: Pixel.getPixel(44),
-        width: itemWidth - Pixel.getPixel(20),
+        width: itemWidth - Pixel.getPixel(30),
         backgroundColor: FontAndColor.COLORB0,
         marginTop: Pixel.getPixel(30),
         marginBottom: Pixel.getPixel(15),
@@ -208,27 +231,28 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: Pixel.getPixel(4),
     },
+    loginButtonTextStyle: {
+        color: FontAndColor.COLORA3,
+        fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT)
+    },
     settingStyle: {
         flexDirection: 'row',
         width: itemWidth,
     },
-    itemStyel: {
-        marginTop: Pixel.getPixel(2),
-        marginBottom: Pixel.getPixel(2),
-    },
+    itemStyel: {},
     bottomTestSytle: {
         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT),
         color: FontAndColor.COLORA2,
-        marginRight: Pixel.getPixel(10),
+        marginRight: Pixel.getPixel(15),
     },
     result: {
         borderColor: '#ccc',
         borderTopWidth: onePT,
         position: 'absolute',
         backgroundColor: "#000000",
-        width: itemWidth - Pixel.getPixel(20),
-        top: Pixel.getPixel(45),
-        left: Pixel.getPixel(10),
+        width: itemWidth - Pixel.getPixel(30),
+        top: Pixel.getPixel(44),
+        left: Pixel.getPixel(15),
 
     },
     item: {
@@ -244,8 +268,8 @@ const styles = StyleSheet.create({
     inputTextSytle: {
         width: itemWidth,
         backgroundColor: '#ffffff',
-        paddingLeft: Pixel.getPixel(10),
-        paddingRight: Pixel.getPixel(10),
+        paddingLeft: Pixel.getPixel(15),
+        paddingRight: Pixel.getPixel(15),
         marginTop: Pixel.getPixel(15),
         paddingBottom: 0,
     },
