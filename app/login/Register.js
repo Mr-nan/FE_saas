@@ -206,8 +206,8 @@ const styles = StyleSheet.create({
     },
     inputTextStyle: {
         backgroundColor: '#ffffff',
-        paddingLeft: 1,
-        paddingRight: 1,
+        paddingLeft: 0,
+        paddingRight: 0,
     },
     inputTextLine: {
         backgroundColor: FontAndColor.COLORA3,

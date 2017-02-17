@@ -39,8 +39,7 @@ export default class LoginInputText extends Component {
         rightIconUri: require('../../../images/welcome.jpg'),
 
         textPlaceholder: '请输入',
-        keyBoard: 'default',
-        leftText: null,
+        keyBoard: 'default'
     };
 
     static propTypes = {
@@ -51,7 +50,6 @@ export default class LoginInputText extends Component {
         leftIconUri: PropTypes.number,
         rightIconUri: PropTypes.number,
         textPlaceholder: PropTypes.string,
-        leftText: PropTypes.string,
         keyBoard: PropTypes.string,  //键盘类型
 
         inputTextStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
@@ -93,10 +91,6 @@ export default class LoginInputText extends Component {
                         <Image source={this.props.leftIconUri}
                                style={[styles.iconStyle, this.props.leftIconStyle]}/>
                         : null
-                }
-                {this.props.leftText ?
-                    <Text style={styles.leftTextStyle}>{this.props.leftText}</Text>
-                    : null
                 }
 
                 <View style={
@@ -160,10 +154,5 @@ const styles = StyleSheet.create({
         width: Pixel.getPixel(25),
         height: Pixel.getPixel(25),
     },
-    leftTextStyle: {
-        fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT),
-        color: FontAndColor.COLORA0,
-        paddingRight: 5,
-    }
 
 });
