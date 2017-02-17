@@ -14,7 +14,7 @@ import {
 
 } from 'react-native';
 
-import *as fontAndColor from '../../constant/fontAndColor';
+import *as fontAndColor from '../constant/fontAndColor';
 
 export default class CarInfoNavigationView extends Component{
 
