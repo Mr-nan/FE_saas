@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from "react";
 import {AppRegistry, StyleSheet, Text, View, PixelRatio, TextInput, Image} from "react-native";
 import * as FontAndColor from "../../constant/fontAndColor";
 import PixelUtil from "../../utils/PixelUtil";
+import MyButton from '../../component/MyButton';
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -21,8 +22,10 @@ export default class Search extends Component {
 
     static defaultProps = {
         leftIconShow: true,
+        clearValue: false,
         inputPlaceholder: "请输入用户名",
         leftIconUri: './../images/login/phone.png',
+        keyboardType: null,
     };
 
     /**
@@ -33,7 +36,10 @@ export default class Search extends Component {
      */
     static propTypes = {
         leftIconShow: PropTypes.bool,
+        clearValue: PropTypes.bool,//清除输入框内容
+
         inputPlaceholder: PropTypes.string,
+        keyboardType: PropTypes.string,
 
         inputTextStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
         leftIconStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
@@ -91,6 +97,12 @@ export default class Search extends Component {
         });
     }
 
+    clearValue = () => {
+        this.setState({
+            value: ""
+        });
+    }
+
     render() {
         return (
             <View style={[styles.width, this.props.itemStyel]}>
@@ -109,7 +121,22 @@ export default class Search extends Component {
                                    onEndEditing={this.hide.bind(this, this.state.value)}
                                    value={this.state.value}
                                    onFocus={this.showDefultContext}
+                                   keyboardType={this.props.keyboardType}
                                    onChangeText={this.goSearch}/>
+                        {
+                            this.props.clearValue && this.state.value.length > 0 ?
+                                <MyButton buttonType={MyButton.IMAGEBUTTON}
+                                          content={require("../../../images/login/clear.png")}
+                                          parentStyle={
+                                              {padding: Pixel.getPixel(5)}
+                                          }
+                                          childStyle={{
+                                              width: Pixel.getPixel(17),
+                                              height: Pixel.getPixel(17)
+                                          }}
+                                          mOnPress={this.clearValue}/> : null
+
+                        }
                     </View>
                 </View>
             </View>
@@ -120,6 +147,8 @@ export default class Search extends Component {
 const styles = StyleSheet.create({
     flex: {
         flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     flexDirection: {
         flexDirection: 'row',

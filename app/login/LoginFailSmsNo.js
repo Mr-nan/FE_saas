@@ -35,7 +35,7 @@ export default class LoginFailSmsNo extends BaseComponent {
                     leftText={"借款人姓名"}
                     viewStytle={styles.itemStyel}/>
                 <LoginInputText
-                    ref="busnessName"
+                    ref="businessName"
                     textPlaceholder={'请填写借款人所在企业名称'}
                     rightIcon={false}
                     leftIcon={false}
@@ -47,7 +47,8 @@ export default class LoginFailSmsNo extends BaseComponent {
                     rightIcon={false}
                     leftIcon={false}
                     leftText={"联系手机"}
-                    viewStytle={styles.itemStyel}/>
+                    viewStytle={styles.itemStyel}
+                    keyboardType={'phone-pad'}/>
                 <View style={{width: width, height: Pixel.getPixel(44)} }/>
                 <MyButton buttonType={MyButton.TEXTBUTTON}
                           content={'确认'}

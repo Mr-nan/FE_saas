@@ -25,11 +25,11 @@ export default class LoginFailPwd extends BaseComponent {
                 />
                 <View style={{width: width, height: Pixel.getPixel(15)} }/>
                 <LoginInputText
-                    ref="userName"
+                    ref="phone"
                     textPlaceholder={'请输入手机号码'}
                     rightIcon={false}
                     viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
-                    keyBoard={'phone-pad'}
+                    keyboardType={'phone-pad'}
                     leftIconUri={require('./../../images/login/phone.png')}/>
                 <View style={{width: width, height: Pixel.getPixel(10)} }/>
                 <LoginInputText
@@ -38,16 +38,14 @@ export default class LoginFailPwd extends BaseComponent {
                     rightIcon={false}
                     leftIcon={false}
                     leftText={"密码"}
-                    viewStytle={styles.itemStyel}
-                    keyBoard={'phone-pad'}/>
+                    viewStytle={styles.itemStyel}/>
                 <LoginInputText
                     ref="passwordAgain"
                     textPlaceholder={'请再次输入密码'}
                     rightIcon={false}
                     leftIcon={false}
                     leftText={"确认密码"}
-                    viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
-                    keyBoard={'phone-pad'}/>
+                    viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}/>
                 <View style={{width: width, height: Pixel.getPixel(44)} }/>
                 <MyButton buttonType={MyButton.TEXTBUTTON}
                           content={'确认'}

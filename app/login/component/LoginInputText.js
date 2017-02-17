@@ -13,8 +13,9 @@ import {
 import  * as FontAndColor from '../../constant/fontAndColor';
 import SendMmsCountDown from './SendMmsCountDown';
 import PixelUtil from '../../utils/PixelUtil';
-var Pixel = new PixelUtil();
+import MyButton from '../../component/MyButton';
 
+var Pixel = new PixelUtil();
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var onePT = 1 / PixelRatio.get(); //一个像素
@@ -24,17 +25,18 @@ export default class LoginInputText extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            values: "",//输入框输入内容
             rightIconLodding: false,
         }
-        values: ""; //输入框输入内容
     }
 
     static defaultProps = {
         leftIcon: true,
         rightIcon: true,
         rightButton: false,
-        maxLength: 1000,
+        clearValue: false,
 
+        maxLength: 1000,
 
         leftIconUri: require('../../../images/welcome.jpg'),
         rightIconUri: require('../../../images/welcome.jpg'),
@@ -50,6 +52,7 @@ export default class LoginInputText extends Component {
         rightIcon: PropTypes.bool,
         rightButton: PropTypes.bool,
         secureTextEntry: PropTypes.bool,
+        clearValue: PropTypes.bool,//清除输入框内容
 
         leftIconUri: PropTypes.number,
         rightIconUri: PropTypes.number,
@@ -79,7 +82,7 @@ export default class LoginInputText extends Component {
     }
 
     getInputTextValue() {
-        return this.values;
+        return this.state.values;
     }
 
     renderLoading() {
@@ -119,8 +122,11 @@ export default class LoginInputText extends Component {
                         style={[styles.textInputStyle, this.props.inputTextStyle]}
                         maxLength={this.props.maxLength}
                         secureTextEntry={this.props.secureTextEntry}
+                        value={this.state.values}
                         onChangeText={(text) => {
-                            this.values = text;
+                            this.setState({
+                                values: text
+                            });
                         }}/>
 
                     {
@@ -137,9 +143,29 @@ export default class LoginInputText extends Component {
                     {
                         this.props.rightButton ? <SendMmsCountDown callBackSms={this.props.callBackSms}/> : null
                     }
+                    {
+                        this.props.clearValue && this.state.values.length > 0 ?
+                            <MyButton buttonType={MyButton.IMAGEBUTTON}
+                                      content={require("../../../images/login/clear.png")}
+                                      parentStyle={
+                                          {padding: Pixel.getPixel(5)}
+                                      }
+                                      childStyle={{
+                                          width: Pixel.getPixel(17),
+                                          height: Pixel.getPixel(17)
+                                      }}
+                                      mOnPress={this.clearValue}/> : null
+
+                    }
                 </View>
             </View>
         );
+    }
+
+    clearValue = () => {
+        this.setState({
+            values: ""
+        });
     }
 }
 
