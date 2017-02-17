@@ -9,7 +9,7 @@ var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
 import MyButton from '../component/MyButton';
 import LoginInputText from './component/LoginInputText';
-export default class LoginFail extends BaseComponent {
+export default class LoginFailPwd extends BaseComponent {
     initFinish = () => {
     }
 
@@ -59,11 +59,7 @@ export default class LoginFail extends BaseComponent {
     }
 
     rightTextCallBack = () => {
-        this.toNextPage({
-            name: 'Register',
-            component: LoginFail,
-            params: {},
-        })
+        alert("密码设置成功")
     }
 
 }
@@ -73,13 +69,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         backgroundColor: FontAndColor.COLORA3,
-    },
-    fontStyle: {
-        color: '#cc092f',
-        alignSelf: 'center',
-        fontSize: 30,
-        marginTop: 50,
-        flex: 1,
     },
     buttonStyle: {
         height: Pixel.getPixel(44),

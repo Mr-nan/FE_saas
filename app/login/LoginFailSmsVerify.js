@@ -12,7 +12,7 @@ import LoginInputText from './component/LoginInputText';
 import LoginFailPwd from './LoginFailPwd';
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
-export default class LoginFail extends BaseComponent {
+export default class LoginFailSmsVerify extends BaseComponent {
     initFinish = () => {
     }
 
@@ -84,13 +84,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         backgroundColor: FontAndColor.COLORA3,
-    },
-    fontStyle: {
-        color: '#cc092f',
-        alignSelf: 'center',
-        fontSize: 30,
-        marginTop: 50,
-        flex: 1,
     },
     buttonStyle: {
         height: Pixel.getPixel(44),

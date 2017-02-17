@@ -9,7 +9,7 @@ var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
 import MyButton from '../component/MyButton';
 import LoginFailSmsVerify from './LoginFailSmsVerify';
-export default class LoginFail extends BaseComponent {
+export default class LoginFailSmsYes extends BaseComponent {
     initFinish = () => {
     }
 
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     },
     fontStyle: {
         color: FontAndColor.COLORA0,
-        fontSize: Pixel.getFontPixel(17),
+        fontSize: Pixel.getFontPixel(FontAndColor.NAVIGATORFONT34),
     },
     buttonStyle: {
         height: Pixel.getPixel(44),

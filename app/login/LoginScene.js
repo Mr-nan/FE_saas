@@ -112,7 +112,8 @@ export default class LoginScene extends BaseComponent {
                             textPlaceholder={'请输入密码'}
                             rightIcon={false}
                             viewStytle={styles.itemStyel}
-                            keyBoard={'phone-pad'}
+                            keyboardType={'phone-pad'}
+                            secureTextEntry={true}
                             leftIconUri={require('./../../images/login/password.png')}/>
 
                         <LoginInputText

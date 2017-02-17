@@ -8,7 +8,7 @@ var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
 import MyButton from '../component/MyButton';
-export default class LoginFail extends BaseComponent {
+export default class SetPwd extends BaseComponent {
     initFinish = () => {
     }
 
@@ -23,9 +23,6 @@ export default class LoginFail extends BaseComponent {
                     rightText={"  "}
                     leftTextCallBack={this.backPage}
                 />
-                <Text style={styles.fontStyle}>
-                    LoginFail
-                </Text>
 
                 <MyButton buttonType={MyButton.TEXTBUTTON}
                           content={'用短信验证码登录'}
@@ -51,13 +48,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         backgroundColor: '#ffffff'
-    },
-    fontStyle: {
-        color: '#cc092f',
-        alignSelf: 'center',
-        fontSize: 30,
-        marginTop: 50,
-        flex: 1,
     },
     buttonStyle: {
         height: Pixel.getPixel(44),
