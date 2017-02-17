@@ -248,24 +248,22 @@ const styles = StyleSheet.create({
         marginRight: Pixel.getPixel(15),
     },
     result: {
-        borderColor: '#ccc',
-        borderTopWidth: onePT,
+        borderWidth: onePT,
+        borderColor: FontAndColor.COLORA4,
         position: 'absolute',
-        backgroundColor: "#000000",
         width: itemWidth - Pixel.getPixel(30),
         top: Pixel.getPixel(44),
         left: Pixel.getPixel(15),
-
+        backgroundColor: '#ffffff'
     },
     item: {
         fontSize: Pixel.getFontPixel(16),
         padding: Pixel.getPixel(5),
         paddingTop: Pixel.getPixel(10),
         paddingBottom: Pixel.getPixel(10),
-        borderWidth: onePT,
-        borderColor: '#ddd',
-        borderTopWidth: 0,
-        backgroundColor: "#ffffff",
+        borderWidth: 0,
+        borderColor: FontAndColor.COLORA4,
+        borderBottomWidth: onePT,
     },
     inputTextSytle: {
         width: itemWidth,

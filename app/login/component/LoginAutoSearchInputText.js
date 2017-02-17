@@ -98,8 +98,9 @@ export default class Search extends Component {
     }
 
     clearValue = () => {
+        this.props.callBackSearchResult(true);
         this.setState({
-            value: ""
+            value: "",
         });
     }
 
