@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
     btnStyle: {
         height: 40,
         backgroundColor: FontAndColor.COLORB0,
-        marginTop: 30,
+        marginTop: 40,
         borderRadius: 3,
         marginHorizontal:15,
         justifyContent: 'center'

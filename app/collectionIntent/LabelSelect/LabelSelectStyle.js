@@ -26,7 +26,6 @@ export default StyleSheet.create({
     selectedItem: {
         marginBottom: 15,
         marginRight: 6,
-        width: width/4-13,
         height: 24,
         borderWidth: 2 / scale,
         borderRadius: 3,
@@ -35,6 +34,7 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         overflow: 'hidden',
+        padding: 6,
     },
     addItem: {
         padding: 7
@@ -43,7 +43,8 @@ export default StyleSheet.create({
         borderColor: FontAndColor.COLORB0,
     },
     layoutSize:{
-        width: width/3-15,
+        width: width/4-13,
+        padding: 0,
     },
     labelText: {
         fontSize: 13,
