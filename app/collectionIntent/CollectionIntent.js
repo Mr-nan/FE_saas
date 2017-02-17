@@ -15,7 +15,8 @@ import NavigationBar from "../component/NavigationBar";
 import * as FontAndColor from "../constant/fontAndColor";
 import PixelUtil from "../utils/PixelUtil";
 var Pixel = new PixelUtil();
-
+var carYearArr =new Map();
+var mileageArr =new Map();
 export default class CollectionIntent extends Component {
     constructor(props) {
         super(props);
@@ -47,11 +48,11 @@ export default class CollectionIntent extends Component {
                 value: 1
             }, {
                 name: '1-3年',
-                isSelected: true,
+                isSelected: false,
                 value: 2
             }, {
                 name: '3-5年',
-                isSelected: true,
+                isSelected: false,
                 value: 3
             }, {
                 name: '5-8年',
@@ -72,11 +73,11 @@ export default class CollectionIntent extends Component {
                 value: 1
             }, {
                 name: '1-3万公里',
-                isSelected: true,
+                isSelected: false,
                 value: 2
             }, {
                 name: '3-5万公里',
-                isSelected: true,
+                isSelected: false,
                 value: 3
             }, {
                 name: '5-8万公里',
@@ -88,12 +89,13 @@ export default class CollectionIntent extends Component {
                     value: 4
                 }, {
                     name: '10万公里以上',
-                    isSelected: true,
+                    isSelected: false,
                     value: 5
                 }]
         };
         this.selectConfirm = this.selectConfirm.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
+
     }
 
     selectConfirm(list) {
@@ -111,6 +113,33 @@ export default class CollectionIntent extends Component {
         let index = arr.findIndex(a => a === item);
         arr[index].isSelected = false;
         this.setState({arr: arr});
+    }
+    countItem(item, array) {
+        let index = array.findIndex(a => a === item);
+        if(array===this.state.arr1){
+            if (array[index].isSelected){
+                if (carYearArr.has(index)){
+                    carYearArr.delete(index)
+                }
+            }else{
+                carYearArr.set(index , array[index].name);
+            }
+            for (let key of carYearArr.keys()) {
+                console.log(key +'--'+  carYearArr.get(key));
+            }
+        }else if(array===this.state.arr2){
+            if (array[index].isSelected){
+                if (mileageArr.has(index)){
+                    mileageArr.delete(index)
+                }
+            }else{
+                mileageArr.set(index , array[index].name);
+            }
+            for (let key of mileageArr.keys()) {
+                console.log(key +'--'+ mileageArr.get(key));
+            }
+        }
+        array[index].isSelected = !array[index].isSelected;
     }
 
     render() {
@@ -171,6 +200,9 @@ export default class CollectionIntent extends Component {
                                 <LabelSelect.Label
                                     key={'label-' + index}
                                     data={item}
+                                    onCancel={() => {
+                                        this.countItem(item, this.state.arr1);
+                                    }}
                                 >{item.name}</LabelSelect.Label>
                             )}
                         </LabelSelect>
@@ -187,6 +219,9 @@ export default class CollectionIntent extends Component {
                                 <LabelSelect.Label
                                     key={'label-' + index}
                                     data={item}
+                                    onCancel={() => {
+                                        this.countItem(item, this.state.arr2);
+                                    }}
                                 >{item.name}</LabelSelect.Label>
                             )}
                         </LabelSelect>

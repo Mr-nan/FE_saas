@@ -189,6 +189,7 @@ class Label extends Component {
                         onCancel();
                     } else {
                         this.setPressDown()
+                        onCancel();
                     }
                 }}>
                     <View
