@@ -8,6 +8,7 @@ var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
 import MyButton from '../component/MyButton';
+import LoginInputText from './component/LoginInputText';
 export default class LoginFailSmsNo extends BaseComponent {
     initFinish = () => {
     }
@@ -20,11 +21,36 @@ export default class LoginFailSmsNo extends BaseComponent {
                     leftTextShow={false}
                     centerText={"登录遇到问题"}
                     rightText={"  "}
-                    leftImageCallBack={this.backPage}
-                />
-
+                    leftImageCallBack={this.backPage}/>
+                <View style={styles.messageVeiwStyle}>
+                    <Text style={styles.messageStyle}>
+                        *请填写您的企业信息，工作人员会主动与您联系
+                    </Text>
+                </View>
+                <LoginInputText
+                    ref="userName"
+                    textPlaceholder={"请填写借款人姓名"}
+                    rightIcon={false}
+                    leftIcon={false}
+                    leftText={"借款人姓名"}
+                    viewStytle={styles.itemStyel}/>
+                <LoginInputText
+                    ref="busnessName"
+                    textPlaceholder={'请填写借款人所在企业名称'}
+                    rightIcon={false}
+                    leftIcon={false}
+                    leftText={"企业名称"}
+                    viewStytle={styles.itemStyel}/>
+                <LoginInputText
+                    ref="phone"
+                    textPlaceholder={'请填写有些手机号'}
+                    rightIcon={false}
+                    leftIcon={false}
+                    leftText={"联系手机"}
+                    viewStytle={styles.itemStyel}/>
+                <View style={{width: width, height: Pixel.getPixel(44)} }/>
                 <MyButton buttonType={MyButton.TEXTBUTTON}
-                          content={'用短信验证码登录'}
+                          content={'确认'}
                           parentStyle={styles.buttonStyle}
                           childStyle={styles.buttonTextStyle}
                           mOnPress={this.rightTextCallBack}/>
@@ -33,11 +59,12 @@ export default class LoginFailSmsNo extends BaseComponent {
     }
 
     rightTextCallBack = () => {
-        this.toNextPage({
-            name: 'Register',
-            component: LoginFail,
-            params: {},
-        })
+        // this.toNextPage({
+        //     name: 'Register',
+        //     component: LoginFail,
+        //     params: {},
+        // })
+        alert("设置成功")
     }
 
 }
@@ -60,5 +87,23 @@ const styles = StyleSheet.create({
     buttonTextStyle: {
         color: FontAndColor.COLORA3,
         fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT)
-    }
+    },
+    messageStyle: {
+        fontSize: Pixel.getFontPixel(FontAndColor.CONTENTFONT24),
+        color: FontAndColor.COLORB3,
+
+    },
+    messageVeiwStyle: {
+        width: width,
+        height: Pixel.getPixel(28),
+        justifyContent: 'center',
+        backgroundColor: "#FFF8EA",
+        paddingLeft: Pixel.getPixel(15),
+        paddingRight: Pixel.getPixel(15),
+    },
+    itemStyel: {
+        backgroundColor: "#ffffff",
+        paddingLeft: Pixel.getPixel(15),
+        paddingRight: Pixel.getPixel(15),
+    },
 });
