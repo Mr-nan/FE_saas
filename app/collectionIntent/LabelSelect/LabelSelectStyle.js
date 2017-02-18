@@ -6,6 +6,8 @@ import {Dimensions, StyleSheet} from 'react-native';
 const window = Dimensions.get('window');
 const {width, height, scale} = window;
 import * as FontAndColor from "../../constant/fontAndColor";
+import PixelUtil from "../../utils/PixelUtil";
+var Pixel = new PixelUtil();
 
 export const Color = {
     disableColor: '#40cca2',
@@ -24,9 +26,9 @@ export default StyleSheet.create({
         flexWrap: 'wrap'
     },
     selectedItem: {
-        marginBottom: 15,
-        marginRight: 6,
-        height: 24,
+        marginBottom: Pixel.getPixel(15),
+        marginRight: Pixel.getPixel(6),
+        height: Pixel.getPixel(24),
         borderWidth: 2 / scale,
         borderRadius: 3,
         borderColor: FontAndColor.COLORA2,
@@ -34,35 +36,35 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         overflow: 'hidden',
-        padding: 6,
+        padding: Pixel.getPixel(6),
     },
     addItem: {
-        padding: 7
+        padding: Pixel.getPixel(7)
     },
     disableColor: {
         borderColor: FontAndColor.COLORB0,
     },
     layoutSize:{
-        width: width/4-13,
+        width: Pixel.getPixel(width/4-13),
         padding: 0,
     },
     labelText: {
-        fontSize: 13,
+        fontSize: Pixel.getPixel(13),
         lineHeight: 13,
         color: FontAndColor.COLORA2
     },
     closeContainer: {
-        paddingLeft: 13,
-        paddingRight: 3,
+        paddingLeft: Pixel.getPixel(13),
+        paddingRight: Pixel.getPixel(3),
 
     },
     closeIcon: {
-        width: 12,
-        height: 12
+        width: Pixel.getPixel(12),
+        height: Pixel.getPixel(12)
     },
     addIcon: {
-        width: 12,
-        height: 12
+        width: Pixel.getPixel(12),
+        height: Pixel.getPixel(12)
     },
     modalMask: {
         flex: 1,
@@ -72,24 +74,24 @@ export default StyleSheet.create({
     },
     modalContainer: {},
     modal: {
-        height: height * 0.6,
-        width: width * 0.6,
+        height: Pixel.getPixel(height * 0.6),
+        width: Pixel.getPixel(width * 0.6),
         overflow: 'hidden',
         borderRadius: 10,
         backgroundColor: '#fff'
     },
     title: {
-        paddingHorizontal: 20,
-        paddingVertical: 10,
+        paddingHorizontal: Pixel.getPixel(20),
+        paddingVertical: Pixel.getPixel(10),
         borderBottomWidth: 2 / scale,
         borderBottomColor: '#bbb'
     },
     titleText: {
-        fontSize: 18,
+        fontSize: Pixel.getPixel(18),
         lineHeight: 20
     },
     scrollView: {
-        height: height * 0.6 - 80
+        height: Pixel.getPixel(height * 0.6 - 80)
     },
     buttonView: {
         height: 40,
@@ -100,15 +102,15 @@ export default StyleSheet.create({
         justifyContent: 'space-around'
     },
     modalButton: {
-        width: width * 0.3,
-        paddingLeft: 20,
-        paddingRight: 20,
+        width: Pixel.getPixel(width * 0.3),
+        paddingLeft: Pixel.getPixel(20),
+        paddingRight: Pixel.getPixel(20),
         justifyContent: 'center',
         alignItems: 'center'
     },
     modalItem: {
-        height: 50,
-        paddingHorizontal: 20,
+        height: Pixel.getPixel(50),
+        paddingHorizontal: Pixel.getPixel(20),
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -116,11 +118,11 @@ export default StyleSheet.create({
         borderBottomColor: '#bbb'
     },
     modalText: {
-        fontSize: 16
+        fontSize: Pixel.getPixel(16)
     },
     buttonText: {
         color: '#fff',
-        fontSize: 16
+        fontSize: Pixel.getPixel(16)
     },
     confirmButton: {
         borderLeftWidth: 2 / scale,
@@ -129,8 +131,8 @@ export default StyleSheet.create({
     outerCircle: {
         borderWidth: 2 / scale,
         borderColor: '#888',
-        width: 20,
-        height: 20,
+        width: Pixel.getPixel(20),
+        height: Pixel.getPixel(20),
         borderRadius: 10,
         overflow: 'hidden',
         justifyContent: 'center',
@@ -141,8 +143,8 @@ export default StyleSheet.create({
     },
     innerCircle: {
         backgroundColor: Color.main,
-        width: 16,
-        height: 16,
+        width: Pixel.getPixel(16),
+        height: Pixel.getPixel(16),
         borderRadius: 8,
         overflow: 'hidden'
     },
