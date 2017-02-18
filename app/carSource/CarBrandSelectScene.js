@@ -152,13 +152,14 @@ export default class CarBrandSelectScene extends BaseComponent {
         })
 
 
-        var dataBlob = {}, sectionIDs = [], rowIDs = [], cars = [];
+        var dataBlob = {}, sectionIDs = [], rowIDs = [], cars = [],sectionTitleArray=[];
 
         for (var i = 0; i < carData.length; i++) {
             //把组号放入sectionIDs数组中
             sectionIDs.push(i);
             //把组中内容放入dataBlob对象中
             dataBlob[i] = carData[i].title;
+            sectionTitleArray.push(carData[i].title);
             //把组中的每行数据的数组放入cars
             cars = carData[i].cars;
             //先确定rowIDs的第一维
@@ -169,11 +170,15 @@ export default class CarBrandSelectScene extends BaseComponent {
                 //把每一行中的内容放入dataBlob对象中
                 dataBlob[i + ':' + j] = cars[j];
             }
+
+
             this.state = {
+
                 dataSource: dataSource.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
                 isHideCarSubBrand: true,
                 carTypeCheckend: '',
                 carTypes: carTypeData,
+                sectionTitleArray:sectionTitleArray,
 
             };
         }
@@ -241,7 +246,9 @@ export default class CarBrandSelectScene extends BaseComponent {
                             isHideCarSubBrand: true,
                         });
                     }}
-                />
+                >
+                    <ZNListIndexView indexTitleArray={this.state.sectionTitleArray}/>
+                </ListView>
                 <NavigationView
                     title="选择品牌"
                     backIconClick={this._backIconClick}
@@ -339,7 +346,6 @@ class CarSubBrand extends Component {
                     <Text style={styles.rowCellText}>{this.props.title}</Text>
                 </View>
                 <ListView
-                    ref="listView"
                     style={{flex: 1}}
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}
@@ -353,6 +359,26 @@ class CarSubBrand extends Component {
 
 }
 
+class ZNListIndexView extends Component{
+
+    render(){
+        const {indexTitleArray}=this.props;
+        return(
+            <View style={styles.indexView}>
+                {
+                    indexTitleArray.map((data,index)=>{
+                        return(
+                            <TouchableOpacity key={index} style={styles.indexItem}>
+                                <Text>{data}</Text>
+                            </TouchableOpacity>
+                        )
+                    })
+                })
+            </View>
+        )
+    }
+
+}
 
 var ScreenWidth = Dimensions.get('window').width;
 
@@ -459,6 +485,28 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         color: fontAnColor.COLORA0,
         fontSize: fontAnColor.LITTLEFONT,
+    },
+
+    indexView:{
+
+        position: 'absolute',
+        bottom:0,
+        top:40,
+        backgroundColor:'red',
+        right:14,
+        width:30,
+        alignItems:'center',
+        justifyContent:'center',
+
+    },
+    indexItem:{
+
+        marginTop:5,
+        marginBottom:5,
+        backgroundColor:'yellow',
+        color:fontAnColor.COLORA0,
+        fontSize:fontAnColor.CONTENTFONT,
+
     },
 
 });
