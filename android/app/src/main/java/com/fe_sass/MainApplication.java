@@ -9,7 +9,6 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-import com.theweflex.react.WeChatPackage;
 import org.pgsqlite.SQLitePluginPackage;
 import com.imagepicker.ImagePickerPackage;
 
@@ -29,7 +28,6 @@ public class MainApplication extends UmengPushApplication implements ReactApplic
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-          new WeChatPackage(),
           new SQLitePluginPackage(),
           new UmengPushPackage(),
           new ImagePickerPackage()
