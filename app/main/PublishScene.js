@@ -12,12 +12,17 @@ import {
     TouchableOpacity
 } from 'react-native';
 
+import  PixelUtil from '../utils/PixelUtil';
+import BaseComponent from '../component/BaseComponent';
+import NewCarScene from '../publish/NewCarScene';
+
 const  publishReceive = require('../../images/mainImage/publishReceive.png');
 const publishNew = require('../../images/mainImage/publishNew.png');
-import  PixelUtil from '../utils/PixelUtil'
 const Pixel = new PixelUtil();
 
-export default class PublishScene extends Component {
+export default class PublishScene extends BaseComponent {
+
+    initFinish=()=>{};
 
     constructor(props){
         super(props);
@@ -27,8 +32,14 @@ export default class PublishScene extends Component {
 
     };
 
-    _newPress = ()=>{
+    newCarParams = {
+        name: 'NewCarScene',
+        component: NewCarScene,
+        params: {}
+    };
 
+    _newPress = ()=>{
+        this.props.callBack(this.newCarParams);
     };
 
     render() {

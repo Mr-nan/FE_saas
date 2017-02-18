@@ -68,7 +68,10 @@ export default class MainPage extends BaseComponent {
             new tableItemInfo('carpage', 'page12', '车源', require('../../images/mainImage/carSelect.png'), require('../../images/mainImage/carUnSelect.png'),
                 <CarSourceSence/>),
             new tableItemInfo('sendpage', 'page13', '发布', require('../../images/mainImage/publishSelect.png'), require('../../images/mainImage/publishUnSelect.png'),
-                <PublishSence/>),
+                <PublishSence callBack={(params)=> {
+
+                    this.toNextPage(params);
+                }}/>),
             new tableItemInfo('mypage', 'page14', '我的', require('../../images/mainImage/mineSelect.png'), require('../../images/mainImage/mineUnSelect.png'),
                 <MineSence/>)
         ];
@@ -83,7 +86,10 @@ export default class MainPage extends BaseComponent {
                     this.toNextPage(params);
                 }}/>),
             new tableItemInfo('sendpage', 'page3', '发布', require('../../images/mainImage/sendButton.png'), require('../../images/mainImage/sendButton.png'),
-                <PublishSence/>),
+                <PublishSence callBack={(params)=> {
+
+                    this.toNextPage(params);
+                }}/>),
             new tableItemInfo('financePage', 'page4', '金融', require('../../images/mainImage/moneySelect.png'), require('../../images/mainImage/moneyUnSelect.png'),
                 <FinanceSence callBack={(params) => {
                     this.toNextPage(params);
