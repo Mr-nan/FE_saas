@@ -235,7 +235,7 @@ export default class CarBrandSelectScene extends BaseComponent {
                         })
                     }
                 </View>
-                <ListView
+                <ListView ref="listView"
                     style={{flex: 1}}
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}
@@ -246,9 +246,24 @@ export default class CarBrandSelectScene extends BaseComponent {
                             isHideCarSubBrand: true,
                         });
                     }}
-                >
-                    <ZNListIndexView indexTitleArray={this.state.sectionTitleArray}/>
-                </ListView>
+                />
+
+                <ZNListIndexView indexTitleArray={this.state.sectionTitleArray} indexClick={(index)=>{
+
+
+
+                    let scrollY=index*40;
+
+                    for (let i=0;i<index;i++)
+                    {
+                        let rowIndex = carData[i].cars.length;
+                        scrollY+=+rowIndex*44;
+                    }
+                    this.refs.listView.scrollTo({x: 0, y:scrollY, animated: true});
+
+
+                }}/>
+
                 <NavigationView
                     title="选择品牌"
                     backIconClick={this._backIconClick}
@@ -260,6 +275,7 @@ export default class CarBrandSelectScene extends BaseComponent {
                                          checkedCarClick={this._checkedCarType}/>
                         )
                 }
+
             </View>
         )
     }
@@ -368,12 +384,17 @@ class ZNListIndexView extends Component{
                 {
                     indexTitleArray.map((data,index)=>{
                         return(
-                            <TouchableOpacity key={index} style={styles.indexItem}>
-                                <Text>{data}</Text>
+                            <TouchableOpacity key={index} style={styles.indexItem} onPress={()=>{
+
+                                this.props.indexClick(index);
+                            }}>
+                                <Text style={styles.indexItemText}>{data}</Text>
                             </TouchableOpacity>
                         )
                     })
-                })
+
+
+                }
             </View>
         )
     }
@@ -491,7 +512,7 @@ const styles = StyleSheet.create({
 
         position: 'absolute',
         bottom:0,
-        top:40,
+        top:113,
         backgroundColor:'red',
         right:14,
         width:30,
@@ -501,12 +522,17 @@ const styles = StyleSheet.create({
     },
     indexItem:{
 
-        marginTop:5,
-        marginBottom:5,
+        marginTop:6,
+        width:30,
         backgroundColor:'yellow',
+
+
+    },
+    indexItemText:{
+
         color:fontAnColor.COLORA0,
         fontSize:fontAnColor.CONTENTFONT,
-
+        textAlign:'center',
     },
 
 });
