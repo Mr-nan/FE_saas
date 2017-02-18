@@ -18,7 +18,8 @@
     "react-native-umeng-push": "^1.0.5",
     "react-native-umeng-sdk": "1.4.0",
     "react-native-viewpager": "^0.2.13",
-    "react-native-modal-datetime-picker": "^3.0.1"
+    "react-native-modal-datetime-picker": "^3.0.1",
+    "react-native-wheel-picker":"^1.1.1"
   },
   "devDependencies": {
     "babel-jest": "18.0.0",
