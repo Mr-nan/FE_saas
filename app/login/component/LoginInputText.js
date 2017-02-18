@@ -39,7 +39,7 @@ export default class LoginInputText extends Component {
         maxLength: 1000,
 
         leftIconUri: require('../../../images/welcome.jpg'),
-        rightIconUri: require('../../../images/welcome.jpg'),
+        rightIconSource: {uri: 'https://facebook.github.io/react/img/logo_og.png'},
 
         textPlaceholder: '请输入',
         keyboardType: 'default',
@@ -55,7 +55,7 @@ export default class LoginInputText extends Component {
         clearValue: PropTypes.bool,//清除输入框内容
 
         leftIconUri: PropTypes.number,
-        rightIconUri: PropTypes.number,
+        rightIconSource: PropTypes.object,
         maxLength: PropTypes.number,//限制文本输入框最大的输入字符长度
         textPlaceholder: PropTypes.string,
         leftText: PropTypes.string,
@@ -134,7 +134,7 @@ export default class LoginInputText extends Component {
                             !this.state.rightIconLodding ?
                                 <TouchableWithoutFeedback
                                     onPress={this.props.rightIconClick ? this.props.rightIconClick : this.clickBtn}>
-                                    <Image source={this.props.rightIconUri}
+                                    <Image source={this.props.rightIconSource}
                                            style={[styles.iconStyle, this.props.rightIconStyle]}/>
                                 </TouchableWithoutFeedback>
                                 : this.renderLoading()

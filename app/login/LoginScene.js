@@ -32,7 +32,6 @@ var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var onePT = 1 / PixelRatio.get(); //一个像素
 var itemWidth = width;
-
 export default class LoginScene extends BaseComponent {
 
     constructor(props) {
@@ -40,11 +39,13 @@ export default class LoginScene extends BaseComponent {
         //初始化方法
         this.state = {
             show: false,
-            value: ""
+            value: "",
+            verifyCode: null,
         }
     }
 
     initFinish = () => {
+        this.Verifycode();
     }
 
     static defaultProps = {
@@ -122,8 +123,9 @@ export default class LoginScene extends BaseComponent {
                             ref="loginVerifycode"
                             textPlaceholder={'请输入验证码'}
                             viewStytle={styles.itemStyel}
-                            leftIconUri={require('./../../images/login/virty.png')}
+                            leftIconUri={ require('./../../images/login/virty.png')}
                             rightIconClick={this.Verifycode}
+                            rightIconSource={this.state.verifyCode ? this.state.verifyCode : null}
                             rightIconStyle={{width: Pixel.getPixel(100), height: Pixel.getPixel(32)}}/>
 
                         <LoginInputText
@@ -178,11 +180,24 @@ export default class LoginScene extends BaseComponent {
     }
 
     Smscode = () => {
-        alert("Smscode")
+        alert("发送短信验证码")
     }
 
     Verifycode = () => {
         this.refs.loginVerifycode.lodingStatus(true);
+        let maps = {
+            device_code: "dycd_dms_manage_android",
+        };
+        request(AppUrls.IDENTIFYING + "&" + "device_code=dycd_dms_manage_android", 'Post', maps)
+            .then((response) => {
+                this.refs.loginVerifycode.lodingStatus(false);
+                this.setState({
+                    verifyCode: {uri: response.mjson.data.img_src},
+                });
+            }, (error) => {
+                this.refs.loginVerifycode.lodingStatus(false);
+                this.refs.toast.changeType(ShowToast.TOAST, "获取失败");
+            });
     }
 
     login = () => {
@@ -200,17 +215,18 @@ export default class LoginScene extends BaseComponent {
             this.refs.toast.changeType(ShowToast.TOAST, "短信验证码不能为空");
         } else {
             let maps = {
-                useName: userName,
-                passWord: passWord,
+                code: smsCode,
+                device_code: "dycd_dms_manage_android",
+                img_code: verifyCode,
+                phone: userName,
+                pwd: passWord,
             };
             request(AppUrls.LOGIN, 'Post', maps)
                 .then((response) => {
-                    // console.log(response);
                     this.refs.toast.changeType(ShowToast.TOAST, "登录成功");
                     StorageUtil.mSetItem(ISLOGIN, 'true');
                     // StorageUtil.mSetItem(USER_INFO, response);
                 }, (error) => {
-                    // console.log(error);
                     this.refs.toast.changeType(ShowToast.TOAST, "登录失败");
                 });
         }

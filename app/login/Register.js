@@ -8,6 +8,9 @@ import NavigationBar from "../component/NavigationBar";
 import PixelUtil from "../utils/PixelUtil";
 import ImagePicker from "react-native-image-picker";
 import {imageUploadUtil} from "../utils/FileUpload";
+import {request} from "../utils/RequestUtil";
+import * as AppUrls from "../constant/appUrls";
+import ShowToast from '../component/toast/ShowToast';
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -31,9 +34,7 @@ export default class Register extends BaseComponent {
             <View style={styles.container}>
                 <NavigationBar
                     leftImageCallBack={this.backPage}
-                    rightTextCallBack={() => {
-                        alert("提交")
-                    }}
+                    rightTextCallBack={this.register}
                 />
                 <ScrollView>
                     <View style={styles.inputTextLine}/>
@@ -131,9 +132,52 @@ export default class Register extends BaseComponent {
                                   childStyle={styles.imageButtonStyle}
                                   mOnPress={this.selectPhotoTapped.bind(this, 'businessLicense')}/>
                     </View>
+                    <ShowToast ref='toast' msg={this.props.msg}></ShowToast>
                 </ScrollView>
             </View>
         );
+    }
+
+    register = () => {
+
+        let phone = this.refs.phone.getInputTextValue();
+        let verifycode = this.refs.verifycode.getInputTextValue();
+        let password = this.refs.password.getInputTextValue();
+        let passwoedAgain = this.refs.passwoedAgain.getInputTextValue();
+        let name = this.refs.name.getInputTextValue();
+        let businessName = this.refs.businessName.getInputTextValue();
+
+        if (typeof(phone) == "undefined" || phone == "") {
+            this.refs.toast.changeType(ShowToast.TOAST, "手机号码不能为空");
+        } else if (typeof(verifycode) == "undefined" || verifycode == "") {
+            this.refs.toast.changeType(ShowToast.TOAST, "验证码不能为空");
+        } else if (typeof(password) == "undefined" || password == "") {
+            this.refs.toast.changeType(ShowToast.TOAST, "密码不能为空");
+        } else if (typeof(passwoedAgain) == "undefined" || passwoedAgain == "") {
+            this.refs.toast.changeType(ShowToast.TOAST, "确认密码不能为空");
+        } else if (typeof(name) == "undefined" || name == "") {
+            this.refs.toast.changeType(ShowToast.TOAST, "用户名不能为空");
+        } else if (typeof(businessName) == "undefined" || businessName == "") {
+            this.refs.toast.changeType(ShowToast.TOAST, "商家名称不能为空");
+        } else {
+            let maps = {
+                user_name: name,
+                phone: phone,
+                pwd: password,
+                confirm_pwd: passwoedAgain,
+                merchant_name: businessName,
+                code: verifycode,
+                device_code: "dycd_dms_manage_android",
+                idcard_img: "",
+                license_img: "",
+            };
+            request(AppUrls.REGISTER, 'Post', maps)
+                .then((response) => {
+                    this.refs.toast.changeType(ShowToast.TOAST, "注册成功");
+                }, (error) => {
+                    this.refs.toast.changeType(ShowToast.TOAST, "注册失败");
+                });
+        }
     }
 
     sendSms = () => {
