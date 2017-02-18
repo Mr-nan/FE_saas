@@ -49,8 +49,7 @@ export default class NavigationBar extends Component {
                 {this.props.leftTextShow ?
                     <MyButton buttonType={MyButton.TEXTBUTTON}
                               content={this.props.leftText}
-                              parentStyle={styles.buttonStyle}
-                              childStyle={[styles.titleTextStyle, this.props.leftTextStyle]}
+                              childStyle={[styles.leftTextStyle, this.props.leftTextStyle]}
                               mOnPress={this.props.leftTextCallBack}/>
                     : null
                 }
@@ -58,10 +57,7 @@ export default class NavigationBar extends Component {
                 {this.props.leftImageShow ?
                     <MyButton buttonType={MyButton.IMAGEBUTTON}
                               content={this.props.leftImage}
-                              parentStyle={[styles.buttonStyle, {
-                                  paddingLeft: Pixel.getPixel(15),
-                                  paddingRight: Pixel.getPixel(15),
-                              }]}
+                              parentStyle={styles.buttonStyle}
                               childStyle={[styles.leftImageStyle, this.props.leftImageStyle]}
                               mOnPress={this.props.leftImageCallBack}/>
                     : null
@@ -73,8 +69,7 @@ export default class NavigationBar extends Component {
                 </Text>
 
                 <MyButton buttonType={MyButton.TEXTBUTTON} content={this.props.rightText}
-                          parentStyle={styles.buttonStyle}
-                          childStyle={[styles.titleTextStyle, this.props.rightTextStyle]}
+                          childStyle={[styles.rightTextStyle, this.props.rightTextStyle]}
                           mOnPress={this.props.rightTextCallBack}/>
             </View>
         );
@@ -82,26 +77,44 @@ export default class NavigationBar extends Component {
 }
 
 const styles = StyleSheet.create({
-    buttonStyle: {},
+    buttonStyle: {
+        width: Pixel.getPixel(80),
+        paddingTop: Pixel.getPixel(5),
+        paddingBottom: Pixel.getPixel(5),
+        paddingLeft: Pixel.getPixel(15),
+        paddingRight: Pixel.getPixel(15),
+    },
     titleStyle: {
-        height: Pixel.getPixel(64),
-        paddingTop: Pixel.getPixel(20),
+        height: Pixel.getTitlePixel(64),
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#05C5C2',
     },
-    titleTextStyle: {
-        textAlign: 'center',
-        fontSize: Pixel.getPixel(FontAndColor.BUTTONFONT),
+    leftTextStyle: {
+        textAlign: 'left',
+        fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT),
         paddingLeft: Pixel.getPixel(15),
         paddingRight: Pixel.getPixel(15),
+        paddingTop: Pixel.getPixel(5),
+        paddingBottom: Pixel.getPixel(5),
         color: FontAndColor.COLORA3,
+        width: Pixel.getPixel(80),
+    },
+    rightTextStyle: {
+        textAlign: 'right',
+        fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT),
+        paddingLeft: Pixel.getPixel(15),
+        paddingRight: Pixel.getPixel(15),
+        paddingTop: Pixel.getPixel(5),
+        paddingBottom: Pixel.getPixel(5),
+        color: FontAndColor.COLORA3,
+        width: Pixel.getPixel(80),
     },
     centerTextStyle: {
         flex: 1,
         textAlign: 'center',
-        fontSize: FontAndColor.NAVIGATORFONT,
+        fontSize: Pixel.getFontPixel(FontAndColor.NAVIGATORFONT),
         paddingLeft: Pixel.getPixel(15),
         paddingRight: Pixel.getPixel(15),
         color: FontAndColor.COLORA3,
@@ -109,5 +122,5 @@ const styles = StyleSheet.create({
     leftImageStyle: {
         width: Pixel.getPixel(20),
         height: Pixel.getPixel(20),
-    }
+    },
 });

@@ -52,7 +52,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
-
         width: width / 2.0,
         height: Pixel.getPixel(75),
         borderWidth: 0.5,

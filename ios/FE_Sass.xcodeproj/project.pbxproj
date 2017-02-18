@@ -605,8 +605,14 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
+<<<<<<< HEAD
 						DevelopmentTeam = 5BVB39B6MD;
 						ProvisioningStyle = Automatic;
+=======
+						DevelopmentTeam = 3BH2YRLSPK;
+						ProvisioningStyle = Automatic;
+
+>>>>>>> 59ebd75ef5e122fb3bd2041b588b368cece01040
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1057,7 +1063,12 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
+<<<<<<< HEAD
 				DEVELOPMENT_TEAM = 5BVB39B6MD;
+=======
+				DEVELOPMENT_TEAM = 3BH2YRLSPK;
+
+>>>>>>> 59ebd75ef5e122fb3bd2041b588b368cece01040
 				INFOPLIST_FILE = FE_Sass/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -1076,7 +1087,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
+<<<<<<< HEAD
 				DEVELOPMENT_TEAM = 5BVB39B6MD;
+=======
+				DEVELOPMENT_TEAM = 3BH2YRLSPK;
+
+>>>>>>> 59ebd75ef5e122fb3bd2041b588b368cece01040
 				INFOPLIST_FILE = FE_Sass/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (

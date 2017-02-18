@@ -21,6 +21,9 @@ export default  class ShowToast extends Component {
 
     constructor(props) {
         super(props);
+        this.state={
+            msg:""
+        }
     }
 
 
@@ -37,8 +40,11 @@ export default  class ShowToast extends Component {
     }
 
 
-    changeType = (_type) => {
+    changeType = (_type,msg) => {
         if (_type === ShowToast.TOAST) {
+            this.setState({
+                msg:msg
+            });
             this._toastOnPress();
         } else if(_type === ShowToast.CONFIRM){
             this._confirmOnPress();
@@ -48,7 +54,7 @@ export default  class ShowToast extends Component {
     render() {
         return (
             <View>
-                <Toast ref='toast' type="" msg={this.props.msg}></Toast>
+                <Toast ref='toast' msg={this.state.msg}></Toast>
                 <Confirm ref='confirm' leftFunc={this.props.leftCallBack} rightFunc={this.props.rightCallBack}
                          btnLeftText={this.props.leftText}
                          btnRightText={this.props.rightText} title={this.props.title} msg={this.props.msg}></Confirm>
