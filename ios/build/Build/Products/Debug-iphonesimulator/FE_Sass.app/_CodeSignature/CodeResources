@@ -5,9 +5,14 @@
 	<key>files</key>
 	<dict>
 		<key>Base.lproj/LaunchScreen.nib</key>
-		<data>
-		KXnWsKhDWVZBSuzzjxrbxRSiVMM=
-		</data>
+		<dict>
+			<key>hash</key>
+			<data>
+			KXnWsKhDWVZBSuzzjxrbxRSiVMM=
+			</data>
+			<key>optional</key>
+			<true/>
+		</dict>
 		<key>Frameworks/IDEBundleInjection.framework/IDEBundleInjection</key>
 		<data>
 		aUm0c1LLvF5BD7IVSBsGgwX3iyY=
@@ -203,7 +208,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		Lt9QbxuFZaKMCK6LYMRCgn+72Ug=
+		445GbPrEfkE5e6LxRC396dWQJqg=
 		</data>
 		<key>PkgInfo</key>
 		<data>
@@ -234,6 +239,8 @@
 			<data>
 			ps2GQl/mjmqYOpPASVRczQFIN+3mN0KOET5Mzd5Sm6U=
 			</data>
+			<key>optional</key>
+			<true/>
 		</dict>
 		<key>Frameworks/IDEBundleInjection.framework/IDEBundleInjection</key>
 		<dict>
@@ -811,11 +818,6 @@
 			<key>weight</key>
 			<real>1100</real>
 		</dict>
-		<key>^Base\.lproj/</key>
-		<dict>
-			<key>weight</key>
-			<real>1010</real>
-		</dict>
 		<key>^version.plist$</key>
 		<true/>
 	</dict>
@@ -860,11 +862,6 @@
 			<true/>
 			<key>weight</key>
 			<real>1100</real>
-		</dict>
-		<key>^Base\.lproj/</key>
-		<dict>
-			<key>weight</key>
-			<real>1010</real>
 		</dict>
 		<key>^Info\.plist$</key>
 		<dict>
