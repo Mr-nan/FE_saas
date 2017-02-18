@@ -1,13 +1,13 @@
 dependencies: \
-  /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/React/Modules/RCTDevLoadingView.m \
-  /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/React/Base/RCTBridge.h \
-  /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/React/Base/RCTBridgeDelegate.h \
-  /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/React/Base/RCTJavaScriptLoader.h \
-  /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/React/Base/RCTDefines.h \
-  /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/React/Base/RCTBridgeModule.h \
-  /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/React/Base/RCTFrameUpdate.h \
-  /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/React/Base/RCTInvalidating.h \
-  /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/React/Modules/RCTDevLoadingView.h \
-  /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/React/Base/RCTUtils.h \
-  /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/React/Base/RCTAssert.h \
-  /Users/yujinzhong/Desktop/YJZ/FE_Saas/node_modules/react-native/React/Views/RCTModalHostViewController.h
+  /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/node_modules/react-native/React/Modules/RCTDevLoadingView.m \
+  /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/node_modules/react-native/React/Base/RCTBridge.h \
+  /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/node_modules/react-native/React/Base/RCTBridgeDelegate.h \
+  /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/node_modules/react-native/React/Base/RCTJavaScriptLoader.h \
+  /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/node_modules/react-native/React/Base/RCTDefines.h \
+  /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/node_modules/react-native/React/Base/RCTBridgeModule.h \
+  /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/node_modules/react-native/React/Base/RCTFrameUpdate.h \
+  /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/node_modules/react-native/React/Base/RCTInvalidating.h \
+  /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/node_modules/react-native/React/Modules/RCTDevLoadingView.h \
+  /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/node_modules/react-native/React/Base/RCTUtils.h \
+  /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/node_modules/react-native/React/Base/RCTAssert.h \
+  /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/node_modules/react-native/React/Views/RCTModalHostViewController.h

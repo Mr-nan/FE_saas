@@ -8,7 +8,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			KXnWsKhDWVZBSuzzjxrbxRSiVMM=
+			95q+1QAsKGxVQMh/SlzrJD8dhck=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -208,7 +208,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		445GbPrEfkE5e6LxRC396dWQJqg=
+		ZpaI4IrVihr465BcRMtOUaOxOV8=
 		</data>
 		<key>PkgInfo</key>
 		<data>
@@ -216,7 +216,7 @@
 		</data>
 		<key>PlugIns/FE_SassTests.xctest/FE_SassTests</key>
 		<data>
-		K5115v5xBr+hYXMQVjSxA5ihF2w=
+		cBVHaFzvvfO1vvQkkLzMTCJ2Y4A=
 		</data>
 		<key>PlugIns/FE_SassTests.xctest/Info.plist</key>
 		<data>
@@ -224,7 +224,7 @@
 		</data>
 		<key>PlugIns/FE_SassTests.xctest/_CodeSignature/CodeResources</key>
 		<data>
-		yFjCMjH3nUMhWbZ16iROLUbfq+M=
+		jEnsOROppTOXtqG7WTgijEDAhxM=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -233,11 +233,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			KXnWsKhDWVZBSuzzjxrbxRSiVMM=
+			95q+1QAsKGxVQMh/SlzrJD8dhck=
 			</data>
 			<key>hash2</key>
 			<data>
-			ps2GQl/mjmqYOpPASVRczQFIN+3mN0KOET5Mzd5Sm6U=
+			IsbJwBlntQQR2gnTEp4yLI4+zwy3jwR8Y+61ES+fK0w=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -770,11 +770,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			K5115v5xBr+hYXMQVjSxA5ihF2w=
+			cBVHaFzvvfO1vvQkkLzMTCJ2Y4A=
 			</data>
 			<key>hash2</key>
 			<data>
-			xUDtVmF/psWIr/a18E5fgrI+HIzOoQfMjbaEJuE2NiE=
+			9NiOirxO3wLujjFCUxFwFjg/mlsGTMOXm+xyF0edLqo=
 			</data>
 		</dict>
 		<key>PlugIns/FE_SassTests.xctest/Info.plist</key>
@@ -792,11 +792,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			yFjCMjH3nUMhWbZ16iROLUbfq+M=
+			jEnsOROppTOXtqG7WTgijEDAhxM=
 			</data>
 			<key>hash2</key>
 			<data>
-			p3Z4mi0Q3j4cgjTCd2QIMVQ4OpNdAaVXsnjaAhbh6oQ=
+			zOz6rbwDjEB4Ko4KD5Amx/JOOzl4wzLl75FzHiiT2zA=
 			</data>
 		</dict>
 	</dict>

@@ -1,5 +1,5 @@
 dependencies: \
-  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/FE_SassTests/FE_SassTests.m \
+  /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/ios/FE_SassTests/FE_SassTests.m \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks/XCTest.framework/Modules/module.modulemap \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks/XCTest.framework/Headers/XCUIRemote.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks/XCTest.framework/Headers/XCUIKeyboardKeys.h \
@@ -29,13 +29,13 @@ dependencies: \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks/XCTest.framework/Headers/XCTestErrors.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks/XCTest.framework/Headers/XCTestDefines.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks/XCTest.framework/Headers/XCTest.h \
-  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTLog.h \
-  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTAssert.h \
-  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTDefines.h \
-  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTRootView.h \
-  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridge.h \
-  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridgeDelegate.h \
-  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTJavaScriptLoader.h \
-  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridgeModule.h \
-  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTFrameUpdate.h \
-  /Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTInvalidating.h
+  /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTLog.h \
+  /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTAssert.h \
+  /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTDefines.h \
+  /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTRootView.h \
+  /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridge.h \
+  /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridgeDelegate.h \
+  /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTJavaScriptLoader.h \
+  /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridgeModule.h \
+  /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTFrameUpdate.h \
+  /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTInvalidating.h
