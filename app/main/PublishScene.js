@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     img:{
         width:Pixel.getPixel(67),
         height:Pixel.getPixel(67),
-        borderRadius:Pixel.getPixel(67)
+        borderRadius:Pixel.getPixel(67/2)
     },
     fontMain:{
         fontSize:Pixel.getFontPixel(14),

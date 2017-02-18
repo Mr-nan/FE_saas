@@ -220,6 +220,18 @@ export default class CarBrandSelectScene extends BaseComponent {
 
     };
 
+    _indexAndScrollClick=(index)=>{
+
+        let scrollY=index*40;
+        for (let i=0;i<index;i++)
+        {
+            let rowIndex = carData[i].cars.length;
+            scrollY+=+rowIndex*44;
+        }
+        this.refs.listView.scrollTo({x: 0, y:scrollY, animated: true});
+
+
+    };
     render() {
 
         return (
@@ -241,6 +253,7 @@ export default class CarBrandSelectScene extends BaseComponent {
                     renderRow={this.renderRow}
                     renderSectionHeader={this.renderSectionHeader}
                     contentContainerStyle={styles.listStyle}
+                          pageSize={100}
                     onScroll={() => {
                         this.setState({
                             isHideCarSubBrand: true,
@@ -248,21 +261,7 @@ export default class CarBrandSelectScene extends BaseComponent {
                     }}
                 />
 
-                <ZNListIndexView indexTitleArray={this.state.sectionTitleArray} indexClick={(index)=>{
-
-
-
-                    let scrollY=index*40;
-
-                    for (let i=0;i<index;i++)
-                    {
-                        let rowIndex = carData[i].cars.length;
-                        scrollY+=+rowIndex*44;
-                    }
-                    this.refs.listView.scrollTo({x: 0, y:scrollY, animated: true});
-
-
-                }}/>
+                <ZNListIndexView indexTitleArray={this.state.sectionTitleArray} indexClick={this._indexAndScrollClick}/>
 
                 <NavigationView
                     title="选择品牌"
@@ -513,9 +512,9 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom:0,
         top:113,
-        backgroundColor:'red',
-        right:14,
-        width:30,
+        backgroundColor:'transparent',
+        right:0,
+        width:45,
         alignItems:'center',
         justifyContent:'center',
 
@@ -524,7 +523,7 @@ const styles = StyleSheet.create({
 
         marginTop:6,
         width:30,
-        backgroundColor:'yellow',
+        backgroundColor:'transparent',
 
 
     },
