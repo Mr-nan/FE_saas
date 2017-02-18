@@ -5,14 +5,9 @@
 	<key>files</key>
 	<dict>
 		<key>Base.lproj/LaunchScreen.nib</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			VWW917QNK8z0u3DQxXSgJteVcfE=
-			</data>
-			<key>optional</key>
-			<true/>
-		</dict>
+		<data>
+		KXnWsKhDWVZBSuzzjxrbxRSiVMM=
+		</data>
 		<key>Frameworks/IDEBundleInjection.framework/IDEBundleInjection</key>
 		<data>
 		aUm0c1LLvF5BD7IVSBsGgwX3iyY=
@@ -208,7 +203,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		C+EhlcddkWnCt23VFIZVgi1axio=
+		Lt9QbxuFZaKMCK6LYMRCgn+72Ug=
 		</data>
 		<key>PkgInfo</key>
 		<data>
@@ -216,15 +211,15 @@
 		</data>
 		<key>PlugIns/FE_SassTests.xctest/FE_SassTests</key>
 		<data>
-		4mNcw0oDH2ukygefyskwCgOToSY=
+		K5115v5xBr+hYXMQVjSxA5ihF2w=
 		</data>
 		<key>PlugIns/FE_SassTests.xctest/Info.plist</key>
 		<data>
-		vXzyr6rTxGvVzovIvBm1tNC3SiM=
+		2l732OPNAwZVGTXTuFayqorZx/Y=
 		</data>
 		<key>PlugIns/FE_SassTests.xctest/_CodeSignature/CodeResources</key>
 		<data>
-		OEf/WKlDfLnYFMX7FlKw+YemUS0=
+		yFjCMjH3nUMhWbZ16iROLUbfq+M=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -233,14 +228,12 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			VWW917QNK8z0u3DQxXSgJteVcfE=
+			KXnWsKhDWVZBSuzzjxrbxRSiVMM=
 			</data>
 			<key>hash2</key>
 			<data>
-			7shLHjHOR39OPIbNzGCR9VcikTuBYTw7nxcTnsRb53I=
+			ps2GQl/mjmqYOpPASVRczQFIN+3mN0KOET5Mzd5Sm6U=
 			</data>
-			<key>optional</key>
-			<true/>
 		</dict>
 		<key>Frameworks/IDEBundleInjection.framework/IDEBundleInjection</key>
 		<dict>
@@ -770,33 +763,33 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			4mNcw0oDH2ukygefyskwCgOToSY=
+			K5115v5xBr+hYXMQVjSxA5ihF2w=
 			</data>
 			<key>hash2</key>
 			<data>
-			33ObdcTIlnaHq14XAfW6aix5Ks5gRDMP8V2pk5Ey9iw=
+			xUDtVmF/psWIr/a18E5fgrI+HIzOoQfMjbaEJuE2NiE=
 			</data>
 		</dict>
 		<key>PlugIns/FE_SassTests.xctest/Info.plist</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			vXzyr6rTxGvVzovIvBm1tNC3SiM=
+			2l732OPNAwZVGTXTuFayqorZx/Y=
 			</data>
 			<key>hash2</key>
 			<data>
-			SLAWSXlTVvHy1Y02mkXGyJHnfuoux6PTv+80piCm1t8=
+			xp3F5X2zTVGFRbhLt01WLq6J+ZnKh4Ha/k3P8M5QZTM=
 			</data>
 		</dict>
 		<key>PlugIns/FE_SassTests.xctest/_CodeSignature/CodeResources</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			OEf/WKlDfLnYFMX7FlKw+YemUS0=
+			yFjCMjH3nUMhWbZ16iROLUbfq+M=
 			</data>
 			<key>hash2</key>
 			<data>
-			vMeYnMf8TxKS1iuYgy7mlBMq/odtjqRI7LfwXh9pYgI=
+			p3Z4mi0Q3j4cgjTCd2QIMVQ4OpNdAaVXsnjaAhbh6oQ=
 			</data>
 		</dict>
 	</dict>
@@ -817,6 +810,11 @@
 			<true/>
 			<key>weight</key>
 			<real>1100</real>
+		</dict>
+		<key>^Base\.lproj/</key>
+		<dict>
+			<key>weight</key>
+			<real>1010</real>
 		</dict>
 		<key>^version.plist$</key>
 		<true/>
@@ -862,6 +860,11 @@
 			<true/>
 			<key>weight</key>
 			<real>1100</real>
+		</dict>
+		<key>^Base\.lproj/</key>
+		<dict>
+			<key>weight</key>
+			<real>1010</real>
 		</dict>
 		<key>^Info\.plist$</key>
 		<dict>

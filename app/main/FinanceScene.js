@@ -90,7 +90,7 @@ export default class FinanceSence extends Component {
         return (
             <View style={[cellSheet.row, cellSheet.padding]}>
                 <View style={cellSheet.rowViewStyle}>
-                    <View style={[cellSheet.rowTopViewStyle, {justifyContent: 'flex-start', flex: 3,}]}>
+                    <View style={[cellSheet.rowViewStyle, {justifyContent: 'flex-start',}]}>
                         <MyButton {...this.buttonParams} content="单车"/>
                         <Text style={cellSheet.rowTopTextStyle}>源之宝汽车经销公司</Text>
                     </View>
@@ -153,6 +153,8 @@ export default class FinanceSence extends Component {
 
     homeItemOnPress = (title) => {
         if (title === '借款') {
+            this.navigatorParams.name = 'LendMoneySence';
+            this.navigatorParams.component = LendMoneySence;
             this.props.callBack(this.navigatorParams);
         } else {
             this.navigatorParams.name = "RepaymentScene";
@@ -182,8 +184,7 @@ export default class FinanceSence extends Component {
 
         return (
             <View>
-                <View style={[cellSheet.titleStyle, cellSheet.titleViewStyle]}
-                      source={require('../../images/financeImages/dinancebg.png')}>
+                <View style={[cellSheet.titleStyle, cellSheet.titleViewStyle]}>
                     <Image style={[cellSheet.titleStyle, cellSheet.titleImageStyle]}
                            source={require('../../images/financeImages/dinancebg.png')}/>
                     <Text style={cellSheet.titleOneTextStyle}>可用额度(万)</Text>
@@ -289,7 +290,6 @@ const cellSheet = StyleSheet.create({
     },
     titleViewStyle: {
         alignItems: 'center',
-        flexDirection: 'column'
     },
     titleImageStyle: {
         position: 'absolute'
@@ -297,7 +297,7 @@ const cellSheet = StyleSheet.create({
     titleViewBottomStyle: {
         width: width,
         height: Pixel.getPixel(40),
-        marginTop: Pixel.getPixel(22), flexDirection: 'row', alignItems: 'center'
+        marginTop: Pixel.getPixel(25), flexDirection: 'row', alignItems: 'center'
     },
     titleViewBottomBGStyle: {
         backgroundColor: '#0970cf', width: width,
@@ -311,19 +311,23 @@ const cellSheet = StyleSheet.create({
     },
     titleViewTextStyle: {
         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-        color: fontAndColor.COLORA3
+        color: fontAndColor.COLORA3,
+        backgroundColor:'#00000000'
     },
     titleOneTextStyle: {
         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-        color: fontAndColor.COLORA3, marginTop: Pixel.getPixel(64)
+        color: fontAndColor.COLORA3, marginTop: Pixel.getPixel(64),
+        backgroundColor:'#00000000'
     },
     titleTwoTextStyle: {
         fontSize: Pixel.getFontPixel(24),
-        color: fontAndColor.COLORA3, marginTop: Pixel.getPixel(4), fontWeight: 'bold'
+        color: fontAndColor.COLORA3, marginTop: Pixel.getPixel(4), fontWeight: 'bold',
+        backgroundColor:'#00000000'
     },
     titleThreeTextStyle: {
         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-        color: fontAndColor.COLORA3, marginTop: Pixel.getPixel(12)
+        color: fontAndColor.COLORA3, marginTop: Pixel.getPixel(12),
+        backgroundColor:'#00000000'
     },
     titleFourTextStyle: {
         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24), fontWeight: 'bold',
@@ -362,11 +366,6 @@ const cellSheet = StyleSheet.create({
         height: Pixel.getPixel(40),
         flexDirection: 'row',
         alignItems: 'center'
-    },
-    rowTopViewStyle: {
-        height: Pixel.getPixel(40),
-        flexDirection: 'row',
-        alignItems: 'center',
     },
     rowTopTextStyle: {
         marginLeft: Pixel.getPixel(7), fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),

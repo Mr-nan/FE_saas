@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
 
     titleText: {
         color: 'white',
-        fontSize: fontAndColor.BUTTONFONT,
+        fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34),
         textAlign: 'center',
         backgroundColor: 'transparent',
 

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component,PureComponent} from 'react';
 import {
     AppRegistry,
     View,
@@ -7,7 +7,7 @@ import {
     Image
 } from 'react-native';
 
-export default class MyButton extends Component {
+export default class MyButton extends PureComponent {
 
     static TEXTBUTTON = "textbutton";
     static IMAGEBUTTON = "imagebutton";

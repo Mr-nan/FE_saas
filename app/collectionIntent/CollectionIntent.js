@@ -114,7 +114,7 @@ export default class CollectionIntent extends Component {
         arr[index].isSelected = false;
         this.setState({arr: arr});
     }
-    countItem(item, array) {
+    countItem(item, array) {//获取车龄区间或里程区间选中的个数
         let index = array.findIndex(a => a === item);
         if(array===this.state.arr1){
             if (array[index].isSelected){
@@ -248,10 +248,10 @@ const styles = StyleSheet.create({
     //     backgroundColor: '#e3eeee'
     // },
     labelSelect: {
-        marginTop: 10,
+        marginTop: Pixel.getPixel(10),
     },
     text: {
-        fontSize: 16,
+        fontSize: Pixel.getPixel(16),
         color: 'rgb(13, 131, 144)'
     },
     container: {
@@ -260,31 +260,31 @@ const styles = StyleSheet.create({
     container1: {
         flex: 1,
         backgroundColor: FontAndColor.COLORA3,
-        paddingTop: 10,
+        paddingTop: Pixel.getPixel(10),
     },
     carSelect: {
         flex: 1,
-        fontSize: 17
+        fontSize: Pixel.getPixel(17)
     },
     carType: {
-        fontSize: 17,
-        marginTop: 10
+        fontSize: Pixel.getPixel(17),
+        marginTop: Pixel.getPixel(10)
     },
     bottomText: {
-        marginHorizontal: 10,
+        marginHorizontal: Pixel.getPixel(10),
     },
     containerChild: {
         backgroundColor: '#ffffff',
-        height: 125,
-        paddingLeft: 12,
-        marginBottom: 10
+        height: Pixel.getPixel(125),
+        paddingLeft: Pixel.getPixel(12),
+        marginBottom: Pixel.getPixel(10)
     },
     btnStyle: {
-        height: 40,
+        height: Pixel.getPixel(40),
         backgroundColor: FontAndColor.COLORB0,
-        marginTop: 40,
+        marginTop: Pixel.getPixel(40),
         borderRadius: 3,
-        marginHorizontal:15,
+        marginHorizontal: Pixel.getPixel(15),
         justifyContent: 'center'
     },
 });

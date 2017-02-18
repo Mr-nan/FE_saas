@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component,PureComponent} from 'react';
 import {
     StyleSheet,
     Text,
@@ -8,7 +8,7 @@ import {
 import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import ChildTabView from './ChildTabView';
-export default class RepaymenyTabBar extends Component {
+export default class RepaymenyTabBar extends PureComponent {
 
 
     constructor(props) {

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component,PureComponent} from 'react';
 import {
     StyleSheet,
     Text,
@@ -9,7 +9,7 @@ import * as  fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 // var tabName = ["单车融资","库存融资","采购融资"];
-export default class ChildTabView extends Component {
+export default class ChildTabView extends PureComponent {
 
     constructor(props) {
         super(props);

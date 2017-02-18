@@ -29,20 +29,17 @@ export default class HomeHeaderItem extends Component {
 
     render() {
         return (
-            <TouchableOpacity activeOpacity={0.7} style={styles.container} onPress={()=>{
+            <TouchableOpacity activeOpacity={0.7} style={styles.container} onPress={()=> {
                 this.props.callBack(this.props.functionTitle);
             }}>
-
-
-                    <Image
-                        source={ this.props.functionImage }
-                        style={styles.imageStyle}
-                    />
-                    <View style={styles.titleStytle}>
-                        <Text style={styles.functionTitleStytle}>{this.props.functionTitle }</Text>
-                        <Text style={styles.describeTitleStytle}>{this.props.describeTitle }</Text>
-                    </View>
-
+                <Image
+                    source={ this.props.functionImage }
+                    style={styles.imageStyle}
+                />
+                <View style={styles.titleStytle}>
+                    <Text style={styles.functionTitleStytle}>{this.props.functionTitle }</Text>
+                    <Text style={styles.describeTitleStytle}>{this.props.describeTitle }</Text>
+                </View>
 
 
             </TouchableOpacity>
@@ -58,7 +55,7 @@ const styles = StyleSheet.create({
         width:width/2.0,
         height:Pixel.getPixel(75),
         backgroundColor:'#ffffff',
-        borderWidth:1,
+        borderWidth:0.5,
         borderColor:fontAndClolr.COLORA4
 
     },

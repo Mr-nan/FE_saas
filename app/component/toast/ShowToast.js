@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component,PureComponent} from 'react';
 import {
     AppRegistry,
     StyleSheet,
@@ -15,7 +15,7 @@ import Confirm from './Confirm';
  * 需要显示确认弹框时，调用changeType方法，传递参数为本类CONFIRM静态常量，
  * 有msg、title、leftText、rightText、leftCallBack、rightCallBack属性通过props传递
 **/
-export default  class ShowToast extends Component {
+export default  class ShowToast extends PureComponent {
     static TOAST = "1";
     static CONFIRM = "2";
 

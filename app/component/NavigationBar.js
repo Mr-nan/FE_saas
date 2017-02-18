@@ -1,11 +1,11 @@
-import React, {Component, PropTypes} from "react";
+import React, {Component, PropTypes,PureComponent} from "react";
 import {AppRegistry, StyleSheet, View, Text} from "react-native";
 import MyButton from "./MyButton";
 import * as FontAndColor from "../constant/fontAndColor";
 import PixelUtil from "../utils/PixelUtil";
 var Pixel = new PixelUtil();
 
-export default class NavigationBar extends Component {
+export default class NavigationBar extends PureComponent {
 
     static defaultProps = {
         leftTextShow: false,
