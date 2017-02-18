@@ -64,14 +64,18 @@ export default class AutoPlate extends Component {
                             </Image>
                         </TouchableOpacity>
 
-                        <Image style={styles.proContainer} source={proBg}>
+                        <View style={styles.proContainer} >
+                            <View style={{
+                               height:44,
+                                backgroundColor: 'red'}}>
                             <TextInput style={styles.fontBold} underlineColorAndroid='transparent' defaultValue={'N'}/>
+                                </View>
                             <TextInput style={styles.fontBold} underlineColorAndroid='transparent' defaultValue={'S'}/>
                             <TextInput style={styles.fontBold} underlineColorAndroid='transparent' defaultValue={'2'}/>
                             <TextInput style={styles.fontBold} underlineColorAndroid='transparent' defaultValue={'5'}/>
                             <TextInput style={styles.fontBold} underlineColorAndroid='transparent' defaultValue={'6'}/>
                             <TextInput style={styles.fontBold} underlineColorAndroid='transparent' defaultValue={'9'}/>
-                        </Image>
+                        </View>
                     </View>
                 </Image>
             </View>
@@ -102,18 +106,22 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(255,255,255,0.2)'
     },
     proContainer: {
+        flex:1,
         height: 44,
         width: 259,
         marginLeft: 13,
         flexDirection: 'row',
-        justifyContent: 'space-around',
+        justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: 'rgba(255,255,255,0.2)'
+        // backgroundColor: 'rgba(255,255,255,0)'
+        backgroundColor: 'yellow'
     },
     fontBold: {
+
         fontSize: 20,
         fontWeight: 'bold',
         color: '#FFFFFF',
-        textAlign:'center'
+        textAlign:'center',
+        backgroundColor: 'red',
     }
 });

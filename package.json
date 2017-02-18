@@ -19,7 +19,11 @@
     "react-native-umeng-sdk": "1.4.0",
     "react-native-viewpager": "^0.2.13",
     "react-native-modal-datetime-picker": "^3.0.1",
+<<<<<<< HEAD
     "react-native-wheel-picker":"^1.1.1"
+=======
+    "react-native-wheel-picker": "^1.1.1"
+>>>>>>> 18bc0998f1a7469f359e5d07640bfa25c9e8930c
   },
   "devDependencies": {
     "babel-jest": "18.0.0",
