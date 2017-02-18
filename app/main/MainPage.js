@@ -18,11 +18,13 @@ import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
 import TabNavigator from 'react-native-tab-navigator';
 
-import HomeSence  from '../main/HomeSence'
+import HomeSence  from './HomeScene'
 import CarSourceSence from '../carSource/CarSourceListScene'
-import MineSence from '../main/MineSence'
-import FinanceSence from '../main/FinanceSence'
-import PublishSence from '../main/PublishSence'
+import MineSence from './MineScene'
+import FinanceSence from './FinanceScene'
+import PublishSence from './PublishScene'
+
+
 import * as fontAndClolr from '../constant/fontAndColor';
 import BaseComponent from '../component/BaseComponent';
 
@@ -51,7 +53,8 @@ export default class MainPage extends BaseComponent {
         identity: 'boss'
     };
 
-    initFinish = () => {
+    initFinish = ()=> {
+
     }
 
     /**
@@ -74,7 +77,9 @@ export default class MainPage extends BaseComponent {
             new tableItemInfo('firstpage', 'page1', '首页', require('../../images/mainImage/homeSelect.png'), require('../../images/mainImage/homeUnSelect.png'),
                 <HomeSence/>),
             new tableItemInfo('carpage', 'page2', '车源', require('../../images/mainImage/carSelect.png'), require('../../images/mainImage/carUnSelect.png'),
-                <CarSourceSence callBack={(params) => {
+
+                <CarSourceSence callBack={(params)=> {
+
                     this.toNextPage(params);
                 }}/>),
             new tableItemInfo('sendpage', 'page3', '发布', require('../../images/mainImage/sendButton.png'), require('../../images/mainImage/sendButton.png'),
@@ -84,7 +89,9 @@ export default class MainPage extends BaseComponent {
                     this.toNextPage(params);
                 }}/>),
             new tableItemInfo('mypage', 'page5', '我的', require('../../images/mainImage/mineSelect.png'), require('../../images/mainImage/mineUnSelect.png'),
-                <MineSence/>)
+                <MineSence callBack={(params)=> {
+                    this.toNextPage(params);
+                }}/>)
         ];
 
         const financeTabArray = [
@@ -108,7 +115,8 @@ export default class MainPage extends BaseComponent {
 
         this.state = {
 
-            selectedTab: tabArray[0].ref,
+            // selectedTab: tabArray[0].ref,
+            selectedTab: tabArray[tabArray.length - 1].ref,
         }
     }
 
@@ -138,15 +146,18 @@ export default class MainPage extends BaseComponent {
         return (
             <View style={styles.flex}>
                 <TabNavigator
+
                     sceneStyle={{backgroundColor: '#00000000'}}
                     tabBarShadowStyle={{backgroundColor: '#00000000'}}
                     tabBarStyle={{overflow: 'visible', height: Pixel.getPixel(75), backgroundColor: '#00000000'}}
+
 
                 >
                     {items}
                 </TabNavigator>
                 <View
                     style={[styles.imageStyle, this.props.identity == "finance" ? {width: Pixel.getPixel(1)} : {width: 0}]}></View>
+
             </View>
         );
     }

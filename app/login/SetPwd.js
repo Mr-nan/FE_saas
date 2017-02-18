@@ -8,6 +8,7 @@ var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
 import MyButton from '../component/MyButton';
+import LoginInputText from './component/LoginInputText';
 export default class SetPwd extends BaseComponent {
     initFinish = () => {
     }
@@ -16,16 +17,35 @@ export default class SetPwd extends BaseComponent {
         return (
             <View style={styles.container}>
                 <NavigationBar
-                    leftImageShow={false}
-                    leftTextShow={true}
-                    leftText={"取消"}
-                    centerText={"登录遇到问题"}
+                    leftImageShow={true}
+                    leftTextShow={false}
+                    centerText={"修改登录密码"}
                     rightText={"  "}
-                    leftTextCallBack={this.backPage}
-                />
-
+                    leftImageCallBack={this.backPage}/>
+                <View style={{width: width, height: Pixel.getPixel(15)} }/>
+                <LoginInputText
+                    ref="oldPassword"
+                    rightIcon={false}
+                    leftIcon={false}
+                    textPlaceholder={"请输入原登录密码"}
+                    viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}/>
+                <View style={{width: width, height: Pixel.getPixel(10)} }/>
+                <LoginInputText
+                    ref="newPassword"
+                    rightIcon={false}
+                    leftIcon={false}
+                    textPlaceholder={"请设置新密码"}
+                    viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}/>
+                <View style={{width: width, height: Pixel.getPixel(10)} }/>
+                <LoginInputText
+                    ref="newPasswordAgain"
+                    rightIcon={false}
+                    leftIcon={false}
+                    textPlaceholder={"请再次填写新密码"}
+                    viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}/>
+                <View style={{width: width, height: Pixel.getPixel(44)} }/>
                 <MyButton buttonType={MyButton.TEXTBUTTON}
-                          content={'用短信验证码登录'}
+                          content={'确定'}
                           parentStyle={styles.buttonStyle}
                           childStyle={styles.buttonTextStyle}
                           mOnPress={this.rightTextCallBack}/>
@@ -34,11 +54,12 @@ export default class SetPwd extends BaseComponent {
     }
 
     rightTextCallBack = () => {
-        this.toNextPage({
-            name: 'Register',
-            component: LoginFail,
-            params: {},
-        })
+        // this.toNextPage({
+        //     name: 'Register',
+        //     component: LoginFail,
+        //     params: {},
+        // })
+        alert("设置成功")
     }
 
 }
@@ -47,7 +68,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: '#ffffff'
+        backgroundColor: FontAndColor.COLORA3,
     },
     buttonStyle: {
         height: Pixel.getPixel(44),
@@ -61,5 +82,8 @@ const styles = StyleSheet.create({
     buttonTextStyle: {
         color: FontAndColor.COLORA3,
         fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT)
-    }
+    },
+    itemStyel: {
+        backgroundColor: "#ffffff",
+    },
 });

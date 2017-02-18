@@ -41,10 +41,10 @@ export class HomeHeaderItemInfo {
 }
 
 const bossFuncArray = [
-    new HomeHeaderItemInfo('shouche', 'page111', '收车', '优质车源,最佳商户', require('../../images/mainImage/shouche.png')),
-    new HomeHeaderItemInfo('maiche', 'page112', '卖车', '快速发车,一键上架', require('../../images/mainImage/maiche.png')),
-    new HomeHeaderItemInfo('jiekuan', 'page113', '借款', '多样化融资方案', require('../../images/mainImage/jiekuan.png')),
-    new HomeHeaderItemInfo('huankuan', 'page114', '还款', '方便,快捷,安全', require('../../images/mainImage/huankuan.png')),
+    new HomeHeaderItemInfo('shouche', 'page111', '收车', '真实靠谱车源', require('../../images/mainImage/shouche.png')),
+    new HomeHeaderItemInfo('maiche', 'page112', '卖车', '面向全国商家', require('../../images/mainImage/maiche.png')),
+    new HomeHeaderItemInfo('jiekuan', 'page113', '借款', '一步快速搞定', require('../../images/mainImage/jiekuan.png')),
+    new HomeHeaderItemInfo('huankuan', 'page114', '还款', '智能自动提醒', require('../../images/mainImage/huankuan.png')),
 ];
 const employerFuncArray = [bossFuncArray[0], bossFuncArray[1]];
 
