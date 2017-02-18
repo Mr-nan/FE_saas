@@ -21,6 +21,7 @@ import RepaymenyTabBar from './component/RepaymenyTabBar';
 import InventoryRepaymentPage from './page/InventoryRepaymentPage';
 import SingleRepaymentPage from './page/SingleRepaymentPage';
 import PurchaseRepaymentPage from './page/PurchaseRepaymentPage';
+import NavigationView from '../component/AllNavigationView';
 export  default class RepaymentScene extends BaseComponent {
 
     initFinish = () => {
@@ -29,8 +30,13 @@ export  default class RepaymentScene extends BaseComponent {
     render() {
 
         return (
+        <View style={{width:width,height:height}}>
+            <NavigationView
+                title="还款"
+                backIconClick={this.backPage}
+            />
             <ScrollableTabView
-                style={{marginTop: Pixel.getPixel(25),}}
+                style={{marginTop: Pixel.getTitlePixel(64),flex:1}}
                 initialPage={0}
                 renderTabBar={() => <RepaymenyTabBar tabName={["单车融资", "库存融资", "采购融资"]}/>}
             >
@@ -41,6 +47,7 @@ export  default class RepaymentScene extends BaseComponent {
                 <PurchaseRepaymentPage tabLabel="ios-chatboxes"/>
 
             </ScrollableTabView>
+        </View>
         );
     }
 }

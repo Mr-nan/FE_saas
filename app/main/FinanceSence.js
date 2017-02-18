@@ -90,7 +90,7 @@ export default class FinanceSence extends Component {
         return (
             <View style={[cellSheet.row, cellSheet.padding]}>
                 <View style={cellSheet.rowViewStyle}>
-                    <View style={[cellSheet.rowTopViewStyle, {justifyContent: 'flex-start', flex: 3,}]}>
+                    <View style={[cellSheet.rowViewStyle, {justifyContent: 'flex-start',}]}>
                         <MyButton {...this.buttonParams} content="单车"/>
                         <Text style={cellSheet.rowTopTextStyle}>源之宝汽车经销公司</Text>
                     </View>
@@ -153,6 +153,8 @@ export default class FinanceSence extends Component {
 
     homeItemOnPress = (title) => {
         if (title === '借款') {
+            this.navigatorParams.name = 'LendMoneySence';
+            this.navigatorParams.component = LendMoneySence;
             this.props.callBack(this.navigatorParams);
         } else {
             this.navigatorParams.name = "RepaymentScene";
@@ -362,11 +364,6 @@ const cellSheet = StyleSheet.create({
         height: Pixel.getPixel(40),
         flexDirection: 'row',
         alignItems: 'center'
-    },
-    rowTopViewStyle: {
-        height: Pixel.getPixel(40),
-        flexDirection: 'row',
-        alignItems: 'center',
     },
     rowTopTextStyle: {
         marginLeft: Pixel.getPixel(7), fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
