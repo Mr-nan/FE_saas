@@ -54,8 +54,13 @@ export default class FinanceSence extends Component {
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
         this.state = {
-            source: ds.cloneWithRows(movies)
-
+            source: ds.cloneWithRows(movies),
+            allData: {
+                keyongedu: "500",
+                daikuanyue: "200",
+                baozhengjinedu: "20",
+                baozhengjinyue: "4.65",
+            }
         };
     }
 
@@ -96,11 +101,8 @@ export default class FinanceSence extends Component {
 
 
     render() {
-
         return (
-
             <View style={cellSheet.container}>
-
                 <ListView
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
@@ -113,9 +115,8 @@ export default class FinanceSence extends Component {
         )
     }
 
-    _renderHeader() {
+    _renderHeader = () => {
         let tablist;
-
         tablist = bossFuncArray;
         let items = [];
         tablist.map((data) => {
@@ -133,52 +134,29 @@ export default class FinanceSence extends Component {
 
         return (
             <View>
-
-                <View style={[cellSheet.titleStyle,cellSheet.titleViewStyle]} source={require('../../images/financeImages/dinancebg.png')}>
-                    <Image style={[cellSheet.titleStyle,cellSheet.titleImageStyle]}
+                <View style={[cellSheet.titleStyle, cellSheet.titleViewStyle]}>
+                    <Image style={[cellSheet.titleStyle, cellSheet.titleImageStyle]}
                            source={require('../../images/financeImages/dinancebg.png')}/>
-                    <Text style={{fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
-                        color:fontAndColor.COLORA3,marginTop:Pixel.getPixel(71)}}>可用额度(万)</Text>
-                    <Text style={{fontSize:Pixel.getFontPixel(24),
-                        color:fontAndColor.COLORA3,marginTop:Pixel.getPixel(8),fontWeight: 'bold'}}>500</Text>
-                    <Text style={{fontSize:Pixel.getPixel(fontAndColor.LITTLEFONT),
-                        color:fontAndColor.COLORA3,marginTop:Pixel.getPixel(71)}}>贷款余额(万)</Text>
-                    <Text style={{fontSize:Pixel.getPixel(fontAndColor.LITTLEFONT),
-                        color:fontAndColor.COLORA3,marginTop:Pixel.getPixel(71)}}>200</Text>
+                    <Text style={cellSheet.titleOneTextStyle}>可用额度(万)</Text>
+                    <Text style={cellSheet.titleTwoTextStyle}>{this.state.allData.keyongedu}</Text>
+                    <Text style={cellSheet.titleThreeTextStyle}>贷款余额(万)</Text>
+                    <Text style={cellSheet.titleFourTextStyle}>{this.state.allData.daikuanyue}</Text>
+                    <View style={cellSheet.titleViewBottomStyle}>
+                        <View style={cellSheet.titleViewBottomBGStyle}></View>
+                        <View style={[cellSheet.titleViewBottomViewStyle, {paddingRight: Pixel.getPixel(40)}]}>
+                            <Text style={cellSheet.titleViewTextStyle}>保证金额度:</Text>
+                            <Text
+                                style={[cellSheet.titleViewTextStyle, {fontWeight: 'bold'}]}>{this.state.allData.baozhengjinedu}万</Text>
+                        </View>
+                        <View style={[cellSheet.titleViewBottomViewStyle, {paddingLeft: Pixel.getPixel(40)}]}>
+                            <Text style={[cellSheet.titleViewTextStyle]}>保证金余额:</Text>
+                            <Text
+                                style={[cellSheet.titleViewTextStyle, {fontWeight: 'bold'}]}>{this.state.allData.baozhengjinyue}万</Text>
+                        </View>
+                    </View>
                 </View>
-
                 <View style={cellSheet.header}>
                     {items}
-                </View>
-
-
-                <View style={{
-                    flexDirection: 'row',
-                    width: width,
-                    height: 30,
-                    backgroundColor: 'yellow',
-                    alignItems: 'center',
-                }}>
-
-                    <View style={{marginLeft: 20, flex: 1}}>
-                        <Text>
-                            意向车源
-                        </Text>
-
-                    </View>
-
-                    <View style={{marginRight: 20, flexDirection: 'row', justifyContent: 'center'}}>
-
-                        <Text>
-                            更多
-                        </Text>
-                        <Image source={require('../../images/mainImage/shouche.png')}
-                               style={{marginRight: 20, flexDirection: 'row', justifyContent: 'center'}}/>
-
-
-                    </View>
-
-
                 </View>
 
             </View>
@@ -194,7 +172,7 @@ const cellSheet = StyleSheet.create({
     header: {
         flex: 1,
 
-        backgroundColor: 'green',
+        backgroundColor: fontAndColor.COLORA3,
         flexDirection: 'row',
         flexWrap: 'wrap',
         paddingBottom: Pixel.getPixel(10),
@@ -220,13 +198,6 @@ const cellSheet = StyleSheet.create({
         flexDirection: 'row',
         backgroundColor: '#F5FCFF',
     },
-
-    thumnail: {
-
-        width: 80,
-        height: 81,
-    },
-
     rightContainer: {
 
         marginLeft: 20,
@@ -262,13 +233,8 @@ const cellSheet = StyleSheet.create({
     },
     Separator: {
 
-        backgroundColor: 'white',
-        height: 2,
-
-    },
-    despriton: {
-
-        textAlign: 'left',
+        backgroundColor: fontAndColor.COLORA4,
+        height: 1,
 
     },
     titleStyle: {
@@ -276,12 +242,50 @@ const cellSheet = StyleSheet.create({
         height: Pixel.getPixel(230)
     },
     titleViewStyle: {
-        alignItems:'center',
-        flexDirection:'column',
+        alignItems: 'center',
     },
     titleImageStyle: {
-        position:'absolute'
+        position: 'absolute'
     },
-
+    titleViewBottomStyle: {
+        width: width,
+        height: Pixel.getPixel(40),
+        marginTop: Pixel.getPixel(25), flexDirection: 'row', alignItems: 'center'
+    },
+    titleViewBottomBGStyle: {
+        backgroundColor: '#0970cf', width: width,
+        height: Pixel.getPixel(40), opacity: 0.25, position: 'absolute'
+    },
+    titleViewBottomViewStyle: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    titleViewTextStyle: {
+        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+        color: fontAndColor.COLORA3,
+        backgroundColor:'#00000000'
+    },
+    titleOneTextStyle:{
+        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+        color: fontAndColor.COLORA3, marginTop: Pixel.getPixel(64),
+        backgroundColor:'#00000000'
+    },
+    titleTwoTextStyle:{
+        fontSize: Pixel.getFontPixel(24),
+        color: fontAndColor.COLORA3, marginTop: Pixel.getPixel(4), fontWeight: 'bold',
+        backgroundColor:'#00000000'
+    },
+    titleThreeTextStyle:{
+        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+        color: fontAndColor.COLORA3, marginTop: Pixel.getPixel(12),
+        backgroundColor:'#00000000'
+    },
+    titleFourTextStyle:{
+        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24), fontWeight: 'bold',
+        color: fontAndColor.COLORA3, marginTop: Pixel.getPixel(4),
+        backgroundColor:'#00000000'
+    }
 
 });

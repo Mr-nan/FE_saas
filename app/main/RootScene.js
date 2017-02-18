@@ -24,15 +24,14 @@ export default class RootScene extends BaseComponent {
         let that = this;
         setTimeout(
             () => {
-
                 // StorageUtil.mGetItem(KeyNames.ISLOGIN, (result) => {
                 //     if (result !== StorageUtil.ERRORCODE) {
                 //         if (result == null) {
-                //             that.navigatorParams.component = LoginAndRegister;
+                //             that.navigatorParams.component = MainPage;
                 //             that.toNextPage(that.navigatorParams);
                 //         } else {
                 //             if (result == "true") {
-                //                 that.navigatorParams.component = LoginAndRegister;
+                //                 that.navigatorParams.component = MainPage;
                 //                 that.navigatorParams.params = {
                 //
                 //                 }
