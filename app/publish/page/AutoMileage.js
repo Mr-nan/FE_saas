@@ -12,6 +12,7 @@ import {
 }from 'react-native';
 
 import Picker from 'react-native-wheel-picker';
+
 let PickerItem = Picker.Item;
 
 import SuccessModal from '../component/SuccessModal';
