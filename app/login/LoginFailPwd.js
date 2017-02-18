@@ -9,6 +9,7 @@ var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
 import MyButton from '../component/MyButton';
 import LoginInputText from './component/LoginInputText';
+import SetPwd from './SetPwd';
 export default class LoginFailPwd extends BaseComponent {
     initFinish = () => {
     }
@@ -57,7 +58,11 @@ export default class LoginFailPwd extends BaseComponent {
     }
 
     rightTextCallBack = () => {
-        alert("密码设置成功")
+        this.toNextPage({
+            name: 'SetPwd',
+            component: SetPwd,
+            params: {},
+        })
     }
 
 }
