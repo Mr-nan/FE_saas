@@ -12,6 +12,7 @@ import {
     Text,
     TouchableOpacity,
     Image,
+    RefreshControl,
 
 } from 'react-native';
 
@@ -101,6 +102,7 @@ export  default  class  carSourceListScene extends  BaseComponent{
 
         this.state = {
 
+            isRefreshing:false,
             dataSource:carSource.cloneWithRows(['h1','h2','h3','h4','h5','h6','h6']),
             checkedSource:carAgeSource,
             isHide:true,
@@ -119,6 +121,18 @@ export  default  class  carSourceListScene extends  BaseComponent{
 
     };
 
+    // 下拉刷新数据
+    _refreshingData=()=>{
+        this.setState({isRefreshing:true});
+        setTimeout(()=>{
+
+            this.setState({isRefreshing:false});
+            alert('刷新完毕');
+
+        },500);
+        alert('开始刷新')
+
+    };
     //  筛选条件选择
     _headViewOnPres = (index,isHighlighted,setImgHighlighted)=> {
 
@@ -227,7 +241,7 @@ export  default  class  carSourceListScene extends  BaseComponent{
     };
 
 
-    _onPres = (str)=>{
+    _carCellOnPres = (str)=>{
 
        let navigatorParams =   {
 
@@ -270,11 +284,18 @@ export  default  class  carSourceListScene extends  BaseComponent{
                         initialListSize={10}
                         stickyHeaderIndices={[]}
                         onEndReachedThreshold={1}
-                        scrollRenderAheadDistance={1}
-                        pageSize={1}
+                        scrollRenderAheadDistance={1}pageSize={1}
+
                         renderRow={(item) =>
-                            <CarCell style={styles.carCell} carMainText={item} carSubText="奔驰E300L" onPress={this._onPres}/>
-                        }/>
+                            <CarCell style={styles.carCell} carMainText={item} carSubText="奔驰E300L" onPress={this._carCellOnPres}/>
+                        }
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.state.isRefreshing}
+                                onRefresh={this._refreshingData}
+                            />
+                        }
+                    />
                 </View>
                 <SequencingButton buttonClick={this._showSequencingView}/>
                 {
@@ -284,7 +305,6 @@ export  default  class  carSourceListScene extends  BaseComponent{
 
                     this.state.isHide ?(null):(
                         <View style={styles.selectView}>
-
                             <View style={{backgroundColor:'white'}}>
                                 <ScrollView>
                                     {
