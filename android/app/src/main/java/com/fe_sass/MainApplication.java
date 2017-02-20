@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import com.fe_sass.react_native_umeng_push.UmengPushApplication;
 import com.fe_sass.react_native_umeng_push.UmengPushPackage;
+import com.theweflex.react.WeChatPackage;
 public class MainApplication extends UmengPushApplication implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
@@ -32,7 +33,8 @@ public class MainApplication extends UmengPushApplication implements ReactApplic
           new SQLitePluginPackage(),
           new UmengPushPackage(),
           new ImagePickerPackage(),
-          new ReactNativeWheelPickerPackage()
+          new ReactNativeWheelPickerPackage(),
+          new WeChatPackage()
       );
     }
   };

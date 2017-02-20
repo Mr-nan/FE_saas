@@ -105,7 +105,7 @@ export default class AutoMileage extends Component{
                             <View style={styles.fillSpace}>
                                 <Picker  style={[IS_ANDROID && styles.fillSpace]}
                                         selectedValue={this.state.selected1}
-                                        itemStyle={{color:"#FFFFFF", fontSize:26,fontWeight:'bold'}}
+                                        itemStyle={{color:"#FFFFFF", fontSize:28,fontWeight:'bold'}}
                                         onValueChange={(index) => this.onPickerSelect('selected1',index)}>
                                     {this.state.itemList.map((value, i) => (
                                         <PickerItem label={value} value={i} key={"first"+value}/>
@@ -123,7 +123,7 @@ export default class AutoMileage extends Component{
                                 </Picker>
                             </View>
                             <View style={styles.fillSpace}>
-                                <Picker style={[IS_ANDROID && styles.fillSpace]}
+                            <Picker style={[IS_ANDROID && styles.fillSpace]}
                                         selectedValue={this.state.selected3}
                                         itemStyle={{color:"#FFFFFF", fontSize:26,fontWeight:'bold'}}
                                         onValueChange={(index) => this.onPickerSelect('selected3',index)}>
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
         marginTop:207
     },
     fillSpace:{
-        flex:1
+        flex:1,
     },
     preContainer:{
         height:44,
