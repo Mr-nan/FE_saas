@@ -21,8 +21,7 @@ import Register from "./Register";
 import NavigationBar from "../component/NavigationBar";
 import PixelUtil from "../utils/PixelUtil";
 import StorageUtil from "../utils/StorageUtil";
-import * as ISLOGIN from "../constant/storageKeyNames";
-import * as USER_INFO from "../constant/storageKeyNames";
+import * as StorageKeyNames from "../constant/storageKeyNames";
 import SAToast from '../component/toast/Toast';
 import ShowToast from '../component/toast/ShowToast';
 import MyButton from '../component/MyButton';
@@ -52,7 +51,7 @@ export default class LoginScene extends BaseComponent {
     }
 
     static defaultProps = {
-        saveData: ["aaaaaa", "bbbbbbb", "cccccccccc"],
+        saveData: ["13001260000", "13001260001", "13001260002"],
     };
 
     render() {
@@ -191,6 +190,7 @@ export default class LoginScene extends BaseComponent {
         } else if (typeof(verifyCode) == "undefined" || verifyCode == "") {
             this.refs.toast.changeType(ShowToast.TOAST, "验证码不能为空");
         } else {
+            this.refs.loginSmscode.StartCountDown();
             let maps = {
                 device_code: "dycd_dms_manage_android",
                 img_code: verifyCode,
@@ -201,7 +201,7 @@ export default class LoginScene extends BaseComponent {
             request(AppUrls.SEND_SMS, 'Post', maps)
                 .then((response) => {
                     smsCode = response.mjson.data.code;
-                    alert("获取短信验证码成功" + response.mjson.data.code)
+                    alert("获取短信验证码成功" + smsCode)
                 }, (error) => {
                     alert("获取短信验证码失败")
                 });
@@ -229,6 +229,7 @@ export default class LoginScene extends BaseComponent {
             });
     }
 
+    // 登录
     login = () => {
         let userName = this.refs.loginUsername.getInputTextValue();
         let passWord = this.refs.loginPassword.getInputTextValue();
@@ -246,15 +247,26 @@ export default class LoginScene extends BaseComponent {
             let maps = {
                 code: smsCode,
                 device_code: "dycd_dms_manage_android",
-                img_code: verifyCode,
+                login_type: "2",
                 phone: userName,
                 pwd: passWord,
             };
             request(AppUrls.LOGIN, 'Post', maps)
                 .then((response) => {
-                    this.refs.toast.changeType(ShowToast.TOAST, "登录成功");
-                    StorageUtil.mSetItem(ISLOGIN, 'true');
-                    // StorageUtil.mSetItem(USER_INFO, response);
+                    this.refs.toast.changeType(ShowToast.TOAST, response.mjson.msg);
+
+                    // 保存用户登录状态
+                    StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
+                    // 保存用户信息
+                    // StorageUtil.mSetItem(StorageKeyNames.base_user_id, response.);
+                    // StorageUtil.mSetItem(StorageKeyNames.enterprise_list, response);
+                    // StorageUtil.mSetItem(StorageKeyNames.head_portrait_url, response);
+                    // StorageUtil.mSetItem(StorageKeyNames.idcard_number, response);
+                    // StorageUtil.mSetItem(StorageKeyNames.phone, response);
+                    // StorageUtil.mSetItem(StorageKeyNames.real_name, response);
+                    // StorageUtil.mSetItem(StorageKeyNames.token, response);
+                    // StorageUtil.mSetItem(StorageKeyNames.user_level, response);
+
                 }, (error) => {
                     this.refs.toast.changeType(ShowToast.TOAST, "登录失败");
                 });

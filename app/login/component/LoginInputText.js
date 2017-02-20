@@ -141,7 +141,8 @@ export default class LoginInputText extends Component {
                             : null
                     }
                     {
-                        this.props.rightButton ? <SendMmsCountDown callBackSms={this.props.callBackSms}/> : null
+                        this.props.rightButton ?
+                            <SendMmsCountDown ref="sendMms" callBackSms={this.props.callBackSms}/> : null
                     }
                     {
                         this.props.clearValue && this.state.values.length > 0 ?
@@ -166,6 +167,10 @@ export default class LoginInputText extends Component {
         this.setState({
             values: ""
         });
+    }
+
+    StartCountDown() {
+        this.refs.sendMms.StartCountDown();
     }
 }
 

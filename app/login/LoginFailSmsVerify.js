@@ -93,7 +93,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
     }
 
     Smscode = () => {
-        alert("Smscode")
+        this.refs.smscode.StartCountDown();
     }
 
     rightTextCallBack = () => {
