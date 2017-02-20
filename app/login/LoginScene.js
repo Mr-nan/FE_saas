@@ -32,6 +32,9 @@ var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var onePT = 1 / PixelRatio.get(); //一个像素
 var itemWidth = width;
+var imgSrc: '';
+var imgSid: '';
+var smsCode: '';
 export default class LoginScene extends BaseComponent {
 
     constructor(props) {
@@ -179,20 +182,46 @@ export default class LoginScene extends BaseComponent {
         });
     }
 
+    //获取短信验证码
     Smscode = () => {
-        alert("发送短信验证码")
+        let userName = this.refs.loginUsername.getInputTextValue();
+        let verifyCode = this.refs.loginVerifycode.getInputTextValue();
+        if (userName == "") {
+            this.refs.toast.changeType(ShowToast.TOAST, "请输入正确的用户名");
+        } else if (typeof(verifyCode) == "undefined" || verifyCode == "") {
+            this.refs.toast.changeType(ShowToast.TOAST, "验证码不能为空");
+        } else {
+            let maps = {
+                device_code: "dycd_dms_manage_android",
+                img_code: verifyCode,
+                img_sid: imgSid,
+                phone: userName,
+                type: "2",
+            };
+            request(AppUrls.SEND_SMS, 'Post', maps)
+                .then((response) => {
+                    smsCode = response.mjson.data.code;
+                    alert("获取短信验证码成功" + response.mjson.data.code)
+                }, (error) => {
+                    alert("获取短信验证码失败")
+                });
+        }
     }
 
+    //获取图形验证码
     Verifycode = () => {
         this.refs.loginVerifycode.lodingStatus(true);
         let maps = {
             device_code: "dycd_dms_manage_android",
         };
-        request(AppUrls.IDENTIFYING + "&" + "device_code=dycd_dms_manage_android", 'Post', maps)
+        request(AppUrls.IDENTIFYING + "?" + "device_code=dycd_dms_manage_android", 'Post', maps)
             .then((response) => {
                 this.refs.loginVerifycode.lodingStatus(false);
+                imgSrc = response.mjson.data.img_src;
+                imgSid = response.mjson.data.img_sid;
+
                 this.setState({
-                    verifyCode: {uri: response.mjson.data.img_src},
+                    verifyCode: {uri: imgSrc},
                 });
             }, (error) => {
                 this.refs.loginVerifycode.lodingStatus(false);
