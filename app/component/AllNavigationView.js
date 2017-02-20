@@ -25,7 +25,7 @@ export default class CarInfoNavigationView extends PureComponent {
         const {title, backIconClick, renderRihtFootView} = this.props;
 
         return (
-            <View style={styles.navigation}>
+            <View style={[styles.navigation,]}>
                 <View style={styles.content}>
                     <TouchableOpacity style={{width: Pixel.getPixel(80), height: Pixel.getPixel(44),justifyContent:'center'}}
                                       onPress={backIconClick}>
@@ -83,7 +83,6 @@ const styles = StyleSheet.create({
     },
     navigation: {
         height: Pixel.getTitlePixel(64),
-        // height:64,
         backgroundColor: fontAndColor.COLORB0,
         left: 0,
         right: 0,

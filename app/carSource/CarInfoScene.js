@@ -112,7 +112,7 @@ export default class CarInfoScene extends BaseComponent {
 
     _callClick = () => {
 
-        Linking.openURL('tel:4006561290,100001#');
+        Linking.openURL('tel:4006561290,100002#');
     };
 
     _navigatorRightView = () => {
@@ -136,7 +136,7 @@ export default class CarInfoScene extends BaseComponent {
                 <ScrollView style={{marginBottom: 44}} onMomentumScrollEnd={(e) => {
                     console.log(e.nativeEvent.contentOffset.y)
                 }}>
-                    <Image style={styles.carImage}/>
+                    <Image style={styles.carImage} source={{uri:'https://images.unsplash.com/photo-1440964829947-ca3277bd37f8?h=1024'}}/>
                     <View style={styles.contentContainer}>
                         <View style={styles.contentView}>
 

@@ -13,6 +13,7 @@ import {
     TouchableOpacity,
     Image,
     Dimensions,
+    Animated,
 
 } from 'react-native';
 
@@ -255,13 +256,18 @@ export default class CarBrandSelectScene extends BaseComponent {
                     contentContainerStyle={styles.listStyle}
                           pageSize={100}
                     onScroll={() => {
-                        this.setState({
-                            isHideCarSubBrand: true,
-                        });
+
+                        if(!this.state.isHideCarSubBrand)
+                        {
+                            this.setState({
+                                isHideCarSubBrand: true,
+
+                            });
+                        }
                     }}
                 />
 
-                <ZNListIndexView indexTitleArray={this.state.sectionTitleArray} indexClick={this._indexAndScrollClick}/>
+                <ZNListIndexView  indexTitleArray={this.state.sectionTitleArray} indexClick={this._indexAndScrollClick}/>
 
                 <NavigationView
                     title="选择品牌"
@@ -269,7 +275,9 @@ export default class CarBrandSelectScene extends BaseComponent {
                 />
                 {
                     this.state.isHideCarSubBrand ? (null) : (
-                            <CarSubBrand data={this.state.carTypes} title={this.state.carTypeCheckend}
+                            <CarSubBrand
+                                         data={this.state.carTypes}
+                                         title={this.state.carTypeCheckend}
                                          checkedCarType={this.props.checkedCarType}
                                          checkedCarClick={this._checkedCarType}/>
                         )
@@ -319,6 +327,7 @@ class CarSubBrand extends Component {
             }
             this.state = {
                 dataSource: dataSource.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
+                valueRight:new Animated.Value(0),
 
             };
         }
@@ -352,10 +361,25 @@ class CarSubBrand extends Component {
         );
     }
 
+    componentDidMount() {
+
+        this.state.valueRight.setValue(ScreenWidth);
+        Animated.spring(
+            this.state.valueRight,
+            {
+                toValue:ScreenWidth*0.5,
+                friction:5,
+            }
+        ).start();
+
+    }
+
+
     render() {
 
         return (
-            <View style={styles.carSubBrandView}>
+
+            <Animated.View style={[styles.carSubBrandView,{left:this.state.valueRight}]}>
                 <View style={styles.carSubBrandHeadView}>
                     <Image style={styles.rowCellImag}/>
                     <Text style={styles.rowCellText}>{this.props.title}</Text>
@@ -367,7 +391,7 @@ class CarSubBrand extends Component {
                     renderSectionHeader={this.renderSectionHeader}
                     contentContainerStyle={styles.listStyle}
                 />
-            </View>
+            </Animated.View>
         )
 
     }
@@ -375,6 +399,7 @@ class CarSubBrand extends Component {
 }
 
 class ZNListIndexView extends Component{
+
 
     render(){
         const {indexTitleArray}=this.props;
@@ -386,6 +411,7 @@ class ZNListIndexView extends Component{
                             <TouchableOpacity key={index} style={styles.indexItem} onPress={()=>{
 
                                 this.props.indexClick(index);
+
                             }}>
                                 <Text style={styles.indexItemText}>{data}</Text>
                             </TouchableOpacity>
@@ -454,7 +480,6 @@ const styles = StyleSheet.create({
     carSubBrandView: {
 
         backgroundColor: 'white',
-        right: 0,
         top: 64,
         bottom: 0,
         position: 'absolute',
@@ -472,6 +497,7 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         position: 'absolute',
+
 
     },
 
