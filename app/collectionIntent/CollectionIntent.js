@@ -17,7 +17,15 @@ import PixelUtil from "../utils/PixelUtil";
 var Pixel = new PixelUtil();
 var carYearArr =new Map();
 var mileageArr =new Map();
-export default class CollectionIntent extends Component {
+import ShareSpanner from './../component/WxShare';
+import BaseComponent from '../component/BaseComponent';
+import { registerApp } from 'react-native-wechat';
+export default class CollectionIntent extends BaseComponent {
+
+    initFinish = () => {
+        registerApp('wx8d560da3ba038e7e');
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -227,7 +235,8 @@ export default class CollectionIntent extends Component {
                         </LabelSelect>
                     </View>
                     <Text style={styles.bottomText}>根据您提报的收车意向，我们会给您相关车源。请关注首页意向车源。</Text>
-                    <TouchableOpacity style={styles.btnStyle} onPress={()=>{}}>
+                    <TouchableOpacity style={styles.btnStyle}
+                                      onPress={()=>{this.shareSpanner.setModalVisible()}}>
                         <Text style={{
                             color: FontAndColor.COLORA3,
                             fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT),
@@ -235,6 +244,7 @@ export default class CollectionIntent extends Component {
                         }}>提交</Text>
                     </TouchableOpacity>
                 </View>
+                <ShareSpanner ref={(shareSpanner)=>{this.shareSpanner = shareSpanner}}/>
             </View>
         );
     }
