@@ -10,10 +10,23 @@ var Pixel = new PixelUtil();
 import MyButton from '../component/MyButton';
 import LoginInputText from './component/LoginInputText';
 import LoginFailPwd from './LoginFailPwd';
+import {request} from "../utils/RequestUtil";
+import * as AppUrls from "../constant/appUrls";
+import ShowToast from '../component/toast/ShowToast';
+
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 export default class LoginFailSmsVerify extends BaseComponent {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            verifyCodeUrl: null,
+        }
+    }
+
     initFinish = () => {
+        this.Verifycode();
     }
 
     render() {
@@ -40,6 +53,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
                     textPlaceholder={'请输入验证码'}
                     viewStytle={styles.itemStyel}
                     leftIconUri={require('./../../images/login/virty.png')}
+                    rightIconSource={this.state.verifyCodeUrl ? this.state.verifyCodeUrl : null}
                     rightIconClick={this.Verifycode}
                     rightIconStyle={{width: Pixel.getPixel(100), height: Pixel.getPixel(32)}}/>
 
@@ -62,11 +76,24 @@ export default class LoginFailSmsVerify extends BaseComponent {
     }
 
     Verifycode = () => {
-        this.refs.loginVerifycode.lodingStatus(true);
+        this.refs.verifycode.lodingStatus(true);
+        let maps = {
+            device_code: "dycd_dms_manage_android",
+        };
+        request(AppUrls.IDENTIFYING + "&" + "device_code=dycd_dms_manage_android", 'Post', maps)
+            .then((response) => {
+                this.refs.verifycode.lodingStatus(false);
+                this.setState({
+                    verifyCodeUrl: {uri: response.mjson.data.img_src},
+                });
+            }, (error) => {
+                this.refs.verifycode.lodingStatus(false);
+                this.refs.toast.changeType(ShowToast.TOAST, "获取失败");
+            });
     }
 
     Smscode = () => {
-        alert("Smscode")
+        this.refs.smscode.StartCountDown();
     }
 
     rightTextCallBack = () => {
