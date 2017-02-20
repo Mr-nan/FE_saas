@@ -241,7 +241,7 @@ export  default  class  carSourceListScene extends  BaseComponent{
     };
 
 
-    _carCellOnPres = (str)=>{
+    _carCellOnPres = (str,sectionID,rowID)=>{
 
        let navigatorParams =   {
 
@@ -286,8 +286,8 @@ export  default  class  carSourceListScene extends  BaseComponent{
                         onEndReachedThreshold={1}
                         scrollRenderAheadDistance={1}pageSize={1}
 
-                        renderRow={(item) =>
-                            <CarCell style={styles.carCell} carMainText={item} carSubText="奔驰E300L" onPress={this._carCellOnPres}/>
+                        renderRow={(item,sectionID,rowID) =>
+                            <CarCell style={styles.carCell} carMainText={item} carSubText="奔驰E300L" onPress={()=>{this._carCellOnPres(item,sectionID,rowID)}}/>
                         }
                         refreshControl={
                             <RefreshControl

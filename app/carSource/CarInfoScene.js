@@ -7,6 +7,7 @@ import {
     Image,
     ScrollView,
     Linking,
+    InteractionManager,
 
 } from 'react-native';
 
@@ -101,7 +102,21 @@ const carIconsContentData = [
 
 export default class CarInfoScene extends BaseComponent {
 
+
+
+    // 构造
+      constructor(props) {
+        super(props);
+        // 初始状态
+        this.state = {
+            renderPlaceholderOnly: true,
+        };
+      }
+
     initFinish = () => {
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+        });
 
     }
 
@@ -128,7 +143,13 @@ export default class CarInfoScene extends BaseComponent {
         );
     };
 
+
+
     render() {
+
+        if (this.state.renderPlaceholderOnly) {
+            return <View style={{flex: 1, backgroundColor: 'white'}}/>;
+        }
 
         return (
             <View style={{flex: 1, backgroundColor: 'white'}}>
