@@ -22,9 +22,8 @@ import NavigationBar from "../component/NavigationBar";
 import PixelUtil from "../utils/PixelUtil";
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
-import SAToast from '../component/toast/Toast';
-import ShowToast from '../component/toast/ShowToast';
-import MyButton from '../component/MyButton';
+import ShowToast from "../component/toast/ShowToast";
+import MyButton from "../component/MyButton";
 var Pixel = new PixelUtil();
 
 var Dimensions = require('Dimensions');

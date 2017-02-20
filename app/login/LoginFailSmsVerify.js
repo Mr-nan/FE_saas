@@ -13,6 +13,8 @@ import LoginFailPwd from './LoginFailPwd';
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 import ShowToast from '../component/toast/ShowToast';
+import StorageUtil from "../utils/StorageUtil";
+import * as StorageKeyNames from "../constant/storageKeyNames";
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -41,8 +43,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
                     leftTextShow={false}
                     centerText={"短信验证"}
                     rightText={"  "}
-                    leftImageCallBack={this.backPage}
-                />
+                    leftImageCallBack={this.backPage}/>
                 <View style={{width: width, height: Pixel.getPixel(15)} }/>
                 <LoginInputText
                     ref="userName"
@@ -74,7 +75,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
                           content={'提交'}
                           parentStyle={styles.buttonStyle}
                           childStyle={styles.buttonTextStyle}
-                          mOnPress={this.rightTextCallBack}/>
+                          mOnPress={this.login}/>
                 <ShowToast ref='toast' msg={this.props.msg}></ShowToast>
             </View>
         );
@@ -133,6 +134,47 @@ export default class LoginFailSmsVerify extends BaseComponent {
             component: LoginFailPwd,
             params: {},
         })
+    }
+
+    // 登录
+    login = () => {
+        let userName = this.refs.userName.getInputTextValue();
+        let verifyCode = this.refs.verifycode.getInputTextValue();
+        let smsCode = this.refs.smscode.getInputTextValue();
+        if (typeof(userName) == "undefined" || userName == "") {
+            this.refs.toast.changeType(ShowToast.TOAST, "请输入正确的用户名");
+        } else if (typeof(verifyCode) == "undefined" || verifyCode == "") {
+            this.refs.toast.changeType(ShowToast.TOAST, "验证码不能为空");
+        } else if (typeof(smsCode) == "undefined" || smsCode == "") {
+            this.refs.toast.changeType(ShowToast.TOAST, "短信验证码不能为空");
+        } else {
+            let maps = {
+                code: smsCode,
+                device_code: "dycd_dms_manage_android",
+                login_type: "1",
+                phone: userName,
+                pwd: "",
+            };
+            request(AppUrls.LOGIN, 'Post', maps)
+                .then((response) => {
+                    this.refs.toast.changeType(ShowToast.TOAST, response.mjson.msg);
+
+                    // 保存用户登录状态
+                    StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
+                    // 保存用户信息
+                    // StorageUtil.mSetItem(StorageKeyNames.base_user_id, response.);
+                    // StorageUtil.mSetItem(StorageKeyNames.enterprise_list, response);
+                    // StorageUtil.mSetItem(StorageKeyNames.head_portrait_url, response);
+                    // StorageUtil.mSetItem(StorageKeyNames.idcard_number, response);
+                    // StorageUtil.mSetItem(StorageKeyNames.phone, response);
+                    // StorageUtil.mSetItem(StorageKeyNames.real_name, response);
+                    // StorageUtil.mSetItem(StorageKeyNames.token, response);
+                    // StorageUtil.mSetItem(StorageKeyNames.user_level, response);
+
+                }, (error) => {
+                    this.refs.toast.changeType(ShowToast.TOAST, "登录失败");
+                });
+        }
     }
 
 }

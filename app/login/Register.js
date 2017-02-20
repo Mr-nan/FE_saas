@@ -171,6 +171,8 @@ export default class Register extends BaseComponent {
             this.refs.toast.changeType(ShowToast.TOAST, "用户名不能为空");
         } else if (typeof(businessName) == "undefined" || businessName == "") {
             this.refs.toast.changeType(ShowToast.TOAST, "商家名称不能为空");
+        } else if (password !== passwoedAgain) {
+            this.refs.toast.changeType(ShowToast.TOAST, "两次密码输入不一致");
         } else {
             let maps = {
                 user_name: name,
@@ -180,12 +182,13 @@ export default class Register extends BaseComponent {
                 merchant_name: businessName,
                 code: smsCode,
                 device_code: "dycd_dms_manage_android",
-                idcard_img: "",
-                license_img: "",
+                idcard_img: "2345678987654345678876",
+                license_img: "https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg",
             };
             request(AppUrls.REGISTER, 'Post', maps)
                 .then((response) => {
-                    this.refs.toast.changeType(ShowToast.TOAST, "注册成功");
+                    smsCode = response.mjson.msg;
+                    this.refs.toast.changeType(ShowToast.TOAST, smsCode);
                 }, (error) => {
                     this.refs.toast.changeType(ShowToast.TOAST, "注册失败");
                 });
@@ -212,6 +215,7 @@ export default class Register extends BaseComponent {
                 this.refs.toast.changeType(ShowToast.TOAST, "获取失败");
             });
     }
+
     //获取短信验证码
     sendSms = () => {
         let userName = this.refs.userName.getInputTextValue();
