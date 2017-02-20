@@ -7,22 +7,31 @@ import {
     Image,
     Text,
     Dimensions,
-    StyleSheet
+    StyleSheet,
+    InteractionManager,
+    TouchableOpacity
 } from 'react-native';
 
 import * as fontAndColor from '../../constant/fontAndColor';
+import AllNavigationView from '../../component/AllNavigationView';
+import PixelUtil from '../../utils/PixelUtil';
+const Pixel = new PixelUtil();
+import ImageSource from '../component/ImageSource';
 
 const { width,height } = Dimensions.get('window');
 const background = require('../../../images/publish/background.png');
 const photo = require('../../../images/publish/photo.png');
 const photoMask = require('../../../images/publish/photo-mask.png');
 
+
 export default class AutoPhoto extends Component{
 
     constructor(props){
         super(props);
+        this.takePhoto ="";
         this.state ={
-            hasPhoto:false
+            hasPhoto:false,
+            renderPlaceholderOnly: true
         }
     }
 
@@ -31,30 +40,67 @@ export default class AutoPhoto extends Component{
     }
 
     componentDidMount(){
-
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+        });
     }
 
     componentWillUnmount(){
 
     }
 
+    _renderPlaceholderView = ()=>{
+        return(<Image style={[styles.img,{height:height-this.props.barHeight}]} source={background} />);
+    };
+
+    _labelPress = ()=>{
+        this.imageSource.openModal();
+    };
+
+    _rePhoto = ()=>{
+        this.imageSource.openModal();
+    };
+
+    _onBack = ()=>{
+
+    };
+
     render(){
+        if (this.state.renderPlaceholderOnly) {
+            return this._renderPlaceholderView();
+        }
         return(
             <View style={styles.container}>
+                <ImageSource ref={(modal) => {this.imageSource = modal}}/>
                 <Image style={[styles.img,{height:height-this.props.barHeight}]} source={background}>
-                    <Image style={styles.photoContainer} source={photo}>
-                        {
-                            this.state.hasPhoto
-                                ? <Image style={styles.hasPhotoContainer} source={photoMask}>
+                    <AllNavigationView
+                        backIconClick={this._onBack}
+                        title='拍摄车辆照片'
+                        wrapStyle={styles.wrapStyle}/>
+                    {
+                        this.state.hasPhoto
+                            ? <Image style={styles.photoContainer} source={photo}>
+                                <Image style={styles.hasPhotoContainer} source={photoMask}>
                                     <Text style={styles.photoLabel}>左前45°照</Text>
                                     <View style={styles.fillSpace}/>
-                                    <Text style={styles.rephotoLabel}>重拍</Text>
+                                    <TouchableOpacity
+                                        onPress={this._rePhoto}
+                                        activeOpacity={0.6}>
+                                        <Text style={styles.rephotoLabel}>重拍</Text>
+                                    </TouchableOpacity>
                                 </Image>
-                                : <View style={styles.noPhotoContainer}>
-                                    <Text style={styles.noPhoto}>请拍摄左前45°照</Text>
-                                </View>
-                        }
-                    </Image>
+                            </Image>
+                            : <TouchableOpacity
+                                onPress={this._labelPress}
+                                activeOpacity={0.6}>
+                                <Image style={styles.photoContainer} source={photo}>
+                                    <View style={styles.noPhotoContainer}>
+                                        <Text style={styles.noPhoto}>请拍摄左前45°照</Text>
+                                    </View>
+                                </Image>
+                            </TouchableOpacity>
+
+                    }
                 </Image>
             </View>
         );
@@ -101,5 +147,7 @@ const styles = StyleSheet.create({
     fillSpace:{
         flex:1
     },
-
+    wrapStyle:{
+        backgroundColor:'transparent'
+    }
 });
