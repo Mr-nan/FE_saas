@@ -8,11 +8,15 @@ import {
     Image,
     Dimensions,
     StyleSheet,
-    TouchableOpacity
+    TouchableOpacity,
+    InteractionManager
 } from 'react-native';
 
 import * as fontAndColor from '../../constant/fontAndColor';
 import Grid from '../component/Grid';
+import AllNavigationView from '../../component/AllNavigationView';
+import PixelUtil from '../../utils/PixelUtil';
+const Pixel = new PixelUtil();
 
 const {width,height} = Dimensions.get('window');
 const background = require('../../../images/publish/background.png');
@@ -34,7 +38,8 @@ export default class AutoEmission extends Component {
             {title: '欧Ⅱ', selected: false,index:9},
         ];
         this.state = {
-            dataSource: this.viewData
+            dataSource: this.viewData,
+            renderPlaceholderOnly: true
         }
     }
 
@@ -43,7 +48,9 @@ export default class AutoEmission extends Component {
     }
 
     componentDidMount() {
-
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+        });
     }
 
     componentWillUnmount() {
@@ -100,10 +107,37 @@ export default class AutoEmission extends Component {
         }
     };
 
+    _renderPlaceholderView = ()=>{
+        return(<Image style={[styles.img,{height:height-this.props.barHeight}]} source={background} />);
+    };
+
+    _onBack = ()=>{
+
+    };
+
+    _renderRihtFootView = ()=>{
+        return(
+            <TouchableOpacity
+                activeOpacity={0.6}
+                onPress={()=>{}}>
+                <Text style={styles.rightTitleText}>完成</Text>
+            </TouchableOpacity>
+        );
+    };
+
     render() {
+        if (this.state.renderPlaceholderOnly) {
+            return this._renderPlaceholderView();
+        }
+
         return (
         <View style={styles.container}>
             <Image style={[styles.imgContainer,{height:height-this.props.barHeight}]} source={background}>
+                <AllNavigationView
+                    backIconClick={this._onBack}
+                    title='选择排放标准'
+                    wrapStyle={styles.wrapStyle}
+                    renderRihtFootView={this._renderRihtFootView} />
                 <Grid
                     ref = {(grid)=>{this.interiorGrid = grid}}
                     style={styles.girdContainer}
@@ -113,7 +147,6 @@ export default class AutoEmission extends Component {
                 />
             </Image>
         </View>
-
         );
     }
 }
@@ -166,6 +199,15 @@ const styles = StyleSheet.create({
         height: 41,
         width: 132,
         marginTop: 10,
+        backgroundColor: 'transparent'
+    },
+    wrapStyle:{
+        backgroundColor:'transparent'
+    },
+    rightTitleText: {
+        color: 'white',
+        fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34),
+        textAlign: 'right',
         backgroundColor: 'transparent'
     }
 });

@@ -7,15 +7,17 @@ import LoginInputText from "./component/LoginInputText";
 import NavigationBar from "../component/NavigationBar";
 import PixelUtil from "../utils/PixelUtil";
 import ImagePicker from "react-native-image-picker";
-import {imageUploadUtil} from "../utils/FileUpload";
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
-import ShowToast from '../component/toast/ShowToast';
+import ShowToast from "../component/toast/ShowToast";
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
 
+var imgSrc: '';
+var imgSid: '';
+var smsCode: '';
 export default class Register extends BaseComponent {
     constructor(props) {
         super(props);
@@ -23,10 +25,12 @@ export default class Register extends BaseComponent {
             idcard: null,
             idcardBack: null,
             businessLicense: null,
+            verifyCode: null,
         }
     }
 
     initFinish = () => {
+        this.Verifycode();
     }
 
     render() {
@@ -40,9 +44,17 @@ export default class Register extends BaseComponent {
                     <View style={styles.inputTextLine}/>
                     <View style={styles.inputTextsStyle}>
                         <LoginInputText
-                            ref="phone"
-                            textPlaceholder={'输入手机号'}
+                            ref="verifycode"
+                            textPlaceholder={'请输入验证码'}
                             viewStytle={styles.itemStyel}
+                            inputTextStyle={styles.inputTextStyle}
+                            leftIcon={false}
+                            rightIconClick={this.Verifycode}
+                            rightIconSource={this.state.verifyCode ? this.state.verifyCode : null}/>
+                        <LoginInputText
+                            ref="userName"
+                            textPlaceholder={'输入手机号'}
+                            viewStytle={[styles.itemStyel, {marginBottom: 1}]}
                             inputTextStyle={styles.inputTextStyle}
                             rightButton={true}
                             rightIcon={false}
@@ -50,7 +62,7 @@ export default class Register extends BaseComponent {
                             keyboardType={'phone-pad'}
                             leftIcon={false}/>
                         <LoginInputText
-                            ref="verifycode"
+                            ref="smsCode"
                             textPlaceholder={'输入短信验证码'}
                             viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
                             inputTextStyle={styles.inputTextStyle}
@@ -140,16 +152,16 @@ export default class Register extends BaseComponent {
 
     register = () => {
 
-        let phone = this.refs.phone.getInputTextValue();
-        let verifycode = this.refs.verifycode.getInputTextValue();
+        let userName = this.refs.userName.getInputTextValue();
+        let smsCode = this.refs.smsCode.getInputTextValue();
         let password = this.refs.password.getInputTextValue();
         let passwoedAgain = this.refs.passwoedAgain.getInputTextValue();
         let name = this.refs.name.getInputTextValue();
         let businessName = this.refs.businessName.getInputTextValue();
 
-        if (typeof(phone) == "undefined" || phone == "") {
+        if (typeof(userName) == "undefined" || userName == "") {
             this.refs.toast.changeType(ShowToast.TOAST, "手机号码不能为空");
-        } else if (typeof(verifycode) == "undefined" || verifycode == "") {
+        } else if (typeof(smsCode) == "undefined" || smsCode == "") {
             this.refs.toast.changeType(ShowToast.TOAST, "验证码不能为空");
         } else if (typeof(password) == "undefined" || password == "") {
             this.refs.toast.changeType(ShowToast.TOAST, "密码不能为空");
@@ -162,11 +174,11 @@ export default class Register extends BaseComponent {
         } else {
             let maps = {
                 user_name: name,
-                phone: phone,
+                phone: userName,
                 pwd: password,
                 confirm_pwd: passwoedAgain,
                 merchant_name: businessName,
-                code: verifycode,
+                code: smsCode,
                 device_code: "dycd_dms_manage_android",
                 idcard_img: "",
                 license_img: "",
@@ -180,8 +192,51 @@ export default class Register extends BaseComponent {
         }
     }
 
+    //获取图形验证码
+    Verifycode = () => {
+        this.refs.verifycode.lodingStatus(true);
+        let maps = {
+            device_code: "dycd_dms_manage_android",
+        };
+        request(AppUrls.IDENTIFYING + "?" + "device_code=dycd_dms_manage_android", 'Post', maps)
+            .then((response) => {
+                this.refs.verifycode.lodingStatus(false);
+                imgSrc = response.mjson.data.img_src;
+                imgSid = response.mjson.data.img_sid;
+
+                this.setState({
+                    verifyCode: {uri: imgSrc},
+                });
+            }, (error) => {
+                this.refs.verifycode.lodingStatus(false);
+                this.refs.toast.changeType(ShowToast.TOAST, "获取失败");
+            });
+    }
+    //获取短信验证码
     sendSms = () => {
-        alert("发送短信验证码");
+        let userName = this.refs.userName.getInputTextValue();
+        let verifyCode = this.refs.verifycode.getInputTextValue();
+        if (typeof(verifyCode) == "undefined" || verifyCode == "") {
+            this.refs.toast.changeType(ShowToast.TOAST, "验证码不能为空");
+        } else if (typeof(userName) == "undefined" || userName == "") {
+            this.refs.toast.changeType(ShowToast.TOAST, "请输入手机号");
+        } else {
+            this.refs.userName.StartCountDown();
+            let maps = {
+                device_code: "dycd_dms_manage_android",
+                img_code: verifyCode,
+                img_sid: imgSid,
+                phone: userName,
+                type: "1",
+            };
+            request(AppUrls.SEND_SMS, 'Post', maps)
+                .then((response) => {
+                    smsCode = response.mjson.data.code;
+                    alert("获取短信验证码成功" + smsCode)
+                }, (error) => {
+                    alert("获取短信验证码失败")
+                });
+        }
     }
 
     selectPhotoTapped(id) {
@@ -213,7 +268,6 @@ export default class Register extends BaseComponent {
                 console.log('User tapped custom button: ', response.customButton);
             } else {
                 let source = {uri: response.uri};
-                console.log('source : ', source.uri);
                 // You can also display the image using data:
                 // let source = { uri: 'data:image/jpeg;base64,' + response.data };
                 if (id === 'idcard') {
@@ -229,9 +283,24 @@ export default class Register extends BaseComponent {
                         businessLicense: source
                     });
                 }
-                imageUploadUtil([response.uri]);
+                this.imageUploadUtil(response);
             }
         });
+    }
+
+    imageUploadUtil(name) {
+        let maps = {
+            device_code: "dycd_dms_manage_android",
+            name: name,
+            user_id: "13001286215",
+        };
+        request(AppUrls.UPLOAD_FILE, 'Post', maps)
+            .then((response) => {
+                // smsCode = response.mjson.data.code;
+                alert("图片上传成那个" + response.mjson.toString())
+            }, (error) => {
+                alert("图片上传失败")
+            });
     }
 }
 

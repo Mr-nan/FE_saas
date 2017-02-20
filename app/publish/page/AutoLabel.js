@@ -8,11 +8,15 @@ import {
     Image,
     TouchableOpacity,
     Dimensions,
-    StyleSheet
+    StyleSheet,
+    InteractionManager
 } from 'react-native';
 
-import * as fontAndColor from '../../constant/fontAndColor';
 import Grid from '../component/Grid';
+import * as fontAndColor from '../../constant/fontAndColor';
+import AllNavigationView from '../../component/AllNavigationView';
+import PixelUtil from '../../utils/PixelUtil';
+const Pixel = new PixelUtil();
 
 const { width,height } = Dimensions.get('window');
 const background = require('../../../images/publish/background.png');
@@ -34,7 +38,8 @@ export default class AutoLabel extends Component {
                 {title: '倒车影像', selected: false,index:7},
             ];
         this.state = {
-            dataSource: this.viewData
+            dataSource: this.viewData,
+            renderPlaceholderOnly: true
         }
     }
 
@@ -43,7 +48,9 @@ export default class AutoLabel extends Component {
     }
 
     componentDidMount() {
-
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+        });
     }
 
     componentWillUnmount() {
@@ -95,12 +102,36 @@ export default class AutoLabel extends Component {
         }
     };
 
+    _renderPlaceholderView = ()=>{
+        return(<Image style={[styles.img,{height:height-this.props.barHeight}]} source={background} />);
+    };
+    _onBack = ()=>{
 
+    };
+
+    _renderRihtFootView = ()=>{
+        return(
+            <TouchableOpacity
+                activeOpacity={0.6}
+                onPress={()=>{}}>
+                <Text style={styles.rightTitleText}>完成</Text>
+            </TouchableOpacity>
+        );
+    };
 
     render() {
+        if (this.state.renderPlaceholderOnly) {
+            return this._renderPlaceholderView();
+        }
+
         return (
             <View style={styles.container}>
                 <Image style={[styles.imgContainer,{height:height-this.props.barHeight}]} source={background}>
+                    <AllNavigationView
+                        backIconClick={this._onBack}
+                        title='选择热门标签'
+                        wrapStyle={styles.wrapStyle}
+                        renderRihtFootView={this._renderRihtFootView} />
                     <Grid
                         ref = {(grid)=>{this.interiorGrid = grid}}
                         style={styles.girdContainer}
@@ -173,6 +204,15 @@ const styles = StyleSheet.create({
     emptyItem: {
         height: 41,
         width: 132,
+        backgroundColor: 'transparent'
+    },
+    wrapStyle:{
+        backgroundColor:'transparent'
+    },
+    rightTitleText: {
+        color: 'white',
+        fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34),
+        textAlign: 'right',
         backgroundColor: 'transparent'
     }
 });

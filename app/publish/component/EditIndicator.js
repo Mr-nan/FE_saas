@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     container:{
         width:width,
         height:94,
-        backgroundColor:'rgba(47,155,250,0.25)',
+        backgroundColor:'rgba(47,155,250,0.6)',
     },
     upSpace:{
         flex:1,

@@ -9,10 +9,15 @@ import {
     ScrollView,
     Dimensions,
     TouchableOpacity,
-    StyleSheet
+    StyleSheet,
+    InteractionManager
 } from 'react-native';
 
+import * as fontAndColor from '../../constant/fontAndColor';
 import Grid from '../component/Grid';
+import AllNavigationView from '../../component/AllNavigationView';
+import PixelUtil from '../../utils/PixelUtil';
+const Pixel = new PixelUtil();
 
 const {width, height} = Dimensions.get('window');
 const background = require('../../../images/publish/background.png');
@@ -225,7 +230,8 @@ export default class AutoColor extends Component {
         ];
         this.state = {
             carShell: this.viewShell,
-            carInterior: this.viewInterior
+            carInterior: this.viewInterior,
+            renderPlaceholderOnly: true
         }
     }
 
@@ -234,8 +240,15 @@ export default class AutoColor extends Component {
     }
 
     componentDidMount() {
-
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+        });
     }
+
+    _renderPlaceholderView = ()=>{
+        return(<Image style={[styles.img,{height:height-this.props.barHeight}]} source={background} />);
+    };
+
 
     componentWillUnmount() {
 
@@ -374,10 +387,34 @@ export default class AutoColor extends Component {
         }
     };
 
+    _onBack = ()=>{
+
+    };
+
+    _renderRihtFootView = ()=>{
+        return(
+            <TouchableOpacity
+                activeOpacity={0.6}
+                onPress={()=>{}}>
+                <Text style={styles.rightTitleText}>完成</Text>
+            </TouchableOpacity>
+        );
+    };
+
     render() {
+
+        if (this.state.renderPlaceholderOnly) {
+            return this._renderPlaceholderView();
+        }
+
         return (
             <View style={styles.container}>
                 <Image style={[styles.imgContainer,{height:height-this.props.barHeight}]} source={background}>
+                    <AllNavigationView
+                        backIconClick={this._onBack}
+                        title='选择颜色'
+                        wrapStyle={styles.wrapStyle}
+                        renderRihtFootView={this._renderRihtFootView} />
                     <ScrollView showsHorizontalScrollIndicator={false}
                                 showsVerticalScrollIndicator={false}
                                 style={styles.contentContainer}>
@@ -469,6 +506,15 @@ const styles = StyleSheet.create({
     },
     center: {
         alignItems: 'center'
+    },
+    wrapStyle:{
+        backgroundColor:'transparent'
+    },
+    rightTitleText: {
+        color: 'white',
+        fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34),
+        textAlign: 'right',
+        backgroundColor: 'transparent'
     }
 });
 

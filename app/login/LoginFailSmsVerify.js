@@ -16,6 +16,10 @@ import ShowToast from '../component/toast/ShowToast';
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
+
+var imgSrc: '';
+var imgSid: '';
+var smsCode: '';
 export default class LoginFailSmsVerify extends BaseComponent {
 
     constructor(props) {
@@ -41,7 +45,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
                 />
                 <View style={{width: width, height: Pixel.getPixel(15)} }/>
                 <LoginInputText
-                    ref="phone"
+                    ref="userName"
                     textPlaceholder={'请输入手机号码'}
                     rightIcon={false}
                     viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
@@ -71,6 +75,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
                           parentStyle={styles.buttonStyle}
                           childStyle={styles.buttonTextStyle}
                           mOnPress={this.rightTextCallBack}/>
+                <ShowToast ref='toast' msg={this.props.msg}></ShowToast>
             </View>
         );
     }
@@ -83,6 +88,8 @@ export default class LoginFailSmsVerify extends BaseComponent {
         request(AppUrls.IDENTIFYING + "&" + "device_code=dycd_dms_manage_android", 'Post', maps)
             .then((response) => {
                 this.refs.verifycode.lodingStatus(false);
+                imgSrc = response.mjson.data.img_src;
+                imgSid = response.mjson.data.img_sid;
                 this.setState({
                     verifyCodeUrl: {uri: response.mjson.data.img_src},
                 });
@@ -92,9 +99,33 @@ export default class LoginFailSmsVerify extends BaseComponent {
             });
     }
 
+    //获取短信验证码
     Smscode = () => {
-        this.refs.smscode.StartCountDown();
+        let userName = this.refs.userName.getInputTextValue();
+        let verifyCode = this.refs.verifycode.getInputTextValue();
+        if (typeof(userName) == "undefined" || userName == "") {
+            this.refs.toast.changeType(ShowToast.TOAST, "请输入正确的用户名");
+        } else if (typeof(verifyCode) == "undefined" || verifyCode == "") {
+            this.refs.toast.changeType(ShowToast.TOAST, "验证码不能为空");
+        } else {
+            this.refs.smscode.StartCountDown();
+            let maps = {
+                device_code: "dycd_dms_manage_android",
+                img_code: verifyCode,
+                img_sid: imgSid,
+                phone: userName,
+                type: "2",
+            };
+            request(AppUrls.SEND_SMS, 'Post', maps)
+                .then((response) => {
+                    smsCode = response.mjson.data.code;
+                    alert("获取短信验证码成功" + smsCode)
+                }, (error) => {
+                    alert("获取短信验证码失败")
+                });
+        }
     }
+
 
     rightTextCallBack = () => {
         this.toNextPage({

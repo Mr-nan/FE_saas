@@ -64,7 +64,7 @@ export default class EditScene extends BaseComponent{
 const styles = StyleSheet.create({
     container:{
         width:width,
-        height:height-23,
+        flex:1,
         backgroundColor:'transparent'
     },
     page:{
