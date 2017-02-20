@@ -47,9 +47,13 @@ export const IDENTIFYING = BASEURL + V + "index/captcha";// v1/index/captcha
 
 /**
  * 短信验证码
+ *
+ * device_code    设备码        必填
+ * name    文件资源    object    'name' 名可以自定义
+ * user_id    可空
  */
-export const SEND_SMS = BASEURL + V
-    + "user/send_verification";
+// export const SEND_SMS = BASEURL + V + "user/send_verification";
+export const SEND_SMS = BASEURL + V + "auth/sendSmsCode";
 
 /**
  * 验证手机号是否有密码
