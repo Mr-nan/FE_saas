@@ -25,11 +25,7 @@ export default class CarInfoNavigationView extends PureComponent {
         const {title, backIconClick, renderRihtFootView,wrapStyle} = this.props;
 
         return (
-<<<<<<< HEAD
             <View style={[styles.navigation,wrapStyle]}>
-=======
-            <View style={[styles.navigation,]}>
->>>>>>> 36dd5ed6949a58d2d3b6680aef18b983a34bcb08
                 <View style={styles.content}>
                      <TouchableOpacity style={{width: Pixel.getPixel(80), height: Pixel.getPixel(44),justifyContent:'center'}}
                                       onPress={backIconClick}>
