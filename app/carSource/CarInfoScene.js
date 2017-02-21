@@ -148,7 +148,13 @@ export default class CarInfoScene extends BaseComponent {
     render() {
 
         if (this.state.renderPlaceholderOnly) {
-            return <View style={{flex: 1, backgroundColor: 'white'}}/>;
+            return (
+                <View style={{flex: 1, backgroundColor: 'white'}}>
+                <NavigationView
+                    title="车源详情"
+                    backIconClick={this._backIconClick}
+                />
+            </View>);
         }
 
         return (
