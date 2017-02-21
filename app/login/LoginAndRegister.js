@@ -8,6 +8,8 @@ import Register from './Register';
 import PixelUtil from "../utils/PixelUtil";
 import LoginFailPwd from './LoginFailPwd';
 import SetPwd from './SetPwd';
+import LoginGesturePassword from '../gesture/LoginGesturePassword';
+
 var Pixel = new PixelUtil();
 
 export default class LoginAndRegister extends BaseComponent {
@@ -50,6 +52,14 @@ export default class LoginAndRegister extends BaseComponent {
                         params: {},
                     })
                 }}/>
+                <MyButton buttonType={MyButton.TEXTBUTTON} content="手势密码" parentStyle={styles.buttonStyle}
+                          childStyle={styles.buttonTextStyle} mOnPress={() => {
+                    this.toNextPage({
+                        name: 'LoginGesturePassword',
+                        component: LoginGesturePassword,
+                        params: {},
+                    })
+                }}/>
             </View>
         );
     }
@@ -60,7 +70,8 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         backgroundColor: '#F0F0F2'
-    }, fontStyle: {
+    },
+    fontStyle: {
         color: '#cc092f',
         alignSelf: 'center',
         fontSize: Pixel.getFontPixel(30),

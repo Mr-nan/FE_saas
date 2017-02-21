@@ -10,6 +10,7 @@ import ImagePicker from "react-native-image-picker";
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 import ShowToast from "../component/toast/ShowToast";
+import {imageUploadUtil} from "../utils/FileUpload";
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -18,6 +19,7 @@ var Pixel = new PixelUtil();
 var imgSrc: '';
 var imgSid: '';
 var smsCode: '';
+var uid: '';
 export default class Register extends BaseComponent {
     constructor(props) {
         super(props);
@@ -182,13 +184,17 @@ export default class Register extends BaseComponent {
                 merchant_name: businessName,
                 code: smsCode,
                 device_code: "dycd_dms_manage_android",
-                idcard_img: "2345678987654345678876",
-                license_img: "https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg",
+                idcard_img: "12345456",
+                license_img: "1234567",
             };
             request(AppUrls.REGISTER, 'Post', maps)
                 .then((response) => {
-                    smsCode = response.mjson.msg;
-                    this.refs.toast.changeType(ShowToast.TOAST, smsCode);
+                    if (response.mjson.code == "1") {
+                        uid = response.mjson.data.uid;
+                        this.refs.toast.changeType(ShowToast.TOAST, "注册成功");
+                    } else {
+                        this.refs.toast.changeType(ShowToast.TOAST, response.mjson.msg);
+                    }
                 }, (error) => {
                     this.refs.toast.changeType(ShowToast.TOAST, "注册失败");
                 });
@@ -201,7 +207,7 @@ export default class Register extends BaseComponent {
         let maps = {
             device_code: "dycd_dms_manage_android",
         };
-        request(AppUrls.IDENTIFYING + "?" + "device_code=dycd_dms_manage_android", 'Post', maps)
+        request(AppUrls.IDENTIFYING, 'Post', maps)
             .then((response) => {
                 this.refs.verifycode.lodingStatus(false);
                 imgSrc = response.mjson.data.img_src;
@@ -235,10 +241,13 @@ export default class Register extends BaseComponent {
             };
             request(AppUrls.SEND_SMS, 'Post', maps)
                 .then((response) => {
-                    smsCode = response.mjson.data.code;
-                    alert("获取短信验证码成功" + smsCode)
+                    if (response.mjson.code == "1") {
+                        this.refs.toast.changeType(ShowToast.TOAST, response.mjson.data.code);
+                    } else {
+                        this.refs.toast.changeType(ShowToast.TOAST, response.mjson.data.msg);
+                    }
                 }, (error) => {
-                    alert("获取短信验证码失败")
+                    this.refs.toast.changeType(ShowToast.TOAST, "短信验证码获取失败");
                 });
         }
     }
@@ -272,8 +281,6 @@ export default class Register extends BaseComponent {
                 console.log('User tapped custom button: ', response.customButton);
             } else {
                 let source = {uri: response.uri};
-                // You can also display the image using data:
-                // let source = { uri: 'data:image/jpeg;base64,' + response.data };
                 if (id === 'idcard') {
                     this.setState({
                         idcard: source
@@ -287,18 +294,24 @@ export default class Register extends BaseComponent {
                         businessLicense: source
                     });
                 }
-                this.imageUploadUtil(response);
+                if (false) imageUploadUtil([response.uri]);
+                this.imageUploadUtil(response)
             }
         });
     }
 
     imageUploadUtil(name) {
+        console.log("name =========== " + JSON.stringify(name));
         let maps = {
             device_code: "dycd_dms_manage_android",
-            name: name,
-            user_id: "13001286215",
+            name: {
+                //这里的key(uri和type和name)不能改变,
+                uri: name,
+                type: 'multipart/form-data',
+                name: 'image.png'
+            },
         };
-        request(AppUrls.UPLOAD_FILE, 'Post', maps)
+        request(AppUrls.AUTH_UPLOAD_FILE, 'Post', maps)
             .then((response) => {
                 // smsCode = response.mjson.data.code;
                 alert("图片上传成那个" + response.mjson.toString())
