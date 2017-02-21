@@ -37,15 +37,15 @@ export default class LoginFailPwd extends BaseComponent {
                     ref="password"
                     textPlaceholder={'请设置BMS登录密码'}
                     rightIcon={false}
-                    leftIcon={false}
-                    leftText={"密码"}
+                    leftIcon={true}
+                    leftIconUri={require('./../../images/login/password.png')}
                     viewStytle={styles.itemStyel}/>
                 <LoginInputText
                     ref="passwordAgain"
                     textPlaceholder={'请再次输入密码'}
                     rightIcon={false}
-                    leftIcon={false}
-                    leftText={"确认密码"}
+                    leftIcon={true}
+                    leftIconUri={require('./../../images/login/password.png')}
                     viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}/>
                 <View style={{width: width, height: Pixel.getPixel(44)} }/>
                 <MyButton buttonType={MyButton.TEXTBUTTON}

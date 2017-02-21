@@ -88,8 +88,24 @@ export const REGISTER = BASEURL + V + "auth/register";//  auth/register
 
 /**
  * 设置密码
+ *
+ * token=
+ * device_code=
+ * confirm_pwd    确认密码【必填】    string
+ * pwd    密码【必填】
  */
-export const SETPWD = BASEURL + V + "user/set_password";
+export const SETPWD = BASEURL + V + "user/setPwd";
+
+/**
+ * 修改密码
+ *
+ * 变量名    含义    类型    备注
+ * code    短信验证码【必填】    number
+ * confirm_pwd    确认密码【必填】    string
+ * phone    用户手机号【必填】    number
+ * pwd
+ */
+export const CHANGEPWD = BASEURL + V + "user/resetPwd";
 
 /**
  * 申诉

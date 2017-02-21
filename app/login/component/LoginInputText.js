@@ -173,7 +173,11 @@ export default class LoginInputText extends Component {
     }
 
     StartCountDown = () => {
-        this.refs.sendMms.StartCountDown();
+        if (this.props.rightButton) {
+            this.refs.sendMms.StartCountDown();
+        } else {
+            alert("您没有开启此功能哦")
+        }
     }
 }
 

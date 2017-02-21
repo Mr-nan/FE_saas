@@ -6,6 +6,8 @@ import * as FontAndColor from "../constant/fontAndColor";
 import LoginScene from "./LoginScene";
 import Register from './Register';
 import PixelUtil from "../utils/PixelUtil";
+import LoginFailPwd from './LoginFailPwd';
+import SetPwd from './SetPwd';
 var Pixel = new PixelUtil();
 
 export default class LoginAndRegister extends BaseComponent {
@@ -29,6 +31,22 @@ export default class LoginAndRegister extends BaseComponent {
                     this.toNextPage({
                         name: 'Register',
                         component: Register,
+                        params: {},
+                    })
+                }}/>
+                <MyButton buttonType={MyButton.TEXTBUTTON} content="修改密码" parentStyle={styles.buttonStyle}
+                          childStyle={styles.buttonTextStyle} mOnPress={() => {
+                    this.toNextPage({
+                        name: 'SetPwd',
+                        component: SetPwd,
+                        params: {},
+                    })
+                }}/>
+                <MyButton buttonType={MyButton.TEXTBUTTON} content="首次设置登录密码" parentStyle={styles.buttonStyle}
+                          childStyle={styles.buttonTextStyle} mOnPress={() => {
+                    this.toNextPage({
+                        name: 'LoginFailPwd',
+                        component: LoginFailPwd,
                         params: {},
                     })
                 }}/>
