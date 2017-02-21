@@ -85,7 +85,7 @@ export default class SetPwd extends BaseComponent {
                 confirm_pwd: oldPassword,
                 pwd: newPassword,
             };
-            request(AppUrls.IDENTIFYING, 'Post', maps)
+            request(AppUrls.CHANGEPWD, 'Post', maps)
                 .then((response) => {
                     if (response.mjson.code == "1") {
                         this.refs.toast.changeType(ShowToast.TOAST, "设置成功");
