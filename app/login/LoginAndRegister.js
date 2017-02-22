@@ -8,7 +8,7 @@ import Register from './Register';
 import PixelUtil from "../utils/PixelUtil";
 import LoginFailPwd from './LoginFailPwd';
 import SetPwd from './SetPwd';
-import LoginGesturePassword from '../gesture/LoginGesturePassword';
+import LoginGesturePassword from './LoginGesture';
 
 var Pixel = new PixelUtil();
 

@@ -13,7 +13,7 @@ import Circle from './circle'
 const Width = Dimensions.get('window').width
 const Height = Dimensions.get('window').height
 const Top = (Height - Width) / 2.0 * 1.5
-const Radius = Width / 10
+const Radius = Width / 14
 
 export default class GesturePassword extends Component {
     constructor(props) {
@@ -30,9 +30,10 @@ export default class GesturePassword extends Component {
         for (let i = 0; i < 9; i++) {
             let p = i % 3;
             let q = parseInt(i / 3);
+            //X,Y圆心位置
             circles.push({
                 isActive: false,
-                x: p * (Radius * 2 + Margin) + Margin + Radius,
+                x: p * (Radius * 2 + Margin) + Margin + 50 + Radius,//圆心距左边距离
                 y: q * (Radius * 2 + Margin) + Margin + Radius
             });
         }
@@ -41,6 +42,11 @@ export default class GesturePassword extends Component {
             circles: circles,
             lines: []
         }
+    }
+
+    //向外部传递手势密码
+    getCircles() {
+        return this.state.circles;
     }
 
     static propTypes = {
@@ -52,7 +58,7 @@ export default class GesturePassword extends Component {
         onStart: PropTypes.func,
         onEnd: PropTypes.func,
         onReset: PropTypes.func,
-        interval: PropTypes.number,
+        interval: PropTypes.number,//设置手势清除时长
         allowCross: PropTypes.bool,
         innerCircle: PropTypes.bool,
         outerCircle: PropTypes.bool
@@ -125,8 +131,16 @@ export default class GesturePassword extends Component {
             outer = !!outerCircle;
 
             array.push(
-                <Circle key={'c_' + i} fill={fill} normalColor={normalColor} color={color} x={c.x} y={c.y} r={Radius}
-                        inner={inner} outer={outer}/>
+                <Circle
+                    key={'c_' + i}
+                    fill={fill}
+                    normalColor={normalColor}
+                    color={color}
+                    x={c.x}
+                    y={c.y}
+                    r={Radius}
+                    inner={inner}
+                    outer={outer}/>
             )
         });
 
@@ -290,7 +304,9 @@ export default class GesturePassword extends Component {
             this.props.onEnd && this.props.onEnd(password);
 
             if (this.props.interval > 0) {
-                this.timer = setTimeout(() => this.resetActive(), this.props.interval);
+                this.timer = setTimeout(() => {
+                    this.resetActive()
+                }, this.props.interval);
             }
         }
     }

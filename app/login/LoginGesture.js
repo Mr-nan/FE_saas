@@ -3,7 +3,7 @@ var {
     AppRegistry,
 } = require('react-native');
 
-import PasswordGesture from './index';
+import PasswordGesture from '../gesture/PwdGesture';
 import BaseComponent from '../component/BaseComponent';
 
 var Password = '';
@@ -26,6 +26,7 @@ export default class GesturePassword extends BaseComponent {
                 ref='pg'
                 status={this.state.status}
                 message={this.state.message}
+                interval={1000}
                 onStart={() => this.onStart()}
                 onEnd={(password) => this.onEnd(password)}
             />
@@ -65,7 +66,7 @@ export default class GesturePassword extends BaseComponent {
                 });
             }
         }
-        this.onResetActive();
+        // this.onResetActive();
     }
 
     onStart() {
