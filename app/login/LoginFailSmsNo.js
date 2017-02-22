@@ -40,6 +40,7 @@ export default class LoginFailSmsNo extends BaseComponent {
                     rightIcon={false}
                     leftIcon={false}
                     leftText={"企业名称"}
+                    inputTextStyle={{paddingLeft: Pixel.getPixel(30)}}
                     viewStytle={styles.itemStyel}/>
                 <LoginInputText
                     ref="phone"
@@ -47,6 +48,7 @@ export default class LoginFailSmsNo extends BaseComponent {
                     rightIcon={false}
                     leftIcon={false}
                     leftText={"联系手机"}
+                    inputTextStyle={{paddingLeft: Pixel.getPixel(30)}}
                     viewStytle={styles.itemStyel}
                     keyboardType={'phone-pad'}/>
                 <View style={{width: width, height: Pixel.getPixel(44)} }/>

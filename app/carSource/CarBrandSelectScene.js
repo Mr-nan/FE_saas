@@ -14,6 +14,7 @@ import {
     Image,
     Dimensions,
     Animated,
+    InteractionManager,
 
 } from 'react-native';
 
@@ -122,9 +123,11 @@ const footprintData = ['A6L', '捷达王', '汉难达', '奥拓'];
 export default class CarBrandSelectScene extends BaseComponent {
 
     initFinish = () => {
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+        });
 
-    };
-
+    }
     _backIconClick = () => {
 
 
@@ -175,6 +178,7 @@ export default class CarBrandSelectScene extends BaseComponent {
 
             this.state = {
 
+                renderPlaceholderOnly: true,
                 dataSource: dataSource.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
                 isHideCarSubBrand: true,
                 carTypeCheckend: '',
@@ -234,6 +238,15 @@ export default class CarBrandSelectScene extends BaseComponent {
 
     };
     render() {
+        if (this.state.renderPlaceholderOnly) {
+            return (
+                <View style={{flex: 1, backgroundColor: 'white'}}>
+                    <NavigationView
+                        title="选择品牌"
+                        backIconClick={this._backIconClick}
+                    />
+                </View>);
+        }
 
         return (
             <View style={styles.rootContainer}>
