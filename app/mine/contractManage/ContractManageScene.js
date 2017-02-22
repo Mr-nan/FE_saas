@@ -35,7 +35,6 @@ export default class ContractManageScene extends BaseComponent {
             dataSource: ds.cloneWithRows([
                 'John', 'Joel', 'James', 'Jimmy'
             ]),
-            show: true,
         };
 
     }
@@ -74,7 +73,7 @@ export default class ContractManageScene extends BaseComponent {
             })}}>
                 <View style={styles.rowView} >
                     <Text style={styles.rowLeftTitle}>第一车贷是个公司</Text>
-                    <Text style={styles.rowRightTitle} >7份合同</Text>
+                    {selectionID!=='2' ? <Text style={styles.rowRightTitle} >7份合同</Text>:null}
                     <Image source={cellJianTou} style={styles.image}></Image>
 
                 </View>

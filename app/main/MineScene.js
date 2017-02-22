@@ -14,6 +14,7 @@ import * as fontAndClolr from '../constant/fontAndColor';
 import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
 import CountInfoScene from '../mine/CountInfoScene';
+import ContractManageScene from '../mine/contractManage/ContractManageScene';
 import CountManageScene from '../mine/CountManageScene'
 const cellJianTou = require('../../images/mainImage/celljiantou.png');
 const Car = [
@@ -153,19 +154,40 @@ export default class MineSectionListView extends Component {
         )
     }
     navigatorParams={
-        name:'CountInfoScene',
-        component:CountManageScene,
-        params:{
-
-        }
+        name: 'CountInfoScene',
+        component: CountInfoScene,
+        params: {}
     }
 
+    _navigator(rowData){
+        console.log(rowData.name);
+        switch (rowData.name){
+            case '账户管理':
+                break;
+            case '优惠券管理':
+                break;
+            case '积分管理':
+                break;
+            case '合同管理':
+                this.navigatorParams.name='ContractManageScene'
+                this.navigatorParams.component=ContractManageScene
+                break;
+            case '员工管理':
+                break;
+            case '收藏记录':
+                break;
+            case '浏览历史':
+                break;
+            case '设置':
+                break;
+
+        }
+        this.props.callBack(this.navigatorParams);
+    }
     // 每一行中的数据
     _renderRow=(rowData)=> {
         return (
-            <TouchableOpacity style={styles.rowView} onPress={()=>{
-                this.props.callBack(this.navigatorParams);
-            }}>
+            <TouchableOpacity style={styles.rowView} onPress={()=>{this._navigator(rowData)}}>
 
                 <Image source={rowData.icon} style={styles.rowLeftImage}/>
 
