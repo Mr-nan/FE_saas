@@ -14,8 +14,12 @@ import {
 import *as fontAndColor from '../constant/fontAndColor';
 import BaseComponent from '../component/BaseComponent';
 import NavigationView from '../component/AllNavigationView';
+import PhotoView from 'react-native-photo-view';
 import PixelUtil from '../utils/PixelUtil';
 const Pixel = new PixelUtil();
+
+import {request} from "../utils/RequestUtil";
+import * as AppUrls from "../constant/appUrls";
 
 const carParameterData = [
     '迎宾灯',
@@ -109,7 +113,9 @@ export default class CarInfoScene extends BaseComponent {
         super(props);
         // 初始状态
         this.state = {
+            isHidePhotoView:true,
             renderPlaceholderOnly: true,
+            carData:{},
         };
       }
 
@@ -120,6 +126,58 @@ export default class CarInfoScene extends BaseComponent {
 
     }
 
+    componentWillMount() {
+
+        this.loadData();
+    }
+
+    loadData=()=> {
+
+        console.log('ID:'+this.props.carID);
+        let url = AppUrls.BASEURL + '/v1/car/detail?token=0ac50af9a02b752ca0f48790dc8ea6d1&device_code=dycd_dms_manage_ios';
+        request(url, 'post', {
+
+            id: this.props.carID,
+
+        }).then((response) => {
+
+            console.log(response);
+
+            let carData = response.mjson.data;
+            carData.carIconsContentData=[
+
+                this.dateReversal(carData.manufacture),
+                this.dateReversal(carData.init_reg),
+                carData.mileage+'万公里',
+                carData.transfer_times+'次',
+                carData.nature_str,
+                carData.car_color+'/'+carData.trim_color,
+            ];
+
+
+            this.setState({
+
+                carData:carData,
+
+            });
+
+
+
+        }, (error) => {
+
+            console.log(error);
+
+        });
+    }
+
+    dateReversal=(time)=>{
+
+        const date = new Date();
+        date.setTime(time);
+        return(date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate());
+
+    };
+
     _backIconClick = () => {
 
         this.backPage();
@@ -127,7 +185,8 @@ export default class CarInfoScene extends BaseComponent {
 
     _callClick = () => {
 
-        Linking.openURL('tel:4006561290,100002#');
+        alert(this.dateReversal(this.state.carData.manufacture));
+        // Linking.openURL('tel:4006561290,100002#');
     };
 
     _navigatorRightView = () => {
@@ -144,6 +203,15 @@ export default class CarInfoScene extends BaseComponent {
     };
 
 
+    showPhotoViewAction=()=>{
+
+        this.setState({
+
+            isHidePhotoView:!this.state.isHidePhotoView,
+        });
+
+    }
+
 
     render() {
 
@@ -157,54 +225,64 @@ export default class CarInfoScene extends BaseComponent {
             </View>);
         }
 
+        const carData = this.state.carData;
+
         return (
             <View style={{flex: 1, backgroundColor: 'white'}}>
 
                 <ScrollView style={{marginBottom: 44}} onMomentumScrollEnd={(e) => {
                     console.log(e.nativeEvent.contentOffset.y)
                 }}>
+                    <TouchableOpacity onPress={()=>{alert(1)}}>
                     <Image style={styles.carImage} source={{uri:'https://images.unsplash.com/photo-1440964829947-ca3277bd37f8?h=1024'}}/>
+                    </TouchableOpacity>
                     <View style={styles.contentContainer}>
                         <View style={styles.contentView}>
-
-                            <Text style={styles.titleText}>凯迪拉克SRX(进口)12款3.0L手自一体 豪华版
-                            </Text>
+                            <Text style={styles.titleText}>{carData.brand_name+carData.model_name+carData.series_name}</Text>
                             <View style={styles.titleFootView}>
                                 <View style={styles.browseView}>
-                                    <Image style={{marginRight: 5}}
-                                           source={require('../../images/carSourceImages/browse.png')}/>
-                                    <Text style={styles.browseText}>1024次浏览</Text>
+                                    {/*<Image style={{marginRight: 5}}*/}
+                                           {/*source={require('../../images/carSourceImages/browse.png')}/>*/}
+                                    {/*<Text style={styles.browseText}>1024次浏览</Text>*/}
                                 </View>
-                                <Text style={styles.priceText}>24.8万</Text>
+                                <Text style={styles.priceText}>{carData.dealer_price +'万'}</Text>
                             </View>
                         </View>
                     </View>
                     <View style={styles.contentContainer}>
                         <View style={styles.contentView}>
-                            <View style={styles.carParameterView}>
-                                {
-                                    carParameterData.map((data, index) => {
-                                        return (<View
-                                            style={[styles.carParameterItem, {backgroundColor: carParameterViewColor[index % 3]}]}
-                                            key={index}>
-                                            <Text
-                                                style={[styles.carParameterText, {color: carParameterTextColor[index % 3]}]}>{data}</Text>
-                                        </View>)
+                            {
+                                carData.labels && ( <View style={styles.carParameterView}>
+                                    {
+                                        carData.labels.map((data, index) => {
+                                            return (<View
+                                                style={[styles.carParameterItem, {backgroundColor: carParameterViewColor[index % 3]}]}
+                                                key={index}>
+                                                <Text
+                                                    style={[styles.carParameterText, {color: carParameterTextColor[index % 3]}]}>{data.value}</Text>
+                                            </View>)
 
-                                    })
-                                }
-                            </View>
-                            <View style={styles.carDepictView}>
-                                <Text style={styles.carDepictText}>综合车况较好,全车结构件无损伤,加强件无严重损伤,也许覆盖件有修复</Text>
-                            </View>
+                                        })
+                                    }
+                                </View>)
+
+                            }
+
+                            {
+                                carData.describe!==''&&( <View style={styles.carDepictView}>
+                                    <Text style={styles.carDepictText}>{carData.describe}</Text>
+                                </View>)
+
+                            }
+
                             <View style={styles.carAddressView}>
                                 <View style={styles.carAddressSubView}>
                                     <Text style={styles.carAddressTitleText}>商户所在地: </Text>
-                                    <Text style={styles.carAddressSubTitleText}>广西 南宁</Text>
+                                    <Text style={styles.carAddressSubTitleText}>{carData.city_name}</Text>
                                 </View>
                                 <View style={styles.carAddressSubView}>
                                     <Text style={styles.carAddressTitleText}>挂牌地: </Text>
-                                    <Text style={styles.carAddressSubTitleText}>京B</Text>
+                                    <Text style={styles.carAddressSubTitleText}>{carData.plate_number}</Text>
                                 </View>
                             </View>
                         </View>
@@ -216,7 +294,7 @@ export default class CarInfoScene extends BaseComponent {
 
                                     return (
                                         <CarIconView imageData={data.image} imageHighData={data.imageHigh}
-                                                     content={carIconsContentData[index].title} title={data.title}
+                                                     content={carData.carIconsContentData&&carData.carIconsContentData[index]} title={data.title}
                                                      key={index}/>
                                     )
 
@@ -230,6 +308,7 @@ export default class CarInfoScene extends BaseComponent {
                     <Text style={styles.callText}>电话咨询</Text>
                 </TouchableOpacity>
                 <NavigationView
+                    wrapStyle={{backgroundColor:'rgba(0,0,0,0)'}}
                     title="车源详情"
                     backIconClick={this._backIconClick}
                     renderRihtFootView={this._navigatorRightView}
@@ -250,7 +329,7 @@ class CarIconView extends Component {
             <View style={styles.carIconItem}>
                 <Image source={content ? imageHighData : imageData}/>
                 <Text
-                    style={[styles.carIconItemContentText, content && {color: fontAndColor.COLORA0}]}>{content ? content : '暂无'}</Text>
+                    style={[styles.carIconItemContentText, (content&&content!==' / '&&content!=='次'&&content!=='万公里' )&& {color: fontAndColor.COLORA0}]}>{content ? content : '暂无'}</Text>
                 <Text style={styles.carIconItemTitleText}>{title}</Text>
             </View>
         )
@@ -275,7 +354,7 @@ const styles = StyleSheet.create({
 
     carImage: {
 
-        backgroundColor: 'yellow',
+        backgroundColor: fontAndColor.COLORB0,
         height: 250,
 
     },
@@ -310,7 +389,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: 52,
         marginLeft: 5,
-
         marginTop: 15,
         height: 30,
 
@@ -356,6 +434,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'white',
         flexWrap: 'wrap',
+        marginBottom: 12,
 
     },
     carParameterItem: {
@@ -374,12 +453,10 @@ const styles = StyleSheet.create({
     },
     carDepictView: {
 
-        marginTop: 10,
+        marginBottom: 15,
         paddingHorizontal: 5,
         paddingVertical: 5,
         backgroundColor: 'rgba(158,158,158,0.15)',
-        justifyContent: 'center',
-        alignItems: 'center',
         borderRadius: 3,
     },
     carDepictText: {
@@ -392,7 +469,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginTop: 15,
 
     },
     carAddressSubView: {

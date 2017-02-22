@@ -1,4 +1,5 @@
 import StorageUtil from "./StorageUtil";
+var Platform = require('Platform');
 import * as StorageKeyNames from "../constant/storageKeyNames";
 const request = (url, method, params) => {
 
@@ -20,7 +21,13 @@ const request = (url, method, params) => {
             if (data.code === 1) {
                 token = data.result;
             }
-            fetch(url + '?token=' + token + '&device_code=dycd_dms_manage_android', {
+            let device_code = '';
+            if(Platform.OS==='android'){
+                device_code='dycd_dms_manage_android';
+            }else{
+                device_code='dycd_dms_manage_ios';
+            }
+            fetch(url + '?token=' + token + '&device_code='+device_code, {
                 method,
                 body
             })

@@ -24,6 +24,8 @@ import NavigationView from '../component/AllNavigationView';
 import PixelUtil from '../utils/PixelUtil';
 var Pixel = new PixelUtil();
 
+import {request} from "../utils/RequestUtil";
+import * as AppUrls from "../constant/appUrls";
 
 const carData = require('./carData');
 const carTypeData = [{
@@ -187,6 +189,31 @@ export default class CarBrandSelectScene extends BaseComponent {
 
             };
         }
+    }
+
+    componentWillMount() {
+
+   this.loadData();
+    }
+
+    loadData=()=>{
+
+        let url = AppUrls.BASEURL + ' v1/home/brand?token=0ac50af9a02b752ca0f48790dc8ea6d1&device_code=dycd_dms_manage_ios';
+        request(url,'post',{
+
+            status:0,
+
+        }) .then((response) => {
+
+            console.log(url+response.mjson.data);
+
+        }, (error) => {
+
+            console.log(error);
+
+        });
+
+
     }
 
     // 每一行中的数据

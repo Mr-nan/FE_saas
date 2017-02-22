@@ -157,9 +157,9 @@ export  default  class  carSourceListScene extends  BaseComponent{
         request(url,'post',params)
             .then((response) => {
 
-                console.log(response.mjson.data);
+                console.log(response);
                 this.setState({
-                    dataSource:this.state.dataSource.cloneWithRows(response.mjson.data),
+                    dataSource:this.state.dataSource.cloneWithRows(response.mjson.data.list),
                     isRefreshing:false,
                 });
 
@@ -310,14 +310,14 @@ export  default  class  carSourceListScene extends  BaseComponent{
     };
 
 
-    carCellOnPres = (str,sectionID,rowID)=>{
+    carCellOnPres = (carID,sectionID,rowID)=>{
 
        let navigatorParams =   {
 
             name:"CarInfoScene",
             component:CarInfoScene,
             params:{
-
+                carID:carID,
             }
         };
         this.props.callBack(navigatorParams);
@@ -356,17 +356,13 @@ export  default  class  carSourceListScene extends  BaseComponent{
                             <SGListView
                                 dataSource={this.state.dataSource}
                                 ref={'carListView'}
-                                initialListSize={20}
+                                initialListSize={10}
                                 stickyHeaderIndices={[]}
                                 onEndReachedThreshold={1}
                                 scrollRenderAheadDistance={1}
                                 pageSize={1}
-                                onEndReached={()=>{
-
-                                    alert('触底');
-                                }}
                                 renderRow={(item,sectionID,rowID) =>
-                                    <CarCell style={styles.carCell} carCellData={item} onPress={()=>{this.carCellOnPres(item,sectionID,rowID)}}/>
+                                    <CarCell style={styles.carCell} carCellData={item} onPress={()=>{this.carCellOnPres(item.id,sectionID,rowID)}}/>
                                 }
                                 refreshControl={
                                     <RefreshControl
