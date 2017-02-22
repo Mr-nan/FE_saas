@@ -91,7 +91,6 @@ export default class LoginScene extends BaseComponent {
                         }}
                     />
 
-
                     <View style={styles.inputTextSytle}>
                         <LoginAutoSearchInputText
                             ref="loginUsername"
