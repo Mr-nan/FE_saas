@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     container:{
         width:width,
         height:57,
-        backgroundColor:'rgba(47,155,250,0.25)',
+        backgroundColor:'rgba(47,155,250,0.6)',
         flexDirection:'row',
         justifyContent:'space-around',
         alignItems:'center'

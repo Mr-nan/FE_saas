@@ -135,7 +135,10 @@ export default class LoginInputText extends Component {
                                 <TouchableWithoutFeedback
                                     onPress={this.props.rightIconClick ? this.props.rightIconClick : this.clickBtn}>
                                     <Image source={this.props.rightIconSource}
-                                           style={[styles.iconStyle, this.props.rightIconStyle]}/>
+                                           style={[styles.iconStyle, {
+                                               width: Pixel.getPixel(100),
+                                               height: Pixel.getPixel(32)
+                                           }, this.props.rightIconStyle]}/>
                                 </TouchableWithoutFeedback>
                                 : this.renderLoading()
                             : null
@@ -169,8 +172,12 @@ export default class LoginInputText extends Component {
         });
     }
 
-    StartCountDown() {
-        this.refs.sendMms.StartCountDown();
+    StartCountDown = () => {
+        if (this.props.rightButton) {
+            this.refs.sendMms.StartCountDown();
+        } else {
+            alert("您没有开启此功能哦")
+        }
     }
 }
 

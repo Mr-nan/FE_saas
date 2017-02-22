@@ -7,9 +7,8 @@
 import {
     AppRegistry
 } from 'react-native';
-// import root from './app/root';
+import root from './app/root';
 import UmengPush from 'react-native-umeng-push';
-import root from './app/collectionIntent/CollectionIntent';
 
 //获取DeviceToken
 UmengPush.getDeviceToken(deviceToken => {

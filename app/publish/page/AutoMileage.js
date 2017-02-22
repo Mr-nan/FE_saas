@@ -7,20 +7,27 @@ import {
     View,
     Text,
     Button,
+    Platform,
     Dimensions,
-    StyleSheet
+    StyleSheet,
+    TouchableOpacity,
+    InteractionManager
 }from 'react-native';
 
 import Picker from 'react-native-wheel-picker';
 let PickerItem = Picker.Item;
 
 import SuccessModal from '../component/SuccessModal';
+import * as fontAndColor from '../../constant/fontAndColor';
+import AllNavigationView from '../../component/AllNavigationView';
+import PixelUtil from '../../utils/PixelUtil';
+const Pixel = new PixelUtil();
 
 const { width,height } = Dimensions.get('window');
 const background = require('../../../images/publish/background.png');
 const preBg = require('../../../images/publish/car-mileage-pre.png');
 const proBg = require('../../../images/publish/car-mileage-pro.png');
-
+const IS_ANDROID = Platform.OS === 'android';
 
 export default class AutoMileage extends Component{
 
@@ -32,7 +39,8 @@ export default class AutoMileage extends Component{
             selected3: 0,
             selected4: 0,
             selected5: 0,
-            itemList: ['0', '1', '2', '3', '4', '5', '6', '7','8','9']
+            itemList: ['0', '1', '2', '3', '4', '5', '6', '7','8','9'],
+            renderPlaceholderOnly: true
         };
     }
 
@@ -41,7 +49,9 @@ export default class AutoMileage extends Component{
     }
 
     componentDidMount(){
-
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+        });
     }
 
     componentWillUnmount(){
@@ -54,15 +64,46 @@ export default class AutoMileage extends Component{
         this.setState(newState);
     };
 
+    _labelPress=(type)=>{
+        this.type = type;
+        this.setState({ isDateTimePickerVisible: true });
+    };
+
+    _renderPlaceholderView = ()=>{
+        return(<Image style={[styles.img,{height:height-this.props.barHeight}]} source={background} />);
+    };
+
+    _onBack = ()=>{
+
+    };
+
+    _renderRihtFootView = ()=>{
+        return(
+            <TouchableOpacity
+                activeOpacity={0.6}
+                onPress={()=>{}}>
+                <Text style={styles.rightTitleText}>完成</Text>
+            </TouchableOpacity>
+        );
+    };
+
     render(){
+        if (this.state.renderPlaceholderOnly) {
+            return this._renderPlaceholderView();
+        }
         return(
             <View style={styles.container}>
                 <Image style={[styles.imgContainer,{height:height-this.props.barHeight}]} source={background}>
                     <SuccessModal ref={(modal) => {this.successModal = modal}}/>
+                    <AllNavigationView
+                        backIconClick={this._onBack}
+                        title='填写行驶里程'
+                        wrapStyle={styles.wrapStyle}
+                        renderRihtFootView={this._renderRihtFootView} />
                     <View style={styles.mileContainer}>
                         <Image style={styles.preContainer} source={preBg}>
                             <View style={styles.fillSpace}>
-                                <Picker
+                                <Picker  style={[IS_ANDROID && styles.fillSpace]}
                                         selectedValue={this.state.selected1}
                                         itemStyle={{color:"#FFFFFF", fontSize:28,fontWeight:'bold'}}
                                         onValueChange={(index) => this.onPickerSelect('selected1',index)}>
@@ -72,7 +113,7 @@ export default class AutoMileage extends Component{
                                 </Picker>
                             </View>
                             <View style={styles.fillSpace}>
-                                <Picker
+                                <Picker style={[IS_ANDROID && styles.fillSpace]}
                                         selectedValue={this.state.selected2}
                                         itemStyle={{color:"#FFFFFF", fontSize:26,fontWeight:'bold'}}
                                         onValueChange={(index) => this.onPickerSelect('selected2',index)}>
@@ -82,7 +123,7 @@ export default class AutoMileage extends Component{
                                 </Picker>
                             </View>
                             <View style={styles.fillSpace}>
-                                <Picker
+                            <Picker style={[IS_ANDROID && styles.fillSpace]}
                                         selectedValue={this.state.selected3}
                                         itemStyle={{color:"#FFFFFF", fontSize:26,fontWeight:'bold'}}
                                         onValueChange={(index) => this.onPickerSelect('selected3',index)}>
@@ -95,7 +136,7 @@ export default class AutoMileage extends Component{
                         <Text style={[styles.fontBold,styles.dotSpace]}>.</Text>
                         <Image style={styles.proContainer} source={proBg}>
                             <View style={styles.fillSpace}>
-                                <Picker style={styles.fillSpace}
+                                <Picker style={[IS_ANDROID && styles.fillSpace]}
                                         selectedValue={this.state.selected4}
                                         itemStyle={{color:"#FFFFFF", fontSize:26,fontWeight:'bold'}}
                                         onValueChange={(index) => this.onPickerSelect('selected4',index)}>
@@ -105,7 +146,7 @@ export default class AutoMileage extends Component{
                                 </Picker>
                             </View>
                             <View style={styles.fillSpace}>
-                                <Picker style={styles.fillSpace}
+                                <Picker style={[IS_ANDROID && styles.fillSpace]}
                                         selectedValue={this.state.selected5}
                                         itemStyle={{color:"#FFFFFF", fontSize:26,fontWeight:'bold'}}
                                         onValueChange={(index) => this.onPickerSelect('selected5',index)}>
@@ -172,5 +213,14 @@ const styles = StyleSheet.create({
     endContainer:{
         marginLeft:9,
         justifyContent:'center'
+    },
+    wrapStyle:{
+        backgroundColor:'transparent'
+    },
+    rightTitleText: {
+        color: 'white',
+        fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34),
+        textAlign: 'right',
+        backgroundColor: 'transparent'
     }
 });

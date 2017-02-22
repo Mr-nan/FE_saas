@@ -8,10 +8,14 @@ import {
     Image,
     Dimensions,
     StyleSheet,
-    TouchableOpacity
+    TouchableOpacity,
+    InteractionManager
 }from 'react-native';
 
 import * as fontAndColor from '../../constant/fontAndColor';
+import AllNavigationView from '../../component/AllNavigationView';
+import PixelUtil from '../../utils/PixelUtil';
+const Pixel = new PixelUtil();
 
 const {width,height} = Dimensions.get('window');
 const background = require('../../../images/publish/background.png');
@@ -37,7 +41,8 @@ export default class AutoType extends Component {
         ];
 
         this.state = {
-            dataSource: this.viewData
+            dataSource: this.viewData,
+            renderPlaceholderOnly: true
         };
     }
 
@@ -46,7 +51,9 @@ export default class AutoType extends Component {
     }
 
     componentDidMount() {
-
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+        });
     }
 
     componentWillUnmount() {
@@ -60,6 +67,10 @@ export default class AutoType extends Component {
         this.setState((prevState, props) => ({
             dataSource: this.viewData
         }));
+    };
+
+    _renderPlaceholderView = ()=>{
+        return(<Image style={[styles.img,{height:height-this.props.barHeight}]} source={background} />);
     };
 
     _renderItem = () => {
@@ -94,10 +105,32 @@ export default class AutoType extends Component {
         );
     };
 
+    _onBack = ()=>{
+
+    };
+
+    _renderRihtFootView = ()=>{
+        return(
+            <TouchableOpacity
+                activeOpacity={0.6}
+                onPress={()=>{}}>
+                <Text style={styles.rightTitleText}>完成</Text>
+            </TouchableOpacity>
+        );
+    };
+
     render() {
+        if (this.state.renderPlaceholderOnly) {
+            return this._renderPlaceholderView();
+        }
         return (
         <View style={styles.container}>
             <Image style={[styles.imgContainer,{height:height-this.props.barHeight}]} source={background}>
+                <AllNavigationView
+                    backIconClick={this._onBack}
+                    title='选择车辆类型'
+                    wrapStyle={styles.wrapStyle}
+                    renderRihtFootView={this._renderRihtFootView} />
                 {this._renderItem()}
             </Image>
         </View>
@@ -147,5 +180,14 @@ const styles = StyleSheet.create({
         borderColor: '#FFFFFF',
         borderRadius: 22,
         backgroundColor: '#FFFFFF'
+    },
+    wrapStyle:{
+        backgroundColor:'transparent'
+    },
+    rightTitleText: {
+        color: 'white',
+        fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34),
+        textAlign: 'right',
+        backgroundColor: 'transparent'
     }
 });

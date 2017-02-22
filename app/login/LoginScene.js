@@ -15,16 +15,16 @@ import LoginInputText from "./component/LoginInputText";
 import LoginAutoSearchInputText from "./component/LoginAutoSearchInputText";
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
-import LoginFail from "./LoginFail";
+// import LoginFail from "./LoginFail";
 import * as FontAndColor from "../constant/fontAndColor";
 import Register from "./Register";
 import NavigationBar from "../component/NavigationBar";
 import PixelUtil from "../utils/PixelUtil";
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
-import SAToast from '../component/toast/Toast';
-import ShowToast from '../component/toast/ShowToast';
-import MyButton from '../component/MyButton';
+import ShowToast from "../component/toast/ShowToast";
+import MyButton from "../component/MyButton";
+import LoginFailSmsYes from './LoginFailSmsYes';
 var Pixel = new PixelUtil();
 
 var Dimensions = require('Dimensions');
@@ -51,7 +51,7 @@ export default class LoginScene extends BaseComponent {
     }
 
     static defaultProps = {
-        saveData: ["13001260000", "13001260001", "13001260002"],
+        saveData: ["13001286215", "13001286216", "13001260002"],
     };
 
     render() {
@@ -157,8 +157,8 @@ export default class LoginScene extends BaseComponent {
                         <View style={{flex: 1}}></View>
                         <TouchableOpacity onPress={() => {
                             this.toNextPage({
-                                name: 'LoginFail',
-                                component: LoginFail,
+                                name: 'LoginFailSmsYes',
+                                component: LoginFailSmsYes,
                                 params: {},
                             })
                         }}>
@@ -200,10 +200,13 @@ export default class LoginScene extends BaseComponent {
             };
             request(AppUrls.SEND_SMS, 'Post', maps)
                 .then((response) => {
-                    smsCode = response.mjson.data.code;
-                    alert("获取短信验证码成功" + smsCode)
+                    if (response.mjson.code == "1") {
+                        this.refs.toast.changeType(ShowToast.TOAST, response.mjson.data.code);
+                    } else {
+                        this.refs.toast.changeType(ShowToast.TOAST, response.mjson.data.msg);
+                    }
                 }, (error) => {
-                    alert("获取短信验证码失败")
+                    this.refs.toast.changeType(ShowToast.TOAST, "获取验证码失败");
                 });
         }
     }
@@ -214,7 +217,7 @@ export default class LoginScene extends BaseComponent {
         let maps = {
             device_code: "dycd_dms_manage_android",
         };
-        request(AppUrls.IDENTIFYING + "?" + "device_code=dycd_dms_manage_android", 'Post', maps)
+        request(AppUrls.IDENTIFYING, 'Post', maps)
             .then((response) => {
                 this.refs.loginVerifycode.lodingStatus(false);
                 imgSrc = response.mjson.data.img_src;
@@ -253,22 +256,26 @@ export default class LoginScene extends BaseComponent {
             };
             request(AppUrls.LOGIN, 'Post', maps)
                 .then((response) => {
-                    this.refs.toast.changeType(ShowToast.TOAST, response.mjson.msg);
-
-                    // 保存用户登录状态
-                    StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
-                    // 保存用户信息
-                    // StorageUtil.mSetItem(StorageKeyNames.base_user_id, response.);
-                    // StorageUtil.mSetItem(StorageKeyNames.enterprise_list, response);
-                    // StorageUtil.mSetItem(StorageKeyNames.head_portrait_url, response);
-                    // StorageUtil.mSetItem(StorageKeyNames.idcard_number, response);
-                    // StorageUtil.mSetItem(StorageKeyNames.phone, response);
-                    // StorageUtil.mSetItem(StorageKeyNames.real_name, response);
-                    // StorageUtil.mSetItem(StorageKeyNames.token, response);
-                    // StorageUtil.mSetItem(StorageKeyNames.user_level, response);
-
+                    if (response.mjson.code == "1") {
+                        this.refs.toast.changeType(ShowToast.TOAST, "登录成功");
+                        // 保存用户登录状态
+                        StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
+                        // 保存用户信息
+                        StorageUtil.mSetItem(StorageKeyNames.base_user_id, response.mjson.data.base_user_id);
+                        StorageUtil.mSetItem(StorageKeyNames.enterprise_list, response.mjson.data.enterprise_list);
+                        StorageUtil.mSetItem(StorageKeyNames.head_portrait_url, response.mjson.data.head_portrait_url);
+                        StorageUtil.mSetItem(StorageKeyNames.idcard_number, response.mjson.data.idcard_number);
+                        StorageUtil.mSetItem(StorageKeyNames.phone, response.mjson.data.phone);
+                        StorageUtil.mSetItem(StorageKeyNames.real_name, response.mjson.data.real_name);
+                        StorageUtil.mSetItem(StorageKeyNames.token, response.mjson.data.token);
+                        StorageUtil.mSetItem(StorageKeyNames.user_level, response.mjson.data.user_level);
+                    } else {
+                        this.refs.toast.changeType(ShowToast.TOAST, response.mjson.msg);
+                    }
                 }, (error) => {
                     this.refs.toast.changeType(ShowToast.TOAST, "登录失败");
+                    // 保存用户登录状态
+                    StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'false');
                 });
         }
     }

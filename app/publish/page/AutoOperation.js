@@ -8,10 +8,14 @@ import {
     Image,
     Dimensions,
     StyleSheet,
-    TouchableOpacity
+    TouchableOpacity,
+    InteractionManager
 }from 'react-native';
 
 import * as fontAndColor from '../../constant/fontAndColor';
+import AllNavigationView from '../../component/AllNavigationView';
+import PixelUtil from '../../utils/PixelUtil';
+const Pixel = new PixelUtil();
 
 const { width,height } = Dimensions.get('window');
 const background = require('../../../images/publish/background.png');
@@ -22,7 +26,8 @@ export default class AutoOperation extends Component{
     constructor(props){
         super(props);
         this.state = {
-            operate:false
+            operate:false,
+            renderPlaceholderOnly: true
         }
     }
 
@@ -31,7 +36,9 @@ export default class AutoOperation extends Component{
     }
 
     componentDidMount(){
-
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+        });
     }
 
     componentWillUnmount(){
@@ -43,11 +50,36 @@ export default class AutoOperation extends Component{
             operate:!preState.operate
         }));
     };
+    _renderPlaceholderView = ()=>{
+        return(<Image style={[styles.img,{height:height-this.props.barHeight}]} source={background} />);
+    };
+
+    _onBack = ()=>{
+
+    };
+
+    _renderRihtFootView = ()=>{
+        return(
+            <TouchableOpacity
+                activeOpacity={0.6}
+                onPress={()=>{}}>
+                <Text style={styles.rightTitleText}>完成</Text>
+            </TouchableOpacity>
+        );
+    };
 
     render(){
+        if (this.state.renderPlaceholderOnly) {
+            return this._renderPlaceholderView();
+        }
         return(
             <View style={styles.container}>
                 <Image style={[styles.imgContainer,{height:height-this.props.barHeight}]} source={background}>
+                    <AllNavigationView
+                        backIconClick={this._onBack}
+                        title='选择营运方式'
+                        wrapStyle={styles.wrapStyle}
+                        renderRihtFootView={this._renderRihtFootView} />
                     <TouchableOpacity
                         activeOpacity={0.6}
                         style={[ !this.state.operate ? styles.selectContainer:styles.circleContainer,styles.contentTop]}
@@ -116,5 +148,14 @@ const styles = StyleSheet.create({
     center:{
         alignItems:'center',
         justifyContent:'center'
+    },
+    wrapStyle:{
+        backgroundColor:'transparent'
+    },
+    rightTitleText: {
+        color: 'white',
+        fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34),
+        textAlign: 'right',
+        backgroundColor: 'transparent'
     }
 });

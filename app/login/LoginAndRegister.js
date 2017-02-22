@@ -6,6 +6,10 @@ import * as FontAndColor from "../constant/fontAndColor";
 import LoginScene from "./LoginScene";
 import Register from './Register';
 import PixelUtil from "../utils/PixelUtil";
+import LoginFailPwd from './LoginFailPwd';
+import SetPwd from './SetPwd';
+import LoginGesturePassword from './LoginGesture';
+
 var Pixel = new PixelUtil();
 
 export default class LoginAndRegister extends BaseComponent {
@@ -32,6 +36,30 @@ export default class LoginAndRegister extends BaseComponent {
                         params: {},
                     })
                 }}/>
+                <MyButton buttonType={MyButton.TEXTBUTTON} content="修改密码" parentStyle={styles.buttonStyle}
+                          childStyle={styles.buttonTextStyle} mOnPress={() => {
+                    this.toNextPage({
+                        name: 'SetPwd',
+                        component: SetPwd,
+                        params: {},
+                    })
+                }}/>
+                <MyButton buttonType={MyButton.TEXTBUTTON} content="首次设置登录密码" parentStyle={styles.buttonStyle}
+                          childStyle={styles.buttonTextStyle} mOnPress={() => {
+                    this.toNextPage({
+                        name: 'LoginFailPwd',
+                        component: LoginFailPwd,
+                        params: {},
+                    })
+                }}/>
+                <MyButton buttonType={MyButton.TEXTBUTTON} content="手势密码" parentStyle={styles.buttonStyle}
+                          childStyle={styles.buttonTextStyle} mOnPress={() => {
+                    this.toNextPage({
+                        name: 'LoginGesturePassword',
+                        component: LoginGesturePassword,
+                        params: {},
+                    })
+                }}/>
             </View>
         );
     }
@@ -42,7 +70,8 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         backgroundColor: '#F0F0F2'
-    }, fontStyle: {
+    },
+    fontStyle: {
         color: '#cc092f',
         alignSelf: 'center',
         fontSize: Pixel.getFontPixel(30),
