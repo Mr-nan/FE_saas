@@ -1,18 +1,18 @@
 import React, {Component} from "react";
 import {AppRegistry, View, Text, StyleSheet, Image, Dimensions, PixelRatio, TouchableOpacity} from "react-native";
-import BaseComponent from '../../component/BaseComponent';
-import PixelUtil from '../../utils/PixelUtil';
-import * as FontAndColor from '../../constant/fontAndColor';
-import NavigationBar from '../../component/NavigationBar';
-import MyButton from '../../component/MyButton';
-import AccountSecurity from './AccountSecurity';
-import AbountPlatform from './AbountPlatform';
+import BaseComponent from "../../component/BaseComponent";
+import PixelUtil from "../../utils/PixelUtil";
+import * as FontAndColor from "../../constant/fontAndColor";
+import NavigationBar from "../../component/NavigationBar";
+import LoginFailPwd from "../../login/LoginFailPwd";
+import SetLoginPwdGesture from "../../login/SetLoginPwdGesture";
+import OnlineTime from "./OnlineTime";
 
 var Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;
 var onePT = 1 / PixelRatio.get(); //一个像素
-export default class Setting extends BaseComponent {
+export default class AccountSecurity extends BaseComponent {
     initFinish = () => {
     }
 
@@ -22,21 +22,19 @@ export default class Setting extends BaseComponent {
                 <NavigationBar
                     leftImageShow={true}
                     leftTextShow={false}
-                    centerText={"设置"}
+                    centerText={"账户与安全"}
                     rightText={""}
                     leftImageCallBack={this.backPage}/>
 
                 <TouchableOpacity onPress={() => {
                     this.toNextPage({
-                        name: 'AccountSecurity',
-                        component: AccountSecurity,
+                        name: 'LoginFailPwd',
+                        component: LoginFailPwd,
                         params: {},
                     })
                 }}>
                     <View style={[styles.itemStyle, {marginTop: Pixel.getPixel(15)}]}>
-                        <Image source={require("./../../../images/setting/account_security.png")}
-                               style={styles.leftImageStyle}/>
-                        <Text style={styles.centerTextStyle}>账户与安全</Text>
+                        <Text style={styles.centerTextStyle}>登录密码</Text>
                         <Image source={require("./../../../images/mainImage/celljiantou@3x.png")}
                                style={styles.rightImageStyle}/>
                     </View>
@@ -46,28 +44,35 @@ export default class Setting extends BaseComponent {
 
                 <TouchableOpacity onPress={() => {
                     this.toNextPage({
-                        name: 'AbountPlatform',
-                        component: AbountPlatform,
+                        name: 'SetLoginPwdGesture',
+                        component: SetLoginPwdGesture,
                         params: {},
                     })
                 }}>
                     <View style={styles.itemStyle}>
-                        <Image source={require("./../../../images/setting/platform.png")}
-                               style={styles.leftImageStyle}/>
-                        <Text style={styles.centerTextStyle}>关于交易服务平台</Text>
+                        <Text style={styles.centerTextStyle}>手势密码</Text>
                         <Image source={require("./../../../images/mainImage/celljiantou@3x.png")}
                                style={styles.rightImageStyle}/>
                     </View>
                 </TouchableOpacity>
 
                 <View style={{height: Pixel.getPixel(1), backgroundColor: FontAndColor.COLORA4}}/>
-                <View style={{flex: 1}}/>
 
-                <MyButton buttonType={MyButton.TEXTBUTTON}
-                          content={'退出登录'}
-                          parentStyle={styles.loginBtnStyle}
-                          childStyle={styles.loginButtonTextStyle}
-                          mOnPress={this.loginOut}/>
+                <TouchableOpacity onPress={() => {
+                    this.toNextPage({
+                        name: 'OnlineTime',
+                        component: OnlineTime,
+                        params: {},
+                    })
+                }}>
+                    <View style={styles.itemStyle}>
+                        <Text style={styles.centerTextStyle}>在线时长</Text>
+                        <Image source={require("./../../../images/mainImage/celljiantou@3x.png")}
+                               style={styles.rightImageStyle}/>
+                    </View>
+                </TouchableOpacity>
+
+                <View style={{height: Pixel.getPixel(1), backgroundColor: FontAndColor.COLORA4}}/>
 
             </View>
         );
@@ -89,7 +94,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         width: Width,
         height: Pixel.getPixel(44),
-        backgroundColor: '#ffffff'
+        backgroundColor: '#ffffff',
+        paddingLeft: Pixel.getPixel(15),
     },
     leftImageStyle: {
         width: Pixel.getPixel(24),
