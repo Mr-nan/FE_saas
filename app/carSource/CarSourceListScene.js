@@ -361,7 +361,10 @@ export  default  class  carSourceListScene extends  BaseComponent{
                                 onEndReachedThreshold={1}
                                 scrollRenderAheadDistance={1}
                                 pageSize={1}
+                                onEndReached={()=>{
 
+                                    alert('触底');
+                                }}
                                 renderRow={(item,sectionID,rowID) =>
                                     <CarCell style={styles.carCell} carCellData={item} onPress={()=>{this.carCellOnPres(item,sectionID,rowID)}}/>
                                 }
