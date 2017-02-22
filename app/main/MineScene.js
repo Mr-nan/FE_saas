@@ -17,6 +17,7 @@ import CountInfoScene from '../mine/CountInfoScene';
 import ContractManageScene from '../mine/contractManage/ContractManageScene';
 import CountManageScene from '../mine/CountManageScene'
 import EmployeeManageScene from '../mine/employeeManage/EmployeeManageScene'
+import Setting from './../mine/setting/Setting'
 const cellJianTou = require('../../images/mainImage/celljiantou.png');
 const Car = [
     {
@@ -184,6 +185,8 @@ export default class MineSectionListView extends Component {
             case '浏览历史':
                 break;
             case '设置':
+                this.navigatorParams.name='Setting'
+                this.navigatorParams.component=Setting
                 break;
 
         }
