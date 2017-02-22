@@ -37,7 +37,14 @@ export default class EmployeeManageScene extends BaseComponent {
 
     }
 
-    addEmployee(){}
+    addEmployee(){
+        this.toNextPage({
+            name: 'ContractSign',
+            component: ContractSign,
+            params: {
+            },
+        })
+    }
     render() {
         return (
             <View style={styles.container}>
