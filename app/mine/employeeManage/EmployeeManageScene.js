@@ -43,7 +43,10 @@ export default class EmployeeManageScene extends BaseComponent {
             <View style={styles.container}>
                 <NavigationBar
                     centerText={'员工管理'}
-                    rightText={''}
+                    rightTextShow={false}
+                    rightImageShow={true}
+                    rightImage={require('../../../images/employee_manage@3x.png')}
+                    rightImageCallBack={this.addEmployee()}
                     leftImageCallBack={this.backPage}
 
                 />
@@ -64,8 +67,8 @@ export default class EmployeeManageScene extends BaseComponent {
                 <View style={styles.rowLeft}>
                     <View style={{flexDirection: 'row'}}>
                     <Text style={styles.rowLeftTitle}>王先生</Text>
-                        <View style={styles.employeeStyle}>
-                            <Text style={styles.employeeText}>管理员</Text>
+                        <View style={[styles.employeeStyle, selectionID==='1'&& {borderColor: fontAndClolr.COLORB3},selectionID==='2'&& {borderColor: fontAndClolr.COLORB1}]}>
+                            <Text style={[styles.employeeText, selectionID==='1'&& {color: fontAndClolr.COLORB3},selectionID==='2'&& {color: fontAndClolr.COLORB1}]}>管理员</Text>
                         </View>
                     </View>
                     <Text style={styles.rowLeftTitle1}>第一车贷二手公司</Text>
