@@ -5,14 +5,9 @@
 	<key>files</key>
 	<dict>
 		<key>Base.lproj/LaunchScreen.nib</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			KXnWsKhDWVZBSuzzjxrbxRSiVMM=
-			</data>
-			<key>optional</key>
-			<true/>
-		</dict>
+		<data>
+		8q9HM+xpqMPNrvdRoYE9H9602co=
+		</data>
 		<key>Frameworks/IDEBundleInjection.framework/IDEBundleInjection</key>
 		<data>
 		aUm0c1LLvF5BD7IVSBsGgwX3iyY=
@@ -208,7 +203,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		445GbPrEfkE5e6LxRC396dWQJqg=
+		MEKw0H3z4597rwTKoXD1EDSbG20=
 		</data>
 		<key>PkgInfo</key>
 		<data>
@@ -216,7 +211,7 @@
 		</data>
 		<key>PlugIns/FE_SassTests.xctest/FE_SassTests</key>
 		<data>
-		deXzr2OK5BrvJIKjAyf4tPnMLuo=
+		pJM7usZHkPozGvWdCjNHdsagGzg=
 		</data>
 		<key>PlugIns/FE_SassTests.xctest/Info.plist</key>
 		<data>
@@ -224,7 +219,7 @@
 		</data>
 		<key>PlugIns/FE_SassTests.xctest/_CodeSignature/CodeResources</key>
 		<data>
-		jEnsOROppTOXtqG7WTgijEDAhxM=
+		yFjCMjH3nUMhWbZ16iROLUbfq+M=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -233,14 +228,12 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			KXnWsKhDWVZBSuzzjxrbxRSiVMM=
+			8q9HM+xpqMPNrvdRoYE9H9602co=
 			</data>
 			<key>hash2</key>
 			<data>
-			ps2GQl/mjmqYOpPASVRczQFIN+3mN0KOET5Mzd5Sm6U=
+			F+Qz8pFkhfjqw7kNsmoG7sMTDsqs3l03+so0prYMTNk=
 			</data>
-			<key>optional</key>
-			<true/>
 		</dict>
 		<key>Frameworks/IDEBundleInjection.framework/IDEBundleInjection</key>
 		<dict>
@@ -770,11 +763,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			deXzr2OK5BrvJIKjAyf4tPnMLuo=
+			pJM7usZHkPozGvWdCjNHdsagGzg=
 			</data>
 			<key>hash2</key>
 			<data>
-			uGw0TyfuAt81Zjyyw0jrj4l0qlMRoEL9zvLIMvoMBns=
+			m6j3kmWFqdFd3qgEBV6dT/b11iczonU54E1CwLvd+G4=
 			</data>
 		</dict>
 		<key>PlugIns/FE_SassTests.xctest/Info.plist</key>
@@ -792,11 +785,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			jEnsOROppTOXtqG7WTgijEDAhxM=
+			yFjCMjH3nUMhWbZ16iROLUbfq+M=
 			</data>
 			<key>hash2</key>
 			<data>
-			zOz6rbwDjEB4Ko4KD5Amx/JOOzl4wzLl75FzHiiT2zA=
+			p3Z4mi0Q3j4cgjTCd2QIMVQ4OpNdAaVXsnjaAhbh6oQ=
 			</data>
 		</dict>
 	</dict>
@@ -817,6 +810,11 @@
 			<true/>
 			<key>weight</key>
 			<real>1100</real>
+		</dict>
+		<key>^Base\.lproj/</key>
+		<dict>
+			<key>weight</key>
+			<real>1010</real>
 		</dict>
 		<key>^version.plist$</key>
 		<true/>
@@ -862,6 +860,11 @@
 			<true/>
 			<key>weight</key>
 			<real>1100</real>
+		</dict>
+		<key>^Base\.lproj/</key>
+		<dict>
+			<key>weight</key>
+			<real>1010</real>
 		</dict>
 		<key>^Info\.plist$</key>
 		<dict>

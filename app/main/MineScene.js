@@ -15,6 +15,10 @@ import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
 import CountInfoScene from '../mine/CountInfoScene';
 import CountManageScene from '../mine/CountManageScene'
+import CouponAllScene from '../mine/CouponAllScene'
+import SeeEmployeeInfoScene from '../mine/SeeEmployeeInfoScene'
+import EditEmployeeScene from '../mine/EditEmployeeScene'
+
 const cellJianTou = require('../../images/mainImage/celljiantou.png');
 const Car = [
     {
@@ -154,7 +158,7 @@ export default class MineSectionListView extends Component {
     }
     navigatorParams={
         name:'CountInfoScene',
-        component:CountManageScene,
+        component:EditEmployeeScene,
         params:{
 
         }
