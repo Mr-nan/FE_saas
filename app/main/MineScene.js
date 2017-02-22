@@ -16,6 +16,7 @@ var Pixel = new PixelUtil();
 import CountInfoScene from '../mine/CountInfoScene';
 import ContractManageScene from '../mine/contractManage/ContractManageScene';
 import CountManageScene from '../mine/CountManageScene'
+import EmployeeManageScene from '../mine/employeeManage/EmployeeManageScene'
 const cellJianTou = require('../../images/mainImage/celljiantou.png');
 const Car = [
     {
@@ -163,6 +164,8 @@ export default class MineSectionListView extends Component {
         console.log(rowData.name);
         switch (rowData.name){
             case '账户管理':
+                this.navigatorParams.name='CountInfoScene'
+                this.navigatorParams.component=CountInfoScene
                 break;
             case '优惠券管理':
                 break;
@@ -173,6 +176,8 @@ export default class MineSectionListView extends Component {
                 this.navigatorParams.component=ContractManageScene
                 break;
             case '员工管理':
+                this.navigatorParams.name='EmployeeManageScene'
+                this.navigatorParams.component=EmployeeManageScene
                 break;
             case '收藏记录':
                 break;
