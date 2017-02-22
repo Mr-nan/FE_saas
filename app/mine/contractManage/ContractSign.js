@@ -32,6 +32,8 @@ export default class ContractSign extends BaseComponent {
     }
 
     render() {
+        const isShow=this.props.show;
+        console.log(isShow+'212121');
         return (
             <View style={styles.container}>
                 <NavigationBar
@@ -51,9 +53,10 @@ export default class ContractSign extends BaseComponent {
                             <Text style={styles.buttonText}>融资服务合同</Text>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={()=>{this.shareSpanner.setModalVisible()}} style={styles.rightStyle}>
+                    { isShow ? (<TouchableOpacity onPress={()=>{this.shareSpanner.setModalVisible()}} style={styles.rightStyle}>
                             <Text style={styles.buttonText}>签署合同</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity>) : null
+                    }
 
                 </View>
 

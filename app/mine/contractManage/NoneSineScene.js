@@ -69,7 +69,9 @@ export default class NoneSineScene extends BaseComponent {
                         this.toNextPage({
                             name: 'ContractSign',
                             component: ContractSign,
-                            params: {rowID},
+                            params: {
+                                show: true
+                            },
                         })
                     }}>
                     <Text style={styles.rowRightTitle}>签署合同</Text>

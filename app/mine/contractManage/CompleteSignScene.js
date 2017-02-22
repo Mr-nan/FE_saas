@@ -63,7 +63,7 @@ export default class CompleteSignScene extends BaseComponent {
                     this.toNextPage({
                         name: 'ContractSign',
                         component: ContractSign,
-                        params: {rowID},
+                        params: {show: false},
                     })
                 }}>
                 <View style={styles.rowView}>
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
         marginTop: Pixel.getPixel(0)
     },
     rowView: {
-        height:Pixel.getPixel(77),
+        height: Pixel.getPixel(77),
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: 'white',
