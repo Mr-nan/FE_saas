@@ -10,6 +10,7 @@ import LoginFailPwd from './LoginFailPwd';
 import SetPwd from './SetPwd';
 import LoginGesturePassword from './LoginGesture';
 import SetLoginPwdGesture from './SetLoginPwdGesture';
+import Setting from './../mine/setting/Setting'
 
 var Pixel = new PixelUtil();
 
@@ -72,8 +73,8 @@ export default class LoginAndRegister extends BaseComponent {
                 <MyButton buttonType={MyButton.TEXTBUTTON} content="设置" parentStyle={styles.buttonStyle}
                           childStyle={styles.buttonTextStyle} mOnPress={() => {
                     this.toNextPage({
-                        name: 'SetLoginPwdGesture',
-                        component: SetLoginPwdGesture,
+                        name: 'Setting',
+                        component: Setting,
                         params: {},
                     })
                 }}/>
