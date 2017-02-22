@@ -1,13 +1,15 @@
-var React = require('react');
-var {
-    AppRegistry,
-} = require('react-native');
+import React, {Component} from "react";
+import {AppRegistry, View, Text, StyleSheet, Image} from "react-native";
 
 import PasswordGesture from '../gesture/PwdGesture';
 import BaseComponent from '../component/BaseComponent';
+import PixelUtil from "../utils/PixelUtil";
+import * as FontAndColor from "../constant/fontAndColor";
+
+var Pixel = new PixelUtil();
 
 var Password = '';
-export default class GesturePassword extends BaseComponent {
+export default class LoginGesture extends BaseComponent {
     constructor(props) {
         super(props);
         //初始化方法
@@ -31,10 +33,6 @@ export default class GesturePassword extends BaseComponent {
                 onEnd={(password) => this.onEnd(password)}
             />
         );
-    }
-
-    onResetActive() {
-        this.refs.pg.resetActive();
     }
 
     onEnd(pwd) {
@@ -66,7 +64,6 @@ export default class GesturePassword extends BaseComponent {
                 });
             }
         }
-        // this.onResetActive();
     }
 
     onStart() {
@@ -81,3 +78,38 @@ export default class GesturePassword extends BaseComponent {
         }
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        backgroundColor: '#F0F0F2'
+    },
+    fontStyle: {
+        color: '#cc092f',
+        alignSelf: 'center',
+        fontSize: Pixel.getFontPixel(30),
+        marginTop: Pixel.getPixel(50),
+    },
+    iconStyle: {
+        height: Pixel.getPixel(100),
+        width: Pixel.getPixel(100),
+        resizeMode: 'cover',
+        marginTop: Pixel.getPixel(150),
+        marginBottom: Pixel.getPixel(30),
+
+    },
+    buttonStyle: {
+        borderColor: FontAndColor.COLORA1,
+        borderWidth: 1,
+        width: Pixel.getPixel(200),
+        height: Pixel.getPixel(35),
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: Pixel.getPixel(10),
+        marginBottom: Pixel.getPixel(10),
+    },
+    buttonTextStyle: {
+        fontSize: Pixel.getFontPixel(18),
+    }
+});

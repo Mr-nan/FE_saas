@@ -9,6 +9,7 @@ import PixelUtil from "../utils/PixelUtil";
 import LoginFailPwd from './LoginFailPwd';
 import SetPwd from './SetPwd';
 import LoginGesturePassword from './LoginGesture';
+import SetLoginPwdGesture from './SetLoginPwdGesture';
 
 var Pixel = new PixelUtil();
 
@@ -60,6 +61,22 @@ export default class LoginAndRegister extends BaseComponent {
                         params: {},
                     })
                 }}/>
+                <MyButton buttonType={MyButton.TEXTBUTTON} content="设置手势密码" parentStyle={styles.buttonStyle}
+                          childStyle={styles.buttonTextStyle} mOnPress={() => {
+                    this.toNextPage({
+                        name: 'SetLoginPwdGesture',
+                        component: SetLoginPwdGesture,
+                        params: {},
+                    })
+                }}/>
+                <MyButton buttonType={MyButton.TEXTBUTTON} content="设置" parentStyle={styles.buttonStyle}
+                          childStyle={styles.buttonTextStyle} mOnPress={() => {
+                    this.toNextPage({
+                        name: 'SetLoginPwdGesture',
+                        component: SetLoginPwdGesture,
+                        params: {},
+                    })
+                }}/>
             </View>
         );
     }
@@ -81,7 +98,7 @@ const styles = StyleSheet.create({
         height: Pixel.getPixel(100),
         width: Pixel.getPixel(100),
         resizeMode: 'cover',
-        marginTop: Pixel.getPixel(150),
+        marginTop: Pixel.getPixel(10),
         marginBottom: Pixel.getPixel(30),
 
     },

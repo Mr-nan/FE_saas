@@ -1,21 +1,20 @@
-import * as helper from './helper'
-import React, {PropTypes, Component} from 'react'
-import {
-    StyleSheet,
-    Dimensions,
-    PanResponder,
-    View,
-    Text
-} from 'react-native'
-import Line from './line'
-import Circle from './circle'
+import * as helper from "./helper";
+import React, {PropTypes, Component} from "react";
+import {StyleSheet, Dimensions, PanResponder, View, Text} from "react-native";
+import Line from "./line";
+import Circle from "./circle";
+import BaseComponent from "../component/BaseComponent";
+import * as FontAndColor from "../constant/fontAndColor";
+import PixelUtil from "../utils/PixelUtil";
 
-const Width = Dimensions.get('window').width
-const Height = Dimensions.get('window').height
-const Top = (Height - Width) / 2.0 * 1.5
-const Radius = Width / 14
+var Pixel = new PixelUtil();
+const Width = Dimensions.get('window').width;
+const Height = Dimensions.get('window').height;
+const Top = Height - Width;
+const Radius = Width / 12;
+const Left = (Width - Radius * 8) / 2
 
-export default class GesturePassword extends Component {
+export default class GesturePassword extends BaseComponent {
     constructor(props) {
         super(props);
 
@@ -33,8 +32,8 @@ export default class GesturePassword extends Component {
             //X,Y圆心位置
             circles.push({
                 isActive: false,
-                x: p * (Radius * 2 + Margin) + Margin + 50 + Radius,//圆心距左边距离
-                y: q * (Radius * 2 + Margin) + Margin + Radius
+                x: p * (Radius * 2 + Margin) + Radius,//圆心距左边距离
+                y: q * (Radius * 2 + Margin) + Radius
             });
         }
 
@@ -44,9 +43,7 @@ export default class GesturePassword extends Component {
         }
     }
 
-    //向外部传递手势密码
-    getCircles() {
-        return this.state.circles;
+    initFinish = () => {
     }
 
     static propTypes = {
@@ -66,9 +63,9 @@ export default class GesturePassword extends Component {
 
     static defaultProps = {
         message: '',
-        normalColor: '#5FA8FC',
-        rightColor: '#5FA8FC',
-        wrongColor: '#D93609',
+        normalColor: FontAndColor.COLORB0,
+        rightColor: FontAndColor.COLORB0,
+        wrongColor: FontAndColor.COLORB2,
         status: 'normal',
         interval: 0,
         allowCross: false,
@@ -103,19 +100,13 @@ export default class GesturePassword extends Component {
         let color = this.props.status === 'wrong' ? this.props.wrongColor : this.props.rightColor;
 
         return (
-            <View style={[styles.frame, this.props.style, {flex: 1}]}>
-                <View style={styles.message}>
-                    <Text style={[styles.msgText, this.props.textStyle, {color: color}]}>
-                        {this.state.message || this.props.message}
-                    </Text>
-                </View>
-                <View style={styles.board} {...this._panResponder.panHandlers}>
+            <View style={[styles.container, this.props.style]}>
+                {this.props.NavigationBar}
+                <View style={styles.bodyStyle} {...this._panResponder.panHandlers}>
                     {this.renderCircles()}
                     {this.renderLines()}
                     <Line ref='line' color={color}/>
                 </View>
-
-                {this.props.children}
             </View>
         )
     }
@@ -194,7 +185,7 @@ export default class GesturePassword extends Component {
     }
 
     getCrossChar(char) {
-        let middles = '13457', last = String(this.lastIndex);
+        let middles = '', last = String(this.lastIndex);
 
         if (middles.indexOf(char) > -1 || middles.indexOf(last) > -1) return false;
 
@@ -211,7 +202,7 @@ export default class GesturePassword extends Component {
     }
 
     onStart(e, g) {
-        let x = e.nativeEvent.pageX;
+        let x = e.nativeEvent.pageX - Left;
         let y = e.nativeEvent.pageY - Top;
 
         let lastChar = this.getTouchChar({x, y});
@@ -238,7 +229,7 @@ export default class GesturePassword extends Component {
     }
 
     onMove(e, g) {
-        let x = e.nativeEvent.pageX;
+        let x = e.nativeEvent.pageX - Left;
         let y = e.nativeEvent.pageY - Top;
 
         if (this.isMoving) {
@@ -313,26 +304,14 @@ export default class GesturePassword extends Component {
 }
 
 const styles = StyleSheet.create({
-    frame: {
-        backgroundColor: '#292B38'
+    container: {
+        flex: 1,
+        backgroundColor: FontAndColor.COLORA3,
     },
-    board: {
+    bodyStyle: {
         position: 'absolute',
-        left: 0,
+        left: Left,
         top: Top,
         width: Width,
-        height: Height
     },
-    message: {
-        position: 'absolute',
-        left: 0,
-        top: Top / 2.2,
-        width: Width,
-        height: Top / 3,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    msgText: {
-        fontSize: 14
-    }
 });
