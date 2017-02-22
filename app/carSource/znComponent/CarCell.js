@@ -24,6 +24,9 @@ export default class CarCell extends Component {
     };
     render(){
 
+        const {carCellData}= this.props;
+        console.log(carCellData);
+
         return(
 
             <TouchableOpacity onPress={this.cellClick}>
@@ -36,11 +39,11 @@ export default class CarCell extends Component {
                 <View style={[styles.textContainer]}>
 
                     <View style={{backgroundColor:'white'}}>
-                        <Text style={styles.mainText}>{this.props.carMainText}</Text>
+                        <Text style={styles.mainText}>{'['+carCellData.city_name+']'+carCellData.brand_name+carCellData.model_name}</Text>
 
                     </View>
                     <View style={{backgroundColor:'white'}}>
-                        <Text style={styles.subTitleText}>{this.props.carSubText}</Text>
+                        <Text style={styles.subTitleText}>{carCellData.mileage}</Text>
                     </View>
 
                 </View>
@@ -91,9 +94,9 @@ const styles = StyleSheet.create({
 
     textContainer:{
 
-        // backgroundColor:'#FF0067',
         flex:1,
         justifyContent:'space-around',
+        marginRight:15,
     },
 
     mainText:{
