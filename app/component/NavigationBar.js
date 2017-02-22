@@ -36,6 +36,7 @@ export default class NavigationBar extends PureComponent {
 
         leftTextStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
         leftImageStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
+        rightImageStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
         centerTextStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
         rightTextStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
         titleVeiwSytle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
@@ -84,7 +85,7 @@ export default class NavigationBar extends PureComponent {
                     <MyButton buttonType={MyButton.IMAGEBUTTON}
                               content={this.props.rightImage}
                               parentStyle={styles.rightButtonStyle}
-                              childStyle={[styles.leftImageStyle, this.props.leftImageStyle]}
+                              childStyle={[styles.leftImageStyle, this.props.rightImageStyle]}
                               mOnPress={this.props.rightImageCallBack}/>
                     : null
                 }
