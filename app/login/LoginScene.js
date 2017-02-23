@@ -189,7 +189,6 @@ export default class LoginScene extends BaseComponent {
         } else if (typeof(verifyCode) == "undefined" || verifyCode == "") {
             this.refs.toast.changeType(ShowToast.TOAST, "验证码不能为空");
         } else {
-            this.refs.loginSmscode.StartCountDown();
             let maps = {
                 device_code: "dycd_dms_manage_android",
                 img_code: verifyCode,
@@ -200,9 +199,10 @@ export default class LoginScene extends BaseComponent {
             request(AppUrls.SEND_SMS, 'Post', maps)
                 .then((response) => {
                     if (response.mjson.code == "1") {
-                        this.refs.toast.changeType(ShowToast.TOAST, response.mjson.data.code);
+                        this.refs.loginSmscode.StartCountDown();
+                        this.refs.toast.changeType(ShowToast.TOAST, response.mjson.data.code + "");
                     } else {
-                        this.refs.toast.changeType(ShowToast.TOAST, response.mjson.data.msg);
+                        this.refs.toast.changeType(ShowToast.TOAST, response.mjson.msg + "");
                     }
                 }, (error) => {
                     this.refs.toast.changeType(ShowToast.TOAST, "获取验证码失败");
@@ -259,17 +259,18 @@ export default class LoginScene extends BaseComponent {
                         this.refs.toast.changeType(ShowToast.TOAST, "登录成功");
                         // 保存用户登录状态
                         StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
+                        StorageUtil.mSetItem(StorageKeyNames.USER_INFO, JSON.stringify(response.mjson.data));
                         // 保存用户信息
-                        StorageUtil.mSetItem(StorageKeyNames.base_user_id, response.mjson.data.base_user_id);
-                        StorageUtil.mSetItem(StorageKeyNames.enterprise_list, response.mjson.data.enterprise_list);
-                        StorageUtil.mSetItem(StorageKeyNames.head_portrait_url, response.mjson.data.head_portrait_url);
-                        StorageUtil.mSetItem(StorageKeyNames.idcard_number, response.mjson.data.idcard_number);
-                        StorageUtil.mSetItem(StorageKeyNames.phone, response.mjson.data.phone);
-                        StorageUtil.mSetItem(StorageKeyNames.real_name, response.mjson.data.real_name);
-                        StorageUtil.mSetItem(StorageKeyNames.token, response.mjson.data.token);
-                        StorageUtil.mSetItem(StorageKeyNames.user_level, response.mjson.data.user_level);
+                        StorageUtil.mSetItem(StorageKeyNames.base_user_id, response.mjson.data.base_user_id + "");
+                        StorageUtil.mSetItem(StorageKeyNames.enterprise_list, JSON.stringify(response.mjson.data.enterprise_list));
+                        StorageUtil.mSetItem(StorageKeyNames.head_portrait_url, response.mjson.data.head_portrait_url + "");
+                        StorageUtil.mSetItem(StorageKeyNames.idcard_number, response.mjson.data.idcard_number + "");
+                        StorageUtil.mSetItem(StorageKeyNames.phone, response.mjson.data.phone + "");
+                        StorageUtil.mSetItem(StorageKeyNames.real_name, response.mjson.data.real_name + "");
+                        StorageUtil.mSetItem(StorageKeyNames.token, response.mjson.data.token + "");
+                        StorageUtil.mSetItem(StorageKeyNames.user_level, response.mjson.data.user_level + "");
                     } else {
-                        this.refs.toast.changeType(ShowToast.TOAST, response.mjson.msg);
+                        this.refs.toast.changeType(ShowToast.TOAST, response.mjson.msg + "");
                     }
                 }, (error) => {
                     this.refs.toast.changeType(ShowToast.TOAST, "登录失败");
