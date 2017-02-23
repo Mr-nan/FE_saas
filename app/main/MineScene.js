@@ -13,7 +13,6 @@ import  {
 import * as fontAndClolr from '../constant/fontAndColor';
 import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
-import AccountInfoScene from '../mine/accountManage/AccountInfoScene';
 import ContractManageScene from '../mine/contractManage/ContractManageScene';
 
 import AccountManageScene from '../mine/accountManage/AccountManageScene'
