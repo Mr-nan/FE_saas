@@ -34,7 +34,7 @@ public class MainApplication extends UmengPushApplication implements ReactApplic
           new SQLitePluginPackage(),
           new UmengPushPackage(),
           new ImagePickerPackage(),
-          new PickerViewPackage()
+          new PickerViewPackage(),
           new ReactNativeWheelPickerPackage(),
           new WeChatPackage()
       );

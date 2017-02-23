@@ -174,12 +174,12 @@ const styles = StyleSheet.create({
     employeeStyle:{
         borderWidth: 1,
         borderColor: fontAndClolr.COLORB4,
+        justifyContent:'center',
+        alignItems:'center'
     },
     employeeText:{
         color: fontAndClolr.COLORB4,
         fontSize: Pixel.getPixel(12),
-        justifyContent:'center',
-        alignItems:'center'
     }
 
 
