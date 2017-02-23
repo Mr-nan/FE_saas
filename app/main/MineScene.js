@@ -13,9 +13,9 @@ import  {
 import * as fontAndClolr from '../constant/fontAndColor';
 import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
-import CountInfoScene from '../mine/CountInfoScene';
+import CountInfoScene from '../mine/accountManage/AccountInfoScene';
 import ContractManageScene from '../mine/contractManage/ContractManageScene';
-import CountManageScene from '../mine/CountManageScene'
+import CountManageScene from '../mine/accountManage/AccountManageScene'
 import EmployeeManageScene from '../mine/employeeManage/EmployeeManageScene'
 import Setting from './../mine/setting/Setting'
 const cellJianTou = require('../../images/mainImage/celljiantou.png');

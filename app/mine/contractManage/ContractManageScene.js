@@ -16,7 +16,7 @@ import SignContractScene from '../contractManage/SignContractScene'
 var Pixel = new PixelUtil();
 const cellJianTou = require('../../../images/mainImage/celljiantou@2x.png');
 import NavigationBar from "../../component/NavigationBar";
-import CountInfoScene from '../CountInfoScene';
+import CountInfoScene from '../accountManage/AccountInfoScene';
 import BaseComponent from "../../component/BaseComponent";
 // let Car = require('./Car.json');
 /*
