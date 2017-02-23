@@ -10,15 +10,15 @@ import  {
     TouchableOpacity
 } from  'react-native'
 
-import * as fontAndClolr from '../constant/fontAndColor';
-import  PixelUtil from '../utils/PixelUtil'
+import * as fontAndClolr from '../../constant/fontAndColor';
+import  PixelUtil from '../../utils/PixelUtil'
 var Pixel = new PixelUtil();
-const cellJianTou = require('../../images/mainImage/celljiantou.png');
+const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 const Car = [
     {
         "cars": [
             {
-                "icon":require('../../images/mainImage/zhanghuguanli.png'),
+                "icon":require('../../../images/mainImage/zhanghuguanli.png'),
                 "name": "账户管理"
             },
         ],
@@ -27,19 +27,19 @@ const Car = [
     {
         "cars": [
             {
-                "icon":require('../../images/mainImage/youhuiquanguanli.png'),
+                "icon":require('../../../images/mainImage/youhuiquanguanli.png'),
                 "name": "优惠券管理"
             },
             {
-                "icon":require('../../images/mainImage/jifenguanli.png'),
+                "icon":require('../../../images/mainImage/jifenguanli.png'),
                 "name": "积分管理"
             },
             {
-                "icon":require('../../images/mainImage/hetongguanli.png'),
+                "icon":require('../../../images/mainImage/hetongguanli.png'),
                 "name": "合同管理"
             },
             {
-                "icon":require('../../images/mainImage/yuangongguanli.png'),
+                "icon":require('../../../images/mainImage/yuangongguanli.png'),
                 "name": "员工管理"
             },
         ],
@@ -48,11 +48,11 @@ const Car = [
     {
         "cars": [
             {
-                "icon":require('../../images/mainImage/shoucangjilu.png'),
+                "icon":require('../../../images/mainImage/shoucangjilu.png'),
                 "name": "收藏记录"
             },
             {
-                "icon":require('../../images/mainImage/liulanlishi.png'),
+                "icon":require('../../../images/mainImage/liulanlishi.png'),
                 "name": "浏览历史"
             },
         ],
@@ -61,7 +61,7 @@ const Car = [
     {
         "cars": [
             {
-                "icon":require('../../images/mainImage/shezhi.png'),
+                "icon":require('../../../images/mainImage/shezhi.png'),
                 "name": "设置"
             },
         ],
@@ -75,7 +75,7 @@ const Car = [
  **/
 const {width, height} = Dimensions.get('window');
 
-export default class MineSectionListView extends Component {
+export default class AccountManageScene extends Component {
 
     // 构造
     constructor(props) {

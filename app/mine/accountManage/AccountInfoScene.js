@@ -10,10 +10,10 @@ import  {
     TouchableOpacity
 } from  'react-native'
 
-import * as fontAndClolr from '../constant/fontAndColor';
-import  PixelUtil from '../utils/PixelUtil'
+import * as fontAndClolr from '../../constant/fontAndColor';
+import  PixelUtil from '../../utils/PixelUtil'
 var Pixel = new PixelUtil();
-const cellJianTou = require('../../images/mainImage/celljiantou.png');
+const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 const Car = [
     {
         "cars": [
@@ -44,7 +44,7 @@ const Car = [
  **/
 const {width, height} = Dimensions.get('window');
 
-export default class CountInfo extends Component {
+export default class AccountInfoScene extends Component {
     // 构造
     constructor(props) {
         super(props);
