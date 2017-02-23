@@ -10,8 +10,8 @@ import  {
     TouchableOpacity
 } from  'react-native'
 
-import * as fontAndClolr from '../constant/fontAndColor';
-import  PixelUtil from '../utils/PixelUtil'
+import * as fontAndClolr from '../../constant/fontAndColor';
+import  PixelUtil from '../../utils/PixelUtil'
 var Pixel = new PixelUtil();
 const Car = [
     {
