@@ -177,7 +177,9 @@ const styles = StyleSheet.create({
     },
     employeeText:{
         color: fontAndClolr.COLORB4,
-        fontSize: Pixel.getPixel(12)
+        fontSize: Pixel.getPixel(12),
+        justifyContent:'center',
+        alignItems:'center'
     }
 
 
