@@ -90,7 +90,7 @@ export default class SetPwd extends BaseComponent {
                     if (response.mjson.code == "1") {
                         this.refs.toast.changeType(ShowToast.TOAST, "设置成功");
                     } else {
-                        this.refs.toast.changeType(ShowToast.TOAST, response.mjson.data.msg);
+                        this.refs.toast.changeType(ShowToast.TOAST, response.mjson.msg);
                     }
                 }, (error) => {
                     this.refs.toast.changeType(ShowToast.TOAST, "设置失败");
