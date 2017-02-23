@@ -5,6 +5,8 @@ import BaseComponent from "../component/BaseComponent";
 import PixelUtil from "../utils/PixelUtil";
 import * as FontAndColor from "../constant/fontAndColor";
 import NavigationBar from '../component/NavigationBar';
+import StorageUtil from "../utils/StorageUtil";
+import * as StorageKeyNames from "../constant/storageKeyNames";
 
 var Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
@@ -22,6 +24,11 @@ export default class GesturePassword extends BaseComponent {
     }
 
     initFinish = () => {
+        StorageUtil.mGetItem(StorageKeyNames.GESTURE, (data) => {
+            if (data.code === 1) {
+                Password = data.result;
+            }
+        })
     }
 
     render() {
@@ -82,7 +89,7 @@ export default class GesturePassword extends BaseComponent {
     }
 
     onEnd(pwd) {
-        if (pwd === '12369') {
+        if (pwd === Password) {
             this.setState({
                 status: 'right',
                 message: '验证成功',
