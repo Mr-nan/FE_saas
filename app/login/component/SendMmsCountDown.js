@@ -42,15 +42,14 @@ export default class sendMmsCountDown extends BaseComponent {
                 <MyButton buttonType={MyButton.TEXTBUTTON} content={this.state.value}
                           parentStyle={this.state.countDown ? styles.pressButtonStyle : styles.buttonStyle}
                           childStyle={this.state.countDown ? styles.pressTextStyle : styles.textStyle}
-                          mOnPress={this.countDown}/>
+                          mOnPress={this.props.callBackSms}/>
             </View>
         );
     }
 
     //开始计算操作
-    countDown = () => {
+    StartCountDown = () => {
         if (!this.state.countDown) {
-            this.props.callBackSms();
             let timer = setInterval(() => {
                 if (countTime <= 0) {
                     this.setState({

@@ -7,6 +7,7 @@ import {
     Image,
     ScrollView,
     Linking,
+    InteractionManager,
 
 } from 'react-native';
 
@@ -101,7 +102,21 @@ const carIconsContentData = [
 
 export default class CarInfoScene extends BaseComponent {
 
+
+
+    // 构造
+      constructor(props) {
+        super(props);
+        // 初始状态
+        this.state = {
+            renderPlaceholderOnly: true,
+        };
+      }
+
     initFinish = () => {
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+        });
 
     }
 
@@ -112,7 +127,7 @@ export default class CarInfoScene extends BaseComponent {
 
     _callClick = () => {
 
-        Linking.openURL('tel:4006561290,100001#');
+        Linking.openURL('tel:4006561290,100002#');
     };
 
     _navigatorRightView = () => {
@@ -128,7 +143,19 @@ export default class CarInfoScene extends BaseComponent {
         );
     };
 
+
+
     render() {
+
+        if (this.state.renderPlaceholderOnly) {
+            return (
+                <View style={{flex: 1, backgroundColor: 'white'}}>
+                <NavigationView
+                    title="车源详情"
+                    backIconClick={this._backIconClick}
+                />
+            </View>);
+        }
 
         return (
             <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -136,7 +163,7 @@ export default class CarInfoScene extends BaseComponent {
                 <ScrollView style={{marginBottom: 44}} onMomentumScrollEnd={(e) => {
                     console.log(e.nativeEvent.contentOffset.y)
                 }}>
-                    <Image style={styles.carImage}/>
+                    <Image style={styles.carImage} source={{uri:'https://images.unsplash.com/photo-1440964829947-ca3277bd37f8?h=1024'}}/>
                     <View style={styles.contentContainer}>
                         <View style={styles.contentView}>
 

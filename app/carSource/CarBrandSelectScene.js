@@ -13,6 +13,8 @@ import {
     TouchableOpacity,
     Image,
     Dimensions,
+    Animated,
+    InteractionManager,
 
 } from 'react-native';
 
@@ -121,9 +123,11 @@ const footprintData = ['A6L', '捷达王', '汉难达', '奥拓'];
 export default class CarBrandSelectScene extends BaseComponent {
 
     initFinish = () => {
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+        });
 
-    };
-
+    }
     _backIconClick = () => {
 
 
@@ -152,13 +156,14 @@ export default class CarBrandSelectScene extends BaseComponent {
         })
 
 
-        var dataBlob = {}, sectionIDs = [], rowIDs = [], cars = [];
+        var dataBlob = {}, sectionIDs = [], rowIDs = [], cars = [],sectionTitleArray=[];
 
         for (var i = 0; i < carData.length; i++) {
             //把组号放入sectionIDs数组中
             sectionIDs.push(i);
             //把组中内容放入dataBlob对象中
             dataBlob[i] = carData[i].title;
+            sectionTitleArray.push(carData[i].title);
             //把组中的每行数据的数组放入cars
             cars = carData[i].cars;
             //先确定rowIDs的第一维
@@ -169,11 +174,16 @@ export default class CarBrandSelectScene extends BaseComponent {
                 //把每一行中的内容放入dataBlob对象中
                 dataBlob[i + ':' + j] = cars[j];
             }
+
+
             this.state = {
+
+                renderPlaceholderOnly: true,
                 dataSource: dataSource.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
                 isHideCarSubBrand: true,
                 carTypeCheckend: '',
                 carTypes: carTypeData,
+                sectionTitleArray:sectionTitleArray,
 
             };
         }
@@ -215,7 +225,28 @@ export default class CarBrandSelectScene extends BaseComponent {
 
     };
 
+    _indexAndScrollClick=(index)=>{
+
+        let scrollY=index*40;
+        for (let i=0;i<index;i++)
+        {
+            let rowIndex = carData[i].cars.length;
+            scrollY+=+rowIndex*44;
+        }
+        this.refs.listView.scrollTo({x: 0, y:scrollY, animated: true});
+
+
+    };
     render() {
+        if (this.state.renderPlaceholderOnly) {
+            return (
+                <View style={{flex: 1, backgroundColor: 'white'}}>
+                    <NavigationView
+                        title="选择品牌"
+                        backIconClick={this._backIconClick}
+                    />
+                </View>);
+        }
 
         return (
             <View style={styles.rootContainer}>
@@ -230,29 +261,41 @@ export default class CarBrandSelectScene extends BaseComponent {
                         })
                     }
                 </View>
-                <ListView
+                <ListView ref="listView"
                     style={{flex: 1}}
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}
                     renderSectionHeader={this.renderSectionHeader}
                     contentContainerStyle={styles.listStyle}
+                          pageSize={100}
                     onScroll={() => {
-                        this.setState({
-                            isHideCarSubBrand: true,
-                        });
+
+                        if(!this.state.isHideCarSubBrand)
+                        {
+                            this.setState({
+                                isHideCarSubBrand: true,
+
+                            });
+                        }
                     }}
                 />
+
+                <ZNListIndexView  indexTitleArray={this.state.sectionTitleArray} indexClick={this._indexAndScrollClick}/>
+
                 <NavigationView
                     title="选择品牌"
                     backIconClick={this._backIconClick}
                 />
                 {
                     this.state.isHideCarSubBrand ? (null) : (
-                            <CarSubBrand data={this.state.carTypes} title={this.state.carTypeCheckend}
+                            <CarSubBrand
+                                         data={this.state.carTypes}
+                                         title={this.state.carTypeCheckend}
                                          checkedCarType={this.props.checkedCarType}
                                          checkedCarClick={this._checkedCarType}/>
                         )
                 }
+
             </View>
         )
     }
@@ -297,6 +340,7 @@ class CarSubBrand extends Component {
             }
             this.state = {
                 dataSource: dataSource.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
+                valueRight:new Animated.Value(0),
 
             };
         }
@@ -330,29 +374,70 @@ class CarSubBrand extends Component {
         );
     }
 
+    componentDidMount() {
+
+        this.state.valueRight.setValue(ScreenWidth);
+        Animated.spring(
+            this.state.valueRight,
+            {
+                toValue:ScreenWidth*0.5,
+                friction:5,
+            }
+        ).start();
+
+    }
+
+
     render() {
 
         return (
-            <View style={styles.carSubBrandView}>
+
+            <Animated.View style={[styles.carSubBrandView,{left:this.state.valueRight}]}>
                 <View style={styles.carSubBrandHeadView}>
                     <Image style={styles.rowCellImag}/>
                     <Text style={styles.rowCellText}>{this.props.title}</Text>
                 </View>
                 <ListView
-                    ref="listView"
                     style={{flex: 1}}
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}
                     renderSectionHeader={this.renderSectionHeader}
                     contentContainerStyle={styles.listStyle}
                 />
-            </View>
+            </Animated.View>
         )
 
     }
 
 }
 
+class ZNListIndexView extends Component{
+
+
+    render(){
+        const {indexTitleArray}=this.props;
+        return(
+            <View style={styles.indexView}>
+                {
+                    indexTitleArray.map((data,index)=>{
+                        return(
+                            <TouchableOpacity key={index} style={styles.indexItem} onPress={()=>{
+
+                                this.props.indexClick(index);
+
+                            }}>
+                                <Text style={styles.indexItemText}>{data}</Text>
+                            </TouchableOpacity>
+                        )
+                    })
+
+
+                }
+            </View>
+        )
+    }
+
+}
 
 var ScreenWidth = Dimensions.get('window').width;
 
@@ -408,7 +493,6 @@ const styles = StyleSheet.create({
     carSubBrandView: {
 
         backgroundColor: 'white',
-        right: 0,
         top: 64,
         bottom: 0,
         position: 'absolute',
@@ -426,6 +510,7 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         position: 'absolute',
+
 
     },
 
@@ -459,6 +544,33 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         color: fontAnColor.COLORA0,
         fontSize: fontAnColor.LITTLEFONT,
+    },
+
+    indexView:{
+
+        position: 'absolute',
+        bottom:0,
+        top:113,
+        backgroundColor:'transparent',
+        right:0,
+        width:45,
+        alignItems:'center',
+        justifyContent:'center',
+
+    },
+    indexItem:{
+
+        marginTop:6,
+        width:30,
+        backgroundColor:'transparent',
+
+
+    },
+    indexItemText:{
+
+        color:fontAnColor.COLORA0,
+        fontSize:fontAnColor.CONTENTFONT,
+        textAlign:'center',
     },
 
 });

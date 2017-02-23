@@ -15,24 +15,25 @@ import LoginInputText from "./component/LoginInputText";
 import LoginAutoSearchInputText from "./component/LoginAutoSearchInputText";
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
-import LoginFail from "./LoginFail";
+// import LoginFail from "./LoginFail";
 import * as FontAndColor from "../constant/fontAndColor";
 import Register from "./Register";
 import NavigationBar from "../component/NavigationBar";
 import PixelUtil from "../utils/PixelUtil";
 import StorageUtil from "../utils/StorageUtil";
-import * as ISLOGIN from "../constant/storageKeyNames";
-import * as USER_INFO from "../constant/storageKeyNames";
-import SAToast from '../component/toast/Toast';
-import ShowToast from '../component/toast/ShowToast';
-import MyButton from '../component/MyButton';
+import * as StorageKeyNames from "../constant/storageKeyNames";
+import ShowToast from "../component/toast/ShowToast";
+import MyButton from "../component/MyButton";
+import LoginFailSmsYes from './LoginFailSmsYes';
 var Pixel = new PixelUtil();
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var onePT = 1 / PixelRatio.get(); //一个像素
 var itemWidth = width;
-
+var imgSrc: '';
+var imgSid: '';
+var smsCode: '';
 export default class LoginScene extends BaseComponent {
 
     constructor(props) {
@@ -40,15 +41,17 @@ export default class LoginScene extends BaseComponent {
         //初始化方法
         this.state = {
             show: false,
-            value: ""
+            value: "",
+            verifyCode: null,
         }
     }
 
     initFinish = () => {
+        this.Verifycode();
     }
 
     static defaultProps = {
-        saveData: ["aaaaaa", "bbbbbbb", "cccccccccc"],
+        saveData: ["13001286215", "13001286216", "13001260002"],
     };
 
     render() {
@@ -88,7 +91,6 @@ export default class LoginScene extends BaseComponent {
                         }}
                     />
 
-
                     <View style={styles.inputTextSytle}>
                         <LoginAutoSearchInputText
                             ref="loginUsername"
@@ -122,8 +124,9 @@ export default class LoginScene extends BaseComponent {
                             ref="loginVerifycode"
                             textPlaceholder={'请输入验证码'}
                             viewStytle={styles.itemStyel}
-                            leftIconUri={require('./../../images/login/virty.png')}
+                            leftIconUri={ require('./../../images/login/virty.png')}
                             rightIconClick={this.Verifycode}
+                            rightIconSource={this.state.verifyCode ? this.state.verifyCode : null}
                             rightIconStyle={{width: Pixel.getPixel(100), height: Pixel.getPixel(32)}}/>
 
                         <LoginInputText
@@ -153,8 +156,8 @@ export default class LoginScene extends BaseComponent {
                         <View style={{flex: 1}}></View>
                         <TouchableOpacity onPress={() => {
                             this.toNextPage({
-                                name: 'LoginFail',
-                                component: LoginFail,
+                                name: 'LoginFailSmsYes',
+                                component: LoginFailSmsYes,
                                 params: {},
                             })
                         }}>
@@ -177,14 +180,58 @@ export default class LoginScene extends BaseComponent {
         });
     }
 
+    //获取短信验证码
     Smscode = () => {
-        alert("Smscode")
+        let userName = this.refs.loginUsername.getInputTextValue();
+        let verifyCode = this.refs.loginVerifycode.getInputTextValue();
+        if (userName == "") {
+            this.refs.toast.changeType(ShowToast.TOAST, "请输入正确的用户名");
+        } else if (typeof(verifyCode) == "undefined" || verifyCode == "") {
+            this.refs.toast.changeType(ShowToast.TOAST, "验证码不能为空");
+        } else {
+            let maps = {
+                device_code: "dycd_dms_manage_android",
+                img_code: verifyCode,
+                img_sid: imgSid,
+                phone: userName,
+                type: "2",
+            };
+            request(AppUrls.SEND_SMS, 'Post', maps)
+                .then((response) => {
+                    if (response.mjson.code == "1") {
+                        this.refs.loginSmscode.StartCountDown();
+                        this.refs.toast.changeType(ShowToast.TOAST, response.mjson.data.code + "");
+                    } else {
+                        this.refs.toast.changeType(ShowToast.TOAST, response.mjson.msg + "");
+                    }
+                }, (error) => {
+                    this.refs.toast.changeType(ShowToast.TOAST, "获取验证码失败");
+                });
+        }
     }
 
+    //获取图形验证码
     Verifycode = () => {
         this.refs.loginVerifycode.lodingStatus(true);
+        let maps = {
+            device_code: "dycd_dms_manage_android",
+        };
+        request(AppUrls.IDENTIFYING, 'Post', maps)
+            .then((response) => {
+                this.refs.loginVerifycode.lodingStatus(false);
+                imgSrc = response.mjson.data.img_src;
+                imgSid = response.mjson.data.img_sid;
+
+                this.setState({
+                    verifyCode: {uri: imgSrc},
+                });
+            }, (error) => {
+                this.refs.loginVerifycode.lodingStatus(false);
+                this.refs.toast.changeType(ShowToast.TOAST, "获取失败");
+            });
     }
 
+    // 登录
     login = () => {
         let userName = this.refs.loginUsername.getInputTextValue();
         let passWord = this.refs.loginPassword.getInputTextValue();
@@ -200,18 +247,35 @@ export default class LoginScene extends BaseComponent {
             this.refs.toast.changeType(ShowToast.TOAST, "短信验证码不能为空");
         } else {
             let maps = {
-                useName: userName,
-                passWord: passWord,
+                code: smsCode,
+                device_code: "dycd_dms_manage_android",
+                login_type: "2",
+                phone: userName,
+                pwd: passWord,
             };
             request(AppUrls.LOGIN, 'Post', maps)
                 .then((response) => {
-                    // console.log(response);
-                    this.refs.toast.changeType(ShowToast.TOAST, "登录成功");
-                    StorageUtil.mSetItem(ISLOGIN, 'true');
-                    // StorageUtil.mSetItem(USER_INFO, response);
+                    if (response.mjson.code == "1") {
+                        this.refs.toast.changeType(ShowToast.TOAST, "登录成功");
+                        // 保存用户登录状态
+                        StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
+                        StorageUtil.mSetItem(StorageKeyNames.USER_INFO, JSON.stringify(response.mjson.data));
+                        // 保存用户信息
+                        StorageUtil.mSetItem(StorageKeyNames.base_user_id, response.mjson.data.base_user_id + "");
+                        StorageUtil.mSetItem(StorageKeyNames.enterprise_list, JSON.stringify(response.mjson.data.enterprise_list));
+                        StorageUtil.mSetItem(StorageKeyNames.head_portrait_url, response.mjson.data.head_portrait_url + "");
+                        StorageUtil.mSetItem(StorageKeyNames.idcard_number, response.mjson.data.idcard_number + "");
+                        StorageUtil.mSetItem(StorageKeyNames.phone, response.mjson.data.phone + "");
+                        StorageUtil.mSetItem(StorageKeyNames.real_name, response.mjson.data.real_name + "");
+                        StorageUtil.mSetItem(StorageKeyNames.token, response.mjson.data.token + "");
+                        StorageUtil.mSetItem(StorageKeyNames.user_level, response.mjson.data.user_level + "");
+                    } else {
+                        this.refs.toast.changeType(ShowToast.TOAST, response.mjson.msg + "");
+                    }
                 }, (error) => {
-                    // console.log(error);
                     this.refs.toast.changeType(ShowToast.TOAST, "登录失败");
+                    // 保存用户登录状态
+                    StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'false');
                 });
         }
     }

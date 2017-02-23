@@ -13,10 +13,10 @@ import {
     Image,
     Modal,
 } from 'react-native';
-const shareIconWechat = require('../../images/welcome.jpg');
-const shareIconMoments = require('../../images/welcome.jpg');
+const shareIconWechat = require('./../../images/share_icon_wechat.png');
+const shareIconMoments = require('./../../images/share_icon_moments.png');
 import toast from '././toast/Toast';
-var WeChat = require('react-native-wechat');
+import * as WeChat from 'react-native-wechat';
 export  default class ShareSpanner extends Component {
     constructor(props) {
         super(props);
@@ -60,10 +60,10 @@ export  default class ShareSpanner extends Component {
                                             webpageUrl: 'http://www.lcode.org'
                                         })
                                             .catch((error) => {
-                                                toast(error.message);
+                                                {/*toast(error.message);*/}
                                             });
                                     } else {
-                                        toast('没有安装微信软件，请您安装微信之后再试');
+                                        {/*toast('没有安装微信软件，请您安装微信之后再试');*/}
                                     }
                                 });
                         }}>
@@ -93,10 +93,10 @@ export  default class ShareSpanner extends Component {
                                                 webpageUrl: 'http://www.lcode.org'
                                             })
                                                 .catch((error) => {
-                                                    Toast(error.message);
+                                                    {/*Toast(error.message);*/}
                                                 });
                                         } else {
-                                            toastShort('没有安装微信软件，请您安装微信之后再试');
+                                            {/*toastShort('没有安装微信软件，请您安装微信之后再试');*/}
                                         }
                                     });
                             }

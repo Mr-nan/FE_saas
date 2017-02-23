@@ -8,20 +8,40 @@ carData =[
         "cars": [
             {
                 "icon": "m_180_100.png",
-                "name": "AC Schnitzer"
+                "name": "AC Schnitzer",
+                "subCars":[
+                    '奥迪A1',
+                    '奥迪A2',
+                    '奥迪A3',
+                ],
             },
             {
                 "icon": "m_92_100.png",
-                "name": "阿尔法·罗密欧"
+                "name": "阿尔法·罗密欧",
+                "subCars":[
+                    '奥迪A1',
+                    '奥迪A2',
+                    '奥迪A3',
+                ],
             },
             {
                 "icon": "m_9_100.png",
                 "name": "奥迪",
+                "subCars":[
+                    '奥迪A1',
+                    '奥迪A2',
+                    '奥迪A3',
+                ],
 
             },
             {
                 "icon": "m_97_100.png",
-                "name": "阿斯顿·马丁"
+                "name": "阿斯顿·马丁",
+                "subCars":[
+                    '奥迪A1',
+                    '奥迪A2',
+                    '奥迪A3',
+                ],
             }
         ],
         "title": "A"

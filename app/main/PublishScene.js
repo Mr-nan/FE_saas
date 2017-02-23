@@ -5,28 +5,67 @@
 
 import React, { Component } from 'react';
 import {
-    AppRegistry,
-    StyleSheet,
     Text,
     View,
-    Image
+    Image,
+    StyleSheet,
+    TouchableOpacity
 } from 'react-native';
 
-export default class Testview22 extends Component {
+import  PixelUtil from '../utils/PixelUtil';
+import BaseComponent from '../component/BaseComponent';
+import NewCarScene from '../publish/NewCarScene';
+
+const  publishReceive = require('../../images/mainImage/publishReceive.png');
+const publishNew = require('../../images/mainImage/publishNew.png');
+const Pixel = new PixelUtil();
+
+export default class PublishScene extends BaseComponent {
+
+    initFinish=()=>{};
+
+    constructor(props){
+        super(props);
+    }
+
+    _receivePress = ()=>{
+
+    };
+
+    newCarParams = {
+        name: 'NewCarScene',
+        component: NewCarScene,
+        params: {}
+    };
+
+    _newPress = ()=>{
+        this.props.callBack(this.newCarParams);
+    };
+
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.welcome}>
-                    Welcome to React Native!
-                </Text>
-                <Text style={styles.instructions}>
-                    To get started, edit index.ios.js
-                </Text>
-                <Text style={styles.instructions}>
-                    Press Cmd+R to reload,{'\n'}
-                    Cmd+D or shake for dev menu
-                </Text>
-
+                <View style={styles.fillSpace}/>
+                <View style={styles.contentContainer}>
+                    <TouchableOpacity
+                        activeOpacity={0.6}
+                        onPress={()=>{this._newPress()}}
+                    >
+                        <View style={styles.rowCenter}>
+                            <Image style={styles.img} source={publishNew}/>
+                            <Text style={styles.fontMain}>发布新车源</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <View style={styles.fillSpace}/>
+                    <TouchableOpacity
+                        activeOpacity={0.6}
+                        onPress={()=>{this._receivePress()}}>
+                        <View style={styles.rowCenter}>
+                            <Image style={styles.img} source={publishReceive}/>
+                            <Text style={styles.fontMain}>发布收车意向</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
             </View>
         );
     }
@@ -35,18 +74,31 @@ export default class Testview22 extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'red',
+        backgroundColor: '#FFFFFF'
     },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
+    contentContainer:{
+        flexDirection:'row',
+        marginBottom:Pixel.getPixel(155),
+        width:Pixel.getPixel(242)
     },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
+    btnContainer: {
+        flexDirection:'row'
     },
+    img:{
+        width:Pixel.getPixel(67),
+        height:Pixel.getPixel(67),
+        borderRadius:Pixel.getPixel(67/2)
+    },
+    fontMain:{
+        fontSize:Pixel.getFontPixel(14),
+        color:'#000000',
+        marginTop:Pixel.getPixel(10)
+    },
+    rowCenter:{
+        alignItems:'center'
+    },
+    fillSpace:{
+        flex:1
+    }
 });
