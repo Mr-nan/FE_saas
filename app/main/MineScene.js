@@ -13,11 +13,12 @@ import  {
 import * as fontAndClolr from '../constant/fontAndColor';
 import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
-import CountInfoScene from '../mine/accountManage/AccountInfoScene';
+import AccountInfoScene from '../mine/accountManage/AccountInfoScene';
 import ContractManageScene from '../mine/contractManage/ContractManageScene';
 
 import AccountManageScene from '../mine/accountManage/AccountManageScene'
 import EmployeeManageScene from '../mine/employeeManage/EmployeeManageScene'
+import CouponAllScene from '../mine/couponManage/CouponAllScene'
 import Setting from './../mine/setting/Setting'
 const cellJianTou = require('../../images/mainImage/celljiantou.png');
 const Car = [
@@ -158,8 +159,8 @@ export default class MineSectionListView extends Component {
     }
     navigatorParams={
 
-        name: 'CountInfoScene',
-        component: CountInfoScene,
+        name: 'AccountManageScene',
+        component: AccountManageScene,
         params: {}
     }
 
@@ -171,6 +172,8 @@ export default class MineSectionListView extends Component {
                 this.navigatorParams.component=AccountManageScene
                 break;
             case '优惠券管理':
+                this.navigatorParams.name='CouponAllScene'
+                this.navigatorParams.component=CouponAllScene
                 break;
             case '积分管理':
                 break;
