@@ -9,13 +9,14 @@ import {
 } from 'react-native';
 export default class BaseComponent extends Component {
 
+    handleBack =()=> {
+        this.backPage();
+        return true;
+    }
+
     componentDidMount() {
-        let that = this;
-        BackAndroid.addEventListener('hardwareBackPress', function () {
-            that.backPage();
-            return true;
-        });
-        that.initFinish();
+        BackAndroid.addEventListener('hardwareBackPress',this.handleBack );
+        this.initFinish();
     }
 
     toNextPage = (mProps) => {
@@ -33,5 +34,10 @@ export default class BaseComponent extends Component {
             navigator.pop();
         }
     }
+
+    componentWillUnmount () {
+        BackAndroid.removeEventListener('hardwareBackPress', this.handleBack)
+    }
+
 
 }

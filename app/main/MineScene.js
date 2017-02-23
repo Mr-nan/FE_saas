@@ -14,11 +14,11 @@ import * as fontAndClolr from '../constant/fontAndColor';
 import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
 import CountInfoScene from '../mine/CountInfoScene';
+import ContractManageScene from '../mine/contractManage/ContractManageScene';
 import CountManageScene from '../mine/CountManageScene'
-import CouponAllScene from '../mine/CouponAllScene'
-import SeeEmployeeInfoScene from '../mine/SeeEmployeeInfoScene'
-import EditEmployeeScene from '../mine/EditEmployeeScene'
 
+import EmployeeManageScene from '../mine/employeeManage/EmployeeManageScene'
+import Setting from './../mine/setting/Setting'
 const cellJianTou = require('../../images/mainImage/celljiantou.png');
 const Car = [
     {
@@ -157,19 +157,47 @@ export default class MineSectionListView extends Component {
         )
     }
     navigatorParams={
-        name:'CountInfoScene',
-        component:EditEmployeeScene,
-        params:{
 
-        }
+        name: 'CountInfoScene',
+        component: CountInfoScene,
+        params: {}
     }
 
+    _navigator(rowData){
+        console.log(rowData.name);
+        switch (rowData.name){
+            case '账户管理':
+                this.navigatorParams.name='CountInfoScene'
+                this.navigatorParams.component=CountInfoScene
+                break;
+            case '优惠券管理':
+                break;
+            case '积分管理':
+                break;
+            case '合同管理':
+                this.navigatorParams.name='ContractManageScene'
+                this.navigatorParams.component=ContractManageScene
+                break;
+            case '员工管理':
+                this.navigatorParams.name='EmployeeManageScene'
+                this.navigatorParams.component=EmployeeManageScene
+                break;
+            case '收藏记录':
+                break;
+            case '浏览历史':
+                break;
+            case '设置':
+                this.navigatorParams.name='Setting'
+                this.navigatorParams.component=Setting
+                break;
+
+        }
+        this.props.callBack(this.navigatorParams);
+    }
     // 每一行中的数据
     _renderRow=(rowData)=> {
         return (
-            <TouchableOpacity style={styles.rowView} onPress={()=>{
-                this.props.callBack(this.navigatorParams);
-            }}>
+            <TouchableOpacity style={styles.rowView} onPress={()=>{this._navigator(rowData)}}>
 
                 <Image source={rowData.icon} style={styles.rowLeftImage}/>
 

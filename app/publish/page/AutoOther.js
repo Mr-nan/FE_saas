@@ -49,7 +49,7 @@ export default class AutoOther extends Component {
     };
 
     _onBack = () => {
-
+        this.props.onBack();
     };
 
     _renderRihtFootView = () => {
@@ -102,40 +102,40 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     rectangleContainer: {
-        width: 317,
-        height: 44,
+        width: Pixel.getPixel(317),
+        height: Pixel.getPixel(44),
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: 'rgba(255,255,255,0.2)',
         borderColor: '#FFFFFF',
         borderWidth: 1,
-        borderRadius: 2
+        borderRadius: Pixel.getPixel(2)
     },
     fontMain: {
-        fontSize: 15,
+        fontSize: Pixel.getFontPixel(15),
         color: '#FFFFFF'
     },
     firstMargin: {
-        marginTop: 166
+        marginTop: Pixel.getPixel(205)
     },
     alignMargin: {
-        marginTop: 19
+        marginTop: Pixel.getPixel(40)
     },
     leftText: {
-        marginLeft: 10
+        marginLeft: Pixel.getPixel(10)
     },
     rightText: {
-        marginRight: 10
+        marginRight: Pixel.getPixel(10)
     },
     leftInput: {
-        marginLeft: 20
+        marginLeft: Pixel.getPixel(20)
     },
     fillSpace: {
         flex: 1,
     },
     imgContainer: {
-        width: 9,
-        height: 15,
+        width: Pixel.getPixel(9),
+        height: Pixel.getPixel(15)
     },
     wrapStyle: {
         backgroundColor: 'transparent'

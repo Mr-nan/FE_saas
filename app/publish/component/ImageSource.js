@@ -12,7 +12,8 @@ import {
 } from 'react-native';
 
 import * as fontAndColor from '../../constant/fontAndColor';
-
+import PixelUtil from '../../utils/PixelUtil';
+const Pixel = new PixelUtil();
 const {width,height} = Dimensions.get('window');
 
 export default class ImageSource extends Component{
@@ -86,14 +87,14 @@ const styles = StyleSheet.create({
     },
     btnContainer:{
         width:width,
-        height:44,
+        height:Pixel.getPixel(44),
         alignItems:'center',
         justifyContent:'center',
         backgroundColor:'#FFFFFF'
     },
     fontMain:{
         color:'#000000',
-        fontSize:15
+        fontSize:Pixel.getFontPixel(15)
     },
     splitLine:{
         borderColor:fontAndColor.COLORA4,
@@ -101,7 +102,7 @@ const styles = StyleSheet.create({
     },
     splitView:{
         width:width,
-        height:10,
+        height:Pixel.getPixel(10),
         backgroundColor:'transparent'
     }
 });

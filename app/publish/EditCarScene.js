@@ -10,7 +10,7 @@ import {
 
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 
-import ModelSelect from './page/ModelSelect';
+import DetailModelSelect from './page/DetailModelSelect';
 import DetailAutoPhoto from './page/DetailAutoPhoto';
 import AutoType from './page/AutoType';
 import AutoDate from './page/AutoDate';
@@ -25,10 +25,12 @@ import AutoOther from './page/AutoOther';
 import EditIndicator from './component/EditIndicator';
 import BaseComponent from '../component/BaseComponent';
 
+
+import PixelUtil from '../utils/PixelUtil';
+const Pixel = new PixelUtil();
 const { width ,height} = Dimensions.get('window');
 const background = require('../../images/publish/background.png');
-
-const barHeight = 57;
+const barHeight = Pixel.getPixel(94);
 
 export default class EditScene extends BaseComponent{
 
@@ -36,26 +38,48 @@ export default class EditScene extends BaseComponent{
 
     constructor(props){
         super(props);
+        this.state = {
+            canChange:true
+        };
     }
+
+
+    _onBack = (page) =>{
+        if(page === 0){
+            this.backPage();
+        }else{
+            this.tabView.goToPage(page-1);
+        }
+    };
+
+    _canChange = (change:boolean)=>{
+        this.setState({
+            canChange:change
+        });
+    };
 
     render(){
         return(
             <Image style={styles.container}  source={background}>
             <ScrollableTabView
+                ref={(tab)=>{this.tabView = tab}}
                 tabBarPosition='bottom'
-                renderTabBar={()=>{return(<EditIndicator/>)}}>
-                <ModelSelect barHeight={barHeight} tabLabel="ModelSelect" />
-                <DetailAutoPhoto barHeight={barHeight} tabLabel="DetailAutoPhoto" />
-                <AutoType barHeight={barHeight} tabLabel="AutoType" />
-                <AutoDate barHeight={barHeight} tabLabel="AutoDate" />
-                <AutoPlate barHeight={barHeight} tabLabel="AutoPlate" />
-                <AutoMileage barHeight={barHeight} tabLabel="AutoMileage" />
-                <AutoEmission barHeight={barHeight} tabLabel="AutoEmission" />
-                <AutoLabel barHeight={barHeight} tabLabel="AutoLabel" />
-                <AutoOperation barHeight={barHeight} tabLabel="AutoOperation" />
-                <AutoColor barHeight={barHeight} tabLabel="AutoColor" />
-                <AutoTransfer barHeight={barHeight} tabLabel="AutoTransfer" />
-                <AutoOther barHeight={barHeight} tabLabel="AutoOther" />
+                locked={this.state.canChange}
+                renderTabBar={()=>{return(<EditIndicator canChange={this.state.canChange}/>)}}>
+                <DetailModelSelect onBack={()=>this._onBack(0)}
+                                   carNumberBack = {this._canChange}
+                                   barHeight={barHeight} tabLabel="ModelSelect" />
+                <DetailAutoPhoto onBack={()=>this._onBack(1)} barHeight={barHeight} tabLabel="DetailAutoPhoto" />
+                <AutoType onBack={()=>this._onBack(2)} barHeight={barHeight} tabLabel="AutoType" />
+                <AutoDate onBack={()=>this._onBack(3)} barHeight={barHeight} tabLabel="AutoDate" />
+                <AutoPlate onBack={()=>this._onBack(4)} barHeight={barHeight} tabLabel="AutoPlate" />
+                <AutoMileage onBack={()=>this._onBack(5)} barHeight={barHeight} tabLabel="AutoMileage" />
+                <AutoEmission onBack={()=>this._onBack(6)} barHeight={barHeight} tabLabel="AutoEmission" />
+                <AutoLabel onBack={()=>this._onBack(7)} barHeight={barHeight} tabLabel="AutoLabel" />
+                <AutoOperation onBack={()=>this._onBack(8)} barHeight={barHeight} tabLabel="AutoOperation" />
+                <AutoColor onBack={()=>this._onBack(9)} barHeight={barHeight} tabLabel="AutoColor" />
+                <AutoTransfer onBack={()=>this._onBack(10)} barHeight={barHeight} tabLabel="AutoTransfer" />
+                <AutoOther onBack={()=>this._onBack(11)} barHeight={barHeight} tabLabel="AutoOther" />
             </ScrollableTabView>
             </Image>
         );
