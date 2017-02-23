@@ -106,7 +106,7 @@ export default class AutoLabel extends Component {
         return(<Image style={[styles.img,{height:height-this.props.barHeight}]} source={background} />);
     };
     _onBack = ()=>{
-
+        this.props.onBack();
     };
 
     _renderRihtFootView = ()=>{
@@ -154,19 +154,19 @@ const styles = StyleSheet.create({
     imgContainer:{
         width: width,
         backgroundColor: 'transparent',
-        paddingTop: 100,
-        paddingHorizontal: 24
+        paddingTop: Pixel.getPixel(121),
+        paddingHorizontal: Pixel.getPixel(43)
     },
     girdContainer: {
         flex: 1,
     },
     defaultContainer: {
-        height: 41,
-        width: 132,
-        marginTop: 10,
+        height: Pixel.getPixel(41),
+        width: Pixel.getPixel(132),
+        marginTop: Pixel.getPixel(10),
         borderWidth: 1,
         borderColor: '#FFFFFF',
-        borderRadius: 20,
+        borderRadius: Pixel.getPixel(20),
         justifyContent: 'center'
     },
     defaultItem: {
@@ -174,16 +174,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     defaultText: {
-        fontSize: 15,
+        fontSize: Pixel.getFontPixel(15),
         color: '#FFFFFF'
     },
     selectContainer: {
-        height: 41,
-        width: 132,
-        marginTop: 10,
+        height: Pixel.getPixel(41),
+        width: Pixel.getPixel(132),
+        marginTop: Pixel.getPixel(10),
         borderWidth: 1,
         borderColor: '#FFFFFF',
-        borderRadius: 20,
+        borderRadius: Pixel.getPixel(20),
         backgroundColor: '#FFFFFF',
         justifyContent: 'center',
     },
@@ -193,17 +193,17 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     selectText: {
-        fontSize: 15,
+        fontSize: Pixel.getFontPixel(15),
         color: fontAndColor.COLORB1
     },
     hotLabel: {
-        width: 13,
-        height: 9,
-        marginLeft: 2
+        width: Pixel.getPixel(13),
+        height: Pixel.getPixel(9),
+        marginLeft: Pixel.getPixel(2)
     },
     emptyItem: {
-        height: 41,
-        width: 132,
+        height: Pixel.getPixel(41),
+        width: Pixel.getPixel(132),
         backgroundColor: 'transparent'
     },
     wrapStyle:{

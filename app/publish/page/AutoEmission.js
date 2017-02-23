@@ -34,8 +34,10 @@ export default class AutoEmission extends Component {
             {title: '欧Ⅵ', selected: false,index:5},
             {title: '国Ⅴ', selected: false,index:6},
             {title: '欧Ⅲ', selected: false,index:7},
-            {title: '', selected: '',index:8},
+            {title: '京Ⅴ', selected: false,index:8},
             {title: '欧Ⅱ', selected: false,index:9},
+            {title: 'OBD', selected: false,index:10},
+            {title: '欧Ⅰ', selected: false,index:11},
         ];
         this.state = {
             dataSource: this.viewData,
@@ -112,7 +114,7 @@ export default class AutoEmission extends Component {
     };
 
     _onBack = ()=>{
-
+        this.props.onBack();
     };
 
     _renderRihtFootView = ()=>{
@@ -159,46 +161,46 @@ const styles = StyleSheet.create({
     imgContainer:{
         width: width,
         backgroundColor: 'transparent',
-        paddingTop: 100,
-        paddingHorizontal: 24
+        paddingTop:  Pixel.getPixel(121),
+        paddingHorizontal:  Pixel.getPixel(43)
     },
     girdContainer: {
         flex: 1
     },
     defaultItem: {
-        height: 41,
-        width: 132,
-        marginTop: 10,
+        height:  Pixel.getPixel(41),
+        width:  Pixel.getPixel(132),
+        marginTop: Pixel.getPixel(10),
         borderWidth: 1,
         borderColor: '#FFFFFF',
-        borderRadius: 20,
+        borderRadius:  Pixel.getPixel(20),
         backgroundColor: 'rgba(255,255,255,0.2)',
         alignItems: 'center',
         justifyContent: 'center'
     },
     defaultText: {
-        fontSize: 15,
+        fontSize: Pixel.getFontPixel(15),
         color: '#FFFFFF'
     },
     selectItem: {
-        height: 41,
-        width: 132,
-        marginTop: 10,
+        height:  Pixel.getPixel(41),
+        width:  Pixel.getPixel(132),
+        marginTop: Pixel.getPixel(10),
         borderWidth: 1,
         borderColor: '#FFFFFF',
-        borderRadius: 20,
+        borderRadius:  Pixel.getPixel(20),
         backgroundColor: '#FFFFFF',
         alignItems: 'center',
         justifyContent: 'center'
     },
     selectText: {
-        fontSize: 15,
+        fontSize: Pixel.getFontPixel(15),
         color: fontAndColor.COLORB1
     },
     emptyItem: {
-        height: 41,
-        width: 132,
-        marginTop: 10,
+        height:  Pixel.getPixel(41),
+        width:  Pixel.getPixel(132),
+        marginTop: Pixel.getPixel(10),
         backgroundColor: 'transparent'
     },
     wrapStyle:{

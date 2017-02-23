@@ -388,7 +388,7 @@ export default class AutoColor extends Component {
     };
 
     _onBack = ()=>{
-
+        this.props.onBack();
     };
 
     _renderRihtFootView = ()=>{
@@ -429,7 +429,7 @@ export default class AutoColor extends Component {
                                 itemsPerRow={4}
                             />
                         </View>
-                        <View style={{marginTop:25}}>
+                        <View style={styles.itemTop}>
                             <Text style={styles.titleText}>内饰颜色</Text>
                             <View style={styles.splitLine}/>
                             <Grid
@@ -443,7 +443,6 @@ export default class AutoColor extends Component {
                     </ScrollView>
                 </Image>
             </View>
-
         );
     }
 }
@@ -458,41 +457,41 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent'
     },
     contentContainer: {
-        marginTop: 66,
-        marginHorizontal: 42,
-        marginBottom:80
+        marginTop: Pixel.getPixel(66),
+        marginHorizontal: Pixel.getPixel(42),
+        marginBottom:Pixel.getPixel(80)
     },
     titleText: {
-        fontSize: 15,
+        fontSize: Pixel.getFontPixel(15),
         color: '#FFFFFF'
     },
     splitLine: {
-        marginTop: 6,
+        marginTop: Pixel.getPixel(6),
         borderColor: '#FFFFFF',
         borderWidth: 0.5,
         flexDirection: 'row'
     },
     girdContainer: {
         flex: 1,
-        marginTop: 12
+        marginTop: Pixel.getPixel(12)
     },
     shellContainer: {
-        marginTop: 14
+        marginTop: Pixel.getPixel(14)
     },
     colorContainer: {
-        width: 40,
-        height: 40,
+        width: Pixel.getPixel(40),
+        height: Pixel.getPixel(40),
         borderColor: '#FFFFFF',
         borderWidth: 1,
-        borderRadius: 20
+        borderRadius: Pixel.getPixel(20)
     },
     emptyContainer: {
-        width: 40,
-        height: 40
+        width: Pixel.getPixel(40),
+        height: Pixel.getPixel(40)
     },
     textLabel: {
-        marginTop: 4,
-        fontSize: 12,
+        marginTop: Pixel.getPixel(4),
+        fontSize: Pixel.getFontPixel(12),
         color: '#FFFFFF'
     },
     selectColor: {
@@ -501,11 +500,14 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     selectImg: {
-        width: 16,
-        height: 11
+        width: Pixel.getPixel(16),
+        height: Pixel.getPixel(11)
     },
     center: {
         alignItems: 'center'
+    },
+    itemTop:{
+        marginTop:Pixel.getPixel(25)
     },
     wrapStyle:{
         backgroundColor:'transparent'

@@ -22,7 +22,7 @@ import HomeSence  from './HomeScene'
 import CarSourceSence from '../carSource/CarSourceListScene'
 import MineSence from './MineScene'
 import FinanceSence from './FinanceScene'
-import PublishSence from './PublishScene'
+import PublishModal from './PublishModal'
 
 
 import * as fontAndClolr from '../constant/fontAndColor';
@@ -68,8 +68,7 @@ export default class MainPage extends BaseComponent {
             new tableItemInfo('carpage', 'page12', '车源', require('../../images/mainImage/carSelect.png'), require('../../images/mainImage/carUnSelect.png'),
                 <CarSourceSence/>),
             new tableItemInfo('sendpage', 'page13', '发布', require('../../images/mainImage/publishSelect.png'), require('../../images/mainImage/publishUnSelect.png'),
-                <PublishSence callBack={(params)=> {
-
+                <PublishModal callBack={(params)=> {
                     this.toNextPage(params);
                 }}/>),
             new tableItemInfo('mypage', 'page14', '我的', require('../../images/mainImage/mineSelect.png'), require('../../images/mainImage/mineUnSelect.png'),
@@ -86,8 +85,7 @@ export default class MainPage extends BaseComponent {
                     this.toNextPage(params);
                 }}/>),
             new tableItemInfo('sendpage', 'page3', '发布', require('../../images/mainImage/sendButton.png'), require('../../images/mainImage/sendButton.png'),
-                <PublishSence callBack={(params)=> {
-
+                <PublishModal callBack={(params)=> {
                     this.toNextPage(params);
                 }}/>),
             new tableItemInfo('financePage', 'page4', '金融', require('../../images/mainImage/moneySelect.png'), require('../../images/mainImage/moneyUnSelect.png'),
@@ -139,7 +137,12 @@ export default class MainPage extends BaseComponent {
                                                  source={data.selectedImg}/>}
                 renderIcon={() => <Image style={data.key === 'page3' ? styles.bigimg : styles.img}
                                          source={data.defaultImg}/>}
-                onPress={() => this.setState({selectedTab: data.ref})}
+                onPress={() => {
+                    if(data.ref==='sendpage'){
+                        this.publishModal.openModal();
+                    }else{
+                        this.setState({selectedTab: data.ref})}}
+                    }
                 selectedTitleStyle={styles.selectedTitleStyle}
 
 
@@ -151,6 +154,8 @@ export default class MainPage extends BaseComponent {
         })
         return (
             <View style={styles.flex}>
+                <PublishModal callBack={(params)=> {
+                    this.toNextPage(params);}} ref={(modal) => {this.publishModal = modal}}/>
                 <TabNavigator
 
                     sceneStyle={{backgroundColor: '#00000000'}}
