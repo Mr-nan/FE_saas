@@ -13,7 +13,10 @@ import  {
 import * as fontAndClolr from '../../constant/fontAndColor';
 import  PixelUtil from '../../utils/PixelUtil'
 var Pixel = new PixelUtil();
-import ContractSign from '../contractManage/ContractSign';
+import SeeEmployeeInfoScene from '../employeeManage/SeeEmployeeInfoScene';
+import AddEmployeeScene from '../employeeManage/AddEmployeeScene';
+import EditEmployeeScene from '../employeeManage/EditEmployeeScene';
+
 import BaseComponent from "../../component/BaseComponent";
 import NavigationBar from "../../component/NavigationBar";
 // let Car = require('./Car.json');
@@ -38,6 +41,13 @@ export default class EmployeeManageScene extends BaseComponent {
     }
 
     addEmployee(){
+        this.toNextPage({
+            name: 'AddEmployeeScene',
+            component: AddEmployeeScene,
+            params: {
+                show: true
+            },
+        })
     }
     render() {
         return (
@@ -46,8 +56,8 @@ export default class EmployeeManageScene extends BaseComponent {
                     centerText={'员工管理'}
                     rightTextShow={false}
                     rightImageShow={true}
-                    rightImage={require('../../../images/employee_manage@3x.png')}
-                    rightImageCallBack={this.addEmployee()}
+                    rightImage={require('../../../images/employee_manage.png')}
+                    rightImageCallBack={()=>{this.addEmployee()}}
                     leftImageCallBack={this.backPage}
 
                 />
@@ -78,15 +88,15 @@ export default class EmployeeManageScene extends BaseComponent {
                     style={styles.buttonStyle}
                     onPress={() => {
                         this.toNextPage({
-                            name: 'ContractSign',
-                            component: ContractSign,
+                            name: 'EditEmployeeScene',
+                            component: EditEmployeeScene,
                             params: {
                                 show: true
                             },
                         })
                     }}>
                     <View style={{flexDirection: 'row'}}>
-                        <Image source={require('../../../images/edit_icon@3x.png') } style={styles.image}/>
+                        <Image source={require('../../../images/edit_icon.png') } style={styles.image}/>
                         <Text style={styles.rowRightTitle}>编辑</Text>
                     </View>
 
@@ -96,15 +106,15 @@ export default class EmployeeManageScene extends BaseComponent {
                     style={styles.buttonStyle}
                     onPress={() => {
                         this.toNextPage({
-                            name: 'ContractSign',
-                            component: ContractSign,
+                            name: 'SeeEmployeeInfoScene',
+                            component: SeeEmployeeInfoScene,
                             params: {
                                 show: true
                             },
                         })
                     }}>
                     <View style={{flexDirection: 'row'}}>
-                        <Image source={require('../../../images/check_iocn@3x.png') } style={styles.image}/>
+                        <Image source={require('../../../images/check_iocn.png') } style={styles.image}/>
                         <Text style={styles.rowRightTitle}>查看</Text>
                     </View>
 

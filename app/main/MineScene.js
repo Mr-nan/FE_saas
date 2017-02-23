@@ -13,10 +13,9 @@ import  {
 import * as fontAndClolr from '../constant/fontAndColor';
 import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
-import CountInfoScene from '../mine/accountManage/AccountInfoScene';
 import ContractManageScene from '../mine/contractManage/ContractManageScene';
 
-import CountManageScene from '../mine/accountManage/AccountManageScene'
+import AccountManageScene from '../mine/accountManage/AccountManageScene'
 import EmployeeManageScene from '../mine/employeeManage/EmployeeManageScene'
 import Setting from './../mine/setting/Setting'
 const cellJianTou = require('../../images/mainImage/celljiantou.png');
@@ -158,8 +157,8 @@ export default class MineSectionListView extends Component {
     }
     navigatorParams={
 
-        name: 'CountInfoScene',
-        component: CountInfoScene,
+        name: 'AccountManageScene',
+        component: AccountManageScene,
         params: {}
     }
 
@@ -167,8 +166,8 @@ export default class MineSectionListView extends Component {
         console.log(rowData.name);
         switch (rowData.name){
             case '账户管理':
-                this.navigatorParams.name='CountInfoScene'
-                this.navigatorParams.component=CountInfoScene
+                this.navigatorParams.name='AccountManageScene'
+                this.navigatorParams.component=AccountManageScene
                 break;
             case '优惠券管理':
                 break;
