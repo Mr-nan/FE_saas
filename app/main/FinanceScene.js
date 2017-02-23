@@ -11,6 +11,8 @@ import  {
     StyleSheet,
     Dimensions,
     Image,
+    InteractionManager,
+    TouchableOpacity
 } from  'react-native'
 
 
@@ -25,10 +27,11 @@ import MainScene from './MainScene';
  * 获取屏幕的宽和高
  **/
 const {width, height} = Dimensions.get('window');
-import LendMoneySence from '../finance/LendMoneySence';
+import LendMoneySence from '../finance/LendMoneyScene';
+import SingDetaileSence from '../finance/SingDetaileSence';
 import MyButton from '../component/MyButton';
 import RepaymentScene from '../finance/RepaymentScene';
-
+import PurchasePickerScene from '../finance/PurchaseLoanStatusScene';
 
 export class HomeHeaderItemInfo {
     constructor(ref, key, functionTitle, describeTitle, functionImage) {
@@ -64,11 +67,15 @@ export default class FinanceSence extends Component {
                 daikuanyue: "200",
                 baozhengjinedu: "20",
                 baozhengjinyue: "4.65",
-            }
+            },
+            renderPlaceholderOnly: true
         };
     }
 
-    initFinish = () => {
+    componentDidMount() {
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+        });
     }
 
     buttonParams = {
@@ -88,15 +95,25 @@ export default class FinanceSence extends Component {
     _renderRow = (movie) => {
 
         return (
-            <View style={[cellSheet.row, cellSheet.padding]}>
+            <TouchableOpacity activeOpacity={0.8} onPress={() => {
+                this.navigatorParams.name = 'SingDetaileSence';
+                this.navigatorParams.component = SingDetaileSence;
+                this.props.callBack(this.navigatorParams);
+            }} style={[cellSheet.row, cellSheet.padding]}>
                 <View style={cellSheet.rowViewStyle}>
-                    <View style={[cellSheet.rowViewStyle, {justifyContent: 'flex-start',}]}>
+                    <View style={[{
+                        height: Pixel.getPixel(40),
+                        justifyContent: 'flex-start', flex: 3, flexDirection: 'row',
+                        alignItems: 'center'
+                    }]}>
                         <MyButton {...this.buttonParams} content="单车"/>
                         <Text style={cellSheet.rowTopTextStyle}>源之宝汽车经销公司</Text>
                     </View>
-                    <View style={[cellSheet.rowTopViewStyle, {
+                    <View style={[{
+                        height: Pixel.getPixel(40),
                         flex: 2,
-                        justifyContent: 'flex-end'
+                        justifyContent: 'center',
+                        alignItems: 'flex-end'
                     }]}>
                         <Text style={cellSheet.rowTopGrayTextStyle}>201701100225</Text>
                     </View>
@@ -115,7 +132,7 @@ export default class FinanceSence extends Component {
                         <MyButton {...this.typeButtonParams} content="处理中"/>
                     </View>
                 </View>
-            </View>
+            </TouchableOpacity>
 
 
         )
@@ -131,6 +148,9 @@ export default class FinanceSence extends Component {
 
 
     render() {
+        if (this.state.renderPlaceholderOnly) {
+            return this._renderPlaceholderView();
+        }
         return (
             <View style={cellSheet.container}>
                 <ListView
@@ -140,9 +160,17 @@ export default class FinanceSence extends Component {
                     renderHeader={this._renderHeader}
                     bounces={false}
                 />
-
             </View>
         )
+    }
+
+    _renderPlaceholderView() {
+        return (
+            <View style={{width: width, height: height}}>
+                <Image style={{width: width, height: Pixel.getPixel(230), position: 'absolute', left: 0, top: 0}}
+                       source={require('../../images/financeImages/dinancebg.png')}/>
+            </View>
+        );
     }
 
     navigatorParams = {
@@ -157,8 +185,8 @@ export default class FinanceSence extends Component {
             this.navigatorParams.component = LendMoneySence;
             this.props.callBack(this.navigatorParams);
         } else {
-            this.navigatorParams.name = "RepaymentScene";
-            this.navigatorParams.component = RepaymentScene;
+            this.navigatorParams.name = "PurchasePickerScene";
+            this.navigatorParams.component = PurchasePickerScene;
             this.props.callBack(this.navigatorParams);
         }
     }
@@ -311,27 +339,27 @@ const cellSheet = StyleSheet.create({
     },
     titleViewTextStyle: {
         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-        color: fontAndColor.COLORA3,
-        backgroundColor:'#00000000'
+        color: '#ffffff',
+        backgroundColor: '#00000000'
     },
     titleOneTextStyle: {
         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-        color: fontAndColor.COLORA3, marginTop: Pixel.getPixel(64),
-        backgroundColor:'#00000000'
+        color: '#ffffff', marginTop: Pixel.getTitlePixel(71),
+        backgroundColor: '#00000000'
     },
     titleTwoTextStyle: {
         fontSize: Pixel.getFontPixel(24),
-        color: fontAndColor.COLORA3, marginTop: Pixel.getPixel(4), fontWeight: 'bold',
-        backgroundColor:'#00000000'
+        color: '#ffffff', marginTop: Pixel.getPixel(8), fontWeight: 'bold',
+        backgroundColor: '#00000000'
     },
     titleThreeTextStyle: {
         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-        color: fontAndColor.COLORA3, marginTop: Pixel.getPixel(12),
-        backgroundColor:'#00000000'
+        color: '#ffffff', marginTop: Pixel.getPixel(21),
+        backgroundColor: '#00000000'
     },
     titleFourTextStyle: {
-        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24), fontWeight: 'bold',
-        color: fontAndColor.COLORA3, marginTop: Pixel.getPixel(4)
+        fontSize: Pixel.getFontPixel(fontAndColor.MARKFONT22), fontWeight: 'bold',
+        color: '#ffffff', marginTop: Pixel.getPixel(6), backgroundColor: '#00000000'
     },
     parentStyle: {
         borderWidth: 1,
@@ -389,5 +417,5 @@ const cellSheet = StyleSheet.create({
     rowBottomBigStyle: {
         fontSize: Pixel.getFontPixel(16),
         marginTop: Pixel.getPixel(6)
-    }
+    },
 });

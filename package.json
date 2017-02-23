@@ -9,8 +9,11 @@
   "dependencies": {
     "react": "~15.4.0-rc.4",
     "react-native": "0.41.1",
-    "react-native-scrollable-tab-view": "^0.7.2",
     "react-native-image-picker": "^0.25.1",
+    "react-native-md5": "^1.0.0",
+    "react-native-modal-datetime-picker": "^3.0.1",
+    "react-native-picker": "^4.0.18",
+    "react-native-scrollable-tab-view": "^0.7.2",
     "react-native-sglistview": "^0.3.2",
     "react-native-sqlite-storage": "^3.2.2",
     "react-native-tab-navigator": "^0.3.3",
