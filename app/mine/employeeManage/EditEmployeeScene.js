@@ -144,7 +144,7 @@ const Car = [
  **/
 const {width, height} = Dimensions.get('window');
 
-export default class AddEmployeeScene extends Component {
+export default class EditEmployeeScene extends Component {
     // 构造
     constructor(props) {
         super(props);
@@ -210,7 +210,11 @@ export default class AddEmployeeScene extends Component {
                     renderRow={this._renderRow}
                     renderSectionHeader={this._renderSectionHeader}
                 />
-
+                <MyButton buttonType={MyButton.TEXTBUTTON}
+                          content={'注销'}
+                          parentStyle={styles.loginBtnStyle}
+                          childStyle={styles.loginButtonTextStyle}
+                          mOnPress={this.loginOut}/>
 
             </View>
         );
@@ -280,7 +284,21 @@ const styles = StyleSheet.create({
         marginRight:Pixel.getPixel(15),
 
     },
-
+    loginBtnStyle: {
+        height: Pixel.getPixel(44),
+        width: width - Pixel.getPixel(30),
+        backgroundColor: FontAndColor.COLORB0,
+        marginTop: Pixel.getPixel(30),
+        marginBottom: Pixel.getPixel(30),
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: Pixel.getPixel(4),
+        marginLeft:Pixel.getPixel(15)
+    },
+    loginButtonTextStyle: {
+        color: FontAndColor.COLORA3,
+        fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT)
+    },
 
 
 

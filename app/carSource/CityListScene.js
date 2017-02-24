@@ -31,7 +31,7 @@ import * as AppUrls from "../constant/appUrls";
 
 const footprintData = ['A6L', '捷达王', '汉难达', '奥拓'];
 
-export default class CarBrandSelectScene extends BaseComponent {
+export default class CityListScene extends BaseComponent {
 
     initFinish = () => {
         InteractionManager.runAfterInteractions(() => {
@@ -59,11 +59,11 @@ export default class CarBrandSelectScene extends BaseComponent {
 
 
         const dataSource =  new ListView.DataSource({
-                getSectionData: getSectionData,
-                getRowData: getRowData,
-                rowHasChanged: (r1, r2) => r1 !== r2,
-                sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
-            });
+            getSectionData: getSectionData,
+            getRowData: getRowData,
+            rowHasChanged: (r1, r2) => r1 !== r2,
+            sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
+        });
         this.state = {
 
             renderPlaceholderOnly: true,
@@ -85,7 +85,7 @@ export default class CarBrandSelectScene extends BaseComponent {
 
     loadData = ()=> {
 
-        let url = AppUrls.BASEURL + '/v1/home/brand';
+        let url = AppUrls.BASEURL + 'v1/index/city';
         request(url, 'post', {
 
             status: 0,
@@ -93,7 +93,7 @@ export default class CarBrandSelectScene extends BaseComponent {
         }).then((response) => {
 
             console.log(response);
-            this.setListData(response.mjson.data);
+            // this.setListData(response.mjson.data);
 
         }, (error) => {
 
@@ -221,7 +221,7 @@ export default class CarBrandSelectScene extends BaseComponent {
             return (
                 <View style={{flex: 1, backgroundColor: 'white'}}>
                     <NavigationView
-                        title="选择品牌"
+                        title="选择城市"
                         backIconClick={this._backIconClick}
                     />
                 </View>);
@@ -261,7 +261,7 @@ export default class CarBrandSelectScene extends BaseComponent {
 
                 <ZNListIndexView indexTitleArray={this.state.sectionTitleArray} indexClick={this._indexAndScrollClick}/>
                 <NavigationView
-                    title="选择品牌"
+                    title="选择城市"
                     backIconClick={this._backIconClick}
                 />
                 {
