@@ -42,7 +42,7 @@ export default class Register extends BaseComponent {
                     leftImageCallBack={this.backPage}
                     rightTextCallBack={this.register}
                 />
-                {/*<ScrollView>*/}
+                <ScrollView>
                 <View style={styles.inputTextLine}/>
                 <View style={styles.inputTextsStyle}>
                     <LoginInputText
@@ -147,7 +147,7 @@ export default class Register extends BaseComponent {
                               mOnPress={this.selectPhotoTapped.bind(this, 'businessLicense')}/>
                 </View>
                 <ShowToast ref='toast' msg={this.props.msg}></ShowToast>
-                {/*</ScrollView>*/}
+                </ScrollView>
             </View>
         );
     }

@@ -12,33 +12,34 @@ import MyButton from '../component/MyButton';
 
 var {height, width} = Dimensions.get('window');
 import MainPage from './MainPage';
+import LoginAndRegister from '../login/LoginAndRegister';
+import StorageUtil from '../utils/StorageUtil';
+import * as KeyNames from '../constant/storageKeyNames';
+
 
 export default class RootScene extends BaseComponent {
     initFinish = () => {
         let that = this;
         setTimeout(
             () => {
-                // StorageUtil.mGetItem(KeyNames.ISLOGIN, (result) => {
-                //     if (result !== StorageUtil.ERRORCODE) {
-                //         if (result == null) {
-                //             that.navigatorParams.component = MainPage;
-                //             that.toNextPage(that.navigatorParams);
-                //         } else {
-                //             if (result == "true") {
-                //                 that.navigatorParams.component = MainPage;
-                //                 that.navigatorParams.params = {
-                //
-                //                 }
-                //                 that.toNextPage(that.navigatorParams);
-                //             } else {
-                //                 that.navigatorParams.component = LoginAndRegister;
-                //                 that.toNextPage(that.navigatorParams);
-                //             }
-                //         }
-                //     }
-                // });
-                that.navigatorParams.component = MainPage;
-                that.toNextPage(that.navigatorParams);
+                StorageUtil.mGetItem(KeyNames.ISLOGIN, (res) => {
+
+                    if (res.result!== StorageUtil.ERRORCODE) {
+                        if (res.result == null) {
+                            that.navigatorParams.component = LoginAndRegister;
+                            that.toNextPage(that.navigatorParams);
+                        } else {
+                            if (res.result == "true") {
+                                that.navigatorParams.component = MainPage;
+                                that.navigatorParams.params = {}
+                                that.toNextPage(that.navigatorParams);
+                            } else {
+                                that.navigatorParams.component = LoginAndRegister;
+                                that.toNextPage(that.navigatorParams);
+                            }
+                        }
+                    }
+                });
             }, 500
         );
     }

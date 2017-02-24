@@ -1,5 +1,5 @@
 import * as helper from "./helper";
-import React, {PropTypes, Component} from "react";
+import React, {PropTypes, Component, PureComponent} from "react";
 import {StyleSheet, Dimensions, PanResponder, View, Text} from "react-native";
 import Line from "./line";
 import Circle from "./circle";
@@ -14,7 +14,7 @@ const Top = Height - Width;
 const Radius = Width / 12;
 const Left = (Width - Radius * 8) / 2
 
-export default class GesturePassword extends BaseComponent {
+export default class SetPwdGesture extends PureComponent {
     constructor(props) {
         super(props);
 

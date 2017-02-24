@@ -94,7 +94,15 @@ export default class MyListView extends Component {
     }
 
     homeOnPress = (title) => {
-        alert(title + "11");
+        if (title == '收车') {
+            this.props.jumpScene('carpage');
+        } else if (title == '卖车') {
+            this.props.openModal();
+        } else if (title == '借款') {
+            this.props.jumpScene('financePage');
+        } else {
+            this.props.jumpScene('financePage');
+        }
     }
 
     _renderHeader = () => {
@@ -145,7 +153,7 @@ export default class MyListView extends Component {
 
                     </View>
                     <TouchableOpacity style={{marginRight: Pixel.getPixel(20)}} onPress={()=> {
-
+                                   this.props.jumpScene('carpage');
                     }}>
                         <View style={{
                             flexDirection: 'row',
@@ -173,7 +181,7 @@ export default class MyListView extends Component {
         )
     }
 
-    _renderRow(movie,sindex,rowID) {
+    _renderRow(movie, sindex, rowID) {
 
         return (
             <View style={{
@@ -187,7 +195,7 @@ export default class MyListView extends Component {
                 <View
                     style={{width: Pixel.getPixel(166), backgroundColor: '#ffffff', justifyContent: 'center'}}>
                     <Image style={cellSheet.imageStyle} source={{uri: movie.images.large}}/>
-                    <Text style={cellSheet.despritonStyle}>{rowID==0?'我不是盘简历我不是盘简历':'我不是盘简历我不是'}</Text>
+                    <Text style={cellSheet.despritonStyle}>{rowID == 0 ? '我不是盘简历我不是盘简历' : '我不是盘简历我不是'}</Text>
                     <Text style={cellSheet.timeStyle}>{movie.title}</Text>
 
                 </View>
@@ -247,7 +255,7 @@ const cellSheet = StyleSheet.create({
         color: fontAndClolr.COLORA1,
         fontSize: Pixel.getFontPixel(fontAndClolr.MARKFONT),
         marginTop: Pixel.getPixel(8),
-        marginBottom:Pixel.getPixel(10)
+        marginBottom: Pixel.getPixel(10)
     },
 
     Separator: {
@@ -262,7 +270,7 @@ const cellSheet = StyleSheet.create({
         marginTop: Pixel.getPixel(8),
         color: fontAndClolr.COLORA0,
         fontSize: Pixel.getFontPixel(fontAndClolr.BUTTONFONT30),
-        height:Pixel.getPixel(40),
+        height: Pixel.getPixel(40),
 
     }
 
