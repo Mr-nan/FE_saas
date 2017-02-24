@@ -31,6 +31,7 @@ export default class SuccessModal extends Component{
         this.setState({
             modalVisible: false
         });
+        this.props.okClick();
     };
 
     openModal = ()=>{
@@ -49,7 +50,7 @@ export default class SuccessModal extends Component{
                     <View style={styles.contentContainer}>
                         <Image style={styles.imgLogo} source={imgLogo}/>
                         <Text style={styles.fontMain}>发布成功</Text>
-                        <Text style={styles.fontHint}>您可以到首页/卖车中查看车辆状态</Text>
+                        <Text style={styles.fontHint}>您可以到首页/车源中查看车辆状态</Text>
                         <View style={styles.fillSpace}/>
                         <TouchableOpacity
                             activeOpacity={0.2}

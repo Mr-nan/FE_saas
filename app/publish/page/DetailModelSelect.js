@@ -47,10 +47,6 @@ export default class DetailModelSelect extends PureComponent{
 
     }
 
-    _scanPress = ()=>{
-
-    };
-
     _modelPress = ()=>{
 
     };
@@ -67,7 +63,7 @@ export default class DetailModelSelect extends PureComponent{
         return(
             <TouchableOpacity
                 activeOpacity={0.6}
-                onPress={()=>{}}>
+                onPress={()=>{this.props.publishData()}}>
                 <Text style={styles.rightTitleText}>完成</Text>
             </TouchableOpacity>
         );
@@ -87,15 +83,7 @@ export default class DetailModelSelect extends PureComponent{
                         renderRihtFootView={this._renderRihtFootView} />
                     <View style={[styles.circleContainer,styles.vinCircle]}>
                         <Text style={[styles.fontMain,styles.leftText]}>车架号</Text>
-                        <TextInput style={[styles.fontMain,styles.fillSpace]} underlineColorAndroid='transparent'/>
-                        <TouchableOpacity
-                            activeOpacity={0.6}
-                            onPress={()=>{this._scanPress()}}>
-                            <View style ={styles.center}>
-                                <Text style={[styles.fontMain,styles.rightText]}>扫描</Text>
-                                <Image style={styles.imgContainer} source={scan}/>
-                            </View>
-                        </TouchableOpacity>
+                        <Text editable={false} style={[styles.fontMain,styles.fillSpace]}>{this.state.vin}</Text>
                     </View>
                     <Text style={styles.fontHint}>建议您扫描登记证或行驶证上的车架号</Text>
                     <TouchableOpacity
@@ -104,7 +92,7 @@ export default class DetailModelSelect extends PureComponent{
                         onPress={()=>{this._modelPress()}}>
                         <View style={styles.rowCenter}>
                             <Text style={[styles.fontMain,styles.leftText]}>请选择车型</Text>
-                            <Text style={[styles.fontMain,styles.fillSpace]} />
+                            <Text style={[styles.fontMain,styles.fillSpace]} ></Text>
                             <Image style={styles.imgContainer} source={arrow}/>
                         </View>
                     </TouchableOpacity>

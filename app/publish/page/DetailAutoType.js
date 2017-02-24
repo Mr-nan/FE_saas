@@ -22,7 +22,7 @@ const background = require('../../../images/publish/background.png');
 import SQLiteUtil from '../../utils/SQLiteUtil';
 const SQLite = new SQLiteUtil();
 
-export default class AutoType extends Component {
+export default class DetailAutoType extends Component {
 
     constructor(props) {
         super(props);
@@ -141,7 +141,7 @@ export default class AutoType extends Component {
         return(
             <TouchableOpacity
                 activeOpacity={0.6}
-                onPress={()=>{}}>
+                onPress={()=>{this.props.publishData()}}>
                 <Text style={styles.rightTitleText}>完成</Text>
             </TouchableOpacity>
         );
@@ -152,16 +152,17 @@ export default class AutoType extends Component {
             return this._renderPlaceholderView();
         }
         return (
-        <View style={styles.container}>
-            <Image style={[styles.imgContainer,{height:height-this.props.barHeight}]} source={background}>
-                <AllNavigationView
-                    backIconClick={this._onBack}
-                    title='选择车辆类型'
-                    wrapStyle={styles.wrapStyle}
+            <View style={styles.container}>
+                <Image style={[styles.imgContainer,{height:height-this.props.barHeight}]} source={background}>
+                    <AllNavigationView
+                        backIconClick={this._onBack}
+                        title='选择车辆类型'
+                        wrapStyle={styles.wrapStyle}
+                        renderRihtFootView={this._renderRihtFootView}
                     />
-                {this._renderItem()}
-            </Image>
-        </View>
+                    {this._renderItem()}
+                </Image>
+            </View>
 
         );
     }

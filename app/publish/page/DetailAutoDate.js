@@ -24,7 +24,7 @@ const arrow = require('../../../images/publish/date-select.png');
 import SQLiteUtil from '../../utils/SQLiteUtil';
 const SQLite = new SQLiteUtil();
 
-export default class AutoDate extends Component{
+export default class DetailAutoDate extends Component{
 
     constructor(props){
         super(props);
@@ -111,7 +111,7 @@ export default class AutoDate extends Component{
         return(
             <TouchableOpacity
                 activeOpacity={0.6}
-                onPress={()=>{}}>
+                onPress={()=>{this.props.publishData()}}>
                 <Text style={styles.rightTitleText}>完成</Text>
             </TouchableOpacity>
         );
@@ -129,6 +129,7 @@ export default class AutoDate extends Component{
                         backIconClick={this._onBack}
                         title='选择日期'
                         wrapStyle={styles.wrapStyle}
+                        renderRihtFootView={this._renderRihtFootView}
                     />
                     <TouchableOpacity
                         style={[styles.circleContainer,styles.factoryCircle]}

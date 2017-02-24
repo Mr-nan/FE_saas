@@ -1,7 +1,7 @@
 /**
  * Created by Administrator on 2017/2/10.
  */
-import React,{ Component} from 'react';
+import React, {Component} from 'react';
 import {
     View,
     Image,
@@ -17,61 +17,160 @@ import AllNavigationView from '../../component/AllNavigationView';
 import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import ImageSource from '../component/ImageSource';
+import * as Net from '../../utils/RequestUtil';
 
-const { width,height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 const background = require('../../../images/publish/background.png');
 const photo = require('../../../images/publish/photo.png');
 const photoMask = require('../../../images/publish/photo-mask.png');
+import ImagePicker from "react-native-image-picker";
 
+import SQLiteUtil from '../../utils/SQLiteUtil';
+const SQLite = new SQLiteUtil();
 
-export default class AutoPhoto extends Component{
+const options = {
+    //弹出框选项
+    title: '请选择',
+    cancelButtonTitle: '取消',
+    takePhotoButtonTitle: '拍照',
+    chooseFromLibraryButtonTitle: '选择相册',
+    allowsEditing: true,
+    noData: false,
+    quality: 1.0,
+    maxWidth: 480,
+    maxHeight: 800,
+    storageOptions: {
+        skipBackup: true,
+        path: 'images',
+    }
+};
 
-    constructor(props){
+export default class AutoPhoto extends Component {
+
+    constructor(props) {
         super(props);
-        this.takePhoto ="";
-        this.state ={
-            hasPhoto:false,
+        let hasPhoto = false;
+        if(this.props.carData.pictures !==''){
+            this.pictures = JSON.parse(this.props.carData.pictures);
+            this.selectSource = {uri: this.pictures[0].url};
+            hasPhoto = true;
+        }else {
+            this.pictures = [];
+        }
+        this.state = {
+            hasPhoto: hasPhoto,
             renderPlaceholderOnly: true
         }
     }
 
-    componentWillMount(){
+    componentWillMount() {
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: false});
         });
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
 
     }
 
-    _renderPlaceholderView = ()=>{
-        return(<Image style={[styles.img,{height:height-this.props.barHeight}]} source={background} />);
+    _renderPlaceholderView = () => {
+        return (<Image style={[styles.img,{height:height-this.props.barHeight}]} source={background}/>);
     };
 
-    _labelPress = ()=>{
+    _labelPress = () => {
         this.imageSource.openModal();
     };
 
-    _rePhoto = ()=>{
+    _rePhoto = () => {
         this.imageSource.openModal();
     };
 
-    _onBack = ()=>{
+    _onBack = () => {
         this.props.onBack();
     };
 
-    render(){
+    _galleryClick = () => {
+        ImagePicker.launchImageLibrary(options, (response) => {
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            }
+            else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            }
+            else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            }
+            else {
+
+                let url = 'http://dev.api-gateway.dycd.com/' + 'v1/index/upload';
+                let params ={
+                    filename : response.fileName,
+                    file:'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g,'%2B')
+                };
+
+                Net.request(url,'post',params).then(
+                    (response)=>{
+
+                        this.selectSource = {uri: response.mjson.data.url};
+                        this.setState({
+                            hasPhoto:true
+                        });
+
+                        let left ={
+                            name : 'left_anterior',
+                            file_id : response.mjson.data.file_id,
+                            url: response.mjson.data.url,
+                        };
+                        this.pictures = [];
+                        this.pictures.push(left);
+
+                        SQLite.changeData(
+                            'UPDATE publishCar SET pictures = ? WHERE vin = ?',
+                            [ JSON.stringify(this.pictures), this.props.carData.vin]);
+
+                    },(error)=>{
+                    console.log(error);
+                });
+
+            }
+        });
+    };
+
+    _cameraClick = () => {
+        ImagePicker.launchCamera(options, (response) => {
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            }
+            else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            }
+            else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            }
+            else {
+
+                console.log(response.data);
+                this.selectSource = {uri: 'data:image/jpeg;base64,' + response.data};
+                this.setState({
+                    hasPhoto: true
+                });
+            }
+        });
+    };
+
+    render() {
         if (this.state.renderPlaceholderOnly) {
             return this._renderPlaceholderView();
         }
-        return(
+        return (
             <View style={styles.container}>
-                <ImageSource ref={(modal) => {this.imageSource = modal}}/>
+                <ImageSource galleryClick={this._galleryClick}
+                             cameraClick={this._cameraClick}
+                             ref={(modal) => {this.imageSource = modal}}/>
                 <Image style={[styles.img,{height:height-this.props.barHeight}]} source={background}>
                     <AllNavigationView
                         backIconClick={this._onBack}
@@ -79,7 +178,7 @@ export default class AutoPhoto extends Component{
                         wrapStyle={styles.wrapStyle}/>
                     {
                         this.state.hasPhoto
-                            ? <Image style={styles.photoContainer} source={photo}>
+                            ? <Image style={styles.photoContainer} source={this.selectSource}>
                                 <Image style={styles.hasPhotoContainer} source={photoMask}>
                                     <Text style={styles.photoLabel}>左前45°照</Text>
                                     <View style={styles.fillSpace}/>
@@ -107,46 +206,47 @@ export default class AutoPhoto extends Component{
 }
 
 const styles = StyleSheet.create({
-    container:{
-        width:width,
-        backgroundColor:'transparent'
+    container: {
+        width: width,
+        backgroundColor: 'transparent'
     },
-    img:{
-        width:width,
-        backgroundColor:'transparent',
-        alignItems:'center'
+    img: {
+        width: width,
+        backgroundColor: 'transparent',
+        alignItems: 'center'
     },
-    photoContainer:{
-        marginTop:Pixel.getPixel(230),
-        width:Pixel.getPixel(160),
-        height:Pixel.getPixel(120),
-        justifyContent:'flex-end',
+    photoContainer: {
+        marginTop: Pixel.getPixel(230),
+        width: Pixel.getPixel(160),
+        height: Pixel.getPixel(120),
+        justifyContent: 'flex-end',
     },
-    noPhotoContainer:{
-        alignItems:'center',
-        marginBottom:Pixel.getPixel(30)
+    noPhotoContainer: {
+        alignItems: 'center',
+        marginBottom: Pixel.getPixel(30)
     },
-    noPhoto:{
-        fontSize:Pixel.getFontPixel(14),
-        color:'#FFFFFF',
+    noPhoto: {
+        fontSize: Pixel.getFontPixel(14),
+        color: '#FFFFFF',
     },
-    hasPhotoContainer:{
-        flexDirection:'row',
-        alignItems:'center',
-        padding:Pixel.getPixel(10)
+    hasPhotoContainer: {
+        width: Pixel.getPixel(160),
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: Pixel.getPixel(10)
     },
-    photoLabel:{
-        fontSize:Pixel.getFontPixel(12),
-        color:'#FFFFFF'
+    photoLabel: {
+        fontSize: Pixel.getFontPixel(12),
+        color: '#FFFFFF'
     },
-    rephotoLabel:{
-        fontSize:Pixel.getFontPixel(12),
-        color:fontAndColor.COLORB1
+    rephotoLabel: {
+        fontSize: Pixel.getFontPixel(12),
+        color: fontAndColor.COLORB1
     },
-    fillSpace:{
-        flex:1
+    fillSpace: {
+        flex: 1
     },
-    wrapStyle:{
-        backgroundColor:'transparent'
+    wrapStyle: {
+        backgroundColor: 'transparent'
     }
 });

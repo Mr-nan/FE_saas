@@ -32,7 +32,7 @@ const preBg = require('../../../images/publish/car-mileage-pre.png');
 const proBg = require('../../../images/publish/car-mileage-pro.png');
 const IS_ANDROID = Platform.OS === 'android';
 
-export default class AutoMileage extends Component {
+export default class DetailAutoMileage extends Component {
 
     constructor(props) {
         super(props);
@@ -105,7 +105,6 @@ export default class AutoMileage extends Component {
         return concat;
     };
 
-
     _renderPlaceholderView = () => {
         return (<Image style={[styles.img,{height:height-this.props.barHeight}]} source={background}/>);
     };
@@ -155,13 +154,12 @@ export default class AutoMileage extends Component {
             });
     };
 
-
     _renderRihtFootView = () => {
         return (
             <TouchableOpacity
                 activeOpacity={0.6}
-                onPress={this._publish}>
-                <Text style={styles.rightTitleText}>发布</Text>
+                onPress={this.props.publishData()}>
+                <Text style={styles.rightTitleText}>完成</Text>
             </TouchableOpacity>
         );
     };
