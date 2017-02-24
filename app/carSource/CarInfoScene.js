@@ -201,7 +201,7 @@ export default class CarInfoScene extends BaseComponent {
                 <TouchableOpacity >
                     <Image source={require('../../images/carSourceImages/store.png')}></Image>
                 </TouchableOpacity>
-                <TouchableOpacity style={{marginLeft: 10}} onPress={this.showShared}>
+                <TouchableOpacity style={{marginLeft: Pixel.getPixel(10)}} onPress={this.showShared}>
                     <Image source={require('../../images/carSourceImages/share_nil.png')}></Image>
                 </TouchableOpacity>
             </View>
@@ -239,7 +239,7 @@ export default class CarInfoScene extends BaseComponent {
         return (
             <View style={{flex: 1, backgroundColor: 'white'}}>
 
-                <ScrollView style={{marginBottom: 44}} onMomentumScrollEnd={(e) => {
+                <ScrollView style={{marginBottom: Pixel.getPixel(44)}} onMomentumScrollEnd={(e) => {
                     console.log(e.nativeEvent.contentOffset.y)
                 }}>
                     <ImagePageView
@@ -448,7 +448,6 @@ const styles = StyleSheet.create({
     navigation: {
 
         height: Pixel.getPixel(64),
-        // height:64,
         backgroundColor: fontAndColor.COLORB0,
         left: 0,
         right: 0,
@@ -459,7 +458,7 @@ const styles = StyleSheet.create({
     carImage: {
 
         backgroundColor: fontAndColor.COLORB0,
-        height: 250,
+        height: Pixel.getPixel(250),
         width:ScreenWidth,
 
     },
@@ -472,10 +471,10 @@ const styles = StyleSheet.create({
     },
     contentView: {
 
-        marginLeft: 15,
-        marginTop: 10,
-        marginRight: 15,
-        marginBottom: 15,
+        marginLeft: Pixel.getPixel(15),
+        marginTop: Pixel.getPixel(10),
+        marginRight: Pixel.getPixel(15),
+        marginBottom: Pixel.getPixel(15),
         backgroundColor: 'white'
 
     },
@@ -492,17 +491,17 @@ const styles = StyleSheet.create({
         borderColor: fontAndColor.COLORB0,
         justifyContent: 'center',
         alignItems: 'center',
-        width: 52,
-        marginLeft: 5,
-        marginTop: 15,
-        height: 30,
+        width: Pixel.getPixel(52),
+        marginLeft: Pixel.getPixel(5),
+        marginTop: Pixel.getPixel(15),
+        height: Pixel.getPixel(30),
 
 
     },
     subText: {
 
         color: fontAndColor.COLORB0,
-        fontSize: fontAndColor.CONTENTFONT,
+        fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT),
         textAlign: 'center',
 
     },
@@ -512,7 +511,7 @@ const styles = StyleSheet.create({
         // backgroundColor:'red',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginTop: 10,
+        marginTop: Pixel.getPixel(10),
 
 
     },
@@ -525,11 +524,11 @@ const styles = StyleSheet.create({
     },
     browseText: {
         color: fontAndColor.COLORA2,
-        fontSize: fontAndColor.CONTENTFONT,
+        fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT),
     },
     priceText: {
         color: fontAndColor.COLORB2,
-        fontSize: fontAndColor.TITLEFONT,
+        fontSize:Pixel.getFontPixel(fontAndColor.TITLEFONT),
         fontWeight: 'bold',
 
     },
@@ -539,35 +538,35 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'white',
         flexWrap: 'wrap',
-        marginBottom: 12,
+        marginBottom: Pixel.getPixel(12),
 
     },
     carParameterItem: {
 
-        marginTop: 5,
-        marginBottom: 5,
-        marginRight: 5,
-        paddingHorizontal: 5,
-        height: 18,
+        marginTop: Pixel.getPixel(5),
+        marginBottom: Pixel.getPixel(5),
+        marginRight: Pixel.getPixel(5),
+        paddingHorizontal: Pixel.getPixel(5),
+        height: Pixel.getPixel(18),
         borderRadius: 3,
         justifyContent: 'center',
         alignItems: 'center',
     },
     carParameterText: {
-        fontSize: fontAndColor.MARKFONT,
+        fontSize:Pixel.getFontPixel(fontAndColor.MARKFONT),
     },
     carDepictView: {
 
-        marginBottom: 15,
-        paddingHorizontal: 5,
-        paddingVertical: 5,
+        marginBottom: Pixel.getPixel(15),
+        paddingHorizontal: Pixel.getPixel(5),
+        paddingVertical: Pixel.getPixel(5),
         backgroundColor: 'rgba(158,158,158,0.15)',
         borderRadius: 3,
     },
     carDepictText: {
 
         color: fontAndColor.COLORA2,
-        fontSize: fontAndColor.MARKFONT,
+        fontSize:Pixel.getFontPixel(fontAndColor.MARKFONT),
     },
     carAddressView: {
 
@@ -583,18 +582,18 @@ const styles = StyleSheet.create({
     carAddressTitleText: {
 
         color: fontAndColor.COLORA1,
-        fontSize: fontAndColor.LITTLEFONT,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
 
     },
     carAddressSubTitleText: {
 
         color: fontAndColor.COLORA0,
-        fontSize: fontAndColor.LITTLEFONT,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
     },
     carIconsContainer: {
 
-        marginBottom: 15,
-        marginHorizontal: 15,
+        marginBottom: Pixel.getPixel(15),
+        marginHorizontal: Pixel.getPixel(15),
         backgroundColor: 'white',
 
 
@@ -611,25 +610,25 @@ const styles = StyleSheet.create({
     carIconItem: {
 
         alignItems: 'center',
-        marginTop: 25,
+        marginTop: Pixel.getPixel(25),
         backgroundColor: 'white',
-        width: 90,
-        height: 90,
-        marginRight: 10,
-        marginLeft: 10,
+        width:Pixel.getPixel(90),
+        height: Pixel.getPixel(90),
+        marginRight: Pixel.getPixel(10),
+        marginLeft: Pixel.getPixel(10),
     },
     carIconItemTitleText: {
 
         color: fontAndColor.COLORA1,
-        fontSize: fontAndColor.CONTENTFONT,
+        fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT),
 
     },
     carIconItemContentText: {
 
         color: fontAndColor.COLORA1,
-        fontSize: fontAndColor.LITTLEFONT,
-        marginTop: 5,
-        marginBottom: 5,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
+        marginTop: Pixel.getPixel(5),
+        marginBottom:Pixel.getPixel(5),
 
     },
     callView: {
@@ -638,7 +637,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: fontAndColor.COLORB0,
-        height: 44,
+        height: Pixel.getPixel(44),
         position: 'absolute',
         bottom: 0,
         left: 0,
@@ -646,7 +645,7 @@ const styles = StyleSheet.create({
     },
     callText: {
         color: 'white',
-        fontSize: fontAndColor.CONTENTFONT,
+        fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT),
     },
     PhotonContaier:{
 
@@ -662,10 +661,10 @@ const styles = StyleSheet.create({
     },
     imageFootView:{
 
-        height:50,
-        right:15,
+        height:Pixel.getPixel(50),
+        right:Pixel.getPixel(15),
         bottom:0,
-        left:15,
+        left:Pixel.getPixel(15),
         position:'absolute',
         flexDirection:'row',
         alignItems:'center',
@@ -675,8 +674,8 @@ const styles = StyleSheet.create({
 
     carAgeView:{
 
-        paddingHorizontal:15,
-        paddingVertical:10,
+        paddingHorizontal:Pixel.getPixel(15),
+        paddingVertical:Pixel.getPixel(10),
         backgroundColor:'rgba(1,1,1,0.3)',
         borderRadius:4,
 
@@ -685,14 +684,14 @@ const styles = StyleSheet.create({
     carAgeText:{
 
         color:'white',
-        fontSize:fontAndColor.CONTENTFONT,
+        fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT),
         backgroundColor:'transparent'
     },
 
     imageIndexText:{
 
         color:'white',
-        fontSize:fontAndColor.LITTLEFONT,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
         backgroundColor:'transparent'
 
 
@@ -716,7 +715,7 @@ const styles = StyleSheet.create({
     },
 
     sharedViewHead:{
-        height:44,
+        height:Pixel.getPixel(44),
         backgroundColor:'white',
         justifyContent:'center',
         alignItems:'center',
@@ -725,22 +724,22 @@ const styles = StyleSheet.create({
     sharedViewHeadText:{
 
         color:fontAndColor.COLORA0,
-        fontSize:fontAndColor.LITTLEFONT28,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
     },
     sharedItemView:{
 
         justifyContent:'center',
         alignItems:'center',
-        marginLeft:20,
-        marginRight:20,
-        marginTop:10,
-        marginBottom:10,
+        marginLeft:Pixel.getPixel(20),
+        marginRight:Pixel.getPixel(20),
+        marginTop:Pixel.getPixel(10),
+        marginBottom:Pixel.getPixel(10),
     },
     sharedText:{
         color:fontAndColor.COLORA1,
         textAlign:'center',
-        marginTop:10,
-        fontSize:fontAndColor.CONTENTFONT24,
+        marginTop:Pixel.getPixel(10),
+        fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
     }
 
 })

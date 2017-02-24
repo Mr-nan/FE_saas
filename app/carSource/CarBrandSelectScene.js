@@ -386,10 +386,10 @@ const styles = StyleSheet.create({
     carBrandHeadView: {
 
         backgroundColor: 'white',
-        height: 49,
+        height: Pixel.getPixel(49),
         alignItems: 'center',
         backgroundColor: 'white',
-        marginTop: 64,
+        marginTop: Pixel.getTitlePixel(64),
         flexDirection: 'row',
 
 
@@ -397,17 +397,17 @@ const styles = StyleSheet.create({
     carBrandHeadText: {
 
         color: fontAnColor.COLORA0,
-        fontSize: fontAnColor.LITTLEFONT,
+        fontSize:Pixel.getFontPixel(fontAnColor.LITTLEFONT),
         backgroundColor: 'white',
-        marginLeft: 15,
+        marginLeft:Pixel.getPixel(15),
     },
 
     footprintView: {
 
-        marginLeft: 7,
-        marginRight: 3,
-        paddingHorizontal: 10,
-        height: 20,
+        marginLeft: Pixel.getPixel(7),
+        marginRight: Pixel.getPixel(3),
+        paddingHorizontal: Pixel.getPixel(10),
+        height: Pixel.getPixel(20),
         borderRadius: 4,
         backgroundColor: fontAnColor.COLORA3,
         justifyContent: 'center'
@@ -415,20 +415,20 @@ const styles = StyleSheet.create({
     footprintText: {
 
         color: fontAnColor.COLORA0,
-        fontSize: fontAnColor.CONTENTFONT,
+        fontSize:Pixel.getFontPixel(fontAnColor.CONTENTFONT),
     },
 
     carSubBrandHeadView: {
 
         flexDirection: 'row',
         backgroundColor: 'white',
-        height: 44,
+        height: Pixel.getPixel(44),
         alignItems: 'center',
     },
     carSubBrandView: {
 
         backgroundColor: 'white',
-        top: 64,
+        top: Pixel.getTitlePixel(64),
         bottom: 0,
         position: 'absolute',
         width: ScreenWidth * 0.5,
@@ -440,7 +440,6 @@ const styles = StyleSheet.create({
     navigation: {
 
         height: Pixel.getPixel(64),
-        // height:64,
         backgroundColor: fontAnColor.COLORB0,
         left: 0,
         right: 0,
@@ -451,52 +450,52 @@ const styles = StyleSheet.create({
 
     sectionHeader: {
         backgroundColor: fontAnColor.COLORA3,
-        height: 40,
+        height: Pixel.getPixel(40),
         justifyContent: 'center'
     },
     sectionText: {
-        marginLeft: 31,
+        marginLeft: Pixel.getPixel(31),
         color: fontAnColor.COLORA1,
-        fontSize: fontAnColor.LITTLEFONT,
+        fontSize:Pixel.getFontPixel(fontAnColor.LITTLEFONT),
     },
     rowCell: {
 
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderBottomColor: fontAnColor.COLORA3,
-        height: 44,
+        height: Pixel.getPixel(44),
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: 'white',
 
     },
     rowCellImag: {
-        width: 40,
-        height: 40,
-        marginLeft: 15,
+        width: Pixel.getPixel(40),
+        height: Pixel.getPixel(40),
+        marginLeft: Pixel.getPixel(15),
         backgroundColor: fontAnColor.COLORB0
     },
     rowCellText: {
-        marginLeft: 5,
+        marginLeft: Pixel.getPixel(5),
         color: fontAnColor.COLORA0,
-        fontSize: fontAnColor.LITTLEFONT,
+        fontSize:Pixel.getFontPixel(fontAnColor.LITTLEFONT),
     },
 
     indexView:{
 
         position: 'absolute',
         bottom:0,
-        top:113,
+        top:Pixel.getTitlePixel(113),
         backgroundColor:'transparent',
         right:0,
-        width:45,
+        width:Pixel.getPixel(45),
         alignItems:'center',
         justifyContent:'center',
 
     },
     indexItem:{
 
-        marginTop:6,
-        width:30,
+        marginTop:Pixel.getPixel(6),
+        width:Pixel.getPixel(30),
         backgroundColor:'transparent',
 
 
@@ -504,7 +503,7 @@ const styles = StyleSheet.create({
     indexItemText:{
 
         color:fontAnColor.COLORA0,
-        fontSize:fontAnColor.CONTENTFONT,
+        fontSize:Pixel.getFontPixel(fontAnColor.CONTENTFONT),
         textAlign:'center',
     },
 
