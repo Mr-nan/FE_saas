@@ -13,6 +13,7 @@
     "react-native-image-zoom": "^0.32.0",
     "react-native-modal-datetime-picker": "^3.0.1",
     "react-native-scrollable-tab-view": "^0.7.2",
+    "react-native-sglistview": "^0.3.2",
     "react-native-sqlite-storage": "^3.2.2",
     "react-native-tab-navigator": "^0.3.3",
     "react-native-tabs": "^1.0.9",
