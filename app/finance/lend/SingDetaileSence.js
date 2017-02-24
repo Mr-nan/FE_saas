@@ -8,7 +8,8 @@ import {
     ListView,
 } from 'react-native';
 
-import {CommnetListItem, LendCarItemCell, CommenButton, width,height, adapeSize, fontdapeSize} from './ComponentBlob'
+import {CommnetListItem, LendCarItemCell, CommenButton } from './component/ComponentBlob'
+import { width,height,fontadapeSize,adapeSize} from './component/MethodComponent'
 
 //ok
 export  default  class SingDetaileSence extends Component {
@@ -20,6 +21,9 @@ export  default  class SingDetaileSence extends Component {
             {title: '借款金额', key: 'money'},
             {title: '借款期限', key: 'dateLimit'},
             {title: '综合费率', key: 'rate'},
+            {title: '还款方式', key: 'paybackType'},
+            {title: '还款方式', key: 'paybackType'},
+            {title: '还款方式', key: 'paybackType'},
             {title: '还款方式', key: 'paybackType'}
         ],
         section2: [{title: '状态', key: 'orderState'}],
@@ -148,7 +152,8 @@ export  default  class SingDetaileSence extends Component {
                     style={{
                         marginTop: 44,
                         backgroundColor: '#f0eff5',
-                        marginBottom: adapeSize(50)
+                        paddingTop: adapeSize(15),
+                        marginBottom: adapeSize(50),
                     }}
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}
@@ -156,10 +161,12 @@ export  default  class SingDetaileSence extends Component {
                     renderSeparator={this.renderSeparator}
                 />
 
-                <CommenButton
-                    buttonStyle={styles.buttonStyle} textStyle={styles.textStyle} onPress={this.orderStateHandel}
-                    title='取消借款'/>
-
+                <View>
+                    <CommenButton
+                        buttonStyle={styles.buttonStyle} textStyle={styles.textStyle} onPress={this.orderStateHandel}
+                        title='取消借款'/>
+                </View>
+                
             </View>
 
         );
@@ -171,17 +178,17 @@ const styles = StyleSheet.create({
 
     buttonStyle: {
 
-        bottom:0,
         height: adapeSize(44),
         backgroundColor: '#05c5c2',
         justifyContent: 'center',
         alignItems: 'center',
         position: 'absolute',
-        width:width
+        bottom: adapeSize(1),
+        width: width,
     },
     textStyle: {
 
-        fontSize: fontdapeSize(15),
+        fontSize: fontadapeSize(15),
         color: '#FFFFFF'
     }
 

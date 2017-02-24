@@ -113,7 +113,7 @@ export default class AutoLabel extends Component {
         return(
             <TouchableOpacity
                 activeOpacity={0.6}
-                onPress={()=>{}}>
+                onPress={()=>{this.props.publishData()}}>
                 <Text style={styles.rightTitleText}>完成</Text>
             </TouchableOpacity>
         );

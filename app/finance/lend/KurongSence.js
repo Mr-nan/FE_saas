@@ -17,15 +17,11 @@ import  {
     LendItem,
     LendUseful,
     CommenButton,
-    width,
-    adapeSize,
-    fontdapeSize,
-    FEColor,
 
-} from './ComponentBlob'
-const ColorFont =new FEColor();
+} from './component/ComponentBlob'
+import {width, adapeSize, fontadapeSize,PAGECOLOR} from './component/MethodComponent'
 
-const  imageSouce =require('../../images/financeImages/dateIcon.png')
+const  imageSouce =require('../../../images/financeImages/dateIcon.png')
 
 export default class SingelCarSence extends Component {
 
@@ -92,7 +88,7 @@ const styles = StyleSheet.create({
     scroller:{
 
         marginTop: 44,
-        backgroundColor:ColorFont.COLORA3
+        backgroundColor:PAGECOLOR.COLORA3
     },
 
     buttonStyle: {
@@ -107,7 +103,7 @@ const styles = StyleSheet.create({
     },
     textStyle: {
 
-        fontSize: fontdapeSize(15),
+        fontSize: fontadapeSize(15),
         color: '#FFFFFF'
 
     }

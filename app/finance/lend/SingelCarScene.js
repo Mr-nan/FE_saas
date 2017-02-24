@@ -19,22 +19,17 @@ import  {
     LendRate,
     LendUseful,
     CommenButton,
-    adapeSize,
-    width,
-    fontdapeSize,
-    FEColor,
-    dateFormat
-} from './ComponentBlob'
-
+} from './component/ComponentBlob'
+import {width, adapeSize, fontadapeSize, PAGECOLOR,dateFormat} from './component/MethodComponent';
 
 //校验完成
 
 import DateTimePicker from 'react-native-modal-datetime-picker'
-const ColorFont =new FEColor();
+
 
 let changeDate;
 
-const imageSouce =require('../../images/financeImages/dateIcon.png')
+const imageSouce =require('../../../images/financeImages/dateIcon.png')
 
 export default class SingelCarSence extends Component {
     state = {
@@ -117,24 +112,25 @@ const styles = StyleSheet.create({
 
     container: {
 
-        flex: 1
+        flex: 1,
+        backgroundColor:PAGECOLOR.COLORA3,
     },
     scroller: {
 
         marginTop: 44,
-        backgroundColor: ColorFont.COLORA3,
+        backgroundColor: PAGECOLOR.COLORA3,
         paddingBottom:adapeSize(80)
     },
 
     lendInfo: {
         paddingTop: adapeSize(15),
         paddingBottom: adapeSize(10),
-        backgroundColor: ColorFont.COLORA3
+        backgroundColor: PAGECOLOR.COLORA3
     },
     input: {
 
         paddingBottom: adapeSize(10),
-        backgroundColor: ColorFont.COLORA3
+        backgroundColor: PAGECOLOR.COLORA3
     },
     buttonStyle: {
 
@@ -151,7 +147,7 @@ const styles = StyleSheet.create({
     },
     textStyle: {
 
-        fontSize: fontdapeSize(15),
+        fontSize: fontadapeSize(15),
         color: '#FFFFFF'
     }
 })

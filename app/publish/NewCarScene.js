@@ -17,11 +17,12 @@ import AutoDate from './page/AutoDate';
 import AutoMileage from './page/AutoMileage';
 import NewIndicator from './component/NewIndicator';
 import EditCarScene from './EditCarScene';
+import CarSourceScene from '../main/CarSourceScene';
 import BaseComponent from '../component/BaseComponent';
 
 import PixelUtil from '../utils/PixelUtil';
 const Pixel = new PixelUtil();
-const { width ,height} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 const background = require('../../images/publish/background.png');
 
 const barHeight = Pixel.getPixel(57);
@@ -38,14 +39,26 @@ export default class NewCarScene extends BaseComponent{
         };
     }
 
-    navigatorParams = {
+    //更多跳到编辑页
+    moreParams = {
         name: 'EditCarScene',
         component: EditCarScene,
-        params: {}
+        params: {fromNew:true}
     };
 
     _goToMore = ()=>{
-        this.toNextPage(this.navigatorParams);
+        this.toNextPage(this.moreParams);
+    };
+
+    //上传成功后
+    sourceParams ={
+        name: 'CarSourceScene',
+        component: CarSourceScene,
+        params: {}
+    };
+
+    _goToSource = ()=>{
+        this.toNextPage(this.sourceParams);
     };
 
     _onBack = (page) =>{
@@ -86,7 +99,10 @@ export default class NewCarScene extends BaseComponent{
                         onBack={()=>this._onBack(2)}
                         barHeight={barHeight} tabLabel="AutoType" />
                     <AutoDate carData={this.state.carData} onBack={()=>this._onBack(3)} barHeight={barHeight} tabLabel="AutoDate" />
-                    <AutoMileage carData={this.state.carData} onBack={()=>this._onBack(4)} barHeight={barHeight} tabLabel="AutoMileage"/>
+                    <AutoMileage
+                        goToSource={this._goToSource}
+                        carData={this.state.carData}
+                        onBack={()=>this._onBack(4)} barHeight={barHeight} tabLabel="AutoMileage"/>
                 </ScrollableTabView>
             </Image>
         );

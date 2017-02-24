@@ -12,9 +12,10 @@ import {
     TouchableOpacity,
 } from 'react-native';
 
-import BaseComponent from '../component/BaseComponent';
+import BaseComponent from '../../component/BaseComponent';
 import Picker from 'react-native-picker'
-import {LendDatePike, LendInputItem, LendItem, CGDCarItem, CommenButton, width, adapeSize} from './ComponentBlob'
+import {LendDatePike, LendInputItem, LendItem, CGDCarItem, CommenButton } from './component/ComponentBlob'
+import {width, adapeSize} from './component/MethodComponent'
 import CGDaddCarScenes from './CGDaddCarScenes';
 
 export  default  class CGDLendScenes extends BaseComponent {
@@ -90,7 +91,7 @@ export  default  class CGDLendScenes extends BaseComponent {
             return (<LendDatePike
                 lefTitle={rowData.title}
                 placeholder='提档后采购贷'
-                imageSouce={require('../../images/financeImages/celljiantou.png')}
+                imageSouce={require('../../../images/financeImages/celljiantou.png')}
                 imageStyle={{width:18,height:18}}
                 onPress={() => {
 
@@ -124,7 +125,7 @@ export  default  class CGDLendScenes extends BaseComponent {
         } else if (sectionID === '1' && rowID === '1') {
 
             return <LendDatePike lefTitle={rowData.title} placeholder='请选择用款时间'
-                                 imageSouce={require('../../images/financeImages/dateIcon.png')}/>
+                                 imageSouce={require('../../../images/financeImages/dateIcon.png')}/>
         } else {
 
             return (
