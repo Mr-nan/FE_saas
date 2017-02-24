@@ -290,7 +290,7 @@ export default class CarInfoScene extends BaseComponent {
                             <View style={styles.contentContainer}>
                                 <View style={styles.contentView}>
                                     {
-                                        typeof(carData.labels) &&
+                                        (typeof(carData.labels)!= "undefined"?carData.labels.length:false) &&
                                         (
                                             <View style={styles.carParameterView}>
                                             {
