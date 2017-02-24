@@ -14,7 +14,7 @@ import * as FontAndColor from '../../constant/fontAndColor';
 import  PixelUtil from '../../utils/PixelUtil';
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 import MyButton from '../../component/MyButton';
-
+import SelectMaskComponent from './SelectMaskComponent'
 
 
 var Pixel = new PixelUtil();
@@ -22,11 +22,11 @@ const Car = [
     {
         "cars": [
             {
-                "title":"姓名",
+                "title": "姓名",
                 "name": "wangyang"
             },
             {
-                "title":"性别",
+                "title": "性别",
                 "name": "nv"
             },
 
@@ -36,11 +36,11 @@ const Car = [
     {
         "cars": [
             {
-                "title":"所属公司",
+                "title": "所属公司",
                 "name": "北京爱法克有限责任公司"
             },
             {
-                "title":"角色",
+                "title": "角色",
                 "name": "管理员"
             },
         ],
@@ -49,104 +49,31 @@ const Car = [
     {
         "cars": [
             {
-                "title":"账号",
+                "title": "账号",
                 "name": "12344566675"
             },
             {
-                "title":"密码",
+                "title": "密码",
                 "name": "888888888"
             },
             {
-                "title":"确认密码",
+                "title": "确认密码",
                 "name": "********"
             },
 
         ],
         "title": "section2"
     },
-    {
-        "cars": [
-            {
-                "title":"账号",
-                "name": "12344566675"
-            },
-            {
-                "title":"密码",
-                "name": "888888888"
-            },
-            {
-                "title":"确认密码",
-                "name": "********"
-            },
 
-        ],
-        "title": "section2"
-    },
-    {
-        "cars": [
-            {
-                "title":"账号",
-                "name": "12344566675"
-            },
-            {
-                "title":"密码",
-                "name": "888888888"
-            },
-            {
-                "title":"确认密码",
-                "name": "********"
-            },
 
-        ],
-        "title": "section2"
-    },
-    {
-        "cars": [
-            {
-                "title":"账号",
-                "name": "12344566675"
-            },
-            {
-                "title":"密码",
-                "name": "888888888"
-            },
-            {
-                "title":"确认密码",
-                "name": "********"
-            },
-
-        ],
-        "title": "section2"
-    },
-    {
-        "cars": [
-            {
-                "title":"账号",
-                "name": "12344566675"
-            },
-            {
-                "title":"密码",
-                "name": "888888888"
-            },
-            {
-                "title":"确认密码",
-                "name": "********"
-            },
-
-        ],
-        "title": "section2"
-    },
 ]
 
-// let Car = require('./Car.json');
-/*
- * 获取屏幕的宽和高
- **/
 const {width, height} = Dimensions.get('window');
 
 export default class EditEmployeeScene extends Component {
     // 构造
     constructor(props) {
+
         super(props);
         // 初始状态
         //    拿到所有的json数据
@@ -194,16 +121,27 @@ export default class EditEmployeeScene extends Component {
             }
         );
 
+        this.xb = ['男', '女',];
+        this.gongneng = ['guanliyuan', 'caiwu', 'tuanyuan'];
+        this.gongsi = ['123', '234', '3345', 'wert', 'egs'];
         this.state = {
-            source: ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs)
+            source: ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
+            maskSource: this.xb
 
         };
+    }
+
+    _onClick = (rowID)=> {
+        console.log(this.state.maskSource[rowID]);
     }
 
     render() {
         return (
             <View style={styles.container}>
-
+                <SelectMaskComponent viewData={this.state.maskSource} onClick={(rowID)=>this._onClick(rowID)}
+                                     ref={(modal)=> {
+                                         this.selectModal = modal
+                                     }}/>
                 <ListView
                     contentContainerStyle={styles.listStyle}
                     dataSource={this.state.source}
@@ -220,17 +158,37 @@ export default class EditEmployeeScene extends Component {
         );
     }
 
+
+    _rowAndSectionClick = (rowID, sectionID)=> {
+        if (sectionID === 0 && rowID === 1) {
+            this._openModal(this.xb);
+        } else if (sectionID === 1 && rowID === 0) {
+            this._openModal(this.gongsi);
+        } else if (sectionID === 1 && rowID === 1) {
+            this._openModal(this.gongneng);
+        }
+    }
+
+    _openModal = (dt) =>{
+        this.selectModal.changeData(dt);
+        this.selectModal.openModal()
+    }
+
     // 每一行中的数据
-    _renderRow = (rowData)=> {
+    _renderRow = (rowData, sectionID, rowID)=> {
+
         return (
-            <View style={styles.rowView} >
+            <TouchableOpacity onPress={()=>this._rowAndSectionClick(rowID, sectionID)
+            }>
+                <View style={styles.rowView}>
 
-                <Text style={styles.rowLeftTitle}>{rowData.title}</Text>
-                <Text style={styles.rowRightTitle}>{rowData.name }</Text>
-                <Image source={cellJianTou} style={styles.rowjiantouImage}/>
+                    <Text style={styles.rowLeftTitle}>{rowData.title}</Text>
+                    <Text style={styles.rowRightTitle}>{rowData.name }</Text>
+                    <Image source={cellJianTou} style={styles.rowjiantouImage}/>
 
 
-            </View>
+                </View>
+            </TouchableOpacity>
         );
     }
     // 每一组对应的数据
@@ -247,10 +205,10 @@ const styles = StyleSheet.create({
 
         flex: 1,
         marginTop: Pixel.getPixel(0),   //设置listView 顶在最上面
-        backgroundColor:FontAndColor.COLORA3,
+        backgroundColor: FontAndColor.COLORA3,
     },
     listStyle: {
-        marginTop:Pixel.getPixel(64)
+        marginTop: Pixel.getPixel(64)
     },
     sectionView: {
         height: Pixel.getPixel(10),
@@ -260,46 +218,44 @@ const styles = StyleSheet.create({
         height: 44,
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor:'white',
-        borderBottomColor:FontAndColor.COLORA4,
-        borderBottomWidth:1,
-        flexDirection:'row'
+        backgroundColor: 'white',
+        borderBottomColor: FontAndColor.COLORA4,
+        borderBottomWidth: 1,
     },
     rowLeftTitle: {
-        marginLeft:Pixel.getPixel(15),
-        flex:1,
-        fontSize:Pixel.getFontPixel(FontAndColor.LITTLEFONT28) ,
-        color:FontAndColor.COLORA0,
+        marginLeft: Pixel.getPixel(15),
+        flex: 1,
+        fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),
+        color: FontAndColor.COLORA0,
 
     },
     rowRightTitle: {
-        marginRight:Pixel.getPixel(5),
-        color:FontAndColor.COLORA1,
-        fontSize:Pixel.getFontPixel(FontAndColor.LITTLEFONT28) ,
+        marginRight: Pixel.getPixel(5),
+        color: FontAndColor.COLORA1,
+        fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),
 
     },
     rowjiantouImage: {
         width: Pixel.getPixel(12),
         height: Pixel.getPixel(12),
-        marginRight:Pixel.getPixel(15),
+        marginRight: Pixel.getPixel(15),
 
     },
     loginBtnStyle: {
         height: Pixel.getPixel(44),
         width: width - Pixel.getPixel(30),
-        backgroundColor: FontAndColor.COLORB0,
+        backgroundColor: FontAndColor.COLORB2,
         marginTop: Pixel.getPixel(30),
         marginBottom: Pixel.getPixel(30),
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: Pixel.getPixel(4),
-        marginLeft:Pixel.getPixel(15)
+        marginLeft: Pixel.getPixel(15)
     },
     loginButtonTextStyle: {
         color: FontAndColor.COLORA3,
         fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT)
     },
-
 
 
 });
