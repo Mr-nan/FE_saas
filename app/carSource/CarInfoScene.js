@@ -25,17 +25,6 @@ import * as AppUrls from "../constant/appUrls";
 
 var ScreenWidth = Dimensions.get('window').width;
 
-
-const carParameterData = [
-    '迎宾灯',
-    '全时四驱',
-    '定速巡航',
-    '自动驾驶',
-    '全景天窗',
-    '车道保持',
-
-];
-
 const carParameterViewColor = [
 
     'rgba(5, 197, 194,0.15)',
@@ -87,28 +76,6 @@ const carIconsData = [
 ];
 
 
-const carIconsContentData = [
-    {
-        title: '2013-05-10',
-    },
-    {
-        title: '2013-11-10',
-    },
-    {
-        title: '10.8万公里',
-    },
-    {
-        title: '2次',
-    },
-    {
-        title: '',
-    },
-    {
-        title: '',
-    },
-
-];
-
 const carImageArray = [
     'https://images.unsplash.com/photo-1441260038675-7329ab4cc264?h=1024',
     'https://images.unsplash.com/photo-1441126270775-739547c8680c?h=1024',
@@ -117,6 +84,7 @@ const carImageArray = [
     'https://images.unsplash.com/photo-1440964829947-ca3277bd37f8?h=1024',
     'https://images.unsplash.com/photo-1440964829947-ca3277bd37f8?h=1024'
 ];
+
 
 export default class CarInfoScene extends BaseComponent {
 
@@ -173,14 +141,12 @@ export default class CarInfoScene extends BaseComponent {
                 carData.car_color+'/'+carData.trim_color,
             ];
 
-
+          console.log(carData);
             this.setState({
 
                 carData:carData,
 
             });
-
-
 
         }, (error) => {
 
@@ -278,7 +244,7 @@ export default class CarInfoScene extends BaseComponent {
                 }}>
                     <ImagePageView
                         dataSource={this.state.imageArray}    //数据源（必须）
-                        renderPage={this.renderImagePage}          //page页面渲染方法（必须）
+                        renderPage={this.renderImagePage}      //page页面渲染方法（必须）
                         isLoop={false}                        //是否可以循环
                         autoPlay={false}                      //是否自动
                         locked={false}                        //为true时禁止滑动翻页
@@ -310,52 +276,62 @@ export default class CarInfoScene extends BaseComponent {
                                            {/*source={require('../../images/carSourceImages/browse.png')}/>*/}
                                     {/*<Text style={styles.browseText}>1024次浏览</Text>*/}
                                 </View>
-                                <Text style={styles.priceText}>{carData.dealer_price +'万'}</Text>
+                                {
+                                    carData.dealer_price>0 &&(
+                                        <Text style={styles.priceText}>{carData.dealer_price +'万'}</Text>
+                                    )
+                                }
+
                             </View>
                         </View>
                     </View>
-                    <View style={styles.contentContainer}>
-                        <View style={styles.contentView}>
-                            {
-                                carData.labels && ( <View style={styles.carParameterView}>
+                    {
+                        (carData.labels.length|| carData.describe!=='' || carData.city_name!=='' || carData.plate_number!=='') && (
+                            <View style={styles.contentContainer}>
+                                <View style={styles.contentView}>
                                     {
-                                        carData.labels.map((data, index) => {
-                                            return (<View
-                                                style={[styles.carParameterItem, {backgroundColor: carParameterViewColor[index % 3]}]}
-                                                key={index}>
-                                                <Text
-                                                    style={[styles.carParameterText, {color: carParameterTextColor[index % 3]}]}>{data.value}</Text>
-                                            </View>)
+                                        carData.labels.length && ( <View style={styles.carParameterView}>
+                                            {
+                                                carData.labels.map((data, index) => {
+                                                    return (<View
+                                                        style={[styles.carParameterItem, {backgroundColor: carParameterViewColor[index % 3]}]}
+                                                        key={index}>
+                                                        <Text
+                                                            style={[styles.carParameterText, {color: carParameterTextColor[index % 3]}]}>{data.value}</Text>
+                                                    </View>)
 
-                                        })
+                                                })
+                                            }
+                                        </View>)
+
                                     }
-                                </View>)
 
-                            }
+                                    {
+                                        carData.describe!==''&&( <View style={styles.carDepictView}>
+                                            <Text style={styles.carDepictText}>{carData.describe}</Text>
+                                        </View>)
 
-                            {
-                                carData.describe!==''&&( <View style={styles.carDepictView}>
-                                    <Text style={styles.carDepictText}>{carData.describe}</Text>
-                                </View>)
+                                    }
 
-                            }
-
-                            <View style={styles.carAddressView}>
-                                {
-                                    carData.city_name? (<View style={styles.carAddressSubView}>
-                                        <Text style={styles.carAddressTitleText}>商户所在地: </Text>
-                                        <Text style={styles.carAddressSubTitleText}>{carData.city_name}</Text>)
-                                    </View>):(null)
-                                }
-                                {
-                                    carData.plate_number?(<View style={styles.carAddressSubView}>
-                                        <Text style={styles.carAddressTitleText}>挂牌地: </Text>
-                                        <Text style={styles.carAddressSubTitleText}>{carData.plate_number}</Text>
-                                    </View>):(null)
-                                }
+                                    <View style={styles.carAddressView}>
+                                        {
+                                            carData.city_name!=='' &&<View style={styles.carAddressSubView}>
+                                                <Text style={styles.carAddressTitleText}>商户所在地: </Text>
+                                                <Text style={styles.carAddressSubTitleText}>{carData.city_name}</Text>)
+                                            </View>
+                                        }
+                                        {
+                                            carData.plate_number!==''&&<View style={styles.carAddressSubView}>
+                                                <Text style={styles.carAddressTitleText}>挂牌地: </Text>
+                                                <Text style={styles.carAddressSubTitleText}>{carData.plate_number}</Text>
+                                            </View>
+                                        }
+                                    </View>
+                                </View>
                             </View>
-                        </View>
-                    </View>
+                        )
+
+                    }
                     <View style={styles.carIconsContainer}>
                         <View style={styles.carIconsView}>
                             {
@@ -407,12 +383,12 @@ class CarIconView extends Component {
     render() {
 
         const {imageData, imageHighData, title, content} = this.props;
-
+        const bool = (content&&content!=='/'&&content!=='次'&&content!=='万公里')?true:false;
         return (
             <View style={styles.carIconItem}>
-                <Image source={content ? imageHighData : imageData}/>
+                <Image source={bool ? imageHighData : imageData}/>
                 <Text
-                    style={[styles.carIconItemContentText, (content&&content!==' / '&&content!=='次'&&content!=='万公里' )&& {color: fontAndColor.COLORA0}]}>{content ? content : '暂无'}</Text>
+                    style={[styles.carIconItemContentText, bool && {color: fontAndColor.COLORA0}]}>{bool ? content : '暂无'}</Text>
                 <Text style={styles.carIconItemTitleText}>{title}</Text>
             </View>
         )

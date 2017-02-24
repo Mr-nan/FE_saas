@@ -28,33 +28,29 @@ import CarBrandSelectScene from './CarBrandSelectScene';
 import CityListScene from './CityListScene';
 import  {request} from '../utils/RequestUtil';
 import PixelUtil from '../utils/PixelUtil';
+import * as console from "../../node_modules/react-native/packager/react-packager/src/Logger/index";
 const Pixel = new PixelUtil();
 
 const carAgeSource = [
     {
         title:'1年以内' ,
         value:'0|1',
-        checked:false,
     },
     {
         title:'3年以内',
         value:'0|3',
-        checked:false,
     },
     {
         title:'5年以内' ,
         value:'0|4',
-        checked:false,
     },
     {
         title:'8年以内' ,
         value:'0|8',
-        checked:false,
     },
     {
         title:'10年以内' ,
         value:'0|10',
-        checked:false,
     },
 
 ];
@@ -63,22 +59,18 @@ const carKMSource = [
     {
         title:'1万公里以内',
         value:'0|1',
-        checked:false,
     },
     {
         title:'3万公里以内' ,
         value:'0|3',
-        checked:false,
     },
     {
         title:'5万公里以内' ,
         value:'0|5',
-        checked:false,
     },
     {
         title:'10万公里以内' ,
         value:'0|10',
-        checked:false,
     },
 
 
@@ -99,7 +91,7 @@ const sequencingDataSource = [
     },
 ];
 
-const carData = new Array;
+let carData = new Array;
 
 const APIParameter = {
 
