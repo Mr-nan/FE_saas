@@ -20,10 +20,12 @@ import {
 import * as fontAndColor from '../constant/fontAndColor';
 import BaseComponent from '../component/BaseComponent';
 import HeadView     from './znComponent/CarSourceSelectHeadView';
+import ListFooter       from './znComponent/LoadMoreFooter';
 import SGListView   from 'react-native-sglistview';
 import CarCell      from './znComponent/CarCell';
 import CarInfoScene from './CarInfoScene';
 import CarBrandSelectScene from './CarBrandSelectScene';
+import CityListScene from './CityListScene';
 import  {request} from '../utils/RequestUtil';
 import PixelUtil from '../utils/PixelUtil';
 const Pixel = new PixelUtil();
@@ -31,22 +33,27 @@ const Pixel = new PixelUtil();
 const carAgeSource = [
     {
         title:'1年以内' ,
+        value:'0|1',
         checked:false,
     },
     {
-        title:'3年以内' ,
+        title:'3年以内',
+        value:'0|3',
         checked:false,
     },
     {
         title:'5年以内' ,
+        value:'0|4',
         checked:false,
     },
     {
         title:'8年以内' ,
+        value:'0|8',
         checked:false,
     },
     {
         title:'10年以内' ,
+        value:'0|10',
         checked:false,
     },
 
@@ -54,47 +61,62 @@ const carAgeSource = [
 
 const carKMSource = [
     {
-        title:'不限',
-        checked:false,
-    },
-    {
         title:'1万公里以内',
+        value:'0|1',
         checked:false,
     },
     {
         title:'3万公里以内' ,
+        value:'0|3',
         checked:false,
     },
     {
         title:'5万公里以内' ,
+        value:'0|5',
         checked:false,
     },
     {
         title:'10万公里以内' ,
+        value:'0|10',
         checked:false,
     },
-    {
-        title:'10万公里以上',
-        checked:false,
-    },
+
 
 ];
 
 const sequencingDataSource = [
-
     {
         title:'最新发布',
-
+        value:'1',
     },
     {
         title:'里程少',
-        checked:false,
+        value:'2',
     },
     {
         title:'车龄短' ,
-        checked:false,
+        value:'3',
     },
 ];
+
+const carData = new Array;
+
+const APIParameter = {
+
+    brand_id:0,
+    series_id:0,
+    model_id:0,
+    provice_id:0,
+    city_id:0,
+    order_type:0,
+    coty:0,
+    mileage:0,
+    rows:20,
+    page:1,
+    start:0,
+    type:1,
+    status:1,
+};
 
 export  default  class  carSourceListScene extends  BaseComponent{
     // 构造
@@ -110,12 +132,27 @@ export  default  class  carSourceListScene extends  BaseComponent{
             dataSource:carSource,
             checkedSource:carAgeSource,
             isHide:true,
+            isFillData:1,
             isHideSequencing:true,
+            isLoadMore:true,
             currentCheckedIndex:1,
-            sequencingType:'',
-            checkedCarType:'',
-            checkedCarAgeType:'',
-            checkedCarKMType:'',
+            sequencingType:{
+                title:'',
+                value:'',
+            },
+            checkedCarType:{
+                title:'',
+                brand_id:'',
+                series_id:'',
+            },
+            checkedCarAgeType:{
+                title:'',
+                value:'',
+            },
+            checkedCarKMType:{
+                title:'',
+                value:'',
+            },
 
         };
 
@@ -141,25 +178,24 @@ export  default  class  carSourceListScene extends  BaseComponent{
     // 获取数据
     loadData=()=>{
 
-        let url = 'http://dev.api-gateway.dycd.com/' + 'v1/car/index?token=0ac50af9a02b752ca0f48790dc8ea6d1&device_code=dycd_dms_manage_ios';
-        let params={
-            brand_id:0,
-            city_id:0,
-            model_id:0,
-            provice_id:0,
-            series_id:0,
-            rows:20,
-            page:1,
+        let url = 'http://dev.api-gateway.dycd.com/' + 'v1/car/index';
 
-        }
-
-
-        request(url,'post',params)
+        console.log(APIParameter);
+        APIParameter.page=0;
+        request(url,'post',APIParameter)
             .then((response) => {
 
+                carData = response.mjson.data.list;
+                APIParameter.status = response.mjson.data.status;
                 console.log(response);
+                if(this.state.isFillData !== APIParameter.status)
+                {
+                    this.setState({
+                        isFillData:APIParameter.status,
+                    });
+                }
                 this.setState({
-                    dataSource:this.state.dataSource.cloneWithRows(response.mjson.data.list),
+                    dataSource:this.state.dataSource.cloneWithRows(carData),
                     isRefreshing:false,
                 });
 
@@ -174,10 +210,64 @@ export  default  class  carSourceListScene extends  BaseComponent{
 
     };
 
+    loadMoreData=()=>{
 
-        presCarTypeScene=()=>{
-        let navigatorParams =   {
+        let url = 'http://dev.api-gateway.dycd.com/' + 'v1/car/index';
+        APIParameter.page +=1;
+        console.log(APIParameter);
+        request(url,'post',APIParameter)
+            .then((response) => {
 
+                APIParameter.status = response.mjson.data.status;
+                console.log(response);
+                if(this.state.isFillData !== APIParameter.status)
+                {
+                    this.setState({
+                        isFillData:APIParameter.status,
+                    });
+                }
+                let data = new  Array;
+                data =response.mjson.data.list
+                for (let i=0;i<data.length;i++)
+                {
+                    carData.push(data[i]);
+                }
+                console.log(carData.length);
+                this.setState({
+                    dataSource:this.state.dataSource.cloneWithRows(carData),
+                });
+
+            }, (error) => {
+
+                console.log(error);
+
+            });
+    }
+
+    toEnd=()=>{
+
+       if(carData.length && APIParameter.status==1)
+       {
+           this.loadMoreData();
+       }
+
+    };
+
+    loactionClick=()=>{
+
+        let navigatorParams = {
+            name: "CityListScene",
+            component: CityListScene,
+            params: {
+                checkedCarType: this.state.checkedCarType,
+                checkedCarClick: this.checkedCarClick,
+            }
+        }
+        this.props.callBack(navigatorParams);
+    }
+
+    presCarTypeScene=()=>{
+        let navigatorParams = {
             name:"CarBrandSelectScene",
             component:CarBrandSelectScene,
             params:{
@@ -188,7 +278,9 @@ export  default  class  carSourceListScene extends  BaseComponent{
         this.props.callBack(navigatorParams);
 
     }
-    //  筛选条件选择
+
+
+    //  筛选条件事件
     headViewOnPres = (index,isHighlighted,setImgHighlighted)=> {
 
         if(index===1) {
@@ -226,58 +318,183 @@ export  default  class  carSourceListScene extends  BaseComponent{
 
     };
 
+    // 选择意向
     checkRecommendClick =(isCheck)=>{
-
-        alert(isCheck);
-
         if(isCheck)
         {
+            APIParameter.type=1;
             this.allDelectClick();
+        }else
+        {
+            APIParameter.type=0;
         }
+        this.refreshingData();
+
     };
 
+    //  选择车型
     checkedCarClick=(carType)=>{
 
         this.setState({
-            checkedCarType:carType,
+            checkedCarType:{
+                title:carType,
+                brand_id:'',
+                model_id:'',
+            },
         });
 
         if(this.refs.headView.state.isCheckRecommend)
         {
             this.refs.headView.setCheckRecommend(false)
+        }else {
+            this.refreshingData();
         }
 
     };
 
-    sequencingClick=()=>{
+    // 筛选车龄和里程
+    checkCarAgeAnKMClick=(data,index)=>{
+
+        this.refs.headView.checkSelect(this.state.currentCheckedIndex);
+
+        let {checkedCarAgeType,checkedCarKMType} = this.state;
+
+        if(this.state.currentCheckedIndex == 2)
+        {
+            checkedCarAgeType ={
+                title:this.state.checkedSource[index].title,
+                value:this.state.checkedSource[index].value,
+            }
+            APIParameter.coty=checkedCarAgeType.value;
+
+        }
+        if (this.state.currentCheckedIndex == 3)
+        {
+            checkedCarKMType = {
+                title:this.state.checkedSource[index].title,
+                value:this.state.checkedSource[index].value,
+            }
+
+            APIParameter.mileage=checkedCarKMType.value;
+        }
+
+
         this.setState({
-            sequencingType:'',
+
+            checkedCarAgeType,
+            checkedCarKMType,
+            isHide:true,
+
         });
 
+        if(this.refs.headView.state.isCheckRecommend)
+        {
+            this.refs.headView.setCheckRecommend(false)
+        }else {
+            this.refreshingData();
+        }
+
     };
+
+    // 筛选排序
+    sequencingCheckedClick=(title,value)=>{
+
+        this.hideSequencingView();
+        this.setState({
+            sequencingType:{
+
+                title:title,
+                value:value,
+
+            },
+        });
+        APIParameter.order_type=value;
+        this.refreshingData();
+    };
+
+    sequencingClick=()=>{
+        this.setState({
+            sequencingType:{
+                title:'',
+                value:'',
+            },
+        });
+        APIParameter.order_type=0;
+        this.refreshingData();
+    };
+
     carTypeClick=()=>{
         this.setState({
             checkedCarType:'',
         });
 
     };
+
     carAgeClick=()=>{
         this.setState({
-            checkedCarAgeType:'',
+            checkedCarAgeType:{
+                title:'',
+                value:'',
+            },
         });
+
+        APIParameter.coty=0;
+        if(this.refs.headView.state.isCheckRecommend)
+        {
+            this.refs.headView.setCheckRecommend(false)
+        }else {
+            this.refreshingData();
+        }
     };
+
     carKMClick=()=>{
         this.setState({
-            checkedCarKMType:'',
+            checkedCarKMType:{
+                title:'',
+                value:'',
+            },
         });
+        APIParameter.mileage=0;
+        if(this.refs.headView.state.isCheckRecommend)
+        {
+            this.refs.headView.setCheckRecommend(false)
+        }else {
+            this.refreshingData();
+        }
     };
+
     allDelectClick=()=>{
+
         this.setState({
-            sequencingType:'',
-            checkedCarType:'',
-            checkedCarAgeType:'',
-            checkedCarKMType:'',
+            sequencingType:{
+                title:'',
+                value:'',
+            },
+            checkedCarType:{
+                title:'',
+                value:'',
+            },
+            checkedCarAgeType:{
+                title:'',
+                value:'',
+            },
+            checkedCarKMType:{
+            title:'',
+                value:'',
+        },
         });
+
+            APIParameter.order_type=0;
+            APIParameter.mileage=0;
+            APIParameter.coty=0;
+
+        if(this.refs.headView.state.isCheckRecommend)
+        {
+            this.refs.headView.setCheckRecommend(false);
+
+        }else {
+            this.refreshingData();
+        }
 
     };
 
@@ -296,18 +513,6 @@ export  default  class  carSourceListScene extends  BaseComponent{
         });
     };
 
-    sequencingCheckedClick=(title)=>{
-
-        this.hideSequencingView();
-        this.setState({
-            sequencingType:title,
-        });
-
-        if(this.refs.headView.state.isCheckRecommend)
-        {
-            this.refs.headView.setCheckRecommend(false)
-        }
-    };
 
 
     carCellOnPres = (carID,sectionID,rowID)=>{
@@ -323,20 +528,30 @@ export  default  class  carSourceListScene extends  BaseComponent{
         this.props.callBack(navigatorParams);
     };
 
+   renderListFooter=()=>{
 
+       if(this.state.isRefreshing)
+       {
+           return null;
+       }else
+       {
+           return (<ListFooter isLoadAll={this.state.isFillData==1?false:true}/>)
+       }
+
+   }
 
     render(){
         return(
 
             <View style={styles.contaier}>
                 <View style={styles.contaier}>
-                    <CarListNavigatorView searchClick={this.presCarTypeScene}/>
+                    <CarListNavigatorView searchClick={this.presCarTypeScene} loactionClick={this.loactionClick}/>
                     <View style={{height:40}}>
                         <HeadView ref="headView" onPres={this.headViewOnPres} checkRecommendClick={this.checkRecommendClick}/>
                     </View>
                     {
 
-                        (this.state.checkedCarKMType || this.state.checkedCarAgeType || this.state.checkedCarType || this.state.sequencingType)?
+                        (this.state.checkedCarKMType.title || this.state.checkedCarAgeType.title || this.state.checkedCarType.title || this.state.sequencingType.title)?
                             ( <CheckedContentView
                                 sequencingType={this.state.sequencingType}
                                 carType={this.state.checkedCarType}
@@ -364,6 +579,10 @@ export  default  class  carSourceListScene extends  BaseComponent{
                                 renderRow={(item,sectionID,rowID) =>
                                     <CarCell style={styles.carCell} carCellData={item} onPress={()=>{this.carCellOnPres(item.id,sectionID,rowID)}}/>
                                 }
+                                renderFooter={
+                                    this.renderListFooter
+                                }
+                                onEndReached={this.toEnd}
                                 refreshControl={
                                     <RefreshControl
                                         refreshing={this.state.isRefreshing}
@@ -389,41 +608,15 @@ export  default  class  carSourceListScene extends  BaseComponent{
                                             return(
                                                 <TouchableOpacity  key={index} onPress={()=>{
 
-                                                    this.refs.headView.checkSelect(this.state.currentCheckedIndex);
-
-                                                    let {checkedCarAgeType,checkedCarKMType} = this.state;
-
-                                                    if(this.state.currentCheckedIndex == 2)
-                                                    {
-                                                        checkedCarAgeType = this.state.checkedSource[index].title;
-
-                                                    }
-                                                    if (this.state.currentCheckedIndex == 3)
-                                                    {
-                                                        checkedCarKMType = this.state.checkedSource[index].title
-                                                    }
-
-                                                    this.setState({
-
-                                                        checkedCarAgeType,
-                                                        checkedCarKMType,
-                                                        isHide:true,
-
-                                                    });
-
-                                                    if(this.refs.headView.state.isCheckRecommend)
-                                                    {
-                                                        this.refs.headView.setCheckRecommend(false)
-                                                    }
-
+                                                    this.checkCarAgeAnKMClick(data,index);
                                                 }}>
                                                     <View style={styles.checkedCell} >
 
                                                         {
                                                             this.state.currentCheckedIndex == 2 ? (
-                                                                <Text  style={[styles.checkedCellText,data.title==this.state.checkedCarAgeType && {color:fontAndColor.COLORB0}]} >{data.title}</Text>
+                                                                <Text  style={[styles.checkedCellText,data.title==this.state.checkedCarAgeType.title && {color:fontAndColor.COLORB0}]} >{data.title}</Text>
                                                             ) : (
-                                                                <Text  style={[styles.checkedCellText,data.title==this.state.checkedCarKMType && {color:fontAndColor.COLORB0}]} >{data.title}</Text>
+                                                                <Text  style={[styles.checkedCellText,data.title==this.state.checkedCarKMType.title && {color:fontAndColor.COLORB0}]} >{data.title}</Text>
                                                             )
                                                         }
 
@@ -461,39 +654,39 @@ class CheckedContentView extends  Component {
 
             <View style={styles.checkedContentView}>
                 {
-                    sequencingType?(
+                    sequencingType.title?(
                         <TouchableOpacity onPress={sequencingClick}>
                             <View style={styles.checkedContentItem}>
-                                <Text style={styles.checkedItemText}>{sequencingType}</Text>
+                                <Text style={styles.checkedItemText}>{sequencingType.title}</Text>
                                 <Image style={styles.checkedDeleteImg} source={require('../../images/deleteIcon2x.png')}/>
                             </View>
                         </TouchableOpacity>):(null)
 
                 }
                 {
-                    carType?(
+                    carType.title?(
                         <TouchableOpacity onPress={carTypeClick}>
                             <View style={styles.checkedContentItem}>
-                                <Text style={styles.checkedItemText}>{carType}</Text>
+                                <Text style={styles.checkedItemText}>{carType.title}</Text>
                                 <Image style={styles.checkedDeleteImg} source={require('../../images/deleteIcon2x.png')}/>
                             </View>
                         </TouchableOpacity>):(null)
 
                 }
                 {
-                    carAge?(
+                    carAge.title?(
                         <TouchableOpacity onPress={carAgeClick}>
                             <View style={styles.checkedContentItem}>
-                                <Text style={styles.checkedItemText}>{carAge}</Text>
+                                <Text style={styles.checkedItemText}>{carAge.title}</Text>
                                 <Image style={styles.checkedDeleteImg} source={require('../../images/deleteIcon2x.png')}/>
                             </View>
                         </TouchableOpacity>):(null)
                 }
                 {
-                    carKM?(
+                    carKM.title?(
                         <TouchableOpacity onPress={carKMClick}>
                             <View style={styles.checkedContentItem}>
-                                <Text style={styles.checkedItemText}>{carKM}</Text>
+                                <Text style={styles.checkedItemText}>{carKM.title}</Text>
                                 <Image style={styles.checkedDeleteImg} source={require('../../images/deleteIcon2x.png')}/>
                             </View>
                         </TouchableOpacity>):(null)
@@ -544,7 +737,7 @@ class SequencingView extends Component{
                                 return(
                                     <TouchableOpacity  key={index} onPress={()=>{
 
-                                       checkedClick(data.title);
+                                       checkedClick(data.title,data.value);
                                         hideClick();
 
                                     }}>
@@ -573,10 +766,10 @@ class CarListNavigatorView extends Component{
 
             <View style={styles.navigatorView}>
                 <View style={styles.navitgatorContentView}>
-                    <View style={styles.navigatorLoactionView}>
-                        <Image style={{marginLeft:15}} source={require('../../images/carSourceImages/location.png')}/>
-                        <Text style={styles.navigatorText}>全国</Text>
-                    </View>
+                    {/*<TouchableOpacity style={styles.navigatorLoactionView} onPress={this.props.loactionClick}>*/}
+                        {/*<Image style={{marginLeft:15}} source={require('../../images/carSourceImages/location.png')}/>*/}
+                        {/*<Text style={styles.navigatorText}>全国</Text>*/}
+                    {/*</TouchableOpacity>*/}
                     <TouchableOpacity onPress={this.props.searchClick}>
                         <View style={styles.navigatorSousuoView}>
                             <Image style={{marginLeft:15,marginRight:10}} source={require('../../images/carSourceImages/sousuoicon.png')}/>
@@ -724,10 +917,13 @@ const styles = StyleSheet.create({
     },
     navitgatorContentView:{
 
+        flex:1,
         flexDirection:'row',
         marginTop:20,
-        width:44,
-        alignItems:'center'
+        height:44,
+        alignItems:'center',
+        justifyContent:'center',
+
     },
 
     navigatorLoactionView:{
@@ -735,14 +931,20 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         width:85,
         alignItems:'center',
+
+
     },
     navigatorSousuoView:{
         height:25,
         borderRadius:5,
         backgroundColor:'white',
         alignItems:'center',
-        width:ScreenWidth-85-15,
-        flexDirection:'row'
+        width:ScreenWidth-40,
+        flexDirection:'row',
+        justifyContent:'center',
+
+
+
     },
     navigatorText:{
       marginLeft:6,

@@ -17,10 +17,10 @@ const request = (url, method, params) => {
 
     return new Promise((resolve, reject) => {
         StorageUtil.mGetItem(StorageKeyNames.token, (data) => {
-            let token = '';
-            if (data.code === 1) {
-                token = data.result;
-            }
+            let token = '0ac50af9a02b752ca0f48790dc8ea6d1';
+            // if (data.code === 1) {
+            //     token = data.result;
+            // }
             let device_code = '';
             if(Platform.OS==='android'){
                 device_code='dycd_dms_manage_android';
@@ -37,19 +37,20 @@ const request = (url, method, params) => {
                     } else {
                         isOk = false;
                     }
+                    console.log(response);
                     return response.json();
                 })
                 .then((responseData) => {
                     if (isOk) {
-                        console.log("success----------" + JSON.stringify(responseData));
+                        // console.log("success----------" + JSON.stringify(responseData));
                         resolve({mjson: responseData, mycode: 1});
                     } else {
-                        console.log("error----------" + JSON.stringify(responseData));
+                        // console.log("error----------" + JSON.stringify(responseData));
                         resolve(responseData);
                     }
                 })
                 .catch((error) => {
-                    console.log("error----------" + error);
+                    // console.log("error----------" + error);
                     reject(error);
                 });
         })

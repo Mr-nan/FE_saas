@@ -22,18 +22,25 @@ export default class CarCell extends Component {
        this.props.onPress(this.props.carMainText);
 
     };
+
+    dateReversal=(time)=>{
+
+        const date = new Date();
+        date.setTime(time);
+        return(date.getFullYear()+"年"+(date.getMonth()+1)+"月"+date.getDate());
+
+    };
+
     render(){
 
         const {carCellData}= this.props;
-        console.log(carCellData);
-
         return(
 
             <TouchableOpacity onPress={this.cellClick}>
             <View style={[styles.container,styles.lineBottom]} >
 
                 <View style={styles.imageView}>
-                    <Image style={styles.image}/>
+                    <Image style={styles.image} source={{uri:carCellData.img}}/>
                 </View>
 
                 <View style={[styles.textContainer]}>
@@ -43,7 +50,7 @@ export default class CarCell extends Component {
 
                     </View>
                     <View style={{backgroundColor:'white'}}>
-                        <Text style={styles.subTitleText}>{carCellData.mileage}</Text>
+                        <Text style={styles.subTitleText}>{this.dateReversal(carCellData.create_time+'000')+'/'+carCellData.mileage+'万公里'}</Text>
                     </View>
 
                 </View>
@@ -54,8 +61,9 @@ export default class CarCell extends Component {
         )
     }
 
-
 }
+
+
 const styles = StyleSheet.create({
 
     container:{
