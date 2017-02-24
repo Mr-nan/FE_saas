@@ -120,7 +120,7 @@ export default class MainPage extends BaseComponent {
         this.state = {
 
             // selectedTab: tabArray[0].ref,
-            selectedTab: tabArray[tabArray.length - 2].ref,
+            selectedTab: tabArray[tabArray.length - 1].ref,
         }
     }
 

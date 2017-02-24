@@ -82,7 +82,8 @@ export default class SetPwd extends BaseComponent {
             this.refs.toast.changeType(ShowToast.TOAST, "两次密码输入不一致");
         } else {
             let maps = {
-                confirm_pwd: oldPassword,
+                old_pwd: oldPassword,
+                confirm_pwd: newPasswordAgain,
                 pwd: newPassword,
             };
             request(AppUrls.CHANGEPWD, 'Post', maps)

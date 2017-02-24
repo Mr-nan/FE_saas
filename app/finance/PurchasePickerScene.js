@@ -18,8 +18,6 @@ const {width, height} = Dimensions.get('window');
 import PixelUtil from '../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import * as fontAndColor from '../constant/fontAndColor';
-let MovleData = require('./carImage.json');
-let movies = MovleData.retdata;
 import BaseComponent from '../component/BaseComponent';
 import NavigationView from '../component/AllNavigationView';
 import PurchasePickerItem from './component/PurchasePickerItem';

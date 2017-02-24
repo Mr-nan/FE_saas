@@ -31,7 +31,19 @@ export default class AutoDate extends Component{
         this.type = '';
         let manufacture = this.props.carData.manufacture;
         let init_reg = this.props.carData.init_reg;
-        let hasRegister = this.props.carData.v_type === '1';
+        let hasRegister = this.props.carData.v_type === '1' || this.props.carData.v_type === '';
+        if(this.props.carData.model !== ''){
+            let model = JSON.parse(this.props.carData.model);
+            let model_year = model.model_year;
+            if(typeof(model_year) == "undefined" || model_year === ""){
+                model_year='2000';
+            }
+            if(manufacture === '') manufacture = model_year +'-06';
+            if(init_reg === '') init_reg = model_year +'-06';
+            SQLite.changeData(
+                'UPDATE publishCar SET manufacture = ?,init_reg = ? WHERE vin = ?',
+                [ manufacture,init_reg, this.props.carData.vin]);
+        }
         this.state ={
             factoryDate:manufacture,
             registerDate:init_reg,
@@ -53,7 +65,7 @@ export default class AutoDate extends Component{
 
     componentWillReceiveProps(nextProps: Object) {
         this.setState({
-            hasRegister: nextProps.carData.v_type === '1'
+            hasRegister: nextProps.carData.v_type === '1'|| this.props.carData.v_type === ''
         });
     }
 
@@ -117,7 +129,7 @@ export default class AutoDate extends Component{
                         backIconClick={this._onBack}
                         title='选择日期'
                         wrapStyle={styles.wrapStyle}
-                        renderRihtFootView={this._renderRihtFootView} />
+                    />
                     <TouchableOpacity
                         style={[styles.circleContainer,styles.factoryCircle]}
                         activeOpacity={0.6}

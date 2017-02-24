@@ -39,7 +39,6 @@ export default class AutoMileage extends Component {
         this.initValue = [0, 0, 0, 0, 0];
         let mileage = this.props.carData.mileage;
         if (mileage !== '') {
-            console.log(mileage);
             mileage = mileage.split("").reverse().join("");
             for (let i = 0; i < mileage.length; i++) {
                 if (i < 2) {
@@ -106,10 +105,6 @@ export default class AutoMileage extends Component {
         return concat;
     };
 
-    _labelPress = (type) => {
-        this.type = type;
-        this.setState({isDateTimePickerVisible: true});
-    };
 
     _renderPlaceholderView = () => {
         return (<Image style={[styles.img,{height:height-this.props.barHeight}]} source={background}/>);
@@ -125,18 +120,32 @@ export default class AutoMileage extends Component {
             [this.props.carData.vin],
             (data) => {
                 if (data.code === 1) {
-                    let params = data.result.rows.item(0);
-                    let url = 'http://dev.api-gateway.dycd.com/' + 'v1/car/save?token=0ac50af9a02b752ca0f48790dc8ea6d1&device_code=dycd_dms_manage_ios';
-                    params['show_shop_id']='57';
-                    params['describe']='郑南的车';
-                    params['label']= [{"value":"全景天窗","name":"1"},{"value":"倒车影像","name":"2"}];
-                    params['car_color']='红色';
-                    params['trim_color']='绿色';
-                    Net.request(url,'post',params)
-                        .then((response)=>{
-                                console.log(response);
+                    let rd = data.result.rows.item(0);
+                    let modelInfo = JSON.parse(rd.model);
+                    let params = {
+                        vin: rd.vin,
+                        brand_id: modelInfo.brand_id,
+                        model_id: modelInfo.model_id,
+                        series_id: modelInfo.series_id,
+                        pictures: rd.pictures,
+                        v_type: rd.v_type,
+                        manufacture: rd.manufacture,
+                        init_reg: rd.init_reg,
+                        mileage: rd.mileage,
+                        show_shop_id: 57,
+
+                    };
+                    let url = 'http://dev.api-gateway.dycd.com/' + 'v1/car/save?token=0ac50af9a02b752ca0f48790dc8ea6d1&device_code=dycd_dms_manage_android';
+                    Net.request(url, 'post', params)
+                        .then((response) => {
+                                if (response.mycode === 1) {
+                                    SQLite.changeData(
+                                        'DELETE From publishCar WHERE vin = ?',
+                                        [this.props.carData.vin]);
+                                    this.successModal.openModal();
+                                }
                             },
-                            (error)=>{
+                            (error) => {
                                 console.log(error);
                             });
                     console.log();
@@ -152,7 +161,7 @@ export default class AutoMileage extends Component {
             <TouchableOpacity
                 activeOpacity={0.6}
                 onPress={this._publish}>
-                <Text style={styles.rightTitleText}>完成</Text>
+                <Text style={styles.rightTitleText}>发布</Text>
             </TouchableOpacity>
         );
     };
@@ -164,12 +173,13 @@ export default class AutoMileage extends Component {
         return (
             <View style={styles.container}>
                 <Image style={[styles.imgContainer,{height:height-this.props.barHeight}]} source={background}>
-                    <SuccessModal ref={(modal) => {this.successModal = modal}}/>
+                    <SuccessModal okClick={this.props.goToSource} ref={(modal) => {this.successModal = modal}}/>
                     <AllNavigationView
                         backIconClick={this._onBack}
                         title='填写行驶里程'
                         wrapStyle={styles.wrapStyle}
-                        renderRihtFootView={this._renderRihtFootView}/>
+                        renderRihtFootView={this._renderRihtFootView}
+                    />
                     <View style={styles.mileContainer}>
                         <Image style={styles.preContainer} source={preBg}>
                             <View style={styles.fillSpace}>

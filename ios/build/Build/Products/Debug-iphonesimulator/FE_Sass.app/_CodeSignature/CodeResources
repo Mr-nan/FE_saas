@@ -5,9 +5,14 @@
 	<key>files</key>
 	<dict>
 		<key>Base.lproj/LaunchScreen.nib</key>
-		<data>
-		8q9HM+xpqMPNrvdRoYE9H9602co=
-		</data>
+		<dict>
+			<key>hash</key>
+			<data>
+			8q9HM+xpqMPNrvdRoYE9H9602co=
+			</data>
+			<key>optional</key>
+			<true/>
+		</dict>
 		<key>Frameworks/IDEBundleInjection.framework/IDEBundleInjection</key>
 		<data>
 		aUm0c1LLvF5BD7IVSBsGgwX3iyY=
@@ -203,7 +208,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		IkrSTY6REVA/+OU+xaIDjtkUuxE=
+		qs7B+j3UDUMYdODm6r/0/krL4GQ=
 		</data>
 		<key>PkgInfo</key>
 		<data>
@@ -211,15 +216,15 @@
 		</data>
 		<key>PlugIns/FE_SassTests.xctest/FE_SassTests</key>
 		<data>
-		pJM7usZHkPozGvWdCjNHdsagGzg=
+		tAI7QjRKGXia6uFsIv5ADt5ndCo=
 		</data>
 		<key>PlugIns/FE_SassTests.xctest/Info.plist</key>
 		<data>
-		2l732OPNAwZVGTXTuFayqorZx/Y=
+		vXzyr6rTxGvVzovIvBm1tNC3SiM=
 		</data>
 		<key>PlugIns/FE_SassTests.xctest/_CodeSignature/CodeResources</key>
 		<data>
-		yFjCMjH3nUMhWbZ16iROLUbfq+M=
+		OEf/WKlDfLnYFMX7FlKw+YemUS0=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -234,6 +239,8 @@
 			<data>
 			F+Qz8pFkhfjqw7kNsmoG7sMTDsqs3l03+so0prYMTNk=
 			</data>
+			<key>optional</key>
+			<true/>
 		</dict>
 		<key>Frameworks/IDEBundleInjection.framework/IDEBundleInjection</key>
 		<dict>
@@ -763,33 +770,33 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			pJM7usZHkPozGvWdCjNHdsagGzg=
+			tAI7QjRKGXia6uFsIv5ADt5ndCo=
 			</data>
 			<key>hash2</key>
 			<data>
-			m6j3kmWFqdFd3qgEBV6dT/b11iczonU54E1CwLvd+G4=
+			GZdOqNN7GJqY1KaZ6YNZIQoymwLznkhY9+/6mvXaHBU=
 			</data>
 		</dict>
 		<key>PlugIns/FE_SassTests.xctest/Info.plist</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			2l732OPNAwZVGTXTuFayqorZx/Y=
+			vXzyr6rTxGvVzovIvBm1tNC3SiM=
 			</data>
 			<key>hash2</key>
 			<data>
-			xp3F5X2zTVGFRbhLt01WLq6J+ZnKh4Ha/k3P8M5QZTM=
+			SLAWSXlTVvHy1Y02mkXGyJHnfuoux6PTv+80piCm1t8=
 			</data>
 		</dict>
 		<key>PlugIns/FE_SassTests.xctest/_CodeSignature/CodeResources</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			yFjCMjH3nUMhWbZ16iROLUbfq+M=
+			OEf/WKlDfLnYFMX7FlKw+YemUS0=
 			</data>
 			<key>hash2</key>
 			<data>
-			p3Z4mi0Q3j4cgjTCd2QIMVQ4OpNdAaVXsnjaAhbh6oQ=
+			vMeYnMf8TxKS1iuYgy7mlBMq/odtjqRI7LfwXh9pYgI=
 			</data>
 		</dict>
 	</dict>
@@ -810,11 +817,6 @@
 			<true/>
 			<key>weight</key>
 			<real>1100</real>
-		</dict>
-		<key>^Base\.lproj/</key>
-		<dict>
-			<key>weight</key>
-			<real>1010</real>
 		</dict>
 		<key>^version.plist$</key>
 		<true/>
@@ -860,11 +862,6 @@
 			<true/>
 			<key>weight</key>
 			<real>1100</real>
-		</dict>
-		<key>^Base\.lproj/</key>
-		<dict>
-			<key>weight</key>
-			<real>1010</real>
 		</dict>
 		<key>^Info\.plist$</key>
 		<dict>

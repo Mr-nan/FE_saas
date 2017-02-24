@@ -17,7 +17,7 @@ import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import BaseComponent from '../../component/BaseComponent';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
-import RepaymenyTabBar from '../../finance/component/RepaymenyTabBar';
+import RepaymenyTabBar from '../../finance/repayment/component/RepaymenyTabBar';
 import NavigationView from '../../component/AllNavigationView';
 import NoneSineScene from '../contractManage/NoneSineScene';
 import SingleSignManageScene from '../contractManage/SingleSignManageScene';

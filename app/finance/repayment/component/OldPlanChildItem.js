@@ -6,8 +6,8 @@ import {
     TouchableOpacity,
     Dimensions
 } from 'react-native';
-import * as  fontAndColor from '../../constant/fontAndColor';
-import PixelUtil from '../../utils/PixelUtil';
+import * as  fontAndColor from '../../../constant/fontAndColor';
+import PixelUtil from '../../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 const {width, height} = Dimensions.get('window');
 export default class PlanItem extends PureComponent {

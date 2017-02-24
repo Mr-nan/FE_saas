@@ -12,10 +12,10 @@ import {
     TouchableOpacity,
 } from 'react-native';
 
-import Picker from 'react-native-picker'
-import {LendDatePike,LendInputItem,adapeSize,width,FEColo,CommenButton} from './ComponentBlob'
 
+import {LendDatePike,LendInputItem,CommenButton} from './component/ComponentBlob'
 
+import {adapeSize,width,PAGECOLOR} from './component/MethodComponent'
 
 export default class CGDaddCarScenes extends Component{
 
@@ -69,7 +69,7 @@ export default class CGDaddCarScenes extends Component{
             return <LendInputItem title={rowData.title} placeholder={rowData.placeHodel} unitStyle={{width:0}}/>
         }else {
 
-            return <LendDatePike lefTitle={rowData.title} placeholder={rowData.placeHodel} imageSouce={require('../../images/financeImages/celljiantou.png')}/>
+            return <LendDatePike lefTitle={rowData.title} placeholder={rowData.placeHodel} imageSouce={require('../../../images/financeImages/celljiantou.png')}/>
         }
 
 

@@ -19,55 +19,11 @@ import {
 
 //ok
 
-import PixelUtil from '../utils/PixelUtil';
+import PixelUtil from '../../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 
+import {width,height,adapeSize,PAGECOLOR,fontadapeSize} from './MethodComponent'
 
-export  class FEColor{
-
-    COLORA0 = "#000000";
-    COLORA1 = "#9e9e9e";
-    COLORA2 = "#90a1b5";
-    COLORA3 = "#f0eff5";
-    COLORA4 = "#d8d8d8";
-    COLORB0 = "#05c5c2";
-    COLORB1 = "#3ac87e";
-    COLORB2 = "#fa5741";
-    COLORB3 = "#ffbd2f";
-    COLORB4 = "#2f9bfa";
-    COLORB5 = "#69dcda";
-
-}
-const FontColor =new FEColor();
-
-export const {width, height} = Dimensions.get('window');
-
-
-export const adapeSize = (size)=> {
-
-    return Pixel.getPixel(size);
-}
-
-export const fontdapeSize = (size)=> {
-
-    return Pixel.getFontPixel(size);
-}
-
-export const dateFormat = (date,fmt) => {
-    let o = {
-        "M+": date.getMonth() + 1, //月份
-        "d+": date.getDate(), //日
-        "h+": date.getHours(), //小时
-        "m+": date.getMinutes(), //分
-        "s+": date.getSeconds(), //秒
-        "q+": Math.floor((date.getMonth() + 3) / 3), //季度
-        "S": date.getMilliseconds() //毫秒
-    };
-    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
-    for (let k in o)
-        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-    return fmt;
-}
 
 export class LendItem extends PureComponent {
 
@@ -254,7 +210,7 @@ export class LendRate extends PureComponent {
     render() {
         return (
             <View style={styles.itemRate}>
-                <Image style={styles.itemRateThumb} source={require('../../images/financeImages/lendRate.png')}/>
+                <Image style={styles.itemRateThumb} source={require('../../../../images/financeImages/lendRate.png')}/>
                 <Text style={styles.itemRateText}> 借款费率</Text>
                 <Text style={styles.itRateNum}>12.0%</Text>
             </View>
@@ -291,7 +247,7 @@ export class CGDCarItem extends PureComponent{
         return(
             <View style={styles.CGDCarWarp}>
 
-                <Image source={require('../../images/financeImages/car.png')} style={styles.CGDCarImage}/>
+                <Image source={require('../../../../images/financeImages/car.png')} style={styles.CGDCarImage}/>
                 <View style={styles.CGDInstWarpTop}>
                     <Text style={styles.CGDInstTitle} numberOfLines={2}>[北京]奥迪7(进口) 2014款 FSI fuck 技术型</Text>
                     <View style={styles.CGDInstWarpBooton}>
@@ -327,7 +283,7 @@ const styles = StyleSheet.create({
         marginLeft: adapeSize(15),
         flex: 0.5,
         textAlign: 'left',
-        fontSize: fontdapeSize(14),
+        fontSize: fontadapeSize(14),
 
     },
     itemRightText: {
@@ -335,7 +291,7 @@ const styles = StyleSheet.create({
         marginRight: adapeSize(15),
         flex: 1,
         textAlign: 'right',
-        fontSize: fontdapeSize(14),
+        fontSize: fontadapeSize(14),
 
 
     },
@@ -344,12 +300,12 @@ const styles = StyleSheet.create({
 
         flex: 1,
         textAlign: 'right',
-        fontSize: fontdapeSize(14),
+        fontSize: fontadapeSize(14),
         marginRight: adapeSize(22),
     },
     itemPlacehodel: {
 
-        fontSize: fontdapeSize(14),
+        fontSize: fontadapeSize(14),
         marginRight: adapeSize(15),
 
 
@@ -375,7 +331,7 @@ const styles = StyleSheet.create({
         marginRight: adapeSize(15),
         flex: 0.4,
         textAlign: 'left',
-        fontSize: fontdapeSize(14),
+        fontSize: fontadapeSize(14),
 
     },
 
@@ -399,12 +355,12 @@ const styles = StyleSheet.create({
         color: 'red',
         textAlign: 'center',
         marginLeft: adapeSize(7),
-        fontSize: fontdapeSize(12),
+        fontSize: fontadapeSize(12),
     },
     itRateNum: {
 
         color: 'black',
-        fontSize: fontdapeSize(12),
+        fontSize: fontadapeSize(12),
     },
     buttonStyle: {
 
@@ -420,7 +376,7 @@ const styles = StyleSheet.create({
     },
     textStyle: {
 
-        fontSize: fontdapeSize(15),
+        fontSize: fontadapeSize(15),
         color: '#FFFFFF'
 
     },
@@ -465,26 +421,26 @@ const styles = StyleSheet.create({
 
     lendCarItemCarName:{
 
-        fontSize:fontdapeSize(14),
+        fontSize:fontadapeSize(14),
         flex:0.8
 
     },
     lendCarItemOrderState:{
 
-        fontSize:fontdapeSize(14),
+        fontSize:fontadapeSize(14),
         flex:0.2,
         marginLeft:5,
         textAlign:'right'
     },
     lendCarItemOrderNum:{
         flex:0.8,
-        fontSize:fontdapeSize(14),
+        fontSize:fontadapeSize(14),
         paddingBottom:10,
         color:'darkgray'
     },
     lendCarItemPrice:{
 
-        fontSize:fontdapeSize(14),
+        fontSize:fontadapeSize(14),
         flex:0.2,
         marginLeft:5,
         textAlign:'right',
@@ -528,21 +484,21 @@ const styles = StyleSheet.create({
 
     CGDInstTitle:{
 
-        fontSize:fontdapeSize(14),
+        fontSize:fontadapeSize(14),
 
 
     },
     CGDInserDate:{
 
-        fontSize:fontdapeSize(12),
-        color:FontColor.COLORA1,
+        fontSize:fontadapeSize(12),
+        color:PAGECOLOR.COLORA1,
 
     },
 
     CGDInsetPrice:{
 
-        fontSize:fontdapeSize(14),
-        color:FontColor.COLORB2,
+        fontSize:fontadapeSize(14),
+        color:PAGECOLOR.COLORB2,
 
     }
 

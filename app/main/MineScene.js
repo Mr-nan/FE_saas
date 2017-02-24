@@ -17,6 +17,7 @@ import ContractManageScene from '../mine/contractManage/ContractManageScene';
 
 import AccountManageScene from '../mine/accountManage/AccountManageScene'
 import EmployeeManageScene from '../mine/employeeManage/EmployeeManageScene'
+import CouponAllScene from '../mine/couponManage/CouponAllScene'
 import Setting from './../mine/setting/Setting'
 const cellJianTou = require('../../images/mainImage/celljiantou.png');
 const Car = [
@@ -170,6 +171,8 @@ export default class MineSectionListView extends Component {
                 this.navigatorParams.component=AccountManageScene
                 break;
             case '优惠券管理':
+                this.navigatorParams.name='CouponAllScene'
+                this.navigatorParams.component=CouponAllScene
                 break;
             case '积分管理':
                 break;

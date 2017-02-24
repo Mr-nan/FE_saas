@@ -14,12 +14,13 @@ import {
 //图片加文字
 //ok
 
-import {width, adapeSize, fontdapeSize, FEColor} from './ComponentBlob';
-import BaseComponent from '../component/BaseComponent';
+import {width, adapeSize, fontadapeSize, PAGECOLOR} from './component/MethodComponent';
+import AllNavigationView from '../../component/AllNavigationView'
+import BaseComponent from '../../component/BaseComponent';
 import SingelCarScene from './SingelCarScene';
 import KurongSence from './KurongSence';
 import CGDLendScenes from './CGDLendScenes';
-const PageColor = new FEColor();
+
 
 class TitleImage extends PureComponent {
     // 构造
@@ -67,20 +68,20 @@ export  default class LendMoneySence extends BaseComponent {
 
     dataSource = [
         {
-            backImage: require('../../images/financeImages/backSingle.png'),
-            imageSource: require('../../images/financeImages/singleIcon.png'),
+            backImage: require('../../../images/financeImages/backSingle.png'),
+            imageSource: require('../../../images/financeImages/singleIcon.png'),
             title: '单车融资',
             key: 'single'
         },
         {
-            backImage: require('../../images/financeImages/backkurong.png'),
-            imageSource: require('../../images/financeImages/kurongIcon.png'),
+            backImage: require('../../../images/financeImages/backkurong.png'),
+            imageSource: require('../../../images/financeImages/kurongIcon.png'),
             title: '库融融资',
             key: 'kurong'
         },
         {
-            backImage: require('../../images/financeImages/backcaigou.png'),
-            imageSource: require('../../images/financeImages/caigouIcon.png'),
+            backImage: require('../../../images/financeImages/backcaigou.png'),
+            imageSource: require('../../../images/financeImages/caigouIcon.png'),
             title: '采购融资',
             key: 'caigoudai'
         },
@@ -95,10 +96,12 @@ export  default class LendMoneySence extends BaseComponent {
         if (key === 'single') {
             this.navigatorParams.name = "SingelCarScene";
             this.navigatorParams.component = SingelCarScene;
-        } else if (key === 'kurong') {
+        }
+        else if (key === 'kurong') {
             this.navigatorParams.name = "KurongSence";
             this.navigatorParams.component = KurongSence;
-        } else {
+        }
+        else {
             this.navigatorParams.name = "CGDLendScenes";
             this.navigatorParams.component = CGDLendScenes;
         }
@@ -125,11 +128,18 @@ export  default class LendMoneySence extends BaseComponent {
 
         return (
 
+            <View style={{flex:1}}>
             <ScrollView showsVerticalScrollIndicator={false}
-                        style={{marginTop: 44, backgroundColor: PageColor.COLORA3, paddingTop: adapeSize(15)} }>
+                        style={{marginTop: 44, backgroundColor: PAGECOLOR.COLORA3, paddingTop: adapeSize(15)} }>
                 {viewBlob}
+
             </ScrollView>
 
+            <AllNavigationView title="申请借款" backIconClick={()=>{
+
+                this.backPage();
+            }}/>
+            </View>
         )
     }
 
@@ -145,7 +155,7 @@ const styles = StyleSheet.create({
     },
     text: {
         marginTop: adapeSize(15),
-        fontSize: fontdapeSize(15),
+        fontSize: fontadapeSize(15),
         color: 'white',
         backgroundColor: 'transparent'
 

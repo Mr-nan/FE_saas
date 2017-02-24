@@ -15,9 +15,10 @@ import {
 } from 'react-native';
 
 
-import {adapeSize,fontdapeSize,CommenButton,width} from './ComponentBlob'
+import {CommenButton} from './component/ComponentBlob'
+import {adapeSize,fontadapeSize,width} from './component/MethodComponent'
 
- class CarOverdueCell extends PureComponent{
+class CarOverdueCell extends PureComponent{
 
 
     render(){
@@ -28,11 +29,11 @@ import {adapeSize,fontdapeSize,CommenButton,width} from './ComponentBlob'
                         <Text  numberOfLines={2} style={styles.carType}>奥迪A7(进口) 2014款 35 FSI 技术形 </Text>
                         <Text style={styles.carFramNum}>车牌号:京2321312312312</Text>
                     </View>
-                    <Image style={styles.orderState} source={require('../../images/financeImages/dateIcon.png')}/>
+                    <Image style={styles.orderState} source={require('../../../images/financeImages/dateIcon.png')}/>
 
                 </View>
                 <View style={styles.containerBottom}>
-                    <Text style={styles.orderNum}>20123123213`21312312312</Text>
+                    <Text style={styles.orderNum}>20123123213~21312312312</Text>
                     <Text style={styles.price}> 按时打算打算打打</Text>
                 </View>
             </TouchableOpacity>
@@ -70,7 +71,7 @@ export  default class CarOverdue extends Component{
         return (
             <View style={{backgroundColor:'rgba(255,198,47,0.1)',height:adapeSize(24),flex:1,flexDirection:'row',alignItems:'center'} }>
 
-               <Text style={{marginLeft:adapeSize(15),fontSize:fontdapeSize(12),color:'#fa5741',}}>*请选择需要展期的还款</Text>
+               <Text style={{marginLeft:adapeSize(15),fontSize:fontadapeSize(12),color:'#fa5741',}}>*请选择需要展期的还款</Text>
             </View>
         )
 
@@ -112,11 +113,7 @@ export  default class CarOverdue extends Component{
           )
 
       }
-
-
 }
-
-
 
 
 const styles=StyleSheet.create({
@@ -216,10 +213,4 @@ const styles=StyleSheet.create({
         marginLeft:5,
         borderRadius:5,
     },
-
-
-
-
 })
-
-

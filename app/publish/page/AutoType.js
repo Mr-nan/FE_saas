@@ -158,7 +158,7 @@ export default class AutoType extends Component {
                     backIconClick={this._onBack}
                     title='选择车辆类型'
                     wrapStyle={styles.wrapStyle}
-                    renderRihtFootView={this._renderRihtFootView} />
+                    />
                 {this._renderItem()}
             </Image>
         </View>

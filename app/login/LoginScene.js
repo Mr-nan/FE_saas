@@ -34,6 +34,7 @@ var itemWidth = width;
 var imgSrc: '';
 var imgSid: '';
 var smsCode: '';
+var userNames = [];
 export default class LoginScene extends BaseComponent {
 
     constructor(props) {
@@ -47,6 +48,11 @@ export default class LoginScene extends BaseComponent {
     }
 
     initFinish = () => {
+        StorageUtil.mGetItem(StorageKeyNames.USERNAME, (data) => {
+            if (data.code === 1 && data.result != null) {
+                userNames = data.result.split(",");
+            }
+        })
         this.Verifycode();
     }
 
@@ -56,16 +62,21 @@ export default class LoginScene extends BaseComponent {
 
     render() {
         let views = [];
-        for (let x in this.props.saveData) {
-            views.push(
-                <Text
-                    key={x}
-                    style={styles.item}
-                    onPress={this.hide.bind(this, this.props.saveData[x])}
-                    numberOfLines={1}>
-                    { this.props.saveData[x]}
-                </Text>
-            );
+        if (userNames != null && userNames.length > 0) {
+            for (let x in userNames) {
+                views.push(
+                    <Text
+                        key={x}
+                        style={styles.item}
+                        onPress={this.hide.bind(this, userNames[x])}
+                        numberOfLines={1}>
+                        {userNames[x]}
+                    </Text>
+                );
+                if (x > 3) {
+                    break;
+                }
+            }
         }
         return (
 
@@ -259,6 +270,17 @@ export default class LoginScene extends BaseComponent {
                         this.refs.toast.changeType(ShowToast.TOAST, "登录成功");
                         // 保存用户登录状态
                         StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
+
+                        StorageUtil.mGetItem(StorageKeyNames.USERNAME, (data) => {
+                            if (data.code === 1) {
+                                if (data.result != null && data.result.indexOf(userName) < 0) {
+                                    StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName + "," + data.result);
+                                } else {
+                                    StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName);
+                                }
+                            }
+                        })
+
                         StorageUtil.mSetItem(StorageKeyNames.USER_INFO, JSON.stringify(response.mjson.data));
                         // 保存用户信息
                         StorageUtil.mSetItem(StorageKeyNames.base_user_id, response.mjson.data.base_user_id + "");
