@@ -92,15 +92,16 @@ export default class MyListView extends Component {
             </View>
         )
     }
-    homeOnPress=(title)=> {
-       alert(title+"11");
+
+    homeOnPress = (title) => {
+        alert(title + "11");
     }
 
-    _renderHeader=()=> {
+    _renderHeader = () => {
         let tablist;
         tablist = bossFuncArray;
         let items = [];
-        tablist.map((data)=> {
+        tablist.map((data) => {
             let tabItem;
 
             tabItem = <HomeHeaderItem
@@ -172,21 +173,21 @@ export default class MyListView extends Component {
         )
     }
 
-    _renderRow(movie) {
+    _renderRow(movie,sindex,rowID) {
 
         return (
             <View style={{
                 width: width / 2,
-                backgroundColor: 'white',
+                backgroundColor: '#ffffff',
                 borderWidth: 0,
                 borderColor: 'black',
                 justifyContent: 'center',
                 alignItems: 'center',
-                marginBottom:Pixel.getPixel(12),
             }}>
-                <View style={{width: Pixel.getPixel(166), height: Pixel.getPixel(180), backgroundColor: 'white', justifyContent: 'center'}}>
+                <View
+                    style={{width: Pixel.getPixel(166), backgroundColor: '#ffffff', justifyContent: 'center'}}>
                     <Image style={cellSheet.imageStyle} source={{uri: movie.images.large}}/>
-                    <Text style={cellSheet.despritonStyle}>我不是盘简历我不是盘简历</Text>
+                    <Text style={cellSheet.despritonStyle}>{rowID==0?'我不是盘简历我不是盘简历':'我不是盘简历我不是'}</Text>
                     <Text style={cellSheet.timeStyle}>{movie.title}</Text>
 
                 </View>
@@ -202,7 +203,7 @@ const cellSheet = StyleSheet.create({
 
     header: {
 
-        backgroundColor:fontAndClolr.COLORA3,
+        backgroundColor: fontAndClolr.COLORA3,
         flexDirection: 'row',
         flexWrap: 'wrap',
         paddingBottom: Pixel.getPixel(10),
@@ -242,12 +243,11 @@ const cellSheet = StyleSheet.create({
     },
 
     timeStyle: {
-
-        flex: 1,
         textAlign: 'left',
-        color:fontAndClolr.COLORA1,
+        color: fontAndClolr.COLORA1,
         fontSize: Pixel.getFontPixel(fontAndClolr.MARKFONT),
-
+        marginTop: Pixel.getPixel(8),
+        marginBottom:Pixel.getPixel(10)
     },
 
     Separator: {
@@ -259,11 +259,10 @@ const cellSheet = StyleSheet.create({
     despritonStyle: {
 
         textAlign: 'left',
-        marginTop:Pixel.getPixel(8),
-        marginBottom:Pixel.getPixel(13),
-        color:fontAndClolr.COLORA0,
-        fontSize: Pixel.getFontPixel(fontAndClolr.BUTTONFONT),
-
+        marginTop: Pixel.getPixel(8),
+        color: fontAndClolr.COLORA0,
+        fontSize: Pixel.getFontPixel(fontAndClolr.BUTTONFONT30),
+        height:Pixel.getPixel(40),
 
     }
 

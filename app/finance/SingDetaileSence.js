@@ -148,7 +148,7 @@ export  default  class SingDetaileSence extends Component {
                     style={{
                         marginTop: 44,
                         backgroundColor: '#f0eff5',
-                        marginBottom: adapeSize(50),
+                        marginBottom: adapeSize(50)
                     }}
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
 
     buttonStyle: {
 
-        top:height-adapeSize(44),
+        bottom:0,
         height: adapeSize(44),
         backgroundColor: '#05c5c2',
         justifyContent: 'center',

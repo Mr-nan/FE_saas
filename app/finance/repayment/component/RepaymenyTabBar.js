@@ -5,7 +5,7 @@ import {
     View,
     TouchableOpacity,
 } from 'react-native';
-import PixelUtil from '../../utils/PixelUtil';
+import PixelUtil from '../../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import ChildTabView from './ChildTabView';
 export default class RepaymenyTabBar extends PureComponent {

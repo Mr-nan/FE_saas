@@ -15,23 +15,24 @@ import {
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
-import PixelUtil from '../utils/PixelUtil';
+import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
-import * as fontAndColor from '../constant/fontAndColor';
-let MovleData = require('./loanStatus.json');
+import * as fontAndColor from '../../constant/fontAndColor';
+let MovleData = require('./repayment.json');
 let movies = MovleData.retdata;
-import BaseComponent from '../component/BaseComponent';
-import NavigationView from '../component/AllNavigationView';
-import PurchasePickerChildItem from './component/PurchaseLoanStatusItem';
-export  default class PurchaseLoanStatusScene extends BaseComponent {
+import BaseComponent from '../../component/BaseComponent';
+import NavigationView from '../../component/AllNavigationView';
+import PlanParentItem from './component/PlanParentItem';
+import OldPlanScene from '../OldPlanListScene';
+export  default class PlanListScene extends BaseComponent {
 
     constructor(props) {
         super(props);
         // 初始状态
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            source: ds.cloneWithRows(movies),
-            renderPlaceholderOnly: true
+            renderPlaceholderOnly: true,
+            source: ds.cloneWithRows(movies)
         };
     }
 
@@ -50,11 +51,12 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
                 <NavigationView
-                    title="还款详情"
+                    title="还款计划"
                     backIconClick={this.backPage}
+                    renderRihtFootView={this._navigatorRightView}
                 />
                 <ListView
-                    style={{marginTop: Pixel.getPixel(64)}}
+                    style={{marginTop: Pixel.getTitlePixel(79)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
@@ -66,7 +68,9 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
 
     _renderRow = (movie, sectionId, rowId) => {
         return (
-            <PurchasePickerChildItem lastIndex={movies.length-1} index={rowId} items={movie}/>
+            <PlanParentItem items={movie} mOnPress={(loan_id) => {
+                alert(loan_id);
+            }}/>
         )
     }
 
@@ -82,10 +86,31 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
         return (
             <View style={{width: width, height: height}}>
                 <NavigationView
-                    title="还款详情"
+                    title="还款计划"
                     backIconClick={this.backPage}
                 />
             </View>
+        );
+    }
+
+    navigatorParams = {
+        name: 'OldPlanScene',
+        component: OldPlanScene,
+        params: {}
+    }
+
+    _navigatorRightView = () => {
+        return (
+            <TouchableOpacity activeOpacity={0.8} onPress={() => {
+                this.toNextPage(this.navigatorParams)
+            }}>
+                <Text style={{
+                    color: 'white',
+                    fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                    textAlign: 'center',
+                    backgroundColor: 'transparent',
+                }}>历史还款</Text>
+            </TouchableOpacity>
         );
     }
 
@@ -97,8 +122,8 @@ const styles = StyleSheet.create({
         height: 43,
     },
     Separator: {
-        height: 0,
-        backgroundColor: '#00000000'
+        backgroundColor: fontAndColor.COLORA3,
+        height: Pixel.getPixel(15),
 
     },
     margin: {
