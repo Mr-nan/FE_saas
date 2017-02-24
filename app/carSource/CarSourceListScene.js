@@ -28,7 +28,6 @@ import CarBrandSelectScene from './CarBrandSelectScene';
 import CityListScene from './CityListScene';
 import  {request} from '../utils/RequestUtil';
 import PixelUtil from '../utils/PixelUtil';
-import * as console from "../../node_modules/react-native/packager/react-packager/src/Logger/index";
 const Pixel = new PixelUtil();
 
 const carAgeSource = [

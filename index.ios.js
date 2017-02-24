@@ -8,8 +8,8 @@ import {
     AppRegistry,
 } from 'react-native';
 
-import root from './app/root';
+import Root from './app/root';
 
-AppRegistry.registerComponent('FE_Sass', () => root);
+AppRegistry.registerComponent('FE_Sass', () => Root);
 
 
