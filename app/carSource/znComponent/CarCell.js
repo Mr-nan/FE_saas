@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
         flex:1,
         flexDirection:'row',
         height:110,
-        // backgroundColor:'gray',
+        backgroundColor:'white',
 
     },
 
@@ -88,7 +88,6 @@ const styles = StyleSheet.create({
         width:147,
         justifyContent:'center',
         // backgroundColor:'blue'
-
 
     },
     image:{
@@ -111,12 +110,15 @@ const styles = StyleSheet.create({
 
         color:fontAndColor.COLORA0,
         fontSize:fontAndColor.LITTLEFONT,
+        backgroundColor:'white',
     },
 
     subTitleText:{
 
         color:fontAndColor.COLORA1,
         fontSize:fontAndColor.CONTENTFONT,
+        backgroundColor:'white',
+
     },
 
 
