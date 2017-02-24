@@ -14,9 +14,9 @@ import {
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
-import PixelUtil from '../../utils/PixelUtil';
+import PixelUtil from '../../../utils/PixelUtil';
 const Pixel = new PixelUtil();
-import * as fontAndColor from '../../constant/fontAndColor';
+import * as fontAndColor from '../../../constant/fontAndColor';
 import  PlanChildItem from './OldPlanChildItem';
 export  default class PlanParentItem extends PureComponent {
 
@@ -80,8 +80,8 @@ export  default class PlanParentItem extends PureComponent {
                             marginLeft: Pixel.getPixel(12)
                         }}
                                source={this.state.show === 'row' ?
-                                   require('../../../images/financeImages/bottomPlan.png')
-                                   : require('../../../images/financeImages/topPlan.png')}/>
+                                   require('../../../../images/financeImages/bottomPlan.png')
+                                   : require('../../../../images/financeImages/topPlan.png')}/>
                     </View>
                 </TouchableOpacity>
                 <View style={{flex: 1, height: Pixel.getPixel(1), backgroundColor: fontAndColor.COLORA4}}></View>

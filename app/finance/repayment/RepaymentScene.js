@@ -14,16 +14,16 @@ import {
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
-import PixelUtil from '../utils/PixelUtil';
+import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
-import BaseComponent from '../component/BaseComponent';
+import BaseComponent from '../../component/BaseComponent';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import RepaymenyTabBar from './component/RepaymenyTabBar';
-import InventoryRepaymentPage from './page/InventoryRepaymentPage';
-import SingleRepaymentPage from './page/SingleRepaymentPage';
-import PurchaseRepaymentPage from './page/PurchaseRepaymentPage';
-import NavigationView from '../component/AllNavigationView';
-import * as fontAndColor from '../constant/fontAndColor';
+import InventoryRepaymentPage from '../page/InventoryRepaymentPage';
+import SingleRepaymentPage from '../page/SingleRepaymentPage';
+import PurchaseRepaymentPage from '../page/PurchaseRepaymentPage';
+import NavigationView from '../../component/AllNavigationView';
+import * as fontAndColor from '../../constant/fontAndColor';
 import PlanListScene from './PlanListScene';
 
 export  default class RepaymentScene extends BaseComponent {
