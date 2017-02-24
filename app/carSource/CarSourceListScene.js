@@ -28,7 +28,6 @@ import CarBrandSelectScene from './CarBrandSelectScene';
 import CityListScene from './CityListScene';
 import  {request} from '../utils/RequestUtil';
 import PixelUtil from '../utils/PixelUtil';
-import * as console from "../../node_modules/react-native/packager/react-packager/src/Logger/index";
 const Pixel = new PixelUtil();
 
 const carAgeSource = [
@@ -172,14 +171,12 @@ export  default  class  carSourceListScene extends  BaseComponent{
 
         let url = 'http://dev.api-gateway.dycd.com/' + 'v1/car/index';
 
-        console.log(APIParameter);
         APIParameter.page=0;
         request(url,'post',APIParameter)
             .then((response) => {
 
                 carData = response.mjson.data.list;
                 APIParameter.status = response.mjson.data.status;
-                console.log(response);
                 if(this.state.isFillData !== APIParameter.status)
                 {
                     this.setState({
@@ -193,7 +190,6 @@ export  default  class  carSourceListScene extends  BaseComponent{
 
         }, (error) => {
 
-                console.log(error);
                 this.setState({
                     isRefreshing:false,
                 });
@@ -206,12 +202,12 @@ export  default  class  carSourceListScene extends  BaseComponent{
 
         let url = 'http://dev.api-gateway.dycd.com/' + 'v1/car/index';
         APIParameter.page +=1;
-        console.log(APIParameter);
+
         request(url,'post',APIParameter)
             .then((response) => {
 
                 APIParameter.status = response.mjson.data.status;
-                console.log(response);
+
                 if(this.state.isFillData !== APIParameter.status)
                 {
                     this.setState({
@@ -224,14 +220,14 @@ export  default  class  carSourceListScene extends  BaseComponent{
                 {
                     carData.push(data[i]);
                 }
-                console.log(carData.length);
+
                 this.setState({
                     dataSource:this.state.dataSource.cloneWithRows(carData),
                 });
 
             }, (error) => {
 
-                console.log(error);
+
 
             });
     }
