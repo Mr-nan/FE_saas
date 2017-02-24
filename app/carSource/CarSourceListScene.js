@@ -103,7 +103,7 @@ const APIParameter = {
     order_type:0,
     coty:0,
     mileage:0,
-    rows:20,
+    rows:10,
     page:1,
     start:0,
     type:1,
@@ -773,7 +773,7 @@ class CarListNavigatorView extends Component{
                     {/*</TouchableOpacity>*/}
                     <TouchableOpacity onPress={this.props.searchClick}>
                         <View style={styles.navigatorSousuoView}>
-                            <Image style={{marginLeft:15,marginRight:10}} source={require('../../images/carSourceImages/sousuoicon.png')}/>
+                            <Image style={{marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(10)}} source={require('../../images/carSourceImages/sousuoicon.png')}/>
                             <Text style={styles.navigatorSousuoText}>按车型信息搜索</Text>
                         </View>
                     </TouchableOpacity>
@@ -808,11 +808,11 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         alignItems:'center',
         justifyContent:'center',
-        height:20,
-        paddingHorizontal:5,
-        marginLeft:15,
-        marginTop:5,
-        marginBottom:5,
+        height:Pixel.getPixel(20),
+        paddingHorizontal:Pixel.getPixel(5),
+        marginLeft:Pixel.getPixel(15),
+        marginTop:Pixel.getPixel(5),
+        marginBottom:Pixel.getPixel(5),
         borderRadius:4,
     },
     checkedItemText:{
@@ -822,32 +822,32 @@ const styles = StyleSheet.create({
     },
     checkedDeleteImg:{
 
-        width:10,
-        height:10,
-        marginLeft:5,
+        width:Pixel.getPixel(10),
+        height:Pixel.getPixel(10),
+        marginLeft:Pixel.getPixel(5),
     },
     checkedDelectView:{
 
-        height:20,
-        width:50,
+        height:Pixel.getPixel(20),
+        width:Pixel.getPixel(50),
         borderRadius:4,
         borderWidth:StyleSheet.hairlineWidth,
         borderColor:fontAndColor.COLORA2,
         alignItems:'center',
         justifyContent:'center',
-        marginBottom:10,
-        marginLeft:15,
-        marginTop:10,
+        marginBottom:Pixel.getPixel(10),
+        marginLeft:Pixel.getPixel(15),
+        marginTop:Pixel.getPixel(10),
 
 
     },
     checkedDelectText:{
         color:fontAndColor.COLORA2,
-        fontSize:fontAndColor.CONTENTFONT,
+        fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT),
 
     },
     selectView:{
-        top:104,
+        top:Pixel.getTitlePixel(104),
         backgroundColor:'rgba(0, 0, 0,0.3)',
         left:0,
         right:0,
@@ -855,12 +855,12 @@ const styles = StyleSheet.create({
         bottom:0,
     },
     carCell:{
-        height :110,
+        height :Pixel.getPixel(110),
     },
     checkedCell:{
 
         backgroundColor:'white',
-        height:44,
+        height:Pixel.getPixel(44),
         alignItems:'center',
         justifyContent:'center',
         borderBottomWidth:StyleSheet.hairlineWidth,
@@ -869,7 +869,7 @@ const styles = StyleSheet.create({
     },
     checkedCellText:{
 
-        fontSize:fontAndColor.BUTTONFONT,
+        fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT),
         textAlign:'center',
         color:fontAndColor.COLORA0,
 
@@ -879,20 +879,20 @@ const styles = StyleSheet.create({
 
         flexDirection:'row',
         position:'absolute',
-        width:70,
-        height:30,
-        right:20,
+        width:Pixel.getPixel(70),
+        height:Pixel.getPixel(30),
+        right:Pixel.getPixel(20),
         borderRadius:15,
         backgroundColor:'rgba(0, 0, 0,0.7)',
         justifyContent:'center',
         alignItems:'center',
-        bottom:25,
+        bottom:Pixel.getPixel(25),
     },
     sequencingText:{
 
         color:'white',
-        fontSize:fontAndColor.LITTLEFONT,
-        marginLeft:5,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
+        marginLeft:Pixel.getPixel(5),
 
     },
 
@@ -920,8 +920,8 @@ const styles = StyleSheet.create({
 
         flex:1,
         flexDirection:'row',
-        marginTop:20,
-        height:44,
+        marginTop:Pixel.getTitlePixel(20),
+        height:Pixel.getPixel(44),
         alignItems:'center',
         justifyContent:'center',
 
@@ -930,17 +930,17 @@ const styles = StyleSheet.create({
     navigatorLoactionView:{
 
         flexDirection:'row',
-        width:85,
+        width:Pixel.getPixel(85),
         alignItems:'center',
 
 
     },
     navigatorSousuoView:{
-        height:25,
+        height:Pixel.getPixel(25),
         borderRadius:5,
         backgroundColor:'white',
         alignItems:'center',
-        width:ScreenWidth-40,
+        width:Pixel.getPixel(ScreenWidth-40),
         flexDirection:'row',
         justifyContent:'center',
 
@@ -948,15 +948,15 @@ const styles = StyleSheet.create({
 
     },
     navigatorText:{
-      marginLeft:6,
+      marginLeft:Pixel.getPixel(6),
         color:'white',
-        fontSize:fontAndColor.LITTLEFONT,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
 
     },
     navigatorSousuoText:{
 
         color:fontAndColor.COLORA1,
-        fontSize:fontAndColor.LITTLEFONT,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
 
     },
 
