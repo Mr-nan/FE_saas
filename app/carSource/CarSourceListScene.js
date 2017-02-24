@@ -17,17 +17,18 @@ import {
 
 } from 'react-native';
 
-import * as fontAndColor from '../constant/fontAndColor';
-import BaseComponent from '../component/BaseComponent';
-import HeadView     from './znComponent/CarSourceSelectHeadView';
-import ListFooter       from './znComponent/LoadMoreFooter';
-import SGListView   from 'react-native-sglistview';
-import CarCell      from './znComponent/CarCell';
-import CarInfoScene from './CarInfoScene';
-import CarBrandSelectScene from './CarBrandSelectScene';
-import CityListScene from './CityListScene';
-import  {request} from '../utils/RequestUtil';
-import PixelUtil from '../utils/PixelUtil';
+import * as fontAndColor    from '../constant/fontAndColor';
+import BaseComponent        from '../component/BaseComponent';
+import HeadView             from './znComponent/CarSourceSelectHeadView';
+import ListFooter           from './znComponent/LoadMoreFooter';
+import SGListView           from 'react-native-sglistview';
+import CarCell              from './znComponent/CarCell';
+import CarInfoScene         from './CarInfoScene';
+import CarBrandSelectScene  from './CarBrandSelectScene';
+import CityListScene        from './CityListScene';
+import  {request}           from '../utils/RequestUtil';
+import PixelUtil            from '../utils/PixelUtil';
+
 const Pixel = new PixelUtil();
 
 const carAgeSource = [
