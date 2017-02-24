@@ -286,11 +286,13 @@ export default class CarInfoScene extends BaseComponent {
                         </View>
                     </View>
                     {
-                        (carData.labels|| carData.describe!=='' || carData.city_name!=='' || carData.plate_number!=='') && (
+                        ((typeof(carData.labels)!= "undefined"?carData.labels.length:false)|| carData.describe!=='' || carData.city_name!=='' || carData.plate_number!=='') && (
                             <View style={styles.contentContainer}>
                                 <View style={styles.contentView}>
                                     {
-                                         <View style={styles.carParameterView}>
+                                        typeof(carData.labels) &&
+                                        (
+                                            <View style={styles.carParameterView}>
                                             {
                                                 carData.labels.map((data, index) => {
                                                     return (<View
@@ -303,6 +305,7 @@ export default class CarInfoScene extends BaseComponent {
                                                 })
                                             }
                                         </View>
+                                        )
 
                                     }
 
@@ -314,18 +317,22 @@ export default class CarInfoScene extends BaseComponent {
                                     }
 
                                     <View style={styles.carAddressView}>
+                                        <View>
                                         {
                                             carData.city_name!=='' &&<View style={styles.carAddressSubView}>
                                                 <Text style={styles.carAddressTitleText}>商户所在地: </Text>
                                                 <Text style={styles.carAddressSubTitleText}>{carData.city_name}</Text>
                                             </View>
                                         }
+                                        </View>
+                                        <View>
                                         {
                                             carData.plate_number!==''&& <View style={styles.carAddressSubView}>
                                                 <Text style={styles.carAddressTitleText}>挂牌地: </Text>
                                                 <Text style={styles.carAddressSubTitleText}>{carData.plate_number}</Text>
                                             </View>
                                         }
+                                        </View>
                                     </View>
                                 </View>
                             </View>
