@@ -28,8 +28,8 @@ var Pixel = new PixelUtil();
  * 获取屏幕的宽和高
  **/
 const {width, height} = Dimensions.get('window');
-import LendMoneySence from '../finance/LendMoneyScene';
-import SingDetaileSence from '../finance/SingDetaileSence';
+import LendMoneySence from '../finance/lend/CarOverdue';
+import SingDetaileSence from '../finance/lend/CGDDetailSence';
 import MyButton from '../component/MyButton';
 import RepaymentScene from '../finance/repayment/RepaymentScene';
 import PurchasePickerScene from '../finance/PurchaseLoanStatusScene';

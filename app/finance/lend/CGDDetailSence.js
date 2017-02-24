@@ -13,8 +13,8 @@ import {
 } from 'react-native';
 
 
-import {LendDatePike,LendInputItem,adapeSize,width,height,FEColor,CommenButton} from './ComponentBlob'
-
+import {LendDatePike,LendInputItem,CommenButton} from './component/ComponentBlob'
+import {adapeSize,width,height,PAGECOLOR}from './component/MethodComponent';
 export default class CGDDetailSence extends Component{
 
     constructor(props) {
@@ -65,7 +65,12 @@ export default class CGDDetailSence extends Component{
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}
                 />
-                <View style={styles.bottomView}></View>
+                <View style={styles.bottomView}>
+                    <CommenButton buttonStyle={styles.buttonStyleRight} onPress={()=>{}} title='查看合同'/>
+                    <CommenButton buttonStyle={styles.buttonStyleRight} onPress={()=>{}} title='车辆监控'/>
+                    <CommenButton buttonStyle={styles.buttonStyleRight} onPress={()=>{}} title='车辆监控'/>
+
+                </View>
 
             </View>
 
@@ -78,25 +83,38 @@ const styles=StyleSheet.create({
     container:{
 
         flex:1,
-        backgroundColor:'yellow'
+        backgroundColor:'white'
 
     },
     listView:{
 
         marginTop:64,
-        marginBottom:60
+        marginBottom:adapeSize(55)
 
 
     },
     bottomView:{
-        top:height-60,
+        bottom:0,
         width:width,
-        height:60,
+        height:adapeSize(50),
         position:'absolute',
-        backgroundColor:'blue'
+        flexDirection:'row',
+        justifyContent:'flex-end',
+        alignItems:'center',
+    },
+    buttonStyleRight:{
 
-    }
+        height: adapeSize(32),
+        width:adapeSize(100),
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor:'#05c5c2',
+        borderWidth:1,
+        borderRadius:5,
+        backgroundColor:'white',
+        marginRight:adapeSize(15),
 
+    },
 
 
 })
