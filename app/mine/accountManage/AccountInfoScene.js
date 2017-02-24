@@ -10,10 +10,12 @@ import  {
     TouchableOpacity
 } from  'react-native'
 
-import * as fontAndClolr from '../constant/fontAndColor';
-import  PixelUtil from '../utils/PixelUtil'
+import * as fontAndClolr from '../../constant/fontAndColor';
+import  PixelUtil from '../../utils/PixelUtil'
+import NavigationBar from "../../component/NavigationBar";
+import BaseComponent from "../../component/BaseComponent";
 var Pixel = new PixelUtil();
-const cellJianTou = require('../../images/mainImage/celljiantou.png');
+const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 const Car = [
     {
         "cars": [
@@ -44,7 +46,9 @@ const Car = [
  **/
 const {width, height} = Dimensions.get('window');
 
-export default class CountInfo extends Component {
+export default class AccountInfoScene extends BaseComponent {
+    initFinish = () => {
+    }
     // 构造
     constructor(props) {
         super(props);
@@ -104,6 +108,13 @@ export default class CountInfo extends Component {
         return (
             <View style={styles.container}>
 
+                <NavigationBar
+                    centerText={'用户信息'}
+                    rightText={''}
+                    leftImageCallBack={this.backPage}
+
+                />
+
                 <ListView
                     contentContainerStyle={styles.listStyle}
                     dataSource={this.state.source}
@@ -143,7 +154,7 @@ const styles = StyleSheet.create({
         backgroundColor:fontAndClolr.COLORA3,
     },
     listStyle: {
-        marginTop:Pixel.getPixel(64)
+        marginTop:Pixel.getPixel(15)
     },
     sectionView: {
         height: Pixel.getPixel(10),

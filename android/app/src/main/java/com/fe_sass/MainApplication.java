@@ -10,6 +10,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import org.pgsqlite.SQLitePluginPackage;
+import com.beefe.picker.PickerViewPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.zyu.ReactNativeWheelPickerPackage;
 
@@ -33,6 +34,7 @@ public class MainApplication extends UmengPushApplication implements ReactApplic
           new SQLitePluginPackage(),
           new UmengPushPackage(),
           new ImagePickerPackage(),
+          new PickerViewPackage(),
           new ReactNativeWheelPickerPackage(),
           new WeChatPackage()
       );

@@ -82,7 +82,8 @@ export default class SetPwd extends BaseComponent {
             this.refs.toast.changeType(ShowToast.TOAST, "两次密码输入不一致");
         } else {
             let maps = {
-                confirm_pwd: oldPassword,
+                old_pwd: oldPassword,
+                confirm_pwd: newPasswordAgain,
                 pwd: newPassword,
             };
             request(AppUrls.CHANGEPWD, 'Post', maps)
@@ -90,7 +91,7 @@ export default class SetPwd extends BaseComponent {
                     if (response.mjson.code == "1") {
                         this.refs.toast.changeType(ShowToast.TOAST, "设置成功");
                     } else {
-                        this.refs.toast.changeType(ShowToast.TOAST, response.mjson.data.msg);
+                        this.refs.toast.changeType(ShowToast.TOAST, response.mjson.msg);
                     }
                 }, (error) => {
                     this.refs.toast.changeType(ShowToast.TOAST, "设置失败");

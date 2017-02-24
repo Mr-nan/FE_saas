@@ -8,7 +8,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			KXnWsKhDWVZBSuzzjxrbxRSiVMM=
+			8q9HM+xpqMPNrvdRoYE9H9602co=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -208,7 +208,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		BCP3YsslLNcQci7U8xtTIQJjNiU=
+		qs7B+j3UDUMYdODm6r/0/krL4GQ=
 		</data>
 		<key>PkgInfo</key>
 		<data>
@@ -216,15 +216,15 @@
 		</data>
 		<key>PlugIns/FE_SassTests.xctest/FE_SassTests</key>
 		<data>
-		rt7FcScQ5qblVAyXUFD9G09MCB4=
+		tAI7QjRKGXia6uFsIv5ADt5ndCo=
 		</data>
 		<key>PlugIns/FE_SassTests.xctest/Info.plist</key>
 		<data>
-		2l732OPNAwZVGTXTuFayqorZx/Y=
+		vXzyr6rTxGvVzovIvBm1tNC3SiM=
 		</data>
 		<key>PlugIns/FE_SassTests.xctest/_CodeSignature/CodeResources</key>
 		<data>
-		jEnsOROppTOXtqG7WTgijEDAhxM=
+		OEf/WKlDfLnYFMX7FlKw+YemUS0=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -233,11 +233,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			KXnWsKhDWVZBSuzzjxrbxRSiVMM=
+			8q9HM+xpqMPNrvdRoYE9H9602co=
 			</data>
 			<key>hash2</key>
 			<data>
-			ps2GQl/mjmqYOpPASVRczQFIN+3mN0KOET5Mzd5Sm6U=
+			F+Qz8pFkhfjqw7kNsmoG7sMTDsqs3l03+so0prYMTNk=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -770,33 +770,33 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			rt7FcScQ5qblVAyXUFD9G09MCB4=
+			tAI7QjRKGXia6uFsIv5ADt5ndCo=
 			</data>
 			<key>hash2</key>
 			<data>
-			+OKJLES/6Uce465G47isk9C6ux+eT8M2cjd9uaULJmY=
+			GZdOqNN7GJqY1KaZ6YNZIQoymwLznkhY9+/6mvXaHBU=
 			</data>
 		</dict>
 		<key>PlugIns/FE_SassTests.xctest/Info.plist</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			2l732OPNAwZVGTXTuFayqorZx/Y=
+			vXzyr6rTxGvVzovIvBm1tNC3SiM=
 			</data>
 			<key>hash2</key>
 			<data>
-			xp3F5X2zTVGFRbhLt01WLq6J+ZnKh4Ha/k3P8M5QZTM=
+			SLAWSXlTVvHy1Y02mkXGyJHnfuoux6PTv+80piCm1t8=
 			</data>
 		</dict>
 		<key>PlugIns/FE_SassTests.xctest/_CodeSignature/CodeResources</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			jEnsOROppTOXtqG7WTgijEDAhxM=
+			OEf/WKlDfLnYFMX7FlKw+YemUS0=
 			</data>
 			<key>hash2</key>
 			<data>
-			zOz6rbwDjEB4Ko4KD5Amx/JOOzl4wzLl75FzHiiT2zA=
+			vMeYnMf8TxKS1iuYgy7mlBMq/odtjqRI7LfwXh9pYgI=
 			</data>
 		</dict>
 	</dict>

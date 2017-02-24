@@ -5,6 +5,8 @@ import BaseComponent from "../component/BaseComponent";
 import PixelUtil from "../utils/PixelUtil";
 import * as FontAndColor from "../constant/fontAndColor";
 import NavigationBar from '../component/NavigationBar';
+import StorageUtil from "../utils/StorageUtil";
+import * as StorageKeyNames from "../constant/storageKeyNames";
 
 var Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
@@ -96,8 +98,9 @@ export default class GesturePassword extends BaseComponent {
             if (pwd === Password) {
                 this.setState({
                     status: 'right',
-                    message: '您的密码是' + pwd
+                    message: '密码设置成功',
                 });
+                StorageUtil.mSetItem(StorageKeyNames.GESTURE, Password);
                 Password = '';
                 // your codes to close this view
                 // this.toNextPage({
@@ -147,16 +150,16 @@ const styles = StyleSheet.create({
         paddingBottom: Pixel.getPixel(60),
     },
     cycleStyle: {
-        width: Pixel.getPixel(20),
-        height: Pixel.getPixel(20),
+        width: Pixel.getPixel(15),
+        height: Pixel.getPixel(15),
         borderWidth: Pixel.getPixel(1),
         borderColor: FontAndColor.COLORA1,
         borderRadius: Pixel.getPixel(15),
         margin: Pixel.getPixel(5),
     },
     cycleChoseStyle: {
-        width: Pixel.getPixel(20),
-        height: Pixel.getPixel(20),
+        width: Pixel.getPixel(15),
+        height: Pixel.getPixel(15),
         margin: Pixel.getPixel(5),
         borderWidth: Pixel.getPixel(1),
         borderRadius: Pixel.getPixel(15),

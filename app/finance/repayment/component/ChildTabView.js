@@ -5,8 +5,8 @@ import {
     View,
     TouchableOpacity,
 } from 'react-native';
-import * as  fontAndColor from '../../constant/fontAndColor';
-import PixelUtil from '../../utils/PixelUtil';
+import * as  fontAndColor from '../../../constant/fontAndColor';
+import PixelUtil from '../../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 // var tabName = ["单车融资","库存融资","采购融资"];
 export default class ChildTabView extends PureComponent {
