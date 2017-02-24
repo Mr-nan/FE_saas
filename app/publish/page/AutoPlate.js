@@ -63,7 +63,7 @@ export default class AutoPlate extends Component {
     };
 
     _onBack = ()=>{
-
+        this.props.onBack();
     };
 
     _renderRihtFootView = ()=>{
@@ -99,18 +99,14 @@ export default class AutoPlate extends Component {
                             </Image>
                         </TouchableOpacity>
 
-                        <View style={styles.proContainer} >
-                            <View style={{
-                               height:44,
-                                backgroundColor: 'red'}}>
+                        <Image style={styles.proContainer} source={proBg}>
                             <TextInput style={styles.fontBold} underlineColorAndroid='transparent' defaultValue={'N'}/>
-                                </View>
                             <TextInput style={styles.fontBold} underlineColorAndroid='transparent' defaultValue={'S'}/>
                             <TextInput style={styles.fontBold} underlineColorAndroid='transparent' defaultValue={'2'}/>
                             <TextInput style={styles.fontBold} underlineColorAndroid='transparent' defaultValue={'5'}/>
                             <TextInput style={styles.fontBold} underlineColorAndroid='transparent' defaultValue={'6'}/>
                             <TextInput style={styles.fontBold} underlineColorAndroid='transparent' defaultValue={'9'}/>
-                        </View>
+                        </Image>
                     </View>
                 </Image>
             </View>
@@ -131,36 +127,37 @@ const styles = StyleSheet.create({
     },
     plateContainer: {
         flexDirection: 'row',
-        marginTop: 207,
+        marginTop: Pixel.getPixel(207),
+        alignItems:'center',
+        width:Pixel.getPixel(320)
     },
     preContainer: {
-        height: 44,
-        width: 44,
+        height: Pixel.getPixel(44),
+        width: Pixel.getPixel(44),
         justifyContent:'center',
         alignItems: 'center',
         backgroundColor: 'rgba(255,255,255,0.2)'
     },
     proContainer: {
         flex:1,
-        height: 44,
-        width: 259,
-        marginLeft: 13,
+        height: Pixel.getPixel(44),
+        width: Pixel.getPixel(264),
+        marginLeft: Pixel.getPixel(12),
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
         alignItems: 'center',
-        // backgroundColor: 'rgba(255,255,255,0)'
-        backgroundColor: 'yellow'
+        backgroundColor: 'rgba(255,255,255,0.2)'
     },
     fontPre: {
-        fontSize: 20,
+        fontSize: Pixel.getFontPixel(20),
         fontWeight: 'bold',
         color: '#FFFFFF',
         textAlign:'center'
     },
     fontBold: {
-        height: 44,
-        width: 40,
-        fontSize: 20,
+        height: Pixel.getPixel(44),
+        width: Pixel.getPixel(44),
+        fontSize: Pixel.getFontPixel(20),
         fontWeight: 'bold',
         color: '#FFFFFF',
         textAlign:'center'

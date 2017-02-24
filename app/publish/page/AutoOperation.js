@@ -55,7 +55,7 @@ export default class AutoOperation extends Component{
     };
 
     _onBack = ()=>{
-
+        this.props.onBack();
     };
 
     _renderRihtFootView = ()=>{
@@ -114,35 +114,35 @@ const styles = StyleSheet.create({
         alignItems:'center'
     },
     contentTop:{
-        marginTop:205
+        marginTop:Pixel.getPixel(166)
     },
     contentAlign:{
-        marginTop:40
+        marginTop:Pixel.getPixel(40)
     },
     circleContainer:{
-        width:210,
-        height:44,
+        width:Pixel.getPixel(210),
+        height:Pixel.getPixel(44),
         justifyContent:'center',
         alignItems:'center',
         borderWidth:1,
         borderColor:'#FFFFFF',
-        borderRadius:22,
+        borderRadius:Pixel.getPixel(22),
         backgroundColor:'rgba(255,255,255,0.2)'
     },
     selectContainer:{
-        width:210,
-        height:44,
+        width:Pixel.getPixel(210),
+        height:Pixel.getPixel(44),
         justifyContent:'center',
         alignItems:'center',
-        borderRadius:22,
+        borderRadius:Pixel.getPixel(22),
         backgroundColor:'#FFFFFF'
     },
     unselectText:{
-        fontSize:15,
+        fontSize:Pixel.getFontPixel(15),
         color:'#FFFFFF'
     },
     selectText:{
-        fontSize:15,
+        fontSize:Pixel.getFontPixel(15),
         color:fontAndColor.COLORB0
     },
     center:{

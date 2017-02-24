@@ -21,17 +21,23 @@ const Pixel = new PixelUtil();
 const { width,height } = Dimensions.get('window');
 const background = require('../../../images/publish/background.png');
 const arrow = require('../../../images/publish/date-select.png');
+import SQLiteUtil from '../../utils/SQLiteUtil';
+const SQLite = new SQLiteUtil();
 
 export default class AutoDate extends Component{
 
     constructor(props){
         super(props);
         this.type = '';
+        let manufacture = this.props.carData.manufacture;
+        let init_reg = this.props.carData.init_reg;
+        let hasRegister = this.props.carData.v_type === '1';
         this.state ={
-            factoryDate:'2014-06',
-            registerDate:'2014-11',
+            factoryDate:manufacture,
+            registerDate:init_reg,
             isDateTimePickerVisible: false,
-            renderPlaceholderOnly: true
+            renderPlaceholderOnly: true,
+            hasRegister:hasRegister,
         }
     }
 
@@ -45,6 +51,12 @@ export default class AutoDate extends Component{
         });
     }
 
+    componentWillReceiveProps(nextProps: Object) {
+        this.setState({
+            hasRegister: nextProps.carData.v_type === '1'
+        });
+    }
+
     _renderPlaceholderView = ()=>{
         return(<Image style={[styles.img,{height:height-this.props.barHeight}]} source={background} />);
     };
@@ -54,9 +66,19 @@ export default class AutoDate extends Component{
     }
 
     _handleDatePicked = (date)=>{
-        this.type === 'factory'
-            ? this.setState({factoryDate:this.dateFormat(date,'yyyy-MM')})
-            : this.setState({registerDate:this.dateFormat(date,'yyyy-MM')});
+        let d = this.dateFormat(date,'yyyy-MM');
+        if(this.type === 'factory'){
+            this.setState({factoryDate:d});
+            SQLite.changeData(
+                'UPDATE publishCar SET manufacture = ? WHERE vin = ?',
+                [ d, this.props.carData.vin]);
+        }else{
+            this.setState({registerDate:d});
+            SQLite.changeData(
+                'UPDATE publishCar SET init_reg = ? WHERE vin = ?',
+                [ d, this.props.carData.vin]);
+        }
+
         this._hideDateTimePicker();
     };
 
@@ -70,7 +92,7 @@ export default class AutoDate extends Component{
     };
 
     _onBack = ()=>{
-
+        this.props.onBack();
     };
 
     _renderRihtFootView = ()=>{
@@ -107,7 +129,7 @@ export default class AutoDate extends Component{
                             <Image style={styles.imgContainer} source={arrow}/>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity
+                    {this.state.hasRegister && <TouchableOpacity
                         style={[styles.circleContainer,styles.registerCircle]}
                         activeOpacity={0.6}
                         onPress={()=>{this._labelPress('register')}}
@@ -117,7 +139,7 @@ export default class AutoDate extends Component{
                             <Text style={[styles.fontMain,styles.fillSpace]} >{this.state.registerDate}</Text>
                             <Image style={styles.imgContainer} source={arrow}/>
                         </View>
-                    </TouchableOpacity>
+                    </TouchableOpacity>}
                     <DateTimePicker
                         titleIOS="请选择日期"
                         confirmTextIOS='确定'
@@ -128,7 +150,6 @@ export default class AutoDate extends Component{
                     />
                 </Image>
             </View>
-
         );
     };
 
@@ -160,37 +181,37 @@ const styles = StyleSheet.create({
         alignItems:'center'
     },
     factoryCircle:{
-        marginTop:136
+        marginTop:Pixel.getPixel(209)
     },
     registerCircle:{
-        marginTop:70
+        marginTop:Pixel.getPixel(70)
     },
     circleContainer:{
-        height:44,
+        height:Pixel.getPixel(44),
         flexDirection:'row',
-        marginHorizontal:35,
+        marginHorizontal:Pixel.getPixel(35),
         borderColor:'#FFFFFF',
         borderWidth:1,
-        borderRadius:22,
+        borderRadius:Pixel.getPixel(22),
         alignItems:'center',
         backgroundColor:'rgba(255,255,255,0.2)',
     },
     leftText:{
-        marginLeft:20,
+        marginLeft:Pixel.getPixel(20),
     },
     fontMain:{
         color:'#FFFFFF',
-        fontSize:14
+        fontSize:Pixel.getFontPixel(14)
     },
     imgContainer:{
-        width:9,
-        height:15,
-        marginRight:20
+        width:Pixel.getPixel(9),
+        height:Pixel.getPixel(15),
+        marginRight:Pixel.getPixel(20)
     },
     fillSpace:{
         flex:1,
         textAlign:'right',
-        marginRight:6
+        marginRight:Pixel.getPixel(6)
     },
     center:{
         flexDirection:'row',

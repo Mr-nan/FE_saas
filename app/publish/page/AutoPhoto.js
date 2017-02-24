@@ -62,7 +62,7 @@ export default class AutoPhoto extends Component{
     };
 
     _onBack = ()=>{
-
+        this.props.onBack();
     };
 
     render(){
@@ -99,7 +99,6 @@ export default class AutoPhoto extends Component{
                                     </View>
                                 </Image>
                             </TouchableOpacity>
-
                     }
                 </Image>
             </View>
@@ -118,30 +117,30 @@ const styles = StyleSheet.create({
         alignItems:'center'
     },
     photoContainer:{
-        marginTop:230,
-        width:160,
-        height:120,
+        marginTop:Pixel.getPixel(230),
+        width:Pixel.getPixel(160),
+        height:Pixel.getPixel(120),
         justifyContent:'flex-end',
     },
     noPhotoContainer:{
         alignItems:'center',
-        marginBottom:30
+        marginBottom:Pixel.getPixel(30)
     },
     noPhoto:{
-        fontSize:14,
+        fontSize:Pixel.getFontPixel(14),
         color:'#FFFFFF',
     },
     hasPhotoContainer:{
         flexDirection:'row',
         alignItems:'center',
-        padding:10
+        padding:Pixel.getPixel(10)
     },
     photoLabel:{
-        fontSize:12,
+        fontSize:Pixel.getFontPixel(12),
         color:'#FFFFFF'
     },
     rephotoLabel:{
-        fontSize:12,
+        fontSize:Pixel.getFontPixel(12),
         color:fontAndColor.COLORB1
     },
     fillSpace:{

@@ -5,7 +5,6 @@ import React, {Component} from 'react';
 import {
     View,
     Text,
-    Image,
     Modal,
     TouchableOpacity,
     Dimensions,
@@ -13,6 +12,8 @@ import {
 } from 'react-native';
 
 import * as fontAndColor from '../../constant/fontAndColor';
+import PixelUtil from '../../utils/PixelUtil';
+const Pixel = new PixelUtil();
 const {width, height} = Dimensions.get('window');
 import Grid from './Grid';
 
@@ -182,54 +183,54 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     contentContainer: {
-        width: 250,
-        height: 320,
-        borderRadius: 2,
-        marginTop: 141,
-        paddingHorizontal: 22,
+        width: Pixel.getPixel(250),
+        height: Pixel.getPixel(320),
+        borderRadius: Pixel.getPixel(2),
+        marginTop: Pixel.getPixel(141),
+        paddingHorizontal: Pixel.getPixel(22),
         justifyContent: 'center',
         backgroundColor: '#FFFFFF',
-        paddingTop: 14
+        paddingTop: Pixel.getPixel(14)
     },
     girdContainer: {
         flex: 1
     },
     defaultItem: {
-        width: 36,
-        height: 36,
+        width: Pixel.getPixel(36),
+        height: Pixel.getPixel(36),
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 4
+        marginTop: Pixel.getPixel(4)
     },
     defaultText: {
-        fontSize: 20,
+        fontSize: Pixel.getFontPixel(20),
         color: fontAndColor.COLORA2,
     },
     selectItem: {
-        width: 36,
-        height: 36,
-        borderRadius: 18,
+        width: Pixel.getPixel(36),
+        height: Pixel.getPixel(36),
+        borderRadius: Pixel.getPixel(18),
         backgroundColor: fontAndColor.COLORB1,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 4
+        marginTop: Pixel.getPixel(4)
     },
     selectText: {
-        fontSize: 20,
+        fontSize: Pixel.getFontPixel(20),
         color: '#FFFFFF'
     },
     okBtn: {
-        width: 154,
-        height: 36,
+        width: Pixel.getPixel(154),
+        height: Pixel.getPixel(36),
         borderWidth: 1,
         borderRadius: 1,
         borderColor: fontAndColor.COLORB1,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 4
+        marginTop: Pixel.getPixel(4)
     },
     okText: {
-        fontSize: 15,
+        fontSize: Pixel.getFontPixel(15),
         color: fontAndColor.COLORB1
     },
     center:{

@@ -124,7 +124,7 @@ export default class DetailAutoPhoto extends Component {
     };
 
     _onBack = ()=>{
-
+        this.props.onBack();
     };
 
     _renderRihtFootView = ()=>{
@@ -176,39 +176,39 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     contentContainer: {
-        paddingTop: 109,
-        paddingHorizontal: 6,
-        justifyContent: 'center',
+        paddingTop: Pixel.getPixel(90),
+        justifyContent: 'center'
     },
     girdContainer: {
         flex: 1
     },
     photoContainer: {
-        marginTop: 14,
-        width: 160,
-        height: 120,
+        marginTop: Pixel.getPixel(14),
+        width: Pixel.getPixel(160),
+        height: Pixel.getPixel(120),
         justifyContent: 'flex-end',
-        marginHorizontal: 4
+        marginHorizontal:Pixel.getPixel(5),
     },
     noPhotoContainer: {
         alignItems: 'center',
-        marginBottom: 30
+        marginBottom: Pixel.getPixel(30)
     },
     noPhoto: {
-        fontSize: 14,
+        fontSize: Pixel.getFontPixel(14),
         color: '#FFFFFF',
     },
     hasPhotoContainer: {
+        width: Pixel.getPixel(160),
         flexDirection: 'row',
         alignItems: 'center',
-        padding: 10
+        padding: Pixel.getPixel(10)
     },
     photoLabel: {
-        fontSize: 12,
+        fontSize: Pixel.getFontPixel(12),
         color: '#FFFFFF'
     },
     rephotoLabel: {
-        fontSize: 12,
+        fontSize: Pixel.getFontPixel(12),
         color: fontAndColor.COLORB1
     },
     fillSpace: {

@@ -1,7 +1,7 @@
 /**
  * Created by lhc on 2017/2/15.
  */
-import React, {Component} from 'react';
+import React, {Component, PureComponent} from 'react';
 import {
     StyleSheet,
     Text,
@@ -12,11 +12,16 @@ import {
     TouchableOpacity,
 } from 'react-native';
 //图片加文字
-const {width, height} = Dimensions.get('window');
-import PixelUtil from '../utils/PixelUtil';
-const Pixel = new PixelUtil();
+//ok
+
+import {width, adapeSize, fontdapeSize, FEColor} from './ComponentBlob';
 import BaseComponent from '../component/BaseComponent';
-class TitleImage extends Component {
+import SingelCarScene from './SingelCarScene';
+import KurongSence from './KurongSence';
+import CGDLendScenes from './CGDLendScenes';
+const PageColor = new FEColor();
+
+class TitleImage extends PureComponent {
     // 构造
     render() {
         const {imageSource, title}=this.props;
@@ -30,10 +35,10 @@ class TitleImage extends Component {
     }
 }
 
-class PageItem extends Component {
+class PageItem extends PureComponent {
 
     render() {
-        const {onPress, backImage, title}=this.props;
+        const {onPress, backImage, title, imageSource}=this.props;
         return (
             <View style={styles.warp}>
 
@@ -42,9 +47,8 @@ class PageItem extends Component {
                     <TouchableOpacity style={{alignItems: 'center'}} activeOpacity={0.9} onPress={onPress}>
                         <Image style={styles.backGroundImage} source={backImage}>
 
-                            <TitleImage imageSource={this.props.imageSource} title={title}
+                            <TitleImage imageSource={imageSource} title={title}
                                         onPress={this.onPress}/>
-
                         </Image>
                     </TouchableOpacity>
 
@@ -57,8 +61,8 @@ class PageItem extends Component {
 }
 
 export  default class LendMoneySence extends BaseComponent {
-
     initFinish = () => {
+
     }
 
     dataSource = [
@@ -71,7 +75,7 @@ export  default class LendMoneySence extends BaseComponent {
         {
             backImage: require('../../images/financeImages/backkurong.png'),
             imageSource: require('../../images/financeImages/kurongIcon.png'),
-            title: '库存融资',
+            title: '库融融资',
             key: 'kurong'
         },
         {
@@ -79,12 +83,26 @@ export  default class LendMoneySence extends BaseComponent {
             imageSource: require('../../images/financeImages/caigouIcon.png'),
             title: '采购融资',
             key: 'caigoudai'
-        }
+        },
     ]
+    navigatorParams = {
+        name: 'SingelCarScene',
+        component: SingelCarScene,
+        params: {}
+    }
 
     onPress = (key) => {
-
-        alert(key);
+        if (key === 'single') {
+            this.navigatorParams.name = "SingelCarScene";
+            this.navigatorParams.component = SingelCarScene;
+        } else if (key === 'kurong') {
+            this.navigatorParams.name = "KurongSence";
+            this.navigatorParams.component = KurongSence;
+        } else {
+            this.navigatorParams.name = "CGDLendScenes";
+            this.navigatorParams.component = CGDLendScenes;
+        }
+        this.toNextPage(this.navigatorParams);
     }
 
     render() {
@@ -108,7 +126,7 @@ export  default class LendMoneySence extends BaseComponent {
         return (
 
             <ScrollView showsVerticalScrollIndicator={false}
-                        style={{marginTop: 44, backgroundColor: '#f0eff5', paddingTop: 15} }>
+                        style={{marginTop: 44, backgroundColor: PageColor.COLORA3, paddingTop: adapeSize(15)} }>
                 {viewBlob}
             </ScrollView>
 
@@ -122,12 +140,12 @@ const styles = StyleSheet.create({
 
     image: {
 
-        width: 43,
-        height: 43,
+        width: adapeSize(43),
+        height: adapeSize(43),
     },
     text: {
-        marginTop: 15,
-        fontSize: 15,
+        marginTop: adapeSize(15),
+        fontSize: fontdapeSize(15),
         color: 'white',
         backgroundColor: 'transparent'
 
@@ -139,21 +157,21 @@ const styles = StyleSheet.create({
     },
 
     warp: {
-        height: Pixel.getPixel(170),
-        paddingBottom: 10,
+
+        paddingBottom: adapeSize(10),
     },
 
     insertWarp: {
 
         backgroundColor: 'white',
-        padding: 15
+        padding: adapeSize(15),
 
     },
     backGroundImage: {
 
         justifyContent: 'center',
-        borderRadius: 5,
-        width: width - 30,
+        borderRadius: adapeSize(5),
+        width: width - adapeSize(30),
 
     }
 })

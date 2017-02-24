@@ -490,3 +490,9 @@ export const PURCHAAUTO_BINDOBD = BASEURL + V
  */
 export const PURCHAAUTO_OBD_DESC = BASEURL +
     "obd_installation.html";
+
+/**
+ * 获取员工列表
+ */
+export const USER_EMPLOYE = BASEURL +V
+    "user.employe/index";
