@@ -1,4 +1,5 @@
 dependencies: \
+<<<<<<< HEAD
   /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/node_modules/react-native/React/Modules/RCTDevMenu.m \
   /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/node_modules/react-native/React/Modules/RCTDevMenu.h \
   /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/node_modules/react-native/React/Base/RCTBridge.h \
@@ -17,3 +18,23 @@ dependencies: \
   /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/node_modules/react-native/React/Base/RCTRootView.h \
   /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/node_modules/react-native/React/Base/RCTUtils.h \
   /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/node_modules/react-native/React/Base/RCTWebSocketObserverProtocol.h
+=======
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Modules/RCTDevMenu.m \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Modules/RCTDevMenu.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Base/RCTBridge.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Base/RCTBridgeDelegate.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Base/RCTJavaScriptLoader.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Base/RCTDefines.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Base/RCTBridgeModule.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Base/RCTFrameUpdate.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Base/RCTInvalidating.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Base/RCTAssert.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Base/RCTBridge+Private.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Base/RCTEventDispatcher.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Base/RCTKeyCommands.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Base/RCTLog.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Profiler/RCTProfile.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Base/RCTRootView.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Base/RCTUtils.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Base/RCTWebSocketObserverProtocol.h
+>>>>>>> a6264db28ac824d24372b05ea375a137393fa431

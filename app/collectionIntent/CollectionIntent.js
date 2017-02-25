@@ -17,7 +17,13 @@ import PixelUtil from "../utils/PixelUtil";
 var Pixel = new PixelUtil();
 var carYearArr =new Map();
 var mileageArr =new Map();
-export default class CollectionIntent extends Component {
+import BaseComponent from '../component/BaseComponent';
+export default class CollectionIntent extends BaseComponent {
+
+    initFinish = () => {
+
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -153,7 +159,7 @@ export default class CollectionIntent extends Component {
                 />
                 <View style={ styles.container1}>
                     <View style={styles.containerChild}>
-                        <View style={{flexDirection: 'row', marginTop: 10}}>
+                        <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10)}}>
                             <Text style={styles.carSelect}>
                                 *品牌、车系
                             </Text>
@@ -227,7 +233,8 @@ export default class CollectionIntent extends Component {
                         </LabelSelect>
                     </View>
                     <Text style={styles.bottomText}>根据您提报的收车意向，我们会给您相关车源。请关注首页意向车源。</Text>
-                    <TouchableOpacity style={styles.btnStyle} onPress={()=>{}}>
+                    <TouchableOpacity style={styles.btnStyle}
+                                      >
                         <Text style={{
                             color: FontAndColor.COLORA3,
                             fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT),
@@ -235,6 +242,7 @@ export default class CollectionIntent extends Component {
                         }}>提交</Text>
                     </TouchableOpacity>
                 </View>
+
             </View>
         );
     }

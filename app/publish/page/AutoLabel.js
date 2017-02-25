@@ -8,11 +8,15 @@ import {
     Image,
     TouchableOpacity,
     Dimensions,
-    StyleSheet
+    StyleSheet,
+    InteractionManager
 } from 'react-native';
 
-import * as fontAndColor from '../../constant/fontAndColor';
 import Grid from '../component/Grid';
+import * as fontAndColor from '../../constant/fontAndColor';
+import AllNavigationView from '../../component/AllNavigationView';
+import PixelUtil from '../../utils/PixelUtil';
+const Pixel = new PixelUtil();
 
 const { width,height } = Dimensions.get('window');
 const background = require('../../../images/publish/background.png');
@@ -34,7 +38,8 @@ export default class AutoLabel extends Component {
                 {title: '倒车影像', selected: false,index:7},
             ];
         this.state = {
-            dataSource: this.viewData
+            dataSource: this.viewData,
+            renderPlaceholderOnly: true
         }
     }
 
@@ -43,7 +48,9 @@ export default class AutoLabel extends Component {
     }
 
     componentDidMount() {
-
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+        });
     }
 
     componentWillUnmount() {
@@ -95,12 +102,36 @@ export default class AutoLabel extends Component {
         }
     };
 
+    _renderPlaceholderView = ()=>{
+        return(<Image style={[styles.img,{height:height-this.props.barHeight}]} source={background} />);
+    };
+    _onBack = ()=>{
+        this.props.onBack();
+    };
 
+    _renderRihtFootView = ()=>{
+        return(
+            <TouchableOpacity
+                activeOpacity={0.6}
+                onPress={()=>{this.props.publishData()}}>
+                <Text style={styles.rightTitleText}>完成</Text>
+            </TouchableOpacity>
+        );
+    };
 
     render() {
+        if (this.state.renderPlaceholderOnly) {
+            return this._renderPlaceholderView();
+        }
+
         return (
             <View style={styles.container}>
                 <Image style={[styles.imgContainer,{height:height-this.props.barHeight}]} source={background}>
+                    <AllNavigationView
+                        backIconClick={this._onBack}
+                        title='选择热门标签'
+                        wrapStyle={styles.wrapStyle}
+                        renderRihtFootView={this._renderRihtFootView} />
                     <Grid
                         ref = {(grid)=>{this.interiorGrid = grid}}
                         style={styles.girdContainer}
@@ -123,19 +154,19 @@ const styles = StyleSheet.create({
     imgContainer:{
         width: width,
         backgroundColor: 'transparent',
-        paddingTop: 100,
-        paddingHorizontal: 24
+        paddingTop: Pixel.getPixel(121),
+        paddingHorizontal: Pixel.getPixel(43)
     },
     girdContainer: {
         flex: 1,
     },
     defaultContainer: {
-        height: 41,
-        width: 132,
-        marginTop: 10,
+        height: Pixel.getPixel(41),
+        width: Pixel.getPixel(132),
+        marginTop: Pixel.getPixel(10),
         borderWidth: 1,
         borderColor: '#FFFFFF',
-        borderRadius: 20,
+        borderRadius: Pixel.getPixel(20),
         justifyContent: 'center'
     },
     defaultItem: {
@@ -143,16 +174,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     defaultText: {
-        fontSize: 15,
+        fontSize: Pixel.getFontPixel(15),
         color: '#FFFFFF'
     },
     selectContainer: {
-        height: 41,
-        width: 132,
-        marginTop: 10,
+        height: Pixel.getPixel(41),
+        width: Pixel.getPixel(132),
+        marginTop: Pixel.getPixel(10),
         borderWidth: 1,
         borderColor: '#FFFFFF',
-        borderRadius: 20,
+        borderRadius: Pixel.getPixel(20),
         backgroundColor: '#FFFFFF',
         justifyContent: 'center',
     },
@@ -162,17 +193,26 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     selectText: {
-        fontSize: 15,
+        fontSize: Pixel.getFontPixel(15),
         color: fontAndColor.COLORB1
     },
     hotLabel: {
-        width: 13,
-        height: 9,
-        marginLeft: 2
+        width: Pixel.getPixel(13),
+        height: Pixel.getPixel(9),
+        marginLeft: Pixel.getPixel(2)
     },
     emptyItem: {
-        height: 41,
-        width: 132,
+        height: Pixel.getPixel(41),
+        width: Pixel.getPixel(132),
+        backgroundColor: 'transparent'
+    },
+    wrapStyle:{
+        backgroundColor:'transparent'
+    },
+    rightTitleText: {
+        color: 'white',
+        fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34),
+        textAlign: 'right',
         backgroundColor: 'transparent'
     }
 });

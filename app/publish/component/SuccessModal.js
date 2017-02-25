@@ -13,7 +13,8 @@ import {
 } from 'react-native';
 
 import * as fontAndColor from '../../constant/fontAndColor';
-
+import PixelUtil from '../../utils/PixelUtil';
+const Pixel = new PixelUtil();
 const {width,height} = Dimensions.get('window');
 const imgLogo = require('../../../images/publish/success.png');
 
@@ -30,6 +31,7 @@ export default class SuccessModal extends Component{
         this.setState({
             modalVisible: false
         });
+        this.props.okClick();
     };
 
     openModal = ()=>{
@@ -48,7 +50,7 @@ export default class SuccessModal extends Component{
                     <View style={styles.contentContainer}>
                         <Image style={styles.imgLogo} source={imgLogo}/>
                         <Text style={styles.fontMain}>发布成功</Text>
-                        <Text style={styles.fontHint}>您可以到首页/卖车中查看车辆状态</Text>
+                        <Text style={styles.fontHint}>您可以到首页/车源中查看车辆状态</Text>
                         <View style={styles.fillSpace}/>
                         <TouchableOpacity
                             activeOpacity={0.2}
@@ -72,43 +74,43 @@ const styles = StyleSheet.create({
         alignItems:'center'
     },
     contentContainer:{
-        width:260,
-        height:310,
-        borderRadius:2,
-        marginTop:157,
+        width:Pixel.getPixel(260),
+        height:Pixel.getPixel(310),
+        borderRadius:Pixel.getPixel(2),
+        marginTop:Pixel.getPixel(157),
         alignItems:'center',
         backgroundColor:'#FFFFFF'
     },
     imgLogo:{
-        marginTop:28,
-        width:142,
-        height:112
+        marginTop:Pixel.getPixel(28),
+        width:Pixel.getPixel(142),
+        height:Pixel.getPixel(112)
     },
     fontMain:{
-        marginTop:28,
+        marginTop:Pixel.getPixel(28),
         color:fontAndColor.COLORA0,
-        fontSize:20
+        fontSize:Pixel.getFontPixel(20)
     },
     fontHint:{
-        marginTop:8,
+        marginTop:Pixel.getPixel(8),
         color:fontAndColor.COLORA1,
-        fontSize:14
+        fontSize:Pixel.getFontPixel(14)
     },
     okBtn:{
-        width:230,
-        height:40,
+        width:Pixel.getPixel(230),
+        height:Pixel.getPixel(40),
         backgroundColor:fontAndColor.COLORB0,
-        borderRadius:2,
+        borderRadius:Pixel.getPixel(2),
         alignItems:'center',
         justifyContent:'center',
-        marginBottom:17
+        marginBottom:Pixel.getPixel(17)
     },
     okText:{
-        fontSize:15,
+        fontSize:Pixel.getFontPixel(15),
         color:'#FFFFFF'
     },
     fillSpace:{
-        flex:1,
+        flex:1
     }
 });
 

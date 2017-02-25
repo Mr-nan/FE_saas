@@ -13,6 +13,8 @@ import {
 
 const { width } = Dimensions.get('window');
 import * as fontAndColor from '../../constant/fontAndColor';
+import PixelUtil from '../../utils/PixelUtil';
+const Pixel = new PixelUtil();
 const unselect = require('../../../images/publish/date-select.png');
 const select = require('../../../images/publish/car-select.png');
 
@@ -32,10 +34,14 @@ export default class NewIndicator extends Component{
 
 
     _onPress = (page) =>{
-        if(page !== 5){
-            this.props.goToPage(page)
+        if(!this.props.canChange){
+            if(page !== 5){
+                this.props.goToPage(page)
+            }else{
+                this.props.goToMore();
+            }
         }else{
-            this.props.goToMore();
+            alert('请先填写车架号');
         }
     };
 
@@ -71,34 +77,34 @@ export default class NewIndicator extends Component{
 const styles = StyleSheet.create({
     container:{
         width:width,
-        height:57,
-        backgroundColor:'rgba(47,155,250,0.25)',
+        height:Pixel.getPixel(57),
+        backgroundColor:'rgba(47,155,250,0.6)',
         flexDirection:'row',
         justifyContent:'space-around',
         alignItems:'center'
     },
     defaultContainer:{
-        width:50,
-        height:27,
+        width:Pixel.getPixel(50),
+        height:Pixel.getPixel(27),
         borderWidth:0.5,
         borderColor:'#FFFFFF',
-        borderRadius:2,
+        borderRadius:Pixel.getPixel(2),
         backgroundColor:'transparent',
         justifyContent:'center'
     },
     defaultText:{
-        fontSize:14,
+        fontSize:Pixel.getFontPixel(14),
         color:'#FFFFFF'
     },
     imgContainer:{
-        width:7,
-        height:12,
-        marginLeft:2
+        width:Pixel.getPixel(7),
+        height:Pixel.getPixel(12),
+        marginLeft:Pixel.getPixel(2)
     },
     selectContainer:{
-        width:50,
-        height:27,
-        borderRadius:2,
+        width:Pixel.getPixel(50),
+        height:Pixel.getPixel(27),
+        borderRadius:Pixel.getPixel(2),
         backgroundColor:'#FFFFFF',
         justifyContent:'center'
     },
@@ -108,7 +114,7 @@ const styles = StyleSheet.create({
         flexDirection:'row'
     },
     selectText:{
-        fontSize:14,
+        fontSize:Pixel.getFontPixel(14),
         color:fontAndColor.COLORB0
     },
 });

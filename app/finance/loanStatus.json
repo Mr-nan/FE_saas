@@ -1,0 +1,63 @@
+{
+    "retcode": 1,
+    "retdata": [
+        {
+            "createtime": "",
+            "info": "提交提档资料",
+            "is_operation": "0",
+            "payment_number": "201612120110",
+            "status": ""
+        },
+        {
+            "createtime": "2017-01-12 09:48:14",
+            "info": "绑定OBD",
+            "is_operation": "1",
+            "payment_number": "201612120110",
+            "status": "60"
+        },
+        {
+            "createtime": "2017-01-12 09:46:48",
+            "info": "签署合同(商户)",
+            "is_operation": "1",
+            "payment_number": "201612120110",
+            "status": "70"
+        },
+        {
+            "createtime": "2016-12-12 16:00:24",
+            "info": "商户确认车辆及金额",
+            "is_operation": "1",
+            "payment_number": "201612120110",
+            "status": "40"
+        },
+        {
+            "createtime": "2016-12-12 16:00:10",
+            "info": "确认资金渠道",
+            "is_operation": "1",
+            "payment_number": "201612120110",
+            "status": "90"
+        },
+        {
+            "createtime": "2016-12-12 15:59:02",
+            "info": "车辆初评",
+            "is_operation": "1",
+            "payment_number": "201612120110",
+            "status": "30"
+        },
+        {
+            "createtime": "2016-12-12 15:57:52",
+            "info": "实际用款初审",
+            "is_operation": "1",
+            "payment_number": "201612120110",
+            "status": "20"
+        },
+        {
+            "createtime": "2016-12-12 15:53:58",
+            "info": "借款申请",
+            "is_operation": "1",
+            "payment_number": "201612120110",
+            "status": "10"
+        }
+    ],
+    "retmsg": "[1]ok",
+    "rettoken": "e9ab1d1bb12b2f824df9503ba4f0e4cd"
+}

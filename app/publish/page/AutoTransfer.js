@@ -8,17 +8,35 @@ import {
     Text,
     TextInput,
     Dimensions,
-    StyleSheet
+    StyleSheet,
+    Platform,
+    TouchableOpacity,
+    InteractionManager
 } from 'react-native';
+
+import * as fontAndColor from '../../constant/fontAndColor';
+import AllNavigationView from '../../component/AllNavigationView';
+import PixelUtil from '../../utils/PixelUtil';
+const Pixel = new PixelUtil();
 
 const { width,height } = Dimensions.get('window');
 const background = require('../../../images/publish/background.png');
 const transferNum = require('../../../images/publish/transfer-num.png');
 
+import Picker from 'react-native-wheel-picker';
+let PickerItem = Picker.Item;
+
+const IS_ANDROID = Platform.OS === 'android';
+
 export default class AutoTransfer extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            selected1: 0,
+            itemList: ['0', '1', '2', '3', '4', '5', '6', '7','8','10','10以上'],
+            renderPlaceholderOnly: true
+        };
     }
 
     componentWillMount() {
@@ -26,20 +44,64 @@ export default class AutoTransfer extends Component {
     }
 
     componentDidMount() {
-
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+        });
     }
 
     componentWillUnmount() {
 
     }
 
+    onPickerSelect = (key,value) => {
+        const newState = {};
+        newState[key] = value;
+        this.setState(newState);
+    };
+
+    _renderPlaceholderView = ()=>{
+        return(<Image style={[styles.img,{height:height-this.props.barHeight}]} source={background} />);
+    };
+
+    _onBack = ()=>{
+        this.props.onBack();
+    };
+
+    _renderRihtFootView = ()=>{
+        return(
+            <TouchableOpacity
+                activeOpacity={0.6}
+                onPress={()=>{this.props.publishData()}}>
+                <Text style={styles.rightTitleText}>完成</Text>
+            </TouchableOpacity>
+        );
+    };
+
     render() {
+        if (this.state.renderPlaceholderOnly) {
+            return this._renderPlaceholderView();
+        }
         return (
             <View style={styles.container}>
                 <Image style={[styles.img,{height:height-this.props.barHeight}]} source={background}>
+                    <AllNavigationView
+                        backIconClick={this._onBack}
+                        title='选择过户次数'
+                        wrapStyle={styles.wrapStyle}
+                        renderRihtFootView={this._renderRihtFootView} />
                     <Image style={styles.imgContainer} source={transferNum}>
                         <View style={styles.inputContainer}>
-                            <TextInput  style={styles.inputNum} underlineColorAndroid='transparent' defaultValue={'2'}/>
+                            {/*<TextInput  style={styles.inputNum} underlineColorAndroid='transparent' defaultValue={'2'}/>*/}
+                            <View style={styles.pickContainer}>
+                                <Picker  style={[IS_ANDROID && styles.fillSpace]}
+                                         selectedValue={this.state.selected1}
+                                         itemStyle={{color:"#FFFFFF", fontSize:16,fontWeight:'bold'}}
+                                         onValueChange={(index) => this.onPickerSelect('selected1',index)}>
+                                    {this.state.itemList.map((value, i) => (
+                                        <PickerItem label={value} value={i} key={"first"+value}/>
+                                    ))}
+                                </Picker>
+                            </View>
                             <View style={styles.timeContainer}>
                                 <Text style={styles.fontTime}>次</Text>
                             </View>
@@ -62,29 +124,47 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     imgContainer: {
-        width: 120,
-        height: 120,
+        width: Pixel.getPixel(120),
+        height: Pixel.getPixel(120),
         justifyContent: 'center',
-        marginTop:225
+        marginTop:Pixel.getPixel(225),
+        alignItems:'center'
     },
     inputContainer:{
-        flexDirection:'row'
+        flexDirection:'row',
+        width:Pixel.getPixel(70),
+        height:Pixel.getPixel(40)
+    },
+    pickContainer:{
+        flex:1,
+        height:Pixel.getPixel(40),
     },
     inputNum:{
-        width:60,
-        fontSize:38,
+        width:Pixel.getPixel(60),
+        height:Pixel.getPixel(40),
+        fontSize:Pixel.getFontPixel(38),
         padding:0,
         color:'#FFFFFF',
         textAlign:'right'
     },
     timeContainer:{
-        justifyContent:'flex-end'
+        justifyContent:'center',
     },
     fontTime:{
-        fontSize:15,
+        fontSize:Pixel.getFontPixel(15),
         color:'#FFFFFF',
-        marginLeft:7,
-        marginBottom:6
+        marginLeft:Pixel.getFontPixel(3),
+    },
+    wrapStyle:{
+        backgroundColor:'transparent'
+    },
+    rightTitleText: {
+        color: 'white',
+        fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34),
+        textAlign: 'right',
+        backgroundColor: 'transparent'
+    },
+    fillSpace:{
+        flex:1,
     }
-
 });

@@ -66,8 +66,8 @@ export  default class SingleRepaymentPage extends Component {
     _renderRow = (movie) => {
 
         return (
-            <View style={[{width: width, height: Pixel.getPixel(163), backgroundColor: 'red'}]}>
-                <View style={[styles.rowViewStyle,styles.margin]}>
+            <View style={[styles.allBack]}>
+                <View style={[styles.rowViewStyle, styles.margin]}>
                     <View style={[styles.rowTopViewStyle, {justifyContent: 'flex-start', flex: 3,}]}>
                         <MyButton {...this.buttonParams} content="单车"/>
                         <Text style={styles.rowTopTextStyle}>源之宝汽车经销公司</Text>
@@ -79,12 +79,39 @@ export  default class SingleRepaymentPage extends Component {
                         <Text style={styles.rowTopGrayTextStyle}>201701100225</Text>
                     </View>
                 </View>
-                <View style={{width: width, height: Pixel.getPixel(1), backgroundColor: fontAndColor.COLORA4}}></View>
-                <View style={{width: width, height: Pixel.getPixel(72), backgroundColor: 'yellow',flexDirection:'row'}}>
-                    <View style={{flex:1,height:Pixel.getPixel(72)}}></View>
+                <View style={[styles.line]}></View>
+                <View
+                    style={[styles.centerView]}>
+                    <View style={[styles.centerChild, styles.margin, {alignItems: 'flex-start'}]}>
+                        <Text style={styles.centerText}>
+                            到账日期
+                        </Text>
+                        <Text style={[styles.centerBottomText, {
+                            color: fontAndColor.COLORA0
+                        }]}>
+                            2017-1-20
+                        </Text>
+                    </View>
+                    <View style={[styles.centerChild, styles.margin, {alignItems: 'flex-end'}]}>
+                        <Text style={styles.centerText}>
+                            本息合计
+                        </Text>
+                        <Text style={[styles.centerBottomText, {
+                            color: fontAndColor.COLORB2
+                        }]}>
+                            10万
+                        </Text>
+                    </View>
                 </View>
-                <View style={{width: width, height: Pixel.getPixel(1), backgroundColor: fontAndColor.COLORA4}}></View>
-                <View style={{width: width, height: Pixel.getPixel(44), backgroundColor: 'pink'}}></View>
+                <View style={[styles.line]}></View>
+                <View style={[styles.bottomView]}>
+                    <Text style={{
+                        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                        color: fontAndColor.COLORA1
+                    }}>
+                        奔驰M级(进口)2015款 ML 4MATIC 动感型
+                    </Text>
+                </View>
                 <View style={{width: width, height: Pixel.getPixel(1), backgroundColor: fontAndColor.COLORA4}}></View>
             </View>
 
@@ -109,7 +136,6 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     rowTopViewStyle: {
-        height: Pixel.getPixel(40),
         flexDirection: 'row',
         alignItems: 'center',
     },
@@ -137,4 +163,34 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
         color: fontAndColor.COLORB0,
     },
+    allBack: {
+        width: width, height: Pixel.getPixel(163),backgroundColor:'#ffffff',alignItems:'center'
+    },
+    line: {
+        width: width-Pixel.getPixel(30),
+        height: Pixel.getPixel(1),
+        backgroundColor: fontAndColor.COLORA3
+    },
+    centerView: {
+        width: width,
+        height: Pixel.getPixel(72),
+        flexDirection: 'row'
+    },
+    centerChild: {
+        flex: 1, height: Pixel.getPixel(72),
+        justifyContent: 'center'
+    },
+    centerText: {
+        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+        color: fontAndColor.COLORA1
+    },
+    centerBottomText: {
+        fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+        marginTop: Pixel.getPixel(8)
+    },
+    bottomView:{
+        height: Pixel.getPixel(44),
+        justifyContent: 'center',
+        width:width-Pixel.getPixel(30)
+    }
 })

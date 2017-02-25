@@ -22,22 +22,20 @@ export default class CarInfoNavigationView extends PureComponent {
 
     render() {
 
-        const {title, backIconClick, renderRihtFootView} = this.props;
+        const {title, backIconClick, renderRihtFootView,wrapStyle} = this.props;
 
         return (
-            <View style={styles.navigation}>
+            <View style={[styles.navigation,wrapStyle]}>
                 <View style={styles.content}>
-                    <TouchableOpacity style={{width: Pixel.getPixel(80), height: Pixel.getPixel(44),justifyContent:'center'}}
+                     <TouchableOpacity style={{width: Pixel.getPixel(80), height: Pixel.getPixel(44),justifyContent:'center'}}
                                       onPress={backIconClick}>
-                        <Image style={styles.backIcon} source={require('../../images/mainImage/navigatorBack.png')}/>
-                    </TouchableOpacity>
+                    {backIconClick && <Image style={styles.backIcon} source={require('../../images/mainImage/navigatorBack.png')}/>}
+                     </TouchableOpacity>
                     <Text style={styles.titleText}>{title}</Text>
                     <View style={styles.imageFoot}>
                         {
                             renderRihtFootView && renderRihtFootView()
                         }
-
-
                     </View>
                 </View>
             </View>
@@ -83,7 +81,6 @@ const styles = StyleSheet.create({
     },
     navigation: {
         height: Pixel.getTitlePixel(64),
-        // height:64,
         backgroundColor: fontAndColor.COLORB0,
         left: 0,
         right: 0,

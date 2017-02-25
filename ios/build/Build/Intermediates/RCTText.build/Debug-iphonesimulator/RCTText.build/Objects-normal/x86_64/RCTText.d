@@ -1,4 +1,5 @@
 dependencies: \
+<<<<<<< HEAD
   /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/node_modules/react-native/Libraries/Text/RCTText.m \
   /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/node_modules/react-native/Libraries/Text/RCTText.h \
   /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTUtils.h \
@@ -19,3 +20,25 @@ dependencies: \
   /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTFrameUpdate.h \
   /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTInvalidating.h \
   /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTTextDecorationLineType.h
+=======
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/Libraries/Text/RCTText.m \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/Libraries/Text/RCTText.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTUtils.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTAssert.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTDefines.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/UIView+React.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTComponent.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/Libraries/Text/RCTShadowText.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTShadowView.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/Yoga.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/YGEnums.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/YGMacros.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTRootView.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridge.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridgeDelegate.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTJavaScriptLoader.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridgeModule.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTFrameUpdate.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTInvalidating.h \
+  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTTextDecorationLineType.h
+>>>>>>> a6264db28ac824d24372b05ea375a137393fa431

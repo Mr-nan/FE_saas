@@ -1,0 +1,39 @@
+{
+  "retcode": 1,
+  "retdata": {
+    "cate_list": [
+      {
+        "code": "buyer_seller_vehicle",
+        "id": "1920",
+        "name": "买方+卖方+车辆合照",
+        "sort": "1"
+      },
+      {
+        "code": "frame_number_photo",
+        "id": "1922",
+        "name": "铭牌照片",
+        "sort": "2"
+      },
+      {
+        "code": "registration_photo",
+        "id": "1940",
+        "name": "登记证照片(有几页拍几页)",
+        "sort": "10"
+      },
+      {
+        "code": "center_console",
+        "id": "1941",
+        "name": "中控台(从后排座往前照)",
+        "sort": "11"
+      },
+      {
+        "code": "right_after",
+        "id": "1942",
+        "name": "右后",
+        "sort": "12"
+      }
+    ]
+  },
+  "retmsg": "[1]ok",
+  "rettoken": "e9ab1d1bb12b2f824df9503ba4f0e4cd"
+}

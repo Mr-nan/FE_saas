@@ -1,0 +1,19 @@
+{
+  "retcode": 1,
+  "retdata": {
+    "apply_credit_type": 3,
+    "bond_mny": 578000,
+    "bond_total_mny": 600000,
+    "credit_add_extend_flags": 3,
+    "credit_max_time": "2018/02/14",
+    "credit_maxloanmny": 9580000,
+    "credit_mny": 10000000,
+    "inventory_financing_status": "1",
+    "loan_balance_mny": 420000,
+    "purchase_archives_after_status": "1",
+    "purchase_archives_first_status": "1",
+    "purchase_status": "1"
+  },
+  "retmsg": "[1]ok",
+  "rettoken": "e9ab1d1bb12b2f824df9503ba4f0e4cd"
+}

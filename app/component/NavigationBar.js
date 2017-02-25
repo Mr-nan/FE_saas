@@ -1,4 +1,4 @@
-import React, {Component, PropTypes,PureComponent} from "react";
+import React, {Component, PropTypes, PureComponent} from "react";
 import {AppRegistry, StyleSheet, View, Text} from "react-native";
 import MyButton from "./MyButton";
 import * as FontAndColor from "../constant/fontAndColor";
@@ -12,9 +12,11 @@ export default class NavigationBar extends PureComponent {
         leftImageShow: true,
         centerTextShow: true,
         rightTextShow: true,
+        rightImageShow: false,
 
         leftText: "",
         leftImage: require('../../images/login/navigotion_back.png'),
+        rightImage: require('../../images/login/add.png'),
         centerText: "注册",
         rightText: "提交",
     };
@@ -23,21 +25,25 @@ export default class NavigationBar extends PureComponent {
         leftTextShow: PropTypes.bool,
         leftImageShow: PropTypes.bool,
         // centerTextShow: PropTypes.bool,
-        // rightTextShow: PropTypes.bool,
+        rightTextShow: PropTypes.bool,
+        rightImageShow: PropTypes.bool,
 
         leftText: PropTypes.string,
         leftImage: PropTypes.number,
+        rightImage: PropTypes.number,
         centerText: PropTypes.string,
         rightText: PropTypes.string,
 
         leftTextStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
         leftImageStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
+        rightImageStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
         centerTextStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
         rightTextStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
         titleVeiwSytle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
 
         leftTextCallBack: PropTypes.func,
         leftImageCallBack: PropTypes.func,
+        rightImageCallBack: PropTypes.func,
         // centerTextCallBack: PropTypes.func,
         rightTextCallBack: PropTypes.func,
     }
@@ -68,9 +74,22 @@ export default class NavigationBar extends PureComponent {
                     {this.props.centerText}
                 </Text>
 
-                <MyButton buttonType={MyButton.TEXTBUTTON} content={this.props.rightText}
-                          childStyle={[styles.rightTextStyle, this.props.rightTextStyle]}
-                          mOnPress={this.props.rightTextCallBack}/>
+                {this.props.rightTextShow ?
+                    <MyButton buttonType={MyButton.TEXTBUTTON} content={this.props.rightText}
+                              childStyle={[styles.rightTextStyle, this.props.rightTextStyle]}
+                              mOnPress={this.props.rightTextCallBack}/>
+                    : null
+                }
+
+                {this.props.rightImageShow ?
+                    <MyButton buttonType={MyButton.IMAGEBUTTON}
+                              content={this.props.rightImage}
+                              parentStyle={styles.rightButtonStyle}
+                              childStyle={[styles.leftImageStyle, this.props.rightImageStyle]}
+                              mOnPress={this.props.rightImageCallBack}/>
+                    : null
+                }
+
             </View>
         );
     }
@@ -83,6 +102,14 @@ const styles = StyleSheet.create({
         paddingBottom: Pixel.getPixel(5),
         paddingLeft: Pixel.getPixel(15),
         paddingRight: Pixel.getPixel(15),
+    },
+    rightButtonStyle: {
+        width: Pixel.getPixel(80),
+        paddingTop: Pixel.getPixel(5),
+        paddingBottom: Pixel.getPixel(5),
+        paddingLeft: Pixel.getPixel(15),
+        paddingRight: Pixel.getPixel(15),
+        alignItems: 'flex-end',
     },
     titleStyle: {
         height: Pixel.getTitlePixel(64),

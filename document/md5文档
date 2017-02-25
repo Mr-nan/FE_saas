@@ -1,0 +1,4 @@
+ import md5 from "react-native-md5";
+
+ let hex_md5v = md5.hex_md5( "111" );
+        console.log(">>>>hex_md5:", hex_md5v);

@@ -4,6 +4,7 @@ import SQLiteStorage from 'react-native-sqlite-storage';
 SQLiteStorage.DEBUG(true);
 var db;
 const Collection_TABLE_NAME = "CarName";//收藏表
+const PUBLISH_TABLE_NAME = "publishCar"; //发布编辑
 
 const SQLite = React.createClass({
 
@@ -17,6 +18,7 @@ const SQLite = React.createClass({
         } else {
             console.log("SQLiteStorage not open");
         }
+
     },
     open(){
         db = SQLiteStorage.openDatabase(
@@ -28,7 +30,7 @@ const SQLite = React.createClass({
                 this._errorCB('open', err);
             });
     },
-    createTable(sql){
+    createTable(){
         if (!db) {
             this.open();
         }
@@ -47,6 +49,38 @@ const SQLite = React.createClass({
         // }, () => {
         //     this._successCB('transaction');
         // })
+
+        //创建发布编辑表
+        db.transaction((tx) => {
+            tx.executeSql('CREATE TABLE IF NOT EXISTS ' + PUBLISH_TABLE_NAME + '('
+                + 'vin VARCHAR(17) PRIMARY KEY NOT NULL,'
+                +'model VARCHAR default "",'
+                +'pictures VARCHAR default "",'
+                +'v_type VARCHAR default "",'
+                +'manufacture VARCHAR default "",'
+                +'init_reg VARCHAR default "",'
+                +'mileage VARCHAR default "",'
+                +'plate_number VARCHAR default "",'
+                +'emission_standards VARCHAR default "",'
+                +'label VARCHAR default "",'
+                +'nature_use VARCHAR default "",'
+                +'car_color VARCHAR default "",'
+                +'trim_color VARCHAR default "",'
+                +'transfer_number VARCHAR default "",'
+                +'dealer_price VARCHAR default "",'
+                +'describe VARCHAR default ""'
+                + ');'
+                , [], () => {
+                    this._successCB('executeSql');
+                }, (err) => {
+                    this._errorCB('executeSql', err);
+                });
+        }, (err) => {
+            this._errorCB('transaction', err);
+        }, () => {
+            this._successCB('transaction');
+        })
+
     },
     close(){
         if (db) {

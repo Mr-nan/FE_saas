@@ -6,7 +6,11 @@
 <string>Apple LLVM version 8.0.0 (clang-800.0.38)</string>
  <key>files</key>
  <array>
+<<<<<<< HEAD
   <string>/Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/node_modules/react-native/React/Modules/RCTRedBox.m</string>
+=======
+  <string>/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Modules/RCTRedBox.m</string>
+>>>>>>> a6264db28ac824d24372b05ea375a137393fa431
  </array>
  <key>diagnostics</key>
  <array>

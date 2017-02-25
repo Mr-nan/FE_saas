@@ -10,15 +10,27 @@ import {
     View,
     Text,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    Dimensions,
 
 } from 'react-native';
 
 
 import * as fontAndColor from '../../constant/fontAndColor';
+import PixelUtil from '../../utils/PixelUtil';
+var Pixel = new PixelUtil();
 
 export default class carSourceSelectHeadView extends Component{
 
+    // 构造
+      constructor(props) {
+        super(props);
+        // 初始状态
+        this.state = {
+
+            isCheckRecommend:true,
+        };
+      }
 
     checkSelect=(index)=>{
 
@@ -37,29 +49,41 @@ export default class carSourceSelectHeadView extends Component{
         }
     };
 
+
+    setCheckRecommend=(isCheck)=>{
+
+        this.setState({
+
+            isCheckRecommend:isCheck,
+
+        });
+
+        this.props.checkRecommendClick(!this.state.isCheckRecommend);
+
+    }
+
     render(){
         return(
 
-            <View style={{flex:1}}>
-                <View style={styles.container}>
-                    <View style={styles.selectView}>
-                        <SelectButton ref="but1" title="车型" index={1} btnClick={this.props.onPres}/>
-                        <SelectButton ref="but2" title="车龄" index={2} btnClick={this.props.onPres}/>
-                        <SelectButton ref="but3" title="里程" index={3} btnClick={this.props.onPres}/>
-                    </View>
-                    <View style={styles.lineView}>
-                        <View style={styles.line}/>
-                    </View>
-                    <View style={styles.countView}>
-                        <Text style={styles.countText}>282221</Text>
-                    </View>
-                    <View style={styles.unitsView}>
-                        <Text style={styles.unitsText}>辆</Text>
-                    </View>
+            <Image style={styles.container} source={require('../../../images/carSourceImages/bottomShaow.png')}>
 
+                    <SelectButton ref="but1" title="车型" index={1} btnClick={this.props.onPres}/>
+                    <SelectButton ref="but2" title="车龄" index={2} btnClick={this.props.onPres}/>
+                    <SelectButton ref="but3" title="里程" index={3} btnClick={this.props.onPres}/>
+
+                <View style={styles.lineView}>
+                    <View style={styles.line}/>
                 </View>
-                <View style={styles.bottomLine}/>
-            </View>
+
+                <TouchableOpacity style={styles.unitsView} onPress={()=>{
+
+                    this.setCheckRecommend(!this.state.isCheckRecommend);
+
+                }}>
+                    <Image style={{marginLeft:10}} source={this.state.isCheckRecommend ? (require('../../../images/carSourceImages/checkIcone.png')):(require('../../../images/carSourceImages/checkIcone_nil.png'))}/>
+                    <Text style={styles.unitsText}>推荐</Text>
+                </TouchableOpacity>
+            </Image>
         )
     }
 
@@ -117,19 +141,23 @@ class SelectButton extends  Component{
 
 }
 
+var screenWidth = Dimensions.get('window').width;
+
 const  styles = StyleSheet.create({
+
 
     container:{
 
         flex:1,
+        height:Pixel.getPixel(40),
+        width:screenWidth,
         flexDirection:'row',
-        height:40,
+        justifyContent:'space-between'
 
     },
 
     selectView:{
 
-        flex:1,
         flexDirection:'row',
         alignItems:'center',
         justifyContent:'space-between'
@@ -143,52 +171,50 @@ const  styles = StyleSheet.create({
 
     line:{
 
-        height:15,
+        height:Pixel.getPixel(15),
         backgroundColor:fontAndColor.COLORA1,
     },
 
     countView:{
 
-        marginLeft:10,
+        marginLeft:Pixel.getPixel(10),
         justifyContent:'center'
     },
 
     selectBtn:{
 
-        width:90,
-        height:40,
+        width:Pixel.getPixel(80),
+        height:Pixel.getPixel(40),
         alignItems:'center',
         justifyContent:'center',
-        flexDirection:'row'
+        flexDirection:'row',
 
     },
     selectBtnText:{
 
         color:fontAndColor.COLORA0,
-        fontSize:fontAndColor.LITTLEFONT,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
     },
 
     countText:{
 
         color:fontAndColor.COLORB3,
-        fontSize:fontAndColor.LITTLEFONT,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
     },
 
     unitsView:{
 
-        marginRight:15,
-        justifyContent:'center'
+        marginRight:Pixel.getPixel(15),
+        marginLeft:Pixel.getPixel(10),
+        justifyContent:'center',
+        alignItems:'center',
+        flexDirection:'row',
     },
 
     unitsText:{
         color:fontAndColor.COLORA0,
-        fontSize:fontAndColor.LITTLEFONT,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
     },
-
-    bottomLine:{
-        borderBottomWidth:2,
-        borderColor:'#EAEAEA'
-    }
 
 
 });

@@ -50,7 +50,6 @@ export default StyleSheet.create({
     },
     labelText: {
         fontSize: Pixel.getPixel(13),
-        lineHeight: 13,
         color: FontAndColor.COLORA2
     },
     closeContainer: {
