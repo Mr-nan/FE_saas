@@ -28,8 +28,9 @@ export default class BaseComponent extends Component {
         BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
         });
-        this.initFinish();
+
     }
 
     initFinish() {
