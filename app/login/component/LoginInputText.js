@@ -107,11 +107,11 @@ export default class LoginInputText extends Component {
                 }
 
                 <View style={
-                {
-                    flex: 1,
-                    flexDirection: 'row',
-                    alignItems: 'center'
-                }}>
+                    {
+                        flex: 1,
+                        flexDirection: 'row',
+                        alignItems: 'center'
+                    }}>
 
                     <TextInput
                         ref="inputText"
@@ -152,7 +152,7 @@ export default class LoginInputText extends Component {
                             <MyButton buttonType={MyButton.IMAGEBUTTON}
                                       content={require("../../../images/login/clear.png")}
                                       parentStyle={
-                                      {padding: Pixel.getPixel(5)}
+                                          {padding: Pixel.getPixel(5)}
                                       }
                                       childStyle={{
                                           width: Pixel.getPixel(17),
@@ -188,6 +188,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderBottomWidth: onePT,
         borderBottomColor: FontAndColor.COLORA4,
+        height: Pixel.getPixel(45),
     },
     textInputStyle: {
         flex: 1,

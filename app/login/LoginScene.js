@@ -306,6 +306,7 @@ export default class LoginScene extends BaseComponent {
                         this.props.showToast("登录成功");
                         // 保存用户登录状态
                         StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
+                        StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '2');
 
                         StorageUtil.mGetItem(StorageKeyNames.USERNAME, (data) => {
                             if (data.code === 1) {
