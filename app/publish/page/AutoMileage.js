@@ -221,7 +221,7 @@ export default class AutoMileage extends Component {
                                         itemStyle={{color:"#FFFFFF", fontSize:26,fontWeight:'bold'}}
                                         onValueChange={(index) => this.onPickerSelect(3,index)}>
                                     {this.state.itemList.map((value, i) => (
-                                        <PickerItem label={value} value={i} key={"second"+value}/>
+                                        <PickerItem label={value} value={i} key={"four"+value}/>
                                     ))}
                                 </Picker>
                             </View>
@@ -231,7 +231,7 @@ export default class AutoMileage extends Component {
                                         itemStyle={{color:"#FFFFFF", fontSize:26,fontWeight:'bold'}}
                                         onValueChange={(index) => this.onPickerSelect(4,index)}>
                                     {this.state.itemList.map((value, i) => (
-                                        <PickerItem label={value} value={i} key={"three"+value}/>
+                                        <PickerItem label={value} value={i} key={"five"+value}/>
                                     ))}
                                 </Picker>
                             </View>

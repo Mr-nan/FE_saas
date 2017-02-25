@@ -82,10 +82,6 @@ class Toast extends Component {
 	          >
 	          	<View style={styles.taostModal}>
 	          		<View style={[styles.toast]}>
-						<Image 
-			            	source={{uri: this.getIconUri()}}
-			            	resizeMode={Image.resizeMode.contain}
-			      			style={styles.thumbnail}/>
 						<Text style={styles.text}>{this.props.msg}</Text>
 					</View>
 	          	</View>

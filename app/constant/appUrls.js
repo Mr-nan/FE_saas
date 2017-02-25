@@ -17,7 +17,6 @@
  * 测试地址
  */
 export const BASEURL = 'http://dev.api-gateway.dycd.com/';
-
 /**
  * 预发布地址
  */
@@ -43,6 +42,16 @@ export const V3 = "v3/";
  * 图形验证码
  */
 export const IDENTIFYING = BASEURL + V + "index/captcha";// v1/index/captcha
+
+/**
+ * 首页数据
+ */
+export const HOME = BASEURL + V + "home";//
+
+/**
+ * 员工列表
+ */
+export const USER_EMPLOYE = BASEURL + V + "user.employe/index";
 
 /**
  * 短信验证码
@@ -490,9 +499,3 @@ export const PURCHAAUTO_BINDOBD = BASEURL + V
  */
 export const PURCHAAUTO_OBD_DESC = BASEURL +
     "obd_installation.html";
-
-/**
- * 获取员工列表
- */
-export const USER_EMPLOYE = BASEURL +V
-    "user.employe/index";

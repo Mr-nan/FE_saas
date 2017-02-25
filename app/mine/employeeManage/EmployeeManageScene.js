@@ -7,18 +7,21 @@ import  {
     StyleSheet,
     Dimensions,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    InteractionManager
 } from  'react-native'
 
 import * as fontAndClolr from '../../constant/fontAndColor';
 import  PixelUtil from '../../utils/PixelUtil'
 var Pixel = new PixelUtil();
+import {request} from '../../utils/RequestUtil';
 import SeeEmployeeInfoScene from '../employeeManage/SeeEmployeeInfoScene';
 import AddEmployeeScene from '../employeeManage/AddEmployeeScene';
 import EditEmployeeScene from '../employeeManage/EditEmployeeScene';
 
 import BaseComponent from "../../component/BaseComponent";
 import NavigationBar from "../../component/NavigationBar";
+import * as AppUrls from '../../constant/appUrls';
 // let Car = require('./Car.json');
 /*
  * 获取屏幕的宽和高
@@ -27,20 +30,48 @@ const {width, height} = Dimensions.get('window');
 
 export default class EmployeeManageScene extends BaseComponent {
     initFinish = () => {
+        this.getData();
     }
     // 构造
     constructor(props) {
         super(props);
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: ds.cloneWithRows([
-                'John', 'Joel', 'James', 'Jimmy'
-            ]),
+            dataSource: [],
+            renderPlaceholderOnly: 'blank',
         };
 
     }
 
-    addEmployee(){
+    getData = () => {
+        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        request('http://dev.api-gateway.dycd.com/' + 'v1/car/index', 'Post', {
+
+            brand_id: 0,
+            series_id: 0,
+            model_id: 0,
+            provice_id: 0,
+            city_id: 0,
+            order_type: 0,
+            coty: 0,
+            mileage: 0,
+            rows: 10,
+            page: 1,
+            start: 0,
+            type: 1,
+            status: 1,
+        })
+            .then((response) => {
+                    this.setState({
+                        dataSource: ds.cloneWithRows(response.mjson.data)
+                    });
+                    this.setState({renderPlaceholderOnly: 'success'});
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error'});
+                });
+    }
+
+    addEmployee() {
         this.toNextPage({
             name: 'AddEmployeeScene',
             component: AddEmployeeScene,
@@ -49,7 +80,21 @@ export default class EmployeeManageScene extends BaseComponent {
             },
         })
     }
+
     render() {
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return (
+                <View style={styles.container}>
+                    <NavigationBar
+                        centerText={'员工管理'}
+                        rightTextShow={false}
+                        rightImageShow={true}
+                        rightImage={require('../../../images/employee_manage.png')}
+                    />
+                    {this.loadView()}
+                </View>
+            );
+        }
         return (
             <View style={styles.container}>
                 <NavigationBar
@@ -77,9 +122,11 @@ export default class EmployeeManageScene extends BaseComponent {
             <View style={styles.rowView}>
                 <View style={styles.rowLeft}>
                     <View style={{flexDirection: 'row'}}>
-                    <Text style={styles.rowLeftTitle}>王先生</Text>
-                        <View style={[styles.employeeStyle, selectionID==='1'&& {borderColor: fontAndClolr.COLORB3},selectionID==='2'&& {borderColor: fontAndClolr.COLORB1}]}>
-                            <Text style={[styles.employeeText, selectionID==='1'&& {color: fontAndClolr.COLORB3},selectionID==='2'&& {color: fontAndClolr.COLORB1}]}>管理员</Text>
+                        <Text style={styles.rowLeftTitle}>王先生</Text>
+                        <View
+                            style={[styles.employeeStyle, selectionID==='1'&& {borderColor: fontAndClolr.COLORB3},selectionID==='2'&& {borderColor: fontAndClolr.COLORB1}]}>
+                            <Text
+                                style={[styles.employeeText, selectionID==='1'&& {color: fontAndClolr.COLORB3},selectionID==='2'&& {color: fontAndClolr.COLORB1}]}>管理员</Text>
                         </View>
                     </View>
                     <Text style={styles.rowLeftTitle1}>第一车贷二手公司</Text>
@@ -140,7 +187,7 @@ const styles = StyleSheet.create({
         backgroundColor: fontAndClolr.COLORA3,
     },
     rowView: {
-        height:Pixel.getPixel(83),
+        height: Pixel.getPixel(83),
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: 'white',
@@ -151,7 +198,7 @@ const styles = StyleSheet.create({
     rowLeftTitle: {
         fontSize: Pixel.getFontPixel(15),
         color: fontAndClolr.COLORA0,
-        marginRight:Pixel.getPixel(5)
+        marginRight: Pixel.getPixel(5)
 
     },
     rowLeftTitle1: {
@@ -172,22 +219,22 @@ const styles = StyleSheet.create({
     },
     image: {
         marginRight: Pixel.getPixel(5),
-        height:22,
-        width:22
+        height: 22,
+        width: 22
     },
-    buttonStyle:{
+    buttonStyle: {
         marginRight: Pixel.getPixel(15),
-        justifyContent:'center',
-        alignItems:'center'
+        justifyContent: 'center',
+        alignItems: 'center'
 
     },
-    employeeStyle:{
+    employeeStyle: {
         borderWidth: 1,
         borderColor: fontAndClolr.COLORB4,
-        justifyContent:'center',
-        alignItems:'center'
+        justifyContent: 'center',
+        alignItems: 'center'
     },
-    employeeText:{
+    employeeText: {
         color: fontAndClolr.COLORB4,
         fontSize: Pixel.getPixel(12),
     }

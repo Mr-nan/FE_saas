@@ -25,6 +25,9 @@ export default class AutoOther extends Component {
 
     constructor(props) {
         super(props);
+        this.vinNum = this.props.carData.vin;
+        this.dealer_price = this.props.carData.dealer_price;
+        this.describe = this.props.carData.describe;
         this.state = {
             renderPlaceholderOnly: true
         }
@@ -62,6 +65,18 @@ export default class AutoOther extends Component {
         );
     };
 
+    _onPrice = (text)=>{
+        this.props.sqlUtil.changeData(
+            'UPDATE publishCar SET dealer_price = ? WHERE vin = ?',
+            [text, this.vinNum]);
+    };
+
+    _onDescribe = (text)=>{
+        this.props.sqlUtil.changeData(
+            'UPDATE publishCar SET describe = ? WHERE vin = ?',
+            [text, this.vinNum]);
+    };
+
     render() {
         if (this.state.renderPlaceholderOnly) {
             return this._renderPlaceholderView();
@@ -77,13 +92,16 @@ export default class AutoOther extends Component {
                     <View style={[styles.rectangleContainer,styles.firstMargin]}>
                         <Text style={[styles.fontMain,styles.leftText]}>销售价：</Text>
                         <TextInput style={[styles.fontMain,styles.leftInput,styles.fillSpace]}
-                                   underlineColorAndroid='transparent'/>
+                                   underlineColorAndroid='transparent' defaultValue={this.dealer_price}
+                                   onChangeText={this._onPrice}
+                        />
                         <Text style={[styles.fontMain,styles.rightText]}>万元</Text>
                     </View>
                     <View style={[styles.rectangleContainer,styles.alignMargin]}>
                         <Text style={[styles.fontMain,styles.leftText]}>车况描述：</Text>
                         <TextInput style={[styles.fontMain,styles.leftInput,styles.fillSpace]}
-                                   underlineColorAndroid='transparent'/>
+                                   underlineColorAndroid='transparent' defaultValue={this.describe}
+                                   onChangeText={this._onDescribe}/>
                     </View>
                 </Image>
             </View>

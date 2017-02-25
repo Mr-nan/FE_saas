@@ -132,25 +132,39 @@ class MyCarSourceCheckedView extends Component{
         this.state = {
 
             bottomLineHide : true,
-
+            checkedIndex:0,
         };
       }
 
-      setBottonLineHide=()=>{
+      setBottonLineHide=(index)=>{
 
           this.setState({
               bottomLineHide : !this.state.bottomLineHide,
+              checkedIndex:index,
 
           })
       }
+
+    checkedClick=(index)=>{
+
+        if(this.state.checkedIndex == index)
+        {
+            return;
+        }
+
+        this.setBottonLineHide(index);
+       this.props.checkedClick(index);
+
+
+    }
+
     render(){
 
         const {checkedClick}=this.props;
         return(
             <View style={styles.checkedContainer}>
                 <TouchableOpacity onPress={()=>{
-                    this.setBottonLineHide();
-                    checkedClick(1);
+                    this.checkedClick(1)
                 }}>
                     <View style={[styles.checkedView,this.state.bottomLineHide&&{borderBottomColor:fontAndColor.COLORB0}]}>
                         <Text style={[styles.checkedText,this.state.bottomLineHide&&{color:fontAndColor.COLORB0}]}>已上架 (4)</Text>
@@ -160,8 +174,7 @@ class MyCarSourceCheckedView extends Component{
                     <View style={styles.centerLine}/>
                 </View>
                 <TouchableOpacity onPress={()=>{
-                    this.setBottonLineHide();
-                    checkedClick(2);
+                    this.checkedClick(2)
                 }}>
                     <View style={[styles.checkedView,!this.state.bottomLineHide&&{borderBottomColor:fontAndColor.COLORB0}]}>
                         <Text style={[styles.checkedText,!this.state.bottomLineHide&&{color:fontAndColor.COLORB0}]}>未上架 (5)</Text>

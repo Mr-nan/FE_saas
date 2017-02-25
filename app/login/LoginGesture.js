@@ -8,11 +8,11 @@ import NavigationBar from '../component/NavigationBar';
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
 
-var Pixel = new PixelUtil();
+let Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;
 
-var Password = '';
+let Password = '';
 export default class GesturePassword extends BaseComponent {
     constructor(props) {
         super(props);
@@ -26,7 +26,7 @@ export default class GesturePassword extends BaseComponent {
     initFinish = () => {
         StorageUtil.mGetItem(StorageKeyNames.GESTURE, (data) => {
             if (data.code === 1) {
-                Password = data.result;
+                Password = data.result.split(',')[0];
             }
         })
     }

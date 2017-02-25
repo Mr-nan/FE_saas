@@ -40,14 +40,15 @@ export default class NewCarScene extends BaseComponent{
     }
 
     //更多跳到编辑页
-    moreParams = {
-        name: 'EditCarScene',
-        component: EditCarScene,
-        params: {fromNew:true}
-    };
 
     _goToMore = ()=>{
-        this.toNextPage(this.moreParams);
+        let moreParams = {
+            name: 'EditCarScene',
+            component: EditCarScene,
+            params: {fromNew:true,carVin:this.state.carData.vin}
+        };
+
+        this.toNextPage(moreParams);
     };
 
     //上传成功后

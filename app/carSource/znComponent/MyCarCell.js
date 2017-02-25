@@ -158,10 +158,8 @@ const styles = StyleSheet.create({
     },
     tailImage:{
 
-        width:64,
-        height:64,
-        bottom:2,
-        right:-10,
+        bottom:5,
+        right:0,
         position:'absolute',
     },
 
@@ -170,6 +168,7 @@ const styles = StyleSheet.create({
         // backgroundColor:'#FF0067',
         flex:1,
         justifyContent:'space-around',
+        marginRight:15,
     },
 
     mainText:{

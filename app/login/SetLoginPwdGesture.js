@@ -1,4 +1,4 @@
-import React, {Component,PureComponent} from "react";
+import React, {Component, PureComponent} from "react";
 import {AppRegistry, View, Text, StyleSheet, Image, Dimensions} from "react-native";
 import SetPwdGesture from "../gesture/SetPwdGesture";
 import BaseComponent from "../component/BaseComponent";
@@ -7,7 +7,7 @@ import * as FontAndColor from "../constant/fontAndColor";
 import NavigationBar from '../component/NavigationBar';
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
-
+import MainPage from '../main/MainPage';
 var Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;
@@ -100,15 +100,44 @@ export default class SetLoginPwdGesture extends BaseComponent {
                     status: 'right',
                     message: '密码设置成功',
                 });
-                StorageUtil.mSetItem(StorageKeyNames.GESTURE, Password);
-                Password = '';
-                this.backPage();
+
+                StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
+                    if (data.code === 1) {
+                        if (data.result != null) {
+                            StorageUtil.mSetItem(StorageKeyNames.GESTURE, data.result + ',' + Password);
+                            Password = '';
+                        } else {
+                            StorageUtil.mSetItem(StorageKeyNames.GESTURE, '0,' + Password);
+                            Password = '';
+                        }
+                    }
+                })
+                if (this.props.from == 'login') {
+                    this.loginPage(this.loginSuccess)
+                } else {
+                    this.backPage();
+                }
             } else {
                 this.setState({
                     status: 'wrong',
                     message: '验证失败请重新输入'
                 });
             }
+        }
+    }
+
+    loginSuccess = {
+        name: 'MainPage',
+        component: MainPage,
+        params: {}
+    }
+
+    loginPage = (mProps) => {
+        const navigator = this.props.navigator;
+        if (navigator) {
+            navigator.immediatelyResetRouteStack([{
+                ...mProps
+            }])
         }
     }
 
