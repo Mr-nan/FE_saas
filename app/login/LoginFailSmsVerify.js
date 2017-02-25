@@ -191,6 +191,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
                         this.props.showToast("登录成功");
                         // 保存用户登录状态
                         StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
+                        StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '1');
                         StorageUtil.mSetItem(StorageKeyNames.USER_INFO, JSON.stringify(response.mjson.data));
                         // 保存用户信息
                         StorageUtil.mSetItem(StorageKeyNames.BASE_USER_ID, response.mjson.data.base_user_id + "");

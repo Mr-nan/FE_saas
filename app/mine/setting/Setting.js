@@ -15,8 +15,10 @@ var onePT = 1 / PixelRatio.get(); //一个像素
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import LoginAndRegister from '../../login/LoginAndRegister';
+
 export default class Setting extends BaseComponent {
     initFinish = () => {
+
     }
 
     render() {

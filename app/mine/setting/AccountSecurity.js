@@ -5,15 +5,21 @@ import PixelUtil from "../../utils/PixelUtil";
 import * as FontAndColor from "../../constant/fontAndColor";
 import NavigationBar from "../../component/NavigationBar";
 import LoginFailPwd from "../../login/LoginFailPwd";
+import SetPwd from '../../login/SetPwd';
 import SetLoginPwdGesture from "../../login/SetLoginPwdGesture";
-import OnlineTime from "./OnlineTime";
+import StorageUtil from "../../utils/StorageUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
 
 var Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;
 var onePT = 1 / PixelRatio.get(); //一个像素
+let LOGINTYPE;
 export default class AccountSecurity extends BaseComponent {
     initFinish = () => {
+        StorageUtil.mGetItem(StorageKeyNames.LOGIN_TYPE, (data) => {
+            LOGINTYPE = data.result;
+        });
     }
 
     render() {
@@ -27,14 +33,22 @@ export default class AccountSecurity extends BaseComponent {
                     leftImageCallBack={this.backPage}/>
 
                 <TouchableOpacity onPress={() => {
-                    this.toNextPage({
-                        name: 'LoginFailPwd',
-                        component: LoginFailPwd,
-                        params: {},
-                    })
+                    if (LOGINTYPE == 1) {
+                        this.toNextPage({
+                            name: 'LoginFailPwd',
+                            component: LoginFailPwd,
+                            params: {},
+                        })
+                    } else {
+                        this.toNextPage({
+                            name: 'SetPwd',
+                            component: SetPwd,
+                            params: {},
+                        })
+                    }
                 }}>
                     <View style={[styles.itemStyle, {marginTop: Pixel.getPixel(15)}]}>
-                        <Text style={styles.centerTextStyle}>登录密码</Text>
+                        <Text style={styles.centerTextStyle}>{LOGINTYPE == 1 ? "设置密码" : "修改密码"}</Text>
                         <Image source={require("./../../../images/mainImage/celljiantou@3x.png")}
                                style={styles.rightImageStyle}/>
                     </View>
