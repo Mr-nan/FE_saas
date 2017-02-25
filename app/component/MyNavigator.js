@@ -26,7 +26,9 @@ export default class MyNavigator extends Component {
                 renderScene={(route, navigator) => {
                     let Component = route.component;
                     if (route.component) {
-                        return <Component {...route.params} navigator={navigator}/>
+                        return <Component {...route.params} navigator={navigator} showToast={(content)=>{
+                            this.props.showToast(content);
+                        }}/>
                     }
                 }}>
             </Navigator>
