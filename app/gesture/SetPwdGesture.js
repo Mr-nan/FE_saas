@@ -1,5 +1,5 @@
 import * as helper from "./helper";
-import React, {PropTypes, Component, PureComponent} from "react";
+import React, {PropTypes, Component} from "react";
 import {StyleSheet, Dimensions, PanResponder, View, Text} from "react-native";
 import Line from "./line";
 import Circle from "./circle";
@@ -14,7 +14,7 @@ const Top = Height - Width;
 const Radius = Width / 12;
 const Left = (Width - Radius * 8) / 2
 
-export default class SetPwdGesture extends PureComponent {
+export default class SetPwdGesture extends Component {
     constructor(props) {
         super(props);
 
@@ -299,6 +299,12 @@ export default class SetPwdGesture extends PureComponent {
                     this.resetActive()
                 }, this.props.interval);
             }
+        }
+    }
+
+    componentWillUnmount() {
+        if (this.timer != null) {
+            clearInterval(this.timer);
         }
     }
 }
