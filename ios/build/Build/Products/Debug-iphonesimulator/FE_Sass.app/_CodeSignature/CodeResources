@@ -5,14 +5,9 @@
 	<key>files</key>
 	<dict>
 		<key>Base.lproj/LaunchScreen.nib</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			8q9HM+xpqMPNrvdRoYE9H9602co=
-			</data>
-			<key>optional</key>
-			<true/>
-		</dict>
+		<data>
+		8q9HM+xpqMPNrvdRoYE9H9602co=
+		</data>
 		<key>Frameworks/IDEBundleInjection.framework/IDEBundleInjection</key>
 		<data>
 		aUm0c1LLvF5BD7IVSBsGgwX3iyY=
@@ -239,8 +234,6 @@
 			<data>
 			F+Qz8pFkhfjqw7kNsmoG7sMTDsqs3l03+so0prYMTNk=
 			</data>
-			<key>optional</key>
-			<true/>
 		</dict>
 		<key>Frameworks/IDEBundleInjection.framework/IDEBundleInjection</key>
 		<dict>
@@ -818,6 +811,11 @@
 			<key>weight</key>
 			<real>1100</real>
 		</dict>
+		<key>^Base\.lproj/</key>
+		<dict>
+			<key>weight</key>
+			<real>1010</real>
+		</dict>
 		<key>^version.plist$</key>
 		<true/>
 	</dict>
@@ -862,6 +860,11 @@
 			<true/>
 			<key>weight</key>
 			<real>1100</real>
+		</dict>
+		<key>^Base\.lproj/</key>
+		<dict>
+			<key>weight</key>
+			<real>1010</real>
 		</dict>
 		<key>^Info\.plist$</key>
 		<dict>
