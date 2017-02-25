@@ -1,5 +1,13 @@
 import React, {Component} from "react";
-import {AppRegistry, View, Text, StyleSheet, TouchableOpacity} from "react-native";
+import {
+    AppRegistry,
+    View,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    InteractionManager,
+    TouchableWithoutFeedback
+} from "react-native";
 import BaseComponent from "../component/BaseComponent";
 import NavigationBar from "../component/NavigationBar";
 import * as FontAndColor from "../constant/fontAndColor";
@@ -29,14 +37,33 @@ export default class LoginFailSmsVerify extends BaseComponent {
         super(props);
         this.state = {
             verifyCodeUrl: null,
+            renderPlaceholderOnly: true,
         }
     }
 
     initFinish = () => {
-        this.Verifycode();
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+            this.Verifycode();
+        });
     }
 
     render() {
+        if (this.state.renderPlaceholderOnly) {
+            return ( <TouchableWithoutFeedback onPress={() => {
+                this.setState({
+                    show: false,
+                });
+            }}>
+                <NavigationBar
+                    leftImageShow={false}
+                    leftTextShow={true}
+                    leftText={""}
+                    centerText={"短信验证"}
+                    rightText={""}
+                />
+            </TouchableWithoutFeedback>);
+        }
         return (
             <View style={styles.container}>
                 <NavigationBar

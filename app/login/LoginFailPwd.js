@@ -1,5 +1,14 @@
 import React, {Component} from "react";
-import {AppRegistry, View, Text, StyleSheet, TouchableOpacity, TextInput} from "react-native";
+import {
+    AppRegistry,
+    View,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    TextInput,
+    InteractionManager,
+    TouchableWithoutFeedback
+} from "react-native";
 import BaseComponent from "../component/BaseComponent";
 import NavigationBar from "../component/NavigationBar";
 import * as FontAndColor from "../constant/fontAndColor";
@@ -13,10 +22,36 @@ var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
 export default class LoginFailPwd extends BaseComponent {
+    constructor(props) {
+        super(props);
+        this.state = {
+            renderPlaceholderOnly: true,
+        }
+    }
+
     initFinish = () => {
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+            // this.Verifycode();
+        });
     }
 
     render() {
+        if (this.state.renderPlaceholderOnly) {
+            return ( <TouchableWithoutFeedback onPress={() => {
+                this.setState({
+                    show: false,
+                });
+            }}>
+                <NavigationBar
+                    leftImageShow={false}
+                    leftTextShow={true}
+                    leftText={""}
+                    centerText={"设置登录密码"}
+                    rightText={""}
+                />
+            </TouchableWithoutFeedback>);
+        }
         return (
             <View style={styles.container}>
                 <NavigationBar

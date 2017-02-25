@@ -1,5 +1,13 @@
 import React, {Component} from "react";
-import {AppRegistry, View, Text, StyleSheet, ScrollView, TouchableWithoutFeedback} from "react-native";
+import {
+    AppRegistry,
+    View,
+    Text,
+    StyleSheet,
+    ScrollView,
+    TouchableWithoutFeedback,
+    InteractionManager
+} from "react-native";
 import BaseComponent from "../component/BaseComponent";
 import MyButton from "../component/MyButton";
 import * as FontAndColor from "../constant/fontAndColor";
@@ -27,14 +35,32 @@ export default class Register extends BaseComponent {
             idcardBack: null,
             businessLicense: null,
             verifyCode: null,
+            renderPlaceholderOnly: true,
         }
     }
 
     initFinish = () => {
-        this.Verifycode();
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+            this.Verifycode();
+        });
     }
 
     render() {
+        if (this.state.renderPlaceholderOnly) {
+            return ( <TouchableWithoutFeedback onPress={() => {
+                this.setState({
+                    show: false,
+                });
+            }}>
+                <NavigationBar
+                    leftImageShow={false}
+                    leftTextShow={true}
+                    leftText={""}
+                    rightText={""}
+                />
+            </TouchableWithoutFeedback>);
+        }
         return (
             <View style={styles.container}>
                 <NavigationBar
