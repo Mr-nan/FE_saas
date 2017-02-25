@@ -136,9 +136,9 @@ const styles = StyleSheet.create({
         alignItems:'center',
         justifyContent:'center',
         borderRadius:2,
-        marginRight:15,
-        bottom:15,
-        right:15,
+        marginRight:Pixel.getPixel(15),
+        bottom:Pixel.getPixel(15),
+        right:Pixel.getPixel(15),
         position:'absolute',
 
     },

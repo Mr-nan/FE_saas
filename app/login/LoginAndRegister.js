@@ -4,13 +4,12 @@ import BaseComponent from "../component/BaseComponent";
 import MyButton from "../component/MyButton";
 import * as FontAndColor from "../constant/fontAndColor";
 import LoginScene from "./LoginScene";
-import Register from './Register';
+import Register from "./Register";
 import PixelUtil from "../utils/PixelUtil";
-import LoginFailPwd from './LoginFailPwd';
-import SetPwd from './SetPwd';
-import LoginGesturePassword from './LoginGesture';
-import SetLoginPwdGesture from './SetLoginPwdGesture';
-import Setting from './../mine/setting/Setting'
+import LoginFailPwd from "./LoginFailPwd";
+import SetPwd from "./SetPwd";
+import LoginGesturePassword from "./LoginGesture";
+import Setting from "./../mine/setting/Setting";
 
 var Pixel = new PixelUtil();
 

@@ -16,7 +16,7 @@ import LoginInputText from "./component/LoginInputText";
 import LoginAutoSearchInputText from "./component/LoginAutoSearchInputText";
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
-import MainPage from '../main/MainPage';
+import MainPage from "../main/MainPage";
 // import LoginFail from "./LoginFail";
 import * as FontAndColor from "../constant/fontAndColor";
 import Register from "./Register";
@@ -24,10 +24,9 @@ import NavigationBar from "../component/NavigationBar";
 import PixelUtil from "../utils/PixelUtil";
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
-import ShowToast from "../component/toast/ShowToast";
 import MyButton from "../component/MyButton";
-import LoginFailSmsYes from './LoginFailSmsYes';
-import SetLoginPwdGesture from './SetLoginPwdGesture';
+import LoginFailSmsYes from "./LoginFailSmsYes";
+import SetLoginPwdGesture from "./SetLoginPwdGesture";
 var Pixel = new PixelUtil();
 
 var Dimensions = require('Dimensions');
@@ -213,7 +212,6 @@ export default class LoginScene extends BaseComponent {
                             <Text style={styles.bottomTestSytle}>登录遇到问题 ></Text>
                         </TouchableOpacity>
                     </View>
-                    <ShowToast ref='toast' msg={this.props.msg}></ShowToast>
                 </View>
             </TouchableWithoutFeedback>
         );
@@ -234,9 +232,9 @@ export default class LoginScene extends BaseComponent {
         let userName = this.refs.loginUsername.getInputTextValue();
         let verifyCode = this.refs.loginVerifycode.getInputTextValue();
         if (userName == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "请输入正确的用户名");
+            this.props.showToast("请输入正确的用户名");
         } else if (typeof(verifyCode) == "undefined" || verifyCode == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "验证码不能为空");
+            this.props.showToast("验证码不能为空");
         } else {
             let maps = {
                 device_code: "dycd_dms_manage_android",
@@ -249,12 +247,12 @@ export default class LoginScene extends BaseComponent {
                 .then((response) => {
                     if (response.mjson.code == "1") {
                         this.refs.loginSmscode.StartCountDown();
-                        this.refs.toast.changeType(ShowToast.TOAST, response.mjson.data.code + "");
+                        this.props.showToast(response.mjson.data.code + "");
                     } else {
-                        this.refs.toast.changeType(ShowToast.TOAST, response.mjson.msg + "");
+                        this.props.showToast(response.mjson.msg + "");
                     }
                 }, (error) => {
-                    this.refs.toast.changeType(ShowToast.TOAST, "获取验证码失败");
+                    this.props.showToast("获取验证码失败");
                 });
         }
     }
@@ -276,7 +274,7 @@ export default class LoginScene extends BaseComponent {
                 });
             }, (error) => {
                 this.refs.loginVerifycode.lodingStatus(false);
-                this.refs.toast.changeType(ShowToast.TOAST, "获取失败");
+                this.props.showToast( "获取失败");
             });
     }
 
@@ -287,13 +285,13 @@ export default class LoginScene extends BaseComponent {
         let verifyCode = this.refs.loginVerifycode.getInputTextValue();
         let smsCode = this.refs.loginSmscode.getInputTextValue();
         if (userName == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "请输入正确的用户名");
+            this.props.showToast( "请输入正确的用户名");
         } else if (typeof(passWord) == "undefined" || passWord == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "密码不能为空");
+            this.props.showToast( "密码不能为空");
         } else if (typeof(verifyCode) == "undefined" || verifyCode == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "验证码不能为空");
+            this.props.showToast( "验证码不能为空");
         } else if (typeof(smsCode) == "undefined" || smsCode == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "短信验证码不能为空");
+            this.props.showToast( "短信验证码不能为空");
         } else {
             let maps = {
                 code: smsCode,
@@ -340,10 +338,10 @@ export default class LoginScene extends BaseComponent {
                             }
                         })
                     } else {
-                        this.refs.toast.changeType(ShowToast.TOAST, response.mjson.msg + "");
+                        this.props.showToast(response.mjson.msg + "");
                     }
                 }, (error) => {
-                    this.refs.toast.changeType(ShowToast.TOAST, "登录失败");
+                    this.props.showToast("登录失败");
                     // 保存用户登录状态
                     StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'false');
                 });
