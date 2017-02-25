@@ -35,22 +35,22 @@ export default class LoginAndRegister extends BaseComponent {
                         params: {},
                     })
                 }}/>
-                <MyButton buttonType={MyButton.TEXTBUTTON} content="修改密码" parentStyle={styles.buttonStyle}
-                          childStyle={styles.buttonTextStyle} mOnPress={() => {
-                    this.toNextPage({
-                        name: 'SetPwd',
-                        component: SetPwd,
-                        params: {},
-                    })
-                }}/>
-                <MyButton buttonType={MyButton.TEXTBUTTON} content="首次设置登录密码" parentStyle={styles.buttonStyle}
-                          childStyle={styles.buttonTextStyle} mOnPress={() => {
-                    this.toNextPage({
-                        name: 'LoginFailPwd',
-                        component: LoginFailPwd,
-                        params: {},
-                    })
-                }}/>
+                {/*<MyButton buttonType={MyButton.TEXTBUTTON} content="修改密码" parentStyle={styles.buttonStyle}*/}
+                          {/*childStyle={styles.buttonTextStyle} mOnPress={() => {*/}
+                    {/*this.toNextPage({*/}
+                        {/*name: 'SetPwd',*/}
+                        {/*component: SetPwd,*/}
+                        {/*params: {},*/}
+                    {/*})*/}
+                {/*}}/>*/}
+                {/*<MyButton buttonType={MyButton.TEXTBUTTON} content="首次设置登录密码" parentStyle={styles.buttonStyle}*/}
+                          {/*childStyle={styles.buttonTextStyle} mOnPress={() => {*/}
+                    {/*this.toNextPage({*/}
+                        {/*name: 'LoginFailPwd',*/}
+                        {/*component: LoginFailPwd,*/}
+                        {/*params: {},*/}
+                    {/*})*/}
+                {/*}}/>*/}
             </View>
         );
     }
