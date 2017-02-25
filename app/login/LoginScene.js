@@ -274,7 +274,7 @@ export default class LoginScene extends BaseComponent {
                 });
             }, (error) => {
                 this.refs.loginVerifycode.lodingStatus(false);
-                this.props.showToast( "获取失败");
+                this.props.showToast("获取失败");
             });
     }
 
@@ -285,13 +285,13 @@ export default class LoginScene extends BaseComponent {
         let verifyCode = this.refs.loginVerifycode.getInputTextValue();
         let smsCode = this.refs.loginSmscode.getInputTextValue();
         if (userName == "") {
-            this.props.showToast( "请输入正确的用户名");
+            this.props.showToast("请输入正确的用户名");
         } else if (typeof(passWord) == "undefined" || passWord == "") {
-            this.props.showToast( "密码不能为空");
+            this.props.showToast("密码不能为空");
         } else if (typeof(verifyCode) == "undefined" || verifyCode == "") {
-            this.props.showToast( "验证码不能为空");
+            this.props.showToast("验证码不能为空");
         } else if (typeof(smsCode) == "undefined" || smsCode == "") {
-            this.props.showToast( "短信验证码不能为空");
+            this.props.showToast("短信验证码不能为空");
         } else {
             let maps = {
                 code: smsCode,
@@ -319,18 +319,17 @@ export default class LoginScene extends BaseComponent {
 
                         StorageUtil.mSetItem(StorageKeyNames.USER_INFO, JSON.stringify(response.mjson.data));
                         // 保存用户信息
-                        StorageUtil.mSetItem(StorageKeyNames.base_user_id, response.mjson.data.base_user_id + "");
-                        StorageUtil.mSetItem(StorageKeyNames.enterprise_list, JSON.stringify(response.mjson.data.enterprise_list));
-                        StorageUtil.mSetItem(StorageKeyNames.head_portrait_url, response.mjson.data.head_portrait_url + "");
-                        StorageUtil.mSetItem(StorageKeyNames.idcard_number, response.mjson.data.idcard_number + "");
-                        StorageUtil.mSetItem(StorageKeyNames.phone, response.mjson.data.phone + "");
-                        StorageUtil.mSetItem(StorageKeyNames.real_name, response.mjson.data.real_name + "");
-                        StorageUtil.mSetItem(StorageKeyNames.token, response.mjson.data.token + "");
-                        StorageUtil.mSetItem(StorageKeyNames.user_level, response.mjson.data.user_level + "");
+                        StorageUtil.mSetItem(StorageKeyNames.BASE_USER_ID, response.mjson.data.base_user_id + "");
+                        StorageUtil.mSetItem(StorageKeyNames.ENTERPRISE_LIST, JSON.stringify(response.mjson.data.enterprise_list));
+                        StorageUtil.mSetItem(StorageKeyNames.HEAD_PORTRAIT_URL, response.mjson.data.head_portrait_url + "");
+                        StorageUtil.mSetItem(StorageKeyNames.IDCARD_NUMBER, response.mjson.data.idcard_number + "");
+                        StorageUtil.mSetItem(StorageKeyNames.PHONE, response.mjson.data.phone + "");
+                        StorageUtil.mSetItem(StorageKeyNames.REAL_NAME, response.mjson.data.real_name + "");
+                        StorageUtil.mSetItem(StorageKeyNames.TOKEN, response.mjson.data.token + "");
+                        StorageUtil.mSetItem(StorageKeyNames.USER_LEVEL, response.mjson.data.user_level + "");
                         StorageUtil.mGetItem(StorageKeyNames.GESTURE, (data) => {
                             if (data.code === 1) {
-                                let results = data.result.split(',');
-                                if (data.result != null && data.result.length > 3 && results[0] == response.mjson.data.phone) {
+                                if (data.result != null && data.result.length > 3 && data.result.split(',')[0] == response.mjson.data.phone) {
                                     this.loginPage(this.loginSuccess)
                                 } else {
                                     this.loginPage(this.setLoginGesture)

@@ -8,8 +8,6 @@ import Register from "./Register";
 import PixelUtil from "../utils/PixelUtil";
 import LoginFailPwd from "./LoginFailPwd";
 import SetPwd from "./SetPwd";
-import LoginGesturePassword from "./LoginGesture";
-import Setting from "./../mine/setting/Setting";
 
 var Pixel = new PixelUtil();
 
@@ -37,38 +35,22 @@ export default class LoginAndRegister extends BaseComponent {
                         params: {},
                     })
                 }}/>
-                <MyButton buttonType={MyButton.TEXTBUTTON} content="修改密码" parentStyle={styles.buttonStyle}
-                          childStyle={styles.buttonTextStyle} mOnPress={() => {
-                    this.toNextPage({
-                        name: 'SetPwd',
-                        component: SetPwd,
-                        params: {},
-                    })
-                }}/>
-                <MyButton buttonType={MyButton.TEXTBUTTON} content="首次设置登录密码" parentStyle={styles.buttonStyle}
-                          childStyle={styles.buttonTextStyle} mOnPress={() => {
-                    this.toNextPage({
-                        name: 'LoginFailPwd',
-                        component: LoginFailPwd,
-                        params: {},
-                    })
-                }}/>
-                <MyButton buttonType={MyButton.TEXTBUTTON} content="手势密码" parentStyle={styles.buttonStyle}
-                          childStyle={styles.buttonTextStyle} mOnPress={() => {
-                    this.toNextPage({
-                        name: 'LoginGesturePassword',
-                        component: LoginGesturePassword,
-                        params: {},
-                    })
-                }}/>
-                <MyButton buttonType={MyButton.TEXTBUTTON} content="设置" parentStyle={styles.buttonStyle}
-                          childStyle={styles.buttonTextStyle} mOnPress={() => {
-                    this.toNextPage({
-                        name: 'Setting',
-                        component: Setting,
-                        params: {},
-                    })
-                }}/>
+                {/*<MyButton buttonType={MyButton.TEXTBUTTON} content="修改密码" parentStyle={styles.buttonStyle}*/}
+                          {/*childStyle={styles.buttonTextStyle} mOnPress={() => {*/}
+                    {/*this.toNextPage({*/}
+                        {/*name: 'SetPwd',*/}
+                        {/*component: SetPwd,*/}
+                        {/*params: {},*/}
+                    {/*})*/}
+                {/*}}/>*/}
+                {/*<MyButton buttonType={MyButton.TEXTBUTTON} content="首次设置登录密码" parentStyle={styles.buttonStyle}*/}
+                          {/*childStyle={styles.buttonTextStyle} mOnPress={() => {*/}
+                    {/*this.toNextPage({*/}
+                        {/*name: 'LoginFailPwd',*/}
+                        {/*component: LoginFailPwd,*/}
+                        {/*params: {},*/}
+                    {/*})*/}
+                {/*}}/>*/}
             </View>
         );
     }
@@ -90,7 +72,7 @@ const styles = StyleSheet.create({
         height: Pixel.getPixel(100),
         width: Pixel.getPixel(100),
         resizeMode: 'cover',
-        marginTop: Pixel.getPixel(10),
+        marginTop: Pixel.getPixel(50),
         marginBottom: Pixel.getPixel(30),
 
     },
