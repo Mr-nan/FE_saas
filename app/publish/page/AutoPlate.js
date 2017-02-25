@@ -65,11 +65,7 @@ export default class AutoPlate extends Component {
                         </TouchableOpacity>
 
                         <View style={styles.proContainer} >
-                            <View style={{
-                               height:44,
-                                backgroundColor: 'red'}}>
                             <TextInput style={styles.fontBold} underlineColorAndroid='transparent' defaultValue={'N'}/>
-                                </View>
                             <TextInput style={styles.fontBold} underlineColorAndroid='transparent' defaultValue={'S'}/>
                             <TextInput style={styles.fontBold} underlineColorAndroid='transparent' defaultValue={'2'}/>
                             <TextInput style={styles.fontBold} underlineColorAndroid='transparent' defaultValue={'5'}/>
@@ -117,7 +113,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'yellow'
     },
     fontBold: {
-
+        height: 44,
+        width: 40,
         fontSize: 20,
         fontWeight: 'bold',
         color: '#FFFFFF',

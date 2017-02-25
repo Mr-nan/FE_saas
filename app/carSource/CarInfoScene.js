@@ -13,6 +13,8 @@ import {
 import *as fontAndColor from '../constant/fontAndColor';
 import BaseComponent from '../component/BaseComponent';
 import NavigationView from '../component/AllNavigationView';
+import CarMySourceScene from './CarMySourceScene';
+import CarCollectSourceScene from './CarCollectSourceScene';
 import PixelUtil from '../utils/PixelUtil';
 const Pixel = new PixelUtil();
 
@@ -115,13 +117,39 @@ export default class CarInfoScene extends BaseComponent {
         Linking.openURL('tel:4006561290,100001#');
     };
 
+    pushMyCarScene=()=>{
+
+        let navigatorParams =   {
+
+            name:"CarMySourceScene",
+            component:CarMySourceScene,
+            params:{
+
+            }
+        };
+        this.toNextPage(navigatorParams);
+    }
+
+    pushCarCollectScene=()=>{
+        let navigatorParams =   {
+
+            name:"CarCollectSourceScene",
+            component:CarCollectSourceScene,
+            params:{
+
+            }
+        };
+        this.toNextPage(navigatorParams);
+
+    }
+
     _navigatorRightView = () => {
         return (
             <View style={{flexDirection: 'row'}}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={this.pushMyCarScene}>
                     <Image source={require('../../images/carSourceImages/store.png')}></Image>
-                </TouchableOpacity>
-                <TouchableOpacity style={{marginLeft: 10}}>
+                </TouchableOpacity >
+                <TouchableOpacity style={{marginLeft: 10}} onPress={this.pushCarCollectScene}>
                     <Image source={require('../../images/carSourceImages/share_nil.png')}></Image>
                 </TouchableOpacity>
             </View>
