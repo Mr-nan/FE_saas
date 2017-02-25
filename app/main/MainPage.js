@@ -64,20 +64,36 @@ export default class MainPage extends BaseComponent {
         super(props);
         const employerTabArray = [
             new tableItemInfo('firstpage', 'page11', '首页', require('../../images/mainImage/homeSelect.png'), require('../../images/mainImage/homeUnSelect.png'),
-                <HomeSence />),
+                <HomeSence openModal={()=>{
+                     this.publishModal.openModal();
+                }} jumpScene={(ref)=>{
+                   this.setState({selectedTab: ref})
+                }} callBack={(params)=> {
+                    this.toNextPage(params);
+                }}/>),
             new tableItemInfo('carpage', 'page12', '车源', require('../../images/mainImage/carSelect.png'), require('../../images/mainImage/carUnSelect.png'),
-                <CarSourceSence/>),
+                <CarSourceSence callBack={(params)=> {
+                    this.toNextPage(params);
+                }}/>),
             new tableItemInfo('sendpage', 'page13', '发布', require('../../images/mainImage/publishSelect.png'), require('../../images/mainImage/publishUnSelect.png'),
                 <PublishModal callBack={(params)=> {
                     this.toNextPage(params);
                 }}/>),
             new tableItemInfo('mypage', 'page14', '我的', require('../../images/mainImage/mineSelect.png'), require('../../images/mainImage/mineUnSelect.png'),
-                <MineSence/>)
+                <MineSence callBack={(params)=> {
+                    this.toNextPage(params);
+                }}/>)
         ];
 
         const bossTabArray = [
             new tableItemInfo('firstpage', 'page1', '首页', require('../../images/mainImage/homeSelect.png'), require('../../images/mainImage/homeUnSelect.png'),
-                <HomeSence/>),
+                <HomeSence openModal={()=>{
+                     this.publishModal.openModal();
+                }} jumpScene={(ref)=>{
+                   this.setState({selectedTab: ref})
+                }} callBack={(params)=> {
+                    this.toNextPage(params);
+                }}/>),
             new tableItemInfo('carpage', 'page2', '车源', require('../../images/mainImage/carSelect.png'), require('../../images/mainImage/carUnSelect.png'),
 
                 <CarSourceSence callBack={(params)=> {
@@ -100,9 +116,13 @@ export default class MainPage extends BaseComponent {
 
         const financeTabArray = [
             new tableItemInfo('financePage', 'page24', '金融', require('../../images/mainImage/moneySelect.png'), require('../../images/mainImage/moneyUnSelect.png'),
-                <FinanceSence/>),
+                <FinanceSence callBack={(params) => {
+                    this.toNextPage(params);
+                }}/>),
             new tableItemInfo('mypage', 'page25', '我的', require('../../images/mainImage/mineSelect.png'), require('../../images/mainImage/mineUnSelect.png'),
-                <MineSence/>)
+                <MineSence callBack={(params)=> {
+                    this.toNextPage(params);
+                }}/>)
         ];
 
         if (this.props.identity == "boss") {
@@ -120,7 +140,7 @@ export default class MainPage extends BaseComponent {
         this.state = {
 
             // selectedTab: tabArray[0].ref,
-            selectedTab: tabArray[tabArray.length - 1].ref,
+            selectedTab: tabArray[0 ].ref,
         }
     }
 

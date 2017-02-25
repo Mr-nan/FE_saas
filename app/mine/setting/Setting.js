@@ -12,6 +12,9 @@ var Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;
 var onePT = 1 / PixelRatio.get(); //一个像素
+import StorageUtil from "../../utils/StorageUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
+import LoginAndRegister from '../../login/LoginAndRegister';
 export default class Setting extends BaseComponent {
     initFinish = () => {
     }
@@ -74,7 +77,17 @@ export default class Setting extends BaseComponent {
     }
 
     loginOut = () => {
-        alert("退出登录")
+        StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'false');
+        this.exitPage({name: 'LoginAndRegister', component: LoginAndRegister});
+    }
+
+    exitPage = (mProps) => {
+        const navigator = this.props.navigator;
+        if (navigator) {
+            navigator.immediatelyResetRouteStack([{
+                ...mProps
+            }])
+        }
     }
 }
 const styles = StyleSheet.create({

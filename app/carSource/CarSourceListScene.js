@@ -17,7 +17,7 @@ import {
     Modal,
 
 } from 'react-native';
-
+const {width, height} = Dimensions.get('window');
 import * as fontAndColor    from '../constant/fontAndColor';
 import BaseComponent        from '../component/BaseComponent';
 import HeadView             from './znComponent/CarSourceSelectHeadView';
@@ -146,7 +146,7 @@ export  default  class  carSourceListScene extends  BaseComponent{
                 title:'',
                 value:'',
             },
-
+            renderPlaceholderOnly: 'blank',
         };
 
     }
@@ -189,7 +189,7 @@ export  default  class  carSourceListScene extends  BaseComponent{
                     dataSource:this.state.dataSource.cloneWithRows(carData),
                     isRefreshing:false,
                 });
-
+                this.setState({renderPlaceholderOnly: 'success'});
         }, (error) => {
 
                 this.setState({
@@ -531,6 +531,9 @@ export  default  class  carSourceListScene extends  BaseComponent{
    }
 
     render(){
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return this._renderPlaceholderView();
+        }
         return(
 
             <View style={styles.contaier}>
@@ -577,6 +580,8 @@ export  default  class  carSourceListScene extends  BaseComponent{
                                     <RefreshControl
                                         refreshing={this.state.isRefreshing}
                                         onRefresh={this.refreshingData}
+                                        tintColor={[fontAndColor.COLORB0]}
+                                        colors={[fontAndColor.COLORB0]}
                                     />
                                 }
                             />)
@@ -632,6 +637,13 @@ export  default  class  carSourceListScene extends  BaseComponent{
 
         )
 
+    }
+    _renderPlaceholderView = () => {
+        return (
+            <View style={{width: width, height: height,backgroundColor:fontAndColor.COLORA3,alignItems: 'center'}}>
+                {this.loadView()}
+            </View>
+        );
     }
 }
 

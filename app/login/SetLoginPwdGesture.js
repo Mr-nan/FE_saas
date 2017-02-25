@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component,PureComponent} from "react";
 import {AppRegistry, View, Text, StyleSheet, Image, Dimensions} from "react-native";
 import SetPwdGesture from "../gesture/SetPwdGesture";
 import BaseComponent from "../component/BaseComponent";
@@ -13,7 +13,7 @@ const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;
 
 var Password = '';
-export default class GesturePassword extends BaseComponent {
+export default class SetLoginPwdGesture extends BaseComponent {
     constructor(props) {
         super(props);
         //初始化方法
@@ -72,7 +72,7 @@ export default class GesturePassword extends BaseComponent {
                 status={this.state.status}
                 message={this.state.message}
                 style={styles.gestureStyle}
-                interval={500}
+                interval={0}
                 onStart={() => this.onStart()}
                 onEnd={(password) => this.onEnd(password)}/>
         );
@@ -102,6 +102,7 @@ export default class GesturePassword extends BaseComponent {
                 });
                 StorageUtil.mSetItem(StorageKeyNames.GESTURE, Password);
                 Password = '';
+                this.backPage();
                 // your codes to close this view
                 // this.toNextPage({
                 //     name: 'Register',

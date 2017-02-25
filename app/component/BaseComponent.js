@@ -32,6 +32,10 @@ export default class BaseComponent extends Component {
         this.initFinish();
     }
 
+    initFinish() {
+
+    }
+
     toNextPage = (mProps) => {
         const navigator = this.props.navigator;
         if (navigator) {

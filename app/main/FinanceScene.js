@@ -28,13 +28,11 @@ var Pixel = new PixelUtil();
  * 获取屏幕的宽和高
  **/
 const {width, height} = Dimensions.get('window');
-import LendMoneySence from '../finance/lend/CarOverdue';
-import SingDetaileSence from '../finance/lend/CGDDetailSence';
+import LendMoneySence from '../finance/lend/LendMoneyScene';
+import SingDetaileSence from '../finance/lend/SingDetaileSence';
 import MyButton from '../component/MyButton';
 import RepaymentScene from '../finance/repayment/RepaymentScene';
-import PurchasePickerScene from '../finance/PurchaseLoanStatusScene';
 import BaseComponet from '../component/BaseComponent';
-import RepaymentInfoScene from '../finance/repayment/RepaymentInfoScene';
 import {request} from '../utils/testRequestUtil';
 import  LoadMoreFooter from '../component/LoadMoreFooter';
 
@@ -328,8 +326,8 @@ export default class FinanceSence extends BaseComponet {
             };
             this.props.callBack(this.navigatorParams);
         } else {
-            this.navigatorParams.name = "RepaymentInfoScene";
-            this.navigatorParams.component = RepaymentInfoScene;
+            this.navigatorParams.name = "RepaymentScene";
+            this.navigatorParams.component = RepaymentScene;
             this.props.callBack(this.navigatorParams);
         }
     }
