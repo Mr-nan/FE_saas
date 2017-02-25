@@ -200,6 +200,12 @@ export default class Register extends BaseComponent {
             this.props.showToast("商家名称不能为空");
         } else if (password !== passwoedAgain) {
             this.props.showToast("两次密码输入不一致");
+        } else if (typeof(idcardf) == "undefined" || idcardf == "") {
+            this.props.showToast("身份证正面不能为空");
+        } else if (typeof(idcardback) == "undefined" || idcardback == "") {
+            this.props.showToast("身份证反面不能为空");
+        } else if (typeof(businessid) == "undefined" || businessid == "") {
+            this.props.showToast("营业执照不能为空");
         } else {
             let maps = {
                 user_name: name,

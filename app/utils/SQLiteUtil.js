@@ -61,7 +61,7 @@ const SQLite = React.createClass({
                 +'init_reg VARCHAR default "",'
                 +'mileage VARCHAR default "",'
                 +'plate_number VARCHAR default "",'
-                +'emission_standards VARCHAR default "",'
+                +'emission VARCHAR default "",'
                 +'label VARCHAR default "",'
                 +'nature_use VARCHAR default "",'
                 +'car_color VARCHAR default "",'

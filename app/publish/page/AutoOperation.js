@@ -25,8 +25,15 @@ export default class AutoOperation extends Component{
 
     constructor(props){
         super(props);
+        this.vinNum = this.props.carData.vin;
+        let nature = this.props.carData.nature_use;
+        console.log(nature);
+        let operate = false;
+        if(nature !== ''){
+            operate = nature == '1'
+        }
         this.state = {
-            operate:false,
+            operate:operate,
             renderPlaceholderOnly: true
         }
     }
@@ -46,9 +53,14 @@ export default class AutoOperation extends Component{
     }
 
     _labelPress = ()=>{
+        let current = !this.state.operate;
         this.setState((preState,pros)=>({
             operate:!preState.operate
         }));
+        let text = current === true ? '1' : '2';
+        this.props.sqlUtil.changeData(
+            'UPDATE publishCar SET nature_use = ? WHERE vin = ?',
+            [text, this.vinNum]);
     };
     _renderPlaceholderView = ()=>{
         return(<Image style={[styles.img,{height:height-this.props.barHeight}]} source={background} />);
