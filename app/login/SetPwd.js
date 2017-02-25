@@ -4,14 +4,13 @@ import BaseComponent from "../component/BaseComponent";
 import NavigationBar from "../component/NavigationBar";
 import * as FontAndColor from "../constant/fontAndColor";
 import PixelUtil from "../utils/PixelUtil";
+import MyButton from "../component/MyButton";
+import LoginInputText from "./component/LoginInputText";
+import {request} from "../utils/RequestUtil";
+import * as AppUrls from "../constant/appUrls";
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
-import MyButton from '../component/MyButton';
-import LoginInputText from './component/LoginInputText';
-import {request} from "../utils/RequestUtil";
-import * as AppUrls from "../constant/appUrls";
-import ShowToast from "../component/toast/ShowToast";
 
 export default class SetPwd extends BaseComponent {
     initFinish = () => {

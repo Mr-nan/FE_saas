@@ -1,17 +1,8 @@
 import React, {Component, PropTypes} from "react";
-import {
-    AppRegistry,
-    StyleSheet,
-    Text,
-    View,
-    TextInput,
-    Image,
-    PixelRatio,
-} from "react-native";
-import MyButton from '../../component/MyButton';
-import  * as FontAndColor from '../../constant/fontAndColor';
-import BaseComponent from '../../component/BaseComponent';
-import PixelUtil from '../../utils/PixelUtil';
+import {AppRegistry, StyleSheet, Text, View, TextInput, Image, PixelRatio} from "react-native";
+import MyButton from "../../component/MyButton";
+import * as FontAndColor from "../../constant/fontAndColor";
+import PixelUtil from "../../utils/PixelUtil";
 var Pixel = new PixelUtil();
 
 var countTime = 30;

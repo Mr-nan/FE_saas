@@ -9,7 +9,6 @@ import PixelUtil from "../utils/PixelUtil";
 import ImagePicker from "react-native-image-picker";
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
-import ShowToast from "../component/toast/ShowToast";
 import {imageUploadUtil} from "../utils/FileUpload";
 
 var Dimensions = require('Dimensions');
