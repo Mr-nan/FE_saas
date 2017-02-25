@@ -17,7 +17,7 @@ import PixelUtil from "../utils/PixelUtil";
 import ImagePicker from "react-native-image-picker";
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
-import {imageUploadUtil} from "../utils/FileUpload";
+import LoginScene from './LoginScene';
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -27,6 +27,9 @@ var imgSrc: '';
 var imgSid: '';
 var smsCode: '';
 var uid: '';
+var idcardf: '';
+var idcardback: '';
+var businessid: '';
 export default class Register extends BaseComponent {
     constructor(props) {
         super(props);
@@ -207,20 +210,30 @@ export default class Register extends BaseComponent {
                 merchant_name: businessName,
                 code: smsCode,
                 device_code: "dycd_dms_manage_android",
-                idcard_img: "12345456",
-                license_img: "1234567",
+                idcard_img: idcardf + "," + idcardback,
+                license_img: businessid,
             };
             request(AppUrls.REGISTER, 'Post', maps)
                 .then((response) => {
                     if (response.mjson.code == "1") {
                         uid = response.mjson.data.uid;
                         this.props.showToast("注册成功");
+                        this.exitPage({name: 'LoginScene', component: LoginScene});
                     } else {
                         this.props.showToast(response.mjson.msg + "");
                     }
                 }, (error) => {
                     this.props.showToast("注册失败");
                 });
+        }
+    }
+
+    exitPage = (mProps) => {
+        const navigator = this.props.navigator;
+        if (navigator) {
+            navigator.immediatelyResetRouteStack([{
+                ...mProps
+            }])
         }
     }
 
@@ -317,29 +330,32 @@ export default class Register extends BaseComponent {
                         businessLicense: source
                     });
                 }
-                if (false) imageUploadUtil([response.uri]);
-                this.imageUploadUtil(response)
+                this.imageUploadUtil(response, id);
             }
         });
     }
 
-    imageUploadUtil(name) {
-        console.log("name =========== " + JSON.stringify(name));
-        let maps = {
+    imageUploadUtil(response, id) {
+        let params = {
             device_code: "dycd_dms_manage_android",
-            name: {
-                //这里的key(uri和type和name)不能改变,
-                uri: name,
-                type: 'multipart/form-data',
-                name: 'image.png'
-            },
+            file_name: response.fileName,
+            base64_file: 'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g, '%2B')
         };
-        request(AppUrls.AUTH_UPLOAD_FILE, 'Post', maps)
+        request(AppUrls.AUTH_UPLOAD_FILE, 'Post', params)
             .then((response) => {
-                // smsCode = response.mjson.data.code;
-                alert("图片上传成那个" + response.mjson.toString())
+                if (response.mjson.code == 1) {
+                    if (id === 'idcard') {
+                        idcardf = response.mjson.data.file_id;
+                    } else if (id === 'idcardBack') {
+                        idcardback = response.mjson.data.file_id;
+                    } else if (id === 'businessLicense') {
+                        businessid = response.mjson.data.file_id;
+                    }
+                } else {
+                    this.props.showToast(response.mjson.msg + "");
+                }
             }, (error) => {
-                alert("图片上传失败")
+                this.props.showToast("图片上传失败");
             });
     }
 }
