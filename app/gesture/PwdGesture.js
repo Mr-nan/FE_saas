@@ -14,7 +14,7 @@ const Top = (Height - Width) / 1.1;
 const Radius = Width / 12;
 const Left = (Width - Radius * 8) / 2
 
-export default class PwdGesture extends BaseComponent {
+export default class PwdGesture extends Component {
     constructor(props) {
         super(props);
 
@@ -300,6 +300,12 @@ export default class PwdGesture extends BaseComponent {
                     this.resetActive()
                 }, this.props.interval);
             }
+        }
+    }
+
+    componentWillUnmount() {
+        if (this.timer != null) {
+            clearInterval(this.timer);
         }
     }
 }
