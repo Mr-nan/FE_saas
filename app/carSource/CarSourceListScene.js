@@ -14,6 +14,7 @@ import {
     Image,
     RefreshControl,
     Dimensions,
+    Modal,
 
 } from 'react-native';
 
