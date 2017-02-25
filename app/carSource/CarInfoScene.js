@@ -17,6 +17,7 @@ import *as fontAndColor from '../constant/fontAndColor';
 import ImagePageView from 'react-native-viewpager';
 import BaseComponent from '../component/BaseComponent';
 import NavigationView from '../component/AllNavigationView';
+import Gallery from 'react-native-gallery';
 import PixelUtil from '../utils/PixelUtil';
 const Pixel = new PixelUtil();
 
@@ -97,11 +98,11 @@ export default class CarInfoScene extends BaseComponent {
         this.state = {
 
             imageArray: dataSource.cloneWithPages(carImageArray),
-            isHidePhotoView:true,
             renderPlaceholderOnly: true,
             carData:{},
             currentImageIndex:1,
             isShowShared:false,
+            isShowPhotoView:false,
 
         };
     }
@@ -130,13 +131,11 @@ export default class CarInfoScene extends BaseComponent {
 
         }).then((response) => {
 
-            console.log(response);
-
             let carData = response.mjson.data;
             carData.carIconsContentData=[
 
-                this.dateReversal(carData.manufacture),
-                this.dateReversal(carData.init_reg),
+                this.dateReversal(carData.manufacture+'000'),
+                this.dateReversal(carData.init_reg+'000'),
                 carData.mileage+'万公里',
                 carData.transfer_times+'次',
                 carData.nature_str,
@@ -170,7 +169,7 @@ export default class CarInfoScene extends BaseComponent {
         this.backPage();
     };
 
-    callClick = () => {
+    callClick =() => {
         Linking.openURL('tel:4006561290,100002#');
     };
 
@@ -186,16 +185,28 @@ export default class CarInfoScene extends BaseComponent {
         this.setState({
             isShowShared:false,
         });
-    }
+    };
 
-    showPhotoViewAction=()=>{
+    showPhotoView=()=>{
 
-        this.setState({
+        if(!this.state.isShowPhotoView){
+            this.setState({
+                isShowPhotoView:true,
+            });
+        }
 
-            isHidePhotoView:!this.state.isHidePhotoView,
-        });
+    };
 
-    }
+    hidePhotoView=()=>{
+
+        if(this.state.isShowPhotoView){
+            this.setState({
+                isShowPhotoView:false,
+            });
+        }
+
+    };
+
 
     navigatorRightView = () => {
         return (
@@ -211,12 +222,11 @@ export default class CarInfoScene extends BaseComponent {
     };
 
 
-    renderImagePage(data,pageID){
+    renderImagePage=(data,pageID)=>{
 
         return(
-            <TouchableOpacity>
-                <Image source={{uri:data}} style={styles.carImage}>
-                </Image>
+            <TouchableOpacity onPress={this.showPhotoView}>
+                <Image source={{uri:data}} style={styles.carImage}/>
             </TouchableOpacity>
 
         );
@@ -239,14 +249,14 @@ export default class CarInfoScene extends BaseComponent {
         const carData = this.state.carData;
 
         return (
-            <View style={{flex: 1, backgroundColor: 'white'}}>
+            <View ref="carInfoScene" style={{flex: 1, backgroundColor: 'white'}}>
 
                 <ScrollView style={{marginBottom: Pixel.getPixel(44)}} onMomentumScrollEnd={(e) => {
                     console.log(e.nativeEvent.contentOffset.y)
                 }}>
                     <ImagePageView
                         dataSource={this.state.imageArray}    //数据源（必须）
-                        renderPage={this.renderImagePage}      //page页面渲染方法（必须）
+                        renderPage={this.renderImagePage}     //page页面渲染方法（必须）
                         isLoop={false}                        //是否可以循环
                         autoPlay={false}                      //是否自动
                         locked={false}                        //为true时禁止滑动翻页
@@ -254,7 +264,7 @@ export default class CarInfoScene extends BaseComponent {
                             return(
                                 <View style={styles.imageFootView}>
                                     <View style={styles.carAgeView}>
-                                        <Text style={styles.carAgeText}>车龄4年</Text>
+                                        <Text style={styles.carAgeText}>{carData.v_type_str}</Text>
                                     </View>
                                     <Text style={styles.imageIndexText}>{this.state.currentImageIndex+'/'+carImageArray.length}</Text>
                                 </View>
@@ -265,25 +275,17 @@ export default class CarInfoScene extends BaseComponent {
                             this.setState({
                                 currentImageIndex:index+1,
                             });
-                        }}
-
-                    >
-                    </ImagePageView>
+                        }}/>
                     <View style={styles.contentContainer}>
                         <View style={styles.contentView}>
-                            <Text style={styles.titleText}>{carData.brand_name+carData.model_name+carData.series_name}</Text>
+                            <Text style={styles.titleText}>{carData.model_name+carData.series_name}</Text>
                             <View style={styles.titleFootView}>
                                 <View style={styles.browseView}>
                                     {/*<Image style={{marginRight: 5}}*/}
                                            {/*source={require('../../images/carSourceImages/browse.png')}/>*/}
                                     {/*<Text style={styles.browseText}>1024次浏览</Text>*/}
                                 </View>
-                                {
-                                    carData.dealer_price>0 &&(
-                                        <Text style={styles.priceText}>{carData.dealer_price +'万'}</Text>
-                                    )
-                                }
-
+                                <Text style={styles.priceText}>{carData.dealer_price>0?(carData.dealer_price +'万'):''}</Text>
                             </View>
                         </View>
                     </View>
@@ -295,44 +297,40 @@ export default class CarInfoScene extends BaseComponent {
                                         (typeof(carData.labels)!= "undefined"?carData.labels.length:false) &&
                                         (
                                             <View style={styles.carParameterView}>
-                                            {
-                                                carData.labels.map((data, index) => {
-                                                    return (<View
-                                                        style={[styles.carParameterItem, {backgroundColor: carParameterViewColor[index % 3]}]}
-                                                        key={index}>
-                                                        <Text
-                                                            style={[styles.carParameterText, {color: carParameterTextColor[index % 3]}]}>{data.value}</Text>
-                                                    </View>)
-
-                                                })
-                                            }
-                                        </View>
+                                                {
+                                                    carData.labels.map((data, index) => {
+                                                        return (
+                                                            <View
+                                                                style={[styles.carParameterItem, {backgroundColor: carParameterViewColor[index % 3]}]}
+                                                                key={index}>
+                                                                <Text style={[styles.carParameterText, {color: carParameterTextColor[index % 3]}]}>{data.value}</Text>
+                                                            </View>)
+                                                    })
+                                                }
+                                            </View>
                                         )
-
                                     }
-
                                     {
                                         carData.describe!==''&& <View style={styles.carDepictView}>
                                             <Text style={styles.carDepictText}>{carData.describe}</Text>
                                         </View>
-
                                     }
 
                                     <View style={styles.carAddressView}>
                                         <View>
                                         {
-                                            carData.city_name!=='' &&<View style={styles.carAddressSubView}>
+                                            carData.city_name!==''&&(<View style={styles.carAddressSubView}>
                                                 <Text style={styles.carAddressTitleText}>商户所在地: </Text>
                                                 <Text style={styles.carAddressSubTitleText}>{carData.city_name}</Text>
-                                            </View>
+                                            </View>)
                                         }
                                         </View>
                                         <View>
                                         {
-                                            carData.plate_number!==''&& <View style={styles.carAddressSubView}>
+                                            carData.plate_number!==''&& (<View style={styles.carAddressSubView}>
                                                 <Text style={styles.carAddressTitleText}>挂牌地: </Text>
                                                 <Text style={styles.carAddressSubTitleText}>{carData.plate_number}</Text>
-                                            </View>
+                                            </View>)
                                         }
                                         </View>
                                     </View>
@@ -367,21 +365,10 @@ export default class CarInfoScene extends BaseComponent {
                     backIconClick={this.backIconClick}
                     renderRihtFootView={this.navigatorRightView}
                 />
-                {
-                    !this.state.isHidePhotoView && (<TouchableOpacity style={styles.PhotonContaier} onPress={this.showPhotoViewAction}>
-                        <ScrollView horizontal={true}>
-                            {
-                                carImageArray.map((data,index)=>{
-                                    return(
-                                        <Image source={{uri:data}} key={index} style={{backgroundColor:'red',height:300,width:ScreenWidth}}/>
-                                    )
-                                })
-                            }
-                        </ScrollView>
-                    </TouchableOpacity>)
-                }
+                <PhotoView visible={this.state.isShowPhotoView} close={this.hidePhotoView} imageArray = {carImageArray} indext={this.state.currentImageIndex}/>
                 <SharedView visible={this.state.isShowShared} close={this.hideShared}/>
             </View>
+
         )
     }
 
@@ -396,18 +383,15 @@ class CarIconView extends Component {
         return (
             <View style={styles.carIconItem}>
                 <Image source={bool ? imageHighData : imageData}/>
-                <Text
-                    style={[styles.carIconItemContentText, bool && {color: fontAndColor.COLORA0}]}>{bool ? content : '暂无'}</Text>
+                <Text style={[styles.carIconItemContentText, bool && {color: fontAndColor.COLORA0}]}>{bool ? content : '暂无'}</Text>
                 <Text style={styles.carIconItemTitleText}>{title}</Text>
             </View>
         )
     }
 
-
 }
 
 class  SharedView extends Component{
-
 
     render(){
 
@@ -444,6 +428,32 @@ class  SharedView extends Component{
 
 }
 
+class PhotoView extends Component{
+
+
+    render(){
+        const {visible,imageArray,index,close,indext} = this.props;
+        return(
+            <Modal
+                visible={visible}
+                transparent={true}
+                onRequestClose={close}
+                animationType={'fade'}
+            >
+
+
+                <Gallery
+                    style={{flex: 1, backgroundColor: 'rgba(1,1,1,0.5)'}}
+                    images={imageArray}
+                    initialPage={indext-1}
+                    onSingleTapConfirmed={() => {
+                        close();
+                    }}
+                />
+            </Modal>
+        )
+    }
+}
 
 const styles = StyleSheet.create({
 
