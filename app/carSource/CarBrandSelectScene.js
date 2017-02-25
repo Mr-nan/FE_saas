@@ -85,7 +85,7 @@ export default class CarBrandSelectScene extends BaseComponent {
 
     loadData = ()=> {
 
-        let url = AppUrls.BASEURL + '/v1/home/brand';
+        let url = AppUrls.BASEURL + 'v1/home/brand';
         request(url, 'post', {
 
             status: 0,
@@ -137,11 +137,10 @@ export default class CarBrandSelectScene extends BaseComponent {
 
     loadCarSeriesData=(carBrandID,carBrandName)=>{
 
-        let url = AppUrls.BASEURL + '/v1/home/series';
+        let url = AppUrls.BASEURL + 'v1/home/series';
         request(url, 'post', {
 
             brand_id:carBrandID,
-            status:1,
 
         }).then((response) => {
 

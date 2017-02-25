@@ -7,7 +7,8 @@ import  {
     StyleSheet,
     Dimensions,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    InteractionManager
 } from  'react-native'
 
 import * as fontAndClolr from '../../constant/fontAndColor';
@@ -25,7 +26,9 @@ import BaseComponent from "../../component/BaseComponent";
 const {width, height} = Dimensions.get('window');
 
 export default class AccountManageScene extends BaseComponent {
+
     initFinish = () => {
+
     }
     // 构造
     constructor(props) {
@@ -36,11 +39,33 @@ export default class AccountManageScene extends BaseComponent {
                 'John', 'Joel', 'James', 'Jimmy'
             ]),
             show: true,
+            renderPlaceholderOnly: 'blank',
         };
 
     }
+    allRefresh = () => {
+        this.setState({renderPlaceholderOnly: 'loading'});
+    }
+
+    getData=()=>{
+        if('success'){
+            this.setState({renderPlaceholderOnly: 'success'});
+        }else{
+            this.setState({renderPlaceholderOnly: 'error'});
+        }
+    }
 
     render() {
+        if (this.state.renderPlaceholderOnly!=='loading') {
+            return ( <View style={styles.container}>
+                <NavigationBar
+                    centerText={'用户管理'}
+                    rightText={''}
+                    leftImageCallBack={this.backPage}
+                />
+                {this.loadView()}
+            </View>);
+        }
         return (
             <View style={styles.container}>
                 <NavigationBar
@@ -127,10 +152,10 @@ const styles = StyleSheet.create({
     image: {
         marginRight: Pixel.getPixel(15),
     },
-    leftImage:{
-        width:Pixel.getPixel(38),
-        height:Pixel.getPixel(38),
-        marginLeft:Pixel.getPixel(15)
+    leftImage: {
+        width: Pixel.getPixel(38),
+        height: Pixel.getPixel(38),
+        marginLeft: Pixel.getPixel(15)
     }
 
 
