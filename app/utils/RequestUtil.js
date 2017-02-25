@@ -17,15 +17,16 @@ const request = (url, method, params) => {
 
     return new Promise((resolve, reject) => {
         StorageUtil.mGetItem(StorageKeyNames.token, (data) => {
-            let token = '0ac50af9a02b752ca0f48790dc8ea6d1';
-            // if (data.code === 1) {
-            //     token = data.result;
-            // }
+            let token = '';
+            if (data.code === 1) {
+                token = data.result;
+            }
             let device_code = '';
-            if(Platform.OS==='android'){
+            if(Platform.OS==='android')
+            {
                 device_code='dycd_dms_manage_android';
             }else{
-                device_code='dycd_dms_manage_ios';
+                device_code='dycd_dms_manage_android';
             }
             fetch(url + '?token=' + token + '&device_code='+device_code, {
                 method,
