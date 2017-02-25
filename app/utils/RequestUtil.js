@@ -43,15 +43,15 @@ const request = (url, method, params) => {
                 })
                 .then((responseData) => {
                     if (isOk) {
-                        // console.log("success----------" + JSON.stringify(responseData));
+                        console.log("success----------" + JSON.stringify(responseData));
                         resolve({mjson: responseData, mycode: 1});
                     } else {
-                        // console.log("error----------" + JSON.stringify(responseData));
+                        console.log("error----------" + JSON.stringify(responseData));
                         resolve(responseData);
                     }
                 })
                 .catch((error) => {
-                    // console.log("error----------" + error);
+                    console.log("error----------" + error);
                     reject(error);
                 });
         })

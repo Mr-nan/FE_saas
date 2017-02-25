@@ -8,7 +8,8 @@ import {
     StyleSheet,
     Image,
     PixelRatio,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    InteractionManager
 } from "react-native";
 import BaseComponent from "../component/BaseComponent";
 import LoginInputText from "./component/LoginInputText";
@@ -46,6 +47,7 @@ export default class LoginScene extends BaseComponent {
             show: false,
             value: "",
             verifyCode: null,
+            renderPlaceholderOnly: true,
         }
     }
 
@@ -55,7 +57,10 @@ export default class LoginScene extends BaseComponent {
                 userNames = data.result.split(",");
             }
         })
-        this.Verifycode();
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+            this.Verifycode();
+        });
     }
 
     static defaultProps = {
@@ -72,11 +77,28 @@ export default class LoginScene extends BaseComponent {
         name: 'SetLoginPwdGesture',
         component: SetLoginPwdGesture,
         params: {
-            from:'login'
+            from: 'login'
         }
     }
 
     render() {
+        if (this.state.renderPlaceholderOnly) {
+            return ( <TouchableWithoutFeedback onPress={() => {
+                this.setState({
+                    show: false,
+                });
+            }}>
+                <View style={styles.container}>
+                    <NavigationBar
+                        leftImageShow={false}
+                        leftTextShow={true}
+                        leftText={""}
+                        centerText={"登录"}
+                        rightText={""}
+                    />
+                </View>
+            </TouchableWithoutFeedback>);
+        }
         let views = [];
         if (userNames != null && userNames.length > 0) {
             for (let x in userNames) {
