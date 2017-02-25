@@ -5,6 +5,7 @@ import {
     StatusBar,
 } from 'react-native';
 import MyNavigator  from './component/MyNavigator';
+import ShowToast from "./component/toast/ShowToast";
 
 export default class root extends Component {
 
@@ -12,8 +13,15 @@ export default class root extends Component {
         return (
             <View style={{flex:1}}>
 
-                <MyNavigator/>
+                <MyNavigator showToast={(content)=>{
+                    this.showToast(content)
+                }}/>
+                <ShowToast ref='toast' msg={''}></ShowToast>
             </View>
         );
+    }
+
+    showToast = (content) => {
+        this.refs.toast.changeType(ShowToast.TOAST, content);
     }
 }

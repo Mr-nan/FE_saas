@@ -26,6 +26,7 @@ import * as StorageKeyNames from "../constant/storageKeyNames";
 import ShowToast from "../component/toast/ShowToast";
 import MyButton from "../component/MyButton";
 import LoginFailSmsYes from './LoginFailSmsYes';
+import SetLoginPwdGesture from './SetLoginPwdGesture';
 var Pixel = new PixelUtil();
 
 var Dimensions = require('Dimensions');
@@ -65,6 +66,14 @@ export default class LoginScene extends BaseComponent {
         name: 'MainPage',
         component: MainPage,
         params: {}
+    }
+
+    setLoginGesture = {
+        name: 'SetLoginPwdGesture',
+        component: SetLoginPwdGesture,
+        params: {
+            from:'login'
+        }
     }
 
     render() {
@@ -274,7 +283,7 @@ export default class LoginScene extends BaseComponent {
             request(AppUrls.LOGIN, 'Post', maps)
                 .then((response) => {
                     if (response.mjson.code == "1") {
-                        this.refs.toast.changeType(ShowToast.TOAST, "登录成功");
+                        this.props.showToast("登录成功");
                         // 保存用户登录状态
                         StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
 
@@ -298,7 +307,16 @@ export default class LoginScene extends BaseComponent {
                         StorageUtil.mSetItem(StorageKeyNames.real_name, response.mjson.data.real_name + "");
                         StorageUtil.mSetItem(StorageKeyNames.token, response.mjson.data.token + "");
                         StorageUtil.mSetItem(StorageKeyNames.user_level, response.mjson.data.user_level + "");
-                        this.loginPage(this.loginSuccess)
+                        StorageUtil.mGetItem(StorageKeyNames.GESTURE, (data) => {
+                            if (data.code === 1) {
+                                let results = data.result.split(',');
+                                if (data.result != null && data.result.length > 3 && results[0] == response.mjson.data.phone) {
+                                    this.loginPage(this.loginSuccess)
+                                } else {
+                                    this.loginPage(this.setLoginGesture)
+                                }
+                            }
+                        })
                     } else {
                         this.refs.toast.changeType(ShowToast.TOAST, response.mjson.msg + "");
                     }
@@ -309,6 +327,7 @@ export default class LoginScene extends BaseComponent {
                 });
         }
     }
+
 
     loginPage = (mProps) => {
         const navigator = this.props.navigator;
