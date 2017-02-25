@@ -53,7 +53,6 @@ export default class SetPwd extends BaseComponent {
                           parentStyle={styles.buttonStyle}
                           childStyle={styles.buttonTextStyle}
                           mOnPress={this.setPwd}/>
-                <ShowToast ref='toast' msg={this.props.msg}></ShowToast>
             </View>
         );
     }
@@ -73,13 +72,13 @@ export default class SetPwd extends BaseComponent {
         let newPassword = this.refs.newPassword.getInputTextValue();
         let newPasswordAgain = this.refs.newPasswordAgain.getInputTextValue();
         if (typeof(oldPassword) == "undefined" || oldPassword == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "原密码不能为空");
+            this.props.showToast("原密码不能为空");
         } else if (typeof(newPassword) == "undefined" || newPassword == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "新密码不能为空");
+            this.props.showToast("新密码不能为空");
         } else if (typeof(newPasswordAgain) == "undefined" || newPasswordAgain == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "再次确认密码不能为空");
+            this.props.showToast("再次确认密码不能为空");
         } else if (newPassword !== newPasswordAgain) {
-            this.refs.toast.changeType(ShowToast.TOAST, "两次密码输入不一致");
+            this.props.showToast("两次密码输入不一致");
         } else {
             let maps = {
                 old_pwd: oldPassword,
@@ -89,12 +88,12 @@ export default class SetPwd extends BaseComponent {
             request(AppUrls.CHANGEPWD, 'Post', maps)
                 .then((response) => {
                     if (response.mjson.code == "1") {
-                        this.refs.toast.changeType(ShowToast.TOAST, "设置成功");
+                        this.props.showToast("设置成功");
                     } else {
-                        this.refs.toast.changeType(ShowToast.TOAST, response.mjson.msg);
+                        this.props.showToast(response.mjson.msg + "");
                     }
                 }, (error) => {
-                    this.refs.toast.changeType(ShowToast.TOAST, "设置失败");
+                    this.props.showToast("设置失败");
                 });
         }
     }
