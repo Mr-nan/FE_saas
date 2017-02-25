@@ -15,6 +15,7 @@ import LoginInputText from "./component/LoginInputText";
 import LoginAutoSearchInputText from "./component/LoginAutoSearchInputText";
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
+import MainPage from '../main/MainPage';
 // import LoginFail from "./LoginFail";
 import * as FontAndColor from "../constant/fontAndColor";
 import Register from "./Register";
@@ -59,6 +60,12 @@ export default class LoginScene extends BaseComponent {
     static defaultProps = {
         saveData: ["13001286215", "13001286216", "13001260002"],
     };
+
+    loginSuccess = {
+        name: 'MainPage',
+        component: MainPage,
+        params: {}
+    }
 
     render() {
         let views = [];
@@ -291,6 +298,7 @@ export default class LoginScene extends BaseComponent {
                         StorageUtil.mSetItem(StorageKeyNames.real_name, response.mjson.data.real_name + "");
                         StorageUtil.mSetItem(StorageKeyNames.token, response.mjson.data.token + "");
                         StorageUtil.mSetItem(StorageKeyNames.user_level, response.mjson.data.user_level + "");
+                        this.loginPage(this.loginSuccess)
                     } else {
                         this.refs.toast.changeType(ShowToast.TOAST, response.mjson.msg + "");
                     }
@@ -299,6 +307,15 @@ export default class LoginScene extends BaseComponent {
                     // 保存用户登录状态
                     StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'false');
                 });
+        }
+    }
+
+    loginPage = (mProps) => {
+        const navigator = this.props.navigator;
+        if (navigator) {
+            navigator.immediatelyResetRouteStack([{
+                ...mProps
+            }])
         }
     }
 }

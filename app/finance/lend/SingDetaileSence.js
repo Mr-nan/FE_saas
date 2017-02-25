@@ -8,11 +8,15 @@ import {
     ListView,
 } from 'react-native';
 
-import {CommnetListItem, LendCarItemCell, CommenButton } from './component/ComponentBlob'
-import { width,height,fontadapeSize,adapeSize} from './component/MethodComponent'
+import {CommnetListItem, LendCarItemCell, CommenButton} from './component/ComponentBlob'
+import {width, height, fontadapeSize, adapeSize} from './component/MethodComponent'
+import  AllNavigationView from '../../component/AllNavigationView';
+import PixelUtil from '../../utils/PixelUtil';
+const Pixel = new PixelUtil();
+import BaseComponent from '../../component/BaseComponent';
 
 //ok
-export  default  class SingDetaileSence extends Component {
+export  default  class SingDetaileSence extends BaseComponent {
 
     titleNameBlob = {
 
@@ -121,8 +125,6 @@ export  default  class SingDetaileSence extends Component {
 
     }
     renderSectionHeader = (sectionData, sectionID) => {
-
-
         return (
 
             <View style={[sectionID !== 'section1' && {backgroundColor: '#f0eff5', height: 20}]}>
@@ -148,9 +150,13 @@ export  default  class SingDetaileSence extends Component {
         return (
 
             <View style={{flex: 1}}>
+                <AllNavigationView
+                    title="借款详情"
+                    backIconClick={this.backPage}
+                />
                 <ListView
                     style={{
-                        marginTop: 44,
+                        marginTop: Pixel.getPixel(64),
                         backgroundColor: '#f0eff5',
                         paddingTop: adapeSize(15),
                         marginBottom: adapeSize(50),
@@ -166,7 +172,7 @@ export  default  class SingDetaileSence extends Component {
                         buttonStyle={styles.buttonStyle} textStyle={styles.textStyle} onPress={this.orderStateHandel}
                         title='取消借款'/>
                 </View>
-                
+
             </View>
 
         );

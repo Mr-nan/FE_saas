@@ -14,7 +14,7 @@ const Top = Height - Width;
 const Radius = Width / 12;
 const Left = (Width - Radius * 8) / 2
 
-export default class GesturePassword extends BaseComponent {
+export default class SetPwdGesture extends Component {
     constructor(props) {
         super(props);
 
@@ -299,6 +299,12 @@ export default class GesturePassword extends BaseComponent {
                     this.resetActive()
                 }, this.props.interval);
             }
+        }
+    }
+
+    componentWillUnmount() {
+        if (this.timer != null) {
+            clearInterval(this.timer);
         }
     }
 }

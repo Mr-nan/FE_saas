@@ -24,6 +24,7 @@ const publishNew = require('../../images/mainImage/publishNew.png');
 const publishClose = require('../../images/mainImage/publishClose.png');
 const Pixel = new PixelUtil();
 const { width,height } = Dimensions.get('window');
+import CollectionIntent from '../collectionIntent/CollectionIntent';
 
 export default class PublishModal extends BaseComponent {
 
@@ -38,12 +39,19 @@ export default class PublishModal extends BaseComponent {
 
     _receivePress = ()=>{
         this._closePress();
+        this.props.callBack(this.receivePress);
     };
 
     _closePress = ()=>{
         this.setState({
             modalVisible: false
         });
+    };
+
+    receivePress = {
+        name: 'CollectionIntent',
+        component: CollectionIntent,
+        params: {}
     };
 
     newCarParams = {

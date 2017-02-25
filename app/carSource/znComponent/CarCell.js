@@ -14,6 +14,8 @@ import {
 
 
 import * as fontAndColor from '../../constant/fontAndColor';
+import PixelUtil from '../../utils/PixelUtil';
+var Pixel = new PixelUtil();
 
 export default class CarCell extends Component {
 
@@ -54,7 +56,12 @@ export default class CarCell extends Component {
                     </View>
 
                 </View>
-
+                {
+                    this.props.showBtn &&
+                    <View style={styles.cellFoot}>
+                        <Text style={styles.cellFootText}>取消收藏</Text>
+                    </View>
+                }
             </View>
             </TouchableOpacity>
 
@@ -70,8 +77,8 @@ const styles = StyleSheet.create({
 
         flex:1,
         flexDirection:'row',
-        height:110,
-        // backgroundColor:'gray',
+        height:Pixel.getPixel(110),
+        backgroundColor:'white',
 
     },
 
@@ -85,17 +92,16 @@ const styles = StyleSheet.create({
 
     imageView:{
 
-        width:147,
+        width:Pixel.getPixel(147),
         justifyContent:'center',
         // backgroundColor:'blue'
-
 
     },
     image:{
 
-        marginLeft:15,
-        width:120,
-        height:80,
+        marginLeft:Pixel.getPixel(15),
+        width:Pixel.getPixel(120),
+        height:Pixel.getPixel(80),
         backgroundColor:'#FFF45C',
 
     },
@@ -104,19 +110,42 @@ const styles = StyleSheet.create({
 
         flex:1,
         justifyContent:'space-around',
-        marginRight:15,
+        marginRight:Pixel.getPixel(15),
     },
 
     mainText:{
 
         color:fontAndColor.COLORA0,
-        fontSize:fontAndColor.LITTLEFONT,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
+        backgroundColor:'white',
     },
 
     subTitleText:{
 
         color:fontAndColor.COLORA1,
-        fontSize:fontAndColor.CONTENTFONT,
+        fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT),
+        backgroundColor:'white',
+
+    },
+    cellFoot:{
+
+        paddingHorizontal:10,
+        paddingVertical:5,
+        borderColor:fontAndColor.COLORA2,
+        borderWidth:StyleSheet.hairlineWidth,
+        alignItems:'center',
+        justifyContent:'center',
+        borderRadius:2,
+        marginRight:15,
+        bottom:15,
+        right:15,
+        position:'absolute',
+
+    },
+    cellFootText:{
+
+        color:fontAndColor.COLORA2,
+        fontSize:fontAndColor.LITTLEFONT,
     },
 
 

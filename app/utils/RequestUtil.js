@@ -25,7 +25,8 @@ const request = (url, method, params) => {
             if(Platform.OS==='android'){
                 device_code='dycd_dms_manage_android';
             }else{
-                device_code='dycd_dms_manage_ios';
+                // device_code='dycd_dms_manage_ios';
+                device_code='dycd_dms_manage_android';
             }
             fetch(url + '?token=' + token + '&device_code='+device_code, {
                 method,

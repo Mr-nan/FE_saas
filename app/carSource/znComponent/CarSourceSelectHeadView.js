@@ -17,6 +17,8 @@ import {
 
 
 import * as fontAndColor from '../../constant/fontAndColor';
+import PixelUtil from '../../utils/PixelUtil';
+var Pixel = new PixelUtil();
 
 export default class carSourceSelectHeadView extends Component{
 
@@ -147,7 +149,7 @@ const  styles = StyleSheet.create({
     container:{
 
         flex:1,
-        height:40,
+        height:Pixel.getPixel(40),
         width:screenWidth,
         flexDirection:'row',
         justifyContent:'space-between'
@@ -169,20 +171,20 @@ const  styles = StyleSheet.create({
 
     line:{
 
-        height:15,
+        height:Pixel.getPixel(15),
         backgroundColor:fontAndColor.COLORA1,
     },
 
     countView:{
 
-        marginLeft:10,
+        marginLeft:Pixel.getPixel(10),
         justifyContent:'center'
     },
 
     selectBtn:{
 
-        width:80,
-        height:40,
+        width:Pixel.getPixel(80),
+        height:Pixel.getPixel(40),
         alignItems:'center',
         justifyContent:'center',
         flexDirection:'row',
@@ -191,19 +193,19 @@ const  styles = StyleSheet.create({
     selectBtnText:{
 
         color:fontAndColor.COLORA0,
-        fontSize:fontAndColor.LITTLEFONT,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
     },
 
     countText:{
 
         color:fontAndColor.COLORB3,
-        fontSize:fontAndColor.LITTLEFONT,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
     },
 
     unitsView:{
 
-        marginRight:15,
-        marginLeft:10,
+        marginRight:Pixel.getPixel(15),
+        marginLeft:Pixel.getPixel(10),
         justifyContent:'center',
         alignItems:'center',
         flexDirection:'row',
@@ -211,7 +213,7 @@ const  styles = StyleSheet.create({
 
     unitsText:{
         color:fontAndColor.COLORA0,
-        fontSize:fontAndColor.LITTLEFONT,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
     },
 
 

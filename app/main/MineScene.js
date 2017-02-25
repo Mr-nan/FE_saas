@@ -11,6 +11,7 @@ import  {
 } from  'react-native'
 
 import * as fontAndClolr from '../constant/fontAndColor';
+import MycarScene from '../carSource/CarMySourceScene';
 import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
 import ContractManageScene from '../mine/contractManage/ContractManageScene';
@@ -55,12 +56,17 @@ const Car = [
         "cars": [
             {
                 "icon":require('../../images/mainImage/shoucangjilu.png'),
+                "name": "我的车源"
+            },
+            {
+                "icon":require('../../images/mainImage/shoucangjilu.png'),
                 "name": "收藏记录"
             },
             {
                 "icon":require('../../images/mainImage/liulanlishi.png'),
                 "name": "浏览历史"
             },
+
         ],
         "title": "section2"
     },
@@ -183,6 +189,10 @@ export default class MineSectionListView extends Component {
             case '员工管理':
                 this.navigatorParams.name='EmployeeManageScene'
                 this.navigatorParams.component=EmployeeManageScene
+                break;
+            case '我的车源':
+                this.navigatorParams.name='MycarScene'
+                this.navigatorParams.component=MycarScene
                 break;
             case '收藏记录':
                 break;
