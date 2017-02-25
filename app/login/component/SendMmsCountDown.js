@@ -14,8 +14,9 @@ import BaseComponent from '../../component/BaseComponent';
 import PixelUtil from '../../utils/PixelUtil';
 var Pixel = new PixelUtil();
 
-var countTime = 6;
-export default class sendMmsCountDown extends BaseComponent {
+var countTime = 30;
+var timer;
+export default class sendMmsCountDown extends Component {
     constructor(props) {
         super(props);
         //初始化方法
@@ -50,7 +51,7 @@ export default class sendMmsCountDown extends BaseComponent {
     //开始计算操作
     StartCountDown = () => {
         if (!this.state.countDown) {
-            let timer = setInterval(() => {
+            timer = setInterval(() => {
                 if (countTime <= 0) {
                     this.setState({
                         countDown: false,
@@ -70,7 +71,11 @@ export default class sendMmsCountDown extends BaseComponent {
     //结束计算操作
     endCountDown = (timer) => {
         clearInterval(timer);
-        countTime = 6;
+        countTime = 30;
+    }
+
+    componentWillUnmount() {
+        clearInterval(timer);
     }
 }
 

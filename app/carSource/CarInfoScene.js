@@ -118,6 +118,8 @@ export default class CarInfoScene extends BaseComponent {
         this.loadData();
     }
 
+
+
     loadData=()=> {
 
         console.log('ID:'+this.props.carID);

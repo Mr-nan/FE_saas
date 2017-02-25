@@ -72,7 +72,7 @@ export default class SetLoginPwdGesture extends BaseComponent {
                 status={this.state.status}
                 message={this.state.message}
                 style={styles.gestureStyle}
-                interval={0}
+                interval={500}
                 onStart={() => this.onStart()}
                 onEnd={(password) => this.onEnd(password)}/>
         );
@@ -103,12 +103,6 @@ export default class SetLoginPwdGesture extends BaseComponent {
                 StorageUtil.mSetItem(StorageKeyNames.GESTURE, Password);
                 Password = '';
                 this.backPage();
-                // your codes to close this view
-                // this.toNextPage({
-                //     name: 'Register',
-                //     component: Register,
-                //     params: {},
-                // })
             } else {
                 this.setState({
                     status: 'wrong',

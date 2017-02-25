@@ -4,6 +4,8 @@ import BaseComponent from "../component/BaseComponent";
 import NavigationBar from "../component/NavigationBar";
 import * as FontAndColor from "../constant/fontAndColor";
 import PixelUtil from "../utils/PixelUtil";
+import MainPage from '../main/MainPage';
+
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
@@ -174,6 +176,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
                         StorageUtil.mSetItem(StorageKeyNames.real_name, response.mjson.data.real_name + "");
                         StorageUtil.mSetItem(StorageKeyNames.token, response.mjson.data.token + "");
                         StorageUtil.mSetItem(StorageKeyNames.user_level, response.mjson.data.user_level + "");
+                        this.loginPage(this.loginSuccess)
                     } else {
                         this.refs.toast.changeType(ShowToast.TOAST, response.mjson.msg);
                     }
@@ -183,6 +186,20 @@ export default class LoginFailSmsVerify extends BaseComponent {
         }
     }
 
+    loginSuccess = {
+        name: 'MainPage',
+        component: MainPage,
+        params: {}
+    }
+
+    loginPage = (mProps) => {
+        const navigator = this.props.navigator;
+        if (navigator) {
+            navigator.immediatelyResetRouteStack([{
+                ...mProps
+            }])
+        }
+    }
 }
 
 const styles = StyleSheet.create({
