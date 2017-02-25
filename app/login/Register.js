@@ -186,7 +186,6 @@ export default class Register extends BaseComponent {
         let passwoedAgain = this.refs.passwoedAgain.getInputTextValue();
         let name = this.refs.name.getInputTextValue();
         let businessName = this.refs.businessName.getInputTextValue();
-
         if (typeof(userName) == "undefined" || userName == "") {
             this.props.showToast("手机号码不能为空");
         } else if (typeof(smsCode) == "undefined" || smsCode == "") {
