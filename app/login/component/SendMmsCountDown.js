@@ -5,7 +5,7 @@ import * as FontAndColor from "../../constant/fontAndColor";
 import PixelUtil from "../../utils/PixelUtil";
 var Pixel = new PixelUtil();
 
-var countTime = 30;
+var countTime = 6;
 var timer;
 export default class sendMmsCountDown extends Component {
     constructor(props) {
@@ -62,7 +62,7 @@ export default class sendMmsCountDown extends Component {
     //结束计算操作
     endCountDown = (timer) => {
         clearInterval(timer);
-        countTime = 30;
+        countTime = 6;
     }
 
     componentWillUnmount() {
