@@ -44,7 +44,22 @@ export default class EmployeeManageScene extends BaseComponent {
 
     getData = () => {
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        request(AppUrls.USER_EMPLOYE, 'Post', {})
+        request('http://dev.api-gateway.dycd.com/' + 'v1/car/index', 'Post', {
+
+            brand_id: 0,
+            series_id: 0,
+            model_id: 0,
+            provice_id: 0,
+            city_id: 0,
+            order_type: 0,
+            coty: 0,
+            mileage: 0,
+            rows: 10,
+            page: 1,
+            start: 0,
+            type: 1,
+            status: 1,
+        })
             .then((response) => {
                     this.setState({
                         dataSource: ds.cloneWithRows(response.mjson.data)

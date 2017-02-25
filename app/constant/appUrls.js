@@ -17,7 +17,6 @@
  * 测试地址
  */
 export const BASEURL = 'http://dev.api-gateway.dycd.com/';
-
 /**
  * 预发布地址
  */
@@ -45,9 +44,14 @@ export const V3 = "v3/";
 export const IDENTIFYING = BASEURL + V + "index/captcha";// v1/index/captcha
 
 /**
+ * 首页数据
+ */
+export const HOME = BASEURL + V + "home";//
+
+/**
  * 员工列表
  */
-export const USER_EMPLOYE = BASEURL + V + "user.employe/index";// v1/index/captcha
+export const USER_EMPLOYE = BASEURL + V + "user.employe/index";
 
 /**
  * 短信验证码

@@ -56,7 +56,7 @@ export default class AccountManageScene extends BaseComponent {
     }
 
     render() {
-        if (this.state.renderPlaceholderOnly!=='success') {
+        if (this.state.renderPlaceholderOnly!=='loading') {
             return ( <View style={styles.container}>
                 <NavigationBar
                     centerText={'用户管理'}

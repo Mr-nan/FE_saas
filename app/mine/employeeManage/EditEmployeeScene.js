@@ -15,7 +15,8 @@ import  PixelUtil from '../../utils/PixelUtil';
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 import MyButton from '../../component/MyButton';
 import SelectMaskComponent from './SelectMaskComponent'
-
+import NavigationView from '../../component/AllNavigationView';
+import BaseComponent from '../../component/BaseComponent';
 
 var Pixel = new PixelUtil();
 const Car = [
@@ -70,7 +71,7 @@ const Car = [
 
 const {width, height} = Dimensions.get('window');
 
-export default class EditEmployeeScene extends Component {
+export default class EditEmployeeScene extends BaseComponent {
     // 构造
     constructor(props) {
 
@@ -131,19 +132,24 @@ export default class EditEmployeeScene extends Component {
         };
     }
 
-    _onClick = (rowID)=> {
+    _onClick = (rowID) => {
         console.log(this.state.maskSource[rowID]);
     }
 
     render() {
         return (
             <View style={styles.container}>
+                <NavigationView
+                    title="编辑员工"
+                    backIconClick={this.backPage}
+                    renderRihtFootView={this._navigatorRightView}
+                />
                 <SelectMaskComponent viewData={this.state.maskSource} onClick={(rowID)=>this._onClick(rowID)}
                                      ref={(modal)=> {
                                          this.selectModal = modal
                                      }}/>
                 <ListView
-                    contentContainerStyle={styles.listStyle}
+                    style={styles.listStyle}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSectionHeader={this._renderSectionHeader}
@@ -158,8 +164,27 @@ export default class EditEmployeeScene extends Component {
         );
     }
 
+    _navigatorRightView = () => {
+        return (
+            <TouchableOpacity
+                style={{backgroundColor:'#ffffff',
+                width:Pixel.getPixel(53),height:Pixel.getPixel(27),
+                justifyContent:'center',alignItems:'center',borderRadius:5}}
+                activeOpacity={0.8} onPress={() => {
 
-    _rowAndSectionClick = (rowID, sectionID)=> {
+            }}>
+                <Text style={{
+                    color: FontAndColor.COLORB0,
+                    fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT30),
+                    textAlign: 'center',
+                    backgroundColor: 'transparent',
+                }}>完成</Text>
+            </TouchableOpacity>
+        );
+    }
+
+
+    _rowAndSectionClick = (rowID, sectionID) => {
         if (sectionID === 0 && rowID === 1) {
             this._openModal(this.xb);
         } else if (sectionID === 1 && rowID === 0) {
@@ -169,13 +194,13 @@ export default class EditEmployeeScene extends Component {
         }
     }
 
-    _openModal = (dt) =>{
+    _openModal = (dt) => {
         this.selectModal.changeData(dt);
         this.selectModal.openModal()
     }
 
     // 每一行中的数据
-    _renderRow = (rowData, sectionID, rowID)=> {
+    _renderRow = (rowData, sectionID, rowID) => {
 
         return (
             <TouchableOpacity onPress={()=>this._rowAndSectionClick(rowID, sectionID)
@@ -208,7 +233,7 @@ const styles = StyleSheet.create({
         backgroundColor: FontAndColor.COLORA3,
     },
     listStyle: {
-        marginTop: Pixel.getPixel(64)
+        marginTop: Pixel.getTitlePixel(64)
     },
     sectionView: {
         height: Pixel.getPixel(10),
