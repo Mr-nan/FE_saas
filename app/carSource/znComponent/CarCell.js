@@ -56,7 +56,12 @@ export default class CarCell extends Component {
                     </View>
 
                 </View>
-
+                {
+                    this.props.showBtn &&
+                    <View style={styles.cellFoot}>
+                        <Text style={styles.cellFootText}>取消收藏</Text>
+                    </View>
+                }
             </View>
             </TouchableOpacity>
 
@@ -121,6 +126,26 @@ const styles = StyleSheet.create({
         fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT),
         backgroundColor:'white',
 
+    },
+    cellFoot:{
+
+        paddingHorizontal:10,
+        paddingVertical:5,
+        borderColor:fontAndColor.COLORA2,
+        borderWidth:StyleSheet.hairlineWidth,
+        alignItems:'center',
+        justifyContent:'center',
+        borderRadius:2,
+        marginRight:15,
+        bottom:15,
+        right:15,
+        position:'absolute',
+
+    },
+    cellFootText:{
+
+        color:fontAndColor.COLORA2,
+        fontSize:fontAndColor.LITTLEFONT,
     },
 
 
