@@ -16,7 +16,7 @@ const request = (url, method, params) => {
     }
 
     return new Promise((resolve, reject) => {
-        StorageUtil.mGetItem(StorageKeyNames.token, (data) => {
+        StorageUtil.mGetItem(StorageKeyNames.TOKEN, (data) => {
             let token = '';
             if (data.code === 1) {
                 token = data.result;

@@ -166,14 +166,14 @@ export default class LoginFailSmsVerify extends BaseComponent {
                         StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
                         StorageUtil.mSetItem(StorageKeyNames.USER_INFO, JSON.stringify(response.mjson.data));
                         // 保存用户信息
-                        StorageUtil.mSetItem(StorageKeyNames.base_user_id, response.mjson.data.base_user_id + "");
-                        StorageUtil.mSetItem(StorageKeyNames.enterprise_list, JSON.stringify(response.mjson.data.enterprise_list));
-                        StorageUtil.mSetItem(StorageKeyNames.head_portrait_url, response.mjson.data.head_portrait_url + "");
-                        StorageUtil.mSetItem(StorageKeyNames.idcard_number, response.mjson.data.idcard_number + "");
-                        StorageUtil.mSetItem(StorageKeyNames.phone, response.mjson.data.phone + "");
-                        StorageUtil.mSetItem(StorageKeyNames.real_name, response.mjson.data.real_name + "");
-                        StorageUtil.mSetItem(StorageKeyNames.token, response.mjson.data.token + "");
-                        StorageUtil.mSetItem(StorageKeyNames.user_level, response.mjson.data.user_level + "");
+                        StorageUtil.mSetItem(StorageKeyNames.BASE_USER_ID, response.mjson.data.base_user_id + "");
+                        StorageUtil.mSetItem(StorageKeyNames.ENTERPRISE_LIST, JSON.stringify(response.mjson.data.enterprise_list));
+                        StorageUtil.mSetItem(StorageKeyNames.HEAD_PORTRAIT_URL, response.mjson.data.head_portrait_url + "");
+                        StorageUtil.mSetItem(StorageKeyNames.IDCARD_NUMBER, response.mjson.data.idcard_number + "");
+                        StorageUtil.mSetItem(StorageKeyNames.PHONE, response.mjson.data.phone + "");
+                        StorageUtil.mSetItem(StorageKeyNames.REAL_NAME, response.mjson.data.real_name + "");
+                        StorageUtil.mSetItem(StorageKeyNames.TOKEN, response.mjson.data.token + "");
+                        StorageUtil.mSetItem(StorageKeyNames.USER_LEVEL, response.mjson.data.user_level + "");
                         this.loginPage(this.loginSuccess)
                     } else {
                         this.props.showToast(response.mjson.msg);
