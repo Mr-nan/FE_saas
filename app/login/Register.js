@@ -71,6 +71,13 @@ export default class Register extends BaseComponent {
                     <View style={styles.inputTextLine}/>
                     <View style={styles.inputTextsStyle}>
                         <LoginInputText
+                            ref="userName"
+                            textPlaceholder={'请输入手机号'}
+                            viewStytle={styles.itemStyel}
+                            inputTextStyle={styles.inputTextStyle}
+                            leftIcon={false}
+                            rightIcon={false}/>
+                        <LoginInputText
                             ref="verifycode"
                             textPlaceholder={'请输入验证码'}
                             viewStytle={styles.itemStyel}
@@ -79,22 +86,15 @@ export default class Register extends BaseComponent {
                             rightIconClick={this.Verifycode}
                             rightIconSource={this.state.verifyCode ? this.state.verifyCode : null}/>
                         <LoginInputText
-                            ref="userName"
-                            textPlaceholder={'输入手机号'}
-                            viewStytle={[styles.itemStyel, {marginBottom: 1}]}
+                            ref="smsCode"
+                            textPlaceholder={'请输入短信验证码'}
+                            viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
                             inputTextStyle={styles.inputTextStyle}
                             rightButton={true}
                             rightIcon={false}
                             callBackSms={this.sendSms}
                             keyboardType={'phone-pad'}
                             leftIcon={false}/>
-                        <LoginInputText
-                            ref="smsCode"
-                            textPlaceholder={'输入短信验证码'}
-                            viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
-                            inputTextStyle={styles.inputTextStyle}
-                            leftIcon={false}
-                            rightIcon={false}/>
                     </View>
                     <View style={styles.inputTextLine}/>
                     <View style={styles.inputTextsStyle}>
@@ -177,7 +177,6 @@ export default class Register extends BaseComponent {
     }
 
     register = () => {
-
         let userName = this.refs.userName.getInputTextValue();
         let smsCode = this.refs.smsCode.getInputTextValue();
         let password = this.refs.password.getInputTextValue();
@@ -265,7 +264,7 @@ export default class Register extends BaseComponent {
             request(AppUrls.SEND_SMS, 'Post', maps)
                 .then((response) => {
                     if (response.mjson.code == "1") {
-                        this.refs.userName.StartCountDown();
+                        this.refs.smsCode.StartCountDown();
                         this.props.showToast(response.mjson.data.code + "");
                     } else {
                         this.props.showToast(response.mjson.msg);
@@ -361,6 +360,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         paddingLeft: 0,
         paddingRight: 0,
+        margin: 0,
     },
     inputTextLine: {
         backgroundColor: FontAndColor.COLORA3,
