@@ -18,7 +18,7 @@ import AllNavigationView from '../../component/AllNavigationView';
 import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 
-const { width,height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 const background = require('../../../images/publish/background.png');
 const hot = require('../../../images/publish/hot-label.png');
 
@@ -26,17 +26,27 @@ export default class AutoLabel extends Component {
 
     constructor(props) {
         super(props);
+        this.vinNum = this.props.carData.vin;
+        let label = this.props.carData.label;
         this.viewData =
             [
-                {title: '座椅加热', selected: false,index:0},
-                {title: '全景天窗', selected: false,index:1},
-                {title: '定速巡航', selected: false,index:2},
-                {title: '全时四驱', selected: false,index:3},
-                {title: '油电混合', selected: false,index:4},
-                {title: '迎宾灯', selected: false,index:5},
-                {title: '无钥匙启动', selected: false,index:6},
-                {title: '倒车影像', selected: false,index:7},
+                {name: '座椅加热', selected: false, index: 0, value: ''},
+                {name: '全景天窗', selected: false, index: 1, value: ''},
+                {name: '定速巡航', selected: false, index: 2, value: ''},
+                {name: '全时四驱', selected: false, index: 3, value: ''},
+                {name: '油电混合', selected: false, index: 4, value: ''},
+                {name: '迎宾灯', selected: false, index: 5, value: ''},
+                {name: '无钥匙启动', selected: false, index: 6, value: ''},
+                {name: '倒车影像', selected: false, index: 7, value: ''}
             ];
+        if (label != '') {
+            let sels = JSON.parse(label);
+            for (let i = 0; i < sels.length; i++) {
+                this.viewData.map((vd) => {
+                    if (vd.name === sels[i].name) vd.selected = true;
+                });
+            }
+        }
         this.state = {
             dataSource: this.viewData,
             renderPlaceholderOnly: true
@@ -58,12 +68,24 @@ export default class AutoLabel extends Component {
     }
 
     _labelPress = (i) => {
-        this.viewData.map((data,index)=>{
-            if(i === index){
+        this.viewData.map((data, index) => {
+            if (i === index) {
                 data.selected = !data.selected;
             }
         });
+        let selects = [];
+        this.viewData.map((data) => {
+            if (data.selected === true) {
+                selects.push({
+                    name: data.name,
+                    value: data.value
+                });
+            }
+        });
         this.interiorGrid.refresh(this.viewData);
+        this.props.sqlUtil.changeData(
+            'UPDATE publishCar SET label = ? WHERE vin = ?',
+            [JSON.stringify(selects), this.vinNum]);
     };
 
     _renderItem = (data, i) => {
@@ -75,12 +97,12 @@ export default class AutoLabel extends Component {
                     activeOpacity={0.6}
                     onPress={()=>{this._labelPress(data.index)}}
                 >
-                <View style={styles.selectItem}>
-                    <Text style={styles.selectText}>
-                        {data.title}
-                    </Text>
-                    <Image style={styles.hotLabel} source={hot}/>
-                </View>
+                    <View style={styles.selectItem}>
+                        <Text style={styles.selectText}>
+                            {data.name}
+                        </Text>
+                        <Image style={styles.hotLabel} source={hot}/>
+                    </View>
                 </TouchableOpacity>
             );
         } else if (data.selected === false) {
@@ -93,7 +115,7 @@ export default class AutoLabel extends Component {
                 >
                     <View style={styles.defaultItem}>
                         <Text style={styles.defaultText}>
-                            {data.title}
+                            {data.name}
                         </Text>
                     </View>
                 </TouchableOpacity>
@@ -102,15 +124,15 @@ export default class AutoLabel extends Component {
         }
     };
 
-    _renderPlaceholderView = ()=>{
-        return(<Image style={[styles.img,{height:height-this.props.barHeight}]} source={background} />);
+    _renderPlaceholderView = () => {
+        return (<Image style={[styles.img,{height:height-this.props.barHeight}]} source={background}/>);
     };
-    _onBack = ()=>{
+    _onBack = () => {
         this.props.onBack();
     };
 
-    _renderRihtFootView = ()=>{
-        return(
+    _renderRihtFootView = () => {
+        return (
             <TouchableOpacity
                 activeOpacity={0.6}
                 onPress={()=>{this.props.publishData()}}>
@@ -131,9 +153,9 @@ export default class AutoLabel extends Component {
                         backIconClick={this._onBack}
                         title='选择热门标签'
                         wrapStyle={styles.wrapStyle}
-                        renderRihtFootView={this._renderRihtFootView} />
+                        renderRihtFootView={this._renderRihtFootView}/>
                     <Grid
-                        ref = {(grid)=>{this.interiorGrid = grid}}
+                        ref={(grid)=>{this.interiorGrid = grid}}
                         style={styles.girdContainer}
                         renderItem={this._renderItem}
                         data={this.state.dataSource}
@@ -151,7 +173,7 @@ const styles = StyleSheet.create({
         width: width,
         backgroundColor: 'transparent',
     },
-    imgContainer:{
+    imgContainer: {
         width: width,
         backgroundColor: 'transparent',
         paddingTop: Pixel.getPixel(121),
@@ -206,8 +228,8 @@ const styles = StyleSheet.create({
         width: Pixel.getPixel(132),
         backgroundColor: 'transparent'
     },
-    wrapStyle:{
-        backgroundColor:'transparent'
+    wrapStyle: {
+        backgroundColor: 'transparent'
     },
     rightTitleText: {
         color: 'white',

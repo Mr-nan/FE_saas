@@ -32,8 +32,19 @@ export default class AutoTransfer extends Component {
 
     constructor(props) {
         super(props);
+        this.vinNum = this.props.carData.vin;
+        let transfer = this.props.carData.transfer_number;
+        console.log(transfer);
+        let initValue = 0;
+        if(transfer != ''){
+            if(transfer === '10以上'){
+                initValue = 11;
+            }else {
+                initValue = parseInt(transfer);
+            }
+        }
         this.state = {
-            selected1: 0,
+            selected1: initValue,
             itemList: ['0', '1', '2', '3', '4', '5', '6', '7','8','10','10以上'],
             renderPlaceholderOnly: true
         };
@@ -57,6 +68,9 @@ export default class AutoTransfer extends Component {
         const newState = {};
         newState[key] = value;
         this.setState(newState);
+        this.props.sqlUtil.changeData(
+            'UPDATE publishCar SET transfer_number = ? WHERE vin = ?',
+            [value, this.vinNum]);
     };
 
     _renderPlaceholderView = ()=>{

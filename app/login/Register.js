@@ -1,5 +1,13 @@
 import React, {Component} from "react";
-import {AppRegistry, View, Text, StyleSheet, ScrollView, TouchableWithoutFeedback} from "react-native";
+import {
+    AppRegistry,
+    View,
+    Text,
+    StyleSheet,
+    ScrollView,
+    TouchableWithoutFeedback,
+    InteractionManager
+} from "react-native";
 import BaseComponent from "../component/BaseComponent";
 import MyButton from "../component/MyButton";
 import * as FontAndColor from "../constant/fontAndColor";
@@ -9,8 +17,7 @@ import PixelUtil from "../utils/PixelUtil";
 import ImagePicker from "react-native-image-picker";
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
-import ShowToast from "../component/toast/ShowToast";
-import {imageUploadUtil} from "../utils/FileUpload";
+import LoginScene from './LoginScene';
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -20,6 +27,9 @@ var imgSrc: '';
 var imgSid: '';
 var smsCode: '';
 var uid: '';
+var idcardf: '';
+var idcardback: '';
+var businessid: '';
 export default class Register extends BaseComponent {
     constructor(props) {
         super(props);
@@ -28,14 +38,32 @@ export default class Register extends BaseComponent {
             idcardBack: null,
             businessLicense: null,
             verifyCode: null,
+            renderPlaceholderOnly: true,
         }
     }
 
     initFinish = () => {
-        this.Verifycode();
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+            this.Verifycode();
+        });
     }
 
     render() {
+        if (this.state.renderPlaceholderOnly) {
+            return ( <TouchableWithoutFeedback onPress={() => {
+                this.setState({
+                    show: false,
+                });
+            }}>
+                <NavigationBar
+                    leftImageShow={false}
+                    leftTextShow={true}
+                    leftText={""}
+                    rightText={""}
+                />
+            </TouchableWithoutFeedback>);
+        }
         return (
             <View style={styles.container}>
                 <NavigationBar
@@ -43,117 +71,115 @@ export default class Register extends BaseComponent {
                     rightTextCallBack={this.register}
                 />
                 <ScrollView>
-                <View style={styles.inputTextLine}/>
-                <View style={styles.inputTextsStyle}>
-                    <LoginInputText
-                        ref="verifycode"
-                        textPlaceholder={'请输入验证码'}
-                        viewStytle={styles.itemStyel}
-                        inputTextStyle={styles.inputTextStyle}
-                        leftIcon={false}
-                        rightIconClick={this.Verifycode}
-                        rightIconSource={this.state.verifyCode ? this.state.verifyCode : null}/>
-                    <LoginInputText
-                        ref="userName"
-                        textPlaceholder={'输入手机号'}
-                        viewStytle={[styles.itemStyel, {marginBottom: 1}]}
-                        inputTextStyle={styles.inputTextStyle}
-                        rightButton={true}
-                        rightIcon={false}
-                        callBackSms={this.sendSms}
-                        keyboardType={'phone-pad'}
-                        leftIcon={false}/>
-                    <LoginInputText
-                        ref="smsCode"
-                        textPlaceholder={'输入短信验证码'}
-                        viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
-                        inputTextStyle={styles.inputTextStyle}
-                        leftIcon={false}
-                        rightIcon={false}/>
-                </View>
-                <View style={styles.inputTextLine}/>
-                <View style={styles.inputTextsStyle}>
-                    <LoginInputText
-                        ref="password"
-                        textPlaceholder={'请输入密码'}
-                        viewStytle={styles.itemStyel}
-                        inputTextStyle={styles.inputTextStyle}
-                        secureTextEntry={true}
-                        leftIcon={false}
-                        rightIcon={false}/>
-                    <LoginInputText
-                        ref="passwoedAgain"
-                        textPlaceholder={'请再次输入密码'}
-                        viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
-                        inputTextStyle={styles.inputTextStyle}
-                        secureTextEntry={true}
-                        leftIcon={false}
-                        rightIcon={false}/>
-                </View>
-                <View style={styles.inputTextLine}/>
-                <View style={styles.inputTextsStyle}>
-                    <LoginInputText
-                        ref="name"
-                        textPlaceholder={'请输入姓名'}
-                        viewStytle={styles.itemStyel}
-                        inputTextStyle={styles.inputTextStyle}
-                        leftIcon={false}
-                        rightIcon={false}/>
-                    <LoginInputText
-                        ref="businessName"
-                        textPlaceholder={'请输入商家名称'}
-                        viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
-                        inputTextStyle={styles.inputTextStyle}
-                        leftIcon={false}
-                        rightIcon={false}/>
-                </View>
-                <View style={styles.inputTextLine}/>
-                <View style={styles.imageButtonsStyle}>
-                    <Text
-                        style={{
+                    <View style={styles.inputTextLine}/>
+                    <View style={styles.inputTextsStyle}>
+                        <LoginInputText
+                            ref="userName"
+                            textPlaceholder={'请输入手机号'}
+                            viewStytle={styles.itemStyel}
+                            inputTextStyle={styles.inputTextStyle}
+                            leftIcon={false}
+                            rightIcon={false}/>
+                        <LoginInputText
+                            ref="verifycode"
+                            textPlaceholder={'请输入验证码'}
+                            viewStytle={styles.itemStyel}
+                            inputTextStyle={styles.inputTextStyle}
+                            leftIcon={false}
+                            rightIconClick={this.Verifycode}
+                            rightIconSource={this.state.verifyCode ? this.state.verifyCode : null}/>
+                        <LoginInputText
+                            ref="smsCode"
+                            textPlaceholder={'请输入短信验证码'}
+                            viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
+                            inputTextStyle={styles.inputTextStyle}
+                            rightButton={true}
+                            rightIcon={false}
+                            callBackSms={this.sendSms}
+                            keyboardType={'phone-pad'}
+                            leftIcon={false}/>
+                    </View>
+                    <View style={styles.inputTextLine}/>
+                    <View style={styles.inputTextsStyle}>
+                        <LoginInputText
+                            ref="password"
+                            textPlaceholder={'请输入密码'}
+                            viewStytle={styles.itemStyel}
+                            inputTextStyle={styles.inputTextStyle}
+                            secureTextEntry={true}
+                            leftIcon={false}
+                            rightIcon={false}/>
+                        <LoginInputText
+                            ref="passwoedAgain"
+                            textPlaceholder={'请再次输入密码'}
+                            viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
+                            inputTextStyle={styles.inputTextStyle}
+                            secureTextEntry={true}
+                            leftIcon={false}
+                            rightIcon={false}/>
+                    </View>
+                    <View style={styles.inputTextLine}/>
+                    <View style={styles.inputTextsStyle}>
+                        <LoginInputText
+                            ref="name"
+                            textPlaceholder={'请输入姓名'}
+                            viewStytle={styles.itemStyel}
+                            inputTextStyle={styles.inputTextStyle}
+                            leftIcon={false}
+                            rightIcon={false}/>
+                        <LoginInputText
+                            ref="businessName"
+                            textPlaceholder={'请输入商家名称'}
+                            viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
+                            inputTextStyle={styles.inputTextStyle}
+                            leftIcon={false}
+                            rightIcon={false}/>
+                    </View>
+                    <View style={styles.inputTextLine}/>
+                    <View style={styles.imageButtonsStyle}>
+                        <Text
+                            style={{
+                                flex: 1,
+                                color: FontAndColor.COLORA1,
+                                fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT)
+                            }}>添加身份证照片</Text>
+                        <MyButton buttonType={MyButton.IMAGEBUTTON}
+                                  content={this.state.idcard === null ?
+                                      require('../../images/login/idcard.png') : this.state.idcard
+                                  }
+                                  parentStyle={[styles.buttonStyle, {marginRight: Pixel.getPixel(10)}]}
+                                  childStyle={styles.imageButtonStyle}
+                                  mOnPress={this.selectPhotoTapped.bind(this, 'idcard')}/>
+
+                        <MyButton buttonType={MyButton.IMAGEBUTTON}
+                                  content={this.state.idcardBack === null ?
+                                      require('../../images/login/idcard_back.png') : this.state.idcardBack
+                                  }
+                                  parentStyle={styles.buttonStyle}
+                                  childStyle={styles.imageButtonStyle}
+                                  mOnPress={this.selectPhotoTapped.bind(this, 'idcardBack')}/>
+                    </View>
+                    <View style={styles.inputTextLine}/>
+                    <View style={styles.imageButtonsStyle}>
+                        <Text style={{
                             flex: 1,
                             color: FontAndColor.COLORA1,
                             fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT)
-                        }}>添加身份证照片</Text>
-                    <MyButton buttonType={MyButton.IMAGEBUTTON}
-                              content={this.state.idcard === null ?
-                                  require('../../images/login/idcard.png') : this.state.idcard
-                              }
-                              parentStyle={[styles.buttonStyle, {marginRight: Pixel.getPixel(10)}]}
-                              childStyle={styles.imageButtonStyle}
-                              mOnPress={this.selectPhotoTapped.bind(this, 'idcard')}/>
-
-                    <MyButton buttonType={MyButton.IMAGEBUTTON}
-                              content={this.state.idcardBack === null ?
-                                  require('../../images/login/idcard_back.png') : this.state.idcardBack
-                              }
-                              parentStyle={styles.buttonStyle}
-                              childStyle={styles.imageButtonStyle}
-                              mOnPress={this.selectPhotoTapped.bind(this, 'idcardBack')}/>
-                </View>
-                <View style={styles.inputTextLine}/>
-                <View style={styles.imageButtonsStyle}>
-                    <Text style={{
-                        flex: 1,
-                        color: FontAndColor.COLORA1,
-                        fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT)
-                    }}>添加营业执照</Text>
-                    <MyButton buttonType={MyButton.IMAGEBUTTON}
-                              content={this.state.businessLicense === null ?
-                                  require('../../images/login/idcard.png') : this.state.businessLicense
-                              }
-                              parentStyle={styles.buttonStyle}
-                              childStyle={styles.imageButtonStyle}
-                              mOnPress={this.selectPhotoTapped.bind(this, 'businessLicense')}/>
-                </View>
-                <ShowToast ref='toast' msg={this.props.msg}></ShowToast>
+                        }}>添加营业执照</Text>
+                        <MyButton buttonType={MyButton.IMAGEBUTTON}
+                                  content={this.state.businessLicense === null ?
+                                      require('../../images/login/idcard.png') : this.state.businessLicense
+                                  }
+                                  parentStyle={styles.buttonStyle}
+                                  childStyle={styles.imageButtonStyle}
+                                  mOnPress={this.selectPhotoTapped.bind(this, 'businessLicense')}/>
+                    </View>
                 </ScrollView>
             </View>
         );
     }
 
     register = () => {
-
         let userName = this.refs.userName.getInputTextValue();
         let smsCode = this.refs.smsCode.getInputTextValue();
         let password = this.refs.password.getInputTextValue();
@@ -162,19 +188,25 @@ export default class Register extends BaseComponent {
         let businessName = this.refs.businessName.getInputTextValue();
 
         if (typeof(userName) == "undefined" || userName == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "手机号码不能为空");
+            this.props.showToast("手机号码不能为空");
         } else if (typeof(smsCode) == "undefined" || smsCode == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "验证码不能为空");
+            this.props.showToast("验证码不能为空");
         } else if (typeof(password) == "undefined" || password == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "密码不能为空");
+            this.props.showToast("密码不能为空");
         } else if (typeof(passwoedAgain) == "undefined" || passwoedAgain == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "确认密码不能为空");
+            this.props.showToast("确认密码不能为空");
         } else if (typeof(name) == "undefined" || name == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "用户名不能为空");
+            this.props.showToast("用户名不能为空");
         } else if (typeof(businessName) == "undefined" || businessName == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "商家名称不能为空");
+            this.props.showToast("商家名称不能为空");
         } else if (password !== passwoedAgain) {
-            this.refs.toast.changeType(ShowToast.TOAST, "两次密码输入不一致");
+            this.props.showToast("两次密码输入不一致");
+        } else if (typeof(idcardf) == "undefined" || idcardf == "") {
+            this.props.showToast("身份证正面不能为空");
+        } else if (typeof(idcardback) == "undefined" || idcardback == "") {
+            this.props.showToast("身份证反面不能为空");
+        } else if (typeof(businessid) == "undefined" || businessid == "") {
+            this.props.showToast("营业执照不能为空");
         } else {
             let maps = {
                 user_name: name,
@@ -184,20 +216,30 @@ export default class Register extends BaseComponent {
                 merchant_name: businessName,
                 code: smsCode,
                 device_code: "dycd_dms_manage_android",
-                idcard_img: "12345456",
-                license_img: "1234567",
+                idcard_img: idcardf + "," + idcardback,
+                license_img: businessid,
             };
             request(AppUrls.REGISTER, 'Post', maps)
                 .then((response) => {
                     if (response.mjson.code == "1") {
                         uid = response.mjson.data.uid;
-                        this.refs.toast.changeType(ShowToast.TOAST, "注册成功");
+                        this.props.showToast("注册成功");
+                        this.exitPage({name: 'LoginScene', component: LoginScene});
                     } else {
-                        this.refs.toast.changeType(ShowToast.TOAST, response.mjson.msg + "");
+                        this.props.showToast(response.mjson.msg + "");
                     }
                 }, (error) => {
-                    this.refs.toast.changeType(ShowToast.TOAST, "注册失败");
+                    this.props.showToast("注册失败");
                 });
+        }
+    }
+
+    exitPage = (mProps) => {
+        const navigator = this.props.navigator;
+        if (navigator) {
+            navigator.immediatelyResetRouteStack([{
+                ...mProps
+            }])
         }
     }
 
@@ -218,7 +260,7 @@ export default class Register extends BaseComponent {
                 });
             }, (error) => {
                 this.refs.verifycode.lodingStatus(false);
-                this.refs.toast.changeType(ShowToast.TOAST, "获取失败");
+                this.props.showToast("获取失败");
             });
     }
 
@@ -227,9 +269,9 @@ export default class Register extends BaseComponent {
         let userName = this.refs.userName.getInputTextValue();
         let verifyCode = this.refs.verifycode.getInputTextValue();
         if (typeof(verifyCode) == "undefined" || verifyCode == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "验证码不能为空");
+            this.props.showToast("验证码不能为空");
         } else if (typeof(userName) == "undefined" || userName == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "请输入手机号");
+            this.props.showToast("请输入手机号");
         } else {
             let maps = {
                 device_code: "dycd_dms_manage_android",
@@ -241,13 +283,13 @@ export default class Register extends BaseComponent {
             request(AppUrls.SEND_SMS, 'Post', maps)
                 .then((response) => {
                     if (response.mjson.code == "1") {
-                        this.refs.userName.StartCountDown();
-                        this.refs.toast.changeType(ShowToast.TOAST, response.mjson.data.code + "");
+                        this.refs.smsCode.StartCountDown();
+                        this.props.showToast(response.mjson.data.code + "");
                     } else {
-                        this.refs.toast.changeType(ShowToast.TOAST, response.mjson.msg);
+                        this.props.showToast(response.mjson.msg);
                     }
                 }, (error) => {
-                    this.refs.toast.changeType(ShowToast.TOAST, "短信验证码获取失败");
+                    this.props.showToast("短信验证码获取失败");
                 });
         }
     }
@@ -294,29 +336,32 @@ export default class Register extends BaseComponent {
                         businessLicense: source
                     });
                 }
-                if (false) imageUploadUtil([response.uri]);
-                this.imageUploadUtil(response)
+                this.imageUploadUtil(response, id);
             }
         });
     }
 
-    imageUploadUtil(name) {
-        console.log("name =========== " + JSON.stringify(name));
-        let maps = {
+    imageUploadUtil(response, id) {
+        let params = {
             device_code: "dycd_dms_manage_android",
-            name: {
-                //这里的key(uri和type和name)不能改变,
-                uri: name,
-                type: 'multipart/form-data',
-                name: 'image.png'
-            },
+            file_name: response.fileName,
+            base64_file: 'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g, '%2B')
         };
-        request(AppUrls.AUTH_UPLOAD_FILE, 'Post', maps)
+        request(AppUrls.AUTH_UPLOAD_FILE, 'Post', params)
             .then((response) => {
-                // smsCode = response.mjson.data.code;
-                alert("图片上传成那个" + response.mjson.toString())
+                if (response.mjson.code == 1) {
+                    if (id === 'idcard') {
+                        idcardf = response.mjson.data.file_id;
+                    } else if (id === 'idcardBack') {
+                        idcardback = response.mjson.data.file_id;
+                    } else if (id === 'businessLicense') {
+                        businessid = response.mjson.data.file_id;
+                    }
+                } else {
+                    this.props.showToast(response.mjson.msg + "");
+                }
             }, (error) => {
-                alert("图片上传失败")
+                this.props.showToast("图片上传失败");
             });
     }
 }
@@ -337,6 +382,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         paddingLeft: 0,
         paddingRight: 0,
+        margin: 0,
     },
     inputTextLine: {
         backgroundColor: FontAndColor.COLORA3,

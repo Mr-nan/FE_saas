@@ -21,8 +21,6 @@ const Pixel = new PixelUtil();
 const { width,height } = Dimensions.get('window');
 const background = require('../../../images/publish/background.png');
 const arrow = require('../../../images/publish/date-select.png');
-import SQLiteUtil from '../../utils/SQLiteUtil';
-const SQLite = new SQLiteUtil();
 
 export default class DetailAutoDate extends Component{
 
@@ -31,7 +29,7 @@ export default class DetailAutoDate extends Component{
         this.type = '';
         let manufacture = this.props.carData.manufacture;
         let init_reg = this.props.carData.init_reg;
-        let hasRegister = this.props.carData.v_type === '1' || this.props.carData.v_type === '';
+        let hasRegister = this.props.carType === '1' || this.props.carType === '';
         if(this.props.carData.model !== ''){
             let model = JSON.parse(this.props.carData.model);
             let model_year = model.model_year;
@@ -40,7 +38,7 @@ export default class DetailAutoDate extends Component{
             }
             if(manufacture === '') manufacture = model_year +'-06';
             if(init_reg === '') init_reg = model_year +'-06';
-            SQLite.changeData(
+            this.props.sqlUtil.changeData(
                 'UPDATE publishCar SET manufacture = ?,init_reg = ? WHERE vin = ?',
                 [ manufacture,init_reg, this.props.carData.vin]);
         }
@@ -65,7 +63,7 @@ export default class DetailAutoDate extends Component{
 
     componentWillReceiveProps(nextProps: Object) {
         this.setState({
-            hasRegister: nextProps.carData.v_type === '1'|| this.props.carData.v_type === ''
+            hasRegister: nextProps.carType === '1'|| this.props.carType === ''
         });
     }
 
@@ -81,12 +79,12 @@ export default class DetailAutoDate extends Component{
         let d = this.dateFormat(date,'yyyy-MM');
         if(this.type === 'factory'){
             this.setState({factoryDate:d});
-            SQLite.changeData(
+            this.props.sqlUtil.changeData(
                 'UPDATE publishCar SET manufacture = ? WHERE vin = ?',
                 [ d, this.props.carData.vin]);
         }else{
             this.setState({registerDate:d});
-            SQLite.changeData(
+            this.props.sqlUtil.changeData(
                 'UPDATE publishCar SET init_reg = ? WHERE vin = ?',
                 [ d, this.props.carData.vin]);
         }

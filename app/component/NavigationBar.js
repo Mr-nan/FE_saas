@@ -3,6 +3,8 @@ import {AppRegistry, StyleSheet, View, Text} from "react-native";
 import MyButton from "./MyButton";
 import * as FontAndColor from "../constant/fontAndColor";
 import PixelUtil from "../utils/PixelUtil";
+
+var Platform = require('Platform');
 var Pixel = new PixelUtil();
 
 export default class NavigationBar extends PureComponent {
@@ -50,7 +52,8 @@ export default class NavigationBar extends PureComponent {
 
     render() {
         return (
-            <View style={[styles.titleStyle, this.props.titleVeiwSytle]}>
+            <View
+                style={[(Platform.OS === 'android') ? styles.titleAndroidStyle : styles.titleIOSStyle, this.props.titleVeiwSytle]}>
 
                 {this.props.leftTextShow ?
                     <MyButton buttonType={MyButton.TEXTBUTTON}
@@ -111,12 +114,20 @@ const styles = StyleSheet.create({
         paddingRight: Pixel.getPixel(15),
         alignItems: 'flex-end',
     },
-    titleStyle: {
+    titleAndroidStyle: {
         height: Pixel.getTitlePixel(64),
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#05C5C2',
+    },
+    titleIOSStyle: {
+        height: Pixel.getTitlePixel(64),
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#05C5C2',
+        paddingTop: Pixel.getPixel(10)
     },
     leftTextStyle: {
         textAlign: 'left',

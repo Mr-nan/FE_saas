@@ -6,7 +6,6 @@ import {
     Image,
     View,
     Text,
-    Button,
     Platform,
     Dimensions,
     StyleSheet,
@@ -17,14 +16,10 @@ import {
 import Picker from 'react-native-wheel-picker';
 let PickerItem = Picker.Item;
 
-import SuccessModal from '../component/SuccessModal';
 import * as fontAndColor from '../../constant/fontAndColor';
 import AllNavigationView from '../../component/AllNavigationView';
 import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
-import SQLiteUtil from '../../utils/SQLiteUtil';
-const SQLite = new SQLiteUtil();
-import * as Net from '../../utils/RequestUtil';
 
 const {width, height} = Dimensions.get('window');
 const background = require('../../../images/publish/background.png');
@@ -37,6 +32,7 @@ export default class DetailAutoMileage extends Component {
     constructor(props) {
         super(props);
         this.initValue = [0, 0, 0, 0, 0];
+        this.vinNum = this.props.carData.vin;
         let mileage = this.props.carData.mileage;
         if (mileage !== '') {
             mileage = mileage.split("").reverse().join("");
@@ -78,12 +74,12 @@ export default class DetailAutoMileage extends Component {
         const newState = {};
         newState['selected' + key] = value;
         this.initValue[key] = value;
-        this.setState(newState);
+        this.setState((preState,props)=>(newState));
 
         let concat = this._concatMileage();
-        SQLite.changeData(
+        this.props.sqlUtil.changeData(
             'UPDATE publishCar SET mileage = ? WHERE vin = ?',
-            [concat, this.props.carData.vin]);
+            [concat, this.vinNum]);
     };
 
     _concatMileage = () => {
@@ -113,52 +109,11 @@ export default class DetailAutoMileage extends Component {
         this.props.onBack();
     };
 
-    //发布
-    _publish = () => {
-        SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
-            [this.props.carData.vin],
-            (data) => {
-                if (data.code === 1) {
-                    let rd = data.result.rows.item(0);
-                    let modelInfo = JSON.parse(rd.model);
-                    let params = {
-                        vin: rd.vin,
-                        brand_id: modelInfo.brand_id,
-                        model_id: modelInfo.model_id,
-                        series_id: modelInfo.series_id,
-                        pictures: rd.pictures,
-                        v_type: rd.v_type,
-                        manufacture: rd.manufacture,
-                        init_reg: rd.init_reg,
-                        mileage: rd.mileage,
-                        show_shop_id: 57,
-
-                    };
-                    let url = 'http://dev.api-gateway.dycd.com/' + 'v1/car/save?token=0ac50af9a02b752ca0f48790dc8ea6d1&device_code=dycd_dms_manage_android';
-                    Net.request(url, 'post', params)
-                        .then((response) => {
-                                if (response.mycode === 1) {
-                                    SQLite.changeData(
-                                        'DELETE From publishCar WHERE vin = ?',
-                                        [this.props.carData.vin]);
-                                    this.successModal.openModal();
-                                }
-                            },
-                            (error) => {
-                                console.log(error);
-                            });
-                    console.log();
-                } else {
-                    console.log(data.error);
-                }
-            });
-    };
-
     _renderRihtFootView = () => {
         return (
             <TouchableOpacity
                 activeOpacity={0.6}
-                onPress={this.props.publishData()}>
+                onPress={this.props.publishData}>
                 <Text style={styles.rightTitleText}>完成</Text>
             </TouchableOpacity>
         );
@@ -171,7 +126,6 @@ export default class DetailAutoMileage extends Component {
         return (
             <View style={styles.container}>
                 <Image style={[styles.imgContainer,{height:height-this.props.barHeight}]} source={background}>
-                    <SuccessModal okClick={this.props.goToSource} ref={(modal) => {this.successModal = modal}}/>
                     <AllNavigationView
                         backIconClick={this._onBack}
                         title='填写行驶里程'
@@ -219,7 +173,7 @@ export default class DetailAutoMileage extends Component {
                                         itemStyle={{color:"#FFFFFF", fontSize:26,fontWeight:'bold'}}
                                         onValueChange={(index) => this.onPickerSelect(3,index)}>
                                     {this.state.itemList.map((value, i) => (
-                                        <PickerItem label={value} value={i} key={"second"+value}/>
+                                        <PickerItem label={value} value={i} key={"four"+value}/>
                                     ))}
                                 </Picker>
                             </View>
@@ -229,7 +183,7 @@ export default class DetailAutoMileage extends Component {
                                         itemStyle={{color:"#FFFFFF", fontSize:26,fontWeight:'bold'}}
                                         onValueChange={(index) => this.onPickerSelect(4,index)}>
                                     {this.state.itemList.map((value, i) => (
-                                        <PickerItem label={value} value={i} key={"three"+value}/>
+                                        <PickerItem label={value} value={i} key={"five"+value}/>
                                     ))}
                                 </Picker>
                             </View>
