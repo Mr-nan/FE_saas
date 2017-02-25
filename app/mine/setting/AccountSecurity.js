@@ -58,22 +58,6 @@ export default class AccountSecurity extends BaseComponent {
 
                 <View style={{height: Pixel.getPixel(1), backgroundColor: FontAndColor.COLORA4}}/>
 
-                <TouchableOpacity onPress={() => {
-                    this.toNextPage({
-                        name: 'OnlineTime',
-                        component: OnlineTime,
-                        params: {},
-                    })
-                }}>
-                    <View style={styles.itemStyle}>
-                        <Text style={styles.centerTextStyle}>在线时长</Text>
-                        <Image source={require("./../../../images/mainImage/celljiantou@3x.png")}
-                               style={styles.rightImageStyle}/>
-                    </View>
-                </TouchableOpacity>
-
-                <View style={{height: Pixel.getPixel(1), backgroundColor: FontAndColor.COLORA4}}/>
-
             </View>
         );
     }
@@ -82,6 +66,22 @@ export default class AccountSecurity extends BaseComponent {
         alert("退出登录")
     }
 }
+
+// <View style={{height: Pixel.getPixel(1), backgroundColor: FontAndColor.COLORA4}}/>
+//
+// <TouchableOpacity onPress={() => {
+//                     this.toNextPage({
+//                         name: 'OnlineTime',
+//                         component: OnlineTime,
+//                         params: {},
+//                     })
+//                 }}>
+//     <View style={styles.itemStyle}>
+//         <Text style={styles.centerTextStyle}>在线时长</Text>
+//         <Image source={require("./../../../images/mainImage/celljiantou@3x.png")}
+//                style={styles.rightImageStyle}/>
+//     </View>
+// </TouchableOpacity>
 const styles = StyleSheet.create({
     container: {
         flex: 1,

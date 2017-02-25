@@ -98,7 +98,7 @@ export default class CarInfoScene extends BaseComponent {
 
             imageArray: dataSource.cloneWithPages(carImageArray),
             isHidePhotoView:true,
-            renderPlaceholderOnly: true,
+            renderPlaceholderOnly: 'blank',
             carData:{},
             currentImageIndex:1,
             isShowShared:false,
@@ -107,10 +107,6 @@ export default class CarInfoScene extends BaseComponent {
     }
 
     initFinish = () => {
-        InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: false});
-        });
-
     }
 
     componentWillMount() {
@@ -149,9 +145,10 @@ export default class CarInfoScene extends BaseComponent {
                 carData:carData,
 
             });
+            this.setState({renderPlaceholderOnly: 'success'});
 
         }, (error) => {
-
+            this.setState({renderPlaceholderOnly: 'error'});
             console.log(error);
 
         });
@@ -226,13 +223,10 @@ export default class CarInfoScene extends BaseComponent {
 
     render() {
 
-        if (this.state.renderPlaceholderOnly) {
+        if (this.state.renderPlaceholderOnly!=='success') {
             return (
                 <View style={{flex: 1, backgroundColor: 'white'}}>
-                <NavigationView
-                    title="车源详情"
-                    backIconClick={this.backIconClick}
-                />
+                    {this.loadView()}
             </View>);
         }
 
