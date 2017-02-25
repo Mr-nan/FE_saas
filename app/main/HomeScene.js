@@ -90,7 +90,7 @@ export default class HomeScene extends BaseComponet {
     }
 
     allRefresh = () => {
-        allList=[];
+        allList = [];
         this.setState({renderPlaceholderOnly: 'loading'});
         page = 1;
         this.getData();
@@ -108,8 +108,11 @@ export default class HomeScene extends BaseComponet {
         if (status == 1) {
             page++;
             this.getData();
+        } else {
+            this.props.jumpScene('carpage');
         }
     };
+
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return (
@@ -166,7 +169,7 @@ export default class HomeScene extends BaseComponet {
     }
 
     refreshingData = () => {
-        allList=[];
+        allList = [];
         this.setState({isRefreshing: true});
         page = 1;
         this.getData();
