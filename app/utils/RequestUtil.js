@@ -22,13 +22,12 @@ const request = (url, method, params) => {
                 token = data.result;
             }
             let device_code = '';
-            if(Platform.OS==='android')
-            {
-                device_code='dycd_dms_manage_android';
-            }else{
-                device_code='dycd_dms_manage_android';
+            if (Platform.OS === 'android') {
+                device_code = 'dycd_bms_android';
+            } else {
+                device_code = 'dycd_bms_ios';
             }
-            fetch(url + '?token=' + token + '&device_code='+device_code, {
+            fetch(url + '?token=' + token + '&device_code=' + device_code, {
                 method,
                 body
             })

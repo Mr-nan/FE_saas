@@ -45,6 +45,11 @@ export const V3 = "v3/";
 export const IDENTIFYING = BASEURL + V + "index/captcha";// v1/index/captcha
 
 /**
+ * 员工列表
+ */
+export const USER_EMPLOYE = BASEURL + V + "user.employe/index";// v1/index/captcha
+
+/**
  * 短信验证码
  *
  * device_code    设备码        必填
@@ -490,9 +495,3 @@ export const PURCHAAUTO_BINDOBD = BASEURL + V
  */
 export const PURCHAAUTO_OBD_DESC = BASEURL +
     "obd_installation.html";
-
-/**
- * 获取员工列表
- */
-export const USER_EMPLOYE = BASEURL +V
-    "user.employe/index";
