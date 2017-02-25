@@ -312,7 +312,7 @@ export default class LoginScene extends BaseComponent {
                             if (data.code === 1) {
                                 if (data.result != null && data.result.indexOf(userName) < 0) {
                                     StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName + "," + data.result);
-                                } else {
+                                } else if (data.result == null) {
                                     StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName);
                                 }
                             }
