@@ -20,6 +20,7 @@ import AccountManageScene from '../mine/accountManage/AccountManageScene'
 import EmployeeManageScene from '../mine/employeeManage/EmployeeManageScene'
 import CouponAllScene from '../mine/couponManage/CouponAllScene'
 import Setting from './../mine/setting/Setting'
+import  CarCollectSourceScene from '../carSource/CarCollectSourceScene';
 const cellJianTou = require('../../images/mainImage/celljiantou.png');
 const Car = [
     {
@@ -205,6 +206,8 @@ export default class MineSectionListView extends Component {
                 this.navigatorParams.component = MycarScene
                 break;
             case '收藏记录':
+                this.navigatorParams.name = 'CarCollectSourceScene'
+                this.navigatorParams.component = CarCollectSourceScene
                 break;
             case '浏览历史':
                 break;

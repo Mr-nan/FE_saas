@@ -303,7 +303,6 @@ export default class LoginScene extends BaseComponent {
             request(AppUrls.LOGIN, 'Post', maps)
                 .then((response) => {
                     if (response.mjson.code == "1") {
-                        this.props.showToast("登录成功");
                         // 保存用户登录状态
                         StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
                         StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '2');
@@ -312,7 +311,7 @@ export default class LoginScene extends BaseComponent {
                             if (data.code === 1) {
                                 if (data.result != null && data.result.indexOf(userName) < 0) {
                                     StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName + "," + data.result);
-                                } else {
+                                } else if (data.result == null) {
                                     StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName);
                                 }
                             }
