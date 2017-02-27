@@ -95,6 +95,29 @@ export const USER_EMPLOYE = BASEURL + V + "user.employe/index";
 export const LOAN_SUBJECT = 'api/v1/user/get_loan_subject_list';
 
 /**
+ * from @zhaojian
+ *
+ * 获取借款首页数据
+ **/
+export const GET_MNY = 'api/v3/account/get_mny';
+
+
+/**
+ * from @zhaojian
+ *
+ * 获取借款记录
+ **/
+export const GET_APPLY_LIST = 'api/v3/account/get_apply_list';
+
+/**
+ * from @zhaojian
+ *
+ * 选择借款主体
+ **/
+export const OPT_LOAN_SUBJECT = 'api/v1/user/opt_loan_subject';
+
+
+/**
  * 短信验证码
  *
  * device_code    设备码        必填

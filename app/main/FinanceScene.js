@@ -35,7 +35,6 @@ import RepaymentScene from '../finance/repayment/RepaymentScene';
 import BaseComponet from '../component/BaseComponent';
 import {request} from '../utils/testRequestUtil';
 import  LoadMoreFooter from '../component/LoadMoreFooter';
-import * as Urls from '../constant/appUrls';
 
 export class HomeHeaderItemInfo {
     constructor(ref, key, functionTitle, describeTitle, functionImage) {
@@ -65,9 +64,11 @@ export default class FinanceSence extends BaseComponet {
     getMnyData = () => {
         let that = this;
         let maps = {
-            api: 'e9ab1d1bb12b2f824df9503ba4f0e4cd',
+            reqtoken: 'e9ab1d1bb12b2f824df9503ba4f0e4cd',
+            key: '784caccb098f595a69e7a9ee017a4609',
+            device_code: 'dycd_bms_android',
         };
-        request(Urls.FINANCE, 'Post', maps)
+        request('https://openbms.dycd.com/api/v3/account/get_mny', 'Post', maps)
             .then((response) => {
                     mnyData = response.mjson.retdata;
                     that.setState({
