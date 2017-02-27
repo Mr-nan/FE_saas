@@ -15,13 +15,13 @@ import {
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
-import PixelUtil from '../utils/PixelUtil';
+import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
-import * as fontAndColor from '../constant/fontAndColor';
-import BaseComponent from '../component/BaseComponent';
-import NavigationView from '../component/AllNavigationView';
-import PurchasePickerItem from './component/PurchasePickerItem';
-import {request} from '../utils/RequestUtil';
+import * as fontAndColor from '../../constant/fontAndColor';
+import BaseComponent from '../../component/BaseComponent';
+import NavigationView from '../../component/AllNavigationView';
+import PurchasePickerItem from '../component/PurchasePickerItem';
+import {request} from '../../utils/RequestUtil';
 const childItems = [];
 export  default class PurchasePickerScene extends BaseComponent {
 

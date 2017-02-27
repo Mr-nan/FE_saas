@@ -9,7 +9,7 @@ import {
 
 import BaseComponent from '../component/BaseComponent';
 import MyButton from '../component/MyButton';
-
+import lendMoney from '../finance/lend/LendMoneyScene'
 var {height, width} = Dimensions.get('window');
 import MainPage from './MainPage';
 import LoginAndRegister from '../login/LoginAndRegister';
@@ -26,7 +26,7 @@ export default class RootScene extends BaseComponent {
 
                     if (res.result!== StorageUtil.ERRORCODE) {
                         if (res.result == null) {
-                            that.navigatorParams.component = LoginAndRegister;
+                            that.navigatorParams.component = lendMoney;
                             that.toNextPage(that.navigatorParams);
                         } else {
                             if (res.result == "true") {

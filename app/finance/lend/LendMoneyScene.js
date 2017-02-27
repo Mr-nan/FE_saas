@@ -52,9 +52,7 @@ class PageItem extends PureComponent {
                                         onPress={this.onPress}/>
                         </Image>
                     </TouchableOpacity>
-
                 </View>
-
             </View>
         )
     }
@@ -130,19 +128,18 @@ export  default class LendMoneySence extends BaseComponent {
 
             <View style={{flex:1}}>
             <ScrollView showsVerticalScrollIndicator={false}
-                        style={{marginTop: 44, backgroundColor: PAGECOLOR.COLORA3, paddingTop: adapeSize(15)} }>
+                        style={{marginTop: 64, backgroundColor: PAGECOLOR.COLORA3, paddingTop: adapeSize(15)} }>
                 {viewBlob}
 
             </ScrollView>
 
-            <AllNavigationView title="申请借款" backIconClick={()=>{
+            <AllNavigationView title="借款" backIconClick={()=>{
 
                 this.backPage();
             }}/>
             </View>
         )
     }
-
 
 }
 

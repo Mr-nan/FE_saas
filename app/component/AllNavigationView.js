@@ -20,6 +20,8 @@ const Pixel = new PixelUtil();
 
 export default class CarInfoNavigationView extends PureComponent {
 
+
+
     render() {
 
         const {title, backIconClick, renderRihtFootView,wrapStyle} = this.props;

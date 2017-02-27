@@ -269,7 +269,7 @@ export  class ModalCGD extends PureComponent{
 
 
     state={
-        show:true,
+        show:false,
         selected:behand,
     }
 
@@ -282,9 +282,7 @@ export  class ModalCGD extends PureComponent{
 
     behandClick=()=>{
 
-
         const {getValue}=this.props;
-
         this.setState({
 
             selected: behand,

@@ -21,40 +21,48 @@ import  {
     CommenButton,
 } from './component/ComponentBlob'
 import {width, adapeSize, fontadapeSize, PAGECOLOR,dateFormat} from './component/MethodComponent';
-
+import BaseComponent from '../../component/BaseComponent';
+import  AllNavigatior from '../../component/AllNavigationView'
 //校验完成
 
 import DateTimePicker from 'react-native-modal-datetime-picker'
 
 
+const PostData={
+    apply_type:'2',
+    loan_mny:'',
+    remark:'',
+    use_time:''
+}
+
 let changeDate;
 
 const imageSouce =require('../../../images/financeImages/dateIcon.png')
 
-export default class SingelCarSence extends Component {
+export default class SingelCarSence extends BaseComponent {
+
     state = {
         companyName: '',
         lendType: '',
         dateLimit: '',
+        maxMoney:'',
         isDateTimePickerVisible: false,
     }
     dataSourceBlob = [
         {title: '借款主体', key: 'companyName'},
         {title: '借款类型', key: 'lendType'},
-        {title: '借款期限', key: 'dateLimit'},
+        {title: '可借额度', key: 'dateLimit'},
+        {title: '借款额度', key: 'maxMoney'}
     ];
-
     //datePiker的方法
     _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false })
-
     //datePiker的回调
     _handleDatePicked = (date) => {
-
-        changeDate(dateFormat(date,'yyyy-MM-dd'));
-
+        let tempdate=dateFormat(date,'yyyy-MM-dd')
+        changeDate(tempdate);
+        PostData.use_time=tempdate;
         this._hideDateTimePicker();
     }
-
 //日历按钮事件
     onPress = (changeText)=> {
         changeDate=changeText;
@@ -63,10 +71,13 @@ export default class SingelCarSence extends Component {
 //申请借款
     onClickLend = ()=> {
 
-        alert('申请借款')
+        for(temp in PostData){
 
+           if(PostData[temp]===''){
+              break;
+           }
+        }
     }
-
     render() {
 
         let itemBlob = [];
@@ -74,7 +85,6 @@ export default class SingelCarSence extends Component {
 
             itemBlob.push(<LendItem key={item.key} leftTitle={item.title} rightTitle={this.state[item.key]}/>)
         });
-
         return (
             <View style={styles.container}>
                 <ScrollView style={styles.scroller}>
@@ -83,17 +93,17 @@ export default class SingelCarSence extends Component {
                             {itemBlob}
                         </View>
                         <View style={styles.input}>
-                            <LendInputItem title='金额' placeholder='请输入借款金额' unit='万'/>
+                            <LendInputItem endEit={(event)=>{
+                                PostData.loan_mny=event.nativeEvent.text;
+                            }} title='金额' placeholder='请输入借款金额' unit='万'/>
                         </View>
                         <LendDatePike lefTitle={'用款时间'} placeholder={'选择用款时间'} imageSouce={imageSouce} onPress={this.onPress}/>
-                        <LendUseful/>
+                        <LendUseful onEndEidt={(event)=>{PostData.remark =event.nativeEvent.text}}/>
                         <LendRate/>
                     </KeyboardAvoidingView>
-
                 </ScrollView>
                 <CommenButton
-                    buttonStyle={styles.buttonStyle} textStyle={styles.textStyle} onPress={this.onClickLend}
-                    title='申请借款'/>
+                    buttonStyle={styles.buttonStyle} textStyle={styles.textStyle} onPress={this.onClickLend} title='申请借款'/>
                 <DateTimePicker
                     isVisible={this.state.isDateTimePickerVisible}
                     onConfirm={this._handleDatePicked}
@@ -102,6 +112,9 @@ export default class SingelCarSence extends Component {
                     confirmTextIOS='确定'
                     cancelTextIOS='取消'
                 />
+                <AllNavigatior title='单车借款' backIconClick={()=>{
+                    this.backPage();
+                }}/>
 
             </View>
         )
@@ -117,7 +130,7 @@ const styles = StyleSheet.create({
     },
     scroller: {
 
-        marginTop: 44,
+        marginTop: 64,
         backgroundColor: PAGECOLOR.COLORA3,
         paddingBottom:adapeSize(80)
     },
