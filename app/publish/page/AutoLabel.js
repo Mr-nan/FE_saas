@@ -18,6 +18,9 @@ import AllNavigationView from '../../component/AllNavigationView';
 import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 
+import * as Net from '../../utils/RequestUtil';
+import * as AppUrls from '../../constant/appUrls';
+
 const {width, height} = Dimensions.get('window');
 const background = require('../../../images/publish/background.png');
 const hot = require('../../../images/publish/hot-label.png');
@@ -27,26 +30,8 @@ export default class AutoLabel extends Component {
     constructor(props) {
         super(props);
         this.vinNum = this.props.carData.vin;
-        let label = this.props.carData.label;
-        this.viewData =
-            [
-                {name: '座椅加热', selected: false, index: 0, value: ''},
-                {name: '全景天窗', selected: false, index: 1, value: ''},
-                {name: '定速巡航', selected: false, index: 2, value: ''},
-                {name: '全时四驱', selected: false, index: 3, value: ''},
-                {name: '油电混合', selected: false, index: 4, value: ''},
-                {name: '迎宾灯', selected: false, index: 5, value: ''},
-                {name: '无钥匙启动', selected: false, index: 6, value: ''},
-                {name: '倒车影像', selected: false, index: 7, value: ''}
-            ];
-        if (label != '') {
-            let sels = JSON.parse(label);
-            for (let i = 0; i < sels.length; i++) {
-                this.viewData.map((vd) => {
-                    if (vd.name === sels[i].name) vd.selected = true;
-                });
-            }
-        }
+        this.label = this.props.carData.label;
+        this.viewData = [];
         this.state = {
             dataSource: this.viewData,
             renderPlaceholderOnly: true
@@ -61,6 +46,60 @@ export default class AutoLabel extends Component {
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: false});
         });
+        Net.request(AppUrls.CAR_CONFIG,'post',{}).then(
+            (response)=>{
+                if(response.mycode === 1){
+                    let auto_label = response.mjson.data.auto_label;
+                    if(typeof(auto_label) == 'undefined' || auto_label.length === 0){
+                        this.viewData = [
+                            {name: '座椅加热', selected: false, index: 0, value: ''},
+                            {name: '全景天窗', selected: false, index: 1, value: ''},
+                            {name: '定速巡航', selected: false, index: 2, value: ''},
+                            {name: '全时四驱', selected: false, index: 3, value: ''},
+                            {name: '油电混合', selected: false, index: 4, value: ''},
+                            {name: '迎宾灯', selected: false, index: 5, value: ''},
+                            {name: '无钥匙启动', selected: false, index: 6, value: ''},
+                            {name: '倒车影像', selected: false, index: 7, value: ''}
+                        ];
+                    }else{
+                        this.viewData = [];
+                        auto_label.map((d,i)=>{
+                            this.viewData.push({
+                                name: d.name,
+                                value:d.value,
+                                selected:false,
+                                index:i
+                            });
+                        });
+                    }
+
+                }else{
+                    this.viewData = [
+                        {name: '座椅加热', selected: false, index: 0, value: ''},
+                        {name: '全景天窗', selected: false, index: 1, value: ''},
+                        {name: '定速巡航', selected: false, index: 2, value: ''},
+                        {name: '全时四驱', selected: false, index: 3, value: ''},
+                        {name: '油电混合', selected: false, index: 4, value: ''},
+                        {name: '迎宾灯', selected: false, index: 5, value: ''},
+                        {name: '无钥匙启动', selected: false, index: 6, value: ''},
+                        {name: '倒车影像', selected: false, index: 7, value: ''}
+                    ];
+                }
+                if (this.label != '') {
+                    let sels = JSON.parse(this.label);
+                    for (let i = 0; i < sels.length; i++) {
+                        this.viewData.map((vd) => {
+                            if (vd.name === sels[i].name) vd.selected = true;
+                        });
+                    }
+                }
+                this.interiorGrid.refresh(this.viewData);
+            },
+            (error)=>{
+                console.log(error);
+            }
+        );
+
     }
 
     componentWillUnmount() {
