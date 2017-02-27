@@ -23,18 +23,11 @@ const request = (url, method, params) => {
             }
             console.log('token==='+token);
             let device_code = '';
-<<<<<<< HEAD
-            if(Platform.OS==='android'){
-                device_code='dycd_dms_manage_android';
-            }else{
-                // device_code='dycd_dms_manage_ios';
-                device_code='dycd_dms_manage_android';
-=======
+
             if (Platform.OS === 'android') {
                 device_code = 'dycd_dms_manage_android';
             } else {
-                device_code = 'dycd_dms_manage_ios';
->>>>>>> 3acf91058d22fdb5867203de98cd02dc3035fe0d
+                device_code = 'dycd_dms_manage_android';
             }
             fetch(url + '?token=' + token + '&device_code=' + device_code, {
                 method,
