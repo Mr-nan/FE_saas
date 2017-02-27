@@ -126,7 +126,11 @@ export default class SetPwd extends BaseComponent {
                         this.props.showToast(response.mjson.msg + "");
                     }
                 }, (error) => {
-                    this.props.showToast("设置失败");
+                    if (error.mjson.code == -300 || error.mjson.code == -500) {
+                        this.props.showToast("设置失败");
+                    } else {
+                        this.props.showToast(error.mjson.msg + "");
+                    }
                 });
         }
     }
