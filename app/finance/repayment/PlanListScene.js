@@ -23,7 +23,8 @@ let movies = MovleData.retdata;
 import BaseComponent from '../../component/BaseComponent';
 import NavigationView from '../../component/AllNavigationView';
 import PlanParentItem from './component/PlanParentItem';
-import OldPlanScene from '../OldPlanListScene';
+import OldPlanScene from './OldPlanListScene';
+import  PlanInfoScene from './PlanInfoScene';
 export  default class PlanListScene extends BaseComponent {
 
     constructor(props) {
@@ -69,7 +70,7 @@ export  default class PlanListScene extends BaseComponent {
     _renderRow = (movie, sectionId, rowId) => {
         return (
             <PlanParentItem items={movie} mOnPress={(loan_id) => {
-                alert(loan_id);
+                this.toNextPage({name:'PlanInfoScene',component:PlanInfoScene,params:{}});
             }}/>
         )
     }

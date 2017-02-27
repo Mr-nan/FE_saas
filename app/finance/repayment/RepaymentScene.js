@@ -25,23 +25,23 @@ import PurchaseRepaymentPage from '../page/PurchaseRepaymentPage';
 import NavigationView from '../../component/AllNavigationView';
 import * as fontAndColor from '../../constant/fontAndColor';
 import PlanListScene from './PlanListScene';
+import RepaymentInfoScene from '../repayment/RepaymentInfoScene';
+import InventoryRepaymentInfoScene from '../repayment/InventoryRepaymentInfoScene';
 
 export  default class RepaymentScene extends BaseComponent {
 
     constructor(props, context) {
         super(props, context);
-        this.state = {renderPlaceholderOnly: true};
+        this.state = {renderPlaceholderOnly: 'blank'};
     }
 
 
     initFinish = () => {
-        InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: false});
-        });
+        this.setState({renderPlaceholderOnly: 'success'});
     }
 
     render() {
-        if (this.state.renderPlaceholderOnly) {
+        if (this.state.renderPlaceholderOnly !== 'success') {
             return this._renderPlaceholderView();
         }
         return (
@@ -56,11 +56,17 @@ export  default class RepaymentScene extends BaseComponent {
                     initialPage={0}
                     renderTabBar={() => <RepaymenyTabBar tabName={["单车融资", "库存融资", "采购融资"]}/>}
                 >
-                    <SingleRepaymentPage tabLabel="ios-paper"/>
+                    <SingleRepaymentPage callBack={(id)=>{
+                      this.toNextPage({name:'RepaymentInfoScene',component:RepaymentInfoScene,params:{customer_id:id}});
+                    }} tabLabel="ios-paper"/>
 
-                    <InventoryRepaymentPage tabLabel="ios-people"/>
+                    <InventoryRepaymentPage callBack={(id)=>{
+                      this.toNextPage({name:'InventoryRepaymentInfoScene',component:InventoryRepaymentInfoScene,params:{customer_id:id}});
+                    }} tabLabel="ios-people"/>
 
-                    <PurchaseRepaymentPage tabLabel="ios-chatboxes"/>
+                    <PurchaseRepaymentPage callBack={(id)=>{
+                      this.toNextPage({name:'RepaymentInfoScene',component:RepaymentInfoScene,params:{customer_id:id}});
+                    }} tabLabel="ios-chatboxes"/>
 
                 </ScrollableTabView>
             </View>
@@ -78,23 +84,22 @@ export  default class RepaymentScene extends BaseComponent {
             </View>
         );
     }
-    navigatorParams={
-        name:"PlanListScene",
-        component:PlanListScene,
-        params:{
 
-        }
+    navigatorParams = {
+        name: "PlanListScene",
+        component: PlanListScene,
+        params: {}
     }
-    _navigatorRightView=()=>{
+    _navigatorRightView = () => {
         return (
-        <TouchableOpacity activeOpacity={0.8} onPress={()=>{
+            <TouchableOpacity activeOpacity={0.8} onPress={()=>{
             this.toNextPage(this.navigatorParams)
         }}>
-            <Text style={{color: 'white',
+                <Text style={{color: 'white',
                 fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                 textAlign: 'center',
                 backgroundColor: 'transparent',}}>还款计划</Text>
-        </TouchableOpacity>
+            </TouchableOpacity>
         );
     }
 }

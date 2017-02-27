@@ -18,7 +18,7 @@ const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import * as fontAndColor from '../../constant/fontAndColor';
-let MovleData = require('./repaymentinfo.json');
+let MovleData = require('./planinfo.json');
 let movies = MovleData.retdata;
 import BaseComponent from '../../component/BaseComponent';
 import NavigationView from '../../component/AllNavigationView';
@@ -30,12 +30,13 @@ import AllBottomItem from './component/AllBottomItem';
 import MyButton from '../../component/MyButton';
 let moneyList = [];
 let nameList = [];
+let dateList = [];
 export  default class PurchaseLoanStatusScene extends BaseComponent {
 
     constructor(props) {
         super(props);
         // 初始状态
-        let mList = ['1', '2', '3', '4', '5', '6'];
+        let mList = ['1', '2', '3', '4', '5'];
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             source: ds.cloneWithRows(mList),
@@ -49,12 +50,13 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
     }
 
     initFinish = () => {
+        dateList.push({name: '付息区间', data: movies.interval});
+        dateList.push({name: '最晚还款日', data: movies.date_str});
+
         moneyList.push({name: '贷款本金', data: movies.loan_mny_str});
         moneyList.push({name: '计息天数', data: movies.loan_day});
         moneyList.push({name: '综合费率', data: movies.loan_rebate_str});
-        moneyList.push({name: '利息总额', data: movies.interest_total});
-        moneyList.push({name: '已还利息', data: movies.interest});
-        moneyList.push({name: '贷款利息', data: movies.interest_other});
+        moneyList.push({name: '利息总额', data: movies.interest});
 
         nameList.push({name: '渠道名称', data: movies.qvdaoname});
         nameList.push({name: '还款账户', data: movies.bank_info.repaymentaccount});
@@ -65,13 +67,6 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
         this.setState({renderPlaceholderOnly: 'success'});
     }
 
-    buttonParams = {
-        buttonType: MyButton.TEXTBUTTON,
-        parentStyle: styles.parentStyle,
-        childStyle: styles.childStyle,
-        opacity: 0.7,
-        content: '申请还款'
-    }
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
@@ -80,7 +75,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
                 <NavigationView
-                    title="还款详情"
+                    title="计划详情"
                     backIconClick={this.backPage}
                 />
                 <ListView
@@ -91,7 +86,6 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                     bounces={false}
                     showsVerticalScrollIndicator={false}
                 />
-                <MyButton {...this.buttonParams}/>
             </View>
         );
     }
@@ -100,7 +94,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
         return (
             <View style={{width: width, height: height,backgroundColor:fontAndColor.COLORA3,alignItems: 'center'}}>
                 <NavigationView
-                    title="还款详情"
+                    title="计划详情"
                     backIconClick={this.backPage}
                 />
                 {this.loadView()}
@@ -115,7 +109,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
             )
         } else if (rowId == 1) {
             return (
-                <RepaymentInfoDateItem />
+                <RepaymentInfoContentItem items={dateList}/>
             )
         } else if (rowId == 2) {
             return (
@@ -128,11 +122,10 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
         } else if (rowId == 4) {
             return (
                 <RepaymentInfoBottomItem
-                    allMoney={movies.total_repayment}
-                    formula={'='+movies.loan_mny+'+'
-                                         +movies.loan_mny+'*'+movies.loan_rebate/100+'/360*'
+                    allMoney={movies.repaymentmny_str}
+                    formula={'='+movies.loan_mny+'*'+movies.loan_rebate/100+'/360*'
                                          +movies.loan_day+'-'+movies.bondmny}
-                    formulaStr={'应还总额=本金+本金*综合费率/360*计息天数-保证金'}
+                    formulaStr={'应还总额=本金*综合费率/360*计息天数-保证金'}
                 />
             )
         } else {
