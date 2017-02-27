@@ -124,6 +124,7 @@ export default class LoginFailPwd extends BaseComponent {
                 .then((response) => {
                     if (response.mjson.code == "1") {
                         this.props.showToast("设置成功");
+                        this.backPage();
                     } else {
                         this.props.showToast(response.mjson.msg + "");
                     }
