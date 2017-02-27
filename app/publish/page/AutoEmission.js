@@ -25,11 +25,14 @@ export default class AutoEmission extends Component {
 
     constructor(props) {
         super(props);
+        this.vinNum = this.props.carData.vin;
+        let emission = this.props.carData.emission;
+        console.log(emission);
         this.viewData = [
             {title: '国Ⅱ', selected: false,index:0},
             {title: '欧Ⅳ', selected: false,index:1},
             {title: '国Ⅲ', selected: false,index:2},
-            {title: '欧Ⅴ', selected: true,index:3},
+            {title: '欧Ⅴ', selected: false,index:3},
             {title: '国Ⅳ', selected: false,index:4},
             {title: '欧Ⅵ', selected: false,index:5},
             {title: '国Ⅴ', selected: false,index:6},
@@ -39,6 +42,9 @@ export default class AutoEmission extends Component {
             {title: 'OBD', selected: false,index:10},
             {title: '欧Ⅰ', selected: false,index:11},
         ];
+        this.viewData.map((item)=>{
+            if(item.title === emission) item.selected = true;
+        });
         this.state = {
             dataSource: this.viewData,
             renderPlaceholderOnly: true
@@ -61,11 +67,13 @@ export default class AutoEmission extends Component {
 
     _labelPress = (i) => {
         this.viewData.map((data,index)=>{
-            if(data.title !== ''){
-                data.selected = (i === index);
-            }
+            data.selected = (i === index);
         });
+
         this.interiorGrid.refresh(this.viewData);
+        this.props.sqlUtil.changeData(
+            'UPDATE publishCar SET emission = ? WHERE vin = ?',
+            [this.viewData[i].title, this.vinNum]);
     };
 
     _renderItem = (data, i) => {

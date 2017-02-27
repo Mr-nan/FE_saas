@@ -7,6 +7,7 @@ import * as FontAndColor from "../constant/fontAndColor";
 import NavigationBar from '../component/NavigationBar';
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
+import LoginScene from './LoginScene';
 
 let Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
@@ -24,9 +25,19 @@ export default class GesturePassword extends BaseComponent {
     }
 
     initFinish = () => {
-        StorageUtil.mGetItem(StorageKeyNames.GESTURE, (data) => {
+        StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
             if (data.code === 1) {
-                Password = data.result.split(',')[0];
+                if (data.result != null) {
+                    StorageUtil.mGetItem(data.result + "", (data) => {
+                        if (data.code === 1) {
+                            if (data.result != null) {
+                                Password = data.result;
+                            } else {
+                                Password = "";
+                            }
+                        }
+                    })
+                }
             }
         })
     }
@@ -59,21 +70,22 @@ export default class GesturePassword extends BaseComponent {
                 Bottom={
                     <View style={{marginTop: Height / 2 * 0.95, flexDirection: 'row'}}>
                         <TouchableOpacity onPress={() => {
-                            this.toNextPage({
-                                name: 'LoginFailSmsYes',
-                                component: null,
-                                params: {},
+                            StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
+                                if (data.code === 1) {
+                                    if (data.result != null) {
+                                        StorageUtil.mRemoveItem(data.result + "");
+                                    }
+                                }
                             })
+                            StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'false');
+                            this.loginPage({name: 'LoginScene', component: LoginScene});
                         }}>
                             <Text style={styles.bottomLeftSytle}>忘记手势密码？</Text>
                         </TouchableOpacity>
                         <View style={{flex: 1}}/>
                         <TouchableOpacity onPress={() => {
-                            this.toNextPage({
-                                name: 'LoginFailSmsYes',
-                                component: null,
-                                params: {},
-                            })
+                            StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'false');
+                            this.loginPage({name: 'LoginScene', component: LoginScene});
                         }}>
                             <Text style={styles.bottomRightSytle}>切换登录</Text>
                         </TouchableOpacity>
@@ -88,13 +100,24 @@ export default class GesturePassword extends BaseComponent {
         );
     }
 
-    onEnd(pwd) {
+    loginPage = (mProps) => {
+        const navigator = this.props.navigator;
+        if (navigator) {
+            navigator.immediatelyResetRouteStack([{
+                ...mProps
+            }])
+        }
+    }
+
+    onEnd = (pwd) => {
         if (pwd === Password) {
             this.setState({
                 status: 'right',
                 message: '验证成功',
             });
-
+            StorageUtil.mSetItem(StorageKeyNames.NEED_GESTURE, 'false');
+            this.props.callBack();
+            this.backPage();
         } else {
             this.setState({
                 status: 'wrong',

@@ -16,19 +16,19 @@ const request = (url, method, params) => {
     }
 
     return new Promise((resolve, reject) => {
-        StorageUtil.mGetItem(StorageKeyNames.token, (data) => {
+        StorageUtil.mGetItem(StorageKeyNames.TOKEN, (data) => {
             let token = '';
             if (data.code === 1) {
                 token = data.result;
             }
+            console.log('token===' + token);
             let device_code = '';
-            if(Platform.OS==='android')
-            {
-                device_code='dycd_dms_manage_android';
-            }else{
-                device_code='dycd_dms_manage_android';
+            if (Platform.OS === 'android') {
+                device_code = 'dycd_dms_manage_android';
+            } else {
+                device_code = 'dycd_dms_manage_ios';
             }
-            fetch(url + '?token=' + token + '&device_code='+device_code, {
+            fetch(url + '?token=' + token + '&device_code=' + device_code+'&'+body, {
                 method,
                 body
             })
@@ -43,16 +43,24 @@ const request = (url, method, params) => {
                 })
                 .then((responseData) => {
                     if (isOk) {
-                        // console.log("success----------" + JSON.stringify(responseData));
-                        resolve({mjson: responseData, mycode: 1});
+                        for (let key of Object.keys(params)) {
+                            console.log(key+"===" + params[key]);
+                        }
+                        console.log(url + '?token=' + token + '&device_code=' + device_code);
+                        console.log("success----------" + JSON.stringify(responseData));
+                        if (responseData.code == 1) {
+                            resolve({mjson: responseData, mycode: 1});
+                        } else {
+                            reject({mycode: responseData.code, mjson: responseData});
+                        }
                     } else {
-                        // console.log("error----------" + JSON.stringify(responseData));
-                        resolve(responseData);
+                        console.log("error----------" + JSON.stringify(responseData));
+                        reject({mycode: -300});
                     }
                 })
                 .catch((error) => {
-                    // console.log("error----------" + error);
-                    reject(error);
+                    console.log("error----------" + error);
+                    reject({mycode: -500, error: error});
                 });
         })
     });

@@ -1,23 +1,57 @@
 import React, {Component} from "react";
-import {AppRegistry, View, Text, StyleSheet, TouchableOpacity, TextInput} from "react-native";
+import {
+    AppRegistry,
+    View,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    TextInput,
+    InteractionManager,
+    TouchableWithoutFeedback
+} from "react-native";
 import BaseComponent from "../component/BaseComponent";
 import NavigationBar from "../component/NavigationBar";
 import * as FontAndColor from "../constant/fontAndColor";
 import PixelUtil from "../utils/PixelUtil";
+import MyButton from "../component/MyButton";
+import LoginInputText from "./component/LoginInputText";
+import SetPwd from "./SetPwd";
+import {request} from "../utils/RequestUtil";
+import * as AppUrls from "../constant/appUrls";
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
-import MyButton from '../component/MyButton';
-import LoginInputText from './component/LoginInputText';
-import SetPwd from './SetPwd';
-import {request} from "../utils/RequestUtil";
-import * as AppUrls from "../constant/appUrls";
-import ShowToast from "../component/toast/ShowToast";
 export default class LoginFailPwd extends BaseComponent {
+    constructor(props) {
+        super(props);
+        this.state = {
+            renderPlaceholderOnly: true,
+        }
+    }
+
     initFinish = () => {
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+            // this.Verifycode();
+        });
     }
 
     render() {
+        if (this.state.renderPlaceholderOnly) {
+            return ( <TouchableWithoutFeedback onPress={() => {
+                this.setState({
+                    show: false,
+                });
+            }}>
+                <NavigationBar
+                    leftImageShow={false}
+                    leftTextShow={true}
+                    leftText={""}
+                    centerText={"设置登录密码"}
+                    rightText={""}
+                />
+            </TouchableWithoutFeedback>);
+        }
         return (
             <View style={styles.container}>
                 <NavigationBar
@@ -56,7 +90,6 @@ export default class LoginFailPwd extends BaseComponent {
                           parentStyle={styles.buttonStyle}
                           childStyle={styles.buttonTextStyle}
                           mOnPress={this.setPwd}/>
-                <ShowToast ref='toast' msg={this.props.msg}></ShowToast>
             </View>
         );
     }
@@ -75,13 +108,13 @@ export default class LoginFailPwd extends BaseComponent {
         let newPassword = this.refs.password.getInputTextValue();
         let newPasswordAgain = this.refs.passwordAgain.getInputTextValue();
         if (typeof(phone) == "undefined" || phone == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "手机号不能为空");
+            this.props.showToast("手机号不能为空");
         } else if (typeof(newPassword) == "undefined" || newPassword == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "新密码不能为空");
+            this.props.showToast("新密码不能为空");
         } else if (typeof(newPasswordAgain) == "undefined" || newPasswordAgain == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "再次确认密码不能为空");
+            this.props.showToast("再次确认密码不能为空");
         } else if (newPassword !== newPasswordAgain) {
-            this.refs.toast.changeType(ShowToast.TOAST, "两次密码输入不一致");
+            this.props.showToast("两次密码输入不一致");
         } else {
             let maps = {
                 confirm_pwd: newPasswordAgain,
@@ -90,12 +123,12 @@ export default class LoginFailPwd extends BaseComponent {
             request(AppUrls.SETPWD, 'Post', maps)
                 .then((response) => {
                     if (response.mjson.code == "1") {
-                        this.refs.toast.changeType(ShowToast.TOAST, "设置成功");
+                        this.props.showToast("设置成功");
                     } else {
-                        this.refs.toast.changeType(ShowToast.TOAST, response.mjson.msg + "");
+                        this.props.showToast(response.mjson.msg + "");
                     }
                 }, (error) => {
-                    this.refs.toast.changeType(ShowToast.TOAST, "设置失败");
+                    this.props.showToast("设置失败");
                 });
         }
     }

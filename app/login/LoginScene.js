@@ -8,14 +8,15 @@ import {
     StyleSheet,
     Image,
     PixelRatio,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    InteractionManager
 } from "react-native";
 import BaseComponent from "../component/BaseComponent";
 import LoginInputText from "./component/LoginInputText";
 import LoginAutoSearchInputText from "./component/LoginAutoSearchInputText";
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
-import MainPage from '../main/MainPage';
+import MainPage from "../main/MainPage";
 // import LoginFail from "./LoginFail";
 import * as FontAndColor from "../constant/fontAndColor";
 import Register from "./Register";
@@ -23,10 +24,9 @@ import NavigationBar from "../component/NavigationBar";
 import PixelUtil from "../utils/PixelUtil";
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
-import ShowToast from "../component/toast/ShowToast";
 import MyButton from "../component/MyButton";
-import LoginFailSmsYes from './LoginFailSmsYes';
-import SetLoginPwdGesture from './SetLoginPwdGesture';
+import LoginFailSmsYes from "./LoginFailSmsYes";
+import SetLoginPwdGesture from "./SetLoginPwdGesture";
 var Pixel = new PixelUtil();
 
 var Dimensions = require('Dimensions');
@@ -46,6 +46,7 @@ export default class LoginScene extends BaseComponent {
             show: false,
             value: "",
             verifyCode: null,
+            renderPlaceholderOnly: true,
         }
     }
 
@@ -55,7 +56,10 @@ export default class LoginScene extends BaseComponent {
                 userNames = data.result.split(",");
             }
         })
-        this.Verifycode();
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+            this.Verifycode();
+        });
     }
 
     static defaultProps = {
@@ -77,6 +81,23 @@ export default class LoginScene extends BaseComponent {
     }
 
     render() {
+        if (this.state.renderPlaceholderOnly) {
+            return ( <TouchableWithoutFeedback onPress={() => {
+                this.setState({
+                    show: false,
+                });
+            }}>
+                <View style={styles.container}>
+                    <NavigationBar
+                        leftImageShow={false}
+                        leftTextShow={true}
+                        leftText={""}
+                        centerText={"登录"}
+                        rightText={""}
+                    />
+                </View>
+            </TouchableWithoutFeedback>);
+        }
         let views = [];
         if (userNames != null && userNames.length > 0) {
             for (let x in userNames) {
@@ -253,7 +274,7 @@ export default class LoginScene extends BaseComponent {
                 });
             }, (error) => {
                 this.refs.loginVerifycode.lodingStatus(false);
-                this.refs.toast.changeType(ShowToast.TOAST, "获取失败");
+                this.props.showToast("获取失败");
             });
     }
 
@@ -264,13 +285,13 @@ export default class LoginScene extends BaseComponent {
         let verifyCode = this.refs.loginVerifycode.getInputTextValue();
         let smsCode = this.refs.loginSmscode.getInputTextValue();
         if (userName == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "请输入正确的用户名");
+            this.props.showToast("请输入正确的用户名");
         } else if (typeof(passWord) == "undefined" || passWord == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "密码不能为空");
+            this.props.showToast("密码不能为空");
         } else if (typeof(verifyCode) == "undefined" || verifyCode == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "验证码不能为空");
+            this.props.showToast("验证码不能为空");
         } else if (typeof(smsCode) == "undefined" || smsCode == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "短信验证码不能为空");
+            this.props.showToast("短信验证码不能为空");
         } else {
             let maps = {
                 code: smsCode,
@@ -282,15 +303,15 @@ export default class LoginScene extends BaseComponent {
             request(AppUrls.LOGIN, 'Post', maps)
                 .then((response) => {
                     if (response.mjson.code == "1") {
-                        this.props.showToast("登录成功");
                         // 保存用户登录状态
                         StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
+                        StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '2');
 
                         StorageUtil.mGetItem(StorageKeyNames.USERNAME, (data) => {
                             if (data.code === 1) {
                                 if (data.result != null && data.result.indexOf(userName) < 0) {
                                     StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName + "," + data.result);
-                                } else {
+                                } else if (data.result == null) {
                                     StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName);
                                 }
                             }
@@ -298,18 +319,18 @@ export default class LoginScene extends BaseComponent {
 
                         StorageUtil.mSetItem(StorageKeyNames.USER_INFO, JSON.stringify(response.mjson.data));
                         // 保存用户信息
-                        StorageUtil.mSetItem(StorageKeyNames.base_user_id, response.mjson.data.base_user_id + "");
-                        StorageUtil.mSetItem(StorageKeyNames.enterprise_list, JSON.stringify(response.mjson.data.enterprise_list));
-                        StorageUtil.mSetItem(StorageKeyNames.head_portrait_url, response.mjson.data.head_portrait_url + "");
-                        StorageUtil.mSetItem(StorageKeyNames.idcard_number, response.mjson.data.idcard_number + "");
-                        StorageUtil.mSetItem(StorageKeyNames.phone, response.mjson.data.phone + "");
-                        StorageUtil.mSetItem(StorageKeyNames.real_name, response.mjson.data.real_name + "");
-                        StorageUtil.mSetItem(StorageKeyNames.token, response.mjson.data.token + "");
-                        StorageUtil.mSetItem(StorageKeyNames.user_level, response.mjson.data.user_level + "");
-                        StorageUtil.mGetItem(StorageKeyNames.GESTURE, (data) => {
+                        StorageUtil.mSetItem(StorageKeyNames.BASE_USER_ID, response.mjson.data.base_user_id + "");
+                        StorageUtil.mSetItem(StorageKeyNames.ENTERPRISE_LIST, JSON.stringify(response.mjson.data.enterprise_list));
+                        StorageUtil.mSetItem(StorageKeyNames.HEAD_PORTRAIT_URL, response.mjson.data.head_portrait_url + "");
+                        StorageUtil.mSetItem(StorageKeyNames.IDCARD_NUMBER, response.mjson.data.idcard_number + "");
+                        StorageUtil.mSetItem(StorageKeyNames.PHONE, response.mjson.data.phone + "");
+                        StorageUtil.mSetItem(StorageKeyNames.REAL_NAME, response.mjson.data.real_name + "");
+                        StorageUtil.mSetItem(StorageKeyNames.TOKEN, response.mjson.data.token + "");
+                        StorageUtil.mSetItem(StorageKeyNames.USER_LEVEL, response.mjson.data.user_level + "");
+
+                        StorageUtil.mGetItem(response.mjson.data.phone + "", (data) => {
                             if (data.code === 1) {
-                                let results = data.result.split(',');
-                                if (data.result != null && data.result.length > 3 && results[0] == response.mjson.data.phone) {
+                                if (data.result != null) {
                                     this.loginPage(this.loginSuccess)
                                 } else {
                                     this.loginPage(this.setLoginGesture)

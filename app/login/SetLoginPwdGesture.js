@@ -101,13 +101,10 @@ export default class SetLoginPwdGesture extends BaseComponent {
                     message: '密码设置成功',
                 });
 
-                StorageUtil.mGetItem(StorageKeyNames.phone, (data) => {
+                StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
                     if (data.code === 1) {
                         if (data.result != null) {
-                            StorageUtil.mSetItem(StorageKeyNames.GESTURE, data.result + ',' + Password);
-                            Password = '';
-                        } else {
-                            StorageUtil.mSetItem(StorageKeyNames.GESTURE, '0,' + Password);
+                            StorageUtil.mSetItem(data.result + "", Password);
                             Password = '';
                         }
                     }

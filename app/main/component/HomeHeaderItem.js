@@ -28,8 +28,21 @@ const {width, height} = Dimensions.get('window');
 export default class HomeHeaderItem extends Component {
 
     render() {
+        let bottomBorder = false;
+        let rightBorder = false;
+        if (this.props.functionTitle == '收车') {
+            bottomBorder = true;
+            rightBorder = true;
+        } else if (this.props.functionTitle == '卖车') {
+            bottomBorder = true;
+        } else if (this.props.functionTitle == '借款') {
+            rightBorder = true;
+        }
         return (
-            <TouchableOpacity activeOpacity={0.7} style={styles.container} onPress={()=> {
+            <TouchableOpacity activeOpacity={0.7}
+                              style={[styles.container,bottomBorder?{borderBottomWidth:1,borderColor:fontAndClolr.COLORA4}:{}
+                              ,rightBorder?{borderRightWidth:1,borderColor:fontAndClolr.COLORA4}:{}]}
+                              onPress={()=> {
                 this.props.callBack(this.props.functionTitle);
             }}>
                 <Image
@@ -52,12 +65,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        width:width/2.0,
-        height:Pixel.getPixel(75),
-        backgroundColor:'#ffffff',
-        borderWidth:0.5,
-        borderColor:fontAndClolr.COLORA4
-
+        width: width / 2.0,
+        height: Pixel.getPixel(75),
+        backgroundColor: '#ffffff',
     },
     imageStyle: {
         width: Pixel.getPixel(46),

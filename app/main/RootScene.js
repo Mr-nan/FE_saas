@@ -19,6 +19,7 @@ import * as KeyNames from '../constant/storageKeyNames';
 
 export default class RootScene extends BaseComponent {
     initFinish = () => {
+        StorageUtil.mSetItem(KeyNames.NEED_GESTURE,'true');
         let that = this;
         setTimeout(
             () => {

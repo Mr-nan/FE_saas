@@ -20,12 +20,13 @@ import AccountManageScene from '../mine/accountManage/AccountManageScene'
 import EmployeeManageScene from '../mine/employeeManage/EmployeeManageScene'
 import CouponAllScene from '../mine/couponManage/CouponAllScene'
 import Setting from './../mine/setting/Setting'
+import  CarCollectSourceScene from '../carSource/CarCollectSourceScene';
 const cellJianTou = require('../../images/mainImage/celljiantou.png');
 const Car = [
     {
         "cars": [
             {
-                "icon":require('../../images/mainImage/zhanghuguanli.png'),
+                "icon": require('../../images/mainImage/zhanghuguanli.png'),
                 "name": "账户管理"
             },
         ],
@@ -34,19 +35,19 @@ const Car = [
     {
         "cars": [
             {
-                "icon":require('../../images/mainImage/youhuiquanguanli.png'),
+                "icon": require('../../images/mainImage/youhuiquanguanli.png'),
                 "name": "优惠券管理"
             },
             {
-                "icon":require('../../images/mainImage/jifenguanli.png'),
+                "icon": require('../../images/mainImage/jifenguanli.png'),
                 "name": "积分管理"
             },
             {
-                "icon":require('../../images/mainImage/hetongguanli.png'),
+                "icon": require('../../images/mainImage/hetongguanli.png'),
                 "name": "合同管理"
             },
             {
-                "icon":require('../../images/mainImage/yuangongguanli.png'),
+                "icon": require('../../images/mainImage/yuangongguanli.png'),
                 "name": "员工管理"
             },
         ],
@@ -55,15 +56,15 @@ const Car = [
     {
         "cars": [
             {
-                "icon":require('../../images/mainImage/shoucangjilu.png'),
+                "icon": require('../../images/mainImage/shoucangjilu.png'),
                 "name": "我的车源"
             },
             {
-                "icon":require('../../images/mainImage/shoucangjilu.png'),
+                "icon": require('../../images/mainImage/shoucangjilu.png'),
                 "name": "收藏记录"
             },
             {
-                "icon":require('../../images/mainImage/liulanlishi.png'),
+                "icon": require('../../images/mainImage/liulanlishi.png'),
                 "name": "浏览历史"
             },
 
@@ -73,8 +74,17 @@ const Car = [
     {
         "cars": [
             {
-                "icon":require('../../images/mainImage/shezhi.png'),
+                "icon": require('../../images/mainImage/shezhi.png'),
                 "name": "设置"
+            },
+        ],
+        "title": "section3"
+    },
+    {
+        "cars": [
+            {
+                "icon": require('../../images/mainImage/shezhi.png'),
+                "name": "blank"
             },
         ],
         "title": "section3"
@@ -162,64 +172,75 @@ export default class MineSectionListView extends Component {
             </View>
         )
     }
-    navigatorParams={
+
+    navigatorParams = {
 
         name: 'AccountManageScene',
         component: AccountManageScene,
         params: {}
     }
 
-    _navigator(rowData){
+    _navigator(rowData) {
         console.log(rowData.name);
-        switch (rowData.name){
+        switch (rowData.name) {
             case '账户管理':
-                this.navigatorParams.name='AccountManageScene'
-                this.navigatorParams.component=AccountManageScene
+                this.navigatorParams.name = 'AccountManageScene'
+                this.navigatorParams.component = AccountManageScene
                 break;
             case '优惠券管理':
-                this.navigatorParams.name='CouponAllScene'
-                this.navigatorParams.component=CouponAllScene
+                this.navigatorParams.name = 'CouponAllScene'
+                this.navigatorParams.component = CouponAllScene
                 break;
             case '积分管理':
                 break;
             case '合同管理':
-                this.navigatorParams.name='ContractManageScene'
-                this.navigatorParams.component=ContractManageScene
+                this.navigatorParams.name = 'ContractManageScene'
+                this.navigatorParams.component = ContractManageScene
                 break;
             case '员工管理':
-                this.navigatorParams.name='EmployeeManageScene'
-                this.navigatorParams.component=EmployeeManageScene
+                this.navigatorParams.name = 'EmployeeManageScene'
+                this.navigatorParams.component = EmployeeManageScene
                 break;
             case '我的车源':
-                this.navigatorParams.name='MycarScene'
-                this.navigatorParams.component=MycarScene
+                this.navigatorParams.name = 'MycarScene'
+                this.navigatorParams.component = MycarScene
                 break;
             case '收藏记录':
+                this.navigatorParams.name = 'CarCollectSourceScene'
+                this.navigatorParams.component = CarCollectSourceScene
                 break;
             case '浏览历史':
                 break;
             case '设置':
-                this.navigatorParams.name='Setting'
-                this.navigatorParams.component=Setting
+                this.navigatorParams.name = 'Setting'
+                this.navigatorParams.component = Setting
                 break;
 
         }
         this.props.callBack(this.navigatorParams);
     }
+
     // 每一行中的数据
-    _renderRow=(rowData)=> {
-        return (
-            <TouchableOpacity style={styles.rowView} onPress={()=>{this._navigator(rowData)}}>
+    _renderRow = (rowData) => {
+        if (rowData.name == 'blank') {
+            return (
+                <View style={{width:width,height:Pixel.getPixel(2),backgroundColor:fontAndClolr.COLORA3}}></View>
+            );
+        } else {
+            return (
+                <TouchableOpacity style={styles.rowView} onPress={()=>{this._navigator(rowData)}}>
 
-                <Image source={rowData.icon} style={styles.rowLeftImage}/>
+                    <Image source={rowData.icon} style={styles.rowLeftImage}/>
 
-                <Text style={styles.rowTitle}>{rowData.name}</Text>
+                    <Text style={styles.rowTitle}>{rowData.name}</Text>
 
-                <Image source={cellJianTou} style={styles.rowjiantouImage}/>
+                    <Image source={cellJianTou} style={styles.rowjiantouImage}/>
 
 
-            </TouchableOpacity>
-        );
+                </TouchableOpacity>
+            );
+        }
+
     }
 
     // 每一组对应的数据
@@ -230,7 +251,7 @@ export default class MineSectionListView extends Component {
         );
     }
 
-    _renderHeader = ()=> {
+    _renderHeader = () => {
 
         return (
 
@@ -293,7 +314,7 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(15),
         marginTop: Pixel.getPixel(15),
         marginBottom: Pixel.getPixel(10),
-        fontWeight:'bold'
+        fontWeight: 'bold'
     },
     headerPhoneStyle: {
         color: 'white',
@@ -303,10 +324,9 @@ const styles = StyleSheet.create({
 
         flex: 1,
         marginTop: Pixel.getPixel(0),   //设置listView 顶在最上面
-        backgroundColor:fontAndClolr.COLORA3,
+        backgroundColor: fontAndClolr.COLORA3,
     },
-    listStyle: {
-    },
+    listStyle: {},
     sectionView: {
         height: Pixel.getPixel(10),
         backgroundColor: fontAndClolr.COLORA3,
@@ -319,26 +339,26 @@ const styles = StyleSheet.create({
         height: 44,
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor:'white',
-        borderBottomColor:fontAndClolr.COLORA4,
-        borderBottomWidth:1
+        backgroundColor: 'white',
+        borderBottomColor: fontAndClolr.COLORA4,
+        borderBottomWidth: 1
     },
     rowLeftImage: {
         width: Pixel.getPixel(26),
         height: Pixel.getPixel(26),
-        marginLeft:Pixel.getPixel(15),
+        marginLeft: Pixel.getPixel(15),
     },
     rowjiantouImage: {
         width: Pixel.getPixel(15),
         height: Pixel.getPixel(15),
-        marginRight:Pixel.getPixel(15),
+        marginRight: Pixel.getPixel(15),
 
     },
     rowTitle: {
-        flex:1,
+        flex: 1,
         fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT28),
-        marginLeft:Pixel.getPixel(20),
-        color:fontAndClolr.COLORA1,
+        marginLeft: Pixel.getPixel(20),
+        color: fontAndClolr.COLORA1,
 
     }
 

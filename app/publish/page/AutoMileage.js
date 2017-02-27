@@ -25,6 +25,7 @@ const Pixel = new PixelUtil();
 import SQLiteUtil from '../../utils/SQLiteUtil';
 const SQLite = new SQLiteUtil();
 import * as Net from '../../utils/RequestUtil';
+import * as AppUrls from "../../constant/appUrls";
 
 const {width, height} = Dimensions.get('window');
 const background = require('../../../images/publish/background.png');
@@ -121,6 +122,18 @@ export default class AutoMileage extends Component {
             (data) => {
                 if (data.code === 1) {
                     let rd = data.result.rows.item(0);
+                    if(typeof(rd.model) == 'undefined' || rd.model === ''){
+                        this.props.showHint('请选择车型信息');
+                    }
+                    if(typeof(rd.pictures) == 'undefined' || rd.pictures === ''){
+                        this.props.showHint('请拍摄车辆照片');
+                    }
+                    if(typeof(rd.mileage) == 'undefined' || rd.mileage === ''){
+                        this.props.showHint('请填写车辆历程');
+                    }
+                    if(typeof(rd.manufacture) == 'undefined' || rd.manufacture === ''){
+                        this.props.showHint('请选择车辆出厂日期');
+                    }
                     let modelInfo = JSON.parse(rd.model);
                     let params = {
                         vin: rd.vin,
@@ -133,10 +146,9 @@ export default class AutoMileage extends Component {
                         init_reg: rd.init_reg,
                         mileage: rd.mileage,
                         show_shop_id: 57,
-
                     };
-                    let url = 'http://dev.api-gateway.dycd.com/' + 'v1/car/save?token=0ac50af9a02b752ca0f48790dc8ea6d1&device_code=dycd_dms_manage_android';
-                    Net.request(url, 'post', params)
+
+                    Net.request(AppUrls.CAR_SAVE, 'post', params)
                         .then((response) => {
                                 if (response.mycode === 1) {
                                     SQLite.changeData(
@@ -221,7 +233,7 @@ export default class AutoMileage extends Component {
                                         itemStyle={{color:"#FFFFFF", fontSize:26,fontWeight:'bold'}}
                                         onValueChange={(index) => this.onPickerSelect(3,index)}>
                                     {this.state.itemList.map((value, i) => (
-                                        <PickerItem label={value} value={i} key={"second"+value}/>
+                                        <PickerItem label={value} value={i} key={"four"+value}/>
                                     ))}
                                 </Picker>
                             </View>
@@ -231,7 +243,7 @@ export default class AutoMileage extends Component {
                                         itemStyle={{color:"#FFFFFF", fontSize:26,fontWeight:'bold'}}
                                         onValueChange={(index) => this.onPickerSelect(4,index)}>
                                     {this.state.itemList.map((value, i) => (
-                                        <PickerItem label={value} value={i} key={"three"+value}/>
+                                        <PickerItem label={value} value={i} key={"five"+value}/>
                                     ))}
                                 </Picker>
                             </View>

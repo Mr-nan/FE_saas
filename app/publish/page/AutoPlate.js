@@ -28,8 +28,17 @@ export default class AutoPlate extends Component {
 
     constructor(props) {
         super(props);
+        this.initValue =['','','','','','',''];
+        this.vinNum = this.props.carData.vin;
+        let plate = this.props.carData.plate_number;
+        if(plate !== ''){
+            for(let i=0;i<plate.length;i++){
+                this.initValue[i] = plate.charAt(i);
+            }
+        }
+        if(this.initValue[0] === '') this.initValue[0] = '京';
         this.state = {
-            city:'京',
+            city:this.initValue[0],
             renderPlaceholderOnly: true
         }
     }
@@ -56,6 +65,8 @@ export default class AutoPlate extends Component {
         this.setState({
             city:city
         });
+        this.initValue[0] = city;
+        this._insertPlate();
     };
 
     _renderPlaceholderView = ()=>{
@@ -75,6 +86,23 @@ export default class AutoPlate extends Component {
             </TouchableOpacity>
         );
     };
+
+    _onPlateChange= (text,type) =>{
+        this.initValue[type] = text;
+        this._insertPlate();
+    };
+
+    _insertPlate(){
+        let plate='';
+        for(let i=0;i < this.initValue.length;i++){
+            plate += this.initValue[i];
+        }
+
+        this.props.sqlUtil.changeData(
+            'UPDATE publishCar SET plate_number = ? WHERE vin = ?',
+            [plate, this.vinNum]);
+    }
+
 
     render() {
         if (this.state.renderPlaceholderOnly) {
@@ -100,12 +128,18 @@ export default class AutoPlate extends Component {
                         </TouchableOpacity>
 
                         <Image style={styles.proContainer} source={proBg}>
-                            <TextInput style={styles.fontBold} underlineColorAndroid='transparent' defaultValue={'N'}/>
-                            <TextInput style={styles.fontBold} underlineColorAndroid='transparent' defaultValue={'S'}/>
-                            <TextInput style={styles.fontBold} underlineColorAndroid='transparent' defaultValue={'2'}/>
-                            <TextInput style={styles.fontBold} underlineColorAndroid='transparent' defaultValue={'5'}/>
-                            <TextInput style={styles.fontBold} underlineColorAndroid='transparent' defaultValue={'6'}/>
-                            <TextInput style={styles.fontBold} underlineColorAndroid='transparent' defaultValue={'9'}/>
+                            <TextInput style={styles.fontBold} underlineColorAndroid='transparent'
+                                       defaultValue={this.initValue[1]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,1)}/>
+                            <TextInput style={styles.fontBold} underlineColorAndroid='transparent'
+                                       defaultValue={this.initValue[2]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,2)}/>
+                            <TextInput style={styles.fontBold} underlineColorAndroid='transparent'
+                                       defaultValue={this.initValue[3]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,3)}/>
+                            <TextInput style={styles.fontBold} underlineColorAndroid='transparent'
+                                       defaultValue={this.initValue[4]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,4)}/>
+                            <TextInput style={styles.fontBold} underlineColorAndroid='transparent'
+                                       defaultValue={this.initValue[5]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,5)}/>
+                            <TextInput style={styles.fontBold} underlineColorAndroid='transparent'
+                                       defaultValue={this.initValue[6]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,6)}/>
                         </Image>
                     </View>
                 </Image>
@@ -160,7 +194,7 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(20),
         fontWeight: 'bold',
         color: '#FFFFFF',
-        textAlign:'center'
+        textAlign:'left'
     },
     wrapStyle:{
         backgroundColor:'transparent'

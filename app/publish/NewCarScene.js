@@ -40,14 +40,14 @@ export default class NewCarScene extends BaseComponent{
     }
 
     //更多跳到编辑页
-    moreParams = {
-        name: 'EditCarScene',
-        component: EditCarScene,
-        params: {fromNew:true}
-    };
-
     _goToMore = ()=>{
-        this.toNextPage(this.moreParams);
+        let moreParams = {
+            name: 'EditCarScene',
+            component: EditCarScene,
+            params: {fromNew:true,carVin:this.state.carData.vin}
+        };
+
+        this.toNextPage(moreParams);
     };
 
     //上传成功后
@@ -81,6 +81,10 @@ export default class NewCarScene extends BaseComponent{
         })
     };
 
+    _showHint = (hint)=>{
+        this.props.showToast(hint);
+    };
+
     render(){
         return(
             <Image style={styles.container}  source={background}>
@@ -88,7 +92,8 @@ export default class NewCarScene extends BaseComponent{
                     ref={(tab)=>{this.tabView = tab}}
                     tabBarPosition='bottom'
                     locked={this.state.canChange}
-                    renderTabBar={()=>{return(<NewIndicator canChange={this.state.canChange} goToMore={()=>{this._goToMore()}} />)}}>
+                    renderTabBar={()=>{return(<NewIndicator canChange={this.state.canChange} showHint={this._showHint}
+                    goToMore={()=>{this._goToMore()}} />)}}>
                     <ModelSelect carNumberBack = {this._canChange}
                         onBack={()=>this._onBack(0)} refreshCar={this._carData}
                         barHeight={barHeight} tabLabel="ModelSelect" />
@@ -100,6 +105,7 @@ export default class NewCarScene extends BaseComponent{
                         barHeight={barHeight} tabLabel="AutoType" />
                     <AutoDate carData={this.state.carData} onBack={()=>this._onBack(3)} barHeight={barHeight} tabLabel="AutoDate" />
                     <AutoMileage
+                        showHint={this._showHint}
                         goToSource={this._goToSource}
                         carData={this.state.carData}
                         onBack={()=>this._onBack(4)} barHeight={barHeight} tabLabel="AutoMileage"/>

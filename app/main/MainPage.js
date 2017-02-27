@@ -23,8 +23,9 @@ import CarSourceSence from '../carSource/CarSourceListScene'
 import MineSence from './MineScene'
 import FinanceSence from './FinanceScene'
 import PublishModal from './PublishModal'
-
-
+import  StorageUtil from '../utils/StorageUtil';
+import * as storageKeyNames from '../constant/storageKeyNames';
+import LoginGesture from '../login/LoginGesture';
 import * as fontAndClolr from '../constant/fontAndColor';
 import BaseComponent from '../component/BaseComponent';
 
@@ -53,7 +54,7 @@ export default class MainPage extends BaseComponent {
         identity: 'boss'
     };
 
-    initFinish = ()=> {
+    initFinish = () => {
 
     }
 
@@ -140,7 +141,7 @@ export default class MainPage extends BaseComponent {
         this.state = {
 
             // selectedTab: tabArray[0].ref,
-            selectedTab: tabArray[0 ].ref,
+            selectedTab: tabArray[0].ref,
         }
     }
 
@@ -160,9 +161,25 @@ export default class MainPage extends BaseComponent {
                 onPress={() => {
                     if(data.ref==='sendpage'){
                         this.publishModal.openModal();
+                    }else if(data.ref==='financePage'){
+                        StorageUtil.mGetItem(storageKeyNames.NEED_GESTURE,(datas)=>{
+                            if(datas.code==1){
+                                if(datas.result=='true'){
+                                    this.toNextPage({name:'LoginGesture',component:LoginGesture,params:{
+                                        callBack:()=>{
+                                           this.setState({selectedTab: data.ref})
+                                        }
+                                    }});
+                                }else{
+                                    this.setState({selectedTab: data.ref})
+                                }
+                            }
+                        });
                     }else{
-                        this.setState({selectedTab: data.ref})}}
+                        this.setState({selectedTab: data.ref})
+                        }
                     }
+                }
                 selectedTitleStyle={styles.selectedTitleStyle}
 
 

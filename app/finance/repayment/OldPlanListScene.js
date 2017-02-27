@@ -15,14 +15,14 @@ import {
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
-import PixelUtil from '../utils/PixelUtil';
+import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
-import * as fontAndColor from '../constant/fontAndColor';
-let MovleData = require('./repayment/oldplan.json');
+import * as fontAndColor from '../../constant/fontAndColor';
+let MovleData = require('./oldplan.json');
 let movies = MovleData.retdata;
-import BaseComponent from '../component/BaseComponent';
-import NavigationView from '../component/AllNavigationView';
-import PlanParentItem from './repayment/component/OldPlanParentItem';
+import BaseComponent from '../../component/BaseComponent';
+import NavigationView from '../../component/AllNavigationView';
+import PlanParentItem from './component/OldPlanParentItem';
 export  default class OldPlanListScene extends BaseComponent {
 
     constructor(props) {

@@ -28,8 +28,8 @@ import RepaymentInfoContentItem from './component/RepaymentInfoContentItem';
 import RepaymentInfoBottomItem from './component/RepaymentInfoBottomItem';
 import AllBottomItem from './component/AllBottomItem';
 import MyButton from '../../component/MyButton';
-const moneyList = [];
-const nameList = [];
+let moneyList = [];
+let nameList = [];
 export  default class PurchaseLoanStatusScene extends BaseComponent {
 
     constructor(props) {
@@ -44,8 +44,8 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
     }
 
     componentWillUnmount() {
-        moneyList.splice(0, moneyList.length);
-        nameList.splice(0, nameList.length);
+        moneyList = [];
+        nameList = [];
     }
 
     initFinish = () => {
@@ -62,7 +62,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
         nameList.push({name: '开户支行', data: movies.bank_info.branch});
         nameList.push({name: '还款账号', data: movies.bank_info.repaymentnumber});
         nameList.push({name: '保证金', data: movies.bondmny});
-
+        this.setState({renderPlaceholderOnly: 'success'});
     }
 
     buttonParams = {
@@ -132,7 +132,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                     formula={'='+movies.loan_mny+'+'
                                          +movies.loan_mny+'*'+movies.loan_rebate/100+'/360*'
                                          +movies.loan_day+'-'+movies.bondmny}
-                    formulaStr={'应还总额=本金*综合费率/360*计息天数-保证金'}
+                    formulaStr={'应还总额=本金+本金*综合费率/360*计息天数-保证金'}
                 />
             )
         } else {
