@@ -327,9 +327,10 @@ export default class LoginScene extends BaseComponent {
                         StorageUtil.mSetItem(StorageKeyNames.REAL_NAME, response.mjson.data.real_name + "");
                         StorageUtil.mSetItem(StorageKeyNames.TOKEN, response.mjson.data.token + "");
                         StorageUtil.mSetItem(StorageKeyNames.USER_LEVEL, response.mjson.data.user_level + "");
-                        StorageUtil.mGetItem(StorageKeyNames.GESTURE, (data) => {
+
+                        StorageUtil.mGetItem(response.mjson.data.phone + "", (data) => {
                             if (data.code === 1) {
-                                if (data.result != null && data.result.length > 3 && data.result.split(',')[0] == response.mjson.data.phone) {
+                                if (data.result != null) {
                                     this.loginPage(this.loginSuccess)
                                 } else {
                                     this.loginPage(this.setLoginGesture)
