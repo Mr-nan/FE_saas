@@ -252,12 +252,14 @@ export  default  class carSourceListScene extends BaseComponent {
     }
 
     presCarTypeScene = () => {
+
         let navigatorParams = {
             name: "CarBrandSelectScene",
             component: CarBrandSelectScene,
             params: {
                 checkedCarType: this.state.checkedCarType,
                 checkedCarClick: this.checkedCarClick,
+                status:0,
             }
         };
         this.props.callBack(navigatorParams);
@@ -315,21 +317,23 @@ export  default  class carSourceListScene extends BaseComponent {
     };
 
     //  选择车型
-    checkedCarClick = (carType) => {
+    checkedCarClick = (object) => {
 
-        this.setState({
-            checkedCarType: {
-                title: carType,
-                brand_id: '',
-                model_id: '',
-            },
-        });
+        alert(object.name+object.id);
 
-        if (this.refs.headView.state.isCheckRecommend) {
-            this.refs.headView.setCheckRecommend(false)
-        } else {
-            this.refreshingData();
-        }
+        // this.setState({
+        //     checkedCarType: {
+        //         title: brand_name,
+        //         brand_id: brand_id,
+        //         series_id: brand_name,
+        //     },
+        // });
+        //
+        // if (this.refs.headView.state.isCheckRecommend) {
+        //     this.refs.headView.setCheckRecommend(false)
+        // } else {
+        //     this.refreshingData();
+        // }
 
     };
 
