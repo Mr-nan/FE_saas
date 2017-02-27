@@ -31,6 +31,7 @@ import * as AppUrls from "../constant/appUrls";
 
 const footprintData = ['A6L', '捷达王', '汉难达', '奥拓'];
 let status  = 0;
+let series_name = '';
 let carData = new  Array;
 
 export default class CarBrandSelectScene extends BaseComponent {
@@ -141,14 +142,12 @@ export default class CarBrandSelectScene extends BaseComponent {
 
         console.log(carBrandID,carBrandName);
         let url = AppUrls.BASEURL + 'v1/home/series/';
-        request(url, 'post', {
-
+        let parameter = {
             brand_id:carBrandID,
             status:status,
-
-        }).then((response) => {
-
-            console.log(response);
+        }
+        console.log(parameter);
+        request(url, 'post',parameter).then((response) => {
 
             if(response.mjson.data.length){
                 this.setState({
@@ -308,15 +307,14 @@ class CarSeriesList extends Component {
     loadCarModelsData=(carBrandID,series_ID,carBrandName)=>{
 
         let url = AppUrls.BASEURL + 'v1/home/models';
-        request(url, 'post', {
-
+        let parameter = {
             brand_id:carBrandID,
             series_id:series_ID,
             status:status,
+        }
+        console.log(parameter);
 
-        }).then((response) => {
-
-            console.log(response);
+        request(url, 'post', parameter).then((response) => {
 
             if(response.mjson.data.length){
                 this.setState({
@@ -350,16 +348,16 @@ class CarSeriesList extends Component {
                 if(status==0){
                     if(this.state.isCheckedCarModel){
 
-                        this.props.checkedCarClick({name:'k3',id:'h1'});
+                        this.props.checkedCarClick({brand_id:rowData.brand_id,series_id:rowData.series_id,series_name:series_name,model_id:rowData.model_id,model_name:rowData.model_name});
 
                     }else {
-                        this.loadCarModelsData(rowData.brand_id,rowData.series_id,rowData.series_name);
+                        series_name = rowData.series_name;
+                        this.loadCarModelsData(rowData.brand_id,rowData.series_id,series_name);
                     }
 
                 }else {
 
-                    {/*this.props.checkedCarClick(rowData.brand_id,rowData.brand_name,rowData.series_id,'奥德赛',rowData.model_,rowData.model_name);*/}
-                    this.props.checkedCarClick(rowData.brand_id,'h1','h2','奥德赛','h3','h4');
+                    this.props.checkedCarClick({brand_id:rowData.brand_id,series_id:rowData.series_id,series_name:rowData.series_name,model_id:rowData.model_id,model_name:rowData.model_name});
 
                 }
 
@@ -400,6 +398,7 @@ class CarSeriesList extends Component {
                         style={{flex: 1}}
                         dataSource={this.state.dataSource}
                         renderRow={this.renderRow}
+                        pageSize={10}
                     />
                 }
             </Animated.View>

@@ -42,7 +42,7 @@ export default class CarCell extends Component {
             <View style={[styles.container,styles.lineBottom]} >
 
                 <View style={styles.imageView}>
-                    <Image style={styles.image} source={{uri:carCellData.img}}/>
+                    <Image style={styles.image}/>
                 </View>
 
                 <View style={[styles.textContainer]}>

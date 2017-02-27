@@ -259,7 +259,7 @@ export  default  class carSourceListScene extends BaseComponent {
             params: {
                 checkedCarType: this.state.checkedCarType,
                 checkedCarClick: this.checkedCarClick,
-                status:0,
+                status:1,
             }
         };
         this.props.callBack(navigatorParams);
@@ -317,23 +317,24 @@ export  default  class carSourceListScene extends BaseComponent {
     };
 
     //  选择车型
-    checkedCarClick = (object) => {
+    checkedCarClick = (carObject) => {
 
-        alert(object.name+object.id);
+        APIParameter.brand_id = carObject.brand_id;
+        APIParameter.series_id = carObject.series_id;
 
-        // this.setState({
-        //     checkedCarType: {
-        //         title: brand_name,
-        //         brand_id: brand_id,
-        //         series_id: brand_name,
-        //     },
-        // });
-        //
-        // if (this.refs.headView.state.isCheckRecommend) {
-        //     this.refs.headView.setCheckRecommend(false)
-        // } else {
-        //     this.refreshingData();
-        // }
+        this.setState({
+            checkedCarType: {
+                title: carObject.series_name,
+                brand_id:carObject.brand_id,
+                series_id: carObject.series_id,
+            },
+        });
+
+        if (this.refs.headView.state.isCheckRecommend) {
+            this.refs.headView.setCheckRecommend(false)
+        } else {
+            this.refreshingData();
+        }
 
     };
 
@@ -407,9 +408,19 @@ export  default  class carSourceListScene extends BaseComponent {
 
     carTypeClick = () => {
         this.setState({
-            checkedCarType: '',
+            checkedCarType: {
+                title: '',
+                brand_id: '',
+                series_id: '',
+            },
         });
-
+        APIParameter.brand_id = 0;
+        APIParameter.series_id = 0;
+        if (this.refs.headView.state.isCheckRecommend) {
+            this.refs.headView.setCheckRecommend(false)
+        } else {
+            this.refreshingData();
+        }
     };
 
     carAgeClick = () => {
@@ -467,6 +478,8 @@ export  default  class carSourceListScene extends BaseComponent {
         APIParameter.order_type = 0;
         APIParameter.mileage = 0;
         APIParameter.coty = 0;
+        APIParameter.brand_id = 0;
+        APIParameter.series_id = 0;
 
         if (this.refs.headView.state.isCheckRecommend) {
             this.refs.headView.setCheckRecommend(false);
