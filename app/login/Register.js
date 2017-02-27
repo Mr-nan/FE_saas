@@ -223,6 +223,7 @@ export default class Register extends BaseComponent {
                     if (response.mjson.code == "1") {
                         uid = response.mjson.data.uid;
                         this.props.showToast("注册成功");
+                        // this.props.showToast(response.mjson.msg + "");
                         this.exitPage({name: 'LoginScene', component: LoginScene});
                     } else {
                         this.props.showToast(response.mjson.msg + "");
