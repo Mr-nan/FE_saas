@@ -31,6 +31,7 @@ import BaseComponet from '../component/BaseComponent';
 import * as Urls from '../constant/appUrls';
 import {request} from '../utils/RequestUtil';
 import  LoadMoreFooter from '../component/LoadMoreFooter';
+import CarInfoScene from '../carSource/CarInfoScene';
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 let allList = [];
 export class HomeHeaderItemInfo {
@@ -265,7 +266,9 @@ export default class HomeScene extends BaseComponet {
 
     _renderRow = (movie, sindex, rowID) => {
         return (
-            <View style={{
+            <TouchableOpacity onPress={()=>{
+                this.props.callBack({name:'CarInfoScene',component:CarInfoScene,params:{carID:movie.id}});
+            }} activeOpacity={0.8} style={{
                 width: width / 2,
                 backgroundColor: '#ffffff',
                 borderWidth: 0,
@@ -282,7 +285,7 @@ export default class HomeScene extends BaseComponet {
                         style={cellSheet.timeStyle}>{this.dateReversal(movie.create_time + '000') + '/' + movie.mileage + '万公里'}</Text>
 
                 </View>
-            </View>
+            </TouchableOpacity>
 
         )
     }

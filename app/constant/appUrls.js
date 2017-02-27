@@ -14,9 +14,14 @@
 // export const BASEURL = "https://qaopenbms.dycd.com/api/";
 
 /**
- * 测试地址
+ * 开发地址
  */
 export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+
+/**
+ * 测试地址
+ */
+// export const BASEURL = 'http://api-gateway.test.dycd.com/';
 /**
  * 预发布地址
  */
@@ -93,6 +98,13 @@ export const USER_EMPLOYE = BASEURL + V + "user.employe/index";
  * 获取借款主体
 **/
 export const LOAN_SUBJECT = 'api/v1/user/get_loan_subject_list';
+
+/**
+ * from @zhaojian
+ *
+ * 获取还款历史
+ **/
+export const GETHISTORICALLIST = 'api/v1/Repayment/getHistoricalList';
 
 /**
  * from @zhaojian

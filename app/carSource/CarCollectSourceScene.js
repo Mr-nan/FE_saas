@@ -88,6 +88,7 @@ export default class CarCollectSourceScene extends BaceComponent {
     }
 
     refreshingData = () => {
+        allSouce = [];
         this.setState({isRefreshing: true});
         page = 1;
         this.getData();
