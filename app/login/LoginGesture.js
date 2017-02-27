@@ -25,9 +25,19 @@ export default class GesturePassword extends BaseComponent {
     }
 
     initFinish = () => {
-        StorageUtil.mGetItem(StorageKeyNames.GESTURE, (data) => {
+        StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
             if (data.code === 1) {
-                Password = data.result.split(',')[0];
+                if (data.result != null) {
+                    StorageUtil.mGetItem(data.result + "", (data) => {
+                        if (data.code === 1) {
+                            if (data.result != null) {
+                                Password = data.result;
+                            } else {
+                                Password = "";
+                            }
+                        }
+                    })
+                }
             }
         })
     }
@@ -60,16 +70,16 @@ export default class GesturePassword extends BaseComponent {
                 Bottom={
                     <View style={{marginTop: Height / 2 * 0.95, flexDirection: 'row'}}>
                         <TouchableOpacity onPress={() => {
-                            StorageUtil.mSetItem(StorageKeyNames.GESTURE,'');
-                            StorageUtil.mSetItem(StorageKeyNames.ISLOGIN,'false');
-                            this.loginPage({name:'LoginScene',component:LoginScene});
+                            StorageUtil.mSetItem(StorageKeyNames.GESTURE, '');
+                            StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'false');
+                            this.loginPage({name: 'LoginScene', component: LoginScene});
                         }}>
                             <Text style={styles.bottomLeftSytle}>忘记手势密码？</Text>
                         </TouchableOpacity>
                         <View style={{flex: 1}}/>
                         <TouchableOpacity onPress={() => {
-                            StorageUtil.mSetItem(StorageKeyNames.ISLOGIN,'false');
-                            this.loginPage({name:'LoginScene',component:LoginScene});
+                            StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'false');
+                            this.loginPage({name: 'LoginScene', component: LoginScene});
                         }}>
                             <Text style={styles.bottomRightSytle}>切换登录</Text>
                         </TouchableOpacity>
@@ -93,7 +103,7 @@ export default class GesturePassword extends BaseComponent {
         }
     }
 
-    onEnd=(pwd)=> {
+    onEnd = (pwd) => {
         if (pwd === Password) {
             this.setState({
                 status: 'right',

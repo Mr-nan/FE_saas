@@ -104,10 +104,7 @@ export default class SetLoginPwdGesture extends BaseComponent {
                 StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
                     if (data.code === 1) {
                         if (data.result != null) {
-                            StorageUtil.mSetItem(StorageKeyNames.GESTURE, data.result + ',' + Password);
-                            Password = '';
-                        } else {
-                            StorageUtil.mSetItem(StorageKeyNames.GESTURE, '0,' + Password);
+                            StorageUtil.mSetItem(data.result + "", Password);
                             Password = '';
                         }
                     }
