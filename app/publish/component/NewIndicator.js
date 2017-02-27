@@ -41,7 +41,7 @@ export default class NewIndicator extends Component{
                 this.props.goToMore();
             }
         }else{
-            alert('请先填写车架号');
+            this.props.showHint('请先填写车架号');
         }
     };
 

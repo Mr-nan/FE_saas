@@ -26,6 +26,7 @@ const background = require('../../../images/publish/background.png');
 const scan = require('../../../images/publish/scan.png');
 const arrow = require('../../../images/publish/date-select.png');
 import * as Net from '../../utils/RequestUtil';
+import * as AppUrls from "../../constant/appUrls";
 import VinInfo from '../component/VinInfo';
 
 export default class ModelSelect extends PureComponent {
@@ -63,7 +64,7 @@ export default class ModelSelect extends PureComponent {
 
     //选择车型
     _modelPress = () => {
-        this.vinModal.openModal();
+
     };
 
     _renderPlaceholderView = () => {
@@ -79,12 +80,10 @@ export default class ModelSelect extends PureComponent {
     _onVinChange = (text) => {
         if (text.length === 17) {
 
-            let url = 'http://dev.api-gateway.dycd.com/'
-                + 'v1/car/vininfo?token=0ac50af9a02b752ca0f48790dc8ea6d1&device_code=dycd_dms_manage_android';
             let params ={
                 vin:text,
             };
-            Net.request(url,'post',params).then(
+            Net.request(AppUrls.VININFO,'post',params).then(
                 (response)=>{
                     if(response.mycode === 1){
                         let rd = response.mjson.data;
