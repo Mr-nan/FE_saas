@@ -18,6 +18,7 @@ import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import ImageSource from '../component/ImageSource';
 import * as Net from '../../utils/RequestUtil';
+import * as AppUrls from "../../constant/appUrls";
 
 const {width, height} = Dimensions.get('window');
 const background = require('../../../images/publish/background.png');
@@ -106,13 +107,12 @@ export default class AutoPhoto extends Component {
             }
             else {
 
-                let url = 'http://dev.api-gateway.dycd.com/' + 'v1/index/upload';
                 let params ={
                     filename : response.fileName,
                     file:'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g,'%2B')
                 };
 
-                Net.request(url,'post',params).then(
+                Net.request(AppUrls.INDEX_UPLOAD,'post',params).then(
                     (response)=>{
 
                         this.selectSource = {uri: response.mjson.data.url};
@@ -153,11 +153,34 @@ export default class AutoPhoto extends Component {
             }
             else {
 
-                console.log(response.data);
-                this.selectSource = {uri: 'data:image/jpeg;base64,' + response.data};
-                this.setState({
-                    hasPhoto: true
-                });
+                let params ={
+                    filename : response.fileName,
+                    file:'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g,'%2B')
+                };
+
+                Net.request(AppUrls.INDEX_UPLOAD,'post',params).then(
+                    (response)=>{
+
+                        this.selectSource = {uri: response.mjson.data.url};
+                        this.setState({
+                            hasPhoto:true
+                        });
+
+                        let left ={
+                            name : 'left_anterior',
+                            file_id : response.mjson.data.file_id,
+                            url: response.mjson.data.url,
+                        };
+                        this.pictures = [];
+                        this.pictures.push(left);
+
+                        SQLite.changeData(
+                            'UPDATE publishCar SET pictures = ? WHERE vin = ?',
+                            [ JSON.stringify(this.pictures), this.props.carData.vin]);
+
+                    },(error)=>{
+                        console.log(error);
+                    });
             }
         });
     };

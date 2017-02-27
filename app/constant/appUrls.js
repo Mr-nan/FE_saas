@@ -37,6 +37,30 @@ export const V2 = "v2/";
  */
 export const V3 = "v3/";
 
+/**
+ * 上传图片
+ */
+export const INDEX_UPLOAD = BASEURL + V + 'index/upload';
+
+/**
+ *属性配置
+ */
+export const CAR_CONFIG = BASEURL + V + 'car/config';
+
+/**
+ * 获取车辆详情
+ */
+export const CAR_DETAIL = BASEURL + V + 'car/detail';
+
+/**
+ * 根据VIN获取车辆详情
+ */
+export const VININFO = BASEURL + V + 'car/vininfo';
+
+/**
+ * 添加&修改车源
+ */
+export const CAR_SAVE = BASEURL + V +'car/save';
 
 /**
  * 图形验证码

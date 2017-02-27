@@ -28,6 +28,7 @@ import CarSourceScene from '../main/CarSourceScene';
 import SuccessModal from './component/SuccessModal';
 
 import * as Net from '../utils/RequestUtil';
+import * as AppUrls from '../constant/appUrls';
 import SQLiteUtil from '../utils/SQLiteUtil';
 import PixelUtil from '../utils/PixelUtil';
 const Pixel = new PixelUtil();
@@ -41,7 +42,6 @@ export default class EditCarScene extends BaseComponent {
     initFinish = () => {
         if (this.fromNew === true) {
             //从新车页跳过来(根据车架号查询数据)
-            console.log('2fromNew===' + this.fromNew + '++++2carVin===' + this.carVin);
             SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
                 [this.carVin],
                 (data) => {
@@ -58,14 +58,11 @@ export default class EditCarScene extends BaseComponent {
                 });
         }
         else {
-            console('===========' + this.fromNew);
             //请求网络数据(根据车源id查询数据)
-            let url = 'http://dev.api-gateway.dycd.com/'
-                + 'v1/car/detail?token=0ac50af9a02b752ca0f48790dc8ea6d1&device_code=dycd_dms_manage_android';
             let params = {
                 id: this.carId,
             };
-            Net.request(url, 'post', params).then(
+            Net.request(AppUrls.CAR_DETAIL, 'post', params).then(
                 (response) => {
                     if (response.mycode === 1) {
                         let rd = response.mjson.data;
@@ -143,6 +140,11 @@ export default class EditCarScene extends BaseComponent {
         }
     };
 
+    //提示信息
+    _showHint = (hint)=>{
+        this.props.showToast(hint);
+    };
+
     //发布
     _publish = () => {
         SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
@@ -175,9 +177,7 @@ export default class EditCarScene extends BaseComponent {
                     if (!this.fromNew) {
                         params[id] = this.carId;
                     }
-                    let url = 'http://dev.api-gateway.dycd.com/' +
-                        'v1/car/save?token=0ac50af9a02b752ca0f48790dc8ea6d1&device_code=dycd_dms_manage_android';
-                    Net.request(url, 'post', params)
+                    Net.request(AppUrls.CAR_SAVE, 'post', params)
                         .then((response) => {
                                 if (response.mycode === 1) {
                                     // SQLite.changeData(
