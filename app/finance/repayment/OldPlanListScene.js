@@ -18,33 +18,50 @@ const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import * as fontAndColor from '../../constant/fontAndColor';
-let MovleData = require('./oldplan.json');
-let movies = MovleData.retdata;
+let movies = [];
 import BaseComponent from '../../component/BaseComponent';
 import NavigationView from '../../component/AllNavigationView';
 import PlanParentItem from './component/OldPlanParentItem';
+import {request} from '../../utils/RequestUtil';
+import * as Urls from '../../constant/appUrls';
 export  default class OldPlanListScene extends BaseComponent {
 
     constructor(props) {
         super(props);
         // 初始状态
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
         this.state = {
-            renderPlaceholderOnly: true,
-            source: ds.cloneWithRows(movies)
+            renderPlaceholderOnly: 'blank',
+            source: []
         };
     }
 
 
     initFinish = () => {
-        InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: false});
-        });
+        this.getData();
+    }
+
+    getData = () => {
+        let maps = {
+            api: Urls.GETHISTORICALLIST
+        };
+        request(Urls.FINANCE, 'Post', maps)
+            .then((response) => {
+                    movies = response.mjson.data;
+                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                    this.setState({
+                        source: ds.cloneWithRows(movies),
+                        renderPlaceholderOnly: 'success'
+                    });
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error'});
+                });
     }
 
 
     render() {
-        if (this.state.renderPlaceholderOnly) {
+        if (this.state.renderPlaceholderOnly !== 'success') {
             return this._renderPlaceholderView();
         }
         return (
@@ -87,6 +104,7 @@ export  default class OldPlanListScene extends BaseComponent {
                     title="历史还款"
                     backIconClick={this.backPage}
                 />
+                {this.loadView()}
             </View>
         );
     }

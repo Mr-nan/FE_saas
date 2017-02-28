@@ -1,3 +1,9 @@
-/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Intermediates/FE_Sass.build/Debug-iphonesimulator/FE_Sass.build/Objects-normal/x86_64/AppDelegate.o
-/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Intermediates/FE_Sass.build/Debug-iphonesimulator/FE_Sass.build/Objects-normal/x86_64/main.o
-/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Intermediates/FE_Sass.build/Debug-iphonesimulator/FE_Sass.build/Objects-normal/x86_64/FE_Sass_vers.o
+<<<<<<< HEAD
+/Users/lhc/Desktop/FE_Saas/ios/build/Build/Intermediates/FE_Sass.build/Debug-iphonesimulator/FE_Sass.build/Objects-normal/x86_64/AppDelegate.o
+/Users/lhc/Desktop/FE_Saas/ios/build/Build/Intermediates/FE_Sass.build/Debug-iphonesimulator/FE_Sass.build/Objects-normal/x86_64/main.o
+/Users/lhc/Desktop/FE_Saas/ios/build/Build/Intermediates/FE_Sass.build/Debug-iphonesimulator/FE_Sass.build/Objects-normal/x86_64/FE_Sass_vers.o
+=======
+/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/FE_Sass.build/Debug-iphonesimulator/FE_Sass.build/Objects-normal/x86_64/AppDelegate.o
+/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/FE_Sass.build/Debug-iphonesimulator/FE_Sass.build/Objects-normal/x86_64/main.o
+/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/FE_Sass.build/Debug-iphonesimulator/FE_Sass.build/Objects-normal/x86_64/FE_Sass_vers.o
+>>>>>>> 6e75e77bf14ab6f5900314d371d795922f927819

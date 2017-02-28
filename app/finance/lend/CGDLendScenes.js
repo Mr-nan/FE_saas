@@ -13,11 +13,13 @@ import {
 } from 'react-native';
 
 import BaseComponent from '../../component/BaseComponent';
-import Picker from 'react-native-picker'
-import {LendDatePike, LendInputItem, LendItem, CGDCarItem, CommenButton } from './component/ComponentBlob'
-import {width, adapeSize} from './component/MethodComponent'
-import CGDaddCarScenes from './CGDaddCarScenes';
 
+import {LendDatePike, LendInputItem, LendItem, CGDCarItem, CommenButton,commnetStyle} from './component/ComponentBlob'
+import {width, adapeSize,PAGECOLOR} from './component/MethodComponent'
+import CGDaddCarScenes from './CGDaddCarScenes';
+import  AllNavigatior from '../../component/AllNavigationView'
+import {ModalCGD} from './component/ModelComponent'
+import DateTimePicker from 'react-native-modal-datetime-picker'
 export  default  class CGDLendScenes extends BaseComponent {
     initFinish = () => {
 
@@ -37,6 +39,7 @@ export  default  class CGDLendScenes extends BaseComponent {
         //
         this.state = {
             dataSource: ds.cloneWithRowsAndSections(this.titleNameBlob),
+            isDateTimePickerVisible: false,
             infoSouce: {
                 date: '',
                 monney: '',
@@ -51,14 +54,12 @@ export  default  class CGDLendScenes extends BaseComponent {
             },
         }
     }
-
     titleNameBlob = {
 
         '0': [
             {title: '借款类型', key: 'type'},
             {title: '借款额度', key: 'money'},
-            {title: '借款费率', key: 'rate'},
-
+            {title: '借款费率', key: 'rate'}
         ],
         '1': [
 
@@ -74,6 +75,17 @@ export  default  class CGDLendScenes extends BaseComponent {
         ],
     }
 
+    //datePiker的方法
+    _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false })
+    //datePiker的回调
+    _handleDatePicked = (date) => {
+        let tempdate=dateFormat(date,'yyyy-MM-dd')
+        this._hideDateTimePicker();
+    }
+
+    onPress = (changeText)=> {
+        this.setState({ isDateTimePickerVisible: true });
+    }
 
     getSectionData = (dataBlob, sectionID) => {
 
@@ -87,34 +99,16 @@ export  default  class CGDLendScenes extends BaseComponent {
     renderRow = (rowData, sectionID, rowID, highLght) => {
 
         if (sectionID === '0' && rowID === '0') {
-
             return (<LendDatePike
+                ref={(type)=>{this.lendType=type}}
                 lefTitle={rowData.title}
                 placeholder='提档后采购贷'
                 imageSouce={require('../../../images/financeImages/celljiantou.png')}
-                imageStyle={{width:18,height:18}}
+                imageStyle={{width:adapeSize(18),height:adapeSize(18)}}
                 onPress={() => {
-
-                    let data = [];
-                    for (var i = 0; i < 100; i++) {
-                        data.push(i);
-                    }
-
-                    Picker.init({
-                        pickerData: data,
-                        selectedValue: [59],
-                        onPickerConfirm: data => {
-                            console.log(data);
-                        },
-                        onPickerCancel: data => {
-                            console.log(data);
-                        },
-                        onPickerSelect: data => {
-                            console.log(data);
-                        }
-                    });
-                    Picker.show();
-                }}
+                    this.cgdAlert.setModelVisible(true);
+                }
+                }
             />)
         } else if (sectionID === '0' && rowID !== '0') {
 
@@ -125,16 +119,12 @@ export  default  class CGDLendScenes extends BaseComponent {
         } else if (sectionID === '1' && rowID === '1') {
 
             return <LendDatePike lefTitle={rowData.title} placeholder='请选择用款时间'
-                                 imageSouce={require('../../../images/financeImages/dateIcon.png')}/>
+                                 imageSouce={require('../../../images/financeImages/dateIcon.png')} onPress={this.onPress}/>
         } else {
-
             return (
                 <CGDCarItem/>
-
             )
         }
-
-
     }
     renderSeparator = (sectionID, rowId, adjacentRowHighlighted) => {
 
@@ -168,8 +158,6 @@ export  default  class CGDLendScenes extends BaseComponent {
             </View>
 
         )
-
-
     }
     navigatorParams={
         name:'CGDaddCarScenes',
@@ -180,28 +168,48 @@ export  default  class CGDLendScenes extends BaseComponent {
     render() {
         return (
 
-            <View style={{flex: 1, marginTop: 40}}>
+            <View style={commnetStyle.container}>
 
-                <ListView
-                    style={{marginBottom: adapeSize(62)}}
-                    dataSource={this.state.dataSource}
-                    renderRow={this.renderRow}
-                    renderSectionHeader={this.renderSectionHeader}
-                    renderSeparator={this.renderSeparator}
-
-                />
-
-                <View style={styles.handelWarper}>
+               <View style={commnetStyle.ListWarp}>
+                   <ListView
+                       style={{flex:1}}
+                       dataSource={this.state.dataSource}
+                       renderRow={this.renderRow}
+                       renderSectionHeader={this.renderSectionHeader}
+                       renderSeparator={this.renderSeparator}
+                   />
+               </View>
+                <View style={[commnetStyle.bottomWarp,{flexDirection:'row', justifyContent: 'flex-end',
+                    alignItems: 'center'}]}>
 
                     <CommenButton textStyle={styles.textLeft} buttonStyle={styles.buttonStyleRight} onPress={() => {
                      this.toNextPage(this.navigatorParams)
                     }} title="添加车辆"/>
                     <CommenButton textStyle={{color: 'white'}} buttonStyle={styles.buttonStyleLeft} onPress={() => {
 
-                    }} title="取消借款"/>
+                    }} title="申请借款"/>
                 </View>
+                <DateTimePicker
+                    isVisible={this.state.isDateTimePickerVisible}
+                    onConfirm={this._handleDatePicked}
+                    onCancel={this._hideDateTimePicker}
+                    titleIOS="请选择日期"
+                    confirmTextIOS='确定'
+                    cancelTextIOS='取消'
+                />
+                <AllNavigatior title='采购融资' backIconClick={()=>{
+                    this.backPage();
+                }}/>
 
+                <ModalCGD ref={(cgdModal)=>{this.cgdAlert=cgdModal}} getValue={(seleveValue)=>{
 
+                    let string='提档后采购贷';
+                    if (seleveValue==='2'){
+
+                        string='提档前采购贷'
+                    }
+                  this.lendType.setPlaceHodel(string);
+                }}/>
             </View>
 
         )
@@ -221,33 +229,32 @@ const styles = StyleSheet.create({
         bottom: adapeSize(16),
         width: width,
         flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center'
+
     },
     buttonStyleRight: {
 
-        height: adapeSize(44),
+        height: adapeSize(32),
         marginLeft: adapeSize(15),
         justifyContent: 'center',
+        width:adapeSize(100),
         alignItems: 'center',
-        flex: 1,
         marginRight: 5,
-        borderColor: '#05c5c2',
+        borderColor: PAGECOLOR.COLORB0,
         borderWidth: 1,
         borderRadius: 5,
-        backgroundColor: 'white'
-
+        backgroundColor: 'white',
+        width:adapeSize(100)
     },
     buttonStyleLeft: {
 
-        height: adapeSize(44),
-        backgroundColor: '#05c5c2',
+        height: adapeSize(32),
+        backgroundColor: PAGECOLOR.COLORB0,
         marginRight: adapeSize(15),
         justifyContent: 'center',
         alignItems: 'center',
-        flex: 1,
         marginLeft: 5,
         borderRadius: 5,
+        width:adapeSize(100)
     },
 
     textLeft: {

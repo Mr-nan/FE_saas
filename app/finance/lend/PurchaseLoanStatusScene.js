@@ -15,14 +15,14 @@ import {
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
-import PixelUtil from '../utils/PixelUtil';
+import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
-import * as fontAndColor from '../constant/fontAndColor';
-let MovleData = require('./loanStatus.json');
+import * as fontAndColor from '../../constant/fontAndColor';
+let MovleData = require('./../loanStatus.json');
 let movies = MovleData.retdata;
-import BaseComponent from '../component/BaseComponent';
-import NavigationView from '../component/AllNavigationView';
-import PurchasePickerChildItem from './component/PurchaseLoanStatusItem';
+import BaseComponent from '../../component/BaseComponent';
+import NavigationView from '../../component/AllNavigationView';
+import PurchasePickerChildItem from '../component/PurchaseLoanStatusItem';
 export  default class PurchaseLoanStatusScene extends BaseComponent {
 
     constructor(props) {

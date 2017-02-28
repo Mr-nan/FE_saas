@@ -32,21 +32,19 @@ export  default class PlanListScene extends BaseComponent {
         // 初始状态
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            renderPlaceholderOnly: true,
+            renderPlaceholderOnly: 'blank',
             source: ds.cloneWithRows(movies)
         };
     }
 
 
     initFinish = () => {
-        InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: false});
-        });
+        this.setState({renderPlaceholderOnly: 'success'});
     }
 
 
     render() {
-        if (this.state.renderPlaceholderOnly) {
+        if (this.state.renderPlaceholderOnly!=='success') {
             return this._renderPlaceholderView();
         }
         return (
@@ -90,6 +88,7 @@ export  default class PlanListScene extends BaseComponent {
                     title="还款计划"
                     backIconClick={this.backPage}
                 />
+                {this.loadView()}
             </View>
         );
     }

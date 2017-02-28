@@ -14,9 +14,14 @@
 // export const BASEURL = "https://qaopenbms.dycd.com/api/";
 
 /**
- * 测试地址
+ * 开发地址
  */
 export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+
+/**
+ * 测试地址
+ */
+// export const BASEURL = 'http://api-gateway.test.dycd.com/';
 /**
  * 预发布地址
  */
@@ -83,6 +88,21 @@ export const FINANCE = BASEURL + V + "finance/index";//
 export const FAVORITES = BASEURL + V + "user.favorites/index";//
 
 /**
+ * 浏览历史
+ */
+export const USER_HISTORY = BASEURL + V + "user.history/index";//
+
+/**
+ * 取消收藏
+ */
+export const DELETE = BASEURL + V + "user.favorites/delete";//
+
+/**
+ * 清空浏览历史
+ */
+export const USER_HISTORY_DELETE = BASEURL + V + "v1/user.history/delete";//
+
+/**
  * 员工列表
  */
 export const USER_EMPLOYE = BASEURL + V + "user.employe/index";
@@ -93,6 +113,13 @@ export const USER_EMPLOYE = BASEURL + V + "user.employe/index";
  * 获取借款主体
 **/
 export const LOAN_SUBJECT = 'api/v1/user/get_loan_subject_list';
+
+/**
+ * from @zhaojian
+ *
+ * 获取还款历史
+ **/
+export const GETHISTORICALLIST = 'api/v1/Repayment/getHistoricalList';
 
 /**
  * from @zhaojian
@@ -115,6 +142,13 @@ export const GET_APPLY_LIST = 'api/v3/account/get_apply_list';
  * 选择借款主体
  **/
 export const OPT_LOAN_SUBJECT = 'api/v1/user/opt_loan_subject';
+
+/**
+ * from @zhaojian
+ *
+ * 单车借款信息
+ **/
+export const get_apply_loan_data = 'api/v3/account/get_apply_loan_data';
 
 
 /**
