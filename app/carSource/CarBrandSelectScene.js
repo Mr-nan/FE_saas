@@ -29,11 +29,16 @@ var Pixel = new PixelUtil();
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 
-// const carData = require('./carData');
-
 let status  = 0;
-let series_name = '';
 let carData = new  Array;
+let carObject= {
+    brand_id:'',
+    brand_name:'',
+    series_id:'',
+    series_name:'',
+    model_id:'',
+    model_name:''
+};
 
 export default class CarBrandSelectScene extends BaseComponent {
 
@@ -200,7 +205,10 @@ export default class CarBrandSelectScene extends BaseComponent {
         return (
             <TouchableOpacity onPress={() => {
 
-                this.loadCarSeriesData(rowData.brand_id,rowData.brand_name)
+                carObject.brand_id = rowData.brand_id;
+                carObject.brand_name = rowData.brand_name;
+
+                this.loadCarSeriesData(rowData.brand_id,rowData.brand_name);
 
             }}>
                 <View style={styles.rowCell}>
@@ -315,10 +323,11 @@ export default class CarBrandSelectScene extends BaseComponent {
 class CarSeriesList extends Component {
 
     componentWillReceiveProps(nextProps) {
-        this.refs.subListView.scrollTo({x: 0, y: 0, animated: true});
         this.setState({
             dataSource: this.state.dataSource.cloneWithRows(nextProps.data),
             isCheckedCarModel:false,
+            carTitle:nextProps.title + '/全部车系',
+
         });
     }
     constructor(props) {
@@ -326,6 +335,7 @@ class CarSeriesList extends Component {
         const ds =new ListView.DataSource({rowHasChanged: (r1, r2) => r1 != r2})
         this.state = {
             dataSource: ds.cloneWithRows(this.props.data),
+            carTitle:this.props.title+'/全部车系',
             valueRight:new Animated.Value(0),
             isCheckedCarModel:false,
 
@@ -333,30 +343,26 @@ class CarSeriesList extends Component {
     }
 
 
-    loadCarModelsData=(carBrandID,series_ID,carBrandName)=>{
+    loadCarModelsData=(carBrand_ID,series_ID)=>{
 
         let url = AppUrls.BASEURL + 'v1/home/models';
         let parameter = {
-            brand_id:carBrandID,
+            brand_id:carBrand_ID,
             series_id:series_ID,
             status:status,
         }
-        console.log(parameter);
-
         request(url, 'post', parameter).then((response) => {
+
 
             if(response.mjson.data.length){
                 this.setState({
-
-                    dataSource:this.ds.cloneWithRows(response.mjson.data),
+                    dataSource:this.state.dataSource.cloneWithRows(response.mjson.data),
                     isCheckedCarModel:true,
-
-            });
+                });
             }else
             {
                 alert('没数据');
             }
-
 
 
         }, (error) => {
@@ -396,8 +402,6 @@ class CarSeriesList extends Component {
 
             newArray.push(carObject);
         }
-        console.log("足迹"+newArray);
-
         if(!isEqual){
             StorageUtil.mSetItem(StorageKeyName.CAR_TYPE_FOOTMARK,JSON.stringify(newArray));
         }
@@ -415,16 +419,24 @@ class CarSeriesList extends Component {
                 if(status==0){
                     if(this.state.isCheckedCarModel){
 
-                        this.props.checkedCarClick({brand_id:rowData.brand_id,series_id:rowData.series_id,series_name:series_name,model_id:rowData.model_id,model_name:rowData.model_name});
+                        carObject.model_id = rowData.model_id;
+                        carObject.model_name = rowData.model_name;
+
+                        this.props.checkedCarClick(carObject);
 
                     }else {
-                        series_name = rowData.series_name;
-                        this.loadCarModelsData(rowData.brand_id,rowData.series_id,series_name);
+                        this.setState({
+                            carTitle:this.props.title +'/全部系车型',
+                        });
+
+                        carObject.series_id = rowData.series_id;
+                        carObject.series_name = rowData.series_name;
+
+                        this.loadCarModelsData(rowData.brand_id,rowData.series_id);
                     }
 
                 }else {
 
-                    let carObject = {brand_id:rowData.brand_id,series_id:rowData.series_id,series_name:rowData.series_name,model_id:rowData.model_id,model_name:rowData.model_name};
                     this.saveFootprintData(carObject);
                     this.props.checkedCarClick(carObject);
 
@@ -448,7 +460,7 @@ class CarSeriesList extends Component {
         Animated.spring(
             this.state.valueRight,
             {
-                toValue:ScreenWidth*0.5,
+                toValue:ScreenWidth*0.3,
                 friction:5,
             }
         ).start();
@@ -460,17 +472,20 @@ class CarSeriesList extends Component {
 
         return (
             <Animated.View style={[styles.carSubBrandView,{left:this.state.valueRight}]}>
-                <View style={styles.carSubBrandHeadView}>
-                    <Image style={styles.rowCellImag}/>
-                    <Text style={styles.rowCellText}>{this.props.title}</Text>
-                </View>
+                <TouchableOpacity onPress={()=>{
+                    this.props.checkedCarClick(carObject);
+                }}>
+                    <View style={styles.carSubBrandHeadView}>
+                        <Image style={styles.rowCellImag}/>
+                        <Text style={styles.rowCellText}>{this.state.carTitle}</Text>
+                    </View>
+                </TouchableOpacity>
                 {
                    this.state.dataSource &&
                     <ListView ref="subListView"
                         style={{flex: 1}}
                         dataSource={this.state.dataSource}
                         renderRow={this.renderRow}
-                        pageSize={10}
                     />
                 }
             </Animated.View>
@@ -564,7 +579,7 @@ const styles = StyleSheet.create({
         top: Pixel.getTitlePixel(64),
         bottom: 0,
         position: 'absolute',
-        width: ScreenWidth * 0.5,
+        width: ScreenWidth * 0.7,
         borderLeftWidth: 2,
         borderLeftColor: fontAnColor.COLORA3,
 

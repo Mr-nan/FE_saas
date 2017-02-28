@@ -285,7 +285,7 @@ export default class CarInfoScene extends BaseComponent {
                             <View style={styles.contentContainer}>
                                 <View style={styles.contentView}>
                                     {
-                                        (typeof(carData.labels)!= "undefined"?carData.labels.length:false) &&
+                                        (typeof(carData.labels)!= "undefined"?(carData.labels.length>0?true:false):false) &&
                                         (
                                             <View style={styles.carParameterView}>
                                                 {
@@ -432,14 +432,11 @@ class PhotoView extends Component{
                 animationType={'fade'}
             >
 
-
                 <Gallery
                     style={{flex: 1, backgroundColor: 'rgba(1,1,1,0.5)'}}
                     images={imageArray}
                     initialPage={indext-1}
-                    onSingleTapConfirmed={() => {
-                        close();
-                    }}
+                    onSingleTapConfirmed={() => {close();}}
                 />
             </Modal>
         )
