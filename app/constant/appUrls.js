@@ -100,7 +100,7 @@ export const DELETE = BASEURL + V + "user.favorites/delete";//
 /**
  * 清空浏览历史
  */
-export const USER_HISTORY_DELETE = BASEURL + V + "v1/user.history/delete";//
+export const USER_HISTORY_DELETE = BASEURL + V + "user.history/delete";//
 
 /**
  * 员工列表
