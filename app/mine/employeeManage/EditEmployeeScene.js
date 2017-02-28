@@ -19,9 +19,9 @@ import SelectMaskComponent from './SelectMaskComponent'
 import NavigationView from '../../component/AllNavigationView';
 import BaseComponent from '../../component/BaseComponent';
 let ROWID = 0;
-let ds={};
+let ds = {};
 let SECTIONID = 0;
-let  Pixel = new PixelUtil();
+let Pixel = new PixelUtil();
 const Car = [
     {
         "cars": [
@@ -131,11 +131,10 @@ export default class EditEmployeeScene extends BaseComponent {
         this.state = {
             source: ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
             maskSource: this.xb,
-            rowdata:null,
+            rowdata: null,
 
         };
     }
-
 
 
     render() {
@@ -145,10 +144,10 @@ export default class EditEmployeeScene extends BaseComponent {
                 <NavigationView
                     backIconClick={this.backPage}
                     title="编辑员工"
-                        renderRihtFootView={this._navigatorRightView}
+                    renderRihtFootView={this._navigatorRightView}
                 />
 
-                   {/*              蒙版选择器        */}
+                {/*              蒙版选择器        */}
                 <SelectMaskComponent viewData={[]} onClick={(rowID)=>this._onClick(rowID)}
                                      ref={(modal)=> {
                                          this.selectModal = modal
@@ -172,27 +171,27 @@ export default class EditEmployeeScene extends BaseComponent {
             </View>
         );
     }
+
     /**      注销按钮点击事件          */
-    _loginOut = () =>{
+    _loginOut = () => {
         alert("点击了注销按钮");
 
     }
     /**      导航栏完成按钮点击事件          */
-    _completedForEdit = () =>{
-        for(let i=0;i<Car.length;i++){
+    _completedForEdit = () => {
+        for (let i = 0; i < Car.length; i++) {
             let cars = Car[i].cars;
-            for (let j=0;j<cars.length;j++){
-                if(cars[j].name <= 0){
-                    this.props.showToast("请输入"+Car[i].cars[j].title);
+            for (let j = 0; j < cars.length; j++) {
+                if (cars[j].name <= 0) {
+                    this.props.showToast("请输入" + Car[i].cars[j].title);
                     return;
                 }
             }
         }
-        if(Car[2].cars[1].name !== Car[2].cars[2].name ){
+        if (Car[2].cars[1].name !== Car[2].cars[2].name) {
             this.props.showToast("两次输入的密码不同");
             return;
         }
-
 
 
     }
@@ -200,11 +199,13 @@ export default class EditEmployeeScene extends BaseComponent {
     _navigatorRightView = () => {
         return (
             <TouchableOpacity
-                style={{backgroundColor:'#ffffff',
-                width:Pixel.getPixel(53),height:Pixel.getPixel(27),
-                justifyContent:'center',alignItems:'center',borderRadius:5}}
+                style={{
+                    backgroundColor: '#ffffff',
+                    width: Pixel.getPixel(53), height: Pixel.getPixel(27),
+                    justifyContent: 'center', alignItems: 'center', borderRadius: 5
+                }}
                 activeOpacity={0.8} onPress={() => {
-                    this._completedForEdit()
+                this._completedForEdit()
             }}>
                 <Text style={{
                     color: FontAndColor.COLORB0,
@@ -216,7 +217,7 @@ export default class EditEmployeeScene extends BaseComponent {
         );
     }
 
-/**      row的点击事件          */
+    /**      row的点击事件          */
     _rowAndSectionClick = (rowID, sectionID) => {
         ROWID = rowID;
         SECTIONID = sectionID;
@@ -229,7 +230,7 @@ export default class EditEmployeeScene extends BaseComponent {
         }
     }
 
-    _openModal = (dt,rowId,sectionID) => {
+    _openModal = (dt, rowId, sectionID) => {
         this.selectModal.changeData(dt);
         this.selectModal.openModal();
         this.currentData = dt;
@@ -283,7 +284,7 @@ export default class EditEmployeeScene extends BaseComponent {
         );
 
         this.setState({
-            source:ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
+            source: ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
         });
     }
 
@@ -292,14 +293,14 @@ export default class EditEmployeeScene extends BaseComponent {
     _renderRow = (rowData, sectionID, rowID) => {
         let HIDDEN;
         let PASSWORD;
-        if((sectionID === 0 && rowID === 0)||sectionID === 2 ){
+        if ((sectionID === 0 && rowID === 0) || sectionID === 2) {
             HIDDEN = false;
         }
         else {
             HIDDEN = true;
         }
 
-        if((sectionID === 2 && rowID === 1)||(sectionID === 2 && rowID === 2) ){
+        if ((sectionID === 2 && rowID === 1) || (sectionID === 2 && rowID === 2)) {
             PASSWORD = true;
         }
         else {
@@ -312,10 +313,12 @@ export default class EditEmployeeScene extends BaseComponent {
                 <View style={styles.rowView}>
 
                     <Text style={styles.rowLeftTitle}>{rowData.title}</Text>
-                    {HIDDEN ?<Text style={[styles.rowRightTitle,]}>{this.state.rowdata? this.state.rowdata:rowData.name}</Text> :
-                        <TextInput ref={sectionID + rowID}  defaultValue={rowData.name} placeholder={"请输入"+ rowData.title } style={styles.inputStyle}
-                                   onChangeText={(text)=>this._textChange(sectionID,rowID,text)}
-                                   password = {PASSWORD}
+                    {HIDDEN ? <Text
+                        style={[styles.rowRightTitle,]}>{this.state.rowdata ? this.state.rowdata : rowData.name}</Text> :
+                        <TextInput ref={sectionID + rowID} defaultValue={rowData.name}
+                                   placeholder={"请输入" + rowData.title } style={styles.inputStyle}
+                                   onChangeText={(text)=>this._textChange(sectionID, rowID, text)}
+                                   password={PASSWORD}
 
                         />}
 
@@ -327,7 +330,7 @@ export default class EditEmployeeScene extends BaseComponent {
             </TouchableOpacity>
         );
     }
-    _textChange=(sectionID,rowID,text)=>{
+    _textChange = (sectionID, rowID, text)=> {
         ROWID = rowID;
         SECTIONID = sectionID;
         Car[SECTIONID].cars[ROWID].name = text;
@@ -365,7 +368,7 @@ const styles = StyleSheet.create({
     },
     rowLeftTitle: {
         marginLeft: Pixel.getPixel(15),
-        width:60,
+        width: 60,
         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),
         color: FontAndColor.COLORA0,
 
@@ -375,14 +378,14 @@ const styles = StyleSheet.create({
         marginRight: Pixel.getPixel(5),
         color: FontAndColor.COLORA0,
         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),
-        textAlign:'right',
+        textAlign: 'right',
 
 
     },
-    inputStyle:{
+    inputStyle: {
         flex: 1,
         marginRight: Pixel.getPixel(5),
-        textAlign:'right',
+        textAlign: 'right',
         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),
         color: FontAndColor.COLORA0,
 
