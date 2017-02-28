@@ -14,11 +14,21 @@ var Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;
 var onePT = 1 / PixelRatio.get(); //一个像素
-let LOGINTYPE;
 export default class AccountSecurity extends BaseComponent {
+
+    constructor(props) {
+        super(props);
+        //初始化方法
+        this.state = {
+            loginType: 0,
+        }
+    }
+
     initFinish = () => {
         StorageUtil.mGetItem(StorageKeyNames.LOGIN_TYPE, (data) => {
-            LOGINTYPE = data.result;
+            this.setState({
+                loginType: data.result
+            });
         });
     }
 
@@ -33,7 +43,7 @@ export default class AccountSecurity extends BaseComponent {
                     leftImageCallBack={this.backPage}/>
 
                 <TouchableOpacity onPress={() => {
-                    if (LOGINTYPE == 1) {
+                    if (this.state.loginType == 1) {
                         this.toNextPage({
                             name: 'LoginFailPwd',
                             component: LoginFailPwd,
@@ -48,7 +58,7 @@ export default class AccountSecurity extends BaseComponent {
                     }
                 }}>
                     <View style={[styles.itemStyle, {marginTop: Pixel.getPixel(15)}]}>
-                        <Text style={styles.centerTextStyle}>{LOGINTYPE == 1 ? "设置密码" : "修改密码"}</Text>
+                        <Text style={styles.centerTextStyle}>{this.state.loginType == 1 ? "设置密码" : "修改密码"}</Text>
                         <Image source={require("./../../../images/mainImage/celljiantou@3x.png")}
                                style={styles.rightImageStyle}/>
                     </View>

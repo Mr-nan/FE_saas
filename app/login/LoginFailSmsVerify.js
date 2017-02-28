@@ -123,7 +123,11 @@ export default class LoginFailSmsVerify extends BaseComponent {
                 });
             }, (error) => {
                 this.refs.verifycode.lodingStatus(false);
-                this.props.showToast("获取失败");
+                if (error.mjson.code == -300 || error.mjson.code == -500) {
+                    this.props.showToast("获取失败");
+                } else {
+                    this.props.showToast(error.mjson.msg + "");
+                }
             });
     }
 
@@ -152,7 +156,11 @@ export default class LoginFailSmsVerify extends BaseComponent {
                         this.props.showToast(response.mjson.msg + "");
                     }
                 }, (error) => {
-                    this.props.showToast("短信验证码获取失败");
+                    if (error.mjson.code == -300 || error.mjson.code == -500) {
+                        this.props.showToast("短信验证码获取失败");
+                    } else {
+                        this.props.showToast(error.mjson.msg + "");
+                    }
                 });
         }
     }
@@ -207,7 +215,11 @@ export default class LoginFailSmsVerify extends BaseComponent {
                         this.props.showToast(response.mjson.msg);
                     }
                 }, (error) => {
-                    this.props.showToast("登录失败");
+                    if (error.mjson.code == -300 || error.mjson.code == -500) {
+                        this.props.showToast("登录失败");
+                    } else {
+                        this.props.showToast(error.mjson.msg + "");
+                    }
                 });
         }
     }

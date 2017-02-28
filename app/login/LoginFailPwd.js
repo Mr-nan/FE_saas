@@ -124,11 +124,16 @@ export default class LoginFailPwd extends BaseComponent {
                 .then((response) => {
                     if (response.mjson.code == "1") {
                         this.props.showToast("设置成功");
+                        this.backPage();
                     } else {
                         this.props.showToast(response.mjson.msg + "");
                     }
                 }, (error) => {
-                    this.props.showToast("设置失败");
+                    if (error.mjson.code == -300 || error.mjson.code == -500) {
+                        this.props.showToast("设置失败");
+                    } else {
+                        this.props.showToast(error.mjson.msg + "");
+                    }
                 });
         }
     }
