@@ -75,32 +75,40 @@ export  default class SelectCompanyScene extends BaseComponent {
                     this.backPage();
                 },
                 (error) => {
-                  this.props.showToast('网络连接失败');
+                    this.props.showToast('网络连接失败');
                 });
     }
 
     _renderRow = (movie, sectionId, rowId) => {
         return (
-            <TouchableOpacity onPress={()=>{
-                  this.setLoan(movie);
-            }} activeOpacity={0.8}
-                              style={{width:width,height:Pixel.getPixel(77),
-                backgroundColor: '#fff',paddingLeft:Pixel.getPixel(15),
-                paddingRight:Pixel.getPixel(15),flexDirection:'row'}}>
-                <View style={{flex:1,justifyContent:'center'}}>
-                    <Image style={{width:Pixel.getPixel(38),height:Pixel.getPixel(33)}}
+            <TouchableOpacity
+                onPress={()=> {
+                    this.setLoan(movie);
+                }}
+                activeOpacity={0.8}
+                style={{
+                    width: width, height: Pixel.getPixel(77),
+                    backgroundColor: '#fff', paddingLeft: Pixel.getPixel(15),
+                    paddingRight: Pixel.getPixel(15), flexDirection: 'row'
+                }}>
+                <View style={{flex: 1, justifyContent: 'center'}}>
+                    <Image style={{width: Pixel.getPixel(38), height: Pixel.getPixel(33)}}
                            source={require('../../images/financeImages/companyIcon.png')}></Image>
                 </View>
-                <View style={{flex:4,justifyContent:'center'}}>
+                <View style={{flex: 4, justifyContent: 'center'}}>
                     <Text
-                        style={{fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),color:fontAndColor.COLORA0}}>
+                        style={{fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30), color: fontAndColor.COLORA0}}>
                         {movie.companyname}</Text>
                     <Text
-                        style={{fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),color:fontAndColor.COLORA1,marginTop:Pixel.getPixel(10)}}>
+                        style={{
+                            fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                            color: fontAndColor.COLORA1,
+                            marginTop: Pixel.getPixel(10)
+                        }}>
                         授信额度{movie.credit_mny / 10000}万</Text>
                 </View>
-                <View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
-                    <Image style={{width:Pixel.getPixel(12),height:Pixel.getPixel(12)}}
+                <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
+                    <Image style={{width: Pixel.getPixel(12), height: Pixel.getPixel(12)}}
                            source={require('../../images/mainImage/celljiantou.png')}/>
                 </View>
             </TouchableOpacity>
