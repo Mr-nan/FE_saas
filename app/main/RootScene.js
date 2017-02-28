@@ -43,7 +43,7 @@ export default class RootScene extends BaseComponent {
                 //         }
                 //     }
                 // });
-                that.navigatorParams.component = MainPage;
+                that.navigatorParams.component = lendMoney;
                 that.toNextPage(that.navigatorParams);
 
             }, 500

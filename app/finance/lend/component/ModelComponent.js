@@ -22,6 +22,57 @@ import {CommenButton} from './ComponentBlob'
 
 import dismissKeyboard from 'dismissKeyboard';
 
+
+export class LendSuccessAlert extends Component{
+
+    state={
+        show:false,
+    }
+
+    setModelVisible=(value)=>{
+
+        this.setState({
+            show:value
+        })
+    }
+    confimClick=()=>{
+
+        const {confimClick}=this.props;
+
+        this.setModelVisible(false);
+        confimClick();
+
+    }
+
+    render(){
+
+        return(
+
+            <Modal animationType='none'
+                   transparent={true}
+                   visible={this.state.show}
+                   onShow={() => {
+                   }}
+                   onRequestClose={() => {
+                   }}
+            >
+                <TouchableOpacity style={commentAlertStyle.mask} activeOpacity={1} onPress={()=>{
+                    dismissKeyboard();
+                }}>
+                    <View style={commentAlertStyle.container}>
+                        <Text style={commentAlertStyle.title}>提示</Text>
+                        <Text style={commentAlertStyle.subtitle}>申请借款成功</Text>
+                        <View style={commentAlertStyle.successWarp}>
+                            <CommenButton buttonStyle={[commentAlertStyle.successButton,{marginBottom:adapeSize(20)}, commentAlertStyle.buttonLeft]} onPress={this.confimClick} title="好的"/>
+                        </View>
+                    </View>
+                </TouchableOpacity>
+            </Modal>
+        )
+    }
+
+}
+
 //修改借款金额
 export class ModifyBorrowing extends Component{
 
@@ -206,6 +257,8 @@ export class ModalList extends PureComponent{
 
 
 
+
+
 export class ModalAlert extends PureComponent{
 
 
@@ -231,7 +284,6 @@ export class ModalAlert extends PureComponent{
 
 
     render(){
-
 
         return(
 
@@ -289,7 +341,7 @@ export  class ModalCGD extends PureComponent{
             show:false,
         })
 
-        getValue('1')
+        getValue('2')
     }
 
     focusClick=()=>{
@@ -299,7 +351,7 @@ export  class ModalCGD extends PureComponent{
             selected: foncus,
             show:false,
         })
-        getValue('2')
+        getValue('1')
 
     }
 
@@ -402,6 +454,10 @@ const commentAlertStyle=StyleSheet.create({
         marginTop:adapeSize(30),
         fontSize:adapeSize(17),
     },
+    subtitle:{
+        marginTop:adapeSize(10),
+        fontSize:adapeSize(17),
+    },
     buttonsWarp:{
 
         flexDirection:'row',
@@ -409,6 +465,12 @@ const commentAlertStyle=StyleSheet.create({
         alignItems:'center',
     },
 
+    successWarp:{
+
+        flexDirection:'row',
+        marginTop:adapeSize(30),
+        alignItems:'center',
+    },
     buttonstyle:{
 
         width:adapeSize(100),
@@ -428,8 +490,16 @@ const commentAlertStyle=StyleSheet.create({
     buttonRight:{
 
         backgroundColor:PAGECOLOR.COLORA4
-    }
+    },
+    successButton:{
 
+        width:adapeSize(160),
+        height:adapeSize(44),
+        backgroundColor:'blue',
+        alignItems:'center',
+        justifyContent:'center',
+        borderRadius:5,
+    },
 
 
 })
