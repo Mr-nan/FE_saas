@@ -9,7 +9,7 @@ import {
 
 import BaseComponent from '../component/BaseComponent';
 import MyButton from '../component/MyButton';
-
+import lendMoney from '../finance/lend/LendMoneyScene'
 var {height, width} = Dimensions.get('window');
 import MainPage from './MainPage';
 import LoginAndRegister from '../login/LoginAndRegister';

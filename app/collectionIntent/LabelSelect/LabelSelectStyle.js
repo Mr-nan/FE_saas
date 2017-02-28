@@ -53,7 +53,7 @@ export default StyleSheet.create({
         color: FontAndColor.COLORA2
     },
     closeContainer: {
-        paddingLeft: Pixel.getPixel(13),
+        paddingLeft: Pixel.getPixel(3),
         paddingRight: Pixel.getPixel(3),
 
     },

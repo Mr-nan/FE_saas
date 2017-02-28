@@ -22,6 +22,8 @@ import CouponAllScene from '../mine/couponManage/CouponAllScene'
 import Setting from './../mine/setting/Setting'
 import  CarCollectSourceScene from '../carSource/CarCollectSourceScene';
 import  BrowsingHistoryScene from '../carSource/BrowsingHistoryScene';
+
+import EditEmployeeScene  from '../mine/employeeManage/EditEmployeeScene'
 const cellJianTou = require('../../images/mainImage/celljiantou.png');
 const Car = [
     {
@@ -92,7 +94,7 @@ const Car = [
     },
 ]
 
-// let Car = require('./Car.json');
+
 /*
  * 获取屏幕的宽和高
  **/
@@ -199,8 +201,8 @@ export default class MineSectionListView extends Component {
                 this.navigatorParams.component = ContractManageScene
                 break;
             case '员工管理':
-                this.navigatorParams.name = 'EmployeeManageScene'
-                this.navigatorParams.component = EmployeeManageScene
+                this.navigatorParams.name = 'EditEmployeeScene'
+                this.navigatorParams.component = EditEmployeeScene
                 break;
             case '我的车源':
                 this.navigatorParams.name = 'MycarScene'

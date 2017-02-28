@@ -18,6 +18,8 @@ import LoginInputText from "./component/LoginInputText";
 import SetPwd from "./SetPwd";
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
+import md5 from "react-native-md5";
+
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
@@ -117,8 +119,8 @@ export default class LoginFailPwd extends BaseComponent {
             this.props.showToast("两次密码输入不一致");
         } else {
             let maps = {
-                confirm_pwd: newPasswordAgain,
-                pwd: newPassword,
+                confirm_pwd: md5.hex_md5( newPasswordAgain ),
+                pwd:md5.hex_md5( newPassword ) ,
             };
             request(AppUrls.SETPWD, 'Post', maps)
                 .then((response) => {
@@ -137,8 +139,6 @@ export default class LoginFailPwd extends BaseComponent {
                 });
         }
     }
-
-
 }
 
 const styles = StyleSheet.create({

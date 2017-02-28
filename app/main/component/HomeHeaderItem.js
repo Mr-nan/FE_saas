@@ -53,8 +53,6 @@ export default class HomeHeaderItem extends Component {
                     <Text style={styles.functionTitleStytle}>{this.props.functionTitle }</Text>
                     <Text style={styles.describeTitleStytle}>{this.props.describeTitle }</Text>
                 </View>
-
-
             </TouchableOpacity>
 
         );
