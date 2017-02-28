@@ -18,6 +18,7 @@ import ImagePicker from "react-native-image-picker";
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 import LoginScene from './LoginScene';
+import md5 from "react-native-md5";
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -210,8 +211,8 @@ export default class Register extends BaseComponent {
             let maps = {
                 user_name: name,
                 phone: userName,
-                pwd: password,
-                confirm_pwd: passwoedAgain,
+                pwd: md5.hex_md5(password),
+                confirm_pwd: md5.hex_md5(passwoedAgain),
                 merchant_name: businessName,
                 code: smsCode,
                 device_code: "dycd_dms_manage_android",
