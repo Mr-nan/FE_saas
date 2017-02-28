@@ -21,7 +21,7 @@ const request = (url, method, params) => {
             if (data.code === 1) {
                 token = data.result;
             }
-            console.log('token==='+token);
+            console.log('token===' + token);
             let device_code = '';
 
             if (Platform.OS === 'android') {
@@ -29,7 +29,7 @@ const request = (url, method, params) => {
             } else {
                 device_code = 'dycd_dms_manage_android';
             }
-            fetch(url + '?token=' + token + '&device_code=' + device_code, {
+            fetch(url + '?token=' + token + '&device_code=' + device_code+'&'+body, {
                 method,
                 body
             })
@@ -44,6 +44,10 @@ const request = (url, method, params) => {
                 })
                 .then((responseData) => {
                     if (isOk) {
+                        for (let key of Object.keys(params)) {
+                            // console.log(key+"===" + params[key]);
+                        }
+                        // console.log(url + '?token=' + token + '&device_code=' + device_code);
                         console.log("success----------" + JSON.stringify(responseData));
                         if (responseData.code == 1) {
                             resolve({mjson: responseData, mycode: 1});

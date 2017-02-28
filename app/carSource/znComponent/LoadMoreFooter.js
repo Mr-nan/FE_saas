@@ -4,6 +4,9 @@ import {
     Text,
     StyleSheet,
 } from 'react-native';
+
+import * as fontAnColor from '../../constant/fontAndColor'
+
 class LoadMoreFooter extends Component {
     constructor(props) {
         super(props);
@@ -26,8 +29,8 @@ const styles = StyleSheet.create({
     },
     footerTitle: {
         marginLeft: 10,
-        fontSize: 15,
-        color: 'gray'
+        fontSize: fontAnColor.CONTENTFONT24,
+        color: fontAnColor.COLORA0,
     }
 })
 

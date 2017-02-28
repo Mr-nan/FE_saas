@@ -70,7 +70,13 @@ export default class GesturePassword extends BaseComponent {
                 Bottom={
                     <View style={{marginTop: Height / 2 * 0.95, flexDirection: 'row'}}>
                         <TouchableOpacity onPress={() => {
-                            StorageUtil.mSetItem(StorageKeyNames.GESTURE, '');
+                            StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
+                                if (data.code === 1) {
+                                    if (data.result != null) {
+                                        StorageUtil.mRemoveItem(data.result + "");
+                                    }
+                                }
+                            })
                             StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'false');
                             this.loginPage({name: 'LoginScene', component: LoginScene});
                         }}>
