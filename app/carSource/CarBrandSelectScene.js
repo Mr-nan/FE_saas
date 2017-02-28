@@ -21,6 +21,8 @@ import {
 import BaseComponent from '../component/BaseComponent';
 import *as fontAnColor from '../constant/fontAndColor';
 import NavigationView from '../component/AllNavigationView';
+import StorageUtil      from '../utils/StorageUtil';
+import * as StorageKeyName   from '../constant/storageKeyNames';
 import PixelUtil from '../utils/PixelUtil';
 var Pixel = new PixelUtil();
 
@@ -29,7 +31,6 @@ import * as AppUrls from "../constant/appUrls";
 
 // const carData = require('./carData');
 
-const footprintData = ['A6L', '捷达王', '汉难达', '奥拓'];
 let status  = 0;
 let series_name = '';
 let carData = new  Array;
@@ -61,6 +62,7 @@ export default class CarBrandSelectScene extends BaseComponent {
             return dataBlob[sectionID + ":" + rowID];
         };
 
+        this.getFootprintData();
 
         const dataSource =  new ListView.DataSource({
                 getSectionData: getSectionData,
@@ -68,6 +70,7 @@ export default class CarBrandSelectScene extends BaseComponent {
                 rowHasChanged: (r1, r2) => r1 !== r2,
                 sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
             });
+
         this.state = {
 
             renderPlaceholderOnly: true,
@@ -76,6 +79,7 @@ export default class CarBrandSelectScene extends BaseComponent {
             carTypeCheckend: '',
             carSeriesData: [],
             sectionTitleArray: [],
+            footprintData:[],
 
         };
 
@@ -84,7 +88,26 @@ export default class CarBrandSelectScene extends BaseComponent {
     componentWillMount() {
 
         this.loadData();
+
     }
+
+    getFootprintData=()=>{
+
+        StorageUtil.mGetItem(StorageKeyName.CAR_TYPE_FOOTMARK,(data)=>{
+
+            if(data.code==1){
+                if(data.result){
+                    this.setState({
+
+                        footprintData:JSON.parse(data.result),
+                    });
+                }
+
+            }
+
+        })
+    }
+
 
     loadData = ()=> {
 
@@ -95,7 +118,6 @@ export default class CarBrandSelectScene extends BaseComponent {
 
         }).then((response) => {
 
-            console.log(response);
             this.setListData(response.mjson.data);
 
         }, (error) => {
@@ -219,6 +241,7 @@ export default class CarBrandSelectScene extends BaseComponent {
 
     };
 
+
     render() {
         if (this.state.renderPlaceholderOnly) {
             return (
@@ -233,14 +256,19 @@ export default class CarBrandSelectScene extends BaseComponent {
         return (
             <View style={styles.rootContainer}>
                 {
-                    this.props.status == 1 &&(<View style={styles.carBrandHeadView}>
+                    (this.props.status == 1 && this.state.footprintData.length>0) &&(<View style={styles.carBrandHeadView}>
                         <Text style={styles.carBrandHeadText}>足迹:</Text>
                         {
-                            footprintData.map((data, index) => {
+                            this.state.footprintData.map((data, index) => {
                                 return (
-                                    <View style={styles.footprintView} key={index}>
-                                        <Text style={styles.footprintText}>{data}</Text>
-                                    </View>)
+                                    <TouchableOpacity key={index} onPress={()=>{
+
+                                        this._checkedCarType(data);
+                                    }}>
+                                    <View style={styles.footprintView}>
+                                        <Text style={styles.footprintText}>{data.series_name}</Text>
+                                    </View>
+                                        </TouchableOpacity>)
                             })
                         }
                     </View>)
@@ -248,7 +276,7 @@ export default class CarBrandSelectScene extends BaseComponent {
                 {
                     this.state.dataSource && (
                         <ListView ref="listView"
-                                  style={[{flex:1}, this.props.status==0 && {marginTop: Pixel.getTitlePixel(64)}]}
+                                  style={[{flex:1}, (this.props.status==0 || this.state.footprintData.length==0) && {marginTop: Pixel.getTitlePixel(64)}]}
                                   dataSource={this.state.dataSource}
                                   renderRow={this.renderRow}
                                   renderSectionHeader={this.renderSectionHeader}
@@ -274,7 +302,8 @@ export default class CarBrandSelectScene extends BaseComponent {
                             data={this.state.carSeriesData}
                             title={this.state.carTypeCheckend}
                             checkedCarType={this.props.checkedCarType}
-                            checkedCarClick={this._checkedCarType}/>
+                            checkedCarClick={this._checkedCarType}
+                            footprintData = {this.state.footprintData}/>
                     )
                 }
 
@@ -286,23 +315,23 @@ export default class CarBrandSelectScene extends BaseComponent {
 class CarSeriesList extends Component {
 
     componentWillReceiveProps(nextProps) {
-        isCheckedCarModel = false;
+        this.refs.subListView.scrollTo({x: 0, y: 0, animated: true});
         this.setState({
-            dataSource: this.ds.cloneWithRows(nextProps.data),
+            dataSource: this.state.dataSource.cloneWithRows(nextProps.data),
             isCheckedCarModel:false,
         });
     }
     constructor(props) {
         super(props);
-
-        this.ds =new ListView.DataSource({rowHasChanged: (r1, r2) => r1 == r2})
+        const ds =new ListView.DataSource({rowHasChanged: (r1, r2) => r1 != r2})
         this.state = {
-            dataSource: this.ds.cloneWithRows(this.props.data),
+            dataSource: ds.cloneWithRows(this.props.data),
             valueRight:new Animated.Value(0),
             isCheckedCarModel:false,
 
         };
     }
+
 
     loadCarModelsData=(carBrandID,series_ID,carBrandName)=>{
 
@@ -338,12 +367,50 @@ class CarSeriesList extends Component {
 
     }
 
+    saveFootprintData =(carObject)=>{
+
+
+        let isEqual = false;
+        let footprintArrar = this.props.footprintData;
+        let newArray = new Array;
+
+        if(footprintArrar.length>0){
+
+            newArray.push(carObject);
+
+            footprintArrar.map((data,index)=>{
+
+                if(carObject.series_name == data.series_name){
+
+                    isEqual = true;
+                }
+
+                if(index<3)
+                {
+                    newArray.push(data);
+                }
+
+            });
+
+        }else{
+
+            newArray.push(carObject);
+        }
+        console.log("足迹"+newArray);
+
+        if(!isEqual){
+            StorageUtil.mSetItem(StorageKeyName.CAR_TYPE_FOOTMARK,JSON.stringify(newArray));
+        }
+
+
+
+    }
+
     // 每一行中的数据
     renderRow = (rowData) => {
         return (
 
             <TouchableOpacity onPress={() => {
-
 
                 if(status==0){
                     if(this.state.isCheckedCarModel){
@@ -357,13 +424,18 @@ class CarSeriesList extends Component {
 
                 }else {
 
-                    this.props.checkedCarClick({brand_id:rowData.brand_id,series_id:rowData.series_id,series_name:rowData.series_name,model_id:rowData.model_id,model_name:rowData.model_name});
+                    let carObject = {brand_id:rowData.brand_id,series_id:rowData.series_id,series_name:rowData.series_name,model_id:rowData.model_id,model_name:rowData.model_name};
+                    this.saveFootprintData(carObject);
+                    this.props.checkedCarClick(carObject);
 
                 }
 
             }}>
                 <View style={styles.rowCell}>
-                    <Text style={[styles.rowCellText, this.props.checkedCarType == (this.state.isCheckedCarModel?rowData.model_name:rowData.series_name) && {color: fontAnColor.COLORB0}]}>{this.state.isCheckedCarModel?rowData.model_name:rowData.series_name}</Text>
+                    <Text style={[styles.rowCellText,
+                        this.props.checkedCarType ==
+                        (this.state.isCheckedCarModel?rowData.model_name:rowData.series_name) &&
+                        {color: fontAnColor.COLORB0}]}>{this.state.isCheckedCarModel?rowData.model_name:rowData.series_name}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -394,7 +466,7 @@ class CarSeriesList extends Component {
                 </View>
                 {
                    this.state.dataSource &&
-                    <ListView
+                    <ListView ref="subListView"
                         style={{flex: 1}}
                         dataSource={this.state.dataSource}
                         renderRow={this.renderRow}
