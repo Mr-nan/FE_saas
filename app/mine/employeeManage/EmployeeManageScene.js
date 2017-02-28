@@ -43,16 +43,20 @@ export default class EmployeeManageScene extends BaseComponent {
 
     getData = () => {
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        request('http://dev.api-gateway.dycd.com/' + 'v1/user.employe/index', 'Post', {
+        request('http://dev.api-gateway.dycd.com/v1/user.employee/index', 'Post', {
 
 
         })
             .then((response) => {
+             if(response.mjson.data==null || response.mjson.data.length<=0){
+                 this.setState({renderPlaceholderOnly: 'null'});
+             }else{
+                 this.setState({
+                     dataSource: ds.cloneWithRows(response.mjson.data)
+                 });
+                 this.setState({renderPlaceholderOnly: 'success'});
+             }
 
-                    this.setState({
-                        dataSource: ds.cloneWithRows(response.mjson.data)
-                    });
-                    this.setState({renderPlaceholderOnly: 'success'});
                 },
                 (error) => {
                     console.log(error);
@@ -96,7 +100,7 @@ export default class EmployeeManageScene extends BaseComponent {
                     renderRihtFootView={this._navigatorRightView}
                 />
                 <ListView
-                    contentContainerStyle={styles.listStyle}
+                    style={styles.listStyle}
                     dataSource={this.state.dataSource}
                     renderRow={this._renderRow}
                 />
@@ -126,15 +130,15 @@ export default class EmployeeManageScene extends BaseComponent {
         return (
             <View style={styles.rowView}>
                 <View style={styles.rowLeft}>
-                    <View style={{flexDirection: 'row'}}>
-                        <Text style={styles.rowLeftTitle}>王先生</Text>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <Text style={styles.rowLeftTitle}>{rowData.username}</Text>
                         <View
-                            style={[styles.employeeStyle, selectionID==='1'&& {borderColor: fontAndClolr.COLORB3},selectionID==='2'&& {borderColor: fontAndClolr.COLORB1}]}>
+                            style={[styles.employeeStyle, rowData.role==='财务'&& {borderColor: fontAndClolr.COLORB3},rowData.role==='员工'&& {borderColor: fontAndClolr.COLORB1}]}>
                             <Text
-                                style={[styles.employeeText, selectionID==='1'&& {color: fontAndClolr.COLORB3},selectionID==='2'&& {color: fontAndClolr.COLORB1}]}>管理员</Text>
+                                style={[styles.employeeText, rowData.role==='财务'&& {color: fontAndClolr.COLORB3},rowData.role==='员工'&& {color: fontAndClolr.COLORB1}]}>{rowData.role}</Text>
                         </View>
                     </View>
-                    <Text style={styles.rowLeftTitle1}>第一车贷二手公司</Text>
+                    <Text style={styles.rowLeftTitle1}>{rowData.company}</Text>
                 </View>
                 <TouchableOpacity
                     style={styles.buttonStyle}
@@ -185,11 +189,7 @@ const styles = StyleSheet.create({
         backgroundColor: fontAndClolr.COLORA3,
     },
     listStyle: {
-        marginTop: Pixel.getPixel(15)
-    },
-    sectionView: {
-        height: Pixel.getPixel(10),
-        backgroundColor: fontAndClolr.COLORA3,
+        marginTop:  Pixel.getTitlePixel(84),
     },
     rowView: {
         height: Pixel.getPixel(83),
@@ -202,11 +202,11 @@ const styles = StyleSheet.create({
     rowLeftTitle: {
         fontSize: Pixel.getFontPixel(15),
         color: fontAndClolr.COLORA0,
-        marginRight: Pixel.getPixel(5)
+        marginRight: Pixel.getPixel(5),
 
     },
     rowLeftTitle1: {
-        fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT24),
+        fontSize: Pixel.getFontPixel(fontAndClolr.CONTENTFONT24),
         color: fontAndClolr.COLORA1,
         marginTop: Pixel.getPixel(5)
 
@@ -236,11 +236,13 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: fontAndClolr.COLORB4,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingHorizontal: Pixel.getPixel(3),
+        height:  Pixel.getPixel(17)
     },
     employeeText: {
         color: fontAndClolr.COLORB4,
-        fontSize: Pixel.getPixel(12),
+        fontSize: Pixel.getPixel(11),
     }
 
 
