@@ -23,6 +23,7 @@ const request = (url, method, params) => {
             }
             console.log('token===' + token);
             let device_code = '';
+
             if (Platform.OS === 'android') {
                 device_code = 'dycd_dms_manage_android';
             } else {

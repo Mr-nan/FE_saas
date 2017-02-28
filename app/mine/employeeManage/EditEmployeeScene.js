@@ -7,7 +7,8 @@ import  {
     StyleSheet,
     Dimensions,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    TextInput
 } from  'react-native'
 
 import * as FontAndColor from '../../constant/fontAndColor';
@@ -17,8 +18,10 @@ import MyButton from '../../component/MyButton';
 import SelectMaskComponent from './SelectMaskComponent'
 import NavigationView from '../../component/AllNavigationView';
 import BaseComponent from '../../component/BaseComponent';
-
-var Pixel = new PixelUtil();
+let ROWID = 0;
+let ds={};
+let SECTIONID = 0;
+let  Pixel = new PixelUtil();
 const Car = [
     {
         "cars": [
@@ -78,13 +81,13 @@ export default class EditEmployeeScene extends BaseComponent {
         super(props);
         // 初始状态
         //    拿到所有的json数据
-        var jsonData = Car;
+        let jsonData = Car;
 
         //    定义变量
-        var dataBlob = {},
+        let dataBlob = {},
             sectionIDs = [],
             rowIDs = [];
-        for (var i = 0; i < jsonData.length; i++) {
+        for (let i = 0; i < jsonData.length; i++) {
             //    1.拿到所有的sectionId
             sectionIDs.push(i);
 
@@ -95,10 +98,10 @@ export default class EditEmployeeScene extends BaseComponent {
             rowIDs[i] = [];
 
             //    4.取出改组中所有的数据
-            var cars = jsonData[i].cars;
+            let cars = jsonData[i].cars;
 
             //    5.便利cars,设置每组的列表数据
-            for (var j = 0; j < cars.length; j++) {
+            for (let j = 0; j < cars.length; j++) {
                 //    改组中的每条对应的rowId
                 rowIDs[i].push(j);
 
@@ -114,7 +117,7 @@ export default class EditEmployeeScene extends BaseComponent {
         let getRowData = (dataBlob, sectionID, rowID) => {
             return dataBlob[sectionID + ":" + rowID];
         };
-        const ds = new ListView.DataSource({
+        ds = new ListView.DataSource({
                 getSectionData: getSectionData,
                 getRowData: getRowData,
                 rowHasChanged: (r1, r2) => r1 !== r2,
@@ -127,43 +130,73 @@ export default class EditEmployeeScene extends BaseComponent {
         this.gongsi = ['123', '234', '3345', 'wert', 'egs'];
         this.state = {
             source: ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
-            maskSource: this.xb
+            maskSource: this.xb,
+            rowdata:null,
 
         };
     }
 
-    _onClick = (rowID) => {
-        console.log(this.state.maskSource[rowID]);
-    }
+
 
     render() {
         return (
             <View style={styles.container}>
+                {/**      导航栏          */}
                 <NavigationView
-                    title="编辑员工"
                     backIconClick={this.backPage}
-                    renderRihtFootView={this._navigatorRightView}
+                    title="编辑员工"
+                        renderRihtFootView={this._navigatorRightView}
                 />
-                <SelectMaskComponent viewData={this.state.maskSource} onClick={(rowID)=>this._onClick(rowID)}
+
+                   {/*              蒙版选择器        */}
+                <SelectMaskComponent viewData={[]} onClick={(rowID)=>this._onClick(rowID)}
                                      ref={(modal)=> {
                                          this.selectModal = modal
                                      }}/>
+
+                { /**      界面listview          */}
                 <ListView
                     style={styles.listStyle}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSectionHeader={this._renderSectionHeader}
                 />
+
+                {/**      注销按钮          */}
                 <MyButton buttonType={MyButton.TEXTBUTTON}
                           content={'注销'}
                           parentStyle={styles.loginBtnStyle}
                           childStyle={styles.loginButtonTextStyle}
-                          mOnPress={this.loginOut}/>
+                          mOnPress={this._loginOut}/>
 
             </View>
         );
     }
+    /**      注销按钮点击事件          */
+    _loginOut = () =>{
+        alert("点击了注销按钮");
 
+    }
+    /**      导航栏完成按钮点击事件          */
+    _completedForEdit = () =>{
+        for(let i=0;i<Car.length;i++){
+            let cars = Car[i].cars;
+            for (let j=0;j<cars.length;j++){
+                if(cars[j].name <= 0){
+                    this.props.showToast("请输入"+Car[i].cars[j].title);
+                    return;
+                }
+            }
+        }
+        if(Car[2].cars[1].name !== Car[2].cars[2].name ){
+            this.props.showToast("两次输入的密码不同");
+            return;
+        }
+
+
+
+    }
+    /**      导航栏右侧按钮          */
     _navigatorRightView = () => {
         return (
             <TouchableOpacity
@@ -171,7 +204,7 @@ export default class EditEmployeeScene extends BaseComponent {
                 width:Pixel.getPixel(53),height:Pixel.getPixel(27),
                 justifyContent:'center',alignItems:'center',borderRadius:5}}
                 activeOpacity={0.8} onPress={() => {
-
+                    this._completedForEdit()
             }}>
                 <Text style={{
                     color: FontAndColor.COLORB0,
@@ -183,8 +216,10 @@ export default class EditEmployeeScene extends BaseComponent {
         );
     }
 
-
+/**      row的点击事件          */
     _rowAndSectionClick = (rowID, sectionID) => {
+        ROWID = rowID;
+        SECTIONID = sectionID;
         if (sectionID === 0 && rowID === 1) {
             this._openModal(this.xb);
         } else if (sectionID === 1 && rowID === 0) {
@@ -194,13 +229,82 @@ export default class EditEmployeeScene extends BaseComponent {
         }
     }
 
-    _openModal = (dt) => {
+    _openModal = (dt,rowId,sectionID) => {
         this.selectModal.changeData(dt);
-        this.selectModal.openModal()
+        this.selectModal.openModal();
+        this.currentData = dt;
     }
+    /**      蒙版listview  点击选择,返回点击cell的id          */
+    _onClick = (rowID) => {
+
+        Car[SECTIONID].cars[ROWID].name = this.currentData[rowID];
+        let jsonData = Car;
+
+        //    定义变量
+        let dataBlob = {},
+            sectionIDs = [],
+            rowIDs = [];
+        for (let i = 0; i < jsonData.length; i++) {
+            //    1.拿到所有的sectionId
+            sectionIDs.push(i);
+
+            //    2.把组中的内容放入dataBlob内容中
+            dataBlob[i] = jsonData[i].title;
+
+            //    3.设置改组中每条数据的结构
+            rowIDs[i] = [];
+
+            //    4.取出改组中所有的数据
+            let cars = jsonData[i].cars;
+
+            //    5.便利cars,设置每组的列表数据
+            for (let j = 0; j < cars.length; j++) {
+                //    改组中的每条对应的rowId
+                rowIDs[i].push(j);
+
+                // 把每一行中的内容放入dataBlob对象中
+                dataBlob[i + ':' + j] = cars[j];
+            }
+        }
+
+        let getSectionData = (dataBlob, sectionID) => {
+            return dataBlob[sectionID];
+        };
+
+        let getRowData = (dataBlob, sectionID, rowID) => {
+            return dataBlob[sectionID + ":" + rowID];
+        };
+        ds = new ListView.DataSource({
+                getSectionData: getSectionData,
+                getRowData: getRowData,
+                rowHasChanged: (r1, r2) => r1 !== r2,
+                sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
+            }
+        );
+
+        this.setState({
+            source:ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
+        });
+    }
+
 
     // 每一行中的数据
     _renderRow = (rowData, sectionID, rowID) => {
+        let HIDDEN;
+        let PASSWORD;
+        if((sectionID === 0 && rowID === 0)||sectionID === 2 ){
+            HIDDEN = false;
+        }
+        else {
+            HIDDEN = true;
+        }
+
+        if((sectionID === 2 && rowID === 1)||(sectionID === 2 && rowID === 2) ){
+            PASSWORD = true;
+        }
+        else {
+            PASSWORD = false;
+        }
 
         return (
             <TouchableOpacity onPress={()=>this._rowAndSectionClick(rowID, sectionID)
@@ -208,13 +312,25 @@ export default class EditEmployeeScene extends BaseComponent {
                 <View style={styles.rowView}>
 
                     <Text style={styles.rowLeftTitle}>{rowData.title}</Text>
-                    <Text style={styles.rowRightTitle}>{rowData.name }</Text>
+                    {HIDDEN ?<Text style={[styles.rowRightTitle,]}>{this.state.rowdata? this.state.rowdata:rowData.name}</Text> :
+                        <TextInput ref={sectionID + rowID}  defaultValue={rowData.name} placeholder={"请输入"+ rowData.title } style={styles.inputStyle}
+                                   onChangeText={(text)=>this._textChange(sectionID,rowID,text)}
+                                   password = {PASSWORD}
+
+                        />}
+
+
                     <Image source={cellJianTou} style={styles.rowjiantouImage}/>
 
 
                 </View>
             </TouchableOpacity>
         );
+    }
+    _textChange=(sectionID,rowID,text)=>{
+        ROWID = rowID;
+        SECTIONID = sectionID;
+        Car[SECTIONID].cars[ROWID].name = text;
     }
     // 每一组对应的数据
     _renderSectionHeader(sectionData, sectionId) {
@@ -249,15 +365,27 @@ const styles = StyleSheet.create({
     },
     rowLeftTitle: {
         marginLeft: Pixel.getPixel(15),
-        flex: 1,
+        width:60,
         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),
         color: FontAndColor.COLORA0,
 
     },
     rowRightTitle: {
+        flex: 1,
         marginRight: Pixel.getPixel(5),
-        color: FontAndColor.COLORA1,
+        color: FontAndColor.COLORA0,
         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),
+        textAlign:'right',
+
+
+    },
+    inputStyle:{
+        flex: 1,
+        marginRight: Pixel.getPixel(5),
+        textAlign:'right',
+        fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),
+        color: FontAndColor.COLORA0,
+
 
     },
     rowjiantouImage: {

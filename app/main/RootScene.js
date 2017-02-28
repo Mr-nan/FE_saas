@@ -23,24 +23,29 @@ export default class RootScene extends BaseComponent {
         let that = this;
         setTimeout(
             () => {
-                StorageUtil.mGetItem(KeyNames.ISLOGIN, (res) => {
 
-                    if (res.result!== StorageUtil.ERRORCODE) {
-                        if (res.result == null) {
-                            that.navigatorParams.component = lendMoney;
-                            that.toNextPage(that.navigatorParams);
-                        } else {
-                            if (res.result == "true") {
-                                that.navigatorParams.component = MainPage;
-                                that.navigatorParams.params = {}
-                                that.toNextPage(that.navigatorParams);
-                            } else {
-                                that.navigatorParams.component = LoginAndRegister;
-                                that.toNextPage(that.navigatorParams);
-                            }
-                        }
-                    }
-                });
+
+                // StorageUtil.mGetItem(KeyNames.ISLOGIN, (res) => {
+                //
+                //     if (res.result!== StorageUtil.ERRORCODE) {
+                //         if (res.result == null) {
+                //             that.navigatorParams.component = LoginAndRegister;
+                //             that.toNextPage(that.navigatorParams);
+                //         } else {
+                //             if (res.result == "true") {
+                //                 that.navigatorParams.component = MainPage;
+                //                 that.navigatorParams.params = {}
+                //                 that.toNextPage(that.navigatorParams);
+                //             } else {
+                //                 that.navigatorParams.component = LoginAndRegister;
+                //                 that.toNextPage(that.navigatorParams);
+                //             }
+                //         }
+                //     }
+                // });
+                that.navigatorParams.component = MainPage;
+                that.toNextPage(that.navigatorParams);
+
             }, 500
         );
     }
