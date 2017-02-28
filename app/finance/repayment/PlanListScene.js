@@ -23,7 +23,8 @@ let movies = MovleData.retdata;
 import BaseComponent from '../../component/BaseComponent';
 import NavigationView from '../../component/AllNavigationView';
 import PlanParentItem from './component/PlanParentItem';
-import OldPlanScene from '../OldPlanListScene';
+import OldPlanScene from './OldPlanListScene';
+import  PlanInfoScene from './PlanInfoScene';
 export  default class PlanListScene extends BaseComponent {
 
     constructor(props) {
@@ -31,21 +32,19 @@ export  default class PlanListScene extends BaseComponent {
         // 初始状态
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            renderPlaceholderOnly: true,
+            renderPlaceholderOnly: 'blank',
             source: ds.cloneWithRows(movies)
         };
     }
 
 
     initFinish = () => {
-        InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: false});
-        });
+        this.setState({renderPlaceholderOnly: 'success'});
     }
 
 
     render() {
-        if (this.state.renderPlaceholderOnly) {
+        if (this.state.renderPlaceholderOnly!=='success') {
             return this._renderPlaceholderView();
         }
         return (
@@ -69,7 +68,7 @@ export  default class PlanListScene extends BaseComponent {
     _renderRow = (movie, sectionId, rowId) => {
         return (
             <PlanParentItem items={movie} mOnPress={(loan_id) => {
-                alert(loan_id);
+                this.toNextPage({name:'PlanInfoScene',component:PlanInfoScene,params:{}});
             }}/>
         )
     }
@@ -89,6 +88,7 @@ export  default class PlanListScene extends BaseComponent {
                     title="还款计划"
                     backIconClick={this.backPage}
                 />
+                {this.loadView()}
             </View>
         );
     }

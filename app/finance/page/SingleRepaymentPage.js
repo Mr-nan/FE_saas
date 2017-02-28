@@ -66,7 +66,9 @@ export  default class SingleRepaymentPage extends Component {
     _renderRow = (movie) => {
 
         return (
-            <View style={[styles.allBack]}>
+            <TouchableOpacity onPress={()=>{
+                this.props.callBack('12');
+            }} activeOpacity={0.8} style={[styles.allBack]}>
                 <View style={[styles.rowViewStyle, styles.margin]}>
                     <View style={[styles.rowTopViewStyle, {justifyContent: 'flex-start', flex: 3,}]}>
                         <MyButton {...this.buttonParams} content="单车"/>
@@ -113,7 +115,7 @@ export  default class SingleRepaymentPage extends Component {
                     </Text>
                 </View>
                 <View style={{width: width, height: Pixel.getPixel(1), backgroundColor: fontAndColor.COLORA4}}></View>
-            </View>
+            </TouchableOpacity>
 
         )
     }

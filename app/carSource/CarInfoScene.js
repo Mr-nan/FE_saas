@@ -123,7 +123,6 @@ export default class CarInfoScene extends BaseComponent {
             id: this.props.carID,
 
         }).then((response) => {
-
             let carData = response.mjson.data;
             carData.carIconsContentData=[
 
@@ -141,11 +140,8 @@ export default class CarInfoScene extends BaseComponent {
                 carData:carData,
                 renderPlaceholderOnly: 'success'
             });
-
         }, (error) => {
             this.setState({renderPlaceholderOnly: 'error'});
-            console.log(error);
-
         });
     }
 
@@ -280,12 +276,15 @@ export default class CarInfoScene extends BaseComponent {
                             </View>
                         </View>
                     </View>
+
+
+
                     {
                         ((typeof(carData.labels)!= "undefined"?carData.labels.length:false)|| carData.describe!=='' || carData.city_name!=='' || carData.plate_number!=='') && (
                             <View style={styles.contentContainer}>
                                 <View style={styles.contentView}>
                                     {
-                                        (typeof(carData.labels)!= "undefined"?carData.labels.length:false) &&
+                                        (typeof(carData.labels)!= "undefined"?(carData.labels.length<=0?false:true):false) &&
                                         (
                                             <View style={styles.carParameterView}>
                                                 {
@@ -301,6 +300,9 @@ export default class CarInfoScene extends BaseComponent {
                                             </View>
                                         )
                                     }
+
+
+
                                     {
                                         carData.describe!==''&& <View style={styles.carDepictView}>
                                             <Text style={styles.carDepictText}>{carData.describe}</Text>
@@ -309,20 +311,20 @@ export default class CarInfoScene extends BaseComponent {
 
                                     <View style={styles.carAddressView}>
                                         <View>
-                                        {
-                                            carData.city_name!==''&&(<View style={styles.carAddressSubView}>
-                                                <Text style={styles.carAddressTitleText}>商户所在地: </Text>
-                                                <Text style={styles.carAddressSubTitleText}>{carData.city_name}</Text>
-                                            </View>)
-                                        }
+                                            {
+                                                carData.city_name!==''&&(<View style={styles.carAddressSubView}>
+                                                    <Text style={styles.carAddressTitleText}>商户所在地: </Text>
+                                                    <Text style={styles.carAddressSubTitleText}>{carData.city_name}</Text>
+                                                </View>)
+                                            }
                                         </View>
                                         <View>
-                                        {
-                                            carData.plate_number!==''&& (<View style={styles.carAddressSubView}>
-                                                <Text style={styles.carAddressTitleText}>挂牌地: </Text>
-                                                <Text style={styles.carAddressSubTitleText}>{carData.plate_number}</Text>
-                                            </View>)
-                                        }
+                                            {
+                                                carData.plate_number!==''&& (<View style={styles.carAddressSubView}>
+                                                    <Text style={styles.carAddressTitleText}>挂牌地: </Text>
+                                                    <Text style={styles.carAddressSubTitleText}>{carData.plate_number}</Text>
+                                                </View>)
+                                            }
                                         </View>
                                     </View>
                                 </View>
@@ -330,6 +332,8 @@ export default class CarInfoScene extends BaseComponent {
                         )
 
                     }
+
+
                     <View style={styles.carIconsContainer}>
                         <View style={styles.carIconsView}>
                             {

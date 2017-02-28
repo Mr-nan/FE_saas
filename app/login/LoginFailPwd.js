@@ -18,6 +18,8 @@ import LoginInputText from "./component/LoginInputText";
 import SetPwd from "./SetPwd";
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
+import md5 from "react-native-md5";
+
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
@@ -117,23 +119,26 @@ export default class LoginFailPwd extends BaseComponent {
             this.props.showToast("两次密码输入不一致");
         } else {
             let maps = {
-                confirm_pwd: newPasswordAgain,
-                pwd: newPassword,
+                confirm_pwd: md5.hex_md5( newPasswordAgain ),
+                pwd:md5.hex_md5( newPassword ) ,
             };
             request(AppUrls.SETPWD, 'Post', maps)
                 .then((response) => {
                     if (response.mjson.code == "1") {
                         this.props.showToast("设置成功");
+                        this.backPage();
                     } else {
                         this.props.showToast(response.mjson.msg + "");
                     }
                 }, (error) => {
-                    this.props.showToast("设置失败");
+                    if (error.mjson.code == -300 || error.mjson.code == -500) {
+                        this.props.showToast("设置失败");
+                    } else {
+                        this.props.showToast(error.mjson.msg + "");
+                    }
                 });
         }
     }
-
-
 }
 
 const styles = StyleSheet.create({

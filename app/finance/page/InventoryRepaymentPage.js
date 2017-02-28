@@ -84,7 +84,9 @@ export  default class InventoryRepaymentPage extends Component {
     _renderRow = (movie) => {
 
         return (
-            <View style={[styles.allBack]}>
+            <TouchableOpacity onPress={()=>{
+                     this.props.callBack('13');
+            }} activeOpacity={0.8} style={[styles.allBack]}>
                 <View style={[styles.rowViewStyle, styles.margin]}>
                     <View style={[styles.rowTopViewStyle, {justifyContent: 'flex-start', flex: 3,}]}>
                         <MyButton {...this.buttonParams} content="库融"/>
@@ -92,7 +94,7 @@ export  default class InventoryRepaymentPage extends Component {
                     </View>
                     <View style={[styles.rowTopViewStyle, {
                         flex: 2,
-                        justifyContent:'flex-end'
+                        justifyContent: 'flex-end'
                     }]}>
                         <Text style={styles.rowTopGrayTextStyle}>201701100225</Text>
                     </View>
@@ -101,37 +103,18 @@ export  default class InventoryRepaymentPage extends Component {
                 <View
                     style={[styles.centerView]}>
                     <View style={[styles.centerChild, styles.margin, {alignItems: 'flex-start'}]}>
-                        <Text style={styles.centerText}>
+                        <Text style={[styles.centerText,{color: fontAndColor.COLORA1}]}>
                             到账日期
-                        </Text>
-                        <Text style={[styles.centerBottomText, {
-                            color: fontAndColor.COLORA0
-                        }]}>
-                            2017-1-20
                         </Text>
                     </View>
                     <View style={[styles.centerChild, styles.margin, {alignItems: 'flex-end'}]}>
-                        <Text style={styles.centerText}>
-                            本息合计
-                        </Text>
-                        <Text style={[styles.centerBottomText, {
-                            color: fontAndColor.COLORB2
-                        }]}>
-                            10万
+                        <Text style={[styles.centerText,{color: fontAndColor.COLORA0}]}>
+                            2017-1-20
                         </Text>
                     </View>
                 </View>
-                <View style={[styles.line]}></View>
-                <View style={[styles.bottomView]}>
-                    <Text style={{
-                        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                        color: fontAndColor.COLORA1
-                    }}>
-                        奔驰M级(进口)2015款 ML 4MATIC 动感型
-                    </Text>
-                </View>
                 <View style={{width: width, height: Pixel.getPixel(1), backgroundColor: fontAndColor.COLORA4}}></View>
-            </View>
+            </TouchableOpacity>
 
         )
     }
@@ -164,15 +147,14 @@ const styles = StyleSheet.create({
     },
     rowTopGrayTextStyle: {
         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT20),
-        color: fontAndColor.COLORA1,
-        backgroundColor:'#00000000'
+        color: fontAndColor.COLORA1
     },
     margin: {
         marginLeft: Pixel.getPixel(15), marginRight: Pixel.getPixel(15),
     },
     parentStyle: {
         borderWidth: 1,
-        borderColor: fontAndColor.COLORB1,
+        borderColor: fontAndColor.COLORB4,
         borderRadius: 3,
         height: Pixel.getPixel(16),
         width: Pixel.getPixel(34),
@@ -181,36 +163,36 @@ const styles = StyleSheet.create({
     },
     childStyle: {
         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-        color: fontAndColor.COLORB1,
+        color: fontAndColor.COLORB4,
     },
     allBack: {
-        width: width, height: Pixel.getPixel(163),backgroundColor:'#ffffff',alignItems:'center'
+        width: width, height: Pixel.getPixel(89), backgroundColor: '#ffffff', alignItems: 'center'
     },
     line: {
-        width: width-Pixel.getPixel(30),
+        width: width - Pixel.getPixel(30),
         height: Pixel.getPixel(1),
         backgroundColor: fontAndColor.COLORA3
     },
     centerView: {
         width: width,
-        height: Pixel.getPixel(72),
+        height: Pixel.getPixel(44),
         flexDirection: 'row'
     },
     centerChild: {
-        flex: 1, height: Pixel.getPixel(72),
+        flex: 1, height: Pixel.getPixel(44),
         justifyContent: 'center'
     },
     centerText: {
-        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-        color: fontAndColor.COLORA1
+        fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+
     },
     centerBottomText: {
         fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
         marginTop: Pixel.getPixel(8)
     },
-    bottomView:{
+    bottomView: {
         height: Pixel.getPixel(44),
         justifyContent: 'center',
-        width:width-Pixel.getPixel(30)
+        width: width - Pixel.getPixel(30)
     }
 })

@@ -30,7 +30,6 @@ export default class BaseComponent extends Component {
             this.setState({renderPlaceholderOnly: 'loading'});
             this.initFinish();
         });
-
     }
 
     initFinish() {

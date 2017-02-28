@@ -18,6 +18,7 @@ import ImagePicker from "react-native-image-picker";
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 import LoginScene from './LoginScene';
+import md5 from "react-native-md5";
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -210,8 +211,8 @@ export default class Register extends BaseComponent {
             let maps = {
                 user_name: name,
                 phone: userName,
-                pwd: password,
-                confirm_pwd: passwoedAgain,
+                pwd: md5.hex_md5(password),
+                confirm_pwd: md5.hex_md5(passwoedAgain),
                 merchant_name: businessName,
                 code: smsCode,
                 device_code: "dycd_dms_manage_android",
@@ -228,7 +229,11 @@ export default class Register extends BaseComponent {
                         this.props.showToast(response.mjson.msg + "");
                     }
                 }, (error) => {
-                    this.props.showToast("注册失败");
+                    if (error.mjson.code == -300 || error.mjson.code == -500) {
+                        this.props.showToast("注册失败");
+                    } else {
+                        this.props.showToast(error.mjson.msg + "");
+                    }
                 });
         }
     }
@@ -259,7 +264,11 @@ export default class Register extends BaseComponent {
                 });
             }, (error) => {
                 this.refs.verifycode.lodingStatus(false);
-                this.props.showToast("获取失败");
+                if (error.mjson.code == -300 || error.mjson.code == -500) {
+                    this.props.showToast("获取失败");
+                } else {
+                    this.props.showToast(error.mjson.msg + "");
+                }
             });
     }
 
@@ -288,7 +297,11 @@ export default class Register extends BaseComponent {
                         this.props.showToast(response.mjson.msg);
                     }
                 }, (error) => {
-                    this.props.showToast("短信验证码获取失败");
+                    if (error.mjson.code == -300 || error.mjson.code == -500) {
+                        this.props.showToast("短信验证码获取失败");
+                    } else {
+                        this.props.showToast(error.mjson.msg + "");
+                    }
                 });
         }
     }
@@ -356,7 +369,11 @@ export default class Register extends BaseComponent {
                     this.props.showToast(response.mjson.msg + "");
                 }
             }, (error) => {
-                this.props.showToast("图片上传失败");
+                if (error.mjson.code == -300 || error.mjson.code == -500) {
+                    this.props.showToast("图片上传失败");
+                } else {
+                    this.props.showToast(error.mjson.msg + "");
+                }
             });
     }
 }

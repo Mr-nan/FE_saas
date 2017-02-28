@@ -27,8 +27,9 @@ import * as StorageKeyNames from "../constant/storageKeyNames";
 import MyButton from "../component/MyButton";
 import LoginFailSmsYes from "./LoginFailSmsYes";
 import SetLoginPwdGesture from "./SetLoginPwdGesture";
-var Pixel = new PixelUtil();
+import md5 from "react-native-md5";
 
+var Pixel = new PixelUtil();
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var onePT = 1 / PixelRatio.get(); //一个像素
@@ -252,7 +253,11 @@ export default class LoginScene extends BaseComponent {
                         this.props.showToast(response.mjson.msg + "");
                     }
                 }, (error) => {
-                    this.props.showToast("获取验证码失败");
+                    if (error.mjson.code == -300 || error.mjson.code == -500) {
+                        this.props.showToast("获取验证码失败");
+                    } else {
+                        this.props.showToast(error.mjson.msg + "");
+                    }
                 });
         }
     }
@@ -274,7 +279,11 @@ export default class LoginScene extends BaseComponent {
                 });
             }, (error) => {
                 this.refs.loginVerifycode.lodingStatus(false);
-                this.props.showToast("获取失败");
+                if (error.mjson.code == -300 || error.mjson.code == -500) {
+                    this.props.showToast("获取失败");
+                } else {
+                    this.props.showToast(error.mjson.msg + "");
+                }
             });
     }
 
@@ -298,12 +307,11 @@ export default class LoginScene extends BaseComponent {
                 device_code: "dycd_dms_manage_android",
                 login_type: "2",
                 phone: userName,
-                pwd: passWord,
+                pwd: md5.hex_md5(passWord),
             };
             request(AppUrls.LOGIN, 'Post', maps)
                 .then((response) => {
                     if (response.mjson.code == "1") {
-                        this.props.showToast("登录成功");
                         // 保存用户登录状态
                         StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
                         StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '2');
@@ -328,9 +336,10 @@ export default class LoginScene extends BaseComponent {
                         StorageUtil.mSetItem(StorageKeyNames.REAL_NAME, response.mjson.data.real_name + "");
                         StorageUtil.mSetItem(StorageKeyNames.TOKEN, response.mjson.data.token + "");
                         StorageUtil.mSetItem(StorageKeyNames.USER_LEVEL, response.mjson.data.user_level + "");
-                        StorageUtil.mGetItem(StorageKeyNames.GESTURE, (data) => {
+
+                        StorageUtil.mGetItem(response.mjson.data.phone + "", (data) => {
                             if (data.code === 1) {
-                                if (data.result != null && data.result.length > 3 && data.result.split(',')[0] == response.mjson.data.phone) {
+                                if (data.result != null) {
                                     this.loginPage(this.loginSuccess)
                                 } else {
                                     this.loginPage(this.setLoginGesture)
@@ -341,7 +350,11 @@ export default class LoginScene extends BaseComponent {
                         this.props.showToast(response.mjson.msg + "");
                     }
                 }, (error) => {
-                    this.props.showToast("登录失败");
+                    if (error.mjson.code == -300 || error.mjson.code == -500) {
+                        this.props.showToast("登录失败");
+                    } else {
+                        this.props.showToast(error.mjson.msg + "");
+                    }
                     // 保存用户登录状态
                     StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'false');
                 });
