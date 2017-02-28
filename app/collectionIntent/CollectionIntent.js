@@ -20,7 +20,7 @@ import BaseComponent from '../component/BaseComponent';
 import CarBrandSelectScene  from './../carSource/CarBrandSelectScene';
 import  {request}from '../utils/RequestUtil';
 import * as AppUrls from "../constant/appUrls";
-
+let isHeadInteraction=false;
 export default class CollectionIntent extends BaseComponent {
 
     initFinish = () => {
@@ -74,6 +74,7 @@ export default class CollectionIntent extends BaseComponent {
         this.carYearArr = new Map();
         this.mileageArr = new Map();
         this.brandSeriesArr = [];
+        isHeadInteraction = this.props.isHeadInteraction;
         this.state = {
             arr: [],
             arr1: [{
@@ -136,12 +137,20 @@ export default class CollectionIntent extends BaseComponent {
     checkedCarClick = (carObject) => {
 // {brand_id: 2, series_id: 2446, series_name: "拉共达Taraf", model_id: 29702, model_name: "2015款 拉共达Taraf 6.0L 标准型"}
         console.log(carObject);
-        this.state.arr.push({
-            title: carObject.series_name,
-            isSelected: true,
-        });
+        if (carObject.series_id=='' || carObject.series_id=='0'){
+            this.brandSeriesArr.push(carObject.brand_id + '|' +0);
+            this.state.arr.push({
+                title: carObject.brand_name,
+                isSelected: true,
+            });
+        }else{
+            this.brandSeriesArr.push(carObject.brand_id + '|' + carObject.series_id);
+            this.state.arr.push({
+                title: carObject.series_name,
+                isSelected: true,
+            });
+        }
         this.selectConfirm(this.state.arr);
-        this.brandSeriesArr.push(carObject.brand_id + '|' + carObject.series_id);
         console.log(this.brandSeriesArr);
 
     };
@@ -152,6 +161,7 @@ export default class CollectionIntent extends BaseComponent {
         params: {
             checkedCarClick: this.checkedCarClick,
             status: 0,
+            isHeadInteraction:true,
         }
 
     }
@@ -237,6 +247,7 @@ export default class CollectionIntent extends BaseComponent {
                             }}
                             style={styles.labelSelect}
                             readOnly={false}
+                            isBigSize={true}
                             onConfirm={this.selectConfirm}
                         >
                             {this.state.arr.filter(item => item.isSelected).map((item, index) =>

@@ -20,9 +20,8 @@ import AddEmployeeScene from '../employeeManage/AddEmployeeScene';
 import EditEmployeeScene from '../employeeManage/EditEmployeeScene';
 
 import BaseComponent from "../../component/BaseComponent";
-import NavigationBar from "../../component/NavigationBar";
+import NavigationView from '../../component/AllNavigationView';
 import * as AppUrls from '../../constant/appUrls';
-// let Car = require('./Car.json');
 /*
  * 获取屏幕的宽和高
  **/
@@ -69,32 +68,32 @@ export default class EmployeeManageScene extends BaseComponent {
                 show: true
             },
         })
+        alert("dianjile添加员工")
     }
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return (
                 <View style={styles.container}>
-                    <NavigationBar
-                        centerText={'员工管理'}
-                        rightTextShow={false}
-                        rightImageShow={true}
-                        rightImage={require('../../../images/employee_manage.png')}
-                    />
+                    {/**      导航栏          */}
+
                     {this.loadView()}
+                    <NavigationView
+                        backIconClick={this.backPage}
+                        title="员工管理"
+                        renderRihtFootView={this._navigatorRightView}
+                    />
                 </View>
             );
         }
         return (
             <View style={styles.container}>
-                <NavigationBar
-                    centerText={'员工管理'}
-                    rightTextShow={false}
-                    rightImageShow={true}
-                    rightImage={require('../../../images/employee_manage.png')}
-                    rightImageCallBack={()=>{this.addEmployee()}}
-                    leftImageCallBack={this.backPage}
 
+                {/**      导航栏          */}
+                <NavigationView
+                    backIconClick={this.backPage}
+                    title="员工管理"
+                    renderRihtFootView={this._navigatorRightView}
                 />
                 <ListView
                     contentContainerStyle={styles.listStyle}
@@ -105,7 +104,23 @@ export default class EmployeeManageScene extends BaseComponent {
             </View>
         );
     }
+    /**      导航栏右侧按钮          */
+    _navigatorRightView = () => {
+        return (
+            <TouchableOpacity
+                style={{
 
+                    width: Pixel.getPixel(53), height: Pixel.getPixel(27),
+                    justifyContent: 'center', alignItems: 'flex-end',
+
+                }}
+                activeOpacity={0.8} onPress={() => {
+                this.addEmployee()
+            }}>
+                <Image source={require('../../../images/employee_manage.png')}/>
+            </TouchableOpacity>
+        );
+    }
     // 每一行中的数据
     _renderRow = (rowData, rowID, selectionID) => {
         return (
@@ -182,7 +197,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'white',
         borderBottomColor: fontAndClolr.COLORA4,
-        flexDirection: 'row',
         borderBottomWidth: 1,
     },
     rowLeftTitle: {

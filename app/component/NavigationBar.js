@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#05C5C2',
-        paddingTop: Pixel.getPixel(10)
+        paddingTop: Pixel.getPixel(20)
     },
     leftTextStyle: {
         textAlign: 'left',
