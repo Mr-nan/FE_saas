@@ -95,9 +95,25 @@ export default class CarCollectSourceScene extends BaceComponent {
     };
 
     allRefresh = () => {
+        allSouce = [];
         this.setState({renderPlaceholderOnly: 'loading'});
         page = 1;
         this.getData();
+    }
+
+    deleteCliiection = (id) => {
+        let maps = {
+            id: id
+        };
+        request(Urls.DELETE, 'Post', maps)
+            .then((response) => {
+                    allSouce = [];
+                    this.props.showToast('删除成功');
+                    this.getData();
+                },
+                (error) => {
+                    this.props.showToast('网络连接失败');
+                });
     }
 
 
@@ -113,9 +129,13 @@ export default class CarCollectSourceScene extends BaceComponent {
                 <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(64)}}
                           dataSource={this.state.carData}
                           renderRow={(rowData) =>
-                          <CarCell items={rowData} mOnPress={(id)=>{
+                          <CarCell from="CarCollectSourceScene" items={rowData} mOnPress={(id)=>{
                                this.toNextPage({name:'CarInfoScene',component:CarInfoScene,params:{carID:id}});
                           }}
+                          callBack={(id)=>{
+                            this.deleteCliiection(id)
+                          }
+                          }
                           />
                        }
                           renderFooter={

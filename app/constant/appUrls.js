@@ -88,6 +88,21 @@ export const FINANCE = BASEURL + V + "finance/index";//
 export const FAVORITES = BASEURL + V + "user.favorites/index";//
 
 /**
+ * 浏览历史
+ */
+export const USER_HISTORY = BASEURL + V + "user.history/index";//
+
+/**
+ * 取消收藏
+ */
+export const DELETE = BASEURL + V + "user.favorites/delete";//
+
+/**
+ * 清空浏览历史
+ */
+export const USER_HISTORY_DELETE = BASEURL + V + "v1/user.history/delete";//
+
+/**
  * 员工列表
  */
 export const USER_EMPLOYE = BASEURL + V + "user.employe/index";
