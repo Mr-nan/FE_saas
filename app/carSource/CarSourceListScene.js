@@ -152,7 +152,7 @@ export  default  class carSourceListScene extends BaseComponent {
     }
 
     initFinish = () => {
-
+        this.refreshingData();
     };
 
     // 下拉刷新数据
@@ -163,10 +163,6 @@ export  default  class carSourceListScene extends BaseComponent {
 
     };
 
-    componentWillMount() {
-
-        this.refreshingData();
-    }
 
     // 获取数据
     loadData = () => {
@@ -260,6 +256,7 @@ export  default  class carSourceListScene extends BaseComponent {
                 checkedCarType: this.state.checkedCarType,
                 checkedCarClick: this.checkedCarClick,
                 status:1,
+                isHeadInteraction:true,
             }
         };
         this.props.callBack(navigatorParams);
@@ -324,7 +321,7 @@ export  default  class carSourceListScene extends BaseComponent {
 
         this.setState({
             checkedCarType: {
-                title: carObject.series_name,
+                title: carObject.series_name==''?carObject.brand_name:carObject.series_name,
                 brand_id:carObject.brand_id,
                 series_id: carObject.series_id,
             },
@@ -524,7 +521,23 @@ export  default  class carSourceListScene extends BaseComponent {
         if (this.state.isRefreshing) {
             return null;
         } else {
-            return (<ListFooter isLoadAll={this.state.isFillData==1?false:true}/>)
+
+           let isCarFoot =  true;
+
+            if(APIParameter.brand_id ==0
+            && APIParameter.series_id ==0
+            && APIParameter.model_id==0
+            && APIParameter.provice_id==0
+            && APIParameter.city_id==0
+            && APIParameter.order_type==0
+            && APIParameter.coty==0
+           && APIParameter.mileage ==0 && APIParameter.type ==0){
+
+                isCarFoot = false;
+
+            };
+
+            return (<ListFooter isLoadAll={this.state.isFillData==1?false:true} isCarFoot = {isCarFoot} footAllClick = {this.allDelectClick}/>)
         }
 
     }
@@ -564,17 +577,12 @@ export  default  class carSourceListScene extends BaseComponent {
                             <ListView
                                 dataSource={this.state.dataSource}
                                 ref={'carListView'}
-                                initialListSize={10}
-                                stickyHeaderIndices={[]}
-                                onEndReachedThreshold={1}
-                                scrollRenderAheadDistance={1}
                                 pageSize={10}
+                                enableEmptySections = {true}
                                 renderRow={(item,sectionID,rowID) =>
                                     <CarCell style={styles.carCell} carCellData={item} onPress={()=>{this.carCellOnPres(item.id,sectionID,rowID)}}/>
                                 }
-                                renderFooter={
-                                    this.renderListFooter
-                                }
+                                renderFooter={this.renderListFooter}
                                 onEndReached={this.toEnd}
                                 refreshControl={
                                     <RefreshControl
