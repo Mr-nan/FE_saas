@@ -21,12 +21,9 @@ import EmployeeManageScene from '../mine/employeeManage/EmployeeManageScene'
 import CouponAllScene from '../mine/couponManage/CouponAllScene'
 import Setting from './../mine/setting/Setting'
 import  CarCollectSourceScene from '../carSource/CarCollectSourceScene';
-<<<<<<< HEAD
 import  BrowsingHistoryScene from '../carSource/BrowsingHistoryScene';
-=======
 
 import EditEmployeeScene  from '../mine/employeeManage/EditEmployeeScene'
->>>>>>> 0eb387767d93250103d7d849e531151bf6178b64
 const cellJianTou = require('../../images/mainImage/celljiantou.png');
 const Car = [
     {
