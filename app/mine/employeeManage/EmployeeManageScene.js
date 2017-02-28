@@ -147,7 +147,7 @@ export default class EmployeeManageScene extends BaseComponent {
                             name: 'EditEmployeeScene',
                             component: EditEmployeeScene,
                             params: {
-                                show: true
+                                rowData: rowData,
                             },
                         })
                     }}>
