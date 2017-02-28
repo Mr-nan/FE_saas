@@ -223,13 +223,16 @@ export default class Register extends BaseComponent {
                     if (response.mjson.code == "1") {
                         uid = response.mjson.data.uid;
                         this.props.showToast("注册成功");
-                        // this.props.showToast(response.mjson.msg + "");
                         this.exitPage({name: 'LoginScene', component: LoginScene});
                     } else {
                         this.props.showToast(response.mjson.msg + "");
                     }
                 }, (error) => {
-                    this.props.showToast("注册失败");
+                    if (error.mjson.code == -300 || error.mjson.code == -500) {
+                        this.props.showToast("注册失败");
+                    } else {
+                        this.props.showToast(error.mjson.msg + "");
+                    }
                 });
         }
     }
@@ -260,7 +263,11 @@ export default class Register extends BaseComponent {
                 });
             }, (error) => {
                 this.refs.verifycode.lodingStatus(false);
-                this.props.showToast("获取失败");
+                if (error.mjson.code == -300 || error.mjson.code == -500) {
+                    this.props.showToast("获取失败");
+                } else {
+                    this.props.showToast(error.mjson.msg + "");
+                }
             });
     }
 
@@ -289,7 +296,11 @@ export default class Register extends BaseComponent {
                         this.props.showToast(response.mjson.msg);
                     }
                 }, (error) => {
-                    this.props.showToast("短信验证码获取失败");
+                    if (error.mjson.code == -300 || error.mjson.code == -500) {
+                        this.props.showToast("短信验证码获取失败");
+                    } else {
+                        this.props.showToast(error.mjson.msg + "");
+                    }
                 });
         }
     }
@@ -357,7 +368,11 @@ export default class Register extends BaseComponent {
                     this.props.showToast(response.mjson.msg + "");
                 }
             }, (error) => {
-                this.props.showToast("图片上传失败");
+                if (error.mjson.code == -300 || error.mjson.code == -500) {
+                    this.props.showToast("图片上传失败");
+                } else {
+                    this.props.showToast(error.mjson.msg + "");
+                }
             });
     }
 }

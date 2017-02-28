@@ -21,6 +21,8 @@ import {
 import BaseComponent from '../component/BaseComponent';
 import *as fontAnColor from '../constant/fontAndColor';
 import NavigationView from '../component/AllNavigationView';
+import StorageUtil      from '../utils/StorageUtil';
+import * as StorageKeyName   from '../constant/storageKeyNames';
 import PixelUtil from '../utils/PixelUtil';
 var Pixel = new PixelUtil();
 
@@ -29,7 +31,9 @@ import * as AppUrls from "../constant/appUrls";
 
 // const carData = require('./carData');
 
-const footprintData = ['A6L', '捷达王', '汉难达', '奥拓'];
+let status  = 0;
+let series_name = '';
+let carData = new  Array;
 
 export default class CarBrandSelectScene extends BaseComponent {
 
@@ -49,6 +53,7 @@ export default class CarBrandSelectScene extends BaseComponent {
     constructor(props) {
         super(props);
 
+        status = this.props.status;
         let getSectionData = (dataBlob, sectionID) => {
             return dataBlob[sectionID];
         };
@@ -57,6 +62,7 @@ export default class CarBrandSelectScene extends BaseComponent {
             return dataBlob[sectionID + ":" + rowID];
         };
 
+        this.getFootprintData();
 
         const dataSource =  new ListView.DataSource({
                 getSectionData: getSectionData,
@@ -64,15 +70,16 @@ export default class CarBrandSelectScene extends BaseComponent {
                 rowHasChanged: (r1, r2) => r1 !== r2,
                 sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
             });
+
         this.state = {
 
             renderPlaceholderOnly: true,
             dataSource: dataSource,
             isHideCarSubBrand: true,
             carTypeCheckend: '',
-            carTypes: [],
+            carSeriesData: [],
             sectionTitleArray: [],
-            carData:[],
+            footprintData:[],
 
         };
 
@@ -81,18 +88,36 @@ export default class CarBrandSelectScene extends BaseComponent {
     componentWillMount() {
 
         this.loadData();
+
     }
+
+    getFootprintData=()=>{
+
+        StorageUtil.mGetItem(StorageKeyName.CAR_TYPE_FOOTMARK,(data)=>{
+
+            if(data.code==1){
+                if(data.result){
+                    this.setState({
+
+                        footprintData:JSON.parse(data.result),
+                    });
+                }
+
+            }
+
+        })
+    }
+
 
     loadData = ()=> {
 
         let url = AppUrls.BASEURL + 'v1/home/brand';
         request(url, 'post', {
 
-            status: 0,
+            status:status,
 
         }).then((response) => {
 
-            console.log(response);
             this.setListData(response.mjson.data);
 
         }, (error) => {
@@ -126,32 +151,31 @@ export default class CarBrandSelectScene extends BaseComponent {
 
         }
 
+        carData = array;
         this.setState({
 
             dataSource: this.state.dataSource.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
             sectionTitleArray: sectionTitleArray,
-            carData:array,
 
         });
     };
 
     loadCarSeriesData=(carBrandID,carBrandName)=>{
 
-        let url = AppUrls.BASEURL + 'v1/home/series';
-        request(url, 'post', {
-
+        console.log(carBrandID,carBrandName);
+        let url = AppUrls.BASEURL + 'v1/home/series/';
+        let parameter = {
             brand_id:carBrandID,
-
-        }).then((response) => {
-
-            console.log(response);
+            status:status,
+        }
+        console.log(parameter);
+        request(url, 'post',parameter).then((response) => {
 
             if(response.mjson.data.length){
-
                 this.setState({
                     isHideCarSubBrand: false,
                     carTypeCheckend:carBrandName,
-                    carTypes:response.mjson.data,
+                    carSeriesData:response.mjson.data,
                 });
             }else
             {
@@ -167,6 +191,8 @@ export default class CarBrandSelectScene extends BaseComponent {
         });
 
     }
+
+
 
     // 每一行中的数据
     renderRow = (rowData, sectionID, rowID) => {
@@ -207,13 +233,14 @@ export default class CarBrandSelectScene extends BaseComponent {
         let listView = this.refs.listView;
         let scrollY = index * 40;
         for (let i = 0; i < index; i++) {
-            let rowIndex =this.state.carData[i].car.length;
+            let rowIndex =carData[i].car.length;
             scrollY += +rowIndex * 44;
         }
         listView.scrollTo({x: 0, y: scrollY, animated: true});
 
 
     };
+
 
     render() {
         if (this.state.renderPlaceholderOnly) {
@@ -228,21 +255,28 @@ export default class CarBrandSelectScene extends BaseComponent {
 
         return (
             <View style={styles.rootContainer}>
-                <View style={styles.carBrandHeadView}>
-                    <Text style={styles.carBrandHeadText}>足迹:</Text>
-                    {
-                        footprintData.map((data, index) => {
-                            return (
-                                <View style={styles.footprintView} key={index}>
-                                    <Text style={styles.footprintText}>{data}</Text>
-                                </View>)
-                        })
-                    }
-                </View>
+                {
+                    (this.props.status == 1 && this.state.footprintData.length>0) &&(<View style={styles.carBrandHeadView}>
+                        <Text style={styles.carBrandHeadText}>足迹:</Text>
+                        {
+                            this.state.footprintData.map((data, index) => {
+                                return (
+                                    <TouchableOpacity key={index} onPress={()=>{
+
+                                        this._checkedCarType(data);
+                                    }}>
+                                    <View style={styles.footprintView}>
+                                        <Text style={styles.footprintText}>{data.series_name}</Text>
+                                    </View>
+                                        </TouchableOpacity>)
+                            })
+                        }
+                    </View>)
+                }
                 {
                     this.state.dataSource && (
                         <ListView ref="listView"
-                                  style={{flex: 1}}
+                                  style={[{flex:1}, (this.props.status==0 || this.state.footprintData.length==0) && {marginTop: Pixel.getTitlePixel(64)}]}
                                   dataSource={this.state.dataSource}
                                   renderRow={this.renderRow}
                                   renderSectionHeader={this.renderSectionHeader}
@@ -253,8 +287,7 @@ export default class CarBrandSelectScene extends BaseComponent {
                                           this.setState({
                                               isHideCarSubBrand: true,
                                           });
-                                      }
-                                  }}
+                                      }}}
                         />)
                 }
 
@@ -265,11 +298,12 @@ export default class CarBrandSelectScene extends BaseComponent {
                 />
                 {
                     this.state.isHideCarSubBrand ? (null) : (
-                        <CarSubBrand
-                            data={this.state.carTypes}
+                        <CarSeriesList
+                            data={this.state.carSeriesData}
                             title={this.state.carTypeCheckend}
                             checkedCarType={this.props.checkedCarType}
-                            checkedCarClick={this._checkedCarType}/>
+                            checkedCarClick={this._checkedCarType}
+                            footprintData = {this.state.footprintData}/>
                     )
                 }
 
@@ -278,32 +312,130 @@ export default class CarBrandSelectScene extends BaseComponent {
     }
 }
 
-class CarSubBrand extends Component {
+class CarSeriesList extends Component {
 
-
+    componentWillReceiveProps(nextProps) {
+        this.refs.subListView.scrollTo({x: 0, y: 0, animated: true});
+        this.setState({
+            dataSource: this.state.dataSource.cloneWithRows(nextProps.data),
+            isCheckedCarModel:false,
+        });
+    }
     constructor(props) {
         super(props);
-
-        const {data} = this.props;
-        const carSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id });
+        const ds =new ListView.DataSource({rowHasChanged: (r1, r2) => r1 != r2})
         this.state = {
-            dataSource: carSource.ListViewDataSource.cloneWithRows(data),
+            dataSource: ds.cloneWithRows(this.props.data),
             valueRight:new Animated.Value(0),
+            isCheckedCarModel:false,
+
         };
     }
 
+
+    loadCarModelsData=(carBrandID,series_ID,carBrandName)=>{
+
+        let url = AppUrls.BASEURL + 'v1/home/models';
+        let parameter = {
+            brand_id:carBrandID,
+            series_id:series_ID,
+            status:status,
+        }
+        console.log(parameter);
+
+        request(url, 'post', parameter).then((response) => {
+
+            if(response.mjson.data.length){
+                this.setState({
+
+                    dataSource:this.ds.cloneWithRows(response.mjson.data),
+                    isCheckedCarModel:true,
+
+            });
+            }else
+            {
+                alert('没数据');
+            }
+
+
+
+        }, (error) => {
+
+            console.log(error);
+
+        });
+
+    }
+
+    saveFootprintData =(carObject)=>{
+
+
+        let isEqual = false;
+        let footprintArrar = this.props.footprintData;
+        let newArray = new Array;
+
+        if(footprintArrar.length>0){
+
+            newArray.push(carObject);
+
+            footprintArrar.map((data,index)=>{
+
+                if(carObject.series_name == data.series_name){
+
+                    isEqual = true;
+                }
+
+                if(index<3)
+                {
+                    newArray.push(data);
+                }
+
+            });
+
+        }else{
+
+            newArray.push(carObject);
+        }
+        console.log("足迹"+newArray);
+
+        if(!isEqual){
+            StorageUtil.mSetItem(StorageKeyName.CAR_TYPE_FOOTMARK,JSON.stringify(newArray));
+        }
+
+
+
+    }
+
     // 每一行中的数据
-    renderRow = (rowData, sectionID, rowID) => {
+    renderRow = (rowData) => {
         return (
 
             <TouchableOpacity onPress={() => {
 
-                this.props.checkedCarClick(rowData.name);
+                if(status==0){
+                    if(this.state.isCheckedCarModel){
+
+                        this.props.checkedCarClick({brand_id:rowData.brand_id,series_id:rowData.series_id,series_name:series_name,model_id:rowData.model_id,model_name:rowData.model_name});
+
+                    }else {
+                        series_name = rowData.series_name;
+                        this.loadCarModelsData(rowData.brand_id,rowData.series_id,series_name);
+                    }
+
+                }else {
+
+                    let carObject = {brand_id:rowData.brand_id,series_id:rowData.series_id,series_name:rowData.series_name,model_id:rowData.model_id,model_name:rowData.model_name};
+                    this.saveFootprintData(carObject);
+                    this.props.checkedCarClick(carObject);
+
+                }
 
             }}>
                 <View style={styles.rowCell}>
-                    <Text
-                        style={[styles.rowCellText, this.props.checkedCarType == rowData.name && {color: fontAnColor.COLORB0}]}>{rowData.name}</Text>
+                    <Text style={[styles.rowCellText,
+                        this.props.checkedCarType ==
+                        (this.state.isCheckedCarModel?rowData.model_name:rowData.series_name) &&
+                        {color: fontAnColor.COLORB0}]}>{this.state.isCheckedCarModel?rowData.model_name:rowData.series_name}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -332,13 +464,15 @@ class CarSubBrand extends Component {
                     <Image style={styles.rowCellImag}/>
                     <Text style={styles.rowCellText}>{this.props.title}</Text>
                 </View>
-                <ListView
-                    style={{flex: 1}}
-                    dataSource={this.state.dataSource}
-                    renderRow={this.renderRow}
-                    renderSectionHeader={this.renderSectionHeader}
-                    contentContainerStyle={styles.listStyle}
-                />
+                {
+                   this.state.dataSource &&
+                    <ListView ref="subListView"
+                        style={{flex: 1}}
+                        dataSource={this.state.dataSource}
+                        renderRow={this.renderRow}
+                        pageSize={10}
+                    />
+                }
             </Animated.View>
         )
 
