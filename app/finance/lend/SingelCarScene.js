@@ -20,13 +20,13 @@ import  {
     LendUseful,
     CommenButton,
 } from './component/ComponentBlob'
-import {width, adapeSize, fontadapeSize, PAGECOLOR,dateFormat} from './component/MethodComponent';
+import {width, adapeSize, fontadapeSize, PAGECOLOR,dateFormat,changeToMillion} from './component/MethodComponent';
 import BaseComponent from '../../component/BaseComponent';
 import  AllNavigatior from '../../component/AllNavigationView'
 //校验完成
-
 import DateTimePicker from 'react-native-modal-datetime-picker'
-
+import {request} from '../../utils/RequestUtil'
+import *as apis from '../../constant/appUrls'
 
 const PostData={
     apply_type:'2',
@@ -41,13 +41,46 @@ const imageSouce =require('../../../images/financeImages/dateIcon.png')
 
 export default class SingelCarSence extends BaseComponent {
 
+    initFinish() {
+
+       this.getData();
+
+    }
+
+    getData = () => {
+        let maps = {
+            api: apis.get_apply_loan_data,
+            apply_type:PostData.apply_type
+        };
+        request(apis.FINANCE, 'Post', maps)
+            .then((response) => {
+
+                let tempjson =response.mjson.data
+
+                this.setState({
+                    companyName:'北京大会上白有限公司',
+                    lendType:tempjson.product_type,
+                    dateLimit:tempjson.loan_life,
+                    maxMoney:changeToMillion(tempjson.min_loanmny)+'-'+changeToMillion(tempjson.max_loanmny)+'万',
+                    rate:tempjson.rate,
+                })
+                },
+                (error) => {
+                    this.props.showToast(error);
+                });
+    }
+
+
+
     state = {
         companyName: '',
         lendType: '',
         dateLimit: '',
         maxMoney:'',
+        rate:'',
         isDateTimePickerVisible: false,
     }
+
     dataSourceBlob = [
         {title: '借款主体', key: 'companyName'},
         {title: '借款类型', key: 'lendType'},
@@ -99,7 +132,7 @@ export default class SingelCarSence extends BaseComponent {
                         </View>
                         <LendDatePike lefTitle={'用款时间'} placeholder={'选择用款时间'} imageSouce={imageSouce} onPress={this.onPress}/>
                         <LendUseful onEndEidt={(event)=>{PostData.remark =event.nativeEvent.text}}/>
-                        <LendRate/>
+                        <LendRate rate={this.state.rate}/>
                     </KeyboardAvoidingView>
                 </ScrollView>
                 <CommenButton

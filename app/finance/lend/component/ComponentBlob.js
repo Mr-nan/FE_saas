@@ -25,6 +25,34 @@ const Pixel = new PixelUtil();
 import {width,height,adapeSize,PAGECOLOR,fontadapeSize} from './MethodComponent'
 
 
+
+export const commnetStyle=StyleSheet.create({
+
+    container:{
+
+        flex:1,
+        backgroundColor:PAGECOLOR.COLORA3
+    },
+
+    ListWarp:{
+        position:'absolute',
+        top:74,
+        width:width,
+        bottom:adapeSize(50),
+    },
+
+    bottomWarp:{
+        position:'absolute',
+        width:width,
+        height:adapeSize(50),
+        bottom:0,
+    }
+
+
+
+
+})
+
 export class LendItem extends PureComponent {
 
 
@@ -217,16 +245,16 @@ export class LendUseful extends PureComponent {
 
 export class LendRate extends PureComponent {
 
+
     render() {
         return (
             <View style={styles.itemRate}>
                 <Image style={styles.itemRateThumb} source={require('../../../../images/financeImages/lendRate.png')}/>
                 <Text style={styles.itemRateText}> 借款费率</Text>
-                <Text style={styles.itRateNum}>12.0%</Text>
+                <Text style={styles.itRateNum}>{this.props.rate}</Text>
             </View>
         )
     }
-
 }
 
 export class CommnetListItem extends PureComponent{
@@ -459,9 +487,9 @@ const styles = StyleSheet.create({
 
     CGDCarWarp:{
 
-
         flexDirection:'row',
         justifyContent:'flex-start',
+        backgroundColor:'white'
 
     },
     CGDCarImage:{

@@ -116,6 +116,13 @@ export const GET_APPLY_LIST = 'api/v3/account/get_apply_list';
  **/
 export const OPT_LOAN_SUBJECT = 'api/v1/user/opt_loan_subject';
 
+/**
+ * from @zhaojian
+ *
+ * 单车借款信息
+ **/
+export const get_apply_loan_data = 'api/v3/account/get_apply_loan_data';
+
 
 /**
  * 短信验证码

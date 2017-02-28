@@ -14,8 +14,8 @@ import {
 
 import BaseComponent from '../../component/BaseComponent';
 
-import {LendDatePike, LendInputItem, LendItem, CGDCarItem, CommenButton } from './component/ComponentBlob'
-import {width, adapeSize} from './component/MethodComponent'
+import {LendDatePike, LendInputItem, LendItem, CGDCarItem, CommenButton,commnetStyle} from './component/ComponentBlob'
+import {width, adapeSize,PAGECOLOR} from './component/MethodComponent'
 import CGDaddCarScenes from './CGDaddCarScenes';
 import  AllNavigatior from '../../component/AllNavigationView'
 import {ModalCGD} from './component/ModelComponent'
@@ -168,25 +168,26 @@ export  default  class CGDLendScenes extends BaseComponent {
     render() {
         return (
 
-            <View style={{flex: 1,backgroundColor:'white'}}>
+            <View style={commnetStyle.container}>
 
-                <ListView
-                    style={{marginBottom: adapeSize(62),marginTop:64}}
-                    dataSource={this.state.dataSource}
-                    renderRow={this.renderRow}
-                    renderSectionHeader={this.renderSectionHeader}
-                    renderSeparator={this.renderSeparator}
-
-                />
-
-                <View style={styles.handelWarper}>
+               <View style={commnetStyle.ListWarp}>
+                   <ListView
+                       style={{flex:1}}
+                       dataSource={this.state.dataSource}
+                       renderRow={this.renderRow}
+                       renderSectionHeader={this.renderSectionHeader}
+                       renderSeparator={this.renderSeparator}
+                   />
+               </View>
+                <View style={[commnetStyle.bottomWarp,{flexDirection:'row', justifyContent: 'flex-end',
+                    alignItems: 'center'}]}>
 
                     <CommenButton textStyle={styles.textLeft} buttonStyle={styles.buttonStyleRight} onPress={() => {
                      this.toNextPage(this.navigatorParams)
                     }} title="添加车辆"/>
                     <CommenButton textStyle={{color: 'white'}} buttonStyle={styles.buttonStyleLeft} onPress={() => {
 
-                    }} title="取消借款"/>
+                    }} title="申请借款"/>
                 </View>
                 <DateTimePicker
                     isVisible={this.state.isDateTimePickerVisible}
@@ -208,9 +209,7 @@ export  default  class CGDLendScenes extends BaseComponent {
                         string='提档前采购贷'
                     }
                   this.lendType.setPlaceHodel(string);
-
                 }}/>
-
             </View>
 
         )
@@ -230,35 +229,32 @@ const styles = StyleSheet.create({
         bottom: adapeSize(16),
         width: width,
         flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center'
+
     },
     buttonStyleRight: {
 
-        height: adapeSize(44),
+        height: adapeSize(32),
         marginLeft: adapeSize(15),
         justifyContent: 'center',
+        width:adapeSize(100),
         alignItems: 'center',
-        flex: 1,
         marginRight: 5,
-        borderColor: '#05c5c2',
+        borderColor: PAGECOLOR.COLORB0,
         borderWidth: 1,
         borderRadius: 5,
         backgroundColor: 'white',
-        marginTop:10,
-
+        width:adapeSize(100)
     },
     buttonStyleLeft: {
 
-        height: adapeSize(44),
-        backgroundColor: '#05c5c2',
+        height: adapeSize(32),
+        backgroundColor: PAGECOLOR.COLORB0,
         marginRight: adapeSize(15),
         justifyContent: 'center',
         alignItems: 'center',
-        flex: 1,
         marginLeft: 5,
         borderRadius: 5,
-        marginTop:10,
+        width:adapeSize(100)
     },
 
     textLeft: {

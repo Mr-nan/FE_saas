@@ -19,12 +19,13 @@ import  {
     CommenButton,
 } from './component/ComponentBlob'
 
-import {width, adapeSize, fontadapeSize, PAGECOLOR,dateFormat} from './component/MethodComponent';
+import {width, adapeSize, fontadapeSize, PAGECOLOR,dateFormat,changeToMillion} from './component/MethodComponent';
 import BaseComponent from '../../component/BaseComponent';
-import  AllNavigatior from '../../component/AllNavigationView'
+import AllNavigatior from '../../component/AllNavigationView'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import Picker from 'react-native-picker';
-
+import {request} from '../../utils/RequestUtil'
+import *as apis from '../../constant/appUrls'
 
 const PostData = {
     apply_type: '4',
@@ -40,18 +41,45 @@ export default class KurongSence extends BaseComponent {
     state = {
         companyName: '',
         lendType: '',
-        dateLimit: '',
+        type: '',
+        maxMoney:'',
+        rate:'',
         isDateTimePickerVisible: false,
     }
     dataSourceBlob = [
         {title: '借款主体', key: 'companyName'},
         {title: '借贷类型', key: 'lendType'},
-        {title: '可借额度', key: 'dateLimit'},
-        {title:'借款类型',key:'type'}
+        {title: '可借额度', key: 'maxMoney'},
+        {title: '借款类型', key: 'type'}
     ];
     dateBlob =['30天','60天','90天','180天'];
+    initFinish() {
 
+        this.getData();
 
+    }
+    getData = () => {
+        let maps = {
+            api: apis.get_apply_loan_data,
+            apply_type:PostData.apply_type
+        };
+        request(apis.FINANCE, 'Post', maps)
+            .then((response) => {
+
+                    let tempjson =response.mjson.data
+
+                    this.setState({
+                        companyName:'北京大会上白有限公司',
+                        lendType:tempjson.product_type,
+                        maxMoney:changeToMillion(tempjson.min_loanmny)+'-'+changeToMillion(tempjson.max_loanmny)+'万',
+                        rate:tempjson.rate,
+                        type:tempjson.loantype_str,
+                    })
+                },
+                (error) => {
+                    this.props.showToast(error);
+                });
+    }
     //datePiker的方法
     _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false })
     //datePiker的回调
@@ -110,7 +138,7 @@ export default class KurongSence extends BaseComponent {
                         </View>
                         <LendDatePike lefTitle={'用款时间'} placeholder={'选择用款时间'} imageSouce={imageSouce} onPress={this.onPress}/>
                         <LendUseful/>
-                        <LendRate/>
+                        <LendRate rate={this.state.rate}/>
                     </KeyboardAvoidingView>
                 </ScrollView>
                 <CommenButton

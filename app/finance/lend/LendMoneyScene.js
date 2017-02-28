@@ -21,6 +21,7 @@ import SingelCarScene from './SingelCarScene';
 import KurongSence from './KurongSence';
 import CGDLendScenes from './CGDLendScenes';
 
+import {confimCarcell} from './ConfimCGDPriceSence'
 
 class TitleImage extends PureComponent {
     // 构造
@@ -126,17 +127,20 @@ export  default class LendMoneySence extends BaseComponent {
 
         return (
 
-            <View style={{flex:1}}>
-            <ScrollView showsVerticalScrollIndicator={false}
-                        style={{marginTop: 64, backgroundColor: PAGECOLOR.COLORA3, paddingTop: adapeSize(15)} }>
-                {viewBlob}
+            <View style={{flex: 1}}>
 
-            </ScrollView>
+                <ScrollView showsVerticalScrollIndicator={false}
+                            style={{marginTop: 64, backgroundColor: PAGECOLOR.COLORA3, paddingTop: adapeSize(15)} }>
+                    {viewBlob}
 
-            <AllNavigationView title="借款" backIconClick={()=>{
+                </ScrollView>
 
-                this.backPage();
-            }}/>
+
+                <AllNavigationView title="借款" backIconClick={()=> {
+
+                    this.backPage();
+                }}/>
+
             </View>
         )
     }
