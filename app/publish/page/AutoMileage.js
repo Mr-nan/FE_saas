@@ -37,6 +37,7 @@ export default class AutoMileage extends Component {
 
     constructor(props) {
         super(props);
+        this.shop_id = this.props.shopID;
         this.initValue = [0, 0, 0, 0, 0];
         let mileage = this.props.carData.mileage;
         if (mileage !== '') {
@@ -106,6 +107,9 @@ export default class AutoMileage extends Component {
         return concat;
     };
 
+    componentWillReceiveProps(nextProps: Object) {
+        this.shop_id = nextProps.shopID;
+    }
 
     _renderPlaceholderView = () => {
         return (<Image style={[styles.img,{height:height-this.props.barHeight}]} source={background}/>);
@@ -145,7 +149,7 @@ export default class AutoMileage extends Component {
                         manufacture: rd.manufacture,
                         init_reg: rd.init_reg,
                         mileage: rd.mileage,
-                        show_shop_id: 57,
+                        show_shop_id: this.shop_id,
                     };
 
                     Net.request(AppUrls.CAR_SAVE, 'post', params)
@@ -166,7 +170,6 @@ export default class AutoMileage extends Component {
                 }
             });
     };
-
 
     _renderRihtFootView = () => {
         return (
