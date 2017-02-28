@@ -1,25 +1,11 @@
-<<<<<<< HEAD
-/Users/lhc/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTTextManager.o
-/Users/lhc/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTTextView.o
-/Users/lhc/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTRawTextManager.o
-/Users/lhc/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTTextSelection.o
-/Users/lhc/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTTextField.o
-/Users/lhc/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTText.o
-/Users/lhc/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTTextFieldManager.o
-/Users/lhc/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTConvert+Text.o
-/Users/lhc/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTTextViewManager.o
-/Users/lhc/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTShadowRawText.o
-/Users/lhc/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTShadowText.o
-=======
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTTextManager.o
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTTextView.o
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTRawTextManager.o
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTTextSelection.o
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTTextField.o
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTText.o
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTTextFieldManager.o
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTConvert+Text.o
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTTextViewManager.o
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTShadowRawText.o
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTShadowText.o
->>>>>>> 6e75e77bf14ab6f5900314d371d795922f927819
+/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTTextManager.o
+/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTTextView.o
+/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTRawTextManager.o
+/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTTextSelection.o
+/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTTextField.o
+/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTText.o
+/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTTextFieldManager.o
+/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTConvert+Text.o
+/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTTextViewManager.o
+/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTShadowRawText.o
+/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Intermediates/RCTText.build/Debug-iphonesimulator/RCTText.build/Objects-normal/x86_64/RCTShadowText.o

@@ -48,19 +48,19 @@ const request = (url, method, params) => {
                             // console.log(key+"===" + params[key]);
                         }
                         // console.log(url + '?token=' + token + '&device_code=' + device_code);
-                        console.log("success----------" + JSON.stringify(responseData));
+                        // console.log("success----------" + JSON.stringify(responseData));
                         if (responseData.code == 1) {
                             resolve({mjson: responseData, mycode: 1});
                         } else {
                             reject({mycode: responseData.code, mjson: responseData});
                         }
                     } else {
-                        console.log("error----------" + JSON.stringify(responseData));
+                        // console.log("error----------" + JSON.stringify(responseData));
                         reject({mycode: -300});
                     }
                 })
                 .catch((error) => {
-                    console.log("error----------" + error);
+                    // console.log("error----------" + error);
                     reject({mycode: -500, error: error});
                 });
         })
