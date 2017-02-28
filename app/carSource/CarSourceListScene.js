@@ -311,8 +311,8 @@ export  default  class carSourceListScene extends BaseComponent {
             this.allDelectClick();
         } else {
             APIParameter.type = 0;
+            this.refreshingData();
         }
-        this.refreshingData();
 
     };
 
@@ -561,7 +561,7 @@ export  default  class carSourceListScene extends BaseComponent {
 
                     {
                         this.state.dataSource && (
-                            <SGListView
+                            <ListView
                                 dataSource={this.state.dataSource}
                                 ref={'carListView'}
                                 initialListSize={10}
