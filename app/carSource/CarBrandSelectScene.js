@@ -31,6 +31,7 @@ import * as AppUrls from "../constant/appUrls";
 
 let status  = 0;
 let carData = new  Array;
+let isHeadInteraction = false;
 let carObject= {
     brand_id:'',
     brand_name:'',
@@ -59,6 +60,8 @@ export default class CarBrandSelectScene extends BaseComponent {
         super(props);
 
         status = this.props.status;
+        isHeadInteraction = this.props.isHeadInteraction;
+
         let getSectionData = (dataBlob, sectionID) => {
             return dataBlob[sectionID];
         };
@@ -473,7 +476,10 @@ class CarSeriesList extends Component {
         return (
             <Animated.View style={[styles.carSubBrandView,{left:this.state.valueRight}]}>
                 <TouchableOpacity onPress={()=>{
-                    this.props.checkedCarClick(carObject);
+                    if(isHeadInteraction){
+                        this.props.checkedCarClick(carObject);
+                    }
+
                 }}>
                     <View style={styles.carSubBrandHeadView}>
                         <Image style={styles.rowCellImag}/>

@@ -255,7 +255,8 @@ export  default  class carSourceListScene extends BaseComponent {
             params: {
                 checkedCarType: this.state.checkedCarType,
                 checkedCarClick: this.checkedCarClick,
-                status:0,
+                status:1,
+                isHeadInteraction:true,
             }
         };
         this.props.callBack(navigatorParams);
