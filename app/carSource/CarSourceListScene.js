@@ -524,7 +524,23 @@ export  default  class carSourceListScene extends BaseComponent {
         if (this.state.isRefreshing) {
             return null;
         } else {
-            return (<ListFooter isLoadAll={this.state.isFillData==1?false:true}/>)
+
+           let isCarFoot =  true;
+
+            if(APIParameter.brand_id ==0
+            && APIParameter.series_id ==0
+            && APIParameter.model_id==0
+            && APIParameter.provice_id==0
+            && APIParameter.city_id==0
+            && APIParameter.order_type==0
+            && APIParameter.coty==0
+           && APIParameter.mileage ==0 && APIParameter.type ==0){
+
+                isCarFoot = false;
+
+            };
+
+            return (<ListFooter isLoadAll={this.state.isFillData==1?false:true} isCarFoot = {isCarFoot} footAllClick = {this.allDelectClick}/>)
         }
 
     }
@@ -564,10 +580,6 @@ export  default  class carSourceListScene extends BaseComponent {
                             <ListView
                                 dataSource={this.state.dataSource}
                                 ref={'carListView'}
-                                initialListSize={10}
-                                stickyHeaderIndices={[]}
-                                onEndReachedThreshold={1}
-                                scrollRenderAheadDistance={1}
                                 pageSize={10}
                                 renderRow={(item,sectionID,rowID) =>
                                     <CarCell style={styles.carCell} carCellData={item} onPress={()=>{this.carCellOnPres(item.id,sectionID,rowID)}}/>
