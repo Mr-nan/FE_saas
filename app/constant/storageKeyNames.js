@@ -5,6 +5,7 @@ export const USER_INFO = "user_info";//保存用户信息
 export const GESTURE = "gesture";
 export const USERNAME = "username";
 export const LOGIN_TYPE = "login_type"
+export const CAR_TYPE_FOOTMARK = "car_type_footmark"; // 车品牌足迹
 
 /* userinfo start */
 export const BASE_USER_ID = "base_user_id";//用户ID

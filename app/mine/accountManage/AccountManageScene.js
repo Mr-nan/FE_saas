@@ -90,7 +90,6 @@ export default class AccountManageScene extends BaseComponent {
             <TouchableOpacity
                 style={{marginTop:15}}
                 onPress={() => {
-                    console.log(rowID + "--" + selectionID)
                     this.toNextPage({
                         name: 'AccountInfoScene',
                         component: AccountInfoScene,
@@ -126,7 +125,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: 'white',
-        flexDirection: 'row'
     },
     rowLeftTitle: {
         fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT28),
