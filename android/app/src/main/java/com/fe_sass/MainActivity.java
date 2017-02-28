@@ -2,8 +2,6 @@ package com.fe_sass;
 
 import com.facebook.react.ReactActivity;
 import com.theweflex.react.WeChatPackage;
-import com.liuchungui.react_native_umeng_push.UmengPushPackage;
-
 public class MainActivity extends ReactActivity {
 
     /**

@@ -1,11 +1,4 @@
-<<<<<<< HEAD
-/Users/lhc/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTWebSocket.build/Debug-iphonesimulator/RCTWebSocket.build/Objects-normal/x86_64/RCTSRWebSocket.o
-/Users/lhc/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTWebSocket.build/Debug-iphonesimulator/RCTWebSocket.build/Objects-normal/x86_64/RCTWebSocketModule.o
-/Users/lhc/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTWebSocket.build/Debug-iphonesimulator/RCTWebSocket.build/Objects-normal/x86_64/RCTWebSocketExecutor.o
-/Users/lhc/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTWebSocket.build/Debug-iphonesimulator/RCTWebSocket.build/Objects-normal/x86_64/RCTWebSocketObserver.o
-=======
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTWebSocket.build/Debug-iphonesimulator/RCTWebSocket.build/Objects-normal/x86_64/RCTSRWebSocket.o
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTWebSocket.build/Debug-iphonesimulator/RCTWebSocket.build/Objects-normal/x86_64/RCTWebSocketModule.o
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTWebSocket.build/Debug-iphonesimulator/RCTWebSocket.build/Objects-normal/x86_64/RCTWebSocketExecutor.o
-/Users/yujinzhong/Desktop/YJZ/FE_Saas/ios/build/Build/Intermediates/RCTWebSocket.build/Debug-iphonesimulator/RCTWebSocket.build/Objects-normal/x86_64/RCTWebSocketObserver.o
->>>>>>> 6e75e77bf14ab6f5900314d371d795922f927819
+/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Intermediates/RCTWebSocket.build/Debug-iphonesimulator/RCTWebSocket.build/Objects-normal/x86_64/RCTSRWebSocket.o
+/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Intermediates/RCTWebSocket.build/Debug-iphonesimulator/RCTWebSocket.build/Objects-normal/x86_64/RCTWebSocketModule.o
+/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Intermediates/RCTWebSocket.build/Debug-iphonesimulator/RCTWebSocket.build/Objects-normal/x86_64/RCTWebSocketExecutor.o
+/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Intermediates/RCTWebSocket.build/Debug-iphonesimulator/RCTWebSocket.build/Objects-normal/x86_64/RCTWebSocketObserver.o

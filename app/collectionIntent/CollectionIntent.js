@@ -20,7 +20,7 @@ import BaseComponent from '../component/BaseComponent';
 import CarBrandSelectScene  from './../carSource/CarBrandSelectScene';
 import  {request}from '../utils/RequestUtil';
 import * as AppUrls from "../constant/appUrls";
-
+let isHeadInteraction=false;
 export default class CollectionIntent extends BaseComponent {
 
     initFinish = () => {
@@ -30,43 +30,51 @@ export default class CollectionIntent extends BaseComponent {
     loadData = () => {
         let yearArr = [];
         let mileArr = [];
-        for (let key of this.carYearArr.keys()) {
+        if (this.brandSeriesArr.length == 0) {
+            this.props.showToast("请选择车的品牌、车系");
+        } else if (this.carYearArr.size == 0) {
+            this.props.showToast("请选择车龄");
+        } else if (this.mileageArr.size == 0) {
+            this.props.showToast("请选择车系");
+        } else {
+            for (let key of this.carYearArr.keys()) {
                 yearArr.push(this.carYearArr.get(key))
-        }
-        for (let key of this.mileageArr.keys()) {
-                mileArr.push(this.mileageArr.get(key))
-        }
-        console.log(yearArr.toString());
-        console.log(mileArr.toString());
-        let url = AppUrls.BASEURL + 'v1/receiveIntention/save';
-        request(url, 'post', {
-
-            brand_series: this.brandSeriesArr.toString(),
-            cotys: yearArr.toString(),
-            mileages: mileArr.toString()
-
-        }).then((response) => {
-
-            console.log(response);
-            if(response.mjson.code=='1'){
-
-                this.props.showToast("提交成功");
             }
+            for (let key of this.mileageArr.keys()) {
+                mileArr.push(this.mileageArr.get(key))
+            }
+            console.log(yearArr.toString());
+            console.log(mileArr.toString());
+            let url = AppUrls.BASEURL + 'v1/receiveIntention/save';
+            request(url, 'post', {
 
-        }, (error) => {
+                brand_series: this.brandSeriesArr.toString(),
+                cotys: yearArr.toString(),
+                mileages: mileArr.toString()
 
-            console.log(error);
+            }).then((response) => {
 
-        });
+                console.log(response);
+                if (response.mjson.code == '1') {
 
+                    this.props.showToast("提交成功");
+                }
 
+            }, (error) => {
+
+                console.log(error);
+
+            });
+
+        }
     }
 
     constructor(props) {
         super(props);
         this.carYearArr = new Map();
         this.mileageArr = new Map();
-        this.brandSeriesArr=[];
+        this.brandSeriesArr = [];
+        isHeadInteraction = this.props.isHeadInteraction;
         this.state = {
             arr: [],
             arr1: [{
@@ -129,12 +137,20 @@ export default class CollectionIntent extends BaseComponent {
     checkedCarClick = (carObject) => {
 // {brand_id: 2, series_id: 2446, series_name: "拉共达Taraf", model_id: 29702, model_name: "2015款 拉共达Taraf 6.0L 标准型"}
         console.log(carObject);
-        this.state.arr.push({
-            title: carObject.series_name,
-            isSelected: true,
-        });
+        if (carObject.series_id=='' || carObject.series_id=='0'){
+            this.brandSeriesArr.push(carObject.brand_id + '|' +0);
+            this.state.arr.push({
+                title: carObject.brand_name,
+                isSelected: true,
+            });
+        }else{
+            this.brandSeriesArr.push(carObject.brand_id + '|' + carObject.series_id);
+            this.state.arr.push({
+                title: carObject.series_name,
+                isSelected: true,
+            });
+        }
         this.selectConfirm(this.state.arr);
-        this.brandSeriesArr.push(carObject.brand_id+'|'+carObject.series_id);
         console.log(this.brandSeriesArr);
 
     };
@@ -144,7 +160,8 @@ export default class CollectionIntent extends BaseComponent {
         component: CarBrandSelectScene,
         params: {
             checkedCarClick: this.checkedCarClick,
-            status:0,
+            status: 0,
+            isHeadInteraction:true,
         }
 
     }
@@ -164,8 +181,8 @@ export default class CollectionIntent extends BaseComponent {
         let index = arr.findIndex(a => a === item);
         arr[index].isSelected = false;
         this.setState({arr: arr});
-        this.brandSeriesArr.splice(index,1);
-        this.state.arr.splice(index,1);
+        this.brandSeriesArr.splice(index, 1);
+        this.state.arr.splice(index, 1);
     }
 
     countItem(item, array) {//获取车龄区间或里程区间选中的个数
@@ -214,7 +231,11 @@ export default class CollectionIntent extends BaseComponent {
                                 *品牌、车系
                             </Text>
                             <Text style={{fontSize: 15, marginRight: 10, color: FontAndColor.COLORA2}} onPress={() => {
-                                this.toNextPage(this.navigatorParams)
+                                if (this.brandSeriesArr.length>=5){
+                                    this.props.showToast("车系最多只能选5个");
+                                }else{
+                                    this.toNextPage(this.navigatorParams)
+                                }
                             }}>
                                 请选择>
                             </Text>
@@ -226,6 +247,7 @@ export default class CollectionIntent extends BaseComponent {
                             }}
                             style={styles.labelSelect}
                             readOnly={false}
+                            isBigSize={true}
                             onConfirm={this.selectConfirm}
                         >
                             {this.state.arr.filter(item => item.isSelected).map((item, index) =>

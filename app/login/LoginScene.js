@@ -27,8 +27,9 @@ import * as StorageKeyNames from "../constant/storageKeyNames";
 import MyButton from "../component/MyButton";
 import LoginFailSmsYes from "./LoginFailSmsYes";
 import SetLoginPwdGesture from "./SetLoginPwdGesture";
-var Pixel = new PixelUtil();
+import md5 from "react-native-md5";
 
+var Pixel = new PixelUtil();
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var onePT = 1 / PixelRatio.get(); //一个像素
@@ -306,7 +307,7 @@ export default class LoginScene extends BaseComponent {
                 device_code: "dycd_dms_manage_android",
                 login_type: "2",
                 phone: userName,
-                pwd: passWord,
+                pwd: md5.hex_md5(passWord),
             };
             request(AppUrls.LOGIN, 'Post', maps)
                 .then((response) => {
@@ -349,6 +350,7 @@ export default class LoginScene extends BaseComponent {
                         this.props.showToast(response.mjson.msg + "");
                     }
                 }, (error) => {
+                    this.Verifycode();
                     if (error.mjson.code == -300 || error.mjson.code == -500) {
                         this.props.showToast("登录失败");
                     } else {

@@ -215,6 +215,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
                         this.props.showToast(response.mjson.msg);
                     }
                 }, (error) => {
+                    this.Verifycode();
                     if (error.mjson.code == -300 || error.mjson.code == -500) {
                         this.props.showToast("登录失败");
                     } else {

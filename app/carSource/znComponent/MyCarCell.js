@@ -69,6 +69,12 @@ export default class MyCarCell extends Component {
                             <Text style={styles.cellFootText}>编辑</Text>
                         </View>
                         {
+                            this.props.type==0 &&
+                            <View style={styles.cellFoot}>
+                                <Text style={styles.cellFootText}>下架</Text>
+                            </View>
+                        }
+                        {
                             this.props.type==1 &&
                             <View style={styles.cellFoot}>
                                 <Text style={styles.cellFootText}>上架</Text>
@@ -79,6 +85,7 @@ export default class MyCarCell extends Component {
                                 <Text style={styles.cellFootText}>生产二维码</Text>
                             </View>
                         }
+
 
                     </View>
 
