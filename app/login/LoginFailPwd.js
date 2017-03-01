@@ -15,13 +15,12 @@ import * as FontAndColor from "../constant/fontAndColor";
 import PixelUtil from "../utils/PixelUtil";
 import MyButton from "../component/MyButton";
 import LoginInputText from "./component/LoginInputText";
-import SetPwd from "./SetPwd";
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 import md5 from "react-native-md5";
 import StorageUtil from "../utils/StorageUtil";
 import SetLoginPwdGesture from "./SetLoginPwdGesture";
-import MainPage from '../main/MainPage';
+import MainPage from "../main/MainPage";
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -127,9 +126,8 @@ export default class LoginFailPwd extends BaseComponent {
             request(AppUrls.SETPWD, 'Post', maps)
                 .then((response) => {
                     if (response.mjson.code == "1") {
-                        this.props.showToast("设置成功");
                         StorageUtil.mGetItem(response.mjson.data.phone + "", (data) => {
-                            if (data.code === 1) {
+                            if (data.code == 1) {
                                 if (data.result != null) {
                                     this.loginPage(this.loginSuccess)
                                 } else {
