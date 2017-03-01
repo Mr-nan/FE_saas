@@ -32,6 +32,7 @@ import CityListScene        from './CityListScene';
 import  {request}           from '../utils/RequestUtil';
 import ZNLoadView           from './znComponent/ZNLoadView'
 import {SequencingButton,SequencingView} from './znComponent/CarSequencingView';
+import * as AppUrls from "../constant/appUrls";
 import PixelUtil            from '../utils/PixelUtil';
 
 
@@ -126,7 +127,7 @@ export  default  class carSourceListScene extends BaseComponent {
     // 获取数据
     loadData = () => {
 
-        let url = 'http://dev.api-gateway.dycd.com/' + 'v1/car/index';
+        let url = AppUrls.BASEURL + 'v1/car/index';
 
         APIParameter.page = 0;
         request(url, 'post', APIParameter)
@@ -168,7 +169,7 @@ export  default  class carSourceListScene extends BaseComponent {
 
     loadMoreData = () => {
 
-        let url = 'http://dev.api-gateway.dycd.com/' + 'v1/car/index';
+        let url = AppUrls.BASEURL + 'v1/car/index';
         APIParameter.page += 1;
 
         request(url, 'post', APIParameter)
@@ -754,34 +755,11 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT),
 
     },
-    selectView: {
-        top: Pixel.getTitlePixel(104),
-        backgroundColor: 'rgba(0, 0, 0,0.3)',
-        left: 0,
-        right: 0,
-        position: 'absolute',
-        bottom: 0,
-    },
+
     carCell: {
         height: Pixel.getPixel(110),
     },
-    checkedCell: {
 
-        backgroundColor: 'white',
-        height: Pixel.getPixel(44),
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: fontAndColor.COLORA4,
-
-    },
-    checkedCellText: {
-
-        fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT),
-        textAlign: 'center',
-        color: fontAndColor.COLORA0,
-
-    },
 
     navigatorView: {
 
