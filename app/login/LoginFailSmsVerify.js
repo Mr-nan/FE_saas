@@ -12,7 +12,6 @@ import BaseComponent from "../component/BaseComponent";
 import NavigationBar from "../component/NavigationBar";
 import * as FontAndColor from "../constant/fontAndColor";
 import PixelUtil from "../utils/PixelUtil";
-import MainPage from "../main/MainPage";
 import MyButton from "../component/MyButton";
 import LoginInputText from "./component/LoginInputText";
 import LoginFailPwd from "./LoginFailPwd";
@@ -20,7 +19,6 @@ import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
-import SetLoginPwdGesture from "./SetLoginPwdGesture";
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -51,7 +49,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
 
     render() {
         if (this.state.renderPlaceholderOnly) {
-            return ( <TouchableWithoutFeedback onPress={() => {
+            return ( <TouchableWithoutFeedback style={{backgroundColor: FontAndColor.COLORA3}} onPress={() => {
                 this.setState({
                     show: false,
                 });
