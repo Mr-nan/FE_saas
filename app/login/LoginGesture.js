@@ -8,6 +8,7 @@ import NavigationBar from '../component/NavigationBar';
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
 import LoginScene from './LoginScene';
+import MainPage from '../main/MainPage';
 
 let Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
@@ -22,6 +23,7 @@ export default class GesturePassword extends BaseComponent {
             message: '请绘制手势密码',
             status: 'normal',
             phone: '',
+            url: '',
         }
     }
 
@@ -44,6 +46,16 @@ export default class GesturePassword extends BaseComponent {
                 }
             }
         })
+
+        StorageUtil.mGetItem(StorageKeyNames.HEAD_PORTRAIT_URL, (data) => {
+            if (data.code == 1) {
+                if (data.result != null) {
+                    this.setState({
+                        url: data.result,
+                    });
+                }
+            }
+        })
     }
 
     render() {
@@ -60,11 +72,12 @@ export default class GesturePassword extends BaseComponent {
                             leftImage={require('./../../images/login/left_cancel.png')}
                             leftImageCallBack={this.backPage}/>
 
-                        <Image style={styles.avatarStyle} source={require("./../../images/mainImage/maiche.png")}/>
+                        {this.state.url ? <Image style={styles.avatarStyle}
+                                                 source={{uri: this.state.url}}/> :
+                            <Image style={styles.avatarStyle}
+                                   source={require("./../../images/mainImage/zhanghuguanli.png")}/>}
 
-                        <Text style={ styles.topMessageStyle }>
-                            用户名：{this.state.phone}
-                        </Text>
+                        <Text style={ styles.topMessageStyle }>用户名：{this.state.phone}</Text>
 
                         <Text style={this.state.status !== "wrong" ? styles.topMessageStyle : styles.topMessageWStyle}>
                             {this.state.message}
@@ -120,8 +133,12 @@ export default class GesturePassword extends BaseComponent {
                 message: '验证成功',
             });
             StorageUtil.mSetItem(StorageKeyNames.NEED_GESTURE, 'false');
-            this.props.callBack();
-            this.backPage();
+            if (this.props.from == 'RootScene') {
+                this.loginPage({name: 'MainPage', component: MainPage});
+            } else {
+                this.props.callBack();
+                this.backPage();
+            }
         } else {
             this.setState({
                 status: 'wrong',

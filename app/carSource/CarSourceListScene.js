@@ -36,7 +36,7 @@ import  {request}           from '../utils/RequestUtil';
 import PixelUtil            from '../utils/PixelUtil';
 
 
-const Pixel = new PixelUtil();
+let Pixel = new PixelUtil();
 let carFilterData = require('./carData/carFilterData.json');
 let carAgeSource = carFilterData.carAgeSource;
 let carKMSource = carFilterData.carKMSource;

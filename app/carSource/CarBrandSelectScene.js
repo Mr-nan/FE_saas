@@ -24,7 +24,7 @@ import *as fontAnColor from '../constant/fontAndColor';
 import NavigationView from '../component/AllNavigationView';
 import StorageUtil      from '../utils/StorageUtil';
 import * as StorageKeyName   from '../constant/storageKeyNames';
-import ZNLoadView from './znComponent/ZNLoadView';
+// import ZNLoadView from './znComponent/ZNLoadView';
 import PixelUtil from '../utils/PixelUtil';
 var Pixel = new PixelUtil();
 
@@ -324,6 +324,7 @@ export default class CarBrandSelectScene extends BaseComponent {
                     title="选择品牌"
                     backIconClick={this._backIconClick}
                 />
+               {/*<ZNLoadView isLoadData={this.state.isLoadData}/>*/}
                 {
                     this.state.isHideCarSubBrand ? (null) : (
                         <CarSeriesList
