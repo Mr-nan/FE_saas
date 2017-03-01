@@ -20,6 +20,7 @@ import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
+import SetLoginPwdGesture from "./SetLoginPwdGesture";
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -210,7 +211,8 @@ export default class LoginFailSmsVerify extends BaseComponent {
                         StorageUtil.mSetItem(StorageKeyNames.REAL_NAME, response.mjson.data.real_name + "");
                         StorageUtil.mSetItem(StorageKeyNames.TOKEN, response.mjson.data.token + "");
                         StorageUtil.mSetItem(StorageKeyNames.USER_LEVEL, response.mjson.data.user_level + "");
-                        this.loginPage(this.loginSuccess)
+
+                        this.loginPage(this.setLoginPwd);
                     } else {
                         this.props.showToast(response.mjson.msg);
                     }
@@ -225,10 +227,12 @@ export default class LoginFailSmsVerify extends BaseComponent {
         }
     }
 
-    loginSuccess = {
-        name: 'MainPage',
-        component: MainPage,
-        params: {}
+    setLoginPwd = {
+        name: 'LoginFailPwd',
+        component: LoginFailPwd,
+        params: {
+            from: 'login'
+        }
     }
 
     loginPage = (mProps) => {
