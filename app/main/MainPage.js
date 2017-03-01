@@ -137,15 +137,39 @@ export default class MainPage extends BaseComponent {
             // this.refs.financePage.changeStates(this.refs.financePage.props.title);
             tabArray = financeTabArray
         }
-
         this.state = {
-
             // selectedTab: tabArray[0].ref,
-            selectedTab: tabArray[0].ref,
+            canShow: false
+
         }
+        StorageUtil.mGetItem(storageKeyNames.USER_INFO, (data) => {
+            if (data.code == 1) {
+                let datas = JSON.parse(data.result);
+                if (datas.user_level == 2) {
+                    if (datas.enterprise_list[0].role_type == '1') {
+                        tabArray = bossTabArray;
+                    } else if (datas.enterprise_list[0].role_type == '2') {
+                        tabArray = financeTabArray
+                    } else {
+                        tabArray = employerTabArray
+                    }
+                } else if (datas.user_level == 1) {
+                    tabArray = employerTabArray
+                } else {
+                    tabArray = employerTabArray
+                }
+                this.setState({
+                    selectedTab: tabArray[0].ref,
+                    canShow: true
+                });
+            }
+        });
     }
 
     render() {
+        if (!this.state.canShow) {
+            return (<View style={{width:width,height:height,backgroundColor:fontAndClolr.COLORA3}}/>);
+        }
         let items = [];
 
         tabArray.map((data) => {

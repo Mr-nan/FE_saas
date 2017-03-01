@@ -8,6 +8,7 @@ import NavigationBar from '../component/NavigationBar';
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
 import LoginScene from './LoginScene';
+import MainPage from '../main/MainPage';
 
 let Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
@@ -120,8 +121,12 @@ export default class GesturePassword extends BaseComponent {
                 message: '验证成功',
             });
             StorageUtil.mSetItem(StorageKeyNames.NEED_GESTURE, 'false');
-            this.props.callBack();
-            this.backPage();
+            if (this.props.from == 'RootScene') {
+                this.loginPage({name: 'MainPage', component: MainPage});
+            } else {
+                this.props.callBack();
+                this.backPage();
+            }
         } else {
             this.setState({
                 status: 'wrong',
