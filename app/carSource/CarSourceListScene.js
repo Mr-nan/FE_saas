@@ -41,7 +41,8 @@ let carFilterData = require('./carData/carFilterData.json');
 let carAgeSource = carFilterData.carAgeSource;
 let carKMSource = carFilterData.carKMSource;
 let sequencingDataSource = carFilterData.sequencingDataSource;
-
+let currentCheckedIndex = 1;
+let checkedSource = [];
 let carData = [];
 
 const APIParameter = {
@@ -74,11 +75,8 @@ export  default  class carSourceListScene extends BaseComponent {
 
             isRefreshing: false,
             dataSource: carSource,
-            checkedSource: carAgeSource,
             isHide: true,
             isFillData: 1,
-            isLoadMore: true,
-            currentCheckedIndex: 1,
             sequencingType: {
                 title: '',
                 value: '',
@@ -247,9 +245,8 @@ export  default  class carSourceListScene extends BaseComponent {
             this.presCarTypeScene();
             return;
         }
-
-        this.refs.headView.checkSelect(this.state.currentCheckedIndex); // 取消之前选择按钮状态
-        let {checkedSource} = this.state;
+        this.refs.headView.checkSelect(currentCheckedIndex); // 取消之前选择按钮状态
+        currentCheckedIndex = index;
         if (!isHighlighted) {
             switch (index) {
 
@@ -265,8 +262,6 @@ export  default  class carSourceListScene extends BaseComponent {
         }
 
         this.setState({
-            checkedSource,
-            currentCheckedIndex: index,
             isHide:isHighlighted,
         });
 
@@ -313,22 +308,22 @@ export  default  class carSourceListScene extends BaseComponent {
     // 筛选车龄和里程
     checkCarAgeAnKMClick = (data, index) => {
 
-        this.refs.headView.checkSelect(this.state.currentCheckedIndex);
+        this.refs.headView.checkSelect(currentCheckedIndex);
 
         let {checkedCarAgeType, checkedCarKMType} = this.state;
 
-        if (this.state.currentCheckedIndex == 2) {
+        if (currentCheckedIndex == 2) {
             checkedCarAgeType = {
-                title: this.state.checkedSource[index].title,
-                value: this.state.checkedSource[index].value,
+                title:checkedSource[index].title,
+                value:checkedSource[index].value,
             }
             APIParameter.coty = checkedCarAgeType.value;
 
         }
-        if (this.state.currentCheckedIndex == 3) {
+        if (currentCheckedIndex == 3) {
             checkedCarKMType = {
-                title: this.state.checkedSource[index].title,
-                value: this.state.checkedSource[index].value,
+                title:checkedSource[index].title,
+                value:checkedSource[index].value,
             }
 
             APIParameter.mileage = checkedCarKMType.value;
@@ -589,11 +584,11 @@ export  default  class carSourceListScene extends BaseComponent {
                     !this.state.isHide && (
                         <CarSourceSelectView
                             ref="CarSourceSelectView"
-                            checkedSource={this.state.checkedSource}
+                            checkedSource={checkedSource}
                             checkCarAgeAnKMClick={this.checkCarAgeAnKMClick}
-                            currentCheckedIndex={this.state.currentCheckedIndex}
+                            currentCheckedIndex={currentCheckedIndex}
                             hideClick ={this.hideCheckedView}
-                            checkedTypeString={this.state.currentCheckedIndex == 2 ? this.state.checkedCarAgeType.title:this.state.checkedCarKMType.title}/>)
+                            checkedTypeString={currentCheckedIndex == 2 ? this.state.checkedCarAgeType.title:this.state.checkedCarKMType.title}/>)
                 }
 
                 <ZNLoadView ref="ZNLoadView"/>
