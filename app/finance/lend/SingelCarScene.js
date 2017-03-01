@@ -20,19 +20,35 @@ import  {
     LendUseful,
     CommenButton,
 } from './component/ComponentBlob'
-import {width, adapeSize, fontadapeSize, PAGECOLOR,dateFormat,changeToMillion} from './component/MethodComponent';
+
+import {width, adapeSize, fontadapeSize, PAGECOLOR,dateFormat,changeToMillion,STATECODE} from './component/MethodComponent';
+import {LendSuccessAlert} from './component/ModelComponent'
 import BaseComponent from '../../component/BaseComponent';
-import  AllNavigatior from '../../component/AllNavigationView'
-//校验完成
+import AllNavigatior from '../../component/AllNavigationView'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import {request} from '../../utils/RequestUtil'
 import *as apis from '../../constant/appUrls'
 
+
 const PostData={
     apply_type:'2',
     loan_mny:'',
+    use_time:'',
     remark:'',
-    use_time:''
+}
+const showData={
+    companyName:'',
+    dateLimit:'',
+    lendType:'',
+    maxMoney:'',
+    rate:'',
+}
+
+const verificationtips={
+    loan_mny:'请输入借款金额',
+    remark:'请输入借款用途',
+    use_time:'请选择用款时间'
+
 }
 
 let changeDate;
@@ -40,45 +56,45 @@ let changeDate;
 const imageSouce =require('../../../images/financeImages/dateIcon.png')
 
 export default class SingelCarSence extends BaseComponent {
-
+    // 构造
+      constructor(props) {
+        super(props);
+        // 初始状态
+        this.state = {
+            isDateTimePickerVisible: false,
+            renderPlaceholderOnly: STATECODE.loading
+        }
+      }
     initFinish() {
 
-       this.getData();
-
+       this.getLendinfo();
     }
-
-    getData = () => {
+    getLendinfo = () => {
         let maps = {
-            api: apis.get_apply_loan_data,
-            apply_type:PostData.apply_type
+            api: apis.GET_APPLY_LOAN_DATA,
+            apply_type: PostData.apply_type
         };
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
 
-                let tempjson =response.mjson.data
+             let tempjson = response.mjson.data
+             showData.companyName = '北京大会上白有限公司',
+             showData.lendType = tempjson.product_type,
+             showData.dateLimit = tempjson.loan_life,
+             showData.maxMoney = changeToMillion(tempjson.min_loanmny) + '-' + changeToMillion(tempjson.max_loanmny) + '万',
+             showData.rate = tempjson.rate
 
-                this.setState({
-                    companyName:'北京大会上白有限公司',
-                    lendType:tempjson.product_type,
-                    dateLimit:tempjson.loan_life,
-                    maxMoney:changeToMillion(tempjson.min_loanmny)+'-'+changeToMillion(tempjson.max_loanmny)+'万',
-                    rate:tempjson.rate,
+             this.setState({
+
+                renderPlaceholderOnly: STATECODE.loadSuccess
+             })
+            },
+            (error) => {
+
+              this.setState({
+                    renderPlaceholderOnly: STATECODE.loadError
                 })
-                },
-                (error) => {
-                    this.props.showToast(error);
-                });
-    }
-
-
-
-    state = {
-        companyName: '',
-        lendType: '',
-        dateLimit: '',
-        maxMoney:'',
-        rate:'',
-        isDateTimePickerVisible: false,
+         });
     }
 
     dataSourceBlob = [
@@ -102,21 +118,53 @@ export default class SingelCarSence extends BaseComponent {
         this.setState({ isDateTimePickerVisible: true });
     }
 //申请借款
-    onClickLend = ()=> {
+    applyForMoney = ()=> {
+
+        let infoComolete = true;
 
         for(temp in PostData){
 
            if(PostData[temp]===''){
+               this.props.showToast(verificationtips[temp]);
+               infoComolete=false;
               break;
            }
         }
+
+        if (infoComolete){
+
+            let maps = {
+                api: apis.APPLY_LOAN,
+                apply_type:PostData.apply_type,
+                loan_mny:PostData.loan_mny,
+                remark:PostData.remark,
+                use_time:PostData.use_time
+            };
+            request(apis.FINANCE, 'Post', maps)
+                .then((response) => {
+
+                    this.lendAlert.setModelVisible(true)
+                    },
+                    (error) => {
+
+                    });
+        }
+
+
     }
     render() {
+        if(this.state.renderPlaceholderOnly!==STATECODE.loadSuccess){
+           return( <View style={styles.container}>
+               {this.loadView()}
+               <AllNavigatior title='单车借款' backIconClick={()=>{
+                   this.backPage();
+               }}/>
 
+           </View>);
+        }
         let itemBlob = [];
         this.dataSourceBlob.map((item)=> {
-
-            itemBlob.push(<LendItem key={item.key} leftTitle={item.title} rightTitle={this.state[item.key]}/>)
+            itemBlob.push(<LendItem key={item.key} leftTitle={item.title} rightTitle={showData[item.key]}/>)
         });
         return (
             <View style={styles.container}>
@@ -132,11 +180,11 @@ export default class SingelCarSence extends BaseComponent {
                         </View>
                         <LendDatePike lefTitle={'用款时间'} placeholder={'选择用款时间'} imageSouce={imageSouce} onPress={this.onPress}/>
                         <LendUseful onEndEidt={(event)=>{PostData.remark =event.nativeEvent.text}}/>
-                        <LendRate rate={this.state.rate}/>
+                        <LendRate rate={showData.rate}/>
                     </KeyboardAvoidingView>
                 </ScrollView>
                 <CommenButton
-                    buttonStyle={styles.buttonStyle} textStyle={styles.textStyle} onPress={this.onClickLend} title='申请借款'/>
+                    buttonStyle={styles.buttonStyle} textStyle={styles.textStyle} onPress={this.applyForMoney} title='申请借款'/>
                 <DateTimePicker
                     isVisible={this.state.isDateTimePickerVisible}
                     onConfirm={this._handleDatePicked}
@@ -145,10 +193,9 @@ export default class SingelCarSence extends BaseComponent {
                     confirmTextIOS='确定'
                     cancelTextIOS='取消'
                 />
-                <AllNavigatior title='单车借款' backIconClick={()=>{
-                    this.backPage();
-                }}/>
+                <LendSuccessAlert ref={(lend)=>{this.lendAlert=lend}} confimClick={()=>{this.backPage()}}/>
 
+                <AllNavigatior title='单车借款' backIconClick={()=>{ this.backPage();}}/>
             </View>
         )
     }

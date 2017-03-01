@@ -83,7 +83,7 @@ export default class LoginScene extends BaseComponent {
 
     render() {
         if (this.state.renderPlaceholderOnly) {
-            return ( <TouchableWithoutFeedback onPress={() => {
+            return ( <TouchableWithoutFeedback style={{backgroundColor: FontAndColor.COLORA3}} onPress={() => {
                 this.setState({
                     show: false,
                 });
@@ -167,6 +167,7 @@ export default class LoginScene extends BaseComponent {
                             viewStytle={styles.itemStyel}
                             secureTextEntry={true}
                             clearValue={true}
+                            maxLength={16}
                             leftIconUri={require('./../../images/login/password.png')}/>
 
                         <LoginInputText
@@ -293,10 +294,12 @@ export default class LoginScene extends BaseComponent {
         let passWord = this.refs.loginPassword.getInputTextValue();
         let verifyCode = this.refs.loginVerifycode.getInputTextValue();
         let smsCode = this.refs.loginSmscode.getInputTextValue();
-        if (userName == "") {
+        if (typeof(passWord) == "undefined" || userName == "" || userName.length != 11) {
             this.props.showToast("请输入正确的用户名");
         } else if (typeof(passWord) == "undefined" || passWord == "") {
             this.props.showToast("密码不能为空");
+        } else if (passWord.length < 8) {
+            this.props.showToast("密码必须为8~16位");
         } else if (typeof(verifyCode) == "undefined" || verifyCode == "") {
             this.props.showToast("验证码不能为空");
         } else if (typeof(smsCode) == "undefined" || smsCode == "") {
@@ -350,6 +353,7 @@ export default class LoginScene extends BaseComponent {
                         this.props.showToast(response.mjson.msg + "");
                     }
                 }, (error) => {
+                    this.Verifycode();
                     if (error.mjson.code == -300 || error.mjson.code == -500) {
                         this.props.showToast("登录失败");
                     } else {

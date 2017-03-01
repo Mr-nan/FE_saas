@@ -6,9 +6,12 @@ import { Dimensions } from 'react-native';
 
 const STATECODE ={
 
+    loading:'blank',
+    loadSuccess:'success',
+    loadError:'error',
     loading:'loading',
-    loadSuccess:'loaded',
-    loadError:'error'
+    empty:'empty'
+
 }
 
 const PAGECOLOR = {

@@ -15,6 +15,7 @@ import {
     Dimensions,
     Animated,
     InteractionManager,
+    Modal,
 
 } from 'react-native';
 
@@ -23,6 +24,7 @@ import *as fontAnColor from '../constant/fontAndColor';
 import NavigationView from '../component/AllNavigationView';
 import StorageUtil      from '../utils/StorageUtil';
 import * as StorageKeyName   from '../constant/storageKeyNames';
+// import ZNLoadView from './znComponent/ZNLoadView';
 import PixelUtil from '../utils/PixelUtil';
 var Pixel = new PixelUtil();
 
@@ -33,12 +35,12 @@ let status  = 0;
 let carData = new  Array;
 let isHeadInteraction = false;
 let carObject= {
-    brand_id:'',
-    brand_name:'',
-    series_id:'',
-    series_name:'',
-    model_id:'',
-    model_name:''
+    brand_id:'0',
+    brand_name:'0',
+    series_id:'0',
+    series_name:'0',
+    model_id:'0',
+    model_name:'0'
 };
 
 export default class CarBrandSelectScene extends BaseComponent {
@@ -82,6 +84,7 @@ export default class CarBrandSelectScene extends BaseComponent {
         this.state = {
 
             renderPlaceholderOnly: true,
+            isLoadData:true,
             dataSource: dataSource,
             isHideCarSubBrand: true,
             carTypeCheckend: '',
@@ -127,14 +130,37 @@ export default class CarBrandSelectScene extends BaseComponent {
         }).then((response) => {
 
             this.setListData(response.mjson.data);
+            this.stopLoadData();
 
         }, (error) => {
 
             console.log(error);
+            this.stopLoadData();
+
 
         });
 
 
+    }
+
+    startLoadData=()=>{
+
+        this.setState(
+            {
+                isLoadData:true,
+            }
+
+        );
+    }
+
+    stopLoadData=()=>{
+
+        this.setState(
+            {
+                isLoadData:false,
+            }
+
+        );
     }
 
     setListData = (array)=> {
@@ -170,7 +196,7 @@ export default class CarBrandSelectScene extends BaseComponent {
 
     loadCarSeriesData=(carBrandID,carBrandName)=>{
 
-        console.log(carBrandID,carBrandName);
+        this.startLoadData();
         let url = AppUrls.BASEURL + 'v1/home/series/';
         let parameter = {
             brand_id:carBrandID,
@@ -190,11 +216,13 @@ export default class CarBrandSelectScene extends BaseComponent {
                 alert('没数据');
             }
 
+            this.stopLoadData();
 
 
         }, (error) => {
 
             console.log(error);
+            this.stopLoadData();
 
         });
 
@@ -307,6 +335,7 @@ export default class CarBrandSelectScene extends BaseComponent {
                     title="选择品牌"
                     backIconClick={this._backIconClick}
                 />
+               {/*<ZNLoadView isLoadData={this.state.isLoadData}/>*/}
                 {
                     this.state.isHideCarSubBrand ? (null) : (
                         <CarSeriesList
@@ -440,6 +469,9 @@ class CarSeriesList extends Component {
 
                 }else {
 
+                    carObject.series_id = rowData.series_id;
+                    carObject.series_name = rowData.series_name;
+
                     this.saveFootprintData(carObject);
                     this.props.checkedCarClick(carObject);
 
@@ -545,7 +577,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         marginTop: Pixel.getTitlePixel(64),
         flexDirection: 'row',
-
+        flexWrap: 'wrap',
 
     },
     carBrandHeadText: {
@@ -554,6 +586,8 @@ const styles = StyleSheet.create({
         fontSize:Pixel.getFontPixel(fontAnColor.LITTLEFONT),
         backgroundColor: 'white',
         marginLeft:Pixel.getPixel(15),
+        marginTop:Pixel.getPixel(5),
+        marginBottom:Pixel.getPixel(5),
     },
 
     footprintView: {

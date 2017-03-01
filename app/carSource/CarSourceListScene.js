@@ -317,14 +317,15 @@ export  default  class carSourceListScene extends BaseComponent {
     //  选择车型
     checkedCarClick = (carObject) => {
 
+        console.log(carObject);
         APIParameter.brand_id = carObject.brand_id;
         APIParameter.series_id = carObject.series_id;
 
         this.setState({
             checkedCarType: {
-                title: carObject.series_name==''?carObject.brand_name:carObject.series_name,
+                title: carObject.series_id==0?carObject.brand_name:carObject.series_name,
                 brand_id:carObject.brand_id,
-                series_id: carObject.series_id,
+                series_id:carObject.series_id,
             },
         });
 
@@ -452,7 +453,7 @@ export  default  class carSourceListScene extends BaseComponent {
         }
     };
 
-    allDelectClick = () => {
+    allDelectClick =() => {
 
         this.setState({
             sequencingType: {
@@ -598,11 +599,12 @@ export  default  class carSourceListScene extends BaseComponent {
 
                 </View>
                 <SequencingButton buttonClick={this.showSequencingView}/>
-                {
-                    this.state.isHideSequencing ? (null) : (<SequencingView checkedType={this.state.sequencingType}
-                                                                            checkedClick={this.sequencingCheckedClick}
-                                                                            hideClick={this.hideSequencingView}/>)
-                }
+
+                <Modal visible={!this.state.isHideSequencing} transparent={true}>
+                    <SequencingView checkedType={this.state.sequencingType}
+                                    checkedClick={this.sequencingCheckedClick}
+                                    hideClick={this.hideSequencingView}/>
+                </Modal>
                 {
 
                     this.state.isHide ? (null) : (
@@ -753,7 +755,6 @@ class SequencingView extends Component {
                     <ScrollView>
                         {
                             sequencingDataSource.map((data, index) => {
-
                                 return (
                                     <TouchableOpacity key={index} onPress={()=>{
 
@@ -773,7 +774,6 @@ class SequencingView extends Component {
                         }
                     </ScrollView>
                 </View>
-
             </View>
         )
     }
@@ -919,13 +919,9 @@ const styles = StyleSheet.create({
 
     SeqencingView: {
 
-        position: 'absolute',
         backgroundColor: 'rgba(0, 0, 0,0.3)',
         justifyContent: 'flex-end',
-        top: 0,
-        right: 0,
-        bottom: 0,
-        left: 0,
+        flex:1
 
     },
 

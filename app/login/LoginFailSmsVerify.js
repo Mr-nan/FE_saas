@@ -20,6 +20,7 @@ import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
+import SetLoginPwdGesture from "./SetLoginPwdGesture";
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -79,6 +80,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
                     rightIcon={false}
                     viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
                     keyboardType={'phone-pad'}
+                    maxLength={11}
                     leftIconUri={require('./../../images/login/phone.png')}/>
                 <View style={{width: width, height: Pixel.getPixel(10)} }/>
                 <LoginInputText
@@ -135,7 +137,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
     Smscode = () => {
         let userName = this.refs.userName.getInputTextValue();
         let verifyCode = this.refs.verifycode.getInputTextValue();
-        if (typeof(userName) == "undefined" || userName == "") {
+        if (typeof(userName) == "undefined" || userName == "" || userName.length != 11) {
             this.props.showToast("请输入正确的用户名");
         } else if (typeof(verifyCode) == "undefined" || verifyCode == "") {
             this.props.showToast("验证码不能为空");
@@ -180,6 +182,8 @@ export default class LoginFailSmsVerify extends BaseComponent {
         let verifyCode = this.refs.verifycode.getInputTextValue();
         let smsCode = this.refs.smscode.getInputTextValue();
         if (typeof(userName) == "undefined" || userName == "") {
+            this.props.showToast("用户名不能为空");
+        } else if (userName.length != 11) {
             this.props.showToast("请输入正确的用户名");
         } else if (typeof(verifyCode) == "undefined" || verifyCode == "") {
             this.props.showToast("验证码不能为空");
@@ -210,11 +214,13 @@ export default class LoginFailSmsVerify extends BaseComponent {
                         StorageUtil.mSetItem(StorageKeyNames.REAL_NAME, response.mjson.data.real_name + "");
                         StorageUtil.mSetItem(StorageKeyNames.TOKEN, response.mjson.data.token + "");
                         StorageUtil.mSetItem(StorageKeyNames.USER_LEVEL, response.mjson.data.user_level + "");
-                        this.loginPage(this.loginSuccess)
+
+                        this.loginPage(this.setLoginPwd);
                     } else {
                         this.props.showToast(response.mjson.msg);
                     }
                 }, (error) => {
+                    this.Verifycode();
                     if (error.mjson.code == -300 || error.mjson.code == -500) {
                         this.props.showToast("登录失败");
                     } else {
@@ -224,10 +230,12 @@ export default class LoginFailSmsVerify extends BaseComponent {
         }
     }
 
-    loginSuccess = {
-        name: 'MainPage',
-        component: MainPage,
-        params: {}
+    setLoginPwd = {
+        name: 'LoginFailPwd',
+        component: LoginFailPwd,
+        params: {
+            from: 'login'
+        }
     }
 
     loginPage = (mProps) => {

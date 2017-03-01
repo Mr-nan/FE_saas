@@ -13,7 +13,8 @@ import {
     TouchableOpacity,
     InteractionManager
 }from 'react-native';
-
+import BaseComponent from '../../component/BaseComponent';
+import CarBrandSelectScene from '../../carSource/CarBrandSelectScene';
 import * as fontAndColor from '../../constant/fontAndColor';
 import AllNavigationView from '../../component/AllNavigationView';
 import PixelUtil from '../../utils/PixelUtil';
@@ -29,7 +30,7 @@ import * as Net from '../../utils/RequestUtil';
 import * as AppUrls from "../../constant/appUrls";
 import VinInfo from '../component/VinInfo';
 
-export default class ModelSelect extends PureComponent {
+export default class ModelSelect extends BaseComponent {
 
     constructor(props) {
         super(props);
@@ -53,19 +54,37 @@ export default class ModelSelect extends PureComponent {
         SQLite.createTable();
     }
 
-    componentWillUnmount() {
 
-    }
+    //选择车型
+    brandParams ={
+        name: 'CarBrandSelectScene',
+        component: CarBrandSelectScene,
+        params: {checkedCarClick: this._checkedCarClick,
+            status:0,}
+    };
+
+    //选择车型
+    _modelPress = () => {
+        this.toNextPage(this.brandParams);
+    };
+
+    _checkedCarClick = (carObject)=>{
+        this.setState({
+            modelName:carObject.model_name
+        });
+        this.modelInfo['brand_id'] = carObject.brand_id;
+        this.modelInfo['model_id'] = carObject.model_id;
+        this.modelInfo['series_id'] = carObject.series_id;
+        this.modelInfo['model_year'] = carObject.model_year;
+        this.modelInfo['model_name'] = carObject.model_name;
+        SQLite.changeData('UPDATE publishCar SET model = ? WHERE vin = ?',[ JSON.stringify(this.modelInfo) ,this.vin]);
+    };
 
     //扫描
     _scanPress = () => {
 
     };
 
-    //选择车型
-    _modelPress = () => {
-
-    };
 
     _renderPlaceholderView = () => {
         return (<Image style={[styles.img,{height:height-this.props.barHeight}]} source={background}/>);
@@ -79,7 +98,6 @@ export default class ModelSelect extends PureComponent {
     //车架号改变
     _onVinChange = (text) => {
         if (text.length === 17) {
-
             let params ={
                 vin:text,
             };
@@ -135,13 +153,22 @@ export default class ModelSelect extends PureComponent {
                             modelName:modelName
                         });
                     }else{
-                        this.props.refreshCar(data.result.rows.item(0));
-                        if(data.result.rows.item(0).model !== ''){
-                            Object.assign(this.modelInfo, JSON.parse(data.result.rows.item(0).model));
-                            this.setState({
-                                modelName:this.modelInfo.model_name
+                        SQLite.changeData('UPDATE publishCar SET model = ? WHERE vin = ?',[modelInfo ,text]);
+                        SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
+                            [ vinNum ],
+                            (data) => {
+                                if (data.code === 1) {
+                                    this.props.refreshCar(data.result.rows.item(0));
+                                    if(data.result.rows.item(0).model !== ''){
+                                        Object.assign(this.modelInfo, JSON.parse(data.result.rows.item(0).model));
+                                        this.setState({
+                                            modelName:this.modelInfo.model_name
+                                        });
+                                    }
+                                } else {
+                                    console.log(data.error);
+                                }
                             });
-                        }
                     }
                 } else {
                     console.log(data.error);
@@ -157,7 +184,6 @@ export default class ModelSelect extends PureComponent {
         this.modelInfo['series_id'] = this.modelData[index].series_id;
         this.modelInfo['model_year'] = this.modelData[index].model_year;
         this.modelInfo['model_name'] = this.modelData[index].model_name;
-        this._insertVin(text,this);
         this._insertVin(text,JSON.stringify(this.modelInfo),this.modelInfo['model_name']);
     };
 

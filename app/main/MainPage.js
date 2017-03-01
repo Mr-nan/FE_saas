@@ -162,20 +162,20 @@ export default class MainPage extends BaseComponent {
                     if(data.ref==='sendpage'){
                         this.publishModal.openModal();
                     }else if(data.ref==='financePage'){
-                        StorageUtil.mGetItem(storageKeyNames.NEED_GESTURE,(datas)=>{
-                            if(datas.code==1){
-                                if(datas.result=='true'){
-                                    this.toNextPage({name:'LoginGesture',component:LoginGesture,params:{
-                                        callBack:()=>{
-                                           this.setState({selectedTab: data.ref})
-                                        }
-                                    }});
-                                }else{
+                             StorageUtil.mGetItem(storageKeyNames.NEED_GESTURE,(datas)=>{
+                       if(datas.code==1){
+                             if(datas.result=='true'){
+                             this.toNextPage({name:'LoginGesture',component:LoginGesture,params:{
+                                callBack:()=>{
                                     this.setState({selectedTab: data.ref})
-                                }
-                            }
-                        });
-                    }else{
+                               }
+                            }});
+                          }else{
+                                this.setState({selectedTab: data.ref})
+                                  }
+                       }
+                  });
+                      } else{
                         this.setState({selectedTab: data.ref})
                         }
                     }

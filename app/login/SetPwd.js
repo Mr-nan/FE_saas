@@ -74,6 +74,7 @@ export default class SetPwd extends BaseComponent {
                     rightIcon={false}
                     leftIcon={false}
                     textPlaceholder={"请设置新密码"}
+                    maxLength={16}
                     viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}/>
                 <View style={{width: width, height: Pixel.getPixel(10)} }/>
                 <LoginInputText
@@ -81,6 +82,7 @@ export default class SetPwd extends BaseComponent {
                     rightIcon={false}
                     leftIcon={false}
                     textPlaceholder={"请再次填写新密码"}
+                    maxLength={16}
                     viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}/>
                 <View style={{width: width, height: Pixel.getPixel(44)} }/>
                 <MyButton buttonType={MyButton.TEXTBUTTON}
@@ -110,6 +112,8 @@ export default class SetPwd extends BaseComponent {
             this.props.showToast("原密码不能为空");
         } else if (typeof(newPassword) == "undefined" || newPassword == "") {
             this.props.showToast("新密码不能为空");
+        } else if (newPassword.length < 8) {
+            this.props.showToast("密码必须为8~16位");
         } else if (typeof(newPasswordAgain) == "undefined" || newPasswordAgain == "") {
             this.props.showToast("再次确认密码不能为空");
         } else if (newPassword !== newPasswordAgain) {
