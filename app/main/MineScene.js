@@ -22,15 +22,20 @@ import CouponAllScene from '../mine/couponManage/CouponAllScene'
 import Setting from './../mine/setting/Setting'
 import  CarCollectSourceScene from '../carSource/CarCollectSourceScene';
 import  BrowsingHistoryScene from '../carSource/BrowsingHistoryScene';
-
+import StorageUtil from "../utils/StorageUtil";
+import * as StorageKeyNames from "../constant/storageKeyNames";
 import EditEmployeeScene  from '../mine/employeeManage/EditEmployeeScene'
 const cellJianTou = require('../../images/mainImage/celljiantou.png');
-const Car = [
+let Car = [
     {
         "cars": [
             {
                 "icon": require('../../images/mainImage/zhanghuguanli.png'),
                 "name": "账户管理"
+            },
+            {
+                "icon": require('../../images/mainImage/yuangongguanli.png'),
+                "name": "员工管理"
             },
         ],
         "title": "section0"
@@ -42,16 +47,8 @@ const Car = [
                 "name": "优惠券管理"
             },
             {
-                "icon": require('../../images/mainImage/jifenguanli.png'),
-                "name": "积分管理"
-            },
-            {
                 "icon": require('../../images/mainImage/hetongguanli.png'),
                 "name": "合同管理"
-            },
-            {
-                "icon": require('../../images/mainImage/yuangongguanli.png'),
-                "name": "员工管理"
             },
         ],
         "title": "section1"
@@ -59,7 +56,7 @@ const Car = [
     {
         "cars": [
             {
-                "icon": require('../../images/mainImage/shoucangjilu.png'),
+                "icon": require('../../images/mainImage/myCarSource.png'),
                 "name": "我的车源"
             },
             {
@@ -99,67 +96,108 @@ const Car = [
  * 获取屏幕的宽和高
  **/
 const {width, height} = Dimensions.get('window');
+import BaseComponent from '../component/BaseComponent';
 
-export default class MineSectionListView extends Component {
+export default class MineSectionListView extends BaseComponent {
 
     // 构造
     constructor(props) {
         super(props);
         // 初始状态
         //    拿到所有的json数据
-        var jsonData = Car;
-
-        //    定义变量
-        var dataBlob = {},
-            sectionIDs = [],
-            rowIDs = [];
-        for (var i = 0; i < jsonData.length; i++) {
-            //    1.拿到所有的sectionId
-            sectionIDs.push(i);
-
-            //    2.把组中的内容放入dataBlob内容中
-            dataBlob[i] = jsonData[i].title;
-
-            //    3.设置改组中每条数据的结构
-            rowIDs[i] = [];
-
-            //    4.取出改组中所有的数据
-            var cars = jsonData[i].cars;
-
-            //    5.便利cars,设置每组的列表数据
-            for (var j = 0; j < cars.length; j++) {
-                //    改组中的每条对应的rowId
-                rowIDs[i].push(j);
-
-                // 把每一行中的内容放入dataBlob对象中
-                dataBlob[i + ':' + j] = cars[j];
-            }
-        }
-
-        let getSectionData = (dataBlob, sectionID) => {
-            return dataBlob[sectionID];
-        };
-
-        let getRowData = (dataBlob, sectionID, rowID) => {
-            return dataBlob[sectionID + ":" + rowID];
-        };
-        const ds = new ListView.DataSource({
-                getSectionData: getSectionData,
-                getRowData: getRowData,
-                rowHasChanged: (r1, r2) => r1 !== r2,
-                sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
-            }
-        );
-
         this.state = {
-            source: ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs)
-
+            renderPlaceholderOnly: 'blank'
         };
+    }
+
+    initFinish = () => {
+        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+            if (data.code == 1) {
+                let user_list = [];
+                let datas = JSON.parse(data.result);
+                console.log(data.result);
+                if (datas.user_level == 2) {
+                    if (datas.enterprise_list[0].role_type == '1') {
+                        user_list.push(...Car);
+                    } else if (datas.enterprise_list[0].role_type == '2') {
+                        user_list.push(Car[1], Car[3], Car[4]);
+                    } else {
+                        user_list.push(Car[2], Car[3], Car[4]);
+                    }
+                } else if (datas.user_level == 1) {
+                    user_list.push(Car[2], Car[3], Car[4]);
+                } else {
+                    user_list.push(Car[2], Car[3], Car[4]);
+                }
+                let jsonData = user_list;
+
+                //    定义变量
+                let dataBlob = {},
+                    sectionIDs = [],
+                    rowIDs = [];
+                for (let i = 0; i < jsonData.length; i++) {
+                    //    1.拿到所有的sectionId
+                    sectionIDs.push(i);
+
+                    //    2.把组中的内容放入dataBlob内容中
+                    dataBlob[i] = jsonData[i].title;
+
+                    //    3.设置改组中每条数据的结构
+                    rowIDs[i] = [];
+
+                    //    4.取出改组中所有的数据
+                    let cars = jsonData[i].cars;
+
+                    //    5.便利cars,设置每组的列表数据
+                    for (let j = 0; j < cars.length; j++) {
+                        //    改组中的每条对应的rowId
+                        rowIDs[i].push(j);
+
+                        // 把每一行中的内容放入dataBlob对象中
+                        dataBlob[i + ':' + j] = cars[j];
+                    }
+                }
+                let getSectionData = (dataBlob, sectionID) => {
+                    return dataBlob[sectionID];
+                };
+
+                let getRowData = (dataBlob, sectionID, rowID) => {
+                    return dataBlob[sectionID + ":" + rowID];
+                };
+                let ds = new ListView.DataSource({
+                        getSectionData: getSectionData,
+                        getRowData: getRowData,
+                        rowHasChanged: (r1, r2) => r1 !== r2,
+                        sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
+                    }
+                );
+                this.setState({
+                    source: ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
+                    name: datas.real_name,
+                    phone: datas.phone,
+                    headUrl: datas.head_portrait_url,
+                    renderPlaceholderOnly: 'success'
+                });
+            } else {
+                this.setState({
+                    renderPlaceholderOnly: 'error'
+                });
+            }
+        });
     }
 
 
     render() {
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return (
 
+                <View style={styles.container}>
+
+                    {this.loadView()}
+
+                </View>
+            )
+        }
         return (
 
             <View style={styles.container}>
@@ -257,30 +295,27 @@ export default class MineSectionListView extends Component {
     }
 
     _renderHeader = () => {
-
         return (
 
             <View style={styles.headerViewStyle}>
 
-                <TouchableOpacity style={styles.headerImageStyle}>
-                    <Image source={require('../../images/mainImage/mineSelect.png')}
-                           style={{
+                <TouchableOpacity style={[styles.headerImageStyle]}>
+                    <Image
+                        source={this.state.headUrl==''?require('../../images/mainImage/whiteHead.png'):require(this.state.headUrl)}
+                        style={{
                                width: Pixel.getPixel(65),
-                               height: Pixel.getPixel(65),
-                               borderRadius: Pixel.getPixel(65 / 2),
-                               borderColor: 'black',
-                               borderWidth: 1,
+                               height: Pixel.getPixel(65),resizeMode:'stretch'
                            }}
                     />
 
                 </TouchableOpacity>
 
                 <Text style={styles.headerNameStyle}>
-                    隔壁老王
+                    {this.state.name}
                 </Text>
 
                 <Text style={styles.headerPhoneStyle}>
-                    16516153866
+                    {this.state.phone}
                 </Text>
             </View>
 
@@ -308,7 +343,6 @@ const styles = StyleSheet.create({
         width: Pixel.getPixel(65),
         height: Pixel.getPixel(65),
         marginTop: Pixel.getPixel(55),
-        backgroundColor: 'red',
         justifyContent: 'center',
         alignItems: 'center',
 

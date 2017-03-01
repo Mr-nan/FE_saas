@@ -16,6 +16,11 @@ import {
 const {width, height} = Dimensions.get('window');
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import BaseComponent from '../component/BaseComponent';
+import PixelUtil from '../utils/PixelUtil';
+import LoginAndRegister from '../login/LoginAndRegister';
+let Pixel = new PixelUtil();
+import StorageUtil from '../utils/StorageUtil';
+import * as KeyNames from '../constant/storageKeyNames';
 
 export  default class WelcomScene extends BaseComponent {
 
@@ -25,6 +30,7 @@ export  default class WelcomScene extends BaseComponent {
 
 
     initFinish = () => {
+
     }
 
     render() {
@@ -48,15 +54,37 @@ export  default class WelcomScene extends BaseComponent {
                     <Image style={{resizeMode:'stretch',width:width,flex:1}}
                            source={require('../../images/welcomThird.png')}
                            tabLabel="ios-paper3"/>
-                    <Image style={{resizeMode:'stretch',width:width,flex:1}}
-                           source={require('../../images/welcomFourth.png')}
-                           tabLabel="ios-paper4"/>
+                    <View style={{flex:1}}>
+                        <Image style={{resizeMode:'stretch',width:width,flex:1}}
+                               source={require('../../images/welcomFourth.png')}
+                               tabLabel="ios-paper4"/>
+                        <TouchableOpacity onPress={()=>{
+                             StorageUtil.mSetItem(KeyNames.FIRST_INTO,'false');
+                             this.loginPage({name:'LoginAndRegister',component:LoginAndRegister,params:{}});
+                        }} activeOpacity={0.8} style={{width:Pixel.getPixel(121),
+                        height:Pixel.getPixel(37),position:'absolute',
+                        bottom: Pixel.getPixel(22),
+                            left:width/2-Pixel.getPixel(60)}}>
+                            <Image style={{width:Pixel.getPixel(121),height:Pixel.getPixel(37),resizeMode:'contain',
+                           }} source={require('../../images/welcomButton.png')}/>
+                        </TouchableOpacity>
 
+                    </View>
                 </ScrollableTabView>
             </View>
         );
 
     }
+
+    loginPage = (mProps) => {
+        const navigator = this.props.navigator;
+        if (navigator) {
+            navigator.immediatelyResetRouteStack([{
+                ...mProps
+            }])
+        }
+    }
+
 }
 
 
