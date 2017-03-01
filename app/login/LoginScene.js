@@ -83,7 +83,7 @@ export default class LoginScene extends BaseComponent {
 
     render() {
         if (this.state.renderPlaceholderOnly) {
-            return ( <TouchableWithoutFeedback onPress={() => {
+            return ( <TouchableWithoutFeedback style={{backgroundColor: FontAndColor.COLORA3}} onPress={() => {
                 this.setState({
                     show: false,
                 });

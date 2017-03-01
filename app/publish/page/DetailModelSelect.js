@@ -12,7 +12,8 @@ import {
     TouchableOpacity,
     InteractionManager
 }from 'react-native';
-
+import CarBrandSelectScene from '../../carSource/CarBrandSelectScene';
+import BaseComponent from '../../component/BaseComponent';
 import * as fontAndColor from '../../constant/fontAndColor';
 import AllNavigationView from '../../component/AllNavigationView';
 import PixelUtil from '../../utils/PixelUtil';
@@ -23,7 +24,7 @@ const background = require('../../../images/publish/background.png');
 const scan = require('../../../images/publish/scan.png');
 const arrow = require('../../../images/publish/date-select.png');
 
-export default class DetailModelSelect extends PureComponent {
+export default class DetailModelSelect extends BaseComponent {
 
     constructor(props) {
         super(props);
@@ -60,15 +61,29 @@ export default class DetailModelSelect extends PureComponent {
         });
     }
 
+    //选择车型
+    brandParams ={
+        name: 'CarBrandSelectScene',
+        component: CarBrandSelectScene,
+        params: {checkedCarClick: this._checkedCarClick,
+            status:0,}
+    };
+
+
     _modelPress = () => {
-        //拿到返回结果保存到本地
-        let rd = [];
+        this.toNextPage(this.brandParams);
+    };
+
+    _checkedCarClick = (carObject)=>{
+        this.setState({
+            modelName:carObject.model_name
+        });
         let modelInfo = {};
-        modelInfo['brand_id'] = rd[0].brand_id;
-        modelInfo['model_id'] = rd[0].model_id;
-        modelInfo['series_id'] = rd[0].series_id;
-        modelInfo['model_year'] = rd[0].model_year;
-        modelInfo['model_name'] = rd[0].model_name;
+        modelInfo['brand_id'] = carObject.brand_id;
+        modelInfo['model_id'] = carObject.model_id;
+        modelInfo['series_id'] = carObject.series_id;
+        modelInfo['model_year'] = carObject.model_year;
+        modelInfo['model_name'] = carObject.model_name;
         this.props.sqlUtil.changeData('INSERT INTO publishCar (vin,model) VALUES (?,?)', [this.vinNum, JSON.stringify(modelInfo)]);
     };
 
