@@ -1,22 +1,57 @@
 import React, {Component} from "react";
-import {AppRegistry, View, Text, StyleSheet, Image, Dimensions, PixelRatio, TouchableOpacity} from "react-native";
-import BaseComponent from '../../component/BaseComponent';
-import PixelUtil from '../../utils/PixelUtil';
-import * as FontAndColor from '../../constant/fontAndColor';
-import NavigationBar from '../../component/NavigationBar';
-import MyButton from '../../component/MyButton';
-import AccountSecurity from './AccountSecurity';
-import OnlineTime from './OnlineTime';
+import {
+    AppRegistry,
+    View,
+    Text,
+    StyleSheet,
+    Image,
+    Dimensions,
+    PixelRatio,
+    TouchableOpacity,
+    InteractionManager,
+    TouchableWithoutFeedback
+} from "react-native";
+import BaseComponent from "../../component/BaseComponent";
+import PixelUtil from "../../utils/PixelUtil";
+import * as FontAndColor from "../../constant/fontAndColor";
+import NavigationBar from "../../component/NavigationBar";
 
 var Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;
 var onePT = 1 / PixelRatio.get(); //一个像素
 export default class Setting extends BaseComponent {
-    initFinish = () => {
+    constructor(props) {
+        super(props);
+        this.state = {
+            renderPlaceholderOnly: true,
+        }
     }
 
+    initFinish = () => {
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+            // this.Verifycode();
+        });
+    }
+
+
     render() {
+        if (this.state.renderPlaceholderOnly) {
+            return ( <TouchableWithoutFeedback style={{backgroundColor: FontAndColor.COLORA3}} onPress={() => {
+                this.setState({
+                    show: false,
+                });
+            }}>
+                <NavigationBar
+                    leftImageShow={false}
+                    leftTextShow={true}
+                    leftText={""}
+                    centerText={"设置"}
+                    rightText={""}
+                />
+            </TouchableWithoutFeedback>);
+        }
         return (
             <View style={styles.container}>
                 <NavigationBar
