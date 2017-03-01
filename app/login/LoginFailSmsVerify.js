@@ -80,6 +80,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
                     rightIcon={false}
                     viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
                     keyboardType={'phone-pad'}
+                    maxLength={11}
                     leftIconUri={require('./../../images/login/phone.png')}/>
                 <View style={{width: width, height: Pixel.getPixel(10)} }/>
                 <LoginInputText
@@ -136,7 +137,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
     Smscode = () => {
         let userName = this.refs.userName.getInputTextValue();
         let verifyCode = this.refs.verifycode.getInputTextValue();
-        if (typeof(userName) == "undefined" || userName == "") {
+        if (typeof(userName) == "undefined" || userName == "" || userName.length != 11) {
             this.props.showToast("请输入正确的用户名");
         } else if (typeof(verifyCode) == "undefined" || verifyCode == "") {
             this.props.showToast("验证码不能为空");
@@ -181,6 +182,8 @@ export default class LoginFailSmsVerify extends BaseComponent {
         let verifyCode = this.refs.verifycode.getInputTextValue();
         let smsCode = this.refs.smscode.getInputTextValue();
         if (typeof(userName) == "undefined" || userName == "") {
+            this.props.showToast("用户名不能为空");
+        } else if (userName != 11) {
             this.props.showToast("请输入正确的用户名");
         } else if (typeof(verifyCode) == "undefined" || verifyCode == "") {
             this.props.showToast("验证码不能为空");

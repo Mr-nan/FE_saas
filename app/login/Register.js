@@ -83,6 +83,7 @@ export default class Register extends BaseComponent {
                                 viewStytle={styles.itemStyel}
                                 inputTextStyle={styles.inputTextStyle}
                                 leftIcon={false}
+                                maxLength={11}
                                 rightIcon={false}/>
                             <LoginInputText
                                 ref="verifycode"
@@ -112,6 +113,7 @@ export default class Register extends BaseComponent {
                                 inputTextStyle={styles.inputTextStyle}
                                 secureTextEntry={true}
                                 leftIcon={false}
+                                maxLength={16}
                                 rightIcon={false}/>
                             <LoginInputText
                                 ref="passwoedAgain"
@@ -119,6 +121,7 @@ export default class Register extends BaseComponent {
                                 viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
                                 inputTextStyle={styles.inputTextStyle}
                                 secureTextEntry={true}
+                                maxLength={16}
                                 leftIcon={false}
                                 rightIcon={false}/>
                         </View>
@@ -193,12 +196,16 @@ export default class Register extends BaseComponent {
         let businessName = this.refs.businessName.getInputTextValue();
         if (typeof(userName) == "undefined" || userName == "") {
             this.props.showToast("手机号码不能为空");
+        } else if (userName.length != 11) {
+            this.props.showToast("请输入正确的手机号");
         } else if (typeof(smsCode) == "undefined" || smsCode == "") {
             this.props.showToast("验证码不能为空");
         } else if (typeof(password) == "undefined" || password == "") {
             this.props.showToast("密码不能为空");
-        } else if (typeof(passwoedAgain) == "undefined" || passwoedAgain == "") {
-            this.props.showToast("确认密码不能为空");
+        } else if (typeof(password) == "undefined" || password == "") {
+            this.props.showToast("密码不能为空");
+        } else if (passwoedAgain.length < 8) {
+            this.props.showToast("密码必须为8~16位");
         } else if (typeof(name) == "undefined" || name == "") {
             this.props.showToast("用户名不能为空");
         } else if (typeof(businessName) == "undefined" || businessName == "") {
