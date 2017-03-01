@@ -17,10 +17,9 @@ import AutoDate from './page/AutoDate';
 import AutoMileage from './page/AutoMileage';
 import NewIndicator from './component/NewIndicator';
 import EditCarScene from './EditCarScene';
-import CarSourceScene from '../main/CarSourceScene';
+import CarSourceListScene from '../carSource/CarSourceListScene';
 import BaseComponent from '../component/BaseComponent';
 import EnterpriseInfo from './component/EnterpriseInfo';
-
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
 import PixelUtil from '../utils/PixelUtil';
@@ -54,7 +53,8 @@ export default class NewCarScene extends BaseComponent{
         this.state = {
             canChange:true,
             carData:{},
-            shop_id:''
+            shop_id:'',
+            brand:{}
         };
     }
 
@@ -71,14 +71,15 @@ export default class NewCarScene extends BaseComponent{
 
     //上传成功后
     sourceParams ={
-        name: 'CarSourceScene',
-        component: CarSourceScene,
+        name: 'CarSourceListScene',
+        component: CarSourceListScene,
         params: {}
     };
 
     _goToSource = ()=>{
         this.toNextPage(this.sourceParams);
     };
+
 
     _onBack = (page) =>{
         if(page === 0){
@@ -122,7 +123,8 @@ export default class NewCarScene extends BaseComponent{
                     locked={this.state.canChange}
                     renderTabBar={()=>{return(<NewIndicator canChange={this.state.canChange} showHint={this._showHint}
                     goToMore={()=>{this._goToMore()}} />)}}>
-                    <ModelSelect carNumberBack = {this._canChange}
+                    <ModelSelect
+                        carNumberBack = {this._canChange}
                         onBack={()=>this._onBack(0)} refreshCar={this._carData}
                         barHeight={barHeight} tabLabel="ModelSelect" />
                     <AutoPhoto carData={this.state.carData} onBack={()=>this._onBack(1)} barHeight={barHeight} tabLabel="AutoPhoto" />
