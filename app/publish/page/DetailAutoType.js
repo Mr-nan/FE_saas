@@ -50,7 +50,7 @@ export default class DetailAutoType extends Component {
 
     componentWillMount() {
         let v_type = this.props.carData.v_type;
-        if(v_type !== ''){
+        if(this.isEmpty(v_type) === false){
             this.viewData.map((data)=>{
                 data.selected = (data.index == v_type);
             });
@@ -68,6 +68,14 @@ export default class DetailAutoType extends Component {
                 [ v_type, this.props.carData.vin]);
         }
     }
+
+    isEmpty = (str)=>{
+        if(typeof(str) != 'undefined' && str !== ''){
+            return false;
+        }else {
+            return true;
+        }
+    };
 
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {

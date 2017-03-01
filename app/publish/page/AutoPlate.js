@@ -31,7 +31,7 @@ export default class AutoPlate extends Component {
         this.initValue =['','','','','','',''];
         this.vinNum = this.props.carData.vin;
         let plate = this.props.carData.plate_number;
-        if(plate !== ''){
+        if(this.isEmpty(plate) === false){
             for(let i=0;i<plate.length;i++){
                 this.initValue[i] = plate.charAt(i);
             }
@@ -42,6 +42,14 @@ export default class AutoPlate extends Component {
             renderPlaceholderOnly: true
         }
     }
+
+    isEmpty = (str)=>{
+        if(typeof(str) != 'undefined' && str !== ''){
+            return false;
+        }else {
+            return true;
+        }
+    };
 
     componentWillMount() {
 

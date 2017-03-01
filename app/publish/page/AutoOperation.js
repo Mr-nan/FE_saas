@@ -29,7 +29,7 @@ export default class AutoOperation extends Component{
         let nature = this.props.carData.nature_use;
         console.log(nature);
         let operate = false;
-        if(nature !== ''){
+        if(this.isEmpty(nature) === false){
             operate = nature == '1'
         }
         this.state = {
@@ -37,6 +37,14 @@ export default class AutoOperation extends Component{
             renderPlaceholderOnly: true
         }
     }
+
+    isEmpty = (str)=>{
+        if(typeof(str) != 'undefined' && str !== ''){
+            return false;
+        }else {
+            return true;
+        }
+    };
 
     componentWillMount(){
 

@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {AppRegistry, View, Text, StyleSheet, Image, Dimensions, PixelRatio, TouchableOpacity} from "react-native";
+import {AppRegistry, View, Text, StyleSheet, Image, Dimensions, PixelRatio, TouchableOpacity,InteractionManager,} from "react-native";
 import BaseComponent from "../../component/BaseComponent";
 import PixelUtil from "../../utils/PixelUtil";
 import * as FontAndColor from "../../constant/fontAndColor";

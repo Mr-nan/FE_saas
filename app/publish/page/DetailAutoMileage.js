@@ -34,7 +34,7 @@ export default class DetailAutoMileage extends Component {
         this.initValue = [0, 0, 0, 0, 0];
         this.vinNum = this.props.carData.vin;
         let mileage = this.props.carData.mileage;
-        if (mileage !== '') {
+        if (this.isEmpty(mileage) === false) {
             mileage = mileage.split("").reverse().join("");
             for (let i = 0; i < mileage.length; i++) {
                 if (i < 2) {
@@ -55,6 +55,14 @@ export default class DetailAutoMileage extends Component {
             renderPlaceholderOnly: true
         };
     }
+
+    isEmpty = (str)=>{
+        if(typeof(str) != 'undefined' && str !== ''){
+            return false;
+        }else {
+            return true;
+        }
+    };
 
     componentWillMount() {
 

@@ -28,13 +28,13 @@ export default class GesturePassword extends BaseComponent {
 
     initFinish = () => {
         StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
-            if (data.code === 1) {
+            if (data.code == 1) {
                 if (data.result != null) {
                     this.setState({
                         phone: data.result,
                     });
                     StorageUtil.mGetItem(data.result + "", (data) => {
-                        if (data.code === 1) {
+                        if (data.code == 1) {
                             if (data.result != null) {
                                 Password = data.result;
                             } else {
@@ -76,7 +76,7 @@ export default class GesturePassword extends BaseComponent {
                     <View style={{marginTop: Height / 2 * 0.95, flexDirection: 'row'}}>
                         <TouchableOpacity onPress={() => {
                             StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
-                                if (data.code === 1) {
+                                if (data.code == 1) {
                                     if (data.result != null) {
                                         StorageUtil.mRemoveItem(data.result + "");
                                     }
@@ -115,7 +115,7 @@ export default class GesturePassword extends BaseComponent {
     }
 
     onEnd = (pwd) => {
-        if (pwd === Password) {
+        if (pwd == Password) {
             this.setState({
                 status: 'right',
                 message: '验证成功',
