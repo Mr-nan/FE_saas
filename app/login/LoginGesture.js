@@ -22,6 +22,7 @@ export default class GesturePassword extends BaseComponent {
             message: '请绘制手势密码',
             status: 'normal',
             phone: '',
+            url: '',
         }
     }
 
@@ -44,6 +45,16 @@ export default class GesturePassword extends BaseComponent {
                 }
             }
         })
+
+        StorageUtil.mGetItem(StorageKeyNames.HEAD_PORTRAIT_URL, (data) => {
+            if (data.code == 1) {
+                if (data.result != null) {
+                    this.setState({
+                        url: data.result,
+                    });
+                }
+            }
+        })
     }
 
     render() {
@@ -60,11 +71,12 @@ export default class GesturePassword extends BaseComponent {
                             leftImage={require('./../../images/login/left_cancel.png')}
                             leftImageCallBack={this.backPage}/>
 
-                        <Image style={styles.avatarStyle} source={require("./../../images/mainImage/maiche.png")}/>
+                        {this.state.url ? <Image style={styles.avatarStyle}
+                                                 source={{uri: this.state.url}}/> :
+                            <Image style={styles.avatarStyle}
+                                   source={require("./../../images/mainImage/zhanghuguanli.png")}/>}
 
-                        <Text style={ styles.topMessageStyle }>
-                            用户名：{this.state.phone}
-                        </Text>
+                        <Text style={ styles.topMessageStyle }>用户名：{this.state.phone}</Text>
 
                         <Text style={this.state.status !== "wrong" ? styles.topMessageStyle : styles.topMessageWStyle}>
                             {this.state.message}

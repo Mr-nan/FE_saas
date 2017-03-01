@@ -3,7 +3,6 @@ import React, {PropTypes, Component} from "react";
 import {StyleSheet, Dimensions, PanResponder, View, Text} from "react-native";
 import Line from "./line";
 import Circle from "./circle";
-import BaseComponent from "../component/BaseComponent";
 import * as FontAndColor from "../constant/fontAndColor";
 import PixelUtil from "../utils/PixelUtil";
 
@@ -41,9 +40,6 @@ export default class PwdGesture extends Component {
             circles: circles,
             lines: []
         }
-    }
-
-    initFinish = () => {
     }
 
     static propTypes = {
@@ -232,7 +228,6 @@ export default class PwdGesture extends Component {
     onMove(e, g) {
         let x = e.nativeEvent.pageX - Left;
         let y = e.nativeEvent.pageY - Top;
-
         if (this.isMoving) {
             this.refs.line.setNativeProps({end: {x, y}});
 
