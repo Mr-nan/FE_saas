@@ -122,6 +122,7 @@ export default class Search extends Component {
                                    value={this.state.value}
                                    onFocus={this.showDefultContext}
                                    keyboardType={this.props.keyboardType}
+                                   maxLength={11}
                                    onChangeText={this.goSearch}/>
                         {
                             this.props.clearValue && this.state.value.length > 0 ?

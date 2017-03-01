@@ -71,6 +71,7 @@ export default class LoginFailPwd extends BaseComponent {
                     ref="phone"
                     textPlaceholder={'请输入手机号码'}
                     rightIcon={false}
+                    maxLength={11}
                     viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
                     keyboardType={'phone-pad'}
                     leftIconUri={require('./../../images/login/phone.png')}/>
@@ -80,6 +81,7 @@ export default class LoginFailPwd extends BaseComponent {
                     textPlaceholder={'请设置BMS登录密码'}
                     rightIcon={false}
                     leftIcon={true}
+                    maxLength={16}
                     leftIconUri={require('./../../images/login/password.png')}
                     viewStytle={styles.itemStyel}/>
                 <LoginInputText
@@ -87,6 +89,7 @@ export default class LoginFailPwd extends BaseComponent {
                     textPlaceholder={'请再次输入密码'}
                     rightIcon={false}
                     leftIcon={true}
+                    maxLength={16}
                     leftIconUri={require('./../../images/login/password.png')}
                     viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}/>
                 <View style={{width: width, height: Pixel.getPixel(44)} }/>
@@ -106,8 +109,12 @@ export default class LoginFailPwd extends BaseComponent {
         let newPasswordAgain = this.refs.passwordAgain.getInputTextValue();
         if (typeof(phone) == "undefined" || phone == "") {
             this.props.showToast("手机号不能为空");
+        } else if (phone.length != 11) {
+            this.props.showToast("请输入正确的手机号");
         } else if (typeof(newPassword) == "undefined" || newPassword == "") {
             this.props.showToast("新密码不能为空");
+        } else if (newPassword.length < 8) {
+            this.props.showToast("密码必须为8~16位");
         } else if (typeof(newPasswordAgain) == "undefined" || newPasswordAgain == "") {
             this.props.showToast("再次确认密码不能为空");
         } else if (newPassword !== newPasswordAgain) {
