@@ -14,9 +14,32 @@ import {
 import Spinner  from 'react-native-spinkit';
 
 export default class  ZNLoadView extends  Component{
+
+    // 构造
+      constructor(props) {
+        super(props);
+        // 初始状态
+        this.state = {
+
+            visible:false,
+        };
+      }
+
+    visibleClick =(visible)=> {
+
+        this.setState({
+            visible:visible,
+        });
+    }
+
+    getVisible=()=>{
+
+        return this.state.visible;
+    }
+
     render(){
         return(
-            <Modal visible={this.props.isLoadData}
+            <Modal visible={this.state.visible}
                    transparent={true}>
                 <View style={styles.rootContaier}>
                     <Spinner isVisible={this.props.isLoadData} size={50} type={'Wave'} color={"#05c5c2"}/>

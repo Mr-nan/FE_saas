@@ -6,7 +6,8 @@ import {
     StyleSheet,
     ScrollView,
     TouchableWithoutFeedback,
-    InteractionManager
+    InteractionManager,
+    KeyboardAvoidingView
 } from "react-native";
 import BaseComponent from "../component/BaseComponent";
 import MyButton from "../component/MyButton";
@@ -17,8 +18,8 @@ import PixelUtil from "../utils/PixelUtil";
 import ImagePicker from "react-native-image-picker";
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
-import LoginScene from './LoginScene';
 import md5 from "react-native-md5";
+import LoginAndRegister from "./LoginAndRegister";
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -52,7 +53,7 @@ export default class Register extends BaseComponent {
 
     render() {
         if (this.state.renderPlaceholderOnly) {
-            return ( <TouchableWithoutFeedback onPress={() => {
+            return ( <TouchableWithoutFeedback style={{backgroundColor: FontAndColor.COLORA3}} onPress={() => {
                 this.setState({
                     show: false,
                 });
@@ -71,72 +72,78 @@ export default class Register extends BaseComponent {
                     leftImageCallBack={this.backPage}
                     rightTextCallBack={this.register}
                 />
-                <ScrollView>
-                    <View style={styles.inputTextLine}/>
-                    <View style={styles.inputTextsStyle}>
-                        <LoginInputText
-                            ref="userName"
-                            textPlaceholder={'请输入手机号'}
-                            viewStytle={styles.itemStyel}
-                            inputTextStyle={styles.inputTextStyle}
-                            leftIcon={false}
-                            rightIcon={false}/>
-                        <LoginInputText
-                            ref="verifycode"
-                            textPlaceholder={'请输入验证码'}
-                            viewStytle={styles.itemStyel}
-                            inputTextStyle={styles.inputTextStyle}
-                            leftIcon={false}
-                            rightIconClick={this.Verifycode}
-                            rightIconSource={this.state.verifyCode ? this.state.verifyCode : null}/>
-                        <LoginInputText
-                            ref="smsCode"
-                            textPlaceholder={'请输入短信验证码'}
-                            viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
-                            inputTextStyle={styles.inputTextStyle}
-                            rightButton={true}
-                            rightIcon={false}
-                            callBackSms={this.sendSms}
-                            keyboardType={'phone-pad'}
-                            leftIcon={false}/>
-                    </View>
-                    <View style={styles.inputTextLine}/>
-                    <View style={styles.inputTextsStyle}>
-                        <LoginInputText
-                            ref="password"
-                            textPlaceholder={'请输入密码'}
-                            viewStytle={styles.itemStyel}
-                            inputTextStyle={styles.inputTextStyle}
-                            secureTextEntry={true}
-                            leftIcon={false}
-                            rightIcon={false}/>
-                        <LoginInputText
-                            ref="passwoedAgain"
-                            textPlaceholder={'请再次输入密码'}
-                            viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
-                            inputTextStyle={styles.inputTextStyle}
-                            secureTextEntry={true}
-                            leftIcon={false}
-                            rightIcon={false}/>
-                    </View>
-                    <View style={styles.inputTextLine}/>
-                    <View style={styles.inputTextsStyle}>
-                        <LoginInputText
-                            ref="name"
-                            textPlaceholder={'请输入姓名'}
-                            viewStytle={styles.itemStyel}
-                            inputTextStyle={styles.inputTextStyle}
-                            leftIcon={false}
-                            rightIcon={false}/>
-                        <LoginInputText
-                            ref="businessName"
-                            textPlaceholder={'请输入商家名称'}
-                            viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
-                            inputTextStyle={styles.inputTextStyle}
-                            leftIcon={false}
-                            rightIcon={false}/>
-                    </View>
-                    <View style={styles.inputTextLine}/>
+
+                <ScrollView keyboardShouldPersistTaps={'handled'}>
+                    <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={5}>
+                        <View style={styles.inputTextLine}/>
+                        <View style={styles.inputTextsStyle}>
+                            <LoginInputText
+                                ref="userName"
+                                textPlaceholder={'请输入手机号'}
+                                viewStytle={styles.itemStyel}
+                                inputTextStyle={styles.inputTextStyle}
+                                leftIcon={false}
+                                maxLength={11}
+                                rightIcon={false}/>
+                            <LoginInputText
+                                ref="verifycode"
+                                textPlaceholder={'请输入验证码'}
+                                viewStytle={styles.itemStyel}
+                                inputTextStyle={styles.inputTextStyle}
+                                leftIcon={false}
+                                rightIconClick={this.Verifycode}
+                                rightIconSource={this.state.verifyCode ? this.state.verifyCode : null}/>
+                            <LoginInputText
+                                ref="smsCode"
+                                textPlaceholder={'请输入短信验证码'}
+                                viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
+                                inputTextStyle={styles.inputTextStyle}
+                                rightButton={true}
+                                rightIcon={false}
+                                callBackSms={this.sendSms}
+                                keyboardType={'phone-pad'}
+                                leftIcon={false}/>
+                        </View>
+                        <View style={styles.inputTextLine}/>
+                        <View style={styles.inputTextsStyle}>
+                            <LoginInputText
+                                ref="password"
+                                textPlaceholder={'请输入密码'}
+                                viewStytle={styles.itemStyel}
+                                inputTextStyle={styles.inputTextStyle}
+                                secureTextEntry={true}
+                                leftIcon={false}
+                                maxLength={16}
+                                rightIcon={false}/>
+                            <LoginInputText
+                                ref="passwoedAgain"
+                                textPlaceholder={'请再次输入密码'}
+                                viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
+                                inputTextStyle={styles.inputTextStyle}
+                                secureTextEntry={true}
+                                maxLength={16}
+                                leftIcon={false}
+                                rightIcon={false}/>
+                        </View>
+                        <View style={styles.inputTextLine}/>
+                        <View style={styles.inputTextsStyle}>
+                            <LoginInputText
+                                ref="name"
+                                textPlaceholder={'请输入姓名'}
+                                viewStytle={styles.itemStyel}
+                                inputTextStyle={styles.inputTextStyle}
+                                leftIcon={false}
+                                rightIcon={false}/>
+                            <LoginInputText
+                                ref="businessName"
+                                textPlaceholder={'请输入商家名称'}
+                                viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
+                                inputTextStyle={styles.inputTextStyle}
+                                leftIcon={false}
+                                rightIcon={false}/>
+                        </View>
+                        <View style={styles.inputTextLine}/>
+                    </KeyboardAvoidingView>
                     <View style={styles.imageButtonsStyle}>
                         <Text
                             style={{
@@ -189,12 +196,16 @@ export default class Register extends BaseComponent {
         let businessName = this.refs.businessName.getInputTextValue();
         if (typeof(userName) == "undefined" || userName == "") {
             this.props.showToast("手机号码不能为空");
+        } else if (userName.length != 11) {
+            this.props.showToast("请输入正确的手机号");
         } else if (typeof(smsCode) == "undefined" || smsCode == "") {
             this.props.showToast("验证码不能为空");
         } else if (typeof(password) == "undefined" || password == "") {
             this.props.showToast("密码不能为空");
-        } else if (typeof(passwoedAgain) == "undefined" || passwoedAgain == "") {
-            this.props.showToast("确认密码不能为空");
+        } else if (typeof(password) == "undefined" || password == "") {
+            this.props.showToast("密码不能为空");
+        } else if (passwoedAgain.length < 8) {
+            this.props.showToast("密码必须为8~16位");
         } else if (typeof(name) == "undefined" || name == "") {
             this.props.showToast("用户名不能为空");
         } else if (typeof(businessName) == "undefined" || businessName == "") {
@@ -224,7 +235,7 @@ export default class Register extends BaseComponent {
                     if (response.mjson.code == "1") {
                         uid = response.mjson.data.uid;
                         this.props.showToast("注册成功");
-                        this.exitPage({name: 'LoginScene', component: LoginScene});
+                        this.exitPage({name: 'LoginAndRegister', component: LoginAndRegister});
                     } else {
                         this.props.showToast(response.mjson.msg + "");
                     }
@@ -316,7 +327,7 @@ export default class Register extends BaseComponent {
             chooseFromLibraryButtonTitle: '选择相册',
             allowsEditing: true,
             noData: true,
-            quality: 1.0,
+            quality: 0.5,
             maxWidth: 500,
             maxHeight: 500,
             storageOptions: {
@@ -331,20 +342,6 @@ export default class Register extends BaseComponent {
             } else if (response.error) {
             } else if (response.customButton) {
             } else {
-                let source = {uri: response.uri};
-                if (id === 'idcard') {
-                    this.setState({
-                        idcard: source
-                    });
-                } else if (id === 'idcardBack') {
-                    this.setState({
-                        idcardBack: source
-                    });
-                } else if (id === 'businessLicense') {
-                    this.setState({
-                        businessLicense: source
-                    });
-                }
                 this.imageUploadUtil(response, id);
             }
         });
@@ -356,24 +353,49 @@ export default class Register extends BaseComponent {
             file_name: response.fileName,
             base64_file: 'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g, '%2B')
         };
+        let source = {uri: response.uri};
         request(AppUrls.AUTH_UPLOAD_FILE, 'Post', params)
             .then((response) => {
                 if (response.mjson.code == 1) {
                     if (id === 'idcard') {
                         idcardf = response.mjson.data.file_id;
+                        if (idcardf != "") {
+                            this.setState({
+                                idcard: source
+                            });
+                            this.props.showToast("图片上传成功");
+                        } else {
+                            this.props.showToast("id 为空 图片上传失败");
+                        }
                     } else if (id === 'idcardBack') {
                         idcardback = response.mjson.data.file_id;
+                        if (idcardback != "") {
+                            this.setState({
+                                idcardBack: source
+                            });
+                            this.props.showToast("图片上传成功");
+                        } else {
+                            this.props.showToast("id 为空 图片上传失败");
+                        }
                     } else if (id === 'businessLicense') {
                         businessid = response.mjson.data.file_id;
+                        if (businessid != "") {
+                            this.setState({
+                                businessLicense: source
+                            });
+                            this.props.showToast("图片上传成功");
+                        } else {
+                            this.props.showToast("id 为空 图片上传失败");
+                        }
                     }
                 } else {
-                    this.props.showToast(response.mjson.msg + "");
+                    this.props.showToast(response.mjson.msg + "!");
                 }
             }, (error) => {
                 if (error.mjson.code == -300 || error.mjson.code == -500) {
                     this.props.showToast("图片上传失败");
                 } else {
-                    this.props.showToast(error.mjson.msg + "");
+                    this.props.showToast(error.mjson.msg + "!");
                 }
             });
     }

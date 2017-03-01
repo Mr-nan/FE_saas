@@ -572,7 +572,6 @@ const styles = StyleSheet.create({
     carBrandHeadView: {
 
         backgroundColor: 'white',
-        height: Pixel.getPixel(49),
         alignItems: 'center',
         backgroundColor: 'white',
         marginTop: Pixel.getTitlePixel(64),
@@ -585,9 +584,10 @@ const styles = StyleSheet.create({
         color: fontAnColor.COLORA0,
         fontSize:Pixel.getFontPixel(fontAnColor.LITTLEFONT),
         backgroundColor: 'white',
-        marginLeft:Pixel.getPixel(15),
         marginTop:Pixel.getPixel(5),
         marginBottom:Pixel.getPixel(5),
+        marginLeft: Pixel.getPixel(15),
+
     },
 
     footprintView: {
@@ -598,7 +598,9 @@ const styles = StyleSheet.create({
         height: Pixel.getPixel(20),
         borderRadius: 4,
         backgroundColor: fontAnColor.COLORA3,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginTop:Pixel.getPixel(5),
+        marginBottom:Pixel.getPixel(5),
     },
     footprintText: {
 

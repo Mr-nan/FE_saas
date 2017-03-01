@@ -53,7 +53,7 @@ export default class LoginScene extends BaseComponent {
 
     initFinish = () => {
         StorageUtil.mGetItem(StorageKeyNames.USERNAME, (data) => {
-            if (data.code === 1 && data.result != null) {
+            if (data.code == 1 && data.result != null) {
                 userNames = data.result.split(",");
             }
         })
@@ -83,20 +83,18 @@ export default class LoginScene extends BaseComponent {
 
     render() {
         if (this.state.renderPlaceholderOnly) {
-            return ( <TouchableWithoutFeedback onPress={() => {
+            return ( <TouchableWithoutFeedback style={{backgroundColor: FontAndColor.COLORA3}} onPress={() => {
                 this.setState({
                     show: false,
                 });
             }}>
-                <View style={styles.container}>
-                    <NavigationBar
-                        leftImageShow={false}
-                        leftTextShow={true}
-                        leftText={""}
-                        centerText={"登录"}
-                        rightText={""}
-                    />
-                </View>
+                <NavigationBar
+                    leftImageShow={false}
+                    leftTextShow={true}
+                    leftText={""}
+                    centerText={"登录"}
+                    rightText={""}
+                />
             </TouchableWithoutFeedback>);
         }
         let views = [];
@@ -167,6 +165,7 @@ export default class LoginScene extends BaseComponent {
                             viewStytle={styles.itemStyel}
                             secureTextEntry={true}
                             clearValue={true}
+                            maxLength={16}
                             leftIconUri={require('./../../images/login/password.png')}/>
 
                         <LoginInputText
@@ -293,10 +292,12 @@ export default class LoginScene extends BaseComponent {
         let passWord = this.refs.loginPassword.getInputTextValue();
         let verifyCode = this.refs.loginVerifycode.getInputTextValue();
         let smsCode = this.refs.loginSmscode.getInputTextValue();
-        if (userName == "") {
+        if (typeof(passWord) == "undefined" || userName == "" || userName.length != 11) {
             this.props.showToast("请输入正确的用户名");
         } else if (typeof(passWord) == "undefined" || passWord == "") {
             this.props.showToast("密码不能为空");
+        } else if (passWord.length < 8) {
+            this.props.showToast("密码必须为8~16位");
         } else if (typeof(verifyCode) == "undefined" || verifyCode == "") {
             this.props.showToast("验证码不能为空");
         } else if (typeof(smsCode) == "undefined" || smsCode == "") {
@@ -313,11 +314,9 @@ export default class LoginScene extends BaseComponent {
                 .then((response) => {
                     if (response.mjson.code == "1") {
                         // 保存用户登录状态
-                        StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
                         StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '2');
-
                         StorageUtil.mGetItem(StorageKeyNames.USERNAME, (data) => {
-                            if (data.code === 1) {
+                            if (data.code == 1) {
                                 if (data.result != null && data.result.indexOf(userName) < 0) {
                                     StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName + "," + data.result);
                                 } else if (data.result == null) {
@@ -338,8 +337,9 @@ export default class LoginScene extends BaseComponent {
                         StorageUtil.mSetItem(StorageKeyNames.USER_LEVEL, response.mjson.data.user_level + "");
 
                         StorageUtil.mGetItem(response.mjson.data.phone + "", (data) => {
-                            if (data.code === 1) {
+                            if (data.code == 1) {
                                 if (data.result != null) {
+                                    StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
                                     this.loginPage(this.loginSuccess)
                                 } else {
                                     this.loginPage(this.setLoginGesture)
