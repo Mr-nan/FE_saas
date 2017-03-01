@@ -1,21 +1,42 @@
 import React, {Component} from "react";
-import {AppRegistry, View, Text, StyleSheet, Image} from "react-native";
+import {AppRegistry, View, Text, StyleSheet, Image, InteractionManager, TouchableWithoutFeedback} from "react-native";
 import BaseComponent from "../component/BaseComponent";
 import MyButton from "../component/MyButton";
 import * as FontAndColor from "../constant/fontAndColor";
 import LoginScene from "./LoginScene";
 import Register from "./Register";
 import PixelUtil from "../utils/PixelUtil";
-import LoginFailPwd from "./LoginFailPwd";
-import SetPwd from "./SetPwd";
+import NavigationBar from '../component/NavigationBar';
 
 var Pixel = new PixelUtil();
 
 export default class LoginAndRegister extends BaseComponent {
+
+    constructor(props) {
+        super(props);
+        //初始化方法
+        this.state = {
+            renderPlaceholderOnly: true,
+        }
+    }
+
     initFinish = () => {
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+            // this.Verifycode();
+        });
     }
 
     render() {
+        if (this.state.renderPlaceholderOnly) {
+            return ( <TouchableWithoutFeedback onPress={() => {
+                this.setState({
+                    show: false,
+                });
+            }}>
+                <View/>
+            </TouchableWithoutFeedback>);
+        }
         return (
             <View style={styles.container}>
                 <Image source={require('./../../images/test.png')} style={styles.iconStyle}/>
@@ -36,20 +57,20 @@ export default class LoginAndRegister extends BaseComponent {
                     })
                 }}/>
                 {/*<MyButton buttonType={MyButton.TEXTBUTTON} content="修改密码" parentStyle={styles.buttonStyle}*/}
-                          {/*childStyle={styles.buttonTextStyle} mOnPress={() => {*/}
-                    {/*this.toNextPage({*/}
-                        {/*name: 'SetPwd',*/}
-                        {/*component: SetPwd,*/}
-                        {/*params: {},*/}
-                    {/*})*/}
+                {/*childStyle={styles.buttonTextStyle} mOnPress={() => {*/}
+                {/*this.toNextPage({*/}
+                {/*name: 'SetPwd',*/}
+                {/*component: SetPwd,*/}
+                {/*params: {},*/}
+                {/*})*/}
                 {/*}}/>*/}
                 {/*<MyButton buttonType={MyButton.TEXTBUTTON} content="首次设置登录密码" parentStyle={styles.buttonStyle}*/}
-                          {/*childStyle={styles.buttonTextStyle} mOnPress={() => {*/}
-                    {/*this.toNextPage({*/}
-                        {/*name: 'LoginFailPwd',*/}
-                        {/*component: LoginFailPwd,*/}
-                        {/*params: {},*/}
-                    {/*})*/}
+                {/*childStyle={styles.buttonTextStyle} mOnPress={() => {*/}
+                {/*this.toNextPage({*/}
+                {/*name: 'LoginFailPwd',*/}
+                {/*component: LoginFailPwd,*/}
+                {/*params: {},*/}
+                {/*})*/}
                 {/*}}/>*/}
             </View>
         );

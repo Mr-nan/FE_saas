@@ -18,6 +18,7 @@ export default class MyNavigator extends Component {
                     name: 'rootScene'
                 }}
                 configureScene={(route) => {
+                    
                     if (Platform.OS === 'android') {
                         return Navigator.SceneConfigs.FloatFromBottomAndroid;
                     }

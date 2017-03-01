@@ -12,16 +12,57 @@ import {
     TouchableOpacity,
 } from 'react-native';
 
+const PostData = {
+    apply_type: '5',
+    loan_mny: '',
+    archives_type:'2',
+    remark: '',
+    use_time: '',
+    loan_life:''
+}
 import BaseComponent from '../../component/BaseComponent';
 
-import {LendDatePike, LendInputItem, LendItem, CGDCarItem, CommenButton,commnetStyle} from './component/ComponentBlob'
-import {width, adapeSize,PAGECOLOR} from './component/MethodComponent'
+import {LendDatePike, LendInputItem, LendItem, CGDCarItem, CommenButton,commnetStyle,} from './component/ComponentBlob'
+import {width, adapeSize,PAGECOLOR,changeToMillion} from './component/MethodComponent'
 import CGDaddCarScenes from './CGDaddCarScenes';
 import  AllNavigatior from '../../component/AllNavigationView'
 import {ModalCGD} from './component/ModelComponent'
 import DateTimePicker from 'react-native-modal-datetime-picker'
+import {request} from '../../utils/RequestUtil'
+import *as apis from '../../constant/appUrls'
 export  default  class CGDLendScenes extends BaseComponent {
-    initFinish = () => {
+
+    initFinish() {
+
+        this.getData();
+
+    }
+    getData = () => {
+        let maps = {
+            api: apis.GET_APPLY_LOAN_DATA,
+            apply_type:PostData.apply_type,
+            archives_type:PostData.archives_type,
+        };
+        request(apis.FINANCE, 'Post', maps)
+            .then((response) => {
+
+                    let tempjson =response.mjson.data
+                    let tempDataSource={}
+                     Object.assign(tempDataSource,this.titleNameBlob);
+                       tempDataSource['0']=[
+                           {title: '借款类型', value: ''},
+                           {title: '借款额度', value: changeToMillion(tempjson.min_loanmny)+'-'+changeToMillion(tempjson.max_loanmny)+'万'},
+                           {title: '借款费率', value: tempjson.rate}
+                       ]
+                       this.setState({
+
+                        dataSource:this.state.dataSource.cloneWithRowsAndSections(tempDataSource)
+                    })
+                },
+                (error) => {
+
+                });
+
 
     }
 
@@ -40,26 +81,14 @@ export  default  class CGDLendScenes extends BaseComponent {
         this.state = {
             dataSource: ds.cloneWithRowsAndSections(this.titleNameBlob),
             isDateTimePickerVisible: false,
-            infoSouce: {
-                date: '',
-                monney: '',
-                dateLimit: '',
-                rate: '',
-                paybackType: '',
-                orderState: '',
-                payDate: '',
-                allMoney: '',
-                people: '',
-                carSource: [{name: "奥迪A7进口豪华型", state: '未还清', order: '201230123012301203', price: '12万'}]
-            },
         }
     }
     titleNameBlob = {
 
         '0': [
-            {title: '借款类型', key: 'type'},
-            {title: '借款额度', key: 'money'},
-            {title: '借款费率', key: 'rate'}
+            {title: '借款类型', value: ''},
+            {title: '借款额度', value: '222'},
+            {title: '借款费率', value: '333'}
         ],
         '1': [
 
@@ -67,12 +96,6 @@ export  default  class CGDLendScenes extends BaseComponent {
             {title: '用款时间', key: 'date'},
         ]
         ,
-        '2': [
-            {carName: '放款日期', key: 'payDate', price: '12万'},
-            {carName: '放款日期', key: 'payDate', price: '12万'},
-            {carName: '放款日期', key: 'payDate', price: '12万'},
-            {carName: '放款日期', key: 'payDate', price: '12万'}
-        ],
     }
 
     //datePiker的方法
@@ -84,6 +107,7 @@ export  default  class CGDLendScenes extends BaseComponent {
     }
 
     onPress = (changeText)=> {
+
         this.setState({ isDateTimePickerVisible: true });
     }
 
@@ -112,7 +136,7 @@ export  default  class CGDLendScenes extends BaseComponent {
             />)
         } else if (sectionID === '0' && rowID !== '0') {
 
-            return (<LendItem leftTitle={rowData.title}/>)
+            return (<LendItem leftTitle={rowData.title} rightTitle={rowData.value}/>)
         } else if (sectionID === '1' && rowID === '0') {
 
             return <LendInputItem placeholder={'请输入借款金额'} title={rowData.title}/>
@@ -130,10 +154,9 @@ export  default  class CGDLendScenes extends BaseComponent {
 
         return (
             <View key={`${sectionID}-${rowId}`} style={{
-                height: adjacentRowHighlighted ? 2 : 1,
+                height: adjacentRowHighlighted ? 1 : 1,
                 backgroundColor: adjacentRowHighlighted ? '#3B5998' : '#CCCCCC'
             }}>
-
             </View>
         )
     }
@@ -145,18 +168,10 @@ export  default  class CGDLendScenes extends BaseComponent {
 
             return <View style={{height: 10, backgroundColor: '#f0eff5'}}></View>
         }
-
         return (
-            <View style={{
-                backgroundColor: '#f0eff5',
-                flexDirection: 'row',
-                height: 30,
-                alignItems: 'center',
-                paddingLeft: 15
-            }}>
+            <View style={styles.section}>
                 <Text>采购车辆</Text>
             </View>
-
         )
     }
     navigatorParams={
@@ -202,12 +217,12 @@ export  default  class CGDLendScenes extends BaseComponent {
                 }}/>
 
                 <ModalCGD ref={(cgdModal)=>{this.cgdAlert=cgdModal}} getValue={(seleveValue)=>{
-
                     let string='提档后采购贷';
-                    if (seleveValue==='2'){
+                    if (seleveValue==='1'){
 
                         string='提档前采购贷'
                     }
+                  PostData.archives_type=seleveValue;
                   this.lendType.setPlaceHodel(string);
                 }}/>
             </View>
@@ -261,5 +276,15 @@ const styles = StyleSheet.create({
 
         color: '#05c5c2'
 
+    },
+    section:{
+
+        backgroundColor: '#f0eff5',
+        flexDirection: 'row',
+        height: 30,
+        alignItems: 'center',
+        paddingLeft: 15
     }
+
+
 })

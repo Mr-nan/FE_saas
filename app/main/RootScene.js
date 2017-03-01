@@ -48,6 +48,7 @@ export default class RootScene extends BaseComponent {
                         });
                     // }
                 // });
+
             }, 500
         );
     }

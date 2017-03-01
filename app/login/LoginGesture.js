@@ -20,16 +20,20 @@ export default class GesturePassword extends BaseComponent {
         //初始化方法
         this.state = {
             message: '请绘制手势密码',
-            status: 'normal'
+            status: 'normal',
+            phone: '',
         }
     }
 
     initFinish = () => {
         StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
-            if (data.code === 1) {
+            if (data.code == 1) {
                 if (data.result != null) {
+                    this.setState({
+                        phone: data.result,
+                    });
                     StorageUtil.mGetItem(data.result + "", (data) => {
-                        if (data.code === 1) {
+                        if (data.code == 1) {
                             if (data.result != null) {
                                 Password = data.result;
                             } else {
@@ -56,10 +60,10 @@ export default class GesturePassword extends BaseComponent {
                             leftImage={require('./../../images/login/left_cancel.png')}
                             leftImageCallBack={this.backPage}/>
 
-                        <Image style={styles.avatarStyle} source={require("./../../images/login/clear.png")}/>
+                        <Image style={styles.avatarStyle} source={require("./../../images/mainImage/maiche.png")}/>
 
                         <Text style={ styles.topMessageStyle }>
-                            用户名：1234567890
+                            用户名：{this.state.phone}
                         </Text>
 
                         <Text style={this.state.status !== "wrong" ? styles.topMessageStyle : styles.topMessageWStyle}>
@@ -71,7 +75,7 @@ export default class GesturePassword extends BaseComponent {
                     <View style={{marginTop: Height / 2 * 0.95, flexDirection: 'row'}}>
                         <TouchableOpacity onPress={() => {
                             StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
-                                if (data.code === 1) {
+                                if (data.code == 1) {
                                     if (data.result != null) {
                                         StorageUtil.mRemoveItem(data.result + "");
                                     }
@@ -110,7 +114,7 @@ export default class GesturePassword extends BaseComponent {
     }
 
     onEnd = (pwd) => {
-        if (pwd === Password) {
+        if (pwd == Password) {
             this.setState({
                 status: 'right',
                 message: '验证成功',
