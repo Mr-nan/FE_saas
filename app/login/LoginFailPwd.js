@@ -21,6 +21,7 @@ import md5 from "react-native-md5";
 import StorageUtil from "../utils/StorageUtil";
 import SetLoginPwdGesture from "./SetLoginPwdGesture";
 import MainPage from "../main/MainPage";
+import * as StorageKeyNames from "../constant/storageKeyNames";
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -129,6 +130,7 @@ export default class LoginFailPwd extends BaseComponent {
                         StorageUtil.mGetItem(response.mjson.data.phone + "", (data) => {
                             if (data.code == 1) {
                                 if (data.result != null) {
+                                    StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
                                     this.loginPage(this.loginSuccess)
                                 } else {
                                     this.loginPage(this.setLoginGesture)
