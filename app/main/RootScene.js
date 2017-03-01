@@ -24,11 +24,11 @@ export default class RootScene extends BaseComponent {
         let that = this;
         setTimeout(
             () => {
-                // StorageUtil.mGetItem(KeyNames.FIRST_INTO, (res) => {
-                //     if (res.result == null) {
-                //         that.navigatorParams.component = LoginAndRegister;
-                //         that.toNextPage(that.navigatorParams);
-                //     } else {
+                StorageUtil.mGetItem(KeyNames.FIRST_INTO, (res) => {
+                    if (res.result == null) {
+                        that.navigatorParams.component = WelcomScene;
+                        that.toNextPage(that.navigatorParams);
+                    } else {
                         StorageUtil.mGetItem(KeyNames.ISLOGIN, (res) => {
                             if (res.result !== StorageUtil.ERRORCODE) {
                                 if (res.result == null) {
@@ -46,8 +46,8 @@ export default class RootScene extends BaseComponent {
                                 }
                             }
                         });
-                    // }
-                // });
+                    }
+                });
             }, 500
         );
     }

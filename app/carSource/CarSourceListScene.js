@@ -29,6 +29,7 @@ import CarBrandSelectScene  from './CarBrandSelectScene';
 import CityListScene        from './CityListScene';
 import  {request}           from '../utils/RequestUtil';
 import PixelUtil            from '../utils/PixelUtil';
+import * as Urls from '../constant/appUrls';
 
 const Pixel = new PixelUtil();
 
@@ -167,7 +168,7 @@ export  default  class carSourceListScene extends BaseComponent {
     // 获取数据
     loadData = () => {
 
-        let url = 'http://dev.api-gateway.dycd.com/' + 'v1/car/index';
+        let url = Urls.BASEURL + 'v1/car/index';
 
         APIParameter.page = 0;
         request(url, 'post', APIParameter)
@@ -197,7 +198,7 @@ export  default  class carSourceListScene extends BaseComponent {
 
     loadMoreData = () => {
 
-        let url = 'http://dev.api-gateway.dycd.com/' + 'v1/car/index';
+        let url = Urls.BASEURL + 'v1/car/index';
         APIParameter.page += 1;
 
         request(url, 'post', APIParameter)
