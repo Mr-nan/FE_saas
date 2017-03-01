@@ -183,7 +183,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
         let smsCode = this.refs.smscode.getInputTextValue();
         if (typeof(userName) == "undefined" || userName == "") {
             this.props.showToast("用户名不能为空");
-        } else if (userName != 11) {
+        } else if (userName.length != 11) {
             this.props.showToast("请输入正确的用户名");
         } else if (typeof(verifyCode) == "undefined" || verifyCode == "") {
             this.props.showToast("验证码不能为空");
