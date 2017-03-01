@@ -42,14 +42,26 @@ export default class AutoEmission extends Component {
             {title: 'OBD', selected: false,index:10},
             {title: '欧Ⅰ', selected: false,index:11},
         ];
-        this.viewData.map((item)=>{
-            if(item.title === emission) item.selected = true;
-        });
+
+        if(this.isEmpty(emission) === false){
+            this.viewData.map((item)=>{
+                if(item.title === emission) item.selected = true;
+            });
+        }
+
         this.state = {
             dataSource: this.viewData,
             renderPlaceholderOnly: true
         }
     }
+
+    isEmpty = (str)=>{
+        if(typeof(str) != 'undefined' && str !== ''){
+            return false;
+        }else {
+            return true;
+        }
+    };
 
     componentWillMount() {
 

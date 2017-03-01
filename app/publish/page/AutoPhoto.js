@@ -51,7 +51,7 @@ export default class AutoPhoto extends Component {
     constructor(props) {
         super(props);
         let hasPhoto = false;
-        if(this.props.carData.pictures !==''){
+        if(this.isEmpty(this.props.carData.pictures) === false){
             this.pictures = JSON.parse(this.props.carData.pictures);
             this.selectSource = {uri: this.pictures[0].url};
             hasPhoto = true;
@@ -63,6 +63,14 @@ export default class AutoPhoto extends Component {
             renderPlaceholderOnly: true
         }
     }
+
+    isEmpty = (str)=>{
+        if(typeof(str) != 'undefined' && str !== ''){
+            return false;
+        }else {
+            return true;
+        }
+    };
 
     componentWillMount() {
 

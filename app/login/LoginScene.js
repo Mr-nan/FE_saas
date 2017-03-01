@@ -28,6 +28,7 @@ import MyButton from "../component/MyButton";
 import LoginFailSmsYes from "./LoginFailSmsYes";
 import SetLoginPwdGesture from "./SetLoginPwdGesture";
 import md5 from "react-native-md5";
+import LoginGesture from './LoginGesture';
 
 var Pixel = new PixelUtil();
 var Dimensions = require('Dimensions');
@@ -335,12 +336,23 @@ export default class LoginScene extends BaseComponent {
                         StorageUtil.mSetItem(StorageKeyNames.REAL_NAME, response.mjson.data.real_name + "");
                         StorageUtil.mSetItem(StorageKeyNames.TOKEN, response.mjson.data.token + "");
                         StorageUtil.mSetItem(StorageKeyNames.USER_LEVEL, response.mjson.data.user_level + "");
-
                         StorageUtil.mGetItem(response.mjson.data.phone + "", (data) => {
                             if (data.code == 1) {
                                 if (data.result != null) {
+                                    if (response.mjson.data.user_level == 2) {
+                                        if (response.mjson.data.enterprise_list[0].role_type == '2') {
+                                            this.loginPage({
+                                                name: 'LoginGesture',
+                                                component: LoginGesture,
+                                                params: {from: 'RootScene'}
+                                            })
+                                        } else {
+                                            this.loginPage(this.loginSuccess)
+                                        }
+                                    } else {
+                                        this.loginPage(this.loginSuccess)
+                                    }
                                     StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
-                                    this.loginPage(this.loginSuccess)
                                 } else {
                                     this.loginPage(this.setLoginGesture)
                                 }

@@ -24,7 +24,7 @@ import *as fontAnColor from '../constant/fontAndColor';
 import NavigationView from '../component/AllNavigationView';
 import StorageUtil      from '../utils/StorageUtil';
 import * as StorageKeyName   from '../constant/storageKeyNames';
-import ZNLoadView from './znComponent/ZNLoadView';
+// import ZNLoadView from './znComponent/ZNLoadView';
 import PixelUtil from '../utils/PixelUtil';
 var Pixel = new PixelUtil();
 
@@ -48,6 +48,8 @@ export default class CarBrandSelectScene extends BaseComponent {
     initFinish = () => {
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: false});
+            this.loadData();
+
         });
 
     }
@@ -84,7 +86,6 @@ export default class CarBrandSelectScene extends BaseComponent {
         this.state = {
 
             renderPlaceholderOnly: true,
-            isLoadData:true,
             dataSource: dataSource,
             isHideCarSubBrand: true,
             carTypeCheckend: '',
@@ -93,12 +94,6 @@ export default class CarBrandSelectScene extends BaseComponent {
             footprintData:[],
 
         };
-
-    }
-
-    componentWillMount() {
-
-        this.loadData();
 
     }
 
@@ -120,9 +115,10 @@ export default class CarBrandSelectScene extends BaseComponent {
     }
 
 
-    loadData = ()=> {
+    loadData =()=> {
 
         let url = AppUrls.BASEURL + 'v1/home/brand';
+        this.startLoadData();
         request(url, 'post', {
 
             status:status,
@@ -145,22 +141,13 @@ export default class CarBrandSelectScene extends BaseComponent {
 
     startLoadData=()=>{
 
-        this.setState(
-            {
-                isLoadData:true,
-            }
+        this.refs.ZNLoadView.visibleClick(true);
 
-        );
     }
 
     stopLoadData=()=>{
 
-        this.setState(
-            {
-                isLoadData:false,
-            }
-
-        );
+       this.refs.ZNLoadView.visibleClick(false);
     }
 
     setListData = (array)=> {
@@ -294,6 +281,8 @@ export default class CarBrandSelectScene extends BaseComponent {
 
         return (
             <View style={styles.rootContainer}>
+                <ZNLoadView ref="ZNLoadView"/>
+
                 {
                     (this.props.status == 1 && this.state.footprintData.length>0) &&(<View style={styles.carBrandHeadView}>
                         <Text style={styles.carBrandHeadText}>足迹:</Text>
@@ -335,7 +324,7 @@ export default class CarBrandSelectScene extends BaseComponent {
                     title="选择品牌"
                     backIconClick={this._backIconClick}
                 />
-               <ZNLoadView isLoadData={this.state.isLoadData}/>
+               {/*<ZNLoadView isLoadData={this.state.isLoadData}/>*/}
                 {
                     this.state.isHideCarSubBrand ? (null) : (
                         <CarSeriesList

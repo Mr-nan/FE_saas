@@ -13,7 +13,6 @@ import {
     InteractionManager
 }from 'react-native';
 import CarBrandSelectScene from '../../carSource/CarBrandSelectScene';
-import BaseComponent from '../../component/BaseComponent';
 import * as fontAndColor from '../../constant/fontAndColor';
 import AllNavigationView from '../../component/AllNavigationView';
 import PixelUtil from '../../utils/PixelUtil';
@@ -24,7 +23,7 @@ const background = require('../../../images/publish/background.png');
 const scan = require('../../../images/publish/scan.png');
 const arrow = require('../../../images/publish/date-select.png');
 
-export default class DetailModelSelect extends BaseComponent {
+export default class DetailModelSelect extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -51,7 +50,7 @@ export default class DetailModelSelect extends BaseComponent {
 
     componentWillReceiveProps(nextProps: Object) {
         let model_name = '';
-        if (typeof(nextProps.carData.model) != 'undefined' && nextProps.carData.model !== '') {
+        if (this.isEmpty(nextProps.carData.model) === false ) {
             let modelInfo = JSON.parse(nextProps.carData.model);
             model_name = modelInfo.model_name;
         }
@@ -61,17 +60,24 @@ export default class DetailModelSelect extends BaseComponent {
         });
     }
 
-    //选择车型
-    brandParams ={
-        name: 'CarBrandSelectScene',
-        component: CarBrandSelectScene,
-        params: {checkedCarClick: this._checkedCarClick,
-            status:0,}
+    isEmpty = (str)=>{
+        if(typeof(str) != 'undefined' && str !== ''){
+            return false;
+        }else {
+            return true;
+        }
     };
 
-
+    //选择车型
     _modelPress = () => {
-        this.toNextPage(this.brandParams);
+        let brandParams ={
+            name: 'CarBrandSelectScene',
+            component: CarBrandSelectScene,
+            params: {checkedCarClick: this._checkedCarClick,
+                status:0,}
+        };
+
+        this.toNextPage(brandParams);
     };
 
     _checkedCarClick = (carObject)=>{

@@ -33,6 +33,7 @@ export default class NewCarScene extends BaseComponent{
 
     initFinish=()=>{
         StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST,(error,result)=>{
+            console.log('1111========>>>' + result);
             if(typeof(result) != 'undefined' && result !== ''){
                 let enters = JSON.parse(result);
                 if(enters.length === 1){
@@ -43,6 +44,10 @@ export default class NewCarScene extends BaseComponent{
                     this.enterpriseList = enters;
                     this.enterpriseModal.refresh(this.enterpriseList);
                 }
+            }else{
+                this.setState({
+                    shop_id:10
+                });
             }
         });
     };
@@ -80,7 +85,6 @@ export default class NewCarScene extends BaseComponent{
         this.toNextPage(this.sourceParams);
     };
 
-
     _onBack = (page) =>{
         if(page === 0){
             this.backPage();
@@ -111,6 +115,10 @@ export default class NewCarScene extends BaseComponent{
         });
     };
 
+    _goToPage = (parms)=>{
+        this.toNextPage(parms);
+    };
+
     render(){
         return(
             <Image style={styles.container}  source={background}>
@@ -124,6 +132,7 @@ export default class NewCarScene extends BaseComponent{
                     renderTabBar={()=>{return(<NewIndicator canChange={this.state.canChange} showHint={this._showHint}
                     goToMore={()=>{this._goToMore()}} />)}}>
                     <ModelSelect
+                        goToPage={this._goToPage}
                         carNumberBack = {this._canChange}
                         onBack={()=>this._onBack(0)} refreshCar={this._carData}
                         barHeight={barHeight} tabLabel="ModelSelect" />
