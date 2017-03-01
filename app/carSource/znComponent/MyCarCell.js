@@ -43,8 +43,17 @@ export default class MyCarCell extends Component {
         }
     };
 
+    dateReversal=(time)=>{
+
+        const date = new Date();
+        date.setTime(time);
+        return(date.getFullYear()+"年"+(date.getMonth()+1)+"月"+date.getDate());
+
+    };
+
     render(){
 
+        const {carCellData} = this.props;
         return(
             <TouchableOpacity onPress={this.cellClick}>
                 <View style={[styles.container,styles.lineBottom]} >
@@ -55,10 +64,10 @@ export default class MyCarCell extends Component {
                         </View>
                         <View style={[styles.textContainer]}>
                             <View style={{backgroundColor:'white'}}>
-                                <Text style={styles.mainText}>{this.props.carMainText}</Text>
+                                <Text style={styles.mainText}>{'['+carCellData.city_name+']'+carCellData.brand_name+carCellData.model_name}</Text>
                             </View>
                             <View style={{backgroundColor:'white'}}>
-                                <Text style={styles.subTitleText}>{this.props.carSubText}</Text>
+                                <Text style={styles.subTitleText}>{this.dateReversal(carCellData.create_time+'000')+'/'+carCellData.mileage+'万公里'}</Text>
                             </View>
                         </View>
                             <Image style={styles.tailImage} source={this.getImage(this.props.type)}/>

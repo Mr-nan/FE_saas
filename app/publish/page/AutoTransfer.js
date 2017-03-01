@@ -160,6 +160,10 @@ const styles = StyleSheet.create({
     pickContainer:{
         flex:1,
         height:Pixel.getPixel(40),
+        justifyContent:'center',
+        alignItems:'center',
+        overflow:'hidden',
+
     },
     inputNum:{
         width:Pixel.getPixel(60),
