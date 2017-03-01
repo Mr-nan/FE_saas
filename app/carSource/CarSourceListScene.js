@@ -17,10 +17,12 @@ import {
     Modal,
 
 } from 'react-native';
+
 const {width, height} = Dimensions.get('window');
+
 import * as fontAndColor    from '../constant/fontAndColor';
 import BaseComponent        from '../component/BaseComponent';
-import HeadView             from './znComponent/CarSourceSelectHeadView';
+import {CarSourceSelectHeadView,CarSourceSelectView}         from './znComponent/CarSourceSelectHeadView';
 import ListFooter           from './znComponent/LoadMoreFooter';
 import SGListView           from 'react-native-sglistview';
 import CarCell              from './znComponent/CarCell';
@@ -28,71 +30,18 @@ import CarInfoScene         from './CarInfoScene';
 import CarBrandSelectScene  from './CarBrandSelectScene';
 import CityListScene        from './CityListScene';
 import  {request}           from '../utils/RequestUtil';
+import ZNLoadView           from './znComponent/ZNLoadView'
+import {SequencingButton,SequencingView} from './znComponent/CarSequencingView';
 import PixelUtil            from '../utils/PixelUtil';
 
+
 const Pixel = new PixelUtil();
+let carFilterData = require('./carData/carFilterData.json');
+let carAgeSource = carFilterData.carAgeSource;
+let carKMSource = carFilterData.carKMSource;
+let sequencingDataSource = carFilterData.sequencingDataSource;
 
-const carAgeSource = [
-    {
-        title: '1年以内',
-        value: '0|1',
-    },
-    {
-        title: '3年以内',
-        value: '0|3',
-    },
-    {
-        title: '5年以内',
-        value: '0|4',
-    },
-    {
-        title: '8年以内',
-        value: '0|8',
-    },
-    {
-        title: '10年以内',
-        value: '0|10',
-    },
-
-];
-
-const carKMSource = [
-    {
-        title: '1万公里以内',
-        value: '0|1',
-    },
-    {
-        title: '3万公里以内',
-        value: '0|3',
-    },
-    {
-        title: '5万公里以内',
-        value: '0|5',
-    },
-    {
-        title: '10万公里以内',
-        value: '0|10',
-    },
-
-
-];
-
-const sequencingDataSource = [
-    {
-        title: '最新发布',
-        value: '1',
-    },
-    {
-        title: '里程少',
-        value: '2',
-    },
-    {
-        title: '车龄短',
-        value: '3',
-    },
-];
-
-let carData = new Array;
+let carData = [];
 
 const APIParameter = {
 
@@ -111,6 +60,7 @@ const APIParameter = {
     status: 1,
 };
 
+
 export  default  class carSourceListScene extends BaseComponent {
     // 构造
     constructor(props) {
@@ -126,7 +76,6 @@ export  default  class carSourceListScene extends BaseComponent {
             checkedSource: carAgeSource,
             isHide: true,
             isFillData: 1,
-            isHideSequencing: true,
             isLoadMore: true,
             currentCheckedIndex: 1,
             sequencingType: {
@@ -152,17 +101,27 @@ export  default  class carSourceListScene extends BaseComponent {
     }
 
     initFinish = () => {
-        this.refreshingData();
+        this.loadData();
     };
 
     // 下拉刷新数据
     refreshingData = () => {
-
-        this.setState({isRefreshing: true});
+        carData = [];
+        this.setState({isRefreshing:true});
         this.loadData();
 
     };
 
+
+
+
+    // 筛选数据刷新
+    filterData=()=>{
+        carData = [];
+        this.refs.ZNLoadView.visibleClick(true);
+        this.loadData();
+
+    }
 
     // 获取数据
     loadData = () => {
@@ -173,22 +132,34 @@ export  default  class carSourceListScene extends BaseComponent {
         request(url, 'post', APIParameter)
             .then((response) => {
 
-                carData = response.mjson.data.list;
+                carData.push(...response.mjson.data.list);
+
                 APIParameter.status = response.mjson.data.status;
+                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
+
                 if (this.state.isFillData !== APIParameter.status) {
                     this.setState({
                         isFillData: APIParameter.status,
+                        dataSource: ds.cloneWithRows(carData),
+                        isRefreshing:false,
+                        renderPlaceholderOnly: 'success',
+                    });
+                }else {
+                     this.setState({
+                        dataSource: ds.cloneWithRows(carData),
+                        isRefreshing:false,
+                         renderPlaceholderOnly: 'success',
                     });
                 }
-                this.setState({
-                    dataSource: this.state.dataSource.cloneWithRows(carData),
-                    isRefreshing: false,
-                });
-                this.setState({renderPlaceholderOnly: 'success'});
+                this.refs.ZNLoadView.visibleClick(false);
+
+
             }, (error) => {
 
+                this.refs.ZNLoadView.visibleClick(false);
                 this.setState({
-                    isRefreshing: false,
+                    isRefreshing:false,
+                    renderPlaceholderOnly:'error'
                 });
 
             });
@@ -204,7 +175,6 @@ export  default  class carSourceListScene extends BaseComponent {
             .then((response) => {
 
                 APIParameter.status = response.mjson.data.status;
-
                 if (this.state.isFillData !== APIParameter.status) {
                     this.setState({
                         isFillData: APIParameter.status,
@@ -215,6 +185,7 @@ export  default  class carSourceListScene extends BaseComponent {
                 for (let i = 0; i < data.length; i++) {
                     carData.push(data[i]);
                 }
+                console.log(carData.length);
 
                 this.setState({
                     dataSource: this.state.dataSource.cloneWithRows(carData),
@@ -226,14 +197,17 @@ export  default  class carSourceListScene extends BaseComponent {
             });
     }
 
-    toEnd = () => {
+    toEnd =() => {
 
-        if (carData.length && APIParameter.status == 1) {
-            this.loadMoreData();
-        }
+        let isFilterData = this.refs.ZNLoadView.getVisible();
+            if (carData.length && APIParameter.status == 1 && !isFilterData && !this.state.isRefreshing) {
+                console.log('加载ing');
+                this.loadMoreData();
+            }
 
     };
 
+    // 选择城市列表
     loactionClick = () => {
 
         let navigatorParams = {
@@ -274,7 +248,6 @@ export  default  class carSourceListScene extends BaseComponent {
         }
 
         this.refs.headView.checkSelect(this.state.currentCheckedIndex); // 取消之前选择按钮状态
-
         let {checkedSource} = this.state;
         if (!isHighlighted) {
             switch (index) {
@@ -291,10 +264,9 @@ export  default  class carSourceListScene extends BaseComponent {
         }
 
         this.setState({
-
             checkedSource,
-            isHide: isHighlighted,
             currentCheckedIndex: index,
+            isHide:isHighlighted,
         });
 
         setImgHighlighted(!isHighlighted); // 回调按钮状态
@@ -303,12 +275,14 @@ export  default  class carSourceListScene extends BaseComponent {
 
     // 选择意向
     checkRecommendClick = (isCheck) => {
+
         if (isCheck) {
             APIParameter.type = 1;
             this.allDelectClick();
+
         } else {
             APIParameter.type = 0;
-            this.refreshingData();
+            this.filterData();
         }
 
     };
@@ -316,7 +290,6 @@ export  default  class carSourceListScene extends BaseComponent {
     //  选择车型
     checkedCarClick = (carObject) => {
 
-        console.log(carObject);
         APIParameter.brand_id = carObject.brand_id;
         APIParameter.series_id = carObject.series_id;
 
@@ -331,7 +304,7 @@ export  default  class carSourceListScene extends BaseComponent {
         if (this.refs.headView.state.isCheckRecommend) {
             this.refs.headView.setCheckRecommend(false)
         } else {
-            this.refreshingData();
+            this.filterData();
         }
 
     };
@@ -372,15 +345,22 @@ export  default  class carSourceListScene extends BaseComponent {
         if (this.refs.headView.state.isCheckRecommend) {
             this.refs.headView.setCheckRecommend(false)
         } else {
-            this.refreshingData();
+            this.filterData();
         }
 
     };
 
+    hideCheckedView=()=>{
+        this.setState({
+
+            isHide: true,
+
+        });
+    }
+
     // 筛选排序
     sequencingCheckedClick = (title, value) => {
 
-        this.hideSequencingView();
         this.setState({
             sequencingType: {
 
@@ -390,7 +370,7 @@ export  default  class carSourceListScene extends BaseComponent {
             },
         });
         APIParameter.order_type = value;
-        this.refreshingData();
+        this.filterData();
     };
 
     sequencingClick = () => {
@@ -401,7 +381,7 @@ export  default  class carSourceListScene extends BaseComponent {
             },
         });
         APIParameter.order_type = 0;
-        this.refreshingData();
+        this.filterData();
     };
 
     carTypeClick = () => {
@@ -417,7 +397,7 @@ export  default  class carSourceListScene extends BaseComponent {
         if (this.refs.headView.state.isCheckRecommend) {
             this.refs.headView.setCheckRecommend(false)
         } else {
-            this.refreshingData();
+            this.filterData();
         }
     };
 
@@ -433,7 +413,7 @@ export  default  class carSourceListScene extends BaseComponent {
         if (this.refs.headView.state.isCheckRecommend) {
             this.refs.headView.setCheckRecommend(false)
         } else {
-            this.refreshingData();
+            this.filterData();
         }
     };
 
@@ -448,7 +428,7 @@ export  default  class carSourceListScene extends BaseComponent {
         if (this.refs.headView.state.isCheckRecommend) {
             this.refs.headView.setCheckRecommend(false)
         } else {
-            this.refreshingData();
+            this.filterData();
         }
     };
 
@@ -483,24 +463,15 @@ export  default  class carSourceListScene extends BaseComponent {
             this.refs.headView.setCheckRecommend(false);
 
         } else {
-            this.refreshingData();
+            this.filterData();
         }
 
     };
 
     showSequencingView = () => {
 
-        this.setState({
-            isHideSequencing: false,
-        });
+      this.refs.SequencingView.visibleCilck(true);
 
-    };
-
-    hideSequencingView = () => {
-
-        this.setState({
-            isHideSequencing: true,
-        });
     };
 
 
@@ -543,19 +514,25 @@ export  default  class carSourceListScene extends BaseComponent {
 
     }
 
+    renderPlaceholderView = () => {
+        return (
+            <View style={{width: width, height: height,backgroundColor:fontAndColor.COLORA3,alignItems: 'center'}}>
+                {this.loadView()}
+            </View>
+        );
+    }
+
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
-            return this._renderPlaceholderView();
+            return this.renderPlaceholderView();
         }
         return (
 
             <View style={styles.contaier}>
                 <View style={styles.contaier}>
                     <CarListNavigatorView searchClick={this.presCarTypeScene} loactionClick={this.loactionClick}/>
-                    <View style={{height:40}}>
-                        <HeadView ref="headView" onPres={this.headViewOnPres}
-                                  checkRecommendClick={this.checkRecommendClick}/>
-                    </View>
+                    <CarSourceSelectHeadView ref="headView" onPres={this.headViewOnPres}
+                              checkRecommendClick={this.checkRecommendClick}/>
                     {
 
                         (this.state.checkedCarKMType.title || this.state.checkedCarAgeType.title || this.state.checkedCarType.title || this.state.sequencingType.title) ?
@@ -575,9 +552,13 @@ export  default  class carSourceListScene extends BaseComponent {
 
                     {
                         this.state.dataSource && (
-                            <ListView
+                            <SGListView
                                 dataSource={this.state.dataSource}
                                 ref={'carListView'}
+                                initialListSize={10}
+                                onEndReachedThreshold={1}
+                                stickyHeaderIndices={[]}//仅ios
+                                scrollRenderAheadDistance={10}
                                 pageSize={10}
                                 enableEmptySections = {true}
                                 renderRow={(item,sectionID,rowID) =>
@@ -598,67 +579,27 @@ export  default  class carSourceListScene extends BaseComponent {
 
                 </View>
                 <SequencingButton buttonClick={this.showSequencingView}/>
-
-                <Modal visible={!this.state.isHideSequencing} transparent={true}>
-                    <SequencingView checkedType={this.state.sequencingType}
-                                    checkedClick={this.sequencingCheckedClick}
-                                    hideClick={this.hideSequencingView}/>
-                </Modal>
+                <SequencingView
+                    ref="SequencingView"
+                    checkedType={this.state.sequencingType}
+                    checkedClick={this.sequencingCheckedClick}
+                    sequencingDataSource={sequencingDataSource}/>
                 {
-
-                    this.state.isHide ? (null) : (
-                            <View style={styles.selectView}>
-                                <View style={{backgroundColor:'white'}}>
-                                    <ScrollView>
-                                        {
-                                            this.state.checkedSource.map((data, index) => {
-                                                return (
-                                                    <TouchableOpacity key={index} onPress={()=>{
-
-                                                    this.checkCarAgeAnKMClick(data,index);
-                                                }}>
-                                                        <View style={styles.checkedCell}>
-
-                                                            {
-                                                                this.state.currentCheckedIndex == 2 ? (
-                                                                        <Text
-                                                                            style={[styles.checkedCellText,data.title==this.state.checkedCarAgeType.title && {color:fontAndColor.COLORB0}]}>{data.title}</Text>
-                                                                    ) : (
-                                                                        <Text
-                                                                            style={[styles.checkedCellText,data.title==this.state.checkedCarKMType.title && {color:fontAndColor.COLORB0}]}>{data.title}</Text>
-                                                                    )
-                                                            }
-
-                                                        </View>
-                                                    </TouchableOpacity>
-
-                                                )
-                                            })
-                                        }
-                                    </ScrollView>
-                                </View>
-                                <TouchableOpacity style={styles.contaier} onPress={()=>{
-                                this.refs.headView.checkSelect(this.state.currentCheckedIndex);
-                                this.setState({
-                                    isHide:true,
-                                });
-                            }}>
-                                </TouchableOpacity>
-
-                            </View>)
+                    !this.state.isHide && (
+                        <CarSourceSelectView
+                            ref="CarSourceSelectView"
+                            checkedSource={this.state.checkedSource}
+                            checkCarAgeAnKMClick={this.checkCarAgeAnKMClick}
+                            currentCheckedIndex={this.state.currentCheckedIndex}
+                            hideClick ={this.hideCheckedView}
+                            checkedTypeString={this.state.currentCheckedIndex == 2 ? this.state.checkedCarAgeType.title:this.state.checkedCarKMType.title}/>)
                 }
+
+                <ZNLoadView ref="ZNLoadView"/>
             </View>
 
         )
 
-    }
-
-    _renderPlaceholderView = () => {
-        return (
-            <View style={{width: width, height: height,backgroundColor:fontAndColor.COLORA3,alignItems: 'center'}}>
-                {this.loadView()}
-            </View>
-        );
     }
 }
 
@@ -726,57 +667,6 @@ class CheckedContentView extends Component {
 
 }
 
-class SequencingButton extends Component {
-
-    render() {
-
-        const {buttonClick} = this.props;
-        return (
-            <TouchableOpacity style={styles.sequencingButton} onPress={buttonClick}>
-                <Image source={require('../../images/carSourceImages/sort@2x.png')}/>
-                <Text style={styles.sequencingText}>排序</Text>
-            </TouchableOpacity>
-        )
-    }
-
-}
-
-class SequencingView extends Component {
-
-    render() {
-        const {checkedType, checkedClick, hideClick}=this.props;
-
-        return (
-            <View style={styles.SeqencingView}>
-                <TouchableOpacity style={styles.contaier} onPress={hideClick}>
-                </TouchableOpacity>
-                <View style={{backgroundColor:'white'}}>
-                    <ScrollView>
-                        {
-                            sequencingDataSource.map((data, index) => {
-                                return (
-                                    <TouchableOpacity key={index} onPress={()=>{
-
-                                       checkedClick(data.title,data.value);
-                                        hideClick();
-
-                                    }}>
-                                        <View style={styles.checkedCell}>
-                                            {
-                                                <Text
-                                                    style={[styles.checkedCellText,data.title == checkedType && {color:fontAndColor.COLORB0}]}>{data.title}</Text>
-                                            }
-                                        </View>
-                                    </TouchableOpacity>
-                                )
-                            })
-                        }
-                    </ScrollView>
-                </View>
-            </View>
-        )
-    }
-}
 
 
 class CarListNavigatorView extends Component {
@@ -804,11 +694,9 @@ class CarListNavigatorView extends Component {
     }
 }
 
+
 var ScreenWidth = Dimensions.get('window').width;
-
-
 const styles = StyleSheet.create({
-
 
     contaier: {
         flex: 1,
@@ -892,35 +780,6 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT),
         textAlign: 'center',
         color: fontAndColor.COLORA0,
-
-    },
-
-    sequencingButton: {
-
-        flexDirection: 'row',
-        position: 'absolute',
-        width: Pixel.getPixel(70),
-        height: Pixel.getPixel(30),
-        right: Pixel.getPixel(20),
-        borderRadius: 15,
-        backgroundColor: 'rgba(0, 0, 0,0.7)',
-        justifyContent: 'center',
-        alignItems: 'center',
-        bottom: Pixel.getPixel(25),
-    },
-    sequencingText: {
-
-        color: 'white',
-        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT),
-        marginLeft: Pixel.getPixel(5),
-
-    },
-
-    SeqencingView: {
-
-        backgroundColor: 'rgba(0, 0, 0,0.3)',
-        justifyContent: 'flex-end',
-        flex:1
 
     },
 
