@@ -19,6 +19,9 @@ import SetPwd from "./SetPwd";
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 import md5 from "react-native-md5";
+import StorageUtil from "../utils/StorageUtil";
+import SetLoginPwdGesture from "./SetLoginPwdGesture";
+import MainPage from '../main/MainPage';
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -96,14 +99,6 @@ export default class LoginFailPwd extends BaseComponent {
         );
     }
 
-    rightTextCallBack = () => {
-        this.toNextPage({
-            name: 'SetPwd',
-            component: SetPwd,
-            params: {},
-        })
-    }
-
     //修改密码
     setPwd = () => {
         let phone = this.refs.phone.getInputTextValue();
@@ -119,14 +114,22 @@ export default class LoginFailPwd extends BaseComponent {
             this.props.showToast("两次密码输入不一致");
         } else {
             let maps = {
-                confirm_pwd: md5.hex_md5( newPasswordAgain ),
-                pwd:md5.hex_md5( newPassword ) ,
+                confirm_pwd: md5.hex_md5(newPasswordAgain),
+                pwd: md5.hex_md5(newPassword),
             };
             request(AppUrls.SETPWD, 'Post', maps)
                 .then((response) => {
                     if (response.mjson.code == "1") {
                         this.props.showToast("设置成功");
-                        this.backPage();
+                        StorageUtil.mGetItem(response.mjson.data.phone + "", (data) => {
+                            if (data.code === 1) {
+                                if (data.result != null) {
+                                    this.loginPage(this.loginSuccess)
+                                } else {
+                                    this.loginPage(this.setLoginGesture)
+                                }
+                            }
+                        })
                     } else {
                         this.props.showToast(response.mjson.msg + "");
                     }
@@ -137,6 +140,29 @@ export default class LoginFailPwd extends BaseComponent {
                         this.props.showToast(error.mjson.msg + "");
                     }
                 });
+        }
+    }
+
+    setLoginGesture = {
+        name: 'SetLoginPwdGesture',
+        component: SetLoginPwdGesture,
+        params: {
+            from: 'login'
+        }
+    }
+
+    loginSuccess = {
+        name: 'MainPage',
+        component: MainPage,
+        params: {}
+    }
+
+    loginPage = (mProps) => {
+        const navigator = this.props.navigator;
+        if (navigator) {
+            navigator.immediatelyResetRouteStack([{
+                ...mProps
+            }])
         }
     }
 }
