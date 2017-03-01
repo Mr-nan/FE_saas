@@ -53,7 +53,7 @@ export default class Register extends BaseComponent {
 
     render() {
         if (this.state.renderPlaceholderOnly) {
-            return ( <TouchableWithoutFeedback onPress={() => {
+            return ( <TouchableWithoutFeedback style={{backgroundColor: FontAndColor.COLORA3}} onPress={() => {
                 this.setState({
                     show: false,
                 });
@@ -320,7 +320,7 @@ export default class Register extends BaseComponent {
             chooseFromLibraryButtonTitle: '选择相册',
             allowsEditing: true,
             noData: true,
-            quality: 1.0,
+            quality: 0.5,
             maxWidth: 500,
             maxHeight: 500,
             storageOptions: {
@@ -335,20 +335,6 @@ export default class Register extends BaseComponent {
             } else if (response.error) {
             } else if (response.customButton) {
             } else {
-                let source = {uri: response.uri};
-                if (id === 'idcard') {
-                    this.setState({
-                        idcard: source
-                    });
-                } else if (id === 'idcardBack') {
-                    this.setState({
-                        idcardBack: source
-                    });
-                } else if (id === 'businessLicense') {
-                    this.setState({
-                        businessLicense: source
-                    });
-                }
                 this.imageUploadUtil(response, id);
             }
         });
@@ -360,18 +346,43 @@ export default class Register extends BaseComponent {
             file_name: response.fileName,
             base64_file: 'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g, '%2B')
         };
+        let source = {uri: response.uri};
         request(AppUrls.AUTH_UPLOAD_FILE, 'Post', params)
             .then((response) => {
                 if (response.mjson.code == 1) {
                     if (id === 'idcard') {
                         idcardf = response.mjson.data.file_id;
+                        if (idcardf != "") {
+                            this.setState({
+                                idcard: source
+                            });
+                            this.props.showToast("图片上传成功");
+                        } else {
+                            this.props.showToast("id 为空 图片上传失败");
+                        }
                     } else if (id === 'idcardBack') {
                         idcardback = response.mjson.data.file_id;
+                        if (idcardback != "") {
+                            this.setState({
+                                idcardBack: source
+                            });
+                            this.props.showToast("图片上传成功");
+                        } else {
+                            this.props.showToast("id 为空 图片上传失败");
+                        }
                     } else if (id === 'businessLicense') {
                         businessid = response.mjson.data.file_id;
+                        if (businessid != "") {
+                            this.setState({
+                                businessLicense: source
+                            });
+                            this.props.showToast("图片上传成功");
+                        } else {
+                            this.props.showToast("id 为空 图片上传失败");
+                        }
                     }
                 } else {
-                    this.props.showToast(response.mjson.msg + "");
+                    this.props.showToast(response.mjson.msg + "!");
                 }
             }, (error) => {
                 if (error.mjson.code == -300 || error.mjson.code == -500) {
