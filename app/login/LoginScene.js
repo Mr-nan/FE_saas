@@ -88,15 +88,13 @@ export default class LoginScene extends BaseComponent {
                     show: false,
                 });
             }}>
-                <View style={styles.container}>
-                    <NavigationBar
-                        leftImageShow={false}
-                        leftTextShow={true}
-                        leftText={""}
-                        centerText={"登录"}
-                        rightText={""}
-                    />
-                </View>
+                <NavigationBar
+                    leftImageShow={false}
+                    leftTextShow={true}
+                    leftText={""}
+                    centerText={"登录"}
+                    rightText={""}
+                />
             </TouchableWithoutFeedback>);
         }
         let views = [];

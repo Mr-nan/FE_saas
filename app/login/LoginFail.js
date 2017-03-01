@@ -1,5 +1,13 @@
 import React, {Component} from "react";
-import {AppRegistry, View, Text, StyleSheet, TouchableOpacity} from "react-native";
+import {
+    AppRegistry,
+    View,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    InteractionManager
+} from "react-native";
 import BaseComponent from "../component/BaseComponent";
 import NavigationBar from "../component/NavigationBar";
 import * as FontAndColor from "../constant/fontAndColor";
@@ -11,10 +19,38 @@ import MyButton from '../component/MyButton';
 import LoginFailSmsYes from './LoginFailSmsYes';
 import LoginFailSmsNo from './LoginFailSmsNo';
 export default class LoginFail extends BaseComponent {
+
+    constructor(props) {
+        super(props);
+        //初始化方法
+        this.state = {
+            renderPlaceholderOnly: true,
+        }
+    }
+
     initFinish = () => {
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+            // this.Verifycode();
+        });
     }
 
     render() {
+        if (this.state.renderPlaceholderOnly) {
+            return ( <TouchableWithoutFeedback style={{backgroundColor: FontAndColor.COLORA3}} onPress={() => {
+                this.setState({
+                    show: false,
+                });
+            }}>
+                <NavigationBar
+                    leftImageShow={false}
+                    leftTextShow={true}
+                    leftText={""}
+                    centerText={"登录遇到问题"}
+                    rightText={""}
+                />
+            </TouchableWithoutFeedback>);
+        }
         return (
             <View style={styles.container}>
                 <NavigationBar
@@ -66,6 +102,10 @@ export default class LoginFail extends BaseComponent {
 }
 
 const styles = StyleSheet.create({
+    containerStyle: {
+        flex: 1,
+        backgroundColor: FontAndColor.COLORA3,
+    },
     container: {
         flex: 1,
         alignItems: 'center',
