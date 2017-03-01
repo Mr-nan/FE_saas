@@ -201,8 +201,8 @@ export default class MineSectionListView extends Component {
                 this.navigatorParams.component = ContractManageScene
                 break;
             case '员工管理':
-                this.navigatorParams.name = 'EditEmployeeScene'
-                this.navigatorParams.component = EditEmployeeScene
+                this.navigatorParams.name = 'EmployeeManageScene'
+                this.navigatorParams.component = EmployeeManageScene
                 break;
             case '我的车源':
                 this.navigatorParams.name = 'MycarScene'

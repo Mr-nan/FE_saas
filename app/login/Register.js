@@ -297,6 +297,7 @@ export default class Register extends BaseComponent {
                         this.props.showToast(response.mjson.msg);
                     }
                 }, (error) => {
+                    this.Verifycode();
                     if (error.mjson.code == -300 || error.mjson.code == -500) {
                         this.props.showToast("短信验证码获取失败");
                     } else {

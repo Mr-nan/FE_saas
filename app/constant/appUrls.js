@@ -100,7 +100,7 @@ export const DELETE = BASEURL + V + "user.favorites/delete";//
 /**
  * 清空浏览历史
  */
-export const USER_HISTORY_DELETE = BASEURL + V + "v1/user.history/delete";//
+export const USER_HISTORY_DELETE = BASEURL + V + "user.history/delete";//
 
 /**
  * 员工列表
@@ -148,8 +148,14 @@ export const OPT_LOAN_SUBJECT = 'api/v1/user/opt_loan_subject';
  *
  * 单车借款信息
  **/
-export const get_apply_loan_data = 'api/v3/account/get_apply_loan_data';
+export const GET_APPLY_LOAN_DATA = 'api/v3/account/get_apply_loan_data';
 
+/**
+ * from @zhaojian
+ *
+ * 申请借款
+ **/
+export const APPLY_LOAN='api/v3/account/apply_loan'
 
 /**
  * 短信验证码

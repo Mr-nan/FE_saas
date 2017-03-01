@@ -36,7 +36,7 @@ export const commnetStyle=StyleSheet.create({
 
     ListWarp:{
         position:'absolute',
-        top:74,
+        top:54,
         width:width,
         bottom:adapeSize(50),
     },
@@ -47,8 +47,6 @@ export const commnetStyle=StyleSheet.create({
         height:adapeSize(50),
         bottom:0,
     }
-
-
 
 
 })

@@ -47,7 +47,7 @@ const request = (url, method, params) => {
                         for (let key of Object.keys(params)) {
                             // console.log(key+"===" + params[key]);
                         }
-                        // console.log(url + '?token=' + token + '&device_code=' + device_code);
+                        console.log('------'+url + '?token=' + token + '&device_code=' + device_code);
                         console.log("success----------" + JSON.stringify(responseData));
                         if (responseData.code == 1) {
                             resolve({mjson: responseData, mycode: 1});
@@ -60,7 +60,7 @@ const request = (url, method, params) => {
                     }
                 })
                 .catch((error) => {
-                    console.log("error----------" + error);
+                    console.log("error----------error" + error);
                     reject({mycode: -500, error: error});
                 });
         })
