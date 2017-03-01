@@ -79,7 +79,7 @@ export default class SetLoginPwdGesture extends BaseComponent {
     }
 
     onEnd(pwd) {
-        if (Password === '') {
+        if (Password == '') {
             // The first password
             if (pwd.length > 3) {
                 Password = pwd;
@@ -95,14 +95,14 @@ export default class SetLoginPwdGesture extends BaseComponent {
             }
         } else {
             // The second password
-            if (pwd === Password) {
+            if (pwd == Password) {
                 this.setState({
                     status: 'right',
                     message: '密码设置成功',
                 });
 
                 StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
-                    if (data.code === 1) {
+                    if (data.code == 1) {
                         if (data.result != null) {
                             StorageUtil.mSetItem(data.result + "", Password);
                             Password = '';
@@ -111,6 +111,7 @@ export default class SetLoginPwdGesture extends BaseComponent {
                 })
                 if (this.props.from == 'login') {
                     this.loginPage(this.loginSuccess)
+                    StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
                 } else {
                     this.backPage();
                 }
@@ -139,7 +140,7 @@ export default class SetLoginPwdGesture extends BaseComponent {
     }
 
     onStart() {
-        if (Password === '') {
+        if (Password == '') {
             this.setState({
                 status: 'normal',
                 message: '绘制解锁图案',

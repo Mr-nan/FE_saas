@@ -73,8 +73,8 @@ export default class Register extends BaseComponent {
                     rightTextCallBack={this.register}
                 />
 
-                <ScrollView>
-                    <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={1}>
+                <ScrollView keyboardShouldPersistTaps={'handled'}>
+                    <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={5}>
                         <View style={styles.inputTextLine}/>
                         <View style={styles.inputTextsStyle}>
                             <LoginInputText
@@ -142,8 +142,8 @@ export default class Register extends BaseComponent {
                                 leftIcon={false}
                                 rightIcon={false}/>
                         </View>
+                        <View style={styles.inputTextLine}/>
                     </KeyboardAvoidingView>
-                    <View style={styles.inputTextLine}/>
                     <View style={styles.imageButtonsStyle}>
                         <Text
                             style={{

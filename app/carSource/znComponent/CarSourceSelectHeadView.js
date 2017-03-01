@@ -12,15 +12,17 @@ import {
     Image,
     TouchableOpacity,
     Dimensions,
+    ScrollView,
+    Modal,
 
 } from 'react-native';
 
 
 import * as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
-var Pixel = new PixelUtil();
+var   Pixel = new PixelUtil();
 
-export default class carSourceSelectHeadView extends Component{
+export class CarSourceSelectHeadView extends Component{
 
     // 构造
       constructor(props) {
@@ -89,7 +91,7 @@ export default class carSourceSelectHeadView extends Component{
 
 }
 
-class SelectButton extends  Component{
+export class SelectButton extends  Component{
 
     // 构造
       constructor(props) {
@@ -141,14 +143,53 @@ class SelectButton extends  Component{
 
 }
 
+
+export class CarSourceSelectView extends Component{
+
+    render(){
+
+        const {checkedSource,checkCarAgeAnKMClick,hideClick,checkedTypeString} = this.props;
+
+        return(
+                <View style={styles.selectView}>
+                    <View style={{backgroundColor:'white'}}>
+                        <ScrollView>
+                            {
+                                checkedSource.map((data, index) => {
+                                    return (
+                                        <TouchableOpacity key={index} onPress={()=>{
+
+                                           checkCarAgeAnKMClick(data,index);
+                                        }}>
+                                            <View style={styles.checkedCell}>
+                                                {
+                                                        <Text
+                                                            style={[styles.checkedCellText,
+                                                                data.title==checkedTypeString && {color:fontAndColor.COLORB0}]}>{data.title}
+                                                        </Text>
+                                                }
+
+                                            </View>
+                                        </TouchableOpacity>
+
+                                    )
+                                })
+                            }
+                        </ScrollView>
+                    </View>
+                    <TouchableOpacity style={styles.contaier} onPress={()=>{hideClick()}}/>
+                </View>
+        )
+    }
+}
+
+
 var screenWidth = Dimensions.get('window').width;
 
 const  styles = StyleSheet.create({
 
-
     container:{
 
-        flex:1,
         height:Pixel.getPixel(40),
         width:screenWidth,
         flexDirection:'row',
@@ -215,6 +256,31 @@ const  styles = StyleSheet.create({
         color:fontAndColor.COLORA0,
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
     },
+    selectView: {
+        top: Pixel.getTitlePixel(104),
+        backgroundColor: 'rgba(0, 0, 0,0.3)',
+        left: 0,
+        right: 0,
+        position: 'absolute',
+        bottom: 0,
+    },
 
+    checkedCell: {
+
+        backgroundColor: 'white',
+        height: Pixel.getPixel(44),
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderBottomColor: fontAndColor.COLORA4,
+
+    },
+    checkedCellText: {
+
+        fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT),
+        textAlign: 'center',
+        color: fontAndColor.COLORA0,
+
+    },
 
 });

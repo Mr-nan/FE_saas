@@ -39,7 +39,7 @@ export default class SetPwd extends BaseComponent {
 
     render() {
         if (this.state.renderPlaceholderOnly) {
-            return ( <TouchableWithoutFeedback onPress={() => {
+            return ( <TouchableWithoutFeedback style={{backgroundColor: FontAndColor.COLORA3}} onPress={() => {
                 this.setState({
                     show: false,
                 });
@@ -92,15 +92,6 @@ export default class SetPwd extends BaseComponent {
                           mOnPress={this.setPwd}/>
             </View>
         );
-    }
-
-    rightTextCallBack = () => {
-        // this.toNextPage({
-        //     name: 'Register',
-        //     component: LoginFail,
-        //     params: {},
-        // })
-        alert("设置成功")
     }
 
     //修改密码

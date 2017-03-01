@@ -12,7 +12,6 @@ import BaseComponent from "../component/BaseComponent";
 import NavigationBar from "../component/NavigationBar";
 import * as FontAndColor from "../constant/fontAndColor";
 import PixelUtil from "../utils/PixelUtil";
-import MainPage from "../main/MainPage";
 import MyButton from "../component/MyButton";
 import LoginInputText from "./component/LoginInputText";
 import LoginFailPwd from "./LoginFailPwd";
@@ -20,7 +19,6 @@ import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
-import SetLoginPwdGesture from "./SetLoginPwdGesture";
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -51,7 +49,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
 
     render() {
         if (this.state.renderPlaceholderOnly) {
-            return ( <TouchableWithoutFeedback onPress={() => {
+            return ( <TouchableWithoutFeedback style={{backgroundColor: FontAndColor.COLORA3}} onPress={() => {
                 this.setState({
                     show: false,
                 });
@@ -183,7 +181,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
         let smsCode = this.refs.smscode.getInputTextValue();
         if (typeof(userName) == "undefined" || userName == "") {
             this.props.showToast("用户名不能为空");
-        } else if (userName != 11) {
+        } else if (userName.length != 11) {
             this.props.showToast("请输入正确的用户名");
         } else if (typeof(verifyCode) == "undefined" || verifyCode == "") {
             this.props.showToast("验证码不能为空");
@@ -200,9 +198,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
             request(AppUrls.LOGIN, 'Post', maps)
                 .then((response) => {
                     if (response.mjson.code == "1") {
-                        this.props.showToast("登录成功");
                         // 保存用户登录状态
-                        StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
                         StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '1');
                         StorageUtil.mSetItem(StorageKeyNames.USER_INFO, JSON.stringify(response.mjson.data));
                         // 保存用户信息

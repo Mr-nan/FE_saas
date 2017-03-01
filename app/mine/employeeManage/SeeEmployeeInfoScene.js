@@ -15,7 +15,8 @@ import  PixelUtil from '../../utils/PixelUtil'
 import NavigationView from '../../component/AllNavigationView';
 import BaseComponent from '../../component/BaseComponent';
 var Pixel = new PixelUtil();
-const Car = [
+// {"id":1412,"username":"陈海","mobile":"18510867932","sex":"男","company":"台州市路桥淇文二手车经纪有限公司","role":"财务"}
+Car = [
     {
         "cars": [
             {
@@ -73,6 +74,54 @@ export default class SeeEmployeeInfoScene extends BaseComponent {
     // 构造
     constructor(props) {
         super(props);
+        const {username, mobile, sex, company,role} = this.props;
+        var Car = [
+            {
+                "cars": [
+                    {
+                        "title": "姓名",
+                        "name": username
+                    },
+                    {
+                        "title": "性别",
+                        "name": sex
+                    },
+
+                ],
+                "title": "section0"
+            },
+            {
+                "cars": [
+                    {
+                        "title": "所属公司",
+                        "name": company
+                    },
+                    {
+                        "title": "角色",
+                        "name": role
+                    },
+                ],
+                "title": "section1"
+            },
+            {
+                "cars": [
+                    {
+                        "title": "账号",
+                        "name": mobile
+                    },
+                    {
+                        "title": "密码",
+                        "name": "********"
+                    },
+                    {
+                        "title": "确认密码",
+                        "name": "********"
+                    },
+
+                ],
+                "title": "section2"
+            },
+        ]
         // 初始状态
         //    拿到所有的json数据
         var jsonData = Car;
