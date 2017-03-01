@@ -67,6 +67,7 @@ export default class SetPwd extends BaseComponent {
                     rightIcon={false}
                     leftIcon={false}
                     textPlaceholder={"请输入原登录密码"}
+                    secureTextEntry={true}
                     viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}/>
                 <View style={{width: width, height: Pixel.getPixel(10)} }/>
                 <LoginInputText
@@ -74,6 +75,7 @@ export default class SetPwd extends BaseComponent {
                     rightIcon={false}
                     leftIcon={false}
                     textPlaceholder={"请设置新密码"}
+                    secureTextEntry={true}
                     maxLength={16}
                     viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}/>
                 <View style={{width: width, height: Pixel.getPixel(10)} }/>
@@ -82,6 +84,7 @@ export default class SetPwd extends BaseComponent {
                     rightIcon={false}
                     leftIcon={false}
                     textPlaceholder={"请再次填写新密码"}
+                    secureTextEntry={true}
                     maxLength={16}
                     viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}/>
                 <View style={{width: width, height: Pixel.getPixel(44)} }/>
