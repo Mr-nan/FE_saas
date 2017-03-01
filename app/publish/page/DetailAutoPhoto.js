@@ -89,7 +89,7 @@ export default class DetailAutoPhoto extends Component {
             }
         ];
         this.pictures = [];
-        if (this.props.carData.pictures !== '') {
+        if (this.isEmpty(this.props.carData.pictures) === false) {
             this.pictures = JSON.parse(this.props.carData.pictures);
         }
         for(let i = 0;i < this.pictures.length;i++){
@@ -106,6 +106,14 @@ export default class DetailAutoPhoto extends Component {
             renderPlaceholderOnly: true
         }
     }
+
+    isEmpty = (str)=>{
+        if(typeof(str) != 'undefined' && str !== ''){
+            return false;
+        }else {
+            return true;
+        }
+    };
 
     componentWillMount() {
 

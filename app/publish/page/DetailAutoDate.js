@@ -30,7 +30,7 @@ export default class DetailAutoDate extends Component{
         let manufacture = this.props.carData.manufacture;
         let init_reg = this.props.carData.init_reg;
         let hasRegister = this.props.carType === '1' || this.props.carType === '';
-        if(this.props.carData.model !== ''){
+        if(this.isEmpty(this.props.carData.model) === false){
             let model = JSON.parse(this.props.carData.model);
             let model_year = model.model_year;
             if(typeof(model_year) == "undefined" || model_year === ""){
@@ -50,6 +50,14 @@ export default class DetailAutoDate extends Component{
             hasRegister:hasRegister,
         }
     }
+
+    isEmpty = (str)=>{
+        if(typeof(str) != 'undefined' && str !== ''){
+            return false;
+        }else {
+            return true;
+        }
+    };
 
     componentWillMount(){
 
