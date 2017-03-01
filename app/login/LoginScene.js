@@ -314,9 +314,7 @@ export default class LoginScene extends BaseComponent {
                 .then((response) => {
                     if (response.mjson.code == "1") {
                         // 保存用户登录状态
-                        StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
                         StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '2');
-
                         StorageUtil.mGetItem(StorageKeyNames.USERNAME, (data) => {
                             if (data.code == 1) {
                                 if (data.result != null && data.result.indexOf(userName) < 0) {
@@ -341,6 +339,7 @@ export default class LoginScene extends BaseComponent {
                         StorageUtil.mGetItem(response.mjson.data.phone + "", (data) => {
                             if (data.code == 1) {
                                 if (data.result != null) {
+                                    StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
                                     this.loginPage(this.loginSuccess)
                                 } else {
                                     this.loginPage(this.setLoginGesture)

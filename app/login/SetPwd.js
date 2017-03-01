@@ -94,15 +94,6 @@ export default class SetPwd extends BaseComponent {
         );
     }
 
-    rightTextCallBack = () => {
-        // this.toNextPage({
-        //     name: 'Register',
-        //     component: LoginFail,
-        //     params: {},
-        // })
-        alert("设置成功")
-    }
-
     //修改密码
     setPwd = () => {
         let oldPassword = this.refs.oldPassword.getInputTextValue();

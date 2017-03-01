@@ -32,10 +32,13 @@ export default class AutoDate extends Component{
         let manufacture = this.props.carData.manufacture;
         let init_reg = this.props.carData.init_reg;
         let hasRegister = this.props.carData.v_type === '1' || this.props.carData.v_type === '';
-        if(this.props.carData.model !== ''){
+        console.log('0000=====>>>' + this.props.carData.model);
+        if(this.isEmpty(this.props.carData.model)  === false){
+
             let model = JSON.parse(this.props.carData.model);
             let model_year = model.model_year;
-            if(typeof(model_year) == "undefined" || model_year === ""){
+            console.log('11111=====>>>' + model_year);
+            if(this.isEmpty(model_year) === true){
                 model_year='2000';
             }
             if(manufacture === '') manufacture = model_year +'-06';
@@ -52,6 +55,14 @@ export default class AutoDate extends Component{
             hasRegister:hasRegister,
         }
     }
+
+    isEmpty = (str)=>{
+        if(typeof(str) != 'undefined' && str !== ''){
+            return false;
+        }else {
+            return true;
+        }
+    };
 
     componentWillMount(){
 
