@@ -21,9 +21,9 @@ export default class VinInfo extends Component{
 
     constructor(props){
         super(props);
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: ds.cloneWithRows(this.props.viewData),
+            dataSource: this.ds.cloneWithRows(this.props.viewData),
             modalVisible: false
         };
     }
@@ -31,6 +31,13 @@ export default class VinInfo extends Component{
     _hiedModal = ()=>{
         this.setState({
             modalVisible: false
+        });
+    };
+
+
+    refresh = (data)=>{
+        this.setState({
+            dataSource: this.ds.cloneWithRows(data),
         });
     };
 

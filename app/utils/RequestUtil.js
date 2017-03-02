@@ -55,7 +55,7 @@ const request = (url, method, params) => {
                         } else {
                             reject({mycode: responseData.code, mjson: responseData});
                         }
-                    // } else {
+                    }else{
                         console.log("error----------" + JSON.stringify(responseData));
                         reject({mycode: -300});
                     }

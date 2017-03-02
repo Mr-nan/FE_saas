@@ -37,6 +37,7 @@ import  LoadMoreFooter from '../component/LoadMoreFooter';
 import * as Urls from '../constant/appUrls';
 import * as fontAndColor from '../constant/fontAndColor';
 import SelectCompanyScene from '../finance/SelectCompanyScene';
+import AginSelectCompanyScene from '../finance/AginSelectCompanyScene';
 let loanList = [];
 
 export class HomeHeaderItemInfo {
@@ -72,10 +73,15 @@ export default class FinanceSence extends BaseComponet {
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
                     loanList = response.mjson.data;
-                    this.setState({
-                        customerName: loanList[0].companyname
-                    });
-                    this.setLoan();
+                    if (loanList.length > 1) {
+                        this.setState({renderPlaceholderOnly: 'select'});
+                    } else {
+                        if (loanList[0].is_done_credit == 0) {
+                            this.setState({renderPlaceholderOnly: 'select'});
+                        } else {
+                           this.setLoan();
+                        }
+                    }
                 },
                 (error) => {
                     this.setState({renderPlaceholderOnly: 'error'});
@@ -192,6 +198,15 @@ export default class FinanceSence extends BaseComponet {
     };
 
     render() {
+        if (this.state.renderPlaceholderOnly === 'select') {
+            return (<SelectCompanyScene showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} loanList={loanList} callBack={(companyname)=>{this.setState({
+                customerName:companyname
+            });
+                            this.allRefresh();
+                            }}/>);
+        }
         if (this.state.renderPlaceholderOnly !== 'success') {
             return this._renderPlaceholderView();
         }
@@ -415,8 +430,8 @@ export default class FinanceSence extends BaseComponet {
                         </View>
                         <View style={{flex:1}}>
                             {loanList.length > 1 ? <TouchableOpacity onPress={()=>{
-                            this.props.callBack({name:'SelectCompanyScene',
-                            component:SelectCompanyScene,params:{loanList:loanList,callBack:(companyname)=>{this.setState({
+                            this.props.callBack({name:'AginSelectCompanyScene',
+                            component:AginSelectCompanyScene,params:{loanList:loanList,callBack:(companyname)=>{this.setState({
                             customerName:companyname
                                 });
                             this.allRefresh();

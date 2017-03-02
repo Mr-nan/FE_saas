@@ -159,7 +159,7 @@ export default class PlanItem extends PureComponent {
         }
         return (
             <TouchableOpacity activeOpacity={0.8} style={{width: width}} onPress={() => {
-                this.props.mOnPress(movie.loan_id);
+                this.props.mOnPress(movie.loan_code,movie.loan_number,movie.plan_id,movie.type);
             }}>
                 {movieItems}
             </TouchableOpacity>
