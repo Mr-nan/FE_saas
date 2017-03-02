@@ -65,7 +65,9 @@ export default class MainPage extends BaseComponent {
         super(props);
         const employerTabArray = [
             new tableItemInfo('firstpage', 'page11', '首页', require('../../images/mainImage/homeSelect.png'), require('../../images/mainImage/homeUnSelect.png'),
-                <HomeSence openModal={()=>{
+                <HomeSence showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} openModal={()=>{
                      this.publishModal.openModal();
                 }} jumpScene={(ref)=>{
                    this.setState({selectedTab: ref})
@@ -73,22 +75,30 @@ export default class MainPage extends BaseComponent {
                     this.toNextPage(params);
                 }}/>),
             new tableItemInfo('carpage', 'page12', '车源', require('../../images/mainImage/carSelect.png'), require('../../images/mainImage/carUnSelect.png'),
-                <CarSourceSence callBack={(params)=> {
+                <CarSourceSence showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
                 }}/>),
             new tableItemInfo('sendpage', 'page13', '发布', require('../../images/mainImage/publishSelect.png'), require('../../images/mainImage/publishUnSelect.png'),
-                <PublishModal callBack={(params)=> {
+                <PublishModal showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
                 }}/>),
             new tableItemInfo('mypage', 'page14', '我的', require('../../images/mainImage/mineSelect.png'), require('../../images/mainImage/mineUnSelect.png'),
-                <MineSence callBack={(params)=> {
+                <MineSence showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
                 }}/>)
         ];
 
         const bossTabArray = [
             new tableItemInfo('firstpage', 'page1', '首页', require('../../images/mainImage/homeSelect.png'), require('../../images/mainImage/homeUnSelect.png'),
-                <HomeSence openModal={()=>{
+                <HomeSence showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} openModal={()=>{
                      this.publishModal.openModal();
                 }} jumpScene={(ref)=>{
                    this.setState({selectedTab: ref})
@@ -97,12 +107,16 @@ export default class MainPage extends BaseComponent {
                 }}/>),
             new tableItemInfo('carpage', 'page2', '车源', require('../../images/mainImage/carSelect.png'), require('../../images/mainImage/carUnSelect.png'),
 
-                <CarSourceSence callBack={(params)=> {
+                <CarSourceSence showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
 
                     this.toNextPage(params);
                 }}/>),
             new tableItemInfo('sendpage', 'page3', '发布', require('../../images/mainImage/sendButton.png'), require('../../images/mainImage/sendButton.png'),
-                <PublishModal callBack={(params)=> {
+                <PublishModal showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
                 }}/>),
             new tableItemInfo('financePage', 'page4', '金融', require('../../images/mainImage/moneySelect.png'), require('../../images/mainImage/moneyUnSelect.png'),
@@ -112,7 +126,9 @@ export default class MainPage extends BaseComponent {
                     this.toNextPage(params);
                 }}/>),
             new tableItemInfo('mypage', 'page5', '我的', require('../../images/mainImage/mineSelect.png'), require('../../images/mainImage/mineUnSelect.png'),
-                <MineSence callBack={(params)=> {
+                <MineSence showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
                 }}/>)
         ];
@@ -125,7 +141,9 @@ export default class MainPage extends BaseComponent {
                     this.toNextPage(params);
                 }}/>),
             new tableItemInfo('mypage', 'page25', '我的', require('../../images/mainImage/mineSelect.png'), require('../../images/mainImage/mineUnSelect.png'),
-                <MineSence callBack={(params)=> {
+                <MineSence showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
                 }}/>)
         ];

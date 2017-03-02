@@ -20,9 +20,9 @@ import * as fontAndColor from '../../constant/fontAndColor';
 
 export default class MyCarCell extends Component {
 
-    cellClick=(carID)=>{
+    cellClick=(carData)=>{
 
-        this.props.cellClick(carID);
+        this.props.cellClick(carData);
 
     };
 
@@ -61,7 +61,7 @@ export default class MyCarCell extends Component {
 
         const {carCellData} = this.props;
         return(
-            <TouchableOpacity onPress={()=>{this.cellClick(carCellData.id)}}>
+            <TouchableOpacity onPress={()=>{this.cellClick(carCellData)}}>
                 <View style={[styles.container,styles.lineBottom]} >
 
                     <View style={styles.cellContentView}>
@@ -80,14 +80,14 @@ export default class MyCarCell extends Component {
                     </View>
                     <View style={styles.cellFootView}>
 
-                        <TouchableOpacity onPress={()=>{this.footButtonClick('编辑',carCellData.id)}}>
+                        <TouchableOpacity onPress={()=>{this.footButtonClick('编辑',carCellData)}}>
                             <View style={styles.cellFoot}>
                                 <Text style={styles.cellFootText}>编辑</Text>
                             </View>
                         </TouchableOpacity>
                         {
                             this.props.type==0 &&
-                            <TouchableOpacity onPress={()=>{this.footButtonClick('下架',carCellData.id)}}>
+                            <TouchableOpacity onPress={()=>{this.footButtonClick('下架',carCellData)}}>
                                 <View style={styles.cellFoot}>
                                     <Text style={styles.cellFootText}>下架</Text>
                                 </View>
@@ -95,7 +95,7 @@ export default class MyCarCell extends Component {
                         }
                         {
                             this.props.type==1 &&
-                            <TouchableOpacity onPress={()=>{this.footButtonClick('上架',carCellData.id)}}>
+                            <TouchableOpacity onPress={()=>{this.footButtonClick('上架',carCellData)}}>
                                 <View style={styles.cellFoot}>
                                     <Text style={styles.cellFootText}>上架</Text>
                                 </View>
