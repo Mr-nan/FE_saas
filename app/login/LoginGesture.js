@@ -1,5 +1,15 @@
 import React, {Component} from "react";
-import {AppRegistry, View, Text, StyleSheet, Image, Dimensions, TouchableOpacity} from "react-native";
+import {
+    AppRegistry,
+    View,
+    Text,
+    StyleSheet,
+    Image,
+    Dimensions,
+    TouchableOpacity,
+    InteractionManager,
+    TouchableWithoutFeedback
+} from "react-native";
 import PwdGesture from "../gesture/PwdGesture";
 import BaseComponent from "../component/BaseComponent";
 import PixelUtil from "../utils/PixelUtil";
@@ -20,13 +30,20 @@ export default class GesturePassword extends BaseComponent {
         super(props);
         //初始化方法
         this.state = {
+            renderPlaceholderOnly: true,
             message: '请绘制手势密码',
             status: 'normal',
             phone: '',
+            url: '',
         }
     }
 
     initFinish = () => {
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+            // this.Verifycode();
+        });
+
         StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
             if (data.code == 1) {
                 if (data.result != null) {
@@ -45,9 +62,35 @@ export default class GesturePassword extends BaseComponent {
                 }
             }
         })
+
+        StorageUtil.mGetItem(StorageKeyNames.HEAD_PORTRAIT_URL, (data) => {
+            if (data.code == 1) {
+                if (data.result != null) {
+                    this.setState({
+                        url: data.result,
+                    });
+                }
+            }
+        })
     }
 
     render() {
+        if (this.state.renderPlaceholderOnly) {
+            return ( <TouchableWithoutFeedback onPress={() => {
+                this.setState({
+                    show: false,
+                });
+            }}>
+                <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
+                    <NavigationBar
+                        leftImageShow={false}
+                        leftTextShow={true}
+                        leftText={""}
+                        centerText={"解锁手势密码"}
+                        rightText={""}/>
+                </View>
+            </TouchableWithoutFeedback>);
+        }
         return (
             <PwdGesture
                 ref='pg'
@@ -58,14 +101,15 @@ export default class GesturePassword extends BaseComponent {
                             leftTextShow={false}
                             centerText={"解锁手势密码"}
                             rightText={""}
-                            leftImage={require('./../../images/login/left_cancel.png')}
+                            leftImage={require('./../../images/login/left_cancle.png')}
                             leftImageCallBack={this.backPage}/>
 
-                        <Image style={styles.avatarStyle} source={require("./../../images/mainImage/maiche.png")}/>
+                        {this.state.url ? <Image style={styles.avatarStyle}
+                                                 source={{uri: this.state.url}}/> :
+                            <Image style={styles.avatarStyle}
+                                   source={require("./../../images/mainImage/zhanghuguanli.png")}/>}
 
-                        <Text style={ styles.topMessageStyle }>
-                            用户名：{this.state.phone}
-                        </Text>
+                        <Text style={ styles.topMessageStyle }>用户名：{this.state.phone}</Text>
 
                         <Text style={this.state.status !== "wrong" ? styles.topMessageStyle : styles.topMessageWStyle}>
                             {this.state.message}

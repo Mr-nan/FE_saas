@@ -25,7 +25,7 @@ class LoadMoreFooter extends Component {
                 }
             }}>
             <View  style={styles.footer}>
-                <Text style={styles.footerTitle}>{isLoadAll ? '查看全部车源>' : '正在加载更多……'}</Text>
+                <Text style={styles.footerTitle}>{isLoadAll ? (isCarFoot?'查看全部车源>' :'已加载全部'): '正在加载更多……'}</Text>
             </View>
             </TouchableOpacity>
         )

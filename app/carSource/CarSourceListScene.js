@@ -29,10 +29,10 @@ import CarCell              from './znComponent/CarCell';
 import CarInfoScene         from './CarInfoScene';
 import CarBrandSelectScene  from './CarBrandSelectScene';
 import CityListScene        from './CityListScene';
-import  {request}           from '../utils/RequestUtil';
 import ZNLoadView           from './znComponent/ZNLoadView'
 import {SequencingButton,SequencingView} from './znComponent/CarSequencingView';
 import * as AppUrls from "../constant/appUrls";
+import  {request}           from '../utils/RequestUtil';
 import PixelUtil            from '../utils/PixelUtil';
 
 
@@ -112,8 +112,6 @@ export  default  class carSourceListScene extends BaseComponent {
     };
 
 
-
-
     // 筛选数据刷新
     filterData=()=>{
         carData = [];
@@ -132,20 +130,18 @@ export  default  class carSourceListScene extends BaseComponent {
             .then((response) => {
 
                 carData.push(...response.mjson.data.list);
-
                 APIParameter.status = response.mjson.data.status;
-                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
 
                 if (this.state.isFillData !== APIParameter.status) {
                     this.setState({
                         isFillData: APIParameter.status,
-                        dataSource: ds.cloneWithRows(carData),
+                        dataSource: this.state.dataSource.cloneWithRows(carData),
                         isRefreshing:false,
                         renderPlaceholderOnly: 'success',
                     });
                 }else {
                      this.setState({
-                        dataSource: ds.cloneWithRows(carData),
+                         dataSource: this.state.dataSource.cloneWithRows(carData),
                         isRefreshing:false,
                          renderPlaceholderOnly: 'success',
                     });
@@ -230,6 +226,7 @@ export  default  class carSourceListScene extends BaseComponent {
                 checkedCarClick: this.checkedCarClick,
                 status:1,
                 isHeadInteraction:true,
+
             }
         };
         this.props.callBack(navigatorParams);
@@ -240,13 +237,22 @@ export  default  class carSourceListScene extends BaseComponent {
     //  筛选条件事件
     headViewOnPres = (index, isHighlighted, setImgHighlighted) => {
 
+        this.refs.headView.checkSelect(currentCheckedIndex); // 取消之前选择按钮状态
+        currentCheckedIndex = index;
+
         if (index === 1) {
 
             this.presCarTypeScene();
+            if(!this.state.isHide)
+            {
+                this.setState({
+                    isHide:true,
+                });
+            }
             return;
         }
-        this.refs.headView.checkSelect(currentCheckedIndex); // 取消之前选择按钮状态
-        currentCheckedIndex = index;
+
+
         if (!isHighlighted) {
             switch (index) {
 
@@ -264,8 +270,8 @@ export  default  class carSourceListScene extends BaseComponent {
         this.setState({
             isHide:isHighlighted,
         });
-
         setImgHighlighted(!isHighlighted); // 回调按钮状态
+
 
     };
 
@@ -288,7 +294,7 @@ export  default  class carSourceListScene extends BaseComponent {
 
         APIParameter.brand_id = carObject.brand_id;
         APIParameter.series_id = carObject.series_id;
-
+    console.log(carObject);
         this.setState({
             checkedCarType: {
                 title: carObject.series_id==0?carObject.brand_name:carObject.series_name,
@@ -329,7 +335,6 @@ export  default  class carSourceListScene extends BaseComponent {
             APIParameter.mileage = checkedCarKMType.value;
         }
 
-
         this.setState({
 
             checkedCarAgeType,
@@ -348,9 +353,7 @@ export  default  class carSourceListScene extends BaseComponent {
 
     hideCheckedView=()=>{
         this.setState({
-
             isHide: true,
-
         });
     }
 

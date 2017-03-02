@@ -177,7 +177,7 @@ export class CarSourceSelectView extends Component{
                             }
                         </ScrollView>
                     </View>
-                    <TouchableOpacity style={styles.contaier} onPress={()=>{hideClick()}}/>
+                    <TouchableOpacity style={{flex:1}} onPress={()=>{hideClick()}}/>
                 </View>
         )
     }
