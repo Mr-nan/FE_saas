@@ -199,7 +199,7 @@ export default class FinanceSence extends BaseComponet {
 
     render() {
         if (this.state.renderPlaceholderOnly === 'select') {
-            return (<SelectCompanyScene showModel={(value)=>{
+            return (<SelectCompanyScene showModal={(value)=>{
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} loanList={loanList} callBack={(companyname)=>{this.setState({
                 customerName:companyname

@@ -106,7 +106,7 @@ export default class MainPage extends BaseComponent {
                     this.toNextPage(params);
                 }}/>),
             new tableItemInfo('financePage', 'page4', '金融', require('../../images/mainImage/moneySelect.png'), require('../../images/mainImage/moneyUnSelect.png'),
-                <FinanceSence showModel={(value)=>{
+                <FinanceSence showModal={(value)=>{
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params) => {
                     this.toNextPage(params);
@@ -119,7 +119,7 @@ export default class MainPage extends BaseComponent {
 
         const financeTabArray = [
             new tableItemInfo('financePage', 'page24', '金融', require('../../images/mainImage/moneySelect.png'), require('../../images/mainImage/moneyUnSelect.png'),
-                <FinanceSence showModel={(value)=>{
+                <FinanceSence showModal={(value)=>{
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params) => {
                     this.toNextPage(params);
