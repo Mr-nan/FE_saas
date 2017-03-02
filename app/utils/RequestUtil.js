@@ -29,7 +29,7 @@ const request = (url, method, params) => {
             } else {
                 device_code = 'dycd_dms_manage_android';
             }
-            fetch(url + '?token=' + '0dee763feb648e3b901af57146d428a3' + '&device_code=' + device_code+'&'+body, {
+            fetch(url + '?token=' + token + '&device_code=' + device_code+'&'+body, {
                 method,
                 body
             })

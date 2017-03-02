@@ -80,7 +80,7 @@ export class ModifyBorrowing extends Component{
       constructor(props) {
         super(props);
         // 初始状态
-        this.state = {visible:true};
+        this.state = {visible:false};
       }
 
     static propTypes={
@@ -111,7 +111,7 @@ export class ModifyBorrowing extends Component{
 
             <Modal animationType='none'
                    transparent={true}
-                   visible={this.state.show}
+                   visible={this.state.visible}
                    onShow={() => {
                    }}
                    onRequestClose={() => {
@@ -457,6 +457,7 @@ const commentAlertStyle=StyleSheet.create({
     subtitle:{
         marginTop:adapeSize(10),
         fontSize:adapeSize(17),
+        color:PAGECOLOR.COLORA3,
     },
     buttonsWarp:{
 

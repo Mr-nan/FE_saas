@@ -9,7 +9,6 @@ const STATECODE ={
     loading:'blank',
     loadSuccess:'success',
     loadError:'error',
-    loading:'loading',
     empty:'empty'
 
 }
@@ -63,4 +62,14 @@ const fontadapeSize = (size)=> {
     return adapeSize(size) + 2;
 }
 
-export {STATECODE,PAGECOLOR,width,height,dateFormat,adapeSize,fontadapeSize,changeToMillion}
+const getSectionData = (dataBlob, sectionID) => {
+
+    return dataBlob[sectionID];
+}
+const getRowData = (datatBlob, sectionId, rowId) => {
+
+    return datatBlob[sectionId][rowId];
+}
+
+
+export {STATECODE,PAGECOLOR,width,height,dateFormat,adapeSize,fontadapeSize,changeToMillion,getSectionData,getRowData}
