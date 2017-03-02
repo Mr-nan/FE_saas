@@ -87,6 +87,8 @@ export default class ModelSelect extends PureComponent {
                    text:vl
                 });
                 this._onVinChange(vl);
+            },(error)=>{
+                console.log(error);
             });
         }
     };
