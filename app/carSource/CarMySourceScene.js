@@ -91,12 +91,12 @@ export default class CarMySourceScene extends BaceComponent{
 
         }).then((response) => {
 
-            console.log(response.mjson);
+            alert(type==2?'上架成功':'下架成功');
 
 
         }, (error) => {
 
-            console.log(error);
+            alert(error.msg);
         });
     }
 
@@ -438,7 +438,7 @@ class MyCarSourceDropFrameView extends BaceComponent{
                                 pageSize={10}
                                 renderFooter={this.renderListFooter}
                                 onEndReached={this.toEnd}
-                                renderRow={(rowData) =><MyCarCell carCellData={rowData} type={1}/>}
+                                renderRow={(rowData) =><MyCarCell carCellData={rowData} type={2}/>}
                                 refreshControl={
                                     <RefreshControl
                                         refreshing={this.state.isRefreshing}
@@ -604,7 +604,7 @@ class MyCarSourceAuditView extends BaceComponent{
                                 pageSize={10}
                                 renderFooter={this.renderListFooter}
                                 onEndReached={this.toEnd}
-                                renderRow={(rowData) =><MyCarCell carCellData={rowData} type={3}/>}
+                                renderRow={(rowData) =><MyCarCell carCellData={rowData} type={1}/>}
                                 refreshControl={
                                     <RefreshControl
                                         refreshing={this.state.isRefreshing}
