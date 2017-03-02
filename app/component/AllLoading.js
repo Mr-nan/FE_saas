@@ -28,7 +28,7 @@ export default class AllLoading extends Component {
         return (
             <Modal
                 ref='loadingModal'
-                animationType={"slide"}
+                animationType={"none"}
                 transparent={true}
                 visible={this.state.isShow}
                 onRequestClose={() => {}}

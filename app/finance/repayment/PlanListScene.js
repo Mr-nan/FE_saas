@@ -19,8 +19,7 @@ const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import * as fontAndColor from '../../constant/fontAndColor';
-let MovleData = require('./repayment.json');
-let movies = MovleData.retdata;
+let movies = [];
 import BaseComponent from '../../component/BaseComponent';
 import NavigationView from '../../component/AllNavigationView';
 import PlanParentItem from './component/PlanParentItem';
@@ -40,8 +39,17 @@ export  default class PlanListScene extends BaseComponent {
         };
     }
 
+    componentWillUnmount(){
+        movies = [];
+    }
+
 
     initFinish = () => {
+        this.getData();
+    }
+
+    allRefresh = () => {
+        this.setState({renderPlaceholderOnly: 'loading'});
         this.getData();
     }
 
@@ -60,7 +68,11 @@ export  default class PlanListScene extends BaseComponent {
                     });
                 },
                 (error) => {
-                    this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
+                    if (error.mycode == '-2100045'||error.mycode == '-1') {
+                        this.setState({renderPlaceholderOnly: 'null', isRefreshing: false});
+                    } else {
+                        this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
+                    }
                 });
     }
 
@@ -123,6 +135,7 @@ export  default class PlanListScene extends BaseComponent {
                 <NavigationView
                     title="还款计划"
                     backIconClick={this.backPage}
+                    renderRihtFootView={this._navigatorRightView}
                 />
                 {this.loadView()}
             </View>

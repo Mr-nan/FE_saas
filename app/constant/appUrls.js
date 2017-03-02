@@ -117,6 +117,13 @@ export const LOAN_SUBJECT = 'api/v1/user/get_loan_subject_list';
 /**
  * from @zhaojian
  *
+ * 获取还款列表
+ **/
+export const REPAYMENT_GETLIST = 'api/v2/Repayment/getList';
+
+/**
+ * from @zhaojian
+ *
  * 获取还款历史
  **/
 export const GETHISTORICALLIST = 'api/v1/Repayment/getHistoricalList';
