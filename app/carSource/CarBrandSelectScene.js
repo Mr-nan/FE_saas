@@ -153,13 +153,13 @@ export default class CarBrandSelectScene extends BaseComponent {
 
     startLoadData=()=>{
 
-        this.refs.ZNLoadView.visibleClick(true);
+        this.props.showModal(true);
 
     }
 
     stopLoadData=()=>{
 
-       this.refs.ZNLoadView.visibleClick(false);
+        this.props.showModal(false);
     }
 
     setListData = (array)=> {
@@ -511,13 +511,12 @@ class CarSeriesList extends Component {
 
     startLoadData=()=>{
 
-        this.refs.ZNLoadView.visibleClick(true);
-
+        this.props.showModal(true);
     }
 
     stopLoadData=()=>{
 
-        this.refs.ZNLoadView.visibleClick(false);
+        this.props.showModal(false);
     }
 
 
