@@ -118,8 +118,8 @@ export default class CarMySourceScene extends BaceComponent{
                 renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["已上架", "已下架", "未审核"]}/>}>
 
                 <MyCarSourceUpperFrameView  carCellClick={this.carCellClick} footButtonClick={this.footButtonClick}  tabLabel="ios-paper1"/>
-                <MyCarSourceDropFrameView   footButtonClick={this.footButtonClick}    tabLabel="ios-paper2"/>
-                <MyCarSourceAuditView       footButtonClick={this.footButtonClick}    tabLabel="ios-paper3"/>
+                <MyCarSourceDropFrameView   carCellClick={this.carCellClick} footButtonClick={this.footButtonClick}    tabLabel="ios-paper2"/>
+                <MyCarSourceAuditView       carCellClick={this.carCellClick} footButtonClick={this.footButtonClick}    tabLabel="ios-paper3"/>
 
             </ScrollableTabView>
             <NavigatorView title='我的车源' backIconClick={this.backPage}/>
