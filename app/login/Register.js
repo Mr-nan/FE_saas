@@ -160,7 +160,6 @@ export default class Register extends BaseComponent {
                                   parentStyle={[styles.buttonStyle, {marginRight: Pixel.getPixel(10)}]}
                                   childStyle={styles.imageButtonStyle}
                                   mOnPress={this.selectPhotoTapped.bind(this, 'idcard')}/>
-
                         <MyButton buttonType={MyButton.IMAGEBUTTON}
                                   content={this.state.idcardBack === null ?
                                       require('../../images/login/idcard_back.png') : this.state.idcardBack
@@ -351,7 +350,7 @@ export default class Register extends BaseComponent {
 
     imageUploadUtil(response, id) {
         let params = {
-            device_code: "dycd_dms_manage_android",
+            device_code: "dycd_bms_manage_android",
             file_name: response.fileName,
             base64_file: 'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g, '%2B')
         };
