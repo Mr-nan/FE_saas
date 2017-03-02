@@ -1,6 +1,5 @@
 {
-
-  "carAgeSource" :[
+  "carAgeSource": [
     {
       "title": "1年以内",
       "value": "0|1"
@@ -21,9 +20,8 @@
       "title": "10年以内",
       "value": "0|10"
     }
-
   ],
-  "carKMSource" : [
+  "carKMSource": [
     {
       "title": "1万公里以内",
       "value": "0|1"
@@ -40,7 +38,6 @@
       "title": "10万公里以内",
       "value": "0|10"
     }
-
   ],
   "sequencingDataSource": [
     {
@@ -54,6 +51,6 @@
     {
       "title": "车龄短",
       "value": "3"
-    }]
-
+    }
+  ]
 }

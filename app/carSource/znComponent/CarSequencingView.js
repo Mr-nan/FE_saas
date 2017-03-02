@@ -59,7 +59,7 @@ export class SequencingView extends Component {
     render() {
         const {checkedType, checkedClick,sequencingDataSource}=this.props;
         return (
-            <Modal visible={this.state.isVisible} transparent={true}>
+            <Modal visible={this.state.isVisible} transparent={true} onRequestClose={()=>{this.visibleCilck(false)}}>
             <View style={styles.SeqencingView}>
                 <TouchableOpacity style={{flex:1}} onPress={()=>{
                     this.visibleCilck(false);

@@ -6,7 +6,6 @@ import {
     View,
     Image,
     Text,
-    TextInput,
     Dimensions,
     StyleSheet,
     Platform,
@@ -34,7 +33,6 @@ export default class AutoTransfer extends Component {
         super(props);
         this.vinNum = this.props.carData.vin;
         let transfer = this.props.carData.transfer_number;
-        console.log(transfer);
         let initValue = 0;
         if(this.isEmpty(transfer) === false){
             if(transfer === '10以上'){

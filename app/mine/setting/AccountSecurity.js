@@ -1,11 +1,20 @@
 import React, {Component} from "react";
-import {AppRegistry, View, Text, StyleSheet, Image, Dimensions, PixelRatio, TouchableOpacity,InteractionManager,} from "react-native";
+import {
+    AppRegistry,
+    View,
+    Text,
+    StyleSheet,
+    Image,
+    Dimensions,
+    PixelRatio,
+    TouchableOpacity,
+    InteractionManager
+} from "react-native";
 import BaseComponent from "../../component/BaseComponent";
 import PixelUtil from "../../utils/PixelUtil";
 import * as FontAndColor from "../../constant/fontAndColor";
 import NavigationBar from "../../component/NavigationBar";
-import LoginFailPwd from "../../login/LoginFailPwd";
-import SetPwd from '../../login/SetPwd';
+import SetPwd from "../../login/SetPwd";
 import SetLoginPwdGesture from "../../login/SetLoginPwdGesture";
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
@@ -43,23 +52,24 @@ export default class AccountSecurity extends BaseComponent {
                     leftImageCallBack={this.backPage}/>
 
                 <TouchableOpacity onPress={() => {
-                    if (this.state.loginType == 1) {
-                        this.toNextPage({
-                            name: 'LoginFailPwd',
-                            component: LoginFailPwd,
-                            params: {},
-                        })
-                    } else {
+                    {/*if (this.state.loginType == 1) {*/}
+                        {/*this.toNextPage({*/}
+                            {/*name: 'LoginFailPwd',*/}
+                            {/*component: LoginFailPwd,*/}
+                            {/*params: {},*/}
+                        {/*})*/}
+                    {/*} else {*/}
                         this.toNextPage({
                             name: 'SetPwd',
                             component: SetPwd,
                             params: {},
                         })
-                    }
+                    {/*}*/}
                 }}>
                     <View style={[styles.itemStyle, {marginTop: Pixel.getPixel(15)}]}>
-                        <Text style={styles.centerTextStyle}>{this.state.loginType == 1 ? "设置密码" : "修改密码"}</Text>
-                        <Image source={require("./../../../images/mainImage/celljiantou@3x.png")}
+                        {/*<Text style={styles.centerTextStyle}>{this.state.loginType == 1 ? "设置密码" : "修改密码"}</Text>*/}
+                        <Text style={styles.centerTextStyle}>修改密码</Text>
+                        <Image source={require("./../../../images/mainImage/celljiantou.png")}
                                style={styles.rightImageStyle}/>
                     </View>
                 </TouchableOpacity>
