@@ -162,6 +162,7 @@ export default class CollectionIntent extends BaseComponent {
             checkedCarClick: this.checkedCarClick,
             status: 0,
             isHeadInteraction:true,
+            isCheckedCarModel :true,
         }
 
     }

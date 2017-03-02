@@ -34,7 +34,6 @@ export default class EmployeeManageScene extends BaseComponent {
     // 构造
     constructor(props) {
         super(props);
-        this.jsonStr='';
         this.state = {
             dataSource: [],
             renderPlaceholderOnly: 'blank',
@@ -44,7 +43,7 @@ export default class EmployeeManageScene extends BaseComponent {
 
     getData = () => {
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        request('http://dev.api-gateway.dycd.com/v1/user.employee/index', 'Post', {
+        request(AppUrls.BASEURL+'v1/user.employee/index', 'Post', {
 
 
         })
@@ -120,7 +119,13 @@ export default class EmployeeManageScene extends BaseComponent {
 
                 }}
                 activeOpacity={0.8} onPress={() => {
-                this.addEmployee()
+                this.toNextPage({
+                    name: 'EditEmployeeScene',
+                    component: EditEmployeeScene,
+                    params: {
+                        isAddEmployee: true,
+                    },
+                })
             }}>
                 <Image source={require('../../../images/employee_manage.png')}/>
             </TouchableOpacity>
@@ -148,7 +153,13 @@ export default class EmployeeManageScene extends BaseComponent {
                             name: 'EditEmployeeScene',
                             component: EditEmployeeScene,
                             params: {
-                                rowData: rowData,
+                                username: rowData.username,
+                                mobile : rowData.mobile,
+                                sex : rowData.sex,
+                                company: rowData.company,
+                                role: rowData.role,
+                                isAddEmployee: false,
+                                id: rowData.id,
                             },
                         })
                     }}>
