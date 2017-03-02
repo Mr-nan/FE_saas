@@ -22,13 +22,16 @@ let page = 1;
 let allPage = 0;
 import  HomeHeaderItem from './component/HomeHeaderItem';
 import  PixelUtil from '../utils/PixelUtil'
+import KurongDetaileScene from '../finance/lend/KurongDetaileScene';
+import CGDDetailSence from '../finance/lend/CGDDetailSence';
+import SingDetaileSence from '../finance/lend/SingDetaileSence';
 var Pixel = new PixelUtil();
 /*
  * 获取屏幕的宽和高
  **/
 const {width, height} = Dimensions.get('window');
 import LendMoneySence from '../finance/lend/LendMoneyScene';
-import SingDetaileSence from '../finance/lend/SingDetaileSence';
+
 import MyButton from '../component/MyButton';
 import RepaymentScene from '../finance/repayment/RepaymentScene';
 import BaseComponet from '../component/BaseComponent';
@@ -258,32 +261,39 @@ export default class FinanceSence extends BaseComponet {
     }
 
     _renderRow = (movie) => {
+        let nextPage = {};
         if (movie == '1') {
             return (<View/>);
         } else {
             if (movie.type == 1) {
+                nextPage= KurongDetaileScene;
                 this.buttonParams.content = '库容';
                 this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB4}];
                 this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB4}];
             }
             else if (movie.type == 2) {
+                nextPage= SingDetaileSence;
                 this.buttonParams.content = '单车';
                 this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB0}];
                 this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB0}];
             } else if (movie.type == 3) {
+                nextPage= KurongDetaileScene;
                 this.buttonParams.content = '信贷';
                 this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB1}];
                 this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB1}];
             } else if (movie.type == 4) {
+                nextPage= KurongDetaileScene;
                 this.buttonParams.content = '库融';
                 this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB4}];
                 this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB4}];
             } else {
                 if (movie.product_type_change_status == 0) {
+                    nextPage= CGDDetailSence;
                     this.buttonParams.content = '采购';
                     this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB1}];
                     this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB1}];
                 } else if (movie.product_type_change_status == 1) {
+                    nextPage= SingDetaileSence;
                     this.buttonParams.content = '单车采购';
                     this.buttonParams.parentStyle = [cellSheet.parentStyle, {
                         borderColor: fontAndColor.COLORB1,
@@ -291,6 +301,7 @@ export default class FinanceSence extends BaseComponet {
                     }];
                     this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB1}];
                 } else {
+                    nextPage= SingDetaileSence;
                     this.buttonParams.content = '单车';
                     this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB0}];
                     this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB0}];
@@ -309,8 +320,11 @@ export default class FinanceSence extends BaseComponet {
             this.typeButtonParams.content = movie.status_str;
             return (
                 <TouchableOpacity activeOpacity={0.8} onPress={() => {
-                this.navigatorParams.name = 'SingDetaileSence';
-                this.navigatorParams.component = SingDetaileSence;
+                this.navigatorParams.name = 'DetaileSence';
+                this.navigatorParams.component = nextPage;
+                    this.navigatorParams.params={
+                        loanNumber:movie.loan_code
+                    }
                 this.props.callBack(this.navigatorParams);
             }} style={[cellSheet.row, cellSheet.padding]}>
                     <View style={cellSheet.rowViewStyle}>
