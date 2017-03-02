@@ -91,12 +91,12 @@ export default class CarMySourceScene extends BaceComponent{
 
         }).then((response) => {
 
-            console.log(response.mjson);
+            alert(type==2?'上架成功':'下架成功');
 
 
         }, (error) => {
 
-            console.log(error);
+            alert(error.msg);
         });
     }
 
@@ -109,8 +109,8 @@ export default class CarMySourceScene extends BaceComponent{
                 renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["已上架", "已下架", "未审核"]}/>}>
 
                 <MyCarSourceUpperFrameView  carCellClick={this.carCellClick} footButtonClick={this.footButtonClick}  tabLabel="ios-paper1"/>
-                <MyCarSourceDropFrameView       tabLabel="ios-paper2"/>
-                <MyCarSourceAuditView           tabLabel="ios-paper3"/>
+                <MyCarSourceDropFrameView   footButtonClick={this.footButtonClick}    tabLabel="ios-paper2"/>
+                <MyCarSourceAuditView       footButtonClick={this.footButtonClick}    tabLabel="ios-paper3"/>
 
             </ScrollableTabView>
             <NavigatorView title='我的车源' backIconClick={this.backPage}/>
@@ -438,7 +438,7 @@ class MyCarSourceDropFrameView extends BaceComponent{
                                 pageSize={10}
                                 renderFooter={this.renderListFooter}
                                 onEndReached={this.toEnd}
-                                renderRow={(rowData) =><MyCarCell carCellData={rowData} type={1}/>}
+                                renderRow={(rowData) =><MyCarCell carCellData={rowData} cellClick={this.props.carCellClick} footButtonClick={this.props.footButtonClick} type={2}/>}
                                 refreshControl={
                                     <RefreshControl
                                         refreshing={this.state.isRefreshing}
@@ -604,7 +604,7 @@ class MyCarSourceAuditView extends BaceComponent{
                                 pageSize={10}
                                 renderFooter={this.renderListFooter}
                                 onEndReached={this.toEnd}
-                                renderRow={(rowData) =><MyCarCell carCellData={rowData} type={3}/>}
+                                renderRow={(rowData) =><MyCarCell carCellData={rowData} cellClick={this.props.carCellClick} footButtonClick={this.props.footButtonClick} type={1}/>}
                                 refreshControl={
                                     <RefreshControl
                                         refreshing={this.state.isRefreshing}

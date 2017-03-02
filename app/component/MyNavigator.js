@@ -29,7 +29,10 @@ export default class MyNavigator extends Component {
                     if (route.component) {
                         return <Component {...route.params} navigator={navigator} showToast={(content)=>{
                             this.props.showToast(content);
-                        }}/>
+                        }} showModal={(value)=>{
+                            this.props.showModal(value);
+                        }
+                        }/>
                     }
                 }}>
             </Navigator>
