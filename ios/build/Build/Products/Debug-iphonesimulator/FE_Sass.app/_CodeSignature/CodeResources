@@ -4,10 +4,6 @@
 <dict>
 	<key>files</key>
 	<dict>
-		<key>Default-568h@2x.png</key>
-		<data>
-		poDYGy1JWXBgPH3/wCEBNbVTOks=
-		</data>
 		<key>Frameworks/IDEBundleInjection.framework/IDEBundleInjection</key>
 		<data>
 		aUm0c1LLvF5BD7IVSBsGgwX3iyY=
@@ -203,7 +199,19 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		gSBzfjhkElGTUyHbo2LHgZi8VGw=
+		QwVLtR8xd0fZYTRxfTNuZIpSYkg=
+		</data>
+		<key>Launch Screen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib</key>
+		<data>
+		YRvLsNFX+aJfAPkZemwcCkV2zyY=
+		</data>
+		<key>Launch Screen.storyboardc/Info.plist</key>
+		<data>
+		n2t8gsDpfE6XkhG31p7IQJRxTxU=
+		</data>
+		<key>Launch Screen.storyboardc/UIViewController-01J-lp-oVM.nib</key>
+		<data>
+		IqtVncXMvd+eOr5bw0ycJhmOOrY=
 		</data>
 		<key>PkgInfo</key>
 		<data>
@@ -224,17 +232,6 @@
 	</dict>
 	<key>files2</key>
 	<dict>
-		<key>Default-568h@2x.png</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			poDYGy1JWXBgPH3/wCEBNbVTOks=
-			</data>
-			<key>hash2</key>
-			<data>
-			UdHegDh1HZlDpSEYtzMl4sjA9q8uvK4K9OL0sRTFD6M=
-			</data>
-		</dict>
 		<key>Frameworks/IDEBundleInjection.framework/IDEBundleInjection</key>
 		<dict>
 			<key>hash</key>
@@ -757,6 +754,39 @@
 			<key>hash2</key>
 			<data>
 			pdgABt46mNG+DAW8NzprEAuv+un0qUW4r4xQcIHJA0M=
+			</data>
+		</dict>
+		<key>Launch Screen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			YRvLsNFX+aJfAPkZemwcCkV2zyY=
+			</data>
+			<key>hash2</key>
+			<data>
+			qTlrDy/XH9sQVq2ods9wIx4OTrC0YOCdbtrbOi6TwJ0=
+			</data>
+		</dict>
+		<key>Launch Screen.storyboardc/Info.plist</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			n2t8gsDpfE6XkhG31p7IQJRxTxU=
+			</data>
+			<key>hash2</key>
+			<data>
+			HyVdXMU7Ux4/KalAao30mpWOK/lEPT4gvYN09wf31cg=
+			</data>
+		</dict>
+		<key>Launch Screen.storyboardc/UIViewController-01J-lp-oVM.nib</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			IqtVncXMvd+eOr5bw0ycJhmOOrY=
+			</data>
+			<key>hash2</key>
+			<data>
+			YYKEMU9eRf8VmloTd7wzOX+/dqsgpAWGZL7+/ijMOPk=
 			</data>
 		</dict>
 		<key>PlugIns/FE_SassTests.xctest/FE_SassTests</key>

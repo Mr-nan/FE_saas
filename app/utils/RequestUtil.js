@@ -29,7 +29,9 @@ const request = (url, method, params) => {
             } else {
                 device_code = 'dycd_bms_ios';
             }
+
             console.log(url + '?token=' + token + '&device_code=' + device_code+'&'+body);
+
             fetch(url + '?token=' + token + '&device_code=' + device_code+'&'+body, {
                 method,
                 body
@@ -55,7 +57,7 @@ const request = (url, method, params) => {
                         } else {
                             reject({mycode: responseData.code, mjson: responseData});
                         }
-                    // } else {
+                    }else{
                         console.log("error----------" + JSON.stringify(responseData));
                         reject({mycode: -300});
                     }
