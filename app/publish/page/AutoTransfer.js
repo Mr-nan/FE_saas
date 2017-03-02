@@ -113,8 +113,7 @@ export default class AutoTransfer extends Component {
                         renderRihtFootView={this._renderRihtFootView} />
                     <Image style={styles.imgContainer} source={transferNum}>
                         <View style={styles.inputContainer}>
-                            {/*<TextInput  style={styles.inputNum} underlineColorAndroid='transparent' defaultValue={'2'}/>*/}
-                            <View style={styles.pickContainer}>
+                            <View style={IS_ANDROID ? styles.pickAndroidContainer : styles.pickIOSContainer}>
                                 <Picker style={[IS_ANDROID && styles.fillSpace]}
                                          selectedValue={this.state.selected1}
                                          itemStyle={{color:"#FFFFFF", fontSize:16,fontWeight:'bold'}}
@@ -157,9 +156,16 @@ const styles = StyleSheet.create({
         width:Pixel.getPixel(70),
         height:Pixel.getPixel(40)
     },
-    pickContainer:{
+    pickAndroidContainer:{
+        flex:1,
+        height:Pixel.getPixel(40)
+    },
+    pickIOSContainer:{
         flex:1,
         height:Pixel.getPixel(40),
+        justifyContent:'center',
+        alignItems:'center',
+        overflow:'hidden'
     },
     inputNum:{
         width:Pixel.getPixel(60),
