@@ -82,6 +82,7 @@ export default class LoginFailPwd extends BaseComponent {
                     rightIcon={false}
                     leftIcon={true}
                     maxLength={16}
+                    secureTextEntry={true}
                     leftIconUri={require('./../../images/login/password.png')}
                     viewStytle={styles.itemStyel}/>
                 <LoginInputText
@@ -90,6 +91,7 @@ export default class LoginFailPwd extends BaseComponent {
                     rightIcon={false}
                     leftIcon={true}
                     maxLength={16}
+                    secureTextEntry={true}
                     leftIconUri={require('./../../images/login/password.png')}
                     viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}/>
                 <View style={{width: width, height: Pixel.getPixel(44)} }/>

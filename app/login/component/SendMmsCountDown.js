@@ -5,7 +5,6 @@ import * as FontAndColor from "../../constant/fontAndColor";
 import PixelUtil from "../../utils/PixelUtil";
 var Pixel = new PixelUtil();
 
-var timer;
 const TIME = 60;
 export default class sendMmsCountDown extends Component {
     constructor(props) {
@@ -16,6 +15,7 @@ export default class sendMmsCountDown extends Component {
             value: '获取验证码'
         }
         this.countTime = TIME;
+        this.timer = null;
     }
 
     static propTypes = {
@@ -48,14 +48,14 @@ export default class sendMmsCountDown extends Component {
 
     //开始计算操作
     StartCountDown = () => {
-        if (!this.state.countDown) {
-            timer = setInterval(() => {
+        if (!this.state.countDown && this.timer == null) {
+            this.timer = setInterval(() => {
                 if (this.countTime <= 0) {
                     this.setState({
                         countDown: false,
                         value: '获取验证码',
                     });
-                    this.endCountDown(timer);
+                    this.endCountDown();
                 } else {
                     this.setState({
                         countDown: true,
@@ -67,13 +67,19 @@ export default class sendMmsCountDown extends Component {
     }
 
     //结束计算操作
-    endCountDown = (timer) => {
-        clearInterval(timer);
+    endCountDown = () => {
+        if (this.timer != null) {
+            clearInterval(this.timer);
+            this.timer = null;
+        }
         this.countTime = TIME;
     }
 
     componentWillUnmount() {
-        clearInterval(timer);
+        if (this.timer != null) {
+            clearInterval(this.timer);
+            this.timer = null;
+        }
     }
 }
 

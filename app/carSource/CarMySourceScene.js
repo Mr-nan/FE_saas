@@ -20,6 +20,9 @@ import MyCarCell     from './znComponent/MyCarCell';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import RepaymenyTabBar from '../finance/repayment/component/RepaymenyTabBar';
 import * as fontAndColor from '../constant/fontAndColor';
+import ZNLoadView       from './znComponent/ZNLoadView';
+import * as AppUrls from "../constant/appUrls";
+import  {request}           from '../utils/RequestUtil';
 import PixelUtil from '../utils/PixelUtil';
 const Pixel = new PixelUtil();
 
@@ -113,29 +116,11 @@ let carData3 = [
 
 ];
 
+let carUpperFrameData = [];
+let carDropFrameData = [];
+let carAuditData = [];
+
 export default class CarMySourceScene extends BaceComponent{
-
-    initFinish=()=>{
-
-    };
-
-
-
-    checkedClick=(index)=>{
-
-        if(index==1){
-
-            this.setState({carData:this.state.carData.cloneWithRows(carData1)})
-
-        }else {
-            this.setState({carData:this.state.carData.cloneWithRows(carData2)})
-        }
-    }
-
-    carCell=(index)=>{
-
-        alert(index);
-    }
 
 
     render(){
@@ -146,9 +131,9 @@ export default class CarMySourceScene extends BaceComponent{
                 initialPage={0}
                 renderTabBar={() =><RepaymenyTabBar tabName={["已上架", "已下架", "未审核"]}/>}>
 
-                <MyCarSourceListView carData={carData1} tabLabel="ios-paper1"/>
-                <MyCarSourceListView carData={carData2} tabLabel="ios-paper2"/>
-                <MyCarSourceListView carData={carData3} tabLabel="ios-paper3"/>
+                <MyCarSourceUpperFrameView      tabLabel="ios-paper1"/>
+                <MyCarSourceDropFrameView       tabLabel="ios-paper2"/>
+                <MyCarSourceAuditView           tabLabel="ios-paper3"/>
 
             </ScrollableTabView>
             <NavigatorView title='我的车源' backIconClick={this.backPage}/>
@@ -158,7 +143,7 @@ export default class CarMySourceScene extends BaceComponent{
 
 }
 
-class MyCarSourceListView extends Component{
+class MyCarSourceUpperFrameView extends BaceComponent{
 
     // 构造
     constructor(props) {
@@ -168,22 +153,139 @@ class MyCarSourceListView extends Component{
         const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id == r2.id });
         this.state = {
 
-            carData:carData.cloneWithRows(this.props.carData),
+            carData:carData,
 
         };
     }
+
+    initFinish=()=>{
+            this.loadData();
+    };
+
+    loadData=()=>{
+
+        this.startLoadData();
+        let url = AppUrls.BASEURL +'v1/car/car'
+        request(url,'post',{
+
+            car_status:'1',
+            page:1,
+            row:10,
+
+        }).then((response) => {
+
+            console.log(response.mjson.data);
+            carUpperFrameData.push(...response.mjson.data.list);
+            if(carUpperFrameData.length)
+            {
+                this.setState({
+                    carData:this.state.carData.cloneWithRows(carUpperFrameData),
+                });
+            }
+            this.stopLoadData();
+
+        }, (error) => {
+
+            console.log(error);
+            this.stopLoadData();
+
+
+        });
+
+    }
+    startLoadData=()=>{
+
+        this.refs.ZNLoadView.visibleClick(true);
+
+    }
+
+    stopLoadData=()=>{
+
+        this.refs.ZNLoadView.visibleClick(false);
+    }
+
     render(){
         return(
             <View style={{flex:1,backgroundColor:fontAndColor.COLORA3}}>
-                <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:5}}
-                    dataSource={this.state.carData}
-                    renderRow={(rowData) => <MyCarCell carMainText={rowData.title} carSubText={rowData.subTitle} type={rowData.imagType}/>}/>
+                <ZNLoadView ref="ZNLoadView"/>
+                {
+                    this.state.carData &&
+                    <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:5}}
+                              dataSource={this.state.carData}
+                              renderRow={(rowData) =>
+                                  <MyCarCell carCellData={rowData} type={0}/>}/>
+                }
             </View>
         )
     }
 
 }
 
+class MyCarSourceDropFrameView extends BaceComponent{
+
+    // 构造
+    constructor(props) {
+        super(props);
+        // 初始状态
+
+        const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id == r2.id });
+        this.state = {
+
+            carData:carData,
+
+        };
+    }
+
+    initFinish=()=>{
+
+    };
+
+    render(){
+        return(
+            <View style={{flex:1,backgroundColor:fontAndColor.COLORA3}}>
+                {
+                    this.state.carData &&
+                    <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:5}}
+                              dataSource={this.state.carData}
+                              renderRow={(rowData) => <MyCarCell carMainText={rowData.title} carSubText={rowData.subTitle} type={2}/>}/>
+                }
+            </View>
+        )
+    }
+
+}
+
+class MyCarSourceAuditView extends BaceComponent{
+
+    // 构造
+    constructor(props) {
+        super(props);
+        // 初始状态
+
+        const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id == r2.id });
+        this.state = {
+            carData:carData,
+        };
+    }
+
+    initFinish=()=>{
+
+    };
+
+    render(){
+        return(
+            <View style={{flex:1,backgroundColor:fontAndColor.COLORA3}}>
+                {
+                    this.state.carData &&
+                    <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:5}}
+                                                    dataSource={this.state.carData}
+                                                    renderRow={(rowData) => <MyCarCell carMainText={rowData.title} carSubText={rowData.subTitle} type={1}/>}/>
+                }
+            </View>
+        )
+    }
+
+}
 
 
 const styles = StyleSheet.create({

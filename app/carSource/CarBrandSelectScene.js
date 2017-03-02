@@ -192,6 +192,8 @@ export default class CarBrandSelectScene extends BaseComponent {
         console.log(parameter);
         request(url, 'post',parameter).then((response) => {
 
+
+            this.stopLoadData();
             if(response.mjson.data.length){
                 this.setState({
                     isHideCarSubBrand: false,
@@ -203,7 +205,6 @@ export default class CarBrandSelectScene extends BaseComponent {
                 alert('没数据');
             }
 
-            this.stopLoadData();
 
 
         }, (error) => {
@@ -282,7 +283,6 @@ export default class CarBrandSelectScene extends BaseComponent {
         return (
             <View style={styles.rootContainer}>
                 <ZNLoadView ref="ZNLoadView"/>
-
                 {
                     (this.props.status == 1 && this.state.footprintData.length>0) &&(<View style={styles.carBrandHeadView}>
                         <Text style={styles.carBrandHeadText}>足迹:</Text>
@@ -366,6 +366,7 @@ class CarSeriesList extends Component {
 
     loadCarModelsData=(carBrand_ID,series_ID)=>{
 
+        this.startLoadData();
         let url = AppUrls.BASEURL + 'v1/home/models';
         let parameter = {
             brand_id:carBrand_ID,
@@ -375,6 +376,7 @@ class CarSeriesList extends Component {
         request(url, 'post', parameter).then((response) => {
 
 
+            this.stopLoadData();
             if(response.mjson.data.length){
                 this.setState({
                     dataSource:this.state.dataSource.cloneWithRows(response.mjson.data),
@@ -389,6 +391,8 @@ class CarSeriesList extends Component {
         }, (error) => {
 
             console.log(error);
+            this.stopLoadData();
+
 
         });
 
@@ -491,11 +495,23 @@ class CarSeriesList extends Component {
 
     }
 
+    startLoadData=()=>{
+
+        this.refs.ZNLoadView.visibleClick(true);
+
+    }
+
+    stopLoadData=()=>{
+
+        this.refs.ZNLoadView.visibleClick(false);
+    }
+
 
     render() {
 
         return (
             <Animated.View style={[styles.carSubBrandView,{left:this.state.valueRight}]}>
+                <ZNLoadView ref="ZNLoadView"/>
                 <TouchableOpacity onPress={()=>{
                     if(isHeadInteraction){
                         this.props.checkedCarClick(carObject);
