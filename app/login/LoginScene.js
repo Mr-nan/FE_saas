@@ -215,6 +215,11 @@ export default class LoginScene extends BaseComponent {
                             <Text style={styles.bottomTestSytle}>登录遇到问题 ></Text>
                         </TouchableOpacity>
                     </View>
+
+                    <View style={{flex: 1}}/>
+
+                    <Image source={require('./../../images/login/login_bg.png')}
+                           style={{width: width, height: Pixel.getPixel(175)}}/>
                 </View>
             </TouchableWithoutFeedback>
         );
