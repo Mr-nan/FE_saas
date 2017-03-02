@@ -331,7 +331,7 @@ export default class Register extends BaseComponent {
             noData: true,
             quality: 0.5,
             maxWidth: 500,
-            maxHeight: 500,
+            maxHeight: 300,
             storageOptions: {
                 skipBackup: true,
                 path: 'images',
