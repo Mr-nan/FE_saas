@@ -226,6 +226,7 @@ export  default  class carSourceListScene extends BaseComponent {
                 checkedCarClick: this.checkedCarClick,
                 status:1,
                 isHeadInteraction:true,
+
             }
         };
         this.props.callBack(navigatorParams);
@@ -236,13 +237,22 @@ export  default  class carSourceListScene extends BaseComponent {
     //  筛选条件事件
     headViewOnPres = (index, isHighlighted, setImgHighlighted) => {
 
+        this.refs.headView.checkSelect(currentCheckedIndex); // 取消之前选择按钮状态
+        currentCheckedIndex = index;
+
         if (index === 1) {
 
             this.presCarTypeScene();
+            if(!this.state.isHide)
+            {
+                this.setState({
+                    isHide:true,
+                });
+            }
             return;
         }
-        this.refs.headView.checkSelect(currentCheckedIndex); // 取消之前选择按钮状态
-        currentCheckedIndex = index;
+
+
         if (!isHighlighted) {
             switch (index) {
 
@@ -260,8 +270,8 @@ export  default  class carSourceListScene extends BaseComponent {
         this.setState({
             isHide:isHighlighted,
         });
-
         setImgHighlighted(!isHighlighted); // 回调按钮状态
+
 
     };
 
@@ -284,7 +294,7 @@ export  default  class carSourceListScene extends BaseComponent {
 
         APIParameter.brand_id = carObject.brand_id;
         APIParameter.series_id = carObject.series_id;
-
+    console.log(carObject);
         this.setState({
             checkedCarType: {
                 title: carObject.series_id==0?carObject.brand_name:carObject.series_name,

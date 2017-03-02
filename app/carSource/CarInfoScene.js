@@ -13,6 +13,7 @@ import {
 
 } from 'react-native';
 
+// init_coty 车龄
 import *as fontAndColor from '../constant/fontAndColor';
 import ImagePageView from 'react-native-viewpager';
 import BaseComponent from '../component/BaseComponent';
@@ -251,7 +252,7 @@ export default class CarInfoScene extends BaseComponent {
                             return(
                                 <View style={styles.imageFootView}>
                                     <View style={styles.carAgeView}>
-                                        <Text style={styles.carAgeText}>{carData.v_type_str}</Text>
+                                        <Text style={styles.carAgeText}>{carData.init_coty}</Text>
                                     </View>
                                     <Text style={styles.imageIndexText}>{this.state.currentImageIndex+'/'+carImageArray.length}</Text>
                                 </View>

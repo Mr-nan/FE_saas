@@ -24,7 +24,7 @@ import *as fontAnColor from '../constant/fontAndColor';
 import NavigationView from '../component/AllNavigationView';
 import StorageUtil      from '../utils/StorageUtil';
 import * as StorageKeyName   from '../constant/storageKeyNames';
-// import ZNLoadView from './znComponent/ZNLoadView';
+import ZNLoadView from './znComponent/ZNLoadView';
 import PixelUtil from '../utils/PixelUtil';
 var Pixel = new PixelUtil();
 
@@ -34,7 +34,10 @@ import * as AppUrls from "../constant/appUrls";
 let status  = 0;
 let carData = new  Array;
 let isHeadInteraction = false;
+let isCheckedCarModel = false;
+
 let carObject= {
+
     brand_id:'0',
     brand_name:'0',
     series_id:'0',
@@ -65,6 +68,15 @@ export default class CarBrandSelectScene extends BaseComponent {
 
         status = this.props.status;
         isHeadInteraction = this.props.isHeadInteraction;
+        isCheckedCarModel = this.props.isCheckedCarModel;
+
+        carObject.brand_name='0';
+        carObject.brand_name='0';
+        carObject.series_id='0';
+        carObject.series_name='0';
+        carObject.model_id='0';
+        carObject.model_name='0';
+
 
         let getSectionData = (dataBlob, sectionID) => {
             return dataBlob[sectionID];
@@ -324,7 +336,6 @@ export default class CarBrandSelectScene extends BaseComponent {
                     title="选择品牌"
                     backIconClick={this._backIconClick}
                 />
-               {/*<ZNLoadView isLoadData={this.state.isLoadData}/>*/}
                 {
                     this.state.isHideCarSubBrand ? (null) : (
                         <CarSeriesList
@@ -456,8 +467,11 @@ class CarSeriesList extends Component {
 
                         carObject.series_id = rowData.series_id;
                         carObject.series_name = rowData.series_name;
-
-                        this.loadCarModelsData(rowData.brand_id,rowData.series_id);
+                        if(!isCheckedCarModel){
+                            this.loadCarModelsData(rowData.brand_id,rowData.series_id);
+                        }else {
+                            this.props.checkedCarClick(carObject);
+                        }
                     }
 
                 }else {

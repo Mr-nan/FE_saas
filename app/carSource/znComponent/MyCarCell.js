@@ -20,11 +20,17 @@ import * as fontAndColor from '../../constant/fontAndColor';
 
 export default class MyCarCell extends Component {
 
-    cellClick=()=>{
+    cellClick=(carID)=>{
 
-        // this.props.onPress(this.props.carMainText);
+        this.props.cellClick(carID);
 
     };
+
+    footButtonClick=(typeStr,carID)=>{
+
+        this.props.footButtonClick(typeStr,carID);
+    };
+
 
     getImage=(type)=>{
 
@@ -55,7 +61,7 @@ export default class MyCarCell extends Component {
 
         const {carCellData} = this.props;
         return(
-            <TouchableOpacity onPress={this.cellClick}>
+            <TouchableOpacity onPress={()=>{this.cellClick(carCellData.id)}}>
                 <View style={[styles.container,styles.lineBottom]} >
 
                     <View style={styles.cellContentView}>
@@ -74,28 +80,33 @@ export default class MyCarCell extends Component {
                     </View>
                     <View style={styles.cellFootView}>
 
-                        <View style={styles.cellFoot}>
-                            <Text style={styles.cellFootText}>编辑</Text>
-                        </View>
+                        <TouchableOpacity onPress={()=>{this.footButtonClick('编辑',carCellData.id)}}>
+                            <View style={styles.cellFoot}>
+                                <Text style={styles.cellFootText}>编辑</Text>
+                            </View>
+                        </TouchableOpacity>
                         {
                             this.props.type==0 &&
-                            <View style={styles.cellFoot}>
-                                <Text style={styles.cellFootText}>下架</Text>
-                            </View>
+                            <TouchableOpacity onPress={()=>{this.footButtonClick('下架',carCellData.id)}}>
+                                <View style={styles.cellFoot}>
+                                    <Text style={styles.cellFootText}>下架</Text>
+                                </View>
+                            </TouchableOpacity>
                         }
                         {
                             this.props.type==1 &&
-                            <View style={styles.cellFoot}>
-                                <Text style={styles.cellFootText}>上架</Text>
-                            </View>
-                        }
-                        {
-                            this.props.type!==2&&<View style={styles.cellFoot}>
-                                <Text style={styles.cellFootText}>生产二维码</Text>
-                            </View>
-                        }
+                            <TouchableOpacity onPress={()=>{this.footButtonClick('上架',carCellData.id)}}>
+                                <View style={styles.cellFoot}>
+                                    <Text style={styles.cellFootText}>上架</Text>
+                                </View>
+                            </TouchableOpacity>
 
-
+                        }
+                        {/*{*/}
+                        {/*this.props.type!==2&&<View style={styles.cellFoot}>*/}
+                        {/*<Text style={styles.cellFootText}>生产二维码</Text>*/}
+                        {/*</View>*/}
+                        {/*}*/}
                     </View>
 
                 </View>
