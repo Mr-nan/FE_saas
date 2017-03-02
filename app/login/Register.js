@@ -53,17 +53,19 @@ export default class Register extends BaseComponent {
 
     render() {
         if (this.state.renderPlaceholderOnly) {
-            return ( <TouchableWithoutFeedback style={{backgroundColor: FontAndColor.COLORA3}} onPress={() => {
+            return ( <TouchableWithoutFeedback onPress={() => {
                 this.setState({
                     show: false,
                 });
             }}>
-                <NavigationBar
-                    leftImageShow={false}
-                    leftTextShow={true}
-                    leftText={""}
-                    rightText={""}
-                />
+                <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
+                    <NavigationBar
+                        leftImageShow={false}
+                        leftTextShow={true}
+                        leftText={""}
+                        rightText={""}
+                    />
+                </View>
             </TouchableWithoutFeedback>);
         }
         return (
@@ -73,8 +75,8 @@ export default class Register extends BaseComponent {
                     rightTextCallBack={this.register}
                 />
 
-                <ScrollView>
-                    <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={1}>
+                <ScrollView keyboardShouldPersistTaps={'handled'}>
+                    <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={5}>
                         <View style={styles.inputTextLine}/>
                         <View style={styles.inputTextsStyle}>
                             <LoginInputText
@@ -142,8 +144,8 @@ export default class Register extends BaseComponent {
                                 leftIcon={false}
                                 rightIcon={false}/>
                         </View>
+                        <View style={styles.inputTextLine}/>
                     </KeyboardAvoidingView>
-                    <View style={styles.inputTextLine}/>
                     <View style={styles.imageButtonsStyle}>
                         <Text
                             style={{
@@ -329,7 +331,7 @@ export default class Register extends BaseComponent {
             noData: true,
             quality: 0.5,
             maxWidth: 500,
-            maxHeight: 500,
+            maxHeight: 300,
             storageOptions: {
                 skipBackup: true,
                 path: 'images',

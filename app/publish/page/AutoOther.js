@@ -28,10 +28,24 @@ export default class AutoOther extends Component {
         this.vinNum = this.props.carData.vin;
         this.dealer_price = this.props.carData.dealer_price;
         this.describe = this.props.carData.describe;
+        if(this.isEmpty(this.describe) === true){
+            this.describe = '';
+        }
+        if(this.isEmpty(this.dealer_price) === true){
+            this.dealer_price = '';
+        }
         this.state = {
             renderPlaceholderOnly: true
         }
     }
+
+    isEmpty = (str)=>{
+        if(typeof(str) != 'undefined' && str !== ''){
+            return false;
+        }else {
+            return true;
+        }
+    };
 
     componentWillMount() {
 

@@ -54,7 +54,9 @@ export default class EmployeeManageScene extends BaseComponent {
                  this.setState({
                      dataSource: ds.cloneWithRows(response.mjson.data)
                  });
+                 console.log(response.mjson.data);
                  this.setState({renderPlaceholderOnly: 'success'});
+
              }
 
                 },

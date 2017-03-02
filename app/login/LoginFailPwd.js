@@ -21,6 +21,7 @@ import md5 from "react-native-md5";
 import StorageUtil from "../utils/StorageUtil";
 import SetLoginPwdGesture from "./SetLoginPwdGesture";
 import MainPage from "../main/MainPage";
+import * as StorageKeyNames from "../constant/storageKeyNames";
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -42,18 +43,20 @@ export default class LoginFailPwd extends BaseComponent {
 
     render() {
         if (this.state.renderPlaceholderOnly) {
-            return ( <TouchableWithoutFeedback style={{backgroundColor: FontAndColor.COLORA3}} onPress={() => {
+            return ( <TouchableWithoutFeedback onPress={() => {
                 this.setState({
                     show: false,
                 });
             }}>
-                <NavigationBar
-                    leftImageShow={false}
-                    leftTextShow={true}
-                    leftText={""}
-                    centerText={"设置登录密码"}
-                    rightText={""}
-                />
+                <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
+                    <NavigationBar
+                        leftImageShow={false}
+                        leftTextShow={true}
+                        leftText={""}
+                        centerText={"设置登录密码"}
+                        rightText={""}
+                    />
+                </View>
             </TouchableWithoutFeedback>);
         }
         return (
@@ -81,6 +84,7 @@ export default class LoginFailPwd extends BaseComponent {
                     rightIcon={false}
                     leftIcon={true}
                     maxLength={16}
+                    secureTextEntry={true}
                     leftIconUri={require('./../../images/login/password.png')}
                     viewStytle={styles.itemStyel}/>
                 <LoginInputText
@@ -89,6 +93,7 @@ export default class LoginFailPwd extends BaseComponent {
                     rightIcon={false}
                     leftIcon={true}
                     maxLength={16}
+                    secureTextEntry={true}
                     leftIconUri={require('./../../images/login/password.png')}
                     viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}/>
                 <View style={{width: width, height: Pixel.getPixel(44)} }/>
@@ -129,6 +134,7 @@ export default class LoginFailPwd extends BaseComponent {
                         StorageUtil.mGetItem(response.mjson.data.phone + "", (data) => {
                             if (data.code == 1) {
                                 if (data.result != null) {
+                                    StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
                                     this.loginPage(this.loginSuccess)
                                 } else {
                                     this.loginPage(this.setLoginGesture)

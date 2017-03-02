@@ -28,6 +28,7 @@ import MyButton from "../component/MyButton";
 import LoginFailSmsYes from "./LoginFailSmsYes";
 import SetLoginPwdGesture from "./SetLoginPwdGesture";
 import md5 from "react-native-md5";
+import LoginGesture from './LoginGesture';
 
 var Pixel = new PixelUtil();
 var Dimensions = require('Dimensions');
@@ -83,18 +84,20 @@ export default class LoginScene extends BaseComponent {
 
     render() {
         if (this.state.renderPlaceholderOnly) {
-            return ( <TouchableWithoutFeedback style={{backgroundColor: FontAndColor.COLORA3}} onPress={() => {
+            return ( <TouchableWithoutFeedback onPress={() => {
                 this.setState({
                     show: false,
                 });
             }}>
-                <NavigationBar
-                    leftImageShow={false}
-                    leftTextShow={true}
-                    leftText={""}
-                    centerText={"登录"}
-                    rightText={""}
-                />
+                <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
+                    <NavigationBar
+                        leftImageShow={false}
+                        leftTextShow={true}
+                        leftText={""}
+                        centerText={"登录"}
+                        rightText={""}
+                    />
+                </View>
             </TouchableWithoutFeedback>);
         }
         let views = [];
@@ -212,6 +215,11 @@ export default class LoginScene extends BaseComponent {
                             <Text style={styles.bottomTestSytle}>登录遇到问题 ></Text>
                         </TouchableOpacity>
                     </View>
+
+                    <View style={{flex: 1}}/>
+
+                    <Image source={require('./../../images/login/login_bg.png')}
+                           style={{width: width, height: Pixel.getPixel(175)}}/>
                 </View>
             </TouchableWithoutFeedback>
         );
@@ -314,9 +322,7 @@ export default class LoginScene extends BaseComponent {
                 .then((response) => {
                     if (response.mjson.code == "1") {
                         // 保存用户登录状态
-                        StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
                         StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '2');
-
                         StorageUtil.mGetItem(StorageKeyNames.USERNAME, (data) => {
                             if (data.code == 1) {
                                 if (data.result != null && data.result.indexOf(userName) < 0) {
@@ -337,11 +343,23 @@ export default class LoginScene extends BaseComponent {
                         StorageUtil.mSetItem(StorageKeyNames.REAL_NAME, response.mjson.data.real_name + "");
                         StorageUtil.mSetItem(StorageKeyNames.TOKEN, response.mjson.data.token + "");
                         StorageUtil.mSetItem(StorageKeyNames.USER_LEVEL, response.mjson.data.user_level + "");
-
                         StorageUtil.mGetItem(response.mjson.data.phone + "", (data) => {
                             if (data.code == 1) {
                                 if (data.result != null) {
-                                    this.loginPage(this.loginSuccess)
+                                    if (response.mjson.data.user_level == 2) {
+                                        if (response.mjson.data.enterprise_list[0].role_type == '2') {
+                                            this.loginPage({
+                                                name: 'LoginGesture',
+                                                component: LoginGesture,
+                                                params: {from: 'RootScene'}
+                                            })
+                                        } else {
+                                            this.loginPage(this.loginSuccess)
+                                        }
+                                    } else {
+                                        this.loginPage(this.loginSuccess)
+                                    }
+                                    StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
                                 } else {
                                     this.loginPage(this.setLoginGesture)
                                 }

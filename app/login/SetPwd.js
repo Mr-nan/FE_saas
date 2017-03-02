@@ -39,18 +39,20 @@ export default class SetPwd extends BaseComponent {
 
     render() {
         if (this.state.renderPlaceholderOnly) {
-            return ( <TouchableWithoutFeedback style={{backgroundColor: FontAndColor.COLORA3}} onPress={() => {
+            return ( <TouchableWithoutFeedback onPress={() => {
                 this.setState({
                     show: false,
                 });
             }}>
-                <NavigationBar
-                    leftImageShow={false}
-                    leftTextShow={true}
-                    leftText={""}
-                    centerText={"修改登录密码"}
-                    rightText={""}
-                />
+                <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
+                    <NavigationBar
+                        leftImageShow={false}
+                        leftTextShow={true}
+                        leftText={""}
+                        centerText={"修改登录密码"}
+                        rightText={""}
+                    />
+                </View>
             </TouchableWithoutFeedback>);
         }
         return (
@@ -67,6 +69,7 @@ export default class SetPwd extends BaseComponent {
                     rightIcon={false}
                     leftIcon={false}
                     textPlaceholder={"请输入原登录密码"}
+                    secureTextEntry={true}
                     viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}/>
                 <View style={{width: width, height: Pixel.getPixel(10)} }/>
                 <LoginInputText
@@ -74,6 +77,7 @@ export default class SetPwd extends BaseComponent {
                     rightIcon={false}
                     leftIcon={false}
                     textPlaceholder={"请设置新密码"}
+                    secureTextEntry={true}
                     maxLength={16}
                     viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}/>
                 <View style={{width: width, height: Pixel.getPixel(10)} }/>
@@ -82,6 +86,7 @@ export default class SetPwd extends BaseComponent {
                     rightIcon={false}
                     leftIcon={false}
                     textPlaceholder={"请再次填写新密码"}
+                    secureTextEntry={true}
                     maxLength={16}
                     viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}/>
                 <View style={{width: width, height: Pixel.getPixel(44)} }/>
@@ -92,15 +97,6 @@ export default class SetPwd extends BaseComponent {
                           mOnPress={this.setPwd}/>
             </View>
         );
-    }
-
-    rightTextCallBack = () => {
-        // this.toNextPage({
-        //     name: 'Register',
-        //     component: LoginFail,
-        //     params: {},
-        // })
-        alert("设置成功")
     }
 
     //修改密码

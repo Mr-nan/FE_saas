@@ -25,11 +25,12 @@ const request = (url, method, params) => {
             let device_code = '';
 
             if (Platform.OS === 'android') {
-                device_code = 'dycd_dms_manage_android';
+                device_code = 'dycd_bms_android';
             } else {
-                device_code = 'dycd_dms_manage_android';
+                device_code = 'dycd_bms_ios';
             }
-            fetch(url + '?token=' + '0dee763feb648e3b901af57146d428a3' + '&device_code=' + device_code+'&'+body, {
+            console.log(url + '?token=' + token + '&device_code=' + device_code+'&'+body);
+            fetch(url + '?token=' + token + '&device_code=' + device_code+'&'+body, {
                 method,
                 body
             })
@@ -45,16 +46,16 @@ const request = (url, method, params) => {
                 .then((responseData) => {
                     if (isOk) {
                         for (let key of Object.keys(params)) {
-                            // console.log(key+"===" + params[key]);
+                            console.log(key+"===" + params[key]);
                         }
-                        console.log('------'+url + '?token=' + token + '&device_code=' + device_code);
+                        // console.log('------'+url + '?token=' + token + '&device_code=' + device_code);
                         console.log("success----------" + JSON.stringify(responseData));
                         if (responseData.code == 1) {
                             resolve({mjson: responseData, mycode: 1});
                         } else {
                             reject({mycode: responseData.code, mjson: responseData});
                         }
-                    } else {
+                    // } else {
                         console.log("error----------" + JSON.stringify(responseData));
                         reject({mycode: -300});
                     }

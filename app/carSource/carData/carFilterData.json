@@ -1,0 +1,56 @@
+{
+  "carAgeSource": [
+    {
+      "title": "1年以内",
+      "value": "0|1"
+    },
+    {
+      "title": "3年以内",
+      "value": "0|3"
+    },
+    {
+      "title": "5年以内",
+      "value": "0|4"
+    },
+    {
+      "title": "8年以内",
+      "value": "0|8"
+    },
+    {
+      "title": "10年以内",
+      "value": "0|10"
+    }
+  ],
+  "carKMSource": [
+    {
+      "title": "1万公里以内",
+      "value": "0|1"
+    },
+    {
+      "title": "3万公里以内",
+      "value": "0|3"
+    },
+    {
+      "title": "5万公里以内",
+      "value": "0|5"
+    },
+    {
+      "title": "10万公里以内",
+      "value": "0|10"
+    }
+  ],
+  "sequencingDataSource": [
+    {
+      "title": "最新发布",
+      "value": "1"
+    },
+    {
+      "title": "里程少",
+      "value": "2"
+    },
+    {
+      "title": "车龄短",
+      "value": "3"
+    }
+  ]
+}

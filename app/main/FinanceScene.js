@@ -122,22 +122,26 @@ export default class FinanceSence extends BaseComponet {
     }
 
     toEnd = () => {
-        if (page < allPage) {
-            page++;
-            this.getApplyData();
+        if (this.state.isRefreshing) {
+
+        } else {
+            if (page < allPage) {
+                page++;
+                this.getApplyData();
+            }
         }
+
     };
 
     getApplyData = () => {
-        let that = this;
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         let maps = {
             api: Urls.GET_APPLY_LIST,
             p: page
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
-                    movies = response.mjson.data.list;
+                    movies.push(...response.mjson.data.list);
                     allPage = response.mjson.data.page;
                     this.setState({renderPlaceholderOnly: 'success', source: ds.cloneWithRows(movies)});
                     this.setState({isRefreshing: false});
@@ -157,6 +161,7 @@ export default class FinanceSence extends BaseComponet {
     }
 
     allRefresh = () => {
+        movies = [];
         this.setState({renderPlaceholderOnly: 'loading'});
         page = 1;
         this.getMnyData();
@@ -180,6 +185,7 @@ export default class FinanceSence extends BaseComponet {
     }
 
     refreshingData = () => {
+        movies = [];
         this.setState({isRefreshing: true});
         page = 1;
         this.getMnyData();
