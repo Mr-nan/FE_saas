@@ -11,7 +11,8 @@ import {
     Dimensions,
     TouchableOpacity,
     ListView,
-    InteractionManager
+    InteractionManager,
+    RefreshControl
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
@@ -25,26 +26,52 @@ import NavigationView from '../../component/AllNavigationView';
 import PlanParentItem from './component/PlanParentItem';
 import OldPlanScene from './OldPlanListScene';
 import  PlanInfoScene from './PlanInfoScene';
+import {request} from '../../utils/RequestUtil';
+import * as Urls from '../../constant/appUrls';
 export  default class PlanListScene extends BaseComponent {
 
     constructor(props) {
         super(props);
         // 初始状态
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             renderPlaceholderOnly: 'blank',
-            source: ds.cloneWithRows(movies)
+            source: [],
+            isRefreshing: false
         };
     }
 
 
     initFinish = () => {
-        this.setState({renderPlaceholderOnly: 'success'});
+        this.getData();
     }
+
+    getData = () => {
+        let maps = {
+            api: Urls.GETPLANLIST
+        };
+        request(Urls.FINANCE, 'Post', maps)
+            .then((response) => {
+                    movies = response.mjson.data;
+                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                    this.setState({
+                        source: ds.cloneWithRows(movies),
+                        renderPlaceholderOnly: 'success',
+                        isRefreshing: false
+                    });
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
+                });
+    }
+
+    refreshingData = () => {
+        this.setState({isRefreshing: true});
+        this.getData();
+    };
 
 
     render() {
-        if (this.state.renderPlaceholderOnly!=='success') {
+        if (this.state.renderPlaceholderOnly !== 'success') {
             return this._renderPlaceholderView();
         }
         return (
@@ -60,6 +87,14 @@ export  default class PlanListScene extends BaseComponent {
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
                     bounces={false}
+                    refreshControl={
+                                    <RefreshControl
+                                        refreshing={this.state.isRefreshing}
+                                        onRefresh={this.refreshingData}
+                                        tintColor={[fontAndColor.COLORB0]}
+                                        colors={[fontAndColor.COLORB0]}
+                                    />
+                                }
                 />
             </View>
         );
@@ -67,8 +102,9 @@ export  default class PlanListScene extends BaseComponent {
 
     _renderRow = (movie, sectionId, rowId) => {
         return (
-            <PlanParentItem items={movie} mOnPress={(loan_id) => {
-                this.toNextPage({name:'PlanInfoScene',component:PlanInfoScene,params:{}});
+            <PlanParentItem items={movie} mOnPress={(loan_code,loan_number,plan_id,type) => {
+                this.toNextPage({name:'PlanInfoScene',component:PlanInfoScene,params:{loan_code:loan_code,
+                loan_number:loan_number,plan_id:plan_id,type:type}});
             }}/>
         )
     }

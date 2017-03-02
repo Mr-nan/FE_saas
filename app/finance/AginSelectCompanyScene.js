@@ -18,11 +18,12 @@ const {width, height} = Dimensions.get('window');
 import PixelUtil from '../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import * as fontAndColor from '../constant/fontAndColor';
+import BaseComponent from '../component/BaseComponent';
 import NavigationView from '../component/AllNavigationView';
 const childItems = [];
 import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
-export  default class SelectCompanyScene extends Component {
+export  default class SelectCompanyScene extends BaseComponent {
 
     constructor(props) {
         super(props);
@@ -32,13 +33,10 @@ export  default class SelectCompanyScene extends Component {
             renderPlaceholderOnly: true,
             source: ds.cloneWithRows(this.props.loanList)
         };
-        console.log(this.props.loanList);
     }
 
-    componentDidMount() {
-        InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: false});
-        });
+    initFinish=()=> {
+        this.setState({renderPlaceholderOnly: false});
     }
 
 
@@ -50,6 +48,7 @@ export  default class SelectCompanyScene extends Component {
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
                 <NavigationView
                     title="切换公司"
+                    backIconClick={this.backPage}
                 />
                 <ListView
                     style={{marginTop: Pixel.getTitlePixel(79)}}
@@ -74,15 +73,17 @@ export  default class SelectCompanyScene extends Component {
                 .then((response) => {
                         this.props.callBack(movie.companyname);
                         this.props.showModal(false);
+                        this.backPage();
                     },
                     (error) => {
-                        this.props.showModal(false);
                         this.props.showToast('网络连接失败');
+                        this.props.showModal(false);
                     });
         }else{
             this.props.showToast('当前企业未完成授信');
         }
     }
+
 
     _renderRow = (movie, sectionId, rowId) => {
         return (
@@ -133,6 +134,7 @@ export  default class SelectCompanyScene extends Component {
             <View style={{width: width, height: height}}>
                 <NavigationView
                     title="切换公司"
+                    backIconClick={this.backPage}
                 />
             </View>
         );

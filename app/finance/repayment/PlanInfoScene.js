@@ -18,20 +18,18 @@ const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import * as fontAndColor from '../../constant/fontAndColor';
-let MovleData = require('./planinfo.json');
-let movies = MovleData.retdata;
 import BaseComponent from '../../component/BaseComponent';
 import NavigationView from '../../component/AllNavigationView';
 import RepaymentInfoTopItem from './component/RepaymentInfoTopItem';
-import RepaymentInfoDateItem from './component/RepaymentInfoDateItem';
 import RepaymentInfoContentItem from './component/RepaymentInfoContentItem';
 import RepaymentInfoBottomItem from './component/RepaymentInfoBottomItem';
 import AllBottomItem from './component/AllBottomItem';
-import MyButton from '../../component/MyButton';
 let moneyList = [];
 let nameList = [];
 let dateList = [];
-export  default class PurchaseLoanStatusScene extends BaseComponent {
+import {request} from '../../utils/RequestUtil';
+import * as Urls from '../../constant/appUrls';
+export  default class PlanInfoScene extends BaseComponent {
 
     constructor(props) {
         super(props);
@@ -47,24 +45,50 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
     componentWillUnmount() {
         moneyList = [];
         nameList = [];
+        dateList = [];
     }
 
     initFinish = () => {
-        dateList.push({name: '付息区间', data: movies.interval});
-        dateList.push({name: '最晚还款日', data: movies.date_str});
+        this.getData();
+    }
 
-        moneyList.push({name: '贷款本金', data: movies.loan_mny_str});
-        moneyList.push({name: '计息天数', data: movies.loan_day});
-        moneyList.push({name: '综合费率', data: movies.loan_rebate_str});
-        moneyList.push({name: '利息总额', data: movies.interest});
+    getData = () => {
+        let maps = {
+            api: Urls.GETPLANINFO,
+            loan_code: this.props.loan_code,
+            loan_number: this.props.loan_number,
+            plan_id: this.props.plan_id,
+            type: this.props.type,
+        };
+        request(Urls.FINANCE, 'Post', maps)
+            .then((response) => {
+                    let movies = response.mjson.data;
+                    dateList.push({name: '付息区间', data: movies.interval});
+                    dateList.push({name: '最晚还款日', data: movies.date_str});
 
-        nameList.push({name: '渠道名称', data: movies.qvdaoname});
-        nameList.push({name: '还款账户', data: movies.bank_info.repaymentaccount});
-        nameList.push({name: '开户行', data: movies.bank_info.bank});
-        nameList.push({name: '开户支行', data: movies.bank_info.branch});
-        nameList.push({name: '还款账号', data: movies.bank_info.repaymentnumber});
-        nameList.push({name: '保证金', data: movies.bondmny});
-        this.setState({renderPlaceholderOnly: 'success'});
+                    moneyList.push({name: '贷款本金', data: movies.loan_mny_str});
+                    moneyList.push({name: '计息天数', data: movies.loan_day});
+                    moneyList.push({name: '综合费率', data: movies.loan_rebate_str});
+                    moneyList.push({name: '利息总额', data: movies.interest});
+
+                    nameList.push({name: '渠道名称', data: movies.qvdaoname});
+                    console.log(typeof (movies.bank_info)
+                        + '      aaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+                    nameList.push({
+                        name: '还款账户', data: movies.bank_info.repaymentaccount
+                        + ''
+                    });
+                    nameList.push({name: '开户行', data: movies.bank_info.bank + ''});
+                    nameList.push({name: '开户支行', data: movies.bank_info.branch + ''});
+                    nameList.push({name: '还款账号', data: movies.bank_info.repaymentnumber + ''});
+                    nameList.push({name: '保证金', data: movies.bondmny});
+                    this.setState({
+                        renderPlaceholderOnly: 'success'
+                    });
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
+                });
     }
 
 

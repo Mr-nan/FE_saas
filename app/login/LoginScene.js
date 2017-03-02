@@ -304,6 +304,7 @@ export default class LoginScene extends BaseComponent {
         } else if (typeof(smsCode) == "undefined" || smsCode == "") {
             this.props.showToast("短信验证码不能为空");
         } else {
+            this.props.showModal(true);
             let maps = {
                 code: smsCode,
                 device_code: "dycd_dms_manage_android",
@@ -313,6 +314,7 @@ export default class LoginScene extends BaseComponent {
             };
             request(AppUrls.LOGIN, 'Post', maps)
                 .then((response) => {
+                    this.props.showModal(false);
                     if (response.mjson.code == "1") {
                         // 保存用户登录状态
                         StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '2');
@@ -362,6 +364,7 @@ export default class LoginScene extends BaseComponent {
                         this.props.showToast(response.mjson.msg + "");
                     }
                 }, (error) => {
+                    this.props.showModal(false);
                     this.Verifycode();
                     if (error.mjson.code == -300 || error.mjson.code == -500) {
                         this.props.showToast("登录失败");
