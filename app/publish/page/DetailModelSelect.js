@@ -12,7 +12,7 @@ import {
     TouchableOpacity,
     InteractionManager
 }from 'react-native';
-
+import CarBrandSelectScene from '../../carSource/CarBrandSelectScene';
 import * as fontAndColor from '../../constant/fontAndColor';
 import AllNavigationView from '../../component/AllNavigationView';
 import PixelUtil from '../../utils/PixelUtil';
@@ -50,7 +50,7 @@ export default class DetailModelSelect extends PureComponent {
 
     componentWillReceiveProps(nextProps: Object) {
         let model_name = '';
-        if (typeof(nextProps.carData.model) != 'undefined' && nextProps.carData.model !== '') {
+        if (this.isEmpty(nextProps.carData.model) === false ) {
             let modelInfo = JSON.parse(nextProps.carData.model);
             model_name = modelInfo.model_name;
         }
@@ -60,15 +60,36 @@ export default class DetailModelSelect extends PureComponent {
         });
     }
 
+    isEmpty = (str)=>{
+        if(typeof(str) != 'undefined' && str !== ''){
+            return false;
+        }else {
+            return true;
+        }
+    };
+
+    //选择车型
     _modelPress = () => {
-        //拿到返回结果保存到本地
-        let rd = [];
+        let brandParams ={
+            name: 'CarBrandSelectScene',
+            component: CarBrandSelectScene,
+            params: {checkedCarClick: this._checkedCarClick,
+                status:0,}
+        };
+
+        this.toNextPage(brandParams);
+    };
+
+    _checkedCarClick = (carObject)=>{
+        this.setState({
+            modelName:carObject.model_name
+        });
         let modelInfo = {};
-        modelInfo['brand_id'] = rd[0].brand_id;
-        modelInfo['model_id'] = rd[0].model_id;
-        modelInfo['series_id'] = rd[0].series_id;
-        modelInfo['model_year'] = rd[0].model_year;
-        modelInfo['model_name'] = rd[0].model_name;
+        modelInfo['brand_id'] = carObject.brand_id;
+        modelInfo['model_id'] = carObject.model_id;
+        modelInfo['series_id'] = carObject.series_id;
+        modelInfo['model_year'] = carObject.model_year;
+        modelInfo['model_name'] = carObject.model_name;
         this.props.sqlUtil.changeData('INSERT INTO publishCar (vin,model) VALUES (?,?)', [this.vinNum, JSON.stringify(modelInfo)]);
     };
 

@@ -17,7 +17,7 @@ import AllNavigationView from '../../component/AllNavigationView';
 import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import ImageSource from '../component/ImageSource';
-import * as Net from '../../utils/RequestUtil';
+import * as ImageUpload from '../../utils/ImageUpload';
 import * as AppUrls from "../../constant/appUrls";
 
 const {width, height} = Dimensions.get('window');
@@ -51,7 +51,7 @@ export default class AutoPhoto extends Component {
     constructor(props) {
         super(props);
         let hasPhoto = false;
-        if(this.props.carData.pictures !==''){
+        if(this.isEmpty(this.props.carData.pictures) === false){
             this.pictures = JSON.parse(this.props.carData.pictures);
             this.selectSource = {uri: this.pictures[0].url};
             hasPhoto = true;
@@ -63,6 +63,14 @@ export default class AutoPhoto extends Component {
             renderPlaceholderOnly: true
         }
     }
+
+    isEmpty = (str)=>{
+        if(typeof(str) != 'undefined' && str !== ''){
+            return false;
+        }else {
+            return true;
+        }
+    };
 
     componentWillMount() {
 
@@ -108,11 +116,10 @@ export default class AutoPhoto extends Component {
             else {
 
                 let params ={
-                    filename : response.fileName,
                     file:'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g,'%2B')
                 };
 
-                Net.request(AppUrls.INDEX_UPLOAD,'post',params).then(
+                ImageUpload.request(AppUrls.INDEX_UPLOAD,'Post',params).then(
                     (response)=>{
 
                         this.selectSource = {uri: response.mjson.data.url};
@@ -158,7 +165,7 @@ export default class AutoPhoto extends Component {
                     file:'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g,'%2B')
                 };
 
-                Net.request(AppUrls.INDEX_UPLOAD,'post',params).then(
+                ImageUpload.request(AppUrls.INDEX_UPLOAD,'post',params).then(
                     (response)=>{
 
                         this.selectSource = {uri: response.mjson.data.url};

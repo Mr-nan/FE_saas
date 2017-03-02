@@ -124,6 +124,20 @@ export const GETHISTORICALLIST = 'api/v1/Repayment/getHistoricalList';
 /**
  * from @zhaojian
  *
+ * 获取还款计划列表
+ **/
+export const GETPLANLIST = 'api/v2/Repayment/getPlanList';
+
+/**
+ * from @zhaojian
+ *
+ * 获取还款计划详情
+ **/
+export const GETPLANINFO = 'api/v2/Repayment/getPlanInfo';
+
+/**
+ * from @zhaojian
+ *
  * 获取借款首页数据
  **/
 export const GET_MNY = 'api/v3/account/get_mny';

@@ -34,6 +34,7 @@ export default class EmployeeManageScene extends BaseComponent {
     // 构造
     constructor(props) {
         super(props);
+        this.jsonStr='';
         this.state = {
             dataSource: [],
             renderPlaceholderOnly: 'blank',
@@ -54,7 +55,9 @@ export default class EmployeeManageScene extends BaseComponent {
                  this.setState({
                      dataSource: ds.cloneWithRows(response.mjson.data)
                  });
+                 console.log(response.mjson.data);
                  this.setState({renderPlaceholderOnly: 'success'});
+
              }
 
                 },
@@ -165,7 +168,11 @@ export default class EmployeeManageScene extends BaseComponent {
                             name: 'SeeEmployeeInfoScene',
                             component: SeeEmployeeInfoScene,
                             params: {
-                                show: true
+                                username: rowData.username,
+                                mobile : rowData.mobile,
+                                sex : rowData.sex,
+                                company: rowData.company,
+                                role: rowData.role
                             },
                         })
                     }}>

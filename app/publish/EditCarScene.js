@@ -46,7 +46,10 @@ export default class EditCarScene extends BaseComponent {
                 [this.carVin],
                 (data) => {
                     if (data.code === 1) {
+                        console.log('000000====>>>');
+                        console.log(data.result.rows.item(0));
                         let carType = data.result.rows.item(0).v_type;
+
                         if(carType === '') carType = '1';
                         this.setState({
                             carData: data.result.rows.item(0),
@@ -125,6 +128,7 @@ export default class EditCarScene extends BaseComponent {
         this.fromNew = this.props.fromNew;
         this.carVin = this.props.carVin;
         this.carId = this.props.carId;
+        this.shop_id = this.props.shopID;
         this.state = {
             carData: {},
             carType:'1'
@@ -154,7 +158,7 @@ export default class EditCarScene extends BaseComponent {
                     let rd = data.result.rows.item(0);
                     let modelInfo = JSON.parse(rd.model);
                     let params = {
-                        show_shop_id: 57,
+                        show_shop_id: this.shop_id,
                         vin: rd.vin,
                         brand_id: modelInfo.brand_id,
                         model_id: modelInfo.model_id,
@@ -208,6 +212,10 @@ export default class EditCarScene extends BaseComponent {
         this.toNextPage(this.sourceParams);
     };
 
+    _goToPage = (parms)=>{
+        this.toNextPage(parms);
+    };
+
     _refreshType = (data)=>{
         this.setState({
             carType:data
@@ -223,6 +231,7 @@ export default class EditCarScene extends BaseComponent {
                     tabBarPosition='bottom'
                     renderTabBar={()=>{return(<EditIndicator />)}}>
                     <DetailModelSelect sqlUtil={SQLite}
+                                       goToPage={this._goToPage}
                                        carData={this.state.carData}
                                        publishData={this._publish}
                                        onBack={()=>this._onBack(0)}

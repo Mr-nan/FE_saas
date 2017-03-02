@@ -104,7 +104,7 @@ export  default  class KurongDetaileScene extends BaseComponent {
                     let tempCarJson = response.mjson.data.list
                     this.setState({
 
-                        dataSource:this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(tempjson,tempCarJson)),
+                        dataSource:this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(lendInfoJson,tempCarJson)),
                         renderPlaceholderOnly: STATECODE.loadSuccess
                     })
                 },

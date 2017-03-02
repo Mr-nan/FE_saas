@@ -28,6 +28,7 @@ import MyButton from "../component/MyButton";
 import LoginFailSmsYes from "./LoginFailSmsYes";
 import SetLoginPwdGesture from "./SetLoginPwdGesture";
 import md5 from "react-native-md5";
+import LoginGesture from './LoginGesture';
 
 var Pixel = new PixelUtil();
 var Dimensions = require('Dimensions');
@@ -53,7 +54,7 @@ export default class LoginScene extends BaseComponent {
 
     initFinish = () => {
         StorageUtil.mGetItem(StorageKeyNames.USERNAME, (data) => {
-            if (data.code === 1 && data.result != null) {
+            if (data.code == 1 && data.result != null) {
                 userNames = data.result.split(",");
             }
         })
@@ -88,7 +89,7 @@ export default class LoginScene extends BaseComponent {
                     show: false,
                 });
             }}>
-                <View style={styles.container}>
+                <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
                     <NavigationBar
                         leftImageShow={false}
                         leftTextShow={true}
@@ -167,6 +168,7 @@ export default class LoginScene extends BaseComponent {
                             viewStytle={styles.itemStyel}
                             secureTextEntry={true}
                             clearValue={true}
+                            maxLength={16}
                             leftIconUri={require('./../../images/login/password.png')}/>
 
                         <LoginInputText
@@ -213,6 +215,11 @@ export default class LoginScene extends BaseComponent {
                             <Text style={styles.bottomTestSytle}>登录遇到问题 ></Text>
                         </TouchableOpacity>
                     </View>
+
+                    <View style={{flex: 1}}/>
+
+                    <Image source={require('./../../images/login/login_bg.png')}
+                           style={{width: width, height: Pixel.getPixel(175)}}/>
                 </View>
             </TouchableWithoutFeedback>
         );
@@ -293,15 +300,18 @@ export default class LoginScene extends BaseComponent {
         let passWord = this.refs.loginPassword.getInputTextValue();
         let verifyCode = this.refs.loginVerifycode.getInputTextValue();
         let smsCode = this.refs.loginSmscode.getInputTextValue();
-        if (userName == "") {
+        if (typeof(passWord) == "undefined" || userName == "" || userName.length != 11) {
             this.props.showToast("请输入正确的用户名");
         } else if (typeof(passWord) == "undefined" || passWord == "") {
             this.props.showToast("密码不能为空");
+        } else if (passWord.length < 8) {
+            this.props.showToast("密码必须为8~16位");
         } else if (typeof(verifyCode) == "undefined" || verifyCode == "") {
             this.props.showToast("验证码不能为空");
         } else if (typeof(smsCode) == "undefined" || smsCode == "") {
             this.props.showToast("短信验证码不能为空");
         } else {
+            this.props.showModal(true);
             let maps = {
                 code: smsCode,
                 device_code: "dycd_dms_manage_android",
@@ -311,13 +321,12 @@ export default class LoginScene extends BaseComponent {
             };
             request(AppUrls.LOGIN, 'Post', maps)
                 .then((response) => {
+                    this.props.showModal(false);
                     if (response.mjson.code == "1") {
                         // 保存用户登录状态
-                        StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
                         StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '2');
-
                         StorageUtil.mGetItem(StorageKeyNames.USERNAME, (data) => {
-                            if (data.code === 1) {
+                            if (data.code == 1) {
                                 if (data.result != null && data.result.indexOf(userName) < 0) {
                                     StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName + "," + data.result);
                                 } else if (data.result == null) {
@@ -336,11 +345,23 @@ export default class LoginScene extends BaseComponent {
                         StorageUtil.mSetItem(StorageKeyNames.REAL_NAME, response.mjson.data.real_name + "");
                         StorageUtil.mSetItem(StorageKeyNames.TOKEN, response.mjson.data.token + "");
                         StorageUtil.mSetItem(StorageKeyNames.USER_LEVEL, response.mjson.data.user_level + "");
-
                         StorageUtil.mGetItem(response.mjson.data.phone + "", (data) => {
-                            if (data.code === 1) {
+                            if (data.code == 1) {
                                 if (data.result != null) {
-                                    this.loginPage(this.loginSuccess)
+                                    if (response.mjson.data.user_level == 2) {
+                                        if (response.mjson.data.enterprise_list[0].role_type == '2') {
+                                            this.loginPage({
+                                                name: 'LoginGesture',
+                                                component: LoginGesture,
+                                                params: {from: 'RootScene'}
+                                            })
+                                        } else {
+                                            this.loginPage(this.loginSuccess)
+                                        }
+                                    } else {
+                                        this.loginPage(this.loginSuccess)
+                                    }
+                                    StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
                                 } else {
                                     this.loginPage(this.setLoginGesture)
                                 }
@@ -350,6 +371,7 @@ export default class LoginScene extends BaseComponent {
                         this.props.showToast(response.mjson.msg + "");
                     }
                 }, (error) => {
+                    this.props.showModal(false);
                     this.Verifycode();
                     if (error.mjson.code == -300 || error.mjson.code == -500) {
                         this.props.showToast("登录失败");

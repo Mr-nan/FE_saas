@@ -10,10 +10,13 @@ import {
     TextInput,
     Dimensions,
     StyleSheet,
+    Platform,
     TouchableOpacity,
-    InteractionManager
+    InteractionManager,
+    NativeModules
 }from 'react-native';
 
+import CarBrandSelectScene from '../../carSource/CarBrandSelectScene';
 import * as fontAndColor from '../../constant/fontAndColor';
 import AllNavigationView from '../../component/AllNavigationView';
 import PixelUtil from '../../utils/PixelUtil';
@@ -37,7 +40,6 @@ export default class ModelSelect extends PureComponent {
         this.modelData = [];
         this.state = {
             renderPlaceholderOnly: true,
-            modelData:this.modelData,
             modelName:''
         }
     }
@@ -53,18 +55,40 @@ export default class ModelSelect extends PureComponent {
         SQLite.createTable();
     }
 
-    componentWillUnmount() {
+    //选择车型
+    _modelPress = () => {
+        //选择车型
+        let brandParams ={
+            name: 'CarBrandSelectScene',
+            component: CarBrandSelectScene,
+            params: {checkedCarClick: this._checkedCarClick,
+                status:0,}
+        };
+        this.props.goToPage(brandParams);
+    };
 
-    }
+    _checkedCarClick = (carObject)=>{
+        this.setState({
+            modelName:carObject.model_name
+        });
+        this.modelInfo['brand_id'] = carObject.brand_id;
+        this.modelInfo['model_id'] = carObject.model_id;
+        this.modelInfo['series_id'] = carObject.series_id;
+        this.modelInfo['model_year'] = '';
+        this.modelInfo['model_name'] = carObject.model_name;
+        SQLite.changeData('UPDATE publishCar SET model = ? WHERE vin = ?',[JSON.stringify(this.modelInfo) ,this.vin]);
+    };
 
     //扫描
     _scanPress = () => {
-
-    };
-
-    //选择车型
-    _modelPress = () => {
-
+        if(Platform.OS === 'android'){
+            NativeModules.VinScan.scan().then((vl)=>{
+                this.vinInput.setNativeProps({
+                   text:vl
+                });
+                this._onVinChange(vl);
+            });
+        }
     };
 
     _renderPlaceholderView = () => {
@@ -79,43 +103,81 @@ export default class ModelSelect extends PureComponent {
     //车架号改变
     _onVinChange = (text) => {
         if (text.length === 17) {
-
             let params ={
                 vin:text,
             };
+            this.vin = text;
             Net.request(AppUrls.VININFO,'post',params).then(
                 (response)=>{
                     if(response.mycode === 1){
                         let rd = response.mjson.data;
                         if(rd.length === 0){
-                            this._insertVin(text,'','');
+                            this._insertVinNum(text);
                         }else if(rd.length === 1){
                             this.modelInfo['brand_id'] = rd[0].brand_id;
                             this.modelInfo['model_id'] = rd[0].model_id;
                             this.modelInfo['series_id'] = rd[0].series_id;
                             this.modelInfo['model_year'] = rd[0].model_year;
                             this.modelInfo['model_name'] = rd[0].model_name;
-                            this._insertVin(text,JSON.stringify(this.modelInfo),rd[0].model_name);
+                            this._insertVinAndModel(text,JSON.stringify(this.modelInfo),rd[0].model_name);
                         }else if(rd.length > 1){
                             this.modelData = response.mjson.data;
-                            this.setState({
-                                modelData:this.modelData,
-                            });
+                            this.vinModal.refresh();
                             this.vinModal.openModal();
                         }
                     }else {
-                        this._insertVin(text,'','');
+                        this._insertVinNum(text);
                     }
                 },
                 (error)=>{
-                    this._insertVin(text,'','');
+                    this._insertVinNum(text);
                 }
             );
         }
     };
 
+    _insertVinNum = (vinNum)=>{
+        SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
+            [ vinNum ],
+            (data) => {
+                if (data.code === 1) {
+                    if(data.result.rows.length === 0){
+                        SQLite.changeData('INSERT INTO publishCar (vin) VALUES (?)',[ vinNum]);
+                        SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
+                            [ vinNum ],
+                            (data) => {
+                                if (data.code === 1) {
+                                    this.props.refreshCar(data.result.rows.item(0));
+                                } else {
+                                    console.log(data.error);
+                                }
+                            });
+                    }else{
+                        SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
+                            [ vinNum ],
+                            (data) => {
+                                if (data.code === 1) {
+                                    this.props.refreshCar(data.result.rows.item(0));
+                                    if(this.isEmpty(data.result.rows.item(0).model) === false){
+                                        Object.assign(this.modelInfo, JSON.parse(data.result.rows.item(0).model));
+                                        this.setState({
+                                            modelName:this.modelInfo.model_name
+                                        });
+                                    }
+                                } else {
+                                    console.log(data.error);
+                                }
+                            });
+                    }
+                } else {
+                    console.log(data.error);
+                }
+            });
+        this.props.carNumberBack(false);
+    };
+
     //根据车架号操作数据库
-    _insertVin = (vinNum,modelInfo,modelName)=>{
+    _insertVinAndModel = (vinNum,modelInfo,modelName)=>{
         SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
             [ vinNum ],
             (data) => {
@@ -135,19 +197,36 @@ export default class ModelSelect extends PureComponent {
                             modelName:modelName
                         });
                     }else{
-                        this.props.refreshCar(data.result.rows.item(0));
-                        if(data.result.rows.item(0).model !== ''){
-                            Object.assign(this.modelInfo, JSON.parse(data.result.rows.item(0).model));
-                            this.setState({
-                                modelName:this.modelInfo.model_name
+                        SQLite.changeData('UPDATE publishCar SET model = ? WHERE vin = ?',[modelInfo ,vinNum]);
+                        SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
+                            [ vinNum ],
+                            (data) => {
+                                if (data.code === 1) {
+                                    this.props.refreshCar(data.result.rows.item(0));
+                                    if(this.isEmpty(data.result.rows.item(0).model) === false){
+                                        Object.assign(this.modelInfo, JSON.parse(data.result.rows.item(0).model));
+                                        this.setState({
+                                            modelName:this.modelInfo.model_name
+                                        });
+                                    }
+                                } else {
+                                    console.log(data.error);
+                                }
                             });
-                        }
                     }
                 } else {
                     console.log(data.error);
                 }
             });
         this.props.carNumberBack(false);
+    };
+
+    isEmpty = (str)=>{
+        if(typeof(str) != 'undefined' && str !== ''){
+            return false;
+        }else {
+            return true;
+        }
     };
 
     //根据车架号选择车型
@@ -157,8 +236,7 @@ export default class ModelSelect extends PureComponent {
         this.modelInfo['series_id'] = this.modelData[index].series_id;
         this.modelInfo['model_year'] = this.modelData[index].model_year;
         this.modelInfo['model_name'] = this.modelData[index].model_name;
-        this._insertVin(text,this);
-        this._insertVin(text,JSON.stringify(this.modelInfo),this.modelInfo['model_name']);
+        this._insertVinAndModel(text,JSON.stringify(this.modelInfo),this.modelInfo['model_name']);
     };
 
     render() {
@@ -167,7 +245,7 @@ export default class ModelSelect extends PureComponent {
         }
         return (
             <View style={styles.container}>
-                <VinInfo viewData ={this.state.modelData} vinPress={this._vinPress} ref={(modal) => {this.vinModal = modal}}/>
+                <VinInfo viewData ={this.modelData} vinPress={this._vinPress} ref={(modal) => {this.vinModal = modal}}/>
                 <Image source={background} style={[styles.container,{height:height-this.props.barHeight}]}>
                     <AllNavigationView
                         backIconClick={this._onBack}
@@ -176,6 +254,7 @@ export default class ModelSelect extends PureComponent {
                     <View style={[styles.circleContainer,styles.vinCircle]}>
                         <Text style={[styles.fontMain,styles.leftText]}>车架号</Text>
                         <TextInput
+                            ref={(input)=>{this.vinInput = input}}
                             style={[styles.fontMain,styles.fillSpace]}
                             underlineColorAndroid='transparent'
                             maxLength={17}

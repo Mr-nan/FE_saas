@@ -6,7 +6,6 @@ import {
     View,
     Image,
     Text,
-    TextInput,
     Dimensions,
     StyleSheet,
     Platform,
@@ -34,9 +33,8 @@ export default class AutoTransfer extends Component {
         super(props);
         this.vinNum = this.props.carData.vin;
         let transfer = this.props.carData.transfer_number;
-        console.log(transfer);
         let initValue = 0;
-        if(transfer != ''){
+        if(this.isEmpty(transfer) === false){
             if(transfer === '10以上'){
                 initValue = 11;
             }else {
@@ -49,6 +47,14 @@ export default class AutoTransfer extends Component {
             renderPlaceholderOnly: true
         };
     }
+
+    isEmpty = (str)=>{
+        if(typeof(str) != 'undefined' && str !== ''){
+            return false;
+        }else {
+            return true;
+        }
+    };
 
     componentWillMount() {
 
@@ -105,9 +111,8 @@ export default class AutoTransfer extends Component {
                         renderRihtFootView={this._renderRihtFootView} />
                     <Image style={styles.imgContainer} source={transferNum}>
                         <View style={styles.inputContainer}>
-                            {/*<TextInput  style={styles.inputNum} underlineColorAndroid='transparent' defaultValue={'2'}/>*/}
-                            <View style={styles.pickContainer}>
-                                <Picker  style={[IS_ANDROID && styles.fillSpace]}
+                            <View style={IS_ANDROID ? styles.pickAndroidContainer : styles.pickIOSContainer}>
+                                <Picker style={[IS_ANDROID && styles.fillSpace]}
                                          selectedValue={this.state.selected1}
                                          itemStyle={{color:"#FFFFFF", fontSize:16,fontWeight:'bold'}}
                                          onValueChange={(index) => this.onPickerSelect('selected1',index)}>
@@ -149,9 +154,16 @@ const styles = StyleSheet.create({
         width:Pixel.getPixel(70),
         height:Pixel.getPixel(40)
     },
-    pickContainer:{
+    pickAndroidContainer:{
+        flex:1,
+        height:Pixel.getPixel(40)
+    },
+    pickIOSContainer:{
         flex:1,
         height:Pixel.getPixel(40),
+        justifyContent:'center',
+        alignItems:'center',
+        overflow:'hidden'
     },
     inputNum:{
         width:Pixel.getPixel(60),

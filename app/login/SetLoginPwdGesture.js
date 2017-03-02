@@ -1,5 +1,14 @@
 import React, {Component, PureComponent} from "react";
-import {AppRegistry, View, Text, StyleSheet, Image, Dimensions} from "react-native";
+import {
+    AppRegistry,
+    View,
+    Text,
+    StyleSheet,
+    Image,
+    Dimensions,
+    InteractionManager,
+    TouchableWithoutFeedback
+} from "react-native";
 import SetPwdGesture from "../gesture/SetPwdGesture";
 import BaseComponent from "../component/BaseComponent";
 import PixelUtil from "../utils/PixelUtil";
@@ -12,21 +21,44 @@ var Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;
 
-var Password = '';
 export default class SetLoginPwdGesture extends BaseComponent {
     constructor(props) {
         super(props);
         //初始化方法
         this.state = {
             message: '绘制解锁图案',
-            status: 'normal'
+            status: 'normal',
+            renderPlaceholderOnly: true,
         }
+        this.savePwd = '';
+        this.Passwords = '';
     }
 
     initFinish = () => {
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+            // this.Verifycode();
+        });
     }
 
     render() {
+        if (this.state.renderPlaceholderOnly) {
+            return ( <TouchableWithoutFeedback onPress={() => {
+                this.setState({
+                    show: false,
+                });
+            }}>
+                <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
+                    <NavigationBar
+                        leftImageShow={false}
+                        leftTextShow={true}
+                        leftText={""}
+                        centerText={"设置手势密码"}
+                        rightText={""}
+                    />
+                </View>
+            </TouchableWithoutFeedback>);
+        }
         return (
             <SetPwdGesture
                 ref='pg'
@@ -40,27 +72,27 @@ export default class SetLoginPwdGesture extends BaseComponent {
                             leftImageCallBack={this.backPage}/>
                         <View style={styles.padResultsStyle}>
                             <View style={{flexDirection: 'row'}}>
-                                {Password.indexOf("1") > -1 ? <View style={styles.cycleChoseStyle}/> :
+                                {this.savePwd.indexOf("1") > -1 ? <View style={styles.cycleChoseStyle}/> :
                                     <View style={styles.cycleStyle}/>}
-                                {Password.indexOf("2") > -1 ? <View style={styles.cycleChoseStyle}/> :
+                                {this.savePwd.indexOf("2") > -1 ? <View style={styles.cycleChoseStyle}/> :
                                     <View style={styles.cycleStyle}/>}
-                                {Password.indexOf("3") > -1 ? <View style={styles.cycleChoseStyle}/> :
-                                    <View style={styles.cycleStyle}/>}
-                            </View>
-                            <View style={{flexDirection: 'row'}}>
-                                {Password.indexOf("4") > -1 ? <View style={styles.cycleChoseStyle}/> :
-                                    <View style={styles.cycleStyle}/>}
-                                {Password.indexOf("5") > -1 ? <View style={styles.cycleChoseStyle}/> :
-                                    <View style={styles.cycleStyle}/>}
-                                {Password.indexOf("6") > -1 ? <View style={styles.cycleChoseStyle}/> :
+                                {this.savePwd.indexOf("3") > -1 ? <View style={styles.cycleChoseStyle}/> :
                                     <View style={styles.cycleStyle}/>}
                             </View>
                             <View style={{flexDirection: 'row'}}>
-                                {Password.indexOf("7") > -1 ? <View style={styles.cycleChoseStyle}/> :
+                                {this.savePwd.indexOf("4") > -1 ? <View style={styles.cycleChoseStyle}/> :
                                     <View style={styles.cycleStyle}/>}
-                                {Password.indexOf("8") > -1 ? <View style={styles.cycleChoseStyle}/> :
+                                {this.savePwd.indexOf("5") > -1 ? <View style={styles.cycleChoseStyle}/> :
                                     <View style={styles.cycleStyle}/>}
-                                {Password.indexOf("9") > -1 ? <View style={styles.cycleChoseStyle}/> :
+                                {this.savePwd.indexOf("6") > -1 ? <View style={styles.cycleChoseStyle}/> :
+                                    <View style={styles.cycleStyle}/>}
+                            </View>
+                            <View style={{flexDirection: 'row'}}>
+                                {this.savePwd.indexOf("7") > -1 ? <View style={styles.cycleChoseStyle}/> :
+                                    <View style={styles.cycleStyle}/>}
+                                {this.savePwd.indexOf("8") > -1 ? <View style={styles.cycleChoseStyle}/> :
+                                    <View style={styles.cycleStyle}/>}
+                                {this.savePwd.indexOf("9") > -1 ? <View style={styles.cycleChoseStyle}/> :
                                     <View style={styles.cycleStyle}/>}
                             </View>
                         </View>
@@ -74,15 +106,23 @@ export default class SetLoginPwdGesture extends BaseComponent {
                 style={styles.gestureStyle}
                 interval={500}
                 onStart={() => this.onStart()}
+                onUpdatePwd={(password) => {
+                    if (this.Passwords == "" && this.savePwd != password) {
+                        this.savePwd = password;
+                        this.setState({
+                            status: 'normal',
+                        });
+                    }
+                }}
                 onEnd={(password) => this.onEnd(password)}/>
         );
     }
 
     onEnd(pwd) {
-        if (Password === '') {
+        if (this.Passwords == '') {
             // The first password
             if (pwd.length > 3) {
-                Password = pwd;
+                this.Passwords = pwd;
                 this.setState({
                     status: 'normal',
                     message: '重新绘制解锁图案',
@@ -95,22 +135,24 @@ export default class SetLoginPwdGesture extends BaseComponent {
             }
         } else {
             // The second password
-            if (pwd === Password) {
+            if (pwd == this.Passwords) {
                 this.setState({
                     status: 'right',
                     message: '密码设置成功',
                 });
 
                 StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
-                    if (data.code === 1) {
+                    if (data.code == 1) {
                         if (data.result != null) {
-                            StorageUtil.mSetItem(data.result + "", Password);
-                            Password = '';
+                            StorageUtil.mSetItem(data.result + "", this.Passwords);
+                            this.Passwords = '';
                         }
                     }
                 })
                 if (this.props.from == 'login') {
                     this.loginPage(this.loginSuccess)
+                    StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
+                    StorageUtil.mSetItem(StorageKeyNames.NEED_GESTURE, 'false');
                 } else {
                     this.backPage();
                 }
@@ -139,7 +181,7 @@ export default class SetLoginPwdGesture extends BaseComponent {
     }
 
     onStart() {
-        if (Password === '') {
+        if (this.Passwords == '') {
             this.setState({
                 status: 'normal',
                 message: '绘制解锁图案',

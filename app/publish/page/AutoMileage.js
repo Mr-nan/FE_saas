@@ -37,9 +37,10 @@ export default class AutoMileage extends Component {
 
     constructor(props) {
         super(props);
+        this.shop_id = this.props.shopID;
         this.initValue = [0, 0, 0, 0, 0];
         let mileage = this.props.carData.mileage;
-        if (mileage !== '') {
+        if (this.isEmpty(mileage) === false) {
             mileage = mileage.split("").reverse().join("");
             for (let i = 0; i < mileage.length; i++) {
                 if (i < 2) {
@@ -60,6 +61,14 @@ export default class AutoMileage extends Component {
             renderPlaceholderOnly: true
         };
     }
+
+    isEmpty = (str)=>{
+        if(typeof(str) != 'undefined' && str !== ''){
+            return false;
+        }else {
+            return true;
+        }
+    };
 
     componentWillMount() {
 
@@ -106,6 +115,9 @@ export default class AutoMileage extends Component {
         return concat;
     };
 
+    componentWillReceiveProps(nextProps: Object) {
+        this.shop_id = nextProps.shopID;
+    }
 
     _renderPlaceholderView = () => {
         return (<Image style={[styles.img,{height:height-this.props.barHeight}]} source={background}/>);
@@ -122,17 +134,21 @@ export default class AutoMileage extends Component {
             (data) => {
                 if (data.code === 1) {
                     let rd = data.result.rows.item(0);
-                    if(typeof(rd.model) == 'undefined' || rd.model === ''){
+                    if(this.isEmpty(rd.model) === true){
                         this.props.showHint('请选择车型信息');
+                        return;
                     }
-                    if(typeof(rd.pictures) == 'undefined' || rd.pictures === ''){
+                    if(this.isEmpty(rd.pictures) === true){
                         this.props.showHint('请拍摄车辆照片');
+                        return;
                     }
-                    if(typeof(rd.mileage) == 'undefined' || rd.mileage === ''){
+                    if(this.isEmpty(rd.mileage) === true){
                         this.props.showHint('请填写车辆历程');
+                        return;
                     }
-                    if(typeof(rd.manufacture) == 'undefined' || rd.manufacture === ''){
+                    if(this.isEmpty(rd.manufacture) === true){
                         this.props.showHint('请选择车辆出厂日期');
+                        return;
                     }
                     let modelInfo = JSON.parse(rd.model);
                     let params = {
@@ -145,7 +161,7 @@ export default class AutoMileage extends Component {
                         manufacture: rd.manufacture,
                         init_reg: rd.init_reg,
                         mileage: rd.mileage,
-                        show_shop_id: 57,
+                        show_shop_id: this.shop_id,
                     };
 
                     Net.request(AppUrls.CAR_SAVE, 'post', params)
@@ -166,7 +182,6 @@ export default class AutoMileage extends Component {
                 }
             });
     };
-
 
     _renderRihtFootView = () => {
         return (

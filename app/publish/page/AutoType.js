@@ -50,9 +50,17 @@ export default class AutoType extends Component {
         };
     }
 
+    isEmpty = (str)=>{
+        if(typeof(str) != 'undefined' && str !== ''){
+            return false;
+        }else {
+            return true;
+        }
+    };
+
     componentWillMount() {
         let v_type = this.props.carData.v_type;
-        if(v_type !== ''){
+        if(this.isEmpty(v_type) === false){
             this.viewData.map((data)=>{
                 data.selected = (data.index == v_type);
             });

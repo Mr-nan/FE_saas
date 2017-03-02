@@ -12,7 +12,6 @@ import BaseComponent from "../component/BaseComponent";
 import NavigationBar from "../component/NavigationBar";
 import * as FontAndColor from "../constant/fontAndColor";
 import PixelUtil from "../utils/PixelUtil";
-import MainPage from "../main/MainPage";
 import MyButton from "../component/MyButton";
 import LoginInputText from "./component/LoginInputText";
 import LoginFailPwd from "./LoginFailPwd";
@@ -55,13 +54,15 @@ export default class LoginFailSmsVerify extends BaseComponent {
                     show: false,
                 });
             }}>
-                <NavigationBar
-                    leftImageShow={false}
-                    leftTextShow={true}
-                    leftText={""}
-                    centerText={"短信验证"}
-                    rightText={""}
-                />
+                <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
+                    <NavigationBar
+                        leftImageShow={false}
+                        leftTextShow={true}
+                        leftText={""}
+                        centerText={"短信验证"}
+                        rightText={""}
+                    />
+                </View>
             </TouchableWithoutFeedback>);
         }
         return (
@@ -79,6 +80,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
                     rightIcon={false}
                     viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
                     keyboardType={'phone-pad'}
+                    maxLength={11}
                     leftIconUri={require('./../../images/login/phone.png')}/>
                 <View style={{width: width, height: Pixel.getPixel(10)} }/>
                 <LoginInputText
@@ -135,7 +137,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
     Smscode = () => {
         let userName = this.refs.userName.getInputTextValue();
         let verifyCode = this.refs.verifycode.getInputTextValue();
-        if (typeof(userName) == "undefined" || userName == "") {
+        if (typeof(userName) == "undefined" || userName == "" || userName.length != 11) {
             this.props.showToast("请输入正确的用户名");
         } else if (typeof(verifyCode) == "undefined" || verifyCode == "") {
             this.props.showToast("验证码不能为空");
@@ -180,6 +182,8 @@ export default class LoginFailSmsVerify extends BaseComponent {
         let verifyCode = this.refs.verifycode.getInputTextValue();
         let smsCode = this.refs.smscode.getInputTextValue();
         if (typeof(userName) == "undefined" || userName == "") {
+            this.props.showToast("用户名不能为空");
+        } else if (userName.length != 11) {
             this.props.showToast("请输入正确的用户名");
         } else if (typeof(verifyCode) == "undefined" || verifyCode == "") {
             this.props.showToast("验证码不能为空");
@@ -196,9 +200,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
             request(AppUrls.LOGIN, 'Post', maps)
                 .then((response) => {
                     if (response.mjson.code == "1") {
-                        this.props.showToast("登录成功");
                         // 保存用户登录状态
-                        StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
                         StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '1');
                         StorageUtil.mSetItem(StorageKeyNames.USER_INFO, JSON.stringify(response.mjson.data));
                         // 保存用户信息
@@ -210,7 +212,8 @@ export default class LoginFailSmsVerify extends BaseComponent {
                         StorageUtil.mSetItem(StorageKeyNames.REAL_NAME, response.mjson.data.real_name + "");
                         StorageUtil.mSetItem(StorageKeyNames.TOKEN, response.mjson.data.token + "");
                         StorageUtil.mSetItem(StorageKeyNames.USER_LEVEL, response.mjson.data.user_level + "");
-                        this.loginPage(this.loginSuccess)
+
+                        this.loginPage(this.setLoginPwd);
                     } else {
                         this.props.showToast(response.mjson.msg);
                     }
@@ -225,10 +228,12 @@ export default class LoginFailSmsVerify extends BaseComponent {
         }
     }
 
-    loginSuccess = {
-        name: 'MainPage',
-        component: MainPage,
-        params: {}
+    setLoginPwd = {
+        name: 'LoginFailPwd',
+        component: LoginFailPwd,
+        params: {
+            from: 'login'
+        }
     }
 
     loginPage = (mProps) => {

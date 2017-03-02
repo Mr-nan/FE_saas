@@ -42,6 +42,14 @@ export default class AutoLabel extends Component {
 
     }
 
+    isEmpty = (str)=>{
+        if(typeof(str) != 'undefined' && str !== ''){
+            return false;
+        }else {
+            return true;
+        }
+    };
+
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: false});
@@ -85,7 +93,7 @@ export default class AutoLabel extends Component {
                         {name: '倒车影像', selected: false, index: 7, value: ''}
                     ];
                 }
-                if (this.label != '') {
+                if (this.isEmpty(this.label) === false) {
                     let sels = JSON.parse(this.label);
                     for (let i = 0; i < sels.length; i++) {
                         this.viewData.map((vd) => {

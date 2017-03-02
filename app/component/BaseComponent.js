@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component} from "react";
 import {
     AppRegistry,
     View,
@@ -10,12 +10,12 @@ import {
     Dimensions,
     Image,
     Text,
-} from 'react-native';
+} from "react-native";
+import PixelUtil from "../utils/PixelUtil";
+import * as fontAndColor from "../constant/fontAndColor";
+import MyButton from "./MyButton";
 const {width, height} = Dimensions.get('window');
-import PixelUtil from '../utils/PixelUtil';
 const Pixel = new PixelUtil();
-import * as fontAndColor from '../constant/fontAndColor';
-import MyButton from './MyButton';
 
 export default class BaseComponent extends Component {
 
@@ -89,45 +89,69 @@ export default class BaseComponent extends Component {
         if (this.state.renderPlaceholderOnly == 'blank') {
             view = <View/>
         } else if (this.state.renderPlaceholderOnly == 'loading') {
-            view = <View style={{flex:1,alignItems: 'center'}}>
+            view = <View style={{flex: 1, alignItems: 'center'}}>
                 <Image
-                    style={{width: Pixel.getPixel(150), height: Pixel.getPixel(159), marginTop:Pixel.getTitlePixel(189)-margintop}}
+                    style={{
+                        width: Pixel.getPixel(150),
+                        height: Pixel.getPixel(159),
+                        marginTop: Pixel.getTitlePixel(189) - margintop
+                    }}
                     source={require('../../images/loading.gif')}/>
                 <Text
-                    style={{color: fontAndColor.COLORA0,fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),marginTop:Pixel.getPixel(32)}}>
+                    style={{
+                        color: fontAndColor.COLORA0,
+                        fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                        marginTop: Pixel.getPixel(32)
+                    }}>
                     加载中......
                 </Text>
             </View>
         } else if (this.state.renderPlaceholderOnly == 'error') {
-            view = <View style={{flex:1,alignItems: 'center'}}>
+            view = <View style={{flex: 1, alignItems: 'center'}}>
                 <Image
-                    style={{width: Pixel.getPixel(121), height: Pixel.getPixel(163), marginTop:Pixel.getTitlePixel(85+64)-margintop}}
+                    style={{
+                        width: Pixel.getPixel(121),
+                        height: Pixel.getPixel(163),
+                        marginTop: Pixel.getTitlePixel(85 + 64) - margintop
+                    }}
                     source={require('../../images/loadingError.png')}/>
                 <Text
-                    style={{color: fontAndColor.COLORA0,fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-                    marginTop:Pixel.getPixel(27)}}>
+                    style={{
+                        color: fontAndColor.COLORA0, fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                        marginTop: Pixel.getPixel(27)
+                    }}>
                     网络错误
                 </Text>
                 <Text
-                    style={{color: fontAndColor.COLORA1,fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                    marginTop:Pixel.getPixel(10)}}>
+                    style={{
+                        color: fontAndColor.COLORA1, fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                        marginTop: Pixel.getPixel(10)
+                    }}>
                     当前网络环境较差，请刷新重试
                 </Text>
                 <MyButton {...this.allRefreshParams} />
             </View>
         } else {
-            view = <View style={{flex:1,alignItems: 'center'}}>
+            view = <View style={{flex: 1, alignItems: 'center'}}>
                 <Image
-                    style={{width: Pixel.getPixel(121), height: Pixel.getPixel(163), marginTop:Pixel.getTitlePixel(85+64)-margintop}}
+                    style={{
+                        width: Pixel.getPixel(121),
+                        height: Pixel.getPixel(163),
+                        marginTop: Pixel.getTitlePixel(85 + 64) - margintop
+                    }}
                     source={require('../../images/noData.png')}/>
                 <Text
-                    style={{color: fontAndColor.COLORA0,fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-                    marginTop:Pixel.getPixel(27)}}>
+                    style={{
+                        color: fontAndColor.COLORA0, fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                        marginTop: Pixel.getPixel(27)
+                    }}>
                     暂无数据
                 </Text>
                 <Text
-                    style={{color: fontAndColor.COLORA1,fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                    marginTop:Pixel.getPixel(10)}}>
+                    style={{
+                        color: fontAndColor.COLORA1, fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                        marginTop: Pixel.getPixel(10)
+                    }}>
                     暂无相关数，去其他地方看看吧
                 </Text>
             </View>

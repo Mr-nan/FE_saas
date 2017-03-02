@@ -1,5 +1,16 @@
 import React, {Component} from "react";
-import {AppRegistry, View, Text, StyleSheet, Image, Dimensions, PixelRatio, TouchableOpacity} from "react-native";
+import {
+    AppRegistry,
+    View,
+    Text,
+    StyleSheet,
+    Image,
+    Dimensions,
+    PixelRatio,
+    TouchableOpacity,
+    InteractionManager,
+    TouchableWithoutFeedback
+} from "react-native";
 import BaseComponent from '../../component/BaseComponent';
 import PixelUtil from '../../utils/PixelUtil';
 import * as FontAndColor from '../../constant/fontAndColor';
@@ -17,11 +28,36 @@ import * as StorageKeyNames from "../../constant/storageKeyNames";
 import LoginAndRegister from '../../login/LoginAndRegister';
 
 export default class Setting extends BaseComponent {
-    initFinish = () => {
+    constructor(props) {
+        super(props);
+        this.state = {
+            renderPlaceholderOnly: true,
+        }
+    }
 
+    initFinish = () => {
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+            // this.Verifycode();
+        });
     }
 
     render() {
+        if (this.state.renderPlaceholderOnly) {
+            return ( <TouchableWithoutFeedback style={{backgroundColor: FontAndColor.COLORA3}} onPress={() => {
+                this.setState({
+                    show: false,
+                });
+            }}>
+                <NavigationBar
+                    leftImageShow={false}
+                    leftTextShow={true}
+                    leftText={""}
+                    centerText={"设置"}
+                    rightText={""}
+                />
+            </TouchableWithoutFeedback>);
+        }
         return (
             <View style={styles.container}>
                 <NavigationBar

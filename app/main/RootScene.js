@@ -16,6 +16,7 @@ import LoginAndRegister from '../login/LoginAndRegister';
 import StorageUtil from '../utils/StorageUtil';
 import * as KeyNames from '../constant/storageKeyNames';
 import WelcomScene from './WelcomScene';
+import LoginGesture from '../login/LoginGesture';
 
 
 export default class RootScene extends BaseComponent {
@@ -24,11 +25,12 @@ export default class RootScene extends BaseComponent {
         let that = this;
         setTimeout(
             () => {
-                // StorageUtil.mGetItem(KeyNames.FIRST_INTO, (res) => {
-                    // if (res.result == null) {
-                    //     that.navigatorParams.component = LoginAndRegister;
-                    //     that.toNextPage(that.navigatorParams);
-                    // } else {
+                StorageUtil.mGetItem(KeyNames.FIRST_INTO, (res) => {
+                    if (res.result == null) {
+                        that.navigatorParams.component = WelcomScene;
+                        that.toNextPage(that.navigatorParams);
+                    } else {
+
                         StorageUtil.mGetItem(KeyNames.ISLOGIN, (res) => {
                             if (res.result !== StorageUtil.ERRORCODE) {
                                 if (res.result == null) {
@@ -36,9 +38,24 @@ export default class RootScene extends BaseComponent {
                                     that.toNextPage(that.navigatorParams);
                                 } else {
                                     if (res.result == "true") {
-                                        that.navigatorParams.component = MainPage;
-                                        that.navigatorParams.params = {}
-                                        that.toNextPage(that.navigatorParams);
+                                        StorageUtil.mGetItem(KeyNames.USER_INFO,(data)=>{
+                                            let datas = JSON.parse(data.result);
+                                            if (datas.user_level == 2) {
+                                                if (datas.enterprise_list[0].role_type == '2') {
+                                                    that.navigatorParams.component = LoginGesture;
+                                                    that.navigatorParams.params = {from:'RootScene'}
+                                                    that.toNextPage(that.navigatorParams);
+                                                } else  {
+                                                    that.navigatorParams.component = MainPage;
+                                                    that.navigatorParams.params = {}
+                                                    that.toNextPage(that.navigatorParams);
+                                                }
+                                            }else{
+                                                that.navigatorParams.component = MainPage;
+                                                that.navigatorParams.params = {}
+                                                that.toNextPage(that.navigatorParams);
+                                            }
+                                        });
                                     } else {
                                         that.navigatorParams.component = LoginAndRegister;
                                         that.toNextPage(that.navigatorParams);
@@ -46,9 +63,8 @@ export default class RootScene extends BaseComponent {
                                 }
                             }
                         });
-                //     }
-                // });
-
+                    }
+                });
             }, 500
         );
     }
