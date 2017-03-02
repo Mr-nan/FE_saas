@@ -184,9 +184,9 @@ export default class EditCarScene extends BaseComponent {
                     Net.request(AppUrls.CAR_SAVE, 'post', params)
                         .then((response) => {
                                 if (response.mycode === 1) {
-                                    // SQLite.changeData(
-                                    //     'DELETE From publishCar WHERE vin = ?',
-                                    //     [this.props.carData.vin]);
+                                    SQLite.changeData(
+                                        'DELETE From publishCar WHERE vin = ?',
+                                        [this.props.carData.vin]);
                                     this.successModal.openModal();
                                     console.log(response.mjson);
                                 }
