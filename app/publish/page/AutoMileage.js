@@ -115,7 +115,7 @@ export default class AutoMileage extends Component {
         return concat;
     };
 
-    componentWillReceiveProps(nextProps: Object) {
+    componentWillReceiveProps(nextProps) {
         this.shop_id = nextProps.shopID;
     }
 
@@ -290,6 +290,7 @@ const styles = StyleSheet.create({
     },
     fillSpace: {
         flex: 1,
+        overflow:'hidden',
     },
     preContainer: {
         height: Pixel.getPixel(44),

@@ -21,7 +21,7 @@ export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 /**
  * 测试地址
  */
-// export const BASEURL = 'http://api-gateway.test.dycd.com/';
+//export const BASEURL = 'http://api-gateway.test.dycd.com/';
 /**
  * 预发布地址
  */
@@ -142,6 +142,20 @@ export const GETPLANINFO = 'api/v2/Repayment/getPlanInfo';
  **/
 export const GET_MNY = 'api/v3/account/get_mny';
 
+
+/**
+ * from @lhc
+ *
+ * 获取借款首页数据
+ **/
+export const GET_APPLY_INFO='api/v3/account/get_apply_info';
+
+
+/**
+ * from @lhc
+ * 获取订单车辆列表
+ **/
+export const  GET_APPLY_CARLIST='api/v2/account/get_apply_carlist';
 
 /**
  * from @zhaojian

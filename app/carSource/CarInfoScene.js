@@ -352,8 +352,14 @@ export default class CarInfoScene extends BaseComponent {
                     </View>
                 </ScrollView>
                 <TouchableOpacity style={styles.callView} onPress={this.callClick}>
+                    <View style={{alignItems:'center',justifyContent:'center',width:ScreenWidth*0.5}}>
+                    <Text style={styles.callText}>{'车源编号:'+carData.id}</Text>
+                    </View>
+                    <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center', borderLeftWidth: StyleSheet.hairlineWidth,
+                        borderLeftColor:'white',width:ScreenWidth*0.5}}>
                     <Image source={require('../../images/carSourceImages/phone.png')}/>
-                    <Text style={styles.callText}>电话咨询</Text>
+                    <Text style={styles.callText}>客服咨询</Text>
+                     </View>
                 </TouchableOpacity>
                 <NavigationView
                     wrapStyle={{backgroundColor:'rgba(0,0,0,0)'}}
@@ -642,7 +648,7 @@ const styles = StyleSheet.create({
     callView: {
 
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: fontAndColor.COLORB0,
         height: Pixel.getPixel(44),

@@ -115,7 +115,7 @@ export  default  class carSourceListScene extends BaseComponent {
     // 筛选数据刷新
     filterData=()=>{
         carData = [];
-        this.refs.ZNLoadView.visibleClick(true);
+        this.props.showModal(true);
         this.loadData();
 
     }
@@ -124,7 +124,6 @@ export  default  class carSourceListScene extends BaseComponent {
     loadData = () => {
 
         let url = AppUrls.BASEURL + 'v1/car/index';
-
         APIParameter.page = 0;
         request(url, 'post', APIParameter)
             .then((response) => {
@@ -146,12 +145,11 @@ export  default  class carSourceListScene extends BaseComponent {
                          renderPlaceholderOnly: 'success',
                     });
                 }
-                this.refs.ZNLoadView.visibleClick(false);
-
+                this.props.showModal(false);
 
             }, (error) => {
 
-                this.refs.ZNLoadView.visibleClick(false);
+                this.props.showModal(false);
                 this.setState({
                     isRefreshing:false,
                     renderPlaceholderOnly:'error'
