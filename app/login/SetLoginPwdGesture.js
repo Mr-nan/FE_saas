@@ -152,6 +152,7 @@ export default class SetLoginPwdGesture extends BaseComponent {
                 if (this.props.from == 'login') {
                     this.loginPage(this.loginSuccess)
                     StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
+                    StorageUtil.mSetItem(StorageKeyNames.NEED_GESTURE, 'false');
                 } else {
                     this.backPage();
                 }

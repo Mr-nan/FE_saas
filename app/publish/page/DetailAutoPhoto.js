@@ -21,7 +21,8 @@ import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import ImageSource from '../component/ImageSource';
 import Grid from '../component/Grid';
-import * as Net from '../../utils/RequestUtil';
+import * as ImageUpload from '../../utils/ImageUpload';
+import * as AppUrls from "../../constant/appUrls";
 import ImagePicker from "react-native-image-picker";
 
 const {width, height} = Dimensions.get('window');
@@ -150,13 +151,11 @@ export default class DetailAutoPhoto extends Component {
             }
             else {
 
-                let url = 'http://dev.api-gateway.dycd.com/' + 'v1/index/upload';
                 let params ={
-                    filename : response.fileName,
                     file:'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g,'%2B')
                 };
 
-                Net.request(url,'post',params).then(
+                ImageUpload.request(AppUrls.INDEX_UPLOAD,'post',params).then(
                     (response)=>{
                         if(viewData.hasPhoto === true){
                             this.pictures.map((pic)=>{
@@ -210,13 +209,11 @@ export default class DetailAutoPhoto extends Component {
             }
             else {
 
-                let url = 'http://dev.api-gateway.dycd.com/' + 'v1/index/upload';
                 let params ={
-                    filename : response.fileName,
                     file:'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g,'%2B')
                 };
 
-                Net.request(url,'post',params).then(
+                ImageUpload.request(AppUrls.INDEX_UPLOAD,'post',params).then(
                     (response)=>{
                         if(viewData.hasPhoto === true){
                             this.pictures.map((pic)=>{

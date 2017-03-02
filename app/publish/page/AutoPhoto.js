@@ -17,7 +17,7 @@ import AllNavigationView from '../../component/AllNavigationView';
 import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import ImageSource from '../component/ImageSource';
-import * as Net from '../../utils/RequestUtil';
+import * as ImageUpload from '../../utils/ImageUpload';
 import * as AppUrls from "../../constant/appUrls";
 
 const {width, height} = Dimensions.get('window');
@@ -116,11 +116,10 @@ export default class AutoPhoto extends Component {
             else {
 
                 let params ={
-                    filename : response.fileName,
                     file:'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g,'%2B')
                 };
 
-                Net.request(AppUrls.INDEX_UPLOAD,'post',params).then(
+                ImageUpload.request(AppUrls.INDEX_UPLOAD,'Post',params).then(
                     (response)=>{
 
                         this.selectSource = {uri: response.mjson.data.url};
@@ -166,7 +165,7 @@ export default class AutoPhoto extends Component {
                     file:'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g,'%2B')
                 };
 
-                Net.request(AppUrls.INDEX_UPLOAD,'post',params).then(
+                ImageUpload.request(AppUrls.INDEX_UPLOAD,'post',params).then(
                     (response)=>{
 
                         this.selectSource = {uri: response.mjson.data.url};
