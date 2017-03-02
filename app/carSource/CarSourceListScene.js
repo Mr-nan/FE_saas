@@ -124,7 +124,6 @@ export  default  class carSourceListScene extends BaseComponent {
     loadData = () => {
 
         let url = AppUrls.BASEURL + 'v1/car/index';
-
         APIParameter.page = 0;
         request(url, 'post', APIParameter)
             .then((response) => {

@@ -20,6 +20,7 @@ import NavigatorView from '../component/AllNavigationView';
 import ListFooter           from './znComponent/LoadMoreFooter';
 import SGListView           from 'react-native-sglistview';
 import CarInfoScene         from './CarInfoScene';
+import EditCarScene         from '../publish/EditCarScene'
 import MyCarCell     from './znComponent/MyCarCell';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import RepaymenyTabBar from '../finance/repayment/component/RepaymenyTabBar';
@@ -48,35 +49,43 @@ let carAuditStatus =1;
 export default class CarMySourceScene extends BaceComponent{
 
 
-    carCellClick=(carID)=>{
+    carCellClick=(carData)=>{
         let navigatorParams = {
 
             name: "CarInfoScene",
             component: CarInfoScene,
             params: {
-                carID: carID,
+                carID: carData.id,
             }
         };
         this.toNextPage(navigatorParams);
 
     }
 
-    footButtonClick=(typeStr,carID)=>{
+    footButtonClick=(typeStr,carData)=>{
 
-        alert(typeStr+carID);
 
         if(typeStr=='上架'){
 
-          this.carAction(2,carID);
+          this.carAction(2,carData.id);
 
         }else if(typeStr=='下架'){
 
-            this.carAction(3,carID);
-
+            this.carAction(3,carData.id);
 
         }else if(typeStr=='编辑'){
 
+            let navigatorParams = {
 
+                name: "EditCarScene",
+                component: EditCarScene,
+                params: {
+
+                    fromNew:false,
+                    carId:carData.id,
+                }
+            };
+            this.toNextPage(navigatorParams);
         }
     }
 
@@ -109,8 +118,8 @@ export default class CarMySourceScene extends BaceComponent{
                 renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["已上架", "已下架", "未审核"]}/>}>
 
                 <MyCarSourceUpperFrameView  carCellClick={this.carCellClick} footButtonClick={this.footButtonClick}  tabLabel="ios-paper1"/>
-                <MyCarSourceDropFrameView   footButtonClick={this.footButtonClick}    tabLabel="ios-paper2"/>
-                <MyCarSourceAuditView       footButtonClick={this.footButtonClick}    tabLabel="ios-paper3"/>
+                <MyCarSourceDropFrameView   carCellClick={this.carCellClick} footButtonClick={this.footButtonClick}    tabLabel="ios-paper2"/>
+                <MyCarSourceAuditView       carCellClick={this.carCellClick} footButtonClick={this.footButtonClick}    tabLabel="ios-paper3"/>
 
             </ScrollableTabView>
             <NavigatorView title='我的车源' backIconClick={this.backPage}/>
@@ -153,7 +162,7 @@ class MyCarSourceUpperFrameView extends BaceComponent{
     }
     loadData=()=>{
 
-        let url = AppUrls.BASEURL +'v1/car/car'
+        let url = AppUrls.BASEURL +'v1/user/car'
         carUpperFramePage = 1;
         request(url,'post',{
             car_status:'1',
@@ -198,7 +207,7 @@ class MyCarSourceUpperFrameView extends BaceComponent{
 
     loadMoreData=()=>{
 
-        let url = AppUrls.BASEURL +'v1/car/car'
+        let url = AppUrls.BASEURL +'v1/user/car'
         carUpperFramePage += 1;
         request(url,'post',{
             car_status:'1',
@@ -321,7 +330,7 @@ class MyCarSourceDropFrameView extends BaceComponent{
     }
     loadData=()=>{
 
-        let url = AppUrls.BASEURL +'v1/car/car'
+        let url = AppUrls.BASEURL +'v1/user/car'
         carDropFramePage = 1;
         request(url,'post',{
             car_status:'2',
@@ -365,7 +374,7 @@ class MyCarSourceDropFrameView extends BaceComponent{
 
     loadMoreData=()=>{
 
-        let url = AppUrls.BASEURL +'v1/car/car'
+        let url = AppUrls.BASEURL +'v1/user/car'
         carDropFramePage += 1;
         request(url,'post',{
             car_status:'2',
