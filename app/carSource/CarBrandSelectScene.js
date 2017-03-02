@@ -352,7 +352,7 @@ export default class CarBrandSelectScene extends BaseComponent {
     }
 }
 
-class CarSeriesList extends Component {
+class CarSeriesList extends BaseComponent {
 
     componentWillReceiveProps(nextProps) {
         this.setState({
@@ -511,12 +511,12 @@ class CarSeriesList extends Component {
 
     startLoadData=()=>{
 
-        this.props.showModal(true);
+        // this.props.showModal(true);
     }
 
     stopLoadData=()=>{
 
-        this.props.showModal(false);
+        // this.props.showModal(false);
     }
 
 
