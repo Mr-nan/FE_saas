@@ -11,7 +11,7 @@ import {
 
 import {CommnetListItem, LendCarItemCell, CommenButton,commnetStyle,ComentImageButton} from './component/ComponentBlob'
 import {width, height, fontadapeSize, adapeSize,STATECODE,PAGECOLOR,getRowData,getSectionData,changeToMillion} from './component/MethodComponent'
-import {ModifyBorrowing} from './component/ModelComponent'
+import {ModifyBorrowing,LendSuccessAlert,ModalAlert} from './component/ModelComponent'
 import  AllNavigationView from '../../component/AllNavigationView';
 import BaseComponent from '../../component/BaseComponent';
 import {request} from '../../utils/RequestUtil'
@@ -25,6 +25,7 @@ const controlCode={
     lendType:'',
     maxLend:'',
     minLend:'',
+    changeMoney:''
 }
 
 
@@ -53,7 +54,7 @@ export  default  class SingDetaileSence extends BaseComponent {
 
         this.getLendinfo();
     }
-
+//借款信息
     getLendinfo = () => {
         let maps = {
             api: apis.GET_APPLY_INFO,
@@ -88,7 +89,7 @@ export  default  class SingDetaileSence extends BaseComponent {
                     })
                 });
     }
-
+//车辆信息
     getOrderCarInfo=(lendInfoJson)=>{
 
         let maps={
@@ -116,7 +117,7 @@ export  default  class SingDetaileSence extends BaseComponent {
 
 
     }
-
+// 数据初始化方法
     titleNameBlob=(jsonData,carData)=>{
 
         let dataSource = {};
@@ -141,7 +142,7 @@ export  default  class SingDetaileSence extends BaseComponent {
 
                 tempCarDate.push(
                     {
-                        autoid:item.auto_id,
+                        auto_id:item.auto_id,
                         model_name:item.model_name,
                         state:item.status_str,
                         order:item.frame_number,
@@ -206,9 +207,69 @@ export  default  class SingDetaileSence extends BaseComponent {
 
     }
 
+//取消借款
+    cancleLoad=(setModelVis)=>{
+
+        setModelVis(false);
+        this.props.showModal(true);
+
+        let maps={
+            api: apis.CANCEL_LOAN,
+            loan_code: this.props.loanNumber
+        }
+        request(apis.FINANCE, 'Post', maps)
+            .then((response) =>{
+
+                this.props.showModal(false);
+                this.successCancle.setModelVisible(true)
+
+                },
+                (error) => {
+
+                    if (error.mycode!==-300||error.mycode!==-500){
+                        this.props.showModal(false);
+                        this.props.showToast(error);
+                    }
+
+                });
+    }
+
     controsButtonClick=(title)=>{
 
-        alert(title);
+        if(title==='取消借款'){
+            this.canleAlert.setModelVisible(true);
+        }
+
+    }
+    modifyLengNum=(callback)=>{
+
+
+        if(controlCode.changeMoney!==''){
+            let maps = {
+                api: apis.SET_APPLY_MNY,
+                loan_code: this.props.loanNumber,
+                loan_mny:controlCode.changeMoney,
+            };
+
+            callback(false);
+            this.props.showModal(true);
+            request(apis.FINANCE, 'Post', maps)
+                .then((response) => {
+                        this.props.showModal(false);
+                        this.change.setModelVisible(true)
+                    },
+                    (error) => {
+
+                        //需要做处理
+                    });
+
+        }else {
+
+            this.props.showToast('请输入借款金额')
+
+        }
+
+
     }
 
 //获取不同页面的颜色
@@ -226,12 +287,21 @@ export  default  class SingDetaileSence extends BaseComponent {
         }
     }
 
+    getCarInfo=(rowData)=>{
+
+        alert(rowData.autoid);
+
+    }
+
+
+
+
     renderRow = (rowData, sectionID, rowId, highlightRow) => {
 
         let Color = this.getStyle(controlCode.stateCode);
         if (sectionID === 'section2') {
 
-           return <LendCarItemCell onPress={()=>{}} carName={rowData.model_name} orderNum={rowData.loan_number} orderState={rowData.state} price={rowData.price}/>
+           return <LendCarItemCell onPress={()=>{this.getCarInfo(rowData)}} carName={rowData.model_name} orderNum={rowData.loan_number} orderState={rowData.state} price={rowData.price}/>
         }
         return (
             <CommnetListItem  textStyle={rowData.title === '状态' ? {color: Color} : null} leftTitle={rowData.title} showValue={rowData.key}/>
@@ -293,14 +363,26 @@ export  default  class SingDetaileSence extends BaseComponent {
                 <View style={[commnetStyle.bottomWarp,{flexDirection: 'row',justifyContent: 'center',alignItems: 'center'}]}>
                     {tempButtons}
                 </View>
-                <ModifyBorrowing ref={(model)=>{this.modifyb=model}} minLend={controlCode.minLend} maxLend={controlCode.maxLend} confimClick={()=>{}} cancleClick={(callback)=>{callback(false)}}/>
+                <ModifyBorrowing ref={(model)=>{this.modifyb=model}}
+                                 onchangeText={(text)=>{controlCode.changeMoney=text}}
+                                 minLend={controlCode.minLend}
+                                 maxLend={controlCode.maxLend}
+                                 confimClick={this.modifyLengNum}
+                                 cancleClick={(callback)=>{callback(false)}}/>
+
+                <LendSuccessAlert ref={(lend)=>{this.change=lend}} confimClick={()=>{this.backPage()}} title='修改成功'subtitle='恭喜您修改借款成功'/>
+                <ModalAlert title='取消借款' subtitle="您确定要取消借款吗" ref={(cancle)=>{this.canleAlert=cancle}} confimClick={this.cancleLoad} cancleClick={(setmodilVis)=>{setmodilVis(false)}}/>
+                <LendSuccessAlert ref={(canleS)=>{this.successCancle=canleS}} confimClick={()=>{this.backPage()}} title='取消成功'subtitle='取消借款成功'/>
                 <AllNavigationView
                     title="借款详情"
                     backIconClick={this.backPage}
                     renderRihtFootView={()=>{
 
                         if(controlCode.stateCode==='1'){
-                            return (<ComentImageButton btnStyle={styles.imageButton} ImgSource={require('../../../images/financeImages/modif.png')} onPress={()=>{this.modifyb.setModelVisible(true)}}/>)
+                            return (<ComentImageButton btnStyle={styles.imageButton}
+                                                       ImgSource={require('../../../images/financeImages/modif.png')}
+                                                       onPress={()=>{this.modifyb.setModelVisible(true)}}
+                            />)
                         }
                         return null;
                     }}
