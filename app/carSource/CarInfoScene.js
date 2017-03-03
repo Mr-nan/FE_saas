@@ -225,7 +225,6 @@ export default class CarInfoScene extends BaseComponent {
 
 
     render() {
-        console.log(this.state.renderPlaceholderOnly);
 
         if (this.state.renderPlaceholderOnly!=='success') {
             return (

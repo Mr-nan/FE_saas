@@ -80,7 +80,7 @@ export class ModifyBorrowing extends Component{
       constructor(props) {
         super(props);
         // 初始状态
-        this.state = {visible:true};
+        this.state = {visible:false};
       }
 
     static propTypes={
@@ -111,7 +111,7 @@ export class ModifyBorrowing extends Component{
 
             <Modal animationType='none'
                    transparent={true}
-                   visible={this.state.show}
+                   visible={this.state.visible}
                    onShow={() => {
                    }}
                    onRequestClose={() => {
@@ -128,7 +128,7 @@ export class ModifyBorrowing extends Component{
                             <TextInput style={styles.inputText} placeholder='请输入借款金额' keyboardType='decimal-pad'></TextInput>
                         </View>
                         <View style={styles.showMessage}>
-                            <Text style={styles.showMessageText}>*可借额度{3}-{360}万</Text>
+                            <Text style={styles.showMessageText}>*可借额度{this.props.minLend}-{this.props.maxLend}万</Text>
                         </View>
 
                         <View style={styles.handelWarp}>
@@ -457,6 +457,7 @@ const commentAlertStyle=StyleSheet.create({
     subtitle:{
         marginTop:adapeSize(10),
         fontSize:adapeSize(17),
+        color:PAGECOLOR.COLORA3,
     },
     buttonsWarp:{
 
