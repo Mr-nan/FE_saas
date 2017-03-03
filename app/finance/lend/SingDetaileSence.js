@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 import {CommnetListItem, LendCarItemCell, CommenButton,commnetStyle,ComentImageButton} from './component/ComponentBlob'
-import {width, height, fontadapeSize, adapeSize,STATECODE,PAGECOLOR,getRowData,getSectionData,} from './component/MethodComponent'
+import {width, height, fontadapeSize, adapeSize,STATECODE,PAGECOLOR,getRowData,getSectionData,changeToMillion} from './component/MethodComponent'
 import {ModifyBorrowing} from './component/ModelComponent'
 import  AllNavigationView from '../../component/AllNavigationView';
 import BaseComponent from '../../component/BaseComponent';
@@ -23,6 +23,8 @@ const controlCode={
     stateCode:'',
     extendCode:'',
     lendType:'',
+    maxLend:'',
+    minLend:'',
 }
 
 
@@ -65,6 +67,10 @@ export  default  class SingDetaileSence extends BaseComponent {
                     controlCode.stateCode=tempjson.status
                     controlCode.extendCode=tempjson.is_extend;
                     controlCode.lendType=tempjson.type;
+                    controlCode.minLend=changeToMillion(tempjson.min_loanmny);
+                    let Maxmum=Number.parseFloat(tempjson.max_loanmny)+Number.parseFloat(tempjson.payment_loanmny)
+                    controlCode.maxLend=changeToMillion(Maxmum)
+
                     if (carNum>0){
 
                         this.getOrderCarInfo(tempjson)
@@ -287,7 +293,7 @@ export  default  class SingDetaileSence extends BaseComponent {
                 <View style={[commnetStyle.bottomWarp,{flexDirection: 'row',justifyContent: 'center',alignItems: 'center'}]}>
                     {tempButtons}
                 </View>
-                <ModifyBorrowing ref={(model)=>{this.modifyb=model}} confimClick={()=>{}} cancleClick={()=>{}}/>
+                <ModifyBorrowing ref={(model)=>{this.modifyb=model}} minLend={controlCode.minLend} maxLend={controlCode.maxLend} confimClick={()=>{}} cancleClick={(callback)=>{callback(false)}}/>
                 <AllNavigationView
                     title="借款详情"
                     backIconClick={this.backPage}
