@@ -145,7 +145,7 @@ export default class SetLoginPwdGesture extends BaseComponent {
                 this.Passwords = pwd;
                 this.setState({
                     status: 'normal',
-                    message: '重新绘制解锁图案',
+                    message: '再次绘制解锁图案',
                 });
             } else {
                 this.setState({
@@ -221,7 +221,7 @@ export default class SetLoginPwdGesture extends BaseComponent {
         } else {
             this.setState({
                 status: 'normal',
-                message: '重新绘制解锁图案',
+                message: '再次绘制解锁图案',
             });
         }
     }
