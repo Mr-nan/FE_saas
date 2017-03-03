@@ -237,6 +237,7 @@ export  default  class carSourceListScene extends BaseComponent {
                 checkedCarClick: this.checkedCarClick,
                 status:1,
                 isHeadInteraction:true,
+                isCheckedCarModel:true,
 
             }
         };
@@ -305,7 +306,6 @@ export  default  class carSourceListScene extends BaseComponent {
 
         APIParameter.brand_id = carObject.brand_id;
         APIParameter.series_id = carObject.series_id;
-    console.log(carObject);
         this.setState({
             checkedCarType: {
                 title: carObject.series_id==0?carObject.brand_name:carObject.series_name,

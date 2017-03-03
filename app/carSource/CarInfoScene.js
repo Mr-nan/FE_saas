@@ -78,9 +78,7 @@ const carIconsData = [
 ];
 
 
-let carImageArray = [
-];
-
+let carImageArray = [];
 
 export default class CarInfoScene extends BaseComponent {
 
@@ -92,12 +90,9 @@ export default class CarInfoScene extends BaseComponent {
         this.state = {
 
             imageArray:  new ImagePageView.DataSource({pageHasChanged: (r1, r2) => r1 !== r2}),
-            isHidePhotoView:true,
             renderPlaceholderOnly: 'blank',
             carData:{imgs:[]},
             currentImageIndex:1,
-            isShowShared:false,
-            isShowPhotoView:false,
 
         };
     }
@@ -105,7 +100,6 @@ export default class CarInfoScene extends BaseComponent {
     initFinish = () => {
         this.loadData();
     }
-
 
 
     loadData=()=> {
@@ -116,18 +110,16 @@ export default class CarInfoScene extends BaseComponent {
             id: this.props.carID,
 
         }).then((response) => {
-            console.log(response);
+
             let carData = response.mjson.data;
             carData.carIconsContentData=[
-
-                this.dateReversal(carData.manufacture+'000'),
-                this.dateReversal(carData.init_reg+'000'),
+                carData.manufacture!=''? this.dateReversal(carData.manufacture+'000'):'',
+                carData.manufacture!=''? this.dateReversal(carData.init_reg+'000'):'',
                 carData.mileage+'万公里',
                 carData.transfer_times+'次',
                 carData.nature_str,
                 carData.car_color+'/'+carData.trim_color,
             ];
-
 
             if(carData.imgs.length<=0){
 
@@ -162,46 +154,27 @@ export default class CarInfoScene extends BaseComponent {
         Linking.openURL('tel:4006561290,100002#');
     };
 
+    // 打开分享
     showShared=()=>{
 
-        this.setState({
-            isShowShared:true,
-        });
+        this.refs.sharedView.isVisible(true);
     }
 
-    hideShared=()=>{
 
-        this.setState({
-            isShowShared:false,
-        });
-    };
-
+    // 浏览图片
     showPhotoView=()=>{
 
         carImageArray=[];
 
-        this.state.carData.imgs.map((data,index)=>{
+       this.state.carData.imgs.map((data,index)=>{
 
-            carImageArray.push(data.url);
-        })
+           carImageArray.push(data.url);
 
-        if(!this.state.isShowPhotoView){
-            this.setState({
-                isShowPhotoView:true,
-            });
-        }
+       })
+        this.refs.photoView.show(carImageArray,this.state.currentImageIndex);
 
     };
 
-    hidePhotoView=()=>{
-
-        if(this.state.isShowPhotoView){
-            this.setState({
-                isShowPhotoView:false,
-            });
-        }
-
-    };
 
     // 添加收藏
     addStoreAction=(isStoreClick)=>{
@@ -261,18 +234,16 @@ export default class CarInfoScene extends BaseComponent {
     }
 
 
-
     navigatorRightView = ()=> {
         return (
-           <NavigationRightView isStore={this.state.carData.is_collection==0?false:true} addStoreAction={this.addStoreAction} cancelStoreAction={this.cancelStoreAction}/>
+           <NavigationRightView isStore={this.state.carData.is_collection==0?false:true} addStoreAction={this.addStoreAction} cancelStoreAction={this.cancelStoreAction} showShared={this.showShared}/>
         );
     };
-
 
     renderImagePage=(data,pageID)=>{
 
         return(
-            <TouchableOpacity onPress={this.showPhotoView}>
+            <TouchableOpacity onPress={()=>{this.showPhotoView()}}>
                 <Image source={{uri:data.url}} style={styles.carImage}/>
             </TouchableOpacity>
 
@@ -319,6 +290,7 @@ export default class CarInfoScene extends BaseComponent {
                             this.setState({
                                 currentImageIndex:index+1,
                             });
+
                         }}/>
                     <View style={styles.contentContainer}>
                         <View style={styles.contentView}>
@@ -354,8 +326,6 @@ export default class CarInfoScene extends BaseComponent {
                                             </View>
                                         )
                                     }
-
-
 
                                     {
                                         carData.describe!==''&& <View style={styles.carDepictView}>
@@ -398,7 +368,6 @@ export default class CarInfoScene extends BaseComponent {
                                                      content={carData.carIconsContentData&&carData.carIconsContentData[index]} title={data.title}
                                                      key={index}/>
                                     )
-
                                 })
                             }
                         </View>
@@ -420,8 +389,8 @@ export default class CarInfoScene extends BaseComponent {
                     backIconClick={this.backIconClick}
                     renderRihtFootView={this.navigatorRightView}
                 />
-                <PhotoView visible={this.state.isShowPhotoView} close={this.hidePhotoView} imageArray = {carImageArray} indext={this.state.currentImageIndex}/>
-                <SharedView visible={this.state.isShowShared} close={this.hideShared}/>
+                <PhotoView ref="photoView"/>
+                <SharedView ref="sharedView"/>
             </View>
 
         )
@@ -448,34 +417,51 @@ class CarIconView extends Component {
 
 class  SharedView extends Component{
 
+
+    // 构造
+      constructor(props) {
+        super(props);
+        // 初始状态
+        this.state = {
+
+            isVisible:false,
+
+        };
+      }
+
+    isVisible=(visible)=>{
+
+        this.setState({
+            isVisible:visible,
+        });
+    }
+
     render(){
 
-        const {visible,close} = this.props;
         return(
             <Modal
-                visible={visible}
+                visible={this.state.isVisible}
                 transparent={true}
-                onRequestClose={close}
+                onRequestClose={()=>{this.isVisible(false)}}
                 animationType={'fade'}>
 
-                <TouchableOpacity style={styles.sharedContaier} onPress={close}>
+                <TouchableOpacity style={styles.sharedContaier} onPress={()=>{this.isVisible(false)}}>
                     <View style={styles.sharedView}>
                         <View style={styles.sharedViewHead}>
                             <Text style={styles.sharedViewHeadText}>分享到</Text>
                         </View>
                         <View style={{flexDirection:'row'}}>
-                            <TouchableOpacity style={styles.sharedItemView}>
+                            <TouchableOpacity style={styles.sharedItemView} onPress={()=>{this.isVisible(false)}}>
                                 <Image source={require('../../images/carSourceImages/shared_ wx.png')}/>
                                 <Text style={styles.sharedText}>微信好友</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.sharedItemView}>
+                            <TouchableOpacity style={styles.sharedItemView} onPress={()=>{this.isVisible(false)}}>
                                 <Image source={require('../../images/carSourceImages/shared_ friend.png')}/>
                                 <Text style={styles.sharedText}>朋友圈</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
                 </TouchableOpacity>
-
             </Modal>
 
         )
@@ -486,23 +472,49 @@ class  SharedView extends Component{
 class PhotoView extends Component{
 
 
+
+    // 构造
+      constructor(props) {
+        super(props);
+        // 初始状态
+        this.state = {
+
+            isVisible:false,
+        };
+      }
+
+
+      show=(imageArray,index)=>{
+
+          this.setState({
+              isVisible:true,
+              imageArray:imageArray,
+              index:index,
+          });
+      }
+
+      hide=()=>{
+
+          this.setState({
+              isVisible:false,
+          });
+      }
+
     render(){
-        const {visible,imageArray,index,close,indext} = this.props;
+        const {imageArray,index} = this.state;
         return(
             <Modal
-                visible={visible}
+                visible={this.state.isVisible}
                 transparent={true}
-                onRequestClose={close}
+                onRequestClose={()=>{this.hide()}}
                 animationType={'fade'}
             >
-
-
                 <Gallery
                     style={{flex: 1, backgroundColor: 'rgba(1,1,1,0.5)'}}
                     images={imageArray}
-                    initialPage={indext-1}
+                    initialPage={index-1}
                     onSingleTapConfirmed={() => {
-                        close();
+                        this.hide();
                     }}
                 />
             </Modal>
@@ -545,7 +557,7 @@ class NavigationRightView extends Component{
                 }}>
                     <Image source={ this.state.isStore? require('../../images/carSourceImages/store.png') : require('../../images/carSourceImages/store_nil.png')}></Image>
                 </TouchableOpacity>
-                <TouchableOpacity style={{marginLeft: Pixel.getPixel(10)}} onPress={this.showShared}>
+                <TouchableOpacity style={{marginLeft: Pixel.getPixel(10)}} onPress={this.props.showShared}>
                     <Image source={require('../../images/carSourceImages/share_nil.png')}></Image>
                 </TouchableOpacity>
             </View>
