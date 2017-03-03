@@ -31,8 +31,8 @@ import * as AppUrls from "../constant/appUrls";
 
 let status  = 0;
 let carData = new  Array;
-let isHeadInteraction = false;
-let isCheckedCarModel = false;
+let isHeadInteraction = false;  // 是否能选择车类
+let isCheckedCarModel = false;  // 是否能选择车型   false-能选,true-不能选
 
 let carObject= {
 
@@ -52,7 +52,6 @@ export default class CarBrandSelectScene extends BaseComponent {
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: false});
             this.loadData();
-
         });
 
     }
@@ -101,7 +100,6 @@ export default class CarBrandSelectScene extends BaseComponent {
             dataSource: dataSource,
             isHideCarSubBrand: true,
             isHideCarModel:true,
-            carSeriesData: [],
             sectionTitleArray: [],
             footprintData:[],
         };
@@ -115,7 +113,6 @@ export default class CarBrandSelectScene extends BaseComponent {
             if(data.code==1){
                 if(data.result){
                     this.setState({
-
                         footprintData:JSON.parse(data.result),
                     });
                 }
@@ -143,8 +140,6 @@ export default class CarBrandSelectScene extends BaseComponent {
             this.stopLoadData();
 
         });
-
-
     }
 
     startLoadData=()=>{
@@ -238,6 +233,7 @@ export default class CarBrandSelectScene extends BaseComponent {
         );
     }
 
+    // 选择参数回传
     _checkedCarType = (carType) => {
 
         this.props.checkedCarClick(carType);
@@ -344,8 +340,6 @@ export default class CarBrandSelectScene extends BaseComponent {
                         <CarModelList ref="CarModelList" checkedCarClick={this._checkedCarType}/>
                     )
                 }
-
-
             </View>
         )
     }
@@ -647,7 +641,7 @@ class CarModelList extends BaseComponent {
 
                 }}>
                     <View style={styles.carSubBrandHeadView}>
-                        <Image style={styles.rowCellImag}/>
+                        {/*<Image style={styles.rowCellImag}/>*/}
                         <Text style={styles.rowCellText}>{this.state.carTitle}</Text>
                     </View>
                 </TouchableOpacity>
