@@ -333,9 +333,6 @@ export default class CarInfoScene extends BaseComponent {
                             </View>
                         </View>
                     </View>
-
-
-
                     {
                         ((typeof(carData.labels)!= "undefined"?(carData.labels.length<=0?false:true):false)|| carData.describe!=='' || carData.city_name!=='' || carData.plate_number!=='') && (
                             <View style={styles.contentContainer}>
@@ -727,7 +724,7 @@ const styles = StyleSheet.create({
         marginTop: Pixel.getPixel(25),
         backgroundColor: 'white',
         width:Pixel.getPixel(90),
-        height: Pixel.getPixel(90),
+        height: Pixel.getPixel(95),
         marginRight: Pixel.getPixel(10),
         marginLeft: Pixel.getPixel(10),
     },
