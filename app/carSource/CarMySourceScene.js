@@ -105,13 +105,10 @@ export default class CarMySourceScene extends BaceComponent {
             if(type==3){
 
                 this.refs.upperFrameView.refreshingData();
-                this.props.showToast('下架成功');
-
 
             }else if(type==2){
 
                 this.refs.AuditView.refreshingData();
-                this.props.showToast('上架成功');
 
             }
 
@@ -130,12 +127,9 @@ export default class CarMySourceScene extends BaceComponent {
                     initialPage={0}
                     renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["已上架", "已下架", "未审核"]}/>}>
 
-                    <MyCarSourceUpperFrameView carCellClick={this.carCellClick} footButtonClick={this.footButtonClick}
-                                               tabLabel="ios-paper1"/>
-                    <MyCarSourceDropFrameView carCellClick={this.carCellClick} footButtonClick={this.footButtonClick}
-                                              tabLabel="ios-paper2"/>
-                    <MyCarSourceAuditView carCellClick={this.carCellClick} footButtonClick={this.footButtonClick}
-                                          tabLabel="ios-paper3"/>
+                    <MyCarSourceUpperFrameView ref="upperFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper1"/>
+                    <MyCarSourceDropFrameView  carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper2"/>
+                    <MyCarSourceAuditView  ref="AuditView"  carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper3"/>
 
                 </ScrollableTabView>
                 <NavigatorView title='我的车源' backIconClick={this.backPage}/>
