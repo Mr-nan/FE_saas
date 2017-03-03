@@ -31,17 +31,19 @@ import * as AppUrls from "../constant/appUrls";
 
 let status  = 0;
 let carData = new  Array;
-let isHeadInteraction = false;
-let isCheckedCarModel = false;
+let isHeadInteraction = false;  // 是否能选择车类
+let isCheckedCarModel = false;  // 是否能选择车型   false-能选,true-不能选
 
 let carObject= {
 
     brand_id:'0',
+    brand_icon:'',
     brand_name:'0',
     series_id:'0',
     series_name:'0',
     model_id:'0',
     model_name:'0'
+
 };
 
 export default class CarBrandSelectScene extends BaseComponent {
@@ -50,7 +52,6 @@ export default class CarBrandSelectScene extends BaseComponent {
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: false});
             this.loadData();
-
         });
 
     }
@@ -99,11 +100,8 @@ export default class CarBrandSelectScene extends BaseComponent {
             dataSource: dataSource,
             isHideCarSubBrand: true,
             isHideCarModel:true,
-            carTypeCheckend: '',
-            carSeriesData: [],
             sectionTitleArray: [],
             footprintData:[],
-
         };
 
     }
@@ -115,13 +113,10 @@ export default class CarBrandSelectScene extends BaseComponent {
             if(data.code==1){
                 if(data.result){
                     this.setState({
-
                         footprintData:JSON.parse(data.result),
                     });
                 }
-
             }
-
         })
     }
 
@@ -144,10 +139,7 @@ export default class CarBrandSelectScene extends BaseComponent {
             console.log(error);
             this.stopLoadData();
 
-
         });
-
-
     }
 
     startLoadData=()=>{
@@ -202,6 +194,7 @@ export default class CarBrandSelectScene extends BaseComponent {
 
                 carObject.brand_id = rowData.brand_id;
                 carObject.brand_name = rowData.brand_name;
+                carObject.brand_icon = rowData.brand_icon;
 
                 if(this.state.isHideCarSubBrand)
                 {
@@ -223,7 +216,7 @@ export default class CarBrandSelectScene extends BaseComponent {
 
             }}>
                 <View style={styles.rowCell}>
-                    <Image style={styles.rowCellImag}></Image>
+                    <Image style={styles.rowCellImag} source={{uri:rowData.brand_icon}}></Image>
                     <Text style={styles.rowCellText}>{rowData.brand_name}</Text>
                 </View>
             </TouchableOpacity>
@@ -240,6 +233,7 @@ export default class CarBrandSelectScene extends BaseComponent {
         );
     }
 
+    // 选择参数回传
     _checkedCarType = (carType) => {
 
         this.props.checkedCarClick(carType);
@@ -346,8 +340,6 @@ export default class CarBrandSelectScene extends BaseComponent {
                         <CarModelList ref="CarModelList" checkedCarClick={this._checkedCarType}/>
                     )
                 }
-
-
             </View>
         )
     }
@@ -355,12 +347,25 @@ export default class CarBrandSelectScene extends BaseComponent {
 
 class CarSeriesList extends BaseComponent {
 
+    componentDidMount() {
+
+        this.state.valueRight.setValue(ScreenWidth);
+        Animated.spring(
+            this.state.valueRight,
+            {
+                toValue:ScreenWidth*0.3,
+                friction:5,
+            }
+        ).start();
+
+    }
 
     constructor(props) {
         super(props);
         this.state={
 
             carTitle:carObject.brand_name+'/全部车系',
+            brandIcon:carObject.brand_icon,
             valueRight:new Animated.Value(0),
         };
         this.loadCarSeriesData(carObject.brand_id,carObject.brand_name);
@@ -368,7 +373,6 @@ class CarSeriesList extends BaseComponent {
     }
 
     loadCarSeriesData=(carBrandID,carBrandName)=>{
-
 
         let url = AppUrls.BASEURL + 'v1/home/series/';
         let parameter = {
@@ -431,6 +435,8 @@ class CarSeriesList extends BaseComponent {
         this.setState ({
             dataSource: ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
             carTitle:carObject.brand_name+'/全部车系',
+            brandIcon:carObject.brand_icon,
+
         });
     };
 
@@ -488,10 +494,6 @@ class CarSeriesList extends BaseComponent {
 
                     }else {
 
-                        this.setState({
-                            carTitle:this.props.title +'/全部系车型',
-                        });
-
                         carObject.series_id = rowData.series_id;
                         carObject.series_name = rowData.series_name;
 
@@ -519,18 +521,6 @@ class CarSeriesList extends BaseComponent {
     };
 
 
-    componentDidMount() {
-
-        this.state.valueRight.setValue(ScreenWidth);
-        Animated.spring(
-            this.state.valueRight,
-            {
-                toValue:ScreenWidth*0.3,
-                friction:5,
-            }
-        ).start();
-
-    }
 
     render() {
 
@@ -543,7 +533,7 @@ class CarSeriesList extends BaseComponent {
 
                 }}>
                     <View style={styles.carSubBrandHeadView}>
-                        <Image style={styles.rowCellImag}/>
+                        <Image style={styles.rowCellImag} source={{uri:this.state.brandIcon}}/>
                         <Text style={styles.rowCellText}>{this.state.carTitle}</Text>
                     </View>
                 </TouchableOpacity>
@@ -651,7 +641,7 @@ class CarModelList extends BaseComponent {
 
                 }}>
                     <View style={styles.carSubBrandHeadView}>
-                        <Image style={styles.rowCellImag}/>
+                        {/*<Image style={styles.rowCellImag}/>*/}
                         <Text style={styles.rowCellText}>{this.state.carTitle}</Text>
                     </View>
                 </TouchableOpacity>
@@ -800,7 +790,6 @@ const styles = StyleSheet.create({
         width: Pixel.getPixel(40),
         height: Pixel.getPixel(40),
         marginLeft: Pixel.getPixel(15),
-        backgroundColor: fontAnColor.COLORB0
     },
     rowCellText: {
         marginLeft: Pixel.getPixel(5),

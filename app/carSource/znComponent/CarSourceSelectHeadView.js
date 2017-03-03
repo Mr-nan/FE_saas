@@ -235,6 +235,7 @@ const  styles = StyleSheet.create({
 
         color:fontAndColor.COLORA0,
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
+        backgroundColor:'white',
     },
 
     countText:{
@@ -255,6 +256,8 @@ const  styles = StyleSheet.create({
     unitsText:{
         color:fontAndColor.COLORA0,
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
+        backgroundColor:'white',
+
     },
     selectView: {
         top: Pixel.getTitlePixel(104),
