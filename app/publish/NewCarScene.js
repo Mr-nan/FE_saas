@@ -17,7 +17,7 @@ import AutoDate from './page/AutoDate';
 import AutoMileage from './page/AutoMileage';
 import NewIndicator from './component/NewIndicator';
 import EditCarScene from './EditCarScene';
-import CarSourceListScene from '../carSource/CarSourceListScene';
+import CarMySourceScene from '../carSource/CarMySourceScene';
 import BaseComponent from '../component/BaseComponent';
 import EnterpriseInfo from './component/EnterpriseInfo';
 import StorageUtil from "../utils/StorageUtil";
@@ -32,10 +32,9 @@ const barHeight = Pixel.getPixel(57);
 export default class NewCarScene extends BaseComponent{
 
     initFinish=()=>{
-        StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST,(error,result)=>{
-            console.log('1111========>>>' + result);
-            if(typeof(result) != 'undefined' && result !== ''){
-                let enters = JSON.parse(result);
+        StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST,(data)=>{
+            if(data.code == 1 && data.result != ''){
+                let enters = JSON.parse(data.result);
                 if(enters.length === 1){
                     this.setState({
                         shop_id:enters[0].enterprise_uid
@@ -43,11 +42,12 @@ export default class NewCarScene extends BaseComponent{
                 }else if(enters.length > 1){
                     this.enterpriseList = enters;
                     this.enterpriseModal.refresh(this.enterpriseList);
+                    this.enterpriseModal.openModal();
+                }else{
+                    this._showHint('无法找到所属商户');
                 }
             }else{
-                this.setState({
-                    shop_id:10
-                });
+                this._showHint('无法找到所属商户');
             }
         });
     };
@@ -63,6 +63,14 @@ export default class NewCarScene extends BaseComponent{
         };
     }
 
+    _showLoading = ()=>{
+        this.props.showModal(true);
+    };
+
+    _closeLoading = ()=>{
+        this.props.showModal(false);
+    };
+
     //更多跳到编辑页
     _goToMore = ()=>{
         let moreParams = {
@@ -74,15 +82,24 @@ export default class NewCarScene extends BaseComponent{
         this.toNextPage(moreParams);
     };
 
+    mtoNextPage = (mProps) => {
+        const navigator = this.props.navigator;
+        if (navigator) {
+            navigator.replace({
+                ...mProps
+            })
+        }
+    };
+
     //上传成功后
     sourceParams ={
-        name: 'CarSourceListScene',
-        component: CarSourceListScene,
+        name: 'CarMySourceScene',
+        component: CarMySourceScene,
         params: {}
     };
 
     _goToSource = ()=>{
-        this.toNextPage(this.sourceParams);
+        this.mtoNextPage(this.sourceParams);
     };
 
     _onBack = (page) =>{
@@ -136,19 +153,31 @@ export default class NewCarScene extends BaseComponent{
                         carNumberBack = {this._canChange}
                         onBack={()=>this._onBack(0)} refreshCar={this._carData}
                         barHeight={barHeight} tabLabel="ModelSelect" />
-                    <AutoPhoto carData={this.state.carData} onBack={()=>this._onBack(1)} barHeight={barHeight} tabLabel="AutoPhoto" />
+                    <AutoPhoto
+                        showHint={this._showHint}
+                        showLoading={this._showLoading}
+                        closeLoading={this._closeLoading}
+                        carData={this.state.carData}
+                        onBack={()=>this._onBack(1)}
+                        barHeight={barHeight} tabLabel="AutoPhoto" />
                     <AutoType
                         refreshCar={this._carData}
                         carData={this.state.carData}
                         onBack={()=>this._onBack(2)}
                         barHeight={barHeight} tabLabel="AutoType" />
-                    <AutoDate carData={this.state.carData} onBack={()=>this._onBack(3)} barHeight={barHeight} tabLabel="AutoDate" />
+                    <AutoDate
+                        carData={this.state.carData}
+                        onBack={()=>this._onBack(3)}
+                        barHeight={barHeight} tabLabel="AutoDate" />
                     <AutoMileage
+                        showLoading={this._showLoading}
+                        closeLoading={this._closeLoading}
                         shopID = {this.state.shop_id}
                         showHint={this._showHint}
                         goToSource={this._goToSource}
                         carData={this.state.carData}
-                        onBack={()=>this._onBack(4)} barHeight={barHeight} tabLabel="AutoMileage"/>
+                        onBack={()=>this._onBack(4)}
+                        barHeight={barHeight} tabLabel="AutoMileage"/>
                 </ScrollableTabView>
             </Image>
         );

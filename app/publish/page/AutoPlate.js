@@ -96,8 +96,28 @@ export default class AutoPlate extends Component {
     };
 
     _onPlateChange= (text,type) =>{
+
         this.initValue[type] = text;
         this._insertPlate();
+        if(text.length === 1){
+            switch (type){
+                case 1:
+                    this.secondInput.focus();
+                    break;
+                case 2:
+                    this.threeInput.focus();
+                    break;
+                case 3:
+                    this.fourInput.focus();
+                    break;
+                case 4:
+                    this.fiveInput.focus();
+                    break;
+                case 5:
+                    this.sixInput.focus();
+                    break;
+            }
+        }
     };
 
     _insertPlate(){
@@ -136,17 +156,23 @@ export default class AutoPlate extends Component {
                         </TouchableOpacity>
 
                         <Image style={styles.proContainer} source={proBg}>
-                            <TextInput style={styles.fontBold} underlineColorAndroid='transparent'
+                            <TextInput ref={(input)=>{this.firstInput = input}}
+                                style={styles.fontBold} underlineColorAndroid='transparent'
                                        defaultValue={this.initValue[1]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,1)}/>
-                            <TextInput style={styles.fontBold} underlineColorAndroid='transparent'
+                            <TextInput ref={(input)=>{this.secondInput = input}}
+                                style={styles.fontBold} underlineColorAndroid='transparent'
                                        defaultValue={this.initValue[2]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,2)}/>
-                            <TextInput style={styles.fontBold} underlineColorAndroid='transparent'
+                            <TextInput ref={(input)=>{this.threeInput = input}}
+                                style={styles.fontBold} underlineColorAndroid='transparent'
                                        defaultValue={this.initValue[3]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,3)}/>
-                            <TextInput style={styles.fontBold} underlineColorAndroid='transparent'
+                            <TextInput ref={(input)=>{this.fourInput = input}}
+                                style={styles.fontBold} underlineColorAndroid='transparent'
                                        defaultValue={this.initValue[4]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,4)}/>
-                            <TextInput style={styles.fontBold} underlineColorAndroid='transparent'
+                            <TextInput ref={(input)=>{this.fiveInput = input}}
+                                style={styles.fontBold} underlineColorAndroid='transparent'
                                        defaultValue={this.initValue[5]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,5)}/>
-                            <TextInput style={styles.fontBold} underlineColorAndroid='transparent'
+                            <TextInput ref={(input)=>{this.sixInput = input}}
+                                style={styles.fontBold} underlineColorAndroid='transparent'
                                        defaultValue={this.initValue[6]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,6)}/>
                         </Image>
                     </View>
@@ -160,7 +186,7 @@ export default class AutoPlate extends Component {
 const styles = StyleSheet.create({
     container: {
         width:width,
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
     },
     imgContainer: {
         width:width,

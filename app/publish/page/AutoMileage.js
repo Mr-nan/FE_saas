@@ -129,58 +129,71 @@ export default class AutoMileage extends Component {
 
     //发布
     _publish = () => {
-        SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
-            [this.props.carData.vin],
-            (data) => {
-                if (data.code === 1) {
-                    let rd = data.result.rows.item(0);
-                    if(this.isEmpty(rd.model) === true){
-                        this.props.showHint('请选择车型信息');
-                        return;
-                    }
-                    if(this.isEmpty(rd.pictures) === true){
-                        this.props.showHint('请拍摄车辆照片');
-                        return;
-                    }
-                    if(this.isEmpty(rd.mileage) === true){
-                        this.props.showHint('请填写车辆历程');
-                        return;
-                    }
-                    if(this.isEmpty(rd.manufacture) === true){
-                        this.props.showHint('请选择车辆出厂日期');
-                        return;
-                    }
-                    let modelInfo = JSON.parse(rd.model);
-                    let params = {
-                        vin: rd.vin,
-                        brand_id: modelInfo.brand_id,
-                        model_id: modelInfo.model_id,
-                        series_id: modelInfo.series_id,
-                        pictures: rd.pictures,
-                        v_type: rd.v_type,
-                        manufacture: rd.manufacture,
-                        init_reg: rd.init_reg,
-                        mileage: rd.mileage,
-                        show_shop_id: this.shop_id,
-                    };
 
-                    Net.request(AppUrls.CAR_SAVE, 'post', params)
-                        .then((response) => {
-                                if (response.mycode === 1) {
-                                    SQLite.changeData(
-                                        'DELETE From publishCar WHERE vin = ?',
-                                        [this.props.carData.vin]);
-                                    this.successModal.openModal();
-                                }
-                            },
-                            (error) => {
-                                console.log(error);
-                            });
-                    console.log();
-                } else {
-                    console.log(data.error);
-                }
-            });
+        try{
+            this.props.showLoading();
+            SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
+                [this.props.carData.vin],
+                (data) => {
+                    if (data.code === 1) {
+                        let rd = data.result.rows.item(0);
+                        if(this.isEmpty(rd.model) === true){
+                            this.props.showHint('请选择车型信息');
+                            return;
+                        }
+                        if(this.isEmpty(rd.pictures) === true){
+                            this.props.showHint('请拍摄车辆照片');
+                            return;
+                        }
+                        if(this.isEmpty(rd.mileage) === true){
+                            this.props.showHint('请填写车辆历程');
+                            return;
+                        }
+                        if(this.isEmpty(rd.manufacture) === true){
+                            this.props.showHint('请选择车辆出厂日期');
+                            return;
+                        }
+                        let modelInfo = JSON.parse(rd.model);
+                        let params = {
+                            vin: rd.vin,
+                            brand_id: modelInfo.brand_id,
+                            model_id: modelInfo.model_id,
+                            series_id: modelInfo.series_id,
+                            pictures: rd.pictures,
+                            v_type: rd.v_type,
+                            manufacture: rd.manufacture,
+                            init_reg: rd.init_reg,
+                            mileage: rd.mileage,
+                            show_shop_id: this.shop_id,
+                        };
+
+                        Net.request(AppUrls.CAR_SAVE, 'post', params)
+                            .then((response) => {
+                                    if (response.mycode === 1) {
+                                        SQLite.changeData(
+                                            'DELETE From publishCar WHERE vin = ?',
+                                            [this.props.carData.vin]);
+                                        this.props.closeLoading();
+                                        this.successModal.openModal();
+                                    }else{
+                                        this.props.closeLoading();
+                                        this.props.showHint(response.mjson.msg);
+                                    }
+                                },
+                                (error) => {
+                                    this.props.closeLoading();
+                                    this.props.showHint(error);
+                                });
+                    } else {
+                        this.props.closeLoading();
+                        this.props.showHint(data.error);
+                    }
+                });
+        }catch (error){
+            this.props.closeLoading();
+            this.props.showHint(data.error);
+        }
+
     };
 
     _renderRihtFootView = () => {

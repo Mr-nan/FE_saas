@@ -162,7 +162,6 @@ const styles = StyleSheet.create({
         flex:1,
         height:Pixel.getPixel(40),
         justifyContent:'center',
-        alignItems:'center',
         overflow:'hidden'
     },
     inputNum:{
