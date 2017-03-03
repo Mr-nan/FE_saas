@@ -15,7 +15,6 @@ import {
     Dimensions,
     Animated,
     InteractionManager,
-    Modal,
 
 } from 'react-native';
 

@@ -20,6 +20,8 @@ import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 import md5 from "react-native-md5";
 import LoginAndRegister from "./LoginAndRegister";
+import * as ImageUpload from '../utils/ImageUpload';
+import ImageSource from '../publish/component/ImageSource';
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -32,6 +34,24 @@ var uid: '';
 var idcardf: '';
 var idcardback: '';
 var businessid: '';
+
+const options = {
+    //弹出框选项
+    title: '请选择',
+    cancelButtonTitle: '取消',
+    takePhotoButtonTitle: '拍照',
+    chooseFromLibraryButtonTitle: '选择相册',
+    allowsEditing: true,
+    noData: false,
+    quality: 1.0,
+    maxWidth: 480,
+    maxHeight: 800,
+    storageOptions: {
+        skipBackup: true,
+        path: 'images',
+    }
+};
+
 export default class Register extends BaseComponent {
     constructor(props) {
         super(props);
@@ -42,6 +62,7 @@ export default class Register extends BaseComponent {
             verifyCode: null,
             renderPlaceholderOnly: true,
         }
+        this.id;
     }
 
     initFinish = () => {
@@ -70,6 +91,12 @@ export default class Register extends BaseComponent {
         }
         return (
             <View style={styles.container}>
+                <ImageSource galleryClick={this._galleryClick}
+                             cameraClick={this._cameraClick}
+                             ref={(modal) => {
+                                 this.imageSource = modal
+                             }}/>
+
                 <NavigationBar
                     leftImageCallBack={this.backPage}
                     rightTextCallBack={this.register}
@@ -85,6 +112,7 @@ export default class Register extends BaseComponent {
                                 viewStytle={styles.itemStyel}
                                 inputTextStyle={styles.inputTextStyle}
                                 leftIcon={false}
+                                clearValue={true}
                                 maxLength={11}
                                 rightIcon={false}/>
                             <LoginInputText
@@ -114,6 +142,7 @@ export default class Register extends BaseComponent {
                                 viewStytle={styles.itemStyel}
                                 inputTextStyle={styles.inputTextStyle}
                                 secureTextEntry={true}
+                                clearValue={true}
                                 leftIcon={false}
                                 maxLength={16}
                                 rightIcon={false}/>
@@ -125,6 +154,7 @@ export default class Register extends BaseComponent {
                                 secureTextEntry={true}
                                 maxLength={16}
                                 leftIcon={false}
+                                clearValue={true}
                                 rightIcon={false}/>
                         </View>
                         <View style={styles.inputTextLine}/>
@@ -135,6 +165,7 @@ export default class Register extends BaseComponent {
                                 viewStytle={styles.itemStyel}
                                 inputTextStyle={styles.inputTextStyle}
                                 leftIcon={false}
+                                clearValue={true}
                                 rightIcon={false}/>
                             <LoginInputText
                                 ref="businessName"
@@ -142,6 +173,7 @@ export default class Register extends BaseComponent {
                                 viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
                                 inputTextStyle={styles.inputTextStyle}
                                 leftIcon={false}
+                                clearValue={true}
                                 rightIcon={false}/>
                         </View>
                         <View style={styles.inputTextLine}/>
@@ -153,21 +185,56 @@ export default class Register extends BaseComponent {
                                 color: FontAndColor.COLORA1,
                                 fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT)
                             }}>添加身份证照片</Text>
-                        <MyButton buttonType={MyButton.IMAGEBUTTON}
-                                  content={this.state.idcard === null ?
-                                      require('../../images/login/idcard.png') : this.state.idcard
-                                  }
-                                  parentStyle={[styles.buttonStyle, {marginRight: Pixel.getPixel(10)}]}
-                                  childStyle={styles.imageButtonStyle}
-                                  mOnPress={this.selectPhotoTapped.bind(this, 'idcard')}/>
+                        <View>
+                            <MyButton buttonType={MyButton.IMAGEBUTTON}
+                                      content={this.state.idcard === null ?
+                                          require('../../images/login/idcard.png') : this.state.idcard
+                                      }
+                                      parentStyle={[styles.buttonStyle]}
+                                      childStyle={styles.imageButtonStyle}
+                                      mOnPress={this.selectPhotoTapped.bind(this, 'idcard')}/>
+                            {this.state.idcard ?
+                                <MyButton buttonType={MyButton.IMAGEBUTTON}
+                                          content={require('../../images/login/clear.png')}
+                                          parentStyle={{
+                                              position: 'absolute',
+                                              marginTop: Pixel.getPixel(2),
+                                              marginLeft: Pixel.getPixel(2),
+                                          }}
+                                          childStyle={styles.imageClearButtonStyle}
+                                          mOnPress={() => {
+                                              this.setState({
+                                                  idcard: null
+                                              });
+                                          }}/>
+                                : null}
+                        </View>
 
-                        <MyButton buttonType={MyButton.IMAGEBUTTON}
-                                  content={this.state.idcardBack === null ?
-                                      require('../../images/login/idcard_back.png') : this.state.idcardBack
-                                  }
-                                  parentStyle={styles.buttonStyle}
-                                  childStyle={styles.imageButtonStyle}
-                                  mOnPress={this.selectPhotoTapped.bind(this, 'idcardBack')}/>
+                        <View>
+                            <MyButton buttonType={MyButton.IMAGEBUTTON}
+                                      content={this.state.idcardBack === null ?
+                                          require('../../images/login/idcard_back.png') : this.state.idcardBack
+                                      }
+                                      parentStyle={styles.buttonStyle}
+                                      childStyle={styles.imageButtonStyle}
+                                      mOnPress={this.selectPhotoTapped.bind(this, 'idcardBack')}/>
+                            {this.state.idcardBack ?
+                                <MyButton buttonType={MyButton.IMAGEBUTTON}
+                                          content={require('../../images/login/clear.png')}
+                                          parentStyle={{
+                                              position: 'absolute',
+                                              marginTop: Pixel.getPixel(2),
+                                              marginLeft: Pixel.getPixel(2),
+                                          }}
+                                          childStyle={styles.imageClearButtonStyle}
+                                          mOnPress={() => {
+                                              this.setState({
+                                                  idcardBack: null
+                                              });
+                                          }}/>
+                                : null}
+
+                        </View>
                     </View>
                     <View style={styles.inputTextLine}/>
                     <View style={styles.imageButtonsStyle}>
@@ -176,13 +243,31 @@ export default class Register extends BaseComponent {
                             color: FontAndColor.COLORA1,
                             fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT)
                         }}>添加营业执照</Text>
-                        <MyButton buttonType={MyButton.IMAGEBUTTON}
-                                  content={this.state.businessLicense === null ?
-                                      require('../../images/login/idcard.png') : this.state.businessLicense
-                                  }
-                                  parentStyle={styles.buttonStyle}
-                                  childStyle={styles.imageButtonStyle}
-                                  mOnPress={this.selectPhotoTapped.bind(this, 'businessLicense')}/>
+                        <View>
+                            <MyButton buttonType={MyButton.IMAGEBUTTON}
+                                      content={this.state.businessLicense === null ?
+                                          require('../../images/login/idcard.png') : this.state.businessLicense
+                                      }
+                                      parentStyle={styles.buttonStyle}
+                                      childStyle={styles.imageButtonStyle}
+                                      mOnPress={this.selectPhotoTapped.bind(this, 'businessLicense')}/>
+                            {this.state.businessLicense ?
+                                <MyButton buttonType={MyButton.IMAGEBUTTON}
+                                          content={require('../../images/login/clear.png')}
+                                          parentStyle={{
+                                              position: 'absolute',
+                                              marginTop: Pixel.getPixel(2),
+                                              marginLeft: Pixel.getPixel(2),
+                                          }}
+                                          childStyle={styles.imageClearButtonStyle}
+                                          mOnPress={() => {
+                                              this.setState({
+                                                  businessLicense: null
+                                              });
+                                          }}/>
+                                : null}
+
+                        </View>
                     </View>
                 </ScrollView>
             </View>
@@ -250,6 +335,15 @@ export default class Register extends BaseComponent {
                 });
         }
     }
+
+
+    _labelPress = () => {
+        this.imageSource.openModal();
+    };
+
+    _rePhoto = () => {
+        this.imageSource.openModal();
+    };
 
     exitPage = (mProps) => {
         const navigator = this.props.navigator;
@@ -321,51 +415,48 @@ export default class Register extends BaseComponent {
     }
 
     selectPhotoTapped(id) {
-        const options = {
-            //弹出框选项
-            title: '请选择',
-            cancelButtonTitle: '取消',
-            takePhotoButtonTitle: '拍照',
-            chooseFromLibraryButtonTitle: '选择相册',
-            allowsEditing: true,
-            noData: true,
-            quality: 0.5,
-            maxWidth: 500,
-            maxHeight: 300,
-            storageOptions: {
-                skipBackup: true,
-                path: 'images',
-            }
-        };
+        this.id = id;
+        this._rePhoto();
+    }
 
-        ImagePicker.showImagePicker(options, (response) => {
-
+    _cameraClick = () => {
+        ImagePicker.launchCamera(options, (response) => {
             if (response.didCancel) {
             } else if (response.error) {
             } else if (response.customButton) {
             } else {
-                this.imageUploadUtil(response, id);
+                this.uploadImage(response, this.id);
             }
         });
     }
 
-    imageUploadUtil(response, id) {
+    _galleryClick = () => {
+        ImagePicker.launchImageLibrary(options, (response) => {
+            if (response.didCancel) {
+            } else if (response.error) {
+            } else if (response.customButton) {
+            } else {
+                this.uploadImage(response, this.id);
+            }
+        });
+    }
+
+    uploadImage = (response, id) => {
         let params = {
-            device_code: "dycd_dms_manage_android",
-            file_name: response.fileName,
             base64_file: 'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g, '%2B')
         };
-        let source = {uri: response.uri};
-        request(AppUrls.AUTH_UPLOAD_FILE, 'Post', params)
+        this.props.showModal(true);
+        ImageUpload.request(AppUrls.AUTH_UPLOAD_FILE, 'Post', params)
             .then((response) => {
+                this.props.showModal(false);
                 if (response.mjson.code == 1) {
+                    let source = {uri: response.mjson.data.url};
                     if (id === 'idcard') {
                         idcardf = response.mjson.data.file_id;
                         if (idcardf != "") {
                             this.setState({
                                 idcard: source
                             });
-                            this.props.showToast("图片上传成功");
                         } else {
                             this.props.showToast("id 为空 图片上传失败");
                         }
@@ -375,7 +466,6 @@ export default class Register extends BaseComponent {
                             this.setState({
                                 idcardBack: source
                             });
-                            this.props.showToast("图片上传成功");
                         } else {
                             this.props.showToast("id 为空 图片上传失败");
                         }
@@ -385,7 +475,6 @@ export default class Register extends BaseComponent {
                             this.setState({
                                 businessLicense: source
                             });
-                            this.props.showToast("图片上传成功");
                         } else {
                             this.props.showToast("id 为空 图片上传失败");
                         }
@@ -394,13 +483,11 @@ export default class Register extends BaseComponent {
                     this.props.showToast(response.mjson.msg + "!");
                 }
             }, (error) => {
-                if (error.mjson.code == -300 || error.mjson.code == -500) {
-                    this.props.showToast("图片上传失败");
-                } else {
-                    this.props.showToast(error.mjson.msg + "!");
-                }
+                this.props.showModal(false);
+                this.props.showToast("图片上传失败");
             });
     }
+
 }
 
 const styles = StyleSheet.create({
@@ -408,7 +495,11 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: FontAndColor.COLORA3
     },
-    buttonStyle: {},
+    buttonStyle: {
+        marginTop: Pixel.getPixel(10),
+        marginBottom: Pixel.getPixel(10),
+        marginLeft: Pixel.getPixel(10),
+    },
     itemStyel: {},
     inputTextsStyle: {
         backgroundColor: '#ffffff',
@@ -439,5 +530,9 @@ const styles = StyleSheet.create({
     imageButtonStyle: {
         width: Pixel.getPixel(80),
         height: Pixel.getPixel(60),
+    },
+    imageClearButtonStyle: {
+        width: Pixel.getPixel(17),
+        height: Pixel.getPixel(17),
     }
 });

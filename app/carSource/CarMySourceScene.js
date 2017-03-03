@@ -92,19 +92,32 @@ export default class CarMySourceScene extends BaceComponent {
 
     carAction = (type, carID) => {
 
-        let url = AppUrls.BASEURL + 'v1/car/status';
-        request(url, 'post', {
+        this.props.showModal(true);
+        let url = AppUrls.BASEURL +'v1/car/status';
+        request(url,'post',{
 
             id: carID,
             op_type: type,
 
         }).then((response) => {
 
-            alert(type == 2 ? '上架成功' : '下架成功');
+            this.props.showModal(false);
+            if(type==3){
 
+                this.refs.upperFrameView.refreshingData();
+                this.props.showToast('下架成功');
+
+
+            }else if(type==2){
+
+                this.refs.AuditView.refreshingData();
+                this.props.showToast('上架成功');
+
+            }
 
         }, (error) => {
 
+            this.props.showModal(false);
             alert(error.msg);
         });
     }
@@ -145,6 +158,7 @@ class MyCarSourceUpperFrameView extends BaceComponent {
             carData: carData,
             isRefreshing: true,
             renderPlaceholderOnly: 'blank',
+            carUpperFrameStatus:carUpperFrameStatus,
 
         };
     }
@@ -182,13 +196,15 @@ class MyCarSourceUpperFrameView extends BaceComponent {
         }).then((response) => {
 
             console.log(response.mjson.data);
-            carUpperFrameData.push(...response.mjson.data.list);
+            carUpperFrameData=response.mjson.data.list;
             carUpperFrameStatus = response.mjson.data.status;
             if (carUpperFrameData.length) {
                 this.setState({
                     carData: this.state.carData.cloneWithRows(carUpperFrameData),
                     isRefreshing: false,
                     renderPlaceholderOnly: 'success',
+                    carUpperFrameStatus:carUpperFrameStatus,
+
 
                 });
 
@@ -196,7 +212,7 @@ class MyCarSourceUpperFrameView extends BaceComponent {
                 this.setState({
                     isRefreshing: false,
                     renderPlaceholderOnly: 'null',
-
+                    carUpperFrameStatus:carUpperFrameStatus,
 
                 });
             }
@@ -227,16 +243,24 @@ class MyCarSourceUpperFrameView extends BaceComponent {
 
             console.log(response.mjson.data);
             carUpperFrameStatus = response.mjson.data.status;
-            let carData = cresponse.mjson.data.list;
-            if (carData.length) {
-                for (let i = 0; i < carData.length; i++) {
+            let carData = response.mjson.data.list;
+            if(carData.length)
+            {
+                for(let i=0;i<carData.length;i++)
+                {
                     carUpperFrameData.push(carData[i]);
                 }
 
                 this.setState({
-                    carData: this.state.carData.cloneWithRows(carUpperFrameData),
-                });
 
+                    carData:this.state.carData.cloneWithRows(carUpperFrameData),
+                    carUpperFrameStatus:carUpperFrameStatus,
+                });
+            }else {
+
+                this.setState({
+                    carUpperFrameStatus:carUpperFrameStatus,
+                });
             }
 
         }, (error) => {
@@ -260,7 +284,7 @@ class MyCarSourceUpperFrameView extends BaceComponent {
         if (this.state.isRefreshing) {
             return null;
         } else {
-            return (<ListFooter isLoadAll={carUpperFrameStatus==1? false : true}/>)
+            return (<ListFooter isLoadAll={this.state.carUpperFrameStatus==1? false : true} />)
         }
     }
 
@@ -313,8 +337,9 @@ class MyCarSourceDropFrameView extends BaceComponent {
         const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id == r2.id});
         this.state = {
 
-            carData: carData,
-            isRefreshing: true,
+            carData:carData,
+            isRefreshing:true,
+            carDropFrameStatus:carDropFrameStatus,
             renderPlaceholderOnly: 'blank',
 
 
@@ -344,7 +369,7 @@ class MyCarSourceDropFrameView extends BaceComponent {
     }
     loadData = () => {
 
-        let url = AppUrls.BASEURL + 'v1/user/car'
+        let url = AppUrls.BASEURL +'v1/user/car';
         carDropFramePage = 1;
         request(url, 'post', {
             car_status: '2',
@@ -354,21 +379,24 @@ class MyCarSourceDropFrameView extends BaceComponent {
         }).then((response) => {
 
             console.log(response.mjson.data);
-            carDropFrameData.push(...response.mjson.data.list);
+            carDropFrameData=response.mjson.data.list;
             carDropFrameStatus = response.mjson.data.status;
             if (carDropFrameData.length) {
                 this.setState({
-                    carData: this.state.carData.cloneWithRows(carDropFrameData),
-                    isRefreshing: false,
-                    renderPlaceholderOnly: 'success'
+                    carData:this.state.carData.cloneWithRows(carDropFrameData),
+                    isRefreshing:false,
+                    renderPlaceholderOnly: 'success',
+                    carDropFrameStatus:carDropFrameStatus,
+
 
                 });
 
             } else {
 
                 this.setState({
-                    isRefreshing: false,
-                    renderPlaceholderOnly: 'null'
+                    isRefreshing:false,
+                    renderPlaceholderOnly: 'null',
+                    carDropFrameStatus:carDropFrameStatus,
 
                 });
             }
@@ -377,8 +405,8 @@ class MyCarSourceDropFrameView extends BaceComponent {
 
             console.log(error);
             this.setState({
-                isRefreshing: false,
-                renderPlaceholderOnly: 'error'
+                isRefreshing:false,
+                renderPlaceholderOnly: 'error',
             });
 
         });
@@ -398,16 +426,24 @@ class MyCarSourceDropFrameView extends BaceComponent {
 
             console.log(response.mjson.data);
             carDropFrameStatus = response.mjson.data.status;
-            let carData = cresponse.mjson.data.list;
-            if (carData.length) {
-                for (let i = 0; i < carData.length; i++) {
+            let carData = response.mjson.data.list;
+            if(carData.length)
+            {
+                for(let i=0;i<carData.length;i++)
+                {
                     carDropFrameData.push(carData[i]);
                 }
 
                 this.setState({
-                    carData: this.state.carData.cloneWithRows(carDropFrameData),
+                    carData:this.state.carData.cloneWithRows(carDropFrameData),
+                    carDropFrameStatus:carDropFrameStatus,
                 });
 
+            }else {
+
+                this.setState({
+                    carDropFrameStatus:carDropFrameStatus,
+                });
             }
 
         }, (error) => {
@@ -420,7 +456,7 @@ class MyCarSourceDropFrameView extends BaceComponent {
 
     toEnd = () => {
 
-        if (carDropFrameData.length && !this.state.isRefreshing && carDropFrameStatus != 2) {
+        if (carDropFrameData.length && !this.state.isRefreshing && this.state.carDropFrameStatus!=2) {
             this.loadMoreData();
         }
 
@@ -431,7 +467,7 @@ class MyCarSourceDropFrameView extends BaceComponent {
         if (this.state.isRefreshing) {
             return null;
         } else {
-            return (<ListFooter isLoadAll={carDropFrameStatus==1? false : true}/>)
+            return (<ListFooter isLoadAll={this.state.carDropFrameStatus==1? false : true} />)
         }
     }
 
@@ -484,8 +520,9 @@ class MyCarSourceAuditView extends BaceComponent {
         const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id == r2.id});
         this.state = {
 
-            carData: carData,
-            isRefreshing: true,
+            carData:carData,
+            isRefreshing:true,
+            carAuditStatus:carAuditStatus,
             renderPlaceholderOnly: 'blank',
 
         };
@@ -524,22 +561,23 @@ class MyCarSourceAuditView extends BaceComponent {
         }).then((response) => {
 
             console.log(response.mjson.data);
-            carAuditData.push(...response.mjson.data.list);
+            carAuditData=response.mjson.data.list;
             carAuditStatus = response.mjson.data.status;
             if (carAuditData.length) {
                 this.setState({
-                    carData: this.state.carData.cloneWithRows(carAuditData),
-                    isRefreshing: false,
-                    renderPlaceholderOnly: 'success'
+                    carData:this.state.carData.cloneWithRows(carAuditData),
+                    isRefreshing:false,
+                    renderPlaceholderOnly: 'success',
+                    carAuditStatus:carAuditStatus,
 
                 });
 
             } else {
 
                 this.setState({
-                    isRefreshing: false,
-                    renderPlaceholderOnly: 'null'
-
+                    isRefreshing:false,
+                    renderPlaceholderOnly: 'null',
+                    carAuditStatus:carAuditStatus,
                 });
             }
 
@@ -567,16 +605,24 @@ class MyCarSourceAuditView extends BaceComponent {
 
             console.log(response.mjson.data);
             carAuditStatus = response.mjson.data.status;
-            let carData = cresponse.mjson.data.list;
-            if (carData.length) {
-                for (let i = 0; i < carData.length; i++) {
+            let carData = response.mjson.data.list;
+            if(carData.length)
+            {
+                for(let i=0;i<carData.length;i++)
+                {
                     carAuditData.push(carData[i]);
                 }
 
                 this.setState({
-                    carData: this.state.carData.cloneWithRows(carAuditData),
+                    carData:this.state.carData.cloneWithRows(carAuditData),
+                    carAuditStatus:carAuditStatus,
                 });
 
+            }else
+            {
+                this.state({
+                    carAuditStatus:carAuditStatus,
+                })
             }
 
         }, (error) => {
@@ -587,9 +633,11 @@ class MyCarSourceAuditView extends BaceComponent {
     }
 
 
-    toEnd = () => {
 
-        if (carAuditData.length && !this.state.isRefreshing && carAuditStatus != 2) {
+    toEnd =() => {
+
+        if (carAuditData.length && !this.state.isRefreshing && this.state.carAuditStatus!=2) {
+
             this.loadMoreData();
         }
 
@@ -600,7 +648,7 @@ class MyCarSourceAuditView extends BaceComponent {
         if (this.state.isRefreshing) {
             return null;
         } else {
-            return (<ListFooter isLoadAll={carAuditStatus==1? false : true}/>)
+            return (<ListFooter isLoadAll={this.state.carAuditStatus==1? false : true} />)
         }
     }
 

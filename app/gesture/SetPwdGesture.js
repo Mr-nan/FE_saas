@@ -108,6 +108,7 @@ export default class SetPwdGesture extends Component {
                     {this.renderLines()}
                     <Line ref='line' color={color}/>
                 </View>
+                {this.props.BottomView}
             </View>
         )
     }

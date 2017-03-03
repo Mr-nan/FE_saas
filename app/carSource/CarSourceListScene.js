@@ -118,6 +118,7 @@ export  default  class carSourceListScene extends BaseComponent {
     // 筛选数据刷新
     filterData=()=>{
         carData = [];
+        this.setState({isRefreshing:true, dataSource: this.state.dataSource.cloneWithRows(carData),});
         this.props.showModal(true);
         this.loadData();
 
@@ -127,12 +128,18 @@ export  default  class carSourceListScene extends BaseComponent {
     loadData = () => {
 
         let url = AppUrls.BASEURL + 'v1/car/index';
-        APIParameter.page = 0;
+        APIParameter.page = 1;
         request(url, 'post', APIParameter)
             .then((response) => {
 
-                carData.push(...response.mjson.data.list);
-                APIParameter.status = response.mjson.data.status;
+                carData=response.mjson.data.list;
+                if(typeof(response.mjson.data.start)== "undefined"){
+                    APIParameter.start = 0;
+
+                }else {
+                    APIParameter.start = response.mjson.data.start;
+                }
+                APIParameter.status =  response.mjson.data.status;
 
                 if (this.state.isFillData !== APIParameter.status) {
                     this.setState({
@@ -169,6 +176,11 @@ export  default  class carSourceListScene extends BaseComponent {
         request(url, 'post', APIParameter)
             .then((response) => {
 
+                if(typeof(response.mjson.data.start)== "undefined"){
+                    APIParameter.start = 0;
+                }else {
+                    APIParameter.start = response.mjson.data.start;
+                }
                 APIParameter.status = response.mjson.data.status;
                 if (this.state.isFillData !== APIParameter.status) {
                     this.setState({
@@ -351,6 +363,7 @@ export  default  class carSourceListScene extends BaseComponent {
     };
 
     hideCheckedView=()=>{
+        this.refs.headView.checkSelect(currentCheckedIndex); // 取消之前选择按钮状态
         this.setState({
             isHide: true,
         });
@@ -550,7 +563,7 @@ export  default  class carSourceListScene extends BaseComponent {
 
                     {
                         this.state.dataSource && (
-                            <SGListView
+                            <ListView
                                 dataSource={this.state.dataSource}
                                 ref={'carListView'}
                                 initialListSize={10}

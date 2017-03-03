@@ -21,12 +21,19 @@ export default class EnterpriseInfo extends Component{
 
     constructor(props){
         super(props);
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: ds.cloneWithRows(this.props.viewData),
+            dataSource: this.ds.cloneWithRows(this.props.viewData),
             modalVisible: false
         };
     }
+
+
+    refresh = (data)=>{
+        this.setState({
+            dataSource: this.ds.cloneWithRows(data),
+        });
+    };
 
     _hiedModal = ()=>{
         this.setState({
@@ -65,9 +72,9 @@ export default class EnterpriseInfo extends Component{
             <TouchableOpacity
                 activeOpacity={0.8}
                 key={rowID}
-                onPress={()=>{this.props.enterprisePress(rowID),this._hiedModal()}}>
+                onPress={()=>{this.props.enterpricePress(rowID),this._hiedModal()}}>
                 <View  style={styles.rowStyle}>
-                    <Text style={styles.fontMain}>{rowData.model_name}</Text>
+                    <Text style={styles.fontMain}>{rowData.enterprise_name}</Text>
                 </View>
             </TouchableOpacity>
         );
