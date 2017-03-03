@@ -29,7 +29,6 @@ import CarCell              from './znComponent/CarCell';
 import CarInfoScene         from './CarInfoScene';
 import CarBrandSelectScene  from './CarBrandSelectScene';
 import CityListScene        from './CityListScene';
-import ZNLoadView           from './znComponent/ZNLoadView'
 import {SequencingButton,SequencingView} from './znComponent/CarSequencingView';
 import * as AppUrls from "../constant/appUrls";
 import  {request}           from '../utils/RequestUtil';
@@ -101,6 +100,10 @@ export  default  class carSourceListScene extends BaseComponent {
 
     initFinish = () => {
         this.loadData();
+        console.log(this.props.openSelectBranch);
+        if(this.props.openSelectBranch==true){
+            this.presCarTypeScene();
+        }
     };
 
     // 下拉刷新数据
@@ -148,7 +151,6 @@ export  default  class carSourceListScene extends BaseComponent {
                 this.props.showModal(false);
 
             }, (error) => {
-
                 this.props.showModal(false);
                 this.setState({
                     isRefreshing:false,
@@ -192,8 +194,7 @@ export  default  class carSourceListScene extends BaseComponent {
 
     toEnd =() => {
 
-        let isFilterData = this.refs.ZNLoadView.getVisible();
-            if (carData.length && APIParameter.status == 1 && !isFilterData && !this.state.isRefreshing) {
+            if (carData.length && APIParameter.status == 1  && !this.state.isRefreshing) {
                 console.log('加载ing');
                 this.loadMoreData();
             }
@@ -513,7 +514,7 @@ export  default  class carSourceListScene extends BaseComponent {
 
     renderPlaceholderView = () => {
         return (
-            <View style={{width: width, height: height,backgroundColor:fontAndColor.COLORA3,alignItems: 'center'}}>
+            <View style={{flex:1,backgroundColor:fontAndColor.COLORA3,alignItems: 'center'}}>
                 {this.loadView()}
             </View>
         );
@@ -592,7 +593,6 @@ export  default  class carSourceListScene extends BaseComponent {
                             checkedTypeString={currentCheckedIndex == 2 ? this.state.checkedCarAgeType.title:this.state.checkedCarKMType.title}/>)
                 }
 
-                <ZNLoadView ref="ZNLoadView"/>
             </View>
 
         )
@@ -697,6 +697,7 @@ const styles = StyleSheet.create({
 
     contaier: {
         flex: 1,
+        backgroundColor:fontAndColor.COLORA3
     },
     checkedContentView: {
 
