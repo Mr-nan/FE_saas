@@ -12,12 +12,12 @@ import {
     ListView
 } from 'react-native';
 
-import * as fontAndColor from '../../constant/fontAndColor';
-import PixelUtil from '../../utils/PixelUtil';
+import * as fontAndColor from '../../../constant/fontAndColor';
+import PixelUtil from '../../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 const {width,height} = Dimensions.get('window');
 
-export default class EnterpriseInfo extends Component{
+export default class SelectLoanNumber extends Component{
 
     constructor(props){
         super(props);
@@ -28,23 +28,18 @@ export default class EnterpriseInfo extends Component{
         };
     }
 
-
-    refresh = (data)=>{
-        this.setState({
-            dataSource: this.ds.cloneWithRows(data),
-        });
-    };
-
     _hiedModal = ()=>{
         this.setState({
             modalVisible: false
         });
     };
 
-    openModal = ()=>{
+
+    openModal = (text)=>{
         this.setState({
             modalVisible: true
         });
+        this.text = text;
     };
 
     render(){
@@ -53,7 +48,7 @@ export default class EnterpriseInfo extends Component{
                 transparent={true}
                 visible={this.state.modalVisible}
                 onRequestClose={() => {}}>
-                <View style={styles.container}>
+                <View style={{flex:1}}>
                     <View>
                         <ListView
                             dataSource={this.state.dataSource}
@@ -72,9 +67,9 @@ export default class EnterpriseInfo extends Component{
             <TouchableOpacity
                 activeOpacity={0.8}
                 key={rowID}
-                onPress={()=>{this.props.enterpricePress(rowID),this._hiedModal()}}>
+                onPress={()=>{this.props.vinPress(this.text,rowID),this._hiedModal()}}>
                 <View  style={styles.rowStyle}>
-                    <Text style={styles.fontMain}>{rowData.enterprise_name}</Text>
+                    <Text style={styles.fontMain}>{rowData.code}</Text>
                 </View>
             </TouchableOpacity>
         );
@@ -86,7 +81,7 @@ const styles = StyleSheet.create({
     container:{
         width:width,
         flex:1,
-        backgroundColor:'rgba(0,0,0,0.3)',
+        // backgroundColor:'rgba(0,0,0,0.3)',
         justifyContent:'flex-end'
     },
     rowStyle:{

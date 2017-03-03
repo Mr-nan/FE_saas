@@ -54,6 +54,8 @@ export default class AutoLabel extends Component {
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: false});
         });
+
+        this.props.showLoading();
         Net.request(AppUrls.CAR_CONFIG,'post',{}).then(
             (response)=>{
                 if(response.mycode === 1){
@@ -102,9 +104,11 @@ export default class AutoLabel extends Component {
                     }
                 }
                 this.interiorGrid.refresh(this.viewData);
+                this.props.closeLoading();
             },
             (error)=>{
-                console.log(error);
+                this.props.closeLoading();
+                this.props.showHint(error);
             }
         );
 

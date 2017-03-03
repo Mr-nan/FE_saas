@@ -132,12 +132,12 @@ export  default class PlanListScene extends BaseComponent {
     _renderPlaceholderView() {
         return (
             <View style={{width: width, height: height}}>
+                {this.loadView()}
                 <NavigationView
                     title="还款计划"
                     backIconClick={this.backPage}
                     renderRihtFootView={this._navigatorRightView}
                 />
-                {this.loadView()}
             </View>
         );
     }

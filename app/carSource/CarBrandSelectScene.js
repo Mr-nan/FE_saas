@@ -15,7 +15,6 @@ import {
     Dimensions,
     Animated,
     InteractionManager,
-    Modal,
 
 } from 'react-native';
 
@@ -24,7 +23,6 @@ import *as fontAnColor from '../constant/fontAndColor';
 import NavigationView from '../component/AllNavigationView';
 import StorageUtil      from '../utils/StorageUtil';
 import * as StorageKeyName   from '../constant/storageKeyNames';
-import ZNLoadView from './znComponent/ZNLoadView';
 import PixelUtil from '../utils/PixelUtil';
 var Pixel = new PixelUtil();
 
@@ -294,7 +292,6 @@ export default class CarBrandSelectScene extends BaseComponent {
 
         return (
             <View style={styles.rootContainer}>
-                <ZNLoadView ref="ZNLoadView"/>
                 {
                     (this.props.status == 1 && this.state.footprintData.length>0) &&(<View style={styles.carBrandHeadView}>
                         <Text style={styles.carBrandHeadText}>足迹:</Text>
@@ -524,7 +521,6 @@ class CarSeriesList extends BaseComponent {
 
         return (
             <Animated.View style={[styles.carSubBrandView,{left:this.state.valueRight}]}>
-                <ZNLoadView ref="ZNLoadView"/>
                 <TouchableOpacity onPress={()=>{
                     if(isHeadInteraction){
                         this.props.checkedCarClick(carObject);

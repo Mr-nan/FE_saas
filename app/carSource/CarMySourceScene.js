@@ -12,7 +12,7 @@ import {
     ListView,
     ScrollView,
     RefreshControl,
-
+    InteractionManager
 } from 'react-native';
 
 import BaceComponent from '../component/BaseComponent';
@@ -38,18 +38,18 @@ let carDropFrameData = [];
 let carAuditData = [];
 
 let carUpperFramePage = 1;
-let carUpperFrameStatus =1;
+let carUpperFrameStatus = 1;
 
 let carDropFramePage = 1;
-let carDropFrameStatus =1;
+let carDropFrameStatus = 1;
 
 let carAuditPage = 1;
-let carAuditStatus =1;
+let carAuditStatus = 1;
 
-export default class CarMySourceScene extends BaceComponent{
+export default class CarMySourceScene extends BaceComponent {
 
 
-    carCellClick=(carData)=>{
+    carCellClick = (carData) => {
         let navigatorParams = {
 
             name: "CarInfoScene",
@@ -62,18 +62,18 @@ export default class CarMySourceScene extends BaceComponent{
 
     }
 
-    footButtonClick=(typeStr,carData)=>{
+    footButtonClick = (typeStr, carData) => {
 
 
-        if(typeStr=='上架'){
+        if (typeStr == '上架') {
 
-          this.carAction(2,carData.id);
+            this.carAction(2, carData.id);
 
-        }else if(typeStr=='下架'){
+        } else if (typeStr == '下架') {
 
-            this.carAction(3,carData.id);
+            this.carAction(3, carData.id);
 
-        }else if(typeStr=='编辑'){
+        } else if (typeStr == '编辑') {
 
             let navigatorParams = {
 
@@ -81,8 +81,8 @@ export default class CarMySourceScene extends BaceComponent{
                 component: EditCarScene,
                 params: {
 
-                    fromNew:false,
-                    carId:carData.id,
+                    fromNew: false,
+                    carId: carData.id,
                 }
             };
             this.toNextPage(navigatorParams);
@@ -90,104 +90,129 @@ export default class CarMySourceScene extends BaceComponent{
     }
 
 
-    carAction=(type,carID)=>{
+    carAction = (type, carID) => {
 
+        this.props.showModal(true);
         let url = AppUrls.BASEURL +'v1/car/status';
         request(url,'post',{
 
-            id:carID,
-            op_type:type,
+            id: carID,
+            op_type: type,
 
         }).then((response) => {
 
-            alert(type==2?'上架成功':'下架成功');
+            this.props.showModal(false);
+            if(type==3){
 
+                this.refs.upperFrameView.refreshingData();
+                this.props.showToast('下架成功');
+
+
+            }else if(type==2){
+
+                this.refs.AuditView.refreshingData();
+                this.props.showToast('上架成功');
+
+            }
 
         }, (error) => {
 
+            this.props.showModal(false);
             alert(error.msg);
         });
     }
 
-    render(){
-        return(
+    render() {
+        return (
             <View style={styles.rootContainer}>
-            <ScrollableTabView
-                style={styles.ScrollableTabView}
-                initialPage={0}
-                renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["已上架", "已下架", "未审核"]}/>}>
+                <ScrollableTabView
+                    style={styles.ScrollableTabView}
+                    initialPage={0}
+                    renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["已上架", "已下架", "未审核"]}/>}>
 
-                <MyCarSourceUpperFrameView  carCellClick={this.carCellClick} footButtonClick={this.footButtonClick}  tabLabel="ios-paper1"/>
-                <MyCarSourceDropFrameView   carCellClick={this.carCellClick} footButtonClick={this.footButtonClick}    tabLabel="ios-paper2"/>
-                <MyCarSourceAuditView       carCellClick={this.carCellClick} footButtonClick={this.footButtonClick}    tabLabel="ios-paper3"/>
+                    <MyCarSourceUpperFrameView carCellClick={this.carCellClick} footButtonClick={this.footButtonClick}
+                                               tabLabel="ios-paper1"/>
+                    <MyCarSourceDropFrameView carCellClick={this.carCellClick} footButtonClick={this.footButtonClick}
+                                              tabLabel="ios-paper2"/>
+                    <MyCarSourceAuditView carCellClick={this.carCellClick} footButtonClick={this.footButtonClick}
+                                          tabLabel="ios-paper3"/>
 
-            </ScrollableTabView>
-            <NavigatorView title='我的车源' backIconClick={this.backPage}/>
-        </View>)
+                </ScrollableTabView>
+                <NavigatorView title='我的车源' backIconClick={this.backPage}/>
+            </View>)
 
     }
 
 }
 
-class MyCarSourceUpperFrameView extends BaceComponent{
+class MyCarSourceUpperFrameView extends BaceComponent {
 
     // 构造
     constructor(props) {
         super(props);
         // 初始状态
 
-        const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id == r2.id });
+        const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id == r2.id});
         this.state = {
 
-            carData:carData,
-            isRefreshing:true,
+            carData: carData,
+            isRefreshing: true,
             renderPlaceholderOnly: 'blank',
+            carUpperFrameStatus:carUpperFrameStatus,
 
         };
     }
 
-    initFinish=()=>{
+    componentDidMount() {
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
+    }
+
+    initFinish = () => {
 
         this.setState({renderPlaceholderOnly: 'loading'});
         this.loadData();
     };
 
-    refreshingData=()=>{
+    refreshingData = () => {
 
         this.setState({
-            isRefreshing:true,
+            isRefreshing: true,
         });
         this.loadData();
 
     }
-    loadData=()=>{
+    loadData = () => {
 
-        let url = AppUrls.BASEURL +'v1/user/car'
+        let url = AppUrls.BASEURL + 'v1/user/car'
         carUpperFramePage = 1;
-        request(url,'post',{
-            car_status:'1',
-            page:carUpperFramePage,
-            row:10,
+        request(url, 'post', {
+            car_status: '1',
+            page: carUpperFramePage,
+            row: 10,
 
         }).then((response) => {
 
             console.log(response.mjson.data);
-            carUpperFrameData.push(...response.mjson.data.list);
+            carUpperFrameData=response.mjson.data.list;
             carUpperFrameStatus = response.mjson.data.status;
-            if(carUpperFrameData.length)
-            {
+            if (carUpperFrameData.length) {
                 this.setState({
-                    carData:this.state.carData.cloneWithRows(carUpperFrameData),
-                    isRefreshing:false,
+                    carData: this.state.carData.cloneWithRows(carUpperFrameData),
+                    isRefreshing: false,
                     renderPlaceholderOnly: 'success',
+                    carUpperFrameStatus:carUpperFrameStatus,
+
 
                 });
 
-            }else{
+            } else {
                 this.setState({
-                    isRefreshing:false,
+                    isRefreshing: false,
                     renderPlaceholderOnly: 'null',
-
+                    carUpperFrameStatus:carUpperFrameStatus,
 
                 });
             }
@@ -196,7 +221,7 @@ class MyCarSourceUpperFrameView extends BaceComponent{
 
             console.log(error);
             this.setState({
-                isRefreshing:false,
+                isRefreshing: false,
                 renderPlaceholderOnly: 'error',
 
             });
@@ -205,20 +230,20 @@ class MyCarSourceUpperFrameView extends BaceComponent{
 
     }
 
-    loadMoreData=()=>{
+    loadMoreData = () => {
 
-        let url = AppUrls.BASEURL +'v1/user/car'
+        let url = AppUrls.BASEURL + 'v1/user/car'
         carUpperFramePage += 1;
-        request(url,'post',{
-            car_status:'1',
-            page:carUpperFramePage,
-            row:10,
+        request(url, 'post', {
+            car_status: '1',
+            page: carUpperFramePage,
+            row: 10,
 
         }).then((response) => {
 
             console.log(response.mjson.data);
             carUpperFrameStatus = response.mjson.data.status;
-            let carData = cresponse.mjson.data.list;
+            let carData = response.mjson.data.list;
             if(carData.length)
             {
                 for(let i=0;i<carData.length;i++)
@@ -227,9 +252,15 @@ class MyCarSourceUpperFrameView extends BaceComponent{
                 }
 
                 this.setState({
-                    carData:this.state.carData.cloneWithRows(carUpperFrameData),
-                });
 
+                    carData:this.state.carData.cloneWithRows(carUpperFrameData),
+                    carUpperFrameStatus:carUpperFrameStatus,
+                });
+            }else {
+
+                this.setState({
+                    carUpperFrameStatus:carUpperFrameStatus,
+                });
             }
 
         }, (error) => {
@@ -240,10 +271,9 @@ class MyCarSourceUpperFrameView extends BaceComponent{
     }
 
 
+    toEnd = () => {
 
-    toEnd =() => {
-
-        if (carUpperFrameData.length && !this.state.isRefreshing && carUpperFrameStatus!=2) {
+        if (carUpperFrameData.length && !this.state.isRefreshing && carUpperFrameStatus != 2) {
             this.loadMoreData();
         }
 
@@ -254,18 +284,18 @@ class MyCarSourceUpperFrameView extends BaceComponent{
         if (this.state.isRefreshing) {
             return null;
         } else {
-            return (<ListFooter isLoadAll={carUpperFrameStatus==1? false : true} />)
+            return (<ListFooter isLoadAll={this.state.carUpperFrameStatus==1? false : true} />)
         }
     }
 
-    render(){
-        if (this.state.renderPlaceholderOnly!=='success') {
+    render() {
+        if (this.state.renderPlaceholderOnly !== 'success') {
             return (
                 <View style={styles.loadView}>
                     {this.loadView()}
                 </View>);
         }
-        return(
+        return (
 
             <View style={styles.viewContainer}>
                 {
@@ -276,7 +306,7 @@ class MyCarSourceUpperFrameView extends BaceComponent{
                                 initialListSize={10}
                                 onEndReachedThreshold={1}
                                 stickyHeaderIndices={[]}//仅ios
-                                enableEmptySections = {true}
+                                enableEmptySections={true}
                                 scrollRenderAheadDistance={10}
                                 pageSize={10}
                                 renderFooter={this.renderListFooter}
@@ -297,65 +327,76 @@ class MyCarSourceUpperFrameView extends BaceComponent{
 
 }
 
-class MyCarSourceDropFrameView extends BaceComponent{
+class MyCarSourceDropFrameView extends BaceComponent {
 
     // 构造
     constructor(props) {
         super(props);
         // 初始状态
 
-        const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id == r2.id });
+        const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id == r2.id});
         this.state = {
 
             carData:carData,
             isRefreshing:true,
+            carDropFrameStatus:carDropFrameStatus,
             renderPlaceholderOnly: 'blank',
 
 
         };
     }
 
-    initFinish=()=>{
+    componentDidMount() {
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
+    }
+
+
+    initFinish = () => {
         this.setState({renderPlaceholderOnly: 'loading'});
         this.loadData();
     };
 
-    refreshingData=()=>{
+    refreshingData = () => {
 
         this.setState({
-            isRefreshing:true,
+            isRefreshing: true,
         });
         this.loadData();
 
     }
-    loadData=()=>{
+    loadData = () => {
 
-        let url = AppUrls.BASEURL +'v1/user/car'
+        let url = AppUrls.BASEURL +'v1/user/car';
         carDropFramePage = 1;
-        request(url,'post',{
-            car_status:'2',
-            page:carDropFramePage,
-            row:10,
+        request(url, 'post', {
+            car_status: '2',
+            page: carDropFramePage,
+            row: 10,
 
         }).then((response) => {
 
             console.log(response.mjson.data);
-            carDropFrameData.push(...response.mjson.data.list);
+            carDropFrameData=response.mjson.data.list;
             carDropFrameStatus = response.mjson.data.status;
-            if(carDropFrameData.length)
-            {
+            if (carDropFrameData.length) {
                 this.setState({
                     carData:this.state.carData.cloneWithRows(carDropFrameData),
                     isRefreshing:false,
-                    renderPlaceholderOnly: 'success'
+                    renderPlaceholderOnly: 'success',
+                    carDropFrameStatus:carDropFrameStatus,
+
 
                 });
 
-            }else{
+            } else {
 
                 this.setState({
                     isRefreshing:false,
-                    renderPlaceholderOnly: 'null'
+                    renderPlaceholderOnly: 'null',
+                    carDropFrameStatus:carDropFrameStatus,
 
                 });
             }
@@ -365,27 +406,27 @@ class MyCarSourceDropFrameView extends BaceComponent{
             console.log(error);
             this.setState({
                 isRefreshing:false,
-                renderPlaceholderOnly: 'error'
+                renderPlaceholderOnly: 'error',
             });
 
         });
 
     }
 
-    loadMoreData=()=>{
+    loadMoreData = () => {
 
-        let url = AppUrls.BASEURL +'v1/user/car'
+        let url = AppUrls.BASEURL + 'v1/user/car'
         carDropFramePage += 1;
-        request(url,'post',{
-            car_status:'2',
-            page:carDropFramePage,
-            row:10,
+        request(url, 'post', {
+            car_status: '2',
+            page: carDropFramePage,
+            row: 10,
 
         }).then((response) => {
 
             console.log(response.mjson.data);
             carDropFrameStatus = response.mjson.data.status;
-            let carData = cresponse.mjson.data.list;
+            let carData = response.mjson.data.list;
             if(carData.length)
             {
                 for(let i=0;i<carData.length;i++)
@@ -395,8 +436,14 @@ class MyCarSourceDropFrameView extends BaceComponent{
 
                 this.setState({
                     carData:this.state.carData.cloneWithRows(carDropFrameData),
+                    carDropFrameStatus:carDropFrameStatus,
                 });
 
+            }else {
+
+                this.setState({
+                    carDropFrameStatus:carDropFrameStatus,
+                });
             }
 
         }, (error) => {
@@ -407,9 +454,9 @@ class MyCarSourceDropFrameView extends BaceComponent{
     }
 
 
-    toEnd =() => {
+    toEnd = () => {
 
-        if (carDropFrameData.length && !this.state.isRefreshing && carDropFrameStatus!=2) {
+        if (carDropFrameData.length && !this.state.isRefreshing && this.state.carDropFrameStatus!=2) {
             this.loadMoreData();
         }
 
@@ -420,18 +467,18 @@ class MyCarSourceDropFrameView extends BaceComponent{
         if (this.state.isRefreshing) {
             return null;
         } else {
-            return (<ListFooter isLoadAll={carDropFrameStatus==1? false : true} />)
+            return (<ListFooter isLoadAll={this.state.carDropFrameStatus==1? false : true} />)
         }
     }
 
-    render(){
-        if (this.state.renderPlaceholderOnly!=='success') {
+    render() {
+        if (this.state.renderPlaceholderOnly !== 'success') {
             return (
                 <View style={styles.loadView}>
                     {this.loadView()}
                 </View>);
         }
-        return(
+        return (
 
             <View style={styles.viewContainer}>
                 {
@@ -442,7 +489,7 @@ class MyCarSourceDropFrameView extends BaceComponent{
                                 initialListSize={10}
                                 onEndReachedThreshold={1}
                                 stickyHeaderIndices={[]}//仅ios
-                                enableEmptySections = {true}
+                                enableEmptySections={true}
                                 scrollRenderAheadDistance={10}
                                 pageSize={10}
                                 renderFooter={this.renderListFooter}
@@ -463,65 +510,74 @@ class MyCarSourceDropFrameView extends BaceComponent{
 
 }
 
-class MyCarSourceAuditView extends BaceComponent{
+class MyCarSourceAuditView extends BaceComponent {
 
     // 构造
     constructor(props) {
         super(props);
         // 初始状态
 
-        const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id == r2.id });
+        const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id == r2.id});
         this.state = {
 
             carData:carData,
             isRefreshing:true,
+            carAuditStatus:carAuditStatus,
             renderPlaceholderOnly: 'blank',
 
         };
     }
 
-    initFinish=()=>{
+    componentDidMount() {
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
+    }
+
+
+    initFinish = () => {
 
         this.setState({renderPlaceholderOnly: 'loading'});
         this.loadData();
     };
 
-    refreshingData=()=>{
+    refreshingData = () => {
 
         this.setState({
-            isRefreshing:true,
+            isRefreshing: true,
         });
         this.loadData();
 
     }
-    loadData=()=>{
+    loadData = () => {
 
-        let url = AppUrls.BASEURL +'v1/car/preList'
+        let url = AppUrls.BASEURL + 'v1/car/preList'
         carAuditPage = 1;
-        request(url,'post',{
-            page:carAuditPage,
-            row:10,
+        request(url, 'post', {
+            page: carAuditPage,
+            row: 10,
 
         }).then((response) => {
 
             console.log(response.mjson.data);
-            carAuditData.push(...response.mjson.data.list);
+            carAuditData=response.mjson.data.list;
             carAuditStatus = response.mjson.data.status;
-            if(carAuditData.length)
-            {
+            if (carAuditData.length) {
                 this.setState({
                     carData:this.state.carData.cloneWithRows(carAuditData),
                     isRefreshing:false,
-                    renderPlaceholderOnly: 'success'
+                    renderPlaceholderOnly: 'success',
+                    carAuditStatus:carAuditStatus,
 
                 });
 
-            }else{
+            } else {
 
                 this.setState({
                     isRefreshing:false,
-                    renderPlaceholderOnly: 'null'
-
+                    renderPlaceholderOnly: 'null',
+                    carAuditStatus:carAuditStatus,
                 });
             }
 
@@ -529,7 +585,7 @@ class MyCarSourceAuditView extends BaceComponent{
 
             console.log(error);
             this.setState({
-                isRefreshing:false,
+                isRefreshing: false,
                 renderPlaceholderOnly: 'error'
             });
 
@@ -537,19 +593,19 @@ class MyCarSourceAuditView extends BaceComponent{
 
     }
 
-    loadMoreData=()=>{
+    loadMoreData = () => {
 
-        let url = AppUrls.BASEURL +'v1/car/preList'
+        let url = AppUrls.BASEURL + 'v1/car/preList'
         carAuditPage += 1;
-        request(url,'post',{
-            page:carAuditPage,
-            row:10,
+        request(url, 'post', {
+            page: carAuditPage,
+            row: 10,
 
         }).then((response) => {
 
             console.log(response.mjson.data);
             carAuditStatus = response.mjson.data.status;
-            let carData = cresponse.mjson.data.list;
+            let carData = response.mjson.data.list;
             if(carData.length)
             {
                 for(let i=0;i<carData.length;i++)
@@ -559,8 +615,14 @@ class MyCarSourceAuditView extends BaceComponent{
 
                 this.setState({
                     carData:this.state.carData.cloneWithRows(carAuditData),
+                    carAuditStatus:carAuditStatus,
                 });
 
+            }else
+            {
+                this.state({
+                    carAuditStatus:carAuditStatus,
+                })
             }
 
         }, (error) => {
@@ -572,10 +634,10 @@ class MyCarSourceAuditView extends BaceComponent{
 
 
 
-
     toEnd =() => {
 
-        if (carAuditData.length && !this.state.isRefreshing && carAuditStatus!=2) {
+        if (carAuditData.length && !this.state.isRefreshing && this.state.carAuditStatus!=2) {
+
             this.loadMoreData();
         }
 
@@ -586,18 +648,18 @@ class MyCarSourceAuditView extends BaceComponent{
         if (this.state.isRefreshing) {
             return null;
         } else {
-            return (<ListFooter isLoadAll={carAuditStatus==1? false : true} />)
+            return (<ListFooter isLoadAll={this.state.carAuditStatus==1? false : true} />)
         }
     }
 
-    render(){
-        if (this.state.renderPlaceholderOnly!=='success') {
+    render() {
+        if (this.state.renderPlaceholderOnly !== 'success') {
             return (
                 <View style={styles.loadView}>
                     {this.loadView()}
                 </View>);
         }
-        return(
+        return (
 
             <View style={styles.viewContainer}>
                 {
@@ -608,7 +670,7 @@ class MyCarSourceAuditView extends BaceComponent{
                                 initialListSize={10}
                                 onEndReachedThreshold={1}
                                 stickyHeaderIndices={[]}//仅ios
-                                enableEmptySections = {true}
+                                enableEmptySections={true}
                                 scrollRenderAheadDistance={10}
                                 pageSize={10}
                                 renderFooter={this.renderListFooter}
@@ -632,29 +694,29 @@ class MyCarSourceAuditView extends BaceComponent{
 
 const styles = StyleSheet.create({
 
-    rootContainer:{
+    rootContainer: {
 
-        flex:1,
-        backgroundColor:fontAndColor.COLORA4,
+        flex: 1,
+        backgroundColor: fontAndColor.COLORA4,
 
     },
-    ScrollableTabView:{
+    ScrollableTabView: {
 
         marginTop: Pixel.getTitlePixel(64),
     },
-    loadView:{
+    loadView: {
         flex: 1,
         backgroundColor: 'white',
-        marginTop:5,
+        marginTop: 5,
     },
-    viewContainer:{
-        flex:1,
-        backgroundColor:fontAndColor.COLORA4
+    viewContainer: {
+        flex: 1,
+        backgroundColor: fontAndColor.COLORA4
     },
-    listView:{
+    listView: {
 
-        backgroundColor:fontAndColor.COLORA4,
-        marginTop:5
+        backgroundColor: fontAndColor.COLORA4,
+        marginTop: 5
     }
 
 })

@@ -40,7 +40,8 @@ export default class ModelSelect extends PureComponent {
         this.modelData = [];
         this.state = {
             renderPlaceholderOnly: true,
-            modelName:''
+            modelName:'',
+            showHint:false
         }
     }
 
@@ -105,6 +106,7 @@ export default class ModelSelect extends PureComponent {
     //车架号改变
     _onVinChange = (text) => {
         if (text.length === 17) {
+            this.props.carNumberBack(false);
             let params ={
                 vin:text,
             };
@@ -115,6 +117,9 @@ export default class ModelSelect extends PureComponent {
                         let rd = response.mjson.data;
                         if(rd.length === 0){
                             this._insertVinNum(text);
+                            this.setState({
+                                showHint:true
+                            });
                         }else if(rd.length === 1){
                             this.modelInfo['brand_id'] = rd[0].brand_id;
                             this.modelInfo['model_id'] = rd[0].model_id;
@@ -122,17 +127,29 @@ export default class ModelSelect extends PureComponent {
                             this.modelInfo['model_year'] = rd[0].model_year;
                             this.modelInfo['model_name'] = rd[0].model_name;
                             this._insertVinAndModel(text,JSON.stringify(this.modelInfo),rd[0].model_name);
+                            this.setState({
+                                showHint:true
+                            });
                         }else if(rd.length > 1){
                             this.modelData = response.mjson.data;
                             this.vinModal.refresh();
                             this.vinModal.openModal();
+                            this.setState({
+                                showHint:true
+                            });
                         }
                     }else {
                         this._insertVinNum(text);
+                        this.setState({
+                            showHint:true
+                        });
                     }
                 },
                 (error)=>{
                     this._insertVinNum(text);
+                    this.setState({
+                        showHint:true
+                    });
                 }
             );
         }
@@ -175,7 +192,6 @@ export default class ModelSelect extends PureComponent {
                     console.log(data.error);
                 }
             });
-        this.props.carNumberBack(false);
     };
 
     //根据车架号操作数据库
@@ -272,16 +288,21 @@ export default class ModelSelect extends PureComponent {
                         </TouchableOpacity>
                     </View>
                     <Text style={styles.fontHint}>建议您扫描登记证或行驶证上的车架号</Text>
-                    <TouchableOpacity
-                        style={[styles.circleContainer,styles.modelCircle]}
-                        activeOpacity={0.6}
-                        onPress={()=>{this._modelPress()}}>
-                        <View style={styles.rowCenter}>
-                            <Text style={[styles.fontMain,styles.leftText]}>请选择车型</Text>
-                            <Text style={[styles.fontMain,styles.fillSpace]}>{this.state.modelName}</Text>
-                            <Image style={styles.imgContainer} source={arrow}/>
-                        </View>
-                    </TouchableOpacity>
+
+                    <View style={styles.modelCircle}>
+                        {this.state.showHint && <Text style={styles.fontHintBelow}>未解析出车型,请自行选择!</Text>}
+                        <TouchableOpacity
+                            style={[styles.circleContainer,styles.hintAlign]}
+                            activeOpacity={0.6}
+                            onPress={()=>{this._modelPress()}}>
+                            <View style={styles.rowCenter}>
+                                <Text style={[styles.fontMain,styles.leftText]}>请选择车型</Text>
+                                <Text style={[styles.fontMain,styles.fillSpace]}>{this.state.modelName}</Text>
+                                <Image style={styles.imgContainer} source={arrow}/>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+
                 </Image>
             </View>
 
@@ -299,6 +320,9 @@ const styles = StyleSheet.create({
     },
     modelCircle: {
         marginTop: Pixel.getPixel(45)
+    },
+    hintAlign:{
+        marginTop: Pixel.getPixel(10)
     },
     circleContainer: {
         height: Pixel.getPixel(44),
@@ -322,6 +346,12 @@ const styles = StyleSheet.create({
     },
     fontHint: {
         marginTop: Pixel.getPixel(10),
+        marginLeft: Pixel.getPixel(55),
+        color: '#FFFFFF',
+        fontSize: Pixel.getFontPixel(12),
+        opacity: 0.6,
+    },
+    fontHintBelow: {
         marginLeft: Pixel.getPixel(55),
         color: '#FFFFFF',
         fontSize: Pixel.getFontPixel(12),

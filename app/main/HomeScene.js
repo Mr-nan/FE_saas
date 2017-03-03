@@ -109,9 +109,10 @@ export default class HomeScene extends BaseComponet {
         if (status == 1) {
             page++;
             this.getData();
-        } else {
-            this.props.jumpScene('carpage');
         }
+        // else {
+        //     this.props.jumpScene('carpage');
+        // }
     };
 
     render() {
@@ -164,7 +165,12 @@ export default class HomeScene extends BaseComponet {
         if (this.state.isRefreshing) {
             return null;
         } else {
-            return (<LoadMoreFooter isLoadAll={status==2?true:false}/>)
+            return (<TouchableOpacity onPress={()=>{
+                    this.props.jumpScene('carpage');
+            }} activeOpacity={0.8} style={{width:width,height:Pixel.getPixel(60),backgroundColor: fontAndClolr.COLORA3,
+            alignItems:'center'}}>
+                <Text style={{fontSize: Pixel.getFontPixel(14),marginTop:Pixel.getPixel(7)}}>查看更多车源 ></Text>
+            </TouchableOpacity>)
         }
 
     }
@@ -213,6 +219,17 @@ export default class HomeScene extends BaseComponet {
 
                 <View style={{flexDirection: 'row'}}>
                     <ViewPagers/>
+                    <TouchableOpacity onPress={()=>{
+                            this.props.jumpScene('carpage','true');
+                    }} activeOpacity={0.8} style={{backgroundColor: 'rgba(255,255,255,0.8)',
+                    width: width-Pixel.getPixel(40),height:Pixel.getPixel(27),position:'absolute',marginTop:Pixel.getTitlePixel(26)
+                    ,marginLeft:Pixel.getPixel(20),borderRadius:100,justifyContent:'center',alignItems: 'center',
+                    flexDirection:'row'}}>
+                        <Image style={{width:Pixel.getPixel(17),height:Pixel.getPixel(17)}}
+                               source={require('../../images/findIcon.png')}/>
+                        <Text style={{backgroundColor: '#00000000',fontSize: Pixel.getPixel(fontAndClolr.CONTENTFONT24),
+                        color:fontAndClolr.COLORA1}}> 搜索您要找的车</Text>
+                    </TouchableOpacity>
                 </View>
 
                 <View style={cellSheet.header}>
@@ -255,10 +272,7 @@ export default class HomeScene extends BaseComponet {
 
                         </View>
                     </TouchableOpacity>
-
-
                 </View>
-
             </View>
 
         )
@@ -319,7 +333,7 @@ const cellSheet = StyleSheet.create({
 
         flex: 1,
         marginTop: Pixel.getPixel(0),   //设置listView 顶在最上面
-        backgroundColor: 'white',
+        backgroundColor: fontAndClolr.COLORA3,
     },
 
     row: {
@@ -362,7 +376,7 @@ const cellSheet = StyleSheet.create({
         marginTop: Pixel.getPixel(8),
         color: fontAndClolr.COLORA0,
         fontSize: Pixel.getFontPixel(fontAndClolr.BUTTONFONT30),
-        height: Pixel.getPixel(40),
+        height: Pixel.getPixel(38),
 
     }
 

@@ -36,8 +36,8 @@ export default class DetailAutoDate extends Component{
             if(typeof(model_year) == "undefined" || model_year === ""){
                 model_year='2000';
             }
-            if(manufacture === '') manufacture = model_year +'-06';
-            if(init_reg === '') init_reg = model_year +'-06';
+            if(manufacture === '') manufacture = model_year +'-06-01';
+            if(init_reg === '') init_reg = model_year +'-06-01';
             this.props.sqlUtil.changeData(
                 'UPDATE publishCar SET manufacture = ?,init_reg = ? WHERE vin = ?',
                 [ manufacture,init_reg, this.props.carData.vin]);
@@ -84,7 +84,7 @@ export default class DetailAutoDate extends Component{
     }
 
     _handleDatePicked = (date)=>{
-        let d = this.dateFormat(date,'yyyy-MM');
+        let d = this.dateFormat(date,'yyyy-MM-dd');
         if(this.type === 'factory'){
             this.setState({factoryDate:d});
             this.props.sqlUtil.changeData(

@@ -77,7 +77,7 @@ export default class DetailModelSelect extends PureComponent {
                 status:0,}
         };
 
-        this.toNextPage(brandParams);
+        this.props.goToPage(brandParams);
     };
 
     _checkedCarClick = (carObject)=>{
