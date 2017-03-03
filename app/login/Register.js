@@ -20,6 +20,8 @@ import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 import md5 from "react-native-md5";
 import LoginAndRegister from "./LoginAndRegister";
+import * as ImageUpload from '../utils/ImageUpload';
+import ImageSource from '../publish/component/ImageSource';
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -32,6 +34,24 @@ var uid: '';
 var idcardf: '';
 var idcardback: '';
 var businessid: '';
+
+const options = {
+    //弹出框选项
+    title: '请选择',
+    cancelButtonTitle: '取消',
+    takePhotoButtonTitle: '拍照',
+    chooseFromLibraryButtonTitle: '选择相册',
+    allowsEditing: true,
+    noData: false,
+    quality: 0.5,
+    maxWidth: 480,
+    maxHeight: 800,
+    storageOptions: {
+        skipBackup: true,
+        path: 'images',
+    }
+};
+
 export default class Register extends BaseComponent {
     constructor(props) {
         super(props);
@@ -42,6 +62,7 @@ export default class Register extends BaseComponent {
             verifyCode: null,
             renderPlaceholderOnly: true,
         }
+        this.id;
     }
 
     initFinish = () => {
@@ -70,6 +91,12 @@ export default class Register extends BaseComponent {
         }
         return (
             <View style={styles.container}>
+                <ImageSource galleryClick={this._galleryClick}
+                             cameraClick={this._cameraClick}
+                             ref={(modal) => {
+                                 this.imageSource = modal
+                             }}/>
+
                 <NavigationBar
                     leftImageCallBack={this.backPage}
                     rightTextCallBack={this.register}
@@ -250,6 +277,15 @@ export default class Register extends BaseComponent {
         }
     }
 
+
+    _labelPress = () => {
+        this.imageSource.openModal();
+    };
+
+    _rePhoto = () => {
+        this.imageSource.openModal();
+    };
+
     exitPage = (mProps) => {
         const navigator = this.props.navigator;
         if (navigator) {
@@ -320,44 +356,40 @@ export default class Register extends BaseComponent {
     }
 
     selectPhotoTapped(id) {
-        const options = {
-            //弹出框选项
-            title: '请选择',
-            cancelButtonTitle: '取消',
-            takePhotoButtonTitle: '拍照',
-            chooseFromLibraryButtonTitle: '选择相册',
-            allowsEditing: true,
-            noData: true,
-            quality: 0.5,
-            maxWidth: 500,
-            maxHeight: 300,
-            storageOptions: {
-                skipBackup: true,
-                path: 'images',
-            }
-        };
+        this.id = id;
+        this._rePhoto();
+    }
 
-        ImagePicker.showImagePicker(options, (response) => {
-
+    _cameraClick = () => {
+        ImagePicker.launchCamera(options, (response) => {
             if (response.didCancel) {
             } else if (response.error) {
             } else if (response.customButton) {
             } else {
-                this.imageUploadUtil(response, id);
+                this.uploadImage(response, this.id);
             }
         });
     }
 
-    imageUploadUtil(response, id) {
+    _galleryClick = () => {
+        ImagePicker.launchImageLibrary(options, (response) => {
+            if (response.didCancel) {
+            } else if (response.error) {
+            } else if (response.customButton) {
+            } else {
+                this.uploadImage(response, this.id);
+            }
+        });
+    }
+
+    uploadImage = (response, id) => {
         let params = {
-            device_code: "dycd_bms_manage_android",
-            file_name: response.fileName,
             base64_file: 'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g, '%2B')
         };
-        let source = {uri: response.uri};
-        request(AppUrls.AUTH_UPLOAD_FILE, 'Post', params)
+        ImageUpload.request(AppUrls.AUTH_UPLOAD_FILE, 'Post', params)
             .then((response) => {
                 if (response.mjson.code == 1) {
+                    let source = {uri: response.mjson.data.url};
                     if (id === 'idcard') {
                         idcardf = response.mjson.data.file_id;
                         if (idcardf != "") {
@@ -393,13 +425,10 @@ export default class Register extends BaseComponent {
                     this.props.showToast(response.mjson.msg + "!");
                 }
             }, (error) => {
-                if (error.mjson.code == -300 || error.mjson.code == -500) {
-                    this.props.showToast("图片上传失败");
-                } else {
-                    this.props.showToast(error.mjson.msg + "!");
-                }
+                console.log("error === " + error);
             });
     }
+
 }
 
 const styles = StyleSheet.create({

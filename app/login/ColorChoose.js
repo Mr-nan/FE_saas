@@ -22,19 +22,19 @@ const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 var contents = [
     {name: "黑色", color: '#000000'},
-    {name: "白色", color: '#000000'},
-    {name: "银灰色", color: '#000000'},
-    {name: "深灰色", color: '#000000'},
-    {name: "红色", color: '#cc092f'},
-    {name: "橙色", color: '#000000'},
-    {name: "绿色", color: '#000000'},
-    {name: "蓝色", color: '#000000'},
-    {name: "咖啡色", color: '#000000'},
-    {name: "紫色", color: '#000000'},
-    {name: "香槟色", color: '#000000'},
-    {name: "多彩色", color: '#000000'},
-    {name: "黄色", color: '#000000'},
-    {name: "其他", color: '#000000'},
+    {name: "白色", color: '#E1E1E1'},
+    {name: "银灰色", color: '#999999'},
+    {name: "深灰色", color: '#707070'},
+    {name: "红色", color: '#FF0000'},
+    {name: "橙色", color: '#FF8000'},
+    {name: "绿色", color: '#8FE477'},
+    {name: "蓝色", color: '#51C1F9'},
+    {name: "咖啡色", color: '#94672B'},
+    {name: "紫色", color: '#D389ED'},
+    {name: "香槟色", color: '#E6D29E'},
+    {name: "多彩色", color: '#4CD964'},
+    {name: "黄色", color: '#FFFF00'},
+    {name: "其他", color: '#E1E1E1'},
 ];
 export default class ColorChoose extends BaseComponent {
 
