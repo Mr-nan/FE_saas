@@ -105,6 +105,7 @@ export default class ModelSelect extends PureComponent {
     //车架号改变
     _onVinChange = (text) => {
         if (text.length === 17) {
+            this.props.carNumberBack(false);
             let params ={
                 vin:text,
             };
@@ -175,7 +176,6 @@ export default class ModelSelect extends PureComponent {
                     console.log(data.error);
                 }
             });
-        this.props.carNumberBack(false);
     };
 
     //根据车架号操作数据库

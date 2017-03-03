@@ -124,11 +124,11 @@ export  default  class carSourceListScene extends BaseComponent {
     loadData = () => {
 
         let url = AppUrls.BASEURL + 'v1/car/index';
-        APIParameter.page = 0;
+        APIParameter.page = 1;
         request(url, 'post', APIParameter)
             .then((response) => {
 
-                carData.push(...response.mjson.data.list);
+                carData=response.mjson.data.list;
                 APIParameter.status = response.mjson.data.status;
 
                 if (this.state.isFillData !== APIParameter.status) {
@@ -350,6 +350,7 @@ export  default  class carSourceListScene extends BaseComponent {
     };
 
     hideCheckedView=()=>{
+        this.refs.headView.checkSelect(currentCheckedIndex); // 取消之前选择按钮状态
         this.setState({
             isHide: true,
         });

@@ -154,42 +154,49 @@ export default class DetailAutoPhoto extends Component {
                 let params ={
                     file:'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g,'%2B')
                 };
-
+                this.props.showLoading();
                 ImageUpload.request(AppUrls.INDEX_UPLOAD,'post',params).then(
                     (response)=>{
-                        if(viewData.hasPhoto === true){
-                            this.pictures.map((pic)=>{
-                                if(pic.name === viewData.name){
-                                    pic.file_id = response.mjson.data.file_id;
-                                    pic.url = response.mjson.data.url;
-                                }
-                            });
-                        }else{
-                            let temp ={
-                                name : viewData.name,
-                                file_id : response.mjson.data.file_id,
-                                url: response.mjson.data.url,
-                            };
-                            this.pictures.push(temp);
+                        if(response.mycode === 1){
+                            if(viewData.hasPhoto === true){
+                                this.pictures.map((pic)=>{
+                                    if(pic.name === viewData.name){
+                                        pic.file_id = response.mjson.data.file_id;
+                                        pic.url = response.mjson.data.url;
+                                    }
+                                });
+                            }else{
+                                let temp ={
+                                    name : viewData.name,
+                                    file_id : response.mjson.data.file_id,
+                                    url: response.mjson.data.url,
+                                };
+                                this.pictures.push(temp);
+                            }
+
+                            for(let i = 0;i < this.pictures.length;i++){
+                                this.viewData.map((pic)=>{
+                                    if(this.pictures[i].name === pic.name){
+                                        pic.hasPhoto = true;
+                                        pic.img_url = this.pictures[i].url;
+                                    }
+                                })
+                            }
+
+                            this.grid.refresh(this.viewData);
+
+                            this.props.sqlUtil.changeData(
+                                'UPDATE publishCar SET pictures = ? WHERE vin = ?',
+                                [JSON.stringify(this.pictures), this.props.carData.vin]);
+                            this.props.closeLoading();
+                        }else {
+                            this.props.showHint(response.mjson.msg);
+                            this.props.closeLoading();
                         }
-
-                        for(let i = 0;i < this.pictures.length;i++){
-                            this.viewData.map((pic)=>{
-                                if(this.pictures[i].name === pic.name){
-                                    pic.hasPhoto = true;
-                                    pic.img_url = this.pictures[i].url;
-                                }
-                            })
-                        }
-
-                        this.grid.refresh(this.viewData);
-
-                        this.props.sqlUtil.changeData(
-                            'UPDATE publishCar SET pictures = ? WHERE vin = ?',
-                            [JSON.stringify(this.pictures), this.props.carData.vin]);
 
                     },(error)=>{
-                        console.log(error);
+                        this.props.showHint(error);
+                        this.props.closeLoading();
                     });
 
             }
@@ -212,44 +219,50 @@ export default class DetailAutoPhoto extends Component {
                 let params ={
                     file:'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g,'%2B')
                 };
-
+                this.props.showLoading();
                 ImageUpload.request(AppUrls.INDEX_UPLOAD,'post',params).then(
                     (response)=>{
-                        if(viewData.hasPhoto === true){
-                            this.pictures.map((pic)=>{
-                                if(pic.name === viewData.name){
-                                    pic.file_id = response.mjson.data.file_id;
-                                    pic.url = response.mjson.data.url;
-                                }
-                            });
+                        if(response.mycode === 1){
+                            if(viewData.hasPhoto === true){
+                                this.pictures.map((pic)=>{
+                                    if(pic.name === viewData.name){
+                                        pic.file_id = response.mjson.data.file_id;
+                                        pic.url = response.mjson.data.url;
+                                    }
+                                });
+                            }else{
+                                let temp ={
+                                    name : viewData.name,
+                                    file_id : response.mjson.data.file_id,
+                                    url: response.mjson.data.url,
+                                };
+                                this.pictures.push(temp);
+                            }
+
+                            for(let i = 0;i < this.pictures.length;i++){
+                                this.viewData.map((pic)=>{
+                                    if(this.pictures[i].name === pic.name){
+                                        pic.hasPhoto = true;
+                                        pic.img_url = this.pictures[i].url;
+                                    }
+                                })
+                            }
+
+                            this.grid.refresh(this.viewData);
+
+                            this.props.sqlUtil.changeData(
+                                'UPDATE publishCar SET pictures = ? WHERE vin = ?',
+                                [ JSON.stringify(this.pictures), this.props.carData.vin]);
+                            this.props.closeLoading();
                         }else{
-                            let temp ={
-                                name : viewData.name,
-                                file_id : response.mjson.data.file_id,
-                                url: response.mjson.data.url,
-                            };
-                            this.pictures.push(temp);
+                            this.props.showHint(response.mjson.msg);
+                            this.props.closeLoading();
                         }
-
-                        for(let i = 0;i < this.pictures.length;i++){
-                            this.viewData.map((pic)=>{
-                                if(this.pictures[i].name === pic.name){
-                                    pic.hasPhoto = true;
-                                    pic.img_url = this.pictures[i].url;
-                                }
-                            })
-                        }
-
-                        this.grid.refresh(this.viewData);
-
-                        this.props.sqlUtil.changeData(
-                            'UPDATE publishCar SET pictures = ? WHERE vin = ?',
-                            [ JSON.stringify(this.pictures), this.props.carData.vin]);
 
                     },(error)=>{
-                        console.log(error);
+                        this.props.showHint(error);
+                        this.props.closeLoading();
                     });
-
             }
         });
     };
