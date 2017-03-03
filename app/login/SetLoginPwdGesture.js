@@ -7,7 +7,8 @@ import {
     Image,
     Dimensions,
     InteractionManager,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    TouchableOpacity
 } from "react-native";
 import SetPwdGesture from "../gesture/SetPwdGesture";
 import BaseComponent from "../component/BaseComponent";
@@ -100,6 +101,12 @@ export default class SetLoginPwdGesture extends BaseComponent {
                         <Text style={this.state.status !== "wrong" ? styles.topMessageStyle : styles.topMessageWStyle}>
                             {this.state.message}
                         </Text>
+
+                        <Text style={{
+                            color: FontAndColor.COLORA1,
+                            fontSize: Pixel.getFontPixel(14),
+                            height: Pixel.getPixel(20),
+                        }}>   {this.savePwd == '' ? " 请至少连接4个圆，完成手势密码" : ""}</Text>
                     </View>
                 }
                 status={this.state.status}
@@ -115,7 +122,19 @@ export default class SetLoginPwdGesture extends BaseComponent {
                         });
                     }
                 }}
-                onEnd={(password) => this.onEnd(password)}/>
+                onEnd={(password) => this.onEnd(password)}
+                BottomView={
+                    <TouchableOpacity style={{marginTop: Height / 2 - Pixel.getPixel(30)}} onPress={() => {
+                        this.savePwd = '';
+                        this.Passwords = '';
+                        this.setCount = 4;
+                        this.setState({
+                            status: 'normal',
+                            message: '重新绘制解锁图案',
+                        });
+                    }}>
+                        <Text style={styles.bottomSytle }>重置手势密码</Text>
+                    </TouchableOpacity>}/>
         );
     }
 
@@ -254,5 +273,9 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         marginBottom: 35,
         marginTop: 35
-    }
+    },
+    bottomSytle: {
+        fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT),
+        color: FontAndColor.COLORA2,
+    },
 });
