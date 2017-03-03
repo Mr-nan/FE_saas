@@ -102,42 +102,21 @@ export default class ColorChoose extends BaseComponent {
 
     _renderRow = (data, sindex, rowID) => {
         return (
-            <TouchableOpacity>
-                <View style={{
-                    width: 100,
-                    height: 40,
-                    alignItems: 'center',
-                    borderWidth: 1,
-                    borderColor: FontAndColor.COLORA1,
-                    marginTop: 10,
-                    marginLeft: 5,
-                    marginRight: 5,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                }}>
-                    <View
-                        style={{
-                            backgroundColor: data.color,
-                            width: 30,
-                            height: 30,
-                            marginLeft: 5,
-                            borderRadius: 15,
-                            paddingTop: 5,
-                            paddingBottom: 5,
-                        }}/>
-                    <Text style={{flex: 1, textAlign: 'center', marginRight: 5}}>{data.name}</Text>
+            <TouchableOpacity onPress={() => this.finshPage(data)}>
+                <View style={styles.itemStyle}>
+                    <View style={[styles.itemIconStyle, {backgroundColor: data.color,}]}/>
+                    <Text style={styles.itemTextStyle}>{data.name}</Text>
                 </View>
             </TouchableOpacity>
 
         )
     }
 
-    noCallBack = () => {
-        this.toNextPage({
-            name: 'LoginFailSmsNo',
-            component: LoginFailSmsNo,
-            params: {},
-        })
+    finshPage = (data) => {
+        if (this.props.callBack) {
+            this.props.callBack(data.name);
+        }
+        this.backPage();
     }
 
 }
@@ -158,4 +137,27 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         alignItems: 'flex-start',
     },
+    itemStyle: {
+        width: 100,
+        height: 40,
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: FontAndColor.COLORA1,
+        marginTop: 10,
+        marginLeft: 5,
+        marginRight: 5,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    itemIconStyle: {
+        width: 30,
+        height: 30,
+        marginLeft: 5,
+        borderRadius: 15,
+        paddingTop: 5,
+        paddingBottom: 5,
+    },
+    itemTextStyle: {
+        flex: 1, textAlign: 'center', marginRight: 5
+    }
 });

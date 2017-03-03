@@ -63,7 +63,11 @@ export default class LoginAndRegister extends BaseComponent {
                     this.toNextPage({
                         name: 'ColorChoose',
                         component: ColorChoose,
-                        params: {},
+                        params: {
+                            callBack:(color)=>{
+                                alert(color)
+                            }
+                        }
                     })
                 }}/>
             </View>
