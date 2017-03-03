@@ -29,9 +29,8 @@ import CarCell              from './znComponent/CarCell';
 import CarInfoScene         from './CarInfoScene';
 import CarBrandSelectScene  from './CarBrandSelectScene';
 import CityListScene        from './CityListScene';
-import ZNLoadView           from './znComponent/ZNLoadView'
-import {SequencingButton,SequencingView} from './znComponent/CarSequencingView';
-import * as AppUrls from "../constant/appUrls";
+import {SequencingButton,SequencingView}                    from './znComponent/CarSequencingView';
+import * as AppUrls         from "../constant/appUrls";
 import  {request}           from '../utils/RequestUtil';
 import PixelUtil            from '../utils/PixelUtil';
 
@@ -115,6 +114,7 @@ export  default  class carSourceListScene extends BaseComponent {
     // 筛选数据刷新
     filterData=()=>{
         carData = [];
+        this.setState({isRefreshing:true, dataSource: this.state.dataSource.cloneWithRows(carData),});
         this.props.showModal(true);
         this.loadData();
 
@@ -129,7 +129,13 @@ export  default  class carSourceListScene extends BaseComponent {
             .then((response) => {
 
                 carData=response.mjson.data.list;
-                APIParameter.status = response.mjson.data.status;
+                if(typeof(response.mjson.data.start)== "undefined"){
+                    APIParameter.start = 0;
+
+                }else {
+                    APIParameter.start = response.mjson.data.start;
+                }
+                APIParameter.status =  response.mjson.data.status;
 
                 if (this.state.isFillData !== APIParameter.status) {
                     this.setState({
@@ -167,6 +173,11 @@ export  default  class carSourceListScene extends BaseComponent {
         request(url, 'post', APIParameter)
             .then((response) => {
 
+                if(typeof(response.mjson.data.start)== "undefined"){
+                    APIParameter.start = 0;
+                }else {
+                    APIParameter.start = response.mjson.data.start;
+                }
                 APIParameter.status = response.mjson.data.status;
                 if (this.state.isFillData !== APIParameter.status) {
                     this.setState({
@@ -192,8 +203,7 @@ export  default  class carSourceListScene extends BaseComponent {
 
     toEnd =() => {
 
-        let isFilterData = this.refs.ZNLoadView.getVisible();
-            if (carData.length && APIParameter.status == 1 && !isFilterData && !this.state.isRefreshing) {
+            if (carData.length && APIParameter.status == 1 && !this.state.isRefreshing) {
                 console.log('加载ing');
                 this.loadMoreData();
             }
@@ -550,7 +560,7 @@ export  default  class carSourceListScene extends BaseComponent {
 
                     {
                         this.state.dataSource && (
-                            <SGListView
+                            <ListView
                                 dataSource={this.state.dataSource}
                                 ref={'carListView'}
                                 initialListSize={10}
@@ -593,7 +603,6 @@ export  default  class carSourceListScene extends BaseComponent {
                             checkedTypeString={currentCheckedIndex == 2 ? this.state.checkedCarAgeType.title:this.state.checkedCarKMType.title}/>)
                 }
 
-                <ZNLoadView ref="ZNLoadView"/>
             </View>
 
         )
