@@ -32,6 +32,7 @@ import * as Urls from '../constant/appUrls';
 import {request} from '../utils/RequestUtil';
 import  LoadMoreFooter from '../component/LoadMoreFooter';
 import CarInfoScene from '../carSource/CarInfoScene';
+import WebScene from './WebScene';
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 let allList = [];
 let allData = {};
@@ -219,7 +220,9 @@ export default class HomeScene extends BaseComponet {
             <View>
 
                 <View style={{flexDirection: 'row'}}>
-                    <ViewPagers items={allData}/>
+                    <ViewPagers callBack={(urls)=>{
+                       this.props.callBack({name:'WebScene',component:WebScene,params:{webUrl:urls}});
+                    }} items={allData}/>
                     <TouchableOpacity onPress={()=>{
                             this.props.jumpScene('carpage','true');
                     }} activeOpacity={0.8} style={{backgroundColor: 'rgba(255,255,255,0.8)',

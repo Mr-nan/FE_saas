@@ -120,8 +120,8 @@ export default class CarCollectSourceScene extends BaceComponent {
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return ( <View style={styles.rootContainer}>
-                <NavigatorView title='我的收藏' backIconClick={this.backPage}/>
                 {this.loadView()}
+                <NavigatorView title='我的收藏' backIconClick={this.backPage}/>
             </View>);
         }
         return (

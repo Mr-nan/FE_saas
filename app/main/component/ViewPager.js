@@ -6,7 +6,8 @@ import {
     Easing,
     Dimensions,
     Image,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    TouchableOpacity
 } from 'react-native';
 
 
@@ -66,9 +67,15 @@ export default class ViewPagers extends Component {
             );
         } else {
             return (
-                <Image style={styles.postPosition}
-                       source={{uri: data.ret_img}}
-                />
+                <TouchableOpacity onPress={()=>{
+                 this.props.callBack(data.ret_url);
+                }} activeOpacity={1} style={{width: width,
+        height: Pixel.getPixel(225),}}>
+                    <Image style={styles.postPosition}
+                           source={{uri: data.ret_img+'?x-oss-process=image/resize,w_'+width+',h_'+Pixel.getPixel(225)}}
+                    />
+                </TouchableOpacity>
+
             );
         }
     }
@@ -77,6 +84,6 @@ const styles = StyleSheet.create({
     postPosition: {
         width: width,
         height: Pixel.getPixel(225),
-        resizeMode:'stretch'
+        resizeMode: 'stretch'
     },
 });
