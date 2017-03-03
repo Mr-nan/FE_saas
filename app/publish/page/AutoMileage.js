@@ -137,20 +137,26 @@ export default class AutoMileage extends Component {
                 (data) => {
                     if (data.code === 1) {
                         let rd = data.result.rows.item(0);
+
                         if(this.isEmpty(rd.model) === true){
                             this.props.showHint('请选择车型信息');
+                            this.props.closeLoading();
                             return;
                         }
+
                         if(this.isEmpty(rd.pictures) === true){
                             this.props.showHint('请拍摄车辆照片');
+                            this.props.closeLoading();
                             return;
                         }
                         if(this.isEmpty(rd.mileage) === true){
                             this.props.showHint('请填写车辆历程');
+                            this.props.closeLoading();
                             return;
                         }
                         if(this.isEmpty(rd.manufacture) === true){
                             this.props.showHint('请选择车辆出厂日期');
+                            this.props.closeLoading();
                             return;
                         }
                         let modelInfo = JSON.parse(rd.model);
@@ -177,7 +183,7 @@ export default class AutoMileage extends Component {
                                         this.successModal.openModal();
                                     }else{
                                         this.props.closeLoading();
-                                        this.props.showHint(response.mjson.msg);
+                                        this.props.showHint('网络请求失败');
                                     }
                                 },
                                 (error) => {

@@ -33,6 +33,8 @@ export default class NewCarScene extends BaseComponent{
 
     initFinish=()=>{
         StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST,(data)=>{
+            console.log('++++++>>>>>');
+            console.log(data.result);
             if(data.code == 1 && data.result != ''){
                 let enters = JSON.parse(data.result);
                 if(enters.length === 1){
