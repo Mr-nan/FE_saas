@@ -43,7 +43,7 @@ const options = {
     chooseFromLibraryButtonTitle: '选择相册',
     allowsEditing: true,
     noData: false,
-    quality: 0.5,
+    quality: 1.0,
     maxWidth: 480,
     maxHeight: 800,
     storageOptions: {
@@ -386,8 +386,10 @@ export default class Register extends BaseComponent {
         let params = {
             base64_file: 'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g, '%2B')
         };
+        this.props.showModal(true);
         ImageUpload.request(AppUrls.AUTH_UPLOAD_FILE, 'Post', params)
             .then((response) => {
+                this.props.showModal(false);
                 if (response.mjson.code == 1) {
                     let source = {uri: response.mjson.data.url};
                     if (id === 'idcard') {
@@ -396,7 +398,6 @@ export default class Register extends BaseComponent {
                             this.setState({
                                 idcard: source
                             });
-                            this.props.showToast("图片上传成功");
                         } else {
                             this.props.showToast("id 为空 图片上传失败");
                         }
@@ -406,7 +407,6 @@ export default class Register extends BaseComponent {
                             this.setState({
                                 idcardBack: source
                             });
-                            this.props.showToast("图片上传成功");
                         } else {
                             this.props.showToast("id 为空 图片上传失败");
                         }
@@ -416,7 +416,6 @@ export default class Register extends BaseComponent {
                             this.setState({
                                 businessLicense: source
                             });
-                            this.props.showToast("图片上传成功");
                         } else {
                             this.props.showToast("id 为空 图片上传失败");
                         }
@@ -425,6 +424,8 @@ export default class Register extends BaseComponent {
                     this.props.showToast(response.mjson.msg + "!");
                 }
             }, (error) => {
+                this.props.showModal(false);
+                this.props.showToast("图片上传失败");
                 console.log("error === " + error);
             });
     }
