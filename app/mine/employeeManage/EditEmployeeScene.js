@@ -150,6 +150,31 @@ export default class EditEmployeeScene extends BaseComponent {
         });
 
     }
+    deleteData = () => {
+        let url = AppUrls.BASEURL + 'v1/user.employee/destroy';
+        request(url, 'post', {
+            staff_id : this.props.id,
+
+        }).then((response) => {
+
+            console.log(response);
+            if (response.mjson.code == '1') {
+                this.props.showToast("注销成功");
+                if (this.props.callBack) {
+                    this.props.callBack();
+                }
+                this.backPage();
+            }else{
+                this.props.showToast(response.mjson.msg);
+            }
+
+        }, (error) => {
+
+            console.log(error);
+
+        });
+
+    }
     // 构造
     constructor(props) {
 
@@ -166,6 +191,7 @@ export default class EditEmployeeScene extends BaseComponent {
         Car[2].cars[0].name=mobile;
         Car[1].cars[0].name=company;
         Car[1].cars[1].name=role;
+        this.companyName=company;
 
         StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST, (data) => {
             if (data.code == 1 && data.result != null) {
@@ -226,7 +252,7 @@ export default class EditEmployeeScene extends BaseComponent {
 
         this.xb = ['男', '女',];
         this.gongneng = ['实际控制人', '财务', '收车人员 ','销售人员'];
-        this.gongneng2 = ['管理员','财务','员工'];
+        // this.gongneng2 = ['管理员','财务','员工'];
         this.state = {
             source: ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
             maskSource: this.xb,
@@ -281,7 +307,7 @@ export default class EditEmployeeScene extends BaseComponent {
 
     /**      注销按钮点击事件          */
     _loginOut = () => {
-
+        this.deleteData();
     }
     /**      导航栏完成按钮点击事件          */
     _completedForEdit = () => {
@@ -359,6 +385,8 @@ export default class EditEmployeeScene extends BaseComponent {
 
                 Car[SECTIONID].cars[ROWID].name =this.companys[itemIds[0]];
                 this.items=itemIds;
+            }else {
+                Car[SECTIONID].cars[ROWID].name =this.companyName;
             }
         }
         console.log(this.items+'--');
@@ -412,17 +440,9 @@ export default class EditEmployeeScene extends BaseComponent {
     }
     /**      蒙版listview  点击选择,返回点击cell的id          */
     _onClick = (rowID) => {
-        if(SECTIONID ===1&& ROWID ===1){
-            if(rowID==='0' ||rowID==='1'){
-                Car[SECTIONID].cars[ROWID].name = this.gongneng2[rowID];
-            }else {
-                Car[SECTIONID].cars[ROWID].name = this.gongneng2[2];
-            }
-            this.roleId= Number.parseInt(rowID)+1+'';
-        }else{
-            this.sex=Number.parseInt(rowID)+1+'';
-            Car[SECTIONID].cars[ROWID].name = this.currentData[rowID];
-        }
+        this.roleId= Number.parseInt(rowID)+1+'';
+        this.sex=Number.parseInt(rowID)+1+'';
+        Car[SECTIONID].cars[ROWID].name = this.currentData[rowID];
 
 
 
@@ -479,7 +499,7 @@ export default class EditEmployeeScene extends BaseComponent {
     // 每一行中的数据
     _renderRow = (rowData, sectionID, rowID) => {
         let HIDDEN;
-        let PASSWORD;
+        let PASSWORD=false;
         if ((sectionID === 0 && rowID === 0) || sectionID === 2) {
             HIDDEN = false;
         }
@@ -505,7 +525,7 @@ export default class EditEmployeeScene extends BaseComponent {
                         <TextInput ref={sectionID + rowID} defaultValue={rowData.name}
                                    placeholder={"请输入" + rowData.title } style={styles.inputStyle}
                                    onChangeText={(text)=>this._textChange(sectionID, rowID, text)}
-                                   password={PASSWORD}
+                                   secureTextEntry={PASSWORD}
                                    underlineColorAndroid={"#00000000"}
 
                         />}

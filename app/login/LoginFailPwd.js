@@ -73,6 +73,7 @@ export default class LoginFailPwd extends BaseComponent {
                     ref="phone"
                     textPlaceholder={'请输入手机号码'}
                     rightIcon={false}
+                    clearValue={true}
                     maxLength={11}
                     viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
                     keyboardType={'phone-pad'}
@@ -83,6 +84,7 @@ export default class LoginFailPwd extends BaseComponent {
                     textPlaceholder={'请设置BMS登录密码'}
                     rightIcon={false}
                     leftIcon={true}
+                    clearValue={true}
                     maxLength={16}
                     secureTextEntry={true}
                     leftIconUri={require('./../../images/login/password.png')}
@@ -92,6 +94,7 @@ export default class LoginFailPwd extends BaseComponent {
                     textPlaceholder={'请再次输入密码'}
                     rightIcon={false}
                     leftIcon={true}
+                    clearValue={true}
                     maxLength={16}
                     secureTextEntry={true}
                     leftIconUri={require('./../../images/login/password.png')}

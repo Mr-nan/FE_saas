@@ -114,13 +114,14 @@ export default class AutoPhoto extends Component {
                 console.log('User tapped custom button: ', response.customButton);
             }
             else {
-
+                console.log('11111111111111111111');
                 let params ={
                     file:'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g,'%2B')
                 };
                 this.props.showLoading();
                 ImageUpload.request(AppUrls.INDEX_UPLOAD,'Post',params).then(
                     (response)=>{
+                        console.log('22222222222222222');
                         if(response.mycode === 1){
                             this.selectSource = {uri: response.mjson.data.url};
                             this.setState({
@@ -140,12 +141,14 @@ export default class AutoPhoto extends Component {
                                 [ JSON.stringify(this.pictures), this.props.carData.vin]);
                             this.props.closeLoading();
                         }else {
-                            this.props.showHint(response.mjson.msg);
                             this.props.closeLoading();
+                            //this.props.showHint('上传失败');
+                            console.log('上传失败');
                         }
                     },(error)=>{
-                        this.props.showHint(error);
                         this.props.closeLoading();
+                        //this.props.showHint(error);
+                        console.log(error);
                 });
             }
         });
@@ -189,12 +192,14 @@ export default class AutoPhoto extends Component {
                                 [ JSON.stringify(this.pictures), this.props.carData.vin]);
                             this.props.closeLoading();
                         }else {
-                            this.props.showHint(response.mjson.msg);
                             this.props.closeLoading();
+                            // this.props.showHint('上传失败');
+                            console.log('上传失败');
                         }
                     },(error)=>{
-                        this.props.showHint(error);
                         this.props.closeLoading();
+                        // this.props.showHint(error);
+                        console.log(error);
                     });
             }
         });

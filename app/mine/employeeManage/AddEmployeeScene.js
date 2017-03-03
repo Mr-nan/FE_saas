@@ -192,7 +192,7 @@ export default class AddEmployeeScene extends BaseComponent {
 
         this.xb = ['男', '女',];
         this.gongneng = ['实际控制人', '财务', '收车人员 ','销售人员'];
-        this.gongneng2 = ['管理员','财务','员工'];
+        // this.gongneng2 = ['管理员','财务','员工'];
         this.state = {
             source: ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
             maskSource: this.xb,
@@ -378,17 +378,9 @@ export default class AddEmployeeScene extends BaseComponent {
     }
     /**      蒙版listview  点击选择,返回点击cell的id          */
     _onClick = (rowID) => {
-        if(SECTIONID ===1&& ROWID ===1){
-            if(rowID==='0' ||rowID==='1'){
-                Car[SECTIONID].cars[ROWID].name = this.gongneng2[rowID];
-            }else {
-                Car[SECTIONID].cars[ROWID].name = this.gongneng2[2];
-            }
             this.roleId= Number.parseInt(rowID)+1+'';
-        }else{
             this.sex=Number.parseInt(rowID)+1+'';
             Car[SECTIONID].cars[ROWID].name = this.currentData[rowID];
-        }
 
 
 
@@ -471,7 +463,7 @@ export default class AddEmployeeScene extends BaseComponent {
                         <TextInput ref={sectionID + rowID} defaultValue={rowData.name}
                                    placeholder={"请输入" + rowData.title } style={styles.inputStyle}
                                    onChangeText={(text)=>this._textChange(sectionID, rowID, text)}
-                                   password={PASSWORD}
+                                   secureTextEntry={PASSWORD}
                                    underlineColorAndroid={"#00000000"}
 
                         />}

@@ -190,13 +190,13 @@ export default class DetailAutoPhoto extends Component {
                                 [JSON.stringify(this.pictures), this.props.carData.vin]);
                             this.props.closeLoading();
                         }else {
-                            this.props.showHint(response.mjson.msg);
                             this.props.closeLoading();
+                            this.props.showHint('上传失败');
                         }
 
                     },(error)=>{
-                        this.props.showHint(error);
                         this.props.closeLoading();
+                        this.props.showHint(error);
                     });
 
             }
@@ -255,13 +255,13 @@ export default class DetailAutoPhoto extends Component {
                                 [ JSON.stringify(this.pictures), this.props.carData.vin]);
                             this.props.closeLoading();
                         }else{
-                            this.props.showHint(response.mjson.msg);
                             this.props.closeLoading();
+                            this.props.showHint('上传失败');
                         }
 
                     },(error)=>{
-                        this.props.showHint(error);
                         this.props.closeLoading();
+                        this.props.showHint(error);
                     });
             }
         });
