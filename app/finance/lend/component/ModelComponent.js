@@ -128,7 +128,7 @@ export class ModifyBorrowing extends Component{
                             <TextInput style={styles.inputText} placeholder='请输入借款金额' keyboardType='decimal-pad'></TextInput>
                         </View>
                         <View style={styles.showMessage}>
-                            <Text style={styles.showMessageText}>*可借额度{3}-{360}万</Text>
+                            <Text style={styles.showMessageText}>*可借额度{this.props.minLend}-{this.props.maxLend}万</Text>
                         </View>
 
                         <View style={styles.handelWarp}>

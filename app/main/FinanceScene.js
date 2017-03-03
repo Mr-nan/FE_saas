@@ -334,7 +334,7 @@ export default class FinanceSence extends BaseComponet {
                         alignItems: 'center'
                     }]}>
                             <MyButton {...this.buttonParams}/>
-                            <Text style={cellSheet.rowTopTextStyle}>源之宝汽车经销公司</Text>
+                            <Text style={cellSheet.rowTopTextStyle}>{this.state.customerName}</Text>
                         </View>
                         <View style={[{
                         height: Pixel.getPixel(40),
@@ -401,12 +401,16 @@ export default class FinanceSence extends BaseComponet {
                 inventory_financing_status: mnyData.inventory_financing_status,
                 purchase_archives_after_status: mnyData.purchase_archives_after_status,
                 purchase_archives_first_status: mnyData.purchase_archives_first_status,
-                purchase_status: mnyData.purchase_status
+                purchase_status: mnyData.purchase_status,
+                customerName:this.state.customerName
             };
             this.props.callBack(this.navigatorParams);
         } else {
             this.navigatorParams.name = "RepaymentScene";
             this.navigatorParams.component = RepaymentScene;
+            this.navigatorParams.params = {
+                customerName:this.state.customerName
+            };
             this.props.callBack(this.navigatorParams);
         }
     }
