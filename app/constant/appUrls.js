@@ -21,7 +21,7 @@ export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 /**
  * 测试地址
  */
-//export const BASEURL = 'http://api-gateway.test.dycd.com/';
+// export const BASEURL = 'http://api-gateway.test.dycd.com/';
 /**
  * 预发布地址
  */
@@ -156,13 +156,29 @@ export const GET_MNY = 'api/v3/account/get_mny';
  * 获取借款首页数据
  **/
 export const GET_APPLY_INFO='api/v3/account/get_apply_info';
-
-
+/**
+ * from @lhc
+ *
+ * 修改借款金额
+ **/
+export const SET_APPLY_MNY ='api/v3/account/set_apply_mny'
 /**
  * from @lhc
  * 获取订单车辆列表
  **/
 export const  GET_APPLY_CARLIST='api/v2/account/get_apply_carlist';
+
+/**
+ * from @lhc
+ * 获取订单车辆详情
+ **/
+
+export const  GET_CAR_INFO='api/v1/account/get_car_info'
+/**
+ * from @lhc
+ * 取消借款单车/库容
+ **/
+export const CANCEL_LOAN='api/v3/account/cancel_loan'
 
 /**
  * from @zhaojian

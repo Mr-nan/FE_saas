@@ -25,6 +25,7 @@ import  PixelUtil from '../utils/PixelUtil'
 import KurongDetaileScene from '../finance/lend/KurongDetaileScene';
 import CGDDetailSence from '../finance/lend/CGDDetailSence';
 import SingDetaileSence from '../finance/lend/SingDetaileSence';
+import ContractInfoScene from '../finance/lend/ContractInfoScene';
 var Pixel = new PixelUtil();
 /*
  * 获取屏幕的宽和高
@@ -380,7 +381,7 @@ export default class FinanceSence extends BaseComponet {
 
     _renderPlaceholderView = () => {
         return (
-            <View style={{width: width, height: height,backgroundColor:fontAndColor.COLORA3,alignItems: 'center'}}>
+            <View style={{flex:1,backgroundColor:fontAndColor.COLORA3,alignItems: 'center'}}>
                 {this.loadView()}
             </View>
         );

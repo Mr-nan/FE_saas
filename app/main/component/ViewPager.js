@@ -58,7 +58,6 @@ export default class ViewPagers extends Component {
                 autoPlay={true}                      //是否自动
                 initialPage={this.state.numberss}       //指定初始页面的index
                 locked={false}                        //为true时禁止滑动翻页
-
             />
 
 
