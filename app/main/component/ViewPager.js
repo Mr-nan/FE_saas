@@ -1,5 +1,4 @@
-
-import React,{ Component } from 'react';
+import React, {Component} from 'react';
 import {
     StyleSheet,
     View,
@@ -27,26 +26,20 @@ export default class ViewPagers extends Component {
     // 初始化模拟数据
     constructor(props) {
         super(props);
+        let alldata = this.props.items;
+        let imageItems = [];
+        if (alldata.banners == null || alldata.banners.length <= 0) {
+            imageItems.push({id: '-200', ret_img: '', ret_url: '', title: ''});
+        } else {
+            imageItems = alldata.banners;
+        }
         const dataSource = new ViewPager.DataSource({pageHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: dataSource.cloneWithPages(IMGS),
-            numberss:0
+            dataSource: dataSource.cloneWithPages(imageItems),
+            numberss: 0
         };
     }
 
-    setPageNumber=(pageNumber)=>{
-        console.log(pageNumber);
-        let number = 0;
-        if(pageNumber=="首页"){
-             number = 0;
-        }else if(pageNumber=="车源"){
-             number = 1;
-        }else{
-             number = 2;
-        }
-        this.setState({ numberss: number });
-        console.log(number);
-    }
 
     render() {
         return (
@@ -54,9 +47,9 @@ export default class ViewPagers extends Component {
             <ViewPager
                 dataSource={this.state.dataSource}    //数据源（必须）
                 renderPage={this._renderPage}         //page页面渲染方法（必须）
-                isLoop={false}                        //是否可以循环
+                isLoop={true}                        //是否可以循环
                 autoPlay={true}                      //是否自动
-                initialPage={this.state.numberss}       //指定初始页面的index
+                initialPage={0}       //指定初始页面的index
                 locked={false}                        //为true时禁止滑动翻页
             />
 
@@ -64,19 +57,26 @@ export default class ViewPagers extends Component {
         )
     }
 
-    _renderPage = (data, pageID) => {
-
-        return (
-            <Image style={styles.postPosition}
-                source={{uri: data}}
-            />
-        );
-
+    _renderPage = (data) => {
+        if (data.id == '-200') {
+            return (
+                <Image style={styles.postPosition}
+                       source={require('../../../images/mainImage/homebanner.png')}
+                />
+            );
+        } else {
+            return (
+                <Image style={styles.postPosition}
+                       source={{uri: data.ret_img}}
+                />
+            );
+        }
     }
 }
 const styles = StyleSheet.create({
-    postPosition:{
-        width:width,
+    postPosition: {
+        width: width,
         height: Pixel.getPixel(225),
+        resizeMode:'stretch'
     },
 });
