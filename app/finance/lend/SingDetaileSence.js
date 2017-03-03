@@ -12,6 +12,7 @@ import {
 import {CommnetListItem, LendCarItemCell, CommenButton,commnetStyle,ComentImageButton} from './component/ComponentBlob'
 import {width, height, fontadapeSize, adapeSize,STATECODE,PAGECOLOR,getRowData,getSectionData,changeToMillion} from './component/MethodComponent'
 import {ModifyBorrowing,LendSuccessAlert,ModalAlert} from './component/ModelComponent'
+import  OrderCarDetailScene from './OrderCarDetailScene'
 import  AllNavigationView from '../../component/AllNavigationView';
 import BaseComponent from '../../component/BaseComponent';
 import {request} from '../../utils/RequestUtil'
@@ -289,7 +290,15 @@ export  default  class SingDetaileSence extends BaseComponent {
 
     getCarInfo=(rowData)=>{
 
-        alert(rowData.autoid);
+      let navigatorParams = {
+            name: 'OrderCarDetailScene',
+            component: OrderCarDetailScene,
+            params: {
+                auto_id:rowData.auto_id,
+                type:'2'
+            }
+        }
+        this.toNextPage(navigatorParams);
 
     }
 

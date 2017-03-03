@@ -447,7 +447,7 @@ const styles = StyleSheet.create({
         paddingLeft:adapeSize(15),
         textAlign:'left',
         color:'#9e9e9e',
-        flex:0.4,
+        flex:0.3,
     },
     commentListItemRight:{
 

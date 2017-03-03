@@ -8,6 +8,8 @@ import {
     StyleSheet,
     View,
     ListView,
+    Image,
+    Text
 } from 'react-native';
 import {CommnetListItem, LendCarItemCell, CommenButton,commnetStyle,ComentImageButton} from './component/ComponentBlob'
 import {width, height, fontadapeSize, adapeSize,STATECODE,PAGECOLOR,getRowData,getSectionData,changeToMillion} from './component/MethodComponent'
@@ -15,8 +17,13 @@ import  AllNavigationView from '../../component/AllNavigationView';
 import BaseComponent from '../../component/BaseComponent';
 import {request} from '../../utils/RequestUtil'
 import *as apis from '../../constant/appUrls'
+import ImagePageView from 'react-native-viewpager'
 
+const ImageSouce= {
 
+    imageSouce:[]
+
+}
 export default class OrderCarDetailScene extends BaseComponent{
 
     constructor(props) {
@@ -30,9 +37,11 @@ export default class OrderCarDetailScene extends BaseComponent{
                 sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
             }
         )//
+        const ImageData = new ImagePageView.DataSource({pageHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             dataSource: ds.cloneWithRowsAndSections(this.titleNameBlob({},[])),
-            renderPlaceholderOnly: STATECODE.loading
+            renderPlaceholderOnly: STATECODE.loading,
+            imagePikerData: ImageData.cloneWithPages([])
         }
     }
 
@@ -53,76 +62,103 @@ export default class OrderCarDetailScene extends BaseComponent{
             .then((response) => {
 
                     let tempjson = response.mjson.data
-                    let carNum =Number.parseInt(tempjson.car_count)
-                    controlCode.stateCode=tempjson.status
-                    controlCode.extendCode=tempjson.is_extend;
-                    controlCode.lendType=tempjson.type;
-                    controlCode.minLend=changeToMillion(tempjson.min_loanmny);
-                    let Maxmum=Number.parseFloat(tempjson.max_loanmny)+Number.parseFloat(tempjson.payment_loanmny)
-                    controlCode.maxLend=changeToMillion(Maxmum)
-                    if (carNum>0){
 
-                        this.getOrderCarInfo(tempjson)
-                    }
-                    else {
-                        this.setState({
+                    tempjson.img_list.map((item)=>{
 
-                            dataSource:this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(tempjson,[])),
-                            renderPlaceholderOnly: STATECODE.loadSuccess
-                        })
-                    }
+                        ImageSouce.imageSouce.push('https://photocdn.sohu.com/20170303/Img482260518.jpg')
+                    })
 
+
+                    this.setState({
+                        renderPlaceholderOnly: STATECODE.loadSuccess,
+                        dataSource:this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(tempjson,tempjson.img_list)),
+                        imagePikerData:this.state.imagePikerData.cloneWithPages(ImageSouce.imageSouce),
+                    })
                 },
                 (error) => {
 
                     this.setState({
                         renderPlaceholderOnly:STATECODE.loadError,
                     })
-
                 });
-
     }
 
 
     titleNameBlob=(jsonData,carData)=>{
 
         let dataSource = {};
-        dataSource['section1']=[
-            {title: '评估日期', key: jsonData.loan_code},
-            {title:'评估师',key:jsonData.product_type},
-            {title: '车型', key: jsonData.loantype_str},
-            {title: '车牌号', key: jsonData.payment_loanmny_str},
-            {title: '车架号', key: jsonData.payment_rate_str},
-            {title: '车身颜色', key: jsonData.loanperiodstr},
-            {title: '内饰颜色', key: jsonData.use_time_str},
-            {title: '监管地点',     key: jsonData.status_str},
-            {title: '评估金额', key: jsonData.loan_time},
-            {title: '放款金额', key: jsonData.remarks},
-            {title: '在库天数', key: jsonData.remarks},
+        let section1=[
+            {title: '评估日期', key: jsonData.reassessed_time},
+            {title:'评估师',key:jsonData.reassessed_username},
+            {title: '车型', key: jsonData.model_name},
+            {title: '车牌号', key: jsonData.plate_number},
+            {title: '车架号', key: jsonData.frame_number},
+            {title: '车身颜色', key: jsonData.car_color},
+            {title: '内饰颜色', key: jsonData.trim_color},
+            {title: '监管地点',     key: jsonData.rp_name},
+            {title: '评估金额', key: changeToMillion(jsonData.lend_mny)+'万元'},
+            {title: '放款金额', key: changeToMillion(jsonData.loan_mny_fk)+'万元'},
+            {title: '在库天数', key: jsonData.library_day+'天'},
         ]
+        if (jsonData.isextension!=='1'){
+
+            section1.push({title: '保证金', key: jsonData.bondmny},{title: '保证金状态', key: jsonData.bond_status_str})
+        }
+
+
+        dataSource['section1']=section1
         if(carData.length>0){
-            dataSource['section2']=tempCarDate;
+            dataSource['section2']=carData;
         }
 
         return dataSource;
     }
 
+    renderImagePage=(data,pageId)=>{
+
+        return (
+            <Image source={{uri:data}} style={{ backgroundColor:'white', height: adapeSize(250), width:width}}/>
+        )
+
+    }
+
     renderRow = (rowData, sectionID, rowId, highlightRow) => {
 
-        let Color = this.getStyle(controlCode.stateCode);
+
         if (sectionID === 'section2') {
-            return <LendCarItemCell onPress={()=>{}} carName={rowData.model_name} orderNum={rowData.loan_number} orderState={rowData.state} price={rowData.price}/>
+            if(rowId==='0'){
+
+                return(
+                    <ImagePageView
+                    dataSource={this.state.imagePikerData}    //数据源（必须）
+                    renderPage={this.renderImagePage}     //page页面渲染方法（必须）
+                    isLoop={false}                        //是否可以循环
+                    autoPlay={false}                      //是否自动
+                    locked={false}                        //为true时禁止滑动翻页
+                />)
+
+            }else {
+
+                return null;
+            }
         }
         return (
-            <CommnetListItem textStyle={rowData.title === '评估日期' ? {color: PAGECOLOR.COLORA4} : null} leftTitle={rowData.title} showValue={rowData.key}/>
+            <CommnetListItem textStyle={rowData.title === '评估日期' ? {color: PAGECOLOR.COLORB2} : null} leftTitle={rowData.title} showValue={rowData.key}/>
         );
     }
     renderSectionHeader = (sectionData, sectionID) => {
-        return (
 
-            <View style={[sectionID !== 'section1' && {backgroundColor: '#f0eff5', height: 20}]}>
-            </View>
-        )
+        if(sectionID==='section2'){
+            return (
+
+                <View style={ {backgroundColor:PAGECOLOR.COLORA3, height:adapeSize(20),alignItems:'flex-start',justifyContent:'center'}}>
+                    <Text style={{marginLeft:adapeSize(15)}}>车辆照片</Text>
+                </View>
+            )
+        }
+
+        return null;
+
     }
     renderSeparator =(sectionID,rowId,adjacentRowHighlighted)=>{
 
@@ -149,17 +185,19 @@ export default class OrderCarDetailScene extends BaseComponent{
                     <AllNavigationView title='车辆详情' backIconClick={()=>{
                         this.backPage();
                     }}/>
-
                 </View>);
         }
         return(
+            <View style={styles.container}>
             <ListView
+                style={{marginTop:64}}
                 dataSource={this.state.dataSource}
                 renderRow={this.renderRow}
                 renderSeparator={this.renderSeparator}
-                renderHeader={this.renderSectionHeader}
+                renderSectionHeader={this.renderSectionHeader}
             />
-
+            <AllNavigationView title='车辆详情' backIconClick={()=>{ this.backPage();}}/>
+            </View>
         )
     }
 
