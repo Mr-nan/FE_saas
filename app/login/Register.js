@@ -426,7 +426,6 @@ export default class Register extends BaseComponent {
             }, (error) => {
                 this.props.showModal(false);
                 this.props.showToast("图片上传失败");
-                console.log("error === " + error);
             });
     }
 
