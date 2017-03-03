@@ -71,7 +71,6 @@ export default class EmployeeManageScene extends BaseComponent {
             name: 'AddEmployeeScene',
             component: AddEmployeeScene,
             params: {
-                show: true
             },
         })
         alert("dianjile添加员工")
@@ -122,8 +121,8 @@ export default class EmployeeManageScene extends BaseComponent {
                 }}
                 activeOpacity={0.8} onPress={() => {
                 this.toNextPage({
-                    name: 'EditEmployeeScene',
-                    component: EditEmployeeScene,
+                    name: 'AddEmployeeScene',
+                    component: AddEmployeeScene,
                     params: {
                         isAddEmployee: true,
                     },

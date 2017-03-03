@@ -16,6 +16,7 @@ import  PixelUtil from '../../utils/PixelUtil';
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 import MyButton from '../../component/MyButton';
 import SelectMaskComponent from './SelectMaskComponent'
+import SelectMaskComponent1 from './SelectMaskComponent1'
 import NavigationView from '../../component/AllNavigationView';
 import BaseComponent from '../../component/BaseComponent';
 import * as AppUrls from '../../constant/appUrls';
@@ -81,17 +82,27 @@ export default class EditEmployeeScene extends BaseComponent {
         this.loadData();
     }
     saveData = () => {
-        console.log(Car[0]);
+        if(SECTIONID ===1&& ROWID ===0){
+            if (this.items.length>0){
+
+                Car[SECTIONID].cars[ROWID].name =this.companys[this.items[0]];
+                for(let value of this.items){
+
+                    this.company_idss.push(this.company_ids[value]);
+                }
+            }
+        }
+        console.log(this.company_idss);
             let url = AppUrls.BASEURL + 'v1/user.employee/save';
-            console.log(Car[2].cars[0].name+"-"+Car[2].cars[1].name+'-'+Car[2].cars[2].name+'-'+this.props.role_id+"----"+Car[0].cars[0].name+'--'+this.props.user_id);
+            console.log(Car[2].cars[0].name+"-"+Car[2].cars[1].name+'-'+Car[2].cars[2].name+'-'+this.role_id+"----"+Car[0].cars[0].name+'--'+this.props.id);
             request(url, 'post', {
                 account	: Car[2].cars[0].name,
-            company_ids	: '6689',
+            company_ids	: this.company_idss.toString(),
             password    : Car[2].cars[1].name,
             repassword : Car[2].cars[2].name,
             role_id	   : this.roleId,   //角色ID【必填】	number	1：实际控制人 2：财务 3：收车人员 4：销售人员
-            sex	   :  '1',//number	1：男（默认）；2：女
-            staff_id: this.props.user_id,	  //	number
+            sex	   :  this.sex,//number	1：男（默认）；2：女
+            staff_id: this.props.id,	  //	number
             username: Car[0].cars[0].name
 
             }).then((response) => {
@@ -122,6 +133,8 @@ export default class EditEmployeeScene extends BaseComponent {
             console.log(response);
             if (response.mjson.code == '1') {
                 this.roleId=response.mjson.data.company.role_id;
+                this.sex =response.mjson.data.base.sex;
+                this.company_idss=response.mjson.data.company.ids;
             }else{
                 this.props.showToast(response.mjson.msg);
             }
@@ -139,7 +152,10 @@ export default class EditEmployeeScene extends BaseComponent {
         super(props);
         this.companys = [];
         this.company_ids=[];
+        this.company_idss=[];
+        this.items=[];
         this.roleId= '';
+        this.sex=''
         const {username, mobile, sex, company,role} = this.props;
         Car[0].cars[0].name=username;
         Car[0].cars[1].name=sex;
@@ -150,6 +166,7 @@ export default class EditEmployeeScene extends BaseComponent {
         StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST, (data) => {
             if (data.code == 1 && data.result != null) {
                 console.log(data.result);
+                this.comps = JSON.parse(data.result);
                 for(let value of JSON.parse(data.result) ){
                     this.companys.push(value.enterprise_name);
                     this.company_ids.push(value.enterprise_uid);
@@ -231,6 +248,13 @@ export default class EditEmployeeScene extends BaseComponent {
                                          this.selectModal = modal
                                      }}
                 />
+                {/*              蒙版选择器        */}
+                <SelectMaskComponent1 viewData={[]} onClick={(rowID)=>this.onClickCompany(rowID)}
+                                     ref={(modal)=> {
+                                         this.selectModal1 = modal
+                                     }}
+                />
+
 
                 { /**      界面listview          */}
                 <ListView
@@ -270,7 +294,7 @@ export default class EditEmployeeScene extends BaseComponent {
             this.props.showToast("两次输入的密码不同");
             return;
         }
-        this.loadData()
+        this.saveData()
 
 
     }
@@ -303,7 +327,7 @@ export default class EditEmployeeScene extends BaseComponent {
         if (sectionID === 0 && rowID === 1) {
             this._openModal(this.xb);
         } else if (sectionID === 1 && rowID === 0) {
-            this._openModal(this.companys);
+            this._openModal1(this.comps);
         } else if (sectionID === 1 && rowID === 1) {
             this._openModal(this.gongneng);
         }
@@ -313,6 +337,74 @@ export default class EditEmployeeScene extends BaseComponent {
         this.selectModal.changeData(dt);
         this.selectModal.openModal();
         this.currentData = dt;
+        if(SECTIONID ===1&& ROWID ===0){
+            // this.selectModal.isCompanys();
+        }
+    }
+    _openModal1 = (dt, rowId, sectionID) => {
+        this.selectModal1.changeData(dt);
+        this.selectModal1.openModal();
+        this.currentData = dt;
+        if(SECTIONID ===1&& ROWID ===0){
+            // this.selectModal.isCompanys();
+        }
+    }
+    onClickCompany=(itemIds)=>{
+        if(SECTIONID ===1&& ROWID ===0){
+            if (itemIds.length>0){
+
+                Car[SECTIONID].cars[ROWID].name =this.companys[itemIds[0]];
+                this.items=itemIds;
+            }
+        }
+        console.log(this.items+'--');
+        let jsonData = Car;
+
+        //    定义变量
+        let dataBlob = {},
+            sectionIDs = [],
+            rowIDs = [];
+        for (let i = 0; i < jsonData.length; i++) {
+            //    1.拿到所有的sectionId
+            sectionIDs.push(i);
+
+            //    2.把组中的内容放入dataBlob内容中
+            dataBlob[i] = jsonData[i].title;
+
+            //    3.设置改组中每条数据的结构
+            rowIDs[i] = [];
+
+            //    4.取出改组中所有的数据
+            let cars = jsonData[i].cars;
+
+            //    5.便利cars,设置每组的列表数据
+            for (let j = 0; j < cars.length; j++) {
+                //    改组中的每条对应的rowId
+                rowIDs[i].push(j);
+
+                // 把每一行中的内容放入dataBlob对象中
+                dataBlob[i + ':' + j] = cars[j];
+            }
+        }
+
+        let getSectionData = (dataBlob, sectionID) => {
+            return dataBlob[sectionID];
+        };
+
+        let getRowData = (dataBlob, sectionID, rowID) => {
+            return dataBlob[sectionID + ":" + rowID];
+        };
+        ds = new ListView.DataSource({
+                getSectionData: getSectionData,
+                getRowData: getRowData,
+                rowHasChanged: (r1, r2) => r1 !== r2,
+                sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
+            }
+        );
+
+        this.setState({
+            source: ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
+        });
     }
     /**      蒙版listview  点击选择,返回点击cell的id          */
     _onClick = (rowID) => {
@@ -324,6 +416,7 @@ export default class EditEmployeeScene extends BaseComponent {
             }
             this.roleId= Number.parseInt(rowID)+1+'';
         }else{
+            this.sex=Number.parseInt(rowID)+1+'';
             Car[SECTIONID].cars[ROWID].name = this.currentData[rowID];
         }
 
