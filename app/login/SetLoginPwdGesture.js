@@ -32,6 +32,7 @@ export default class SetLoginPwdGesture extends BaseComponent {
         }
         this.savePwd = '';
         this.Passwords = '';
+        this.setCount = 4;
     }
 
     initFinish = () => {
@@ -154,13 +155,25 @@ export default class SetLoginPwdGesture extends BaseComponent {
                     StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
                     StorageUtil.mSetItem(StorageKeyNames.NEED_GESTURE, 'false');
                 } else {
+                    this.props.showToast("设置成功");
                     this.backPage();
                 }
             } else {
-                this.setState({
-                    status: 'wrong',
-                    message: '验证失败请重新输入'
-                });
+                if (this.setCount > 0) {
+                    this.setState({
+                        status: 'wrong',
+                        message: '验证失败,还有' + this.setCount + '次机会'
+                    });
+                    this.setCount--;
+                } else {
+                    this.savePwd = '';
+                    this.Passwords = '';
+                    this.setCount = 4;
+                    this.setState({
+                        status: 'wrong',
+                        message: '重新绘制解锁图案',
+                    });
+                }
             }
         }
     }
