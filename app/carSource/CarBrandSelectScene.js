@@ -349,7 +349,7 @@ export default class CarBrandSelectScene extends BaseComponent {
     }
 }
 
-class CarSeriesList extends Component {
+class CarSeriesList extends BaseComponent {
 
     componentWillReceiveProps(nextProps) {
         this.setState({

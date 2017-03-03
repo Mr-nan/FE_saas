@@ -78,13 +78,7 @@ const carIconsData = [
 ];
 
 
-const carImageArray = [
-    'https://images.unsplash.com/photo-1441260038675-7329ab4cc264?h=1024',
-    'https://images.unsplash.com/photo-1441126270775-739547c8680c?h=1024',
-    'https://images.unsplash.com/photo-1440964829947-ca3277bd37f8?h=1024',
-    'https://images.unsplash.com/photo-1441126270775-739547c8680c?h=1024',
-    'https://images.unsplash.com/photo-1440964829947-ca3277bd37f8?h=1024',
-    'https://images.unsplash.com/photo-1440964829947-ca3277bd37f8?h=1024'
+let carImageArray = [
 ];
 
 
@@ -95,13 +89,12 @@ export default class CarInfoScene extends BaseComponent {
     constructor(props) {
         super(props);
         // 初始状态
-        const dataSource = new ImagePageView.DataSource({pageHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
 
-            imageArray: dataSource.cloneWithPages(carImageArray),
+            imageArray:  new ImagePageView.DataSource({pageHasChanged: (r1, r2) => r1 !== r2}),
             isHidePhotoView:true,
             renderPlaceholderOnly: 'blank',
-            carData:{},
+            carData:{imgs:[]},
             currentImageIndex:1,
             isShowShared:false,
             isShowPhotoView:false,
@@ -117,13 +110,13 @@ export default class CarInfoScene extends BaseComponent {
 
     loadData=()=> {
 
-        console.log('ID:'+this.props.carID);
         let url = AppUrls.BASEURL + 'v1/car/detail';
         request(url, 'post', {
 
             id: this.props.carID,
 
         }).then((response) => {
+            console.log(response);
             let carData = response.mjson.data;
             carData.carIconsContentData=[
 
@@ -135,12 +128,18 @@ export default class CarInfoScene extends BaseComponent {
                 carData.car_color+'/'+carData.trim_color,
             ];
 
-          console.log(carData);
-            this.setState({
 
+            if(carData.imgs.length<=0){
+
+                carData.imgs=[{ url:'https://images.unsplash.com/photo-1441260038675-7329ab4cc264?h=1024'}];
+            }
+
+            this.setState({
                 carData:carData,
+                imageArray: this.state.imageArray.cloneWithPages(carData.imgs),
                 renderPlaceholderOnly: 'success'
             });
+
         }, (error) => {
             this.setState({renderPlaceholderOnly: 'error'});
         });
@@ -150,7 +149,7 @@ export default class CarInfoScene extends BaseComponent {
 
         const date = new Date();
         date.setTime(time);
-        return(date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate());
+        return(date.getFullYear()+"-"+(date.getMonth()+1));
 
     };
 
@@ -179,6 +178,13 @@ export default class CarInfoScene extends BaseComponent {
 
     showPhotoView=()=>{
 
+        carImageArray=[];
+
+        this.state.carData.imgs.map((data,index)=>{
+
+            carImageArray.push(data.url);
+        })
+
         if(!this.state.isShowPhotoView){
             this.setState({
                 isShowPhotoView:true,
@@ -197,17 +203,68 @@ export default class CarInfoScene extends BaseComponent {
 
     };
 
+    // 添加收藏
+    addStoreAction=(isStoreClick)=>{
+
+        let url = AppUrls.BASEURL + 'v1/user.favorites/create';
+        request(url,'post',{
+
+            id:this.state.carData.id,
+
+        }).then((response) => {
+
+            console.log(response);
+            if(response.mycode==1){
+
+                isStoreClick(true);
+                this.props.showToast('收藏成功');
+            }else {
+
+                this.props.showToast(response.mycode.msg);
+            }
+
+        }, (error) => {
+
+            this.props.showToast('收藏失败');
+
+        });
+
+    }
+
+    // 取消收藏
+    cancelStoreAction=(isStoreClick)=>{
+
+        let url = AppUrls.BASEURL + 'v1/user.favorites/delete';
+        request(url,'post',{
+
+            id:this.state.carData.id,
+
+        }).then((response) => {
+
+            console.log(response);
+            if(response.mycode==1){
+
+                isStoreClick(false);
+                this.props.showToast('取消收藏');
+
+            }else {
+
+                this.props.showToast(response.mycode.msg);
+            }
+
+        }, (error) => {
+
+            this.props.showToast('取消收藏失败');
+
+        });
+
+    }
+
+
 
     navigatorRightView = ()=> {
         return (
-            <View style={{flexDirection: 'row'}}>
-                <TouchableOpacity >
-                    <Image source={require('../../images/carSourceImages/store.png')}></Image>
-                </TouchableOpacity>
-                <TouchableOpacity style={{marginLeft: Pixel.getPixel(10)}} onPress={this.showShared}>
-                    <Image source={require('../../images/carSourceImages/share_nil.png')}></Image>
-                </TouchableOpacity>
-            </View>
+           <NavigationRightView isStore={this.state.carData.is_collection==0?false:true} addStoreAction={this.addStoreAction} cancelStoreAction={this.cancelStoreAction}/>
         );
     };
 
@@ -216,7 +273,7 @@ export default class CarInfoScene extends BaseComponent {
 
         return(
             <TouchableOpacity onPress={this.showPhotoView}>
-                <Image source={{uri:data}} style={styles.carImage}/>
+                <Image source={{uri:data.url}} style={styles.carImage}/>
             </TouchableOpacity>
 
         );
@@ -225,7 +282,6 @@ export default class CarInfoScene extends BaseComponent {
 
 
     render() {
-        console.log(this.state.renderPlaceholderOnly);
 
         if (this.state.renderPlaceholderOnly!=='success') {
             return (
@@ -252,9 +308,9 @@ export default class CarInfoScene extends BaseComponent {
                             return(
                                 <View style={styles.imageFootView}>
                                     <View style={styles.carAgeView}>
-                                        <Text style={styles.carAgeText}>{carData.init_coty}</Text>
+                                        <Text style={styles.carAgeText}>{carData.v_type==1?'车龄 '+carData.init_coty:carData.v_type_str}</Text>
                                     </View>
-                                    <Text style={styles.imageIndexText}>{this.state.currentImageIndex+'/'+carImageArray.length}</Text>
+                                    <Text style={styles.imageIndexText}>{this.state.currentImageIndex+'/'+this.state.carData.imgs.length}</Text>
                                 </View>
                             )
                         }}
@@ -281,7 +337,7 @@ export default class CarInfoScene extends BaseComponent {
 
 
                     {
-                        ((typeof(carData.labels)!= "undefined"?carData.labels.length:false)|| carData.describe!=='' || carData.city_name!=='' || carData.plate_number!=='') && (
+                        ((typeof(carData.labels)!= "undefined"?(carData.labels.length<=0?false:true):false)|| carData.describe!=='' || carData.city_name!=='' || carData.plate_number!=='') && (
                             <View style={styles.contentContainer}>
                                 <View style={styles.contentView}>
                                     {
@@ -455,6 +511,50 @@ class PhotoView extends Component{
             </Modal>
         )
     }
+}
+
+class NavigationRightView extends Component{
+    // 构造
+      constructor(props) {
+        super(props);
+        // 初始状态
+        this.state = {
+
+            isStore:this.props.isStore,
+        };
+      }
+
+      isStoreClick=(isStore)=>{
+
+          this.setState({
+              isStore:isStore,
+          })
+      }
+
+    render(){
+        return(
+            <View style={{flexDirection: 'row'}}>
+                <TouchableOpacity onPress={()=>{
+
+                    if(this.state.isStore){
+
+                        this.props.cancelStoreAction(this.isStoreClick);
+
+                    }else {
+
+                        this.props.addStoreAction(this.isStoreClick);
+                    }
+
+                }}>
+                    <Image source={ this.state.isStore? require('../../images/carSourceImages/store.png') : require('../../images/carSourceImages/store_nil.png')}></Image>
+                </TouchableOpacity>
+                <TouchableOpacity style={{marginLeft: Pixel.getPixel(10)}} onPress={this.showShared}>
+                    <Image source={require('../../images/carSourceImages/share_nil.png')}></Image>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
 }
 
 const styles = StyleSheet.create({
@@ -688,10 +788,10 @@ const styles = StyleSheet.create({
 
     carAgeView:{
 
-        paddingHorizontal:Pixel.getPixel(15),
-        paddingVertical:Pixel.getPixel(10),
+        paddingHorizontal:Pixel.getPixel(10),
+        paddingVertical:Pixel.getPixel(5),
         backgroundColor:'rgba(1,1,1,0.3)',
-        borderRadius:4,
+        borderRadius:3,
 
     },
 

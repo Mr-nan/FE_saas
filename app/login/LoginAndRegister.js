@@ -7,6 +7,7 @@ import LoginScene from "./LoginScene";
 import Register from "./Register";
 import PixelUtil from "../utils/PixelUtil";
 import NavigationBar from '../component/NavigationBar';
+import ColorChoose from './ColorChoose';
 
 var Pixel = new PixelUtil();
 
@@ -56,22 +57,19 @@ export default class LoginAndRegister extends BaseComponent {
                         params: {},
                     })
                 }}/>
-                {/*<MyButton buttonType={MyButton.TEXTBUTTON} content="修改密码" parentStyle={styles.buttonStyle}*/}
-                {/*childStyle={styles.buttonTextStyle} mOnPress={() => {*/}
-                {/*this.toNextPage({*/}
-                {/*name: 'SetPwd',*/}
-                {/*component: SetPwd,*/}
-                {/*params: {},*/}
-                {/*})*/}
-                {/*}}/>*/}
-                {/*<MyButton buttonType={MyButton.TEXTBUTTON} content="首次设置登录密码" parentStyle={styles.buttonStyle}*/}
-                {/*childStyle={styles.buttonTextStyle} mOnPress={() => {*/}
-                {/*this.toNextPage({*/}
-                {/*name: 'LoginFailPwd',*/}
-                {/*component: LoginFailPwd,*/}
-                {/*params: {},*/}
-                {/*})*/}
-                {/*}}/>*/}
+
+                <MyButton buttonType={MyButton.TEXTBUTTON} content="颜色选择" parentStyle={styles.buttonStyle}
+                          childStyle={styles.buttonTextStyle} mOnPress={() => {
+                    this.toNextPage({
+                        name: 'ColorChoose',
+                        component: ColorChoose,
+                        params: {
+                            callBack:(color)=>{
+                                alert(color)
+                            }
+                        }
+                    })
+                }}/>
             </View>
         );
     }

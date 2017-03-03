@@ -29,7 +29,7 @@ export default class CarCell extends Component {
 
         const date = new Date();
         date.setTime(time);
-        return(date.getFullYear()+"年"+(date.getMonth()+1)+"月"+date.getDate());
+        return(date.getFullYear()+"年"+(date.getMonth()+1)+"月");
 
     };
 
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
         marginLeft:Pixel.getPixel(15),
         width:Pixel.getPixel(120),
         height:Pixel.getPixel(80),
-        backgroundColor:'#FFF45C',
+        backgroundColor:fontAndColor.COLORA4,
 
     },
 

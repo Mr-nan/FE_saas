@@ -46,29 +46,29 @@ export  default class RepaymentScene extends BaseComponent {
         }
         return (
             <View style={{width: width, height: height}}>
-                <NavigationView
-                    title="还款"
-                    backIconClick={this.backPage}
-                    renderRihtFootView={this._navigatorRightView}
-                />
                 <ScrollableTabView
                     style={{marginTop: Pixel.getTitlePixel(64), flex: 1}}
                     initialPage={0}
                     renderTabBar={() => <RepaymenyTabBar tabName={["单车融资", "库存融资", "采购融资"]}/>}
                 >
-                    <SingleRepaymentPage callBack={(id)=>{
+                    <SingleRepaymentPage customerName={this.props.customerName} callBack={(id)=>{
                       this.toNextPage({name:'RepaymentInfoScene',component:RepaymentInfoScene,params:{customer_id:id}});
                     }} tabLabel="ios-paper"/>
 
-                    <InventoryRepaymentPage callBack={(id)=>{
+                    <InventoryRepaymentPage customerName={this.props.customerName} callBack={(id)=>{
                       this.toNextPage({name:'InventoryRepaymentInfoScene',component:InventoryRepaymentInfoScene,params:{customer_id:id}});
                     }} tabLabel="ios-people"/>
 
-                    <PurchaseRepaymentPage callBack={(id)=>{
+                    <PurchaseRepaymentPage customerName={this.props.customerName}  callBack={(id)=>{
                       this.toNextPage({name:'RepaymentInfoScene',component:RepaymentInfoScene,params:{customer_id:id}});
                     }} tabLabel="ios-chatboxes"/>
 
                 </ScrollableTabView>
+                <NavigationView
+                    title="还款"
+                    backIconClick={this.backPage}
+                    renderRihtFootView={this._navigatorRightView}
+                />
             </View>
         );
 
