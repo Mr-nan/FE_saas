@@ -107,6 +107,10 @@ export default class AddEmployeeScene extends BaseComponent {
             if (response.mjson.code == '1') {
 
                 this.props.showToast("提交成功");
+                if (this.props.callBack) {
+                    this.props.callBack();
+                }
+                this.backPage();
             }else{
                 this.props.showToast(response.mjson.msg);
             }

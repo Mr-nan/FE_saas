@@ -124,6 +124,10 @@ export default class EmployeeManageScene extends BaseComponent {
                     name: 'AddEmployeeScene',
                     component: AddEmployeeScene,
                     params: {
+                        callBack:()=>{
+                            this.setState({renderPlaceholderOnly:'loading'});
+                            this.getData();
+                        },
                         isAddEmployee: true,
                     },
                 })
@@ -154,6 +158,10 @@ export default class EmployeeManageScene extends BaseComponent {
                             name: 'EditEmployeeScene',
                             component: EditEmployeeScene,
                             params: {
+                                callBack:()=>{
+                                    this.setState({renderPlaceholderOnly:'loading'});
+                                    this.getData();
+                                },
                                 username: rowData.username,
                                 mobile : rowData.mobile,
                                 sex : rowData.sex,
