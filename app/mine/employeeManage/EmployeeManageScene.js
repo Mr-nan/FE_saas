@@ -128,7 +128,6 @@ export default class EmployeeManageScene extends BaseComponent {
                             this.setState({renderPlaceholderOnly:'loading'});
                             this.getData();
                         },
-                        isAddEmployee: true,
                     },
                 })
             }}>
@@ -169,6 +168,7 @@ export default class EmployeeManageScene extends BaseComponent {
                                 role: rowData.role,
                                 isAddEmployee: false,
                                 id: rowData.id,
+                                isAddEmployee: true,
                             },
                         })
                     }}>

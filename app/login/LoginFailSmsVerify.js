@@ -70,6 +70,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
                 <NavigationBar
                     leftImageShow={true}
                     leftTextShow={false}
+                    clearValue={true}
                     centerText={"短信验证"}
                     rightText={"  "}
                     leftImageCallBack={this.backPage}/>
@@ -78,6 +79,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
                     ref="userName"
                     textPlaceholder={'请输入手机号码'}
                     rightIcon={false}
+                    clearValue={true}
                     viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
                     keyboardType={'phone-pad'}
                     maxLength={11}

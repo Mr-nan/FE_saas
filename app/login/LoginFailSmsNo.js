@@ -68,6 +68,7 @@ export default class LoginFailSmsNo extends BaseComponent {
                     textPlaceholder={"请填写借款人姓名"}
                     rightIcon={false}
                     leftIcon={false}
+                    clearValue={true}
                     leftText={"借款人姓名"}
                     viewStytle={styles.itemStyel}/>
                 <LoginInputText
@@ -75,6 +76,7 @@ export default class LoginFailSmsNo extends BaseComponent {
                     textPlaceholder={'请填写借款人所在企业名称'}
                     rightIcon={false}
                     leftIcon={false}
+                    clearValue={true}
                     leftText={"企业名称"}
                     inputTextStyle={{paddingLeft: Pixel.getPixel(30)}}
                     viewStytle={styles.itemStyel}/>
@@ -83,6 +85,7 @@ export default class LoginFailSmsNo extends BaseComponent {
                     textPlaceholder={'请填写有些手机号'}
                     rightIcon={false}
                     leftIcon={false}
+                    clearValue={true}
                     leftText={"联系手机"}
                     inputTextStyle={{paddingLeft: Pixel.getPixel(30)}}
                     viewStytle={styles.itemStyel}

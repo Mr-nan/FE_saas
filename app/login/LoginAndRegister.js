@@ -57,19 +57,6 @@ export default class LoginAndRegister extends BaseComponent {
                         params: {},
                     })
                 }}/>
-
-                <MyButton buttonType={MyButton.TEXTBUTTON} content="颜色选择" parentStyle={styles.buttonStyle}
-                          childStyle={styles.buttonTextStyle} mOnPress={() => {
-                    this.toNextPage({
-                        name: 'ColorChoose',
-                        component: ColorChoose,
-                        params: {
-                            callBack:(color)=>{
-                                alert(color)
-                            }
-                        }
-                    })
-                }}/>
             </View>
         );
     }

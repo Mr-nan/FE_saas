@@ -112,6 +112,7 @@ export default class Register extends BaseComponent {
                                 viewStytle={styles.itemStyel}
                                 inputTextStyle={styles.inputTextStyle}
                                 leftIcon={false}
+                                clearValue={true}
                                 maxLength={11}
                                 rightIcon={false}/>
                             <LoginInputText
@@ -141,6 +142,7 @@ export default class Register extends BaseComponent {
                                 viewStytle={styles.itemStyel}
                                 inputTextStyle={styles.inputTextStyle}
                                 secureTextEntry={true}
+                                clearValue={true}
                                 leftIcon={false}
                                 maxLength={16}
                                 rightIcon={false}/>
@@ -152,6 +154,7 @@ export default class Register extends BaseComponent {
                                 secureTextEntry={true}
                                 maxLength={16}
                                 leftIcon={false}
+                                clearValue={true}
                                 rightIcon={false}/>
                         </View>
                         <View style={styles.inputTextLine}/>
@@ -162,6 +165,7 @@ export default class Register extends BaseComponent {
                                 viewStytle={styles.itemStyel}
                                 inputTextStyle={styles.inputTextStyle}
                                 leftIcon={false}
+                                clearValue={true}
                                 rightIcon={false}/>
                             <LoginInputText
                                 ref="businessName"
@@ -169,6 +173,7 @@ export default class Register extends BaseComponent {
                                 viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
                                 inputTextStyle={styles.inputTextStyle}
                                 leftIcon={false}
+                                clearValue={true}
                                 rightIcon={false}/>
                         </View>
                         <View style={styles.inputTextLine}/>
@@ -180,20 +185,56 @@ export default class Register extends BaseComponent {
                                 color: FontAndColor.COLORA1,
                                 fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT)
                             }}>添加身份证照片</Text>
-                        <MyButton buttonType={MyButton.IMAGEBUTTON}
-                                  content={this.state.idcard === null ?
-                                      require('../../images/login/idcard.png') : this.state.idcard
-                                  }
-                                  parentStyle={[styles.buttonStyle, {marginRight: Pixel.getPixel(10)}]}
-                                  childStyle={styles.imageButtonStyle}
-                                  mOnPress={this.selectPhotoTapped.bind(this, 'idcard')}/>
-                        <MyButton buttonType={MyButton.IMAGEBUTTON}
-                                  content={this.state.idcardBack === null ?
-                                      require('../../images/login/idcard_back.png') : this.state.idcardBack
-                                  }
-                                  parentStyle={styles.buttonStyle}
-                                  childStyle={styles.imageButtonStyle}
-                                  mOnPress={this.selectPhotoTapped.bind(this, 'idcardBack')}/>
+                        <View>
+                            <MyButton buttonType={MyButton.IMAGEBUTTON}
+                                      content={this.state.idcard === null ?
+                                          require('../../images/login/idcard.png') : this.state.idcard
+                                      }
+                                      parentStyle={[styles.buttonStyle]}
+                                      childStyle={styles.imageButtonStyle}
+                                      mOnPress={this.selectPhotoTapped.bind(this, 'idcard')}/>
+                            {this.state.idcard ?
+                                <MyButton buttonType={MyButton.IMAGEBUTTON}
+                                          content={require('../../images/login/clear.png')}
+                                          parentStyle={{
+                                              position: 'absolute',
+                                              marginTop: Pixel.getPixel(2),
+                                              marginLeft: Pixel.getPixel(2),
+                                          }}
+                                          childStyle={styles.imageClearButtonStyle}
+                                          mOnPress={() => {
+                                              this.setState({
+                                                  idcard: null
+                                              });
+                                          }}/>
+                                : null}
+                        </View>
+
+                        <View>
+                            <MyButton buttonType={MyButton.IMAGEBUTTON}
+                                      content={this.state.idcardBack === null ?
+                                          require('../../images/login/idcard_back.png') : this.state.idcardBack
+                                      }
+                                      parentStyle={styles.buttonStyle}
+                                      childStyle={styles.imageButtonStyle}
+                                      mOnPress={this.selectPhotoTapped.bind(this, 'idcardBack')}/>
+                            {this.state.idcardBack ?
+                                <MyButton buttonType={MyButton.IMAGEBUTTON}
+                                          content={require('../../images/login/clear.png')}
+                                          parentStyle={{
+                                              position: 'absolute',
+                                              marginTop: Pixel.getPixel(2),
+                                              marginLeft: Pixel.getPixel(2),
+                                          }}
+                                          childStyle={styles.imageClearButtonStyle}
+                                          mOnPress={() => {
+                                              this.setState({
+                                                  idcardBack: null
+                                              });
+                                          }}/>
+                                : null}
+
+                        </View>
                     </View>
                     <View style={styles.inputTextLine}/>
                     <View style={styles.imageButtonsStyle}>
@@ -202,13 +243,31 @@ export default class Register extends BaseComponent {
                             color: FontAndColor.COLORA1,
                             fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT)
                         }}>添加营业执照</Text>
-                        <MyButton buttonType={MyButton.IMAGEBUTTON}
-                                  content={this.state.businessLicense === null ?
-                                      require('../../images/login/idcard.png') : this.state.businessLicense
-                                  }
-                                  parentStyle={styles.buttonStyle}
-                                  childStyle={styles.imageButtonStyle}
-                                  mOnPress={this.selectPhotoTapped.bind(this, 'businessLicense')}/>
+                        <View>
+                            <MyButton buttonType={MyButton.IMAGEBUTTON}
+                                      content={this.state.businessLicense === null ?
+                                          require('../../images/login/idcard.png') : this.state.businessLicense
+                                      }
+                                      parentStyle={styles.buttonStyle}
+                                      childStyle={styles.imageButtonStyle}
+                                      mOnPress={this.selectPhotoTapped.bind(this, 'businessLicense')}/>
+                            {this.state.businessLicense ?
+                                <MyButton buttonType={MyButton.IMAGEBUTTON}
+                                          content={require('../../images/login/clear.png')}
+                                          parentStyle={{
+                                              position: 'absolute',
+                                              marginTop: Pixel.getPixel(2),
+                                              marginLeft: Pixel.getPixel(2),
+                                          }}
+                                          childStyle={styles.imageClearButtonStyle}
+                                          mOnPress={() => {
+                                              this.setState({
+                                                  businessLicense: null
+                                              });
+                                          }}/>
+                                : null}
+
+                        </View>
                     </View>
                 </ScrollView>
             </View>
@@ -426,7 +485,6 @@ export default class Register extends BaseComponent {
             }, (error) => {
                 this.props.showModal(false);
                 this.props.showToast("图片上传失败");
-                console.log("error === " + error);
             });
     }
 
@@ -437,7 +495,11 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: FontAndColor.COLORA3
     },
-    buttonStyle: {},
+    buttonStyle: {
+        marginTop: Pixel.getPixel(10),
+        marginBottom: Pixel.getPixel(10),
+        marginLeft: Pixel.getPixel(10),
+    },
     itemStyel: {},
     inputTextsStyle: {
         backgroundColor: '#ffffff',
@@ -468,5 +530,9 @@ const styles = StyleSheet.create({
     imageButtonStyle: {
         width: Pixel.getPixel(80),
         height: Pixel.getPixel(60),
+    },
+    imageClearButtonStyle: {
+        width: Pixel.getPixel(17),
+        height: Pixel.getPixel(17),
     }
 });
