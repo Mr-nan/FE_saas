@@ -191,6 +191,7 @@ export default class EditEmployeeScene extends BaseComponent {
         Car[2].cars[0].name=mobile;
         Car[1].cars[0].name=company;
         Car[1].cars[1].name=role;
+        this.companyName=company;
 
         StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST, (data) => {
             if (data.code == 1 && data.result != null) {
@@ -384,6 +385,8 @@ export default class EditEmployeeScene extends BaseComponent {
 
                 Car[SECTIONID].cars[ROWID].name =this.companys[itemIds[0]];
                 this.items=itemIds;
+            }else {
+                Car[SECTIONID].cars[ROWID].name =this.companyName;
             }
         }
         console.log(this.items+'--');
