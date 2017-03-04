@@ -38,6 +38,7 @@ export default class AutoMileage extends Component {
     constructor(props) {
         super(props);
         this.shop_id = this.props.shopID;
+        this.carData = this.props.carData;
         this.initValue = [0, 0, 0, 0, 0];
         let mileage = this.props.carData.mileage;
         if (this.isEmpty(mileage) === false) {
@@ -117,6 +118,7 @@ export default class AutoMileage extends Component {
 
     componentWillReceiveProps(nextProps) {
         this.shop_id = nextProps.shopID;
+        this.carData = nextProps.carData;
     }
 
     _renderPlaceholderView = () => {
@@ -129,10 +131,11 @@ export default class AutoMileage extends Component {
 
     //发布
     _publish = () => {
+        console.log(this.carData);
         try{
             this.props.showLoading();
             SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
-                [this.props.carData.vin],
+                [this.carData.vin],
                 (data) => {
                     if (data.code === 1) {
                         let rd = data.result.rows.item(0);
