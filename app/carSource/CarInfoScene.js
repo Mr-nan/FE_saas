@@ -114,7 +114,7 @@ export default class CarInfoScene extends BaseComponent {
             let carData = response.mjson.data;
             carData.carIconsContentData=[
                 carData.manufacture!=''? this.dateReversal(carData.manufacture+'000'):'',
-                carData.manufacture!=''? this.dateReversal(carData.init_reg+'000'):'',
+                carData.init_reg!=''? this.dateReversal(carData.init_reg+'000'):'',
                 carData.mileage+'万公里',
                 carData.transfer_times+'次',
                 carData.nature_str,
