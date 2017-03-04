@@ -99,22 +99,42 @@ export default class AutoPlate extends Component {
 
         this.initValue[type] = text;
         this._insertPlate();
-        if(text.length === 1){
+        if(text.length !== 0){
             switch (type){
                 case 1:
+                    this.firstInput.setNativeProps({
+                        text:text
+                    });
                     this.secondInput.focus();
                     break;
                 case 2:
+                    this.secondInput.setNativeProps({
+                        text:text
+                    });
                     this.threeInput.focus();
                     break;
                 case 3:
+                    this.threeInput.setNativeProps({
+                        text:text
+                    });
                     this.fourInput.focus();
                     break;
                 case 4:
+                    this.fourInput.setNativeProps({
+                        text:text
+                    });
                     this.fiveInput.focus();
                     break;
                 case 5:
+                    this.fiveInput.setNativeProps({
+                        text:text
+                    });
                     this.sixInput.focus();
+                    break;
+                case 6:
+                    this.sixInput.setNativeProps({
+                        text:text
+                    });
                     break;
             }
         }
@@ -228,7 +248,7 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(20),
         fontWeight: 'bold',
         color: '#FFFFFF',
-        textAlign:'left'
+        textAlign:'center'
     },
     wrapStyle:{
         backgroundColor:'transparent'

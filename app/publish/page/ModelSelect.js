@@ -113,9 +113,11 @@ export default class ModelSelect extends PureComponent {
             this.vin = text;
             Net.request(AppUrls.VININFO,'post',params).then(
                 (response)=>{
+                    console.log('1111111111111111111');
                     if(response.mycode === 1){
                         let rd = response.mjson.data;
                         if(rd.length === 0){
+                            console.log('222222222222222222222222');
                             this._insertVinNum(text);
                             this.setState({
                                 showHint:true
@@ -291,7 +293,7 @@ export default class ModelSelect extends PureComponent {
                     <Text style={styles.fontHint}>建议您扫描登记证或行驶证上的车架号</Text>
 
                     <View style={styles.modelCircle}>
-                        {this.state.showHint && <Text style={styles.fontHintBelow}>未解析出车型,请自行选择!</Text>}
+                        {this.state.showHint && <Text style={styles.fontHintBelow}>未解析出车型，请自行选择！</Text>}
                         <TouchableOpacity
                             style={[styles.circleContainer,styles.hintAlign]}
                             activeOpacity={0.6}

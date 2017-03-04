@@ -129,7 +129,6 @@ export default class AutoMileage extends Component {
 
     //发布
     _publish = () => {
-
         try{
             this.props.showLoading();
             SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
@@ -188,16 +187,16 @@ export default class AutoMileage extends Component {
                                 },
                                 (error) => {
                                     this.props.closeLoading();
-                                    this.props.showHint(error);
+                                    this.props.showHint(JSON.stringify(error));
                                 });
                     } else {
                         this.props.closeLoading();
-                        this.props.showHint(data.error);
+                        this.props.showHint(JSON.stringify(data.error));
                     }
                 });
         }catch (error){
             this.props.closeLoading();
-            this.props.showHint(data.error);
+            this.props.showHint(JSON.stringify(error));
         }
 
     };
