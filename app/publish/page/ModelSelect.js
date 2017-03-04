@@ -82,16 +82,14 @@ export default class ModelSelect extends PureComponent {
 
     //扫描
     _scanPress = () => {
-        if(Platform.OS === 'android'){
-            NativeModules.VinScan.scan().then((vl)=>{
-                this.vinInput.setNativeProps({
-                   text:vl
-                });
-                this._onVinChange(vl);
-            },(error)=>{
-                console.log(error);
+        NativeModules.VinScan.scan().then((vl)=>{
+            this.vinInput.setNativeProps({
+                text:vl
             });
-        }
+            this._onVinChange(vl);
+        },(error)=>{
+            console.log(error);
+        });
     };
 
     _renderPlaceholderView = () => {
