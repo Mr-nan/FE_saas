@@ -32,8 +32,10 @@ import * as Urls from '../constant/appUrls';
 import {request} from '../utils/RequestUtil';
 import  LoadMoreFooter from '../component/LoadMoreFooter';
 import CarInfoScene from '../carSource/CarInfoScene';
+import WebScene from './WebScene';
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 let allList = [];
+let allData = {};
 export class HomeHeaderItemInfo {
     constructor(ref, key, functionTitle, describeTitle, functionImage) {
 
@@ -78,6 +80,7 @@ export default class HomeScene extends BaseComponet {
         };
         request(Urls.HOME, 'Post', maps)
             .then((response) => {
+                    allData = response.mjson.data;
                     allList.push(...response.mjson.data.carList.list);
                     this.setState({
                         renderPlaceholderOnly: 'success',
@@ -118,7 +121,6 @@ export default class HomeScene extends BaseComponet {
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return (
-
                 <View style={cellSheet.container}>
                     {
                         this.loadView()
@@ -218,7 +220,9 @@ export default class HomeScene extends BaseComponet {
             <View>
 
                 <View style={{flexDirection: 'row'}}>
-                    <ViewPagers/>
+                    <ViewPagers callBack={(urls)=>{
+                       this.props.callBack({name:'WebScene',component:WebScene,params:{webUrl:urls}});
+                    }} items={allData}/>
                     <TouchableOpacity onPress={()=>{
                             this.props.jumpScene('carpage','true');
                     }} activeOpacity={0.8} style={{backgroundColor: 'rgba(255,255,255,0.8)',

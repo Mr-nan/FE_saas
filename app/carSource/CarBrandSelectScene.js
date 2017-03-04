@@ -31,17 +31,19 @@ import * as AppUrls from "../constant/appUrls";
 
 let status  = 0;
 let carData = new  Array;
-let isHeadInteraction = false;
-let isCheckedCarModel = false;
+let isHeadInteraction = false;  // 是否能选择车类
+let isCheckedCarModel = false;  // 是否能选择车型   false-能选,true-不能选
 
 let carObject= {
 
     brand_id:'0',
+    brand_icon:'',
     brand_name:'0',
     series_id:'0',
     series_name:'0',
     model_id:'0',
     model_name:'0'
+
 };
 
 export default class CarBrandSelectScene extends BaseComponent {
@@ -50,7 +52,6 @@ export default class CarBrandSelectScene extends BaseComponent {
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: false});
             this.loadData();
-
         });
 
     }
@@ -98,11 +99,9 @@ export default class CarBrandSelectScene extends BaseComponent {
             renderPlaceholderOnly: true,
             dataSource: dataSource,
             isHideCarSubBrand: true,
-            carTypeCheckend: '',
-            carSeriesData: [],
+            isHideCarModel:true,
             sectionTitleArray: [],
             footprintData:[],
-
         };
 
     }
@@ -114,13 +113,10 @@ export default class CarBrandSelectScene extends BaseComponent {
             if(data.code==1){
                 if(data.result){
                     this.setState({
-
                         footprintData:JSON.parse(data.result),
                     });
                 }
-
             }
-
         })
     }
 
@@ -143,10 +139,7 @@ export default class CarBrandSelectScene extends BaseComponent {
             console.log(error);
             this.stopLoadData();
 
-
         });
-
-
     }
 
     startLoadData=()=>{
@@ -189,43 +182,8 @@ export default class CarBrandSelectScene extends BaseComponent {
             sectionTitleArray: sectionTitleArray,
 
         });
+
     };
-
-    loadCarSeriesData=(carBrandID,carBrandName)=>{
-
-        this.startLoadData();
-        let url = AppUrls.BASEURL + 'v1/home/series/';
-        let parameter = {
-            brand_id:carBrandID,
-            status:status,
-        }
-        console.log(parameter);
-        request(url, 'post',parameter).then((response) => {
-
-
-            this.stopLoadData();
-            if(response.mjson.data.length){
-                this.setState({
-                    isHideCarSubBrand: false,
-                    carTypeCheckend:carBrandName,
-                    carSeriesData:response.mjson.data,
-                });
-            }else
-            {
-                alert('没数据');
-            }
-
-
-
-        }, (error) => {
-
-            console.log(error);
-            this.stopLoadData();
-
-        });
-
-    }
-
 
 
     // 每一行中的数据
@@ -236,12 +194,29 @@ export default class CarBrandSelectScene extends BaseComponent {
 
                 carObject.brand_id = rowData.brand_id;
                 carObject.brand_name = rowData.brand_name;
+                carObject.brand_icon = rowData.brand_icon;
 
-                this.loadCarSeriesData(rowData.brand_id,rowData.brand_name);
+                if(this.state.isHideCarSubBrand)
+                {
+                    this.setState({
+                        isHideCarSubBrand:false,
+                    });
+
+                }else
+                {
+                    if(!this.state.isHideCarModel){
+                        this.setState({
+                            isHideCarModel:true,
+                        });
+
+                    }
+                    this.refs.carSeriesList.loadCarSeriesData(carObject.brand_id,carObject.brand_name);
+                }
+
 
             }}>
                 <View style={styles.rowCell}>
-                    <Image style={styles.rowCellImag}></Image>
+                    <Image style={styles.rowCellImag} source={{uri:rowData.brand_icon}}></Image>
                     <Text style={styles.rowCellText}>{rowData.brand_name}</Text>
                 </View>
             </TouchableOpacity>
@@ -258,12 +233,29 @@ export default class CarBrandSelectScene extends BaseComponent {
         );
     }
 
+    // 选择参数回传
     _checkedCarType = (carType) => {
 
         this.props.checkedCarClick(carType);
         this.backPage();
 
     };
+
+    _checkedCarModel=(brand_id,series_id)=>{
+
+        if(this.state.isHideCarModel){
+
+            this.setState({
+                isHideCarModel:false,
+            });
+
+        }else {
+
+            this.refs.CarModelList.loadCarModelsData(brnand_id,series_id,carObject.series_namee);
+        }
+
+    };
+
 
     _indexAndScrollClick = (index)=> {
 
@@ -323,6 +315,7 @@ export default class CarBrandSelectScene extends BaseComponent {
                                       if (!this.state.isHideCarSubBrand) {
                                           this.setState({
                                               isHideCarSubBrand: true,
+                                              isHideCarModel:true,
                                           });
                                       }}}
                         />)
@@ -335,163 +328,24 @@ export default class CarBrandSelectScene extends BaseComponent {
                 />
                 {
                     this.state.isHideCarSubBrand ? (null) : (
-                        <CarSeriesList
-                            data={this.state.carSeriesData}
-                            title={this.state.carTypeCheckend}
-                            checkedCarType={this.props.checkedCarType}
-                            checkedCarClick={this._checkedCarType}
-                            footprintData = {this.state.footprintData}/>
+                        <CarSeriesList ref="carSeriesList"
+                                       footprintData = {this.state.footprintData}
+                                       checkedCarClick={this._checkedCarType}
+                                       checkedCarModel ={this._checkedCarModel}
+                        />
                     )
                 }
-
+                {
+                    this.state.isHideCarModel ?(null):(
+                        <CarModelList ref="CarModelList" checkedCarClick={this._checkedCarType}/>
+                    )
+                }
             </View>
         )
     }
 }
 
 class CarSeriesList extends BaseComponent {
-
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            dataSource: this.state.dataSource.cloneWithRows(nextProps.data),
-            isCheckedCarModel:false,
-            carTitle:nextProps.title + '/全部车系',
-
-        });
-    }
-    constructor(props) {
-        super(props);
-        const ds =new ListView.DataSource({rowHasChanged: (r1, r2) => r1 != r2})
-        this.state = {
-            dataSource: ds.cloneWithRows(this.props.data),
-            carTitle:this.props.title+'/全部车系',
-            valueRight:new Animated.Value(0),
-            isCheckedCarModel:false,
-
-        };
-    }
-
-
-    loadCarModelsData=(carBrand_ID,series_ID)=>{
-
-        this.startLoadData();
-        let url = AppUrls.BASEURL + 'v1/home/models';
-        let parameter = {
-            brand_id:carBrand_ID,
-            series_id:series_ID,
-            status:status,
-        }
-        request(url, 'post', parameter).then((response) => {
-
-
-            this.stopLoadData();
-            if(response.mjson.data.length){
-                this.setState({
-                    dataSource:this.state.dataSource.cloneWithRows(response.mjson.data),
-                    isCheckedCarModel:true,
-                });
-            }else
-            {
-                alert('没数据');
-            }
-
-
-        }, (error) => {
-
-            console.log(error);
-            this.stopLoadData();
-
-
-        });
-
-    }
-
-    saveFootprintData =(carObject)=>{
-
-
-        let isEqual = false;
-        let footprintArrar = this.props.footprintData;
-        let newArray = new Array;
-
-        if(footprintArrar.length>0){
-
-            newArray.push(carObject);
-
-            footprintArrar.map((data,index)=>{
-
-                if(carObject.series_name == data.series_name){
-
-                    isEqual = true;
-                }
-
-                if(index<3)
-                {
-                    newArray.push(data);
-                }
-
-            });
-
-        }else{
-
-            newArray.push(carObject);
-        }
-        if(!isEqual){
-            StorageUtil.mSetItem(StorageKeyName.CAR_TYPE_FOOTMARK,JSON.stringify(newArray));
-        }
-
-
-
-    }
-
-    // 每一行中的数据
-    renderRow = (rowData) => {
-        return (
-
-            <TouchableOpacity onPress={() => {
-
-                if(status==0){
-                    if(this.state.isCheckedCarModel){
-
-                        carObject.model_id = rowData.model_id;
-                        carObject.model_name = rowData.model_name;
-
-                        this.props.checkedCarClick(carObject);
-
-                    }else {
-                        this.setState({
-                            carTitle:this.props.title +'/全部系车型',
-                        });
-
-                        carObject.series_id = rowData.series_id;
-                        carObject.series_name = rowData.series_name;
-                        if(!isCheckedCarModel){
-                            this.loadCarModelsData(rowData.brand_id,rowData.series_id);
-                        }else {
-                            this.props.checkedCarClick(carObject);
-                        }
-                    }
-
-                }else {
-
-                    carObject.series_id = rowData.series_id;
-                    carObject.series_name = rowData.series_name;
-
-                    this.saveFootprintData(carObject);
-                    this.props.checkedCarClick(carObject);
-
-                }
-
-            }}>
-                <View style={styles.rowCell}>
-                    <Text style={[styles.rowCellText,
-                        this.props.checkedCarType ==
-                        (this.state.isCheckedCarModel?rowData.model_name:rowData.series_name) &&
-                        {color: fontAnColor.COLORB0}]}>{this.state.isCheckedCarModel?rowData.model_name:rowData.series_name}</Text>
-                </View>
-            </TouchableOpacity>
-        )
-    };
-
 
     componentDidMount() {
 
@@ -506,15 +360,166 @@ class CarSeriesList extends BaseComponent {
 
     }
 
-    startLoadData=()=>{
+    constructor(props) {
+        super(props);
+        this.state={
 
-        // this.props.showModal(true);
+            carTitle:carObject.brand_name+'/全部车系',
+            brandIcon:carObject.brand_icon,
+            valueRight:new Animated.Value(0),
+        };
+        this.loadCarSeriesData(carObject.brand_id,carObject.brand_name);
+
     }
 
-    stopLoadData=()=>{
+    loadCarSeriesData=(carBrandID,carBrandName)=>{
 
-        // this.props.showModal(false);
+        let url = AppUrls.BASEURL + 'v1/home/series/';
+        let parameter = {
+            brand_id:carBrandID,
+            status:status,
+        }
+        request(url, 'post',parameter).then((response) => {
+
+            if(response.mjson.data.length){
+
+                this.setListData(response.mjson.data,carBrandName);
+
+            }else
+            {
+                alert('没数据');
+            }
+
+        }, (error) => {
+            console.log(error);
+        });
+
     }
+
+
+    setListData = (array,carBrandName)=> {
+
+        var dataBlob = {}, sectionIDs = [], rowIDs = [], cars = [], sectionTitleArray = [];
+        for (var i = 0; i < array.length; i++) {
+            //把组号放入sectionIDs数组中
+            sectionIDs.push(i);
+            //把组中内容放入dataBlob对象中
+            dataBlob[i] = array[i].title;
+            sectionTitleArray.push(array[i].title);
+            //把组中的每行数据的数组放入cars
+            cars = array[i].car;
+            //先确定rowIDs的第一维
+            rowIDs[i] = [];
+            //遍历cars数组,确定rowIDs的第二维
+            for (var j = 0; j < cars.length; j++) {
+                rowIDs[i].push(j);
+                //把每一行中的内容放入dataBlob对象中
+                dataBlob[i + ':' + j] = cars[j];
+            }
+        }
+
+        let getSectionData = (dataBlob, sectionID) => {
+            return dataBlob[sectionID];
+        };
+
+        let getRowData = (dataBlob, sectionID, rowID) => {
+            return dataBlob[sectionID + ":" + rowID];
+        };
+
+        const ds =  new ListView.DataSource({
+            getSectionData: getSectionData,
+            getRowData: getRowData,
+            rowHasChanged: (r1, r2) => r1 !== r2,
+            sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
+        });
+        this.setState ({
+            dataSource: ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
+            carTitle:carObject.brand_name+'/全部车系',
+            brandIcon:carObject.brand_icon,
+
+        });
+    };
+
+
+    saveFootprintData =(carObject)=>{
+
+        let isEqual = false;
+        let footprintArrar = this.props.footprintData;
+        let newArray = new Array;
+
+        if(footprintArrar.length>0){
+            newArray.push(carObject);
+            footprintArrar.map((data,index)=>{
+                if(carObject.series_name == data.series_name){
+                    isEqual = true;
+                }
+                if(index<3)
+                {
+                    newArray.push(data);
+                }
+            });
+        }else{
+            newArray.push(carObject);
+        }
+        if(!isEqual){
+            StorageUtil.mSetItem(StorageKeyName.CAR_TYPE_FOOTMARK,JSON.stringify(newArray));
+        }
+
+    }
+
+
+    // 每一组对应的数据
+    renderSectionHeader = (sectionData, sectionId) => {
+
+        return (
+            <View style={styles.sectionHeader}>
+                <Text style={styles.sectionText}>{sectionData}</Text>
+            </View>
+        );
+    }
+
+    // 每一行中的数据
+    renderRow = (rowData) => {
+        return (
+
+            <TouchableOpacity onPress={() => {
+
+                if(status==0){
+                    if(this.state.isCheckedCarModel){
+
+                        carObject.model_id = rowData.model_id;
+                        carObject.model_name = rowData.model_name;
+                        this.props.checkedCarClick(carObject);
+
+
+                    }else {
+
+                        carObject.series_id = rowData.series_id;
+                        carObject.series_name = rowData.series_name;
+
+                        if(!isCheckedCarModel){
+                            this.props.checkedCarModel(rowData.brand_id,rowData.series_id);
+                        }else {
+                            this.props.checkedCarClick(carObject);
+                        }
+                    }
+
+                }else {
+
+                    carObject.series_id = rowData.series_id;
+                    carObject.series_name = rowData.series_name;
+                    this.saveFootprintData(carObject);
+                    this.props.checkedCarClick(carObject);
+                }
+
+            }}>
+                <View style={styles.rowCell}>
+                    <Text style={styles.rowCellText}>{rowData.series_name}</Text>
+                </View>
+            </TouchableOpacity>
+        )
+    };
+
 
 
     render() {
@@ -528,16 +533,125 @@ class CarSeriesList extends BaseComponent {
 
                 }}>
                     <View style={styles.carSubBrandHeadView}>
-                        <Image style={styles.rowCellImag}/>
+                        <Image style={styles.rowCellImag} source={{uri:this.state.brandIcon}}/>
                         <Text style={styles.rowCellText}>{this.state.carTitle}</Text>
                     </View>
                 </TouchableOpacity>
                 {
                    this.state.dataSource &&
                     <ListView ref="subListView"
-                        style={{flex: 1}}
-                        dataSource={this.state.dataSource}
-                        renderRow={this.renderRow}
+                              style={{flex: 1}}
+                              dataSource={this.state.dataSource}
+                              renderRow={this.renderRow}
+                              renderSectionHeader={this.renderSectionHeader}
+                    />
+                }
+            </Animated.View>
+        )
+
+    }
+
+}
+
+class CarModelList extends BaseComponent {
+
+
+    componentDidMount() {
+
+        this.state.valueRight.setValue(ScreenWidth);
+        Animated.spring(
+            this.state.valueRight,
+            {
+                toValue:ScreenWidth*0.3,
+                friction:5,
+            }
+        ).start();
+    }
+
+
+    constructor(props) {
+
+        super(props);
+
+        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
+        this.state=({
+
+            carTitle:carObject.series_name+'/全部车型',
+            valueRight:new Animated.Value(0),
+            modelsData:ds,
+        });
+
+        this.loadCarModelsData(carObject.brand_id,carObject.series_id,carObject.series_name);
+    }
+
+
+    loadCarModelsData=(carBrand_ID,series_ID,carTitle)=>{
+
+        let url = AppUrls.BASEURL + 'v1/home/models';
+        let parameter = {
+            brand_id:carBrand_ID,
+            series_id:series_ID,
+            status:status,
+        }
+        request(url, 'post', parameter).then((response) => {
+
+            if(response.mjson.data.length){
+
+                this.setState({
+                    modelsData:this.state.modelsData.cloneWithRows(response.mjson.data),
+                });
+            }
+
+        }, (error) => {
+
+            console.log(error);
+
+        });
+
+    }
+
+
+    // 每一行中的数据
+    renderRow = (rowData) => {
+        return (
+
+            <TouchableOpacity onPress={() => {
+
+                carObject.model_id = rowData.model_id;
+                carObject.model_name = rowData.model_name;
+                this.props.checkedCarClick(carObject);
+
+            }}>
+                <View style={styles.rowCell}>
+                    <Text style={styles.rowCellText}>{rowData.model_name}</Text>
+                </View>
+            </TouchableOpacity>
+        )
+    };
+
+
+    render() {
+
+        return (
+            <Animated.View style={[styles.carSubBrandView,{left:this.state.valueRight}]}>
+                <TouchableOpacity onPress={()=>{
+                    if(isHeadInteraction){
+                        this.props.checkedCarClick(carObject);
+                    }
+
+                }}>
+                    <View style={styles.carSubBrandHeadView}>
+                        {/*<Image style={styles.rowCellImag}/>*/}
+                        <Text style={styles.rowCellText}>{this.state.carTitle}</Text>
+                    </View>
+                </TouchableOpacity>
+                {
+                    this.state.modelsData &&
+                    <ListView ref="subListView"
+                              style={{flex: 1}}
+                              dataSource={this.state.modelsData}
+                              renderRow={this.renderRow}
+                              renderSectionHeader={this.renderSectionHeader}
                     />
                 }
             </Animated.View>
@@ -676,7 +790,6 @@ const styles = StyleSheet.create({
         width: Pixel.getPixel(40),
         height: Pixel.getPixel(40),
         marginLeft: Pixel.getPixel(15),
-        backgroundColor: fontAnColor.COLORB0
     },
     rowCellText: {
         marginLeft: Pixel.getPixel(5),
