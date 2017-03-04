@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(20),
         fontWeight: 'bold',
         color: '#FFFFFF',
-        textAlign:'left'
+        textAlign:'center'
     },
     wrapStyle:{
         backgroundColor:'transparent'
