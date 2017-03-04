@@ -35,6 +35,7 @@ var idcardf: '';
 var idcardback: '';
 var businessid: '';
 
+var Platform = require('Platform');
 const options = {
     //弹出框选项
     title: '请选择',
@@ -415,9 +416,21 @@ export default class Register extends BaseComponent {
     }
 
     selectPhotoTapped(id) {
-        this.id = id;
-        this._rePhoto();
+        if (Platform.OS === 'android') {
+            this.id = id;
+            this._rePhoto();
+        } else {
+            ImagePicker.showImagePicker(options, (response) => {
+                if (response.didCancel) {
+                } else if (response.error) {
+                } else if (response.customButton) {
+                } else {
+                    this.uploadImage(response, id);
+                }
+            });
+        }
     }
+
 
     _cameraClick = () => {
         ImagePicker.launchCamera(options, (response) => {

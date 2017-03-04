@@ -57,7 +57,7 @@ export default class CarCollectionItems extends Component {
                         </View>
                         <View style={{backgroundColor:'#00000000',justifyContent:'center'}}>
                             <Text
-                                style={styles.subTitleText}>{this.dateReversal(carCellData.create_time + '000') + '/' + carCellData.mileage + '万公里'}</Text>
+                                style={styles.subTitleText}>{this.dateReversal(carCellData.manufacture + '000') + '/' + carCellData.mileage + '万公里'}</Text>
                             <TouchableOpacity onPress={()=>{
                                     this.props.callBack(carCellData.id);
                             }} activeOpacity={0.8}
