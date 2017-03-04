@@ -208,7 +208,7 @@ export default class AddEmployeeScene extends BaseComponent {
                 {/**      导航栏          */}
                 <NavigationView
                     backIconClick={this.backPage}
-                    title="编辑员工"
+                    title="添加员工"
                     renderRihtFootView={this._navigatorRightView}
                 />
 

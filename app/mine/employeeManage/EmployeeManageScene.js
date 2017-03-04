@@ -88,6 +88,7 @@ export default class EmployeeManageScene extends BaseComponent {
                         title="员工管理"
                         renderRihtFootView={this._navigatorRightView}
                     />
+                    {this.loadView()}
                 </View>
             );
         }
