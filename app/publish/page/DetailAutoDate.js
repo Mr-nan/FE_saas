@@ -69,7 +69,7 @@ export default class DetailAutoDate extends Component{
         });
     }
 
-    componentWillReceiveProps(nextProps: Object) {
+    componentWillReceiveProps(nextProps) {
         this.setState({
             hasRegister: nextProps.carType === '1'|| this.props.carType === ''
         });

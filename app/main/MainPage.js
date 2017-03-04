@@ -77,12 +77,12 @@ export default class MainPage extends BaseComponent {
                      this.publishModal.openModal();
                 }} jumpScene={(ref,openSelectBranch)=>{
                     if(openSelectBranch=='true'){
-                        if(typeof this.refs.carsourcesence == 'undefined'){
+                        {/*if(typeof this.refs.carsourcesence == 'undefined'){*/}
                             this.setState({selectedTab: ref})
-                        }else{
-                            this.setState({selectedTab: ref})
-                            this.refs.carsourcesence.presCarTypeScene();
-                        }
+                        {/*}else{*/}
+                            {/*this.setState({selectedTab: ref})*/}
+                            {/*this.refs.carsourcesence.presCarTypeScene();*/}
+                        {/*}*/}
                     }else{
                         this.setState({selectedTab: ref})
                     }
@@ -90,7 +90,7 @@ export default class MainPage extends BaseComponent {
                     this.toNextPage(params);
                 }}/>),
             new tableItemInfo('carpage', 'page12', '车源', require('../../images/mainImage/carSelect.png'), require('../../images/mainImage/carUnSelect.png'),
-                <CarSourceSence ref="carsourcesence" showModal={(value)=>{
+                <CarSourceSence  showModal={(value)=>{
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
@@ -117,12 +117,12 @@ export default class MainPage extends BaseComponent {
                      this.publishModal.openModal();
                 }} jumpScene={(ref,openSelectBranch)=>{
                     if(openSelectBranch=='true'){
-                        if(typeof this.refs.carsourcesence == 'undefined'){
+                        {/*if(typeof this.refs.carsourcesence == 'undefined'){*/}
                             this.setState({selectedTab: ref})
-                        }else{
-                            this.setState({selectedTab: ref})
-                            this.refs.carsourcesence.presCarTypeScene();
-                        }
+                        {/*}else{*/}
+                            {/*this.setState({selectedTab: ref})*/}
+                            {/*this.refs.carsourcesence.presCarTypeScene();*/}
+                        {/*}*/}
                     }else{
                         this.setState({selectedTab: ref})
                     }
@@ -131,7 +131,7 @@ export default class MainPage extends BaseComponent {
                 }}/>),
             new tableItemInfo('carpage', 'page2', '车源', require('../../images/mainImage/carSelect.png'), require('../../images/mainImage/carUnSelect.png'),
 
-                <CarSourceSence ref="carsourcesence" showModal={(value)=>{
+                <CarSourceSence  showModal={(value)=>{
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
 
