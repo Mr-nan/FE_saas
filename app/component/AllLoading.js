@@ -24,6 +24,12 @@ export default class AllLoading extends Component {
         });
     }
 
+    changeShowType = (value) => {
+        this.setState({
+            isShow: value
+        });
+    }
+
     render() {
         return (
             <Modal

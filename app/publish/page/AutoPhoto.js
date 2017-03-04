@@ -121,7 +121,6 @@ export default class AutoPhoto extends Component {
                 this.props.showLoading();
                 ImageUpload.request(AppUrls.INDEX_UPLOAD,'Post',params).then(
                     (response)=>{
-                        console.log('22222222222222222');
                         if(response.mycode === 1){
                             this.selectSource = {uri: response.mjson.data.url};
                             this.setState({
@@ -142,13 +141,11 @@ export default class AutoPhoto extends Component {
                             this.props.closeLoading();
                         }else {
                             this.props.closeLoading();
-                            //this.props.showHint('上传失败');
-                            console.log('上传失败');
+                            this.props.showHint('上传失败');
                         }
                     },(error)=>{
                         this.props.closeLoading();
-                        //this.props.showHint(error);
-                        console.log(error);
+                        this.props.showHint(JSON.stringify(error));
                 });
             }
         });
@@ -193,13 +190,11 @@ export default class AutoPhoto extends Component {
                             this.props.closeLoading();
                         }else {
                             this.props.closeLoading();
-                            // this.props.showHint('上传失败');
-                            console.log('上传失败');
+                            this.props.showHint('上传失败');
                         }
                     },(error)=>{
                         this.props.closeLoading();
-                        // this.props.showHint(error);
-                        console.log(error);
+                        this.props.showHint(JSON.stringify(error));
                     });
             }
         });

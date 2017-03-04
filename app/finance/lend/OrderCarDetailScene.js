@@ -100,7 +100,7 @@ export default class OrderCarDetailScene extends BaseComponent{
             {title: '放款金额', key: changeToMillion(jsonData.loan_mny_fk)+'万元'},
             {title: '在库天数', key: jsonData.library_day+'天'},
         ]
-        if (jsonData.isextension!=='1'){
+        if (jsonData.isextension==='1'){
 
             section1.push({title: '保证金', key: jsonData.bondmny},{title: '保证金状态', key: jsonData.bond_status_str})
         }

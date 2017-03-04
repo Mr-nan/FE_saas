@@ -151,15 +151,18 @@ export default class LoginFailSmsVerify extends BaseComponent {
                 phone: userName,
                 type: "2",
             };
+            this.props.showModal(true);
             request(AppUrls.SEND_SMS, 'Post', maps)
                 .then((response) => {
+                    this.props.showModal(false);
                     if (response.mjson.code == "1") {
                         this.refs.smscode.StartCountDown();
-                        this.props.showToast(response.mjson.data.code + "");
+                        alert(response.mjson.data.code + "")
                     } else {
                         this.props.showToast(response.mjson.msg + "");
                     }
                 }, (error) => {
+                    this.props.showModal(false);
                     if (error.mjson.code == -300 || error.mjson.code == -500) {
                         this.props.showToast("短信验证码获取失败");
                     } else {

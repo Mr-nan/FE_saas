@@ -44,8 +44,7 @@ export default class CarCollectionItems extends Component {
                 <View style={[styles.container,styles.lineBottom]}>
 
                     <View style={styles.imageView}>
-                        <Image style={styles.image}
-                               source={{uri:'https://ss3.baidu.com/-fo3dSag_xI4khGko9WTAnF6hhy/baike/s%3D220/sign=7fa024e5f703738dda4a0b20831ab073/279759ee3d6d55fb745a2d636c224f4a21a4ddd3.jpg'}}/>
+                        <Image style={styles.image} source={carCellData.img?{uri:carCellData.img}:require('../../../images/carSourceImages/car_null_img.png')}/>
                     </View>
 
                     <View style={[styles.textContainer]}>
@@ -57,7 +56,7 @@ export default class CarCollectionItems extends Component {
                         </View>
                         <View style={{backgroundColor:'#00000000',justifyContent:'center'}}>
                             <Text
-                                style={styles.subTitleText}>{this.dateReversal(carCellData.create_time + '000') + '/' + carCellData.mileage + '万公里'}</Text>
+                                style={styles.subTitleText}>{this.dateReversal(carCellData.manufacture + '000') + '/' + carCellData.mileage + '万公里'}</Text>
                             <TouchableOpacity onPress={()=>{
                                     this.props.callBack(carCellData.id);
                             }} activeOpacity={0.8}
@@ -107,7 +106,6 @@ const styles = StyleSheet.create({
         marginLeft: Pixel.getPixel(15),
         width: Pixel.getPixel(120),
         height: Pixel.getPixel(80),
-        backgroundColor: '#FFF45C',
 
     },
 

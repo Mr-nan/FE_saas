@@ -99,7 +99,8 @@ export default class AutoType extends Component {
         SQLite.changeData(
             'UPDATE publishCar SET v_type = ? WHERE vin = ?',
             [ this.viewData[i].index, this.props.carData.vin]);
-        let newData = new Object(...this.props.carData);
+        let newData = new Object();
+        Object.assign(newData,this.props.carData);
         newData['v_type'] = this.viewData[i].index;
         this.props.refreshCar(newData);
 

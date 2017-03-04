@@ -13,7 +13,6 @@ import {
 
 } from 'react-native';
 
-// init_coty 车龄
 import *as fontAndColor from '../constant/fontAndColor';
 import ImagePageView from 'react-native-viewpager';
 import BaseComponent from '../component/BaseComponent';
@@ -88,12 +87,10 @@ export default class CarInfoScene extends BaseComponent {
         super(props);
         // 初始状态
         this.state = {
-
             imageArray:  new ImagePageView.DataSource({pageHasChanged: (r1, r2) => r1 !== r2}),
             renderPlaceholderOnly: 'blank',
             carData:{imgs:[]},
             currentImageIndex:1,
-
         };
     }
 
@@ -114,7 +111,7 @@ export default class CarInfoScene extends BaseComponent {
             let carData = response.mjson.data;
             carData.carIconsContentData=[
                 carData.manufacture!=''? this.dateReversal(carData.manufacture+'000'):'',
-                carData.manufacture!=''? this.dateReversal(carData.init_reg+'000'):'',
+                carData.init_reg!=''? this.dateReversal(carData.init_reg+'000'):'',
                 carData.mileage+'万公里',
                 carData.transfer_times+'次',
                 carData.nature_str,
@@ -123,7 +120,7 @@ export default class CarInfoScene extends BaseComponent {
 
             if(carData.imgs.length<=0){
 
-                carData.imgs=[{ url:'https://images.unsplash.com/photo-1441260038675-7329ab4cc264?h=1024'}];
+                carData.imgs=[ {require:require('../../images/carSourceImages/car_null_img.png')}];
             }
 
             this.setState({
@@ -164,8 +161,13 @@ export default class CarInfoScene extends BaseComponent {
     // 浏览图片
     showPhotoView=()=>{
 
-        carImageArray=[];
+        if(typeof this.state.carData.imgs[0].url == 'undefined')
+        {
+            this.props.showToast('没有车辆图片');
+            return;
+        }
 
+        carImageArray=[];
        this.state.carData.imgs.map((data,index)=>{
 
            carImageArray.push(data.url);
@@ -244,7 +246,7 @@ export default class CarInfoScene extends BaseComponent {
 
         return(
             <TouchableOpacity onPress={()=>{this.showPhotoView()}}>
-                <Image source={{uri:data.url}} style={styles.carImage}/>
+                <Image source={typeof data.url =='undefined'?data.require:{uri:data.url}} style={styles.carImage}/>
             </TouchableOpacity>
 
         );
@@ -362,7 +364,6 @@ export default class CarInfoScene extends BaseComponent {
                         <View style={styles.carIconsView}>
                             {
                                 carIconsData.map((data, index) => {
-
                                     return (
                                         <CarIconView imageData={data.image} imageHighData={data.imageHigh}
                                                      content={carData.carIconsContentData&&carData.carIconsContentData[index]} title={data.title}
@@ -375,7 +376,7 @@ export default class CarInfoScene extends BaseComponent {
                 </ScrollView>
                 <TouchableOpacity style={styles.callView} onPress={this.callClick}>
                     <View style={{alignItems:'center',justifyContent:'center',width:ScreenWidth*0.5}}>
-                    <Text style={styles.callText}>{'车源编号:'+carData.id}</Text>
+                    <Text style={styles.callText}>{'车源编号:'+carData.serial_num}</Text>
                     </View>
                     <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center', borderLeftWidth: StyleSheet.hairlineWidth,
                         borderLeftColor:'white',width:ScreenWidth*0.5}}>
@@ -580,7 +581,6 @@ const styles = StyleSheet.create({
 
     carImage: {
 
-        backgroundColor: fontAndColor.COLORB0,
         height: Pixel.getPixel(250),
         width:ScreenWidth,
 
