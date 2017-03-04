@@ -108,7 +108,7 @@ export default class AutoLabel extends Component {
             },
             (error)=>{
                 this.props.closeLoading();
-                this.props.showHint(error);
+                this.props.showHint(JSON.stringify(error));
             }
         );
 
