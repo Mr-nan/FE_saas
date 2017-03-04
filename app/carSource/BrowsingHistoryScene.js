@@ -38,9 +38,7 @@ export default class BrowsingHistoryScene extends BaceComponent {
     }
 
     getData = () => {
-        let maps = {
-
-        };
+        let maps = {};
         request(Urls.USER_HISTORY, 'Post', maps)
             .then((response) => {
                     if (page == 1 && response.mjson.data.length <= 0) {
@@ -101,17 +99,36 @@ export default class BrowsingHistoryScene extends BaceComponent {
     }
 
     deleteCliiection = (id) => {
+        this.props.showModal(true);
         let maps = {
             id: id
         };
         request(Urls.USER_HISTORY_DELETE, 'Post', maps)
             .then((response) => {
                     allSouce = [];
+                    this.props.showModal(false);
                     this.props.showToast('删除成功');
                     this.getData();
                 },
                 (error) => {
-                    this.props.showToast('网络连接失败');
+                    this.props.showModal(false);
+                    this.props.showToast('删除失败');
+                });
+    }
+
+    deleteAllCliiection = () => {
+        this.props.showModal(true);
+        let maps = {};
+        request(Urls.USER_HISTORY_DELETE, 'Post', maps)
+            .then((response) => {
+                    allSouce = [];
+                    this.props.showModal(false);
+                    this.props.showToast('删除成功');
+                    this.getData();
+                },
+                (error) => {
+                    this.props.showModal(false);
+                    this.props.showToast('删除失败');
                 });
     }
 
@@ -119,8 +136,8 @@ export default class BrowsingHistoryScene extends BaceComponent {
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return ( <View style={styles.rootContainer}>
-                <NavigatorView title='浏览历史' backIconClick={this.backPage}/>
                 {this.loadView()}
+                <NavigatorView title='浏览历史' backIconClick={this.backPage}/>
             </View>);
         }
         return (
@@ -150,9 +167,23 @@ export default class BrowsingHistoryScene extends BaceComponent {
                                     />
                                 }
                 />
-                <NavigatorView title='浏览历史' backIconClick={this.backPage}/>
+                <NavigatorView title='浏览历史' backIconClick={this.backPage}
+                               renderRihtFootView={this._navigatorRightView}/>
             </View>)
 
+    }
+
+    _navigatorRightView = () => {
+        return (
+            <TouchableOpacity activeOpacity={0.8} onPress={()=>{
+            this.deleteAllCliiection();
+        }}>
+                <Text style={{color: 'white',
+                fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                textAlign: 'center',
+                backgroundColor: 'transparent',}}>清空历史</Text>
+            </TouchableOpacity>
+        );
     }
 
 }

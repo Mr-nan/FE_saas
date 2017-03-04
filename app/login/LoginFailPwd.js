@@ -73,6 +73,7 @@ export default class LoginFailPwd extends BaseComponent {
                     ref="phone"
                     textPlaceholder={'请输入手机号码'}
                     rightIcon={false}
+                    clearValue={true}
                     maxLength={11}
                     viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
                     keyboardType={'phone-pad'}
@@ -83,6 +84,7 @@ export default class LoginFailPwd extends BaseComponent {
                     textPlaceholder={'请设置BMS登录密码'}
                     rightIcon={false}
                     leftIcon={true}
+                    clearValue={true}
                     maxLength={16}
                     secureTextEntry={true}
                     leftIconUri={require('./../../images/login/password.png')}
@@ -92,6 +94,7 @@ export default class LoginFailPwd extends BaseComponent {
                     textPlaceholder={'请再次输入密码'}
                     rightIcon={false}
                     leftIcon={true}
+                    clearValue={true}
                     maxLength={16}
                     secureTextEntry={true}
                     leftIconUri={require('./../../images/login/password.png')}
@@ -128,8 +131,10 @@ export default class LoginFailPwd extends BaseComponent {
                 confirm_pwd: md5.hex_md5(newPasswordAgain),
                 pwd: md5.hex_md5(newPassword),
             };
+            this.props.showModal(true);
             request(AppUrls.SETPWD, 'Post', maps)
                 .then((response) => {
+                    this.props.showModal(false);
                     if (response.mjson.code == "1") {
                         StorageUtil.mGetItem(response.mjson.data.phone + "", (data) => {
                             if (data.code == 1) {
@@ -145,6 +150,7 @@ export default class LoginFailPwd extends BaseComponent {
                         this.props.showToast(response.mjson.msg + "");
                     }
                 }, (error) => {
+                    this.props.showModal(false);
                     if (error.mjson.code == -300 || error.mjson.code == -500) {
                         this.props.showToast("设置失败");
                     } else {

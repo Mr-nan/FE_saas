@@ -137,20 +137,46 @@ export default class CollectionIntent extends BaseComponent {
     checkedCarClick = (carObject) => {
 // {brand_id: 2, series_id: 2446, series_name: "拉共达Taraf", model_id: 29702, model_name: "2015款 拉共达Taraf 6.0L 标准型"}
         console.log(carObject);
-        if (carObject.series_id=='' || carObject.series_id=='0'){
-            this.brandSeriesArr.push(carObject.brand_id + '|' +0);
-            this.state.arr.push({
-                title: carObject.brand_name,
-                isSelected: true,
-            });
+        if(this.brandSeriesArr.length>0){
+
+            for(let value of this.brandSeriesArr){
+                console.log(value);
+                if((value.split('|',1)) == (carObject.brand_id)){
+                    this.props.showToast('一个品牌的车型只能选一个');
+                }else{
+                    if (carObject.series_id=='' || carObject.series_id=='0'){
+                        this.brandSeriesArr.push(carObject.brand_id + '|' +0);
+                        this.state.arr.push({
+                            title: carObject.brand_name,
+                            isSelected: true,
+                        });
+                    }else{
+                        this.brandSeriesArr.push(carObject.brand_id + '|' + carObject.series_id);
+                        this.state.arr.push({
+                            title: carObject.series_name,
+                            isSelected: true,
+                        });
+                    }
+                    this.selectConfirm(this.state.arr);
+                }
+            }
         }else{
-            this.brandSeriesArr.push(carObject.brand_id + '|' + carObject.series_id);
-            this.state.arr.push({
-                title: carObject.series_name,
-                isSelected: true,
-            });
+            if (carObject.series_id=='' || carObject.series_id=='0'){
+                this.brandSeriesArr.push(carObject.brand_id + '|' +0);
+                this.state.arr.push({
+                    title: carObject.brand_name,
+                    isSelected: true,
+                });
+            }else{
+                this.brandSeriesArr.push(carObject.brand_id + '|' + carObject.series_id);
+                this.state.arr.push({
+                    title: carObject.series_name,
+                    isSelected: true,
+                });
+            }
+            this.selectConfirm(this.state.arr);
         }
-        this.selectConfirm(this.state.arr);
+
         console.log(this.brandSeriesArr);
 
     };
@@ -162,6 +188,7 @@ export default class CollectionIntent extends BaseComponent {
             checkedCarClick: this.checkedCarClick,
             status: 0,
             isHeadInteraction:true,
+            isCheckedCarModel :true,
         }
 
     }
