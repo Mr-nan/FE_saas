@@ -28,10 +28,10 @@ export default class AutoOther extends Component {
         this.vinNum = this.props.carData.vin;
         this.dealer_price = this.props.carData.dealer_price;
         this.describe = this.props.carData.describe;
-        if(this.isEmpty(this.describe) === true){
+        if (this.isEmpty(this.describe) === true) {
             this.describe = '';
         }
-        if(this.isEmpty(this.dealer_price) === true){
+        if (this.isEmpty(this.dealer_price) === true) {
             this.dealer_price = '';
         }
         this.state = {
@@ -39,10 +39,10 @@ export default class AutoOther extends Component {
         }
     }
 
-    isEmpty = (str)=>{
-        if(typeof(str) != 'undefined' && str !== ''){
+    isEmpty = (str) => {
+        if (typeof(str) != 'undefined' && str !== '') {
             return false;
-        }else {
+        } else {
             return true;
         }
     };
@@ -79,13 +79,13 @@ export default class AutoOther extends Component {
         );
     };
 
-    _onPrice = (text)=>{
+    _onPrice = (text) => {
         this.props.sqlUtil.changeData(
             'UPDATE publishCar SET dealer_price = ? WHERE vin = ?',
             [text, this.vinNum]);
     };
 
-    _onDescribe = (text)=>{
+    _onDescribe = (text) => {
         this.props.sqlUtil.changeData(
             'UPDATE publishCar SET describe = ? WHERE vin = ?',
             [text, this.vinNum]);
