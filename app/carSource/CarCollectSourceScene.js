@@ -44,10 +44,11 @@ export default class CarCollectSourceScene extends BaceComponent {
         };
         request(Urls.FAVORITES, 'Post', maps)
             .then((response) => {
-                    if (page == 1 && response.mjson.data.length <= 0) {
+                    allPage = response.mjson.data.pageCount;
+                    if (page == 1 && response.mjson.data.list.length <= 0) {
                         this.setState({renderPlaceholderOnly: 'null', isRefreshing: false});
                     } else {
-                        allSouce.push(...response.mjson.data);
+                        allSouce.push(...response.mjson.data.list.length);
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
                             carData: ds.cloneWithRows(allSouce),
