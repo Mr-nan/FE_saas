@@ -260,7 +260,7 @@
     
 
     //初始化识别核心
-    int nRet = [_sVehicleLicense initSVehicleLicense:@"7332DBAFD2FD18301EF6" nsReserve:@""];
+    int nRet = [_sVehicleLicense initSVehicleLicense:@"4D39F52BD46AC7CD8470" nsReserve:@""];
     if ([self.delegate respondsToSelector:@selector(initVehicleLicenseWithResult:)]) {
         [self.delegate initVehicleLicenseWithResult:nRet];
     }
