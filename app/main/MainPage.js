@@ -77,20 +77,15 @@ export default class MainPage extends BaseComponent {
                      this.publishModal.openModal();
                 }} jumpScene={(ref,openSelectBranch)=>{
                     if(openSelectBranch=='true'){
-                        if(typeof this.refs.carsourcesence == 'undefined'){
-                            this.setState({selectedTab: ref})
-                        }else{
-                            this.setState({selectedTab: ref})
-                            this.refs.carsourcesence.presCarTypeScene();
-                        }
+                        this.setState({selectedTab: ref,openSelectBranch:true})
                     }else{
-                        this.setState({selectedTab: ref})
+                        this.setState({selectedTab: ref,openSelectBranch:false})
                     }
                 }} callBack={(params)=> {
                     this.toNextPage(params);
                 }}/>),
             new tableItemInfo('carpage', 'page12', '车源', require('../../images/mainImage/carSelect.png'), require('../../images/mainImage/carUnSelect.png'),
-                <CarSourceSence ref="carsourcesence" showModal={(value)=>{
+                <CarSourceSence openBeanch={this.state.openSelectBranch} showModal={(value)=>{
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
@@ -117,21 +112,16 @@ export default class MainPage extends BaseComponent {
                      this.publishModal.openModal();
                 }} jumpScene={(ref,openSelectBranch)=>{
                     if(openSelectBranch=='true'){
-                        if(typeof this.refs.carsourcesence == 'undefined'){
-                            this.setState({selectedTab: ref})
-                        }else{
-                            this.setState({selectedTab: ref})
-                            this.refs.carsourcesence.presCarTypeScene();
-                        }
+                        this.setState({selectedTab: ref,openSelectBranch:true})
                     }else{
-                        this.setState({selectedTab: ref})
+                        this.setState({selectedTab: ref,openSelectBranch:false})
                     }
                 }} callBack={(params)=> {
                     this.toNextPage(params);
                 }}/>),
             new tableItemInfo('carpage', 'page2', '车源', require('../../images/mainImage/carSelect.png'), require('../../images/mainImage/carUnSelect.png'),
 
-                <CarSourceSence ref="carsourcesence" showModal={(value)=>{
+                <CarSourceSence openBeanch={this.state.openSelectBranch} showModal={(value)=>{
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
 

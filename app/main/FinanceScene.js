@@ -95,8 +95,8 @@ export default class FinanceSence extends BaseComponet {
     setLoan = () => {
         let maps = {
             api: Urls.OPT_LOAN_SUBJECT,
-            merge_id: loanList[0].merge_id,
-            user_id: loanList[0].user_id,
+            opt_merge_id: loanList[0].merge_id,
+            opt_user_id: loanList[0].user_id,
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {

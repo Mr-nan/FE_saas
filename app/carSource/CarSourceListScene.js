@@ -67,7 +67,7 @@ export  default  class carSourceListScene extends BaseComponent {
     constructor(props) {
         super(props);
         // 初始状态
-
+       console.log(this.props.openBeanch);
         const carSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
 
         this.state = {
@@ -98,12 +98,12 @@ export  default  class carSourceListScene extends BaseComponent {
 
     }
 
+    componentWillReceiveProps() {
+        console.log('11111111111');
+    }
+
     initFinish = () => {
         this.loadData();
-        console.log(this.props.openSelectBranch);
-        if(this.props.openSelectBranch==true){
-            this.presCarTypeScene();
-        }
     };
 
     // 下拉刷新数据
