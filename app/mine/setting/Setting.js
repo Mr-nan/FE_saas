@@ -89,7 +89,7 @@ export default class Setting extends BaseComponent {
                 <TouchableOpacity onPress={() => {
                     this.toNextPage({
                         name: 'AbountPlatform',
-                        component: CarOverdue,
+                        component: AbountPlatform,
                         params: {},
                     })
                 }}>
