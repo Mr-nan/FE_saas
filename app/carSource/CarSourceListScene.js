@@ -29,8 +29,8 @@ import CarCell              from './znComponent/CarCell';
 import CarInfoScene         from './CarInfoScene';
 import CarBrandSelectScene  from './CarBrandSelectScene';
 import CityListScene        from './CityListScene';
-import {SequencingButton,SequencingView}                    from './znComponent/CarSequencingView';
-import * as AppUrls         from "../constant/appUrls";
+import {SequencingButton,SequencingView} from './znComponent/CarSequencingView';
+import * as AppUrls from "../constant/appUrls";
 import  {request}           from '../utils/RequestUtil';
 import PixelUtil            from '../utils/PixelUtil';
 
@@ -100,6 +100,10 @@ export  default  class carSourceListScene extends BaseComponent {
 
     initFinish = () => {
         this.loadData();
+        console.log(this.props.openSelectBranch);
+        if(this.props.openSelectBranch==true){
+            this.presCarTypeScene();
+        }
     };
 
     // 下拉刷新数据
@@ -154,7 +158,6 @@ export  default  class carSourceListScene extends BaseComponent {
                 this.props.showModal(false);
 
             }, (error) => {
-
                 this.props.showModal(false);
                 this.setState({
                     isRefreshing:false,
@@ -203,7 +206,7 @@ export  default  class carSourceListScene extends BaseComponent {
 
     toEnd =() => {
 
-            if (carData.length && APIParameter.status == 1 && !this.state.isRefreshing) {
+            if (carData.length && APIParameter.status == 1  && !this.state.isRefreshing) {
                 console.log('加载ing');
                 this.loadMoreData();
             }
@@ -234,6 +237,7 @@ export  default  class carSourceListScene extends BaseComponent {
                 checkedCarClick: this.checkedCarClick,
                 status:1,
                 isHeadInteraction:true,
+                isCheckedCarModel:true,
 
             }
         };
@@ -302,7 +306,6 @@ export  default  class carSourceListScene extends BaseComponent {
 
         APIParameter.brand_id = carObject.brand_id;
         APIParameter.series_id = carObject.series_id;
-    console.log(carObject);
         this.setState({
             checkedCarType: {
                 title: carObject.series_id==0?carObject.brand_name:carObject.series_name,
@@ -524,7 +527,7 @@ export  default  class carSourceListScene extends BaseComponent {
 
     renderPlaceholderView = () => {
         return (
-            <View style={{width: width, height: height,backgroundColor:fontAndColor.COLORA3,alignItems: 'center'}}>
+            <View style={{flex:1,backgroundColor:fontAndColor.COLORA3,alignItems: 'center'}}>
                 {this.loadView()}
             </View>
         );
@@ -707,6 +710,7 @@ const styles = StyleSheet.create({
 
     contaier: {
         flex: 1,
+        backgroundColor:fontAndColor.COLORA3
     },
     checkedContentView: {
 

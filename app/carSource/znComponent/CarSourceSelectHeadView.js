@@ -213,7 +213,7 @@ const  styles = StyleSheet.create({
     line:{
 
         height:Pixel.getPixel(15),
-        backgroundColor:fontAndColor.COLORA1,
+        backgroundColor:fontAndColor.COLORA3,
     },
 
     countView:{
@@ -235,6 +235,7 @@ const  styles = StyleSheet.create({
 
         color:fontAndColor.COLORA0,
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
+        backgroundColor:'white',
     },
 
     countText:{
@@ -255,6 +256,8 @@ const  styles = StyleSheet.create({
     unitsText:{
         color:fontAndColor.COLORA0,
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
+        backgroundColor:'white',
+
     },
     selectView: {
         top: Pixel.getTitlePixel(104),
@@ -272,7 +275,7 @@ const  styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: fontAndColor.COLORA4,
+        borderBottomColor: fontAndColor.COLORA3,
 
     },
     checkedCellText: {

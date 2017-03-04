@@ -11,7 +11,8 @@ import {
     Dimensions,
     TouchableOpacity,
     ListView,
-    RefreshControl
+    RefreshControl,
+    InteractionManager
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
@@ -36,6 +37,13 @@ export  default class PurchaseRepaymentPage extends BaseComponent {
             renderPlaceholderOnly: 'blank',
             isRefreshing: false
         };
+    }
+
+    componentDidMount() {
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
     }
 
     componentWillUnmount() {

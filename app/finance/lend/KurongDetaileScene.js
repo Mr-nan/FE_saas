@@ -12,10 +12,10 @@ import {
 } from 'react-native';
 
 import {CommnetListItem, LendCarItemCell, CommenButton,commnetStyle,ComentImageButton} from './component/ComponentBlob'
-import {width, height, fontadapeSize, adapeSize,STATECODE,PAGECOLOR,getRowData,getSectionData} from './component/MethodComponent'
+import {width, height, fontadapeSize, adapeSize,STATECODE,PAGECOLOR,getRowData,getSectionData,changeToMillion} from './component/MethodComponent'
 import  AllNavigationView from '../../component/AllNavigationView';
 import BaseComponent from '../../component/BaseComponent';
-import {ModifyBorrowing} from './component/ModelComponent'
+import {ModifyBorrowing,LendSuccessAlert,ModalAlert} from './component/ModelComponent'
 import {request} from '../../utils/RequestUtil'
 import *as apis from '../../constant/appUrls'
 
@@ -24,7 +24,10 @@ const controlCode={
 
     stateCode:'',
     extendCode:'',
-    lendType:''
+    lendType:'',
+    maxLend:'',
+    minLend:'',
+    changeMoney:''
 }
 
 
@@ -66,11 +69,12 @@ export  default  class KurongDetaileScene extends BaseComponent {
                     controlCode.stateCode=tempjson.status
                     controlCode.extendCode=tempjson.is_extend;
                     controlCode.lendType=tempjson.type;
-
+                    controlCode.minLend=changeToMillion(tempjson.min_loanmny);
+                    let Maxmum=Number.parseFloat(tempjson.max_loanmny)+Number.parseFloat(tempjson.payment_loanmny)
+                    controlCode.maxLend=changeToMillion(Maxmum)
                     if (carNum>0){
 
                         this.getOrderCarInfo(tempjson)
-
                     }
                     else {
                         this.setState({
@@ -79,8 +83,6 @@ export  default  class KurongDetaileScene extends BaseComponent {
                             renderPlaceholderOnly: STATECODE.loadSuccess
                         })
                     }
-
-
 
                 },
                 (error) => {
@@ -133,7 +135,7 @@ export  default  class KurongDetaileScene extends BaseComponent {
             {title: '状态',     key: jsonData.status_str},
             {title: '放款日期', key: jsonData.loan_time},
             {title: '借款用途', key: jsonData.remarks},
-        ]
+            ]
         if(carData.length>0){
 
             let tempCarDate=[];
@@ -177,11 +179,41 @@ export  default  class KurongDetaileScene extends BaseComponent {
         }
 
     }
+    modifyLengNum=(callback)=> {
+
+
+        if (controlCode.changeMoney !== '') {
+            let maps = {
+                api: apis.SET_APPLY_MNY,
+                loan_code: this.props.loanNumber,
+                loan_mny: controlCode.changeMoney,
+            };
+
+            callback(false);
+            this.props.showModal(true);
+            request(apis.FINANCE, 'Post', maps)
+                .then((response) => {
+                        this.props.showModal(false);
+                        this.change.setModelVisible(true)
+                    },
+                    (error) => {
+//需要做处理
+
+                    });
+
+        }
+    }
+
 
     controsButtonClick=(title)=>{
 
-        alert(title);
+        if (title==='取消借款'){
+            this.canleAlert.setModelVisible(true)
+        }
     }
+
+
+
 
 //获取不同页面的颜色
     getStyle = (state) => {
@@ -255,7 +287,31 @@ export  default  class KurongDetaileScene extends BaseComponent {
             </View>
         )
     }
+    cancleLoad=(setModelVis)=>{
 
+        setModelVis(false);
+        this.props.showModal(true);
+
+        let maps={
+            api: apis.CANCEL_LOAN,
+            loan_code: this.props.loanNumber
+        }
+        request(apis.FINANCE, 'Post', maps)
+            .then((response) =>{
+
+                    this.props.showModal(false);
+                    this.successCancle.setModelVisible(true)
+
+                },
+                (error) => {
+
+                    if (error.mycode!==-300||error.mycode!==-500){
+                        this.props.showModal(false);
+                        this.props.showToast(error);
+                    }
+
+                });
+    }
 
 
     render() {
@@ -298,7 +354,15 @@ export  default  class KurongDetaileScene extends BaseComponent {
                 <View style={[commnetStyle.bottomWarp,{flexDirection: 'row',justifyContent: 'center',alignItems: 'center'}]}>
                     {tempButtons}
                 </View>
-                <ModifyBorrowing ref={(model)=>{this.modifyb=model}} confimClick={()=>{}} cancleClick={()=>{}}/>
+                <ModifyBorrowing ref={(model)=>{this.modifyb=model}}
+                                 onchangeText={(text)=>{controlCode.changeMoney=text}}
+                                 minLend={controlCode.minLend}
+                                 maxLend={controlCode.maxLend}
+                                 confimClick={this.modifyLengNum}
+                                 cancleClick={(callback)=>{callback(false)}}/>
+                <LendSuccessAlert ref={(lend)=>{this.change=lend}} confimClick={()=>{this.backPage()}} title='修改成功'subtitle='恭喜您修改借款成功'/>
+                <ModalAlert title='取消借款' subtitle="您确定要取消借款吗" ref={(cancle)=>{this.canleAlert=cancle}} confimClick={this.cancleLoad} cancleClick={(setmodilVis)=>{setmodilVis(false)}}/>
+                <LendSuccessAlert ref={(canleS)=>{this.successCancle=canleS}} confimClick={()=>{this.backPage()}} title='取消成功'subtitle='取消借款成功'/>
                 <AllNavigationView
                     title="借款详情"
                     backIconClick={this.backPage}

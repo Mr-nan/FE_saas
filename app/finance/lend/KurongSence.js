@@ -132,12 +132,15 @@ export default class KurongSence extends BaseComponent {
                 use_time:PostData.use_time,
                 loan_life:PostData.loan_life
             };
+            this.props.showModal(true);
             request(apis.FINANCE, 'Post', maps)
                 .then((response) => {
+                        this.props.showModal(false);
                         this.lendAlert.setModelVisible(true)
                     },
                     (error) => {
-
+                        //授信
+                        //this.lendAlert.setModelVisible(true)
                     });
         }
 
@@ -169,6 +172,7 @@ export default class KurongSence extends BaseComponent {
                                     selectedValue: [0],
                                     pickerConfirmBtnText:'确认',
                                     pickerCancelBtnText:'取消',
+                                    pickerTitleText:'选择期限天数',
                                     onPickerConfirm: data => {
                                         let tempString=data.toString();
                                         let  placeHodel =tempString==='0'?this.dateBlob[0]:tempString
@@ -203,7 +207,8 @@ export default class KurongSence extends BaseComponent {
                     confirmTextIOS='确定'
                     cancelTextIOS='取消'
                 />
-                <LendSuccessAlert ref={(lend)=>{this.lendAlert=lend}} confimClick={()=>{this.backPage()}}/>
+                <LendSuccessAlert ref={(lend)=>{this.lendAlert=lend}} confimClick={()=>{this.backPage()}} title='借款成功'subtitle='恭喜您借款成功'/>
+                <LendSuccessAlert ref={(shouxin)=>{this.shouxinAlert=shouxin}} confimClick={()=>{this.backPage()}} title='需要授信'subtitle='请联系客户经理进行授信'/>
                 <AllNavigatior title='库融借款' backIconClick={()=>{ this.backPage()}}/>
 
             </View>
