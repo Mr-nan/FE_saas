@@ -45,6 +45,11 @@
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8764F52B800544BDB35F20A3 /* libRCTBEEPickerManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82B903BCC1514330B41DB29B /* libRCTBEEPickerManager.a */; };
 		A71F92341425474AB56D2770 /* libSQLite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A1229226735478EA2FEAE52 /* libSQLite.a */; };
+		E36AEB611E6ABEE8000F4E11 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E36AEB601E6ABEE8000F4E11 /* CoreMotion.framework */; };
+		E36AEB821E6ABF0C000F4E11 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E36AEB811E6ABF0C000F4E11 /* AudioToolbox.framework */; };
+		E36AEB841E6ABF17000F4E11 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E36AEB831E6ABF17000F4E11 /* AVFoundation.framework */; };
+		E36AEB861E6ABF2A000F4E11 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E36AEB851E6ABF2A000F4E11 /* CoreMedia.framework */; };
+		E36AEB881E6ABF35000F4E11 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E36AEB871E6ABF35000F4E11 /* Foundation.framework */; };
 		E3B817061E613EAC00279287 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3B817051E613EAC00279287 /* SystemConfiguration.framework */; };
 		E3B817081E613EB600279287 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3B817071E613EB600279287 /* CoreTelephony.framework */; };
 		E3B817091E613ECF00279287 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D769E2B1E602A630039526C /* libc++.tbd */; };
@@ -325,6 +330,11 @@
 		B2004FD539E84DDD82569B93 /* libRCTBEEPickerManager.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTBEEPickerManager.a; sourceTree = "<group>"; };
 		B52D7A8211964E0BBCE73C67 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		BD7DC422982C4AC0B3993A09 /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
+		E36AEB601E6ABEE8000F4E11 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		E36AEB811E6ABF0C000F4E11 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		E36AEB831E6ABF17000F4E11 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		E36AEB851E6ABF2A000F4E11 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		E36AEB871E6ABF35000F4E11 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E3B817051E613EAC00279287 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		E3B817071E613EB600279287 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		E3B8170A1E613ED600279287 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
@@ -345,6 +355,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E36AEB881E6ABF35000F4E11 /* Foundation.framework in Frameworks */,
+				E36AEB861E6ABF2A000F4E11 /* CoreMedia.framework in Frameworks */,
+				E36AEB841E6ABF17000F4E11 /* AVFoundation.framework in Frameworks */,
+				E36AEB821E6ABF0C000F4E11 /* AudioToolbox.framework in Frameworks */,
+				E36AEB611E6ABEE8000F4E11 /* CoreMotion.framework in Frameworks */,
 				E3B8170B1E613ED600279287 /* libz.tbd in Frameworks */,
 				E3B817091E613ECF00279287 /* libc++.tbd in Frameworks */,
 				6EFC1612A1C141A990AA381C /* libsqlite3.0.tbd in Frameworks */,
@@ -458,6 +473,11 @@
 		033B617BF03E4DCEBBEDB683 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E36AEB871E6ABF35000F4E11 /* Foundation.framework */,
+				E36AEB851E6ABF2A000F4E11 /* CoreMedia.framework */,
+				E36AEB831E6ABF17000F4E11 /* AVFoundation.framework */,
+				E36AEB811E6ABF0C000F4E11 /* AudioToolbox.framework */,
+				E36AEB601E6ABEE8000F4E11 /* CoreMotion.framework */,
 				E3B8170A1E613ED600279287 /* libz.tbd */,
 				E3B817071E613EB600279287 /* CoreTelephony.framework */,
 				E3B817051E613EAC00279287 /* SystemConfiguration.framework */,
