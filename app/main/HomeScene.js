@@ -32,8 +32,12 @@ import * as Urls from '../constant/appUrls';
 import {request} from '../utils/RequestUtil';
 import  LoadMoreFooter from '../component/LoadMoreFooter';
 import CarInfoScene from '../carSource/CarInfoScene';
+import  StorageUtil from '../utils/StorageUtil';
+import * as storageKeyNames from '../constant/storageKeyNames';
+import WebScene from './WebScene';
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 let allList = [];
+let allData = {};
 export class HomeHeaderItemInfo {
     constructor(ref, key, functionTitle, describeTitle, functionImage) {
 
@@ -46,7 +50,7 @@ export class HomeHeaderItemInfo {
 
 }
 
-const bossFuncArray = [
+let bossFuncArray = [
     new HomeHeaderItemInfo('shouche', 'page111', '收车', '真实靠谱车源', require('../../images/mainImage/shouche.png')),
     new HomeHeaderItemInfo('maiche', 'page112', '卖车', '面向全国商家', require('../../images/mainImage/maiche.png')),
     new HomeHeaderItemInfo('jiekuan', 'page113', '借款', '一步快速搞定', require('../../images/mainImage/jiekuan.png')),
@@ -64,8 +68,9 @@ export default class HomeScene extends BaseComponet {
         this.state = {
             source: [],
             renderPlaceholderOnly: 'blank',
-            isRefreshing: false
-        };
+            isRefreshing: false,
+            headSource: []
+    };
     }
 
     initFinish = () => {
@@ -78,10 +83,30 @@ export default class HomeScene extends BaseComponet {
         };
         request(Urls.HOME, 'Post', maps)
             .then((response) => {
+                    allData = response.mjson.data;
                     allList.push(...response.mjson.data.carList.list);
+                    StorageUtil.mGetItem(storageKeyNames.USER_INFO, (data) => {
+                        if (data.code == 1) {
+                            let datas = JSON.parse(data.result);
+                            if (datas.user_level == 2) {
+                                if (datas.enterprise_list[0].role_type == '1') {
+                                } else if (datas.enterprise_list[0].role_type == '2') {
+                                    bossFuncArray.splice(0, 2);
+                                } else {
+                                    bossFuncArray.splice(2, 2);
+                                }
+                            } else if (datas.user_level == 1) {
+                                bossFuncArray.splice(2, 2);
+                            } else {
+                                bossFuncArray.splice(2, 2);
+                            }
+                            console.log(bossFuncArray);
+                            this.setState({headSource:bossFuncArray,renderPlaceholderOnly: 'success',
+                                source: ds.cloneWithRows(allList), isRefreshing: false});
+                        }
+                    });
                     this.setState({
-                        renderPlaceholderOnly: 'success',
-                        source: ds.cloneWithRows(allList), isRefreshing: false
+
                     });
                     status = response.mjson.data.carList.status;
                 },
@@ -118,7 +143,6 @@ export default class HomeScene extends BaseComponet {
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return (
-
                 <View style={cellSheet.container}>
                     {
                         this.loadView()
@@ -195,9 +219,10 @@ export default class HomeScene extends BaseComponet {
     }
 
     _renderHeader = () => {
-        let tablist;
-        tablist = bossFuncArray;
+        let tablist = [];
+        tablist = this.state.headSource;
         let items = [];
+        console.log(tablist);
         tablist.map((data) => {
             let tabItem;
 
@@ -216,9 +241,10 @@ export default class HomeScene extends BaseComponet {
 
         return (
             <View>
-
                 <View style={{flexDirection: 'row'}}>
-                    <ViewPagers/>
+                    <ViewPagers callBack={(urls)=>{
+                       this.props.callBack({name:'WebScene',component:WebScene,params:{webUrl:urls}});
+                    }} items={allData}/>
                     <TouchableOpacity onPress={()=>{
                             this.props.jumpScene('carpage','true');
                     }} activeOpacity={0.8} style={{backgroundColor: 'rgba(255,255,255,0.8)',

@@ -121,22 +121,23 @@ export default class ModelSelect extends PureComponent {
                                 showHint:true
                             });
                         }else if(rd.length === 1){
+                            this.setState({
+                                showHint:false
+                            });
                             this.modelInfo['brand_id'] = rd[0].brand_id;
                             this.modelInfo['model_id'] = rd[0].model_id;
                             this.modelInfo['series_id'] = rd[0].series_id;
                             this.modelInfo['model_year'] = rd[0].model_year;
                             this.modelInfo['model_name'] = rd[0].model_name;
                             this._insertVinAndModel(text,JSON.stringify(this.modelInfo),rd[0].model_name);
-                            this.setState({
-                                showHint:true
-                            });
+
                         }else if(rd.length > 1){
+                            this.setState({
+                                showHint:false
+                            });
                             this.modelData = response.mjson.data;
                             this.vinModal.refresh();
                             this.vinModal.openModal();
-                            this.setState({
-                                showHint:true
-                            });
                         }
                     }else {
                         this._insertVinNum(text);
