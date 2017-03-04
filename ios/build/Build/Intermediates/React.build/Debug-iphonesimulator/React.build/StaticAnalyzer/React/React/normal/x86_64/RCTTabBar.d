@@ -1,22 +1,22 @@
 dependencies: \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Views/RCTTabBar.m \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Views/RCTTabBar.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Base/RCTEventDispatcher.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Base/RCTBridge.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Base/RCTBridgeDelegate.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Base/RCTJavaScriptLoader.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Base/RCTDefines.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Base/RCTBridgeModule.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Base/RCTFrameUpdate.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Base/RCTInvalidating.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Base/RCTLog.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Base/RCTAssert.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Views/RCTTabBarItem.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Views/RCTComponent.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Base/RCTUtils.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Views/RCTView.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Views/RCTBorderStyle.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Views/RCTPointerEvents.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Views/RCTViewControllerProtocol.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Views/RCTWrapperViewController.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Views/UIView+React.h
+  /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Views/RCTTabBar.m \
+  /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Views/RCTTabBar.h \
+  /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTEventDispatcher.h \
+  /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTBridge.h \
+  /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTBridgeDelegate.h \
+  /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTJavaScriptLoader.h \
+  /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTDefines.h \
+  /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTBridgeModule.h \
+  /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTFrameUpdate.h \
+  /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTInvalidating.h \
+  /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTLog.h \
+  /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTAssert.h \
+  /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Views/RCTTabBarItem.h \
+  /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Views/RCTComponent.h \
+  /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTUtils.h \
+  /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Views/RCTView.h \
+  /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Views/RCTBorderStyle.h \
+  /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Views/RCTPointerEvents.h \
+  /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Views/RCTViewControllerProtocol.h \
+  /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Views/RCTWrapperViewController.h \
+  /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Views/UIView+React.h

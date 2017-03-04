@@ -1,6 +1,6 @@
 dependencies: \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Base/RCTUtils.m \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Base/RCTUtils.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Base/RCTAssert.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Base/RCTDefines.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/React/Base/RCTLog.h
+  /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTUtils.m \
+  /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTUtils.h \
+  /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTAssert.h \
+  /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTDefines.h \
+  /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTLog.h

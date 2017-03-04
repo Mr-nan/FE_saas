@@ -113,9 +113,9 @@ export default class AutoTransfer extends Component {
                         <View style={styles.inputContainer}>
                             <View style={IS_ANDROID ? styles.pickAndroidContainer : styles.pickIOSContainer}>
                                 <Picker style={[IS_ANDROID && styles.fillSpace]}
-                                         selectedValue={this.state.selected1}
-                                         itemStyle={{color:"#FFFFFF", fontSize:16,fontWeight:'bold'}}
-                                         onValueChange={(index) => this.onPickerSelect('selected1',index)}>
+                                        selectedValue={this.state.selected1}
+                                        itemStyle={{color:"#FFFFFF", fontSize:16,fontWeight:'bold'}}
+                                        onValueChange={(index) => this.onPickerSelect('selected1',index)}>
                                     {this.state.itemList.map((value, i) => (
                                         <PickerItem label={value} value={i} key={"first"+value}/>
                                     ))}
@@ -162,7 +162,6 @@ const styles = StyleSheet.create({
         flex:1,
         height:Pixel.getPixel(40),
         justifyContent:'center',
-        alignItems:'center',
         overflow:'hidden'
     },
     inputNum:{
