@@ -6,8 +6,7 @@ import * as FontAndColor from "../constant/fontAndColor";
 import LoginScene from "./LoginScene";
 import Register from "./Register";
 import PixelUtil from "../utils/PixelUtil";
-import NavigationBar from '../component/NavigationBar';
-import ColorChoose from './ColorChoose';
+import CarOverdue from '../finance/lend/CarOverdue';
 
 var Pixel = new PixelUtil();
 
@@ -57,6 +56,14 @@ export default class LoginAndRegister extends BaseComponent {
                         params: {},
                     })
                 }}/>
+                {/*<MyButton buttonType={MyButton.TEXTBUTTON} content="测试" parentStyle={styles.buttonStyle}*/}
+                          {/*childStyle={styles.buttonTextStyle} mOnPress={() => {*/}
+                    {/*this.toNextPage({*/}
+                        {/*name: 'CarOverdue',*/}
+                        {/*component: CarOverdue,*/}
+                        {/*params: {},*/}
+                    {/*})*/}
+                {/*}}/>*/}
             </View>
         );
     }
