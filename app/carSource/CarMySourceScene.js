@@ -105,10 +105,12 @@ export default class CarMySourceScene extends BaceComponent {
             if(type==3){
 
                 this.refs.upperFrameView.refreshingData();
+                this.props.showToast('已成功下架');
 
             }else if(type==2){
 
                 this.refs.AuditView.refreshingData();
+                this.props.showToast('已成功上架');
 
             }
 

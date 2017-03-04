@@ -52,7 +52,7 @@ export default class CarCell extends Component {
 
                     </View>
                     <View style={{backgroundColor:'white'}}>
-                        <Text style={styles.subTitleText}>{this.dateReversal(carCellData.create_time+'000')+'/'+carCellData.mileage+'万公里'}</Text>
+                        <Text style={styles.subTitleText}>{this.dateReversal(carCellData.manufacture+'000')+'/'+carCellData.mileage+'万公里'}</Text>
                     </View>
 
                 </View>

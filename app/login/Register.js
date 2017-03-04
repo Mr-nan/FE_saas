@@ -35,6 +35,7 @@ var idcardf: '';
 var idcardback: '';
 var businessid: '';
 
+var Platform = require('Platform');
 const options = {
     //弹出框选项
     title: '请选择',
@@ -395,8 +396,10 @@ export default class Register extends BaseComponent {
                 phone: userName,
                 type: "1",
             };
+            this.props.showModal(true);
             request(AppUrls.SEND_SMS, 'Post', maps)
                 .then((response) => {
+                    this.props.showModal(false);
                     if (response.mjson.code == "1") {
                         this.refs.smsCode.StartCountDown();
                         this.props.showToast(response.mjson.data.code + "");
@@ -404,6 +407,7 @@ export default class Register extends BaseComponent {
                         this.props.showToast(response.mjson.msg);
                     }
                 }, (error) => {
+                    this.props.showModal(false);
                     this.Verifycode();
                     if (error.mjson.code == -300 || error.mjson.code == -500) {
                         this.props.showToast("短信验证码获取失败");
@@ -415,9 +419,21 @@ export default class Register extends BaseComponent {
     }
 
     selectPhotoTapped(id) {
-        this.id = id;
-        this._rePhoto();
+        if (Platform.OS === 'android') {
+            this.id = id;
+            this._rePhoto();
+        } else {
+            ImagePicker.showImagePicker(options, (response) => {
+                if (response.didCancel) {
+                } else if (response.error) {
+                } else if (response.customButton) {
+                } else {
+                    this.uploadImage(response, id);
+                }
+            });
+        }
     }
+
 
     _cameraClick = () => {
         ImagePicker.launchCamera(options, (response) => {

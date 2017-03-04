@@ -261,7 +261,7 @@ export default class DetailAutoPhoto extends Component {
 
                     },(error)=>{
                         this.props.closeLoading();
-                        this.props.showHint(error);
+                        this.props.showHint(JSON.stringify(error));
                     });
             }
         });

@@ -220,21 +220,21 @@ export default class EditCarScene extends BaseComponent {
                                         this._closeLoading();
                                     }else {
                                         this._closeLoading();
-                                        // this._showHint('网络请求失败');
+                                        this._showHint('网络请求失败');
                                     }
                                 },
                                 (error) => {
                                     this._closeLoading();
-                                    // this._showHint(error);
+                                    this._showHint(JSON.stringify(error));
                                 });
                     } else {
                         this._closeLoading();
-                        // this._showHint(data.error);
+                        this._showHint(JSON.stringify(data.error));
                     }
                 });
         }catch(error) {
             this._closeLoading();
-            // this._showHint(error);
+            this._showHint(JSON.stringify(error));
         }
 
     };

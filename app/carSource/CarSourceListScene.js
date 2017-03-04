@@ -18,13 +18,11 @@ import {
 
 } from 'react-native';
 
-const {width, height} = Dimensions.get('window');
 
 import * as fontAndColor    from '../constant/fontAndColor';
 import BaseComponent        from '../component/BaseComponent';
 import {CarSourceSelectHeadView,CarSourceSelectView}         from './znComponent/CarSourceSelectHeadView';
 import ListFooter           from './znComponent/LoadMoreFooter';
-import SGListView           from 'react-native-sglistview';
 import CarCell              from './znComponent/CarCell';
 import CarInfoScene         from './CarInfoScene';
 import CarBrandSelectScene  from './CarBrandSelectScene';
@@ -63,6 +61,8 @@ const APIParameter = {
 
 
 export  default  class carSourceListScene extends BaseComponent {
+
+
     // 构造
     constructor(props) {
         super(props);
@@ -237,7 +237,7 @@ export  default  class carSourceListScene extends BaseComponent {
                 checkedCarClick: this.checkedCarClick,
                 status:1,
                 isHeadInteraction:true,
-                isCheckedCarModel:true,
+                // isCheckedCarModel:true,
 
             }
         };
@@ -534,13 +534,13 @@ export  default  class carSourceListScene extends BaseComponent {
     }
 
     render() {
+
         if (this.state.renderPlaceholderOnly !== 'success') {
             return this.renderPlaceholderView();
         }
         return (
 
             <View style={styles.contaier}>
-                <View style={styles.contaier}>
                     <CarListNavigatorView searchClick={this.presCarTypeScene} loactionClick={this.loactionClick}/>
                     <CarSourceSelectHeadView ref="headView" onPres={this.headViewOnPres}
                               checkRecommendClick={this.checkRecommendClick}/>
@@ -565,7 +565,6 @@ export  default  class carSourceListScene extends BaseComponent {
                         this.state.dataSource && (
                             <ListView
                                 dataSource={this.state.dataSource}
-                                ref={'carListView'}
                                 initialListSize={10}
                                 onEndReachedThreshold={1}
                                 stickyHeaderIndices={[]}//仅ios
@@ -587,8 +586,6 @@ export  default  class carSourceListScene extends BaseComponent {
                                 }
                             />)
                     }
-
-                </View>
                 <SequencingButton buttonClick={this.showSequencingView}/>
                 <SequencingView
                     ref="SequencingView"
@@ -598,7 +595,6 @@ export  default  class carSourceListScene extends BaseComponent {
                 {
                     !this.state.isHide && (
                         <CarSourceSelectView
-                            ref="CarSourceSelectView"
                             checkedSource={checkedSource}
                             checkCarAgeAnKMClick={this.checkCarAgeAnKMClick}
                             currentCheckedIndex={currentCheckedIndex}
