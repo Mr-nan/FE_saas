@@ -13,30 +13,52 @@ import {
     ListView,
     TouchableOpacity,
     TouchableWithoutFeedback,
+    InteractionManager,
 } from 'react-native';
 import {CommenButton} from './component/ComponentBlob';
 import {adapeSize, fontadapeSize, width} from './component/MethodComponent';
 import NavigationBar from '../../component/NavigationBar';
 import * as FontAndColor from '../../constant/fontAndColor';
 import BaseComponent from '../../component/BaseComponent';
-import PixelUtil from '../../utils/PixelUtil'
+import PixelUtil from '../../utils/PixelUtil';
+import *as AppUrls from '../../constant/appUrls';
+import {request} from '../../utils/RequestUtil'
 
 var Pixel = new PixelUtil();
 
 let map = new Map();
 let data = ['1', '2', '3'];
 export  default class CarOverdue extends BaseComponent {
-    // 构造
+
     constructor(props) {
         super(props);
-        // 初始状态
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: this.ds.cloneWithRows(data),
+            dataSource: [],
+            renderPlaceholderOnly: 'blank',
         }
     }
 
+    initFinish = () => {
+        this.getData();
+    }
+
     render() {
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return (
+                <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
+                    <NavigationBar
+                        leftImageShow={false}
+                        leftTextShow={true}
+                        leftText={""}
+                        centerText={"申请展期"}
+                        rightText={""}
+                    />
+                    {this.loadView()}
+                </View>
+            )
+        }
+
         return (
             <View style={{backgroundColor: FontAndColor.COLORA3, flex: 1}}>
                 <NavigationBar
@@ -58,17 +80,22 @@ export  default class CarOverdue extends BaseComponent {
                         textStyle={{color: 'white'}}
                         buttonStyle={styles.buttonStyleLeft}
                         onPress={() => {
-
+                            this.getData();
                         }} title="申请展期"/>
                     <CommenButton
                         textStyle={{color: 'white'}}
                         buttonStyle={styles.buttonStyleRight}
                         onPress={() => {
-
+                            this.backPage();
                         }} title="取消"/>
                 </View>
             </View>
         )
+    }
+
+    allRefresh = () => {
+        this.setState({renderPlaceholderOnly: 'loading'});
+        this.getData();
     }
 
     renderRow = (rowData, sindex, rowID) => {
@@ -134,6 +161,46 @@ export  default class CarOverdue extends BaseComponent {
             }}>
             </View>
         )
+    }
+
+    getData = () => {
+        let maps = {
+            api: "api/v1/account/apply_extension_carlist",
+            loan_code: "12345678",
+        };
+        request(AppUrls.FINANCE, 'Post', maps)
+            .then((response) => {
+                    this.props.showToast("请求成功");
+                    if (response.mjson.data == null || response.mjson.data.length <= 0) {
+                        this.setState({renderPlaceholderOnly: 'null'});
+                    } else {
+                        this.setState({
+                            renderPlaceholderOnly: 'success',
+                            // dataSource: ds.cloneWithRows(response.mjson.data)
+                            dataSource: this.ds.cloneWithRows(data)
+                        });
+                    }
+                },
+                (error) => {
+                    if (error.mjson.code == -300 || error.mjson.code == -500) {
+                        this.props.showToast("网络请求失败");
+                        this.setState({
+                            renderPlaceholderOnly: 'error',
+                        })
+                    } else {
+                        if (error.mjson.code == -1) {
+                            this.setState({
+                                renderPlaceholderOnly: 'null',
+                            })
+                        } else {
+                            this.props.showToast(error.mjson.msg + "");
+                            this.setState({
+                                renderPlaceholderOnly: 'error',
+                            })
+                        }
+                    }
+                }
+            )
     }
 }
 
@@ -211,6 +278,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flex: 1,
         marginLeft: 5,
-        borderRadius: 5,
+        borderRadius: 3,
     },
 })
