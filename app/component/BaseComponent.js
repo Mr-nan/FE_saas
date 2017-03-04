@@ -16,7 +16,8 @@ import * as fontAndColor from "../constant/fontAndColor";
 import MyButton from "./MyButton";
 const {width, height} = Dimensions.get('window');
 const Pixel = new PixelUtil();
-
+import ConsoleUtils from "../utils/ConsoleUtils";
+const Console = new ConsoleUtils();
 export default class BaseComponent extends Component {
 
     handleBack = () => {
@@ -50,6 +51,10 @@ export default class BaseComponent extends Component {
         if (navigator) {
             navigator.pop();
         }
+    }
+
+    showConsole = (content) => {
+        Console.showConsole(content);
     }
 
     componentWillUnmount() {

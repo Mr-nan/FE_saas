@@ -88,12 +88,10 @@ export default class CarInfoScene extends BaseComponent {
         super(props);
         // 初始状态
         this.state = {
-
             imageArray:  new ImagePageView.DataSource({pageHasChanged: (r1, r2) => r1 !== r2}),
             renderPlaceholderOnly: 'blank',
             carData:{imgs:[]},
             currentImageIndex:1,
-
         };
     }
 
