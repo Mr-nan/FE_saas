@@ -1,4 +1,4 @@
-import React, {Component,PureComponent} from 'react';
+import React, {Component, PureComponent} from 'react';
 import {
     AppRegistry,
     StyleSheet,
@@ -14,15 +14,15 @@ import Confirm from './Confirm';
  * 需要显示吐司时，调用changeType方法，传递参数为本类TOAST静态常量，msg通过props传递。
  * 需要显示确认弹框时，调用changeType方法，传递参数为本类CONFIRM静态常量，
  * 有msg、title、leftText、rightText、leftCallBack、rightCallBack属性通过props传递
-**/
+ **/
 export default  class ShowToast extends PureComponent {
     static TOAST = "1";
     static CONFIRM = "2";
 
     constructor(props) {
         super(props);
-        this.state={
-            msg:""
+        this.state = {
+            msg: ""
         }
     }
 
@@ -40,15 +40,19 @@ export default  class ShowToast extends PureComponent {
     }
 
 
-    changeType = (_type,msg) => {
+    changeType = (_type, msg) => {
         if (_type === ShowToast.TOAST) {
             this.setState({
-                msg:msg
+                msg: msg
             });
             this._toastOnPress();
-        } else if(_type === ShowToast.CONFIRM){
+        } else if (_type === ShowToast.CONFIRM) {
             this._confirmOnPress();
         }
+    }
+
+    showModal = (value) => {
+        this.refs.toast.openLoading(value);
     }
 
     render() {
