@@ -13,7 +13,6 @@ import {
 
 } from 'react-native';
 
-// init_coty 车龄
 import *as fontAndColor from '../constant/fontAndColor';
 import ImagePageView from 'react-native-viewpager';
 import BaseComponent from '../component/BaseComponent';
@@ -121,7 +120,7 @@ export default class CarInfoScene extends BaseComponent {
 
             if(carData.imgs.length<=0){
 
-                carData.imgs=[{ url:'https://images.unsplash.com/photo-1441260038675-7329ab4cc264?h=1024'}];
+                carData.imgs=[ {require:require('../../images/carSourceImages/car_null_img.png')}];
             }
 
             this.setState({
@@ -162,8 +161,13 @@ export default class CarInfoScene extends BaseComponent {
     // 浏览图片
     showPhotoView=()=>{
 
-        carImageArray=[];
+        if(typeof this.state.carData.imgs[0].url == 'undefined')
+        {
+            this.props.showToast('没有车辆图片');
+            return;
+        }
 
+        carImageArray=[];
        this.state.carData.imgs.map((data,index)=>{
 
            carImageArray.push(data.url);
@@ -242,7 +246,7 @@ export default class CarInfoScene extends BaseComponent {
 
         return(
             <TouchableOpacity onPress={()=>{this.showPhotoView()}}>
-                <Image source={{uri:data.url}} style={styles.carImage}/>
+                <Image source={typeof data.url =='undefined'?data.require:{uri:data.url}} style={styles.carImage}/>
             </TouchableOpacity>
 
         );
@@ -577,7 +581,6 @@ const styles = StyleSheet.create({
 
     carImage: {
 
-        backgroundColor: fontAndColor.COLORB0,
         height: Pixel.getPixel(250),
         width:ScreenWidth,
 

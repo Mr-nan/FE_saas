@@ -19,7 +19,7 @@ class LoadMoreFooter extends Component {
         return (
             <TouchableOpacity onPress={()=>{
 
-                if(isLoadAll)
+                if(isCarFoot && isLoadAll)
                 {
                     footAllClick();
                 }
