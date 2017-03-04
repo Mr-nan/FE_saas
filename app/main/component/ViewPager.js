@@ -47,10 +47,10 @@ export default class ViewPagers extends Component {
             <ViewPager
                 dataSource={this.state.dataSource}    //数据源（必须）
                 renderPage={this._renderPage}         //page页面渲染方法（必须）
-                isLoop={alldata.banners.length <= 0?false:true}                        //是否可以循环
-                autoPlay={alldata.banners.length <= 0?false:true}                      //是否自动
+                isLoop={alldata.banners.length <= 1?false:true}                        //是否可以循环
+                autoPlay={alldata.banners.length <= 1?false:true}                      //是否自动
                 initialPage={0}       //指定初始页面的index
-                locked={alldata.banners.length <= 0?true:false}                        //为true时禁止滑动翻页
+                locked={alldata.banners.length <= 1?true:false}                        //为true时禁止滑动翻页
             />
         )
     }

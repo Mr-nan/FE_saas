@@ -149,7 +149,7 @@ export default class AutoMileage extends Component {
                             return;
                         }
                         if(this.isEmpty(rd.mileage) === true){
-                            this.props.showHint('请填写车辆历程');
+                            this.props.showHint('请填写车辆里程');
                             this.props.closeLoading();
                             return;
                         }
