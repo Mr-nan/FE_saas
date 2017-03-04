@@ -1,0 +1,76 @@
+{
+  "retcode": 1,
+  "retdata": [
+    {
+      "code": "20161216006901",
+      "contract": [
+        {
+          "name": "租赁车辆购买价款确认函",
+          "namecode": "chelianggoumai20161216006904",
+          "pdf": "http://openbms.dycd.com/Uploads/contract/2016-12/chelianggoumai20161216006904.pdf",
+          "pic": [
+            "http://openbms.dycd.com/imageOld/L1VwbG9hZHMvY29udHJhY3QvY2hlbGlhbmdnb3VtYWkyMDE2MTIxNjAwNjkwNC8xLnBuZw%3D%3D"
+          ]
+        },
+        {
+          "name": "融资租赁车辆表",
+          "namecode": "cheliangkucun20161216006902",
+          "pdf": "http://openbms.dycd.com/Uploads/contract/2016-12/cheliangkucun20161216006902.pdf",
+          "pic": [
+            "http://openbms.dycd.com/imageOld/L1VwbG9hZHMvY29udHJhY3QvY2hlbGlhbmdrdWN1bjIwMTYxMjE2MDA2OTAyLzEucG5n"
+          ]
+        },
+        {
+          "name": "监管协议合同",
+          "namecode": "jianguanxieyi20161216006906",
+          "pdf": "http://openbms.dycd.com/Uploads/contract/2016-12/jianguanxieyi20161216006906.pdf",
+          "pic": [
+            "http://openbms.dycd.com/imageOld/L1VwbG9hZHMvY29udHJhY3Qvamlhbmd1YW54aWV5aTIwMTYxMjE2MDA2OTA2LzEucG5n",
+            "http://openbms.dycd.com/imageOld/L1VwbG9hZHMvY29udHJhY3Qvamlhbmd1YW54aWV5aTIwMTYxMjE2MDA2OTA2LzIucG5n",
+            "http://openbms.dycd.com/imageOld/L1VwbG9hZHMvY29udHJhY3Qvamlhbmd1YW54aWV5aTIwMTYxMjE2MDA2OTA2LzMucG5n",
+            "http://openbms.dycd.com/imageOld/L1VwbG9hZHMvY29udHJhY3Qvamlhbmd1YW54aWV5aTIwMTYxMjE2MDA2OTA2LzQucG5n",
+            "http://openbms.dycd.com/imageOld/L1VwbG9hZHMvY29udHJhY3Qvamlhbmd1YW54aWV5aTIwMTYxMjE2MDA2OTA2LzUucG5n"
+          ]
+        },
+        {
+          "name": "售后回租合同",
+          "namecode": "shouhouhuizu20161216006901",
+          "pdf": "http://openbms.dycd.com/Uploads/contract/2016-12/shouhouhuizu20161216006901.pdf",
+          "pic": [
+            "http://openbms.dycd.com/imageOld/L1VwbG9hZHMvY29udHJhY3Qvc2hvdWhvdWh1aXp1MjAxNjEyMTYwMDY5MDEvMS5wbmc%3D",
+            "http://openbms.dycd.com/imageOld/L1VwbG9hZHMvY29udHJhY3Qvc2hvdWhvdWh1aXp1MjAxNjEyMTYwMDY5MDEvMTAucG5n",
+            "http://openbms.dycd.com/imageOld/L1VwbG9hZHMvY29udHJhY3Qvc2hvdWhvdWh1aXp1MjAxNjEyMTYwMDY5MDEvMTEucG5n",
+            "http://openbms.dycd.com/imageOld/L1VwbG9hZHMvY29udHJhY3Qvc2hvdWhvdWh1aXp1MjAxNjEyMTYwMDY5MDEvMTIucG5n",
+            "http://openbms.dycd.com/imageOld/L1VwbG9hZHMvY29udHJhY3Qvc2hvdWhvdWh1aXp1MjAxNjEyMTYwMDY5MDEvMi5wbmc%3D",
+            "http://openbms.dycd.com/imageOld/L1VwbG9hZHMvY29udHJhY3Qvc2hvdWhvdWh1aXp1MjAxNjEyMTYwMDY5MDEvMy5wbmc%3D",
+            "http://openbms.dycd.com/imageOld/L1VwbG9hZHMvY29udHJhY3Qvc2hvdWhvdWh1aXp1MjAxNjEyMTYwMDY5MDEvNC5wbmc%3D",
+            "http://openbms.dycd.com/imageOld/L1VwbG9hZHMvY29udHJhY3Qvc2hvdWhvdWh1aXp1MjAxNjEyMTYwMDY5MDEvNS5wbmc%3D",
+            "http://openbms.dycd.com/imageOld/L1VwbG9hZHMvY29udHJhY3Qvc2hvdWhvdWh1aXp1MjAxNjEyMTYwMDY5MDEvNi5wbmc%3D",
+            "http://openbms.dycd.com/imageOld/L1VwbG9hZHMvY29udHJhY3Qvc2hvdWhvdWh1aXp1MjAxNjEyMTYwMDY5MDEvNy5wbmc%3D",
+            "http://openbms.dycd.com/imageOld/L1VwbG9hZHMvY29udHJhY3Qvc2hvdWhvdWh1aXp1MjAxNjEyMTYwMDY5MDEvOC5wbmc%3D",
+            "http://openbms.dycd.com/imageOld/L1VwbG9hZHMvY29udHJhY3Qvc2hvdWhvdWh1aXp1MjAxNjEyMTYwMDY5MDEvOS5wbmc%3D"
+          ]
+        },
+        {
+          "name": "租金表",
+          "namecode": "zujinbiao20161216006903",
+          "pdf": "http://openbms.dycd.com/Uploads/contract/2016-12/zujinbiao20161216006903.pdf",
+          "pic": [
+            "http://openbms.dycd.com/imageOld/L1VwbG9hZHMvY29udHJhY3QvenVqaW5iaWFvMjAxNjEyMTYwMDY5MDMvMS5wbmc%3D"
+          ]
+        },
+        {
+          "name": "租赁物交接确认单",
+          "namecode": "zulinwujiaojie20161216006905",
+          "pdf": "http://openbms.dycd.com/Uploads/contract/2016-12/zulinwujiaojie20161216006905.pdf",
+          "pic": [
+            "http://openbms.dycd.com/imageOld/L1VwbG9hZHMvY29udHJhY3QvenVsaW53dWppYW9qaWUyMDE2MTIxNjAwNjkwNS8xLnBuZw%3D%3D"
+          ]
+        }
+      ],
+      "payment_number": "201612160069"
+    }
+  ],
+  "retmsg": "[1]ok",
+  "rettoken": "ff744bc3aca078ed94cd9643da14ad97"
+}

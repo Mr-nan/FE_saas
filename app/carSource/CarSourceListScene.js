@@ -29,7 +29,6 @@ import CarCell              from './znComponent/CarCell';
 import CarInfoScene         from './CarInfoScene';
 import CarBrandSelectScene  from './CarBrandSelectScene';
 import CityListScene        from './CityListScene';
-import ZNLoadView           from './znComponent/ZNLoadView'
 import {SequencingButton,SequencingView} from './znComponent/CarSequencingView';
 import * as AppUrls from "../constant/appUrls";
 import  {request}           from '../utils/RequestUtil';
@@ -101,6 +100,10 @@ export  default  class carSourceListScene extends BaseComponent {
 
     initFinish = () => {
         this.loadData();
+        console.log(this.props.openSelectBranch);
+        if(this.props.openSelectBranch==true){
+            this.presCarTypeScene();
+        }
     };
 
     // 下拉刷新数据
@@ -115,7 +118,8 @@ export  default  class carSourceListScene extends BaseComponent {
     // 筛选数据刷新
     filterData=()=>{
         carData = [];
-        this.refs.ZNLoadView.visibleClick(true);
+        this.setState({isRefreshing:true, dataSource: this.state.dataSource.cloneWithRows(carData),});
+        this.props.showModal(true);
         this.loadData();
 
     }
@@ -124,13 +128,18 @@ export  default  class carSourceListScene extends BaseComponent {
     loadData = () => {
 
         let url = AppUrls.BASEURL + 'v1/car/index';
-
-        APIParameter.page = 0;
+        APIParameter.page = 1;
         request(url, 'post', APIParameter)
             .then((response) => {
 
-                carData.push(...response.mjson.data.list);
-                APIParameter.status = response.mjson.data.status;
+                carData=response.mjson.data.list;
+                if(typeof(response.mjson.data.start)== "undefined"){
+                    APIParameter.start = 0;
+
+                }else {
+                    APIParameter.start = response.mjson.data.start;
+                }
+                APIParameter.status =  response.mjson.data.status;
 
                 if (this.state.isFillData !== APIParameter.status) {
                     this.setState({
@@ -146,12 +155,10 @@ export  default  class carSourceListScene extends BaseComponent {
                          renderPlaceholderOnly: 'success',
                     });
                 }
-                this.refs.ZNLoadView.visibleClick(false);
-
+                this.props.showModal(false);
 
             }, (error) => {
-
-                this.refs.ZNLoadView.visibleClick(false);
+                this.props.showModal(false);
                 this.setState({
                     isRefreshing:false,
                     renderPlaceholderOnly:'error'
@@ -169,6 +176,11 @@ export  default  class carSourceListScene extends BaseComponent {
         request(url, 'post', APIParameter)
             .then((response) => {
 
+                if(typeof(response.mjson.data.start)== "undefined"){
+                    APIParameter.start = 0;
+                }else {
+                    APIParameter.start = response.mjson.data.start;
+                }
                 APIParameter.status = response.mjson.data.status;
                 if (this.state.isFillData !== APIParameter.status) {
                     this.setState({
@@ -194,8 +206,7 @@ export  default  class carSourceListScene extends BaseComponent {
 
     toEnd =() => {
 
-        let isFilterData = this.refs.ZNLoadView.getVisible();
-            if (carData.length && APIParameter.status == 1 && !isFilterData && !this.state.isRefreshing) {
+            if (carData.length && APIParameter.status == 1  && !this.state.isRefreshing) {
                 console.log('加载ing');
                 this.loadMoreData();
             }
@@ -226,6 +237,8 @@ export  default  class carSourceListScene extends BaseComponent {
                 checkedCarClick: this.checkedCarClick,
                 status:1,
                 isHeadInteraction:true,
+                isCheckedCarModel:true,
+
             }
         };
         this.props.callBack(navigatorParams);
@@ -236,13 +249,22 @@ export  default  class carSourceListScene extends BaseComponent {
     //  筛选条件事件
     headViewOnPres = (index, isHighlighted, setImgHighlighted) => {
 
+        this.refs.headView.checkSelect(currentCheckedIndex); // 取消之前选择按钮状态
+        currentCheckedIndex = index;
+
         if (index === 1) {
 
             this.presCarTypeScene();
+            if(!this.state.isHide)
+            {
+                this.setState({
+                    isHide:true,
+                });
+            }
             return;
         }
-        this.refs.headView.checkSelect(currentCheckedIndex); // 取消之前选择按钮状态
-        currentCheckedIndex = index;
+
+
         if (!isHighlighted) {
             switch (index) {
 
@@ -260,8 +282,8 @@ export  default  class carSourceListScene extends BaseComponent {
         this.setState({
             isHide:isHighlighted,
         });
-
         setImgHighlighted(!isHighlighted); // 回调按钮状态
+
 
     };
 
@@ -284,7 +306,6 @@ export  default  class carSourceListScene extends BaseComponent {
 
         APIParameter.brand_id = carObject.brand_id;
         APIParameter.series_id = carObject.series_id;
-
         this.setState({
             checkedCarType: {
                 title: carObject.series_id==0?carObject.brand_name:carObject.series_name,
@@ -342,6 +363,7 @@ export  default  class carSourceListScene extends BaseComponent {
     };
 
     hideCheckedView=()=>{
+        this.refs.headView.checkSelect(currentCheckedIndex); // 取消之前选择按钮状态
         this.setState({
             isHide: true,
         });
@@ -505,7 +527,7 @@ export  default  class carSourceListScene extends BaseComponent {
 
     renderPlaceholderView = () => {
         return (
-            <View style={{width: width, height: height,backgroundColor:fontAndColor.COLORA3,alignItems: 'center'}}>
+            <View style={{flex:1,backgroundColor:fontAndColor.COLORA3,alignItems: 'center'}}>
                 {this.loadView()}
             </View>
         );
@@ -541,7 +563,7 @@ export  default  class carSourceListScene extends BaseComponent {
 
                     {
                         this.state.dataSource && (
-                            <SGListView
+                            <ListView
                                 dataSource={this.state.dataSource}
                                 ref={'carListView'}
                                 initialListSize={10}
@@ -584,7 +606,6 @@ export  default  class carSourceListScene extends BaseComponent {
                             checkedTypeString={currentCheckedIndex == 2 ? this.state.checkedCarAgeType.title:this.state.checkedCarKMType.title}/>)
                 }
 
-                <ZNLoadView ref="ZNLoadView"/>
             </View>
 
         )
@@ -689,6 +710,7 @@ const styles = StyleSheet.create({
 
     contaier: {
         flex: 1,
+        backgroundColor:fontAndColor.COLORA3
     },
     checkedContentView: {
 

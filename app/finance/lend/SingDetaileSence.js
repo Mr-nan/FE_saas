@@ -6,182 +6,407 @@ import {
     StyleSheet,
     View,
     ListView,
+
 } from 'react-native';
 
-import {CommnetListItem, LendCarItemCell, CommenButton} from './component/ComponentBlob'
-import {width, height, fontadapeSize, adapeSize} from './component/MethodComponent'
+import {CommnetListItem, LendCarItemCell, CommenButton,commnetStyle,ComentImageButton} from './component/ComponentBlob'
+import {width, height, fontadapeSize, adapeSize,STATECODE,PAGECOLOR,getRowData,getSectionData,changeToMillion} from './component/MethodComponent'
+import {ModifyBorrowing,LendSuccessAlert,ModalAlert} from './component/ModelComponent'
+import  OrderCarDetailScene from './OrderCarDetailScene'
 import  AllNavigationView from '../../component/AllNavigationView';
-import PixelUtil from '../../utils/PixelUtil';
-const Pixel = new PixelUtil();
 import BaseComponent from '../../component/BaseComponent';
+import {request} from '../../utils/RequestUtil'
+import *as apis from '../../constant/appUrls'
 
-//ok
+
+const controlCode={
+
+    stateCode:'',
+    extendCode:'',
+    lendType:'',
+    maxLend:'',
+    minLend:'',
+    changeMoney:''
+}
+
+
+
 export  default  class SingDetaileSence extends BaseComponent {
 
-    titleNameBlob = {
-
-        section1: [
-            {title: '申请日期', key: 'date'},
-            {title: '借款金额', key: 'money'},
-            {title: '借款期限', key: 'dateLimit'},
-            {title: '综合费率', key: 'rate'},
-            {title: '还款方式', key: 'paybackType'},
-            {title: '还款方式', key: 'paybackType'},
-            {title: '还款方式', key: 'paybackType'},
-            {title: '还款方式', key: 'paybackType'}
-        ],
-        section2: [{title: '状态', key: 'orderState'}],
-        section3: [
-            {title: '放款日期', key: 'payDate'},
-            {title: '评估总额', key: 'allMoney'},
-            {title: '债权人', key: 'people'}
-        ],
-        section4: {key: 'carSource'}
-    }
     // 构造
     constructor(props) {
         super(props);
         // 初始状态
         const ds = new ListView.DataSource(
             {
-                getRowData: this.getRowData,
-                getSectionHeaderData: this.getSectionData,
+                getRowData: getRowData,
+                getSectionHeaderData: getSectionData,
                 rowHasChanged: (row1, row2) => row1 !== row2,
                 sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
             }
-        );
-
-        //
+        )//
         this.state = {
-            dataSource: ds.cloneWithRowsAndSections(this.titleNameBlob,),
-            infoSouce: {
-                date: '',
-                monney: '',
-                dateLimit: '',
-                rate: '',
-                paybackType: '',
-                orderState: '',
-                payDate: '',
-                allMoney: '',
-                people: '',
-                carSource: [{name: "奥迪A7进口豪华型", state: '未还清', order: '201230123012301203', price: '12万'}]
-            },
+            dataSource: ds.cloneWithRowsAndSections(this.titleNameBlob({},[])),
+            renderPlaceholderOnly: STATECODE.loading
         }
     }
 
+    initFinish() {
 
-    getSectionData = (dataBlob, sectionID) => {
-
-        return dataBlob[sectionID];
+        this.getLendinfo();
     }
-    getRowData = (datatBlob, sectionId, rowId) => {
+//借款信息
+    getLendinfo = () => {
+        let maps = {
+            api: apis.GET_APPLY_INFO,
+            loan_code: this.props.loanNumber
+        };
+        request(apis.FINANCE, 'Post', maps)
+            .then((response) => {
 
-        return datatBlob[sectionId][rowId];
+                    let tempjson = response.mjson.data
+                    let carNum =Number.parseInt(tempjson.car_count)
+                    controlCode.stateCode=tempjson.status
+                    controlCode.extendCode=tempjson.is_extend;
+                    controlCode.lendType=tempjson.type;
+                    controlCode.minLend=changeToMillion(tempjson.min_loanmny);
+                    let Maxmum=Number.parseFloat(tempjson.max_loanmny)+Number.parseFloat(tempjson.payment_loanmny)
+                    controlCode.maxLend=changeToMillion(Maxmum)
+
+                    if (carNum>0){
+
+                        this.getOrderCarInfo(tempjson)
+                    }
+                    else {
+                        this.setState({
+
+                            dataSource:this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(tempjson,[])),
+                            renderPlaceholderOnly: STATECODE.loadSuccess
+                 })}},
+                (error) => {
+
+                    this.setState({
+                        renderPlaceholderOnly:STATECODE.loadError,
+                    })
+                });
+    }
+//车辆信息
+    getOrderCarInfo=(lendInfoJson)=>{
+
+        let maps={
+            api: apis.GET_APPLY_CARLIST,
+            loan_code: this.props.loanNumber
+        }
+        request(apis.FINANCE, 'Post', maps)
+            .then((response) =>{
+
+                    let tempCarJson = response.mjson.data.list
+                    this.setState({
+
+                        dataSource:this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(lendInfoJson,tempCarJson)),
+                        renderPlaceholderOnly: STATECODE.loadSuccess
+                    })
+                },
+
+                (error) => {
+
+                    this.setState({
+                        renderPlaceholderOnly:STATECODE.loadError,
+                    })
+                });
+
+
+
+    }
+// 数据初始化方法
+    titleNameBlob=(jsonData,carData)=>{
+
+        let dataSource = {};
+        dataSource['section1']=[
+            {title: '申请日期', key: jsonData.createtimestr},
+            {title: '借款金额', key: jsonData.payment_loanmny_str},
+            {title: '借款期限', key: jsonData.loanperiodstr},
+            {title: '借款单号', key: jsonData.loan_code},
+            {title: '综合费率', key: jsonData.payment_rate_str},
+            {title:'还款方式',key:jsonData.repayment_type},
+            {title: '状态',     key: jsonData.status_str},
+            {title: '放款日期', key: jsonData.loan_time},
+            {title: '评估总额', key: jsonData.reassessed},
+            {title: '债权人', key: jsonData.credito},
+
+        ]
+        if(carData.length>0){
+
+            let tempCarDate=[];
+
+            carData.map((item)=>{
+
+                tempCarDate.push(
+                    {
+                        auto_id:item.auto_id,
+                        model_name:item.model_name,
+                        state:item.status_str,
+                        order:item.frame_number,
+                        price:item.lend_mny,//放款额
+                        plate_number:item.plate_number,//车牌号
+                        loan_number:item.loan_number,
+                    }
+                )
+            })
+            dataSource['section2']=tempCarDate;
+        }
+
+        return dataSource;
+    }
+
+
+    getControlTitleblob=(stateCode,extendCode)=>{
+
+        if(stateCode!==''&&extendCode!==''){
+
+            let tempTitle=[]
+            if (stateCode==='1'){
+                tempTitle=['取消借款']
+            }else if(stateCode==='2'){
+                tempTitle=['签署合同','取消借款']
+            }
+            else if(stateCode==='2'){
+                tempTitle=['已取消借款']
+            }
+            else if(Number.parseInt(stateCode)>2&&stateCode!=='5'){
+                tempTitle=['查看合同']
+            }else if(stateCode=='5'){
+                if (extendCode==='1'){
+                    tempTitle=['查看合同','申请展期']
+                }else {
+                    tempTitle=['查看合同']
+                }
+            }
+
+            return tempTitle;
+        }
+    }
+
+    getButtonStyleWithTitle=(title)=>{
+
+        switch (title){
+
+            case '取消借款':
+                return styles.cancelButton
+            case '签署合同':
+                return styles.controlButton
+            case '查看合同':
+                return styles.cancelButton
+            case '申请展期':
+                return styles.controlButton
+            case '已取消借款':
+                return styles.canceledButton
+            default:
+                return styles.cancelButton
+
+        }
+
+    }
+
+//取消借款
+    cancleLoad=(setModelVis)=>{
+
+        setModelVis(false);
+        this.props.showModal(true);
+
+        let maps={
+            api: apis.CANCEL_LOAN,
+            loan_code: this.props.loanNumber
+        }
+        request(apis.FINANCE, 'Post', maps)
+            .then((response) =>{
+
+                this.props.showModal(false);
+                this.successCancle.setModelVisible(true)
+
+                },
+                (error) => {
+
+                    if (error.mycode!==-300||error.mycode!==-500){
+                        this.props.showModal(false);
+                        this.props.showToast(error);
+                    }
+
+                });
+    }
+
+    controsButtonClick=(title)=>{
+
+        if(title==='取消借款'){
+            this.canleAlert.setModelVisible(true);
+        }
+
+    }
+    modifyLengNum=(callback)=>{
+
+
+        if(controlCode.changeMoney!==''){
+            let maps = {
+                api: apis.SET_APPLY_MNY,
+                loan_code: this.props.loanNumber,
+                loan_mny:controlCode.changeMoney,
+            };
+
+            callback(false);
+            this.props.showModal(true);
+            request(apis.FINANCE, 'Post', maps)
+                .then((response) => {
+                        this.props.showModal(false);
+                        this.change.setModelVisible(true)
+                    },
+                    (error) => {
+
+                        //需要做处理
+                    });
+
+        }else {
+
+            this.props.showToast('请输入借款金额')
+
+        }
+
+
     }
 
 //获取不同页面的颜色
     getStyle = (state) => {
 
         switch (state) {
-            case 'yellow':
-                return 'yellow'
+            case '1':
+                return PAGECOLOR.COLORB3
                 break;
-            case 'blue':
-                return 'green'
+            case '2':
+                return PAGECOLOR.COLORB0
                 break;
             default:
-                return 'black'
+                return PAGECOLOR.COLORA1
         }
     }
 
-    orderStateHandel = () => {
+    getCarInfo=(rowData)=>{
 
-        alert(111);
+      let navigatorParams = {
+            name: 'OrderCarDetailScene',
+            component: OrderCarDetailScene,
+            params: {
+                auto_id:rowData.auto_id,
+                type:'2'
+            }
+        }
+        this.toNextPage(navigatorParams);
+
     }
+
+
+
 
     renderRow = (rowData, sectionID, rowId, highlightRow) => {
 
-        let Color = this.getStyle('blue');
+        let Color = this.getStyle(controlCode.stateCode);
+        if (sectionID === 'section2') {
 
-
-        if (sectionID === 'section4') {
-
-
-            let Item = this.state.infoSouce[rowData][0];
-
-
-            return <LendCarItemCell
-                carName={Item.name}
-                orderState={Item.state}
-                orderNum={Item.order}
-                price={Item.price}/>
+           return <LendCarItemCell onPress={()=>{this.getCarInfo(rowData)}} carName={rowData.model_name} orderNum={rowData.loan_number} orderState={rowData.state} price={rowData.price}/>
         }
-
         return (
-
-            <CommnetListItem textStyle={rowData.key === 'orderState' ? {color: Color} : null} leftTitle={rowData.title}
-                             showValue={rowData.key}/>
+            <CommnetListItem  textStyle={rowData.title === '状态' ? {color: Color} : null} leftTitle={rowData.title} showValue={rowData.key}/>
         );
-
     }
     renderSectionHeader = (sectionData, sectionID) => {
         return (
 
-            <View style={[sectionID !== 'section1' && {backgroundColor: '#f0eff5', height: 20}]}>
-            </View>
+            <View style={[sectionID !== 'section1' && {backgroundColor:PAGECOLOR.COLORA3, height: 20}]}></View>
         )
-
     }
+    renderSeparator =(sectionID,rowId,adjacentRowHighlighted)=>{
 
-    renderSeparator = (sectionID, rowId, adjacentRowHighlighted) => {
-
+        let separtrorHegigth =1;
+        if (rowId==='5'||rowId==='6'){
+            separtrorHegigth=10;
+        }
         return (
-            <View key={`${sectionID}-${rowId}`} style={{
-                height: adjacentRowHighlighted ? 2 : 1,
-                backgroundColor: adjacentRowHighlighted ? '#f0eff5' : '#CCCCCC'
-            }}>
-            </View>
+            <View key={`${sectionID}-${rowId}`} style={{height:separtrorHegigth, backgroundColor:PAGECOLOR.COLORA3}}></View>
         )
     }
-
 
     render() {
 
+
+        if (this.state.renderPlaceholderOnly !== STATECODE.loadSuccess) {
+            return (
+                <View style={styles.container}>
+                    {this.loadView()}
+                    <AllNavigationView title='借款详情' backIconClick={()=> {
+                        this.backPage();
+                    }}/>
+                </View>);
+        }
+        let tempButtons = [];
+        let tempButtonTitles = this.getControlTitleblob(controlCode.stateCode, controlCode.extendCode);
+
+        tempButtonTitles.map((item)=> {
+            tempButtons.push(<CommenButton buttonStyle={this.getButtonStyleWithTitle(item)}
+                                           textStyle={styles.buttontextStyle}
+                                           onPress={()=>{this.controsButtonClick(item)}}
+                                           title={item}
+                                           key={item}
+            />)
+            }
+        )
+
         return (
 
-            <View style={{flex: 1}}>
-                <AllNavigationView
-                    title="借款详情"
-                    backIconClick={this.backPage}
-                />
+            <View style={commnetStyle.container}>
+
                 <ListView
-                    style={{
-                        marginTop: Pixel.getPixel(64),
-                        backgroundColor: '#f0eff5',
-                        paddingTop: adapeSize(15),
-                        marginBottom: adapeSize(50),
-                    }}
+                    style={[commnetStyle.ListWarp,{marginTop:10}]}
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}
                     renderSectionHeader={this.renderSectionHeader}
                     renderSeparator={this.renderSeparator}
                 />
-
-                <View>
-                    <CommenButton
-                        buttonStyle={styles.buttonStyle} textStyle={styles.textStyle} onPress={this.orderStateHandel}
-                        title='取消借款'/>
+                <View style={[commnetStyle.bottomWarp,{flexDirection: 'row',justifyContent: 'center',alignItems: 'center'}]}>
+                    {tempButtons}
                 </View>
+                <ModifyBorrowing ref={(model)=>{this.modifyb=model}}
+                                 onchangeText={(text)=>{controlCode.changeMoney=text}}
+                                 minLend={controlCode.minLend}
+                                 maxLend={controlCode.maxLend}
+                                 confimClick={this.modifyLengNum}
+                                 cancleClick={(callback)=>{callback(false)}}/>
 
-            </View>
+                <LendSuccessAlert ref={(lend)=>{this.change=lend}} confimClick={()=>{this.backPage()}} title='修改成功'subtitle='恭喜您修改借款成功'/>
+                <ModalAlert title='取消借款' subtitle="您确定要取消借款吗" ref={(cancle)=>{this.canleAlert=cancle}} confimClick={this.cancleLoad} cancleClick={(setmodilVis)=>{setmodilVis(false)}}/>
+                <LendSuccessAlert ref={(canleS)=>{this.successCancle=canleS}} confimClick={()=>{this.backPage()}} title='取消成功'subtitle='取消借款成功'/>
+                <AllNavigationView
+                    title="借款详情"
+                    backIconClick={this.backPage}
+                    renderRihtFootView={()=>{
 
-        );
+                        if(controlCode.stateCode==='1'){
+                            return (<ComentImageButton btnStyle={styles.imageButton}
+                                                       ImgSource={require('../../../images/financeImages/modif.png')}
+                                                       onPress={()=>{this.modifyb.setModelVisible(true)}}
+                            />)
+                        }
+                        return null;
+                    }}
+                />
+              </View>
+          );
     }
-
 }
 
 const styles = StyleSheet.create({
+    container:{
 
+        flex:1,
+        backgroundColor:PAGECOLOR.COLORA3
+    },
     buttonStyle: {
 
         height: adapeSize(44),
@@ -196,7 +421,44 @@ const styles = StyleSheet.create({
 
         fontSize: fontadapeSize(15),
         color: '#FFFFFF'
+    },
+    imageButton:{
+        width:25,
+        height:25,
+        alignItems:'center',
+        justifyContent:'center',
+        marginLeft:10
+    },
+
+    cancelButton:{
+
+        flex:1,
+        backgroundColor:PAGECOLOR.COLORA2,
+        height:adapeSize(44),
+        justifyContent:'center'
+    },
+    canceledButton:{
+
+        flex:1,
+        height:adapeSize(44),
+        backgroundColor:PAGECOLOR.COLORA1,
+        justifyContent:'center'
+
+    },
+    controlButton:{
+        flex:1,
+        height:adapeSize(44),
+        backgroundColor:PAGECOLOR.COLORB0,
+        justifyContent:'center'
+    },
+
+    buttontextStyle:{
+
+        fontSize:fontadapeSize(15),
+        color:'white',
+        textAlign:'center',
     }
+
 
 
 });

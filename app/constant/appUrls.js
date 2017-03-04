@@ -117,9 +117,30 @@ export const LOAN_SUBJECT = 'api/v1/user/get_loan_subject_list';
 /**
  * from @zhaojian
  *
+ * 获取还款列表
+ **/
+export const REPAYMENT_GETLIST = 'api/v2/Repayment/getList';
+
+/**
+ * from @zhaojian
+ *
  * 获取还款历史
  **/
 export const GETHISTORICALLIST = 'api/v1/Repayment/getHistoricalList';
+
+/**
+ * from @zhaojian
+ *
+ * 获取还款计划列表
+ **/
+export const GETPLANLIST = 'api/v2/Repayment/getPlanList';
+
+/**
+ * from @zhaojian
+ *
+ * 获取还款计划详情
+ **/
+export const GETPLANINFO = 'api/v2/Repayment/getPlanInfo';
 
 /**
  * from @zhaojian
@@ -128,6 +149,36 @@ export const GETHISTORICALLIST = 'api/v1/Repayment/getHistoricalList';
  **/
 export const GET_MNY = 'api/v3/account/get_mny';
 
+
+/**
+ * from @lhc
+ *
+ * 获取借款首页数据
+ **/
+export const GET_APPLY_INFO='api/v3/account/get_apply_info';
+/**
+ * from @lhc
+ *
+ * 修改借款金额
+ **/
+export const SET_APPLY_MNY ='api/v3/account/set_apply_mny'
+/**
+ * from @lhc
+ * 获取订单车辆列表
+ **/
+export const  GET_APPLY_CARLIST='api/v2/account/get_apply_carlist';
+
+/**
+ * from @lhc
+ * 获取订单车辆详情
+ **/
+
+export const  GET_CAR_INFO='api/v1/account/get_car_info'
+/**
+ * from @lhc
+ * 取消借款单车/库容
+ **/
+export const CANCEL_LOAN='api/v3/account/cancel_loan'
 
 /**
  * from @zhaojian

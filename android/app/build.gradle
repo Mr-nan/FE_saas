@@ -93,7 +93,7 @@ android {
         versionCode 1
         versionName "1.0"
         ndk {
-            abiFilters "armeabi-v7a", "x86"
+            abiFilters "armeabi","armeabi-v8a"
         }
     }
     splits {
@@ -101,7 +101,7 @@ android {
             reset()
             enable enableSeparateBuildPerCPUArchitecture
             universalApk false  // If true, also generate a universal APK
-            include "armeabi-v7a", "x86"
+            include "armeabi","armeabi-v8a"
         }
     }
     signingConfigs {
@@ -124,12 +124,18 @@ android {
         variant.outputs.each { output ->
             // For each separate APK per architecture, set a unique version code as described here:
             // http://tools.android.com/tech-docs/new-build-system/user-guide/apk-splits
-            def versionCodes = ["armeabi-v7a":1, "x86":2]
+            def versionCodes = ["armeabi":1,"armeabi-v8a":2]
             def abi = output.getFilter(OutputFile.ABI)
             if (abi != null) {  // null for the universal-debug, universal-release variants
                 output.versionCodeOverride =
                         versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
             }
+        }
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
         }
     }
 }
@@ -142,6 +148,7 @@ dependencies {
         compile project(':PushSDK')
         compile project(':react-native-image-picker')
         compile project(':react-native-picker')
+        compile project(':react-native-vin-scan')
         compile project(':react-native-wheel-picker')
         compile project(':RCTWeChat')
         compile 'com.facebook.fresco:animated-gif:0.13.0'

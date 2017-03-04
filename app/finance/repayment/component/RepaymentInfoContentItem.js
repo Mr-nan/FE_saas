@@ -33,7 +33,7 @@ export  default class RepaymentInfoContentItem extends PureComponent {
                     <View activeOpacity={0.8}
                           style={{flex:2,justifyContent:'flex-end',alignItems:'center',flexDirection:'row'}}>
                         <Text
-                            style={[styles.loanCodeStyle,{color:fontAndColor.COLORA0}]}>
+                            style={[styles.loanCodeStyle,this.props.items[i].name=='最晚还款日'?{color:fontAndColor.COLORB2}:{color:fontAndColor.COLORA0}]}>
                             {this.props.items[i].data}</Text>
                     </View>
                 </View>

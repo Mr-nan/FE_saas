@@ -21,7 +21,8 @@ import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import ImageSource from '../component/ImageSource';
 import Grid from '../component/Grid';
-import * as Net from '../../utils/RequestUtil';
+import * as ImageUpload from '../../utils/ImageUpload';
+import * as AppUrls from "../../constant/appUrls";
 import ImagePicker from "react-native-image-picker";
 
 const {width, height} = Dimensions.get('window');
@@ -150,47 +151,52 @@ export default class DetailAutoPhoto extends Component {
             }
             else {
 
-                let url = 'http://dev.api-gateway.dycd.com/' + 'v1/index/upload';
                 let params ={
-                    filename : response.fileName,
                     file:'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g,'%2B')
                 };
-
-                Net.request(url,'post',params).then(
+                this.props.showLoading();
+                ImageUpload.request(AppUrls.INDEX_UPLOAD,'post',params).then(
                     (response)=>{
-                        if(viewData.hasPhoto === true){
-                            this.pictures.map((pic)=>{
-                                if(pic.name === viewData.name){
-                                    pic.file_id = response.mjson.data.file_id;
-                                    pic.url = response.mjson.data.url;
-                                }
-                            });
-                        }else{
-                            let temp ={
-                                name : viewData.name,
-                                file_id : response.mjson.data.file_id,
-                                url: response.mjson.data.url,
-                            };
-                            this.pictures.push(temp);
+                        if(response.mycode === 1){
+                            if(viewData.hasPhoto === true){
+                                this.pictures.map((pic)=>{
+                                    if(pic.name === viewData.name){
+                                        pic.file_id = response.mjson.data.file_id;
+                                        pic.url = response.mjson.data.url;
+                                    }
+                                });
+                            }else{
+                                let temp ={
+                                    name : viewData.name,
+                                    file_id : response.mjson.data.file_id,
+                                    url: response.mjson.data.url,
+                                };
+                                this.pictures.push(temp);
+                            }
+
+                            for(let i = 0;i < this.pictures.length;i++){
+                                this.viewData.map((pic)=>{
+                                    if(this.pictures[i].name === pic.name){
+                                        pic.hasPhoto = true;
+                                        pic.img_url = this.pictures[i].url;
+                                    }
+                                })
+                            }
+
+                            this.grid.refresh(this.viewData);
+
+                            this.props.sqlUtil.changeData(
+                                'UPDATE publishCar SET pictures = ? WHERE vin = ?',
+                                [JSON.stringify(this.pictures), this.props.carData.vin]);
+                            this.props.closeLoading();
+                        }else {
+                            this.props.closeLoading();
+                            this.props.showHint('上传失败');
                         }
-
-                        for(let i = 0;i < this.pictures.length;i++){
-                            this.viewData.map((pic)=>{
-                                if(this.pictures[i].name === pic.name){
-                                    pic.hasPhoto = true;
-                                    pic.img_url = this.pictures[i].url;
-                                }
-                            })
-                        }
-
-                        this.grid.refresh(this.viewData);
-
-                        this.props.sqlUtil.changeData(
-                            'UPDATE publishCar SET pictures = ? WHERE vin = ?',
-                            [JSON.stringify(this.pictures), this.props.carData.vin]);
 
                     },(error)=>{
-                        console.log(error);
+                        this.props.closeLoading();
+                        this.props.showHint(error);
                     });
 
             }
@@ -210,49 +216,53 @@ export default class DetailAutoPhoto extends Component {
             }
             else {
 
-                let url = 'http://dev.api-gateway.dycd.com/' + 'v1/index/upload';
                 let params ={
-                    filename : response.fileName,
                     file:'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g,'%2B')
                 };
-
-                Net.request(url,'post',params).then(
+                this.props.showLoading();
+                ImageUpload.request(AppUrls.INDEX_UPLOAD,'post',params).then(
                     (response)=>{
-                        if(viewData.hasPhoto === true){
-                            this.pictures.map((pic)=>{
-                                if(pic.name === viewData.name){
-                                    pic.file_id = response.mjson.data.file_id;
-                                    pic.url = response.mjson.data.url;
-                                }
-                            });
+                        if(response.mycode === 1){
+                            if(viewData.hasPhoto === true){
+                                this.pictures.map((pic)=>{
+                                    if(pic.name === viewData.name){
+                                        pic.file_id = response.mjson.data.file_id;
+                                        pic.url = response.mjson.data.url;
+                                    }
+                                });
+                            }else{
+                                let temp ={
+                                    name : viewData.name,
+                                    file_id : response.mjson.data.file_id,
+                                    url: response.mjson.data.url,
+                                };
+                                this.pictures.push(temp);
+                            }
+
+                            for(let i = 0;i < this.pictures.length;i++){
+                                this.viewData.map((pic)=>{
+                                    if(this.pictures[i].name === pic.name){
+                                        pic.hasPhoto = true;
+                                        pic.img_url = this.pictures[i].url;
+                                    }
+                                })
+                            }
+
+                            this.grid.refresh(this.viewData);
+
+                            this.props.sqlUtil.changeData(
+                                'UPDATE publishCar SET pictures = ? WHERE vin = ?',
+                                [ JSON.stringify(this.pictures), this.props.carData.vin]);
+                            this.props.closeLoading();
                         }else{
-                            let temp ={
-                                name : viewData.name,
-                                file_id : response.mjson.data.file_id,
-                                url: response.mjson.data.url,
-                            };
-                            this.pictures.push(temp);
+                            this.props.closeLoading();
+                            this.props.showHint('上传失败');
                         }
-
-                        for(let i = 0;i < this.pictures.length;i++){
-                            this.viewData.map((pic)=>{
-                                if(this.pictures[i].name === pic.name){
-                                    pic.hasPhoto = true;
-                                    pic.img_url = this.pictures[i].url;
-                                }
-                            })
-                        }
-
-                        this.grid.refresh(this.viewData);
-
-                        this.props.sqlUtil.changeData(
-                            'UPDATE publishCar SET pictures = ? WHERE vin = ?',
-                            [ JSON.stringify(this.pictures), this.props.carData.vin]);
 
                     },(error)=>{
-                        console.log(error);
+                        this.props.closeLoading();
+                        this.props.showHint(error);
                     });
-
             }
         });
     };

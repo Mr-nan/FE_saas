@@ -29,7 +29,7 @@ export default class CarCell extends Component {
 
         const date = new Date();
         date.setTime(time);
-        return(date.getFullYear()+"年"+(date.getMonth()+1)+"月"+date.getDate());
+        return(date.getFullYear()+"年"+(date.getMonth()+1)+"月");
 
     };
 
@@ -42,7 +42,7 @@ export default class CarCell extends Component {
             <View style={[styles.container,styles.lineBottom]} >
 
                 <View style={styles.imageView}>
-                    <Image style={styles.image} source={{uri:'https://ss3.baidu.com/-fo3dSag_xI4khGko9WTAnF6hhy/baike/s%3D220/sign=7fa024e5f703738dda4a0b20831ab073/279759ee3d6d55fb745a2d636c224f4a21a4ddd3.jpg'}}/>
+                    <Image style={styles.image} source={carCellData.img?{uri:carCellData.img}:{uri:'https://ss3.baidu.com/-fo3dSag_xI4khGko9WTAnF6hhy/baike/s%3D220/sign=7fa024e5f703738dda4a0b20831ab073/279759ee3d6d55fb745a2d636c224f4a21a4ddd3.jpg'}}/>
                 </View>
 
                 <View style={[styles.textContainer]}>
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
         marginLeft:Pixel.getPixel(15),
         width:Pixel.getPixel(120),
         height:Pixel.getPixel(80),
-        backgroundColor:'#FFF45C',
+        backgroundColor:fontAndColor.COLORA4,
 
     },
 

@@ -25,6 +25,21 @@ const Pixel = new PixelUtil();
 import {width,height,adapeSize,PAGECOLOR,fontadapeSize} from './MethodComponent'
 
 
+export class ComentImageButton extends  PureComponent{
+
+    render(){
+        const {btnStyle,ImgSource, onPress}=this.props;
+        return (
+            <TouchableOpacity style={btnStyle} onPress = {onPress}>
+                <Image source={ImgSource}/>
+            </TouchableOpacity>
+        )
+    }
+
+}
+
+
+
 
 export const commnetStyle=StyleSheet.create({
 
@@ -39,6 +54,7 @@ export const commnetStyle=StyleSheet.create({
         top:54,
         width:width,
         bottom:adapeSize(50),
+        backgroundColor:'white'
     },
 
     bottomWarp:{
@@ -115,11 +131,11 @@ export class LendCarItemCell extends PureComponent{
 
     render(){
 
-        const {carName,orderState,orderNum,price}=this.props;
+        const {carName,orderState,orderNum,price, onPress}=this.props;
 
         return(
 
-            <View style={styles.lendCarItemCellWarp}>
+            <TouchableOpacity onPress={onPress} style={styles.lendCarItemCellWarp}>
 
                 <View style={styles.lendCarItemCellInstWarp}>
 
@@ -133,7 +149,7 @@ export class LendCarItemCell extends PureComponent{
                     <Text style={styles.lendCarItemPrice}>{price}</Text>
                 </View>
 
-            </View>
+            </TouchableOpacity>
 
         )
     }
@@ -431,7 +447,7 @@ const styles = StyleSheet.create({
         paddingLeft:adapeSize(15),
         textAlign:'left',
         color:'#9e9e9e',
-        flex:0.4,
+        flex:0.3,
     },
     commentListItemRight:{
 

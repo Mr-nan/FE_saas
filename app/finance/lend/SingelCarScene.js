@@ -140,15 +140,22 @@ export default class SingelCarSence extends BaseComponent {
                 remark:PostData.remark,
                 use_time:PostData.use_time
             };
+            this.props.showModal(true);
             request(apis.FINANCE, 'Post', maps)
                 .then((response) => {
 
-                    this.lendAlert.setModelVisible(true)
+                        this.props.showModal(false);
+                        this.lendAlert.setModelVisible(true)
                     },
                     (error) => {
 
+                        //授信时候需要调用
+                        // this.shouxinAlert.setModelVisible(true)
+                        this.props.showToast(error.mycode)
+
                     });
         }
+
 
 
     }
@@ -193,8 +200,8 @@ export default class SingelCarSence extends BaseComponent {
                     confirmTextIOS='确定'
                     cancelTextIOS='取消'
                 />
-                <LendSuccessAlert ref={(lend)=>{this.lendAlert=lend}} confimClick={()=>{this.backPage()}}/>
-
+                <LendSuccessAlert ref={(lend)=>{this.lendAlert=lend}} confimClick={()=>{this.backPage()}} title='借款成功'subtitle='恭喜您借款成功'/>
+                <LendSuccessAlert ref={(shouxin)=>{this.shouxinAlert=shouxin}} confimClick={()=>{this.backPage()}} title='需要授信'subtitle='请联系客户经理进行授信'/>
                 <AllNavigatior title='单车借款' backIconClick={()=>{ this.backPage();}}/>
             </View>
         )

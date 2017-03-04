@@ -103,6 +103,9 @@ export default class LoginScene extends BaseComponent {
         let views = [];
         if (userNames != null && userNames.length > 0) {
             for (let x in userNames) {
+                if (x > 2) {
+                    break;
+                }
                 views.push(
                     <Text
                         key={x}
@@ -112,9 +115,6 @@ export default class LoginScene extends BaseComponent {
                         {userNames[x]}
                     </Text>
                 );
-                if (x > 3) {
-                    break;
-                }
             }
         }
         return (
@@ -190,13 +190,14 @@ export default class LoginScene extends BaseComponent {
                             callBackSms={this.Smscode}/>
                         {
                             //结果列表
-                            this.state.show ?
+                            (this.state.show && userNames.length > 0) ?
                                 <View style={[styles.result]}>
                                     {views}
                                 </View>
                                 : null
                         }
                     </View>
+
                     <MyButton buttonType={MyButton.TEXTBUTTON}
                               content={'登录'}
                               parentStyle={styles.loginBtnStyle}
@@ -215,6 +216,11 @@ export default class LoginScene extends BaseComponent {
                             <Text style={styles.bottomTestSytle}>登录遇到问题 ></Text>
                         </TouchableOpacity>
                     </View>
+
+                    <View style={{flex: 1}}/>
+
+                    <Image source={require('./../../images/login/login_bg.png')}
+                           style={{width: width, height: Pixel.getPixel(175)}}/>
                 </View>
             </TouchableWithoutFeedback>
         );
@@ -306,6 +312,7 @@ export default class LoginScene extends BaseComponent {
         } else if (typeof(smsCode) == "undefined" || smsCode == "") {
             this.props.showToast("短信验证码不能为空");
         } else {
+            this.props.showModal(true);
             let maps = {
                 code: smsCode,
                 device_code: "dycd_dms_manage_android",
@@ -315,15 +322,25 @@ export default class LoginScene extends BaseComponent {
             };
             request(AppUrls.LOGIN, 'Post', maps)
                 .then((response) => {
+                    this.props.showModal(false);
                     if (response.mjson.code == "1") {
                         // 保存用户登录状态
                         StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '2');
+                        // 保存登录成功后的用户信息
                         StorageUtil.mGetItem(StorageKeyNames.USERNAME, (data) => {
                             if (data.code == 1) {
-                                if (data.result != null && data.result.indexOf(userName) < 0) {
-                                    StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName + "," + data.result);
-                                } else if (data.result == null) {
+                                if (data.result == null || data.result == "") {
                                     StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName);
+                                } else if (data.result.indexOf(userName) < 0) {
+                                    StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName + "," + data.result);
+                                } else {
+                                    let names;
+                                    if (data.result.indexOf(userName + ",") < 0) {
+                                        names = data.result.replace(userName, "")
+                                    } else {
+                                        names = data.result.replace(userName + ",", "")
+                                    }
+                                    StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName + "," + names);
                                 }
                             }
                         })
@@ -364,6 +381,7 @@ export default class LoginScene extends BaseComponent {
                         this.props.showToast(response.mjson.msg + "");
                     }
                 }, (error) => {
+                    this.props.showModal(false);
                     this.Verifycode();
                     if (error.mjson.code == -300 || error.mjson.code == -500) {
                         this.props.showToast("登录失败");
@@ -424,7 +442,7 @@ const styles = StyleSheet.create({
         width: itemWidth - Pixel.getPixel(30),
         top: Pixel.getPixel(44),
         left: Pixel.getPixel(15),
-        backgroundColor: '#ffffff'
+        backgroundColor: '#ffffff',
     },
     item: {
         fontSize: Pixel.getFontPixel(16),

@@ -17,7 +17,7 @@ import AllNavigationView from '../../component/AllNavigationView';
 import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import ImageSource from '../component/ImageSource';
-import * as Net from '../../utils/RequestUtil';
+import * as ImageUpload from '../../utils/ImageUpload';
 import * as AppUrls from "../../constant/appUrls";
 
 const {width, height} = Dimensions.get('window');
@@ -114,36 +114,42 @@ export default class AutoPhoto extends Component {
                 console.log('User tapped custom button: ', response.customButton);
             }
             else {
-
+                console.log('11111111111111111111');
                 let params ={
-                    filename : response.fileName,
                     file:'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g,'%2B')
                 };
-
-                Net.request(AppUrls.INDEX_UPLOAD,'post',params).then(
+                this.props.showLoading();
+                ImageUpload.request(AppUrls.INDEX_UPLOAD,'Post',params).then(
                     (response)=>{
+                        console.log('22222222222222222');
+                        if(response.mycode === 1){
+                            this.selectSource = {uri: response.mjson.data.url};
+                            this.setState({
+                                hasPhoto:true
+                            });
 
-                        this.selectSource = {uri: response.mjson.data.url};
-                        this.setState({
-                            hasPhoto:true
-                        });
+                            let left ={
+                                name : 'left_anterior',
+                                file_id : response.mjson.data.file_id,
+                                url: response.mjson.data.url,
+                            };
+                            this.pictures = [];
+                            this.pictures.push(left);
 
-                        let left ={
-                            name : 'left_anterior',
-                            file_id : response.mjson.data.file_id,
-                            url: response.mjson.data.url,
-                        };
-                        this.pictures = [];
-                        this.pictures.push(left);
-
-                        SQLite.changeData(
-                            'UPDATE publishCar SET pictures = ? WHERE vin = ?',
-                            [ JSON.stringify(this.pictures), this.props.carData.vin]);
-
+                            SQLite.changeData(
+                                'UPDATE publishCar SET pictures = ? WHERE vin = ?',
+                                [ JSON.stringify(this.pictures), this.props.carData.vin]);
+                            this.props.closeLoading();
+                        }else {
+                            this.props.closeLoading();
+                            //this.props.showHint('上传失败');
+                            console.log('上传失败');
+                        }
                     },(error)=>{
-                    console.log(error);
+                        this.props.closeLoading();
+                        //this.props.showHint(error);
+                        console.log(error);
                 });
-
             }
         });
     };
@@ -162,31 +168,37 @@ export default class AutoPhoto extends Component {
             else {
 
                 let params ={
-                    filename : response.fileName,
                     file:'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g,'%2B')
                 };
-
-                Net.request(AppUrls.INDEX_UPLOAD,'post',params).then(
+                this.props.showLoading();
+                ImageUpload.request(AppUrls.INDEX_UPLOAD,'Post',params).then(
                     (response)=>{
+                        if(response.mycode === 1){
+                            this.selectSource = {uri: response.mjson.data.url};
+                            this.setState({
+                                hasPhoto:true
+                            });
 
-                        this.selectSource = {uri: response.mjson.data.url};
-                        this.setState({
-                            hasPhoto:true
-                        });
+                            let left ={
+                                name : 'left_anterior',
+                                file_id : response.mjson.data.file_id,
+                                url: response.mjson.data.url,
+                            };
+                            this.pictures = [];
+                            this.pictures.push(left);
 
-                        let left ={
-                            name : 'left_anterior',
-                            file_id : response.mjson.data.file_id,
-                            url: response.mjson.data.url,
-                        };
-                        this.pictures = [];
-                        this.pictures.push(left);
-
-                        SQLite.changeData(
-                            'UPDATE publishCar SET pictures = ? WHERE vin = ?',
-                            [ JSON.stringify(this.pictures), this.props.carData.vin]);
-
+                            SQLite.changeData(
+                                'UPDATE publishCar SET pictures = ? WHERE vin = ?',
+                                [ JSON.stringify(this.pictures), this.props.carData.vin]);
+                            this.props.closeLoading();
+                        }else {
+                            this.props.closeLoading();
+                            // this.props.showHint('上传失败');
+                            console.log('上传失败');
+                        }
                     },(error)=>{
+                        this.props.closeLoading();
+                        // this.props.showHint(error);
                         console.log(error);
                     });
             }

@@ -28,7 +28,6 @@ export class LendSuccessAlert extends Component{
     state={
         show:false,
     }
-
     setModelVisible=(value)=>{
 
         this.setState({
@@ -43,8 +42,10 @@ export class LendSuccessAlert extends Component{
         confimClick();
 
     }
-
     render(){
+
+
+        const {title,subtitle}=this.props;
 
         return(
 
@@ -60,8 +61,8 @@ export class LendSuccessAlert extends Component{
                     dismissKeyboard();
                 }}>
                     <View style={commentAlertStyle.container}>
-                        <Text style={commentAlertStyle.title}>提示</Text>
-                        <Text style={commentAlertStyle.subtitle}>申请借款成功</Text>
+                        <Text style={commentAlertStyle.title}>{title}</Text>
+                        <Text style={commentAlertStyle.subtitle}>{subtitle}</Text>
                         <View style={commentAlertStyle.successWarp}>
                             <CommenButton buttonStyle={[commentAlertStyle.successButton,{marginBottom:adapeSize(20)}, commentAlertStyle.buttonLeft]} onPress={this.confimClick} title="好的"/>
                         </View>
@@ -80,7 +81,7 @@ export class ModifyBorrowing extends Component{
       constructor(props) {
         super(props);
         // 初始状态
-        this.state = {visible:true};
+        this.state = {visible:false};
       }
 
     static propTypes={
@@ -111,7 +112,7 @@ export class ModifyBorrowing extends Component{
 
             <Modal animationType='none'
                    transparent={true}
-                   visible={this.state.show}
+                   visible={this.state.visible}
                    onShow={() => {
                    }}
                    onRequestClose={() => {
@@ -125,10 +126,10 @@ export class ModifyBorrowing extends Component{
                         <Text style={styles.title}>修改借款</Text>
 
                         <View style={styles.input}>
-                            <TextInput style={styles.inputText} placeholder='请输入借款金额' keyboardType='decimal-pad'></TextInput>
+                            <TextInput onChangeText={this.props.onchangeText} style={styles.inputText} placeholder='请输入借款金额' keyboardType='decimal-pad'></TextInput>
                         </View>
                         <View style={styles.showMessage}>
-                            <Text style={styles.showMessageText}>*可借额度{3}-{360}万</Text>
+                            <Text style={styles.showMessageText}>*可借额度{this.props.minLend}-{this.props.maxLend}万</Text>
                         </View>
 
                         <View style={styles.handelWarp}>
@@ -256,14 +257,11 @@ export class ModalList extends PureComponent{
 }
 
 
-
-
-
 export class ModalAlert extends PureComponent{
 
 
     state={
-        show:true,
+        show:false,
     }
 
     setModelVisible=(value)=>{
@@ -275,16 +273,25 @@ export class ModalAlert extends PureComponent{
 
     confimClick=()=>{
 
+        const {confimClick} =this.props;
+
+        confimClick(this.setModelVisible)
+
     }
 
     cancleClick=()=>{
 
+        const {cancleClick} =this.props;
+
+        cancleClick(this.setModelVisible)
 
     }
 
 
     render(){
 
+
+        const {title,subtitle}=this.props;
         return(
 
             <Modal animationType='none'
@@ -299,7 +306,8 @@ export class ModalAlert extends PureComponent{
                     dismissKeyboard();
                 }}>
                     <View style={commentAlertStyle.container}>
-                        <Text style={commentAlertStyle.title}>你好</Text>
+                        <Text style={commentAlertStyle.title}>{title}</Text>
+                        <Text style={commentAlertStyle.subtitle}>{subtitle}</Text>
                         <View style={commentAlertStyle.buttonsWarp}>
 
                             <CommenButton buttonStyle={[commentAlertStyle.buttonstyle,{marginRight:adapeSize(10)}, commentAlertStyle.buttonLeft]} onPress={this.confimClick} title="确定"/>
@@ -451,17 +459,18 @@ const commentAlertStyle=StyleSheet.create({
 
     title:{
 
-        marginTop:adapeSize(30),
-        fontSize:adapeSize(17),
+        marginTop:adapeSize(25),
+        fontSize: fontadapeSize(17),
     },
     subtitle:{
         marginTop:adapeSize(10),
         fontSize:adapeSize(17),
+        color:PAGECOLOR.COLORA1,
     },
     buttonsWarp:{
 
         flexDirection:'row',
-        marginTop:adapeSize(40),
+        marginTop:adapeSize(25),
         alignItems:'center',
     },
 

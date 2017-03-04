@@ -6,7 +6,6 @@ import {
     View,
     Image,
     Text,
-    TextInput,
     Dimensions,
     StyleSheet,
     Platform,
@@ -34,7 +33,6 @@ export default class AutoTransfer extends Component {
         super(props);
         this.vinNum = this.props.carData.vin;
         let transfer = this.props.carData.transfer_number;
-        console.log(transfer);
         let initValue = 0;
         if(this.isEmpty(transfer) === false){
             if(transfer === '10以上'){
@@ -113,8 +111,8 @@ export default class AutoTransfer extends Component {
                         renderRihtFootView={this._renderRihtFootView} />
                     <Image style={styles.imgContainer} source={transferNum}>
                         <View style={styles.inputContainer}>
-                            {/*<TextInput  style={styles.inputNum} underlineColorAndroid='transparent' defaultValue={'2'}/>*/}
-                            <View style={styles.pickContainer}>
+                            <View style={styles.pickIOSContainer}>
+                                <View>
                                 <Picker style={[IS_ANDROID && styles.fillSpace]}
                                          selectedValue={this.state.selected1}
                                          itemStyle={{color:"#FFFFFF", fontSize:16,fontWeight:'bold'}}
@@ -124,6 +122,7 @@ export default class AutoTransfer extends Component {
                                     ))}
                                 </Picker>
                             </View>
+                                </View>
                             <View style={styles.timeContainer}>
                                 <Text style={styles.fontTime}>次</Text>
                             </View>
@@ -157,13 +156,15 @@ const styles = StyleSheet.create({
         width:Pixel.getPixel(70),
         height:Pixel.getPixel(40)
     },
-    pickContainer:{
+    pickAndroidContainer:{
+        flex:1,
+        height:Pixel.getPixel(40)
+    },
+    pickIOSContainer:{
         flex:1,
         height:Pixel.getPixel(40),
         justifyContent:'center',
-        alignItems:'center',
-        overflow:'hidden',
-
+        overflow:'hidden'
     },
     inputNum:{
         width:Pixel.getPixel(60),

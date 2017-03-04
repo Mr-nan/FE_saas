@@ -63,65 +63,111 @@ export default class MainPage extends BaseComponent {
      */
     constructor(props) {
         super(props);
+        this.state = {
+            // selectedTab: tabArray[0].ref,
+            canShow: false,
+            openSelectBranch: false
+
+        }
         const employerTabArray = [
             new tableItemInfo('firstpage', 'page11', '首页', require('../../images/mainImage/homeSelect.png'), require('../../images/mainImage/homeUnSelect.png'),
-                <HomeSence openModal={()=>{
+                <HomeSence showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} openModal={()=>{
                      this.publishModal.openModal();
-                }} jumpScene={(ref)=>{
-                   this.setState({selectedTab: ref})
+                }} jumpScene={(ref,openSelectBranch)=>{
+                    if(openSelectBranch=='true'){
+                        if(typeof this.refs.carsourcesence == 'undefined'){
+                            this.setState({selectedTab: ref})
+                        }else{
+                            this.setState({selectedTab: ref})
+                            this.refs.carsourcesence.presCarTypeScene();
+                        }
+                    }else{
+                        this.setState({selectedTab: ref})
+                    }
                 }} callBack={(params)=> {
                     this.toNextPage(params);
                 }}/>),
             new tableItemInfo('carpage', 'page12', '车源', require('../../images/mainImage/carSelect.png'), require('../../images/mainImage/carUnSelect.png'),
-                <CarSourceSence callBack={(params)=> {
+                <CarSourceSence ref="carsourcesence" showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
                 }}/>),
             new tableItemInfo('sendpage', 'page13', '发布', require('../../images/mainImage/publishSelect.png'), require('../../images/mainImage/publishUnSelect.png'),
-                <PublishModal callBack={(params)=> {
+                <PublishModal showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
                 }}/>),
             new tableItemInfo('mypage', 'page14', '我的', require('../../images/mainImage/mineSelect.png'), require('../../images/mainImage/mineUnSelect.png'),
-                <MineSence callBack={(params)=> {
+                <MineSence showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
                 }}/>)
         ];
 
         const bossTabArray = [
             new tableItemInfo('firstpage', 'page1', '首页', require('../../images/mainImage/homeSelect.png'), require('../../images/mainImage/homeUnSelect.png'),
-                <HomeSence openModal={()=>{
+                <HomeSence showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} openModal={()=>{
                      this.publishModal.openModal();
-                }} jumpScene={(ref)=>{
-                   this.setState({selectedTab: ref})
+                }} jumpScene={(ref,openSelectBranch)=>{
+                    if(openSelectBranch=='true'){
+                        if(typeof this.refs.carsourcesence == 'undefined'){
+                            this.setState({selectedTab: ref})
+                        }else{
+                            this.setState({selectedTab: ref})
+                            this.refs.carsourcesence.presCarTypeScene();
+                        }
+                    }else{
+                        this.setState({selectedTab: ref})
+                    }
                 }} callBack={(params)=> {
                     this.toNextPage(params);
                 }}/>),
             new tableItemInfo('carpage', 'page2', '车源', require('../../images/mainImage/carSelect.png'), require('../../images/mainImage/carUnSelect.png'),
 
-                <CarSourceSence callBack={(params)=> {
+                <CarSourceSence ref="carsourcesence" showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
 
                     this.toNextPage(params);
                 }}/>),
             new tableItemInfo('sendpage', 'page3', '发布', require('../../images/mainImage/sendButton.png'), require('../../images/mainImage/sendButton.png'),
-                <PublishModal callBack={(params)=> {
+                <PublishModal showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
                 }}/>),
             new tableItemInfo('financePage', 'page4', '金融', require('../../images/mainImage/moneySelect.png'), require('../../images/mainImage/moneyUnSelect.png'),
-                <FinanceSence callBack={(params) => {
+                <FinanceSence showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params) => {
                     this.toNextPage(params);
                 }}/>),
             new tableItemInfo('mypage', 'page5', '我的', require('../../images/mainImage/mineSelect.png'), require('../../images/mainImage/mineUnSelect.png'),
-                <MineSence callBack={(params)=> {
+                <MineSence showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
                 }}/>)
         ];
 
         const financeTabArray = [
             new tableItemInfo('financePage', 'page24', '金融', require('../../images/mainImage/moneySelect.png'), require('../../images/mainImage/moneyUnSelect.png'),
-                <FinanceSence callBack={(params) => {
+                <FinanceSence showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params) => {
                     this.toNextPage(params);
                 }}/>),
             new tableItemInfo('mypage', 'page25', '我的', require('../../images/mainImage/mineSelect.png'), require('../../images/mainImage/mineUnSelect.png'),
-                <MineSence callBack={(params)=> {
+                <MineSence showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
                 }}/>)
         ];
@@ -136,11 +182,6 @@ export default class MainPage extends BaseComponent {
         } else if (this.props.identity == "finance") {
             // this.refs.financePage.changeStates(this.refs.financePage.props.title);
             tabArray = financeTabArray
-        }
-        this.state = {
-            // selectedTab: tabArray[0].ref,
-            canShow: false
-
         }
         StorageUtil.mGetItem(storageKeyNames.USER_INFO, (data) => {
             if (data.code == 1) {
@@ -218,12 +259,9 @@ export default class MainPage extends BaseComponent {
                 <PublishModal callBack={(params)=> {
                     this.toNextPage(params);}} ref={(modal) => {this.publishModal = modal}}/>
                 <TabNavigator
-
                     sceneStyle={{backgroundColor: '#00000000'}}
                     tabBarShadowStyle={{backgroundColor: '#00000000'}}
                     tabBarStyle={{overflow: 'visible', height: Pixel.getPixel(75), backgroundColor: '#00000000'}}
-
-
                 >
                     {items}
                 </TabNavigator>
@@ -241,6 +279,7 @@ const
 
         flex: {
             flex: 1,
+            backgroundColor: '#fff'
         },
         img: {
 

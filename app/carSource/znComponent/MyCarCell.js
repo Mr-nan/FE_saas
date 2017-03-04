@@ -20,11 +20,17 @@ import * as fontAndColor from '../../constant/fontAndColor';
 
 export default class MyCarCell extends Component {
 
-    cellClick=()=>{
+    cellClick=(carData)=>{
 
-        // this.props.onPress(this.props.carMainText);
+        this.props.cellClick(carData);
 
     };
+
+    footButtonClick=(typeStr,carID)=>{
+
+        this.props.footButtonClick(typeStr,carID);
+    };
+
 
     getImage=(type)=>{
 
@@ -47,7 +53,7 @@ export default class MyCarCell extends Component {
 
         const date = new Date();
         date.setTime(time);
-        return(date.getFullYear()+"年"+(date.getMonth()+1)+"月"+date.getDate());
+        return(date.getFullYear()+"年"+(date.getMonth()+1)+"月");
 
     };
 
@@ -55,12 +61,12 @@ export default class MyCarCell extends Component {
 
         const {carCellData} = this.props;
         return(
-            <TouchableOpacity onPress={this.cellClick}>
+            <TouchableOpacity onPress={()=>{this.cellClick(carCellData)}}>
                 <View style={[styles.container,styles.lineBottom]} >
 
                     <View style={styles.cellContentView}>
-                        <View style={styles.imageView}>
-                            <Image style={styles.image}/>
+                        <View style={styles.imageView} >
+                            <Image style={styles.image} source={carCellData.img?{uri:carCellData.img}:{uri:'https://ss3.baidu.com/-fo3dSag_xI4khGko9WTAnF6hhy/baike/s%3D220/sign=7fa024e5f703738dda4a0b20831ab073/279759ee3d6d55fb745a2d636c224f4a21a4ddd3.jpg'}}/>
                         </View>
                         <View style={[styles.textContainer]}>
                             <View style={{backgroundColor:'white'}}>
@@ -74,28 +80,33 @@ export default class MyCarCell extends Component {
                     </View>
                     <View style={styles.cellFootView}>
 
-                        <View style={styles.cellFoot}>
-                            <Text style={styles.cellFootText}>编辑</Text>
-                        </View>
+                        <TouchableOpacity onPress={()=>{this.footButtonClick('编辑',carCellData)}}>
+                            <View style={styles.cellFoot}>
+                                <Text style={styles.cellFootText}>编辑</Text>
+                            </View>
+                        </TouchableOpacity>
                         {
                             this.props.type==0 &&
-                            <View style={styles.cellFoot}>
-                                <Text style={styles.cellFootText}>下架</Text>
-                            </View>
+                            <TouchableOpacity onPress={()=>{this.footButtonClick('下架',carCellData)}}>
+                                <View style={styles.cellFoot}>
+                                    <Text style={styles.cellFootText}>下架</Text>
+                                </View>
+                            </TouchableOpacity>
                         }
                         {
                             this.props.type==1 &&
-                            <View style={styles.cellFoot}>
-                                <Text style={styles.cellFootText}>上架</Text>
-                            </View>
-                        }
-                        {
-                            this.props.type!==2&&<View style={styles.cellFoot}>
-                                <Text style={styles.cellFootText}>生产二维码</Text>
-                            </View>
-                        }
+                            <TouchableOpacity onPress={()=>{this.footButtonClick('上架',carCellData)}}>
+                                <View style={styles.cellFoot}>
+                                    <Text style={styles.cellFootText}>上架</Text>
+                                </View>
+                            </TouchableOpacity>
 
-
+                        }
+                        {/*{*/}
+                        {/*this.props.type!==2&&<View style={styles.cellFoot}>*/}
+                        {/*<Text style={styles.cellFootText}>生产二维码</Text>*/}
+                        {/*</View>*/}
+                        {/*}*/}
                     </View>
 
                 </View>
@@ -169,7 +180,7 @@ const styles = StyleSheet.create({
         marginLeft:15,
         width:120,
         height:80,
-        backgroundColor:'#FFF45C',
+        backgroundColor:fontAndColor.COLORA4,
 
     },
     tailImage:{

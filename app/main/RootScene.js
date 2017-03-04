@@ -30,6 +30,7 @@ export default class RootScene extends BaseComponent {
                         that.navigatorParams.component = WelcomScene;
                         that.toNextPage(that.navigatorParams);
                     } else {
+
                         StorageUtil.mGetItem(KeyNames.ISLOGIN, (res) => {
                             if (res.result !== StorageUtil.ERRORCODE) {
                                 if (res.result == null) {

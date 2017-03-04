@@ -101,7 +101,7 @@ export default class GesturePassword extends BaseComponent {
                             leftTextShow={false}
                             centerText={"解锁手势密码"}
                             rightText={""}
-                            leftImage={require('./../../images/login/left_cancel.png')}
+                            leftImage={require('./../../images/login/left_cancle.png')}
                             leftImageCallBack={this.backPage}/>
 
                         {this.state.url ? <Image style={styles.avatarStyle}
