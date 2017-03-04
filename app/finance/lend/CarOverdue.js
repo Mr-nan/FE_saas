@@ -12,82 +12,28 @@ import {
     Image,
     ListView,
     TouchableOpacity,
+    TouchableWithoutFeedback,
 } from 'react-native';
-
-
 import {CommenButton} from './component/ComponentBlob';
 import {adapeSize, fontadapeSize, width} from './component/MethodComponent';
 import NavigationBar from '../../component/NavigationBar';
 import * as FontAndColor from '../../constant/fontAndColor';
 import BaseComponent from '../../component/BaseComponent';
-import PixelUtil from "../utils/PixelUtil";
+import PixelUtil from '../../utils/PixelUtil'
 
-class CarOverdueCell extends PureComponent {
+var Pixel = new PixelUtil();
 
-    render() {
-        return (
-            <TouchableOpacity style={styles.container}>
-                <View style={styles.containerTop}>
-                    <View style={styles.carInfoWarp}>
-                        <Text numberOfLines={2} style={styles.carType}>奥迪A7(进口) 2014款 35 FSI 技术形 </Text>
-                        <Text style={styles.carFramNum}>车牌号:京2321312312312</Text>
-                    </View>
-                    <Image style={styles.orderState} source={require('../../../images/financeImages/dateIcon.png')}/>
-
-                </View>
-                <View style={styles.containerBottom}>
-                    <Text style={styles.orderNum}>20123123213~21312312312</Text>
-                    <Text style={styles.price}> 按时打算打算打打</Text>
-                </View>
-            </TouchableOpacity>
-        )
-    }
-}
-
-
+let map = new Map();
+let data = ['1', '2', '3'];
 export  default class CarOverdue extends BaseComponent {
     // 构造
     constructor(props) {
         super(props);
         // 初始状态
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: ds.cloneWithRows(['1', '2', '3', '4', '5']),
+            dataSource: this.ds.cloneWithRows(data),
         }
-    }
-
-    renderRow = (rowData) => {
-        return (<CarOverdueCell/>)
-    }
-
-    renderHeader = () => {
-        return (
-            <View style={{
-                backgroundColor: 'rgba(255,198,47,0.1)',
-                height: adapeSize(24),
-                flex: 1,
-                flexDirection: 'row',
-                alignItems: 'center'
-            } }>
-
-                <Text style={{
-                    marginLeft: adapeSize(15),
-                    fontSize: fontadapeSize(12),
-                    color: '#fa5741',
-                }}>*请选择需要展期的还款</Text>
-            </View>
-        )
-
-    }
-    renderSeparator = (sectionID, rowId, adjacentRowHighlighted) => {
-
-        return (
-            <View key={`${sectionID}-${rowId}`} style={{
-                height: adjacentRowHighlighted ? adapeSize(10) : adapeSize(10),
-                backgroundColor: adjacentRowHighlighted ? '#f0eff5' : '#CCCCCC'
-            }}>
-            </View>
-        )
     }
 
     render() {
@@ -124,21 +70,88 @@ export  default class CarOverdue extends BaseComponent {
             </View>
         )
     }
+
+    renderRow = (rowData, sindex, rowID) => {
+        return (
+            <TouchableOpacity onPress={() => {
+                if (typeof(map.get(rowID)) == 'undefined') {
+                    map.set(rowID, rowData);
+                } else {
+                    map.delete(rowID);
+                }
+                this.setState({
+                    dataSource: this.ds.cloneWithRows(data),
+                });
+            }}>
+                <View style={styles.container}>
+                    <View style={styles.containerTop}>
+                        <View style={styles.carInfoWarp}>
+                            <Text numberOfLines={2} style={styles.carType}>奥迪A7(进口) 2014款 35 FSI 技术形 </Text>
+                            <Text style={styles.carFramNum}>车牌号:京2321312312312</Text>
+                        </View>
+                        {typeof(map.get(rowID)) == 'undefined' ?
+                            <Image style={styles.orderState}
+                                   source={require('../../../images/financeImages/dateIcon.png')}/>
+                            :
+                            <Image style={styles.orderState}
+                                   source={require('../../../images/financeImages/addPicker.png')}/>
+                        }
+                    </View>
+                    <View style={styles.containerBottom}>
+                        <Text style={[styles.carFramNum, {flex: 1}]}>20123123213~21312312312</Text>
+                        <Text style={styles.price}> 放款额： 15万</Text>
+                    </View>
+                </View>
+            </TouchableOpacity>
+        )
+    }
+
+    renderHeader = () => {
+        return (
+            <View style={{
+                backgroundColor: 'rgba(255,198,47,0.1)',
+                marginBottom: Pixel.getPixel(10),
+                height: Pixel.getPixel(34),
+                flexDirection: 'row',
+                alignItems: 'center',
+                width: width,
+            }}>
+
+                <Text style={{
+                    marginLeft: Pixel.getPixel(15),
+                    fontSize: Pixel.getFontPixel(12),
+                    color: '#fa5741',
+                }}>*请选择需要展期的还款</Text>
+            </View>
+        )
+    }
+
+    renderSeparator = (sectionID, rowId, adjacentRowHighlighted) => {
+        return (
+            <View key={`${sectionID}-${rowId}`} style={{
+                height: Pixel.getPixel(10),
+                backgroundColor: FontAndColor.COLORA3,
+            }}>
+            </View>
+        )
+    }
 }
 
 
 const styles = StyleSheet.create({
     handelWarper: {
-        height: adapeSize(50),
         justifyContent: 'center',
         alignItems: 'center',
-        width: width,
+        width: width - Pixel.getPixel(30),
         flexDirection: 'row',
+        backgroundColor: FontAndColor.COLORA3,
+        marginBottom: Pixel.getPixel(15),
+        marginTop: Pixel.getPixel(15),
+        marginLeft: Pixel.getPixel(15),
+        marginRight: Pixel.getPixel(15),
     },
     container: {
-        height: adapeSize(120),
-        marginTop: adapeSize(10),
-        backgroundColor: 'white'
+        backgroundColor: '#ffffff'
     },
     containerTop: {
         flexDirection: 'row',
@@ -153,8 +166,9 @@ const styles = StyleSheet.create({
     containerBottom: {
         flexDirection: 'row',
         height: adapeSize(44),
-        justifyContent: 'space-between',
         alignItems: 'center',
+        marginLeft: Pixel.getPixel(15),
+        marginRight: Pixel.getPixel(15),
     },
     carInfoWarp: {
         flex: 0.8,
@@ -162,19 +176,22 @@ const styles = StyleSheet.create({
     orderState: {
         width: adapeSize(25),
         height: adapeSize(25),
-        marginLeft: adapeSize(10),
     },
     carType: {
         alignItems: 'flex-start',
+        fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT),
+        color: FontAndColor.COLORA0,
     },
     carFramNum: {
-        marginTop: adapeSize(10),
+        fontSize: Pixel.getFontPixel(12),
+        color: FontAndColor.COLORA1,
+        marginTop: Pixel.getPixel(10),
     },
     orderNum: {
         marginLeft: adapeSize(15),
     },
     price: {
-        marginRight: adapeSize(15),
+        color: FontAndColor.COLORB2,
     },
     buttonStyleRight: {
         height: adapeSize(44),

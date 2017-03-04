@@ -9,6 +9,7 @@ import {
     Dimensions,
     StyleSheet,
     TextInput,
+    Platform,
     TouchableOpacity,
     InteractionManager
 } from 'react-native';
@@ -23,6 +24,7 @@ import PlateModal from '../component/PlateModal';
 const background = require('../../../images/publish/background.png');
 const preBg = require('../../../images/publish/car-plate-pre.png');
 const proBg = require('../../../images/publish/car-plate.png');
+const IS_ANDROID = Platform.OS === 'android';
 
 export default class AutoPlate extends Component {
 
@@ -177,22 +179,22 @@ export default class AutoPlate extends Component {
 
                         <Image style={styles.proContainer} source={proBg}>
                             <TextInput ref={(input)=>{this.firstInput = input}}
-                                style={styles.fontBold} underlineColorAndroid='transparent'
+                                style={IS_ANDROID ? styles.fontAndroidBold: styles.fontIOSBold} underlineColorAndroid='transparent'
                                        defaultValue={this.initValue[1]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,1)}/>
                             <TextInput ref={(input)=>{this.secondInput = input}}
-                                style={styles.fontBold} underlineColorAndroid='transparent'
+                                       style={IS_ANDROID ? styles.fontAndroidBold: styles.fontIOSBold} underlineColorAndroid='transparent'
                                        defaultValue={this.initValue[2]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,2)}/>
                             <TextInput ref={(input)=>{this.threeInput = input}}
-                                style={styles.fontBold} underlineColorAndroid='transparent'
+                                       style={IS_ANDROID ? styles.fontAndroidBold: styles.fontIOSBold} underlineColorAndroid='transparent'
                                        defaultValue={this.initValue[3]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,3)}/>
                             <TextInput ref={(input)=>{this.fourInput = input}}
-                                style={styles.fontBold} underlineColorAndroid='transparent'
+                                       style={IS_ANDROID ? styles.fontAndroidBold: styles.fontIOSBold} underlineColorAndroid='transparent'
                                        defaultValue={this.initValue[4]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,4)}/>
                             <TextInput ref={(input)=>{this.fiveInput = input}}
-                                style={styles.fontBold} underlineColorAndroid='transparent'
+                                       style={IS_ANDROID ? styles.fontAndroidBold: styles.fontIOSBold} underlineColorAndroid='transparent'
                                        defaultValue={this.initValue[5]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,5)}/>
                             <TextInput ref={(input)=>{this.sixInput = input}}
-                                style={styles.fontBold} underlineColorAndroid='transparent'
+                                       style={IS_ANDROID ? styles.fontAndroidBold: styles.fontIOSBold} underlineColorAndroid='transparent'
                                        defaultValue={this.initValue[6]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,6)}/>
                         </Image>
                     </View>
@@ -242,7 +244,15 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         textAlign:'center'
     },
-    fontBold: {
+    fontAndroidBold: {
+        height: Pixel.getPixel(44),
+        width: Pixel.getPixel(44),
+        fontSize: Pixel.getFontPixel(20),
+        fontWeight: 'bold',
+        color: '#FFFFFF',
+        textAlign:'left'
+    },
+    fontIOSBold: {
         height: Pixel.getPixel(44),
         width: Pixel.getPixel(44),
         fontSize: Pixel.getFontPixel(20),
