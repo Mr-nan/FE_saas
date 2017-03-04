@@ -360,7 +360,6 @@ export default class CarInfoScene extends BaseComponent {
                         <View style={styles.carIconsView}>
                             {
                                 carIconsData.map((data, index) => {
-
                                     return (
                                         <CarIconView imageData={data.image} imageHighData={data.imageHigh}
                                                      content={carData.carIconsContentData&&carData.carIconsContentData[index]} title={data.title}
@@ -373,7 +372,7 @@ export default class CarInfoScene extends BaseComponent {
                 </ScrollView>
                 <TouchableOpacity style={styles.callView} onPress={this.callClick}>
                     <View style={{alignItems:'center',justifyContent:'center',width:ScreenWidth*0.5}}>
-                    <Text style={styles.callText}>{'车源编号:'+carData.id}</Text>
+                    <Text style={styles.callText}>{'车源编号:'+carData.serial_num}</Text>
                     </View>
                     <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center', borderLeftWidth: StyleSheet.hairlineWidth,
                         borderLeftColor:'white',width:ScreenWidth*0.5}}>

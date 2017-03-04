@@ -112,13 +112,13 @@ export default class NewCarScene extends BaseComponent{
         }
     };
 
-    _canChange = (change:boolean)=>{
+    _canChange = (change)=>{
         this.setState({
             canChange:change
         });
     };
 
-    _carData = (data:Object)=>{
+    _carData = (data)=>{
         this.setState({
             carData:data
         })
