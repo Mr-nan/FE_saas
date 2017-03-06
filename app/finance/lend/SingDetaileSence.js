@@ -363,7 +363,7 @@ export  default  class SingDetaileSence extends BaseComponent {
             <View style={commnetStyle.container}>
 
                 <ListView
-                    style={[commnetStyle.ListWarp,{marginTop:10}]}
+                    style={[commnetStyle.ListWarp]}
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}
                     renderSectionHeader={this.renderSectionHeader}

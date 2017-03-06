@@ -1,27 +1,13 @@
-/**
- * 开发地址
- */
-// export const BASEURL = "http://dev.open.bms.dycd.com/api/";
-
-/**
- * 正式地址
- */
-//export const BASEURL = "https://openbms.dycd.com/api/";
-
-/**
- * 测试地址
- */
-// export const BASEURL = "https://qaopenbms.dycd.com/api/";
 
 /**
  * 开发地址
  */
-// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
  */
-export const BASEURL = 'http://api-gateway.test.dycd.com/';
+// export const BASEURL = 'http://api-gateway.test.dycd.com/';
 /**
  * 预发布地址
  */
