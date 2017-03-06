@@ -29,6 +29,7 @@ export default class ViewPagers extends Component {
     constructor(props) {
         super(props);
         this.getData();
+
     }
 
     getData=()=>{
@@ -45,9 +46,8 @@ export default class ViewPagers extends Component {
         };
     }
 
-
-    changeData=(items)=>{
-        alldata = items;
+    componentWillReceiveProps(nextProps) {
+        alldata = nextProps.items;
         let imageItems = [];
         if (alldata.banners == null || alldata.banners.length <= 0) {
             imageItems.push({id: '-200', ret_img: '', ret_url: '', title: ''});
@@ -59,6 +59,7 @@ export default class ViewPagers extends Component {
             dataSource: dataSource.cloneWithPages(imageItems),
         };
     }
+
 
     render() {
         return (

@@ -68,13 +68,12 @@ export default class EmployeeManageScene extends BaseComponent {
         return (
             <View style={styles.container}>
                 {/**      导航栏          */}
-
+                {this.loadView()}
                 <NavigationView
                     backIconClick={this.backPage}
                     title="员工管理"
                     renderRihtFootView={this._navigatorRightView}
                 />
-                {this.loadView()}
             </View>
         );
         return (

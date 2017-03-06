@@ -225,7 +225,6 @@ export default class FinanceSence extends BaseComponet {
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
                     renderHeader={this._renderHeader}
-                    bounces={false}
                     renderFooter={
                                     this.renderListFooter
                                 }

@@ -113,48 +113,12 @@ export default class HomeScene extends BaseComponet {
                 });
     }
 
-    getRefresh = () => {
-        let maps = {
-            page: page,
-            rows: 6
-        };
-        request(Urls.HOME, 'Post', maps)
-            .then((response) => {
-                    allList.push(...response.mjson.data.carList.list);
-                    StorageUtil.mGetItem(storageKeyNames.USER_INFO, (data) => {
-                        if (data.code == 1) {
-                            let datas = JSON.parse(data.result);
-                            if (datas.user_level == 2) {
-                                if (datas.enterprise_list[0].role_type == '1') {
-                                } else if (datas.enterprise_list[0].role_type == '2') {
-                                    bossFuncArray.splice(0, 2);
-                                } else {
-                                    bossFuncArray.splice(2, 2);
-                                }
-                            } else if (datas.user_level == 1) {
-                                bossFuncArray.splice(2, 2);
-                            } else {
-                                bossFuncArray.splice(2, 2);
-                            }
-                            console.log(bossFuncArray);
-                            this.setState({headSource:bossFuncArray,renderPlaceholderOnly: 'success',
-                                source: ds.cloneWithRows(allList), isRefreshing: false,
-                                allData:response.mjson.data});
-                            this.refs.viewpage.changeData(response.mjson.data);
-                        }
-                    });
-                    status = response.mjson.data.carList.status;
-                },
-                (error) => {
-                    this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
-                });
-    }
 
     allRefresh = () => {
         allList = [];
         this.setState({renderPlaceholderOnly: 'loading'});
         page = 1;
-        this.getRefresh();
+        this.getData();
     }
 
     _renderSeparator(sectionId, rowId) {
@@ -200,7 +164,6 @@ export default class HomeScene extends BaseComponet {
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
                     renderHeader={this._renderHeader}
-                    bounces={false}
                     refreshControl={
                                     <RefreshControl
                                         refreshing={this.state.isRefreshing}
@@ -254,7 +217,6 @@ export default class HomeScene extends BaseComponet {
     }
 
     _renderHeader = () => {
-        this.showConsole('---------------------------------------------');
         let tablist = [];
         tablist = this.state.headSource;
         let items = [];
@@ -277,7 +239,7 @@ export default class HomeScene extends BaseComponet {
         return (
             <View>
                 <View style={{flexDirection: 'row'}}>
-                    <ViewPagers ref="viewpage" callBack={(urls)=>{
+                    <ViewPagers callBack={(urls)=>{
                        this.props.callBack({name:'WebScene',component:WebScene,params:{webUrl:urls}});
                     }} items={this.state.allData}/>
                     <TouchableOpacity onPress={()=>{

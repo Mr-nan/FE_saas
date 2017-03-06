@@ -99,7 +99,6 @@ export  default class PlanListScene extends BaseComponent {
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
-                    bounces={false}
                     refreshControl={
                                     <RefreshControl
                                         refreshing={this.state.isRefreshing}
