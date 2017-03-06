@@ -93,7 +93,7 @@ export default class CarMySourceScene extends BaceComponent {
     carAction = (type, carID) => {
 
         this.props.showModal(true);
-        let url = AppUrls.BASEURL +'v1/car/status';
+        let url = AppUrls.CAR_STATUS;
         request(url,'post',{
 
             id: carID,
@@ -182,7 +182,7 @@ class MyCarSourceUpperFrameView extends BaceComponent {
     }
     loadData = () => {
 
-        let url = AppUrls.BASEURL + 'v1/user/car'
+        let url = AppUrls.CAR_USER_CAR;
         carUpperFramePage = 1;
         request(url, 'post', {
             car_status: '1',
@@ -228,7 +228,7 @@ class MyCarSourceUpperFrameView extends BaceComponent {
 
     loadMoreData = () => {
 
-        let url = AppUrls.BASEURL + 'v1/user/car'
+        let url = AppUrls.CAR_USER_CAR;
         carUpperFramePage += 1;
         request(url, 'post', {
             car_status: '1',
@@ -365,7 +365,7 @@ class MyCarSourceDropFrameView extends BaceComponent {
     }
     loadData = () => {
 
-        let url = AppUrls.BASEURL +'v1/user/car';
+        let url = AppUrls.CAR_USER_CAR;
         carDropFramePage = 1;
         request(url, 'post', {
             car_status: '2',
@@ -411,7 +411,7 @@ class MyCarSourceDropFrameView extends BaceComponent {
 
     loadMoreData = () => {
 
-        let url = AppUrls.BASEURL + 'v1/user/car'
+        let url = AppUrls.CAR_USER_CAR;
         carDropFramePage += 1;
         request(url, 'post', {
             car_status: '2',
@@ -548,7 +548,7 @@ class MyCarSourceAuditView extends BaceComponent {
     }
     loadData = () => {
 
-        let url = AppUrls.BASEURL + 'v1/car/preList'
+        let url = AppUrls.CAR_PERLIST;
         carAuditPage = 1;
         request(url, 'post', {
             page: carAuditPage,
@@ -591,7 +591,7 @@ class MyCarSourceAuditView extends BaceComponent {
 
     loadMoreData = () => {
 
-        let url = AppUrls.BASEURL + 'v1/car/preList'
+        let url = AppUrls.CAR_PERLIST;
         carAuditPage += 1;
         request(url, 'post', {
             page: carAuditPage,

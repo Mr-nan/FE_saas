@@ -85,6 +85,12 @@ export default class LoginInputText extends Component {
         return this.state.values;
     }
 
+    setInputTextValue = (text) => {
+        this.setState({
+            values: text
+        });
+    }
+
     renderLoading() {
         return (
             <ActivityIndicator size='small' style={[styles.iconStyle, this.props.rightIconStyle]}/>

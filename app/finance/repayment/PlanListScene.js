@@ -27,6 +27,7 @@ import OldPlanScene from './OldPlanListScene';
 import  PlanInfoScene from './PlanInfoScene';
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
+import InventoryPlanInfoScene from './InventoryPlanInfoScene';
 export  default class PlanListScene extends BaseComponent {
 
     constructor(props) {
@@ -115,8 +116,14 @@ export  default class PlanListScene extends BaseComponent {
     _renderRow = (movie, sectionId, rowId) => {
         return (
             <PlanParentItem items={movie} mOnPress={(loan_code,loan_number,plan_id,type) => {
-                this.toNextPage({name:'PlanInfoScene',component:PlanInfoScene,params:{loan_code:loan_code,
+                if(type==1||type==4){
+                    this.toNextPage({name:'InventoryPlanInfoScene',component:InventoryPlanInfoScene,params:{loan_code:loan_code,
                 loan_number:loan_number,plan_id:plan_id,type:type}});
+                }else{
+                    this.toNextPage({name:'PlanInfoScene',component:PlanInfoScene,params:{loan_code:loan_code,
+                loan_number:loan_number,plan_id:plan_id,type:type}});
+                }
+
             }}/>
         )
     }

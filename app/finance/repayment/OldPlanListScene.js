@@ -41,6 +41,11 @@ export  default class OldPlanListScene extends BaseComponent {
         this.getData();
     }
 
+    allRefresh = () => {
+        this.setState({renderPlaceholderOnly: 'loading'});
+        this.getData();
+    }
+
     getData = () => {
         let maps = {
             api: Urls.GETHISTORICALLIST
