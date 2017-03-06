@@ -27,7 +27,6 @@ import {request} from '../../utils/RequestUtil'
 var Pixel = new PixelUtil();
 
 let map = new Map();
-let data = ['1', '2', '3'];
 export  default class CarOverdue extends BaseComponent {
 
     constructor(props) {
@@ -37,6 +36,7 @@ export  default class CarOverdue extends BaseComponent {
             dataSource: [],
             renderPlaceholderOnly: 'blank',
         }
+        this.data = [];
     }
 
     initFinish = () => {
@@ -100,32 +100,35 @@ export  default class CarOverdue extends BaseComponent {
     renderRow = (rowData, sindex, rowID) => {
         return (
             <TouchableOpacity onPress={() => {
-                if (typeof(map.get(rowID)) == 'undefined') {
-                    map.set(rowID, rowData);
+                if (typeof(map.get(rowData.auto_id)) == 'undefined') {
+                    map.set(rowData.auto_id, rowData);
                 } else {
-                    map.delete(rowID);
+                    map.delete(rowData.auto_id);
                 }
                 this.setState({
-                    dataSource: this.ds.cloneWithRows(data),
+                    dataSource: this.ds.cloneWithRows(this.data),
                 });
             }}>
                 <View style={styles.container}>
                     <View style={styles.containerTop}>
                         <View style={styles.carInfoWarp}>
-                            <Text numberOfLines={2} style={styles.carType}>奥迪A7(进口) 2014款 35 FSI 技术形 </Text>
-                            <Text style={styles.carFramNum}>车牌号:京2321312312312</Text>
+                            <Text numberOfLines={2} style={styles.carType}>{rowData.model_name} </Text>
+                            <Text style={styles.carFramNum}>{"车牌号:" + rowData.model_name}</Text>
                         </View>
-                        {typeof(map.get(rowID)) == 'undefined' ?
+                        {typeof(map.get(rowData.auto_id)) == 'undefined' ?
                             <Image style={styles.orderState}
-                                   source={require('../../../images/financeImages/dateIcon.png')}/>
+                                   source={require('../../../images/financeImages/unselected.png')}/>
                             :
                             <Image style={styles.orderState}
-                                   source={require('../../../images/financeImages/addPicker.png')}/>
+                                   source={require('../../../images/financeImages/selected.png')}/>
+
                         }
                     </View>
                     <View style={styles.containerBottom}>
-                        <Text style={[styles.carFramNum, {flex: 1}]}>20123123213~21312312312</Text>
-                        <Text style={styles.price}> 放款额： 15万</Text>
+                        <Text
+                            style={[styles.carFramNum, {flex: 1}]}>{rowData.loan_time + "|" + rowData.status_str}
+                        </Text>
+                        <Text style={styles.price}> {"放款额：" + rowData.loan_mny_fk_str}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -165,19 +168,18 @@ export  default class CarOverdue extends BaseComponent {
     getData = () => {
         let maps = {
             api: AppUrls.APPLY_EXTENSION_CARLIST,
-            loan_code: "12345678",
+            loan_code: "" + this.props.loan_code,
         };
         request(AppUrls.FINANCE, 'Post', maps)
             .then((response) => {
-                    this.props.showToast("请求成功");
                     if (response.mjson.data == null || response.mjson.data.length <= 0) {
                         this.setState({renderPlaceholderOnly: 'null'});
                     } else {
                         this.setState({
                             renderPlaceholderOnly: 'success',
-                            // dataSource: ds.cloneWithRows(response.mjson.data)
-                            dataSource: this.ds.cloneWithRows(data)
+                            dataSource: this.ds.cloneWithRows(response.mjson.data),
                         });
+                        this.data = response.mjson.data;
                     }
                 },
                 (error) => {
@@ -203,25 +205,26 @@ export  default class CarOverdue extends BaseComponent {
     }
 
     doExtension = () => {
-        let maps = {
-            api: AppUrls.DO_EXTENSION,
-            auto_ids: '',
-            loan_code: '',
-        };
-        request(AppUrls.FINANCE, 'Post', maps)
-            .then((response) => {
-                    this.props.showToast("请求成功");
-                },
-                (error) => {
-                    if (error.mjson.code == -300 || error.mjson.code == -500) {
-                        this.props.showToast("网络请求失败");
-                    } else {
-                        if (error.mjson.code == -1) {
+        if (map.size < 1) {
+            alert("请选择车辆")
+        } else {
+            let maps = {
+                api: AppUrls.DO_EXTENSION,
+                auto_ids: Object.keys(map) +'',
+                loan_code: "" + this.props.loan_code,
+            };
+            request(AppUrls.FINANCE, 'Post', maps)
+                .then((response) => {
+                        this.props.showToast("请求成功");
+                    }, (error) => {
+                        if (error.mjson.code == -300 || error.mjson.code == -500) {
+                            this.props.showToast("网络请求失败");
+                        } else {
                             this.props.showToast(error.mjson.msg + "");
                         }
                     }
-                }
-            )
+                )
+        }
     }
 }
 

@@ -5,7 +5,8 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Dimensions,
-    Image
+    Image,
+    Platform
 } from 'react-native';
 
 import ScrollableTabView from 'react-native-scrollable-tab-view';
@@ -36,6 +37,7 @@ const SQLite = new SQLiteUtil();
 const {width} = Dimensions.get('window');
 const background = require('../../images/publish/background.png');
 const barHeight = Pixel.getPixel(94);
+const IS_ANDROID = Platform.OS === 'android';
 
 export default class EditCarScene extends BaseComponent {
 
@@ -127,6 +129,10 @@ export default class EditCarScene extends BaseComponent {
         }
     };
 
+    componentWillUnmount(){
+        this.timer && clearTimeout(this.timer);
+    }
+
     constructor(props) {
         super(props);
         this.fromNew = this.props.fromNew;
@@ -178,7 +184,6 @@ export default class EditCarScene extends BaseComponent {
     _publish = () => {
 
         try{
-            this._showLoading();
             SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
                 [this.carVin],
                 (data) => {
@@ -231,6 +236,7 @@ export default class EditCarScene extends BaseComponent {
                         if (!this.fromNew) {
                             params['id'] = this.carId;
                         }
+                        this._showLoading();
                         Net.request(AppUrls.CAR_SAVE, 'post', params)
                             .then((response) => {
                                     if (response.mycode === 1) {
@@ -238,24 +244,59 @@ export default class EditCarScene extends BaseComponent {
                                             'DELETE From publishCar WHERE vin = ?',
                                             [this.carVin]);
                                         this._closeLoading();
-                                        this.successModal.openModal();
+                                        if(IS_ANDROID === true){
+                                            this.successModal.openModal();
+                                        }else {
+                                            this.timer = setTimeout(
+                                                () => { this.successModal.openModal(); },
+                                                500
+                                            );
+                                        }
                                     }else {
                                         this._closeLoading();
-                                        this._showHint('网络请求失败');
+                                        if(IS_ANDROID === true){
+                                            this._showHint('网络请求失败');
+                                        }else {
+                                            this.timer = setTimeout(
+                                                () => { this.successModal.openModal(); },
+                                                500
+                                            );
+                                        }
                                     }
                                 },
                                 (error) => {
                                     this._closeLoading();
-                                    this._showHint(JSON.stringify(error));
+                                    if(IS_ANDROID === true){
+                                        this._showHint(JSON.stringify(error));
+                                    }else {
+                                        this.timer = setTimeout(
+                                            () => { this._showHint(JSON.stringify(error)); },
+                                            500
+                                        );
+                                    }
                                 });
                     } else {
                         this._closeLoading();
-                        this._showHint(JSON.stringify(data.error));
+                        if(IS_ANDROID === true){
+                            this._showHint(JSON.stringify(data.error));
+                        }else{
+                            this.timer = setTimeout(
+                                () => { this._showHint(JSON.stringify(data.error)); },
+                                500
+                            );
+                        }
                     }
                 });
         }catch(error) {
             this._closeLoading();
-            this._showHint(JSON.stringify(error));
+            if(IS_ANDROID === true){
+                this._showHint(JSON.stringify(error));
+            }else {
+                this.timer = setTimeout(
+                    () => { this._showHint(JSON.stringify(error)); },
+                    500
+                );
+            }
         }
 
     };

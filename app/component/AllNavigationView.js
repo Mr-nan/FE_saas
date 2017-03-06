@@ -21,13 +21,30 @@ const Pixel = new PixelUtil();
 export default class CarInfoNavigationView extends PureComponent {
 
 
+    // 构造
+      constructor(props) {
+        super(props);
+        // 初始状态
+        this.state = {
+
+            navigationBackgroundColor:null,
+
+        };
+      }
+
+      setNavigationBackgroindColor=(color)=>{
+
+          this.setState({
+              navigationBackgroundColor:color,
+          });
+      }
 
     render() {
 
         const {title, backIconClick, renderRihtFootView,wrapStyle} = this.props;
 
         return (
-            <View style={[styles.navigation,wrapStyle]}>
+            <View style={[styles.navigation,wrapStyle,this.state.navigationBackgroundColor && {backgroundColor:this.state.navigationBackgroundColor}]}>
                 <View style={styles.content}>
                      <TouchableOpacity style={{width: Pixel.getPixel(80), height: Pixel.getPixel(44),justifyContent:'center'}}
                                       onPress={backIconClick}>

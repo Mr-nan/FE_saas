@@ -254,7 +254,7 @@ export  default  class KurongDetaileScene extends BaseComponent {
             else if(Number.parseInt(stateCode)>2&&stateCode!=='5'){
                 tempTitle=['查看合同']
             }else if(stateCode=='5'){
-                if (extendCode==='1'){
+                if (Number.parseInt(extendCode)==='1'){
                     tempTitle=['查看合同','申请展期']
                 }else {
                     tempTitle=['查看合同']

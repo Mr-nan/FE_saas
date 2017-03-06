@@ -51,7 +51,7 @@ export const commnetStyle=StyleSheet.create({
 
     ListWarp:{
         position:'absolute',
-        top:54,
+        top:Pixel.getTitlePixel(64),
         width:width,
         bottom:adapeSize(50),
         backgroundColor:'white'
@@ -199,9 +199,8 @@ export class LendDatePike extends PureComponent {
 
     setPlaceHodel=(vlaue)=>{
 
-        this.setState({
-
-            placeholder:vlaue,
+        this.dateInput.setNativeProps({
+            placeholder:vlaue
         })
     }
     onPress=()=>{

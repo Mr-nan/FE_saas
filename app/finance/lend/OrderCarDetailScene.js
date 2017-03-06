@@ -65,7 +65,7 @@ export default class OrderCarDetailScene extends BaseComponent{
 
                     tempjson.img_list.map((item)=>{
 
-                        ImageSouce.imageSouce.push('https://photocdn.sohu.com/20170303/Img482260518.jpg')
+                        ImageSouce.imageSouce.push(item.fileurl)
                     })
 
 
