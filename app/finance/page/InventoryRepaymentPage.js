@@ -156,7 +156,7 @@ export  default class InventoryRepaymentPage extends BaseComponent {
 
         return (
             <TouchableOpacity onPress={()=>{
-                     this.props.callBack('13');
+                     this.props.callBack(movie.loan_id,movie.loan_number,movie.type);
             }} activeOpacity={0.8} style={[styles.allBack]}>
                 <View style={[styles.rowViewStyle, styles.margin]}>
                     <View style={[styles.rowTopViewStyle, {justifyContent: 'flex-start', flex: 3,}]}>

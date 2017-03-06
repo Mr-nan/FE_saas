@@ -72,19 +72,19 @@ export default class EmployeeManageScene extends BaseComponent {
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
-            return (
-                <View style={styles.container}>
-                    {/**      导航栏          */}
-
-                    {this.loadView()}
-                    <NavigationView
-                        backIconClick={this.backPage}
-                        title="员工管理"
-                        renderRihtFootView={this._navigatorRightView}
-                    />
-                </View>
-            );
         }
+        return (
+            <View style={styles.container}>
+                {/**      导航栏          */}
+
+                <NavigationView
+                    backIconClick={this.backPage}
+                    title="员工管理"
+                    renderRihtFootView={this._navigatorRightView}
+                />
+                {this.loadView()}
+            </View>
+        );
         return (
             <View style={styles.container}>
 

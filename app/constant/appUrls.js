@@ -182,6 +182,27 @@ export const GETPLANINFO = 'api/v2/Repayment/getPlanInfo';
 /**
  * from @zhaojian
  *
+ * 获取还款详情
+ **/
+export const REPAYMENT_GETINFO = 'api/v2/Repayment/getInfo';
+
+/**
+ * from @zhaojian
+ *
+ * 获取库融还款计划详情
+ **/
+export const REPAYMENT_GETONLINEINFO = 'api/v2/Repayment/getOnlineInfo';
+
+/**
+ * from @zhaojian
+ *
+ * 获取库融调整详情
+ **/
+export const REPAYMENT_GETADJUSTINFO = 'api/v2/Repayment/getAdjustInfo';
+
+/**
+ * from @zhaojian
+ *
  * 获取借款首页数据
  **/
 export const GET_MNY = 'api/v3/account/get_mny';

@@ -56,14 +56,14 @@ export default class LoginAndRegister extends BaseComponent {
                         params: {},
                     })
                 }}/>
-                <MyButton buttonType={MyButton.TEXTBUTTON} content="测试" parentStyle={styles.buttonStyle}
-                          childStyle={styles.buttonTextStyle} mOnPress={() => {
-                    this.toNextPage({
-                        name: 'CarOverdue',
-                        component: CarOverdue,
-                        params: {},
-                    })
-                }}/>
+                {/*<MyButton buttonType={MyButton.TEXTBUTTON} content="测试" parentStyle={styles.buttonStyle}*/}
+                          {/*childStyle={styles.buttonTextStyle} mOnPress={() => {*/}
+                    {/*this.toNextPage({*/}
+                        {/*name: 'CarOverdue',*/}
+                        {/*component: CarOverdue,*/}
+                        {/*params: {},*/}
+                    {/*})*/}
+                {/*}}/>*/}
             </View>
         );
     }
