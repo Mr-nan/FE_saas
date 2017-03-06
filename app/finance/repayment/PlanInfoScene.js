@@ -115,7 +115,6 @@ export  default class PlanInfoScene extends BaseComponent {
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
-                    bounces={false}
                     showsVerticalScrollIndicator={false}
                 />
             </View>

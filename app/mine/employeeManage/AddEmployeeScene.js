@@ -519,9 +519,9 @@ const styles = StyleSheet.create({
     },
     rowLeftTitle: {
         marginLeft: Pixel.getPixel(15),
-        width: 60,
         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),
         color: FontAndColor.COLORA0,
+        flex:1
 
     },
     rowRightTitle: {
@@ -534,7 +534,7 @@ const styles = StyleSheet.create({
 
     },
     inputStyle: {
-        flex: 1,
+        flex: 3,
         marginRight: Pixel.getPixel(5),
         textAlign: 'right',
         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),

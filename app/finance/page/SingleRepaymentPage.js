@@ -119,7 +119,6 @@ export  default class SingleRepaymentPage extends BaseComponent {
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
-                    bounces={false}
                     renderFooter={
                                     this.renderListFooter
                                 }

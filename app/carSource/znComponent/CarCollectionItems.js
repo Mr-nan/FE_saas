@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
         marginLeft: Pixel.getPixel(15),
         width: Pixel.getPixel(120),
         height: Pixel.getPixel(80),
+        resizeMode: 'stretch'
 
     },
 
