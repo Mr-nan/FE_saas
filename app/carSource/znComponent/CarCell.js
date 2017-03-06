@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
         width:Pixel.getPixel(120),
         height:Pixel.getPixel(80),
         backgroundColor:fontAndColor.COLORA4,
+        resizeMode: 'stretch'
 
     },
 
