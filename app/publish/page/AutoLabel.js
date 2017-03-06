@@ -105,7 +105,7 @@ export default class AutoLabel extends Component {
                         }
                     }
                 }
-                this.interiorGrid.refresh(this.viewData);
+
                 this.props.closeLoading();
             },
             (error)=>{
@@ -113,11 +113,10 @@ export default class AutoLabel extends Component {
                 this.props.showHint(JSON.stringify(error));
             }
         );
-
     }
 
-    componentWillUnmount() {
-
+    componentDidUpdate(){
+        this.interiorGrid.refresh(this.viewData);
     }
 
     _labelPress = (i) => {

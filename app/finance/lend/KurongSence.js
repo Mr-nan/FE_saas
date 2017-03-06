@@ -151,7 +151,7 @@ export default class KurongSence extends BaseComponent {
         if(this.state.renderPlaceholderOnly!==STATECODE.loadSuccess){
             return( <View style={styles.container}>
                 {this.loadView()}
-                <AllNavigatior title='单车借款' backIconClick={()=>{this.backPage()}}/>
+                <AllNavigatior title='库融借款' backIconClick={()=>{this.backPage()}}/>
 
             </View>);
         }
@@ -179,7 +179,7 @@ export default class KurongSence extends BaseComponent {
                                         let  placeHodel =tempString==='0'?this.dateBlob[0]:tempString
                                         let  num = Number.parseInt(placeHodel)
                                         PostData.loan_life=num
-                                        this.dateLimit.setPlaceHodel(placeHodel)
+                                        this.dateLimit.changeText(placeHodel)
 
                                     },
                                 });
