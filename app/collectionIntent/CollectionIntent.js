@@ -64,6 +64,7 @@ export default class CollectionIntent extends BaseComponent {
                 if (response.mjson.code == '1') {
 
                     this.props.showToast("提交成功");
+                    this.backPage();
                 }
 
             }, (error) => {
@@ -135,6 +136,7 @@ export default class CollectionIntent extends BaseComponent {
         this.carYearArr = new Map();
         this.mileageArr = new Map();
         this.brandSeriesArr = [];
+        this.isAdd = false;
         isHeadInteraction = this.props.isHeadInteraction;
         this.state = {
             renderPlaceholderOnly: 'blank',
@@ -199,49 +201,35 @@ export default class CollectionIntent extends BaseComponent {
     checkedCarClick = (carObject) => {
 // {brand_id: 2, series_id: 2446, series_name: "拉共达Taraf", model_id: 29702, model_name: "2015款 拉共达Taraf 6.0L 标准型"}
         console.log(carObject);
-        if (this.brandSeriesArr.length > 0) {
 
-            for (let value of this.brandSeriesArr) {
-                console.log(value);
-                if ((value.split('|', 1)) == (carObject.brand_id)) {
-                    this.props.showToast('一个品牌的车型只能选一个');
-                } else {
-                    if (carObject.series_id == '' || carObject.series_id == '0') {
-                        this.brandSeriesArr.push(carObject.brand_id + '|' + 0);
-                        this.state.arr.push({
-                            title: carObject.brand_name,
-                            isSelected: true,
-                        });
-                    } else {
-                        this.brandSeriesArr.push(carObject.brand_id + '|' + carObject.series_id);
-                        this.state.arr.push({
-                            title: carObject.series_name,
-                            isSelected: true,
-                        });
-                    }
-                    this.selectConfirm(this.state.arr);
-                    break;
+        for (let i = 0; i < this.brandSeriesArr.length; i++) {
+            if ((this.brandSeriesArr[i].split('|', 1)) == (carObject.brand_id)) {
+                if ((this.brandSeriesArr[i].split('|', 2)[1]) == '0' || carObject.series_id === '0') {
+
+                    this.props.showToast('一个品牌只能选一次');
+                    return;
+                } else if ((this.brandSeriesArr[i].split('|', 2)[1])==(carObject.series_id)) {
+                    this.props.showToast('一个品牌的相同车型只能选一次');
+                    return;
                 }
             }
-        } else {
-            if (carObject.series_id == '' || carObject.series_id == '0') {
-                this.brandSeriesArr.push(carObject.brand_id + '|' + 0);
-                this.state.arr.push({
-                    title: carObject.brand_name,
-                    isSelected: true,
-                });
-            } else {
-                this.brandSeriesArr.push(carObject.brand_id + '|' + carObject.series_id);
-                this.state.arr.push({
-                    title: carObject.series_name,
-                    isSelected: true,
-                });
-            }
-            this.selectConfirm(this.state.arr);
-            console.log(this.brandSeriesArr);
         }
-
-    };
+        if (carObject.series_id == '' || carObject.series_id == '0') {
+            this.brandSeriesArr.push(carObject.brand_id + '|' + 0);
+            this.state.arr.push({
+                title: carObject.brand_name,
+                isSelected: true,
+            });
+        } else {
+            this.brandSeriesArr.push(carObject.brand_id + '|' + carObject.series_id);
+            this.state.arr.push({
+                title: carObject.series_name,
+                isSelected: true,
+            });
+        }
+        this.selectConfirm(this.state.arr);
+        this.isAdd = false;
+    }
 
     navigatorParams = {
         title: "CarBrandSelectScene",
@@ -279,9 +267,9 @@ export default class CollectionIntent extends BaseComponent {
         console.log(item.isSelected + '---' + index);
         if (array === this.state.arr1) {
             if (item.isSelected) {
-                if (this.carYearArr.has(index)) {
+                if (this.carYearArr.has(index+'')) {
                     console.log('----');
-                    this.carYearArr.delete(index)
+                    this.carYearArr.delete(index+'')
                 }
             } else {
                 this.carYearArr.set(index, index + '|' + array[index].value);
@@ -290,8 +278,8 @@ export default class CollectionIntent extends BaseComponent {
             console.log(this.carYearArr);
         } else if (array === this.state.arr2) {
             if (item.isSelected) {
-                if (this.mileageArr.has(index)) {
-                    this.mileageArr.delete(index)
+                if (this.mileageArr.has(index+'')) {
+                    this.mileageArr.delete(index+'')
                 }
             } else {
                 this.mileageArr.set(index, index + '|' + array[index].value);

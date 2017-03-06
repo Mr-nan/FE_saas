@@ -61,14 +61,6 @@ export default class EmployeeManageScene extends BaseComponent {
                 });
     }
 
-    addEmployee() {
-        this.toNextPage({
-            name: 'AddEmployeeScene',
-            component: AddEmployeeScene,
-            params: {},
-        })
-        alert("dianjile添加员工")
-    }
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
