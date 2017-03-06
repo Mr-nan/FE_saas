@@ -25,6 +25,9 @@ import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 
 var ScreenWidth = Dimensions.get('window').width;
+var ScreenHeight = Dimensions.get('window').height;
+
+
 
 const carParameterViewColor = [
 
@@ -115,7 +118,7 @@ export default class CarInfoScene extends BaseComponent {
                 carData.mileage+'万公里',
                 carData.transfer_times+'次',
                 carData.nature_str,
-                carData.car_color+'/'+carData.trim_color,
+                carData.car_color.split("|")[0]+'/'+carData.trim_color.split("|")[0],
             ];
 
             if(carData.imgs.length<=0){
@@ -242,6 +245,17 @@ export default class CarInfoScene extends BaseComponent {
         );
     };
 
+
+    setNavitgationBackgroundColor=(event)=>{
+
+        if(event.nativeEvent.contentOffset.y>20){
+
+            this.refs.navtigation.setNavigationBackgroindColor(fontAndColor.COLORB0);
+        }else{
+            this.refs.navtigation.setNavigationBackgroindColor('rgba(0,0,0,0)');
+        }
+    }
+
     renderImagePage=(data,pageID)=>{
 
         return(
@@ -268,9 +282,10 @@ export default class CarInfoScene extends BaseComponent {
         return (
             <View ref="carInfoScene" style={{flex: 1, backgroundColor: 'white'}}>
 
-                <ScrollView style={{marginBottom: Pixel.getPixel(44)}} onMomentumScrollEnd={(e) => {
-                    console.log(e.nativeEvent.contentOffset.y)
-                }}>
+                <ScrollView style={{marginBottom: Pixel.getPixel(44)}}
+                            scrollEventThrottle={200}
+                            onScroll={this.setNavitgationBackgroundColor}
+                >
                     <ImagePageView
                         dataSource={this.state.imageArray}    //数据源（必须）
                         renderPage={this.renderImagePage}     //page页面渲染方法（必须）
@@ -321,7 +336,7 @@ export default class CarInfoScene extends BaseComponent {
                                                             <View
                                                                 style={[styles.carParameterItem, {backgroundColor: carParameterViewColor[index % 3]}]}
                                                                 key={index}>
-                                                                <Text style={[styles.carParameterText, {color: carParameterTextColor[index % 3]}]}>{data.value}</Text>
+                                                                <Text style={[styles.carParameterText, {color: carParameterTextColor[index % 3]}]}>{data.name}</Text>
                                                             </View>)
                                                     })
                                                 }
@@ -339,8 +354,8 @@ export default class CarInfoScene extends BaseComponent {
                                         <View>
                                             {
                                                 carData.city_name!==''&&(<View style={styles.carAddressSubView}>
-                                                    <Text style={styles.carAddressTitleText}>商户所在地: </Text>
-                                                    <Text style={styles.carAddressSubTitleText}>{carData.city_name}</Text>
+                                                    <Text style={styles.carAddressTitleText}>所在地: </Text>
+                                                    <Text style={styles.carAddressSubTitleText}>{carData.provice_name+carData.city_name}</Text>
                                                 </View>)
                                             }
                                         </View>
@@ -348,7 +363,7 @@ export default class CarInfoScene extends BaseComponent {
                                             {
                                                 carData.plate_number!==''&& (<View style={styles.carAddressSubView}>
                                                     <Text style={styles.carAddressTitleText}>挂牌地: </Text>
-                                                    <Text style={styles.carAddressSubTitleText}>{carData.plate_number}</Text>
+                                                    <Text style={styles.carAddressSubTitleText}>{carData.plate_number.substring(0,2)}</Text>
                                                 </View>)
                                             }
                                         </View>
@@ -385,6 +400,7 @@ export default class CarInfoScene extends BaseComponent {
                      </View>
                 </TouchableOpacity>
                 <NavigationView
+                    ref="navtigation"
                     wrapStyle={{backgroundColor:'rgba(0,0,0,0)'}}
                     title="车源详情"
                     backIconClick={this.backIconClick}
@@ -569,15 +585,6 @@ class NavigationRightView extends Component{
 
 const styles = StyleSheet.create({
 
-    navigation: {
-
-        height: Pixel.getPixel(64),
-        backgroundColor: fontAndColor.COLORB0,
-        left: 0,
-        right: 0,
-        position: 'absolute',
-
-    },
 
     carImage: {
 

@@ -42,6 +42,7 @@ export default class AutoDate extends Component{
             }
             if(manufacture === '') manufacture = model_year +'-06-01';
             if(init_reg === '') init_reg = model_year +'-06-01';
+            if(hasRegister === false) init_reg = '';
             SQLite.changeData(
                 'UPDATE publishCar SET manufacture = ?,init_reg = ? WHERE vin = ?',
                 [ manufacture,init_reg, this.props.carData.vin]);
@@ -76,6 +77,12 @@ export default class AutoDate extends Component{
     componentWillReceiveProps(nextProps: Object) {
         this.setState({
             hasRegister: nextProps.carData.v_type === '1'|| this.props.carData.v_type === ''
+        },()=>{
+            if(this.state.hasRegister === false) {
+                SQLite.changeData(
+                    'UPDATE publishCar SET init_reg = ? WHERE vin = ?',
+                    ['', this.props.carData.vin]);
+            }
         });
     }
 
