@@ -101,7 +101,7 @@ export default class CarInfoScene extends BaseComponent {
 
     loadData=()=> {
 
-        let url = AppUrls.BASEURL + 'v1/car/detail';
+        let url = AppUrls.CAR_DETAIL;
         request(url, 'post', {
 
             id: this.props.carID,
