@@ -92,7 +92,6 @@ export default class ColorChoose extends BaseComponent {
                         dataSource={this.state.source}
                         style={{paddingLeft: 10, paddingRight: 10}}
                         renderRow={this._renderRow}
-                        bounces={false}
                     />
 
                 </View>
