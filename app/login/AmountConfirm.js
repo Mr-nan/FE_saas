@@ -116,7 +116,7 @@ export default class AmountConfirm extends BaseComponent {
                         backgroundColor: '#ffffff'
                     }}
                     renderRow={this._renderRow}
-                    bounces={false}/>
+                    />
 
                 <View style={{
                     width: width,
