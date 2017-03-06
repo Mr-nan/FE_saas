@@ -30,25 +30,26 @@ export default class CollectionIntent extends BaseComponent {
     loadData = () => {
         let yearArr = [];
         let mileArr = [];
-        if (this.brandSeriesArr.length == 0) {
-            this.props.showToast("请选择车的品牌、车系");
-        } else if (this.carYearArr.size == 0) {
-            this.props.showToast("请选择车龄区间");
-        } else if (this.mileageArr.size == 0) {
-            this.props.showToast("请选择里程区间");
-        }
-        if (this.carYearArr.size > 5) {
+        if (this.brandSeriesArr.length == 0 && this.carYearArr.size == 0 && this.mileageArr.size == 0) {
+            this.props.showToast("请选择收车意向");
+        }else if (this.carYearArr.size > 5) {
             this.props.showToast('车龄区间最多只能选五个');
-        }
-        if (this.mileageArr.size > 5) {
+        }else if (this.mileageArr.size > 5) {
             this.props.showToast('里程区间最多只能选五个');
         } else {
-            for (let key of this.carYearArr.keys()) {
-                yearArr.push(this.carYearArr.get(key))
+            if(this.carYearArr.size>0){
+
+                for (let key of this.carYearArr.keys()) {
+                    yearArr.push(this.carYearArr.get(key))
+                }
             }
-            for (let key of this.mileageArr.keys()) {
-                mileArr.push(this.mileageArr.get(key))
+            if(this.mileageArr.size>0){
+
+                for (let key of this.mileageArr.keys()) {
+                    mileArr.push(this.mileageArr.get(key))
+                }
             }
+
             console.log(yearArr.toString());
             console.log(mileArr.toString());
             let url = AppUrls.BASEURL + 'v1/receiveIntention/save';
