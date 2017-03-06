@@ -101,7 +101,7 @@ export default class CarInfoScene extends BaseComponent {
 
     loadData=()=> {
 
-        let url = AppUrls.BASEURL + 'v1/car/detail';
+        let url = AppUrls.CAR_DETAIL;
         request(url, 'post', {
 
             id: this.props.carID,
@@ -583,6 +583,7 @@ const styles = StyleSheet.create({
 
         height: Pixel.getPixel(250),
         width:ScreenWidth,
+        resizeMode: 'stretch'
 
     },
     contentContainer: {

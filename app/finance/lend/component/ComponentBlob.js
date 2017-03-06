@@ -251,7 +251,7 @@ export class LendUseful extends PureComponent {
         return (
             <View style={styles.itemUserful}>
                 <Text style={styles.itemLeftText}>用款用途</Text>
-                <TextInput onEndEditing={onEndEidt} style={styles.itemUserfulInput} placeholder={'请简要描述借款用途'} multiline={true}/>
+                <TextInput underlineColorAndroid={"#00000000"} onEndEditing={onEndEidt} style={styles.itemUserfulInput} placeholder={'请简要描述借款用途'} multiline={true}/>
             </View>
         )
     }

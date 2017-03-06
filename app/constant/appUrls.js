@@ -53,9 +53,46 @@ export const INDEX_UPLOAD = BASEURL + V + 'index/upload';
 export const CAR_CONFIG = BASEURL + V + 'car/config';
 
 /**
+ * 获取车品牌
+ */
+export const CAR_HOME_BRAND = BASEURL + V + 'home/brand';
+
+/**
+ * 获取车系
+ */
+export const CAR_HOME_SERIES = BASEURL + V + 'home/series';
+
+/**
+ * 获取车型
+ */
+export const CAR_HOME_MODELS = BASEURL + V + 'home/models';
+
+
+/**
+ * 获取车源列表
+ */
+export const CAR_INDEX = BASEURL + V + 'car/index';
+
+
+/**
  * 获取车辆详情
  */
 export const CAR_DETAIL = BASEURL + V + 'car/detail';
+
+/**
+ * 获取我的车源-已上架/下架
+ */
+export const CAR_USER_CAR = BASEURL + V + 'user/car';
+
+/**
+ * 我的车源-已上架/下架-操作
+ */
+export const CAR_STATUS = BASEURL + V + 'car/status';
+
+/**
+ * 获取我的车源-未审核
+ */
+export const CAR_PERLIST = BASEURL + V + 'car/preList';
 
 /**
  * 根据VIN获取车辆详情
@@ -221,6 +258,20 @@ export const OPT_LOAN_SUBJECT = 'api/v1/user/opt_loan_subject';
  * 单车借款信息
  **/
 export const GET_APPLY_LOAN_DATA = 'api/v3/account/get_apply_loan_data';
+
+/**
+ * from @huangning
+ *
+ * 申请展期
+ **/
+export const DO_EXTENSION = 'api/v1/account/do_extension';
+
+/**
+ * from @huangning
+ *
+ * 申请展期
+ **/
+export const APPLY_EXTENSION_CARLIST = 'api/v1/account/apply_extension_carlist';
 
 /**
  * from @zhaojian

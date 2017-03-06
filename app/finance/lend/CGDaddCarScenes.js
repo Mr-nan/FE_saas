@@ -18,7 +18,6 @@ import {LendDatePike,LendInputItem,CommenButton} from './component/ComponentBlob
 import {adapeSize,width,PAGECOLOR} from './component/MethodComponent'
 
 export default class CGDaddCarScenes extends BaseComponent{
-
     // 构造
       constructor(props) {
         super(props);
@@ -34,10 +33,8 @@ export default class CGDaddCarScenes extends BaseComponent{
         this.state = {
 
             dataSource: ds.cloneWithRowsAndSections(this.titleBlob)
-
         };
       }
-
 
     getSectionData = (dataBlob,sectionID) => {
 
