@@ -76,7 +76,6 @@ export default class OrderCarDetailScene extends BaseComponent{
                     })
                 },
                 (error) => {
-
                     this.setState({
                         renderPlaceholderOnly:STATECODE.loadError,
                     })

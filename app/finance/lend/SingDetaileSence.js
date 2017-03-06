@@ -9,26 +9,42 @@ import {
 
 } from 'react-native';
 
-import {CommnetListItem, LendCarItemCell, CommenButton,commnetStyle,ComentImageButton} from './component/ComponentBlob'
-import {width, height, fontadapeSize, adapeSize,STATECODE,PAGECOLOR,getRowData,getSectionData,changeToMillion} from './component/MethodComponent'
-import {ModifyBorrowing,LendSuccessAlert,ModalAlert} from './component/ModelComponent'
+import {
+    CommnetListItem,
+    LendCarItemCell,
+    CommenButton,
+    commnetStyle,
+    ComentImageButton
+} from './component/ComponentBlob'
+import {
+    width,
+    height,
+    fontadapeSize,
+    adapeSize,
+    STATECODE,
+    PAGECOLOR,
+    getRowData,
+    getSectionData,
+    changeToMillion
+} from './component/MethodComponent'
+import {ModifyBorrowing, LendSuccessAlert, ModalAlert} from './component/ModelComponent'
 import  OrderCarDetailScene from './OrderCarDetailScene'
 import  AllNavigationView from '../../component/AllNavigationView';
 import BaseComponent from '../../component/BaseComponent';
 import {request} from '../../utils/RequestUtil'
 import *as apis from '../../constant/appUrls'
+import ContractInfoScene from './ContractInfoScene';
 
 
-const controlCode={
+const controlCode = {
 
-    stateCode:'',
-    extendCode:'',
-    lendType:'',
-    maxLend:'',
-    minLend:'',
-    changeMoney:''
+    stateCode: '',
+    extendCode: '',
+    lendType: '',
+    maxLend: '',
+    minLend: '',
+    changeMoney: ''
 }
-
 
 
 export  default  class SingDetaileSence extends BaseComponent {
@@ -46,7 +62,7 @@ export  default  class SingDetaileSence extends BaseComponent {
             }
         )//
         this.state = {
-            dataSource: ds.cloneWithRowsAndSections(this.titleNameBlob({},[])),
+            dataSource: ds.cloneWithRowsAndSections(this.titleNameBlob({}, [])),
             renderPlaceholderOnly: STATECODE.loading
         }
     }
@@ -55,6 +71,7 @@ export  default  class SingDetaileSence extends BaseComponent {
 
         this.getLendinfo();
     }
+
 //借款信息
     getLendinfo = () => {
         let maps = {
@@ -65,45 +82,47 @@ export  default  class SingDetaileSence extends BaseComponent {
             .then((response) => {
 
                     let tempjson = response.mjson.data
-                    let carNum =Number.parseInt(tempjson.car_count)
-                    controlCode.stateCode=tempjson.status
-                    controlCode.extendCode=tempjson.is_extend;
-                    controlCode.lendType=tempjson.type;
-                    controlCode.minLend=changeToMillion(tempjson.min_loanmny);
-                    let Maxmum=Number.parseFloat(tempjson.max_loanmny)+Number.parseFloat(tempjson.payment_loanmny)
-                    controlCode.maxLend=changeToMillion(Maxmum)
+                    let carNum = Number.parseInt(tempjson.car_count)
+                    controlCode.stateCode = tempjson.status
+                    controlCode.extendCode = tempjson.is_extend;
+                    controlCode.lendType = tempjson.type;
+                    controlCode.minLend = changeToMillion(tempjson.min_loanmny);
+                    let Maxmum = Number.parseFloat(tempjson.max_loanmny) + Number.parseFloat(tempjson.payment_loanmny)
+                    controlCode.maxLend = changeToMillion(Maxmum)
 
-                    if (carNum>0){
+                    if (carNum > 0) {
 
                         this.getOrderCarInfo(tempjson)
                     }
                     else {
                         this.setState({
 
-                            dataSource:this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(tempjson,[])),
+                            dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(tempjson, [])),
                             renderPlaceholderOnly: STATECODE.loadSuccess
-                 })}},
+                        })
+                    }
+                },
                 (error) => {
 
                     this.setState({
-                        renderPlaceholderOnly:STATECODE.loadError,
+                        renderPlaceholderOnly: STATECODE.loadError,
                     })
                 });
     }
 //车辆信息
-    getOrderCarInfo=(lendInfoJson)=>{
+    getOrderCarInfo = (lendInfoJson) => {
 
-        let maps={
+        let maps = {
             api: apis.GET_APPLY_CARLIST,
             loan_code: this.props.loanNumber
         }
         request(apis.FINANCE, 'Post', maps)
-            .then((response) =>{
+            .then((response) => {
 
                     let tempCarJson = response.mjson.data.list
                     this.setState({
 
-                        dataSource:this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(lendInfoJson,tempCarJson)),
+                        dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(lendInfoJson, tempCarJson)),
                         renderPlaceholderOnly: STATECODE.loadSuccess
                     })
                 },
@@ -111,75 +130,74 @@ export  default  class SingDetaileSence extends BaseComponent {
                 (error) => {
 
                     this.setState({
-                        renderPlaceholderOnly:STATECODE.loadError,
+                        renderPlaceholderOnly: STATECODE.loadError,
                     })
                 });
 
 
-
     }
 // 数据初始化方法
-    titleNameBlob=(jsonData,carData)=>{
+    titleNameBlob = (jsonData, carData) => {
 
         let dataSource = {};
-        dataSource['section1']=[
+        dataSource['section1'] = [
             {title: '申请日期', key: jsonData.createtimestr},
             {title: '借款金额', key: jsonData.payment_loanmny_str},
             {title: '借款期限', key: jsonData.loanperiodstr},
             {title: '借款单号', key: jsonData.loan_code},
             {title: '综合费率', key: jsonData.payment_rate_str},
-            {title:'还款方式',key:jsonData.repayment_type},
-            {title: '状态',     key: jsonData.status_str},
+            {title: '还款方式', key: jsonData.repayment_type},
+            {title: '状态', key: jsonData.status_str},
             {title: '放款日期', key: jsonData.loan_time},
             {title: '评估总额', key: jsonData.reassessed},
             {title: '债权人', key: jsonData.credito},
 
         ]
-        if(carData.length>0){
+        if (carData.length > 0) {
 
-            let tempCarDate=[];
+            let tempCarDate = [];
 
-            carData.map((item)=>{
+            carData.map((item) => {
 
                 tempCarDate.push(
                     {
-                        auto_id:item.auto_id,
-                        model_name:item.model_name,
-                        state:item.status_str,
-                        order:item.frame_number,
-                        price:item.lend_mny,//放款额
-                        plate_number:item.plate_number,//车牌号
-                        loan_number:item.loan_number,
+                        auto_id: item.auto_id,
+                        model_name: item.model_name,
+                        state: item.status_str,
+                        order: item.frame_number,
+                        price: item.lend_mny,//放款额
+                        plate_number: item.plate_number,//车牌号
+                        loan_number: item.loan_number,
                     }
                 )
             })
-            dataSource['section2']=tempCarDate;
+            dataSource['section2'] = tempCarDate;
         }
 
         return dataSource;
     }
 
 
-    getControlTitleblob=(stateCode,extendCode)=>{
+    getControlTitleblob = (stateCode, extendCode) => {
 
-        if(stateCode!==''&&extendCode!==''){
+        if (stateCode !== '' && extendCode !== '') {
 
-            let tempTitle=[]
-            if (stateCode==='1'){
-                tempTitle=['取消借款']
-            }else if(stateCode==='2'){
-                tempTitle=['签署合同','取消借款']
+            let tempTitle = []
+            if (stateCode === '1') {
+                tempTitle = ['取消借款']
+            } else if (stateCode === '2') {
+                tempTitle = ['签署合同', '取消借款']
             }
-            else if(stateCode==='2'){
-                tempTitle=['已取消借款']
+            else if (stateCode === '2') {
+                tempTitle = ['已取消借款']
             }
-            else if(Number.parseInt(stateCode)>2&&stateCode!=='5'){
-                tempTitle=['查看合同']
-            }else if(stateCode=='5'){
-                if (extendCode==='1'){
-                    tempTitle=['查看合同','申请展期']
-                }else {
-                    tempTitle=['查看合同']
+            else if (Number.parseInt(stateCode) > 2 && stateCode !== '5') {
+                tempTitle = ['查看合同']
+            } else if (stateCode == '5') {
+                if (extendCode === '1') {
+                    tempTitle = ['查看合同', '申请展期']
+                } else {
+                    tempTitle = ['查看合同']
                 }
             }
 
@@ -187,9 +205,9 @@ export  default  class SingDetaileSence extends BaseComponent {
         }
     }
 
-    getButtonStyleWithTitle=(title)=>{
+    getButtonStyleWithTitle = (title) => {
 
-        switch (title){
+        switch (title) {
 
             case '取消借款':
                 return styles.cancelButton
@@ -209,25 +227,25 @@ export  default  class SingDetaileSence extends BaseComponent {
     }
 
 //取消借款
-    cancleLoad=(setModelVis)=>{
+    cancleLoad = (setModelVis) => {
 
         setModelVis(false);
         this.props.showModal(true);
 
-        let maps={
+        let maps = {
             api: apis.CANCEL_LOAN,
             loan_code: this.props.loanNumber
         }
         request(apis.FINANCE, 'Post', maps)
-            .then((response) =>{
+            .then((response) => {
 
-                this.props.showModal(false);
-                this.successCancle.setModelVisible(true)
+                    this.props.showModal(false);
+                    this.successCancle.setModelVisible(true)
 
                 },
                 (error) => {
 
-                    if (error.mycode!==-300||error.mycode!==-500){
+                    if (error.mycode !== -300 || error.mycode !== -500) {
                         this.props.showModal(false);
                         this.props.showToast(error);
                     }
@@ -235,21 +253,29 @@ export  default  class SingDetaileSence extends BaseComponent {
                 });
     }
 
-    controsButtonClick=(title)=>{
+    controsButtonClick = (title) => {
 
-        if(title==='取消借款'){
+        if (title === '取消借款') {
             this.canleAlert.setModelVisible(true);
+        } else if (title === '签署合同') {
+            this.toNextPage({
+                name: 'ContractInfoScene', component: ContractInfoScene, params: {loan_code:this.props.loanNumber,showButton:true}
+            });
+        } else if (title === '查看合同') {
+            this.toNextPage({
+                name: 'ContractInfoScene', component: ContractInfoScene, params: {loan_code:this.props.loanNumber,showButton:false}
+            });
         }
 
     }
-    modifyLengNum=(callback)=>{
+    modifyLengNum = (callback) => {
 
 
-        if(controlCode.changeMoney!==''){
+        if (controlCode.changeMoney !== '') {
             let maps = {
                 api: apis.SET_APPLY_MNY,
                 loan_code: this.props.loanNumber,
-                loan_mny:controlCode.changeMoney,
+                loan_mny: controlCode.changeMoney,
             };
 
             callback(false);
@@ -264,7 +290,7 @@ export  default  class SingDetaileSence extends BaseComponent {
                         //需要做处理
                     });
 
-        }else {
+        } else {
 
             this.props.showToast('请输入借款金额')
 
@@ -288,14 +314,14 @@ export  default  class SingDetaileSence extends BaseComponent {
         }
     }
 
-    getCarInfo=(rowData)=>{
+    getCarInfo = (rowData) => {
 
-      let navigatorParams = {
+        let navigatorParams = {
             name: 'OrderCarDetailScene',
             component: OrderCarDetailScene,
             params: {
-                auto_id:rowData.auto_id,
-                type:'2'
+                auto_id: rowData.auto_id,
+                type: '2'
             }
         }
         this.toNextPage(navigatorParams);
@@ -303,17 +329,17 @@ export  default  class SingDetaileSence extends BaseComponent {
     }
 
 
-
-
     renderRow = (rowData, sectionID, rowId, highlightRow) => {
 
         let Color = this.getStyle(controlCode.stateCode);
         if (sectionID === 'section2') {
 
-           return <LendCarItemCell onPress={()=>{this.getCarInfo(rowData)}} carName={rowData.model_name} orderNum={rowData.loan_number} orderState={rowData.state} price={rowData.price}/>
+            return <LendCarItemCell onPress={()=>{this.getCarInfo(rowData)}} carName={rowData.model_name}
+                                    orderNum={rowData.loan_number} orderState={rowData.state} price={rowData.price}/>
         }
         return (
-            <CommnetListItem  textStyle={rowData.title === '状态' ? {color: Color} : null} leftTitle={rowData.title} showValue={rowData.key}/>
+            <CommnetListItem textStyle={rowData.title === '状态' ? {color: Color} : null} leftTitle={rowData.title}
+                             showValue={rowData.key}/>
         );
     }
     renderSectionHeader = (sectionData, sectionID) => {
@@ -322,14 +348,15 @@ export  default  class SingDetaileSence extends BaseComponent {
             <View style={[sectionID !== 'section1' && {backgroundColor:PAGECOLOR.COLORA3, height: 20}]}></View>
         )
     }
-    renderSeparator =(sectionID,rowId,adjacentRowHighlighted)=>{
+    renderSeparator = (sectionID, rowId, adjacentRowHighlighted) => {
 
-        let separtrorHegigth =1;
-        if (rowId==='5'||rowId==='6'){
-            separtrorHegigth=10;
+        let separtrorHegigth = 1;
+        if (rowId === '5' || rowId === '6') {
+            separtrorHegigth = 10;
         }
         return (
-            <View key={`${sectionID}-${rowId}`} style={{height:separtrorHegigth, backgroundColor:PAGECOLOR.COLORA3}}></View>
+            <View key={`${sectionID}-${rowId}`}
+                  style={{height:separtrorHegigth, backgroundColor:PAGECOLOR.COLORA3}}></View>
         )
     }
 
@@ -348,13 +375,13 @@ export  default  class SingDetaileSence extends BaseComponent {
         let tempButtons = [];
         let tempButtonTitles = this.getControlTitleblob(controlCode.stateCode, controlCode.extendCode);
 
-        tempButtonTitles.map((item)=> {
-            tempButtons.push(<CommenButton buttonStyle={this.getButtonStyleWithTitle(item)}
-                                           textStyle={styles.buttontextStyle}
-                                           onPress={()=>{this.controsButtonClick(item)}}
-                                           title={item}
-                                           key={item}
-            />)
+        tempButtonTitles.map((item) => {
+                tempButtons.push(<CommenButton buttonStyle={this.getButtonStyleWithTitle(item)}
+                                               textStyle={styles.buttontextStyle}
+                                               onPress={()=>{this.controsButtonClick(item)}}
+                                               title={item}
+                                               key={item}
+                />)
             }
         )
 
@@ -369,7 +396,8 @@ export  default  class SingDetaileSence extends BaseComponent {
                     renderSectionHeader={this.renderSectionHeader}
                     renderSeparator={this.renderSeparator}
                 />
-                <View style={[commnetStyle.bottomWarp,{flexDirection: 'row',justifyContent: 'center',alignItems: 'center'}]}>
+                <View
+                    style={[commnetStyle.bottomWarp,{flexDirection: 'row',justifyContent: 'center',alignItems: 'center'}]}>
                     {tempButtons}
                 </View>
                 <ModifyBorrowing ref={(model)=>{this.modifyb=model}}
@@ -379,9 +407,12 @@ export  default  class SingDetaileSence extends BaseComponent {
                                  confimClick={this.modifyLengNum}
                                  cancleClick={(callback)=>{callback(false)}}/>
 
-                <LendSuccessAlert ref={(lend)=>{this.change=lend}} confimClick={()=>{this.backPage()}} title='修改成功'subtitle='恭喜您修改借款成功'/>
-                <ModalAlert title='取消借款' subtitle="您确定要取消借款吗" ref={(cancle)=>{this.canleAlert=cancle}} confimClick={this.cancleLoad} cancleClick={(setmodilVis)=>{setmodilVis(false)}}/>
-                <LendSuccessAlert ref={(canleS)=>{this.successCancle=canleS}} confimClick={()=>{this.backPage()}} title='取消成功'subtitle='取消借款成功'/>
+                <LendSuccessAlert ref={(lend)=>{this.change=lend}} confimClick={()=>{this.backPage()}} title='修改成功'
+                                  subtitle='恭喜您修改借款成功'/>
+                <ModalAlert title='取消借款' subtitle="您确定要取消借款吗" ref={(cancle)=>{this.canleAlert=cancle}}
+                            confimClick={this.cancleLoad} cancleClick={(setmodilVis)=>{setmodilVis(false)}}/>
+                <LendSuccessAlert ref={(canleS)=>{this.successCancle=canleS}} confimClick={()=>{this.backPage()}}
+                                  title='取消成功' subtitle='取消借款成功'/>
                 <AllNavigationView
                     title="借款详情"
                     backIconClick={this.backPage}
@@ -396,16 +427,16 @@ export  default  class SingDetaileSence extends BaseComponent {
                         return null;
                     }}
                 />
-              </View>
-          );
+            </View>
+        );
     }
 }
 
 const styles = StyleSheet.create({
-    container:{
+    container: {
 
-        flex:1,
-        backgroundColor:PAGECOLOR.COLORA3
+        flex: 1,
+        backgroundColor: PAGECOLOR.COLORA3
     },
     buttonStyle: {
 
@@ -422,43 +453,42 @@ const styles = StyleSheet.create({
         fontSize: fontadapeSize(15),
         color: '#FFFFFF'
     },
-    imageButton:{
-        width:25,
-        height:25,
-        alignItems:'center',
-        justifyContent:'center',
-        marginLeft:10
+    imageButton: {
+        width: 25,
+        height: 25,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginLeft: 10
     },
 
-    cancelButton:{
+    cancelButton: {
 
-        flex:1,
-        backgroundColor:PAGECOLOR.COLORA2,
-        height:adapeSize(44),
-        justifyContent:'center'
+        flex: 1,
+        backgroundColor: PAGECOLOR.COLORA2,
+        height: adapeSize(44),
+        justifyContent: 'center'
     },
-    canceledButton:{
+    canceledButton: {
 
-        flex:1,
-        height:adapeSize(44),
-        backgroundColor:PAGECOLOR.COLORA1,
-        justifyContent:'center'
+        flex: 1,
+        height: adapeSize(44),
+        backgroundColor: PAGECOLOR.COLORA1,
+        justifyContent: 'center'
 
     },
-    controlButton:{
-        flex:1,
-        height:adapeSize(44),
-        backgroundColor:PAGECOLOR.COLORB0,
-        justifyContent:'center'
+    controlButton: {
+        flex: 1,
+        height: adapeSize(44),
+        backgroundColor: PAGECOLOR.COLORB0,
+        justifyContent: 'center'
     },
 
-    buttontextStyle:{
+    buttontextStyle: {
 
-        fontSize:fontadapeSize(15),
-        color:'white',
-        textAlign:'center',
+        fontSize: fontadapeSize(15),
+        color: 'white',
+        textAlign: 'center',
     }
-
 
 
 });

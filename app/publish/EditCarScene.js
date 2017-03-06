@@ -82,8 +82,8 @@ export default class EditCarScene extends BaseComponent {
                                         modelInfo['series_id'] = rdb.series_id;
                                         modelInfo['model_year'] = '';
                                         modelInfo['model_name'] = rdb.model_name;
-                                        let mf = '2010-06';
-                                        let rg = '2010-06';
+                                        let mf = '2010-06-01';
+                                        let rg = '2010-06-01';
                                         if(this.isEmpty(rdb.manufacture) === false) mf = this.dateReversal(rdb.manufacture);
                                         if(this.isEmpty(rdb.init_reg) === false) rg = this.dateReversal(rdb.manufacture);
                                         SQLite.changeData('INSERT INTO publishCar (vin,model,pictures,v_type,manufacture,init_reg,' +
@@ -149,7 +149,7 @@ export default class EditCarScene extends BaseComponent {
 
     dateReversal=(time)=>{
         const date = new Date();
-        date.setTime(time);
+        date.setTime(time+'000');
         return(date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDay());
     };
 
@@ -254,7 +254,6 @@ export default class EditCarScene extends BaseComponent {
                     }
                 });
         }catch(error) {
-            console.log('77777777777777777777777');
             this._closeLoading();
             this._showHint(JSON.stringify(error));
         }
