@@ -86,9 +86,12 @@ export default class CollectionIntent extends BaseComponent {
             } else {
                 if (response.mjson.code == '1') {
                     this.setState({renderPlaceholderOnly: 'success'});
-                    this.getSelectedItems(this.state.arr, response.mjson.data.brand_series, this.brandSeriesArr);
-                    this.getSelectedItems(this.state.arr1, response.mjson.data.coty, this.carYearArr);
-                    this.getSelectedItems(this.state.arr2, response.mjson.data.mileage, this.mileageArr);
+                    if(response.mjson.data != null){
+
+                        this.getSelectedItems(this.state.arr1, response.mjson.data.coty, this.carYearArr);
+                        this.getSelectedItems(this.state.arr, response.mjson.data.brand_series, this.brandSeriesArr);
+                        this.getSelectedItems(this.state.arr2, response.mjson.data.mileage, this.mileageArr);
+                    }
                 } else {
                     this.props.showToast(response.mjson.msg);
                 }
