@@ -186,24 +186,24 @@ export default class EditCarScene extends BaseComponent {
                         let rd = data.result.rows.item(0);
 
                         if(this.isEmpty(rd.model) === true){
-                            this._showHint('请选择车型信息');
                             this._closeLoading();
+                            this._showHint('请选择车型信息');
                             return;
                         }
 
                         if(this.isEmpty(rd.pictures) === true){
-                            this._showHint('请拍摄车辆照片');
                             this._closeLoading();
+                            this._showHint('请拍摄车辆照片');
                             return;
                         }
                         if(this.isEmpty(rd.mileage) === true){
-                            this._showHint('请填写车辆里程');
                             this._closeLoading();
+                            this._showHint('请填写车辆里程');
                             return;
                         }
                         if(this.isEmpty(rd.manufacture) === true){
-                            this._showHint('请选择车辆出厂日期');
                             this._closeLoading();
+                            this._showHint('请选择车辆出厂日期');
                             return;
                         }
                         let modelInfo = JSON.parse(rd.model);
@@ -237,8 +237,8 @@ export default class EditCarScene extends BaseComponent {
                                         SQLite.changeData(
                                             'DELETE From publishCar WHERE vin = ?',
                                             [this.carVin]);
-                                        this.successModal.openModal();
                                         this._closeLoading();
+                                        this.successModal.openModal();
                                     }else {
                                         this._closeLoading();
                                         this._showHint('网络请求失败');

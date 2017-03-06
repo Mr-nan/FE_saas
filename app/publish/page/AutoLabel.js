@@ -105,9 +105,6 @@ export default class AutoLabel extends Component {
                         }
                     }
                 }
-                console.log('============>>>>>>>>');
-                console.log(this.interiorGrid);
-                console.log(this.viewData);
                 this.interiorGrid.refresh(this.viewData);
                 this.props.closeLoading();
             },
