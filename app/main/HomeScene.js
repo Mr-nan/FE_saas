@@ -200,7 +200,7 @@ export default class HomeScene extends BaseComponet {
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
                     renderHeader={this._renderHeader}
-                    bounces={false}
+                    bounces={true}
                     refreshControl={
                         <RefreshControl
                             refreshing={this.state.isRefreshing}
