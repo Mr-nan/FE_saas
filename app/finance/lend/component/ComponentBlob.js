@@ -51,7 +51,7 @@ export const commnetStyle=StyleSheet.create({
 
     ListWarp:{
         position:'absolute',
-        top:54,
+        top:Pixel.getTitlePixel(64),
         width:width,
         bottom:adapeSize(50),
         backgroundColor:'white'

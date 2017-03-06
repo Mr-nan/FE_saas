@@ -28,6 +28,11 @@ export default class ViewPagers extends Component {
     // 初始化模拟数据
     constructor(props) {
         super(props);
+        this.getData();
+
+    }
+
+    getData=()=>{
         alldata = this.props.items;
         let imageItems = [];
         if (alldata.banners == null || alldata.banners.length <= 0) {
@@ -35,7 +40,21 @@ export default class ViewPagers extends Component {
         } else {
             imageItems = alldata.banners;
         }
-        const dataSource = new ViewPager.DataSource({pageHasChanged: (r1, r2) => r1 !== r2});
+        let dataSource = new ViewPager.DataSource({pageHasChanged: (r1, r2) => r1 !== r2});
+        this.state = {
+            dataSource: dataSource.cloneWithPages(imageItems),
+        };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        alldata = nextProps.items;
+        let imageItems = [];
+        if (alldata.banners == null || alldata.banners.length <= 0) {
+            imageItems.push({id: '-200', ret_img: '', ret_url: '', title: ''});
+        } else {
+            imageItems = alldata.banners;
+        }
+        let dataSource = new ViewPager.DataSource({pageHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             dataSource: dataSource.cloneWithPages(imageItems),
         };
