@@ -20,7 +20,8 @@ import BaseComponent from '../../component/BaseComponent';
 import SingelCarScene from './SingelCarScene';
 import KurongSence from './KurongSence';
 import CGDLendScenes from './CGDLendScenes';
-
+import PixelUtil from '../../utils/PixelUtil';
+const Pixel = new PixelUtil();
 import {confimCarcell} from './ConfimCGDPriceSence'
 
 class TitleImage extends PureComponent {
@@ -88,7 +89,7 @@ export  default class LendMoneySence extends BaseComponent {
     navigatorParams = {
         name: 'SingelCarScene',
         component: SingelCarScene,
-        params: {}
+        params: {customerName:this.props.customerName}
     }
 
     onPress = (key) => {
@@ -130,7 +131,7 @@ export  default class LendMoneySence extends BaseComponent {
             <View style={{flex: 1}}>
 
                 <ScrollView showsVerticalScrollIndicator={false}
-                            style={{marginTop: 64, backgroundColor: PAGECOLOR.COLORA3, paddingTop: adapeSize(15)} }>
+                            style={{marginTop:Pixel.getTitlePixel(64) , backgroundColor: PAGECOLOR.COLORA3, paddingTop: adapeSize(15)} }>
                     {viewBlob}
 
                 </ScrollView>

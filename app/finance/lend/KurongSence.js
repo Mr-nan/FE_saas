@@ -51,7 +51,8 @@ const verificationtips={
 }
 
 const imageSouce =require('../../../images/financeImages/dateIcon.png')
-
+import PixelUtil from '../../utils/PixelUtil';
+const Pixel = new PixelUtil();
 export default class KurongSence extends BaseComponent {
     state = {
 
@@ -80,7 +81,7 @@ export default class KurongSence extends BaseComponent {
 
                     let tempjson =response.mjson.data
 
-                        ShowData.companyName='北京大会上白有限公司',
+                        ShowData.companyName=this.props.customerName,
                         ShowData.lendType=tempjson.product_type,
                         ShowData.maxMoney=changeToMillion(tempjson.min_loanmny)+'-'+changeToMillion(tempjson.max_loanmny)+'万',
                         ShowData.rate=tempjson.rate,
@@ -225,7 +226,7 @@ const styles = StyleSheet.create({
     },
     scroller: {
 
-        marginTop: 54,
+        marginTop: Pixel.getTitlePixel(64),
         backgroundColor: PAGECOLOR.COLORA3,
 
         marginBottom:adapeSize(60)

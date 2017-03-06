@@ -20,7 +20,8 @@ import  {
     LendUseful,
     CommenButton,
 } from './component/ComponentBlob'
-
+import PixelUtil from '../../utils/PixelUtil';
+const Pixel = new PixelUtil();
 import {width, adapeSize, fontadapeSize, PAGECOLOR,dateFormat,changeToMillion,STATECODE} from './component/MethodComponent';
 import {LendSuccessAlert} from './component/ModelComponent'
 import BaseComponent from '../../component/BaseComponent';
@@ -78,7 +79,7 @@ export default class SingelCarSence extends BaseComponent {
             .then((response) => {
 
              let tempjson = response.mjson.data
-             showData.companyName = '北京大会上白有限公司',
+             showData.companyName = this.props.customerName,
              showData.lendType = tempjson.product_type,
              showData.dateLimit = tempjson.loan_life,
              showData.maxMoney = changeToMillion(tempjson.min_loanmny) + '-' + changeToMillion(tempjson.max_loanmny) + '万',
@@ -217,7 +218,7 @@ const styles = StyleSheet.create({
     },
     scroller: {
 
-        marginTop: 64,
+        marginTop:Pixel.getTitlePixel(64) ,
         backgroundColor: PAGECOLOR.COLORA3,
         paddingBottom:adapeSize(80)
     },
