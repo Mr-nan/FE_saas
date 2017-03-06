@@ -34,6 +34,7 @@ import BaseComponent from '../../component/BaseComponent';
 import {request} from '../../utils/RequestUtil'
 import *as apis from '../../constant/appUrls'
 import ContractInfoScene from './ContractInfoScene';
+import CarOverdue from './CarOverdue';
 
 
 const controlCode = {
@@ -43,7 +44,8 @@ const controlCode = {
     lendType: '',
     maxLend: '',
     minLend: '',
-    changeMoney: ''
+    changeMoney: '',
+    loan_code:''
 }
 
 
@@ -87,6 +89,7 @@ export  default  class SingDetaileSence extends BaseComponent {
                     controlCode.extendCode = tempjson.is_extend;
                     controlCode.lendType = tempjson.type;
                     controlCode.minLend = changeToMillion(tempjson.min_loanmny);
+                    controlCode.loan_code = tempjson.loan_code;
                     let Maxmum = Number.parseFloat(tempjson.max_loanmny) + Number.parseFloat(tempjson.payment_loanmny)
                     controlCode.maxLend = changeToMillion(Maxmum)
 
@@ -264,6 +267,10 @@ export  default  class SingDetaileSence extends BaseComponent {
         } else if (title === '查看合同') {
             this.toNextPage({
                 name: 'ContractInfoScene', component: ContractInfoScene, params: {loan_code:this.props.loanNumber,showButton:false}
+            });
+        }else if(title ==="申请展期"){
+            this.toNextPage({
+                name: 'CarOverdue', component: CarOverdue, params: {loan_code: controlCode.loan_code}
             });
         }
 
