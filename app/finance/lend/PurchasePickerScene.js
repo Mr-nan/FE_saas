@@ -87,7 +87,6 @@ export  default class PurchasePickerScene extends BaseComponent {
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
-                    bounces={false}
                 />
             </View>
         );
