@@ -260,6 +260,20 @@ export const OPT_LOAN_SUBJECT = 'api/v1/user/opt_loan_subject';
 export const GET_APPLY_LOAN_DATA = 'api/v3/account/get_apply_loan_data';
 
 /**
+ * from @huangning
+ *
+ * 申请展期
+ **/
+export const DO_EXTENSION = 'api/v1/account/do_extension';
+
+/**
+ * from @zhaojian
+ *
+ * 申请借款
+ **/
+export const APPLY_LOAN='api/v3/account/apply_loan'
+
+/**
  * from @zhaojian
  *
  * 申请借款
