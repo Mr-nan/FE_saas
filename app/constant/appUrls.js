@@ -53,9 +53,46 @@ export const INDEX_UPLOAD = BASEURL + V + 'index/upload';
 export const CAR_CONFIG = BASEURL + V + 'car/config';
 
 /**
+ * 获取车品牌
+ */
+export const CAR_HOME_BRAND = BASEURL + V + 'home/brand';
+
+/**
+ * 获取车系
+ */
+export const CAR_HOME_SERIES = BASEURL + V + 'home/series';
+
+/**
+ * 获取车型
+ */
+export const CAR_HOME_MODELS = BASEURL + V + 'home/models';
+
+
+/**
+ * 获取车源列表
+ */
+export const CAR_INDEX = BASEURL + V + 'car/index';
+
+
+/**
  * 获取车辆详情
  */
 export const CAR_DETAIL = BASEURL + V + 'car/detail';
+
+/**
+ * 获取我的车源-已上架/下架
+ */
+export const CAR_USER_CAR = BASEURL + V + 'user/car';
+
+/**
+ * 我的车源-已上架/下架-操作
+ */
+export const CAR_STATUS = BASEURL + V + 'car/status';
+
+/**
+ * 获取我的车源-未审核
+ */
+export const CAR_PERLIST = BASEURL + V + 'car/preList';
 
 /**
  * 根据VIN获取车辆详情
