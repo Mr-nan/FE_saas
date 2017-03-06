@@ -27,7 +27,7 @@ const request = (url, method, params) => {
             if (Platform.OS === 'android') {
                 device_code = 'dycd_bms_android';
             } else {
-                device_code = 'dycd_bms_ios';
+                device_code = 'dycd_bms_android';
             }
 
             console.log(url + '?token=' + token + '&device_code=' + device_code+'&'+body);
