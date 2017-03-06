@@ -31,6 +31,8 @@ import * as AppUrls from "../constant/appUrls";
 
 let status  = 0;
 let carData = new  Array;
+let carBrandArray1  = [];       // status=1
+let carBrandArray2  = [];       // status=2
 let isHeadInteraction = false;  // 是否能选择车类
 let isCheckedCarModel = false;  // 是否能选择车型   false-能选,true-不能选
 
@@ -123,6 +125,17 @@ export default class CarBrandSelectScene extends BaseComponent {
 
     loadData =()=> {
 
+        if(status==1 && carBrandArray1.length>0 ){
+
+            this.setListData(carBrandArray1);
+            return;
+
+        }else if(status == 0 && carBrandArray2.length>0)
+        {
+            this.setListData(carBrandArray2);
+            return;
+        }
+
         let url = AppUrls.CAR_HOME_BRAND;
         this.startLoadData();
         request(url, 'post', {
@@ -131,6 +144,14 @@ export default class CarBrandSelectScene extends BaseComponent {
 
         }).then((response) => {
 
+            if(status==1){
+
+                carBrandArray1 = response.mjson.data;
+
+            }else if(status == 0)
+            {
+                carBrandArray2 = response.mjson.data;
+            }
             this.setListData(response.mjson.data);
             this.stopLoadData();
 

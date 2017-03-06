@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
         marginLeft:15,
         width:120,
         height:80,
-        backgroundColor:fontAndColor.COLORA4,
+        resizeMode: 'stretch',
 
     },
     tailImage:{
