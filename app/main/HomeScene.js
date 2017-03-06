@@ -1,5 +1,5 @@
 /**
- * Created by yujinzhong on 2017/2/8.
+ * Created by zhaojian 2017/2/8.
  */
 
 import  React, {Component, PropTypes} from  'react'
@@ -37,7 +37,6 @@ import WebScene from './WebScene';
 import ContractInfoScene from '../finance/lend/ContractInfoScene';
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 let allList = [];
-let allData = {};
 export class HomeHeaderItemInfo {
     constructor(ref, key, functionTitle, describeTitle, functionImage) {
 
@@ -69,7 +68,8 @@ export default class HomeScene extends BaseComponet {
             source: [],
             renderPlaceholderOnly: 'blank',
             isRefreshing: false,
-            headSource: []
+            headSource: [],
+            pageData:[]
     };
     }
 
@@ -83,7 +83,6 @@ export default class HomeScene extends BaseComponet {
         };
         request(Urls.HOME, 'Post', maps)
             .then((response) => {
-                    allData = response.mjson.data;
                     allList.push(...response.mjson.data.carList.list);
                     StorageUtil.mGetItem(storageKeyNames.USER_INFO, (data) => {
                         if (data.code == 1) {
@@ -102,11 +101,47 @@ export default class HomeScene extends BaseComponet {
                             }
                             console.log(bossFuncArray);
                             this.setState({headSource:bossFuncArray,renderPlaceholderOnly: 'success',
-                                source: ds.cloneWithRows(allList), isRefreshing: false});
+                                source: ds.cloneWithRows(allList), isRefreshing: false,
+                                allData:response.mjson.data});
+                            // this.refs.viewpage.changeData(response.mjson.data);
                         }
                     });
-                    this.setState({
+                    status = response.mjson.data.carList.status;
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
+                });
+    }
 
+    getRefresh = () => {
+        let maps = {
+            page: page,
+            rows: 6
+        };
+        request(Urls.HOME, 'Post', maps)
+            .then((response) => {
+                    allList.push(...response.mjson.data.carList.list);
+                    StorageUtil.mGetItem(storageKeyNames.USER_INFO, (data) => {
+                        if (data.code == 1) {
+                            let datas = JSON.parse(data.result);
+                            if (datas.user_level == 2) {
+                                if (datas.enterprise_list[0].role_type == '1') {
+                                } else if (datas.enterprise_list[0].role_type == '2') {
+                                    bossFuncArray.splice(0, 2);
+                                } else {
+                                    bossFuncArray.splice(2, 2);
+                                }
+                            } else if (datas.user_level == 1) {
+                                bossFuncArray.splice(2, 2);
+                            } else {
+                                bossFuncArray.splice(2, 2);
+                            }
+                            console.log(bossFuncArray);
+                            this.setState({headSource:bossFuncArray,renderPlaceholderOnly: 'success',
+                                source: ds.cloneWithRows(allList), isRefreshing: false,
+                                allData:response.mjson.data});
+                            this.refs.viewpage.changeData(response.mjson.data);
+                        }
                     });
                     status = response.mjson.data.carList.status;
                 },
@@ -119,7 +154,7 @@ export default class HomeScene extends BaseComponet {
         allList = [];
         this.setState({renderPlaceholderOnly: 'loading'});
         page = 1;
-        this.getData();
+        this.getRefresh();
     }
 
     _renderSeparator(sectionId, rowId) {
@@ -219,10 +254,10 @@ export default class HomeScene extends BaseComponet {
     }
 
     _renderHeader = () => {
+        this.showConsole('---------------------------------------------');
         let tablist = [];
         tablist = this.state.headSource;
         let items = [];
-        console.log(tablist);
         tablist.map((data) => {
             let tabItem;
 
@@ -242,9 +277,9 @@ export default class HomeScene extends BaseComponet {
         return (
             <View>
                 <View style={{flexDirection: 'row'}}>
-                    <ViewPagers callBack={(urls)=>{
+                    <ViewPagers ref="viewpage" callBack={(urls)=>{
                        this.props.callBack({name:'WebScene',component:WebScene,params:{webUrl:urls}});
-                    }} items={allData}/>
+                    }} items={this.state.allData}/>
                     <TouchableOpacity onPress={()=>{
                             this.props.jumpScene('carpage','true');
                     }} activeOpacity={0.8} style={{backgroundColor: 'rgba(255,255,255,0.8)',
