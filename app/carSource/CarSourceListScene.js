@@ -64,7 +64,6 @@ const APIParameter = {
 
 export  default  class carSourceListScene extends BaseComponent {
 
-
     // 构造
     constructor(props) {
         super(props);

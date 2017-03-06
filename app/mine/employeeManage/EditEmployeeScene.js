@@ -82,19 +82,17 @@ export default class EditEmployeeScene extends BaseComponent {
         this.loadData();
     }
     saveData = () => {
-        if(SECTIONID ===1&& ROWID ===0){
             if (this.items.length>0){
-
+                this.company_idss=[];
                 Car[SECTIONID].cars[ROWID].name =this.companys[this.items[0]];
                 for(let value of this.items){
 
                     this.company_idss.push(this.company_ids[value]);
                 }
             }
-        }
         console.log(this.company_idss);
             let url = AppUrls.BASEURL + 'v1/user.employee/save';
-            console.log(Car[2].cars[0].name+"-"+Car[2].cars[1].name+'-'+Car[2].cars[2].name+'-'+this.role_id+"----"+Car[0].cars[0].name+'--'+this.props.id);
+            console.log(Car[2].cars[0].name+"-"+Car[2].cars[1].name+'-'+Car[2].cars[2].name+'-'+this.roleId+"----"+Car[0].cars[0].name+'--'+this.props.id);
             request(url, 'post', {
                 account	: Car[2].cars[0].name,
             company_ids	: this.company_idss.toString(),
@@ -440,8 +438,13 @@ export default class EditEmployeeScene extends BaseComponent {
     }
     /**      蒙版listview  点击选择,返回点击cell的id          */
     _onClick = (rowID) => {
-        this.roleId= Number.parseInt(rowID)+1+'';
-        this.sex=Number.parseInt(rowID)+1+'';
+        if(SECTIONID ===0&& ROWID ===1){
+
+            this.sex=Number.parseInt(rowID)+1+'';
+        }else if (SECTIONID ===1&& ROWID ===1){
+
+            this.roleId= Number.parseInt(rowID)+1+'';
+        }
         Car[SECTIONID].cars[ROWID].name = this.currentData[rowID];
 
 

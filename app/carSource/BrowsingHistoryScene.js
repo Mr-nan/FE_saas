@@ -41,10 +41,11 @@ export default class BrowsingHistoryScene extends BaceComponent {
         let maps = {};
         request(Urls.USER_HISTORY, 'Post', maps)
             .then((response) => {
-                    if (page == 1 && response.mjson.data.length <= 0) {
+                    allPage=response.mjson.data.pageCount;
+                    if (page == 1 && response.mjson.data.list.length <= 0) {
                         this.setState({renderPlaceholderOnly: 'null', isRefreshing: false});
                     } else {
-                        allSouce.push(...response.mjson.data);
+                        allSouce.push(...response.mjson.data.list);
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
                             carData: ds.cloneWithRows(allSouce),
@@ -69,10 +70,37 @@ export default class BrowsingHistoryScene extends BaceComponent {
         };
     }
 
-    toEnd = () => {
-        // page++;
-        // this.getApplyData();
+    toEnd =() => {
+
+        if(!this.state.isRefreshing && allSouce.length>0 && allPage!=page){
+
+            page++;
+            this.getApplyData();
+        }
+
     };
+
+    getApplyData=()=>{
+
+        let maps = {
+            page: page,
+            rows: 10
+        };
+        request(Urls.USER_HISTORY, 'Post', maps)
+            .then((response) => {
+                    if (response.mjson.data.list.length>0)
+                    {
+                        allSouce.push(...response.mjson.data.list);
+                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                        this.setState({
+                            carData: ds.cloneWithRows(allSouce),
+                        });
+                    }
+                },
+                (error) => {
+                    this.props.showToast(error.msg);
+                });
+    }
 
     renderListFooter = () => {
 
@@ -124,6 +152,7 @@ export default class BrowsingHistoryScene extends BaceComponent {
                     allSouce = [];
                     this.props.showModal(false);
                     this.props.showToast('删除成功');
+                    page = 1;
                     this.getData();
                 },
                 (error) => {

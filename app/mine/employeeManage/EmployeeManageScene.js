@@ -28,9 +28,7 @@ import * as AppUrls from '../../constant/appUrls';
 const {width, height} = Dimensions.get('window');
 
 export default class EmployeeManageScene extends BaseComponent {
-    initFinish = () => {
-        this.getData();
-    }
+
     // 构造
     constructor(props) {
         super(props);
@@ -38,27 +36,24 @@ export default class EmployeeManageScene extends BaseComponent {
             dataSource: [],
             renderPlaceholderOnly: 'blank',
         };
+    }
 
+    initFinish = () => {
+        this.getData();
     }
 
     getData = () => {
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        request(AppUrls.BASEURL+'v1/user.employee/index', 'Post', {
-
-
-        })
+        request(AppUrls.BASEURL + 'v1/user.employee/index', 'Post', {})
             .then((response) => {
-             if(response.mjson.data==null || response.mjson.data.length<=0){
-                 this.setState({renderPlaceholderOnly: 'null'});
-             }else{
-                 this.setState({
-                     dataSource: ds.cloneWithRows(response.mjson.data)
-                 });
-                 console.log(response.mjson.data);
-                 this.setState({renderPlaceholderOnly: 'success'});
-
-             }
-
+                    if (response.mjson.data == null || response.mjson.data.length <= 0) {
+                        this.setState({renderPlaceholderOnly: 'null'});
+                    } else {
+                        this.setState({
+                            dataSource: ds.cloneWithRows(response.mjson.data)
+                        });
+                        this.setState({renderPlaceholderOnly: 'success'});
+                    }
                 },
                 (error) => {
                     console.log(error);
@@ -70,27 +65,26 @@ export default class EmployeeManageScene extends BaseComponent {
         this.toNextPage({
             name: 'AddEmployeeScene',
             component: AddEmployeeScene,
-            params: {
-            },
+            params: {},
         })
         alert("dianjile添加员工")
     }
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
-            return (
-                <View style={styles.container}>
-                    {/**      导航栏          */}
-
-                    {this.loadView()}
-                    <NavigationView
-                        backIconClick={this.backPage}
-                        title="员工管理"
-                        renderRihtFootView={this._navigatorRightView}
-                    />
-                </View>
-            );
         }
+        return (
+            <View style={styles.container}>
+                {/**      导航栏          */}
+
+                <NavigationView
+                    backIconClick={this.backPage}
+                    title="员工管理"
+                    renderRihtFootView={this._navigatorRightView}
+                />
+                {this.loadView()}
+            </View>
+        );
         return (
             <View style={styles.container}>
 
@@ -109,6 +103,7 @@ export default class EmployeeManageScene extends BaseComponent {
             </View>
         );
     }
+
     /**      导航栏右侧按钮          */
     _navigatorRightView = () => {
         return (
@@ -124,8 +119,8 @@ export default class EmployeeManageScene extends BaseComponent {
                     name: 'AddEmployeeScene',
                     component: AddEmployeeScene,
                     params: {
-                        callBack:()=>{
-                            this.setState({renderPlaceholderOnly:'loading'});
+                        callBack: () => {
+                            this.setState({renderPlaceholderOnly: 'loading'});
                             this.getData();
                         },
                     },
@@ -143,9 +138,9 @@ export default class EmployeeManageScene extends BaseComponent {
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         <Text style={styles.rowLeftTitle}>{rowData.username}</Text>
                         <View
-                            style={[styles.employeeStyle, rowData.role==='财务'&& {borderColor: fontAndClolr.COLORB3},rowData.role==='员工'&& {borderColor: fontAndClolr.COLORB1}]}>
+                            style={[styles.employeeStyle, rowData.role === '财务' && {borderColor: fontAndClolr.COLORB3}, rowData.role === '员工' && {borderColor: fontAndClolr.COLORB1}]}>
                             <Text
-                                style={[styles.employeeText, rowData.role==='财务'&& {color: fontAndClolr.COLORB3},rowData.role==='员工'&& {color: fontAndClolr.COLORB1}]}>{rowData.role}</Text>
+                                style={[styles.employeeText, rowData.role === '财务' && {color: fontAndClolr.COLORB3}, rowData.role === '员工' && {color: fontAndClolr.COLORB1}]}>{rowData.role}</Text>
                         </View>
                     </View>
                     <Text style={styles.rowLeftTitle1}>{rowData.company}</Text>
@@ -157,13 +152,13 @@ export default class EmployeeManageScene extends BaseComponent {
                             name: 'EditEmployeeScene',
                             component: EditEmployeeScene,
                             params: {
-                                callBack:()=>{
-                                    this.setState({renderPlaceholderOnly:'loading'});
+                                callBack: () => {
+                                    this.setState({renderPlaceholderOnly: 'loading'});
                                     this.getData();
                                 },
                                 username: rowData.username,
-                                mobile : rowData.mobile,
-                                sex : rowData.sex,
+                                mobile: rowData.mobile,
+                                sex: rowData.sex,
                                 company: rowData.company,
                                 role: rowData.role,
                                 isAddEmployee: false,
@@ -187,8 +182,8 @@ export default class EmployeeManageScene extends BaseComponent {
                             component: SeeEmployeeInfoScene,
                             params: {
                                 username: rowData.username,
-                                mobile : rowData.mobile,
-                                sex : rowData.sex,
+                                mobile: rowData.mobile,
+                                sex: rowData.sex,
                                 company: rowData.company,
                                 role: rowData.role
                             },
@@ -214,7 +209,7 @@ const styles = StyleSheet.create({
         backgroundColor: fontAndClolr.COLORA3,
     },
     listStyle: {
-        marginTop:  Pixel.getTitlePixel(84),
+        marginTop: Pixel.getTitlePixel(84),
     },
     rowView: {
         height: Pixel.getPixel(83),
@@ -263,7 +258,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: Pixel.getPixel(3),
-        height:  Pixel.getPixel(17)
+        height: Pixel.getPixel(17)
     },
     employeeText: {
         color: fontAndClolr.COLORB4,

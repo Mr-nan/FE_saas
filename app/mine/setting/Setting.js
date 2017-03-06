@@ -18,6 +18,7 @@ import NavigationBar from '../../component/NavigationBar';
 import MyButton from '../../component/MyButton';
 import AccountSecurity from './AccountSecurity';
 import AbountPlatform from './AbountPlatform';
+import CarOverdue from '../../finance/lend/CarOverdue';
 
 var Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
