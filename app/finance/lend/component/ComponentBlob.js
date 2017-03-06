@@ -199,9 +199,8 @@ export class LendDatePike extends PureComponent {
 
     setPlaceHodel=(vlaue)=>{
 
-        this.setState({
-
-            placeholder:vlaue,
+        this.dateInput.setNativeProps({
+            placeholder:vlaue
         })
     }
     onPress=()=>{
