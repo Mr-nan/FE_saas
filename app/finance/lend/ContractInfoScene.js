@@ -17,7 +17,7 @@ import {
 const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
-let RJson = require('./contrac.json');
+let RJson = {};
 import BaseComponent from '../../component/BaseComponent';
 import NavigationView from '../../component/AllNavigationView';
 import * as fontAndColor from '../../constant/fontAndColor';
@@ -26,6 +26,8 @@ import ViewPager from 'react-native-viewpager';
 import SelectLoanNumber from './component/SelectLoanNumber';
 let numberPage = 0;
 let namePage = 0;
+import {request} from '../../utils/RequestUtil';
+import * as Urls from '../../constant/appUrls';
 
 export  default class ContractInfoScene extends BaseComponent {
 
@@ -40,13 +42,39 @@ export  default class ContractInfoScene extends BaseComponent {
     }
 
     getData = () => {
-        imageItems = [];
-        imageItems.push(...RJson.retdata[numberPage].contract[namePage].pic);
-        let ds = new ViewPager.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.setState({
-            dataSource: ds.cloneWithPages(imageItems),
-            renderPlaceholderOnly: 'success',
-        });
+        let maps = {
+            api: Urls.GET_CONTRACT_DATA,
+            loan_code: this.props.loan_code,
+        };
+        request(Urls.FINANCE, 'Post', maps)
+            .then((response) => {
+                    imageItems = [];
+                    RJson = response.mjson;
+                    imageItems.push(...response.mjson.data[numberPage].contract[namePage].pic);
+                    let ds = new ViewPager.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                    this.setState({
+                        dataSource: ds.cloneWithPages(imageItems),
+                        renderPlaceholderOnly: 'success',
+                    });
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error'});
+                });
+    }
+
+    contractSign = () => {
+        this.props.showModal(true);
+        let maps = {
+            api: Urls.CONTRACT_SIGN,
+            loan_code: this.props.loan_code,
+        };
+        request(Urls.FINANCE, 'Post', maps)
+            .then((response) => {
+                    this.props.showToast('签署成功');
+                },
+                (error) => {
+                    this.props.showToast('签署失败');
+                });
     }
 
 
@@ -74,16 +102,19 @@ export  default class ContractInfoScene extends BaseComponent {
                 </View>
                 <View style={{width:width,height:Pixel.getPixel(44),flexDirection: 'row'}}>
                     <TouchableOpacity onPress={()=>{
-                        this.refs.selectloannumber.openModalForName(RJson.retdata[numberPage].contract);
+                        this.refs.selectloannumber.openModalForName(RJson.data[numberPage].contract);
                     }} activeOpacity={0.8} style={{flex:1,backgroundColor:fontAndColor.COLORA2,justifyContent:'center'
                     ,alignItems:'center',flexDirection:'row'}}>
                         <Image style={{width:Pixel.getPixel(14),height:Pixel.getPixel(15)}}
                                source={require('../../../images/financeImages/contractInfo.png')}/>
                         <Text numberOfLines={1} style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                         color:'#fff',width:width/2-Pixel.getPixel(Pixel.getPixel(28)),marginLeft:Pixel.getPixel(5)}}>
-                            {RJson.retdata[numberPage].contract[namePage].name}</Text>
+                            {RJson.data[numberPage].contract[namePage].name}</Text>
                     </TouchableOpacity>
-                    {this.props.showButton == true ? <TouchableOpacity activeOpacity={0.8} style={{flex:1,backgroundColor:fontAndColor.COLORB0,justifyContent:'center'
+                    {this.props.showButton == true ? <TouchableOpacity onPress={()=>{
+                       this.contractSign();
+                    }
+                    } activeOpacity={0.8} style={{flex:1,backgroundColor:fontAndColor.COLORB0,justifyContent:'center'
                     ,alignItems:'center'}}>
                             <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                         color:'#fff'}}>签署合同</Text>
@@ -106,7 +137,7 @@ export  default class ContractInfoScene extends BaseComponent {
     _navigatorRightView = () => {
         return (
             <TouchableOpacity activeOpacity={0.8} onPress={()=>{
-                 this.refs.selectloannumber.openModalForNumber(RJson.retdata);
+                 this.refs.selectloannumber.openModalForNumber(RJson.data);
         }}>
                 <Text style={{color: 'white',
                 fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
@@ -119,7 +150,11 @@ export  default class ContractInfoScene extends BaseComponent {
     _renderPage = (data) => {
 
         return (
-            <Image style={{flex:1}}
+            <Image onLoadEnd={()=>{
+                this.props.showModal(false);
+            }} onLoadStart={()=>{
+                this.props.showModal(true);
+            }} style={{flex:1}}
                    source={{uri: data}}
             />
         );
