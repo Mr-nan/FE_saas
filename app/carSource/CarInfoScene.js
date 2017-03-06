@@ -246,7 +246,7 @@ export default class CarInfoScene extends BaseComponent {
 
         return(
             <TouchableOpacity onPress={()=>{this.showPhotoView()}}>
-                <Image source={typeof data.url =='undefined'?data.require:{uri:data.url}} style={styles.carImage}/>
+                <Image source={typeof data.url =='undefined'?data.require:{uri:data.url+'?x-oss-process=image/resize,w_'+Math.ceil(ScreenWidth)+',h_'+250}} style={styles.carImage}/>
             </TouchableOpacity>
 
         );
