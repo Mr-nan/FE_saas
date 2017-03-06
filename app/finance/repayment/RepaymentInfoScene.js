@@ -18,8 +18,7 @@ const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import * as fontAndColor from '../../constant/fontAndColor';
-let MovleData = require('./repaymentinfo.json');
-let movies = MovleData.retdata;
+let movies = {};
 import BaseComponent from '../../component/BaseComponent';
 import NavigationView from '../../component/AllNavigationView';
 import RepaymentInfoTopItem from './component/RepaymentInfoTopItem';
@@ -30,6 +29,8 @@ import AllBottomItem from './component/AllBottomItem';
 import MyButton from '../../component/MyButton';
 let moneyList = [];
 let nameList = [];
+import {request} from '../../utils/RequestUtil';
+import * as Urls from '../../constant/appUrls';
 export  default class PurchaseLoanStatusScene extends BaseComponent {
 
     constructor(props) {
@@ -49,20 +50,44 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
     }
 
     initFinish = () => {
-        moneyList.push({name: '贷款本金', data: movies.loan_mny_str});
-        moneyList.push({name: '计息天数', data: movies.loan_day});
-        moneyList.push({name: '综合费率', data: movies.loan_rebate_str});
-        moneyList.push({name: '利息总额', data: movies.interest_total});
-        moneyList.push({name: '已还利息', data: movies.interest});
-        moneyList.push({name: '贷款利息', data: movies.interest_other});
+        this.getData();
+    }
 
-        nameList.push({name: '渠道名称', data: movies.qvdaoname});
-        nameList.push({name: '还款账户', data: movies.bank_info.repaymentaccount});
-        nameList.push({name: '开户行', data: movies.bank_info.bank});
-        nameList.push({name: '开户支行', data: movies.bank_info.branch});
-        nameList.push({name: '还款账号', data: movies.bank_info.repaymentnumber});
-        nameList.push({name: '保证金', data: movies.bondmny});
-        this.setState({renderPlaceholderOnly: 'success'});
+    allRefresh = () => {
+        moneyList = [];
+        nameList = [];
+        this.setState({renderPlaceholderOnly: 'loading'});
+        this.getData();
+    }
+
+    getData = () => {
+        let maps = {
+            api: Urls.REPAYMENT_GETINFO,
+            loan_id: this.props.loan_id,
+            loan_number: this.props.loan_number,
+            type: this.props.type,
+        };
+        request(Urls.FINANCE, 'Post', maps)
+            .then((response) => {
+                    let movies = response.mjson.data;
+                    moneyList.push({name: '贷款本金', data: movies.loan_mny_str});
+                    moneyList.push({name: '计息天数', data: movies.loan_day});
+                    moneyList.push({name: '综合费率', data: movies.loan_rebate_str});
+                    moneyList.push({name: '利息总额', data: movies.interest_total});
+                    moneyList.push({name: '已还利息', data: movies.interest});
+                    moneyList.push({name: '贷款利息', data: movies.interest_other});
+
+                    nameList.push({name: '渠道名称', data: movies.qvdaoname});
+                    nameList.push({name: '还款账户', data: movies.bank_info.repaymentaccount});
+                    nameList.push({name: '开户行', data: movies.bank_info.bank});
+                    nameList.push({name: '开户支行', data: movies.bank_info.branch});
+                    nameList.push({name: '还款账号', data: movies.bank_info.repaymentnumber});
+                    nameList.push({name: '保证金', data: movies.bondmny});
+                    this.setState({renderPlaceholderOnly: 'success'});
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error'});
+                });
     }
 
     buttonParams = {
@@ -99,11 +124,11 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
     _renderPlaceholderView() {
         return (
             <View style={{width: width, height: height,backgroundColor:fontAndColor.COLORA3,alignItems: 'center'}}>
+                {this.loadView()}
                 <NavigationView
                     title="还款详情"
                     backIconClick={this.backPage}
                 />
-                {this.loadView()}
             </View>
         );
     }
