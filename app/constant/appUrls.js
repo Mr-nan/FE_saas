@@ -274,13 +274,6 @@ export const DO_EXTENSION = 'api/v1/account/do_extension';
 export const APPLY_LOAN='api/v3/account/apply_loan'
 
 /**
- * from @zhaojian
- *
- * 申请借款
- **/
-export const APPLY_LOAN='api/v3/account/apply_loan'
-
-/**
  * 短信验证码
  *
  * device_code    设备码        必填
