@@ -167,16 +167,16 @@ export default class HomeScene extends BaseComponet {
                     renderHeader={this._renderHeader}
                     bounces={false}
                     refreshControl={
-                                    <RefreshControl
-                                        refreshing={this.state.isRefreshing}
-                                        onRefresh={this.refreshingData}
-                                        tintColor={[fontAndClolr.COLORB0]}
-                                        colors={[fontAndClolr.COLORB0]}
-                                    />
-                                }
+                        <RefreshControl
+                            refreshing={this.state.isRefreshing}
+                            onRefresh={this.refreshingData}
+                            tintColor={[fontAndClolr.COLORB0]}
+                            colors={[fontAndClolr.COLORB0]}
+                        />
+                    }
                     renderFooter={
-                                    this.renderListFooter
-                                }
+                        this.renderListFooter
+                    }
                     onEndReached={this.toEnd}
                 />
 
