@@ -66,6 +66,12 @@ export default class Search extends Component {
         return this.state.value
     }
 
+    setInputTextValue = (text) => {
+        this.setState({
+            value: text
+        });
+    }
+
     //文本框获取焦点时判断是否隐藏收索结果框
     showDefultContext = () => {
         if (this.state.value == "") {
