@@ -583,6 +583,7 @@ const styles = StyleSheet.create({
 
         height: Pixel.getPixel(250),
         width:ScreenWidth,
+        resizeMode: 'stretch'
 
     },
     contentContainer: {

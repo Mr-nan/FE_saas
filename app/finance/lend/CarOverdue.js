@@ -48,12 +48,11 @@ export  default class CarOverdue extends BaseComponent {
             return (
                 <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
                     <NavigationBar
-                        leftImageShow={false}
-                        leftTextShow={true}
-                        leftText={""}
+                        leftImageShow={true}
+                        leftTextShow={false}
                         centerText={"申请展期"}
                         rightText={""}
-                    />
+                        leftImageCallBack={this.backPage}/>
                     {this.loadView()}
                 </View>
             )
@@ -80,7 +79,7 @@ export  default class CarOverdue extends BaseComponent {
                         textStyle={{color: 'white'}}
                         buttonStyle={styles.buttonStyleLeft}
                         onPress={() => {
-                            this.getData();
+                            this.doExtension();
                         }} title="申请展期"/>
                     <CommenButton
                         textStyle={{color: 'white'}}
@@ -165,7 +164,7 @@ export  default class CarOverdue extends BaseComponent {
 
     getData = () => {
         let maps = {
-            api: "api/v1/account/apply_extension_carlist",
+            api: AppUrls.APPLY_EXTENSION_CARLIST,
             loan_code: "12345678",
         };
         request(AppUrls.FINANCE, 'Post', maps)
@@ -197,6 +196,28 @@ export  default class CarOverdue extends BaseComponent {
                             this.setState({
                                 renderPlaceholderOnly: 'error',
                             })
+                        }
+                    }
+                }
+            )
+    }
+
+    doExtension = () => {
+        let maps = {
+            api: AppUrls.DO_EXTENSION,
+            auto_ids: '',
+            loan_code: '',
+        };
+        request(AppUrls.FINANCE, 'Post', maps)
+            .then((response) => {
+                    this.props.showToast("请求成功");
+                },
+                (error) => {
+                    if (error.mjson.code == -300 || error.mjson.code == -500) {
+                        this.props.showToast("网络请求失败");
+                    } else {
+                        if (error.mjson.code == -1) {
+                            this.props.showToast(error.mjson.msg + "");
                         }
                     }
                 }
