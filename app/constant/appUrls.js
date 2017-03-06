@@ -1,31 +1,13 @@
-/**
- * 开发地址
- */
-// export const BASEURL = "http://dev.open.bms.dycd.com/api/";
-
-/**
- * 正式地址
- */
-//export const BASEURL = "https://openbms.dycd.com/api/";
-
-/**
- * 测试地址
- */
-// export const BASEURL = "https://qaopenbms.dycd.com/api/";
 
 /**
  * 开发地址
  */
-// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
  */
 export const BASEURL = 'http://api-gateway.test.dycd.com/';
-/**
- * 预发布地址
- */
-//  export const BASEURL = "http://st.open.bms.dycd.com/api/";
 
 /**
  * 版本号1
@@ -196,6 +178,21 @@ export const REPAYMENT_GETONLINEINFO = 'api/v2/Repayment/getOnlineInfo';
 /**
  * from @zhaojian
  *
+ * 获取合同数据
+ **/
+export const GET_CONTRACT_DATA = 'api/v1/account/get_contract_data';
+
+/**
+ * from @zhaojian
+ *
+ * 签署合同
+ **/
+export const CONTRACT_SIGN = 'api/v1/account/contract_sign';
+
+
+/**
+ * from @zhaojian
+ *
  * 获取库融调整详情
  **/
 export const REPAYMENT_GETADJUSTINFO = 'api/v2/Repayment/getAdjustInfo';
@@ -265,6 +262,13 @@ export const GET_APPLY_LOAN_DATA = 'api/v3/account/get_apply_loan_data';
  * 申请展期
  **/
 export const DO_EXTENSION = 'api/v1/account/do_extension';
+
+/**
+ * from @huangning
+ *
+ * 申请展期
+ **/
+export const APPLY_EXTENSION_CARLIST = 'api/v1/account/apply_extension_carlist';
 
 /**
  * from @zhaojian

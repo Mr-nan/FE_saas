@@ -97,10 +97,12 @@ export default class AutoLabel extends Component {
                 }
                 if (this.isEmpty(this.label) === false) {
                     let sels = JSON.parse(this.label);
-                    for (let i = 0; i < sels.length; i++) {
-                        this.viewData.map((vd) => {
-                            if (vd.name === sels[i].name) vd.selected = true;
-                        });
+                    if(sels !== null){
+                        for (let i = 0; i < sels.length; i++) {
+                            this.viewData.map((vd) => {
+                                if (vd.name === sels[i].name) vd.selected = true;
+                            });
+                        }
                     }
                 }
                 this.interiorGrid.refresh(this.viewData);

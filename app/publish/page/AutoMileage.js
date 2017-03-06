@@ -141,24 +141,24 @@ export default class AutoMileage extends Component {
                         let rd = data.result.rows.item(0);
 
                         if(this.isEmpty(rd.model) === true){
-                            this.props.showHint('请选择车型信息');
                             this.props.closeLoading();
+                            this.props.showHint('请选择车型信息');
                             return;
                         }
 
                         if(this.isEmpty(rd.pictures) === true){
-                            this.props.showHint('请拍摄车辆照片');
                             this.props.closeLoading();
+                            this.props.showHint('请拍摄车辆照片');
                             return;
                         }
                         if(this.isEmpty(rd.mileage) === true){
-                            this.props.showHint('请填写车辆里程');
                             this.props.closeLoading();
+                            this.props.showHint('请填写车辆里程');
                             return;
                         }
                         if(this.isEmpty(rd.manufacture) === true){
-                            this.props.showHint('请选择车辆出厂日期');
                             this.props.closeLoading();
+                            this.props.showHint('请选择车辆出厂日期');
                             return;
                         }
                         let modelInfo = JSON.parse(rd.model);
