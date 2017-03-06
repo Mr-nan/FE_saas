@@ -258,7 +258,7 @@ export default class LoginScene extends BaseComponent {
                     this.props.showModal(false);
                     if (response.mjson.code == "1") {
                         this.refs.loginSmscode.StartCountDown();
-                        this.props.showToast(response.mjson.data.code + "");
+                        this.refs.loginSmscode.setInputTextValue(response.mjson.data.code + "");
                     } else {
                         this.props.showToast(response.mjson.msg + "");
                     }

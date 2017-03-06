@@ -1,13 +1,12 @@
 import  React, {Component, PropTypes} from  'react'
 import  {
-
-    View,
-    Text,
-    ListView,
     StyleSheet,
+    View,
+    TouchableOpacity,
+    Text,
     Dimensions,
-    Image,
-    TouchableOpacity
+    ListView,
+    RefreshControl
 } from  'react-native'
 
 import * as fontAndClolr from '../../constant/fontAndColor';
@@ -15,49 +14,111 @@ import  PixelUtil from '../../utils/PixelUtil'
 import SignContractScene from '../contractManage/SignContractScene'
 var Pixel = new PixelUtil();
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
-import NavigationBar from "../../component/NavigationBar";
-import CountInfoScene from '../accountManage/AccountInfoScene';
+import  LoadMoreFooter from '../../component/LoadMoreFooter';
+import {request} from '../../utils/RequestUtil';
+import * as Urls from '../../constant/appUrls';
 import BaseComponent from "../../component/BaseComponent";
-// let Car = require('./Car.json');
+import NavigatorView from '../../component/AllNavigationView';
 /*
  * 获取屏幕的宽和高
  **/
 const {width, height} = Dimensions.get('window');
-
+let page = 1;
+let allPage = 1;
+let allSouce = [];
 export default class ContractManageScene extends BaseComponent {
     initFinish = () => {
+        this.getData();
+    }
+
+    componentWillUnmount() {
+        allSouce = [];
+    }
+
+    getData = () => {
+        let maps = {
+            page: page,
+            rows: 10,
+            api : 'api/v1/Contract/contractList',
+            sign_status: '1',
+        };
+        request(Urls.CONTRACT_LIST, 'Post', maps)
+            .then((response) => {
+            console.log(response.mjson);
+                    if (page == 1 && response.mjson.data.contract_list.length <= 0) {
+                        this.setState({renderPlaceholderOnly: 'null', isRefreshing: false});
+                    } else {
+                        allSouce.push(...response.mjson.data);
+                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                        this.setState({
+                            dataSource: ds.cloneWithRows(allSouce),
+                            renderPlaceholderOnly: 'success',
+                            isRefreshing: false
+                        });
+                    }
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
+                });
     }
     // 构造
     constructor(props) {
         super(props);
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: ds.cloneWithRows([
-                'John', 'Joel', 'James', 'Jimmy'
-            ]),
+            dataSource: {},
+            renderPlaceholderOnly: 'blank',
+            isRefreshing: false
         };
 
     }
 
+    renderListFooter = () => {
+
+        if (this.state.isRefreshing) {
+            return null;
+        } else {
+            return (<LoadMoreFooter isLoadAll={page==allPage?true:false}/>)
+        }
+
+    }
+
+    refreshingData = () => {
+        allSouce = [];
+        this.setState({isRefreshing: true});
+        page = 1;
+        this.getData();
+    };
+
     render() {
-        return (
-            <View style={styles.container}>
-                <NavigationBar
-                    centerText={'合同管理'}
-                    rightText={''}
-                    leftImageCallBack={this.backPage}
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return ( <View style={styles.rootContainer}>
+                <NavigatorView title='合同管理' backIconClick={this.backPage}/>
+                {this.loadView()}
+            </View>);
+        }else {
+            return (<View style={styles.container}>
+                <NavigatorView title='合同管理' backIconClick={this.backPage}/>
 
+
+                <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(64)}}
+                          dataSource={this.state.dataSource}
+                          renderRow={this._renderRow}
+                          renderFooter={
+                              this.renderListFooter
+                          }
+                          onEndReached={this.toEnd}
+                          refreshControl={
+                              <RefreshControl
+                                  refreshing={this.state.isRefreshing}
+                                  onRefresh={this.refreshingData}
+                                  tintColor={[fontAndColor.COLORB0]}
+                                  colors={[fontAndColor.COLORB0]}
+                              />
+                          }
                 />
 
-
-                <ListView
-                    contentContainerStyle={styles.listStyle}
-                    dataSource={this.state.dataSource}
-                    renderRow={this._renderRow}
-                />
-
-            </View>
-        );
+            </View>);
+        }
     }
 
     // 每一行中的数据

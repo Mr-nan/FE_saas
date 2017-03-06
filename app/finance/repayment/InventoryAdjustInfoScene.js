@@ -18,24 +18,40 @@ const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import * as fontAndColor from '../../constant/fontAndColor';
-let MovleData = require('./InventoryAdjustInfo.json');
-let movies = MovleData.retdata;
+let movies = {};
 import BaseComponent from '../../component/BaseComponent';
 import NavigationView from '../../component/AllNavigationView';
+import {request} from '../../utils/RequestUtil';
+import * as Urls from '../../constant/appUrls';
 export default class InventoryRepaymentInfoScene extends BaseComponent {
 
     constructor(props) {
         super(props);
         // 初始状态
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            source: ds.cloneWithRows(movies.list),
+            source: [],
             renderPlaceholderOnly: 'blank'
         };
     }
 
     initFinish = () => {
-        this.setState({renderPlaceholderOnly: 'success'});
+       this.getData();
+    }
+
+    getData = () => {
+        let maps = {
+            api: Urls.REPAYMENT_GETADJUSTINFO,
+            planid: this.props.planid,
+        };
+        request(Urls.FINANCE, 'Post', maps)
+            .then((response) => {
+                    movies = response.data;
+                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                    this.setState({renderPlaceholderOnly: 'success', source: ds.cloneWithRows(response.data.list)});
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error'});
+                });
     }
 
 

@@ -208,7 +208,7 @@ export default class AddEmployeeScene extends BaseComponent {
                 {/**      导航栏          */}
                 <NavigationView
                     backIconClick={this.backPage}
-                    title="编辑员工"
+                    title="添加员工"
                     renderRihtFootView={this._navigatorRightView}
                 />
 
@@ -378,8 +378,13 @@ export default class AddEmployeeScene extends BaseComponent {
     }
     /**      蒙版listview  点击选择,返回点击cell的id          */
     _onClick = (rowID) => {
-            this.roleId= Number.parseInt(rowID)+1+'';
+        if(SECTIONID ===0&& ROWID ===1){
+
             this.sex=Number.parseInt(rowID)+1+'';
+        }else if (SECTIONID ===1&& ROWID ===1){
+
+            this.roleId= Number.parseInt(rowID)+1+'';
+        }
             Car[SECTIONID].cars[ROWID].name = this.currentData[rowID];
 
 
