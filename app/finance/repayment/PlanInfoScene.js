@@ -53,6 +53,9 @@ export  default class PlanInfoScene extends BaseComponent {
     }
 
     allRefresh = () => {
+        moneyList = [];
+        nameList = [];
+        dateList = [];
         this.setState({renderPlaceholderOnly: 'loading'});
         this.getData();
     }

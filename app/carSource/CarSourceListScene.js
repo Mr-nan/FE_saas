@@ -146,7 +146,7 @@ export  default  class carSourceListScene extends BaseComponent {
     // 获取数据
     loadData = () => {
 
-        let url = AppUrls.BASEURL + 'v1/car/index';
+        let url = AppUrls.CAR_INDEX;
         APIParameter.page = 1;
         request(url, 'post', APIParameter)
             .then((response) => {
@@ -189,7 +189,7 @@ export  default  class carSourceListScene extends BaseComponent {
 
     loadMoreData = () => {
 
-        let url = AppUrls.BASEURL + 'v1/car/index';
+        let url = AppUrls.CAR_INDEX;
         APIParameter.page += 1;
 
         request(url, 'post', APIParameter)

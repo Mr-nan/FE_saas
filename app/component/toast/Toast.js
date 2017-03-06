@@ -97,7 +97,7 @@ class Toast extends Component {
                 onRequestClose={() => {}}
             >
                 {this.state.modal ? <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-                        <Image style={{width:100,height:100}} source={require('../../../images/setDataLoading.gif')}/>
+                        <Image style={{width:60,height:60}} source={require('../../../images/setDataLoading.gif')}/>
                     </View> : <View style={styles.taostModal}>
                         <View style={[styles.toast]}>
                             <Text style={styles.text}>{this.props.msg}</Text>

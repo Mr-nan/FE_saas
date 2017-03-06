@@ -30,11 +30,11 @@ const {width, height} = Dimensions.get('window');
 import BaseComponet from '../component/BaseComponent';
 import * as Urls from '../constant/appUrls';
 import {request} from '../utils/RequestUtil';
-import  LoadMoreFooter from '../component/LoadMoreFooter';
 import CarInfoScene from '../carSource/CarInfoScene';
 import  StorageUtil from '../utils/StorageUtil';
 import * as storageKeyNames from '../constant/storageKeyNames';
 import WebScene from './WebScene';
+import ContractInfoScene from '../finance/lend/ContractInfoScene';
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 let allList = [];
 let allData = {};
@@ -280,6 +280,8 @@ export default class HomeScene extends BaseComponet {
                     </View>
                     <TouchableOpacity style={{marginRight: Pixel.getPixel(20)}} onPress={()=> {
                                    this.props.jumpScene('carpage');
+                                   {/*this.props.callBack({name:'ContractInfoScene',component:ContractInfoScene,*/}
+                                   {/*params:{showButton:true}});*/}
                     }}>
                         <View style={{
                             flexDirection: 'row',
@@ -320,7 +322,7 @@ export default class HomeScene extends BaseComponet {
                     style={{width: Pixel.getPixel(166), backgroundColor: '#ffffff', justifyContent: 'center'}}>
                     <Image style={cellSheet.imageStyle}
                            source={{uri: 'https://ss3.baidu.com/-fo3dSag_xI4khGko9WTAnF6hhy/baike/s%3D220/sign=7fa024e5f703738dda4a0b20831ab073/279759ee3d6d55fb745a2d636c224f4a21a4ddd3.jpg'}}/>
-                    <Text style={cellSheet.despritonStyle}>{'[' + movie.city_name + ']' + movie.model_name}</Text>
+                    <Text style={cellSheet.despritonStyle} numberOfLines={2}>{'[' + movie.city_name + ']' + movie.model_name}</Text>
                     <Text
                         style={cellSheet.timeStyle}>{this.dateReversal(movie.create_time + '000') + '/' + movie.mileage + '万公里'}</Text>
 
