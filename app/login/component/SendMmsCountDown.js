@@ -16,6 +16,8 @@ export default class sendMmsCountDown extends Component {
         }
         this.countTime = TIME;
         this.timer = null;
+        this.oldTime = 0;
+        this.newTime = 10000;
     }
 
     static propTypes = {
@@ -41,8 +43,13 @@ export default class sendMmsCountDown extends Component {
     }
 
     onSendPress = () => {
-        if (this.countTime == TIME) {
-            this.props.callBackSms();
+        //屏蔽用户连续点击
+        this.newTime = (new Date()).valueOf();
+        if ((this.newTime - this.oldTime) > 9000) {
+            this.oldTime = this.newTime;
+            if (this.countTime == TIME) {
+                this.props.callBackSms();
+            }
         }
     }
 
