@@ -89,6 +89,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
                     ref="verifycode"
                     textPlaceholder={'请输入验证码'}
                     viewStytle={styles.itemStyel}
+                    keyboardType={'phone-pad'}
                     leftIconUri={require('./../../images/login/virty.png')}
                     rightIconSource={this.state.verifyCodeUrl ? this.state.verifyCodeUrl : null}
                     rightIconClick={this.Verifycode}
@@ -97,6 +98,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
                 <LoginInputText
                     ref="smscode"
                     textPlaceholder={'请输入短信验证码'}
+                    keyboardType={'phone-pad'}
                     viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
                     leftIconUri={require('./../../images/login/sms.png')}
                     rightIcon={false}
@@ -231,7 +233,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
                     this.props.showModal(false);
                     if (error.mjson.code == -300 || error.mjson.code == -500) {
                         this.props.showToast("登录失败");
-                    }  else if (error.mjson.code == 7040004) {
+                    } else if (error.mjson.code == 7040004) {
                         this.Verifycode();
                         this.props.showToast(error.mjson.msg + "");
                     } else {
