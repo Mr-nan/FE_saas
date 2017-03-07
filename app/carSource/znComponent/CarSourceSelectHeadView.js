@@ -83,7 +83,7 @@ export class CarSourceSelectHeadView extends Component{
 
                 }}>
                     <Image style={{marginLeft:10}} source={this.state.isCheckRecommend ? (require('../../../images/carSourceImages/checkIcone.png')):(require('../../../images/carSourceImages/checkIcone_nil.png'))}/>
-                    <Text style={styles.unitsText}>推荐</Text>
+                    <Text style={styles.unitsText}>意向</Text>
                 </TouchableOpacity>
             </Image>
         )

@@ -2,12 +2,12 @@
 /**
  * 开发地址
  */
-export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
  */
-// export const BASEURL = 'http://api-gateway.test.dycd.com/';
+export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 版本号1
@@ -167,6 +167,13 @@ export const GETPLANINFO = 'api/v2/Repayment/getPlanInfo';
  * 获取还款详情
  **/
 export const REPAYMENT_GETINFO = 'api/v2/Repayment/getInfo';
+
+/**
+ * from @zhaojian
+ *
+ * 申请提前还款
+ **/
+export const APPLYREPAYMENT = 'api/v1/Repayment/applyRepayment';
 
 /**
  * from @zhaojian
