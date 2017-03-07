@@ -55,7 +55,6 @@ export default class LoginScene extends BaseComponent {
     initFinish = () => {
         StorageUtil.mGetItem(StorageKeyNames.USERNAME, (data) => {
             if (data.code == 1 && data.result != null) {
-                alert(data.result)
                 userNames = data.result.split(",");
             }
         })
@@ -346,7 +345,11 @@ export default class LoginScene extends BaseComponent {
                                 } else {
                                     let names;
                                     if (data.result.indexOf(userName + ",") == -1) {
-                                        names = data.result.replace(userName, "")
+                                        if (data.result.indexOf("," + userName) == -1) {
+                                            names = data.result.replace(userName, "")
+                                        } else {
+                                            names = data.result.replace("," + userName, "")
+                                        }
                                     } else {
                                         names = data.result.replace(userName + ",", "")
                                     }
