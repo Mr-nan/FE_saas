@@ -55,6 +55,7 @@ export default class LoginScene extends BaseComponent {
     initFinish = () => {
         StorageUtil.mGetItem(StorageKeyNames.USERNAME, (data) => {
             if (data.code == 1 && data.result != null) {
+                alert(data.result)
                 userNames = data.result.split(",");
             }
         })
@@ -280,13 +281,13 @@ export default class LoginScene extends BaseComponent {
 
     //获取图形验证码
     Verifycode = () => {
-        this.refs.loginVerifycode.lodingStatus(true);
+        // this.refs.loginVerifycode.lodingStatus(true);
         let maps = {
             device_code: "dycd_dms_manage_android",
         };
         request(AppUrls.IDENTIFYING, 'Post', maps)
             .then((response) => {
-                this.refs.loginVerifycode.lodingStatus(false);
+                // this.refs.loginVerifycode.lodingStatus(false);
                 imgSrc = response.mjson.data.img_src;
                 imgSid = response.mjson.data.img_sid;
 
@@ -294,7 +295,7 @@ export default class LoginScene extends BaseComponent {
                     verifyCode: {uri: imgSrc},
                 });
             }, (error) => {
-                this.refs.loginVerifycode.lodingStatus(false);
+                // this.refs.loginVerifycode.lodingStatus(false);
                 if (error.mjson.code == -300 || error.mjson.code == -500) {
                     this.props.showToast("获取失败");
                 } else {
@@ -339,11 +340,12 @@ export default class LoginScene extends BaseComponent {
                             if (data.code == 1) {
                                 if (data.result == null || data.result == "") {
                                     StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName);
-                                } else if (data.result.indexOf(userName) < 0) {
+                                } else if (data.result.indexOf(userName) == -1) {
                                     StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName + "," + data.result);
+                                } else if (data.result == userName) {
                                 } else {
                                     let names;
-                                    if (data.result.indexOf(userName + ",") < 0) {
+                                    if (data.result.indexOf(userName + ",") == -1) {
                                         names = data.result.replace(userName, "")
                                     } else {
                                         names = data.result.replace(userName + ",", "")
