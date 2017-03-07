@@ -136,7 +136,7 @@ export default class ModelSelect extends PureComponent {
                                 showHint:false
                             });
                             this.modelData = response.mjson.data;
-                            this.vinModal.refresh();
+                            this.vinModal.refresh(this.modelData);
                             this.vinModal.openModal();
                         }
                     }else {
