@@ -71,8 +71,6 @@ export default class EditCarScene extends BaseComponent {
                         let rdb = response.mjson.data;
                         this.shop_id = rdb.show_shop_id;
                         this.carVin = rdb.vin;
-                        console.log('==========>>>>');
-                        console.log(rdb.imgs);
                         SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
                             [this.carVin],
                             (data) => {
@@ -88,10 +86,22 @@ export default class EditCarScene extends BaseComponent {
                                         let rg = '2010-06-01';
                                         if(this.isEmpty(rdb.manufacture) === false) mf = this.dateReversal(rdb.manufacture);
                                         if(this.isEmpty(rdb.init_reg) === false) rg = this.dateReversal(rdb.manufacture);
+                                        let pictures = '';
+                                        if(rdb.imgs != 'undefined' && rdb.imgs != null){
+                                            let ps = [];
+                                            rdb.imgs.map((p)=>{
+                                                ps.push({
+                                                    name:p.name,
+                                                    file_id:p.file_id,
+                                                    url:p.url
+                                                });
+                                            });
+                                            pictures = JSON.stringify(ps);
+                                        }
                                         SQLite.changeData('INSERT INTO publishCar (vin,model,pictures,v_type,manufacture,init_reg,' +
                                             'mileage,plate_number,emission,label,nature_use,car_color,trim_color,' +
                                             'transfer_number,dealer_price,describe) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-                                            [this.carVin, JSON.stringify(modelInfo), JSON.stringify(rdb.imgs),rdb.v_type+'', mf, rg, rdb.mileage,
+                                            [this.carVin, JSON.stringify(modelInfo), pictures,rdb.v_type+'', mf, rg, rdb.mileage,
                                                 rdb.plate_number, rdb.emission_standards, JSON.stringify(rdb.label), rdb.nature_use, rdb.car_color, rdb.trim_color,
                                                 rdb.transfer_times, rdb.dealer_price, rdb.describe]);
                                         SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
@@ -191,23 +201,19 @@ export default class EditCarScene extends BaseComponent {
                         let rd = data.result.rows.item(0);
 
                         if(this.isEmpty(rd.model) === true){
-                            this._closeLoading();
                             this._showHint('请选择车型信息');
                             return;
                         }
 
                         if(this.isEmpty(rd.pictures) === true){
-                            this._closeLoading();
                             this._showHint('请拍摄车辆照片');
                             return;
                         }
-                        if(this.isEmpty(rd.mileage) === true){
-                            this._closeLoading();
+                        if(rd.v_type === '1' && this.isEmpty(rd.mileage) === false && rd.mileage === '0.00'){
                             this._showHint('请填写车辆里程');
                             return;
                         }
                         if(this.isEmpty(rd.manufacture) === true){
-                            this._closeLoading();
                             this._showHint('请选择车辆出厂日期');
                             return;
                         }
@@ -231,7 +237,7 @@ export default class EditCarScene extends BaseComponent {
                             label: rd.label,
                             nature_use: rd.nature_use,
                             plate_number: rd.plate_number,
-                            transfer_times: rd.transfer_times
+                            transfer_times: rd.transfer_number
                         };
                         if (!this.fromNew) {
                             params['id'] = this.carId;
@@ -265,14 +271,25 @@ export default class EditCarScene extends BaseComponent {
                                     }
                                 },
                                 (error) => {
-                                    this._closeLoading();
-                                    if(IS_ANDROID === true){
-                                        this._showHint(JSON.stringify(error));
-                                    }else {
-                                        this.timer = setTimeout(
-                                            () => { this._showHint(JSON.stringify(error)); },
-                                            500
-                                        );
+                                    this.props.closeLoading();
+                                    if(error.mycode === -300 || error.mycode === -500){
+                                        if(IS_ANDROID === true){
+                                            this.props.showHint('网络请求失败');
+                                        }else {
+                                            this.timer = setTimeout(
+                                                () => { this.props.showHint('网络请求失败'); },
+                                                500
+                                            );
+                                        }
+                                    }else{
+                                        if(IS_ANDROID === true){
+                                            this.props.showHint(error.mjson.msg);
+                                        }else {
+                                            this.timer = setTimeout(
+                                                () => { this.props.showHint(error.mjson.msg); },
+                                                500
+                                            );
+                                        }
                                     }
                                 });
                     } else {

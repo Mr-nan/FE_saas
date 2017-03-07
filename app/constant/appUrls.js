@@ -273,6 +273,13 @@ export const DO_EXTENSION = 'api/v1/account/do_extension';
 /**
  * from @huangning
  *
+ * 申请展期-生成合同
+ **/
+export const DO_EXTENSIONPC = 'api/v1/account/do_extension';
+
+/**
+ * from @huangning
+ *
  * 申请展期
  **/
 export const APPLY_EXTENSION_CARLIST = 'api/v1/account/apply_extension_carlist';

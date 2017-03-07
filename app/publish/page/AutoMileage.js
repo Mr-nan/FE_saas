@@ -139,23 +139,19 @@ export default class AutoMileage extends Component {
                     if (data.code === 1) {
                         let rd = data.result.rows.item(0);
                         if(this.isEmpty(rd.model) === true){
-                            this.props.closeLoading();
                             this.props.showHint('请选择车型信息');
                             return;
                         }
 
                         if(this.isEmpty(rd.pictures) === true){
-                            this.props.closeLoading();
                             this.props.showHint('请拍摄车辆照片');
                             return;
                         }
-                        if(this.isEmpty(rd.mileage) === true){
-                            this.props.closeLoading();
+                        if(rd.v_type === '1' && this.isEmpty(rd.mileage) === false && rd.mileage === '0.00'){
                             this.props.showHint('请填写车辆里程');
                             return;
                         }
                         if(this.isEmpty(rd.manufacture) === true){
-                            this.props.closeLoading();
                             this.props.showHint('请选择车辆出厂日期');
                             return;
                         }
@@ -189,8 +185,11 @@ export default class AutoMileage extends Component {
                                                 500
                                             );
                                         }
-                                    }else{
-                                        this.props.closeLoading();
+                                    }
+                                },
+                                (error) => {
+                                    this.props.closeLoading();
+                                    if(error.mycode === -300 || error.mycode === -500){
                                         if(IS_ANDROID === true){
                                             this.props.showHint('网络请求失败');
                                         }else {
@@ -199,17 +198,15 @@ export default class AutoMileage extends Component {
                                                 500
                                             );
                                         }
-                                    }
-                                },
-                                (error) => {
-                                    this.props.closeLoading();
-                                    if(IS_ANDROID === true){
-                                        this.props.showHint(JSON.stringify(error));
-                                    }else {
-                                        this.timer = setTimeout(
-                                            () => { this.props.showHint(JSON.stringify(error)); },
-                                            500
-                                        );
+                                    }else{
+                                        if(IS_ANDROID === true){
+                                            this.props.showHint(error.mjson.msg);
+                                        }else {
+                                            this.timer = setTimeout(
+                                                () => { this.props.showHint(error.mjson.msg); },
+                                                500
+                                            );
+                                        }
                                     }
                                 });
                     } else {

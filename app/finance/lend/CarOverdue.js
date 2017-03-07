@@ -26,7 +26,6 @@ import {request} from '../../utils/RequestUtil'
 
 var Pixel = new PixelUtil();
 
-let map = new Map();
 export  default class CarOverdue extends BaseComponent {
 
     constructor(props) {
@@ -37,6 +36,7 @@ export  default class CarOverdue extends BaseComponent {
             renderPlaceholderOnly: 'blank',
         }
         this.data = [];
+        this.map = new Map();
     }
 
     initFinish = () => {
@@ -100,10 +100,15 @@ export  default class CarOverdue extends BaseComponent {
     renderRow = (rowData, sindex, rowID) => {
         return (
             <TouchableOpacity onPress={() => {
-                if (typeof(map.get(rowData.auto_id)) == 'undefined') {
-                    map.set(rowData.auto_id, rowData);
+                if (typeof(this.map.get(rowData.auto_id)) == 'undefined') {
+                    if ((rowData.status_str + "").indexOf('已申请') > -1) {
+                        this.props.showToast("已申请展期");
+                    } else {
+                        this.map.set(rowData.auto_id, rowData);
+                        this.doExtensionPc(rowData.loan_number);
+                    }
                 } else {
-                    map.delete(rowData.auto_id);
+                    this.map.delete(rowData.auto_id);
                 }
                 this.setState({
                     dataSource: this.ds.cloneWithRows(this.data),
@@ -115,7 +120,7 @@ export  default class CarOverdue extends BaseComponent {
                             <Text numberOfLines={2} style={styles.carType}>{rowData.model_name} </Text>
                             <Text style={styles.carFramNum}>{"车牌号:" + rowData.model_name}</Text>
                         </View>
-                        {typeof(map.get(rowData.auto_id)) == 'undefined' ?
+                        {typeof(this.map.get(rowData.auto_id)) == 'undefined' ?
                             <Image style={styles.orderState}
                                    source={require('../../../images/financeImages/unselected.png')}/>
                             :
@@ -206,10 +211,10 @@ export  default class CarOverdue extends BaseComponent {
 
     doExtension = () => {
         let auto_ids = "";
-        if (map.size < 1) {
-            alert("请选择车辆")
+        if (this.map.size < 1) {
+            this.props.showToast("请选择车辆");
         } else {
-            for (let key of map.keys()) {
+            for (let key of this.map.keys()) {
                 if (auto_ids == '') {
                     auto_ids = key;
                 } else {
@@ -221,10 +226,10 @@ export  default class CarOverdue extends BaseComponent {
                 auto_ids: auto_ids,
                 loan_code: "" + this.props.loan_code,
             };
-            alert(auto_ids)
             request(AppUrls.FINANCE, 'Post', maps)
                 .then((response) => {
-                        this.props.showToast("请求成功");
+                        this.props.showToast("展期申请成功");
+                        this.backPage();
                     }, (error) => {
                         if (error.mjson.code == -300 || error.mjson.code == -500) {
                             this.props.showToast("网络请求失败");
@@ -234,6 +239,19 @@ export  default class CarOverdue extends BaseComponent {
                     }
                 )
         }
+    }
+
+    doExtensionPc = (loan_number) => {
+        let maps = {
+            api: AppUrls.DO_EXTENSIONPC,
+            loan_number: loan_number,
+            loan_code: "" + this.props.loan_code,
+        };
+        request(AppUrls.FINANCE, 'Post', maps)
+            .then((response) => {
+                }, (error) => {
+                }
+            )
     }
 }
 
