@@ -51,7 +51,8 @@ const verificationtips={
 }
 
 const imageSouce =require('../../../images/financeImages/dateIcon.png')
-
+import PixelUtil from '../../utils/PixelUtil';
+const Pixel = new PixelUtil();
 export default class KurongSence extends BaseComponent {
     state = {
 
@@ -80,7 +81,7 @@ export default class KurongSence extends BaseComponent {
 
                     let tempjson =response.mjson.data
 
-                        ShowData.companyName='北京大会上白有限公司',
+                        ShowData.companyName=this.props.customerName,
                         ShowData.lendType=tempjson.product_type,
                         ShowData.maxMoney=changeToMillion(tempjson.min_loanmny)+'-'+changeToMillion(tempjson.max_loanmny)+'万',
                         ShowData.rate=tempjson.rate,
@@ -150,7 +151,7 @@ export default class KurongSence extends BaseComponent {
         if(this.state.renderPlaceholderOnly!==STATECODE.loadSuccess){
             return( <View style={styles.container}>
                 {this.loadView()}
-                <AllNavigatior title='单车借款' backIconClick={()=>{this.backPage()}}/>
+                <AllNavigatior title='库融借款' backIconClick={()=>{this.backPage()}}/>
 
             </View>);
         }
@@ -178,7 +179,7 @@ export default class KurongSence extends BaseComponent {
                                         let  placeHodel =tempString==='0'?this.dateBlob[0]:tempString
                                         let  num = Number.parseInt(placeHodel)
                                         PostData.loan_life=num
-                                        this.dateLimit.setPlaceHodel(placeHodel)
+                                        this.dateLimit.changeText(placeHodel)
 
                                     },
                                 });
@@ -225,7 +226,7 @@ const styles = StyleSheet.create({
     },
     scroller: {
 
-        marginTop: 54,
+        marginTop: Pixel.getTitlePixel(64),
         backgroundColor: PAGECOLOR.COLORA3,
 
         marginBottom:adapeSize(60)

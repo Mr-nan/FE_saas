@@ -111,8 +111,7 @@ export default class AutoTransfer extends Component {
                         renderRihtFootView={this._renderRihtFootView} />
                     <Image style={styles.imgContainer} source={transferNum}>
                         <View style={styles.inputContainer}>
-                            <View style={styles.pickIOSContainer}>
-                                <View>
+                            <View style={IS_ANDROID ? styles.pickAndroidContainer: styles.pickIOSContainer}>
                                 <Picker style={[IS_ANDROID && styles.fillSpace]}
                                          selectedValue={this.state.selected1}
                                          itemStyle={{color:"#FFFFFF", fontSize:16,fontWeight:'bold'}}
@@ -122,7 +121,6 @@ export default class AutoTransfer extends Component {
                                     ))}
                                 </Picker>
                             </View>
-                                </View>
                             <View style={styles.timeContainer}>
                                 <Text style={styles.fontTime}>次</Text>
                             </View>
@@ -154,7 +152,8 @@ const styles = StyleSheet.create({
     inputContainer:{
         flexDirection:'row',
         width:Pixel.getPixel(70),
-        height:Pixel.getPixel(40)
+        height:Pixel.getPixel(40),
+
     },
     pickAndroidContainer:{
         flex:1,

@@ -13,7 +13,6 @@ import {
 
 } from 'react-native';
 
-// init_coty 车龄
 import *as fontAndColor from '../constant/fontAndColor';
 import ImagePageView from 'react-native-viewpager';
 import BaseComponent from '../component/BaseComponent';
@@ -26,6 +25,9 @@ import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 
 var ScreenWidth = Dimensions.get('window').width;
+var ScreenHeight = Dimensions.get('window').height;
+
+
 
 const carParameterViewColor = [
 
@@ -88,12 +90,10 @@ export default class CarInfoScene extends BaseComponent {
         super(props);
         // 初始状态
         this.state = {
-
             imageArray:  new ImagePageView.DataSource({pageHasChanged: (r1, r2) => r1 !== r2}),
             renderPlaceholderOnly: 'blank',
             carData:{imgs:[]},
             currentImageIndex:1,
-
         };
     }
 
@@ -104,7 +104,7 @@ export default class CarInfoScene extends BaseComponent {
 
     loadData=()=> {
 
-        let url = AppUrls.BASEURL + 'v1/car/detail';
+        let url = AppUrls.CAR_DETAIL;
         request(url, 'post', {
 
             id: this.props.carID,
@@ -114,16 +114,16 @@ export default class CarInfoScene extends BaseComponent {
             let carData = response.mjson.data;
             carData.carIconsContentData=[
                 carData.manufacture!=''? this.dateReversal(carData.manufacture+'000'):'',
-                carData.manufacture!=''? this.dateReversal(carData.init_reg+'000'):'',
+                carData.init_reg!=''? this.dateReversal(carData.init_reg+'000'):'',
                 carData.mileage+'万公里',
                 carData.transfer_times+'次',
                 carData.nature_str,
-                carData.car_color+'/'+carData.trim_color,
+                carData.car_color.split("|")[0]+'/'+carData.trim_color.split("|")[0],
             ];
 
             if(carData.imgs.length<=0){
 
-                carData.imgs=[{ url:'https://images.unsplash.com/photo-1441260038675-7329ab4cc264?h=1024'}];
+                carData.imgs=[ {require:require('../../images/carSourceImages/car_null_img.png')}];
             }
 
             this.setState({
@@ -164,8 +164,13 @@ export default class CarInfoScene extends BaseComponent {
     // 浏览图片
     showPhotoView=()=>{
 
-        carImageArray=[];
+        if(typeof this.state.carData.imgs[0].url == 'undefined')
+        {
+            this.props.showToast('没有车辆图片');
+            return;
+        }
 
+        carImageArray=[];
        this.state.carData.imgs.map((data,index)=>{
 
            carImageArray.push(data.url);
@@ -240,11 +245,22 @@ export default class CarInfoScene extends BaseComponent {
         );
     };
 
+
+    setNavitgationBackgroundColor=(event)=>{
+
+        if(event.nativeEvent.contentOffset.y>20){
+
+            this.refs.navtigation.setNavigationBackgroindColor(fontAndColor.COLORB0);
+        }else{
+            this.refs.navtigation.setNavigationBackgroindColor('rgba(0,0,0,0)');
+        }
+    }
+
     renderImagePage=(data,pageID)=>{
 
         return(
             <TouchableOpacity onPress={()=>{this.showPhotoView()}}>
-                <Image source={{uri:data.url}} style={styles.carImage}/>
+                <Image source={typeof data.url =='undefined'?data.require:{uri:data.url+'?x-oss-process=image/resize,w_'+Math.ceil(ScreenWidth)+',h_'+250}} style={styles.carImage}/>
             </TouchableOpacity>
 
         );
@@ -266,9 +282,10 @@ export default class CarInfoScene extends BaseComponent {
         return (
             <View ref="carInfoScene" style={{flex: 1, backgroundColor: 'white'}}>
 
-                <ScrollView style={{marginBottom: Pixel.getPixel(44)}} onMomentumScrollEnd={(e) => {
-                    console.log(e.nativeEvent.contentOffset.y)
-                }}>
+                <ScrollView style={{marginBottom: Pixel.getPixel(44)}}
+                            scrollEventThrottle={200}
+                            onScroll={this.setNavitgationBackgroundColor}
+                >
                     <ImagePageView
                         dataSource={this.state.imageArray}    //数据源（必须）
                         renderPage={this.renderImagePage}     //page页面渲染方法（必须）
@@ -295,14 +312,18 @@ export default class CarInfoScene extends BaseComponent {
                     <View style={styles.contentContainer}>
                         <View style={styles.contentView}>
                             <Text style={styles.titleText}>{carData.model_name+carData.series_name}</Text>
-                            <View style={styles.titleFootView}>
+                            {
+                                carData.dealer_price>0 &&
+                                <View style={styles.titleFootView}>
                                 <View style={styles.browseView}>
-                                    {/*<Image style={{marginRight: 5}}*/}
-                                           {/*source={require('../../images/carSourceImages/browse.png')}/>*/}
-                                    {/*<Text style={styles.browseText}>1024次浏览</Text>*/}
+                                {/*<Image style={{marginRight: 5}}*/}
+                                {/*source={require('../../images/carSourceImages/browse.png')}/>*/}
+                                {/*<Text style={styles.browseText}>1024次浏览</Text>*/}
                                 </View>
                                 <Text style={styles.priceText}>{carData.dealer_price>0?(carData.dealer_price +'万'):''}</Text>
-                            </View>
+                                </View>
+                            }
+
                         </View>
                     </View>
                     {
@@ -319,7 +340,7 @@ export default class CarInfoScene extends BaseComponent {
                                                             <View
                                                                 style={[styles.carParameterItem, {backgroundColor: carParameterViewColor[index % 3]}]}
                                                                 key={index}>
-                                                                <Text style={[styles.carParameterText, {color: carParameterTextColor[index % 3]}]}>{data.value}</Text>
+                                                                <Text style={[styles.carParameterText, {color: carParameterTextColor[index % 3]}]}>{data.name}</Text>
                                                             </View>)
                                                     })
                                                 }
@@ -337,8 +358,8 @@ export default class CarInfoScene extends BaseComponent {
                                         <View>
                                             {
                                                 carData.city_name!==''&&(<View style={styles.carAddressSubView}>
-                                                    <Text style={styles.carAddressTitleText}>商户所在地: </Text>
-                                                    <Text style={styles.carAddressSubTitleText}>{carData.city_name}</Text>
+                                                    <Text style={styles.carAddressTitleText}>所在地: </Text>
+                                                    <Text style={styles.carAddressSubTitleText}>{carData.provice_name+carData.city_name}</Text>
                                                 </View>)
                                             }
                                         </View>
@@ -346,7 +367,7 @@ export default class CarInfoScene extends BaseComponent {
                                             {
                                                 carData.plate_number!==''&& (<View style={styles.carAddressSubView}>
                                                     <Text style={styles.carAddressTitleText}>挂牌地: </Text>
-                                                    <Text style={styles.carAddressSubTitleText}>{carData.plate_number}</Text>
+                                                    <Text style={styles.carAddressSubTitleText}>{carData.plate_number.substring(0,2)}</Text>
                                                 </View>)
                                             }
                                         </View>
@@ -362,7 +383,6 @@ export default class CarInfoScene extends BaseComponent {
                         <View style={styles.carIconsView}>
                             {
                                 carIconsData.map((data, index) => {
-
                                     return (
                                         <CarIconView imageData={data.image} imageHighData={data.imageHigh}
                                                      content={carData.carIconsContentData&&carData.carIconsContentData[index]} title={data.title}
@@ -375,7 +395,7 @@ export default class CarInfoScene extends BaseComponent {
                 </ScrollView>
                 <TouchableOpacity style={styles.callView} onPress={this.callClick}>
                     <View style={{alignItems:'center',justifyContent:'center',width:ScreenWidth*0.5}}>
-                    <Text style={styles.callText}>{'车源编号:'+carData.id}</Text>
+                    <Text style={styles.callText}>{'车源编号:'+carData.serial_num}</Text>
                     </View>
                     <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center', borderLeftWidth: StyleSheet.hairlineWidth,
                         borderLeftColor:'white',width:ScreenWidth*0.5}}>
@@ -384,6 +404,7 @@ export default class CarInfoScene extends BaseComponent {
                      </View>
                 </TouchableOpacity>
                 <NavigationView
+                    ref="navtigation"
                     wrapStyle={{backgroundColor:'rgba(0,0,0,0)'}}
                     title="车源详情"
                     backIconClick={this.backIconClick}
@@ -568,21 +589,12 @@ class NavigationRightView extends Component{
 
 const styles = StyleSheet.create({
 
-    navigation: {
-
-        height: Pixel.getPixel(64),
-        backgroundColor: fontAndColor.COLORB0,
-        left: 0,
-        right: 0,
-        position: 'absolute',
-
-    },
 
     carImage: {
 
-        backgroundColor: fontAndColor.COLORB0,
         height: Pixel.getPixel(250),
         width:ScreenWidth,
+        resizeMode: 'stretch'
 
     },
     contentContainer: {

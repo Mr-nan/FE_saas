@@ -38,6 +38,7 @@ export default class AutoMileage extends Component {
     constructor(props) {
         super(props);
         this.shop_id = this.props.shopID;
+        this.carData = this.props.carData;
         this.initValue = [0, 0, 0, 0, 0];
         let mileage = this.props.carData.mileage;
         if (this.isEmpty(mileage) === false) {
@@ -81,7 +82,7 @@ export default class AutoMileage extends Component {
     }
 
     componentWillUnmount() {
-
+        this.timer && clearTimeout(this.timer);
     }
 
     onPickerSelect = (key, value) => {
@@ -117,6 +118,7 @@ export default class AutoMileage extends Component {
 
     componentWillReceiveProps(nextProps) {
         this.shop_id = nextProps.shopID;
+        this.carData = nextProps.carData;
     }
 
     _renderPlaceholderView = () => {
@@ -129,36 +131,35 @@ export default class AutoMileage extends Component {
 
     //发布
     _publish = () => {
-
+        console.log(this.carData);
         try{
-            this.props.showLoading();
             SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
-                [this.props.carData.vin],
+                [this.carData.vin],
                 (data) => {
                     if (data.code === 1) {
                         let rd = data.result.rows.item(0);
-
                         if(this.isEmpty(rd.model) === true){
-                            this.props.showHint('请选择车型信息');
                             this.props.closeLoading();
+                            this.props.showHint('请选择车型信息');
                             return;
                         }
 
                         if(this.isEmpty(rd.pictures) === true){
-                            this.props.showHint('请拍摄车辆照片');
                             this.props.closeLoading();
+                            this.props.showHint('请拍摄车辆照片');
                             return;
                         }
                         if(this.isEmpty(rd.mileage) === true){
-                            this.props.showHint('请填写车辆历程');
                             this.props.closeLoading();
+                            this.props.showHint('请填写车辆里程');
                             return;
                         }
                         if(this.isEmpty(rd.manufacture) === true){
-                            this.props.showHint('请选择车辆出厂日期');
                             this.props.closeLoading();
+                            this.props.showHint('请选择车辆出厂日期');
                             return;
                         }
+                        this.props.showLoading();
                         let modelInfo = JSON.parse(rd.model);
                         let params = {
                             vin: rd.vin,
@@ -180,24 +181,59 @@ export default class AutoMileage extends Component {
                                             'DELETE From publishCar WHERE vin = ?',
                                             [this.props.carData.vin]);
                                         this.props.closeLoading();
-                                        this.successModal.openModal();
+                                        if(IS_ANDROID === true){
+                                            this.successModal.openModal();
+                                        }else{
+                                            this.timer = setTimeout(
+                                                () => { this.successModal.openModal(); },
+                                                500
+                                            );
+                                        }
                                     }else{
                                         this.props.closeLoading();
-                                        this.props.showHint('网络请求失败');
+                                        if(IS_ANDROID === true){
+                                            this.props.showHint('网络请求失败');
+                                        }else {
+                                            this.timer = setTimeout(
+                                                () => { this.props.showHint('网络请求失败'); },
+                                                500
+                                            );
+                                        }
                                     }
                                 },
                                 (error) => {
                                     this.props.closeLoading();
-                                    this.props.showHint(error);
+                                    if(IS_ANDROID === true){
+                                        this.props.showHint(JSON.stringify(error));
+                                    }else {
+                                        this.timer = setTimeout(
+                                            () => { this.props.showHint(JSON.stringify(error)); },
+                                            500
+                                        );
+                                    }
                                 });
                     } else {
                         this.props.closeLoading();
-                        this.props.showHint(data.error);
+                        if(IS_ANDROID){
+                            this.props.showHint(JSON.stringify(data.error));
+                        }else {
+                            this.timer = setTimeout(
+                                () => { this.props.showHint(JSON.stringify(data.error)); },
+                                500
+                            );
+                        }
                     }
                 });
         }catch (error){
             this.props.closeLoading();
-            this.props.showHint(data.error);
+            if(IS_ANDROID === true){
+                this.props.showHint(JSON.stringify(error));
+            }else {
+                this.timer = setTimeout(
+                    () => { this.props.showHint(JSON.stringify(error));},
+                    500
+                );
+            }
         }
 
     };

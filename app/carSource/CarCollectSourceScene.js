@@ -20,7 +20,7 @@ import * as fontAndColor from '../constant/fontAndColor';
 import PixelUtil from '../utils/PixelUtil';
 let Pixel = new PixelUtil();
 let page = 1;
-let allPage = 1;
+let allPage = 0;
 import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
 import CarInfoScene from './CarInfoScene';
@@ -44,10 +44,12 @@ export default class CarCollectSourceScene extends BaceComponent {
         };
         request(Urls.FAVORITES, 'Post', maps)
             .then((response) => {
-                    if (page == 1 && response.mjson.data.length <= 0) {
+
+                    allPage = response.mjson.data.pageCount;
+                    if (page == 1 && response.mjson.data.list.length <= 0) {
                         this.setState({renderPlaceholderOnly: 'null', isRefreshing: false});
                     } else {
-                        allSouce.push(...response.mjson.data);
+                        allSouce.push(...response.mjson.data.list);
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
                             carData: ds.cloneWithRows(allSouce),
@@ -72,10 +74,37 @@ export default class CarCollectSourceScene extends BaceComponent {
         };
     }
 
-    toEnd = () => {
-        // page++;
-        // this.getApplyData();
+    toEnd =() => {
+
+        if(!this.state.isRefreshing && allSouce.length>0 && allPage!=page){
+
+            page++;
+            this.getApplyData();
+        }
+
     };
+
+    getApplyData=()=>{
+
+        let maps = {
+            page: page,
+            rows: 10
+        };
+        request(Urls.FAVORITES, 'Post', maps)
+            .then((response) => {
+                    if (response.mjson.data.list.length>0)
+                    {
+                        allSouce.push(...response.mjson.data.list);
+                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                        this.setState({
+                            carData: ds.cloneWithRows(allSouce),
+                        });
+                    }
+                },
+                (error) => {
+                    this.props.showToast(error.msg);
+                });
+    }
 
     renderListFooter = () => {
 

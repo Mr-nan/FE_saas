@@ -97,25 +97,26 @@ export default class AutoLabel extends Component {
                 }
                 if (this.isEmpty(this.label) === false) {
                     let sels = JSON.parse(this.label);
-                    for (let i = 0; i < sels.length; i++) {
-                        this.viewData.map((vd) => {
-                            if (vd.name === sels[i].name) vd.selected = true;
-                        });
+                    if(sels !== null){
+                        for (let i = 0; i < sels.length; i++) {
+                            this.viewData.map((vd) => {
+                                if (vd.name === sels[i].name) vd.selected = true;
+                            });
+                        }
                     }
                 }
-                this.interiorGrid.refresh(this.viewData);
+
                 this.props.closeLoading();
             },
             (error)=>{
                 this.props.closeLoading();
-                this.props.showHint(error);
+                this.props.showHint(JSON.stringify(error));
             }
         );
-
     }
 
-    componentWillUnmount() {
-
+    componentDidUpdate(){
+        this.interiorGrid.refresh(this.viewData);
     }
 
     _labelPress = (i) => {

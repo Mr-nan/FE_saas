@@ -24,6 +24,7 @@ import EditCarScene         from '../publish/EditCarScene'
 import MyCarCell     from './znComponent/MyCarCell';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import RepaymenyTabBar from '../finance/repayment/component/RepaymenyTabBar';
+import NewCarScene      from '../publish/NewCarScene';
 import * as fontAndColor from '../constant/fontAndColor';
 import * as AppUrls from "../constant/appUrls";
 import  {request}           from '../utils/RequestUtil';
@@ -93,7 +94,7 @@ export default class CarMySourceScene extends BaceComponent {
     carAction = (type, carID) => {
 
         this.props.showModal(true);
-        let url = AppUrls.BASEURL +'v1/car/status';
+        let url = AppUrls.CAR_STATUS;
         request(url,'post',{
 
             id: carID,
@@ -105,10 +106,12 @@ export default class CarMySourceScene extends BaceComponent {
             if(type==3){
 
                 this.refs.upperFrameView.refreshingData();
+                this.props.showToast('已成功下架');
 
             }else if(type==2){
 
                 this.refs.AuditView.refreshingData();
+                this.props.showToast('已成功上架');
 
             }
 
@@ -117,6 +120,29 @@ export default class CarMySourceScene extends BaceComponent {
             this.props.showModal(false);
             alert(error.msg);
         });
+    }
+
+    pushNewCarScene=()=>{
+
+        let navigatorParams = {
+
+            name: "NewCarScene",
+            component: NewCarScene,
+            params: {
+
+                fromNew: false,
+            }
+        };
+        this.toNextPage(navigatorParams);
+    }
+
+    renderRightFootView=()=>{
+
+        return(
+            <TouchableOpacity onPress={this.pushNewCarScene}>
+                <Text style={{color:"#FFFFFF", fontSize:fontAndColor.BUTTONFONT30}}>发布车源</Text>
+            </TouchableOpacity>
+        )
     }
 
     render() {
@@ -132,7 +158,7 @@ export default class CarMySourceScene extends BaceComponent {
                     <MyCarSourceAuditView  ref="AuditView"  carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper3"/>
 
                 </ScrollableTabView>
-                <NavigatorView title='我的车源' backIconClick={this.backPage}/>
+                <NavigatorView title='我的车源' backIconClick={this.backPage} renderRihtFootView={this.renderRightFootView}/>
             </View>)
 
     }
@@ -180,7 +206,7 @@ class MyCarSourceUpperFrameView extends BaceComponent {
     }
     loadData = () => {
 
-        let url = AppUrls.BASEURL + 'v1/user/car'
+        let url = AppUrls.CAR_USER_CAR;
         carUpperFramePage = 1;
         request(url, 'post', {
             car_status: '1',
@@ -226,7 +252,7 @@ class MyCarSourceUpperFrameView extends BaceComponent {
 
     loadMoreData = () => {
 
-        let url = AppUrls.BASEURL + 'v1/user/car'
+        let url = AppUrls.CAR_USER_CAR;
         carUpperFramePage += 1;
         request(url, 'post', {
             car_status: '1',
@@ -363,7 +389,7 @@ class MyCarSourceDropFrameView extends BaceComponent {
     }
     loadData = () => {
 
-        let url = AppUrls.BASEURL +'v1/user/car';
+        let url = AppUrls.CAR_USER_CAR;
         carDropFramePage = 1;
         request(url, 'post', {
             car_status: '2',
@@ -409,7 +435,7 @@ class MyCarSourceDropFrameView extends BaceComponent {
 
     loadMoreData = () => {
 
-        let url = AppUrls.BASEURL + 'v1/user/car'
+        let url = AppUrls.CAR_USER_CAR;
         carDropFramePage += 1;
         request(url, 'post', {
             car_status: '2',
@@ -546,7 +572,7 @@ class MyCarSourceAuditView extends BaceComponent {
     }
     loadData = () => {
 
-        let url = AppUrls.BASEURL + 'v1/car/preList'
+        let url = AppUrls.CAR_PERLIST;
         carAuditPage = 1;
         request(url, 'post', {
             page: carAuditPage,
@@ -589,7 +615,7 @@ class MyCarSourceAuditView extends BaceComponent {
 
     loadMoreData = () => {
 
-        let url = AppUrls.BASEURL + 'v1/car/preList'
+        let url = AppUrls.CAR_PERLIST;
         carAuditPage += 1;
         request(url, 'post', {
             page: carAuditPage,

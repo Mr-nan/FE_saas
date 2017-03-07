@@ -83,6 +83,9 @@ export default class FinanceSence extends BaseComponet {
                         if (loanList[0].is_done_credit == 0) {
                             this.setState({renderPlaceholderOnly: 'select'});
                         } else {
+                            this.setState({
+                                customerName:loanList[0].companyname
+                            });
                            this.setLoan();
                         }
                     }
@@ -95,11 +98,12 @@ export default class FinanceSence extends BaseComponet {
     setLoan = () => {
         let maps = {
             api: Urls.OPT_LOAN_SUBJECT,
-            merge_id: loanList[0].merge_id,
-            user_id: loanList[0].user_id,
+            opt_merge_id: loanList[0].merge_id,
+            opt_user_id: loanList[0].user_id,
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
+
                     this.getMnyData();
                 },
                 (error) => {
@@ -221,7 +225,6 @@ export default class FinanceSence extends BaseComponet {
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
                     renderHeader={this._renderHeader}
-                    bounces={false}
                     renderFooter={
                                     this.renderListFooter
                                 }

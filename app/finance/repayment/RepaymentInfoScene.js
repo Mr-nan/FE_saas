@@ -18,8 +18,7 @@ const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import * as fontAndColor from '../../constant/fontAndColor';
-let MovleData = require('./repaymentinfo.json');
-let movies = MovleData.retdata;
+let movies = {};
 import BaseComponent from '../../component/BaseComponent';
 import NavigationView from '../../component/AllNavigationView';
 import RepaymentInfoTopItem from './component/RepaymentInfoTopItem';
@@ -30,16 +29,20 @@ import AllBottomItem from './component/AllBottomItem';
 import MyButton from '../../component/MyButton';
 let moneyList = [];
 let nameList = [];
+import {request} from '../../utils/RequestUtil';
+import * as Urls from '../../constant/appUrls';
 export  default class PurchaseLoanStatusScene extends BaseComponent {
 
     constructor(props) {
         super(props);
         // 初始状态
         let mList = ['1', '2', '3', '4', '5', '6'];
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             source: ds.cloneWithRows(mList),
-            renderPlaceholderOnly: 'blank'
+            renderPlaceholderOnly: 'blank',
+            loan_day: '',
+            loan_dayStr: ''
         };
     }
 
@@ -49,20 +52,44 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
     }
 
     initFinish = () => {
-        moneyList.push({name: '贷款本金', data: movies.loan_mny_str});
-        moneyList.push({name: '计息天数', data: movies.loan_day});
-        moneyList.push({name: '综合费率', data: movies.loan_rebate_str});
-        moneyList.push({name: '利息总额', data: movies.interest_total});
-        moneyList.push({name: '已还利息', data: movies.interest});
-        moneyList.push({name: '贷款利息', data: movies.interest_other});
+        this.getData();
+    }
 
-        nameList.push({name: '渠道名称', data: movies.qvdaoname});
-        nameList.push({name: '还款账户', data: movies.bank_info.repaymentaccount});
-        nameList.push({name: '开户行', data: movies.bank_info.bank});
-        nameList.push({name: '开户支行', data: movies.bank_info.branch});
-        nameList.push({name: '还款账号', data: movies.bank_info.repaymentnumber});
-        nameList.push({name: '保证金', data: movies.bondmny});
-        this.setState({renderPlaceholderOnly: 'success'});
+    allRefresh = () => {
+        moneyList = [];
+        nameList = [];
+        this.setState({renderPlaceholderOnly: 'loading'});
+        this.getData();
+    }
+
+    getData = () => {
+        let maps = {
+            api: Urls.REPAYMENT_GETINFO,
+            loan_id: this.props.loan_id,
+            loan_number: this.props.loan_number,
+            type: this.props.type,
+        };
+        request(Urls.FINANCE, 'Post', maps)
+            .then((response) => {
+                    movies = response.mjson.data;
+                    moneyList.push({name: '贷款本金', data: movies.loan_mny_str});
+                    moneyList.push({name: '计息天数', data: movies.loan_day});
+                    moneyList.push({name: '综合费率', data: movies.loan_rebate_str});
+                    moneyList.push({name: '利息总额', data: movies.interest_total});
+                    moneyList.push({name: '已还利息', data: movies.interest});
+                    moneyList.push({name: '贷款利息', data: movies.interest_other});
+
+                    nameList.push({name: '渠道名称', data: movies.qvdaoname});
+                    nameList.push({name: '还款账户', data: movies.bank_info.repaymentaccount});
+                    nameList.push({name: '开户行', data: movies.bank_info.bank});
+                    nameList.push({name: '开户支行', data: movies.bank_info.branch});
+                    nameList.push({name: '还款账号', data: movies.bank_info.repaymentnumber});
+                    nameList.push({name: '保证金', data: movies.bondmny});
+                    this.setState({renderPlaceholderOnly: 'success', loan_day: movies.loan_day});
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error'});
+                });
     }
 
     buttonParams = {
@@ -70,7 +97,22 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
         parentStyle: styles.parentStyle,
         childStyle: styles.childStyle,
         opacity: 0.7,
-        content: '申请还款'
+        content: '申请还款',
+        mOnPress: () => {
+            let maps = {
+                api: Urls.APPLYREPAYMENT,
+                loan_number: this.props.loan_number,
+                use_time: this.state.loan_dayStr
+            };
+            request(Urls.FINANCE, 'Post', maps)
+                .then((response) => {
+                        this.props.showToast('申请成功');
+                        this.allRefresh();
+                    },
+                    (error) => {
+                        this.props.showToast('申请失败');
+                    });
+        }
     }
 
     render() {
@@ -88,10 +130,10 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
-                    bounces={false}
                     showsVerticalScrollIndicator={false}
                 />
-                <MyButton {...this.buttonParams}/>
+                {movies.paymen_status == '0' ? this.props.from == 'SingleRepaymentPage' ?
+                        <MyButton {...this.buttonParams}/> : <View/> : <View/>}
             </View>
         );
     }
@@ -99,11 +141,11 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
     _renderPlaceholderView() {
         return (
             <View style={{width: width, height: height,backgroundColor:fontAndColor.COLORA3,alignItems: 'center'}}>
+                {this.loadView()}
                 <NavigationView
                     title="还款详情"
                     backIconClick={this.backPage}
                 />
-                {this.loadView()}
             </View>
         );
     }
@@ -111,11 +153,30 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
     _renderRow = (movie, sectionId, rowId) => {
         if (rowId == 0) {
             return (
-                <RepaymentInfoTopItem />
+                <RepaymentInfoTopItem items={movies}/>
             )
         } else if (rowId == 1) {
             return (
-                <RepaymentInfoDateItem />
+                <RepaymentInfoDateItem callBack={(time)=>{
+                    let date = new Date(time);
+                    let seperator1 = "/";
+                    let month = date.getMonth() + 1;
+                    let strDate = date.getDate();
+                    if (month >= 1 && month <= 9) {
+                        month = "0" + month;
+                    }
+                    if (strDate >= 0 && strDate <= 9) {
+                        strDate = "0" + strDate;
+                    }
+                    let currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;
+                    let newList = ['1', '2', '3', '4', '5', '6'];
+                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                    this.setState({
+                        source: ds.cloneWithRows(newList),
+                        loan_day:Math.ceil((time/1000-parseFloat(movies.loan_time))/60/60/24),
+                        loan_dayStr:currentdate
+                    });
+                }}/>
             )
         } else if (rowId == 2) {
             return (
@@ -127,12 +188,14 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
             )
         } else if (rowId == 4) {
             return (
-                <RepaymentInfoBottomItem
-                    allMoney={movies.total_repayment}
-                    formula={'='+movies.loan_mny+'+'
+                <RepaymentInfoBottomItem ref="RepaymentInfoBottomItem"
+                                         allMoney={(parseFloat(movies.loan_mny)
+                                         +parseFloat(movies.loan_mny)*parseFloat(movies.loan_rebate)/100/360*
+                                         this.state.loan_day-parseFloat(movies.bondmny)).toFixed(2)}
+                                         formula={'='+movies.loan_mny+'+'
                                          +movies.loan_mny+'*'+movies.loan_rebate/100+'/360*'
-                                         +movies.loan_day+'-'+movies.bondmny}
-                    formulaStr={'应还总额=本金+本金*综合费率/360*计息天数-保证金'}
+                                         +this.state.loan_day+'-'+movies.bondmny}
+                                         formulaStr={'应还总额=本金+本金*综合费率/360*计息天数-保证金'}
                 />
             )
         } else {

@@ -4,7 +4,7 @@
 //车辆展期
 
 
-import React, {Component,PureComponent} from 'react';
+import React, {Component, PureComponent} from 'react';
 import {
     StyleSheet,
     Text,
@@ -12,205 +12,305 @@ import {
     Image,
     ListView,
     TouchableOpacity,
+    TouchableWithoutFeedback,
+    InteractionManager,
 } from 'react-native';
+import {CommenButton} from './component/ComponentBlob';
+import {adapeSize, fontadapeSize, width} from './component/MethodComponent';
+import NavigationBar from '../../component/NavigationBar';
+import * as FontAndColor from '../../constant/fontAndColor';
+import BaseComponent from '../../component/BaseComponent';
+import PixelUtil from '../../utils/PixelUtil';
+import *as AppUrls from '../../constant/appUrls';
+import {request} from '../../utils/RequestUtil'
 
+var Pixel = new PixelUtil();
 
-import {CommenButton} from './component/ComponentBlob'
-import {adapeSize,fontadapeSize,width} from './component/MethodComponent'
+let map = new Map();
+export  default class CarOverdue extends BaseComponent {
 
-class CarOverdueCell extends PureComponent{
+    constructor(props) {
+        super(props);
+        this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.state = {
+            dataSource: [],
+            renderPlaceholderOnly: 'blank',
+        }
+        this.data = [];
+    }
 
+    initFinish = () => {
+        this.getData();
+    }
 
-    render(){
-        return (
-            <TouchableOpacity style={styles.container}>
-                <View style={styles.containerTop}>
-                    <View style={styles.carInfoWarp}>
-                        <Text  numberOfLines={2} style={styles.carType}>奥迪A7(进口) 2014款 35 FSI 技术形 </Text>
-                        <Text style={styles.carFramNum}>车牌号:京2321312312312</Text>
-                    </View>
-                    <Image style={styles.orderState} source={require('../../../images/financeImages/dateIcon.png')}/>
-
+    render() {
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return (
+                <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
+                    <NavigationBar
+                        leftImageShow={true}
+                        leftTextShow={false}
+                        centerText={"申请展期"}
+                        rightText={""}
+                        leftImageCallBack={this.backPage}/>
+                    {this.loadView()}
                 </View>
-                <View style={styles.containerBottom}>
-                    <Text style={styles.orderNum}>20123123213~21312312312</Text>
-                    <Text style={styles.price}> 按时打算打算打打</Text>
+            )
+        }
+
+        return (
+            <View style={{backgroundColor: FontAndColor.COLORA3, flex: 1}}>
+                <NavigationBar
+                    leftImageShow={true}
+                    leftTextShow={false}
+                    centerText={"申请展期"}
+                    rightText={""}
+                    leftImageCallBack={this.backPage}/>
+
+                <ListView
+                    style={{flex: 1}}
+                    dataSource={this.state.dataSource}
+                    renderRow={this.renderRow}
+                    renderHeader={this.renderHeader}
+                    renderSeparator={this.renderSeparator}/>
+
+                <View style={styles.handelWarper}>
+                    <CommenButton
+                        textStyle={{color: 'white'}}
+                        buttonStyle={styles.buttonStyleLeft}
+                        onPress={() => {
+                            this.doExtension();
+                        }} title="申请展期"/>
+                    <CommenButton
+                        textStyle={{color: 'white'}}
+                        buttonStyle={styles.buttonStyleRight}
+                        onPress={() => {
+                            this.backPage();
+                        }} title="取消"/>
+                </View>
+            </View>
+        )
+    }
+
+    allRefresh = () => {
+        this.setState({renderPlaceholderOnly: 'loading'});
+        this.getData();
+    }
+
+    renderRow = (rowData, sindex, rowID) => {
+        return (
+            <TouchableOpacity onPress={() => {
+                if (typeof(map.get(rowData.auto_id)) == 'undefined') {
+                    map.set(rowData.auto_id, rowData);
+                } else {
+                    map.delete(rowData.auto_id);
+                }
+                this.setState({
+                    dataSource: this.ds.cloneWithRows(this.data),
+                });
+            }}>
+                <View style={styles.container}>
+                    <View style={styles.containerTop}>
+                        <View style={styles.carInfoWarp}>
+                            <Text numberOfLines={2} style={styles.carType}>{rowData.model_name} </Text>
+                            <Text style={styles.carFramNum}>{"车牌号:" + rowData.model_name}</Text>
+                        </View>
+                        {typeof(map.get(rowData.auto_id)) == 'undefined' ?
+                            <Image style={styles.orderState}
+                                   source={require('../../../images/financeImages/unselected.png')}/>
+                            :
+                            <Image style={styles.orderState}
+                                   source={require('../../../images/financeImages/selected.png')}/>
+
+                        }
+                    </View>
+                    <View style={styles.containerBottom}>
+                        <Text
+                            style={[styles.carFramNum, {flex: 1}]}>{rowData.loan_time + "|" + rowData.status_str}
+                        </Text>
+                        <Text style={styles.price}> {"放款额：" + rowData.loan_mny_fk_str}</Text>
+                    </View>
                 </View>
             </TouchableOpacity>
         )
     }
-}
 
-
-export  default class CarOverdue extends Component{
-
-
-    // 构造
-      constructor(props) {
-        super(props);
-        // 初始状态
-          //
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2)=>r1 !== r2});
-          this.state = {
-              dataSource: ds.cloneWithRows(['1','2','3','4','5']),
-          }
-      }
-
-
-
-      renderRow=(rowData)=>{
-
-
-          return(<CarOverdueCell/>)
-
-
-      }
-
-    renderHeader = ()=>{
-
+    renderHeader = () => {
         return (
-            <View style={{backgroundColor:'rgba(255,198,47,0.1)',height:adapeSize(24),flex:1,flexDirection:'row',alignItems:'center'} }>
+            <View style={{
+                backgroundColor: 'rgba(255,198,47,0.1)',
+                marginBottom: Pixel.getPixel(10),
+                height: Pixel.getPixel(34),
+                flexDirection: 'row',
+                alignItems: 'center',
+                width: width,
+            }}>
 
-               <Text style={{marginLeft:adapeSize(15),fontSize:fontadapeSize(12),color:'#fa5741',}}>*请选择需要展期的还款</Text>
+                <Text style={{
+                    marginLeft: Pixel.getPixel(15),
+                    fontSize: Pixel.getFontPixel(12),
+                    color: '#fa5741',
+                }}>*请选择需要展期的还款</Text>
             </View>
         )
-
     }
-    renderSeparator =(sectionID,rowId,adjacentRowHighlighted)=>{
 
+    renderSeparator = (sectionID, rowId, adjacentRowHighlighted) => {
         return (
             <View key={`${sectionID}-${rowId}`} style={{
-                height:adjacentRowHighlighted?adapeSize(10):adapeSize(10),
-                backgroundColor:adjacentRowHighlighted?'#f0eff5' : '#CCCCCC'
+                height: Pixel.getPixel(10),
+                backgroundColor: FontAndColor.COLORA3,
             }}>
             </View>
         )
     }
 
-      render(){
+    getData = () => {
+        let maps = {
+            api: AppUrls.APPLY_EXTENSION_CARLIST,
+            loan_code: "" + this.props.loan_code,
+        };
+        request(AppUrls.FINANCE, 'Post', maps)
+            .then((response) => {
+                    if (response.mjson.data == null || response.mjson.data.length <= 0) {
+                        this.setState({renderPlaceholderOnly: 'null'});
+                    } else {
+                        this.setState({
+                            renderPlaceholderOnly: 'success',
+                            dataSource: this.ds.cloneWithRows(response.mjson.data),
+                        });
+                        this.data = response.mjson.data;
+                    }
+                },
+                (error) => {
+                    if (error.mjson.code == -300 || error.mjson.code == -500) {
+                        this.props.showToast("网络请求失败");
+                        this.setState({
+                            renderPlaceholderOnly: 'error',
+                        })
+                    } else {
+                        if (error.mjson.code == -1) {
+                            this.setState({
+                                renderPlaceholderOnly: 'null',
+                            })
+                        } else {
+                            this.props.showToast(error.mjson.msg + "");
+                            this.setState({
+                                renderPlaceholderOnly: 'error',
+                            })
+                        }
+                    }
+                }
+            )
+    }
 
-          return(
-              <View style={{backgroundColor:'white',marginTop:44}}>
-              <ListView
-                  style={{marginBottom:70}}
-                  dataSource={this.state.dataSource}
-                  renderRow={this.renderRow}
-                  renderHeader={this.renderHeader}
-                  renderSeparator={this.renderSeparator}
-              />
-
-               <View style={styles.handelWarper}>
-
-                  <CommenButton textStyle={{color:'white'}} buttonStyle={styles.buttonStyleLeft} onPress={()=>{
-
-                  }} title="申请展期"/>
-                   <CommenButton textStyle={{color:'white'}} buttonStyle={styles.buttonStyleRight} onPress={()=>{
-
-                   }} title="取消"/>
-               </View>
-
-              </View>
-          )
-
-      }
+    doExtension = () => {
+        let auto_ids = "";
+        if (map.size < 1) {
+            alert("请选择车辆")
+        } else {
+            for (let key of map.keys()) {
+                if (auto_ids == '') {
+                    auto_ids = key;
+                } else {
+                    auto_ids = auto_ids + "," + key;
+                }
+            }
+            let maps = {
+                api: AppUrls.DO_EXTENSION,
+                auto_ids: auto_ids,
+                loan_code: "" + this.props.loan_code,
+            };
+            alert(auto_ids)
+            request(AppUrls.FINANCE, 'Post', maps)
+                .then((response) => {
+                        this.props.showToast("请求成功");
+                    }, (error) => {
+                        if (error.mjson.code == -300 || error.mjson.code == -500) {
+                            this.props.showToast("网络请求失败");
+                        } else {
+                            this.props.showToast(error.mjson.msg + "");
+                        }
+                    }
+                )
+        }
+    }
 }
 
 
-const styles=StyleSheet.create({
-
-    handelWarper:{
-        height: adapeSize(50),
+const styles = StyleSheet.create({
+    handelWarper: {
         justifyContent: 'center',
         alignItems: 'center',
-        position: 'absolute',
-        bottom: adapeSize(16),
-        width: width,
-        flexDirection:'row',
-        justifyContent:'flex-start',
-        alignItems:'center',
+        width: width - Pixel.getPixel(30),
+        flexDirection: 'row',
+        backgroundColor: FontAndColor.COLORA3,
+        marginBottom: Pixel.getPixel(15),
+        marginTop: Pixel.getPixel(15),
+        marginLeft: Pixel.getPixel(15),
+        marginRight: Pixel.getPixel(15),
     },
-
-    container:{
-
-       height:adapeSize(120),
-       marginTop:adapeSize(10),
-
-       backgroundColor:'white'
+    container: {
+        backgroundColor: '#ffffff'
     },
-    containerTop:{
-
-        flexDirection:'row',
-        height:adapeSize(76),
-        justifyContent:'flex-start',
-        alignItems:'center',
-        borderBottomColor:'#f0eff5',
-        borderBottomWidth:0.5,
-        marginLeft:adapeSize(15),
-        marginRight:adapeSize(15)
+    containerTop: {
+        flexDirection: 'row',
+        height: adapeSize(76),
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        borderBottomColor: '#f0eff5',
+        borderBottomWidth: 0.5,
+        marginLeft: adapeSize(15),
+        marginRight: adapeSize(15)
     },
-
-    containerBottom:{
-
-        flexDirection:'row',
-        height:adapeSize(44),
-        justifyContent:'space-between',
-        alignItems:'center',
-
+    containerBottom: {
+        flexDirection: 'row',
+        height: adapeSize(44),
+        alignItems: 'center',
+        marginLeft: Pixel.getPixel(15),
+        marginRight: Pixel.getPixel(15),
     },
-
-    carInfoWarp:{
-
-        flex:0.8,
-
-
+    carInfoWarp: {
+        flex: 0.8,
     },
-    orderState:{
-        width:adapeSize(25),
-        height:adapeSize(25),
-        marginLeft:adapeSize(10),
+    orderState: {
+        width: adapeSize(25),
+        height: adapeSize(25),
     },
-
-    carType:{
-
-        alignItems:'flex-start',
-
+    carType: {
+        alignItems: 'flex-start',
+        fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT),
+        color: FontAndColor.COLORA0,
     },
-    carFramNum:{
-        marginTop:adapeSize(10),
+    carFramNum: {
+        fontSize: Pixel.getFontPixel(12),
+        color: FontAndColor.COLORA1,
+        marginTop: Pixel.getPixel(10),
     },
-
-    orderNum:{
-
-        marginLeft:adapeSize(15),
-
+    orderNum: {
+        marginLeft: adapeSize(15),
     },
-
-    price:{
-
-        marginRight:adapeSize(15),
+    price: {
+        color: FontAndColor.COLORB2,
     },
-
-    buttonStyleRight:{
-
+    buttonStyleRight: {
         height: adapeSize(44),
         marginLeft: adapeSize(15),
         justifyContent: 'center',
         alignItems: 'center',
-        flex:1,
-        marginRight:5,
-        borderRadius:5,
-        backgroundColor:'#90a1b5'
-
+        flex: 1,
+        marginRight: 5,
+        borderRadius: 5,
+        backgroundColor: '#90a1b5'
     },
-    buttonStyleLeft:{
-
+    buttonStyleLeft: {
         height: adapeSize(44),
         backgroundColor: '#05c5c2',
         marginRight: adapeSize(15),
         justifyContent: 'center',
         alignItems: 'center',
-        flex:1,
-        marginLeft:5,
-        borderRadius:5,
+        flex: 1,
+        marginLeft: 5,
+        borderRadius: 3,
     },
 })

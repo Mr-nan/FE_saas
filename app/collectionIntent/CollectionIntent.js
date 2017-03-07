@@ -20,29 +20,36 @@ import BaseComponent from '../component/BaseComponent';
 import CarBrandSelectScene  from './../carSource/CarBrandSelectScene';
 import  {request}from '../utils/RequestUtil';
 import * as AppUrls from "../constant/appUrls";
-let isHeadInteraction=false;
+let isHeadInteraction = false;
 export default class CollectionIntent extends BaseComponent {
 
     initFinish = () => {
-
+        this.readData();
     }
 
     loadData = () => {
         let yearArr = [];
         let mileArr = [];
-        if (this.brandSeriesArr.length == 0) {
-            this.props.showToast("请选择车的品牌、车系");
-        } else if (this.carYearArr.size == 0) {
-            this.props.showToast("请选择车龄");
-        } else if (this.mileageArr.size == 0) {
-            this.props.showToast("请选择车系");
+        if (this.brandSeriesArr.length == 0 && this.carYearArr.size == 0 && this.mileageArr.size == 0) {
+            this.props.showToast("请选择收车意向");
+        }else if (this.carYearArr.size > 5) {
+            this.props.showToast('车龄区间最多只能选五个');
+        }else if (this.mileageArr.size > 5) {
+            this.props.showToast('里程区间最多只能选五个');
         } else {
-            for (let key of this.carYearArr.keys()) {
-                yearArr.push(this.carYearArr.get(key))
+            if(this.carYearArr.size>0){
+
+                for (let key of this.carYearArr.keys()) {
+                    yearArr.push(this.carYearArr.get(key))
+                }
             }
-            for (let key of this.mileageArr.keys()) {
-                mileArr.push(this.mileageArr.get(key))
+            if(this.mileageArr.size>0){
+
+                for (let key of this.mileageArr.keys()) {
+                    mileArr.push(this.mileageArr.get(key))
+                }
             }
+
             console.log(yearArr.toString());
             console.log(mileArr.toString());
             let url = AppUrls.BASEURL + 'v1/receiveIntention/save';
@@ -58,6 +65,7 @@ export default class CollectionIntent extends BaseComponent {
                 if (response.mjson.code == '1') {
 
                     this.props.showToast("提交成功");
+                    this.backPage();
                 }
 
             }, (error) => {
@@ -69,13 +77,73 @@ export default class CollectionIntent extends BaseComponent {
         }
     }
 
+    readData = () => {
+        let url = AppUrls.BASEURL + 'v1/receiveIntention/index';
+        request(url, 'post', {}).then((response) => {
+
+            console.log(response);
+            if (response.mjson.data == null) {
+                this.setState({renderPlaceholderOnly: 'null'});
+            } else {
+                if (response.mjson.code == '1') {
+                    this.setState({renderPlaceholderOnly: 'success'});
+                    if(response.mjson.data != null){
+
+                        this.getSelectedItems(this.state.arr1, response.mjson.data.coty, this.carYearArr);
+                        this.getSelectedItems(this.state.arr, response.mjson.data.brand_series, this.brandSeriesArr);
+                        this.getSelectedItems(this.state.arr2, response.mjson.data.mileage, this.mileageArr);
+                    }
+                } else {
+                    this.props.showToast(response.mjson.msg);
+                }
+            }
+
+        }, (error) => {
+            this.setState({renderPlaceholderOnly: 'error'});
+            console.log(error);
+
+        });
+
+    }
+
+    getSelectedItems(arrs, items, params) {
+        if (items.length > 0) {
+            for (let item of items) {
+                console.log(item);
+                if (arrs == this.state.arr) {// 车系
+
+                    params.push(item.value);
+                    this.state.arr.push({
+                        title: item.name,
+                        isSelected: true,
+                    });
+                } else {
+                    params.set(item.id, item.id + '|' + item.value);
+                    arrs[item.id].isSelected = true;
+                }
+            }
+            if (arrs == this.state.arr) {
+
+                this.selectConfirm(this.state.arr);
+            } else if (arrs == this.state.arr1) {
+                this.setState({arr1: this.state.arr1});
+            } else {
+                this.setState({arr2: this.state.arr2});
+            }
+
+        }
+        console.log(params);
+    }
+
     constructor(props) {
         super(props);
         this.carYearArr = new Map();
         this.mileageArr = new Map();
         this.brandSeriesArr = [];
+        this.isAdd = false;
         isHeadInteraction = this.props.isHeadInteraction;
         this.state = {
+            renderPlaceholderOnly: 'blank',
             arr: [],
             arr1: [{
                 title: '1年以内',
@@ -92,7 +160,7 @@ export default class CollectionIntent extends BaseComponent {
             }, {
                 title: '5-8年',
                 isSelected: false,
-                value: '5|5'
+                value: '5|8'
             }, {
                 title: '8-10年',
                 isSelected: false,
@@ -137,49 +205,35 @@ export default class CollectionIntent extends BaseComponent {
     checkedCarClick = (carObject) => {
 // {brand_id: 2, series_id: 2446, series_name: "拉共达Taraf", model_id: 29702, model_name: "2015款 拉共达Taraf 6.0L 标准型"}
         console.log(carObject);
-        if(this.brandSeriesArr.length>0){
 
-            for(let value of this.brandSeriesArr){
-                console.log(value);
-                if((value.split('|',1)) == (carObject.brand_id)){
-                    this.props.showToast('一个品牌的车型只能选一个');
-                }else{
-                    if (carObject.series_id=='' || carObject.series_id=='0'){
-                        this.brandSeriesArr.push(carObject.brand_id + '|' +0);
-                        this.state.arr.push({
-                            title: carObject.brand_name,
-                            isSelected: true,
-                        });
-                    }else{
-                        this.brandSeriesArr.push(carObject.brand_id + '|' + carObject.series_id);
-                        this.state.arr.push({
-                            title: carObject.series_name,
-                            isSelected: true,
-                        });
-                    }
-                    this.selectConfirm(this.state.arr);
+        for (let i = 0; i < this.brandSeriesArr.length; i++) {
+            if ((this.brandSeriesArr[i].split('|', 1)) == (carObject.brand_id)) {
+                if ((this.brandSeriesArr[i].split('|', 2)[1]) == '0' || carObject.series_id === '0') {
+
+                    this.props.showToast('一个品牌只能选一次');
+                    return;
+                } else if ((this.brandSeriesArr[i].split('|', 2)[1])==(carObject.series_id)) {
+                    this.props.showToast('一个品牌的相同车型只能选一次');
+                    return;
                 }
             }
-        }else{
-            if (carObject.series_id=='' || carObject.series_id=='0'){
-                this.brandSeriesArr.push(carObject.brand_id + '|' +0);
-                this.state.arr.push({
-                    title: carObject.brand_name,
-                    isSelected: true,
-                });
-            }else{
-                this.brandSeriesArr.push(carObject.brand_id + '|' + carObject.series_id);
-                this.state.arr.push({
-                    title: carObject.series_name,
-                    isSelected: true,
-                });
-            }
-            this.selectConfirm(this.state.arr);
         }
-
-        console.log(this.brandSeriesArr);
-
-    };
+        if (carObject.series_id == '' || carObject.series_id == '0') {
+            this.brandSeriesArr.push(carObject.brand_id + '|' + 0);
+            this.state.arr.push({
+                title: carObject.brand_name,
+                isSelected: true,
+            });
+        } else {
+            this.brandSeriesArr.push(carObject.brand_id + '|' + carObject.series_id);
+            this.state.arr.push({
+                title: carObject.series_name,
+                isSelected: true,
+            });
+        }
+        this.selectConfirm(this.state.arr);
+        this.isAdd = false;
+    }
 
     navigatorParams = {
         title: "CarBrandSelectScene",
@@ -187,8 +241,8 @@ export default class CollectionIntent extends BaseComponent {
         params: {
             checkedCarClick: this.checkedCarClick,
             status: 0,
-            isHeadInteraction:true,
-            isCheckedCarModel :true,
+            isHeadInteraction: true,
+            isCheckedCarModel: true,
         }
 
     }
@@ -214,136 +268,150 @@ export default class CollectionIntent extends BaseComponent {
 
     countItem(item, array) {//获取车龄区间或里程区间选中的个数
         let index = array.findIndex(a => a === item);
+        console.log(item.isSelected + '---' + index);
         if (array === this.state.arr1) {
-            if (array[index].isSelected) {
-                if (this.carYearArr.has(index)) {
-                    this.carYearArr.delete(index)
+            if (item.isSelected) {
+                if (this.carYearArr.has(index+'')) {
+                    console.log('----');
+                    this.carYearArr.delete(index+'')
                 }
             } else {
                 this.carYearArr.set(index, index + '|' + array[index].value);
 
             }
-            console.log(JSON.stringify(this.carYearArr.get(2)));
-            for (let key of this.carYearArr.keys()) {
-                console.log(key + '--' + this.carYearArr.get(key));
-            }
+            console.log(this.carYearArr);
         } else if (array === this.state.arr2) {
-            if (array[index].isSelected) {
-                if (this.mileageArr.has(index)) {
-                    this.mileageArr.delete(index)
+            if (item.isSelected) {
+                if (this.mileageArr.has(index+'')) {
+                    this.mileageArr.delete(index+'')
                 }
             } else {
                 this.mileageArr.set(index, index + '|' + array[index].value);
             }
-            for (let key of this.mileageArr.keys()) {
-                console.log(key + '--' + this.mileageArr.get(key));
-            }
+            console.log(this.mileageArr);
         }
         array[index].isSelected = !array[index].isSelected;
     }
 
     render() {
-        return (
-            <View style={styles.container}>
-                <NavigationBar
-                    centerText={'收车意向'}
-                    rightText={''}
-                    leftImageCallBack={this.backPage}
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return (
+                <View style={styles.container}>
+                    <NavigationBar
+                        centerText={'收车意向'}
+                        rightText={''}
+                        leftImageCallBack={this.backPage}
 
-                />
-                <View style={ styles.container1}>
-                    <View style={styles.containerChild}>
-                        <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10)}}>
-                            <Text style={styles.carSelect}>
-                                *品牌、车系
-                            </Text>
-                            <Text style={{fontSize: 15, marginRight: 10, color: FontAndColor.COLORA2}} onPress={() => {
-                                if (this.brandSeriesArr.length>=5){
-                                    this.props.showToast("车系最多只能选5个");
-                                }else{
-                                    this.toNextPage(this.navigatorParams)
-                                }
-                            }}>
-                                请选择>
-                            </Text>
-                        </View>
-                        <LabelSelect
-                            title="Checkbox"
-                            ref={(select) => {
-                                this.select = select
-                            }}
-                            style={styles.labelSelect}
-                            readOnly={false}
-                            isBigSize={true}
-                            onConfirm={this.selectConfirm}
-                        >
-                            {this.state.arr.filter(item => item.isSelected).map((item, index) =>
-                                <LabelSelect.Label
-                                    key={'label-' + index}
-                                    data={item}
-                                    onCancel={() => {
-                                        this.deleteItem(item);
-                                    }}
-                                >{item.title}</LabelSelect.Label>
-                            )}
-                            {this.state.arr.filter(item => !item.isSelected).map((item, index) =>
-                                <LabelSelect.ModalItem
-                                    key={'modal-item-' + index}
-                                    data={item}
-                                >{item.title}</LabelSelect.ModalItem>
-                            )}
-                        </LabelSelect>
-                    </View>
-                    <View style={styles.containerChild}>
-                        <Text style={styles.carType}>车龄区间（单位：年）</Text>
-                        <LabelSelect
-                            style={styles.labelSelect}
-                            title="Checkbox"
-                            readOnly={true}
-                        >
-                            {this.state.arr1.map((item, index) =>
-                                <LabelSelect.Label
-                                    key={'label-' + index}
-                                    data={item}
-                                    onCancel={() => {
-                                        this.countItem(item, this.state.arr1);
-                                    }}
-                                >{item.title}</LabelSelect.Label>
-                            )}
-                        </LabelSelect>
-                    </View>
-                    <View style={styles.containerChild}>
-                        <Text style={styles.carType}>里程区间（单位：万公里）</Text>
-                        <LabelSelect
-                            style={styles.labelSelect}
-                            title="Checkbox"
-                            readOnly={true}
-                            isBigSize={true}
-                        >
-                            {this.state.arr2.map((item, index) =>
-                                <LabelSelect.Label
-                                    key={'label-' + index}
-                                    data={item}
-                                    onCancel={() => {
-                                        this.countItem(item, this.state.arr2);
-                                    }}
-                                >{item.title}</LabelSelect.Label>
-                            )}
-                        </LabelSelect>
-                    </View>
-                    <Text style={styles.bottomText}>根据您提报的收车意向，我们会给您相关车源。请关注首页意向车源。</Text>
-                    <TouchableOpacity style={styles.btnStyle}
-                                      onPress={() => this.loadData('')}>
-                        <Text style={{
-                            color: FontAndColor.COLORA3,
-                            fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT),
-                            textAlign: 'center'
-                        }}>提交</Text>
-                    </TouchableOpacity>
+                    />
+                    {this.loadView()}
                 </View>
+            );
+        } else {
+            return (
+                <View style={styles.container}>
+                    <NavigationBar
+                        centerText={'收车意向'}
+                        rightText={''}
+                        leftImageCallBack={this.backPage}
 
-            </View>
-        );
+                    />
+                    <View style={ styles.container1}>
+                        <View style={styles.containerChild}>
+                            <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10)}}>
+                                <Text style={styles.carSelect}>
+                                    *品牌、车系
+                                </Text>
+                                <Text style={{fontSize: 15, marginRight: 10, color: FontAndColor.COLORA2}}
+                                      onPress={() => {
+                                          if (this.brandSeriesArr.length >= 5) {
+                                              this.props.showToast("车系最多只能选5个");
+                                          } else {
+                                              this.toNextPage(this.navigatorParams)
+                                          }
+                                      }}>
+                                    请选择>
+                                </Text>
+                            </View>
+                            <LabelSelect
+                                title="Checkbox"
+                                ref={(select) => {
+                                    this.select = select
+                                }}
+                                style={styles.labelSelect}
+                                readOnly={false}
+                                isBigSize={true}
+                                onConfirm={this.selectConfirm}
+                            >
+                                {this.state.arr.filter(item => item.isSelected).map((item, index) =>
+                                    <LabelSelect.Label
+                                        key={'label-' + index}
+                                        data={item}
+                                        onCancel={() => {
+                                            this.deleteItem(item);
+                                        }}
+                                    >{item.title}</LabelSelect.Label>
+                                )}
+                                {this.state.arr.filter(item => !item.isSelected).map((item, index) =>
+                                    <LabelSelect.ModalItem
+                                        key={'modal-item-' + index}
+                                        data={item}
+                                    >{item.title}</LabelSelect.ModalItem>
+                                )}
+                            </LabelSelect>
+                        </View>
+                        <View style={styles.containerChild}>
+                            <Text style={styles.carType}>车龄区间（单位：年）</Text>
+                            <LabelSelect
+                                style={styles.labelSelect}
+                                title="Checkbox"
+                                readOnly={true}
+                            >
+                                {this.state.arr1.map((item, index) =>
+                                    <LabelSelect.Label
+                                        key={'label-' + index}
+                                        data={item}
+                                        enables={item.isSelected}
+                                        onCancel={() => {
+                                            this.countItem(item, this.state.arr1);
+                                        }}
+                                    >{item.title}</LabelSelect.Label>
+                                )}
+                            </LabelSelect>
+                        </View>
+                        <View style={styles.containerChild}>
+                            <Text style={styles.carType}>里程区间（单位：万公里）</Text>
+                            <LabelSelect
+                                style={styles.labelSelect}
+                                title="Checkbox"
+                                readOnly={true}
+                                isBigSize={true}
+                            >
+                                {this.state.arr2.map((item, index) =>
+                                    <LabelSelect.Label
+                                        key={'label-' + index}
+                                        data={item}
+                                        enables={item.isSelected}
+                                        onCancel={() => {
+                                            this.countItem(item, this.state.arr2);
+                                        }}
+                                    >{item.title}</LabelSelect.Label>
+                                )}
+                            </LabelSelect>
+                        </View>
+                        <Text style={styles.bottomText}>根据您提报的收车意向，我们会给您相关车源。请关注首页意向车源。</Text>
+                        <TouchableOpacity style={styles.btnStyle}
+                                          onPress={() => this.loadData('')}>
+                            <Text style={{
+                                color: FontAndColor.COLORA3,
+                                fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT),
+                                textAlign: 'center'
+                            }}>提交</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                </View>
+            );
+        }
     }
 }
 

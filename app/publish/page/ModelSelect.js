@@ -82,16 +82,14 @@ export default class ModelSelect extends PureComponent {
 
     //扫描
     _scanPress = () => {
-        if(Platform.OS === 'android'){
-            NativeModules.VinScan.scan().then((vl)=>{
-                this.vinInput.setNativeProps({
-                   text:vl
-                });
-                this._onVinChange(vl);
-            },(error)=>{
-                console.log(error);
+        NativeModules.VinScan.scan().then((vl)=>{
+            this.vinInput.setNativeProps({
+                text:vl
             });
-        }
+            this._onVinChange(vl);
+        },(error)=>{
+            console.log(error);
+        });
     };
 
     _renderPlaceholderView = () => {
@@ -113,30 +111,33 @@ export default class ModelSelect extends PureComponent {
             this.vin = text;
             Net.request(AppUrls.VININFO,'post',params).then(
                 (response)=>{
+                    console.log('1111111111111111111');
                     if(response.mycode === 1){
                         let rd = response.mjson.data;
                         if(rd.length === 0){
+                            console.log('222222222222222222222222');
                             this._insertVinNum(text);
                             this.setState({
                                 showHint:true
                             });
                         }else if(rd.length === 1){
+                            this.setState({
+                                showHint:false
+                            });
                             this.modelInfo['brand_id'] = rd[0].brand_id;
                             this.modelInfo['model_id'] = rd[0].model_id;
                             this.modelInfo['series_id'] = rd[0].series_id;
                             this.modelInfo['model_year'] = rd[0].model_year;
                             this.modelInfo['model_name'] = rd[0].model_name;
                             this._insertVinAndModel(text,JSON.stringify(this.modelInfo),rd[0].model_name);
-                            this.setState({
-                                showHint:true
-                            });
+
                         }else if(rd.length > 1){
+                            this.setState({
+                                showHint:false
+                            });
                             this.modelData = response.mjson.data;
                             this.vinModal.refresh();
                             this.vinModal.openModal();
-                            this.setState({
-                                showHint:true
-                            });
                         }
                     }else {
                         this._insertVinNum(text);
@@ -290,7 +291,7 @@ export default class ModelSelect extends PureComponent {
                     <Text style={styles.fontHint}>建议您扫描登记证或行驶证上的车架号</Text>
 
                     <View style={styles.modelCircle}>
-                        {this.state.showHint && <Text style={styles.fontHintBelow}>未解析出车型,请自行选择!</Text>}
+                        {this.state.showHint && <Text style={styles.fontHintBelow}>未解析出车型，请自行选择！</Text>}
                         <TouchableOpacity
                             style={[styles.circleContainer,styles.hintAlign]}
                             activeOpacity={0.6}

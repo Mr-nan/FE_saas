@@ -1,5 +1,5 @@
 /**
- * Created by yujinzhong on 2017/2/8.
+ * Created by zhaojian 2017/2/8.
  */
 
 import  React, {Component, PropTypes} from  'react'
@@ -30,12 +30,13 @@ const {width, height} = Dimensions.get('window');
 import BaseComponet from '../component/BaseComponent';
 import * as Urls from '../constant/appUrls';
 import {request} from '../utils/RequestUtil';
-import  LoadMoreFooter from '../component/LoadMoreFooter';
 import CarInfoScene from '../carSource/CarInfoScene';
+import  StorageUtil from '../utils/StorageUtil';
+import * as storageKeyNames from '../constant/storageKeyNames';
 import WebScene from './WebScene';
+import ContractInfoScene from '../finance/lend/ContractInfoScene';
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 let allList = [];
-let allData = {};
 export class HomeHeaderItemInfo {
     constructor(ref, key, functionTitle, describeTitle, functionImage) {
 
@@ -48,7 +49,7 @@ export class HomeHeaderItemInfo {
 
 }
 
-const bossFuncArray = [
+let bossFuncArray = [
     new HomeHeaderItemInfo('shouche', 'page111', '收车', '真实靠谱车源', require('../../images/mainImage/shouche.png')),
     new HomeHeaderItemInfo('maiche', 'page112', '卖车', '面向全国商家', require('../../images/mainImage/maiche.png')),
     new HomeHeaderItemInfo('jiekuan', 'page113', '借款', '一步快速搞定', require('../../images/mainImage/jiekuan.png')),
@@ -66,8 +67,10 @@ export default class HomeScene extends BaseComponet {
         this.state = {
             source: [],
             renderPlaceholderOnly: 'blank',
-            isRefreshing: false
-        };
+            isRefreshing: false,
+            headSource: [],
+            pageData:[]
+    };
     }
 
     initFinish = () => {
@@ -80,11 +83,28 @@ export default class HomeScene extends BaseComponet {
         };
         request(Urls.HOME, 'Post', maps)
             .then((response) => {
-                    allData = response.mjson.data;
                     allList.push(...response.mjson.data.carList.list);
-                    this.setState({
-                        renderPlaceholderOnly: 'success',
-                        source: ds.cloneWithRows(allList), isRefreshing: false
+                    StorageUtil.mGetItem(storageKeyNames.USER_INFO, (data) => {
+                        if (data.code == 1) {
+                            let datas = JSON.parse(data.result);
+                            if (datas.user_level == 2) {
+                                if (datas.enterprise_list[0].role_type == '1') {
+                                } else if (datas.enterprise_list[0].role_type == '2') {
+                                    bossFuncArray.splice(0, 2);
+                                } else {
+                                    bossFuncArray.splice(2, 2);
+                                }
+                            } else if (datas.user_level == 1) {
+                                bossFuncArray.splice(2, 2);
+                            } else {
+                                bossFuncArray.splice(2, 2);
+                            }
+                            console.log(bossFuncArray);
+                            this.setState({headSource:bossFuncArray,renderPlaceholderOnly: 'success',
+                                source: ds.cloneWithRows(allList), isRefreshing: false,
+                                allData:response.mjson.data});
+                            // this.refs.viewpage.changeData(response.mjson.data);
+                        }
                     });
                     status = response.mjson.data.carList.status;
                 },
@@ -92,6 +112,7 @@ export default class HomeScene extends BaseComponet {
                     this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
                 });
     }
+
 
     allRefresh = () => {
         allList = [];
@@ -143,7 +164,6 @@ export default class HomeScene extends BaseComponet {
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
                     renderHeader={this._renderHeader}
-                    bounces={false}
                     refreshControl={
                                     <RefreshControl
                                         refreshing={this.state.isRefreshing}
@@ -197,8 +217,8 @@ export default class HomeScene extends BaseComponet {
     }
 
     _renderHeader = () => {
-        let tablist;
-        tablist = bossFuncArray;
+        let tablist = [];
+        tablist = this.state.headSource;
         let items = [];
         tablist.map((data) => {
             let tabItem;
@@ -218,11 +238,10 @@ export default class HomeScene extends BaseComponet {
 
         return (
             <View>
-
                 <View style={{flexDirection: 'row'}}>
                     <ViewPagers callBack={(urls)=>{
                        this.props.callBack({name:'WebScene',component:WebScene,params:{webUrl:urls}});
-                    }} items={allData}/>
+                    }} items={this.state.allData}/>
                     <TouchableOpacity onPress={()=>{
                             this.props.jumpScene('carpage','true');
                     }} activeOpacity={0.8} style={{backgroundColor: 'rgba(255,255,255,0.8)',
@@ -258,6 +277,8 @@ export default class HomeScene extends BaseComponet {
                     </View>
                     <TouchableOpacity style={{marginRight: Pixel.getPixel(20)}} onPress={()=> {
                                    this.props.jumpScene('carpage');
+                                   {/*this.props.callBack({name:'ContractInfoScene',component:ContractInfoScene,*/}
+                                   {/*params:{showButton:true}});*/}
                     }}>
                         <View style={{
                             flexDirection: 'row',
@@ -297,8 +318,8 @@ export default class HomeScene extends BaseComponet {
                 <View
                     style={{width: Pixel.getPixel(166), backgroundColor: '#ffffff', justifyContent: 'center'}}>
                     <Image style={cellSheet.imageStyle}
-                           source={{uri: 'https://ss3.baidu.com/-fo3dSag_xI4khGko9WTAnF6hhy/baike/s%3D220/sign=7fa024e5f703738dda4a0b20831ab073/279759ee3d6d55fb745a2d636c224f4a21a4ddd3.jpg'}}/>
-                    <Text style={cellSheet.despritonStyle}>{'[' + movie.city_name + ']' + movie.model_name}</Text>
+                           source={movie.img?{uri:movie.img+'?x-oss-process=image/resize,w_'+166+',h_'+111}:require('../../images/carSourceImages/car_null_img.png')}/>
+                    <Text style={cellSheet.despritonStyle} numberOfLines={2}>{'[' + movie.city_name + ']' + movie.model_name}</Text>
                     <Text
                         style={cellSheet.timeStyle}>{this.dateReversal(movie.create_time + '000') + '/' + movie.mileage + '万公里'}</Text>
 
@@ -351,6 +372,7 @@ const cellSheet = StyleSheet.create({
 
         width: Pixel.getPixel(166),
         height: Pixel.getPixel(111),
+        resizeMode: 'stretch'
     },
     listStyle: {
         justifyContent: 'space-between',

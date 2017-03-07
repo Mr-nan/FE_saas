@@ -29,6 +29,7 @@ const controlCode={
     minLend:'',
     changeMoney:''
 }
+import ContractInfoScene from './ContractInfoScene';
 
 
 export  default  class KurongDetaileScene extends BaseComponent {
@@ -209,6 +210,14 @@ export  default  class KurongDetaileScene extends BaseComponent {
 
         if (title==='取消借款'){
             this.canleAlert.setModelVisible(true)
+        }else if (title === '签署合同') {
+            this.toNextPage({
+                name: 'ContractInfoScene', component: ContractInfoScene, params: {loan_code:this.props.loanNumber,showButton:true}
+            });
+        } else if (title === '查看合同') {
+            this.toNextPage({
+                name: 'ContractInfoScene', component: ContractInfoScene, params: {loan_code:this.props.loanNumber,showButton:false}
+            });
         }
     }
 
@@ -245,7 +254,7 @@ export  default  class KurongDetaileScene extends BaseComponent {
             else if(Number.parseInt(stateCode)>2&&stateCode!=='5'){
                 tempTitle=['查看合同']
             }else if(stateCode=='5'){
-                if (extendCode==='1'){
+                if (Number.parseInt(extendCode)==='1'){
                     tempTitle=['查看合同','申请展期']
                 }else {
                     tempTitle=['查看合同']

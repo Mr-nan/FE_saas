@@ -5,7 +5,8 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Dimensions,
-    Image
+    Image,
+    Platform
 } from 'react-native';
 
 import ScrollableTabView from 'react-native-scrollable-tab-view';
@@ -36,6 +37,7 @@ const SQLite = new SQLiteUtil();
 const {width} = Dimensions.get('window');
 const background = require('../../images/publish/background.png');
 const barHeight = Pixel.getPixel(94);
+const IS_ANDROID = Platform.OS === 'android';
 
 export default class EditCarScene extends BaseComponent {
 
@@ -46,8 +48,6 @@ export default class EditCarScene extends BaseComponent {
                 [this.carVin],
                 (data) => {
                     if (data.code === 1) {
-                        console.log('000000====>>>');
-                        console.log(data.result.rows.item(0));
                         let carType = data.result.rows.item(0).v_type;
 
                         if(carType === '') carType = '1';
@@ -62,7 +62,6 @@ export default class EditCarScene extends BaseComponent {
         }
         else {
             //请求网络数据(根据车源id查询数据)
-            console.log('carid======>>>' + this.carId);
             let params = {
                 id: this.carId,
             };
@@ -70,9 +69,12 @@ export default class EditCarScene extends BaseComponent {
                 (response) => {
                     if (response.mycode === 1) {
                         let rdb = response.mjson.data;
-                        let vinNum = rdb.vin;
+                        this.shop_id = rdb.show_shop_id;
+                        this.carVin = rdb.vin;
+                        console.log('==========>>>>');
+                        console.log(rdb.imgs);
                         SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
-                            [vinNum],
+                            [this.carVin],
                             (data) => {
                                 if (data.code === 1) {
                                     if (data.result.rows.length === 0) {
@@ -82,19 +84,18 @@ export default class EditCarScene extends BaseComponent {
                                         modelInfo['series_id'] = rdb.series_id;
                                         modelInfo['model_year'] = '';
                                         modelInfo['model_name'] = rdb.model_name;
-                                        this.shop_id = rdb.show_shop_id;
-                                        let mf = '2010-06';
-                                        let rg = '2010-06';
+                                        let mf = '2010-06-01';
+                                        let rg = '2010-06-01';
                                         if(this.isEmpty(rdb.manufacture) === false) mf = this.dateReversal(rdb.manufacture);
                                         if(this.isEmpty(rdb.init_reg) === false) rg = this.dateReversal(rdb.manufacture);
                                         SQLite.changeData('INSERT INTO publishCar (vin,model,pictures,v_type,manufacture,init_reg,' +
                                             'mileage,plate_number,emission,label,nature_use,car_color,trim_color,' +
                                             'transfer_number,dealer_price,describe) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-                                            [rdb.vin, JSON.stringify(modelInfo), JSON.stringify(rdb.imgs),rdb.v_type+'', mf, rg, rdb.mileage,
+                                            [this.carVin, JSON.stringify(modelInfo), JSON.stringify(rdb.imgs),rdb.v_type+'', mf, rg, rdb.mileage,
                                                 rdb.plate_number, rdb.emission_standards, JSON.stringify(rdb.label), rdb.nature_use, rdb.car_color, rdb.trim_color,
                                                 rdb.transfer_times, rdb.dealer_price, rdb.describe]);
                                         SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
-                                            [vinNum],
+                                            [this.carVin],
                                             (data) => {
                                                 if (data.code === 1) {
                                                     let carType = data.result.rows.item(0).v_type;
@@ -128,6 +129,10 @@ export default class EditCarScene extends BaseComponent {
         }
     };
 
+    componentWillUnmount(){
+        this.timer && clearTimeout(this.timer);
+    }
+
     constructor(props) {
         super(props);
         this.fromNew = this.props.fromNew;
@@ -150,7 +155,7 @@ export default class EditCarScene extends BaseComponent {
 
     dateReversal=(time)=>{
         const date = new Date();
-        date.setTime(time);
+        date.setTime(time+'000');
         return(date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDay());
     };
 
@@ -179,12 +184,33 @@ export default class EditCarScene extends BaseComponent {
     _publish = () => {
 
         try{
-            this._showLoading();
             SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
                 [this.carVin],
                 (data) => {
                     if (data.code === 1) {
                         let rd = data.result.rows.item(0);
+
+                        if(this.isEmpty(rd.model) === true){
+                            this._closeLoading();
+                            this._showHint('请选择车型信息');
+                            return;
+                        }
+
+                        if(this.isEmpty(rd.pictures) === true){
+                            this._closeLoading();
+                            this._showHint('请拍摄车辆照片');
+                            return;
+                        }
+                        if(this.isEmpty(rd.mileage) === true){
+                            this._closeLoading();
+                            this._showHint('请填写车辆里程');
+                            return;
+                        }
+                        if(this.isEmpty(rd.manufacture) === true){
+                            this._closeLoading();
+                            this._showHint('请选择车辆出厂日期');
+                            return;
+                        }
                         let modelInfo = JSON.parse(rd.model);
                         let params = {
                             show_shop_id: this.shop_id,
@@ -208,33 +234,69 @@ export default class EditCarScene extends BaseComponent {
                             transfer_times: rd.transfer_times
                         };
                         if (!this.fromNew) {
-                            params[id] = this.carId;
+                            params['id'] = this.carId;
                         }
+                        this._showLoading();
                         Net.request(AppUrls.CAR_SAVE, 'post', params)
                             .then((response) => {
                                     if (response.mycode === 1) {
                                         SQLite.changeData(
                                             'DELETE From publishCar WHERE vin = ?',
                                             [this.carVin]);
-                                        this.successModal.openModal();
                                         this._closeLoading();
+                                        if(IS_ANDROID === true){
+                                            this.successModal.openModal();
+                                        }else {
+                                            this.timer = setTimeout(
+                                                () => { this.successModal.openModal(); },
+                                                500
+                                            );
+                                        }
                                     }else {
                                         this._closeLoading();
-                                        this._showHint('网络请求失败');
+                                        if(IS_ANDROID === true){
+                                            this._showHint('网络请求失败');
+                                        }else {
+                                            this.timer = setTimeout(
+                                                () => { this.successModal.openModal(); },
+                                                500
+                                            );
+                                        }
                                     }
                                 },
                                 (error) => {
                                     this._closeLoading();
-                                    this._showHint(error);
+                                    if(IS_ANDROID === true){
+                                        this._showHint(JSON.stringify(error));
+                                    }else {
+                                        this.timer = setTimeout(
+                                            () => { this._showHint(JSON.stringify(error)); },
+                                            500
+                                        );
+                                    }
                                 });
                     } else {
                         this._closeLoading();
-                        this._showHint(data.error);
+                        if(IS_ANDROID === true){
+                            this._showHint(JSON.stringify(data.error));
+                        }else{
+                            this.timer = setTimeout(
+                                () => { this._showHint(JSON.stringify(data.error)); },
+                                500
+                            );
+                        }
                     }
                 });
         }catch(error) {
             this._closeLoading();
-            this._showHint(error);
+            if(IS_ANDROID === true){
+                this._showHint(JSON.stringify(error));
+            }else {
+                this.timer = setTimeout(
+                    () => { this._showHint(JSON.stringify(error)); },
+                    500
+                );
+            }
         }
 
     };

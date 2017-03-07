@@ -66,14 +66,14 @@ export default class MyCarCell extends Component {
 
                     <View style={styles.cellContentView}>
                         <View style={styles.imageView} >
-                            <Image style={styles.image} source={carCellData.img?{uri:carCellData.img}:{uri:'https://ss3.baidu.com/-fo3dSag_xI4khGko9WTAnF6hhy/baike/s%3D220/sign=7fa024e5f703738dda4a0b20831ab073/279759ee3d6d55fb745a2d636c224f4a21a4ddd3.jpg'}}/>
+                            <Image style={styles.image} source={carCellData.img?{uri:carCellData.img}:require('../../../images/carSourceImages/car_null_img.png')}/>
                         </View>
                         <View style={[styles.textContainer]}>
                             <View style={{backgroundColor:'white'}}>
                                 <Text style={styles.mainText}>{'['+carCellData.city_name+']'+carCellData.brand_name+carCellData.model_name}</Text>
                             </View>
                             <View style={{backgroundColor:'white'}}>
-                                <Text style={styles.subTitleText}>{this.dateReversal(carCellData.create_time+'000')+'/'+carCellData.mileage+'万公里'}</Text>
+                                <Text style={styles.subTitleText}>{this.dateReversal(carCellData.manufacture+'000')+'/'+carCellData.mileage+'万公里'}</Text>
                             </View>
                         </View>
                             <Image style={styles.tailImage} source={this.getImage(this.props.type)}/>
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
         marginLeft:15,
         width:120,
         height:80,
-        backgroundColor:fontAndColor.COLORA4,
+        resizeMode: 'stretch',
 
     },
     tailImage:{

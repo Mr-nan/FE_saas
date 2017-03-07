@@ -9,6 +9,7 @@ import {
     InteractionManager,
     ListView,
     PixelRatio,
+    TextInput
 } from "react-native";
 import BaseComponent from "../component/BaseComponent";
 import NavigationBar from "../component/NavigationBar";
@@ -37,9 +38,13 @@ export default class AmountConfirm extends BaseComponent {
         this.state = {
             renderPlaceholderOnly: true,
             source: ds.cloneWithRows(contents),
+            values: "",//输入框输入内容
         };
     }
 
+    defaultProps = {
+        payment_number: 123456789,
+    }
     initFinish = () => {
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: false});
@@ -88,7 +93,7 @@ export default class AmountConfirm extends BaseComponent {
                         textAlign: 'right',
                         color: FontAndColor.COLORA0,
                         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT),
-                    }}>12345678765</Text>
+                    }}>{this.props.payment_number}</Text>
                 </View>
 
                 <Text style={{
@@ -111,7 +116,7 @@ export default class AmountConfirm extends BaseComponent {
                         backgroundColor: '#ffffff'
                     }}
                     renderRow={this._renderRow}
-                    bounces={false}/>
+                    />
 
                 <View style={{
                     width: width,
@@ -142,21 +147,32 @@ export default class AmountConfirm extends BaseComponent {
                     justifyContent: 'center',
                 }}>
                     <Text style={{fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT), color: FontAndColor.COLORA0}}>借款金额：</Text>
+                    <TextInput
+                        ref="inputText"
+                        underlineColorAndroid={"#00000000"}
+                        placeholderTextColor={FontAndColor.COLORA4}
+                        placeholder={'0.00'}
+                        style={{
+                            flex: 1,
+                            fontWeight: 'bold',
+                            fontSize: Pixel.getFontPixel(22),
+                            color: FontAndColor.COLORA0,
+                        }}
+                        value={this.state.values}
+                        onChangeText={(text) => {
+                            this.setState({
+                                values: text
+                            });
+                        }}/>
                     <Text style={{
-                        fontWeight: 'bold',
-                        fontSize: Pixel.getFontPixel(22),
-                        color: FontAndColor.COLORA4
-                    }}>000</Text>
-                    <Text style={{
-                        flex: 1,
+                        flex: 2,
                         fontWeight: 'bold',
                         fontSize: Pixel.getFontPixel(22),
                         color: FontAndColor.COLORA0
                     }}>万元</Text>
                     <MyButton buttonType={MyButton.TEXTBUTTON} content="确认" parentStyle={styles.buttonStyle}
                               childStyle={styles.buttonTextStyle} mOnPress={() => {
-                        alert("确定")
-
+                        alert(this.state.values)
                     }}/>
                 </View>
             </View>

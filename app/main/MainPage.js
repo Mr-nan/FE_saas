@@ -15,7 +15,7 @@ import {
 
 const {width, height} = Dimensions.get('window');
 import  PixelUtil from '../utils/PixelUtil'
-var Pixel = new PixelUtil();
+let Pixel = new PixelUtil();
 import TabNavigator from 'react-native-tab-navigator';
 
 import HomeSence  from './HomeScene'
@@ -28,6 +28,7 @@ import * as storageKeyNames from '../constant/storageKeyNames';
 import LoginGesture from '../login/LoginGesture';
 import * as fontAndClolr from '../constant/fontAndColor';
 import BaseComponent from '../component/BaseComponent';
+import NonCreditScene from './NonCreditScene';
 
 export class tableItemInfo {
     constructor(ref, key, title, selectedImg, defaultImg, topView) {
@@ -77,20 +78,17 @@ export default class MainPage extends BaseComponent {
                      this.publishModal.openModal();
                 }} jumpScene={(ref,openSelectBranch)=>{
                     if(openSelectBranch=='true'){
-                        if(typeof this.refs.carsourcesence == 'undefined'){
-                            this.setState({selectedTab: ref})
-                        }else{
-                            this.setState({selectedTab: ref})
-                            this.refs.carsourcesence.presCarTypeScene();
-                        }
+                        this.setState({selectedTab: ref})
+                        StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'true');
                     }else{
                         this.setState({selectedTab: ref})
+                        StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
                     }
                 }} callBack={(params)=> {
                     this.toNextPage(params);
                 }}/>),
             new tableItemInfo('carpage', 'page12', '车源', require('../../images/mainImage/carSelect.png'), require('../../images/mainImage/carUnSelect.png'),
-                <CarSourceSence ref="carsourcesence" showModal={(value)=>{
+                <CarSourceSence showModal={(value)=>{
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
@@ -117,21 +115,17 @@ export default class MainPage extends BaseComponent {
                      this.publishModal.openModal();
                 }} jumpScene={(ref,openSelectBranch)=>{
                     if(openSelectBranch=='true'){
-                        if(typeof this.refs.carsourcesence == 'undefined'){
-                            this.setState({selectedTab: ref})
-                        }else{
-                            this.setState({selectedTab: ref})
-                            this.refs.carsourcesence.presCarTypeScene();
-                        }
+                        this.setState({selectedTab: ref})
+                        StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'true');
                     }else{
                         this.setState({selectedTab: ref})
+                        StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
                     }
                 }} callBack={(params)=> {
                     this.toNextPage(params);
                 }}/>),
             new tableItemInfo('carpage', 'page2', '车源', require('../../images/mainImage/carSelect.png'), require('../../images/mainImage/carUnSelect.png'),
-
-                <CarSourceSence ref="carsourcesence" showModal={(value)=>{
+                <CarSourceSence showModal={(value)=>{
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
 
@@ -149,6 +143,46 @@ export default class MainPage extends BaseComponent {
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params) => {
                     this.toNextPage(params);
                 }}/>),
+            new tableItemInfo('mypage', 'page5', '我的', require('../../images/mainImage/mineSelect.png'), require('../../images/mainImage/mineUnSelect.png'),
+                <MineSence showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
+                    this.toNextPage(params);
+                }}/>)
+        ];
+
+        const formalUserTabArray = [
+            new tableItemInfo('firstpage', 'page1', '首页', require('../../images/mainImage/homeSelect.png'), require('../../images/mainImage/homeUnSelect.png'),
+                <HomeSence showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} openModal={()=>{
+                     this.publishModal.openModal();
+                }} jumpScene={(ref,openSelectBranch)=>{
+                    if(openSelectBranch=='true'){
+                        this.setState({selectedTab: ref})
+                        StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'true');
+                    }else{
+                        this.setState({selectedTab: ref})
+                        StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
+                    }
+                }} callBack={(params)=> {
+                    this.toNextPage(params);
+                }}/>),
+            new tableItemInfo('carpage', 'page2', '车源', require('../../images/mainImage/carSelect.png'), require('../../images/mainImage/carUnSelect.png'),
+                <CarSourceSence showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
+
+                    this.toNextPage(params);
+                }}/>),
+            new tableItemInfo('sendpage', 'page3', '发布', require('../../images/mainImage/sendButton.png'), require('../../images/mainImage/sendButton.png'),
+                <PublishModal showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
+                    this.toNextPage(params);
+                }}/>),
+            new tableItemInfo('financePage', 'page4', '金融', require('../../images/mainImage/moneySelect.png'), require('../../images/mainImage/moneyUnSelect.png'),
+                <NonCreditScene/>),
             new tableItemInfo('mypage', 'page5', '我的', require('../../images/mainImage/mineSelect.png'), require('../../images/mainImage/mineUnSelect.png'),
                 <MineSence showModal={(value)=>{
                     this.props.showModal(value);
@@ -185,6 +219,7 @@ export default class MainPage extends BaseComponent {
         }
         StorageUtil.mGetItem(storageKeyNames.USER_INFO, (data) => {
             if (data.code == 1) {
+                console.log(data.result);
                 let datas = JSON.parse(data.result);
                 if (datas.user_level == 2) {
                     if (datas.enterprise_list[0].role_type == '1') {
@@ -195,7 +230,7 @@ export default class MainPage extends BaseComponent {
                         tabArray = employerTabArray
                     }
                 } else if (datas.user_level == 1) {
-                    tabArray = employerTabArray
+                    tabArray = formalUserTabArray
                 } else {
                     tabArray = employerTabArray
                 }

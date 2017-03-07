@@ -11,6 +11,7 @@ import {
     Text,
     Dimensions,
     StyleSheet,
+    Platform,
     TouchableOpacity,
     InteractionManager
 } from 'react-native';
@@ -29,6 +30,7 @@ const {width, height} = Dimensions.get('window');
 const background = require('../../../images/publish/background.png');
 const photo = require('../../../images/publish/photo.png');
 const photoMask = require('../../../images/publish/photo-mask.png');
+const IS_ANDROID = Platform.OS === 'android';
 
 const options = {
     //弹出框选项
@@ -116,153 +118,110 @@ export default class DetailAutoPhoto extends Component {
         }
     };
 
-    componentWillMount() {
-
-    }
-
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: false});
         });
     }
 
-    componentWillUnmount() {
-
-    }
-
     _labelPress = (viewData) => {
-        this.imageSource.openModal(viewData);
+        if(IS_ANDROID === true){
+            this.imageSource.openModal(viewData);
+        }else{
+            ImagePicker.showImagePicker(options, (response) => {
+                if (response.didCancel) {
+                } else if (response.error) {
+                } else if (response.customButton) {
+                } else {
+                    this._uploadPicture(viewData,response);
+                }
+            });
+        }
     };
 
     _rePhoto = (viewData) => {
-        this.imageSource.openModal(viewData);
+        if(IS_ANDROID === true){
+            this.imageSource.openModal(viewData);
+        }else{
+            ImagePicker.showImagePicker(options, (response) => {
+                if (response.didCancel) {
+                } else if (response.error) {
+                } else if (response.customButton) {
+                } else {
+                    this._uploadPicture(viewData,response);
+                }
+            });
+        }
     };
 
     _galleryClick = (viewData) => {
         ImagePicker.launchImageLibrary(options, (response) => {
-            if (response.didCancel) {
-                console.log('User cancelled image picker');
-            }
-            else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-            }
-            else if (response.customButton) {
-                console.log('User tapped custom button: ', response.customButton);
-            }
+            if (response.didCancel) {}
+            else if (response.error) {}
+            else if (response.customButton) {}
             else {
-
-                let params ={
-                    file:'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g,'%2B')
-                };
-                this.props.showLoading();
-                ImageUpload.request(AppUrls.INDEX_UPLOAD,'post',params).then(
-                    (response)=>{
-                        if(response.mycode === 1){
-                            if(viewData.hasPhoto === true){
-                                this.pictures.map((pic)=>{
-                                    if(pic.name === viewData.name){
-                                        pic.file_id = response.mjson.data.file_id;
-                                        pic.url = response.mjson.data.url;
-                                    }
-                                });
-                            }else{
-                                let temp ={
-                                    name : viewData.name,
-                                    file_id : response.mjson.data.file_id,
-                                    url: response.mjson.data.url,
-                                };
-                                this.pictures.push(temp);
-                            }
-
-                            for(let i = 0;i < this.pictures.length;i++){
-                                this.viewData.map((pic)=>{
-                                    if(this.pictures[i].name === pic.name){
-                                        pic.hasPhoto = true;
-                                        pic.img_url = this.pictures[i].url;
-                                    }
-                                })
-                            }
-
-                            this.grid.refresh(this.viewData);
-
-                            this.props.sqlUtil.changeData(
-                                'UPDATE publishCar SET pictures = ? WHERE vin = ?',
-                                [JSON.stringify(this.pictures), this.props.carData.vin]);
-                            this.props.closeLoading();
-                        }else {
-                            this.props.closeLoading();
-                            this.props.showHint('上传失败');
-                        }
-
-                    },(error)=>{
-                        this.props.closeLoading();
-                        this.props.showHint(error);
-                    });
-
+                this._uploadPicture(viewData,response);
             }
         });
     };
 
+    _uploadPicture = (viewData,response)=>{
+        let params ={
+            file:'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g,'%2B')
+        };
+        this.props.showLoading();
+        ImageUpload.request(AppUrls.INDEX_UPLOAD,'post',params).then(
+            (response)=>{
+                if(response.mycode === 1){
+                    if(viewData.hasPhoto === true){
+                        this.pictures.map((pic)=>{
+                            if(pic.name === viewData.name){
+                                pic.file_id = response.mjson.data.file_id;
+                                pic.url = response.mjson.data.url;
+                            }
+                        });
+                    }else{
+                        let temp ={
+                            name : viewData.name,
+                            file_id : response.mjson.data.file_id,
+                            url: response.mjson.data.url,
+                        };
+                        this.pictures.push(temp);
+                    }
+
+                    for(let i = 0;i < this.pictures.length;i++){
+                        this.viewData.map((pic)=>{
+                            if(this.pictures[i].name === pic.name){
+                                pic.hasPhoto = true;
+                                pic.img_url = this.pictures[i].url;
+                            }
+                        })
+                    }
+
+                    this.grid.refresh(this.viewData);
+
+                    this.props.sqlUtil.changeData(
+                        'UPDATE publishCar SET pictures = ? WHERE vin = ?',
+                        [ JSON.stringify(this.pictures), this.props.carData.vin]);
+                    this.props.closeLoading();
+                }else{
+                    this.props.closeLoading();
+                    this.props.showHint('上传失败');
+                }
+
+            },(error)=>{
+                this.props.closeLoading();
+                this.props.showHint(JSON.stringify(error));
+            });
+    };
+
     _cameraClick = (viewData) => {
         ImagePicker.launchCamera(options, (response) => {
-            if (response.didCancel) {
-                console.log('User cancelled image picker');
-            }
-            else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-            }
-            else if (response.customButton) {
-                console.log('User tapped custom button: ', response.customButton);
-            }
+            if (response.didCancel) {}
+            else if (response.error) {}
+            else if (response.customButton) {}
             else {
-
-                let params ={
-                    file:'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g,'%2B')
-                };
-                this.props.showLoading();
-                ImageUpload.request(AppUrls.INDEX_UPLOAD,'post',params).then(
-                    (response)=>{
-                        if(response.mycode === 1){
-                            if(viewData.hasPhoto === true){
-                                this.pictures.map((pic)=>{
-                                    if(pic.name === viewData.name){
-                                        pic.file_id = response.mjson.data.file_id;
-                                        pic.url = response.mjson.data.url;
-                                    }
-                                });
-                            }else{
-                                let temp ={
-                                    name : viewData.name,
-                                    file_id : response.mjson.data.file_id,
-                                    url: response.mjson.data.url,
-                                };
-                                this.pictures.push(temp);
-                            }
-
-                            for(let i = 0;i < this.pictures.length;i++){
-                                this.viewData.map((pic)=>{
-                                    if(this.pictures[i].name === pic.name){
-                                        pic.hasPhoto = true;
-                                        pic.img_url = this.pictures[i].url;
-                                    }
-                                })
-                            }
-
-                            this.grid.refresh(this.viewData);
-
-                            this.props.sqlUtil.changeData(
-                                'UPDATE publishCar SET pictures = ? WHERE vin = ?',
-                                [ JSON.stringify(this.pictures), this.props.carData.vin]);
-                            this.props.closeLoading();
-                        }else{
-                            this.props.closeLoading();
-                            this.props.showHint('上传失败');
-                        }
-
-                    },(error)=>{
-                        this.props.closeLoading();
-                        this.props.showHint(error);
-                    });
+                this._uploadPicture(viewData,response);
             }
         });
     };

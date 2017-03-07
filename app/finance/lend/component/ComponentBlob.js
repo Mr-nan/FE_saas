@@ -51,7 +51,7 @@ export const commnetStyle=StyleSheet.create({
 
     ListWarp:{
         position:'absolute',
-        top:54,
+        top:Pixel.getTitlePixel(64),
         width:width,
         bottom:adapeSize(50),
         backgroundColor:'white'
@@ -199,9 +199,8 @@ export class LendDatePike extends PureComponent {
 
     setPlaceHodel=(vlaue)=>{
 
-        this.setState({
-
-            placeholder:vlaue,
+        this.dateInput.setNativeProps({
+            placeholder:vlaue
         })
     }
     onPress=()=>{
@@ -251,7 +250,7 @@ export class LendUseful extends PureComponent {
         return (
             <View style={styles.itemUserful}>
                 <Text style={styles.itemLeftText}>用款用途</Text>
-                <TextInput onEndEditing={onEndEidt} style={styles.itemUserfulInput} placeholder={'请简要描述借款用途'} multiline={true}/>
+                <TextInput underlineColorAndroid={"#00000000"} onEndEditing={onEndEidt} style={styles.itemUserfulInput} placeholder={'请简要描述借款用途'} multiline={true}/>
             </View>
         )
     }
