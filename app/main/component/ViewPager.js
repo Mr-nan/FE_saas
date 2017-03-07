@@ -88,7 +88,7 @@ export default class ViewPagers extends Component {
                 }} activeOpacity={1} style={{width: width,
         height: Pixel.getPixel(225),}}>
                     <Image style={styles.postPosition}
-                           source={{uri: data.ret_img+'?x-oss-process=image/resize,w_'+width+',h_'+Pixel.getPixel(225)}}
+                           source={{uri: data.ret_img+'?x-oss-process=image/resize,w_'+width+',h_'+225}}
                     />
                 </TouchableOpacity>
 

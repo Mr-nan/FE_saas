@@ -318,7 +318,7 @@ export default class HomeScene extends BaseComponet {
                 <View
                     style={{width: Pixel.getPixel(166), backgroundColor: '#ffffff', justifyContent: 'center'}}>
                     <Image style={cellSheet.imageStyle}
-                           source={{uri: 'https://ss3.baidu.com/-fo3dSag_xI4khGko9WTAnF6hhy/baike/s%3D220/sign=7fa024e5f703738dda4a0b20831ab073/279759ee3d6d55fb745a2d636c224f4a21a4ddd3.jpg'}}/>
+                           source={movie.img?{uri:movie.img+'?x-oss-process=image/resize,w_'+166+',h_'+111}:require('../../images/carSourceImages/car_null_img.png')}/>
                     <Text style={cellSheet.despritonStyle} numberOfLines={2}>{'[' + movie.city_name + ']' + movie.model_name}</Text>
                     <Text
                         style={cellSheet.timeStyle}>{this.dateReversal(movie.create_time + '000') + '/' + movie.mileage + '万公里'}</Text>
@@ -372,6 +372,7 @@ const cellSheet = StyleSheet.create({
 
         width: Pixel.getPixel(166),
         height: Pixel.getPixel(111),
+        resizeMode: 'stretch'
     },
     listStyle: {
         justifyContent: 'space-between',

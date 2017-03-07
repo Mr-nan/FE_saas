@@ -205,33 +205,35 @@ export  default class CarOverdue extends BaseComponent {
     }
 
     doExtension = () => {
+        let auto_ids = "";
         if (map.size < 1) {
-            this.props.showToast("请选择车辆");
-            return;
-        }
-        let auto_ids = '';
-        for (var key in map) {
-            auto_ids = auto_ids + key + ","
-        }
-        let maps = {
-            api: AppUrls.DO_EXTENSION,
-            auto_ids: auto_ids,
-            loan_code: "" + this.props.loan_code,
-        };
-        request(AppUrls.FINANCE, 'Post', maps)
-            .then((response) => {
-                    this.props.showToast("请求成功");
-                },
-                (error) => {
-                    if (error.mjson.code == -300 || error.mjson.code == -500) {
-                        this.props.showToast("网络请求失败");
-                    } else {
-                        if (error.mjson.code == -1) {
+            alert("请选择车辆")
+        } else {
+            for (let key of map.keys()) {
+                if (auto_ids == '') {
+                    auto_ids = key;
+                } else {
+                    auto_ids = auto_ids + "," + key;
+                }
+            }
+            let maps = {
+                api: AppUrls.DO_EXTENSION,
+                auto_ids: auto_ids,
+                loan_code: "" + this.props.loan_code,
+            };
+            alert(auto_ids)
+            request(AppUrls.FINANCE, 'Post', maps)
+                .then((response) => {
+                        this.props.showToast("请求成功");
+                    }, (error) => {
+                        if (error.mjson.code == -300 || error.mjson.code == -500) {
+                            this.props.showToast("网络请求失败");
+                        } else {
                             this.props.showToast(error.mjson.msg + "");
                         }
                     }
-                }
-            )
+                )
+        }
     }
 }
 

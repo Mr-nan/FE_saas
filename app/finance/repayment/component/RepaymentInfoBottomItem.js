@@ -23,8 +23,21 @@ export  default class RepaymentInfoBottomItem extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            show: 'row'
+            show: 'row',
+            formulaStr: this.props.formulaStr,
+            allMoney: this.props.allMoney,
+            formula: this.props.formula
+
         };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps);
+        this.setState({
+            formulaStr: nextProps.formulaStr,
+            allMoney: nextProps.allMoney,
+            formula: nextProps.formula
+        });
     }
 
     render() {
@@ -37,16 +50,16 @@ export  default class RepaymentInfoBottomItem extends PureComponent {
                 <View style={{flex:1,justifyContent:'center'}}>
                     <Text
                         style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),color:fontAndColor.COLORA1}}>
-                        {this.props.formulaStr}
+                        {this.state.formulaStr}
                     </Text>
                     <View style={{marginTop:Pixel.getPixel(15),flexDirection:'row'}}>
                         <Text
                             style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),color:fontAndColor.COLORB2}}>
-                            {this.props.allMoney}
+                            {this.state.allMoney}
                         </Text>
                         <Text
                             style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),color:fontAndColor.COLORA0}}>
-                            {this.props.formula}
+                            {this.state.formula}
                         </Text>
                     </View>
                 </View>
