@@ -7,51 +7,130 @@ import  {
     StyleSheet,
     Dimensions,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    RefreshControl,
 } from  'react-native'
 
-import * as fontAndClolr from '../../constant/fontAndColor';
+import * as fontAndColor from '../../constant/fontAndColor';
 import  PixelUtil from '../../utils/PixelUtil'
-import SignContractScene from '../contractManage/SignContractScene'
 var Pixel = new PixelUtil();
 const cellJianTou = require('../../../images/mainImage/celljiantou@2x.png');
-import NavigationBar from "../../component/NavigationBar";
-import CountInfoScene from '../accountManage/AccountInfoScene';
 import ContractSign from '../contractManage/ContractSign';
 import BaseComponent from "../../component/BaseComponent";
-// let Car = require('./Car.json');
+import {request} from '../../utils/RequestUtil';
+import * as Urls from '../../constant/appUrls';
+import  LoadMoreFooter from '../../component/LoadMoreFooter';
 /*
  * 获取屏幕的宽和高
  **/
+let page = 1;
+let allPage = 1;
+let allSouce = [];
 const {width, height} = Dimensions.get('window');
 
 export default class CompleteSignScene extends BaseComponent {
     initFinish = () => {
+        this.getData();
+    }
+
+    componentWillUnmount() {
+        allSouce = [];
+    }
+
+    getData = () => {
+        let maps = {
+            page: page,
+            rows: 10,
+            api : 'api/v1/Contract/contractList',
+            sign_status: '1',
+        };        request(Urls.FINANCE, 'Post', maps)
+
+            .then((response) => {
+                    console.log(response.mjson);
+                    if (page == 1 && response.mjson.data.contract_list.length <= 0) {
+                        this.setState({renderPlaceholderOnly: 'null'});
+                    } else {
+                        allSouce.push(...response.mjson.data.contract_list);
+                        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                        this.setState({
+                            dataSource: ds.cloneWithRows(allSouce),
+                            isRefreshing: false
+                        });
+                        this.setState({renderPlaceholderOnly: 'success'});
+                    }
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
+                });
     }
     // 构造
     constructor(props) {
         super(props);
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: ds.cloneWithRows([
-                'John', 'Joel', 'James', 'Jimmy'
-            ]),
-            show: true,
+            dataSource: {},
+            renderPlaceholderOnly: 'blank',
+            isRefreshing: false
         };
 
     }
 
-    render() {
-        return (
-            <View style={styles.container}>
-                <ListView
-                    contentContainerStyle={styles.listStyle}
-                    dataSource={this.state.dataSource}
-                    renderRow={this._renderRow}
-                />
+    refreshingData = () => {
+        allSouce = [];
+        this.setState({isRefreshing: true});
+        page = 1;
+        this.getData();
+    };
 
-            </View>
-        );
+    toEnd = () => {
+        if (this.state.isRefreshing) {
+
+        } else {
+            if (page < allPage) {
+                page++;
+                this.getData();
+            }
+        }
+
+    };
+
+    renderListFooter = () => {
+        if (this.state.isRefreshing) {
+            return null;
+        } else {
+            return (<LoadMoreFooter isLoadAll={page>=allPage?true:false}/>)
+        }
+    }
+
+    render() {
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return (<View style={{backgroundColor: fontAndColor.COLORA3, flex: 1, paddingTop: Pixel.getPixel(15)}}>
+                {this.loadView()}
+            </View>);
+        }else{
+
+            return (
+                <View style={styles.container}>
+                    <ListView
+                        contentContainerStyle={styles.listStyle}
+                        dataSource={this.state.dataSource}
+                        renderRow={this._renderRow}
+                        renderFooter={
+                            this.renderListFooter
+                        }
+                        onEndReached={this.toEnd}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.state.isRefreshing}
+                                onRefresh={this.refreshingData}
+                                tintColor={[fontAndColor.COLORB0]}
+                                colors={[fontAndColor.COLORB0]}
+                            />
+                        }
+                    />
+
+                </View>
+            );
+        }
     }
 
     // 每一行中的数据
@@ -68,8 +147,8 @@ export default class CompleteSignScene extends BaseComponent {
                 }}>
                 <View style={styles.rowView}>
                     <View style={styles.rowLeft}>
-                        <Text style={styles.rowLeftTitle}>线下库容</Text>
-                        <Text style={styles.rowLeftTitle1}>20161111</Text>
+                        <Text style={styles.rowLeftTitle}>{rowData.product_type_ch}</Text>
+                        <Text style={styles.rowLeftTitle1}>{rowData.payment_number}</Text>
                     </View>
                     <Image source={cellJianTou} style={styles.image}></Image>
 
@@ -84,28 +163,32 @@ const styles = StyleSheet.create({
 
         flex: 1,
         marginTop: Pixel.getPixel(0),   //设置listView 顶在最上面
-        backgroundColor: fontAndClolr.COLORA3,
+        backgroundColor: fontAndColor.COLORA3,
     },
     listStyle: {
         marginTop: Pixel.getPixel(0)
     },
+    sectionView: {
+        height: Pixel.getPixel(10),
+        backgroundColor: fontAndColor.COLORA3,
+    },
     rowView: {
-        height: Pixel.getPixel(77),
+        height:Pixel.getPixel(77),
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: 'white',
-        borderTopColor: fontAndClolr.COLORA4,
+        borderTopColor: fontAndColor.COLORA4,
+        flexDirection: 'row',
         borderTopWidth: 1,
-        flexDirection: 'row'
     },
     rowLeftTitle: {
-        fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT28),
-        color: fontAndClolr.COLORA0,
+        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+        color: fontAndColor.COLORA0,
 
     },
     rowLeftTitle1: {
-        fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT28),
-        color: fontAndClolr.COLORA2,
+        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+        color: fontAndColor.COLORA2,
 
     },
     rowLeft: {
@@ -114,13 +197,22 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
     },
     rowRightTitle: {
-        marginRight: Pixel.getPixel(10),
-        color: fontAndClolr.COLORA2,
-        fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT28),
+        color: fontAndColor.COLORA3,
+        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
 
     },
     image: {
         marginRight: Pixel.getPixel(15),
+    },
+    buttonStyle:{
+        height: Pixel.getPixel(27),
+        width: Pixel.getPixel(80),
+        borderRadius: 3,
+        marginRight: Pixel.getPixel(15),
+        backgroundColor: fontAndColor.COLORB0,
+        justifyContent:'center',
+        alignItems:'center'
+
     }
 
 

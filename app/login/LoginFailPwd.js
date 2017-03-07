@@ -62,10 +62,11 @@ export default class LoginFailPwd extends BaseComponent {
         return (
             <View style={styles.container}>
                 <NavigationBar
-                    leftImageShow={true}
-                    leftTextShow={false}
+                    leftImageShow={false}
+                    leftTextShow={true}
                     centerText={"设置登录密码"}
-                    rightText={"  "}
+                    rightText={""}
+                    leftText={""}
                     leftImageCallBack={this.backPage}
                 />
                 <View style={{width: width, height: Pixel.getPixel(15)} }/>

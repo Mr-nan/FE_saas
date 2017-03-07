@@ -71,8 +71,6 @@ export default class EditCarScene extends BaseComponent {
                         let rdb = response.mjson.data;
                         this.shop_id = rdb.show_shop_id;
                         this.carVin = rdb.vin;
-                        console.log('==========>>>>');
-                        console.log(rdb.imgs);
                         SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
                             [this.carVin],
                             (data) => {
@@ -88,10 +86,22 @@ export default class EditCarScene extends BaseComponent {
                                         let rg = '2010-06-01';
                                         if(this.isEmpty(rdb.manufacture) === false) mf = this.dateReversal(rdb.manufacture);
                                         if(this.isEmpty(rdb.init_reg) === false) rg = this.dateReversal(rdb.manufacture);
+                                        let pictures = '';
+                                        if(rdb.imgs != 'undefined' && rdb.imgs != null){
+                                            let ps = [];
+                                            rdb.imgs.map((p)=>{
+                                                ps.push({
+                                                    name:p.name,
+                                                    file_id:p.file_id,
+                                                    url:p.url
+                                                });
+                                            });
+                                            pictures = JSON.stringify(ps);
+                                        }
                                         SQLite.changeData('INSERT INTO publishCar (vin,model,pictures,v_type,manufacture,init_reg,' +
                                             'mileage,plate_number,emission,label,nature_use,car_color,trim_color,' +
                                             'transfer_number,dealer_price,describe) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-                                            [this.carVin, JSON.stringify(modelInfo), JSON.stringify(rdb.imgs),rdb.v_type+'', mf, rg, rdb.mileage,
+                                            [this.carVin, JSON.stringify(modelInfo), pictures,rdb.v_type+'', mf, rg, rdb.mileage,
                                                 rdb.plate_number, rdb.emission_standards, JSON.stringify(rdb.label), rdb.nature_use, rdb.car_color, rdb.trim_color,
                                                 rdb.transfer_times, rdb.dealer_price, rdb.describe]);
                                         SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
@@ -227,7 +237,7 @@ export default class EditCarScene extends BaseComponent {
                             label: rd.label,
                             nature_use: rd.nature_use,
                             plate_number: rd.plate_number,
-                            transfer_times: rd.transfer_times
+                            transfer_times: rd.transfer_number
                         };
                         if (!this.fromNew) {
                             params['id'] = this.carId;

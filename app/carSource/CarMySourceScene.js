@@ -63,16 +63,15 @@ export default class CarMySourceScene extends BaceComponent {
 
     }
 
-    footButtonClick = (typeStr, carData) => {
-
+    footButtonClick = (typeStr,groupStr,carData) => {
 
         if (typeStr == '上架') {
 
-            this.carAction(2, carData.id);
+            this.carAction(2,groupStr,carData.id);
 
         } else if (typeStr == '下架') {
 
-            this.carAction(3, carData.id);
+            this.carAction(3,groupStr,carData.id);
 
         } else if (typeStr == '编辑') {
 
@@ -91,7 +90,7 @@ export default class CarMySourceScene extends BaceComponent {
     }
 
 
-    carAction = (type, carID) => {
+    carAction = (type,groupStr,carID) => {
 
         this.props.showModal(true);
         let url = AppUrls.CAR_STATUS;
@@ -106,11 +105,22 @@ export default class CarMySourceScene extends BaceComponent {
             if (type == 3) {
 
                 this.refs.upperFrameView.refreshingData();
+                if((typeof(this.refs.dropFrameView)!= "undefined")){
+                    this.refs.dropFrameView.refreshingData();
+                }
                 this.props.showToast('已成功下架');
 
             } else if (type == 2) {
 
-                this.refs.AuditView.refreshingData();
+                if(groupStr==3){
+
+                    this.refs.auditView.refreshingData();
+
+                }else if(groupStr == 2){
+
+                    this.refs.dropFrameView.refreshingData();
+                    this.refs.upperFrameView.refreshingData();
+                }
                 this.props.showToast('已成功上架');
 
             }
@@ -152,13 +162,9 @@ export default class CarMySourceScene extends BaceComponent {
                     style={styles.ScrollableTabView}
                     initialPage={0}
                     renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["已上架", "已下架", "未审核"]}/>}>
-
-                    <MyCarSourceUpperFrameView ref="upperFrameView" carCellClick={this.carCellClick}
-                                               footButtonClick={this.footButtonClick} tabLabel="ios-paper1"/>
-                    <MyCarSourceDropFrameView carCellClick={this.carCellClick} footButtonClick={this.footButtonClick}
-                                              tabLabel="ios-paper2"/>
-                    <MyCarSourceAuditView ref="AuditView" carCellClick={this.carCellClick}
-                                          footButtonClick={this.footButtonClick} tabLabel="ios-paper3"/>
+                    <MyCarSourceUpperFrameView ref="upperFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper1"/>
+                    <MyCarSourceDropFrameView  ref="dropFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper2"/>
+                    <MyCarSourceAuditView  ref="auditView"  carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper3"/>
 
                 </ScrollableTabView>
                 <NavigatorView title='我的车源' backIconClick={this.backPage}
@@ -176,10 +182,10 @@ class MyCarSourceUpperFrameView extends BaceComponent {
         super(props);
         // 初始状态
 
-        const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id == r2.id});
+        const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id != r2.id});
         this.state = {
 
-            carData: carData,
+            carData:carData,
             isRefreshing: true,
             renderPlaceholderOnly: 'blank',
             carUpperFrameStatus: carUpperFrameStatus,
@@ -195,7 +201,6 @@ class MyCarSourceUpperFrameView extends BaceComponent {
     }
 
     initFinish = () => {
-
         this.setState({renderPlaceholderOnly: 'loading'});
         this.loadData();
     };
@@ -219,17 +224,15 @@ class MyCarSourceUpperFrameView extends BaceComponent {
 
         }).then((response) => {
 
-            console.log(response.mjson.data);
-            carUpperFrameData = response.mjson.data.list;
+            console.log(response.mjson);
+            carUpperFrameData=response.mjson.data.list;
             carUpperFrameStatus = response.mjson.data.status;
             if (carUpperFrameData.length) {
                 this.setState({
                     carData: this.state.carData.cloneWithRows(carUpperFrameData),
                     isRefreshing: false,
                     renderPlaceholderOnly: 'success',
-                    carUpperFrameStatus: carUpperFrameStatus,
-
-
+                    carUpperFrameStatus:carUpperFrameStatus,
                 });
 
             } else {
@@ -264,7 +267,6 @@ class MyCarSourceUpperFrameView extends BaceComponent {
             row: 10,
 
         }).then((response) => {
-
             console.log(response.mjson.data);
             carUpperFrameStatus = response.mjson.data.status;
             let carData = response.mjson.data.list;
@@ -274,9 +276,8 @@ class MyCarSourceUpperFrameView extends BaceComponent {
                 }
 
                 this.setState({
-
-                    carData: this.state.carData.cloneWithRows(carUpperFrameData),
-                    carUpperFrameStatus: carUpperFrameStatus,
+                    carData:this.state.carData.cloneWithRows(carUpperFrameData),
+                    carUpperFrameStatus:carUpperFrameStatus,
                 });
             } else {
 
@@ -297,6 +298,7 @@ class MyCarSourceUpperFrameView extends BaceComponent {
 
         if (carUpperFrameData.length && !this.state.isRefreshing && carUpperFrameStatus != 2) {
             this.loadMoreData();
+            console.log('-----------');
         }
 
     };
@@ -322,7 +324,7 @@ class MyCarSourceUpperFrameView extends BaceComponent {
             <View style={styles.viewContainer}>
                 {
                     this.state.carData &&
-                    <SGListView style={styles.listView}
+                    <ListView style={styles.listView}
                                 dataSource={this.state.carData}
                                 ref={'carListView'}
                                 initialListSize={10}
@@ -333,7 +335,7 @@ class MyCarSourceUpperFrameView extends BaceComponent {
                                 pageSize={10}
                                 renderFooter={this.renderListFooter}
                                 onEndReached={this.toEnd}
-                                renderRow={(rowData) =><MyCarCell carCellData={rowData}  cellClick={this.props.carCellClick} footButtonClick={this.props.footButtonClick} type={0}/>}
+                              renderRow={(rowData) =><MyCarCell carCellData={rowData} cellClick={this.props.carCellClick} footButtonClick={this.props.footButtonClick} type={1}/>}
                                 refreshControl={
                                     <RefreshControl
                                         refreshing={this.state.isRefreshing}
@@ -356,7 +358,7 @@ class MyCarSourceDropFrameView extends BaceComponent {
         super(props);
         // 初始状态
 
-        const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id == r2.id});
+        const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id != r2.id});
         this.state = {
 
             carData: carData,
@@ -409,7 +411,6 @@ class MyCarSourceDropFrameView extends BaceComponent {
                     isRefreshing: false,
                     renderPlaceholderOnly: 'success',
                     carDropFrameStatus: carDropFrameStatus,
-
 
                 });
 
@@ -503,7 +504,7 @@ class MyCarSourceDropFrameView extends BaceComponent {
             <View style={styles.viewContainer}>
                 {
                     this.state.carData &&
-                    <SGListView style={styles.listView}
+                    <ListView style={styles.listView}
                                 dataSource={this.state.carData}
                                 ref={'carListView'}
                                 initialListSize={10}
@@ -537,7 +538,7 @@ class MyCarSourceAuditView extends BaceComponent {
         super(props);
         // 初始状态
 
-        const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id == r2.id});
+        const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id != r2.id});
         this.state = {
 
             carData: carData,
@@ -691,7 +692,7 @@ class MyCarSourceAuditView extends BaceComponent {
                                 pageSize={10}
                                 renderFooter={this.renderListFooter}
                                 onEndReached={this.toEnd}
-                                renderRow={(rowData) =><MyCarCell carCellData={rowData} cellClick={this.props.carCellClick} footButtonClick={this.props.footButtonClick} type={1}/>}
+                                renderRow={(rowData) =><MyCarCell carCellData={rowData} cellClick={this.props.carCellClick} footButtonClick={this.props.footButtonClick} type={3}/>}
                                 refreshControl={
                                     <RefreshControl
                                         refreshing={this.state.isRefreshing}

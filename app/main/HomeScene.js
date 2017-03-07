@@ -35,6 +35,7 @@ import  StorageUtil from '../utils/StorageUtil';
 import * as storageKeyNames from '../constant/storageKeyNames';
 import WebScene from './WebScene';
 import  CarMySourceScene from '../carSource/CarMySourceScene';
+import  NewRepaymentInfoScene from '../finance/repayment/NewRepaymentInfoScene';
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 let allList = [];
 export class HomeHeaderItemInfo {
@@ -115,7 +116,7 @@ export default class HomeScene extends BaseComponet {
                             // this.refs.viewpage.changeData(response.mjson.data);
                         }
                     });
-                    status = response.mjson.data.carList.status;
+                    status = response.mjson.data.carList.pageCount;
                 },
                 (error) => {
                     this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
@@ -139,7 +140,7 @@ export default class HomeScene extends BaseComponet {
     }
 
     toEnd = () => {
-        if (status == 1) {
+        if (page<status) {
             page++;
             this.getData();
         }
@@ -285,9 +286,9 @@ export default class HomeScene extends BaseComponet {
 
                     </View>
                     <TouchableOpacity style={{marginRight: Pixel.getPixel(20)}} onPress={()=> {
-                                   this.props.jumpScene('carpage');
-                                   {/*this.props.callBack({name:'ContractInfoScene',component:ContractInfoScene,*/}
-                                   {/*params:{showButton:true}});*/}
+                                   {/*this.props.jumpScene('carpage');*/}
+                                   this.props.callBack({name:'NewRepaymentInfoScene',component:NewRepaymentInfoScene,
+                                   params:{showButton:true}});
                     }}>
                         <View style={{
                             flexDirection: 'row',
