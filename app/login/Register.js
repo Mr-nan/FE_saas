@@ -115,6 +115,7 @@ export default class Register extends BaseComponent {
                                 leftIcon={false}
                                 clearValue={true}
                                 maxLength={11}
+                                keyboardType={'phone-pad'}
                                 rightIcon={false}/>
                             <LoginInputText
                                 ref="verifycode"
@@ -122,6 +123,7 @@ export default class Register extends BaseComponent {
                                 viewStytle={styles.itemStyel}
                                 inputTextStyle={styles.inputTextStyle}
                                 leftIcon={false}
+                                keyboardType={'phone-pad'}
                                 rightIconClick={this.Verifycode}
                                 rightIconSource={this.state.verifyCode ? this.state.verifyCode : null}/>
                             <LoginInputText
