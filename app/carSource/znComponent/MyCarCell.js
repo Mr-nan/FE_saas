@@ -26,9 +26,9 @@ export default class MyCarCell extends Component {
 
     };
 
-    footButtonClick=(typeStr,carID)=>{
+    footButtonClick=(typeStr,groupStr,carID)=>{
 
-        this.props.footButtonClick(typeStr,carID);
+        this.props.footButtonClick(typeStr,this.props.type,carID);
     };
 
 
@@ -36,13 +36,13 @@ export default class MyCarCell extends Component {
 
         switch(type) {
             case 1:
-                return(require('../../../images/carSourceImages/audit.png'));
-                break;
-            case 2:
-                return(require('../../../images/carSourceImages/soldOut.png'));
+                return(require('../../../images/carSourceImages/audit.png')); // 审核中
                 break;
             case 3:
-                return(require('../../../images/carSourceImages/accomplish.png'));
+                return(require('../../../images/carSourceImages/soldOut.png')); // 已下架
+                break;
+            case 4:
+                return(require('../../../images/carSourceImages/accomplish.png')); //已成交
                 break;
             default:
                 break;
@@ -60,55 +60,50 @@ export default class MyCarCell extends Component {
     render(){
 
         const {carCellData} = this.props;
+        const  carType = carCellData.status;
         return(
             <TouchableOpacity onPress={()=>{this.cellClick(carCellData)}}>
                 <View style={[styles.container,styles.lineBottom]} >
 
                     <View style={styles.cellContentView}>
                         <View style={styles.imageView} >
-                            <Image style={styles.image} source={carCellData.img?{uri:carCellData.img}:require('../../../images/carSourceImages/car_null_img.png')}/>
+                            <Image style={styles.image}
+                                   source={carCellData.img?{uri:carCellData.img+'?x-oss-process=image/resize,w_'+120+',h_'+80}:require('../../../images/carSourceImages/car_null_img.png')}/>
                         </View>
                         <View style={[styles.textContainer]}>
                             <View style={{backgroundColor:'white'}}>
-                                <Text style={styles.mainText}>{'['+carCellData.city_name+']'+carCellData.brand_name+carCellData.model_name}</Text>
+                                <Text style={styles.mainText}>{'['+carCellData.city_name+']'+carCellData.model_name}</Text>
                             </View>
                             <View style={{backgroundColor:'white'}}>
                                 <Text style={styles.subTitleText}>{this.dateReversal(carCellData.manufacture+'000')+'/'+carCellData.mileage+'万公里'}</Text>
                             </View>
                         </View>
-                            <Image style={styles.tailImage} source={this.getImage(this.props.type)}/>
+                            <Image style={styles.tailImage} source={this.getImage(carType)}/>
                     </View>
                     <View style={styles.cellFootView}>
-
-                        <TouchableOpacity onPress={()=>{this.footButtonClick('编辑',carCellData)}}>
+                        <TouchableOpacity onPress={()=>{this.footButtonClick('编辑',this.props.type,carCellData)}}>
                             <View style={styles.cellFoot}>
                                 <Text style={styles.cellFootText}>编辑</Text>
                             </View>
                         </TouchableOpacity>
                         {
-                            this.props.type==0 &&
-                            <TouchableOpacity onPress={()=>{this.footButtonClick('下架',carCellData)}}>
+                            carType==2 &&
+                            <TouchableOpacity onPress={()=>{this.footButtonClick('下架',this.props.type,carCellData)}}>
                                 <View style={styles.cellFoot}>
                                     <Text style={styles.cellFootText}>下架</Text>
                                 </View>
                             </TouchableOpacity>
                         }
                         {
-                            this.props.type==1 &&
-                            <TouchableOpacity onPress={()=>{this.footButtonClick('上架',carCellData)}}>
+                            (carType==1||carType==3 ) &&
+                            <TouchableOpacity onPress={()=>{this.footButtonClick('上架',this.props.type,carCellData)}}>
                                 <View style={styles.cellFoot}>
                                     <Text style={styles.cellFootText}>上架</Text>
                                 </View>
                             </TouchableOpacity>
 
                         }
-                        {/*{*/}
-                        {/*this.props.type!==2&&<View style={styles.cellFoot}>*/}
-                        {/*<Text style={styles.cellFootText}>生产二维码</Text>*/}
-                        {/*</View>*/}
-                        {/*}*/}
                     </View>
-
                 </View>
             </TouchableOpacity>
         )
@@ -131,7 +126,7 @@ const styles = StyleSheet.create({
         height:110,
         flexDirection:'row',
         borderBottomWidth:StyleSheet.hairlineWidth,
-        borderColor:fontAndColor.COLORA4,
+        borderColor:fontAndColor.COLORA3,
         overflow:'hidden',
 
     },
@@ -165,7 +160,7 @@ const styles = StyleSheet.create({
     lineBottom:{
 
         borderBottomWidth:10,
-        borderColor:fontAndColor.COLORA4,
+        borderColor:fontAndColor.COLORA3,
 
     },
 

@@ -217,6 +217,10 @@ export default class EditCarScene extends BaseComponent {
                             this._showHint('请选择车辆出厂日期');
                             return;
                         }
+                        if(rd.v_type === '1' && this.isEmpty(rd.init_reg) === true){
+                            this.props.showHint('请选择车辆初登日期');
+                            return;
+                        }
                         let modelInfo = JSON.parse(rd.model);
                         let params = {
                             show_shop_id: this.shop_id,

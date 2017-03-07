@@ -338,7 +338,7 @@ export default class FinanceSence extends BaseComponet {
                         alignItems: 'center'
                     }]}>
                             <MyButton {...this.buttonParams}/>
-                            <Text style={cellSheet.rowTopTextStyle}>{this.state.customerName}</Text>
+                            <Text numberOfLines={1} style={cellSheet.rowTopTextStyle}>{this.state.customerName}</Text>
                         </View>
                         <View style={[{
                         height: Pixel.getPixel(40),
@@ -445,7 +445,7 @@ export default class FinanceSence extends BaseComponet {
                     <View style={{width:width,height:Pixel.getTitlePixel(105),flexDirection:'row'}}>
                         <View style={{flex:1}}></View>
                         <View style={{flex:3,alignItems: 'center'}}>
-                            <Text
+                            <Text numberOfLines={1}
                                 style={{fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34),
                                 color:'#fff',marginTop:Pixel.getTitlePixel(25),backgroundColor: '#00000000'}}>
                                 金融 ({this.state.customerName})</Text>

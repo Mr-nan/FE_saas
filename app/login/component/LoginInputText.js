@@ -93,7 +93,8 @@ export default class LoginInputText extends Component {
 
     renderLoading() {
         return (
-            <ActivityIndicator size='small' style={[styles.iconStyle, this.props.rightIconStyle]}/>
+            <ActivityIndicator size='small'
+                               style={[styles.iconStyle, {width: Pixel.getPixel(45)}, this.props.rightIconStyle]}/>
         );
     }
 
