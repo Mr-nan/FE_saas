@@ -286,9 +286,9 @@ export default class HomeScene extends BaseComponet {
 
                     </View>
                     <TouchableOpacity style={{marginRight: Pixel.getPixel(20)}} onPress={()=> {
-                                   {/*this.props.jumpScene('carpage');*/}
-                                   this.props.callBack({name:'NewRepaymentInfoScene',component:NewRepaymentInfoScene,
-                                   params:{showButton:true}});
+                                   this.props.jumpScene('carpage');
+                                   {/*this.props.callBack({name:'NewRepaymentInfoScene',component:NewRepaymentInfoScene,*/}
+                                   {/*params:{showButton:true}});*/}
                     }}>
                         <View style={{
                             flexDirection: 'row',

@@ -30,7 +30,7 @@ let moneyList = [];
 let nameList = [];
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
-export  default class PurchaseLoanStatusScene extends BaseComponent {
+export  default class RepaymentInfoPage extends BaseComponent {
 
     constructor(props) {
         super(props);
