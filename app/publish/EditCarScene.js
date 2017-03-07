@@ -237,7 +237,7 @@ export default class EditCarScene extends BaseComponent {
                             label: rd.label,
                             nature_use: rd.nature_use,
                             plate_number: rd.plate_number,
-                            transfer_times: rd.transfer_times
+                            transfer_times: rd.transfer_number
                         };
                         if (!this.fromNew) {
                             params['id'] = this.carId;
