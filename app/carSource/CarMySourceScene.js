@@ -24,6 +24,7 @@ import EditCarScene         from '../publish/EditCarScene'
 import MyCarCell     from './znComponent/MyCarCell';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import RepaymenyTabBar from '../finance/repayment/component/RepaymenyTabBar';
+import NewCarScene      from '../publish/NewCarScene';
 import * as fontAndColor from '../constant/fontAndColor';
 import * as AppUrls from "../constant/appUrls";
 import  {request}           from '../utils/RequestUtil';
@@ -121,6 +122,29 @@ export default class CarMySourceScene extends BaceComponent {
         });
     }
 
+    pushNewCarScene=()=>{
+
+        let navigatorParams = {
+
+            name: "NewCarScene",
+            component: NewCarScene,
+            params: {
+
+                fromNew: false,
+            }
+        };
+        this.toNextPage(navigatorParams);
+    }
+
+    renderRightFootView=()=>{
+
+        return(
+            <TouchableOpacity onPress={this.pushNewCarScene}>
+                <Text style={{color:"#FFFFFF", fontSize:fontAndColor.BUTTONFONT30}}>发布车源</Text>
+            </TouchableOpacity>
+        )
+    }
+
     render() {
         return (
             <View style={styles.rootContainer}>
@@ -134,7 +158,7 @@ export default class CarMySourceScene extends BaceComponent {
                     <MyCarSourceAuditView  ref="AuditView"  carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper3"/>
 
                 </ScrollableTabView>
-                <NavigatorView title='我的车源' backIconClick={this.backPage}/>
+                <NavigatorView title='我的车源' backIconClick={this.backPage} renderRihtFootView={this.renderRightFootView}/>
             </View>)
 
     }

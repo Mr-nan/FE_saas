@@ -312,14 +312,18 @@ export default class CarInfoScene extends BaseComponent {
                     <View style={styles.contentContainer}>
                         <View style={styles.contentView}>
                             <Text style={styles.titleText}>{carData.model_name+carData.series_name}</Text>
-                            <View style={styles.titleFootView}>
+                            {
+                                carData.dealer_price>0 &&
+                                <View style={styles.titleFootView}>
                                 <View style={styles.browseView}>
-                                    {/*<Image style={{marginRight: 5}}*/}
-                                           {/*source={require('../../images/carSourceImages/browse.png')}/>*/}
-                                    {/*<Text style={styles.browseText}>1024次浏览</Text>*/}
+                                {/*<Image style={{marginRight: 5}}*/}
+                                {/*source={require('../../images/carSourceImages/browse.png')}/>*/}
+                                {/*<Text style={styles.browseText}>1024次浏览</Text>*/}
                                 </View>
                                 <Text style={styles.priceText}>{carData.dealer_price>0?(carData.dealer_price +'万'):''}</Text>
-                            </View>
+                                </View>
+                            }
+
                         </View>
                     </View>
                     {
