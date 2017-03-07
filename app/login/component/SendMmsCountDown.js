@@ -45,7 +45,7 @@ export default class sendMmsCountDown extends Component {
     onSendPress = () => {
         //屏蔽用户连续点击
         this.newTime = (new Date()).valueOf();
-        if ((this.newTime - this.oldTime) > 9000) {
+        if ((this.newTime - this.oldTime) > 2000) {
             this.oldTime = this.newTime;
             if (this.countTime == TIME) {
                 this.props.callBackSms();

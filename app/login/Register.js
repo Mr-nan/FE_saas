@@ -125,6 +125,7 @@ export default class Register extends BaseComponent {
                                 leftIcon={false}
                                 keyboardType={'phone-pad'}
                                 rightIconClick={this.Verifycode}
+                                rightIconStyle={{width: Pixel.getPixel(100)}}
                                 rightIconSource={this.state.verifyCode ? this.state.verifyCode : null}/>
                             <LoginInputText
                                 ref="smsCode"
@@ -332,7 +333,7 @@ export default class Register extends BaseComponent {
                 }, (error) => {
                     if (error.mjson.code == -300 || error.mjson.code == -500) {
                         this.props.showToast("注册失败");
-                    }  else if (error.mjson.code == 7040004) {
+                    } else if (error.mjson.code == 7040004) {
                         this.Verifycode();
                         this.props.showToast(error.mjson.msg + "");
                     } else {
