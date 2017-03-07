@@ -197,22 +197,24 @@ export default class ModelSelect extends PureComponent {
     };
 
     _copyDataByVin = ()=>{
-        if(this.lastVin !== '' && this.lastVin !== this.vin){
-            SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
-                [ this.lastVin ],
-                (data) => {
-                    if (data.code === 1) {
-                        if(data.result.rows.length > 0){
-                            let rdb = data.result.rows.item(0);
-                            SQLite.changeData('INSERT INTO publishCar (vin,model,pictures,v_type,manufacture,init_reg,' +
-                                'mileage,plate_number,emission,label,nature_use,car_color,trim_color,' +
-                                'transfer_number,dealer_price,describe) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-                                [this.vin, rdb.model, rdb.pictures,rdb.v_type, rdb.manufacture, rdb.init_reg, rdb.mileage,
-                                    rdb.plate_number, rdb.emission, rdb.label, rdb.nature_use, rdb.car_color, rdb.trim_color,
-                                    rdb.transfer_number, rdb.dealer_price, rdb.describe]);
+        if(this.lastVin !== this.vin){
+            if(this.lastVin !== ''){
+                SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
+                    [ this.lastVin ],
+                    (data) => {
+                        if (data.code === 1) {
+                            if(data.result.rows.length > 0){
+                                let rdb = data.result.rows.item(0);
+                                SQLite.changeData('INSERT INTO publishCar (vin,model,pictures,v_type,manufacture,init_reg,' +
+                                    'mileage,plate_number,emission,label,nature_use,car_color,trim_color,' +
+                                    'transfer_number,dealer_price,describe) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                                    [this.vin, rdb.model, rdb.pictures,rdb.v_type, rdb.manufacture, rdb.init_reg, rdb.mileage,
+                                        rdb.plate_number, rdb.emission, rdb.label, rdb.nature_use, rdb.car_color, rdb.trim_color,
+                                        rdb.transfer_number, rdb.dealer_price, rdb.describe]);
+                            }
                         }
-                    }
-                });
+                    });
+            }
             this.lastVin = this.vin;
         }
     };
