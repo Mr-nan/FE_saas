@@ -101,7 +101,12 @@ export  default class CarOverdue extends BaseComponent {
         return (
             <TouchableOpacity onPress={() => {
                 if (typeof(map.get(rowData.auto_id)) == 'undefined') {
-                    map.set(rowData.auto_id, rowData);
+                    if ((rowData.status_str + "").indexOf('已申请') > -1) {
+                        this.props.showToast("已申请展期");
+                    } else {
+                        map.set(rowData.auto_id, rowData);
+                        this.doExtensionPc(rowData.loan_number);
+                    }
                 } else {
                     map.delete(rowData.auto_id);
                 }
@@ -221,10 +226,9 @@ export  default class CarOverdue extends BaseComponent {
                 auto_ids: auto_ids,
                 loan_code: "" + this.props.loan_code,
             };
-            alert(auto_ids)
             request(AppUrls.FINANCE, 'Post', maps)
                 .then((response) => {
-                        this.props.showToast("请求成功");
+                        this.props.showToast("展期申请成功");
                     }, (error) => {
                         if (error.mjson.code == -300 || error.mjson.code == -500) {
                             this.props.showToast("网络请求失败");
@@ -234,6 +238,19 @@ export  default class CarOverdue extends BaseComponent {
                     }
                 )
         }
+    }
+
+    doExtensionPc = (loan_number) => {
+        let maps = {
+            api: AppUrls.DO_EXTENSIONPC,
+            loan_number: loan_number,
+            loan_code: "" + this.props.loan_code,
+        };
+        request(AppUrls.FINANCE, 'Post', maps)
+            .then((response) => {
+                }, (error) => {
+                }
+            )
     }
 }
 
