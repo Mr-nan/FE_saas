@@ -308,8 +308,8 @@ export default class LoginScene extends BaseComponent {
             this.props.showToast("请输入正确的用户名");
         } else if (typeof(passWord) == "undefined" || passWord == "") {
             this.props.showToast("密码不能为空");
-        } else if (passWord.length < 8) {
-            this.props.showToast("密码必须为8~16位");
+        } else if (passWord.length < 6) {
+            this.props.showToast("密码必须为6~16位");
         } else if (typeof(verifyCode) == "undefined" || verifyCode == "") {
             this.props.showToast("验证码不能为空");
         } else if (typeof(smsCode) == "undefined" || smsCode == "") {

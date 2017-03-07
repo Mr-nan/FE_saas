@@ -292,8 +292,8 @@ export default class Register extends BaseComponent {
             this.props.showToast("密码不能为空");
         } else if (typeof(password) == "undefined" || password == "") {
             this.props.showToast("密码不能为空");
-        } else if (passwoedAgain.length < 8) {
-            this.props.showToast("密码必须为8~16位");
+        } else if (passwoedAgain.length < 6) {
+            this.props.showToast("密码必须为6~16位");
         } else if (typeof(name) == "undefined" || name == "") {
             this.props.showToast("用户名不能为空");
         } else if (typeof(businessName) == "undefined" || businessName == "") {
