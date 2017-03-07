@@ -12,6 +12,7 @@ import {
     TouchableHighlight,
     Image,
     Modal,
+    TouchableOpacity,
 } from 'react-native';
 import * as fontAndClolr from '../../constant/fontAndColor';
 export  default class ShareSpanner extends Component {
@@ -30,6 +31,11 @@ export  default class ShareSpanner extends Component {
             show: !isShow,
         });
     }
+    _hideModal = ()=> {
+        this.setState({
+            show: false
+        });
+    };
 
     render() {
         return (
@@ -41,7 +47,7 @@ export  default class ShareSpanner extends Component {
                 }}
                 onRequestClose={() => {
                 }}>
-
+                <TouchableOpacity style={styles.modalStyle} onPress={this._hideModal}>
                 <View style={styles.modalStyle}>
                     <View style={{flex: 1, backgroundColor: '#bbB2B2B2'}}/>
                     <View style={styles.subView}>
@@ -71,6 +77,7 @@ export  default class ShareSpanner extends Component {
                         </TouchableHighlight>
                     </View>
                 </View>
+                </TouchableOpacity>
             </Modal>
 
         );

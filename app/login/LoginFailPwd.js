@@ -62,10 +62,11 @@ export default class LoginFailPwd extends BaseComponent {
         return (
             <View style={styles.container}>
                 <NavigationBar
-                    leftImageShow={true}
-                    leftTextShow={false}
+                    leftImageShow={false}
+                    leftTextShow={true}
                     centerText={"设置登录密码"}
-                    rightText={"  "}
+                    rightText={""}
+                    leftText={""}
                     leftImageCallBack={this.backPage}
                 />
                 <View style={{width: width, height: Pixel.getPixel(15)} }/>
@@ -120,8 +121,8 @@ export default class LoginFailPwd extends BaseComponent {
             this.props.showToast("请输入正确的手机号");
         } else if (typeof(newPassword) == "undefined" || newPassword == "") {
             this.props.showToast("新密码不能为空");
-        } else if (newPassword.length < 8) {
-            this.props.showToast("密码必须为8~16位");
+        } else if (newPassword.length < 6) {
+            this.props.showToast("密码必须为6~16位");
         } else if (typeof(newPasswordAgain) == "undefined" || newPasswordAgain == "") {
             this.props.showToast("再次确认密码不能为空");
         } else if (newPassword !== newPasswordAgain) {

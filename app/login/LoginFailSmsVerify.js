@@ -165,6 +165,9 @@ export default class LoginFailSmsVerify extends BaseComponent {
                     this.props.showModal(false);
                     if (error.mjson.code == -300 || error.mjson.code == -500) {
                         this.props.showToast("短信验证码获取失败");
+                    } else if (error.mjson.code == 7040012) {
+                        this.Verifycode();
+                        this.props.showToast(error.mjson.msg + "");
                     } else {
                         this.props.showToast(error.mjson.msg + "");
                     }
@@ -226,9 +229,11 @@ export default class LoginFailSmsVerify extends BaseComponent {
                     }
                 }, (error) => {
                     this.props.showModal(false);
-                    this.Verifycode();
                     if (error.mjson.code == -300 || error.mjson.code == -500) {
                         this.props.showToast("登录失败");
+                    }  else if (error.mjson.code == 7040004) {
+                        this.Verifycode();
+                        this.props.showToast(error.mjson.msg + "");
                     } else {
                         this.props.showToast(error.mjson.msg + "");
                     }
