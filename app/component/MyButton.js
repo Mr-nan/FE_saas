@@ -39,8 +39,8 @@ export default class MyButton extends PureComponent {
     onPress = () => {
         this.newTime = (new Date()).valueOf();
         if ((this.newTime - this.oldTime) > 500) {
-            this.props.mOnPress()
             this.oldTime = this.newTime;
+            this.props.mOnPress()
         }
     }
 }
