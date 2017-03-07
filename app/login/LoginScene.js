@@ -266,6 +266,9 @@ export default class LoginScene extends BaseComponent {
                     this.props.showModal(false);
                     if (error.mjson.code == -300 || error.mjson.code == -500) {
                         this.props.showToast("获取验证码失败");
+                    } else if (error.mjson.code == 7040012) {
+                        this.Verifycode();
+                        this.props.showToast(error.mjson.msg + "");
                     } else {
                         this.props.showToast(error.mjson.msg + "");
                     }
@@ -387,7 +390,7 @@ export default class LoginScene extends BaseComponent {
                     this.props.showModal(false);
                     if (error.mjson.code == -300 || error.mjson.code == -500) {
                         this.props.showToast("登录失败");
-                    }  else if (error.mjson.code == 7040004) {
+                    } else if (error.mjson.code == 7040004) {
                         this.Verifycode();
                         this.props.showToast(error.mjson.msg + "");
                     } else {
