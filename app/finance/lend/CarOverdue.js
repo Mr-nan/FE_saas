@@ -205,14 +205,23 @@ export  default class CarOverdue extends BaseComponent {
     }
 
     doExtension = () => {
+        let auto_ids = "";
         if (map.size < 1) {
             alert("请选择车辆")
         } else {
+            for (let key of map.keys()) {
+                if (auto_ids == '') {
+                    auto_ids = key;
+                } else {
+                    auto_ids = auto_ids + "," + key;
+                }
+            }
             let maps = {
                 api: AppUrls.DO_EXTENSION,
-                auto_ids: Object.keys(map) +'',
+                auto_ids: auto_ids,
                 loan_code: "" + this.props.loan_code,
             };
+            alert(auto_ids)
             request(AppUrls.FINANCE, 'Post', maps)
                 .then((response) => {
                         this.props.showToast("请求成功");
