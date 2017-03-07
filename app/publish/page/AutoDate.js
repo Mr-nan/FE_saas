@@ -27,6 +27,7 @@ const SQLite = new SQLiteUtil();
 export default class AutoDate extends Component{
 
     constructor(props){
+        console.log('================>>>>>>>>>>constructor');
         super(props);
         this.type = '';
         let manufacture = this.props.carData.manufacture;
@@ -76,7 +77,7 @@ export default class AutoDate extends Component{
 
     componentWillReceiveProps(nextProps: Object) {
         this.setState({
-            hasRegister: nextProps.carData.v_type === '1'|| this.props.carData.v_type === ''
+            hasRegister: nextProps.carData.v_type === '1'|| nextProps.carData.v_type === ''
         },()=>{
             if(this.state.hasRegister === false) {
                 SQLite.changeData(

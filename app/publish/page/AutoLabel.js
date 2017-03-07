@@ -52,71 +52,68 @@ export default class AutoLabel extends Component {
 
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: false});
-        });
+            this.setState({renderPlaceholderOnly: false},()=>{
+                this.props.showLoading();
+                Net.request(AppUrls.CAR_CONFIG,'post',{}).then(
+                    (response)=>{
+                        if(response.mycode === 1){
+                            let auto_label = response.mjson.data.auto_label;
+                            if(typeof(auto_label) == 'undefined' || auto_label.length === 0){
+                                this.viewData = [
+                                    {name: '座椅加热', selected: false, index: 0, value: ''},
+                                    {name: '全景天窗', selected: false, index: 1, value: ''},
+                                    {name: '定速巡航', selected: false, index: 2, value: ''},
+                                    {name: '全时四驱', selected: false, index: 3, value: ''},
+                                    {name: '油电混合', selected: false, index: 4, value: ''},
+                                    {name: '迎宾灯', selected: false, index: 5, value: ''},
+                                    {name: '无钥匙启动', selected: false, index: 6, value: ''},
+                                    {name: '倒车影像', selected: false, index: 7, value: ''}
+                                ];
+                            }else{
+                                this.viewData = [];
+                                auto_label.map((d,i)=>{
+                                    this.viewData.push({
+                                        name: d.name,
+                                        value:d.value,
+                                        selected:false,
+                                        index:i
+                                    });
+                                });
+                            }
 
-        this.props.showLoading();
-        Net.request(AppUrls.CAR_CONFIG,'post',{}).then(
-            (response)=>{
-                if(response.mycode === 1){
-                    let auto_label = response.mjson.data.auto_label;
-                    if(typeof(auto_label) == 'undefined' || auto_label.length === 0){
-                        this.viewData = [
-                            {name: '座椅加热', selected: false, index: 0, value: ''},
-                            {name: '全景天窗', selected: false, index: 1, value: ''},
-                            {name: '定速巡航', selected: false, index: 2, value: ''},
-                            {name: '全时四驱', selected: false, index: 3, value: ''},
-                            {name: '油电混合', selected: false, index: 4, value: ''},
-                            {name: '迎宾灯', selected: false, index: 5, value: ''},
-                            {name: '无钥匙启动', selected: false, index: 6, value: ''},
-                            {name: '倒车影像', selected: false, index: 7, value: ''}
-                        ];
-                    }else{
-                        this.viewData = [];
-                        auto_label.map((d,i)=>{
-                            this.viewData.push({
-                                name: d.name,
-                                value:d.value,
-                                selected:false,
-                                index:i
-                            });
-                        });
-                    }
-
-                }else{
-                    this.viewData = [
-                        {name: '座椅加热', selected: false, index: 0, value: ''},
-                        {name: '全景天窗', selected: false, index: 1, value: ''},
-                        {name: '定速巡航', selected: false, index: 2, value: ''},
-                        {name: '全时四驱', selected: false, index: 3, value: ''},
-                        {name: '油电混合', selected: false, index: 4, value: ''},
-                        {name: '迎宾灯', selected: false, index: 5, value: ''},
-                        {name: '无钥匙启动', selected: false, index: 6, value: ''},
-                        {name: '倒车影像', selected: false, index: 7, value: ''}
-                    ];
-                }
-                if (this.isEmpty(this.label) === false) {
-                    let sels = JSON.parse(this.label);
-                    if(sels !== null){
-                        for (let i = 0; i < sels.length; i++) {
-                            this.viewData.map((vd) => {
-                                if (vd.name === sels[i].name) vd.selected = true;
-                            });
+                        }else{
+                            this.viewData = [
+                                {name: '座椅加热', selected: false, index: 0, value: ''},
+                                {name: '全景天窗', selected: false, index: 1, value: ''},
+                                {name: '定速巡航', selected: false, index: 2, value: ''},
+                                {name: '全时四驱', selected: false, index: 3, value: ''},
+                                {name: '油电混合', selected: false, index: 4, value: ''},
+                                {name: '迎宾灯', selected: false, index: 5, value: ''},
+                                {name: '无钥匙启动', selected: false, index: 6, value: ''},
+                                {name: '倒车影像', selected: false, index: 7, value: ''}
+                            ];
                         }
+                        if (this.isEmpty(this.label) === false) {
+                            let sels = JSON.parse(this.label);
+                            if(sels !== null){
+                                for (let i = 0; i < sels.length; i++) {
+                                    this.viewData.map((vd) => {
+                                        if (vd.name === sels[i].name) vd.selected = true;
+                                    });
+                                }
+                            }
+                        }
+
+                        this.props.closeLoading();
+                        this.interiorGrid.refresh(this.viewData);
+                    },
+                    (error)=>{
+                        this.props.closeLoading();
+                        this.props.showHint(JSON.stringify(error));
                     }
-                }
-
-                this.props.closeLoading();
-            },
-            (error)=>{
-                this.props.closeLoading();
-                this.props.showHint(JSON.stringify(error));
-            }
-        );
-    }
-
-    componentDidUpdate(){
-        this.interiorGrid.refresh(this.viewData);
+                );
+            });
+        });
     }
 
     _labelPress = (i) => {
@@ -179,6 +176,7 @@ export default class AutoLabel extends Component {
     _renderPlaceholderView = () => {
         return (<Image style={[styles.img,{height:height-this.props.barHeight}]} source={background}/>);
     };
+
     _onBack = () => {
         this.props.onBack();
     };
@@ -197,7 +195,6 @@ export default class AutoLabel extends Component {
         if (this.state.renderPlaceholderOnly) {
             return this._renderPlaceholderView();
         }
-
         return (
             <View style={styles.container}>
                 <Image style={[styles.imgContainer,{height:height-this.props.barHeight}]} source={background}>

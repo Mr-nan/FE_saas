@@ -191,23 +191,19 @@ export default class EditCarScene extends BaseComponent {
                         let rd = data.result.rows.item(0);
 
                         if(this.isEmpty(rd.model) === true){
-                            this._closeLoading();
                             this._showHint('请选择车型信息');
                             return;
                         }
 
                         if(this.isEmpty(rd.pictures) === true){
-                            this._closeLoading();
                             this._showHint('请拍摄车辆照片');
                             return;
                         }
-                        if(this.isEmpty(rd.mileage) === true){
-                            this._closeLoading();
+                        if(rd.v_type === '1' && this.isEmpty(rd.mileage) === false && rd.mileage === '0.00'){
                             this._showHint('请填写车辆里程');
                             return;
                         }
                         if(this.isEmpty(rd.manufacture) === true){
-                            this._closeLoading();
                             this._showHint('请选择车辆出厂日期');
                             return;
                         }
@@ -265,14 +261,25 @@ export default class EditCarScene extends BaseComponent {
                                     }
                                 },
                                 (error) => {
-                                    this._closeLoading();
-                                    if(IS_ANDROID === true){
-                                        this._showHint(JSON.stringify(error));
-                                    }else {
-                                        this.timer = setTimeout(
-                                            () => { this._showHint(JSON.stringify(error)); },
-                                            500
-                                        );
+                                    this.props.closeLoading();
+                                    if(error.mycode === -300 || error.mycode === -500){
+                                        if(IS_ANDROID === true){
+                                            this.props.showHint('网络请求失败');
+                                        }else {
+                                            this.timer = setTimeout(
+                                                () => { this.props.showHint('网络请求失败'); },
+                                                500
+                                            );
+                                        }
+                                    }else{
+                                        if(IS_ANDROID === true){
+                                            this.props.showHint(error.mjson.msg);
+                                        }else {
+                                            this.timer = setTimeout(
+                                                () => { this.props.showHint(error.mjson.msg); },
+                                                500
+                                            );
+                                        }
                                     }
                                 });
                     } else {
