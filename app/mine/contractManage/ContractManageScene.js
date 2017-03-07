@@ -52,12 +52,14 @@ export default class ContractManageScene extends BaseComponent {
                         allSouce.push(...response.mjson.data.contract_list);
                         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
-                            dataSource: ds.cloneWithRows(allSouce),});
+                            dataSource: ds.cloneWithRows(allSouce),
+                            isRefreshing: false
+                        });
                         this.setState({renderPlaceholderOnly: 'success'});
                     }
                 },
                 (error) => {
-                    this.setState({renderPlaceholderOnly: 'error'});
+                    this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
                 });
     }
     // 构造
@@ -66,8 +68,36 @@ export default class ContractManageScene extends BaseComponent {
         this.state = {
             dataSource: {},
             renderPlaceholderOnly: 'blank',
+            isRefreshing: false
         };
 
+    }
+
+    refreshingData = () => {
+        allSouce = [];
+        this.setState({isRefreshing: true});
+        page = 1;
+        this.getData();
+    };
+
+    toEnd = () => {
+        if (this.state.isRefreshing) {
+
+        } else {
+            if (page < allPage) {
+                page++;
+                this.getData();
+            }
+        }
+
+    };
+
+    renderListFooter = () => {
+        if (this.state.isRefreshing) {
+            return null;
+        } else {
+            return (<LoadMoreFooter isLoadAll={page>=allPage?true:false}/>)
+        }
     }
 
     render() {
@@ -85,6 +115,18 @@ export default class ContractManageScene extends BaseComponent {
                           dataSource={this.state.dataSource}
                           renderRow={this._renderRow}
                           enableEmptySections = {true}
+                          renderFooter={
+                              this.renderListFooter
+                          }
+                          onEndReached={this.toEnd}
+                          refreshControl={
+                              <RefreshControl
+                                  refreshing={this.state.isRefreshing}
+                                  onRefresh={this.refreshingData}
+                                  tintColor={[fontAndColor.COLORB0]}
+                                  colors={[fontAndColor.COLORB0]}
+                              />
+                          }
                 />
 
             </View>);
