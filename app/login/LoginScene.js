@@ -177,6 +177,7 @@ export default class LoginScene extends BaseComponent {
                             viewStytle={styles.itemStyel}
                             leftIconUri={ require('./../../images/login/virty.png')}
                             rightIconClick={this.Verifycode}
+                            keyboardType={'phone-pad'}
                             rightIconSource={this.state.verifyCode ? this.state.verifyCode : null}
                             rightIconStyle={{width: Pixel.getPixel(100), height: Pixel.getPixel(32)}}/>
 
@@ -187,6 +188,7 @@ export default class LoginScene extends BaseComponent {
                             leftIconUri={require('./../../images/login/sms.png')}
                             rightIcon={false}
                             rightButton={true}
+                            keyboardType={'phone-pad'}
                             callBackSms={this.Smscode}/>
                         {
                             //结果列表
