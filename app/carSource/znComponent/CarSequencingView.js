@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: fontAndColor.COLORA4,
+        borderBottomColor: fontAndColor.COLORA3,
 
     },
     checkedCellText: {

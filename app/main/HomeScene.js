@@ -34,7 +34,7 @@ import CarInfoScene from '../carSource/CarInfoScene';
 import  StorageUtil from '../utils/StorageUtil';
 import * as storageKeyNames from '../constant/storageKeyNames';
 import WebScene from './WebScene';
-import ContractInfoScene from '../finance/lend/ContractInfoScene';
+import  CarMySourceScene from '../carSource/CarMySourceScene';
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 let allList = [];
 export class HomeHeaderItemInfo {
@@ -46,7 +46,6 @@ export class HomeHeaderItemInfo {
         this.describeTitle = describeTitle;
         this.functionImage = functionImage;
     }
-
 }
 
 let bossFuncArray = [
@@ -69,8 +68,8 @@ export default class HomeScene extends BaseComponet {
             renderPlaceholderOnly: 'blank',
             isRefreshing: false,
             headSource: [],
-            pageData:[]
-    };
+            pageData: []
+        };
     }
 
     initFinish = () => {
@@ -97,12 +96,22 @@ export default class HomeScene extends BaseComponet {
                             } else if (datas.user_level == 1) {
                                 bossFuncArray.splice(2, 2);
                             } else {
-                                bossFuncArray.splice(2, 2);
+                                bossFuncArray.splice(0, 4);
                             }
-                            console.log(bossFuncArray);
-                            this.setState({headSource:bossFuncArray,renderPlaceholderOnly: 'success',
-                                source: ds.cloneWithRows(allList), isRefreshing: false,
-                                allData:response.mjson.data});
+                            if (allList.length <= 0) {
+                                this.setState({
+                                    headSource: bossFuncArray, renderPlaceholderOnly: 'success',
+                                    source: ds.cloneWithRows(['1']), isRefreshing: false,
+                                    allData: response.mjson.data
+                                });
+                            } else {
+                                this.setState({
+                                    headSource: bossFuncArray, renderPlaceholderOnly: 'success',
+                                    source: ds.cloneWithRows(allList), isRefreshing: false,
+                                    allData: response.mjson.data
+                                });
+                            }
+
                             // this.refs.viewpage.changeData(response.mjson.data);
                         }
                     });
@@ -208,7 +217,7 @@ export default class HomeScene extends BaseComponet {
         if (title == '收车') {
             this.props.jumpScene('carpage');
         } else if (title == '卖车') {
-            this.props.openModal();
+            this.props.callBack({name:'CarMySourceScene',component:CarMySourceScene,params:{}});
         } else if (title == '借款') {
             this.props.jumpScene('financePage');
         } else {
@@ -304,6 +313,9 @@ export default class HomeScene extends BaseComponet {
     }
 
     _renderRow = (movie, sindex, rowID) => {
+        if (movie == '1') {
+            return (<View/>);
+        }
         return (
             <TouchableOpacity onPress={()=>{
                 this.props.callBack({name:'CarInfoScene',component:CarInfoScene,params:{carID:movie.id}});
@@ -319,7 +331,8 @@ export default class HomeScene extends BaseComponet {
                     style={{width: Pixel.getPixel(166), backgroundColor: '#ffffff', justifyContent: 'center'}}>
                     <Image style={cellSheet.imageStyle}
                            source={movie.img?{uri:movie.img+'?x-oss-process=image/resize,w_'+166+',h_'+111}:require('../../images/carSourceImages/car_null_img.png')}/>
-                    <Text style={cellSheet.despritonStyle} numberOfLines={2}>{'[' + movie.city_name + ']' + movie.model_name}</Text>
+                    <Text style={cellSheet.despritonStyle}
+                          numberOfLines={2}>{'[' + movie.city_name + ']' + movie.model_name}</Text>
                     <Text
                         style={cellSheet.timeStyle}>{this.dateReversal(movie.create_time + '000') + '/' + movie.mileage + '万公里'}</Text>
 

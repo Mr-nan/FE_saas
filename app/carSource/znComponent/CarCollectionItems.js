@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     lineBottom: {
 
         borderBottomWidth: StyleSheet.hairlineWidth,
-        borderColor: fontAndColor.COLORA4,
+        borderColor: fontAndColor.COLORA3,
 
     },
 
