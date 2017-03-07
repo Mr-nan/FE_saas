@@ -71,7 +71,13 @@ export default class DetailAutoDate extends Component{
 
     componentWillReceiveProps(nextProps) {
         this.setState({
-            hasRegister: nextProps.carType === '1'|| this.props.carType === ''
+            hasRegister: nextProps.carData.v_type === '1'|| nextProps.carData.v_type === ''
+        },()=>{
+            if(this.state.hasRegister === false) {
+                this.props.sqlUtil.changeData(
+                    'UPDATE publishCar SET init_reg = ? WHERE vin = ?',
+                    ['', this.props.carData.vin]);
+            }
         });
     }
 

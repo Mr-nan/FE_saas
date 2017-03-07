@@ -25,6 +25,11 @@ import  BrowsingHistoryScene from '../carSource/BrowsingHistoryScene';
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
 import EditEmployeeScene  from '../mine/employeeManage/EditEmployeeScene'
+import ImageSource from '../publish/component/ImageSource';
+
+var Platform = require('Platform');
+import ImagePicker from "react-native-image-picker";
+
 const cellJianTou = require('../../images/mainImage/celljiantou.png');
 let Car = [
     {
@@ -96,6 +101,22 @@ let Car = [
  * 获取屏幕的宽和高
  **/
 const {width, height} = Dimensions.get('window');
+const options = {
+    //弹出框选项
+    title: '请选择',
+    cancelButtonTitle: '取消',
+    takePhotoButtonTitle: '拍照',
+    chooseFromLibraryButtonTitle: '选择相册',
+    allowsEditing: true,
+    noData: false,
+    quality: 1.0,
+    maxWidth: 480,
+    maxHeight: 800,
+    storageOptions: {
+        skipBackup: true,
+        path: 'images',
+    }
+}
 import BaseComponent from '../component/BaseComponent';
 
 export default class MineSectionListView extends BaseComponent {
@@ -201,7 +222,11 @@ export default class MineSectionListView extends BaseComponent {
         return (
 
             <View style={styles.container}>
-
+                <ImageSource galleryClick={this._galleryClick}
+                             cameraClick={this._cameraClick}
+                             ref={(modal) => {
+                                 this.imageSource = modal
+                             }}/>
                 <ListView
                     contentContainerStyle={styles.listStyle}
                     dataSource={this.state.source}
@@ -267,11 +292,13 @@ export default class MineSectionListView extends BaseComponent {
     _renderRow = (rowData) => {
         if (rowData.name == 'blank') {
             return (
-                <View style={{width:width,height:Pixel.getPixel(2),backgroundColor:fontAndClolr.COLORA3}}></View>
+                <View style={{width: width, height: Pixel.getPixel(2), backgroundColor: fontAndClolr.COLORA3}}></View>
             );
         } else {
             return (
-                <TouchableOpacity style={styles.rowView} onPress={()=>{this._navigator(rowData)}}>
+                <TouchableOpacity style={styles.rowView} onPress={() => {
+                    this._navigator(rowData)
+                }}>
 
                     <Image source={rowData.icon} style={styles.rowLeftImage}/>
 
@@ -296,32 +323,78 @@ export default class MineSectionListView extends BaseComponent {
 
     _renderHeader = () => {
         return (
-
             <View style={styles.headerViewStyle}>
-
-                <TouchableOpacity style={[styles.headerImageStyle]}>
+                <TouchableOpacity style={[styles.headerImageStyle]} onPress={() => this.selectPhotoTapped()}>
                     <Image
-                        source={this.state.headUrl==''?require('../../images/mainImage/whiteHead.png'):require(this.state.headUrl)}
+                        source={this.state.headUrl == '' ? require('../../images/mainImage/whiteHead.png') : this.state.headUrl}
                         style={{
-                               width: Pixel.getPixel(65),
-                               height: Pixel.getPixel(65),resizeMode:'stretch'
-                           }}
+                            width: Pixel.getPixel(65),
+                            height: Pixel.getPixel(65), resizeMode: 'stretch'
+                        }}
                     />
-
                 </TouchableOpacity>
-
                 <Text style={styles.headerNameStyle}>
                     {this.state.name}
                 </Text>
-
                 <Text style={styles.headerPhoneStyle}>
                     {this.state.phone}
                 </Text>
             </View>
-
-
-
         )
+    }
+
+    selectPhotoTapped = () => {
+        if (Platform.OS == 'android') {
+            this._rePhoto();
+        } else {
+            ImagePicker.showImagePicker(options, (response) => {
+                if (response.didCancel) {
+                } else if (response.error) {
+                } else if (response.customButton) {
+                } else {
+                    let source = {uri: response.uri};
+                    this.setState({
+                        headUrl: source,
+                    });
+                }
+            });
+        }
+    }
+
+    _labelPress = () => {
+        this.imageSource.openModal();
+    };
+
+    _rePhoto = () => {
+        this.imageSource.openModal();
+    };
+
+    _cameraClick = () => {
+        ImagePicker.launchCamera(options, (response) => {
+            if (response.didCancel) {
+            } else if (response.error) {
+            } else if (response.customButton) {
+            } else {
+                let source = {uri: response.uri};
+                this.setState({
+                    headUrl: source,
+                });
+            }
+        });
+    }
+
+    _galleryClick = () => {
+        ImagePicker.launchImageLibrary(options, (response) => {
+            if (response.didCancel) {
+            } else if (response.error) {
+            } else if (response.customButton) {
+            } else {
+                let source = {uri: response.uri};
+                this.setState({
+                    headUrl: source,
+                });
+            }
+        });
     }
 
 }
