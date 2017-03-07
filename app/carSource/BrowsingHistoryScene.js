@@ -46,6 +46,8 @@ export default class BrowsingHistoryScene extends BaceComponent {
                         this.setState({renderPlaceholderOnly: 'null', isRefreshing: false});
                     } else {
                         allSouce.push(...response.mjson.data.list);
+                        console.log(response.mjson.data.list);
+
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
                             carData: ds.cloneWithRows(allSouce),
