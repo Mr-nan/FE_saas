@@ -66,12 +66,23 @@ export default class SetLoginPwdGesture extends BaseComponent {
                 ref='pg'
                 NavigationBar={
                     <View style={styles.topStyle}>
-                        <NavigationBar
-                            leftImageShow={true}
-                            leftTextShow={false}
-                            centerText={"设置手势密码"}
-                            rightText={""}
-                            leftImageCallBack={this.backPage}/>
+                        {
+                            this.props.from == 'login' ?
+                                <NavigationBar
+                                    leftImageShow={false}
+                                    leftTextShow={true}
+                                    centerText={"设置手势密码"}
+                                    rightText={""}
+                                    leftText={''}
+                                    leftImageCallBack={this.backPage}/>
+                                :
+                                <NavigationBar
+                                    leftImageShow={true}
+                                    leftTextShow={false}
+                                    centerText={"设置手势密码"}
+                                    rightText={""}
+                                    leftImageCallBack={this.backPage}/>
+                        }
                         <View style={styles.padResultsStyle}>
                             <View style={{flexDirection: 'row'}}>
                                 {this.savePwd.indexOf("1") > -1 ? <View style={styles.cycleChoseStyle}/> :
