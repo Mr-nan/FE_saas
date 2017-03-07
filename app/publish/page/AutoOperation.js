@@ -27,7 +27,6 @@ export default class AutoOperation extends Component{
         super(props);
         this.vinNum = this.props.carData.vin;
         let nature = this.props.carData.nature_use;
-        console.log(nature);
         let operate = false;
         if(this.isEmpty(nature) === false){
             operate = nature == '1'
@@ -54,6 +53,10 @@ export default class AutoOperation extends Component{
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: false});
         });
+        let text = this.state.operate === true ? '1' : '2';
+        this.props.sqlUtil.changeData(
+            'UPDATE publishCar SET nature_use = ? WHERE vin = ?',
+            [text, this.vinNum]);
     }
 
     componentWillUnmount(){

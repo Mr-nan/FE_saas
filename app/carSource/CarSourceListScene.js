@@ -28,7 +28,7 @@ import CarInfoScene         from './CarInfoScene';
 import CarBrandSelectScene  from './CarBrandSelectScene';
 import CityListScene        from './CityListScene';
 import {SequencingButton, SequencingView} from './znComponent/CarSequencingView';
-import * as AppUrls from "../constant/appUrls";
+import * as AppUrls         from "../constant/appUrls";
 import  {request}           from '../utils/RequestUtil';
 import PixelUtil            from '../utils/PixelUtil';
 import * as storageKeyNames from '../constant/storageKeyNames';
