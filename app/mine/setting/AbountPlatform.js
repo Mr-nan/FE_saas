@@ -74,6 +74,13 @@ export default class Setting extends BaseComponent {
                     color: FontAndColor.COLORA0,
                     marginTop: Pixel.getPixel(10),
                 }}>您的朋友也可以下载服务平台客户端</Text>
+                <View style={{flex: 1}}/>
+                <Text style={{
+                    fontSize: FontAndColor.CONTENTFONT,
+                    color: FontAndColor.COLORA1,
+                    marginTop: Pixel.getPixel(10),
+                    marginBottom: Pixel.getFontPixel(20),
+                }}>Copyright第一车贷版权所有</Text>
 
             </View>
         );

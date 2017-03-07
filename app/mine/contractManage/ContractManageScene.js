@@ -6,10 +6,11 @@ import  {
     Text,
     Dimensions,
     ListView,
-    RefreshControl
+    RefreshControl,
+    Image
 } from  'react-native'
 
-import * as fontAndClolr from '../../constant/fontAndColor';
+import * as fontAndColor from '../../constant/fontAndColor';
 import  PixelUtil from '../../utils/PixelUtil'
 import SignContractScene from '../contractManage/SignContractScene'
 var Pixel = new PixelUtil();
@@ -41,24 +42,22 @@ export default class ContractManageScene extends BaseComponent {
             rows: 10,
             api : 'api/v1/Contract/contractList',
             sign_status: '1',
-        };
-        request(Urls.CONTRACT_LIST, 'Post', maps)
+        };        request(Urls.FINANCE, 'Post', maps)
+
             .then((response) => {
             console.log(response.mjson);
                     if (page == 1 && response.mjson.data.contract_list.length <= 0) {
-                        this.setState({renderPlaceholderOnly: 'null', isRefreshing: false});
+                        this.setState({renderPlaceholderOnly: 'null'});
                     } else {
-                        allSouce.push(...response.mjson.data);
-                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                        allSouce.push(...response.mjson.data.contract_list);
+                        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
-                            dataSource: ds.cloneWithRows(allSouce),
-                            renderPlaceholderOnly: 'success',
-                            isRefreshing: false
-                        });
+                            dataSource: ds.cloneWithRows(allSouce),});
+                        this.setState({renderPlaceholderOnly: 'success'});
                     }
                 },
                 (error) => {
-                    this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
+                    this.setState({renderPlaceholderOnly: 'error'});
                 });
     }
     // 构造
@@ -67,31 +66,13 @@ export default class ContractManageScene extends BaseComponent {
         this.state = {
             dataSource: {},
             renderPlaceholderOnly: 'blank',
-            isRefreshing: false
         };
 
     }
 
-    renderListFooter = () => {
-
-        if (this.state.isRefreshing) {
-            return null;
-        } else {
-            return (<LoadMoreFooter isLoadAll={page==allPage?true:false}/>)
-        }
-
-    }
-
-    refreshingData = () => {
-        allSouce = [];
-        this.setState({isRefreshing: true});
-        page = 1;
-        this.getData();
-    };
-
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
-            return ( <View style={styles.rootContainer}>
+            return ( <View style={styles.container}>
                 <NavigatorView title='合同管理' backIconClick={this.backPage}/>
                 {this.loadView()}
             </View>);
@@ -103,18 +84,7 @@ export default class ContractManageScene extends BaseComponent {
                 <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(64)}}
                           dataSource={this.state.dataSource}
                           renderRow={this._renderRow}
-                          renderFooter={
-                              this.renderListFooter
-                          }
-                          onEndReached={this.toEnd}
-                          refreshControl={
-                              <RefreshControl
-                                  refreshing={this.state.isRefreshing}
-                                  onRefresh={this.refreshingData}
-                                  tintColor={[fontAndColor.COLORB0]}
-                                  colors={[fontAndColor.COLORB0]}
-                              />
-                          }
+                          enableEmptySections = {true}
                 />
 
             </View>);
@@ -126,15 +96,18 @@ export default class ContractManageScene extends BaseComponent {
         return (
             <TouchableOpacity
                 onPress={()=>{
-                    console.log(rowID+"--"+selectionID)
                     this.toNextPage({
+                        callBack: () => {
+                            this.setState({renderPlaceholderOnly: 'loading'});
+                            this.getData();
+                        },
                 name: 'SignContractScene',
                 component: SignContractScene,
                 params: {rowID},
             })}}>
                 <View style={styles.rowView} >
                     <Text style={styles.rowLeftTitle}>第一车贷是个公司</Text>
-                    {selectionID!=='2' ? <Text style={styles.rowRightTitle} >7份合同</Text>:null}
+                    <Text style={styles.rowRightTitle} >7份合同</Text>
                     <Image source={cellJianTou} style={styles.image}></Image>
 
                 </View>
@@ -148,35 +121,35 @@ const styles = StyleSheet.create({
 
         flex: 1,
         marginTop: Pixel.getPixel(0),   //设置listView 顶在最上面
-        backgroundColor: fontAndClolr.COLORA3,
+        backgroundColor: fontAndColor.COLORA3,
     },
     listStyle: {
         marginTop: Pixel.getPixel(15)
     },
     sectionView: {
         height: Pixel.getPixel(10),
-        backgroundColor: fontAndClolr.COLORA3,
+        backgroundColor: fontAndColor.COLORA3,
     },
     rowView: {
         height: 44,
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: 'white',
-        borderBottomColor: fontAndClolr.COLORA4,
+        borderBottomColor: fontAndColor.COLORA4,
         borderBottomWidth: 1,
         flexDirection: 'row'
     },
     rowLeftTitle: {
         marginLeft: Pixel.getPixel(15),
         flex: 1,
-        fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT28),
-        color: fontAndClolr.COLORA0,
+        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+        color: fontAndColor.COLORA0,
 
     },
     rowRightTitle: {
         marginRight: Pixel.getPixel(10),
-        color: fontAndClolr.COLORA2,
-        fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT28),
+        color: fontAndColor.COLORA2,
+        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
 
     },
     image:{

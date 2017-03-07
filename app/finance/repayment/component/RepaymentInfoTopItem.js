@@ -42,7 +42,7 @@ export  default class RepaymentInfoTopItem extends PureComponent {
                             应还总额
                         </Text>
                         <Text style={styles.loanMoneyStyle}>
-                            45291.67
+                            {this.props.items.total_repayment}
                         </Text>
                     </View>
                 </View>
@@ -53,19 +53,19 @@ export  default class RepaymentInfoTopItem extends PureComponent {
                             放款额:
                         </Text>
                         <Text style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0),color:fontAndColor.COLORA0}]}>
-                            5万元 | 3个月
+                            {this.props.items.loan_mny_str} | {this.props.items.loanperiod}{this.props.items.loanperiod_type}
                         </Text>
                     </View>
                     <View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
                         <Text style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0)}]}>
-                            放款时间:2017-02-21
+                            放款时间:{this.props.items.loan_time_str}
                         </Text>
                     </View>
                 </View>
                 <View style={styles.lineStyle}/>
                 <View style={styles.itemStyle}>
                     <Text style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0)}]}>
-                        明锐2017款TSI DS智行版自动挡
+                        {this.props.items.model_name_str}
                     </Text>
                 </View>
             </View>
