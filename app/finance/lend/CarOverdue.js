@@ -229,6 +229,7 @@ export  default class CarOverdue extends BaseComponent {
             request(AppUrls.FINANCE, 'Post', maps)
                 .then((response) => {
                         this.props.showToast("展期申请成功");
+                        this.backPage();
                     }, (error) => {
                         if (error.mjson.code == -300 || error.mjson.code == -500) {
                             this.props.showToast("网络请求失败");
