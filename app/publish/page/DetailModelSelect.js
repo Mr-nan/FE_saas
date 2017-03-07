@@ -53,11 +53,15 @@ export default class DetailModelSelect extends PureComponent {
         if (this.isEmpty(nextProps.carData.model) === false ) {
             let modelInfo = JSON.parse(nextProps.carData.model);
             model_name = modelInfo.model_name;
+            this.setState({
+                model_name:model_name
+            });
         }
+
         this.setState({
             vinNum: nextProps.carData.vin,
-            model_name:model_name
         });
+
     }
 
     isEmpty = (str)=>{
@@ -82,15 +86,15 @@ export default class DetailModelSelect extends PureComponent {
 
     _checkedCarClick = (carObject)=>{
         this.setState({
-            modelName:carObject.model_name
+            model_name:carObject.model_name
         });
         let modelInfo = {};
         modelInfo['brand_id'] = carObject.brand_id;
         modelInfo['model_id'] = carObject.model_id;
         modelInfo['series_id'] = carObject.series_id;
-        modelInfo['model_year'] = carObject.model_year;
+        modelInfo['model_year'] = '';
         modelInfo['model_name'] = carObject.model_name;
-        this.props.sqlUtil.changeData('INSERT INTO publishCar (vin,model) VALUES (?,?)', [this.vinNum, JSON.stringify(modelInfo)]);
+        this.props.sqlUtil.changeData('UPDATE publishCar SET model = ? WHERE vin = ?', [JSON.stringify(modelInfo),this.state.vinNum]);
     };
 
     _renderPlaceholderView = () => {
