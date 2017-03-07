@@ -101,7 +101,12 @@ export  default class CarOverdue extends BaseComponent {
         return (
             <TouchableOpacity onPress={() => {
                 if (typeof(map.get(rowData.auto_id)) == 'undefined') {
-                    map.set(rowData.auto_id, rowData);
+                    if ((rowData.status_str + "").indexOf('已申请') > -1) {
+                        this.props.showToast("已申请展期");
+                    } else {
+                        map.set(rowData.auto_id, rowData);
+                        this.doExtensionPc(rowData.loan_number);
+                    }
                 } else {
                     map.delete(rowData.auto_id);
                 }
@@ -205,31 +210,45 @@ export  default class CarOverdue extends BaseComponent {
     }
 
     doExtension = () => {
+        let auto_ids = "";
         if (map.size < 1) {
-            this.props.showToast("请选择车辆");
-            return;
+            alert("请选择车辆")
+        } else {
+            for (let key of map.keys()) {
+                if (auto_ids == '') {
+                    auto_ids = key;
+                } else {
+                    auto_ids = auto_ids + "," + key;
+                }
+            }
+            let maps = {
+                api: AppUrls.DO_EXTENSION,
+                auto_ids: auto_ids,
+                loan_code: "" + this.props.loan_code,
+            };
+            request(AppUrls.FINANCE, 'Post', maps)
+                .then((response) => {
+                        this.props.showToast("展期申请成功");
+                    }, (error) => {
+                        if (error.mjson.code == -300 || error.mjson.code == -500) {
+                            this.props.showToast("网络请求失败");
+                        } else {
+                            this.props.showToast(error.mjson.msg + "");
+                        }
+                    }
+                )
         }
-        let auto_ids = '';
-        for (var key in map) {
-            auto_ids = auto_ids + key + ","
-        }
+    }
+
+    doExtensionPc = (loan_number) => {
         let maps = {
-            api: AppUrls.DO_EXTENSION,
-            auto_ids: auto_ids,
+            api: AppUrls.DO_EXTENSIONPC,
+            loan_number: loan_number,
             loan_code: "" + this.props.loan_code,
         };
         request(AppUrls.FINANCE, 'Post', maps)
             .then((response) => {
-                    this.props.showToast("请求成功");
-                },
-                (error) => {
-                    if (error.mjson.code == -300 || error.mjson.code == -500) {
-                        this.props.showToast("网络请求失败");
-                    } else {
-                        if (error.mjson.code == -1) {
-                            this.props.showToast(error.mjson.msg + "");
-                        }
-                    }
+                }, (error) => {
                 }
             )
     }

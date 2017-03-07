@@ -171,6 +171,13 @@ export const REPAYMENT_GETINFO = 'api/v2/Repayment/getInfo';
 /**
  * from @zhaojian
  *
+ * 申请提前还款
+ **/
+export const APPLYREPAYMENT = 'api/v1/Repayment/applyRepayment';
+
+/**
+ * from @zhaojian
+ *
  * 获取库融还款计划详情
  **/
 export const REPAYMENT_GETONLINEINFO = 'api/v2/Repayment/getOnlineInfo';
@@ -262,6 +269,13 @@ export const GET_APPLY_LOAN_DATA = 'api/v3/account/get_apply_loan_data';
  * 申请展期
  **/
 export const DO_EXTENSION = 'api/v1/account/do_extension';
+
+/**
+ * from @huangning
+ *
+ * 申请展期-生成合同
+ **/
+export const DO_EXTENSIONPC = 'api/v1/account/do_extension';
 
 /**
  * from @huangning
