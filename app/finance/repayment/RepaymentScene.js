@@ -43,7 +43,7 @@ export  default class RepaymentScene extends BaseComponent {
             return this._renderPlaceholderView();
         }
         return (
-            <View style={{width: width, height: height}}>
+            <View style={{flex:1}}>
                 <ScrollableTabView
                     style={{marginTop: Pixel.getTitlePixel(64), flex: 1}}
                     initialPage={0}

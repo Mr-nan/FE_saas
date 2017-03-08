@@ -143,15 +143,21 @@ export default class MineSectionListView extends BaseComponent {
                     if (datas.enterprise_list[0].role_type == '1') {
                         user_list.push(...Car);
                     } else if (datas.enterprise_list[0].role_type == '2') {
-                        user_list.push(Car[1], Car[3], Car[4]);
+                        user_list.push( Car[1], Car[3], Car[4]);
                     } else {
-                        user_list.push(Car[2], Car[3], Car[4]);
+                        user_list.push( Car[2], Car[3], Car[4]);
                     }
                 } else if (datas.user_level == 1) {
-                    user_list.push(Car[2], Car[3], Car[4]);
+                    user_list.push( Car[2], Car[3], Car[4]);
                 } else {
-                    Car[0].cars.splice(1,1);
-                    user_list.push(Car[0], Car[3], Car[4]);
+                    if (datas.audit_status == '2') {
+
+                        user_list.push( Car[2], Car[3], Car[4]);
+                    } else {
+
+                        user_list.push( Car[3], Car[4]);
+                    }
+
                 }
                 let jsonData = user_list;
 

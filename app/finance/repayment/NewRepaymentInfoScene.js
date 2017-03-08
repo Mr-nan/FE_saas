@@ -23,6 +23,7 @@ import NavigationView from '../../component/AllNavigationView';
 import * as fontAndColor from '../../constant/fontAndColor';
 import PlanListScene from './PlanListScene';
 import RepaymentInfoPage from '../page/RepaymentInfoPage';
+import PlanInfoScene from '../page/PlanInfoPage';
 export  default class NewRepaymentInfoScene extends BaseComponent {
 
     constructor(props, context) {
@@ -41,7 +42,7 @@ export  default class NewRepaymentInfoScene extends BaseComponent {
             return this._renderPlaceholderView();
         }
         return (
-            <View style={{width: width, height: height}}>
+            <View style={{flex:1}}>
                 <ScrollableTabView
                     style={{marginTop: Pixel.getTitlePixel(64), flex: 1}}
                     initialPage={0}
@@ -49,7 +50,7 @@ export  default class NewRepaymentInfoScene extends BaseComponent {
                     renderTabBar={() => <RepaymenyTabBar tabName={["还款详情", "还款计划"]}/>}
                 >
                     <RepaymentInfoPage loan_id={this.props.loan_id} loan_number={this.props.loan_number}  tabLabel="ios-paper"/>
-                    <View style={{flex:1,backgroundColor: 'blue'}} tabLabel="ios-paper1"></View>
+                    <PlanInfoScene tabLabel="ios-paper1"></PlanInfoScene>
                 </ScrollableTabView>
                 <NavigationView
                     title="还款详情"

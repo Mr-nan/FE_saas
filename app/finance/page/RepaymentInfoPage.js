@@ -22,6 +22,8 @@ let movies = {};
 import BaseComponent from '../../component/BaseComponent';
 import NewRepaymentInfoTopItem from '../repayment/component/NewRepaymentInfoTopItem';
 import MyButton from '../../component/MyButton';
+import RepaymentInfoContentItem from '../repayment/component/RepaymentInfoContentItem';
+import AllBottomItem from '../repayment/component/AllBottomItem';
 let moneyList = [];
 let nameList = [];
 
@@ -97,7 +99,7 @@ export  default class RepaymentInfoPage extends BaseComponent {
         parentStyle: styles.parentStyle,
         childStyle: styles.childStyle,
         opacity: 0.7,
-        content: '申请还款',
+        content: '申请提前还款',
         mOnPress: () => {
             let maps = {
                 api: Urls.APPLYREPAYMENT,
@@ -122,6 +124,7 @@ export  default class RepaymentInfoPage extends BaseComponent {
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
                 <ListView
+                    style={{marginTop:Pixel.getPixel(5)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
@@ -145,9 +148,17 @@ export  default class RepaymentInfoPage extends BaseComponent {
             return (
                 <NewRepaymentInfoTopItem items={movies}/>
             )
-        } else {
+        } else if(rowId == 1){
             return (
-                <View/>
+                <RepaymentInfoContentItem items={nameList}/>
+            )
+        }else if(rowId == 2){
+            return (
+                <RepaymentInfoContentItem items={moneyList}/>
+            )
+        }else{
+            return (
+                <AllBottomItem/>
             )
         }
 
