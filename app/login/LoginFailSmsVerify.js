@@ -129,7 +129,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
                 });
             }, (error) => {
                 this.refs.verifycode.lodingStatus(false);
-                if (error.mjson.code == -300 || error.mjson.code == -500) {
+                if (error.mycode == -300 || error.mycode == -500) {
                     this.props.showToast("获取失败");
                 } else {
                     this.props.showToast(error.mjson.msg + "");
@@ -165,9 +165,9 @@ export default class LoginFailSmsVerify extends BaseComponent {
                     }
                 }, (error) => {
                     // this.props.showModal(false);
-                    if (error.mjson.code == -300 || error.mjson.code == -500) {
+                    if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("短信验证码获取失败");
-                    } else if (error.mjson.code == 7040012) {
+                    } else if (error.mycode == 7040012) {
                         this.Verifycode();
                         this.props.showToast(error.mjson.msg + "");
                     } else {
@@ -211,7 +211,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
             request(AppUrls.LOGIN, 'Post', maps)
                 .then((response) => {
                     this.props.showModal(false);
-                    if (response.mjson.code == "1") {
+                    if (response.mycode == "1") {
                         // 保存用户登录状态
                         StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '1');
                         StorageUtil.mSetItem(StorageKeyNames.USER_INFO, JSON.stringify(response.mjson.data));
@@ -231,9 +231,9 @@ export default class LoginFailSmsVerify extends BaseComponent {
                     }
                 }, (error) => {
                     this.props.showModal(false);
-                    if (error.mjson.code == -300 || error.mjson.code == -500) {
+                    if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("登录失败");
-                    } else if (error.mjson.code == 7040004) {
+                    } else if (error.mycode == 7040004) {
                         this.Verifycode();
                         this.props.showToast(error.mjson.msg + "");
                     } else {

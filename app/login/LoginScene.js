@@ -258,7 +258,7 @@ export default class LoginScene extends BaseComponent {
             request(AppUrls.SEND_SMS, 'Post', maps)
                 .then((response) => {
                     // this.props.showModal(false);
-                    if (response.mjson.code == "1") {
+                    if (response.mycode == "1") {
                         this.refs.loginSmscode.StartCountDown();
                         this.refs.loginSmscode.setInputTextValue(response.mjson.data.code + "");
                     } else {
@@ -266,9 +266,9 @@ export default class LoginScene extends BaseComponent {
                     }
                 }, (error) => {
                     // this.props.showModal(false);
-                    if (error.mjson.code == -300 || error.mjson.code == -500) {
+                    if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("获取验证码失败");
-                    } else if (error.mjson.code == 7040012) {
+                    } else if (error.mycode == 7040012) {
                         this.Verifycode();
                         this.props.showToast(error.mjson.msg + "");
                     } else {
@@ -295,7 +295,7 @@ export default class LoginScene extends BaseComponent {
                 });
             }, (error) => {
                 this.refs.loginVerifycode.lodingStatus(false);
-                if (error.mjson.code == -300 || error.mjson.code == -500) {
+                if (error.mycode == -300 || error.mycode == -500) {
                     this.props.showToast("获取失败");
                 } else {
                     this.props.showToast(error.mjson.msg + "");
@@ -331,7 +331,7 @@ export default class LoginScene extends BaseComponent {
             request(AppUrls.LOGIN, 'Post', maps)
                 .then((response) => {
                     this.props.showModal(false);
-                    if (response.mjson.code == "1") {
+                    if (response.mycode == "1") {
                         // 保存用户登录状态
                         StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '2');
                         // 保存登录成功后的用户信息
@@ -395,9 +395,9 @@ export default class LoginScene extends BaseComponent {
                     }
                 }, (error) => {
                     this.props.showModal(false);
-                    if (error.mjson.code == -300 || error.mjson.code == -500) {
+                    if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("登录失败");
-                    } else if (error.mjson.code == 7040004) {
+                    } else if (error.mycode == 7040004) {
                         this.Verifycode();
                         this.props.showToast(error.mjson.msg + "");
                     } else {
