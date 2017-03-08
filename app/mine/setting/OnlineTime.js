@@ -37,18 +37,20 @@ export default class OnlineTime extends BaseComponent {
 
     render() {
         if (this.state.renderPlaceholderOnly) {
-            return ( <TouchableWithoutFeedback style={{backgroundColor: FontAndColor.COLORA3}} onPress={() => {
+            return ( <TouchableWithoutFeedback onPress={() => {
                 this.setState({
                     show: false,
                 });
             }}>
-                <NavigationBar
-                    leftImageShow={false}
-                    leftTextShow={true}
-                    leftText={""}
-                    centerText={"设置"}
-                    rightText={""}
-                />
+                <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
+                    <NavigationBar
+                        leftImageShow={false}
+                        leftTextShow={true}
+                        leftText={""}
+                        centerText={"设置"}
+                        rightText={""}
+                    />
+                </View>
             </TouchableWithoutFeedback>);
         }
         return (
