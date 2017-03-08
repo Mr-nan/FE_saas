@@ -32,7 +32,7 @@ export default class DetailModelSelect extends PureComponent {
             vinNum: '',
             model_name: ''
         }
-        this.isFirst = false;
+        this.isFirst = 0;
     }
 
     componentWillMount() {
@@ -50,8 +50,8 @@ export default class DetailModelSelect extends PureComponent {
     }
 
     componentWillReceiveProps(nextProps: Object) {
-
-        if(this.isFirst === false){
+        this.isFirst++;
+        if(this.isFirst === 2){
             let model_name = '';
             if (this.isEmpty(nextProps.carData.model) === false ) {
                 let modelInfo = JSON.parse(nextProps.carData.model);
@@ -62,11 +62,7 @@ export default class DetailModelSelect extends PureComponent {
                 model_name:model_name,
                 vinNum: nextProps.carData.vin
             });
-        }else{
-            this.isFirst = true;
         }
-
-
     }
 
     isEmpty = (str)=>{
