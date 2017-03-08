@@ -14,6 +14,8 @@ import * as fontAndClolr from '../constant/fontAndColor';
 import MycarScene from '../carSource/CarMySourceScene';
 import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
+
+import repayDetailsScene from '../mine/accountManage/repayDetailsScene'
 import ContractManageScene from '../mine/contractManage/ContractManageScene';
 
 import AccountManageScene from '../mine/accountManage/AccountManageScene'

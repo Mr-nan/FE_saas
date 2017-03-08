@@ -42,6 +42,7 @@ const IS_ANDROID = Platform.OS === 'android';
 export default class EditCarScene extends BaseComponent {
 
     initFinish = () => {
+        SQLite.createTable();
         if (this.fromNew === true) {
             //从新车页跳过来(根据车架号查询数据)
             SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',

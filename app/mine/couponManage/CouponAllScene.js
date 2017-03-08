@@ -97,7 +97,6 @@ const styles = StyleSheet.create({
     },
     rowView: {
         height: 44,
-        flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: 'white',
         borderBottomColor: fontAndClolr.COLORA4,

@@ -9,6 +9,13 @@
  */
 export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
+
+/**
+ * 预发布地址
+ */
+//  export const BASEURL = "http://st.open.bms.dycd.com/api/";
+
+
 /**
  * 版本号1
  */
@@ -358,3 +365,9 @@ export const CONTRACTLIST = 'api/v1/Contract/contractList';
  * 查看合同详情
  */
 export const CHECKOUT_CONTRACT = '/api/v1/Contract/contractDetail';
+/**
+ * from @ch
+ *
+ * 签署合同
+ **/
+export const CONTRACT_SIGN_MINE = 'api/v1/Contract/signContract';

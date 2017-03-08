@@ -20,6 +20,7 @@ import java.util.List;
 import com.fe_sass.react_native_umeng_push.UmengPushApplication;
 import com.fe_sass.react_native_umeng_push.UmengPushPackage;
 import com.theweflex.react.WeChatPackage;
+import com.react.rnspinkit.RNSpinkitPackage;
 
 
 public class MainApplication extends UmengPushApplication implements ReactApplication {
@@ -40,7 +41,8 @@ public class MainApplication extends UmengPushApplication implements ReactApplic
           new PickerViewPackage(),
           new ReactNativeWheelPickerPackage(),
           new WeChatPackage(),
-              new VinScanPackage()
+          new VinScanPackage(),
+          new RNSpinkitPackage()
       );
     }
   };
