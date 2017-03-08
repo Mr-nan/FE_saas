@@ -275,7 +275,7 @@ export const DO_EXTENSION = 'api/v1/account/do_extension';
  *
  * 申请展期-生成合同
  **/
-export const DO_EXTENSIONPC = 'api/v1/account/do_extension';
+export const DO_EXTENSIONPC = 'api/v3/account/extension_contract_pc';
 
 /**
  * from @huangning
