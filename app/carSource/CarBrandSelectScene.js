@@ -319,7 +319,7 @@ export default class CarBrandSelectScene extends BaseComponent {
                                         this._checkedCarType(data);
                                     }}>
                                             <View style={styles.footprintView}>
-                                                <Text style={styles.footprintText}>{data.series_name}</Text>
+                                                <Text style={styles.footprintText}>{data.series_name!='0'?data.series_name:data.brand_name}</Text>
                                             </View>
                                         </TouchableOpacity>)
                                 })
@@ -473,7 +473,7 @@ class CarSeriesList extends BaseComponent {
         if (footprintArrar.length > 0) {
             newArray.push(carObject);
             footprintArrar.map((data, index) => {
-                if (carObject.series_name == data.series_name) {
+                if (carObject.series_name == data.series_name && carObject.brand_name == data.brand_name) {
                     isEqual = true;
                 }
                 if (index < 3) {
@@ -549,6 +549,7 @@ class CarSeriesList extends BaseComponent {
             <Animated.View style={[styles.carSubBrandView,{left:this.state.valueRight}]}>
                 <TouchableOpacity onPress={()=>{
                     if(isHeadInteraction){
+                        this.saveFootprintData(carObject);
                         this.props.checkedCarClick(carObject);
                     }
 
@@ -726,6 +727,7 @@ const styles = StyleSheet.create({
         marginTop: Pixel.getTitlePixel(64),
         flexDirection: 'row',
         flexWrap: 'wrap',
+        paddingVertical:Pixel.getPixel(10),
 
     },
     carBrandHeadText: {

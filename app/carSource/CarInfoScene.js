@@ -67,7 +67,7 @@ const carIconsData = [
         imageHigh: require('../../images/carSourceImages/transfer_h.png'),
     },
     {
-        title: '运营性质',
+        title: '使用性质',
         image: require('../../images/carSourceImages/operation.png'),
         imageHigh: require('../../images/carSourceImages/operation_h.png'),
     },
@@ -504,21 +504,25 @@ class PhotoView extends Component{
         };
       }
 
-
       show=(imageArray,index)=>{
 
-          this.setState({
-              isVisible:true,
-              imageArray:imageArray,
-              index:index,
-          });
+          if(!this.state.isVisible){
+              this.setState({
+                  isVisible:true,
+                  imageArray:imageArray,
+                  index:index,
+              });
+          }
       }
 
       hide=()=>{
 
-          this.setState({
-              isVisible:false,
-          });
+          if(this.state.isVisible){
+              this.setState({
+                  isVisible:false,
+              });
+          }
+
       }
 
     render(){
