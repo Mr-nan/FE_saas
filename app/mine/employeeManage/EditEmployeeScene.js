@@ -23,6 +23,7 @@ import * as AppUrls from '../../constant/appUrls';
 import {request} from '../../utils/RequestUtil';
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
+import md5 from "react-native-md5";
 let ROWID = 0;
 let ds = {};
 let SECTIONID = 0;
@@ -96,8 +97,8 @@ export default class EditEmployeeScene extends BaseComponent {
             request(url, 'post', {
                 account	: Car[2].cars[0].name,
             company_ids	: this.company_idss.toString(),
-            password    : Car[2].cars[1].name,
-            repassword : Car[2].cars[2].name,
+            password    : md5.hex_md5(Car[2].cars[1].name),
+            repassword : md5.hex_md5(Car[2].cars[2].name),
             role_id	   : this.roleId,   //角色ID【必填】	number	1：实际控制人 2：财务 3：收车人员 4：销售人员
             sex	   :  this.sex,//number	1：男（默认）；2：女
             staff_id: this.props.id,	  //	number
