@@ -64,7 +64,7 @@ export default class SelectLoanNumber extends Component {
                    });
                 }} style={{flex:1}}>
                     {this.state.topOrBottom == 'top' ?
-                        <View style={{width:width,height:Pixel.getPixel(44)}}></View> : <View/>}
+                        <View style={{width:width,height:Pixel.getTitlePixel(64)}}></View> : <View/>}
                     <View style={[{flex:1,backgroundColor:'rgba(0,0,0,0.3)'},
                     this.state.topOrBottom=='top'?{justifyContent:'flex-start'}:{justifyContent:'flex-end'}]}>
                         <View>
