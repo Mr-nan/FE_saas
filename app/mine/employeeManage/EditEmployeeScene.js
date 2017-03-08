@@ -249,8 +249,7 @@ export default class EditEmployeeScene extends BaseComponent {
         );
 
         this.xb = ['男', '女',];
-        this.gongneng = ['实际控制人', '财务', '收车人员 ','销售人员'];
-        // this.gongneng2 = ['管理员','财务','员工'];
+        this.gongneng = this.props.roleList;
         this.state = {
             source: ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
             maskSource: this.xb,
