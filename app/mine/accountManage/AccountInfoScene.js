@@ -171,7 +171,6 @@ const styles = StyleSheet.create({
         backgroundColor:'white',
         borderBottomColor:fontAndClolr.COLORA4,
         borderBottomWidth:1,
-        flexDirection:'row'
     },
     rowLeftTitle: {
         marginLeft:Pixel.getPixel(15),

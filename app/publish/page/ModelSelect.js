@@ -112,11 +112,9 @@ export default class ModelSelect extends PureComponent {
             this._copyDataByVin();
             Net.request(AppUrls.VININFO,'post',params).then(
                 (response)=>{
-                    console.log('1111111111111111111');
                     if(response.mycode === 1){
                         let rd = response.mjson.data;
                         if(rd.length === 0){
-                            console.log('222222222222222222222222');
                             this._insertVinNum(text);
                             this.setState({
                                 showHint:true
@@ -273,13 +271,13 @@ export default class ModelSelect extends PureComponent {
     };
 
     //根据车架号选择车型
-    _vinPress =(text,index)=>{
+    _vinPress =(index)=>{
         this.modelInfo['brand_id'] = this.modelData[index].brand_id;
         this.modelInfo['model_id'] = this.modelData[index].model_id;
         this.modelInfo['series_id'] = this.modelData[index].series_id;
         this.modelInfo['model_year'] = this.modelData[index].model_year;
         this.modelInfo['model_name'] = this.modelData[index].model_name;
-        this._insertVinAndModel(text,JSON.stringify(this.modelInfo),this.modelInfo['model_name']);
+        this._insertVinAndModel(this.vin,JSON.stringify(this.modelInfo),this.modelInfo['model_name']);
     };
 
     render() {

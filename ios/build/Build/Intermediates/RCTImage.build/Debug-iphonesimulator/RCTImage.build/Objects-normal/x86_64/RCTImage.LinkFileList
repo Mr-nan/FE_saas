@@ -1,3 +1,16 @@
+<<<<<<< HEAD
+/Users/yujinzhong/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTImage.build/Debug-iphonesimulator/RCTImage.build/Objects-normal/x86_64/RCTImageStoreManager.o
+/Users/yujinzhong/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTImage.build/Debug-iphonesimulator/RCTImage.build/Objects-normal/x86_64/RCTImageViewManager.o
+/Users/yujinzhong/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTImage.build/Debug-iphonesimulator/RCTImage.build/Objects-normal/x86_64/RCTGIFImageDecoder.o
+/Users/yujinzhong/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTImage.build/Debug-iphonesimulator/RCTImage.build/Objects-normal/x86_64/RCTImageLoader.o
+/Users/yujinzhong/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTImage.build/Debug-iphonesimulator/RCTImage.build/Objects-normal/x86_64/RCTImageEditingManager.o
+/Users/yujinzhong/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTImage.build/Debug-iphonesimulator/RCTImage.build/Objects-normal/x86_64/RCTResizeMode.o
+/Users/yujinzhong/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTImage.build/Debug-iphonesimulator/RCTImage.build/Objects-normal/x86_64/RCTImageView.o
+/Users/yujinzhong/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTImage.build/Debug-iphonesimulator/RCTImage.build/Objects-normal/x86_64/RCTImageBlurUtils.o
+/Users/yujinzhong/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTImage.build/Debug-iphonesimulator/RCTImage.build/Objects-normal/x86_64/RCTLocalAssetImageLoader.o
+/Users/yujinzhong/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTImage.build/Debug-iphonesimulator/RCTImage.build/Objects-normal/x86_64/RCTImageUtils.o
+/Users/yujinzhong/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTImage.build/Debug-iphonesimulator/RCTImage.build/Objects-normal/x86_64/RCTImageCache.o
+=======
 /Users/lhc/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTImage.build/Debug-iphonesimulator/RCTImage.build/Objects-normal/x86_64/RCTImageStoreManager.o
 /Users/lhc/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTImage.build/Debug-iphonesimulator/RCTImage.build/Objects-normal/x86_64/RCTImageViewManager.o
 /Users/lhc/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTImage.build/Debug-iphonesimulator/RCTImage.build/Objects-normal/x86_64/RCTGIFImageDecoder.o
@@ -9,3 +22,4 @@
 /Users/lhc/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTImage.build/Debug-iphonesimulator/RCTImage.build/Objects-normal/x86_64/RCTLocalAssetImageLoader.o
 /Users/lhc/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTImage.build/Debug-iphonesimulator/RCTImage.build/Objects-normal/x86_64/RCTImageUtils.o
 /Users/lhc/Desktop/FE_Saas/ios/build/Build/Intermediates/RCTImage.build/Debug-iphonesimulator/RCTImage.build/Objects-normal/x86_64/RCTImageCache.o
+>>>>>>> 69e1a1af155b930861b1abbc6981d1889051a72f
