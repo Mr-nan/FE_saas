@@ -69,10 +69,11 @@ export default class HomeScene extends BaseComponet {
             renderPlaceholderOnly: 'blank',
             isRefreshing: false,
             headSource: [],
-            pageData:[]
-    };
+            pageData: []
+        };
     }
 
+//初始化结束后,请求网络,将数据添加到界面
     initFinish = () => {
         this.getData();
     }
@@ -87,6 +88,7 @@ export default class HomeScene extends BaseComponet {
                     StorageUtil.mGetItem(storageKeyNames.USER_INFO, (data) => {
                         if (data.code == 1) {
                             let datas = JSON.parse(data.result);
+                            console.log(datas);
                             if (datas.user_level == 2) {
                                 if (datas.enterprise_list[0].role_type == '1') {
                                 } else if (datas.enterprise_list[0].role_type == '2') {
@@ -100,9 +102,11 @@ export default class HomeScene extends BaseComponet {
                                 bossFuncArray.splice(2, 2);
                             }
                             console.log(bossFuncArray);
-                            this.setState({headSource:bossFuncArray,renderPlaceholderOnly: 'success',
+                            this.setState({
+                                headSource: bossFuncArray, renderPlaceholderOnly: 'success',
                                 source: ds.cloneWithRows(allList), isRefreshing: false,
-                                allData:response.mjson.data});
+                                allData: response.mjson.data
+                            });
                             // this.refs.viewpage.changeData(response.mjson.data);
                         }
                     });
@@ -129,6 +133,7 @@ export default class HomeScene extends BaseComponet {
         )
     }
 
+//触底加载
     toEnd = () => {
         if (status == 1) {
             page++;
@@ -187,12 +192,15 @@ export default class HomeScene extends BaseComponet {
         if (this.state.isRefreshing) {
             return null;
         } else {
-            return (<TouchableOpacity onPress={()=>{
+            return (
+                <TouchableOpacity onPress={()=> {
                     this.props.jumpScene('carpage');
-            }} activeOpacity={0.8} style={{width:width,height:Pixel.getPixel(60),backgroundColor: fontAndClolr.COLORA3,
-            alignItems:'center'}}>
-                <Text style={{fontSize: Pixel.getFontPixel(14),marginTop:Pixel.getPixel(7)}}>查看更多车源 ></Text>
-            </TouchableOpacity>)
+                }} activeOpacity={0.8} style={{
+                    width: width, height: Pixel.getPixel(60), backgroundColor: fontAndClolr.COLORA3,
+                    alignItems: 'center'
+                }}>
+                    <Text style={{fontSize: Pixel.getFontPixel(14), marginTop: Pixel.getPixel(7)}}>查看更多车源 ></Text>
+                </TouchableOpacity>)
         }
 
     }
@@ -229,7 +237,7 @@ export default class HomeScene extends BaseComponet {
                 functionTitle={data.functionTitle}
                 describeTitle={data.describeTitle}
                 functionImage={data.functionImage}
-                callBack={(title)=>{
+                callBack={(title)=> {
                     this.homeOnPress(title);
                 }}
             />
@@ -239,19 +247,30 @@ export default class HomeScene extends BaseComponet {
         return (
             <View>
                 <View style={{flexDirection: 'row'}}>
-                    <ViewPagers callBack={(urls)=>{
-                       this.props.callBack({name:'WebScene',component:WebScene,params:{webUrl:urls}});
+                    <ViewPagers callBack={(urls)=> {
+                        this.props.callBack({name: 'WebScene', component: WebScene, params: {webUrl: urls}});
                     }} items={this.state.allData}/>
-                    <TouchableOpacity onPress={()=>{
-                            this.props.jumpScene('carpage','true');
-                    }} activeOpacity={0.8} style={{backgroundColor: 'rgba(255,255,255,0.8)',
-                    width: width-Pixel.getPixel(40),height:Pixel.getPixel(27),position:'absolute',marginTop:Pixel.getTitlePixel(26)
-                    ,marginLeft:Pixel.getPixel(20),borderRadius:100,justifyContent:'center',alignItems: 'center',
-                    flexDirection:'row'}}>
-                        <Image style={{width:Pixel.getPixel(17),height:Pixel.getPixel(17)}}
+                    <TouchableOpacity onPress={()=> {
+                        this.props.jumpScene('carpage', 'true');
+                    }} activeOpacity={0.8} style={{
+                        backgroundColor: 'rgba(255,255,255,0.8)',
+                        width: width - Pixel.getPixel(40),
+                        height: Pixel.getPixel(27),
+                        position: 'absolute',
+                        marginTop: Pixel.getTitlePixel(26)
+                        ,
+                        marginLeft: Pixel.getPixel(20),
+                        borderRadius: 100,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        flexDirection: 'row'
+                    }}>
+                        <Image style={{width: Pixel.getPixel(17), height: Pixel.getPixel(17)}}
                                source={require('../../images/findIcon.png')}/>
-                        <Text style={{backgroundColor: '#00000000',fontSize: Pixel.getPixel(fontAndClolr.CONTENTFONT24),
-                        color:fontAndClolr.COLORA1}}> 搜索您要找的车</Text>
+                        <Text style={{
+                            backgroundColor: '#00000000', fontSize: Pixel.getPixel(fontAndClolr.CONTENTFONT24),
+                            color: fontAndClolr.COLORA1
+                        }}> 搜索您要找的车</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -276,9 +295,11 @@ export default class HomeScene extends BaseComponet {
 
                     </View>
                     <TouchableOpacity style={{marginRight: Pixel.getPixel(20)}} onPress={()=> {
-                                   this.props.jumpScene('carpage');
-                                   {/*this.props.callBack({name:'ContractInfoScene',component:ContractInfoScene,*/}
-                                   {/*params:{showButton:true}});*/}
+                        this.props.jumpScene('carpage');
+                        {/*this.props.callBack({name:'ContractInfoScene',component:ContractInfoScene,*/
+                        }
+                        {/*params:{showButton:true}});*/
+                        }
                     }}>
                         <View style={{
                             flexDirection: 'row',
@@ -305,8 +326,8 @@ export default class HomeScene extends BaseComponet {
 
     _renderRow = (movie, sindex, rowID) => {
         return (
-            <TouchableOpacity onPress={()=>{
-                this.props.callBack({name:'CarInfoScene',component:CarInfoScene,params:{carID:movie.id}});
+            <TouchableOpacity onPress={()=> {
+                this.props.callBack({name: 'CarInfoScene', component: CarInfoScene, params: {carID: movie.id}});
             }} activeOpacity={0.8} style={{
                 width: width / 2,
                 backgroundColor: '#ffffff',
@@ -318,8 +339,9 @@ export default class HomeScene extends BaseComponet {
                 <View
                     style={{width: Pixel.getPixel(166), backgroundColor: '#ffffff', justifyContent: 'center'}}>
                     <Image style={cellSheet.imageStyle}
-                           source={movie.img?{uri:movie.img+'?x-oss-process=image/resize,w_'+166+',h_'+111}:require('../../images/carSourceImages/car_null_img.png')}/>
-                    <Text style={cellSheet.despritonStyle} numberOfLines={2}>{'[' + movie.city_name + ']' + movie.model_name}</Text>
+                           source={movie.img ? {uri: movie.img + '?x-oss-process=image/resize,w_' + 166 + ',h_' + 111} : require('../../images/carSourceImages/car_null_img.png')}/>
+                    <Text style={cellSheet.despritonStyle}
+                          numberOfLines={2}>{'[' + movie.city_name + ']' + movie.model_name}</Text>
                     <Text
                         style={cellSheet.timeStyle}>{this.dateReversal(movie.create_time + '000') + '/' + movie.mileage + '万公里'}</Text>
 
