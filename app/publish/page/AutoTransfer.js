@@ -72,11 +72,11 @@ export default class AutoTransfer extends Component {
 
     onPickerSelect = (key,value) => {
         const newState = {};
-        newState[key] = value;
+        newState[key] = this.state.itemList[value];
         this.setState(newState);
         this.props.sqlUtil.changeData(
             'UPDATE publishCar SET transfer_number = ? WHERE vin = ?',
-            [value, this.vinNum]);
+            [this.state.itemList[value], this.vinNum]);
     };
 
     _renderPlaceholderView = ()=>{

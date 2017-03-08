@@ -150,7 +150,8 @@ export default class MineSectionListView extends BaseComponent {
                 } else if (datas.user_level == 1) {
                     user_list.push(Car[2], Car[3], Car[4]);
                 } else {
-                    user_list.push(Car[2], Car[3], Car[4]);
+                    Car[0].cars.splice(1,1);
+                    user_list.push(Car[0], Car[3], Car[4]);
                 }
                 let jsonData = user_list;
 

@@ -207,7 +207,11 @@
 		</data>
 		<key>Launch Screen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib</key>
 		<data>
+<<<<<<< HEAD
 		qTsM5VA5w5d6JnzQmnZ3YiHKLMo=
+=======
+		A72ax1HAqkuS2coR6fM9knyl3B8=
+>>>>>>> 69e1a1af155b930861b1abbc6981d1889051a72f
 		</data>
 		<key>Launch Screen.storyboardc/Info.plist</key>
 		<data>
@@ -215,7 +219,11 @@
 		</data>
 		<key>Launch Screen.storyboardc/UIViewController-01J-lp-oVM.nib</key>
 		<data>
+<<<<<<< HEAD
 		jAD58RmxyiM8Xv9xyxtGQo4T8kE=
+=======
+		TMQX3Vhj283ZJLCDUd/TwwswgkQ=
+>>>>>>> 69e1a1af155b930861b1abbc6981d1889051a72f
 		</data>
 		<key>PkgInfo</key>
 		<data>
@@ -223,7 +231,11 @@
 		</data>
 		<key>PlugIns/FE_SassTests.xctest/FE_SassTests</key>
 		<data>
+<<<<<<< HEAD
 		/L+t8iFVdGWH1KMLv8JuEq5m9Qw=
+=======
+		Dz646+kW3dAHnBUjKTXepLdnJQU=
+>>>>>>> 69e1a1af155b930861b1abbc6981d1889051a72f
 		</data>
 		<key>PlugIns/FE_SassTests.xctest/Info.plist</key>
 		<data>
@@ -823,11 +835,19 @@
 		<dict>
 			<key>hash</key>
 			<data>
+<<<<<<< HEAD
 			qTsM5VA5w5d6JnzQmnZ3YiHKLMo=
 			</data>
 			<key>hash2</key>
 			<data>
 			j7JKao5fRIIv/0eC6voggfSqdc3A7fIECXxkuAA/ELw=
+=======
+			A72ax1HAqkuS2coR6fM9knyl3B8=
+			</data>
+			<key>hash2</key>
+			<data>
+			HMzXOUFGxC3bKkV4zOT2qvshu8DmG+nY/WSe1KKtyvY=
+>>>>>>> 69e1a1af155b930861b1abbc6981d1889051a72f
 			</data>
 		</dict>
 		<key>Launch Screen.storyboardc/Info.plist</key>
@@ -845,22 +865,38 @@
 		<dict>
 			<key>hash</key>
 			<data>
+<<<<<<< HEAD
 			jAD58RmxyiM8Xv9xyxtGQo4T8kE=
 			</data>
 			<key>hash2</key>
 			<data>
 			xxVrDqa2n9SSo4DiW1lkDkEqqrVGR/GTfGbgOGnfsIY=
+=======
+			TMQX3Vhj283ZJLCDUd/TwwswgkQ=
+			</data>
+			<key>hash2</key>
+			<data>
+			eD/HTnTLjIieAeaH26MFNaKkzuSAQevK237ARWXe5M4=
+>>>>>>> 69e1a1af155b930861b1abbc6981d1889051a72f
 			</data>
 		</dict>
 		<key>PlugIns/FE_SassTests.xctest/FE_SassTests</key>
 		<dict>
 			<key>hash</key>
 			<data>
+<<<<<<< HEAD
 			/L+t8iFVdGWH1KMLv8JuEq5m9Qw=
 			</data>
 			<key>hash2</key>
 			<data>
 			pu6ZDXZZb6L8SzQWa+cxm2Wi9WUyOTQEdb8XJqq0CwI=
+=======
+			Dz646+kW3dAHnBUjKTXepLdnJQU=
+			</data>
+			<key>hash2</key>
+			<data>
+			j/KeGT5BzQT25e9NgnLfXAg1/cRjjhOEQY9BYAGWT84=
+>>>>>>> 69e1a1af155b930861b1abbc6981d1889051a72f
 			</data>
 		</dict>
 		<key>PlugIns/FE_SassTests.xctest/Info.plist</key>

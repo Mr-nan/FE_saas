@@ -1,4 +1,5 @@
 dependencies: \
+<<<<<<< HEAD
   /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Views/RCTMapManager.m \
   /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Views/RCTMapManager.h \
   /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Views/RCTViewManager.h \
@@ -28,3 +29,34 @@ dependencies: \
   /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTUtils.h \
   /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Views/RCTMapAnnotation.h \
   /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/React/Views/RCTMapOverlay.h
+=======
+  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Views/RCTMapManager.m \
+  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Views/RCTMapManager.h \
+  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Views/RCTViewManager.h \
+  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTBridgeModule.h \
+  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTDefines.h \
+  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTConvert.h \
+  /Users/lhc/Desktop/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/Yoga.h \
+  /Users/lhc/Desktop/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/YGEnums.h \
+  /Users/lhc/Desktop/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/YGMacros.h \
+  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Views/RCTAnimationType.h \
+  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Views/RCTBorderStyle.h \
+  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTLog.h \
+  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTAssert.h \
+  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Views/RCTPointerEvents.h \
+  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Views/RCTTextDecorationLineType.h \
+  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTEventDispatcher.h \
+  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTBridge.h \
+  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTBridgeDelegate.h \
+  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTJavaScriptLoader.h \
+  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTFrameUpdate.h \
+  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTInvalidating.h \
+  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Views/UIView+React.h \
+  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Views/RCTComponent.h \
+  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Views/RCTConvert+CoreLocation.h \
+  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Views/RCTConvert+MapKit.h \
+  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Views/RCTMap.h \
+  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Base/RCTUtils.h \
+  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Views/RCTMapAnnotation.h \
+  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/React/Views/RCTMapOverlay.h
+>>>>>>> 69e1a1af155b930861b1abbc6981d1889051a72f

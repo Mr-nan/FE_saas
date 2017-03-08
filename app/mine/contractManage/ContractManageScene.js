@@ -40,24 +40,25 @@ export default class ContractManageScene extends BaseComponent {
         let maps = {
             page: page,
             rows: 10,
-            api : 'api/v1/Contract/contractList',
-            sign_status: '1',
+            api : Urls.LOAN_SUBJECT,
         };        request(Urls.FINANCE, 'Post', maps)
 
             .then((response) => {
             console.log(response.mjson);
-                    if (page == 1 && response.mjson.data.contract_list.length <= 0) {
+                    if (page == 1 && response.mjson.data.length <= 0) {
                         this.setState({renderPlaceholderOnly: 'null'});
                     } else {
-                        allSouce.push(...response.mjson.data.contract_list);
+                        allSouce.push(...response.mjson.data);
                         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
-                            dataSource: ds.cloneWithRows(allSouce),});
+                            dataSource: ds.cloneWithRows(allSouce),
+                            isRefreshing: false
+                        });
                         this.setState({renderPlaceholderOnly: 'success'});
                     }
                 },
                 (error) => {
-                    this.setState({renderPlaceholderOnly: 'error'});
+                    this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
                 });
     }
     // 构造
@@ -66,8 +67,36 @@ export default class ContractManageScene extends BaseComponent {
         this.state = {
             dataSource: {},
             renderPlaceholderOnly: 'blank',
+            isRefreshing: false
         };
 
+    }
+
+    refreshingData = () => {
+        allSouce = [];
+        this.setState({isRefreshing: true});
+        page = 1;
+        this.getData();
+    };
+
+    toEnd = () => {
+        if (this.state.isRefreshing) {
+
+        } else {
+            if (page < allPage) {
+                page++;
+                this.getData();
+            }
+        }
+
+    };
+
+    renderListFooter = () => {
+        if (this.state.isRefreshing) {
+            return null;
+        } else {
+            return (<LoadMoreFooter isLoadAll={page>=allPage?true:false}/>)
+        }
     }
 
     render() {
@@ -85,6 +114,18 @@ export default class ContractManageScene extends BaseComponent {
                           dataSource={this.state.dataSource}
                           renderRow={this._renderRow}
                           enableEmptySections = {true}
+                          renderFooter={
+                              this.renderListFooter
+                          }
+                          onEndReached={this.toEnd}
+                          refreshControl={
+                              <RefreshControl
+                                  refreshing={this.state.isRefreshing}
+                                  onRefresh={this.refreshingData}
+                                  tintColor={[fontAndColor.COLORB0]}
+                                  colors={[fontAndColor.COLORB0]}
+                              />
+                          }
                 />
 
             </View>);
@@ -103,11 +144,13 @@ export default class ContractManageScene extends BaseComponent {
                         },
                 name: 'SignContractScene',
                 component: SignContractScene,
-                params: {rowID},
+                params: {
+                    opt_user_id: rowData.user_id,
+                },
             })}}>
                 <View style={styles.rowView} >
-                    <Text style={styles.rowLeftTitle}>第一车贷是个公司</Text>
-                    <Text style={styles.rowRightTitle} >7份合同</Text>
+                    <Text style={styles.rowLeftTitle}>{rowData.companyname}</Text>
+                    <Text style={styles.rowRightTitle} >{rowData.contract_num}份未签署合同</Text>
                     <Image source={cellJianTou} style={styles.image}></Image>
 
                 </View>

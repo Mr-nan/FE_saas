@@ -131,7 +131,6 @@ export default class AutoMileage extends Component {
 
     //发布
     _publish = () => {
-        console.log(this.carData);
         try{
             SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
                 [this.carData.vin],
@@ -153,6 +152,10 @@ export default class AutoMileage extends Component {
                         }
                         if(this.isEmpty(rd.manufacture) === true){
                             this.props.showHint('请选择车辆出厂日期');
+                            return;
+                        }
+                        if(rd.v_type === '1' && this.isEmpty(rd.init_reg) === true){
+                            this.props.showHint('请选择车辆初登日期');
                             return;
                         }
                         this.props.showLoading();

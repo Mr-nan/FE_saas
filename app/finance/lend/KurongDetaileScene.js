@@ -350,7 +350,7 @@ export  default  class KurongDetaileScene extends BaseComponent {
         )
         return (
 
-            <View style={commnetStyle.container}>
+            <View  style={commnetStyle.container}>
 
                 <ListView
                     style={commnetStyle.ListWarp}

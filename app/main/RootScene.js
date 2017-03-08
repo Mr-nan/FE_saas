@@ -39,20 +39,24 @@ export default class RootScene extends BaseComponent {
                                 } else {
                                     if (res.result == "true") {
 
-                                        StorageUtil.mGetItem(KeyNames.USER_INFO,(data)=>{
+                                        StorageUtil.mGetItem(KeyNames.USER_INFO, (data) => {
                                             let datas = JSON.parse(data.result);
-                                            console.log(datas);
                                             if (datas.user_level == 2) {
-                                                if (datas.enterprise_list[0].role_type == '2') {
-                                                    that.navigatorParams.component = LoginGesture;
-                                                    that.navigatorParams.params = {from:'RootScene'}
+                                                if (datas.enterprise_list == null || datas.enterprise_list.length <= 0) {
+                                                    that.navigatorParams.component = LoginAndRegister;
                                                     that.toNextPage(that.navigatorParams);
-                                                } else  {
-                                                    that.navigatorParams.component = MainPage;
-                                                    that.navigatorParams.params = {}
-                                                    that.toNextPage(that.navigatorParams);
+                                                } else {
+                                                    if (datas.enterprise_list[0].role_type == '2') {
+                                                        that.navigatorParams.component = LoginGesture;
+                                                        that.navigatorParams.params = {from: 'RootScene'}
+                                                        that.toNextPage(that.navigatorParams);
+                                                    } else {
+                                                        that.navigatorParams.component = MainPage;
+                                                        that.navigatorParams.params = {}
+                                                        that.toNextPage(that.navigatorParams);
+                                                    }
                                                 }
-                                            }else{
+                                            } else {
                                                 that.navigatorParams.component = MainPage;
                                                 that.navigatorParams.params = {}
                                                 that.toNextPage(that.navigatorParams);

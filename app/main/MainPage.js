@@ -107,6 +107,37 @@ export default class MainPage extends BaseComponent {
                 }}/>)
         ];
 
+        const touristTabArray = [
+            new tableItemInfo('firstpage', 'page11', '首页', require('../../images/mainImage/homeSelect.png'), require('../../images/mainImage/homeUnSelect.png'),
+                <HomeSence showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} openModal={()=>{
+                     this.publishModal.openModal();
+                }} jumpScene={(ref,openSelectBranch)=>{
+                    if(openSelectBranch=='true'){
+                        this.setState({selectedTab: ref})
+                        StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'true');
+                    }else{
+                        this.setState({selectedTab: ref})
+                        StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
+                    }
+                }} callBack={(params)=> {
+                    this.toNextPage(params);
+                }}/>),
+            new tableItemInfo('carpage', 'page12', '车源', require('../../images/mainImage/carSelect.png'), require('../../images/mainImage/carUnSelect.png'),
+                <CarSourceSence showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
+                    this.toNextPage(params);
+                }}/>),
+            new tableItemInfo('mypage', 'page14', '我的', require('../../images/mainImage/mineSelect.png'), require('../../images/mainImage/mineUnSelect.png'),
+                <MineSence showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
+                    this.toNextPage(params);
+                }}/>)
+        ];
+
         const bossTabArray = [
             new tableItemInfo('firstpage', 'page1', '首页', require('../../images/mainImage/homeSelect.png'), require('../../images/mainImage/homeUnSelect.png'),
                 <HomeSence showModal={(value)=>{
@@ -232,7 +263,7 @@ export default class MainPage extends BaseComponent {
                 } else if (datas.user_level == 1) {
                     tabArray = formalUserTabArray
                 } else {
-                    tabArray = employerTabArray
+                    tabArray = touristTabArray
                 }
                 this.setState({
                     selectedTab: tabArray[0].ref,

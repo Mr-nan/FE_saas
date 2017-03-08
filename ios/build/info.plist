@@ -3,8 +3,14 @@
 <plist version="1.0">
 <dict>
 	<key>LastAccessedDate</key>
+<<<<<<< HEAD
 	<date>2017-03-07T08:04:56Z</date>
 	<key>WorkspacePath</key>
 	<string>/Users/yujinzhong/Desktop/FE_Saas/ios/FE_Sass.xcodeproj</string>
+=======
+	<date>2017-03-07T07:18:20Z</date>
+	<key>WorkspacePath</key>
+	<string>/Users/lhc/Desktop/FE_Saas/ios/FE_Sass.xcodeproj</string>
+>>>>>>> 69e1a1af155b930861b1abbc6981d1889051a72f
 </dict>
 </plist>
