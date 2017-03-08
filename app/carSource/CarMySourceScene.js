@@ -150,7 +150,7 @@ export default class CarMySourceScene extends BaceComponent {
 
         return (
             <TouchableOpacity onPress={this.pushNewCarScene}>
-                <Text style={{color:"#FFFFFF", fontSize:fontAndColor.BUTTONFONT30}}>发布车源</Text>
+                <Text style={{color:"#FFFFFF", fontSize:fontAndColor.CONTENTFONT24}}>发布车源</Text>
             </TouchableOpacity>
         )
     }

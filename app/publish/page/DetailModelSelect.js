@@ -32,6 +32,7 @@ export default class DetailModelSelect extends PureComponent {
             vinNum: '',
             model_name: ''
         }
+        this.modelClick = false;
     }
 
     componentWillMount() {
@@ -49,19 +50,20 @@ export default class DetailModelSelect extends PureComponent {
     }
 
     componentWillReceiveProps(nextProps: Object) {
-        let model_name = '';
-        if (this.isEmpty(nextProps.carData.model) === false ) {
-            let modelInfo = JSON.parse(nextProps.carData.model);
-            model_name = modelInfo.model_name;
+        if(this.modelClick === false ){
+            let model_name = '';
+            if (this.isEmpty(nextProps.carData.model) === false ) {
+                let modelInfo = JSON.parse(nextProps.carData.model);
+                model_name = modelInfo.model_name;
+            }
+
             this.setState({
-                model_name:model_name
+                model_name:model_name,
+                vinNum: nextProps.carData.vin
             });
+        }else{
+            this.modelClick = false;
         }
-
-        this.setState({
-            vinNum: nextProps.carData.vin,
-        });
-
     }
 
     isEmpty = (str)=>{
@@ -88,6 +90,7 @@ export default class DetailModelSelect extends PureComponent {
         this.setState({
             model_name:carObject.model_name
         });
+        this.modelClick = true;
         let modelInfo = {};
         modelInfo['brand_id'] = carObject.brand_id;
         modelInfo['model_id'] = carObject.model_id;

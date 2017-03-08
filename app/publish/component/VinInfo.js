@@ -41,11 +41,10 @@ export default class VinInfo extends Component{
         });
     };
 
-    openModal = (text)=>{
+    openModal = ()=>{
         this.setState({
             modalVisible: true
         });
-        this.text = text;
     };
 
     render(){
@@ -73,7 +72,7 @@ export default class VinInfo extends Component{
             <TouchableOpacity
                 activeOpacity={0.8}
                 key={rowID}
-                onPress={()=>{this.props.vinPress(this.text,rowID),this._hiedModal()}}>
+                onPress={()=>{this.props.vinPress(rowID),this._hiedModal()}}>
                 <View  style={styles.rowStyle}>
                     <Text style={styles.fontMain}>{rowData.model_name}</Text>
                 </View>

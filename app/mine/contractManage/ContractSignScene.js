@@ -33,7 +33,7 @@ export  default class ContractSignScene extends BaseComponent {
 
     constructor(props, context) {
         super(props, context);
-        this.state = {renderPlaceholderOnly: 'blank', dataSource: []};
+        this.state = {renderPlaceholderOnly: 'blank', dataSource: [], freshButton: true};
         this.sign_part='';
     }
 
@@ -53,7 +53,6 @@ export  default class ContractSignScene extends BaseComponent {
             .then((response) => {
                     imageItems = [];
                     RJson = response.mjson;
-                    console.log(RJson);
                     imageItems.push(...response.mjson.data.image_paths);
                     this.sign_part=RJson.data.sign_part;
                     let ds = new ViewPager.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -63,14 +62,19 @@ export  default class ContractSignScene extends BaseComponent {
                     });
                 },
                 (error) => {
-                    this.setState({renderPlaceholderOnly: 'error'});
+                    if(error.mjson.code=='5020002'){
+                        this.setState({renderPlaceholderOnly: 'null'});
+                    }else{
+
+                        this.setState({renderPlaceholderOnly: 'error'});
+                    }
                 });
     }
 
     contractSign = () => {
         this.props.showModal(true);
         let maps = {
-            api: Urls.CONTRACT_SIGN,
+            api: Urls.CONTRACT_SIGN_MINE,
             contract_id: this.props.contract_id,    //合同ID
             contract_log_id: this.props.contract_log_id,
             sign_part: this.sign_part
@@ -78,6 +82,7 @@ export  default class ContractSignScene extends BaseComponent {
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
                     this.props.showToast('签署成功');
+                    this.setState({freshButton: false});
                 },
                 (error) => {
                     this.props.showToast('签署失败');
@@ -107,7 +112,7 @@ export  default class ContractSignScene extends BaseComponent {
                     />
                 </View>
                 <View style={{width:width,height:Pixel.getPixel(44),flexDirection: 'row'}}>
-                    {this.props.showButton == true ? <TouchableOpacity onPress={()=>{
+                    {this.props.showButton == true && this.state.freshButton ? <TouchableOpacity onPress={()=>{
                        this.contractSign();
                     }} activeOpacity={0.8} style={{flex:1,backgroundColor:fontAndColor.COLORB0,justifyContent:'center'
                     ,alignItems:'center'}}>

@@ -709,7 +709,7 @@ class CarListNavigatorView extends Component {
                         <View style={styles.navigatorSousuoView}>
                             <Image style={{marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(10)}}
                                    source={require('../../images/carSourceImages/sousuoicon.png')}/>
-                            <Text style={styles.navigatorSousuoText}>按车型信息搜索</Text>
+                            <Text style={styles.navigatorSousuoText}>按品牌、车型搜索</Text>
                         </View>
                     </TouchableOpacity>
                 </View>

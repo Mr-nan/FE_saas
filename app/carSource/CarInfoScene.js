@@ -141,9 +141,15 @@ export default class CarInfoScene extends BaseComponent {
 
         const date = new Date();
         date.setTime(time);
-        return(date.getFullYear()+"-"+(date.getMonth()+1));
+        return(date.getFullYear()+"-"+(this.PrefixInteger(date.getMonth()+1,2)));
 
     };
+    PrefixInteger =(num,length)=>{
+
+        return (Array(length).join('0') + num).slice(-length);
+
+    }
+
 
     backIconClick = () => {
 
@@ -395,12 +401,12 @@ export default class CarInfoScene extends BaseComponent {
                 </ScrollView>
                 <TouchableOpacity style={styles.callView} onPress={this.callClick}>
                     <View style={{alignItems:'center',justifyContent:'center',width:ScreenWidth*0.5}}>
-                    <Text style={styles.callText}>{'车源编号:'+carData.serial_num}</Text>
+                    <Text style={styles.callText}>{'车源编号 '+carData.serial_num}</Text>
                     </View>
                     <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center', borderLeftWidth: StyleSheet.hairlineWidth,
                         borderLeftColor:'white',width:ScreenWidth*0.5}}>
                     <Image source={require('../../images/carSourceImages/phone.png')}/>
-                    <Text style={styles.callText}>客服咨询</Text>
+                    <Text style={styles.callText}>咨询客服</Text>
                      </View>
                 </TouchableOpacity>
                 <NavigationView

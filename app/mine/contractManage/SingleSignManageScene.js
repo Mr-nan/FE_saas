@@ -137,31 +137,29 @@ export default class SingleSignManageScene extends BaseComponent {
     // 每一行中的数据
     _renderRow = (rowData, rowID, selectionID) => {
         return (
-            <View style={styles.rowView}>
-                <View style={styles.rowLeft}>
-                    <Text style={styles.rowLeftTitle}>{rowData.product_type_ch}</Text>
-                    <Text style={styles.rowLeftTitle1}>{rowData.payment_number}</Text>
+            <TouchableOpacity
+                onPress={() => {
+                    console.log(rowID + "--" + selectionID)
+                    this.toNextPage({
+                        name: 'ContractSignScene',
+                        component: ContractSignScene,
+                        params: {
+                            contract_id: rowData.contract_id,   //合同ID
+                            contract_log_id: rowData.contract_log_id,	//合同日志ID
+                            product_type_code: rowData.product_type_code,	//产品类型编码
+                            showButton: false
+                        },
+                    })
+                }}>
+                <View style={styles.rowView}>
+                    <View style={styles.rowLeft}>
+                        <Text style={styles.rowLeftTitle}>{rowData.product_type_ch}</Text>
+                        <Text style={styles.rowLeftTitle1}>{rowData.payment_number}</Text>
+                    </View>
+                    <Image source={cellJianTou} style={styles.image}></Image>
+
                 </View>
-                <TouchableOpacity
-                    style={styles.buttonStyle}
-                    onPress={() => {
-                        console.log(rowID + "--" + selectionID)
-                        this.toNextPage({
-                            name: 'ContractSignScene',
-                            component: ContractSignScene,
-                            params: {
-                                contract_id: rowData.contract_id,   //合同ID
-                                contract_log_id: rowData.contract_log_id,	//合同日志ID
-                                product_type_code: rowData.product_type_code,	//产品类型编码
-                                showButton: true
-                            },
-                        })
-                    }}>
-                    <Text style={styles.rowRightTitle}>签署合同</Text>
-
-                </TouchableOpacity>
-            </View>
-
+            </TouchableOpacity>
         );
     }
 }

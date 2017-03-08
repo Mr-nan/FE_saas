@@ -379,3 +379,9 @@ export const CONTRACTLIST = 'api/v1/Contract/contractList';
  * 查看合同详情
  */
 export const CHECKOUT_CONTRACT = '/api/v1/Contract/contractDetail';
+/**
+ * from @ch
+ *
+ * 签署合同
+ **/
+export const CONTRACT_SIGN_MINE = 'api/v1/Contract/signContract';
