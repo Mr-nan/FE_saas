@@ -188,13 +188,13 @@ export  default class CarOverdue extends BaseComponent {
                     }
                 },
                 (error) => {
-                    if (error.mjson.code == -300 || error.mjson.code == -500) {
+                    if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("网络请求失败");
                         this.setState({
                             renderPlaceholderOnly: 'error',
                         })
                     } else {
-                        if (error.mjson.code == -1) {
+                        if (error.mycode == -1) {
                             this.setState({
                                 renderPlaceholderOnly: 'null',
                             })

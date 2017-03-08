@@ -44,7 +44,15 @@ export default class CarCollectionItems extends Component {
                 <View style={[styles.container,styles.lineBottom]}>
 
                     <View style={styles.imageView}>
-                        <Image style={styles.image}  source={carCellData.img?{uri:carCellData.img+'?x-oss-process=image/resize,w_'+120+',h_'+80}:require('../../../images/carSourceImages/car_null_img.png')}/>
+                        <Image style={styles.image}
+                               source={carCellData.img?{uri:carCellData.img+'?x-oss-process=image/resize,w_'+120+',h_'+80}:require('../../../images/carSourceImages/car_null_img.png')}>
+                            {
+                                (carCellData.status==3||carCellData.status==4) &&<View style={styles.carTypeView}>
+                                    <Text style={styles.carTypeText}>{carCellData.status==3?'已下架':'已成交'}</Text>
+                                </View>
+                            }
+
+                        </Image>
                     </View>
 
                     <View style={[styles.textContainer]}>
@@ -106,6 +114,20 @@ const styles = StyleSheet.create({
 
     },
 
+    carTypeView:{
+        left:0,
+        top:0,
+        right:0,
+        bottom:0,
+        position: 'absolute',
+        backgroundColor:'rgba(1,1,1,0.5)',
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    carTypeText:{
+        color:'white',
+        fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+    },
     textContainer: {
 
         flex: 1,
