@@ -14,8 +14,7 @@ import  {
 import * as fontAndColor from '../../constant/fontAndColor';
 import  PixelUtil from '../../utils/PixelUtil'
 var Pixel = new PixelUtil();
-const cellJianTou = require('../../../images/mainImage/celljiantou@2x.png');
-import ContractSign from '../contractManage/ContractSign';
+import ContractSignScene from '../contractManage/ContractSignScene';
 import BaseComponent from "../../component/BaseComponent";
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
@@ -41,7 +40,8 @@ export default class NoneSineScene extends BaseComponent {
         let maps = {
             page: page,
             rows: 10,
-            api : 'api/v1/Contract/contractList',
+            api : Urls.CONTRACTLIST,
+            opt_user_id: this.props.opt_user_id,
             sign_status: '1',
         };        request(Urls.FINANCE, 'Post', maps)
 
@@ -146,10 +146,13 @@ export default class NoneSineScene extends BaseComponent {
                     onPress={() => {
                         console.log(rowID + "--" + selectionID)
                         this.toNextPage({
-                            name: 'ContractSign',
-                            component: ContractSign,
+                            name: 'ContractSignScene',
+                            component: ContractSignScene,
                             params: {
-                                show: true
+                                contract_id: rowData.contract_id,   //合同ID
+                                contract_log_id: rowData.contract_log_id,	//合同日志ID
+                                product_type_code: rowData.product_type_code,	//产品类型编码
+                                showButton: true
                             },
                         })
                     }}>
