@@ -452,7 +452,6 @@ const commentAlertStyle=StyleSheet.create({
         backgroundColor:'white',
         alignItems:'center',
         width:adapeSize(260),
-        height:adapeSize(160),
         justifyContent:'flex-start',
         borderRadius:5,
     },
@@ -466,6 +465,8 @@ const commentAlertStyle=StyleSheet.create({
         marginTop:adapeSize(10),
         fontSize:adapeSize(17),
         color:PAGECOLOR.COLORA1,
+        marginLeft:adapeSize(5),
+        marginRight:adapeSize(5),
     },
     buttonsWarp:{
 
@@ -489,6 +490,7 @@ const commentAlertStyle=StyleSheet.create({
         alignItems:'center',
         justifyContent:'center',
         borderRadius:5,
+        marginBottom:adapeSize(10)
     },
 
     buttonLeft:{

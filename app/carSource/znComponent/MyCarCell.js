@@ -72,7 +72,7 @@ export default class MyCarCell extends Component {
                         </View>
                         <View style={[styles.textContainer]}>
                             <View style={{backgroundColor:'white'}}>
-                                <Text style={styles.mainText}>{'['+carCellData.city_name+']'+carCellData.model_name}</Text>
+                                <Text style={styles.mainText}>{'['+carCellData.city_name+']'+carCellData.brand_name+carCellData.model_name}</Text>
                             </View>
                             <View style={{backgroundColor:'white'}}>
                                 <Text style={styles.subTitleText}>{this.dateReversal(carCellData.manufacture+'000')+'/'+carCellData.mileage+'万公里'}</Text>
