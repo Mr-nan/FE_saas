@@ -160,7 +160,7 @@ export default class KurongSence extends BaseComponent {
             itemBlob.push(<LendItem key={item.key} leftTitle={item.title} rightTitle={ShowData[item.key]}/>)
         });
         return (
-            <View style={styles.container}>
+            <View ref={view=>this.baseView=view} style={styles.container}>
                 <ScrollView style={styles.scroller}>
                     <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={5}>
                         <View style={styles.lendInfo}>
@@ -193,7 +193,7 @@ export default class KurongSence extends BaseComponent {
                             <LendInputItem title='金额' placeholder='请输入借款金额' unit='万' endEit={(event)=>{PostData.loan_mny=event.nativeEvent.text}}/>
                         </View>
                         <LendDatePike lefTitle={'用款时间'} placeholder={'选择用款时间'} imageSouce={imageSouce} onPress={this.onPress}/>
-                        <LendUseful onEndEidt={(event)=>{PostData.remark=event.nativeEvent.text}}/>
+                        <LendUseful onEndEidt={(text)=>{PostData.remark=text}}/>
                         <LendRate rate={ShowData.rate}/>
                     </KeyboardAvoidingView>
                 </ScrollView>

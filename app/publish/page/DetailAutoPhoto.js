@@ -283,11 +283,6 @@ export default class DetailAutoPhoto extends Component {
                     cameraClick={this._cameraClick}
                     ref={(modal) => {this.imageSource = modal}}/>
                 <Image style={[styles.imgContainer,{height:height-this.props.barHeight}]} source={background}>
-                    <AllNavigationView
-                        backIconClick={this._onBack}
-                        title='拍摄车辆照片'
-                        wrapStyle={styles.wrapStyle}
-                        renderRihtFootView={this._renderRihtFootView}/>
                     <View style={styles.contentContainer}>
                         <Grid
                             ref={(grid)=>{this.grid = grid}}
@@ -296,6 +291,11 @@ export default class DetailAutoPhoto extends Component {
                             data={this.viewData}
                             itemsPerRow={2}/>
                     </View>
+                    <AllNavigationView
+                        backIconClick={this._onBack}
+                        title='拍摄车辆照片'
+                        wrapStyle={styles.wrapStyle}
+                        renderRihtFootView={this._renderRihtFootView}/>
                 </Image>
             </View>
         );
