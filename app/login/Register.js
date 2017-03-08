@@ -22,6 +22,7 @@ import md5 from "react-native-md5";
 import LoginAndRegister from "./LoginAndRegister";
 import * as ImageUpload from '../utils/ImageUpload';
 import ImageSource from '../publish/component/ImageSource';
+import LoddingAlert from '../component/toast/LoddingAlert';
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -92,6 +93,7 @@ export default class Register extends BaseComponent {
         }
         return (
             <View style={styles.container}>
+                <LoddingAlert ref="lodding"/>
                 <ImageSource galleryClick={this._galleryClick}
                              cameraClick={this._cameraClick}
                              ref={(modal) => {
@@ -321,8 +323,10 @@ export default class Register extends BaseComponent {
                 idcard_img: idcardf + "," + idcardback,
                 license_img: businessid,
             };
+            this.refs.lodding.setShow(true);
             request(AppUrls.REGISTER, 'Post', maps)
                 .then((response) => {
+                    this.refs.lodding.setShow(false);
                     if (response.mycode == "1") {
                         uid = response.mjson.data.uid;
                         this.props.showToast("注册成功");
@@ -331,6 +335,7 @@ export default class Register extends BaseComponent {
                         this.props.showToast(response.mjson.msg + "");
                     }
                 }, (error) => {
+                    this.refs.lodding.setShow(false);
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("注册失败");
                     } else if (error.mycode == 7040004) {

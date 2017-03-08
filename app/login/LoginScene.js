@@ -29,6 +29,7 @@ import LoginFailSmsYes from "./LoginFailSmsYes";
 import SetLoginPwdGesture from "./SetLoginPwdGesture";
 import md5 from "react-native-md5";
 import LoginGesture from './LoginGesture';
+import LoddingAlert from '../component/toast/LoddingAlert';
 
 var Pixel = new PixelUtil();
 var Dimensions = require('Dimensions');
@@ -142,6 +143,7 @@ export default class LoginScene extends BaseComponent {
                     />
 
                     <View style={styles.inputTextSytle}>
+                        <LoddingAlert ref="lodding"/>
                         <LoginAutoSearchInputText
                             ref="loginUsername"
                             searchBtShow={true}
@@ -320,7 +322,7 @@ export default class LoginScene extends BaseComponent {
         } else if (typeof(smsCode) == "undefined" || smsCode == "") {
             this.props.showToast("短信验证码不能为空");
         } else {
-            this.props.showModal(true);
+            // this.props.showModal(true);
             let maps = {
                 code: smsCode,
                 device_code: "dycd_dms_manage_android",
@@ -328,9 +330,11 @@ export default class LoginScene extends BaseComponent {
                 phone: userName,
                 pwd: md5.hex_md5(passWord),
             };
+            this.refs.lodding.setShow(true);
             request(AppUrls.LOGIN, 'Post', maps)
                 .then((response) => {
-                    this.props.showModal(false);
+                    // this.props.showModal(false);
+                    this.refs.lodding.setShow(false);
                     if (response.mycode == "1") {
                         // 保存用户登录状态
                         StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '2');
@@ -394,7 +398,8 @@ export default class LoginScene extends BaseComponent {
                         this.props.showToast(response.mjson.msg + "");
                     }
                 }, (error) => {
-                    this.props.showModal(false);
+                    // this.props.showModal(false);
+                    this.refs.lodding.setShow(false);
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("登录失败");
                     } else if (error.mycode == 7040004) {
