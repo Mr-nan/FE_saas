@@ -6,7 +6,8 @@ import {
     TouchableOpacity,
 
 } from 'react-native';
-
+import PixelUtil            from '../../utils/PixelUtil';
+const Pixel = new PixelUtil();
 import * as fontAnColor from '../../constant/fontAndColor'
 
 class LoadMoreFooter extends Component {
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        height: 40,
+        height:Pixel.getPixel(60) ,
     },
     footerTitle: {
         marginLeft: 10,

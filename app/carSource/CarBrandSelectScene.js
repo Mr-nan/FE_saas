@@ -15,6 +15,7 @@ import {
     Dimensions,
     Animated,
     InteractionManager,
+    BackAndroid
 
 } from 'react-native';
 
@@ -51,13 +52,14 @@ let carObject = {
 
 export default class CarBrandSelectScene extends BaseComponent {
 
-    initFinish = () => {
+    componentDidMount() {
+        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: false});
             this.loadData();
         });
-
     }
+
     _backIconClick = () => {
 
         this.backPage();

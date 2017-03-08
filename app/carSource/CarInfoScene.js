@@ -605,7 +605,7 @@ const styles = StyleSheet.create({
 
         backgroundColor: 'white',
         borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: fontAndColor.COLORA4,
+        borderBottomColor: fontAndColor.COLORA3,
 
     },
     contentView: {

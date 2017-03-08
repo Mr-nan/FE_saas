@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
         height:110,
         flexDirection:'row',
         borderBottomWidth:StyleSheet.hairlineWidth,
-        borderColor:fontAndColor.COLORA4,
+        borderColor:fontAndColor.COLORA3,
         overflow:'hidden',
 
     },
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     lineBottom:{
 
         borderBottomWidth:10,
-        borderColor:fontAndColor.COLORA4,
+        borderColor:fontAndColor.COLORA3,
 
     },
 

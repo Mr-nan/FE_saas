@@ -16,54 +16,6 @@ import NavigationView from '../../component/AllNavigationView';
 import BaseComponent from '../../component/BaseComponent';
 var Pixel = new PixelUtil();
 // {"id":1412,"username":"陈海","mobile":"18510867932","sex":"男","company":"台州市路桥淇文二手车经纪有限公司","role":"财务"}
-Car = [
-    {
-        "cars": [
-            {
-                "title": "姓名",
-                "name": "wangyang"
-            },
-            {
-                "title": "性别",
-                "name": "nv"
-            },
-
-        ],
-        "title": "section0"
-    },
-    {
-        "cars": [
-            {
-                "title": "所属公司",
-                "name": "北京爱法克有限责任公司"
-            },
-            {
-                "title": "角色",
-                "name": "管理员"
-            },
-        ],
-        "title": "section1"
-    },
-    {
-        "cars": [
-            {
-                "title": "账号",
-                "name": "12344566675"
-            },
-            {
-                "title": "密码",
-                "name": "888888888"
-            },
-            {
-                "title": "确认密码",
-                "name": "********"
-            },
-
-        ],
-        "title": "section2"
-    },
-]
-
 // let Car = require('./Car.json');
 /*
  * 获取屏幕的宽和高
