@@ -1,4 +1,10 @@
 dependencies: \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/Libraries/NativeAnimation/Nodes/RCTAnimatedNode.m \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/Libraries/NativeAnimation/Nodes/RCTAnimatedNode.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTDefines.h
+<<<<<<< HEAD
+  /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/Libraries/NativeAnimation/Nodes/RCTAnimatedNode.m \
+  /Users/yujinzhong/Desktop/FE_Saas/node_modules/react-native/Libraries/NativeAnimation/Nodes/RCTAnimatedNode.h \
+  /Users/yujinzhong/Desktop/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTDefines.h
+=======
+  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/Libraries/NativeAnimation/Nodes/RCTAnimatedNode.m \
+  /Users/lhc/Desktop/FE_Saas/node_modules/react-native/Libraries/NativeAnimation/Nodes/RCTAnimatedNode.h \
+  /Users/lhc/Desktop/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTDefines.h
+>>>>>>> 69e1a1af155b930861b1abbc6981d1889051a72f

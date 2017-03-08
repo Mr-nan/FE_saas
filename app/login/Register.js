@@ -323,7 +323,7 @@ export default class Register extends BaseComponent {
             };
             request(AppUrls.REGISTER, 'Post', maps)
                 .then((response) => {
-                    if (response.mjson.code == "1") {
+                    if (response.mycode == "1") {
                         uid = response.mjson.data.uid;
                         this.props.showToast("注册成功");
                         this.exitPage({name: 'LoginAndRegister', component: LoginAndRegister});
@@ -331,9 +331,9 @@ export default class Register extends BaseComponent {
                         this.props.showToast(response.mjson.msg + "");
                     }
                 }, (error) => {
-                    if (error.mjson.code == -300 || error.mjson.code == -500) {
+                    if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("注册失败");
-                    } else if (error.mjson.code == 7040004) {
+                    } else if (error.mycode == 7040004) {
                         this.Verifycode();
                         this.props.showToast(error.mjson.msg + "");
                     } else {
@@ -378,7 +378,7 @@ export default class Register extends BaseComponent {
                 });
             }, (error) => {
                 this.refs.verifycode.lodingStatus(false);
-                if (error.mjson.code == -300 || error.mjson.code == -500) {
+                if (error.mycode == -300 || error.mycode == -500) {
                     this.props.showToast("获取失败");
                 } else {
                     this.props.showToast(error.mjson.msg + "");
@@ -415,9 +415,9 @@ export default class Register extends BaseComponent {
                 }, (error) => {
                     // this.props.showModal(false);
                     this.Verifycode();
-                    if (error.mjson.code == -300 || error.mjson.code == -500) {
+                    if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("短信验证码获取失败");
-                    } else if (error.mjson.code == 7040012) {
+                    } else if (error.mycode == 7040012) {
                         this.Verifycode();
                         this.props.showToast(error.mjson.msg + "");
                     } else {
@@ -474,7 +474,7 @@ export default class Register extends BaseComponent {
         ImageUpload.request(AppUrls.AUTH_UPLOAD_FILE, 'Post', params)
             .then((response) => {
                 this.props.showModal(false);
-                if (response.mjson.code == 1) {
+                if (response.mycode == 1) {
                     let source = {uri: response.mjson.data.url};
                     if (id === 'idcard') {
                         idcardf = response.mjson.data.file_id;

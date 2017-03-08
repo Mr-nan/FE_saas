@@ -14,6 +14,8 @@ import * as fontAndClolr from '../constant/fontAndColor';
 import MycarScene from '../carSource/CarMySourceScene';
 import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
+
+import repayDetailsScene from '../mine/accountManage/repayDetailsScene'
 import ContractManageScene from '../mine/contractManage/ContractManageScene';
 
 import AccountManageScene from '../mine/accountManage/AccountManageScene'
@@ -252,7 +254,7 @@ export default class MineSectionListView extends BaseComponent {
         switch (rowData.name) {
             case '账户管理':
                 this.navigatorParams.name = 'AccountManageScene'
-                this.navigatorParams.component = AccountManageScene
+                this.navigatorParams.component = repayDetailsScene
                 break;
             case '优惠券管理':
                 this.navigatorParams.name = 'CouponAllScene'

@@ -203,11 +203,15 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		QwVLtR8xd0fZYTRxfTNuZIpSYkg=
+		UthPThkbPNcYp+PYU1E0UjXsZWM=
 		</data>
 		<key>Launch Screen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib</key>
 		<data>
-		YRvLsNFX+aJfAPkZemwcCkV2zyY=
+<<<<<<< HEAD
+		qTsM5VA5w5d6JnzQmnZ3YiHKLMo=
+=======
+		A72ax1HAqkuS2coR6fM9knyl3B8=
+>>>>>>> 69e1a1af155b930861b1abbc6981d1889051a72f
 		</data>
 		<key>Launch Screen.storyboardc/Info.plist</key>
 		<data>
@@ -215,7 +219,11 @@
 		</data>
 		<key>Launch Screen.storyboardc/UIViewController-01J-lp-oVM.nib</key>
 		<data>
-		IqtVncXMvd+eOr5bw0ycJhmOOrY=
+<<<<<<< HEAD
+		jAD58RmxyiM8Xv9xyxtGQo4T8kE=
+=======
+		TMQX3Vhj283ZJLCDUd/TwwswgkQ=
+>>>>>>> 69e1a1af155b930861b1abbc6981d1889051a72f
 		</data>
 		<key>PkgInfo</key>
 		<data>
@@ -223,15 +231,19 @@
 		</data>
 		<key>PlugIns/FE_SassTests.xctest/FE_SassTests</key>
 		<data>
-		fAKDGFh9M0zim4YW1FztDAbli4c=
+<<<<<<< HEAD
+		/L+t8iFVdGWH1KMLv8JuEq5m9Qw=
+=======
+		Dz646+kW3dAHnBUjKTXepLdnJQU=
+>>>>>>> 69e1a1af155b930861b1abbc6981d1889051a72f
 		</data>
 		<key>PlugIns/FE_SassTests.xctest/Info.plist</key>
 		<data>
-		vXzyr6rTxGvVzovIvBm1tNC3SiM=
+		2l732OPNAwZVGTXTuFayqorZx/Y=
 		</data>
 		<key>PlugIns/FE_SassTests.xctest/_CodeSignature/CodeResources</key>
 		<data>
-		OEf/WKlDfLnYFMX7FlKw+YemUS0=
+		yFjCMjH3nUMhWbZ16iROLUbfq+M=
 		</data>
 		<key>back_btn@2x.png</key>
 		<data>
@@ -823,11 +835,19 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			YRvLsNFX+aJfAPkZemwcCkV2zyY=
+<<<<<<< HEAD
+			qTsM5VA5w5d6JnzQmnZ3YiHKLMo=
 			</data>
 			<key>hash2</key>
 			<data>
-			qTlrDy/XH9sQVq2ods9wIx4OTrC0YOCdbtrbOi6TwJ0=
+			j7JKao5fRIIv/0eC6voggfSqdc3A7fIECXxkuAA/ELw=
+=======
+			A72ax1HAqkuS2coR6fM9knyl3B8=
+			</data>
+			<key>hash2</key>
+			<data>
+			HMzXOUFGxC3bKkV4zOT2qvshu8DmG+nY/WSe1KKtyvY=
+>>>>>>> 69e1a1af155b930861b1abbc6981d1889051a72f
 			</data>
 		</dict>
 		<key>Launch Screen.storyboardc/Info.plist</key>
@@ -845,44 +865,60 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			IqtVncXMvd+eOr5bw0ycJhmOOrY=
+<<<<<<< HEAD
+			jAD58RmxyiM8Xv9xyxtGQo4T8kE=
 			</data>
 			<key>hash2</key>
 			<data>
-			YYKEMU9eRf8VmloTd7wzOX+/dqsgpAWGZL7+/ijMOPk=
+			xxVrDqa2n9SSo4DiW1lkDkEqqrVGR/GTfGbgOGnfsIY=
+=======
+			TMQX3Vhj283ZJLCDUd/TwwswgkQ=
+			</data>
+			<key>hash2</key>
+			<data>
+			eD/HTnTLjIieAeaH26MFNaKkzuSAQevK237ARWXe5M4=
+>>>>>>> 69e1a1af155b930861b1abbc6981d1889051a72f
 			</data>
 		</dict>
 		<key>PlugIns/FE_SassTests.xctest/FE_SassTests</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			fAKDGFh9M0zim4YW1FztDAbli4c=
+<<<<<<< HEAD
+			/L+t8iFVdGWH1KMLv8JuEq5m9Qw=
 			</data>
 			<key>hash2</key>
 			<data>
-			aWQYavrdqNayYaCS4lzWu/8nAoG7ZMwC5HsnTxAAV5Q=
+			pu6ZDXZZb6L8SzQWa+cxm2Wi9WUyOTQEdb8XJqq0CwI=
+=======
+			Dz646+kW3dAHnBUjKTXepLdnJQU=
+			</data>
+			<key>hash2</key>
+			<data>
+			j/KeGT5BzQT25e9NgnLfXAg1/cRjjhOEQY9BYAGWT84=
+>>>>>>> 69e1a1af155b930861b1abbc6981d1889051a72f
 			</data>
 		</dict>
 		<key>PlugIns/FE_SassTests.xctest/Info.plist</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			vXzyr6rTxGvVzovIvBm1tNC3SiM=
+			2l732OPNAwZVGTXTuFayqorZx/Y=
 			</data>
 			<key>hash2</key>
 			<data>
-			SLAWSXlTVvHy1Y02mkXGyJHnfuoux6PTv+80piCm1t8=
+			xp3F5X2zTVGFRbhLt01WLq6J+ZnKh4Ha/k3P8M5QZTM=
 			</data>
 		</dict>
 		<key>PlugIns/FE_SassTests.xctest/_CodeSignature/CodeResources</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			OEf/WKlDfLnYFMX7FlKw+YemUS0=
+			yFjCMjH3nUMhWbZ16iROLUbfq+M=
 			</data>
 			<key>hash2</key>
 			<data>
-			vMeYnMf8TxKS1iuYgy7mlBMq/odtjqRI7LfwXh9pYgI=
+			p3Z4mi0Q3j4cgjTCd2QIMVQ4OpNdAaVXsnjaAhbh6oQ=
 			</data>
 		</dict>
 		<key>back_btn@2x.png</key>
@@ -1036,6 +1072,11 @@
 			<key>weight</key>
 			<real>1100</real>
 		</dict>
+		<key>^Base\.lproj/</key>
+		<dict>
+			<key>weight</key>
+			<real>1010</real>
+		</dict>
 		<key>^version.plist$</key>
 		<true/>
 	</dict>
@@ -1080,6 +1121,11 @@
 			<true/>
 			<key>weight</key>
 			<real>1100</real>
+		</dict>
+		<key>^Base\.lproj/</key>
+		<dict>
+			<key>weight</key>
+			<real>1010</real>
 		</dict>
 		<key>^Info\.plist$</key>
 		<dict>

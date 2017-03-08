@@ -137,7 +137,7 @@ export default class CarCollectSourceScene extends BaceComponent {
         request(Urls.DELETE, 'Post', maps)
             .then((response) => {
                     allSouce = [];
-                    this.props.showToast('删除成功');
+                    this.props.showToast('取消成功');
                     this.getData();
                 },
                 (error) => {

@@ -187,7 +187,7 @@ export default class SingelCarSence extends BaseComponent {
                             }} title='金额' placeholder='请输入借款金额' unit='万'/>
                         </View>
                         <LendDatePike lefTitle={'用款时间'} placeholder={'选择用款时间'} imageSouce={imageSouce} onPress={this.onPress}/>
-                        <LendUseful onEndEidt={(event)=>{PostData.remark =event.nativeEvent.text}}/>
+                        <LendUseful onEndEidt={(text)=>{PostData.remark =text}}/>
                         <LendRate rate={showData.rate}/>
                     </KeyboardAvoidingView>
                 </ScrollView>
