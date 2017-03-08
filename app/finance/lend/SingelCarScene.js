@@ -101,7 +101,7 @@ export default class SingelCarSence extends BaseComponent {
     dataSourceBlob = [
         {title: '借款主体', key: 'companyName'},
         {title: '借款类型', key: 'lendType'},
-        {title: '可借额度', key: 'dateLimit'},
+        {title: '借款期限', key: 'dateLimit'},
         {title: '借款额度', key: 'maxMoney'}
     ];
     //datePiker的方法
@@ -131,6 +131,8 @@ export default class SingelCarSence extends BaseComponent {
               break;
            }
         }
+
+
 
         if (infoComolete){
 
