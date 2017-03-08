@@ -160,7 +160,7 @@ export default class KurongSence extends BaseComponent {
             itemBlob.push(<LendItem key={item.key} leftTitle={item.title} rightTitle={ShowData[item.key]}/>)
         });
         return (
-            <View style={styles.container}>
+            <View ref={view=>this.baseView=view} style={styles.container}>
                 <ScrollView style={styles.scroller}>
                     <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={5}>
                         <View style={styles.lendInfo}>
@@ -184,6 +184,9 @@ export default class KurongSence extends BaseComponent {
                                     },
                                 });
                                 Picker.show();
+                                this.baseView.setNativeProps({
+                                    enable:false
+                                })
 
                             }} lefTitle="借款期限" placeholder="请选择借款期限" imageSouce={require('../../../images/financeImages/celljiantou.png')}/>
 

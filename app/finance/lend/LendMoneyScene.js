@@ -19,11 +19,10 @@ import AllNavigationView from '../../component/AllNavigationView'
 import BaseComponent from '../../component/BaseComponent';
 import SingelCarScene from './SingelCarScene';
 import KurongSence from './KurongSence';
-import CGDLendScenes from './CGDLendScenes';
 import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import {confimCarcell} from './ConfimCGDPriceSence'
-
+import {LendSuccessAlert} from './component/ModelComponent'
 class TitleImage extends PureComponent {
     // 构造
     render() {
@@ -96,16 +95,18 @@ export  default class LendMoneySence extends BaseComponent {
         if (key === 'single') {
             this.navigatorParams.name = "SingelCarScene";
             this.navigatorParams.component = SingelCarScene;
+            this.toNextPage(this.navigatorParams);
         }
         else if (key === 'kurong') {
             this.navigatorParams.name = "KurongSence";
             this.navigatorParams.component = KurongSence;
+            this.toNextPage(this.navigatorParams);
         }
         else {
-            this.navigatorParams.name = "CGDLendScenes";
-            this.navigatorParams.component = CGDLendScenes;
+
+            this.cgdMessage.setModelVisible(true)
         }
-        this.toNextPage(this.navigatorParams);
+
     }
 
     render() {
@@ -135,7 +136,7 @@ export  default class LendMoneySence extends BaseComponent {
                     {viewBlob}
 
                 </ScrollView>
-
+                <LendSuccessAlert title="提示" subtitle="采购融资功能正在维护中，请您移步BMS系统申请采购融资" ref={(message)=>{this.cgdMessage=message}}confimClick={()=>{}}/>
 
                 <AllNavigationView title="借款" backIconClick={()=> {
 
