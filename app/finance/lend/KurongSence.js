@@ -184,9 +184,6 @@ export default class KurongSence extends BaseComponent {
                                     },
                                 });
                                 Picker.show();
-                                this.baseView.setNativeProps({
-                                    enable:false
-                                })
 
                             }} lefTitle="借款期限" placeholder="请选择借款期限" imageSouce={require('../../../images/financeImages/celljiantou.png')}/>
 
@@ -196,7 +193,7 @@ export default class KurongSence extends BaseComponent {
                             <LendInputItem title='金额' placeholder='请输入借款金额' unit='万' endEit={(event)=>{PostData.loan_mny=event.nativeEvent.text}}/>
                         </View>
                         <LendDatePike lefTitle={'用款时间'} placeholder={'选择用款时间'} imageSouce={imageSouce} onPress={this.onPress}/>
-                        <LendUseful onEndEidt={(event)=>{PostData.remark=event.nativeEvent.text}}/>
+                        <LendUseful onEndEidt={(text)=>{PostData.remark=text}}/>
                         <LendRate rate={ShowData.rate}/>
                     </KeyboardAvoidingView>
                 </ScrollView>
