@@ -36,6 +36,7 @@ export default class ModelSelect extends PureComponent {
 
     constructor(props) {
         super(props);
+        this.lastVin = '';
         this.modelInfo = {};
         this.modelData = [];
         this.state = {
@@ -58,7 +59,6 @@ export default class ModelSelect extends PureComponent {
 
     //选择车型
     _modelPress = () => {
-        //选择车型
         let brandParams ={
             name: 'CarBrandSelectScene',
             component: CarBrandSelectScene,
@@ -109,6 +109,7 @@ export default class ModelSelect extends PureComponent {
                 vin:text,
             };
             this.vin = text;
+            this._copyDataByVin();
             Net.request(AppUrls.VININFO,'post',params).then(
                 (response)=>{
                     console.log('1111111111111111111');
@@ -136,7 +137,7 @@ export default class ModelSelect extends PureComponent {
                                 showHint:false
                             });
                             this.modelData = response.mjson.data;
-                            this.vinModal.refresh();
+                            this.vinModal.refresh(this.modelData);
                             this.vinModal.openModal();
                         }
                     }else {
@@ -193,6 +194,29 @@ export default class ModelSelect extends PureComponent {
                     console.log(data.error);
                 }
             });
+    };
+
+    _copyDataByVin = ()=>{
+        if(this.lastVin !== this.vin){
+            if(this.lastVin !== ''){
+                SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
+                    [ this.lastVin ],
+                    (data) => {
+                        if (data.code === 1) {
+                            if(data.result.rows.length > 0){
+                                let rdb = data.result.rows.item(0);
+                                SQLite.changeData('INSERT INTO publishCar (vin,model,pictures,v_type,manufacture,init_reg,' +
+                                    'mileage,plate_number,emission,label,nature_use,car_color,trim_color,' +
+                                    'transfer_number,dealer_price,describe) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                                    [this.vin, rdb.model, rdb.pictures,rdb.v_type, rdb.manufacture, rdb.init_reg, rdb.mileage,
+                                        rdb.plate_number, rdb.emission, rdb.label, rdb.nature_use, rdb.car_color, rdb.trim_color,
+                                        rdb.transfer_number, rdb.dealer_price, rdb.describe]);
+                            }
+                        }
+                    });
+            }
+            this.lastVin = this.vin;
+        }
     };
 
     //根据车架号操作数据库

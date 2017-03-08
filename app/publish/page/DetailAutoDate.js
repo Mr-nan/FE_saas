@@ -71,7 +71,7 @@ export default class DetailAutoDate extends Component{
 
     componentWillReceiveProps(nextProps) {
         this.setState({
-            hasRegister: nextProps.carData.v_type === '1'|| nextProps.carData.v_type === ''
+            hasRegister: nextProps.carType === '1'|| nextProps.carType === ''
         },()=>{
             if(this.state.hasRegister === false) {
                 this.props.sqlUtil.changeData(

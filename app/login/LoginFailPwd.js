@@ -62,10 +62,11 @@ export default class LoginFailPwd extends BaseComponent {
         return (
             <View style={styles.container}>
                 <NavigationBar
-                    leftImageShow={true}
-                    leftTextShow={false}
+                    leftImageShow={false}
+                    leftTextShow={true}
                     centerText={"设置登录密码"}
-                    rightText={"  "}
+                    rightText={""}
+                    leftText={""}
                     leftImageCallBack={this.backPage}
                 />
                 <View style={{width: width, height: Pixel.getPixel(15)} }/>
@@ -135,7 +136,7 @@ export default class LoginFailPwd extends BaseComponent {
             request(AppUrls.SETPWD, 'Post', maps)
                 .then((response) => {
                     this.props.showModal(false);
-                    if (response.mjson.code == "1") {
+                    if (response.mycode == "1") {
                         StorageUtil.mGetItem(response.mjson.data.phone + "", (data) => {
                             if (data.code == 1) {
                                 if (data.result != null) {
@@ -151,7 +152,7 @@ export default class LoginFailPwd extends BaseComponent {
                     }
                 }, (error) => {
                     this.props.showModal(false);
-                    if (error.mjson.code == -300 || error.mjson.code == -500) {
+                    if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("设置失败");
                     } else {
                         this.props.showToast(error.mjson.msg + "");
