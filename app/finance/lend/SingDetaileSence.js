@@ -423,7 +423,7 @@ export  default  class SingDetaileSence extends BaseComponent {
                 <AllNavigationView
                     title="借款详情"
                     backIconClick={this.backPage}
-                    renderRihtFootView={()=>{
+                    renderRihtFootView={()=>{                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
 
                         if(controlCode.stateCode==='1'){
                             return (<ComentImageButton btnStyle={styles.imageButton}
