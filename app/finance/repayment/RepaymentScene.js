@@ -21,11 +21,10 @@ import ScrollableTabView from 'react-native-scrollable-tab-view';
 import RepaymenyTabBar from './component/RepaymenyTabBar';
 import InventoryRepaymentPage from '../page/InventoryRepaymentPage';
 import SingleRepaymentPage from '../page/SingleRepaymentPage';
-import PurchaseRepaymentPage from '../page/PurchaseRepaymentPage';
 import NavigationView from '../../component/AllNavigationView';
 import * as fontAndColor from '../../constant/fontAndColor';
 import PlanListScene from './PlanListScene';
-import RepaymentInfoScene from '../repayment/RepaymentInfoScene';
+import RepaymentInfoScene from '../repayment/NewRepaymentInfoScene';
 
 export  default class RepaymentScene extends BaseComponent {
 
@@ -48,6 +47,7 @@ export  default class RepaymentScene extends BaseComponent {
                 <ScrollableTabView
                     style={{marginTop: Pixel.getTitlePixel(64), flex: 1}}
                     initialPage={0}
+                    locked={true}
                     renderTabBar={() => <RepaymenyTabBar tabName={["单车融资", "库存融资"]}/>}
                 >
                     <SingleRepaymentPage customerName={this.props.customerName} callBack={(loan_id,loan_number,type)=>{

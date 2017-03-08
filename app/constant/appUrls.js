@@ -171,6 +171,13 @@ export const REPAYMENT_GETINFO = 'api/v2/Repayment/getInfo';
 /**
  * from @zhaojian
  *
+ * 获取新还款详情
+ **/
+export const NEWREPAYMENT_GET_INFO = 'api/v5/NewRepayment/get_info';
+
+/**
+ * from @zhaojian
+ *
  * 申请提前还款
  **/
 export const APPLYREPAYMENT = 'api/v1/Repayment/applyRepayment';
