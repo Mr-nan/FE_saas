@@ -28,7 +28,7 @@ export  default class SignContractScene extends BaseComponent {
     }
 
     render() {
-
+        console.log(this.props.opt_user_id);
         return (
         <View style={{width:width,height:height}}>
             <NavigationView
@@ -40,11 +40,11 @@ export  default class SignContractScene extends BaseComponent {
                 initialPage={0}
                 renderTabBar={() => <RepaymenyTabBar tabName={["未签署", "单方签署", "已签署"]}/>}
             >
-                <NoneSineScene tabLabel="ios-paper"  navigator={this.props.navigator}/>
+                <NoneSineScene tabLabel="ios-paper"  opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
 
-                <SingleSignManageScene tabLabel="ios-people" navigator={this.props.navigator}/>
+                <SingleSignManageScene tabLabel="ios-people" opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
 
-                <CompleteSignScene tabLabel="ios-chatboxes" navigator={this.props.navigator}/>
+                <CompleteSignScene tabLabel="ios-chatboxes" opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
             </ScrollableTabView>
         </View>
         );

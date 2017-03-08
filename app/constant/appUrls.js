@@ -275,7 +275,7 @@ export const DO_EXTENSION = 'api/v1/account/do_extension';
  *
  * 申请展期-生成合同
  **/
-export const DO_EXTENSIONPC = 'api/v1/account/do_extension';
+export const DO_EXTENSIONPC = 'api/v3/account/extension_contract_pc';
 
 /**
  * from @huangning
@@ -349,3 +349,12 @@ export const CHANGEPWD = BASEURL + V + "user/resetPwd";
  * 注册，图片上传
  */
 export const AUTH_UPLOAD_FILE = BASEURL + V + "auth/upload";
+
+/**
+ * 合同列表
+ */
+export const CONTRACTLIST = 'api/v1/Contract/contractList';
+/**
+ * 查看合同详情
+ */
+export const CHECKOUT_CONTRACT = '/api/v1/Contract/contractDetail';
