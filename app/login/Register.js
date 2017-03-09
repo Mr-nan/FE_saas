@@ -475,10 +475,12 @@ export default class Register extends BaseComponent {
         let params = {
             base64_file: 'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g, '%2B')
         };
-        this.props.showModal(true);
+        // this.props.showModal(true);
+        this.refs.lodding.setShow(true);
         ImageUpload.request(AppUrls.AUTH_UPLOAD_FILE, 'Post', params)
             .then((response) => {
-                this.props.showModal(false);
+                // this.props.showModal(false);
+                this.refs.lodding.setShow(false);
                 if (response.mycode == 1) {
                     let source = {uri: response.mjson.data.url};
                     if (id === 'idcard') {
@@ -513,7 +515,8 @@ export default class Register extends BaseComponent {
                     this.props.showToast(response.mjson.msg + "!");
                 }
             }, (error) => {
-                this.props.showModal(false);
+                // this.props.showModal(false);
+                this.refs.lodding.setShow(false);
                 this.props.showToast("图片上传失败");
             });
     }

@@ -38,6 +38,7 @@ export  default class SignContractScene extends BaseComponent {
             <ScrollableTabView
                 style={{marginTop: Pixel.getTitlePixel(64),flex:1}}
                 initialPage={0}
+                locked={true}
                 renderTabBar={() => <RepaymenyTabBar tabName={["未签署", "单方签署", "已签署"]}/>}
             >
                 <NoneSineScene tabLabel="ios-paper"  opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>

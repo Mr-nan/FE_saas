@@ -263,7 +263,11 @@ export default class MainPage extends BaseComponent {
                 } else if (datas.user_level == 1) {
                     tabArray = formalUserTabArray
                 } else {
-                    tabArray = touristTabArray
+                    if(datas.audit_status=='2'){
+                        tabArray = formalUserTabArray
+                    }else{
+                        tabArray = touristTabArray
+                    }
                 }
                 this.setState({
                     selectedTab: tabArray[0].ref,

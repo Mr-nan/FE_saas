@@ -149,7 +149,7 @@ export default class DetailAutoDate extends Component{
                         onPress={()=>{this._labelPress('factory')}}
                     >
                         <View style={styles.center}>
-                            <Text style={[styles.fontMain,styles.leftText]}>出厂时间</Text>
+                            <Text style={[styles.fontMain,styles.leftText]}>出厂日期</Text>
                             <Text style={[styles.fontMain,styles.fillSpace]} >{this.state.factoryDate}</Text>
                             <Image style={styles.imgContainer} source={arrow}/>
                         </View>
@@ -160,7 +160,7 @@ export default class DetailAutoDate extends Component{
                         onPress={()=>{this._labelPress('register')}}
                     >
                         <View style={styles.center}>
-                            <Text style={[styles.fontMain,styles.leftText]}>初登时间</Text>
+                            <Text style={[styles.fontMain,styles.leftText]}>初登日期</Text>
                             <Text style={[styles.fontMain,styles.fillSpace]} >{this.state.registerDate}</Text>
                             <Image style={styles.imgContainer} source={arrow}/>
                         </View>

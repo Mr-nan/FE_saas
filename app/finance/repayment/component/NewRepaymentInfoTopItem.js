@@ -18,7 +18,7 @@ import PixelUtil from '../../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import * as fontAndColor from '../../../constant/fontAndColor';
 import  PlanChildItem from './PlanChildItem';
-export  default class RepaymentInfoTopItem extends PureComponent {
+export  default class NewRepaymentInfoTopItem extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -30,19 +30,15 @@ export  default class RepaymentInfoTopItem extends PureComponent {
     render() {
         return (
             <View style={[{width: width, backgroundColor: '#ffffff'},styles.padding]}>
-                <View style={{flex:1,height:Pixel.getPixel(144)}}>
-                    <Text
-                        style={styles.loanCodeStyle}>单号：{this.props.items.loan_number}</Text>
-                    <View
-                        style={{flex: 1,
-                        marginTop:Pixel.getPixel(1),
-                        justifyContent:'center',
-                        alignItems:'center'}}>
-                        <Text style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(1)}]}>
-                            应还总额
+                <View style={styles.itemStyle}>
+                    <View style={{flex:1,justifyContent:'center',alignItems:'flex-start'}}>
+                        <Text style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0)}]}>
+                            单号:12312312
                         </Text>
-                        <Text style={styles.loanMoneyStyle}>
-                            {this.props.items.total_repayment}
+                    </View>
+                    <View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
+                        <Text style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0)}]}>
+                            放款时间:2017-02-21
                         </Text>
                     </View>
                 </View>
@@ -53,21 +49,12 @@ export  default class RepaymentInfoTopItem extends PureComponent {
                             放款额:
                         </Text>
                         <Text style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0),color:fontAndColor.COLORA0}]}>
-                            {this.props.items.loan_mny_str} | {this.props.items.loanperiod}{this.props.items.loanperiod_type}
+                            5万元 | 3个月
                         </Text>
                     </View>
-                    <View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
-                        <Text style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0)}]}>
-                            放款时间:{this.props.items.loan_time_str}
-                        </Text>
-                    </View>
+
                 </View>
                 <View style={styles.lineStyle}/>
-                <View style={styles.itemStyle}>
-                    <Text style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0)}]}>
-                        {this.props.items.model_name_str}
-                    </Text>
-                </View>
             </View>
         );
     }
