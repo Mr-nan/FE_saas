@@ -45,10 +45,7 @@ export default class EditEmployeeScene extends BaseComponent {
                     this.company_idss.push(this.company_ids[value]);
                 }
             }
-        console.log(this.company_idss);
-            alert(this.company_idss);
             let url = AppUrls.BASEURL + 'v1/user.employee/save';
-            console.log(Car[2].cars[0].name+"-"+Car[2].cars[1].name+'-'+Car[2].cars[2].name+'-'+this.roleId+"----"+Car[0].cars[0].name+'--'+this.props.id);
             request(url, 'post', {
                 account	: Car[2].cars[0].name,
             company_ids	: this.company_idss.toString(),
