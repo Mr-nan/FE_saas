@@ -173,13 +173,13 @@ export class LendInputItem extends PureComponent {
 
 
 
-        const {title,placeholder,unit,unitStyle,endEit}=this.props;
+        const {title,placeholder,unit,unitStyle,onChangeText}=this.props;
 
         return (
             <View style={styles.itemView}>
 
                 <Text style={styles.itemLeftText}>{title}</Text>
-                <TextInput underlineColorAndroid={"#00000000"} style={styles.itemInput} placeholder={placeholder} keyboardType={'decimal-pad'} onEndEditing={endEit}/>
+                <TextInput underlineColorAndroid={"#00000000"} style={styles.itemInput} placeholder={placeholder} keyboardType={'decimal-pad'} onChangeText={onChangeText}/>
                 <Text style={[styles.itemPlacehodel,unitStyle]}>{unit}</Text>
             </View>
         )
