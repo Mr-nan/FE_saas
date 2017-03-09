@@ -24,7 +24,8 @@ import SingleRepaymentPage from '../page/SingleRepaymentPage';
 import NavigationView from '../../component/AllNavigationView';
 import * as fontAndColor from '../../constant/fontAndColor';
 import PlanListScene from './PlanListScene';
-import RepaymentInfoScene from '../repayment/NewRepaymentInfoScene';
+import RepaymentInfoScene from '../repayment/RepaymentInfoScene';
+import InventoryPlanInfoScene from '../repayment/InventoryPlanInfoScene';
 
 export  default class RepaymentScene extends BaseComponent {
 
@@ -56,7 +57,7 @@ export  default class RepaymentScene extends BaseComponent {
                     }} tabLabel="ios-paper"/>
 
                     <InventoryRepaymentPage customerName={this.props.customerName} callBack={(loan_id,loan_number,type)=>{
-                      this.toNextPage({name:'RepaymentInfoScene',component:RepaymentInfoScene,
+                      this.toNextPage({name:'InventoryPlanInfoScene',component:InventoryPlanInfoScene,
                       params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'InventoryRepaymentPage'}});
                     }} tabLabel="ios-people"/>
 

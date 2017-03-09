@@ -25,7 +25,7 @@ import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
 import CarInfoScene from './CarInfoScene';
 var screenWidth = Dimensions.get('window').width;
-import  LoadMoreFooter from '../component/LoadMoreFooter';
+import  LoadMoreFooter from './znComponent/LoadMoreFooter';
 let allSouce = [];
 export default class CarCollectSourceScene extends BaceComponent {
 
