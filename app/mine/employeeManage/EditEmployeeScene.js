@@ -8,7 +8,8 @@ import  {
     Dimensions,
     Image,
     TouchableOpacity,
-    TextInput
+    TextInput,
+    KeyboardAvoidingView
 } from  'react-native'
 
 import * as FontAndColor from '../../constant/fontAndColor';
@@ -264,10 +265,22 @@ export default class EditEmployeeScene extends BaseComponent {
     render() {
         return (
             <View style={styles.container}>
+
+
+
+                { /**      界面listview          */}
+                <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={5}>
+                    <ListView
+                        style={styles.listStyle}
+                        dataSource={this.state.source}
+                        renderRow={this._renderRow}
+                        renderSectionHeader={this._renderSectionHeader}
+                    />
+                </KeyboardAvoidingView>
                 {/**      导航栏          */}
                 <NavigationView
                     backIconClick={this.backPage}
-                    title="编辑员工"
+                    title="添加员工"
                     renderRihtFootView={this._navigatorRightView}
                 />
 
@@ -279,18 +292,9 @@ export default class EditEmployeeScene extends BaseComponent {
                 />
                 {/*              蒙版选择器        */}
                 <SelectMaskComponent1 viewData={[]} onClick={(rowID)=>this.onClickCompany(rowID)}
-                                     ref={(modal)=> {
-                                         this.selectModal1 = modal
-                                     }}
-                />
-
-
-                { /**      界面listview          */}
-                <ListView
-                    style={styles.listStyle}
-                    dataSource={this.state.source}
-                    renderRow={this._renderRow}
-                    renderSectionHeader={this._renderSectionHeader}
+                                      ref={(modal)=> {
+                                          this.selectModal1 = modal
+                                      }}
                 />
 
                 {/**      注销按钮          */}

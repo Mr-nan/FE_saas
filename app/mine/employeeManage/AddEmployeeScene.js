@@ -8,7 +8,8 @@ import  {
     Dimensions,
     Image,
     TouchableOpacity,
-    TextInput
+    TextInput,
+    KeyboardAvoidingView
 } from  'react-native'
 
 import * as FontAndColor from '../../constant/fontAndColor';
@@ -206,6 +207,18 @@ export default class AddEmployeeScene extends BaseComponent {
     render() {
         return (
             <View style={styles.container}>
+
+
+
+                { /**      界面listview          */}
+                <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={5}>
+                <ListView
+                    style={styles.listStyle}
+                    dataSource={this.state.source}
+                    renderRow={this._renderRow}
+                    renderSectionHeader={this._renderSectionHeader}
+                />
+                </KeyboardAvoidingView>
                 {/**      导航栏          */}
                 <NavigationView
                     backIconClick={this.backPage}
@@ -225,23 +238,6 @@ export default class AddEmployeeScene extends BaseComponent {
                                           this.selectModal1 = modal
                                       }}
                 />
-
-
-                { /**      界面listview          */}
-                <ListView
-                    style={styles.listStyle}
-                    dataSource={this.state.source}
-                    renderRow={this._renderRow}
-                    renderSectionHeader={this._renderSectionHeader}
-                />
-
-                {/**      注销按钮          */}
-                {this.props.isAddEmployee ? <MyButton buttonType={MyButton.TEXTBUTTON}
-                                                      content={'注销'}
-                                                      parentStyle={styles.loginBtnStyle}
-                                                      childStyle={styles.loginButtonTextStyle}
-                                                      mOnPress={this._loginOut}/> : null}
-
             </View>
         );
     }
@@ -261,7 +257,7 @@ export default class AddEmployeeScene extends BaseComponent {
                 }
             }
         }
-        if (Car[0].cars[0].name.length != 11) {
+        if (Car[2].cars[0].name.length != 11) {
             this.props.showToast("请输入正确的用户名");
         }else if (Car[2].cars[1].name.length < 6) {
             this.props.showToast("密码必须为6~16位");
