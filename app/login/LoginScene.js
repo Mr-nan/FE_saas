@@ -250,7 +250,6 @@ export default class LoginScene extends BaseComponent {
             this.props.showToast("验证码不能为空");
         } else {
             let maps = {
-                device_code: "dycd_dms_manage_android",
                 img_code: verifyCode,
                 img_sid: imgSid,
                 phone: userName,
@@ -284,7 +283,6 @@ export default class LoginScene extends BaseComponent {
     Verifycode = () => {
         this.refs.loginVerifycode.lodingStatus(true);
         let maps = {
-            device_code: "dycd_dms_manage_android",
         };
         request(AppUrls.IDENTIFYING, 'Post', maps)
             .then((response) => {
@@ -325,7 +323,6 @@ export default class LoginScene extends BaseComponent {
             // this.props.showModal(true);
             let maps = {
                 code: smsCode,
-                device_code: "dycd_dms_manage_android",
                 login_type: "2",
                 phone: userName,
                 pwd: md5.hex_md5(passWord),

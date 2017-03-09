@@ -319,7 +319,6 @@ export default class Register extends BaseComponent {
                 confirm_pwd: md5.hex_md5(passwoedAgain),
                 merchant_name: businessName,
                 code: smsCode,
-                device_code: "dycd_dms_manage_android",
                 idcard_img: idcardf + "," + idcardback,
                 license_img: businessid,
             };
@@ -370,7 +369,6 @@ export default class Register extends BaseComponent {
     Verifycode = () => {
         this.refs.verifycode.lodingStatus(true);
         let maps = {
-            device_code: "dycd_dms_manage_android",
         };
         request(AppUrls.IDENTIFYING, 'Post', maps)
             .then((response) => {
@@ -401,7 +399,6 @@ export default class Register extends BaseComponent {
             this.props.showToast("请输入手机号");
         } else {
             let maps = {
-                device_code: "dycd_dms_manage_android",
                 img_code: verifyCode,
                 img_sid: imgSid,
                 phone: userName,
