@@ -38,6 +38,8 @@ export default class EditEmployeeScene extends BaseComponent {
         this.loadData();
     }
     saveData = () => {
+        this.props.showModal(true);
+        this.isClick=false;
             if (this.items.length>0){
                 this.company_idss=[];
                 Car[SECTIONID].cars[ROWID].name =this.companys[this.items[0]];
@@ -58,7 +60,7 @@ export default class EditEmployeeScene extends BaseComponent {
             username: Car[0].cars[0].name
 
             }).then((response) => {
-
+                this.props.showModal(false);
                 console.log(response);
                 if (response.mjson.code == '1') {
 
@@ -67,11 +69,14 @@ export default class EditEmployeeScene extends BaseComponent {
                         this.props.callBack();
                     }
                     this.backPage();
+                    this.isClick=true;
                 }else{
                     this.props.showToast(response.mjson.msg);
                 }
 
             }, (error) => {
+                this.isClick=true;
+                this.props.showModal(false);
                 this.props.showToast(error.mjson.msg);
                 console.log(error);
 
@@ -193,6 +198,7 @@ export default class EditEmployeeScene extends BaseComponent {
         Car[2].cars[1].name='';
         Car[2].cars[2].name='';
         this.companyName=company;
+        this.isClick=true;
 
         StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST, (data) => {
             if (data.code == 1 && data.result != null) {
@@ -346,7 +352,10 @@ export default class EditEmployeeScene extends BaseComponent {
                     justifyContent: 'center', alignItems: 'center', borderRadius: 5
                 }}
                 activeOpacity={0.8} onPress={() => {
-                this._completedForEdit();
+                    if (this.isClick){
+
+                        this._completedForEdit();
+                    }
             }}>
                 <Text style={{
                     color: FontAndColor.COLORB0,

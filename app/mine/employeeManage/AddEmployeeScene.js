@@ -37,7 +37,8 @@ export default class AddEmployeeScene extends BaseComponent {
     initFinish = () => {
     }
     saveData = () => {
-        console.log(this.items);
+        this.props.showModal(true);
+        this.isClick=false;
         if (this.items.length>0){
 
                 for(let value of this.items){
@@ -58,20 +59,22 @@ export default class AddEmployeeScene extends BaseComponent {
             username: Car[0].cars[0].name
 
         }).then((response) => {
-
+            this.props.showModal(false);
             console.log(response);
             if (response.mjson.code == '1') {
-
                 this.props.showToast("提交成功");
                 if (this.props.callBack) {
                     this.props.callBack();
                 }
                 this.backPage();
+                this.isClick=true;
             }else{
                 this.props.showToast(response.mjson.msg);
             }
 
         }, (error) => {
+            this.props.showModal(false);
+            this.isClick=true;
             this.props.showToast(error.mjson.msg);
             console.log(error);
 
@@ -134,7 +137,8 @@ export default class AddEmployeeScene extends BaseComponent {
         this.company_idss=[];
         this.items=[];
         this.roleId= '';
-        this.sex=''
+        this.sex='';
+        this.isClick=true;
 
         StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST, (data) => {
             if (data.code == 1 && data.result != null) {
@@ -279,7 +283,10 @@ export default class AddEmployeeScene extends BaseComponent {
                     justifyContent: 'center', alignItems: 'center', borderRadius: 5
                 }}
                 activeOpacity={0.8} onPress={() => {
-                this._completedForEdit();
+                    if(this.isClick){
+
+                        this._completedForEdit();
+                    }
             }}>
                 <Text style={{
                     color: FontAndColor.COLORB0,
