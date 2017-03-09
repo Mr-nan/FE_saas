@@ -33,18 +33,18 @@ export default class AutoColor extends Component {
         this.vinNum = this.props.carData.vin;
         let car_color = this.props.carData.car_color;
         let trim_color = this.props.carData.trim_color;
-        if(this.isEmpty(car_color) === true) {
-            car_color = '黑色';
-            this.props.sqlUtil.changeData(
-                'UPDATE publishCar SET car_color = ? WHERE vin = ?',
-                [car_color, this.vinNum]);
-        }
-        if(this.isEmpty(trim_color) === true) {
-            trim_color = '黑色';
-            this.props.sqlUtil.changeData(
-                'UPDATE publishCar SET trim_color = ? WHERE vin = ?',
-                [trim_color, this.vinNum]);
-        }
+        // if(this.isEmpty(car_color) === true) {
+        //     car_color = '黑色';
+        //     this.props.sqlUtil.changeData(
+        //         'UPDATE publishCar SET car_color = ? WHERE vin = ?',
+        //         [car_color, this.vinNum]);
+        // }
+        // if(this.isEmpty(trim_color) === true) {
+        //     trim_color = '黑色';
+        //     this.props.sqlUtil.changeData(
+        //         'UPDATE publishCar SET trim_color = ? WHERE vin = ?',
+        //         [trim_color, this.vinNum]);
+        // }
         //车身 fill为true填充颜色，false填充图片
         this.viewShell = [
             {

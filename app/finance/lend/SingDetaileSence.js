@@ -62,7 +62,7 @@ export  default  class SingDetaileSence extends BaseComponent {
                 rowHasChanged: (row1, row2) => row1 !== row2,
                 sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
             }
-        )//
+        )
         this.state = {
             dataSource: ds.cloneWithRowsAndSections(this.titleNameBlob({}, [])),
             renderPlaceholderOnly: STATECODE.loading
@@ -108,8 +108,16 @@ export  default  class SingDetaileSence extends BaseComponent {
                 (error) => {
 
                     this.setState({
-                        renderPlaceholderOnly: STATECODE.loadError,
+
+                        renderPlaceholderOnly:STATECODE.loadError
                     })
+                    if(error.mycode!= -300||error.mycode!= -500){
+
+                        this.props.showToast('服务器连接有问题')
+                    }else {
+
+                        this.props.showToast(error.mjson.msg);
+                    }
                 });
     }
 //车辆信息
@@ -133,8 +141,16 @@ export  default  class SingDetaileSence extends BaseComponent {
                 (error) => {
 
                     this.setState({
-                        renderPlaceholderOnly: STATECODE.loadError,
+
+                        renderPlaceholderOnly:STATECODE.loadError
                     })
+                    if(error.mycode!= -300||error.mycode!= -500){
+
+                        this.props.showToast('服务器连接有问题')
+                    }else {
+
+                        this.props.showToast(error.mjson.msg);
+                    }
                 });
 
 
@@ -247,10 +263,13 @@ export  default  class SingDetaileSence extends BaseComponent {
 
                 },
                 (error) => {
+                    this.props.showModal(false);
+                    if(error.mycode!= -300||error.mycode!= -500){
 
-                    if (error.mycode !== -300 || error.mycode !== -500) {
-                        this.props.showModal(false);
-                        this.props.showToast(error);
+                        this.props.showToast('服务器连接有问题')
+                    }else {
+
+                        this.props.showToast(error.mjson.msg);
                     }
 
                 });
@@ -293,8 +312,16 @@ export  default  class SingDetaileSence extends BaseComponent {
                         this.change.setModelVisible(true)
                     },
                     (error) => {
+                        this.props.showModal(false);
+                        if(error.mycode!= -300||error.mycode!= -500){
 
-                        //需要做处理
+                            this.props.showToast('服务器连接有问题')
+                        }else {
+
+                            this.props.showToast(error.mjson.msg);
+                        }
+
+
                     });
 
         } else {

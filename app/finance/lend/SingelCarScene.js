@@ -43,6 +43,8 @@ const showData={
     lendType:'',
     maxMoney:'',
     rate:'',
+    tempMin:'',
+    tempMax:''
 }
 
 const verificationtips={
@@ -83,6 +85,8 @@ export default class SingelCarSence extends BaseComponent {
              showData.lendType = tempjson.product_type,
              showData.dateLimit = tempjson.loan_life,
              showData.maxMoney = changeToMillion(tempjson.min_loanmny) + '-' + changeToMillion(tempjson.max_loanmny) + '万',
+             showData.tempMin=changeToMillion(tempjson.min_loanmny);
+             showData.tempMax=changeToMillion(tempjson.max_loanmny);
              showData.rate = tempjson.rate
 
              this.setState({
@@ -92,9 +96,14 @@ export default class SingelCarSence extends BaseComponent {
             },
             (error) => {
 
-              this.setState({
-                    renderPlaceholderOnly: STATECODE.loadError
-                })
+                if(error.mycode!= -300||error.mycode!= -500){
+
+                    this.props.showToast('服务器连接有问题')
+                }else {
+
+                    this.props.showToast(error.mjson.msg);
+                }
+
          });
     }
 
@@ -102,7 +111,7 @@ export default class SingelCarSence extends BaseComponent {
         {title: '借款主体', key: 'companyName'},
         {title: '借款类型', key: 'lendType'},
         {title: '借款期限', key: 'dateLimit'},
-        {title: '借款额度', key: 'maxMoney'}
+        {title: '可借额度', key: 'maxMoney'}
     ];
     //datePiker的方法
     _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false })
@@ -131,9 +140,11 @@ export default class SingelCarSence extends BaseComponent {
               break;
            }
         }
+        if (Number.parseFloat(PostData.loan_mny)<Number.parseFloat(showData.tempMin)||Number.parseFloat(PostData.loan_mny)>Number.parseFloat(showData.tempMax)){
 
-
-
+            infoComolete=false;
+            this.props.showToast('借款金额范围为'+showData.maxMoney)
+        }
         if (infoComolete){
 
             let maps = {
@@ -152,10 +163,13 @@ export default class SingelCarSence extends BaseComponent {
                     },
                     (error) => {
 
-                        //授信时候需要调用
-                        // this.shouxinAlert.setModelVisible(true)
-                        this.props.showToast(error.mycode)
+                        if(error.mycode!= -300||error.mycode!= -500){
 
+                            this.props.showToast('服务器连接有问题')
+                        }else {
+
+                            this.props.showToast(error.mjson.msg);
+                        }
                     });
         }
 
@@ -184,8 +198,8 @@ export default class SingelCarSence extends BaseComponent {
                             {itemBlob}
                         </View>
                         <View style={styles.input}>
-                            <LendInputItem endEit={(event)=>{
-                                PostData.loan_mny=event.nativeEvent.text;
+                            <LendInputItem onChangeText={(text)=>{
+                                PostData.loan_mny=text;
                             }} title='金额' placeholder='请输入借款金额' unit='万'/>
                         </View>
                         <LendDatePike lefTitle={'用款时间'} placeholder={'选择用款时间'} imageSouce={imageSouce} onPress={this.onPress}/>

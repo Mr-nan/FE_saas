@@ -41,6 +41,8 @@ const ShowData={
     type: '',
     maxMoney:'',
     rate:'',
+    tempMin:'',
+    tempMax:''
 }
 const verificationtips={
     loan_mny:'请输入借款金额',
@@ -86,6 +88,8 @@ export default class KurongSence extends BaseComponent {
                         ShowData.maxMoney=changeToMillion(tempjson.min_loanmny)+'-'+changeToMillion(tempjson.max_loanmny)+'万',
                         ShowData.rate=tempjson.rate,
                         ShowData.type=tempjson.loantype_str,
+                        showData.tempMin=changeToMillion(tempjson.min_loanmny);
+                        showData.tempMax=changeToMillion(tempjson.max_loanmny);
 
                     this.setState({
 
@@ -93,7 +97,18 @@ export default class KurongSence extends BaseComponent {
                     })
                 },
                 (error) => {
-                    this.props.showToast(error);
+
+                    this.setState({
+
+                        renderPlaceholderOnly:STATECODE.loadError
+                    })
+                    if(error.mycode!= -300||error.mycode!= -500){
+
+                        this.props.showToast('服务器连接有问题')
+                    }else {
+
+                        this.props.showToast(error.mjson.msg);
+                    }
                 });
     }
     //datePiker的方法
@@ -123,6 +138,12 @@ export default class KurongSence extends BaseComponent {
             }
         }
 
+        if (Number.parseFloat(PostData.loan_mny)<Number.parseFloat(showData.tempMin)||Number.parseFloat(PostData.loan_mny)>Number.parseFloat(showData.tempMax)){
+
+            infoComolete=false;
+            this.props.showToast('借款金额范围为'+showData.maxMoney)
+        }
+
         if (infoComolete){
 
             let maps = {
@@ -140,8 +161,13 @@ export default class KurongSence extends BaseComponent {
                         this.lendAlert.setModelVisible(true)
                     },
                     (error) => {
-                        //授信
-                        //this.lendAlert.setModelVisible(true)
+                        if(error.mycode!= -300||error.mycode!= -500){
+
+                            this.props.showToast('服务器连接有问题')
+                        }else {
+
+                            this.props.showToast(error.mjson.msg);
+                        }
                     });
         }
 

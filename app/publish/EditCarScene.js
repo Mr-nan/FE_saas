@@ -99,12 +99,13 @@ export default class EditCarScene extends BaseComponent {
                                             });
                                             pictures = JSON.stringify(ps);
                                         }
+                                        let dprice = rdb.dealer_price == '0.0000' ? '':rdb.dealer_price;
                                         SQLite.changeData('INSERT INTO publishCar (vin,model,pictures,v_type,manufacture,init_reg,' +
                                             'mileage,plate_number,emission,label,nature_use,car_color,trim_color,' +
                                             'transfer_number,dealer_price,describe) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
                                             [this.carVin, JSON.stringify(modelInfo), pictures,rdb.v_type+'', mf, rg, rdb.mileage,
                                                 rdb.plate_number, rdb.emission_standards, JSON.stringify(rdb.label), rdb.nature_use, rdb.car_color, rdb.trim_color,
-                                                rdb.transfer_times, rdb.dealer_price, rdb.describe]);
+                                                rdb.transfer_times, dprice, rdb.describe]);
                                         SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
                                             [this.carVin],
                                             (data) => {
@@ -167,7 +168,12 @@ export default class EditCarScene extends BaseComponent {
     dateReversal=(time)=>{
         const date = new Date();
         date.setTime(time+'000');
-        return(date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDay());
+        let year = date.getFullYear();
+        let month = (date.getMonth()+1) + '';
+        let day = date.getDay() + '';
+        if(month.length == 1)month = '0'+month;
+        if(day.length == 1) day = '0'+day;
+        return(year+"-"+month+"-"+day);
     };
 
     isEmpty = (str)=>{
