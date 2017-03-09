@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/E:/react/FE_Saas/node_modules/react-native-spinkit/android/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="app_name">RNSpinkit</string>
+</resources>

@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\com.google.code.findbugs\jsr305\3.0.0\5871fb60dc68d67da54a663c3fd636a10a532948\jsr305-3.0.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="5871fb60dc68d67da54a663c3fd636a10a532948">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\jsr305-3.0.0-a971f67c50848f35eab062a5cec0856f32aa537b.jar" />
+    </item>
+    <item
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\com.facebook.fbui.textlayoutbuilder\staticlayout-proxy\1.0\f162442a19fff13995fbd51ba414d9ee05579080\staticlayout-proxy-1.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="f162442a19fff13995fbd51ba414d9ee05579080">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\staticlayout-proxy-1.0-0283216b9bf7dad1d31c87f4be8f1ed4e4500cc6.jar" />
+    </item>
+    <item
+        jar="E:\react\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\0.13.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="0aa38f91d7e6c9d5983d2148741de45b6cc5949b">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\classes-0aa5f9b754881760415836bdc66abe353a1b31b2.jar" />
+    </item>
+    <item
+        jar="E:\react\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\RCTWeChat\unspecified\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="9e6dbba00b80f016fac299246dca6facd0dc4db4">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\classes-4abcd62560f6b4933db29563299ab39929549dc7.jar" />
+    </item>
+    <item
+        jar="E:\react\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.41.1\jars\libs\infer-annotations-1.5.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="dcac634e137395f79693ec760f081a86eb2bd84e">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\infer-annotations-1.5-1735ccebfec7b5fa712981463ad11e6e1a2713f1.jar" />
+    </item>
+    <item
+        jar="E:\react\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\RCTWeChat\unspecified\jars\libs\libammsdk.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="47f4993168154fa73377d7470b9f6887d48a8023">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\libammsdk-899a590c9f4679ac4c1d50398925170416a473e4.jar" />
+    </item>
+    <item
+        jar="E:\react\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="2c5d4cdf375d00cdf1c3429c358bff3670bcf5c2">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\classes-fef407996cfa1d63af425a29d5251b1df12f97fd.jar" />
+    </item>
+    <item
+        jar="E:\react\FE_Saas\android\app\build\intermediates\exploded-aar\cn.aigestudio.wheelpicker\WheelPicker\1.0.3\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="bb3505675ad34af8ab25f32cb124687b700b6fc7">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\classes-c11e22ee4e877c05b7c365d1f06e1034474e2bdb.jar" />
+    </item>
+    <item
+        jar="E:\react\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-image-picker\unspecified\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="8d26fec3eec420de386586fd26e7eca77dad489a">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\classes-9d2103fd500135523f1a4138bb6bf855856b7660.jar" />
+    </item>
+    <item
+        jar="E:\react\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.41.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="b49a04a3016689b372ecbb77f0c33e486e768cca">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\classes-d58733fd2b3ec6b890cb5c18f9000c82e9d7da7e.jar" />
+    </item>
+    <item
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\com.squareup.okio\okio\1.9.0\f824591a0016efbaeddb8300bee54832a1398cfa\okio-1.9.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="f824591a0016efbaeddb8300bee54832a1398cfa">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\okio-1.9.0-db0545b090bbd931e1cf6e43202e038727277a7d.jar" />
+    </item>
+    <item
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\com.parse.bolts\bolts-tasks\1.4.0\d85884acf6810a3bbbecb587f239005cbc846dc4\bolts-tasks-1.4.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d85884acf6810a3bbbecb587f239005cbc846dc4">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\bolts-tasks-1.4.0-c64325f78a24c085b700c554244dc03fa6bc6a89.jar" />
+    </item>
+    <item
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp3\okhttp-ws\3.4.1\8ace66ef7002d98f633377c9e67daeeb196d8c3b\okhttp-ws-3.4.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="8ace66ef7002d98f633377c9e67daeeb196d8c3b">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\okhttp-ws-3.4.1-fe83462a5d206d9870f1dd3ec3f8349b06d7cb1f.jar" />
+    </item>
+    <item
+        jar="E:\react\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-picker\unspecified\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="4299f04529b54d87a7d364cbb43635bac6322130">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\classes-0d115cb66e546ea7fb46963adddcb9e2c6ff43fb.jar" />
+    </item>
+    <item
+        jar="E:\react\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fresco\0.11.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d31aadf33187c37a7cd63dc1b769f8c6e33f78c3">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\classes-637d364f93d5146d9723ec79ba72dbfeb404ed20.jar" />
+    </item>
+    <item
+        jar="E:\react\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\jars\libs\com.umeng.message_v2.8.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="4e48f2bbda85926eea7a6b5e591a1cde86fba522">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\com.umeng.message_v2.8.0-3e714bc7bf5453845f24960e75a85af205bc770c.jar" />
+    </item>
+    <item
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\javax.inject\javax.inject\1\6975da39a7040257bd51d21a231b76c915872d38\javax.inject-1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="6975da39a7040257bd51d21a231b76c915872d38">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\javax.inject-1-273da2ba53aedc2691b5c6c4485ebe7b12b6e634.jar" />
+    </item>
+    <item
+        jar="E:\react\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="67bd36ee9340ec7c254108936ad16b24bed160cc">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\classes-97b7e43af95d33348e42eebc0e594dd7eb454ea5.jar" />
+    </item>
+    <item
+        jar="E:\react\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-wheel-picker\unspecified\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="38d406bf365ba1de92470ca9f562fd5f2fe1f8d5">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\classes-eddefdbfd95674ef2792e3967657254e4e986241.jar" />
+    </item>
+    <item
+        jar="E:\react\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\jars\libs\internal_impl-23.4.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="ea3c07504d2c8f4b13aa17c45c1b68ed9c1c3674">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\internal_impl-23.4.0-d18b37c3880d6206af8f0669c876c9e8774ee381.jar" />
+    </item>
+    <item
+        jar="E:\react\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.4.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="ec75036c3c52e451d0cde50a5aedaf5fd32354a0">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\classes-2948610e2fad897f6141c19682cbfd34c434f42a.jar" />
+    </item>
+    <item
+        jar="E:\react\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\drawee\0.11.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1137942adeb03984c1311b662363dd38fc238fd3">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\classes-4f206abf498f366b11f9411c218f0772651d30b0.jar" />
+    </item>
+    <item
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp3\okhttp-urlconnection\3.4.1\63994437f62bc861bc20c605d12962f7246116d1\okhttp-urlconnection-3.4.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="63994437f62bc861bc20c605d12962f7246116d1">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\okhttp-urlconnection-3.4.1-8c53f11782c30ceeab64a97cd78f9c7aa80afcf8.jar" />
+    </item>
+    <item
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp3\okhttp\3.4.1\c7c4f9e35c2fd5900da24f9872e3971801f08ce0\okhttp-3.4.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="c7c4f9e35c2fd5900da24f9872e3971801f08ce0">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\okhttp-3.4.1-a3a718343956c6e4d917a53a4fdd4a4dc134cda5.jar" />
+    </item>
+    <item
+        jar="E:\react\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-sqlite-storage\unspecified\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="42d97ab417fd3d18dbf29e1b70f60e04692cbf3b">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\classes-b99fd5a1710e7f8e4193adb179fede96be735177.jar" />
+    </item>
+    <item
+        jar="E:\react\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-vin-scan\unspecified\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="4962cebe4240b0dd7bda0a50d35b850c665b21d7">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\classes-373728735edd645fea52234e83b5ef5a5c2fb7fb.jar" />
+    </item>
+    <item
+        jar="E:\react\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\animated-gif\0.13.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="017cbad0ef8876fc041eb28b642a33c3762fe774">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\classes-6dde9d78503abfab8d74dd2a8b489fad6170ab00.jar" />
+    </item>
+    <item
+        jar="E:\react\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-okhttp3\0.11.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="2b8a01ad9da5d26d0067894c22e87597bca2c500">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\classes-cd53c645ed5f396b2cfca6800d0769d784d2482d.jar" />
+    </item>
+    <item
+        jar="E:\react\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-spinkit\unspecified\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="bbcf18dec7b0f15f98ae3a02139a3facdd7d5e28">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\classes-0e1cf96b1d5e399141cab36fc9049faf37ca90fe.jar" />
+    </item>
+    <item
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\com.squareup.wire\wire-runtime\1.7.0\99b61fbfbd9ae5d5309bb4a618e1f2d875821e2c\wire-runtime-1.7.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="99b61fbfbd9ae5d5309bb4a618e1f2d875821e2c">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\wire-runtime-1.7.0-73f6861a22b151ff4f4b93f18234fa98b1a991d8.jar" />
+    </item>
+    <item
+        jar="E:\react\FE_Saas\android\app\build\intermediates\exploded-aar\com.github.ybq\Android-SpinKit\1.1.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="21c0f1b0de29bfe601028757c5cb125c343f5164">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\classes-ed06222417d9e68fd274d972e981b0914a59cc7a.jar" />
+    </item>
+    <item
+        jar="E:\react\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="8f615bca00639150c9eb6175d4b5471193f70794">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\classes-88a9098011721627d51b26c3249d52c892d93e31.jar" />
+    </item>
+    <item
+        jar="E:\androidstudio\extras\android\m2repository\com\android\support\support-annotations\23.4.0\support-annotations-23.4.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="ffbe55fdb2bb456b1485831706a9eac3300bb6b8">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\support-annotations-23.4.0-894629b4183f468ee0fa362dcd20b6ad4f190c1b.jar" />
+    </item>
+    <item
+        jar="E:\react\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.13.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="e818c866cdd1e9b94d54a3ffbd7420dca384746a">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\classes-dac44516b0dc97cc7e41f43e1dd9d4b1d68e3e35.jar" />
+    </item>
+    <item
+        jar="E:\react\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\animated-base\0.13.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="2bea506ec2a27189b7d3198ea11431304c8f7549">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\classes-51c2aa4ac91f7a9399c9e76bb232293686375dc9.jar" />
+    </item>
+    <item
+        jar="E:\react\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fbui.textlayoutbuilder\textlayoutbuilder\1.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="f90b593491e4044903f0bbf68dc3fa2790b151b9">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\classes-7f8430c4eac987296325344910d0e02bbad08233.jar" />
+    </item>
+    <item
+        jar="E:\react\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d86429b0f0b3f3cafbeb78dda1b9d89119ccb05d">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\classes-878b69bec1d040ab9e5195bf7e6e6b8a22375825.jar" />
+    </item>
+    <item
+        jar="E:\react\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="9bab39d73226491b969ef7ffebeae2e6e525e98f">
+        <dex dex="E:\react\FE_Saas\android\app\build\intermediates\pre-dexed\debug\classes-d08146b27ff00d05b825aa0d9e54e6fa38cb56d6.jar" />
+    </item>
+
+</items>
