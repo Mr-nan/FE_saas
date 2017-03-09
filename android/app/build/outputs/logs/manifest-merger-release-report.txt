@@ -1,0 +1,762 @@
+-- Merging decision tree log ---
+manifest
+ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:1:1-47:12
+	package
+		ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:2:5-26
+		INJECTED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml
+		INJECTED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml
+	android:versionName
+		ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:4:5-30
+		INJECTED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml
+		INJECTED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml
+	android:versionCode
+		ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:3:5-28
+		INJECTED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml
+		INJECTED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:1:11-69
+uses-permission#android.permission.INTERNET
+ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:6:5-67
+MERGED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:13:5-67
+MERGED from [FE_Sass:RCTWeChat:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\RCTWeChat\unspecified\AndroidManifest.xml:11:5-67
+	android:name
+		ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:6:22-64
+uses-permission#android.permission.SYSTEM_ALERT_WINDOW
+ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:7:5-77
+MERGED from [com.facebook.react:react-native:0.41.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.41.1\AndroidManifest.xml:11:5-78
+MERGED from [com.facebook.react:react-native:0.41.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.41.1\AndroidManifest.xml:11:5-78
+MERGED from [com.facebook.react:react-native:0.41.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.41.1\AndroidManifest.xml:11:5-78
+MERGED from [com.facebook.react:react-native:0.41.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.41.1\AndroidManifest.xml:11:5-78
+MERGED from [com.facebook.react:react-native:0.41.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.41.1\AndroidManifest.xml:11:5-78
+MERGED from [com.facebook.react:react-native:0.41.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.41.1\AndroidManifest.xml:11:5-78
+MERGED from [com.facebook.react:react-native:0.41.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.41.1\AndroidManifest.xml:11:5-78
+MERGED from [com.facebook.react:react-native:0.41.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.41.1\AndroidManifest.xml:11:5-78
+	android:name
+		ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:7:22-75
+uses-permission#android.permission.CAMERA
+ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:8:5-65
+MERGED from [FE_Sass:react-native-vin-scan:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-vin-scan\unspecified\AndroidManifest.xml:18:5-65
+	android:name
+		ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:8:22-62
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:9:5-80
+MERGED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:16:5-81
+MERGED from [FE_Sass:react-native-vin-scan:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-vin-scan\unspecified\AndroidManifest.xml:14:5-81
+MERGED from [FE_Sass:react-native-vin-scan:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-vin-scan\unspecified\AndroidManifest.xml:28:5-81
+MERGED from [FE_Sass:RCTWeChat:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\RCTWeChat\unspecified\AndroidManifest.xml:15:5-81
+	android:name
+		ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:9:22-78
+uses-sdk
+ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:11:5-13:41
+MERGED from [FE_Sass:react-native-sqlite-storage:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-sqlite-storage\unspecified\AndroidManifest.xml:7:5-9:41
+MERGED from [com.facebook.react:react-native:0.41.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.41.1\AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:appcompat-v7:23.0.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:recyclerview-v7:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fbui.textlayoutbuilder:textlayoutbuilder:1.0.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fbui.textlayoutbuilder\textlayoutbuilder\1.0.0\AndroidManifest.xml:14:5-16:41
+MERGED from [com.facebook.fresco:fresco:0.11.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fresco\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:drawee:0.11.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\drawee\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:imagepipeline-base:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-okhttp3:0.11.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-okhttp3\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:imagepipeline-base:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.soloader:soloader:0.1.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\AndroidManifest.xml:2:3-70
+MERGED from [com.android.support:appcompat-v7:23.0.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.react:react-native:0.41.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.41.1\AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:appcompat-v7:23.0.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:recyclerview-v7:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fbui.textlayoutbuilder:textlayoutbuilder:1.0.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fbui.textlayoutbuilder\textlayoutbuilder\1.0.0\AndroidManifest.xml:14:5-16:41
+MERGED from [com.facebook.fresco:fresco:0.11.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fresco\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:drawee:0.11.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\drawee\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:imagepipeline-base:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-okhttp3:0.11.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-okhttp3\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:imagepipeline-base:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.soloader:soloader:0.1.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\AndroidManifest.xml:2:3-70
+MERGED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:7:5-9:41
+MERGED from [FE_Sass:react-native-image-picker:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-image-picker\unspecified\AndroidManifest.xml:8:5-10:41
+MERGED from [com.facebook.react:react-native:0.41.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.41.1\AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:appcompat-v7:23.0.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:recyclerview-v7:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fbui.textlayoutbuilder:textlayoutbuilder:1.0.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fbui.textlayoutbuilder\textlayoutbuilder\1.0.0\AndroidManifest.xml:14:5-16:41
+MERGED from [com.facebook.fresco:fresco:0.11.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fresco\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:drawee:0.11.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\drawee\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:imagepipeline-base:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-okhttp3:0.11.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-okhttp3\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:imagepipeline-base:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.soloader:soloader:0.1.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\AndroidManifest.xml:2:3-70
+MERGED from [FE_Sass:react-native-picker:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-picker\unspecified\AndroidManifest.xml:7:5-9:41
+MERGED from [com.facebook.react:react-native:0.41.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.41.1\AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:appcompat-v7:23.0.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:recyclerview-v7:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fbui.textlayoutbuilder:textlayoutbuilder:1.0.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fbui.textlayoutbuilder\textlayoutbuilder\1.0.0\AndroidManifest.xml:14:5-16:41
+MERGED from [com.facebook.fresco:fresco:0.11.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fresco\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:drawee:0.11.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\drawee\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:imagepipeline-base:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-okhttp3:0.11.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-okhttp3\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:imagepipeline-base:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.soloader:soloader:0.1.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\AndroidManifest.xml:2:3-70
+MERGED from [FE_Sass:react-native-vin-scan:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-vin-scan\unspecified\AndroidManifest.xml:7:5-9:41
+MERGED from [com.facebook.react:react-native:0.41.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.41.1\AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:appcompat-v7:23.0.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:recyclerview-v7:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fbui.textlayoutbuilder:textlayoutbuilder:1.0.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fbui.textlayoutbuilder\textlayoutbuilder\1.0.0\AndroidManifest.xml:14:5-16:41
+MERGED from [com.facebook.fresco:fresco:0.11.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fresco\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:drawee:0.11.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\drawee\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:imagepipeline-base:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-okhttp3:0.11.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-okhttp3\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:imagepipeline-base:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.soloader:soloader:0.1.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\AndroidManifest.xml:2:3-70
+MERGED from [FE_Sass:react-native-wheel-picker:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-wheel-picker\unspecified\AndroidManifest.xml:7:5-9:41
+MERGED from [cn.aigestudio.wheelpicker:WheelPicker:1.0.3] D:\FE_Saas\android\app\build\intermediates\exploded-aar\cn.aigestudio.wheelpicker\WheelPicker\1.0.3\AndroidManifest.xml:8:5-10:41
+MERGED from [com.facebook.react:react-native:0.41.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.41.1\AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:appcompat-v7:23.0.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:recyclerview-v7:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fbui.textlayoutbuilder:textlayoutbuilder:1.0.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fbui.textlayoutbuilder\textlayoutbuilder\1.0.0\AndroidManifest.xml:14:5-16:41
+MERGED from [com.facebook.fresco:fresco:0.11.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fresco\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:drawee:0.11.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\drawee\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:imagepipeline-base:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-okhttp3:0.11.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-okhttp3\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:imagepipeline-base:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.soloader:soloader:0.1.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\AndroidManifest.xml:2:3-70
+MERGED from [FE_Sass:RCTWeChat:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\RCTWeChat\unspecified\AndroidManifest.xml:7:5-9:41
+MERGED from [com.facebook.react:react-native:0.41.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.41.1\AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:appcompat-v7:23.0.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:recyclerview-v7:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fbui.textlayoutbuilder:textlayoutbuilder:1.0.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fbui.textlayoutbuilder\textlayoutbuilder\1.0.0\AndroidManifest.xml:14:5-16:41
+MERGED from [com.facebook.fresco:fresco:0.11.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fresco\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:drawee:0.11.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\drawee\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:imagepipeline-base:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-okhttp3:0.11.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-okhttp3\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:imagepipeline-base:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.soloader:soloader:0.1.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\AndroidManifest.xml:2:3-70
+MERGED from [com.facebook.fresco:animated-gif:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\animated-gif\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:animated-base:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\animated-base\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:imagepipeline-base:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:imagepipeline-base:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [FE_Sass:react-native-spinkit:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-spinkit\unspecified\AndroidManifest.xml:7:5-9:41
+MERGED from [com.facebook.react:react-native:0.41.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.41.1\AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:appcompat-v7:23.0.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:recyclerview-v7:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fbui.textlayoutbuilder:textlayoutbuilder:1.0.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fbui.textlayoutbuilder\textlayoutbuilder\1.0.0\AndroidManifest.xml:14:5-16:41
+MERGED from [com.facebook.fresco:fresco:0.11.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fresco\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:drawee:0.11.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\drawee\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:imagepipeline-base:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-okhttp3:0.11.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-okhttp3\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:imagepipeline-base:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.13.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.soloader:soloader:0.1.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\AndroidManifest.xml:2:3-70
+MERGED from [com.github.ybq:Android-SpinKit:1.1.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.github.ybq\Android-SpinKit\1.1.0\AndroidManifest.xml:6:5-8:41
+	android:targetSdkVersion
+		ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:13:9-38
+		INJECTED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml
+		INJECTED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:12:9-35
+		INJECTED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml
+		INJECTED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml
+application
+ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:15:5-45:19
+MERGED from [com.facebook.react:react-native:0.41.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.41.1\AndroidManifest.xml:13:5-20
+MERGED from [com.android.support:appcompat-v7:23.0.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.facebook.soloader:soloader:0.1.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\AndroidManifest.xml:3:3-17
+MERGED from [org.webkit:android-jsc:r174650] D:\FE_Saas\android\app\build\intermediates\exploded-aar\org.webkit\android-jsc\r174650\AndroidManifest.xml:2:3-17
+MERGED from [com.android.support:appcompat-v7:23.0.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.facebook.react:react-native:0.41.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.41.1\AndroidManifest.xml:13:5-20
+MERGED from [com.android.support:appcompat-v7:23.0.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.facebook.soloader:soloader:0.1.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\AndroidManifest.xml:3:3-17
+MERGED from [org.webkit:android-jsc:r174650] D:\FE_Saas\android\app\build\intermediates\exploded-aar\org.webkit\android-jsc\r174650\AndroidManifest.xml:2:3-17
+MERGED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:36:5-141:19
+MERGED from [FE_Sass:react-native-image-picker:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-image-picker\unspecified\AndroidManifest.xml:12:5-23:19
+MERGED from [com.facebook.react:react-native:0.41.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.41.1\AndroidManifest.xml:13:5-20
+MERGED from [com.android.support:appcompat-v7:23.0.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.facebook.soloader:soloader:0.1.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\AndroidManifest.xml:3:3-17
+MERGED from [org.webkit:android-jsc:r174650] D:\FE_Saas\android\app\build\intermediates\exploded-aar\org.webkit\android-jsc\r174650\AndroidManifest.xml:2:3-17
+MERGED from [com.facebook.react:react-native:0.41.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.41.1\AndroidManifest.xml:13:5-20
+MERGED from [com.android.support:appcompat-v7:23.0.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.facebook.soloader:soloader:0.1.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\AndroidManifest.xml:3:3-17
+MERGED from [org.webkit:android-jsc:r174650] D:\FE_Saas\android\app\build\intermediates\exploded-aar\org.webkit\android-jsc\r174650\AndroidManifest.xml:2:3-17
+MERGED from [FE_Sass:react-native-vin-scan:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-vin-scan\unspecified\AndroidManifest.xml:30:5-32:19
+MERGED from [com.facebook.react:react-native:0.41.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.41.1\AndroidManifest.xml:13:5-20
+MERGED from [com.android.support:appcompat-v7:23.0.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.facebook.soloader:soloader:0.1.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\AndroidManifest.xml:3:3-17
+MERGED from [org.webkit:android-jsc:r174650] D:\FE_Saas\android\app\build\intermediates\exploded-aar\org.webkit\android-jsc\r174650\AndroidManifest.xml:2:3-17
+MERGED from [com.facebook.react:react-native:0.41.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.41.1\AndroidManifest.xml:13:5-20
+MERGED from [com.android.support:appcompat-v7:23.0.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.facebook.soloader:soloader:0.1.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\AndroidManifest.xml:3:3-17
+MERGED from [org.webkit:android-jsc:r174650] D:\FE_Saas\android\app\build\intermediates\exploded-aar\org.webkit\android-jsc\r174650\AndroidManifest.xml:2:3-17
+MERGED from [com.facebook.react:react-native:0.41.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.41.1\AndroidManifest.xml:13:5-20
+MERGED from [com.android.support:appcompat-v7:23.0.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.facebook.soloader:soloader:0.1.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\AndroidManifest.xml:3:3-17
+MERGED from [org.webkit:android-jsc:r174650] D:\FE_Saas\android\app\build\intermediates\exploded-aar\org.webkit\android-jsc\r174650\AndroidManifest.xml:2:3-17
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [FE_Sass:react-native-spinkit:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-spinkit\unspecified\AndroidManifest.xml:11:5-15:19
+MERGED from [com.facebook.react:react-native:0.41.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.41.1\AndroidManifest.xml:13:5-20
+MERGED from [com.android.support:appcompat-v7:23.0.1] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.4.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
+MERGED from [com.facebook.soloader:soloader:0.1.0] D:\FE_Saas\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\AndroidManifest.xml:3:3-17
+MERGED from [org.webkit:android-jsc:r174650] D:\FE_Saas\android\app\build\intermediates\exploded-aar\org.webkit\android-jsc\r174650\AndroidManifest.xml:2:3-17
+	android:label
+		ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:18:7-39
+	android:supportsRtl
+		ADDED from [FE_Sass:react-native-spinkit:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-spinkit\unspecified\AndroidManifest.xml:14:9-35
+	android:allowBackup
+		ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:17:7-33
+	android:icon
+		ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:19:7-41
+	android:theme
+		ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:20:7-38
+	android:name
+		ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:16:7-38
+activity#com.fe_sass.MainActivity
+ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:21:7-29:18
+	android:label
+		ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:23:9-41
+	android:configChanges
+		ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:24:9-79
+	android:name
+		ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:22:9-37
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:25:9-28:25
+action#android.intent.action.MAIN
+ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:26:13-65
+	android:name
+		ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:26:21-62
+category#android.intent.category.LAUNCHER
+ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:27:13-73
+	android:name
+		ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:27:23-70
+activity#com.facebook.react.devsupport.DevSettingsActivity
+ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:30:7-84
+	android:name
+		ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:30:17-81
+activity#com.fe_sass.wxapi.WXEntryActivity
+ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:32:9-36:11
+	android:label
+		ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:35:17-49
+	android:exported
+		ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:34:17-40
+	android:name
+		ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:33:17-65
+meta-data#UMENG_APPKEY
+ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:37:9-40:21
+	android:value
+		ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:39:17-57
+	android:name
+		ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:38:17-44
+meta-data#UMENG_MESSAGE_SECRET
+ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:41:9-44:21
+	android:value
+		ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:43:17-65
+	android:name
+		ADDED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:42:17-52
+android:uses-permission#android.permission.READ_PHONE_STATE
+IMPLIED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:1:1-47:12 reason: org.webkit.android_jsc has a targetSdkVersion < 4
+MERGED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:18:5-75
+MERGED from [FE_Sass:react-native-vin-scan:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-vin-scan\unspecified\AndroidManifest.xml:16:5-75
+MERGED from [FE_Sass:RCTWeChat:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\RCTWeChat\unspecified\AndroidManifest.xml:14:5-75
+android:uses-permission#android.permission.READ_EXTERNAL_STORAGE
+IMPLIED from D:\FE_Saas\android\app\src\main\AndroidManifest.xml:1:1-47:12 reason: org.webkit.android_jsc requested WRITE_EXTERNAL_STORAGE
+uses-permission#android.permission.WRITE_SETTINGS
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:12:5-73
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:12:22-70
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:14:5-79
+MERGED from [FE_Sass:RCTWeChat:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\RCTWeChat\unspecified\AndroidManifest.xml:12:5-79
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:14:22-76
+uses-permission#android.permission.ACCESS_WIFI_STATE
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:15:5-76
+MERGED from [FE_Sass:RCTWeChat:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\RCTWeChat\unspecified\AndroidManifest.xml:13:5-76
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:15:22-73
+uses-permission#android.permission.WAKE_LOCK
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:17:5-68
+MERGED from [FE_Sass:react-native-vin-scan:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-vin-scan\unspecified\AndroidManifest.xml:25:5-68
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:17:22-65
+uses-permission#android.permission.CHANGE_NETWORK_STATE
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:19:5-79
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:19:22-76
+uses-permission#android.permission.CHANGE_WIFI_STATE
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:20:5-76
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:20:22-73
+uses-permission#android.permission.GET_TASKS
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:21:5-68
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:21:22-65
+uses-permission#android.permission.RECEIVE_BOOT_COMPLETED
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:22:5-81
+MERGED from [FE_Sass:react-native-vin-scan:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-vin-scan\unspecified\AndroidManifest.xml:13:5-81
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:22:22-78
+uses-permission#android.permission.BROADCAST_PACKAGE_ADDED
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:25:5-82
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:25:22-79
+uses-permission#android.permission.BROADCAST_PACKAGE_CHANGED
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:26:5-84
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:26:22-81
+uses-permission#android.permission.BROADCAST_PACKAGE_INSTALL
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:27:5-84
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:27:22-81
+uses-permission#android.permission.BROADCAST_PACKAGE_REPLACED
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:28:5-85
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:28:22-82
+uses-permission#android.permission.RESTART_PACKAGES
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:29:5-75
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:29:22-72
+uses-permission#android.permission.GET_ACCOUNTS
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:30:5-71
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:30:22-68
+uses-permission#android.permission.VIBRATE
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:31:5-66
+MERGED from [FE_Sass:react-native-vin-scan:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-vin-scan\unspecified\AndroidManifest.xml:19:5-66
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:31:22-63
+uses-permission#android.permission.SEND_SMS
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:32:5-67
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:32:22-64
+uses-permission#android.permission.RECEIVE_SMS
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:33:5-70
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:33:22-67
+uses-permission#android.permission.READ_SMS
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:34:5-67
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:34:22-64
+receiver#com.umeng.message.NotificationProxyBroadcastReceiver
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:37:9-40:20
+	android:exported
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:39:13-37
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:38:13-80
+receiver#com.umeng.message.SystemReceiver
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:41:9-55:20
+	android:process
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:43:13-36
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:42:13-60
+intent-filter#android.intent.action.BOOT_COMPLETED
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:44:13-46:29
+action#android.intent.action.BOOT_COMPLETED
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:45:17-79
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:45:25-76
+intent-filter#android.net.conn.CONNECTIVITY_CHANGE
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:47:13-49:29
+action#android.net.conn.CONNECTIVITY_CHANGE
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:48:17-79
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:48:25-76
+intent-filter#android.intent.action.PACKAGE_REMOVED
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:50:13-54:29
+action#android.intent.action.PACKAGE_REMOVED
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:51:17-80
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:51:25-77
+data
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:53:17-50
+	android:scheme
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:53:23-47
+receiver#com.umeng.message.MessageReceiver
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:56:9-63:20
+	android:process
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:59:13-36
+	android:exported
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:58:13-37
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:57:13-61
+intent-filter#org.agoo.android.intent.action.RECEIVE
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:60:13-62:29
+action#org.agoo.android.intent.action.RECEIVE
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:61:17-81
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:61:25-78
+receiver#com.umeng.message.ElectionReceiver
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:64:9-72:20
+	android:process
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:66:13-36
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:65:13-62
+intent-filter#org.agoo.android.intent.action.ELECTION_RESULT_V4+umeng
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:67:13-71:29
+action#org.agoo.android.intent.action.ELECTION_RESULT_V4
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:68:17-92
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:68:25-89
+category#umeng
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:70:17-50
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:70:27-47
+receiver#com.umeng.message.RegistrationReceiver
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:73:9-79:20
+	android:exported
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:75:13-37
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:74:13-66
+intent-filter#${applicationId}.intent.action.COMMAND
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:76:13-78:29
+action#${applicationId}.intent.action.COMMAND
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:77:17-81
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:77:25-78
+receiver#com.umeng.message.UmengMessageBootReceiver
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:80:9-84:20
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:80:19-76
+service#com.umeng.message.UmengService
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:86:9-102:19
+	android:process
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:90:13-36
+	android:label
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:89:13-40
+	android:exported
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:88:13-36
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:87:13-58
+intent-filter#${applicationId}.intent.action.START
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:91:13-93:29
+action#${applicationId}.intent.action.START
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:92:17-79
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:92:25-76
+intent-filter#${applicationId}.intent.action.COCKROACH
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:94:13-96:29
+action#${applicationId}.intent.action.COCKROACH
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:95:17-83
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:95:25-80
+intent-filter#org.agoo.android.intent.action.PING_V4+umeng
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:97:13-101:29
+action#org.agoo.android.intent.action.PING_V4
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:98:17-81
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:98:25-78
+service#com.umeng.message.UmengIntentService
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:103:9-105:39
+	android:process
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:105:13-36
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:104:13-64
+service#com.umeng.message.UmengMessageIntentReceiverService
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:106:9-116:19
+	android:process
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:109:13-36
+	android:exported
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:108:13-36
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:107:13-79
+intent-filter#org.android.agoo.client.MessageReceiverService
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:110:13-112:29
+action#org.android.agoo.client.MessageReceiverService
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:111:17-89
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:111:25-86
+intent-filter#org.android.agoo.client.ElectionReceiverService
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:113:13-115:29
+action#org.android.agoo.client.ElectionReceiverService
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:114:17-90
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:114:25-87
+service#com.umeng.message.UmengMessageCallbackHandlerService
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:117:9-132:19
+	android:exported
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:119:13-37
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:118:13-80
+intent-filter#com.umeng.messge.registercallback.action
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:120:13-122:29
+action#com.umeng.messge.registercallback.action
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:121:17-83
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:121:25-80
+intent-filter#com.umeng.message.unregistercallback.action
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:123:13-125:29
+action#com.umeng.message.unregistercallback.action
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:124:17-86
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:124:25-83
+intent-filter#com.umeng.message.message.handler.action
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:126:13-128:29
+action#com.umeng.message.message.handler.action
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:127:17-83
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:127:25-80
+intent-filter#com.umeng.message.autoupdate.handler.action
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:129:13-131:29
+action#com.umeng.message.autoupdate.handler.action
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:130:17-86
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:130:25-83
+service#com.umeng.message.UmengDownloadResourceService
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:135:9-137:40
+	android:exported
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:137:13-37
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:136:13-74
+service#com.umeng.message.local.UmengLocalNotificationService
+ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:138:9-140:40
+	android:exported
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:140:13-37
+	android:name
+		ADDED from [FE_Sass:PushSDK:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\PushSDK\unspecified\AndroidManifest.xml:139:13-81
+provider#android.support.v4.content.FileProvider
+ADDED from [FE_Sass:react-native-image-picker:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-image-picker\unspecified\AndroidManifest.xml:13:9-22:20
+	android:authorities
+		ADDED from [FE_Sass:react-native-image-picker:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-image-picker\unspecified\AndroidManifest.xml:15:13-60
+	android:grantUriPermissions
+		ADDED from [FE_Sass:react-native-image-picker:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-image-picker\unspecified\AndroidManifest.xml:17:13-47
+	android:exported
+		ADDED from [FE_Sass:react-native-image-picker:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-image-picker\unspecified\AndroidManifest.xml:16:13-37
+	tools:replace
+		ADDED from [FE_Sass:react-native-image-picker:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-image-picker\unspecified\AndroidManifest.xml:18:13-48
+	android:name
+		ADDED from [FE_Sass:react-native-image-picker:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-image-picker\unspecified\AndroidManifest.xml:14:13-67
+meta-data#android.support.FILE_PROVIDER_PATHS
+ADDED from [FE_Sass:react-native-image-picker:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-image-picker\unspecified\AndroidManifest.xml:19:13-21:58
+	android:resource
+		ADDED from [FE_Sass:react-native-image-picker:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-image-picker\unspecified\AndroidManifest.xml:21:17-55
+	android:name
+		ADDED from [FE_Sass:react-native-image-picker:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-image-picker\unspecified\AndroidManifest.xml:20:17-67
+uses-permission#android.permission.NFC
+ADDED from [FE_Sass:react-native-vin-scan:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-vin-scan\unspecified\AndroidManifest.xml:11:5-62
+	android:name
+		ADDED from [FE_Sass:react-native-vin-scan:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-vin-scan\unspecified\AndroidManifest.xml:11:22-59
+uses-permission#android.permission.BIND_NFC_SERVICE
+ADDED from [FE_Sass:react-native-vin-scan:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-vin-scan\unspecified\AndroidManifest.xml:12:5-75
+	android:name
+		ADDED from [FE_Sass:react-native-vin-scan:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-vin-scan\unspecified\AndroidManifest.xml:12:22-72
+uses-permission#android.permission.MOUNT_UNMOUNT_FILESYSTEMS
+ADDED from [FE_Sass:react-native-vin-scan:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-vin-scan\unspecified\AndroidManifest.xml:17:5-84
+	android:name
+		ADDED from [FE_Sass:react-native-vin-scan:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-vin-scan\unspecified\AndroidManifest.xml:17:22-81
+uses-feature#android.hardware.camera
+ADDED from [FE_Sass:react-native-vin-scan:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-vin-scan\unspecified\AndroidManifest.xml:21:5-60
+	android:name
+		ADDED from [FE_Sass:react-native-vin-scan:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-vin-scan\unspecified\AndroidManifest.xml:21:19-57
+uses-feature#android.hardware.camera.autofocus
+ADDED from [FE_Sass:react-native-vin-scan:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-vin-scan\unspecified\AndroidManifest.xml:22:5-70
+	android:name
+		ADDED from [FE_Sass:react-native-vin-scan:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-vin-scan\unspecified\AndroidManifest.xml:22:19-67
+uses-permission#android.permission.FLASHLIGHT
+ADDED from [FE_Sass:react-native-vin-scan:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-vin-scan\unspecified\AndroidManifest.xml:24:5-69
+	android:name
+		ADDED from [FE_Sass:react-native-vin-scan:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-vin-scan\unspecified\AndroidManifest.xml:24:22-66
+uses-permission#android.permission.RECORD_AUDIO
+ADDED from [FE_Sass:react-native-vin-scan:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-vin-scan\unspecified\AndroidManifest.xml:26:5-71
+	android:name
+		ADDED from [FE_Sass:react-native-vin-scan:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-vin-scan\unspecified\AndroidManifest.xml:26:22-68
+uses-permission#android.permission.CHANGE_CONFIGURATION
+ADDED from [FE_Sass:react-native-vin-scan:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-vin-scan\unspecified\AndroidManifest.xml:27:5-79
+	android:name
+		ADDED from [FE_Sass:react-native-vin-scan:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-vin-scan\unspecified\AndroidManifest.xml:27:22-76
+activity#com.vin.scan.VLScanActivity
+ADDED from [FE_Sass:react-native-vin-scan:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-vin-scan\unspecified\AndroidManifest.xml:31:9-64
+	android:name
+		ADDED from [FE_Sass:react-native-vin-scan:unspecified] D:\FE_Saas\android\app\build\intermediates\exploded-aar\FE_Sass\react-native-vin-scan\unspecified\AndroidManifest.xml:31:19-61

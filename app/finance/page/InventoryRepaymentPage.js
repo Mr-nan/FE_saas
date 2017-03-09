@@ -172,18 +172,15 @@ export  default class InventoryRepaymentPage extends BaseComponent {
                 <View style={[styles.line]}></View>
                 <View
                     style={[styles.centerView]}>
-                    <View style={[styles.centerChild, styles.margin, {alignItems: 'flex-start'}]}>
+                    <View style={[styles.centerChild, styles.margin, {alignItems: 'center',flexDirection:'row',justifyContent:'flex-start'}]}>
                         <Text style={[styles.centerText,{color: fontAndColor.COLORA1}]}>
-                            到账日期
+                            到账日期:
                         </Text>
-                    </View>
-                    <View style={[styles.centerChild, styles.margin, {alignItems: 'flex-end'}]}>
                         <Text style={[styles.centerText,{color: fontAndColor.COLORA0}]}>
-                            {movie.loan_time_str}
+                            {movie.dead_line_str}
                         </Text>
                     </View>
                 </View>
-                <View style={{width: width, height: Pixel.getPixel(1), backgroundColor: fontAndColor.COLORA4}}></View>
             </TouchableOpacity>
 
         )
@@ -235,7 +232,7 @@ const styles = StyleSheet.create({
         color: fontAndColor.COLORB0,
     },
     allBack: {
-        width: width, height: Pixel.getPixel(163), backgroundColor: '#ffffff', alignItems: 'center'
+        width: width, height: Pixel.getPixel(123), backgroundColor: '#ffffff', alignItems: 'center'
     },
     line: {
         width: width - Pixel.getPixel(30),

@@ -116,7 +116,7 @@ export  default class PlanListScene extends BaseComponent {
         return (
             <PlanParentItem items={movie} mOnPress={(loan_code,loan_number,plan_id,type) => {
                 if(type==1||type==4){
-                    this.toNextPage({name:'InventoryPlanInfoScene',component:InventoryPlanInfoScene,params:{loan_code:loan_code,
+                    this.toNextPage({name:'PlanInfoScene',component:PlanInfoScene,params:{loan_code:loan_code,
                 loan_number:loan_number,plan_id:plan_id,type:type}});
                 }else{
                     this.toNextPage({name:'PlanInfoScene',component:PlanInfoScene,params:{loan_code:loan_code,
