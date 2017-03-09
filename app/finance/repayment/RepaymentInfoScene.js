@@ -38,11 +38,22 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
         // 初始状态
         let mList = ['1', '2', '3', '4', '5', '6'];
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        let date = new Date();
+        let seperator1 = "/";
+        let month = date.getMonth() + 1;
+        let strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        let currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;
         this.state = {
             source: ds.cloneWithRows(mList),
             renderPlaceholderOnly: 'blank',
             loan_day: '',
-            loan_dayStr: ''
+            loan_dayStr: currentdate
         };
     }
 
@@ -110,7 +121,12 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                         this.allRefresh();
                     },
                     (error) => {
-                        this.props.showToast('申请失败');
+                        if (error.mycode==-300||error.mycode==-500) {
+                            this.props.showToast('申请失败');
+                        } else {
+                            this.props.showToast(error.mjson.msg);
+                        }
+
                     });
         }
     }

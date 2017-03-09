@@ -40,6 +40,7 @@ var imgSrc: '';
 var imgSid: '';
 var smsCode: '';
 var userNames = [];
+var Platform = require('Platform');
 export default class LoginScene extends BaseComponent {
 
     constructor(props) {
@@ -249,8 +250,14 @@ export default class LoginScene extends BaseComponent {
         } else if (typeof(verifyCode) == "undefined" || verifyCode == "") {
             this.props.showToast("验证码不能为空");
         } else {
+            let device_code = '';
+            if (Platform.OS === 'android') {
+                device_code = 'dycd_bms_android';
+            } else {
+                device_code = 'dycd_bms_ios';
+            }
             let maps = {
-                device_code: "dycd_dms_manage_android",
+                device_code: device_code,
                 img_code: verifyCode,
                 img_sid: imgSid,
                 phone: userName,
@@ -283,8 +290,14 @@ export default class LoginScene extends BaseComponent {
     //获取图形验证码
     Verifycode = () => {
         this.refs.loginVerifycode.lodingStatus(true);
+        let device_code = '';
+        if (Platform.OS === 'android') {
+            device_code = 'dycd_bms_android';
+        } else {
+            device_code = 'dycd_bms_ios';
+        }
         let maps = {
-            device_code: "dycd_dms_manage_android",
+            device_code: device_code,
         };
         request(AppUrls.IDENTIFYING, 'Post', maps)
             .then((response) => {
@@ -323,9 +336,15 @@ export default class LoginScene extends BaseComponent {
             this.props.showToast("短信验证码不能为空");
         } else {
             // this.props.showModal(true);
+            let device_code = '';
+            if (Platform.OS === 'android') {
+                device_code = 'dycd_bms_android';
+            } else {
+                device_code = 'dycd_bms_ios';
+            }
             let maps = {
+                device_code: device_code,
                 code: smsCode,
-                device_code: "dycd_dms_manage_android",
                 login_type: "2",
                 phone: userName,
                 pwd: md5.hex_md5(passWord),
