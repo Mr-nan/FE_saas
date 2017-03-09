@@ -393,6 +393,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E3B817081E613EB600279287 /* CoreTelephony.framework in Frameworks */,
 				E36AEB881E6ABF35000F4E11 /* Foundation.framework in Frameworks */,
 				E36AEB861E6ABF2A000F4E11 /* CoreMedia.framework in Frameworks */,
 				E36AEB841E6ABF17000F4E11 /* AVFoundation.framework in Frameworks */,
@@ -401,7 +402,6 @@
 				E3B8170B1E613ED600279287 /* libz.tbd in Frameworks */,
 				E3B817091E613ECF00279287 /* libc++.tbd in Frameworks */,
 				6EFC1612A1C141A990AA381C /* libsqlite3.0.tbd in Frameworks */,
-				E3B817081E613EB600279287 /* CoreTelephony.framework in Frameworks */,
 				E3B817061E613EAC00279287 /* SystemConfiguration.framework in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
@@ -820,16 +820,15 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
-						DevelopmentTeam = 3BH2YRLSPK;
+						DevelopmentTeam = EJJUGM3T75;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 3BH2YRLSPK;
+						DevelopmentTeam = EJJUGM3T75;
 						ProvisioningStyle = Automatic;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 3BH2YRLSPK;
 						ProvisioningStyle = Automatic;
 					};
 					2D02E48F1E0B4A5D006451C7 = {
@@ -1286,7 +1285,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = 3BH2YRLSPK;
+				DEVELOPMENT_TEAM = EJJUGM3T75;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1317,7 +1316,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				DEVELOPMENT_TEAM = 3BH2YRLSPK;
+				DEVELOPMENT_TEAM = EJJUGM3T75;
 				INFOPLIST_FILE = FE_SassTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1346,7 +1345,11 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = 3BH2YRLSPK;
+				DEVELOPMENT_TEAM = EJJUGM3T75;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/LinkingIOS",
+				);
 				INFOPLIST_FILE = FE_Sass/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1359,7 +1362,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.saass;
+				PRODUCT_BUNDLE_IDENTIFIER = com.icyd.jinxitao;
 				PRODUCT_NAME = FE_Sass;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1373,7 +1376,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 3BH2YRLSPK;
+				DEVELOPMENT_TEAM = EJJUGM3T75;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/LinkingIOS",
+				);
 				INFOPLIST_FILE = FE_Sass/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1386,7 +1393,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.saass;
+				PRODUCT_BUNDLE_IDENTIFIER = com.icyd.jinxitao;
 				PRODUCT_NAME = FE_Sass;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1404,7 +1411,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 3BH2YRLSPK;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "FE_Sass-tvOS/Info.plist";
@@ -1441,7 +1448,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 3BH2YRLSPK;
+				DEVELOPMENT_TEAM = "";
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "FE_Sass-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
