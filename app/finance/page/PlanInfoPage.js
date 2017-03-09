@@ -32,6 +32,7 @@ export default class PlanInfoPage extends BaseComponent {
         this.state = {
             xuanzhong: '',
             dataSource: [],
+            renderPlaceholderOnly: 'blank'
         };
 
     }
@@ -56,14 +57,18 @@ export default class PlanInfoPage extends BaseComponent {
         let maps = {
             api: Urls.REPAYMENT_GET_ADJUST_INFO,
             loan_number: this.props.loan_number,
-            type: '2',
+            type: '3',
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
                     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                     list = response.mjson.data.list;
                     relist = response.mjson.data.relist;
-                    this.setState({renderPlaceholderOnly: 'success',dataSource:ds.cloneWithRows(list)});
+                    if (list != null && list.length > 0) {
+                        this.setState({renderPlaceholderOnly: 'success', dataSource: ds.cloneWithRows(list)});
+                    } else {
+                        this.setState({renderPlaceholderOnly: 'null'});
+                    }
                 },
                 (error) => {
                     this.setState({renderPlaceholderOnly: 'error'});
@@ -71,6 +76,11 @@ export default class PlanInfoPage extends BaseComponent {
     }
 
     render() {
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return (
+                this._renderPlaceholderView()
+            );
+        }
         return (
             <View style={styles.container}>
                 <ListView
@@ -89,6 +99,14 @@ export default class PlanInfoPage extends BaseComponent {
         );
     }
 
+    _renderPlaceholderView() {
+        return (
+            <View style={{width: width, height: height,backgroundColor:fontAndClolr.COLORA3,alignItems: 'center'}}>
+                {this.loadView()}
+            </View>
+        );
+    }
+
     _useCoupon = () => {
         alert("234252")
     }
@@ -102,7 +120,6 @@ export default class PlanInfoPage extends BaseComponent {
             widthnum = 0;
         }
 
-
         return (
             <TouchableOpacity style={styles.rowView}
                               onPress={() => {
@@ -110,16 +127,16 @@ export default class PlanInfoPage extends BaseComponent {
                                   this._rowClick(rowID)
                               }}>
                 <View style={styles.textAllStyle}>
-                    <Text style={styles.rowTextStyle}>date</Text>
-                    <Text style={styles.rowTextStyle}>100</Text>
+                    <Text style={styles.rowTextStyle}>{rowData.dead_line}</Text>
+                    <Text style={styles.rowTextStyle}>{rowData.repaymentmny}</Text>
                     <TouchableOpacity onPress={() => {
 
                         this._moneyAdjustClick(rowID)
                     }}>
-                        <Text style={styles.rowTextStyle}>20</Text>
+                        <Text style={styles.rowTextStyle}>{rowData.adjustmoney}</Text>
                     </TouchableOpacity>
 
-                    <Text style={styles.rowTextStyle}>80</Text>
+                    <Text style={styles.rowTextStyle}>{rowData.aftermny}</Text>
                 </View>
 
 
@@ -161,6 +178,7 @@ export default class PlanInfoPage extends BaseComponent {
         );
     }
 }
+
 
 const styles = StyleSheet.create({
     container: {

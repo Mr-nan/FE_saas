@@ -50,7 +50,7 @@ export  default class NewRepaymentInfoScene extends BaseComponent {
                     renderTabBar={() => <RepaymenyTabBar tabName={["还款详情", "还款计划"]}/>}
                 >
                     <RepaymentInfoPage loan_id={this.props.loan_id} loan_number={this.props.loan_number}  tabLabel="ios-paper"/>
-                    <PlanInfoScene tabLabel="ios-paper1"></PlanInfoScene>
+                    <PlanInfoScene  loan_id={this.props.loan_id} loan_number={this.props.loan_number} tabLabel="ios-paper1"></PlanInfoScene>
                 </ScrollableTabView>
                 <NavigationView
                     title="还款详情"

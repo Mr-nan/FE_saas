@@ -27,6 +27,7 @@ var Pixel = new PixelUtil();
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
+var Platform = require('Platform');
 
 var imgSrc: '';
 var imgSid: '';
@@ -118,9 +119,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
 
     Verifycode = () => {
         this.refs.verifycode.lodingStatus(true);
-        let maps = {
-            device_code: "dycd_dms_manage_android",
-        };
+        let maps = {};
         request(AppUrls.IDENTIFYING, 'Post', maps)
             .then((response) => {
                 this.refs.verifycode.lodingStatus(false);
@@ -148,8 +147,14 @@ export default class LoginFailSmsVerify extends BaseComponent {
         } else if (typeof(verifyCode) == "undefined" || verifyCode == "") {
             this.props.showToast("验证码不能为空");
         } else {
+            let device_code = '';
+            if (Platform.OS === 'android') {
+                device_code = 'dycd_bms_android';
+            } else {
+                device_code = 'dycd_bms_ios';
+            }
             let maps = {
-                device_code: "dycd_dms_manage_android",
+                device_code: device_code,
                 img_code: verifyCode,
                 img_sid: imgSid,
                 phone: userName,
@@ -202,9 +207,15 @@ export default class LoginFailSmsVerify extends BaseComponent {
         } else if (typeof(smsCode) == "undefined" || smsCode == "") {
             this.props.showToast("短信验证码不能为空");
         } else {
+            let device_code = '';
+            if (Platform.OS === 'android') {
+                device_code = 'dycd_bms_android';
+            } else {
+                device_code = 'dycd_bms_ios';
+            }
             let maps = {
+                device_code:device_code,
                 code: smsCode,
-                device_code: "dycd_dms_manage_android",
                 login_type: "1",
                 phone: userName,
                 pwd: "",

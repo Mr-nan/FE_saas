@@ -49,10 +49,10 @@ let Car = [
     },
     {
         "cars": [
-            {
-                "icon": require('../../images/mainImage/youhuiquanguanli.png'),
-                "name": "优惠券管理"
-            },
+            // {
+            //     "icon": require('../../images/mainImage/youhuiquanguanli.png'),
+            //     "name": "优惠券管理"
+            // },
             {
                 "icon": require('../../images/mainImage/hetongguanli.png'),
                 "name": "合同管理"
