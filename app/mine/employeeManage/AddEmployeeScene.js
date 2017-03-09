@@ -30,53 +30,7 @@ let SECTIONID = 0;
 let Pixel = new PixelUtil();
 
 const {width, height} = Dimensions.get('window');
-var Car = [
-    {
-        "cars": [
-            {
-                "title": "姓名",
-                "name": ''
-            },
-            {
-                "title": "性别",
-                "name": ''
-            },
-
-        ],
-        "title": "section0"
-    },
-    {
-        "cars": [
-            {
-                "title": "所属公司",
-                "name": ''
-            },
-            {
-                "title": "角色",
-                "name": ''
-            },
-        ],
-        "title": "section1"
-    },
-    {
-        "cars": [
-            {
-                "title": "账号",
-                "name": ''
-            },
-            {
-                "title": "密码",
-                "name": ""
-            },
-            {
-                "title": "确认密码",
-                "name": ""
-            },
-
-        ],
-        "title": "section2"
-    },
-]
+var Car = [];
 
 export default class AddEmployeeScene extends BaseComponent {
     initFinish = () => {
@@ -117,7 +71,7 @@ export default class AddEmployeeScene extends BaseComponent {
             }
 
         }, (error) => {
-
+            this.props.showToast(error.mjson.msg);
             console.log(error);
 
         });
@@ -126,7 +80,53 @@ export default class AddEmployeeScene extends BaseComponent {
 
     // 构造
     constructor(props) {
+        Car = [
+            {
+                "cars": [
+                    {
+                        "title": "姓名",
+                        "name": ''
+                    },
+                    {
+                        "title": "性别",
+                        "name": ''
+                    },
 
+                ],
+                "title": "section0"
+            },
+            {
+                "cars": [
+                    {
+                        "title": "所属公司",
+                        "name": ''
+                    },
+                    {
+                        "title": "角色",
+                        "name": ''
+                    },
+                ],
+                "title": "section1"
+            },
+            {
+                "cars": [
+                    {
+                        "title": "账号",
+                        "name": ''
+                    },
+                    {
+                        "title": "密码",
+                        "name": ""
+                    },
+                    {
+                        "title": "确认密码",
+                        "name": ""
+                    },
+
+                ],
+                "title": "section2"
+            },
+        ]
         super(props);
         this.companys = [];
         this.company_ids=[];
@@ -261,11 +261,15 @@ export default class AddEmployeeScene extends BaseComponent {
                 }
             }
         }
-        if (Car[2].cars[1].name !== Car[2].cars[2].name) {
+        if (Car[0].cars[0].name.length != 11) {
+            this.props.showToast("请输入正确的用户名");
+        }else if (Car[2].cars[1].name.length < 6) {
+            this.props.showToast("密码必须为6~16位");
+        }else if (Car[2].cars[1].name !== Car[2].cars[2].name) {
             this.props.showToast("两次输入的密码不同");
-            return;
+        }else{
+            this.saveData()
         }
-        this.saveData()
 
 
     }
@@ -520,9 +524,9 @@ const styles = StyleSheet.create({
     },
     rowLeftTitle: {
         marginLeft: Pixel.getPixel(15),
+        width: 60,
         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),
         color: FontAndColor.COLORA0,
-        flex:1
 
     },
     rowRightTitle: {
@@ -535,7 +539,7 @@ const styles = StyleSheet.create({
 
     },
     inputStyle: {
-        flex: 3,
+        flex: 1,
         marginRight: Pixel.getPixel(5),
         textAlign: 'right',
         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),

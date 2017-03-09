@@ -152,7 +152,13 @@ export default class NoneSineScene extends BaseComponent {
                                 contract_id: rowData.contract_id,   //合同ID
                                 contract_log_id: rowData.contract_log_id,	//合同日志ID
                                 product_type_code: rowData.product_type_code,	//产品类型编码
-                                showButton: true
+                                showButton: true,
+                                callBack: () => {
+                                    allSouce = [];
+                                    this.setState({renderPlaceholderOnly: 'loading'});
+                                    page = 1;
+                                    this.getData();
+                                },
                             },
                         })
                     }}>

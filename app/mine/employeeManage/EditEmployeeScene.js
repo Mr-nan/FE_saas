@@ -30,53 +30,7 @@ let SECTIONID = 0;
 let Pixel = new PixelUtil();
 
 const {width, height} = Dimensions.get('window');
-var Car = [
-    {
-        "cars": [
-            {
-                "title": "姓名",
-                "name": ''
-            },
-            {
-                "title": "性别",
-                "name": ''
-            },
-
-        ],
-        "title": "section0"
-    },
-    {
-        "cars": [
-            {
-                "title": "所属公司",
-                "name": ''
-            },
-            {
-                "title": "角色",
-                "name": ''
-            },
-        ],
-        "title": "section1"
-    },
-    {
-        "cars": [
-            {
-                "title": "账号",
-                "name": ''
-            },
-            {
-                "title": "密码",
-                "name": ""
-            },
-            {
-                "title": "确认密码",
-                "name": ""
-            },
-
-        ],
-        "title": "section2"
-    },
-]
+var Car=[];
 
 export default class EditEmployeeScene extends BaseComponent {
     initFinish = () => {
@@ -92,6 +46,7 @@ export default class EditEmployeeScene extends BaseComponent {
                 }
             }
         console.log(this.company_idss);
+            alert(this.company_idss);
             let url = AppUrls.BASEURL + 'v1/user.employee/save';
             console.log(Car[2].cars[0].name+"-"+Car[2].cars[1].name+'-'+Car[2].cars[2].name+'-'+this.roleId+"----"+Car[0].cars[0].name+'--'+this.props.id);
             request(url, 'post', {
@@ -119,7 +74,7 @@ export default class EditEmployeeScene extends BaseComponent {
                 }
 
             }, (error) => {
-
+                this.props.showToast(error.mjson.msg);
                 console.log(error);
 
             });
@@ -178,6 +133,53 @@ export default class EditEmployeeScene extends BaseComponent {
     constructor(props) {
 
         super(props);
+        Car = [
+            {
+                "cars": [
+                    {
+                        "title": "姓名",
+                        "name": ''
+                    },
+                    {
+                        "title": "性别",
+                        "name": ''
+                    },
+
+                ],
+                "title": "section0"
+            },
+            {
+                "cars": [
+                    {
+                        "title": "所属公司",
+                        "name": ''
+                    },
+                    {
+                        "title": "角色",
+                        "name": ''
+                    },
+                ],
+                "title": "section1"
+            },
+            {
+                "cars": [
+                    {
+                        "title": "账号",
+                        "name": ''
+                    },
+                    {
+                        "title": "密码",
+                        "name": ""
+                    },
+                    {
+                        "title": "确认密码",
+                        "name": ""
+                    },
+
+                ],
+                "title": "section2"
+            },
+        ]
         this.companys = [];
         this.company_ids=[];
         this.company_idss=[];
@@ -190,6 +192,8 @@ export default class EditEmployeeScene extends BaseComponent {
         Car[2].cars[0].name=mobile;
         Car[1].cars[0].name=company;
         Car[1].cars[1].name=role;
+        Car[2].cars[1].name='';
+        Car[2].cars[2].name='';
         this.companyName=company;
 
         StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST, (data) => {
@@ -318,11 +322,16 @@ export default class EditEmployeeScene extends BaseComponent {
                 }
             }
         }
-        if (Car[2].cars[1].name !== Car[2].cars[2].name) {
+        if (Car[2].cars[0].name.length != 11) {
+            this.props.showToast("请输入正确的用户名");
+        }else if (Car[2].cars[1].name.length < 6) {
+            this.props.showToast("密码必须为6~16位");
+        }else if (Car[2].cars[1].name !== Car[2].cars[2].name) {
             this.props.showToast("两次输入的密码不同");
-            return;
+        }else{
+            this.saveData()
         }
-        this.saveData()
+
 
 
     }

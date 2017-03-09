@@ -319,7 +319,7 @@ export default class CollectionIntent extends BaseComponent {
                         <View style={styles.containerChild}>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10)}}>
                                 <Text style={styles.carSelect}>
-                                    *品牌、车系
+                                    品牌、车系
                                 </Text>
                                 <Text style={{fontSize: 15, marginRight: 10, color: FontAndColor.COLORA2}}
                                       onPress={() => {
@@ -346,6 +346,7 @@ export default class CollectionIntent extends BaseComponent {
                                     <LabelSelect.Label
                                         key={'label-' + index}
                                         data={item}
+                                        enables={true}
                                         onCancel={() => {
                                             this.deleteItem(item);
                                         }}
