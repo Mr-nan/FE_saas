@@ -65,7 +65,7 @@ export default class CarCollectionItems extends Component {
                             <TouchableOpacity onPress={()=>{
                                     this.props.callBack(carCellData.id);
                             }} activeOpacity={0.8}
-                                              style={{borderWidth:1,borderRadius:3,borderColor:fontAndColor.COLORA3,marginTop:Pixel.getPixel(5),width:Pixel.getPixel(58)}}>
+                                              style={{borderWidth:1,borderRadius:3,borderColor:fontAndColor.COLORA3,marginTop:Pixel.getPixel(5),width:Pixel.getPixel(63)}}>
                                 <Text style={[styles.cellFootText,{margin:Pixel.getPixel(3)}]}>{this.props.from=='BrowsingHistoryScene'?'删除记录':'取消收藏'}</Text>
                             </TouchableOpacity>
                         </View>

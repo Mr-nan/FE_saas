@@ -150,7 +150,7 @@ export default class CarMySourceScene extends BaceComponent {
 
         return (
             <TouchableOpacity onPress={this.pushNewCarScene}>
-                <Text style={{color:"#FFFFFF", fontSize:fontAndColor.BUTTONFONT30}}>发布车源</Text>
+                <Text style={{color:"#FFFFFF", fontSize:fontAndColor.CONTENTFONT24}}>发布车源</Text>
             </TouchableOpacity>
         )
     }
@@ -161,6 +161,7 @@ export default class CarMySourceScene extends BaceComponent {
                 <ScrollableTabView
                     style={styles.ScrollableTabView}
                     initialPage={0}
+                    locked={true}
                     renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["已上架", "已下架", "未审核"]}/>}>
                     <MyCarSourceUpperFrameView ref="upperFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper1"/>
                     <MyCarSourceDropFrameView  ref="dropFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper2"/>

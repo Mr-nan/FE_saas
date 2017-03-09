@@ -319,7 +319,7 @@ export default class CollectionIntent extends BaseComponent {
                         <View style={styles.containerChild}>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10)}}>
                                 <Text style={styles.carSelect}>
-                                    *品牌、车系
+                                    品牌、车系
                                 </Text>
                                 <Text style={{fontSize: 15, marginRight: 10, color: FontAndColor.COLORA2}}
                                       onPress={() => {
@@ -398,7 +398,7 @@ export default class CollectionIntent extends BaseComponent {
                                 )}
                             </LabelSelect>
                         </View>
-                        <Text style={styles.bottomText}>根据您提报的收车意向，我们会给您相关车源。请关注首页意向车源。</Text>
+                        <Text style={styles.bottomText}>根据您提报的收车意向，我们会推荐相关车源，请关注首页意向车源。</Text>
                         <TouchableOpacity style={styles.btnStyle}
                                           onPress={() => this.loadData('')}>
                             <Text style={{

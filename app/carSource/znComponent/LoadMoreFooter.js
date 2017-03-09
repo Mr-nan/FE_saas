@@ -18,13 +18,13 @@ class LoadMoreFooter extends Component {
 
         const {isLoadAll,isCarFoot,footAllClick} = this.props;
         return (
-            <TouchableOpacity onPress={()=>{
+            <TouchableOpacity  onPress={()=>{
 
                 if(isCarFoot && isLoadAll)
                 {
                     footAllClick();
                 }
-            }}>
+            }} activeOpacity={1}>
             <View  style={styles.footer}>
                 <Text style={styles.footerTitle}>{isLoadAll ? (isCarFoot?'查看全部车源>' :'已加载全部'): '正在加载更多……'}</Text>
             </View>

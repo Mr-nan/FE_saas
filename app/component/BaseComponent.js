@@ -157,7 +157,6 @@ export default class BaseComponent extends Component {
                         color: fontAndColor.COLORA1, fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                         marginTop: Pixel.getPixel(10)
                     }}>
-                    暂无相关数，去其他地方看看吧
                 </Text>
             </View>
         }

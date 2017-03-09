@@ -48,6 +48,8 @@ export  default class SingleRepaymentPage extends BaseComponent {
 
     componentWillUnmount() {
         allList = [];
+        page = 1;
+        allPage = 1;
     }
 
     initFinish = () => {
@@ -63,7 +65,7 @@ export  default class SingleRepaymentPage extends BaseComponent {
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
                     allList.push(...response.mjson.data.list);
-                    allPage = response.mjson.data.total;
+                    allPage = response.mjson.data.page;
                     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                     this.setState({
                         source: ds.cloneWithRows(allList),
@@ -84,6 +86,7 @@ export  default class SingleRepaymentPage extends BaseComponent {
         allList = [];
         this.setState({isRefreshing: true});
         page = 1;
+        allPage = 1;
         this.getData();
     };
 
