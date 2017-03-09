@@ -25,7 +25,7 @@ import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
 import CarInfoScene from './CarInfoScene';
 var screenWidth = Dimensions.get('window').width;
-import  LoadMoreFooter from '../component/LoadMoreFooter';
+import  LoadMoreFooter from '../carSource/znComponent/LoadMoreFooter';
 let allSouce = [];
 export default class BrowsingHistoryScene extends BaceComponent {
 
@@ -46,8 +46,6 @@ export default class BrowsingHistoryScene extends BaceComponent {
                         this.setState({renderPlaceholderOnly: 'null', isRefreshing: false});
                     } else {
                         allSouce.push(...response.mjson.data.list);
-                        console.log(response.mjson.data.list);
-
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
                             carData: ds.cloneWithRows(allSouce),

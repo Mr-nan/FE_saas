@@ -32,7 +32,7 @@ export  default class RepaymentInfoTopItem extends PureComponent {
             <View style={[{width: width, backgroundColor: '#ffffff'},styles.padding]}>
                 <View style={{flex:1,height:Pixel.getPixel(144)}}>
                     <Text
-                        style={styles.loanCodeStyle}>单号：201702211002801</Text>
+                        style={styles.loanCodeStyle}>单号：{this.props.items.loan_number}</Text>
                     <View
                         style={{flex: 1,
                         marginTop:Pixel.getPixel(1),

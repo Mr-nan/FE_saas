@@ -20,13 +20,14 @@ const Pixel = new PixelUtil();
 import * as fontAndColor from '../../constant/fontAndColor';
 import BaseComponent from '../../component/BaseComponent';
 import NavigationView from '../../component/AllNavigationView';
-import RepaymentInfoTopItem from './component/RepaymentInfoTopItem';
+import RepaymentInfoTopItem from './component/PlanInfoTopItem';
 import RepaymentInfoContentItem from './component/RepaymentInfoContentItem';
 import RepaymentInfoBottomItem from './component/RepaymentInfoBottomItem';
 import AllBottomItem from './component/AllBottomItem';
 let moneyList = [];
 let nameList = [];
 let dateList = [];
+let movies = {};
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 export  default class PlanInfoScene extends BaseComponent {
@@ -70,7 +71,7 @@ export  default class PlanInfoScene extends BaseComponent {
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
-                    let movies = response.mjson.data;
+                     movies = response.mjson.data;
                     dateList.push({name: '付息区间', data: movies.interval});
                     dateList.push({name: '最晚还款日', data: movies.date_str});
 
@@ -136,7 +137,7 @@ export  default class PlanInfoScene extends BaseComponent {
     _renderRow = (movie, sectionId, rowId) => {
         if (rowId == 0) {
             return (
-                <RepaymentInfoTopItem />
+                <RepaymentInfoTopItem items={movies}/>
             )
         } else if (rowId == 1) {
             return (

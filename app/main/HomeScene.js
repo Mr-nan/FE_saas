@@ -334,8 +334,14 @@ export default class HomeScene extends BaseComponet {
     }
 
     _renderRow = (movie, sindex, rowID) => {
+        let DIDIAN;
         if (movie == '1') {
             return (<View/>);
+        }
+        if(movie.city_name.length){
+            DIDIAN = '[' + movie.city_name + ']'
+        }else {
+            DIDIAN = '';
         }
         return (
             <TouchableOpacity onPress={()=> {
@@ -354,7 +360,7 @@ export default class HomeScene extends BaseComponet {
                            source={movie.img ? {uri: movie.img + '?x-oss-process=image/resize,w_' + 166 + ',h_' + 111} : require('../../images/carSourceImages/car_null_img.png')}/>
 
                     <Text style={cellSheet.despritonStyle}
-                          numberOfLines={2}>{'[' + movie.city_name + ']' + movie.model_name}</Text>
+                          numberOfLines={2}>{DIDIAN + movie.model_name}</Text>
                     <Text
                         style={cellSheet.timeStyle}>{this.dateReversal(movie.create_time + '000') + '/' + movie.mileage + '万公里'}</Text>
 

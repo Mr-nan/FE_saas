@@ -49,7 +49,7 @@ export default class CarCell extends Component {
                 <View style={[styles.textContainer]}>
 
                     <View style={{backgroundColor:'white'}}>
-                        <Text style={styles.mainText}>{'['+carCellData.city_name+']'+carCellData.brand_name+carCellData.model_name}</Text>
+                        <Text style={styles.mainText}>{carCellData.city_name!=""?('['+carCellData.city_name+']'):""+carCellData.brand_name+carCellData.model_name}</Text>
 
                     </View>
                     <View style={{backgroundColor:'white'}}>

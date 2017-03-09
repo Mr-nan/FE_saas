@@ -20,14 +20,13 @@ const Pixel = new PixelUtil();
 import * as fontAndColor from '../../constant/fontAndColor';
 let movies = {};
 import BaseComponent from '../../component/BaseComponent';
-import RepaymentInfoTopItem from './component/RepaymentInfoTopItem';
-import RepaymentInfoDateItem from './component/RepaymentInfoDateItem';
-import RepaymentInfoContentItem from './component/RepaymentInfoContentItem';
-import RepaymentInfoBottomItem from './component/RepaymentInfoBottomItem';
-import AllBottomItem from './component/AllBottomItem';
+import NewRepaymentInfoTopItem from '../repayment/component/NewRepaymentInfoTopItem';
 import MyButton from '../../component/MyButton';
+import RepaymentInfoContentItem from '../repayment/component/RepaymentInfoContentItem';
+import AllBottomItem from '../repayment/component/AllBottomItem';
 let moneyList = [];
 let nameList = [];
+
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 export  default class RepaymentInfoPage extends BaseComponent {
@@ -39,15 +38,20 @@ export  default class RepaymentInfoPage extends BaseComponent {
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             source: ds.cloneWithRows(mList),
-            renderPlaceholderOnly: 'blank',
-            loan_day: '',
-            loan_dayStr: ''
+            renderPlaceholderOnly: 'blank'
         };
     }
 
     componentWillUnmount() {
         moneyList = [];
         nameList = [];
+    }
+
+    componentDidMount() {
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
     }
 
     initFinish = () => {
@@ -63,28 +67,27 @@ export  default class RepaymentInfoPage extends BaseComponent {
 
     getData = () => {
         let maps = {
-            api: Urls.REPAYMENT_GETINFO,
+            api: Urls.NEWREPAYMENT_GET_INFO,
             loan_id: this.props.loan_id,
             loan_number: this.props.loan_number,
-            type: this.props.type,
+            type: '2',
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
                     movies = response.mjson.data;
-                    moneyList.push({name: '贷款本金', data: movies.loan_mny_str});
-                    moneyList.push({name: '计息天数', data: movies.loan_day});
-                    moneyList.push({name: '综合费率', data: movies.loan_rebate_str});
                     moneyList.push({name: '利息总额', data: movies.interest_total});
                     moneyList.push({name: '已还利息', data: movies.interest});
-                    moneyList.push({name: '贷款利息', data: movies.interest_other});
+                    moneyList.push({name: '待还利息', data: movies.interest_other});
+                    moneyList.push({name: '使用优惠券数量', data: movies.coupon_info.coupon_repayment});
+                    moneyList.push({name: '使用优惠券金额', data: movies.coupon_info.coupon_number});
+                    moneyList.push({name: '优惠券还息金额', data: movies.coupon_info.coupon_usable});
 
                     nameList.push({name: '渠道名称', data: movies.qvdaoname});
                     nameList.push({name: '还款账户', data: movies.bank_info.repaymentaccount});
                     nameList.push({name: '开户行', data: movies.bank_info.bank});
                     nameList.push({name: '开户支行', data: movies.bank_info.branch});
                     nameList.push({name: '还款账号', data: movies.bank_info.repaymentnumber});
-                    nameList.push({name: '保证金', data: movies.bondmny});
-                    this.setState({renderPlaceholderOnly: 'success', loan_day: movies.loan_day});
+                    this.setState({renderPlaceholderOnly: 'success'});
                 },
                 (error) => {
                     this.setState({renderPlaceholderOnly: 'error'});
@@ -96,7 +99,7 @@ export  default class RepaymentInfoPage extends BaseComponent {
         parentStyle: styles.parentStyle,
         childStyle: styles.childStyle,
         opacity: 0.7,
-        content: '申请还款',
+        content: '申请提前还款',
         mOnPress: () => {
             let maps = {
                 api: Urls.APPLYREPAYMENT,
@@ -121,14 +124,13 @@ export  default class RepaymentInfoPage extends BaseComponent {
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
                 <ListView
-                    style={{marginTop: Pixel.getTitlePixel(64)}}
+                    style={{marginTop:Pixel.getPixel(5)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
                     showsVerticalScrollIndicator={false}
                 />
-                {movies.paymen_status == '0' ? this.props.from == 'SingleRepaymentPage' ?
-                        <MyButton {...this.buttonParams}/> : <View/> : <View/>}
+                <MyButton {...this.buttonParams}/>
             </View>
         );
     }
@@ -144,56 +146,20 @@ export  default class RepaymentInfoPage extends BaseComponent {
     _renderRow = (movie, sectionId, rowId) => {
         if (rowId == 0) {
             return (
-                <RepaymentInfoTopItem items={movies}/>
+                <NewRepaymentInfoTopItem items={movies}/>
             )
-        } else if (rowId == 1) {
-            return (
-                <RepaymentInfoDateItem callBack={(time)=>{
-                    let date = new Date(time);
-                    let seperator1 = "/";
-                    let month = date.getMonth() + 1;
-                    let strDate = date.getDate();
-                    if (month >= 1 && month <= 9) {
-                        month = "0" + month;
-                    }
-                    if (strDate >= 0 && strDate <= 9) {
-                        strDate = "0" + strDate;
-                    }
-                    let currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;
-                    let newList = ['1', '2', '3', '4', '5', '6'];
-                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    this.setState({
-                        source: ds.cloneWithRows(newList),
-                        loan_day:Math.ceil((time/1000-parseFloat(movies.loan_time))/60/60/24),
-                        loan_dayStr:currentdate
-                    });
-                }}/>
-            )
-        } else if (rowId == 2) {
-            return (
-                <RepaymentInfoContentItem items={moneyList}/>
-            )
-        } else if (rowId == 3) {
+        } else if(rowId == 1){
             return (
                 <RepaymentInfoContentItem items={nameList}/>
             )
-        } else if (rowId == 4) {
+        }else if(rowId == 2){
             return (
-                <RepaymentInfoBottomItem ref="RepaymentInfoBottomItem"
-                                         allMoney={(parseFloat(movies.loan_mny)
-                                         +parseFloat(movies.loan_mny)*parseFloat(movies.loan_rebate)/100/360*
-                                         this.state.loan_day-parseFloat(movies.bondmny)).toFixed(2)}
-                                         formula={'='+movies.loan_mny+'+'
-                                         +movies.loan_mny+'*'+movies.loan_rebate/100+'/360*'
-                                         +this.state.loan_day+'-'+movies.bondmny}
-                                         formulaStr={'应还总额=本金+本金*综合费率/360*计息天数-保证金'}
-                />
+                <RepaymentInfoContentItem items={moneyList}/>
             )
-        } else {
+        }else{
             return (
-                <AllBottomItem
-
-                />);
+                <AllBottomItem/>
+            )
         }
 
     }

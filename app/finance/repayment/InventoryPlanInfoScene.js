@@ -53,9 +53,9 @@ export default class InventoryRepaymentInfoScene extends BaseComponent {
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
-                    movies = response.data;
+                    movies = response.mjson.data;
                     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    this.setState({renderPlaceholderOnly: 'success', source: ds.cloneWithRows(response.data.list)});
+                    this.setState({renderPlaceholderOnly: 'success', source: ds.cloneWithRows(movies.list)});
                 },
                 (error) => {
                     this.setState({renderPlaceholderOnly: 'error'});

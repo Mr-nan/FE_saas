@@ -17,10 +17,12 @@ import LoginInputText from "./component/LoginInputText";
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 import md5 from "react-native-md5";
+import LoddingAlert from '../component/toast/LoddingAlert';
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
+var Platform = require('Platform');
 
 export default class SetPwd extends BaseComponent {
     constructor(props) {
@@ -57,6 +59,7 @@ export default class SetPwd extends BaseComponent {
         }
         return (
             <View style={styles.container}>
+                <LoddingAlert ref="lodding"/>
                 <NavigationBar
                     leftImageShow={true}
                     leftTextShow={false}
@@ -119,15 +122,24 @@ export default class SetPwd extends BaseComponent {
         } else if (newPassword !== newPasswordAgain) {
             this.props.showToast("两次密码输入不一致");
         } else {
+            let device_code = '';
+            if (Platform.OS === 'android') {
+                device_code = 'dycd_bms_android';
+            } else {
+                device_code = 'dycd_bms_ios';
+            }
             let maps = {
+                device_code: device_code,
                 old_pwd: md5.hex_md5(oldPassword),
                 confirm_pwd: md5.hex_md5(newPasswordAgain),
                 pwd: md5.hex_md5(newPassword),
             };
-            this.props.showModal(true);
+            // this.props.showModal(true);
+            this.refs.lodding.setShow(true);
             request(AppUrls.CHANGEPWD, 'Post', maps)
                 .then((response) => {
-                    this.props.showModal(false);
+                    // this.props.showModal(false);
+                    this.refs.lodding.setShow(false);
                     if (response.mycode == "1") {
                         this.props.showToast("设置成功");
                         this.backPage();
@@ -135,7 +147,8 @@ export default class SetPwd extends BaseComponent {
                         this.props.showToast(response.mjson.msg + "");
                     }
                 }, (error) => {
-                    this.props.showModal(false);
+                    // this.props.showModal(false);
+                    this.refs.lodding.setShow(false);
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("设置失败");
                     } else {

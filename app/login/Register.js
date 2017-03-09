@@ -312,14 +312,20 @@ export default class Register extends BaseComponent {
         } else if (typeof(businessid) == "undefined" || businessid == "") {
             this.props.showToast("营业执照不能为空");
         } else {
+            let device_code = '';
+            if (Platform.OS === 'android') {
+                device_code = 'dycd_bms_android';
+            } else {
+                device_code = 'dycd_bms_ios';
+            }
             let maps = {
+                device_code: device_code,
                 user_name: name,
                 phone: userName,
                 pwd: md5.hex_md5(password),
                 confirm_pwd: md5.hex_md5(passwoedAgain),
                 merchant_name: businessName,
                 code: smsCode,
-                device_code: "dycd_dms_manage_android",
                 idcard_img: idcardf + "," + idcardback,
                 license_img: businessid,
             };
@@ -369,8 +375,14 @@ export default class Register extends BaseComponent {
     //获取图形验证码
     Verifycode = () => {
         this.refs.verifycode.lodingStatus(true);
+        let device_code = '';
+        if (Platform.OS === 'android') {
+            device_code = 'dycd_bms_android';
+        } else {
+            device_code = 'dycd_bms_ios';
+        }
         let maps = {
-            device_code: "dycd_dms_manage_android",
+            device_code: device_code,
         };
         request(AppUrls.IDENTIFYING, 'Post', maps)
             .then((response) => {
@@ -400,8 +412,14 @@ export default class Register extends BaseComponent {
         } else if (typeof(userName) == "undefined" || userName == "") {
             this.props.showToast("请输入手机号");
         } else {
+            let device_code = '';
+            if (Platform.OS === 'android') {
+                device_code = 'dycd_bms_android';
+            } else {
+                device_code = 'dycd_bms_ios';
+            }
             let maps = {
-                device_code: "dycd_dms_manage_android",
+                device_code: device_code,
                 img_code: verifyCode,
                 img_sid: imgSid,
                 phone: userName,
@@ -475,10 +493,12 @@ export default class Register extends BaseComponent {
         let params = {
             base64_file: 'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g, '%2B')
         };
-        this.props.showModal(true);
+        // this.props.showModal(true);
+        this.refs.lodding.setShow(true);
         ImageUpload.request(AppUrls.AUTH_UPLOAD_FILE, 'Post', params)
             .then((response) => {
-                this.props.showModal(false);
+                // this.props.showModal(false);
+                this.refs.lodding.setShow(false);
                 if (response.mycode == 1) {
                     let source = {uri: response.mjson.data.url};
                     if (id === 'idcard') {
@@ -513,7 +533,8 @@ export default class Register extends BaseComponent {
                     this.props.showToast(response.mjson.msg + "!");
                 }
             }, (error) => {
-                this.props.showModal(false);
+                // this.props.showModal(false);
+                this.refs.lodding.setShow(false);
                 this.props.showToast("图片上传失败");
             });
     }

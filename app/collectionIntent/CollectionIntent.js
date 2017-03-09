@@ -399,7 +399,7 @@ export default class CollectionIntent extends BaseComponent {
                                 )}
                             </LabelSelect>
                         </View>
-                        <Text style={styles.bottomText}>根据您提报的收车意向，我们会给您相关车源。请关注首页意向车源。</Text>
+                        <Text style={styles.bottomText}>根据您提报的收车意向，我们会推荐相关车源，请关注首页意向车源。</Text>
                         <TouchableOpacity style={styles.btnStyle}
                                           onPress={() => this.loadData('')}>
                             <Text style={{

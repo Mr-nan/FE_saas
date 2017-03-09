@@ -115,7 +115,7 @@ export default class CarInfoScene extends BaseComponent {
             carData.carIconsContentData=[
                 carData.manufacture!=''? this.dateReversal(carData.manufacture+'000'):'',
                 carData.init_reg!=''? this.dateReversal(carData.init_reg+'000'):'',
-                carData.mileage+'万公里',
+                this.carMoneyChange(carData.mileage)+'万公里',
                 carData.transfer_times+'次',
                 carData.nature_str,
                 carData.car_color.split("|")[0]+'/'+carData.trim_color.split("|")[0],
@@ -123,7 +123,7 @@ export default class CarInfoScene extends BaseComponent {
 
             if(carData.imgs.length<=0){
 
-                carData.imgs=[ {require:require('../../images/carSourceImages/car_null_img.png')}];
+                carData.imgs=[ {require:require('../../images/carSourceImages/car_info_null.png')}];
             }
 
             this.setState({
@@ -141,9 +141,15 @@ export default class CarInfoScene extends BaseComponent {
 
         const date = new Date();
         date.setTime(time);
-        return(date.getFullYear()+"-"+(date.getMonth()+1));
+        return(date.getFullYear()+"-"+(this.PrefixInteger(date.getMonth()+1,2)));
 
     };
+    PrefixInteger =(num,length)=>{
+
+        return (Array(length).join('0') + num).slice(-length);
+
+    }
+
 
     backIconClick = () => {
 
@@ -266,7 +272,29 @@ export default class CarInfoScene extends BaseComponent {
         );
     }
 
+    carMoneyChange=(carMoney)=>{
 
+
+        let newCarMoney = parseFloat(carMoney);
+        let carMoneyStr = newCarMoney.toFixed(2);
+        let moneyArray = carMoneyStr.split(".");
+        console.log(carMoney);
+
+        if(moneyArray.length>1)
+        {
+            if(moneyArray[1]>0){
+
+                return moneyArray[0]+'.'+moneyArray[1];
+            }else {
+                return moneyArray[0];
+            }
+
+        }else {
+            return carMoneyStr;
+        }
+
+
+    }
 
     render() {
 
@@ -274,6 +302,11 @@ export default class CarInfoScene extends BaseComponent {
             return (
                 <View style={{flex: 1, backgroundColor: 'white'}}>
                     {this.loadView()}
+                    <NavigationView
+                        ref="navtigation"
+                        title="车源详情"
+                        backIconClick={this.backIconClick}
+                    />
             </View>);
         }
 
@@ -320,7 +353,7 @@ export default class CarInfoScene extends BaseComponent {
                                 {/*source={require('../../images/carSourceImages/browse.png')}/>*/}
                                 {/*<Text style={styles.browseText}>1024次浏览</Text>*/}
                                 </View>
-                                <Text style={styles.priceText}>{carData.dealer_price>0?(carData.dealer_price +'万'):''}</Text>
+                                <Text style={styles.priceText}>{carData.dealer_price>0?(this.carMoneyChange(carData.dealer_price) +'万'):''}</Text>
                                 </View>
                             }
 
@@ -359,7 +392,7 @@ export default class CarInfoScene extends BaseComponent {
                                             {
                                                 carData.city_name!==''&&(<View style={styles.carAddressSubView}>
                                                     <Text style={styles.carAddressTitleText}>所在地: </Text>
-                                                    <Text style={styles.carAddressSubTitleText}>{carData.provice_name+carData.city_name}</Text>
+                                                    <Text style={styles.carAddressSubTitleText}>{carData.provice_name +(carData.provice_name===carData.city_name?" ":("-"+carData.city_name))}</Text>
                                                 </View>)
                                             }
                                         </View>
@@ -395,12 +428,12 @@ export default class CarInfoScene extends BaseComponent {
                 </ScrollView>
                 <TouchableOpacity style={styles.callView} onPress={this.callClick}>
                     <View style={{alignItems:'center',justifyContent:'center',width:ScreenWidth*0.5}}>
-                    <Text style={styles.callText}>{'车源编号:'+carData.serial_num}</Text>
+                    <Text style={styles.callText}>{'车源编号 '+carData.serial_num}</Text>
                     </View>
                     <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center', borderLeftWidth: StyleSheet.hairlineWidth,
                         borderLeftColor:'white',width:ScreenWidth*0.5}}>
                     <Image source={require('../../images/carSourceImages/phone.png')}/>
-                    <Text style={styles.callText}>客服咨询</Text>
+                    <Text style={styles.callText}>咨询客服</Text>
                      </View>
                 </TouchableOpacity>
                 <NavigationView
