@@ -22,6 +22,7 @@ import LoddingAlert from '../component/toast/LoddingAlert';
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
+var Platform = require('Platform');
 
 export default class SetPwd extends BaseComponent {
     constructor(props) {
@@ -121,7 +122,14 @@ export default class SetPwd extends BaseComponent {
         } else if (newPassword !== newPasswordAgain) {
             this.props.showToast("两次密码输入不一致");
         } else {
+            let device_code = '';
+            if (Platform.OS === 'android') {
+                device_code = 'dycd_bms_android';
+            } else {
+                device_code = 'dycd_bms_ios';
+            }
             let maps = {
+                device_code: device_code,
                 old_pwd: md5.hex_md5(oldPassword),
                 confirm_pwd: md5.hex_md5(newPasswordAgain),
                 pwd: md5.hex_md5(newPassword),
