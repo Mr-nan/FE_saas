@@ -135,7 +135,7 @@ export  default  class carSourceListScene extends BaseComponent {
     // 筛选数据刷新
     filterData = () => {
         carData = [];
-        this.setState({dataSource: this.state.dataSource.cloneWithRows(carData)});
+        this.setState({dataSource:this.state.dataSource.cloneWithRows(carData)});
         this.props.showModal(true);
         this.loadData();
 
@@ -711,7 +711,7 @@ class CarListNavigatorView extends Component {
                         <View style={styles.navigatorSousuoView}>
                             <Image style={{marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(10)}}
                                    source={require('../../images/carSourceImages/sousuoicon.png')}/>
-                            <Text style={styles.navigatorSousuoText}>按品牌、车型搜索</Text>
+                            <Text style={styles.navigatorSousuoText}>按品牌、车系搜索</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
