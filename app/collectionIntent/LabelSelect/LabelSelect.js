@@ -197,9 +197,9 @@ class Label extends Component {
                     }
                 }}>
                     <View
-                        style={[Styles.selectedItem, readOnly && this.state.enable && Styles.disableColor, !isBigSize && Styles.layoutSize]}>
+                        style={[Styles.selectedItem, this.state.enable && Styles.disableColor, !isBigSize && Styles.layoutSize]}>
                         <Text
-                            style={[Styles.labelText, readOnly && this.state.enable && Styles.disableText]}>{this.props.children}</Text>
+                            style={[Styles.labelText, this.state.enable && Styles.disableText]}>{this.props.children}</Text>
 
                         {!readOnly && <TouchableOpacity
                             style={Styles.closeContainer}

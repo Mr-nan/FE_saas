@@ -8,7 +8,8 @@ import  {
     Dimensions,
     Image,
     TouchableOpacity,
-    TextInput
+    TextInput,
+    KeyboardAvoidingView
 } from  'react-native'
 
 import * as FontAndColor from '../../constant/fontAndColor';
@@ -30,59 +31,14 @@ let SECTIONID = 0;
 let Pixel = new PixelUtil();
 
 const {width, height} = Dimensions.get('window');
-var Car = [
-    {
-        "cars": [
-            {
-                "title": "姓名",
-                "name": ''
-            },
-            {
-                "title": "性别",
-                "name": ''
-            },
-
-        ],
-        "title": "section0"
-    },
-    {
-        "cars": [
-            {
-                "title": "所属公司",
-                "name": ''
-            },
-            {
-                "title": "角色",
-                "name": ''
-            },
-        ],
-        "title": "section1"
-    },
-    {
-        "cars": [
-            {
-                "title": "账号",
-                "name": ''
-            },
-            {
-                "title": "密码",
-                "name": ""
-            },
-            {
-                "title": "确认密码",
-                "name": ""
-            },
-
-        ],
-        "title": "section2"
-    },
-]
+var Car = [];
 
 export default class AddEmployeeScene extends BaseComponent {
     initFinish = () => {
     }
     saveData = () => {
-        console.log(this.items);
+        this.props.showModal(true);
+        this.isClick=false;
         if (this.items.length>0){
 
                 for(let value of this.items){
@@ -103,21 +59,23 @@ export default class AddEmployeeScene extends BaseComponent {
             username: Car[0].cars[0].name
 
         }).then((response) => {
-
+            this.props.showModal(false);
             console.log(response);
             if (response.mjson.code == '1') {
-
                 this.props.showToast("提交成功");
                 if (this.props.callBack) {
                     this.props.callBack();
                 }
                 this.backPage();
+                this.isClick=true;
             }else{
                 this.props.showToast(response.mjson.msg);
             }
 
         }, (error) => {
-
+            this.props.showModal(false);
+            this.isClick=true;
+            this.props.showToast(error.mjson.msg);
             console.log(error);
 
         });
@@ -126,14 +84,61 @@ export default class AddEmployeeScene extends BaseComponent {
 
     // 构造
     constructor(props) {
+        Car = [
+            {
+                "cars": [
+                    {
+                        "title": "姓名",
+                        "name": ''
+                    },
+                    {
+                        "title": "性别",
+                        "name": ''
+                    },
 
+                ],
+                "title": "section0"
+            },
+            {
+                "cars": [
+                    {
+                        "title": "所属公司",
+                        "name": ''
+                    },
+                    {
+                        "title": "角色",
+                        "name": ''
+                    },
+                ],
+                "title": "section1"
+            },
+            {
+                "cars": [
+                    {
+                        "title": "账号",
+                        "name": ''
+                    },
+                    {
+                        "title": "密码",
+                        "name": ""
+                    },
+                    {
+                        "title": "确认密码",
+                        "name": ""
+                    },
+
+                ],
+                "title": "section2"
+            },
+        ]
         super(props);
         this.companys = [];
         this.company_ids=[];
         this.company_idss=[];
         this.items=[];
         this.roleId= '';
-        this.sex=''
+        this.sex='';
+        this.isClick=true;
 
         StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST, (data) => {
             if (data.code == 1 && data.result != null) {
@@ -206,6 +211,18 @@ export default class AddEmployeeScene extends BaseComponent {
     render() {
         return (
             <View style={styles.container}>
+
+
+
+                { /**      界面listview          */}
+                <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={5}>
+                <ListView
+                    style={styles.listStyle}
+                    dataSource={this.state.source}
+                    renderRow={this._renderRow}
+                    renderSectionHeader={this._renderSectionHeader}
+                />
+                </KeyboardAvoidingView>
                 {/**      导航栏          */}
                 <NavigationView
                     backIconClick={this.backPage}
@@ -225,23 +242,6 @@ export default class AddEmployeeScene extends BaseComponent {
                                           this.selectModal1 = modal
                                       }}
                 />
-
-
-                { /**      界面listview          */}
-                <ListView
-                    style={styles.listStyle}
-                    dataSource={this.state.source}
-                    renderRow={this._renderRow}
-                    renderSectionHeader={this._renderSectionHeader}
-                />
-
-                {/**      注销按钮          */}
-                {this.props.isAddEmployee ? <MyButton buttonType={MyButton.TEXTBUTTON}
-                                                      content={'注销'}
-                                                      parentStyle={styles.loginBtnStyle}
-                                                      childStyle={styles.loginButtonTextStyle}
-                                                      mOnPress={this._loginOut}/> : null}
-
             </View>
         );
     }
@@ -261,11 +261,15 @@ export default class AddEmployeeScene extends BaseComponent {
                 }
             }
         }
-        if (Car[2].cars[1].name !== Car[2].cars[2].name) {
+        if (Car[2].cars[0].name.length != 11) {
+            this.props.showToast("请输入正确的用户名");
+        }else if (Car[2].cars[1].name.length < 6) {
+            this.props.showToast("密码必须为6~16位");
+        }else if (Car[2].cars[1].name !== Car[2].cars[2].name) {
             this.props.showToast("两次输入的密码不同");
-            return;
+        }else{
+            this.saveData()
         }
-        this.saveData()
 
 
     }
@@ -279,7 +283,10 @@ export default class AddEmployeeScene extends BaseComponent {
                     justifyContent: 'center', alignItems: 'center', borderRadius: 5
                 }}
                 activeOpacity={0.8} onPress={() => {
-                this._completedForEdit();
+                    if(this.isClick){
+
+                        this._completedForEdit();
+                    }
             }}>
                 <Text style={{
                     color: FontAndColor.COLORB0,
@@ -520,9 +527,9 @@ const styles = StyleSheet.create({
     },
     rowLeftTitle: {
         marginLeft: Pixel.getPixel(15),
+        width: 60,
         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),
         color: FontAndColor.COLORA0,
-        flex:1
 
     },
     rowRightTitle: {
@@ -535,7 +542,7 @@ const styles = StyleSheet.create({
 
     },
     inputStyle: {
-        flex: 3,
+        flex: 1,
         marginRight: Pixel.getPixel(5),
         textAlign: 'right',
         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),

@@ -11,6 +11,7 @@ import {
     Dimensions,
     Modal,
 
+
 } from 'react-native';
 
 import *as fontAndColor from '../constant/fontAndColor';
@@ -19,6 +20,7 @@ import BaseComponent from '../component/BaseComponent';
 import NavigationView from '../component/AllNavigationView';
 import Gallery from 'react-native-gallery';
 import PixelUtil from '../utils/PixelUtil';
+import * as weChat from 'react-native-wechat';
 const Pixel = new PixelUtil();
 
 import {request} from "../utils/RequestUtil";
@@ -27,7 +29,7 @@ import * as AppUrls from "../constant/appUrls";
 var ScreenWidth = Dimensions.get('window').width;
 var ScreenHeight = Dimensions.get('window').height;
 
-
+let resolveAssetSource = require('resolveAssetSource');
 
 const carParameterViewColor = [
 
@@ -251,7 +253,6 @@ export default class CarInfoScene extends BaseComponent {
         );
     };
 
-
     setNavitgationBackgroundColor=(event)=>{
 
         if(event.nativeEvent.contentOffset.y>20){
@@ -444,7 +445,7 @@ export default class CarInfoScene extends BaseComponent {
                     renderRihtFootView={this.navigatorRightView}
                 />
                 <PhotoView ref="photoView"/>
-                <SharedView ref="sharedView"/>
+                <SharedView ref="sharedView" carData={this.state.carData}/>
             </View>
 
         )
@@ -471,7 +472,6 @@ class CarIconView extends Component {
 
 class  SharedView extends Component{
 
-
     // 构造
       constructor(props) {
         super(props);
@@ -490,6 +490,89 @@ class  SharedView extends Component{
         });
     }
 
+    componentDidMount() {
+
+          if(weChat.registerApp=='')
+          {
+              weChat.registerApp('wx69699ad69f370cfc');
+          }
+    }
+
+    // 分享好友
+    sharedWechatSession=(carData)=>{
+        weChat.isWXAppInstalled()
+            .then((isInstalled)=>{
+            if(isInstalled){
+
+                console.log(carData);
+                let imageResource = require('../../images/carSourceImages/car_info_null.png');
+                let carContent = '';
+
+                if(carData.city_name!=""){
+
+                    carContent = carData.city_name+' | ';
+                }
+                if(carData.plate_number!=""){
+
+                    carContent +=carData.plate_number.substring(0,2);
+                }
+                if(carData.carIconsContentData[0]!=""){
+
+                    carContent+=" | "+carData.carIconsContentData[0]+'出厂';
+                }
+                let carImage = typeof carData.imgs[0].url == 'undefined'?resolveAssetSource(imageResource).uri:carData.imgs[0].url;
+                weChat.shareToSession({
+                    type: 'news',
+                    title:carData.model_name,
+                    description:carContent,
+                    webpageUrl:'http://finance.test.dycd.com/platform/car_detail.html?id='+carData.id,
+                    thumbImage:carImage,
+
+                }).catch((error)=>{
+                    console.log(error.message);
+                })
+            }else {
+                console.log('没有安装微信软件');
+            }
+            });
+    }
+
+    // 分享朋友圈
+    sharedWechatTimeline=(carData)=>{
+        weChat.isWXAppInstalled()
+            .then((isInstalled)=>{
+                if(isInstalled){
+                    let imageResource = require('../../images/carSourceImages/car_info_null.png');
+                    let carContent = '';
+                    if(carData.city_name!=""){
+                        carContent = carData.city_name+' | ';
+                    }
+                    if(carData.plate_number!=""){
+
+                        carContent +=carData.plate_number.substring(0,2);
+                    }
+                    if(carData.carIconsContentData[0]!=""){
+
+                        carContent+=" | "+carData.carIconsContentData[0]+'出厂';
+                    }
+                    let carImage = typeof carData.imgs[0].url == 'undefined'?resolveAssetSource(imageResource).uri:carData.imgs[0].url;
+                    weChat.shareToTimeline({
+                        type:'news',
+                        title:carData.model_name,
+                        description:carContent,
+                        webpageUrl:'http://finance.test.dycd.com/platform/car_detail.html?id='+carData.id,
+                        thumbImage:carImage,
+
+                    }).catch((error)=>{
+                        console.log(error.message);
+                    })
+                }else {
+                    console.log('没有安装微信软件');
+                }
+            });
+    }
+
+
     render(){
 
         return(
@@ -505,11 +588,11 @@ class  SharedView extends Component{
                             <Text style={styles.sharedViewHeadText}>分享到</Text>
                         </View>
                         <View style={{flexDirection:'row'}}>
-                            <TouchableOpacity style={styles.sharedItemView} onPress={()=>{this.isVisible(false)}}>
+                            <TouchableOpacity style={styles.sharedItemView} onPress={()=>{this.sharedWechatSession(this.props.carData);  this.isVisible(false);}}>
                                 <Image source={require('../../images/carSourceImages/shared_ wx.png')}/>
                                 <Text style={styles.sharedText}>微信好友</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.sharedItemView} onPress={()=>{this.isVisible(false)}}>
+                            <TouchableOpacity style={styles.sharedItemView} onPress={()=>{this.sharedWechatTimeline(this.props.carData);  this.isVisible(false);}}>
                                 <Image source={require('../../images/carSourceImages/shared_ friend.png')}/>
                                 <Text style={styles.sharedText}>朋友圈</Text>
                             </TouchableOpacity>
@@ -723,6 +806,7 @@ const styles = StyleSheet.create({
         borderRadius: 3,
         justifyContent: 'center',
         alignItems: 'center',
+        flexDirection:'row'
     },
     carParameterText: {
         fontSize:Pixel.getFontPixel(fontAndColor.MARKFONT),
