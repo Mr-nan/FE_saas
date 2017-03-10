@@ -378,7 +378,13 @@ export default class AddEmployeeScene extends BaseComponent {
             this.sex = Number.parseInt(rowID) + 1 + '';
         } else if (SECTIONID === 1 && ROWID === 1) {
 
-            this.roleId = Number.parseInt(rowID) + 1 + '';
+            for(let value of this.props.roleData){
+
+                if(value.role_name==this.props.roleList[rowID]){
+
+                    this.roleId = value.role_id;
+                }
+            }
         }
         Car[SECTIONID].cars[ROWID].name = this.currentData[rowID];
 

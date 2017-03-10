@@ -32,6 +32,8 @@ import * as Net from '../../utils/RequestUtil';
 import * as AppUrls from "../../constant/appUrls";
 import VinInfo from '../component/VinInfo';
 
+const IS_ANDROID = Platform.OS === 'android';
+
 export default class ModelSelect extends PureComponent {
 
     constructor(props) {
@@ -39,11 +41,11 @@ export default class ModelSelect extends PureComponent {
         this.lastVin = '';
         this.modelInfo = {};
         this.modelData = [];
-        this.scanType =[{model_name : '扫描前风挡'},{model_name : '扫描行驶证'}];
+        this.scanType = [{model_name: '扫描前风挡'}, {model_name: '扫描行驶证'}];
         this.state = {
             renderPlaceholderOnly: true,
-            modelName:'',
-            showHint:false
+            modelName: '',
+            showHint: false
         }
     }
 
@@ -58,27 +60,33 @@ export default class ModelSelect extends PureComponent {
         SQLite.createTable();
     }
 
+    componentWillUnmount() {
+        this.timer && clearTimeout(this.timer);
+    }
+
     //选择车型
     _modelPress = () => {
-        let brandParams ={
+        let brandParams = {
             name: 'CarBrandSelectScene',
             component: CarBrandSelectScene,
-            params: {checkedCarClick: this._checkedCarClick,
-                status:0,}
+            params: {
+                checkedCarClick: this._checkedCarClick,
+                status: 0,
+            }
         };
         this.props.goToPage(brandParams);
     };
 
-    _checkedCarClick = (carObject)=>{
+    _checkedCarClick = (carObject) => {
         this.setState({
-            modelName:carObject.model_name
+            modelName: carObject.model_name
         });
         this.modelInfo['brand_id'] = carObject.brand_id;
         this.modelInfo['model_id'] = carObject.model_id;
         this.modelInfo['series_id'] = carObject.series_id;
         this.modelInfo['model_year'] = '';
         this.modelInfo['model_name'] = carObject.model_name;
-        SQLite.changeData('UPDATE publishCar SET model = ? WHERE vin = ?',[JSON.stringify(this.modelInfo) ,this.vin]);
+        SQLite.changeData('UPDATE publishCar SET model = ? WHERE vin = ?', [JSON.stringify(this.modelInfo), this.vin]);
     };
 
     //扫描
@@ -100,65 +108,65 @@ export default class ModelSelect extends PureComponent {
     _onVinChange = (text) => {
         if (text.length === 17) {
             this.props.carNumberBack(false);
-            let params ={
-                vin:text,
+            let params = {
+                vin: text,
             };
             this.vin = text;
             this._copyDataByVin();
-            Net.request(AppUrls.VININFO,'post',params).then(
-                (response)=>{
-                    if(response.mycode === 1){
+            Net.request(AppUrls.VININFO, 'post', params).then(
+                (response) => {
+                    if (response.mycode === 1) {
                         let rd = response.mjson.data;
-                        if(rd.length === 0){
+                        if (rd.length === 0) {
                             this._insertVinNum(text);
                             this.setState({
-                                showHint:true
+                                showHint: true
                             });
-                        }else if(rd.length === 1){
+                        } else if (rd.length === 1) {
                             this.setState({
-                                showHint:false
+                                showHint: false
                             });
                             this.modelInfo['brand_id'] = rd[0].brand_id;
                             this.modelInfo['model_id'] = rd[0].model_id;
                             this.modelInfo['series_id'] = rd[0].series_id;
                             this.modelInfo['model_year'] = rd[0].model_year;
                             this.modelInfo['model_name'] = rd[0].model_name;
-                            this._insertVinAndModel(text,JSON.stringify(this.modelInfo),rd[0].model_name);
+                            this._insertVinAndModel(text, JSON.stringify(this.modelInfo), rd[0].model_name);
 
-                        }else if(rd.length > 1){
+                        } else if (rd.length > 1) {
                             this.setState({
-                                showHint:false
+                                showHint: false
                             });
                             this.modelData = response.mjson.data;
                             this.vinModal.refresh(this.modelData);
                             this.vinModal.openModal(0);
                         }
-                    }else {
+                    } else {
                         this._insertVinNum(text);
                         this.setState({
-                            showHint:true
+                            showHint: true
                         });
                     }
                 },
-                (error)=>{
+                (error) => {
                     this._insertVinNum(text);
                     this.setState({
-                        showHint:true
+                        showHint: true
                     });
                 }
             );
         }
     };
 
-    _insertVinNum = (vinNum)=>{
+    _insertVinNum = (vinNum) => {
         SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
-            [ vinNum ],
+            [vinNum],
             (data) => {
                 if (data.code === 1) {
-                    if(data.result.rows.length === 0){
-                        SQLite.changeData('INSERT INTO publishCar (vin) VALUES (?)',[ vinNum]);
+                    if (data.result.rows.length === 0) {
+                        SQLite.changeData('INSERT INTO publishCar (vin) VALUES (?)', [vinNum]);
                         SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
-                            [ vinNum ],
+                            [vinNum],
                             (data) => {
                                 if (data.code === 1) {
                                     this.props.refreshCar(data.result.rows.item(0));
@@ -166,16 +174,16 @@ export default class ModelSelect extends PureComponent {
                                     console.log(data.error);
                                 }
                             });
-                    }else{
+                    } else {
                         SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
-                            [ vinNum ],
+                            [vinNum],
                             (data) => {
                                 if (data.code === 1) {
                                     this.props.refreshCar(data.result.rows.item(0));
-                                    if(this.isEmpty(data.result.rows.item(0).model) === false){
+                                    if (this.isEmpty(data.result.rows.item(0).model) === false) {
                                         Object.assign(this.modelInfo, JSON.parse(data.result.rows.item(0).model));
                                         this.setState({
-                                            modelName:this.modelInfo.model_name
+                                            modelName: this.modelInfo.model_name
                                         });
                                     }
                                 } else {
@@ -189,19 +197,19 @@ export default class ModelSelect extends PureComponent {
             });
     };
 
-    _copyDataByVin = ()=>{
-        if(this.lastVin !== this.vin){
-            if(this.lastVin !== ''){
+    _copyDataByVin = () => {
+        if (this.lastVin !== this.vin) {
+            if (this.lastVin !== '') {
                 SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
-                    [ this.lastVin ],
+                    [this.lastVin],
                     (data) => {
                         if (data.code === 1) {
-                            if(data.result.rows.length > 0){
+                            if (data.result.rows.length > 0) {
                                 let rdb = data.result.rows.item(0);
                                 SQLite.changeData('INSERT INTO publishCar (vin,model,pictures,v_type,manufacture,init_reg,' +
                                     'mileage,plate_number,emission,label,nature_use,car_color,trim_color,' +
                                     'transfer_number,dealer_price,describe) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-                                    [this.vin, rdb.model, rdb.pictures,rdb.v_type, rdb.manufacture, rdb.init_reg, rdb.mileage,
+                                    [this.vin, rdb.model, rdb.pictures, rdb.v_type, rdb.manufacture, rdb.init_reg, rdb.mileage,
                                         rdb.plate_number, rdb.emission, rdb.label, rdb.nature_use, rdb.car_color, rdb.trim_color,
                                         rdb.transfer_number, rdb.dealer_price, rdb.describe]);
                             }
@@ -213,15 +221,15 @@ export default class ModelSelect extends PureComponent {
     };
 
     //根据车架号操作数据库
-    _insertVinAndModel = (vinNum,modelInfo,modelName)=>{
+    _insertVinAndModel = (vinNum, modelInfo, modelName) => {
         SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
-            [ vinNum ],
+            [vinNum],
             (data) => {
                 if (data.code === 1) {
-                    if(data.result.rows.length === 0){
-                        SQLite.changeData('INSERT INTO publishCar (vin,model) VALUES (?,?)',[ vinNum ,modelInfo]);
+                    if (data.result.rows.length === 0) {
+                        SQLite.changeData('INSERT INTO publishCar (vin,model) VALUES (?,?)', [vinNum, modelInfo]);
                         SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
-                            [ vinNum ],
+                            [vinNum],
                             (data) => {
                                 if (data.code === 1) {
                                     this.props.refreshCar(data.result.rows.item(0));
@@ -230,19 +238,19 @@ export default class ModelSelect extends PureComponent {
                                 }
                             });
                         this.setState({
-                            modelName:modelName
+                            modelName: modelName
                         });
-                    }else{
-                        SQLite.changeData('UPDATE publishCar SET model = ? WHERE vin = ?',[modelInfo ,vinNum]);
+                    } else {
+                        SQLite.changeData('UPDATE publishCar SET model = ? WHERE vin = ?', [modelInfo, vinNum]);
                         SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
-                            [ vinNum ],
+                            [vinNum],
                             (data) => {
                                 if (data.code === 1) {
                                     this.props.refreshCar(data.result.rows.item(0));
-                                    if(this.isEmpty(data.result.rows.item(0).model) === false){
+                                    if (this.isEmpty(data.result.rows.item(0).model) === false) {
                                         Object.assign(this.modelInfo, JSON.parse(data.result.rows.item(0).model));
                                         this.setState({
-                                            modelName:this.modelInfo.model_name
+                                            modelName: this.modelInfo.model_name
                                         });
                                     }
                                 } else {
@@ -257,34 +265,49 @@ export default class ModelSelect extends PureComponent {
         this.props.carNumberBack(false);
     };
 
-    isEmpty = (str)=>{
-        if(typeof(str) != 'undefined' && str !== ''){
+    isEmpty = (str) => {
+        if (typeof(str) != 'undefined' && str !== '') {
             return false;
-        }else {
+        } else {
             return true;
         }
     };
 
     //根据车架号选择车型
-    _vinPress =(mType,index)=>{
-        if(mType == 0){
+    _vinPress = (mType, index) => {
+        if (mType == 0) {
             this.modelInfo['brand_id'] = this.modelData[index].brand_id;
             this.modelInfo['model_id'] = this.modelData[index].model_id;
             this.modelInfo['series_id'] = this.modelData[index].series_id;
             this.modelInfo['model_year'] = this.modelData[index].model_year;
             this.modelInfo['model_name'] = this.modelData[index].model_name;
-            this._insertVinAndModel(this.vin,JSON.stringify(this.modelInfo),this.modelInfo['model_name']);
-        }else if(mType == 1){
-            NativeModules.VinScan.scan(parseInt(index)).then((vl)=>{
-                this.vinInput.setNativeProps({
-                    text:vl
+            this._insertVinAndModel(this.vin, JSON.stringify(this.modelInfo), this.modelInfo['model_name']);
+        } else if (mType == 1) {
+            if (IS_ANDROID === true) {
+                NativeModules.VinScan.scan(parseInt(index)).then((vl) => {
+                    this.vinInput.setNativeProps({
+                        text: vl
+                    });
+                    this._onVinChange(vl);
+                }, (error) => {
+                    console.log(error);
                 });
-                this._onVinChange(vl);
-            },(error)=>{
-                console.log(error);
-            });
+            } else {
+                this.timer = setTimeout(
+                    () => {
+                        NativeModules.VinScan.scan(parseInt(index)).then((vl) => {
+                            this.vinInput.setNativeProps({
+                                text: vl
+                            });
+                            this._onVinChange(vl);
+                        }, (error) => {
+                            console.log(error);
+                        });
+                    },
+                    500
+                );
+            }
         }
-
     };
 
     render() {
@@ -293,7 +316,7 @@ export default class ModelSelect extends PureComponent {
         }
         return (
             <View style={styles.container}>
-                <VinInfo viewData ={this.modelData} vinPress={this._vinPress} ref={(modal) => {this.vinModal = modal}}/>
+                <VinInfo viewData={this.modelData} vinPress={this._vinPress} ref={(modal) => {this.vinModal = modal}}/>
                 <Image source={background} style={[styles.container,{height:height-this.props.barHeight}]}>
                     <AllNavigationView
                         backIconClick={this._onBack}
@@ -351,7 +374,7 @@ const styles = StyleSheet.create({
     modelCircle: {
         marginTop: Pixel.getPixel(45)
     },
-    hintAlign:{
+    hintAlign: {
         marginTop: Pixel.getPixel(10)
     },
     circleContainer: {

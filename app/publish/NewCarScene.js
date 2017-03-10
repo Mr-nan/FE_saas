@@ -79,7 +79,7 @@ export default class NewCarScene extends BaseComponent{
             params: {fromNew:true,carVin:this.state.carData.vin,shopID:this.state.shop_id}
         };
 
-        this.toNextPage(moreParams);
+        this.mtoNextPage(moreParams);
     };
 
     mtoNextPage = (mProps) => {
