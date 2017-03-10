@@ -367,14 +367,14 @@ export default class CarInfoScene extends BaseComponent {
                                     {
                                         (typeof(carData.labels)!= "undefined"?(carData.labels.length<=0?false:true):false) &&
                                         (
-                                            <View style={styles.carParameterView}>
+                                            <View style={[styles.carParameterView]}>
                                                 {
                                                     carData.labels.map((data, index) => {
                                                         return (
                                                             <View
                                                                 style={[styles.carParameterItem, {backgroundColor: carParameterViewColor[index % 3]}]}
                                                                 key={index}>
-                                                                <Text style={[styles.carParameterText, {color: carParameterTextColor[index % 3]}]}>{data.name}</Text>
+                                                                <Text style={[styles.carParameterText, {color: carParameterTextColor[index % 3]}]}> {data.name} </Text>
                                                             </View>)
                                                     })
                                                 }
@@ -801,7 +801,9 @@ const styles = StyleSheet.create({
         borderRadius: 3,
         justifyContent: 'center',
         alignItems: 'center',
-        flexDirection:'row'
+        flexDirection:'row',
+        paddingVertical:Pixel.getPixel(5),
+        flexWrap: 'wrap',
     },
     carParameterText: {
         fontSize:Pixel.getFontPixel(fontAndColor.MARKFONT),

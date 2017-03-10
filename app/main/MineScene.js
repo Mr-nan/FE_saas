@@ -140,7 +140,7 @@ export default class MineSectionListView extends BaseComponent {
                 let datas = JSON.parse(data.result);
                 console.log(data.result);
                 if (datas.user_level == 2) {
-                    if (datas.enterprise_list[0].role_type == '1') {
+                    if (datas.enterprise_list[0].role_type == '1'||datas.enterprise_list[0].role_type == '6') {
                         user_list.push(...Car);
                     } else if (datas.enterprise_list[0].role_type == '2') {
                         Car[0].cars.splice(1,1);

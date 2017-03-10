@@ -90,7 +90,7 @@ export default class HomeScene extends BaseComponet {
                             let datas = JSON.parse(data.result);
                             console.log(datas);
                             if (datas.user_level == 2) {
-                                if (datas.enterprise_list[0].role_type == '1') {
+                                if (datas.enterprise_list[0].role_type == '1'||datas.enterprise_list[0].role_type == '6') {
                                 } else if (datas.enterprise_list[0].role_type == '2') {
                                     bossFuncArray.splice(0, 2);
                                 } else {
