@@ -226,6 +226,8 @@ export default class AddEmployeeScene extends BaseComponent {
                         textAlign: 'center',
                         paddingLeft: 0,
                         paddingRight: 0,
+                        paddingTop: Pixel.getPixel(3),
+                        paddingBottom: Pixel.getPixel(3),
                     }}
                     rightTextCallBack={() => {
                         if (this.isClick) {
