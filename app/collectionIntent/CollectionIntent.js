@@ -346,6 +346,7 @@ export default class CollectionIntent extends BaseComponent {
                                     <LabelSelect.Label
                                         key={'label-' + index}
                                         data={item}
+                                        enables={true}
                                         onCancel={() => {
                                             this.deleteItem(item);
                                         }}
