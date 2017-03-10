@@ -491,7 +491,11 @@ class  SharedView extends Component{
     }
 
     componentDidMount() {
-        weChat.registerApp('wx69699ad69f370cfc');
+
+          if(weChat.registerApp=='')
+          {
+              weChat.registerApp('wx69699ad69f370cfc');
+          }
     }
 
     // 分享好友
@@ -802,6 +806,7 @@ const styles = StyleSheet.create({
         borderRadius: 3,
         justifyContent: 'center',
         alignItems: 'center',
+        flexDirection:'row'
     },
     carParameterText: {
         fontSize:Pixel.getFontPixel(fontAndColor.MARKFONT),
