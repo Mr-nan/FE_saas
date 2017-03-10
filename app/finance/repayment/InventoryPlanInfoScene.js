@@ -124,7 +124,9 @@ export default class InventoryRepaymentInfoScene extends BaseComponent {
                 </View>
                 <View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
                     <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-                    color:fontAndColor.COLORB2,fontWeight: 'bold'}}>{movie.plantype == '1' ? '本' : '息'} {movie.repaymentmny}</Text>
+                    color:fontAndColor.COLORB2,}}>
+                        {movie.plantype == '1' ? '本'+movie.repaymentmny : '息'+movie.repaymentmny}
+                    </Text>
                     <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                     color:fontAndColor.COLORA1,marginTop:Pixel.getPixel(9)}}>调整：{movie.adjustmoney}</Text>
                 </View>

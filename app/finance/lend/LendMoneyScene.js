@@ -88,7 +88,9 @@ export  default class LendMoneySence extends BaseComponent {
     navigatorParams = {
         name: 'SingelCarScene',
         component: SingelCarScene,
-        params: {customerName:this.props.customerName}
+        params: {customerName:this.props.customerName,backRefresh:()=>{
+            this.props.backRefresh();
+        }}
     }
 
     onPress = (key) => {
