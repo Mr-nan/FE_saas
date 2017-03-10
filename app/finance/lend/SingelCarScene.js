@@ -95,15 +95,17 @@ export default class SingelCarSence extends BaseComponent {
              })
             },
             (error) => {
+                this.setState({
 
+                    renderPlaceholderOnly: STATECODE.loadError
+                })
                 if(error.mycode!= -300||error.mycode!= -500){
 
-                    this.props.showToast('服务器连接有问题')
+                    this.props.showToast(error.mjson.msg);
                 }else {
 
-                    this.props.showToast(error.mjson.msg);
+                    this.props.showToast('服务器连接有问题')
                 }
-
          });
     }
 
@@ -163,12 +165,13 @@ export default class SingelCarSence extends BaseComponent {
                     },
                     (error) => {
 
+                        this.props.showModal(false);
                         if(error.mycode!= -300||error.mycode!= -500){
 
-                            this.props.showToast('服务器连接有问题')
+                            this.props.showToast(error.mjson.msg);
                         }else {
 
-                            this.props.showToast(error.mjson.msg);
+                            this.props.showToast('服务器连接有问题')
                         }
                     });
         }
@@ -217,7 +220,10 @@ export default class SingelCarSence extends BaseComponent {
                     confirmTextIOS='确定'
                     cancelTextIOS='取消'
                 />
-                <LendSuccessAlert ref={(lend)=>{this.lendAlert=lend}} confimClick={()=>{this.backPage()}} title='借款成功'subtitle='恭喜您借款成功'/>
+                <LendSuccessAlert ref={(lend)=>{this.lendAlert=lend}} confimClick={()=>{
+                    this.props.backRefresh();
+                    this.backToTop()
+                }} title='借款成功'subtitle='恭喜您借款成功'/>
                 <LendSuccessAlert ref={(shouxin)=>{this.shouxinAlert=shouxin}} confimClick={()=>{this.backPage()}} title='需要授信'subtitle='请联系客户经理进行授信'/>
                 <AllNavigatior title='单车借款' backIconClick={()=>{ this.backPage();}}/>
             </View>

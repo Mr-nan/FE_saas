@@ -28,9 +28,15 @@ public class VinScanModule extends ReactContextBaseJavaModule implements Activit
             if(resultCode == Activity.RESULT_CANCELED){
                 mVLPromise.reject("error","Result_Canceled");
             }else if(resultCode == Activity.RESULT_OK){
-                String vl = data.getStringExtra("vl");
-                mVLPromise.resolve(vl);
-                mVLPromise = null;
+                if(requestCode == 1){
+                    String vl = data.getStringExtra("vl");
+                    mVLPromise.resolve(vl);
+                    mVLPromise = null;
+                }else if(requestCode == 0){
+                    String vl = data.getStringExtra("vin");
+                    mVLPromise.resolve(vl);
+                    mVLPromise = null;
+                }
             }
         }
     }
@@ -46,9 +52,8 @@ public class VinScanModule extends ReactContextBaseJavaModule implements Activit
     }
 
     @ReactMethod
-    public void scan(final Promise promise){
+    public void scan(int vinType,final Promise promise){
         Activity currentActivity = getCurrentActivity();
-
 
         if (currentActivity == null) {
             promise.reject("error", "Activity doesn't exist");
@@ -56,10 +61,14 @@ public class VinScanModule extends ReactContextBaseJavaModule implements Activit
         }
 
         mVLPromise = promise;
-
         try{
-            final Intent vlIntent = new Intent(currentActivity,VLScanActivity.class);
-            currentActivity.startActivityForResult(vlIntent,1);
+            if(vinType == 1){
+                Intent vlIntent = new Intent(currentActivity,VLScanActivity.class);
+                currentActivity.startActivityForResult(vlIntent,1);
+            }else if(vinType == 0){
+                Intent vinIntent = new Intent(currentActivity,FDScanActivity.class);
+                currentActivity.startActivityForResult(vinIntent,0);
+            }
         }catch (Exception e){
             mVLPromise.reject("error",e.toString());
             mVLPromise = null;

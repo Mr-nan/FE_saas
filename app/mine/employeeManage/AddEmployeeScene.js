@@ -1,6 +1,5 @@
-import  React, {Component, PropTypes} from  'react'
-import  {
-
+import React, {Component, PropTypes} from "react";
+import {
     View,
     Text,
     ListView,
@@ -8,116 +7,72 @@ import  {
     Dimensions,
     Image,
     TouchableOpacity,
-    TextInput
-} from  'react-native'
-
-import * as FontAndColor from '../../constant/fontAndColor';
-import  PixelUtil from '../../utils/PixelUtil';
-const cellJianTou = require('../../../images/mainImage/celljiantou.png');
-import MyButton from '../../component/MyButton';
-import SelectMaskComponent from './SelectMaskComponent'
-import SelectMaskComponent1 from './SelectMaskComponent1'
-import NavigationView from '../../component/AllNavigationView';
-import BaseComponent from '../../component/BaseComponent';
-import * as AppUrls from '../../constant/appUrls';
-import {request} from '../../utils/RequestUtil';
+    TextInput,
+    KeyboardAvoidingView
+} from "react-native";
+import * as FontAndColor from "../../constant/fontAndColor";
+import PixelUtil from "../../utils/PixelUtil";
+import SelectMaskComponent from "./SelectMaskComponent";
+import SelectMaskComponent1 from "./SelectMaskComponent1";
+import BaseComponent from "../../component/BaseComponent";
+import * as AppUrls from "../../constant/appUrls";
+import {request} from "../../utils/RequestUtil";
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import md5 from "react-native-md5";
+import NavigationBar from "../../component/NavigationBar";
+const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 let ROWID = 0;
 let ds = {};
 let SECTIONID = 0;
 let Pixel = new PixelUtil();
 
 const {width, height} = Dimensions.get('window');
-var Car = [
-    {
-        "cars": [
-            {
-                "title": "姓名",
-                "name": ''
-            },
-            {
-                "title": "性别",
-                "name": ''
-            },
-
-        ],
-        "title": "section0"
-    },
-    {
-        "cars": [
-            {
-                "title": "所属公司",
-                "name": ''
-            },
-            {
-                "title": "角色",
-                "name": ''
-            },
-        ],
-        "title": "section1"
-    },
-    {
-        "cars": [
-            {
-                "title": "账号",
-                "name": ''
-            },
-            {
-                "title": "密码",
-                "name": ""
-            },
-            {
-                "title": "确认密码",
-                "name": ""
-            },
-
-        ],
-        "title": "section2"
-    },
-]
+var Car = [];
 
 export default class AddEmployeeScene extends BaseComponent {
     initFinish = () => {
     }
     saveData = () => {
-        console.log(this.items);
-        if (this.items.length>0){
+        this.props.showModal(true);
+        this.isClick = false;
+        if (this.items.length > 0) {
 
-                for(let value of this.items){
+            for (let value of this.items) {
 
-                    this.company_idss.push(this.company_ids[value]);
-                }
+                this.company_idss.push(this.company_ids[value]);
+            }
         }
         console.log(this.company_idss);
         let url = AppUrls.BASEURL + 'v1/user.employee/save';
-        console.log(Car[2].cars[0].name+"-"+Car[2].cars[1].name+'-'+Car[2].cars[2].name+'-'+this.roleId+"----"+Car[0].cars[0].name);
+        console.log(Car[2].cars[0].name + "-" + Car[2].cars[1].name + '-' + Car[2].cars[2].name + '-' + this.roleId + "----" + Car[0].cars[0].name);
         request(url, 'post', {
-            account	: Car[2].cars[0].name,
-            company_ids	: this.company_idss.toString(),
-            password    : md5.hex_md5(Car[2].cars[1].name),
-            repassword : md5.hex_md5(Car[2].cars[2].name),
-            role_id	   : this.roleId,   //角色ID【必填】	number	1：实际控制人 2：财务 3：收车人员 4：销售人员
-            sex	   :  this.sex,//number	1：男（默认）；2：女
+            account: Car[2].cars[0].name,
+            company_ids: this.company_idss.toString(),
+            password: md5.hex_md5(Car[2].cars[1].name),
+            repassword: md5.hex_md5(Car[2].cars[2].name),
+            role_id: this.roleId,   //角色ID【必填】	number	1：实际控制人 2：财务 3：收车人员 4：销售人员
+            sex: this.sex,//number	1：男（默认）；2：女
             username: Car[0].cars[0].name
 
         }).then((response) => {
-
+            this.props.showModal(false);
             console.log(response);
             if (response.mjson.code == '1') {
-
                 this.props.showToast("提交成功");
                 if (this.props.callBack) {
                     this.props.callBack();
                 }
                 this.backPage();
-            }else{
+                this.isClick = true;
+            } else {
                 this.props.showToast(response.mjson.msg);
             }
 
         }, (error) => {
-
+            this.props.showModal(false);
+            this.isClick = true;
+            this.props.showToast(error.mjson.msg);
             console.log(error);
 
         });
@@ -126,20 +81,67 @@ export default class AddEmployeeScene extends BaseComponent {
 
     // 构造
     constructor(props) {
+        Car = [
+            {
+                "cars": [
+                    {
+                        "title": "姓名",
+                        "name": ''
+                    },
+                    {
+                        "title": "性别",
+                        "name": ''
+                    },
 
+                ],
+                "title": "section0"
+            },
+            {
+                "cars": [
+                    {
+                        "title": "所属公司",
+                        "name": ''
+                    },
+                    {
+                        "title": "角色",
+                        "name": ''
+                    },
+                ],
+                "title": "section1"
+            },
+            {
+                "cars": [
+                    {
+                        "title": "账号",
+                        "name": ''
+                    },
+                    {
+                        "title": "密码",
+                        "name": ""
+                    },
+                    {
+                        "title": "确认密码",
+                        "name": ""
+                    },
+
+                ],
+                "title": "section2"
+            },
+        ]
         super(props);
         this.companys = [];
-        this.company_ids=[];
-        this.company_idss=[];
-        this.items=[];
-        this.roleId= '';
-        this.sex=''
+        this.company_ids = [];
+        this.company_idss = [];
+        this.items = [];
+        this.roleId = '';
+        this.sex = '';
+        this.isClick = true;
 
         StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST, (data) => {
             if (data.code == 1 && data.result != null) {
                 console.log(data.result);
                 this.comps = JSON.parse(data.result);
-                for(let value of JSON.parse(data.result) ){
+                for (let value of JSON.parse(data.result)) {
                     this.companys.push(value.enterprise_name);
                     this.company_ids.push(value.enterprise_uid);
                 }
@@ -206,50 +208,59 @@ export default class AddEmployeeScene extends BaseComponent {
     render() {
         return (
             <View style={styles.container}>
-                {/**      导航栏          */}
-                <NavigationView
-                    backIconClick={this.backPage}
-                    title="添加员工"
-                    renderRihtFootView={this._navigatorRightView}
+
+                <NavigationBar
+                    leftImageShow={true}
+                    leftTextShow={false}
+                    leftText={""}
+                    centerText={"添加员工"}
+                    rightText={"完成"}
+                    leftImageCallBack={this.backPage}
+                    rightTextStyle={{
+                        color: FontAndColor.COLORB0,
+                        borderRadius: Pixel.getPixel(2),
+                        backgroundColor: '#ffffff',
+                        marginRight: Pixel.getPixel(15),
+                        marginLeft: Pixel.getPixel(15),
+                        width: Pixel.getPixel(53),
+                        textAlign: 'center',
+                        paddingLeft: 0,
+                        paddingRight: 0,
+                        paddingTop: Pixel.getPixel(3),
+                        paddingBottom: Pixel.getPixel(3),
+                    }}
+                    rightTextCallBack={() => {
+                        if (this.isClick) {
+                            this._completedForEdit();
+                        }
+                    }}
                 />
 
                 {/*              蒙版选择器        */}
-                <SelectMaskComponent viewData={[]} onClick={(rowID)=>this._onClick(rowID)}
-                                     ref={(modal)=> {
+                <SelectMaskComponent viewData={[]} onClick={(rowID) => this._onClick(rowID)}
+                                     ref={(modal) => {
                                          this.selectModal = modal
                                      }}
                 />
                 {/*              蒙版选择器        */}
-                <SelectMaskComponent1 viewData={[]} onClick={(rowID)=>this.onClickCompany(rowID)}
-                                      ref={(modal)=> {
+                <SelectMaskComponent1 viewData={[]} onClick={(rowID) => this.onClickCompany(rowID)}
+                                      ref={(modal) => {
                                           this.selectModal1 = modal
                                       }}
                 />
 
-
                 { /**      界面listview          */}
-                <ListView
-                    style={styles.listStyle}
-                    dataSource={this.state.source}
-                    renderRow={this._renderRow}
-                    renderSectionHeader={this._renderSectionHeader}
-                />
-
-                {/**      注销按钮          */}
-                {this.props.isAddEmployee ? <MyButton buttonType={MyButton.TEXTBUTTON}
-                                                      content={'注销'}
-                                                      parentStyle={styles.loginBtnStyle}
-                                                      childStyle={styles.loginButtonTextStyle}
-                                                      mOnPress={this._loginOut}/> : null}
-
+                <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={5}>
+                    <ListView
+                        style={styles.listStyle}
+                        dataSource={this.state.source}
+                        renderRow={this._renderRow}
+                        renderSectionHeader={this._renderSectionHeader}/>
+                </KeyboardAvoidingView>
             </View>
         );
     }
 
-    /**      注销按钮点击事件          */
-    _loginOut = () => {
-
-    }
     /**      导航栏完成按钮点击事件          */
     _completedForEdit = () => {
         for (let i = 0; i < Car.length; i++) {
@@ -261,34 +272,17 @@ export default class AddEmployeeScene extends BaseComponent {
                 }
             }
         }
-        if (Car[2].cars[1].name !== Car[2].cars[2].name) {
+        if (Car[2].cars[0].name.length != 11) {
+            this.props.showToast("请输入正确的用户名");
+        } else if (Car[2].cars[1].name.length < 6) {
+            this.props.showToast("密码必须为6~16位");
+        } else if (Car[2].cars[1].name !== Car[2].cars[2].name) {
             this.props.showToast("两次输入的密码不同");
-            return;
+        } else {
+            this.saveData()
         }
-        this.saveData()
 
 
-    }
-    /**      导航栏右侧按钮          */
-    _navigatorRightView = () => {
-        return (
-            <TouchableOpacity
-                style={{
-                    backgroundColor: '#ffffff',
-                    width: Pixel.getPixel(53), height: Pixel.getPixel(27),
-                    justifyContent: 'center', alignItems: 'center', borderRadius: 5
-                }}
-                activeOpacity={0.8} onPress={() => {
-                this._completedForEdit();
-            }}>
-                <Text style={{
-                    color: FontAndColor.COLORB0,
-                    fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT30),
-                    textAlign: 'center',
-                    backgroundColor: 'transparent',
-                }}>完成</Text>
-            </TouchableOpacity>
-        );
     }
 
     /**      row的点击事件          */
@@ -308,7 +302,7 @@ export default class AddEmployeeScene extends BaseComponent {
         this.selectModal.changeData(dt);
         this.selectModal.openModal();
         this.currentData = dt;
-        if(SECTIONID ===1&& ROWID ===0){
+        if (SECTIONID === 1 && ROWID === 0) {
             // this.selectModal.isCompanys();
         }
     }
@@ -316,19 +310,19 @@ export default class AddEmployeeScene extends BaseComponent {
         this.selectModal1.changeData(dt);
         this.selectModal1.openModal();
         this.currentData = dt;
-        if(SECTIONID ===1&& ROWID ===0){
+        if (SECTIONID === 1 && ROWID === 0) {
             // this.selectModal.isCompanys();
         }
     }
-    onClickCompany=(itemIds)=>{
-        if(SECTIONID ===1&& ROWID ===0){
-            if (itemIds.length>0){
+    onClickCompany = (itemIds) => {
+        if (SECTIONID === 1 && ROWID === 0) {
+            if (itemIds.length > 0) {
 
-                Car[SECTIONID].cars[ROWID].name =this.companys[itemIds[0]];
-                this.items=itemIds;
+                Car[SECTIONID].cars[ROWID].name = this.companys[itemIds[0]];
+                this.items = itemIds;
             }
         }
-        console.log(this.items+'--');
+        console.log(this.items + '--');
         let jsonData = Car;
 
         //    定义变量
@@ -379,15 +373,20 @@ export default class AddEmployeeScene extends BaseComponent {
     }
     /**      蒙版listview  点击选择,返回点击cell的id          */
     _onClick = (rowID) => {
-        if(SECTIONID ===0&& ROWID ===1){
+        if (SECTIONID === 0 && ROWID === 1) {
 
-            this.sex=Number.parseInt(rowID)+1+'';
-        }else if (SECTIONID ===1&& ROWID ===1){
+            this.sex = Number.parseInt(rowID) + 1 + '';
+        } else if (SECTIONID === 1 && ROWID === 1) {
 
-            this.roleId= Number.parseInt(rowID)+1+'';
+            for(let value of this.props.roleData){
+
+                if(value.role_name==this.props.roleList[rowID]){
+
+                    this.roleId = value.role_id;
+                }
+            }
         }
-            Car[SECTIONID].cars[ROWID].name = this.currentData[rowID];
-
+        Car[SECTIONID].cars[ROWID].name = this.currentData[rowID];
 
 
         let jsonData = Car;
@@ -459,7 +458,7 @@ export default class AddEmployeeScene extends BaseComponent {
         }
 
         return (
-            <TouchableOpacity onPress={()=>this._rowAndSectionClick(rowID, sectionID)
+            <TouchableOpacity onPress={() => this._rowAndSectionClick(rowID, sectionID)
             }>
                 <View style={styles.rowView}>
 
@@ -468,7 +467,7 @@ export default class AddEmployeeScene extends BaseComponent {
                             style={[styles.rowRightTitle,]}>{this.state.rowdata ? this.state.rowdata : rowData.name}</Text> :
                         <TextInput ref={sectionID + rowID} defaultValue={rowData.name}
                                    placeholder={"请输入" + rowData.title } style={styles.inputStyle}
-                                   onChangeText={(text)=>this._textChange(sectionID, rowID, text)}
+                                   onChangeText={(text) => this._textChange(sectionID, rowID, text)}
                                    secureTextEntry={PASSWORD}
                                    underlineColorAndroid={"#00000000"}
 
@@ -482,7 +481,7 @@ export default class AddEmployeeScene extends BaseComponent {
             </TouchableOpacity>
         );
     }
-    _textChange = (sectionID, rowID, text)=> {
+    _textChange = (sectionID, rowID, text) => {
         ROWID = rowID;
         SECTIONID = sectionID;
         Car[SECTIONID].cars[ROWID].name = text;
@@ -504,7 +503,7 @@ const styles = StyleSheet.create({
         backgroundColor: FontAndColor.COLORA3,
     },
     listStyle: {
-        marginTop: Pixel.getTitlePixel(64)
+        // marginTop: Pixel.getTitlePixel(64)
     },
     sectionView: {
         height: Pixel.getPixel(10),
@@ -520,9 +519,9 @@ const styles = StyleSheet.create({
     },
     rowLeftTitle: {
         marginLeft: Pixel.getPixel(15),
+        width: 60,
         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),
         color: FontAndColor.COLORA0,
-        flex:1
 
     },
     rowRightTitle: {
@@ -535,7 +534,7 @@ const styles = StyleSheet.create({
 
     },
     inputStyle: {
-        flex: 3,
+        flex: 1,
         marginRight: Pixel.getPixel(5),
         textAlign: 'right',
         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),

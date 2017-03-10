@@ -53,6 +53,14 @@ export default class BaseComponent extends Component {
         }
     }
 
+    backToTop = () => {
+        const navigator = this.props.navigator;
+        if (navigator) {
+            navigator.popToTop();
+        }
+    }
+
+
     showConsole = (content) => {
         Console.showConsole(content);
     }

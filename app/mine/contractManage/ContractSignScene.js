@@ -83,6 +83,10 @@ export  default class ContractSignScene extends BaseComponent {
             .then((response) => {
                     this.props.showToast('签署成功');
                     this.setState({freshButton: false});
+                    if (this.props.callBack) {
+                        this.props.callBack();
+                    }
+                    this.backPage();
                 },
                 (error) => {
                     this.props.showToast('签署失败');
