@@ -25,7 +25,6 @@ import  PixelUtil from '../utils/PixelUtil'
 import KurongDetaileScene from '../finance/lend/KurongDetaileScene';
 import CGDDetailSence from '../finance/lend/CGDDetailSence';
 import SingDetaileSence from '../finance/lend/SingDetaileSence';
-import ContractInfoScene from '../finance/lend/ContractInfoScene';
 var Pixel = new PixelUtil();
 /*
  * 获取屏幕的宽和高
