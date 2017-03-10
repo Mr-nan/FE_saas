@@ -266,7 +266,7 @@ export default class CarInfoScene extends BaseComponent {
     renderImagePage=(data,pageID)=>{
 
         return(
-            <TouchableOpacity onPress={()=>{this.showPhotoView()}}>
+            <TouchableOpacity onPress={()=>{this.showPhotoView()}} activeOpacity={1}>
                 <Image source={typeof data.url =='undefined'?data.require:{uri:data.url+'?x-oss-process=image/resize,w_'+Math.ceil(ScreenWidth)+',h_'+250}} style={styles.carImage}/>
             </TouchableOpacity>
 
@@ -802,8 +802,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection:'row',
-        paddingVertical:Pixel.getPixel(5),
-        flexWrap: 'wrap',
+        paddingVertical:Pixel.getPixel(5)
     },
     carParameterText: {
         fontSize:Pixel.getFontPixel(fontAndColor.MARKFONT),
