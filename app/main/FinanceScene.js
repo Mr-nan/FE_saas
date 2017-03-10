@@ -327,7 +327,10 @@ export default class FinanceSence extends BaseComponet {
                 this.navigatorParams.name = 'DetaileSence';
                 this.navigatorParams.component = nextPage;
                     this.navigatorParams.params={
-                        loanNumber:movie.loan_code
+                        loanNumber:movie.loan_code,
+                        backRefresh:()=>{
+                            this.allRefresh()
+                        }
                     }
                 this.props.callBack(this.navigatorParams);
             }} style={[cellSheet.row, cellSheet.padding]}>
@@ -406,14 +409,18 @@ export default class FinanceSence extends BaseComponet {
                 purchase_archives_after_status: mnyData.purchase_archives_after_status,
                 purchase_archives_first_status: mnyData.purchase_archives_first_status,
                 purchase_status: mnyData.purchase_status,
-                customerName:this.state.customerName
-            };
+                customerName:this.state.customerName,
+                backRefresh:()=>{
+                    this.allRefresh()
+                }}
+            ;
             this.props.callBack(this.navigatorParams);
         } else {
             this.navigatorParams.name = "RepaymentScene";
             this.navigatorParams.component = RepaymentScene;
             this.navigatorParams.params = {
-                customerName:this.state.customerName
+                customerName:this.state.customerName,
+
             };
             this.props.callBack(this.navigatorParams);
         }
