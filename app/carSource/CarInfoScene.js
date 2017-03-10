@@ -11,6 +11,7 @@ import {
     Dimensions,
     Modal,
 
+
 } from 'react-native';
 
 import *as fontAndColor from '../constant/fontAndColor';
@@ -19,6 +20,7 @@ import BaseComponent from '../component/BaseComponent';
 import NavigationView from '../component/AllNavigationView';
 import Gallery from 'react-native-gallery';
 import PixelUtil from '../utils/PixelUtil';
+import * as weChat from 'react-native-wechat';
 const Pixel = new PixelUtil();
 
 import {request} from "../utils/RequestUtil";
@@ -27,7 +29,7 @@ import * as AppUrls from "../constant/appUrls";
 var ScreenWidth = Dimensions.get('window').width;
 var ScreenHeight = Dimensions.get('window').height;
 
-
+let resolveAssetSource = require('resolveAssetSource');
 
 const carParameterViewColor = [
 
@@ -115,7 +117,7 @@ export default class CarInfoScene extends BaseComponent {
             carData.carIconsContentData=[
                 carData.manufacture!=''? this.dateReversal(carData.manufacture+'000'):'',
                 carData.init_reg!=''? this.dateReversal(carData.init_reg+'000'):'',
-                carData.mileage+'万公里',
+                this.carMoneyChange(carData.mileage)+'万公里',
                 carData.transfer_times+'次',
                 carData.nature_str,
                 carData.car_color.split("|")[0]+'/'+carData.trim_color.split("|")[0],
@@ -123,7 +125,7 @@ export default class CarInfoScene extends BaseComponent {
 
             if(carData.imgs.length<=0){
 
-                carData.imgs=[ {require:require('../../images/carSourceImages/car_null_img.png')}];
+                carData.imgs=[ {require:require('../../images/carSourceImages/car_info_null.png')}];
             }
 
             this.setState({
@@ -251,7 +253,6 @@ export default class CarInfoScene extends BaseComponent {
         );
     };
 
-
     setNavitgationBackgroundColor=(event)=>{
 
         if(event.nativeEvent.contentOffset.y>20){
@@ -272,7 +273,29 @@ export default class CarInfoScene extends BaseComponent {
         );
     }
 
+    carMoneyChange=(carMoney)=>{
 
+
+        let newCarMoney = parseFloat(carMoney);
+        let carMoneyStr = newCarMoney.toFixed(2);
+        let moneyArray = carMoneyStr.split(".");
+        console.log(carMoney);
+
+        if(moneyArray.length>1)
+        {
+            if(moneyArray[1]>0){
+
+                return moneyArray[0]+'.'+moneyArray[1];
+            }else {
+                return moneyArray[0];
+            }
+
+        }else {
+            return carMoneyStr;
+        }
+
+
+    }
 
     render() {
 
@@ -280,6 +303,11 @@ export default class CarInfoScene extends BaseComponent {
             return (
                 <View style={{flex: 1, backgroundColor: 'white'}}>
                     {this.loadView()}
+                    <NavigationView
+                        ref="navtigation"
+                        title="车源详情"
+                        backIconClick={this.backIconClick}
+                    />
             </View>);
         }
 
@@ -326,7 +354,7 @@ export default class CarInfoScene extends BaseComponent {
                                 {/*source={require('../../images/carSourceImages/browse.png')}/>*/}
                                 {/*<Text style={styles.browseText}>1024次浏览</Text>*/}
                                 </View>
-                                <Text style={styles.priceText}>{carData.dealer_price>0?(carData.dealer_price +'万'):''}</Text>
+                                <Text style={styles.priceText}>{carData.dealer_price>0?(this.carMoneyChange(carData.dealer_price) +'万'):''}</Text>
                                 </View>
                             }
 
@@ -365,7 +393,7 @@ export default class CarInfoScene extends BaseComponent {
                                             {
                                                 carData.city_name!==''&&(<View style={styles.carAddressSubView}>
                                                     <Text style={styles.carAddressTitleText}>所在地: </Text>
-                                                    <Text style={styles.carAddressSubTitleText}>{carData.provice_name+carData.city_name}</Text>
+                                                    <Text style={styles.carAddressSubTitleText}>{carData.provice_name +(carData.provice_name===carData.city_name?" ":("-"+carData.city_name))}</Text>
                                                 </View>)
                                             }
                                         </View>
@@ -417,7 +445,7 @@ export default class CarInfoScene extends BaseComponent {
                     renderRihtFootView={this.navigatorRightView}
                 />
                 <PhotoView ref="photoView"/>
-                <SharedView ref="sharedView"/>
+                <SharedView ref="sharedView" carData={this.state.carData}/>
             </View>
 
         )
@@ -444,7 +472,6 @@ class CarIconView extends Component {
 
 class  SharedView extends Component{
 
-
     // 构造
       constructor(props) {
         super(props);
@@ -463,6 +490,85 @@ class  SharedView extends Component{
         });
     }
 
+    componentDidMount() {
+        weChat.registerApp('wx69699ad69f370cfc');
+    }
+
+    // 分享好友
+    sharedWechatSession=(carData)=>{
+        weChat.isWXAppInstalled()
+            .then((isInstalled)=>{
+            if(isInstalled){
+
+                console.log(carData);
+                let imageResource = require('../../images/carSourceImages/car_info_null.png');
+                let carContent = '';
+
+                if(carData.city_name!=""){
+
+                    carContent = carData.city_name+' | ';
+                }
+                if(carData.plate_number!=""){
+
+                    carContent +=carData.plate_number.substring(0,2);
+                }
+                if(carData.carIconsContentData[0]!=""){
+
+                    carContent+=" | "+carData.carIconsContentData[0]+'出厂';
+                }
+                let carImage = typeof carData.imgs[0].url == 'undefined'?resolveAssetSource(imageResource).uri:carData.imgs[0].url;
+                weChat.shareToSession({
+                    type: 'news',
+                    title:carData.model_name,
+                    description:carContent,
+                    webpageUrl:'http://finance.test.dycd.com/platform/car_detail.html?id='+carData.id,
+                    thumbImage:carImage,
+
+                }).catch((error)=>{
+                    console.log(error.message);
+                })
+            }else {
+                console.log('没有安装微信软件');
+            }
+            });
+    }
+
+    // 分享朋友圈
+    sharedWechatTimeline=(carData)=>{
+        weChat.isWXAppInstalled()
+            .then((isInstalled)=>{
+                if(isInstalled){
+                    let imageResource = require('../../images/carSourceImages/car_info_null.png');
+                    let carContent = '';
+                    if(carData.city_name!=""){
+                        carContent = carData.city_name+' | ';
+                    }
+                    if(carData.plate_number!=""){
+
+                        carContent +=carData.plate_number.substring(0,2);
+                    }
+                    if(carData.carIconsContentData[0]!=""){
+
+                        carContent+=" | "+carData.carIconsContentData[0]+'出厂';
+                    }
+                    let carImage = typeof carData.imgs[0].url == 'undefined'?resolveAssetSource(imageResource).uri:carData.imgs[0].url;
+                    weChat.shareToTimeline({
+                        type:'news',
+                        title:carData.model_name,
+                        description:carContent,
+                        webpageUrl:'http://finance.test.dycd.com/platform/car_detail.html?id='+carData.id,
+                        thumbImage:carImage,
+
+                    }).catch((error)=>{
+                        console.log(error.message);
+                    })
+                }else {
+                    console.log('没有安装微信软件');
+                }
+            });
+    }
+
+
     render(){
 
         return(
@@ -478,11 +584,11 @@ class  SharedView extends Component{
                             <Text style={styles.sharedViewHeadText}>分享到</Text>
                         </View>
                         <View style={{flexDirection:'row'}}>
-                            <TouchableOpacity style={styles.sharedItemView} onPress={()=>{this.isVisible(false)}}>
+                            <TouchableOpacity style={styles.sharedItemView} onPress={()=>{this.sharedWechatSession(this.props.carData);  this.isVisible(false);}}>
                                 <Image source={require('../../images/carSourceImages/shared_ wx.png')}/>
                                 <Text style={styles.sharedText}>微信好友</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.sharedItemView} onPress={()=>{this.isVisible(false)}}>
+                            <TouchableOpacity style={styles.sharedItemView} onPress={()=>{this.sharedWechatTimeline(this.props.carData);  this.isVisible(false);}}>
                                 <Image source={require('../../images/carSourceImages/shared_ friend.png')}/>
                                 <Text style={styles.sharedText}>朋友圈</Text>
                             </TouchableOpacity>
