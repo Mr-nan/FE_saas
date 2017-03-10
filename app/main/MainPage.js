@@ -81,8 +81,24 @@ export default class MainPage extends BaseComponent {
                         this.setState({selectedTab: ref})
                         StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'true');
                     }else{
-                        this.setState({selectedTab: ref})
+                        if(ref==='financePage'){
+                             StorageUtil.mGetItem(storageKeyNames.NEED_GESTURE,(datas)=>{
+                       if(datas.code==1){
+                             if(datas.result=='true'){
+                             this.toNextPage({name:'LoginGesture',component:LoginGesture,params:{
+                                callBack:()=>{
+                                    this.setState({selectedTab: ref})
+                               }
+                            }});
+                          }else{
+                                this.setState({selectedTab: ref})
+                          }
+                       }
+                  });
+                      }else{
+                            this.setState({selectedTab: ref})
                         StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
+                      }
                     }
                 }} callBack={(params)=> {
                     this.toNextPage(params);
@@ -118,8 +134,24 @@ export default class MainPage extends BaseComponent {
                         this.setState({selectedTab: ref})
                         StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'true');
                     }else{
-                        this.setState({selectedTab: ref})
+                        if(ref==='financePage'){
+                             StorageUtil.mGetItem(storageKeyNames.NEED_GESTURE,(datas)=>{
+                       if(datas.code==1){
+                             if(datas.result=='true'){
+                             this.toNextPage({name:'LoginGesture',component:LoginGesture,params:{
+                                callBack:()=>{
+                                    this.setState({selectedTab: ref})
+                               }
+                            }});
+                          }else{
+                                this.setState({selectedTab: ref})
+                          }
+                       }
+                  });
+                      }else{
+                            this.setState({selectedTab: ref})
                         StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
+                      }
                     }
                 }} callBack={(params)=> {
                     this.toNextPage(params);
@@ -149,8 +181,24 @@ export default class MainPage extends BaseComponent {
                         this.setState({selectedTab: ref})
                         StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'true');
                     }else{
-                        this.setState({selectedTab: ref})
+                        if(ref==='financePage'){
+                             StorageUtil.mGetItem(storageKeyNames.NEED_GESTURE,(datas)=>{
+                       if(datas.code==1){
+                             if(datas.result=='true'){
+                             this.toNextPage({name:'LoginGesture',component:LoginGesture,params:{
+                                callBack:()=>{
+                                    this.setState({selectedTab: ref})
+                               }
+                            }});
+                          }else{
+                                this.setState({selectedTab: ref})
+                          }
+                       }
+                  });
+                      }else{
+                            this.setState({selectedTab: ref})
                         StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
+                      }
                     }
                 }} callBack={(params)=> {
                     this.toNextPage(params);
@@ -193,8 +241,24 @@ export default class MainPage extends BaseComponent {
                         this.setState({selectedTab: ref})
                         StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'true');
                     }else{
-                        this.setState({selectedTab: ref})
+                        if(ref==='financePage'){
+                             StorageUtil.mGetItem(storageKeyNames.NEED_GESTURE,(datas)=>{
+                       if(datas.code==1){
+                             if(datas.result=='true'){
+                             this.toNextPage({name:'LoginGesture',component:LoginGesture,params:{
+                                callBack:()=>{
+                                    this.setState({selectedTab: ref})
+                               }
+                            }});
+                          }else{
+                                this.setState({selectedTab: ref})
+                          }
+                       }
+                  });
+                      }else{
+                            this.setState({selectedTab: ref})
                         StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
+                      }
                     }
                 }} callBack={(params)=> {
                     this.toNextPage(params);
