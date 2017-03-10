@@ -69,7 +69,6 @@ export default class KurongSence extends BaseComponent {
     ];
     dateBlob =['30天','60天','90天','180天'];
     initFinish() {
-
         this.getData();
 
     }
@@ -88,8 +87,8 @@ export default class KurongSence extends BaseComponent {
                         ShowData.maxMoney=changeToMillion(tempjson.min_loanmny)+'-'+changeToMillion(tempjson.max_loanmny)+'万',
                         ShowData.rate=tempjson.rate,
                         ShowData.type=tempjson.loantype_str,
-                        showData.tempMin=changeToMillion(tempjson.min_loanmny);
-                        showData.tempMax=changeToMillion(tempjson.max_loanmny);
+                        ShowData.tempMin=changeToMillion(tempjson.min_loanmny),
+                        ShowData.tempMax=changeToMillion(tempjson.max_loanmny),
 
                     this.setState({
 
@@ -99,7 +98,6 @@ export default class KurongSence extends BaseComponent {
                 (error) => {
 
                     this.setState({
-
                         renderPlaceholderOnly:STATECODE.loadError
                     })
                     if(error.mycode!= -300||error.mycode!= -500){
@@ -138,10 +136,11 @@ export default class KurongSence extends BaseComponent {
             }
         }
 
-        if (Number.parseFloat(PostData.loan_mny)<Number.parseFloat(showData.tempMin)||Number.parseFloat(PostData.loan_mny)>Number.parseFloat(showData.tempMax)){
+
+        if (Number.parseFloat(PostData.loan_mny)<Number.parseFloat(ShowData.tempMin)||Number.parseFloat(PostData.loan_mny)>Number.parseFloat(ShowData.tempMax)){
 
             infoComolete=false;
-            this.props.showToast('借款金额范围为'+showData.maxMoney)
+            this.props.showToast('借款金额范围为'+ShowData.maxMoney)
         }
 
         if (infoComolete){
@@ -216,7 +215,7 @@ export default class KurongSence extends BaseComponent {
                         </View>
 
                         <View style={styles.input}>
-                            <LendInputItem title='金额' placeholder='请输入借款金额' unit='万' endEit={(event)=>{PostData.loan_mny=event.nativeEvent.text}}/>
+                            <LendInputItem title='金额' placeholder='请输入借款金额' unit='万' onChangeText={(text)=>{PostData.loan_mny=text}}/>
                         </View>
                         <LendDatePike lefTitle={'用款时间'} placeholder={'选择用款时间'} imageSouce={imageSouce} onPress={this.onPress}/>
                         <LendUseful onEndEidt={(text)=>{PostData.remark=text}}/>
@@ -234,8 +233,10 @@ export default class KurongSence extends BaseComponent {
                     confirmTextIOS='确定'
                     cancelTextIOS='取消'
                 />
-                <LendSuccessAlert ref={(lend)=>{this.lendAlert=lend}} confimClick={()=>{this.backPage()}} title='借款成功'subtitle='恭喜您借款成功'/>
-                <LendSuccessAlert ref={(shouxin)=>{this.shouxinAlert=shouxin}} confimClick={()=>{this.backPage()}} title='需要授信'subtitle='请联系客户经理进行授信'/>
+                <LendSuccessAlert ref={(lend)=>{this.lendAlert=lend}} confimClick={()=>{
+                    this.props.backRefresh();
+                    this.backToTop()
+                }} title='借款成功'subtitle='恭喜您借款成功'/>
                 <AllNavigatior title='库融借款' backIconClick={()=>{ this.backPage()}}/>
 
             </View>

@@ -14,7 +14,6 @@ export default class PlanItem extends PureComponent {
 
     render() {
         let movie = this.props.items;
-        console.log(movie);
         let movieItems = [];
         let count = 0;
         let typeName = '';
@@ -102,7 +101,7 @@ export default class PlanItem extends PureComponent {
                 <Text style={{
                     fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                     color: fontAndColor.COLORA1
-                }}>息{this.props.interest_str}</Text>
+                }}>{movie.plan_type==1?'息':'本'}{movie.repaymentmny_str}</Text>
             </View>
         </View>);
         if (this.props.lastIndex === this.props.index) {
