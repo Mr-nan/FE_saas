@@ -82,7 +82,7 @@ export default class ModelSelect extends PureComponent {
 
     //扫描
     _scanPress = () => {
-        NativeModules.VinScan.scan().then((vl)=>{
+        NativeModules.VinScan.scan(1).then((vl)=>{
             this.vinInput.setNativeProps({
                 text:vl
             });

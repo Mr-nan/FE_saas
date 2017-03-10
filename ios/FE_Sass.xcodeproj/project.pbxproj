@@ -67,6 +67,9 @@
 		E36AEBD01E6AC19F000F4E11 /* VinScan.m in Sources */ = {isa = PBXBuildFile; fileRef = E36AEBBD1E6AC19F000F4E11 /* VinScan.m */; };
 		E36AEBD11E6AC19F000F4E11 /* VLCameraViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = E36AEBBF1E6AC19F000F4E11 /* VLCameraViewController.mm */; };
 		E36AEBD21E6AC19F000F4E11 /* VLTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = E36AEBC11E6AC19F000F4E11 /* VLTopView.m */; };
+		E36EBB8B1E72979D009B0361 /* libvinTyper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E36EBB8A1E72979D009B0361 /* libvinTyper.a */; };
+		E36EBBB11E729868009B0361 /* TopView.m in Sources */ = {isa = PBXBuildFile; fileRef = E36EBBAE1E729868009B0361 /* TopView.m */; };
+		E36EBBB21E729868009B0361 /* VinCameraViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = E36EBBB01E729868009B0361 /* VinCameraViewController.mm */; };
 		E3B817061E613EAC00279287 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3B817051E613EAC00279287 /* SystemConfiguration.framework */; };
 		E3B817081E613EB600279287 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3B817071E613EB600279287 /* CoreTelephony.framework */; };
 		E3B817091E613ECF00279287 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D769E2B1E602A630039526C /* libc++.tbd */; };
@@ -373,6 +376,12 @@
 		E36AEBBF1E6AC19F000F4E11 /* VLCameraViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = VLCameraViewController.mm; sourceTree = "<group>"; };
 		E36AEBC01E6AC19F000F4E11 /* VLTopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLTopView.h; sourceTree = "<group>"; };
 		E36AEBC11E6AC19F000F4E11 /* VLTopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLTopView.m; sourceTree = "<group>"; };
+		E36EBB8A1E72979D009B0361 /* libvinTyper.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libvinTyper.a; sourceTree = "<group>"; };
+		E36EBBAC1E7297B7009B0361 /* vinTyper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vinTyper.h; sourceTree = "<group>"; };
+		E36EBBAD1E729868009B0361 /* TopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopView.h; sourceTree = "<group>"; };
+		E36EBBAE1E729868009B0361 /* TopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopView.m; sourceTree = "<group>"; };
+		E36EBBAF1E729868009B0361 /* VinCameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VinCameraViewController.h; sourceTree = "<group>"; };
+		E36EBBB01E729868009B0361 /* VinCameraViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = VinCameraViewController.mm; sourceTree = "<group>"; };
 		E3B817051E613EAC00279287 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		E3B817071E613EB600279287 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		E3B8170A1E613ED600279287 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
@@ -401,6 +410,7 @@
 				E36AEB611E6ABEE8000F4E11 /* CoreMotion.framework in Frameworks */,
 				E3B8170B1E613ED600279287 /* libz.tbd in Frameworks */,
 				E3B817091E613ECF00279287 /* libc++.tbd in Frameworks */,
+				E36EBB8B1E72979D009B0361 /* libvinTyper.a in Frameworks */,
 				6EFC1612A1C141A990AA381C /* libsqlite3.0.tbd in Frameworks */,
 				E3B817061E613EAC00279287 /* SystemConfiguration.framework in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -670,11 +680,17 @@
 			isa = PBXGroup;
 			children = (
 				E369CDF21E6D0FD000401BFC /* libSVehicleLicense.a */,
+				E36EBB8A1E72979D009B0361 /* libvinTyper.a */,
 				E36AEBAC1E6AC19F000F4E11 /* 4D39F52BD46AC7CD8470.lic */,
 				E36AEBAE1E6AC19F000F4E11 /* Resources */,
 				E36AEBBB1E6AC19F000F4E11 /* SVehicleLicense.h */,
+				E36EBBAC1E7297B7009B0361 /* vinTyper.h */,
 				E36AEBBC1E6AC19F000F4E11 /* VinScan.h */,
 				E36AEBBD1E6AC19F000F4E11 /* VinScan.m */,
+				E36EBBAD1E729868009B0361 /* TopView.h */,
+				E36EBBAE1E729868009B0361 /* TopView.m */,
+				E36EBBAF1E729868009B0361 /* VinCameraViewController.h */,
+				E36EBBB01E729868009B0361 /* VinCameraViewController.mm */,
 				E36AEBBE1E6AC19F000F4E11 /* VLCameraViewController.h */,
 				E36AEBBF1E6AC19F000F4E11 /* VLCameraViewController.mm */,
 				E36AEBC01E6AC19F000F4E11 /* VLTopView.h */,
@@ -1240,6 +1256,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E36EBBB21E729868009B0361 /* VinCameraViewController.mm in Sources */,
+				E36EBBB11E729868009B0361 /* TopView.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				E36AEBD21E6AC19F000F4E11 /* VLTopView.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
