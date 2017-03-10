@@ -101,11 +101,11 @@ export default class KurongSence extends BaseComponent {
                         renderPlaceholderOnly:STATECODE.loadError
                     })
                     if(error.mycode!= -300||error.mycode!= -500){
+                        this.props.showToast(error.mjson.msg);
 
-                        this.props.showToast('服务器连接有问题')
                     }else {
 
-                        this.props.showToast(error.mjson.msg);
+                        this.props.showToast('服务器连接有问题')
                     }
                 });
     }
@@ -160,12 +160,13 @@ export default class KurongSence extends BaseComponent {
                         this.lendAlert.setModelVisible(true)
                     },
                     (error) => {
+                        this.props.showModal(false);
                         if(error.mycode!= -300||error.mycode!= -500){
+                            this.props.showToast(error.mjson.msg);
 
-                            this.props.showToast('服务器连接有问题')
                         }else {
 
-                            this.props.showToast(error.mjson.msg);
+                            this.props.showToast('服务器连接有问题')
                         }
                     });
         }
