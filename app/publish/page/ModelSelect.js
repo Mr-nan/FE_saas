@@ -32,6 +32,8 @@ import * as Net from '../../utils/RequestUtil';
 import * as AppUrls from "../../constant/appUrls";
 import VinInfo from '../component/VinInfo';
 
+const IS_ANDROID = Platform.OS === 'android';
+
 export default class ModelSelect extends PureComponent {
 
     constructor(props) {
@@ -281,21 +283,31 @@ export default class ModelSelect extends PureComponent {
             this.modelInfo['model_name'] = this.modelData[index].model_name;
             this._insertVinAndModel(this.vin, JSON.stringify(this.modelInfo), this.modelInfo['model_name']);
         } else if (mType == 1) {
-            this.timer = setTimeout(
-                () => {
-                    NativeModules.VinScan.scan(parseInt(index)).then((vl) => {
-                        this.vinInput.setNativeProps({
-                            text: vl
-                        });
-                        this._onVinChange(vl);
-                    }, (error) => {
-                        console.log(error);
+            if (IS_ANDROID === true) {
+                NativeModules.VinScan.scan(parseInt(index)).then((vl) => {
+                    this.vinInput.setNativeProps({
+                        text: vl
                     });
-                },
-                500
-            );
+                    this._onVinChange(vl);
+                }, (error) => {
+                    console.log(error);
+                });
+            } else {
+                this.timer = setTimeout(
+                    () => {
+                        NativeModules.VinScan.scan(parseInt(index)).then((vl) => {
+                            this.vinInput.setNativeProps({
+                                text: vl
+                            });
+                            this._onVinChange(vl);
+                        }, (error) => {
+                            console.log(error);
+                        });
+                    },
+                    500
+                );
+            }
         }
-
     };
 
     render() {
