@@ -100,12 +100,10 @@ export  default  class carSourceListScene extends BaseComponent {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log('123');
         StorageUtil.mGetItem(storageKeyNames.NEED_OPENBRAND,(data)=>{
             if(data.code==1){
                if(data.result=='true'){
                     this.presCarTypeScene();
-
                }
             }
         });
@@ -137,7 +135,7 @@ export  default  class carSourceListScene extends BaseComponent {
     // 筛选数据刷新
     filterData = () => {
         carData = [];
-        this.setState({isRefreshing: true, dataSource: this.state.dataSource.cloneWithRows(carData),});
+        this.setState({dataSource: this.state.dataSource.cloneWithRows(carData)});
         this.props.showModal(true);
         this.loadData();
 
@@ -226,7 +224,6 @@ export  default  class carSourceListScene extends BaseComponent {
     toEnd = () => {
 
         if (carData.length && APIParameter.status == 1 && !this.state.isRefreshing) {
-            console.log('加载ing');
             this.loadMoreData();
         }
 
@@ -399,7 +396,12 @@ export  default  class carSourceListScene extends BaseComponent {
             },
         });
         APIParameter.order_type = value;
-        this.filterData();
+        if (this.refs.headView.state.isCheckRecommend) {
+            this.refs.headView.setCheckRecommend(false)
+        } else {
+            this.filterData();
+        }
+
     };
 
     sequencingClick = () => {

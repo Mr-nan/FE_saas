@@ -345,7 +345,7 @@ export default class CarInfoScene extends BaseComponent {
                         }}/>
                     <View style={styles.contentContainer}>
                         <View style={styles.contentView}>
-                            <Text style={styles.titleText}>{carData.model_name+carData.series_name}</Text>
+                            <Text style={styles.titleText}>{carData.model_name}</Text>
                             {
                                 carData.dealer_price>0 &&
                                 <View style={styles.titleFootView}>
@@ -492,10 +492,8 @@ class  SharedView extends Component{
 
     componentDidMount() {
 
-          if(weChat.registerApp=='')
-          {
-              weChat.registerApp('wx69699ad69f370cfc');
-          }
+          weChat.registerApp('wx69699ad69f370cfc');
+
     }
 
     // 分享好友
@@ -532,9 +530,10 @@ class  SharedView extends Component{
                     console.log(error.message);
                 })
             }else {
+                this.isVisible(false);
                 console.log('没有安装微信软件');
             }
-            });
+        });
     }
 
     // 分享朋友圈
@@ -567,6 +566,7 @@ class  SharedView extends Component{
                         console.log(error.message);
                     })
                 }else {
+                    this.isVisible(false);
                     console.log('没有安装微信软件');
                 }
             });
@@ -608,8 +608,6 @@ class  SharedView extends Component{
 
 class PhotoView extends Component{
 
-
-
     // 构造
       constructor(props) {
         super(props);
@@ -619,7 +617,6 @@ class PhotoView extends Component{
             isVisible:false,
         };
       }
-
       show=(imageArray,index)=>{
 
           if(!this.state.isVisible){
@@ -630,7 +627,6 @@ class PhotoView extends Component{
               });
           }
       }
-
       hide=()=>{
 
           if(this.state.isVisible){
@@ -638,7 +634,6 @@ class PhotoView extends Component{
                   isVisible:false,
               });
           }
-
       }
 
     render(){
@@ -654,7 +649,7 @@ class PhotoView extends Component{
                     style={{flex: 1, backgroundColor: 'rgba(1,1,1,0.5)'}}
                     images={imageArray}
                     initialPage={index-1}
-                    onSingleTapConfirmed={() => {
+                    onSingleTapConfirmed={()=>{
                         this.hide();
                     }}
                 />
@@ -901,7 +896,7 @@ const styles = StyleSheet.create({
     },
     callText: {
         color: 'white',
-        fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT),
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
     },
     PhotonContaier:{
 
