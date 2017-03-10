@@ -14,6 +14,7 @@ export default class PlanItem extends PureComponent {
 
     render() {
         let movie = this.props.items;
+        console.log(movie);
         let movieItems = [];
         let count = 0;
         let typeName = '';
