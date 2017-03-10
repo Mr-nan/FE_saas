@@ -39,6 +39,7 @@ export default class ModelSelect extends PureComponent {
         this.lastVin = '';
         this.modelInfo = {};
         this.modelData = [];
+        this.scanType =[{model_name : '扫描前风挡'},{model_name : '扫描行驶证'}];
         this.state = {
             renderPlaceholderOnly: true,
             modelName:'',
@@ -82,14 +83,8 @@ export default class ModelSelect extends PureComponent {
 
     //扫描
     _scanPress = () => {
-        NativeModules.VinScan.scan(1).then((vl)=>{
-            this.vinInput.setNativeProps({
-                text:vl
-            });
-            this._onVinChange(vl);
-        },(error)=>{
-            console.log(error);
-        });
+        this.vinModal.refresh(this.scanType);
+        this.vinModal.openModal(1);
     };
 
     _renderPlaceholderView = () => {
@@ -136,7 +131,7 @@ export default class ModelSelect extends PureComponent {
                             });
                             this.modelData = response.mjson.data;
                             this.vinModal.refresh(this.modelData);
-                            this.vinModal.openModal();
+                            this.vinModal.openModal(0);
                         }
                     }else {
                         this._insertVinNum(text);
@@ -271,13 +266,25 @@ export default class ModelSelect extends PureComponent {
     };
 
     //根据车架号选择车型
-    _vinPress =(index)=>{
-        this.modelInfo['brand_id'] = this.modelData[index].brand_id;
-        this.modelInfo['model_id'] = this.modelData[index].model_id;
-        this.modelInfo['series_id'] = this.modelData[index].series_id;
-        this.modelInfo['model_year'] = this.modelData[index].model_year;
-        this.modelInfo['model_name'] = this.modelData[index].model_name;
-        this._insertVinAndModel(this.vin,JSON.stringify(this.modelInfo),this.modelInfo['model_name']);
+    _vinPress =(mType,index)=>{
+        if(mType == 0){
+            this.modelInfo['brand_id'] = this.modelData[index].brand_id;
+            this.modelInfo['model_id'] = this.modelData[index].model_id;
+            this.modelInfo['series_id'] = this.modelData[index].series_id;
+            this.modelInfo['model_year'] = this.modelData[index].model_year;
+            this.modelInfo['model_name'] = this.modelData[index].model_name;
+            this._insertVinAndModel(this.vin,JSON.stringify(this.modelInfo),this.modelInfo['model_name']);
+        }else if(mType == 1){
+            NativeModules.VinScan.scan(parseInt(index)).then((vl)=>{
+                this.vinInput.setNativeProps({
+                    text:vl
+                });
+                this._onVinChange(vl);
+            },(error)=>{
+                console.log(error);
+            });
+        }
+
     };
 
     render() {
