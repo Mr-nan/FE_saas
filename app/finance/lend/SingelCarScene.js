@@ -95,15 +95,17 @@ export default class SingelCarSence extends BaseComponent {
              })
             },
             (error) => {
+                this.setState({
 
+                    renderPlaceholderOnly: STATECODE.loadError
+                })
                 if(error.mycode!= -300||error.mycode!= -500){
 
-                    this.props.showToast('服务器连接有问题')
+                    this.props.showToast(error.mjson.msg);
                 }else {
 
-                    this.props.showToast(error.mjson.msg);
+                    this.props.showToast('服务器连接有问题')
                 }
-
          });
     }
 
@@ -163,12 +165,13 @@ export default class SingelCarSence extends BaseComponent {
                     },
                     (error) => {
 
+                        this.props.showModal(false);
                         if(error.mycode!= -300||error.mycode!= -500){
 
-                            this.props.showToast('服务器连接有问题')
+                            this.props.showToast(error.mjson.msg);
                         }else {
 
-                            this.props.showToast(error.mjson.msg);
+                            this.props.showToast('服务器连接有问题')
                         }
                     });
         }
