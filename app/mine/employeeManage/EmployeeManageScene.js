@@ -33,6 +33,7 @@ export default class EmployeeManageScene extends BaseComponent {
     constructor(props) {
         super(props);
         this.roleList=[];
+        this.roleData=[];
         this.state = {
             dataSource: [],
             renderPlaceholderOnly: 'blank',
@@ -66,10 +67,12 @@ export default class EmployeeManageScene extends BaseComponent {
         request(AppUrls.BASEURL + 'v1/user/role', 'Post', {})
             .then((response) => {
                         if(response.mjson.code=='1'){
+
                             for(let value of response.mjson.data){
                                 this.roleList.push(value.role_name);
                             }
-                            console.log(this.roleList);
+                            this.roleData=response.mjson.data;
+                            console.log(this.roleData);
                         }
                 },
                 (error) => {
@@ -133,7 +136,8 @@ export default class EmployeeManageScene extends BaseComponent {
                             this.setState({renderPlaceholderOnly: 'loading'});
                             this.getData();
                         },
-                        roleList: this.roleList
+                        roleList: this.roleList,
+                        roleData: this.roleData
                     },
                 })
             }}>
@@ -174,7 +178,8 @@ export default class EmployeeManageScene extends BaseComponent {
                                 role: rowData.role,
                                 isAddEmployee: true,
                                 id: rowData.id,
-                                roleList: this.roleList
+                                roleList: this.roleList,
+                                roleData: this.roleData
                             },
                         })
                     }}>
