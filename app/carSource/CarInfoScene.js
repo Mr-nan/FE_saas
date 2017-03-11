@@ -493,7 +493,7 @@ class  SharedView extends Component{
 
     componentDidMount() {
 
-          // weChat.registerApp('wx69699ad69f370cfc');
+          weChat.registerApp('wx69699ad69f370cfc');
 
     }
 

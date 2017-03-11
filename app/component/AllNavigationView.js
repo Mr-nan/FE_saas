@@ -91,10 +91,11 @@ const styles = StyleSheet.create({
     imageFoot: {
 
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
         alignItems: 'center',
         // backgroundColor:'red',
         width: Pixel.getPixel(80),
+        marginRight:Pixel.getPixel(15),
 
 
     },
