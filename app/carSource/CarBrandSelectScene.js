@@ -160,7 +160,6 @@ export default class CarBrandSelectScene extends BaseComponent {
 
         }, (error) => {
 
-            console.log(error);
             this.stopLoadData();
 
         });
@@ -415,7 +414,6 @@ class CarSeriesList extends BaseComponent {
             }
 
         }, (error) => {
-            console.log(error);
         });
 
     }
@@ -627,7 +625,6 @@ class CarModelList extends BaseComponent {
 
         }, (error) => {
 
-            console.log(error);
 
         });
 

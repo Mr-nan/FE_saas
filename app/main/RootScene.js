@@ -4,7 +4,8 @@ import {
     View,
     StyleSheet,
     Dimensions,
-    TouchableOpacity
+    TouchableOpacity,
+    Image
 } from 'react-native';
 
 import BaseComponent from '../component/BaseComponent';
@@ -104,9 +105,7 @@ export default class RootScene extends BaseComponent {
 
     render() {
         return (
-            <View style={{flex: 1}}>
-                <MyButton {...this.buttonParams}/>
-            </View>
+            <View></View>
         );
     }
 }

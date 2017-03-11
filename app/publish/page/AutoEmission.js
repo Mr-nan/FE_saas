@@ -27,7 +27,6 @@ export default class AutoEmission extends Component {
         super(props);
         this.vinNum = this.props.carData.vin;
         let emission = this.props.carData.emission;
-        console.log(emission);
         this.viewData = [
             {title: '国Ⅱ', selected: false,index:0},
             {title: '欧Ⅳ', selected: false,index:1},

@@ -92,12 +92,10 @@ export default class CityListScene extends BaseComponent {
 
         }).then((response) => {
 
-            console.log(response);
             // this.setListData(response.mjson.data);
 
         }, (error) => {
 
-            console.log(error);
 
         });
 
@@ -145,7 +143,6 @@ export default class CityListScene extends BaseComponent {
 
         }).then((response) => {
 
-            console.log(response);
 
             if(response.mjson.data.length){
 
@@ -163,7 +160,6 @@ export default class CityListScene extends BaseComponent {
 
         }, (error) => {
 
-            console.log(error);
 
         });
 

@@ -59,7 +59,6 @@ export default class EmployeeManageScene extends BaseComponent {
                     }
                 },
                 (error) => {
-                    console.log(error);
                     this.setState({renderPlaceholderOnly: 'error'});
                 });
     }
@@ -72,11 +71,9 @@ export default class EmployeeManageScene extends BaseComponent {
                                 this.roleList.push(value.role_name);
                             }
                             this.roleData=response.mjson.data;
-                            console.log(this.roleData);
                         }
                 },
                 (error) => {
-                    console.log(error);
                     this.props.showToast("网络异常");
                 });
     }

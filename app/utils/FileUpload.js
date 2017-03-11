@@ -25,9 +25,7 @@ const imageUploadUtil = (uris) => {
     }).then((response) => {
         response.text()
     }).then((responseData) => {
-        console.log('responseData', responseData);
     }).catch((error) => {
-        console.error('error', error);
     });
 }
 

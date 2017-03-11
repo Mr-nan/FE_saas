@@ -103,7 +103,7 @@ export  default class OldPlanListScene extends BaseComponent {
 
     _renderPlaceholderView() {
         return (
-            <View style={{width: width, height: height}}>
+            <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
                 <NavigationView
                     title="历史还款"
                     backIconClick={this.backPage}

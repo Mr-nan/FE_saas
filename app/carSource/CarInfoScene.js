@@ -199,7 +199,6 @@ export default class CarInfoScene extends BaseComponent {
 
         }).then((response) => {
 
-            console.log(response);
             if(response.mycode==1){
 
                 isStoreClick(true);
@@ -227,7 +226,6 @@ export default class CarInfoScene extends BaseComponent {
 
         }).then((response) => {
 
-            console.log(response);
             if(response.mycode==1){
 
                 isStoreClick(false);
@@ -279,7 +277,6 @@ export default class CarInfoScene extends BaseComponent {
         let newCarMoney = parseFloat(carMoney);
         let carMoneyStr = newCarMoney.toFixed(2);
         let moneyArray = carMoneyStr.split(".");
-        console.log(carMoney);
 
         if(moneyArray.length>1)
         {
@@ -502,7 +499,6 @@ class  SharedView extends Component{
             .then((isInstalled)=>{
             if(isInstalled){
 
-                console.log(carData);
                 let imageResource = require('../../images/carSourceImages/car_info_null.png');
                 let carContent = '';
 
@@ -527,11 +523,9 @@ class  SharedView extends Component{
                     thumbImage:carImage,
 
                 }).catch((error)=>{
-                    console.log(error.message);
                 })
             }else {
                 this.isVisible(false);
-                console.log('没有安装微信软件');
             }
         });
     }
@@ -563,11 +557,9 @@ class  SharedView extends Component{
                         thumbImage:carImage,
 
                     }).catch((error)=>{
-                        console.log(error.message);
                     })
                 }else {
                     this.isVisible(false);
-                    console.log('没有安装微信软件');
                 }
             });
     }

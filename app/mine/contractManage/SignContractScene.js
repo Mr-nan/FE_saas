@@ -28,7 +28,6 @@ export  default class SignContractScene extends BaseComponent {
     }
 
     render() {
-        console.log(this.props.opt_user_id);
         return (
         <View style={{width:width,height:height}}>
             <NavigationView

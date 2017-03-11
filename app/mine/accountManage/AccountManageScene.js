@@ -78,7 +78,6 @@ export  default class SelectCompanyScene extends BaseComponent {
     }
 
     _renderRow = (movie, sectionId, rowId) => {
-        console.log(movie);
         return (
             <TouchableOpacity
                 onPress={()=> {
@@ -126,7 +125,7 @@ export  default class SelectCompanyScene extends BaseComponent {
 
     _renderPlaceholderView() {
         return (
-            <View style={{width: width, height: height}}>
+            <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
                 {this.loadView()}
                 <NavigationView
                     title="用户管理"

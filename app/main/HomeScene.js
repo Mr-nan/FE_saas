@@ -82,13 +82,14 @@ export default class HomeScene extends BaseComponet {
             page: page,
             rows: 6
         };
-        request(Urls.HOME, 'Post', maps)
+        request(Urls.HOME, 'Post', maps,()=>{
+            this.props.backToLogin()
+        })
             .then((response) => {
                     allList.push(...response.mjson.data.carList.list);
                     StorageUtil.mGetItem(storageKeyNames.USER_INFO, (data) => {
                         if (data.code == 1) {
                             let datas = JSON.parse(data.result);
-                            console.log(datas);
                             if (datas.user_level == 2) {
                                 if (datas.enterprise_list[0].role_type == '1'||datas.enterprise_list[0].role_type == '6') {
                                 } else if (datas.enterprise_list[0].role_type == '2') {

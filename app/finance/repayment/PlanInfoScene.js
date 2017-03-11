@@ -81,8 +81,6 @@ export  default class PlanInfoScene extends BaseComponent {
                     moneyList.push({name: '利息总额', data: movies.interest});
 
                     nameList.push({name: '渠道名称', data: movies.qvdaoname});
-                    console.log(typeof (movies.bank_info.bank)
-                        + '      aaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
                     nameList.push({
                         name: '还款账户', data: movies.bank_info.repaymentaccount
                         + ''

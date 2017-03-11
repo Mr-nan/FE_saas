@@ -32,7 +32,6 @@ export  default class SelectCompanyScene extends Component {
             renderPlaceholderOnly: true,
             source: ds.cloneWithRows(this.props.loanList)
         };
-        console.log(this.props.loanList);
     }
 
     componentDidMount() {
