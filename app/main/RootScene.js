@@ -105,7 +105,7 @@ export default class RootScene extends BaseComponent {
 
     render() {
         return (
-            <Image style={{flex:1,resizeMode:'stretch',width:width}} source={require('../../images/splash.png')}></Image>
+            <Image style={{flex:1,resizeMode:'stretch'}} source={require('../../images/splash.png')}></Image>
 
         );
     }
