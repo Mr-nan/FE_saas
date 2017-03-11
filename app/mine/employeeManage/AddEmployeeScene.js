@@ -34,6 +34,7 @@ export default class AddEmployeeScene extends BaseComponent {
     initFinish = () => {
     }
     saveData = () => {
+        this.company_idss=[];
         this.props.showModal(true);
         this.isClick = false;
         if (this.items.length > 0) {
@@ -317,6 +318,7 @@ export default class AddEmployeeScene extends BaseComponent {
                 this.items = itemIds;
             }
         }
+        console.log(this.items);
         let jsonData = Car;
 
         //    定义变量
@@ -513,7 +515,7 @@ const styles = StyleSheet.create({
     },
     rowLeftTitle: {
         marginLeft: Pixel.getPixel(15),
-        width: 60,
+        width: Pixel.getPixel(60),
         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),
         color: FontAndColor.COLORA0,
 
