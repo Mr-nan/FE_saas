@@ -153,13 +153,13 @@ const styles = StyleSheet.create({
     },
     cellFoot: {
 
-        paddingHorizontal: 10,
-        paddingVertical: 5,
+        paddingHorizontal: Pixel.getPixel(10),
+        paddingVertical: Pixel.getPixel(5),
         borderColor: fontAndColor.COLORA2,
         borderWidth: StyleSheet.hairlineWidth,
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 2,
+        borderRadius: Pixel.getPixel(2),
         marginRight: Pixel.getPixel(15),
         bottom: Pixel.getPixel(15),
         right: Pixel.getPixel(15),

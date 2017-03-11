@@ -16,7 +16,8 @@ import {
 var screenWidth = Dimensions.get('window').width;
 
 import * as fontAndColor from '../../constant/fontAndColor';
-
+import  PixelUtil from '../../utils/PixelUtil';
+let     Pixel = new PixelUtil();
 
 export default class MyCarCell extends Component {
 
@@ -116,14 +117,14 @@ const styles = StyleSheet.create({
     container:{
 
         flex:1,
-        height:160,
+        height:Pixel.getPixel(160),
         backgroundColor:'white',
     },
 
     cellContentView:{
 
         flex:1,
-        height:110,
+        height:Pixel.getPixel(110),
         flexDirection:'row',
         borderBottomWidth:StyleSheet.hairlineWidth,
         borderColor:fontAndColor.COLORA3,
@@ -132,7 +133,7 @@ const styles = StyleSheet.create({
     },
     cellFootView:{
 
-        height:50,
+        height:Pixel.getPixel(50),
         width:screenWidth,
         flexDirection:'row',
         alignItems:'center',
@@ -141,46 +142,46 @@ const styles = StyleSheet.create({
     },
     cellFoot:{
 
-        paddingHorizontal:10,
-        paddingVertical:5,
+        paddingHorizontal:Pixel.getPixel(10),
+        paddingVertical:Pixel.getPixel(5),
         borderColor:fontAndColor.COLORA2,
         borderWidth:StyleSheet.hairlineWidth,
         alignItems:'center',
         justifyContent:'center',
-        borderRadius:2,
+        borderRadius:Pixel.getPixel(2),
         overflow:'hidden',
-        marginRight:15,
+        marginRight:Pixel.getPixel(15),
 
     },
     cellFootText:{
 
-        color:fontAndColor.COLORA2,
-        fontSize:fontAndColor.LITTLEFONT,
+        color: fontAndColor.COLORA2,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT) ,
     },
     lineBottom:{
 
-        borderBottomWidth:10,
+        borderBottomWidth:Pixel.getPixel(10),
         borderColor:fontAndColor.COLORA3,
 
     },
 
     imageView:{
 
-        width:147,
+        width:Pixel.getPixel(147),
         justifyContent:'center',
 
     },
     image:{
 
-        marginLeft:15,
-        width:120,
-        height:80,
+        marginLeft:Pixel.getPixel(15),
+        width:Pixel.getPixel(120),
+        height:Pixel.getPixel(80),
         resizeMode: 'stretch',
 
     },
     tailImage:{
 
-        bottom:5,
+        bottom:Pixel.getPixel(5),
         right:0,
         position:'absolute',
     },
@@ -190,19 +191,19 @@ const styles = StyleSheet.create({
         // backgroundColor:'#FF0067',
         flex:1,
         justifyContent:'space-around',
-        marginRight:15,
+        marginRight:Pixel.getPixel(15),
     },
 
     mainText:{
 
         color:fontAndColor.COLORA0,
-        fontSize:fontAndColor.LITTLEFONT,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
     },
 
     subTitleText:{
 
         color:fontAndColor.COLORA1,
-        fontSize:fontAndColor.CONTENTFONT,
+        fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT) ,
     },
 
 

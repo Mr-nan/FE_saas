@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     cellFootText:{
 
         color:fontAndColor.COLORA2,
-        fontSize:fontAndColor.LITTLEFONT,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT) ,
     },
 
 
