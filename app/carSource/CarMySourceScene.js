@@ -712,7 +712,7 @@ const styles = StyleSheet.create({
     loadView: {
         flex: 1,
         backgroundColor: 'white',
-        marginTop: 5,
+        marginTop: Pixel.getPixel(5),
     },
     viewContainer: {
         flex: 1,
@@ -721,7 +721,7 @@ const styles = StyleSheet.create({
     listView: {
 
         backgroundColor: fontAndColor.COLORA3,
-        marginTop: 5
+        marginTop: Pixel.getPixel(5),
     }
 
 })

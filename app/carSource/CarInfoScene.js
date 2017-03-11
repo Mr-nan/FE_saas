@@ -108,7 +108,6 @@ export default class CarInfoScene extends BaseComponent {
 
         let url = AppUrls.CAR_DETAIL;
         request(url, 'post', {
-
             id: this.props.carID,
 
         }).then((response) => {
@@ -117,7 +116,7 @@ export default class CarInfoScene extends BaseComponent {
             carData.carIconsContentData=[
                 carData.manufacture!=''? this.dateReversal(carData.manufacture+'000'):'',
                 carData.init_reg!=''? this.dateReversal(carData.init_reg+'000'):'',
-                this.carMoneyChange(carData.mileage)+'万公里',
+                carData.mileage>0?this.carMoneyChange(carData.mileage)+'万公里':'',
                 carData.transfer_times+'次',
                 carData.nature_str,
                 carData.car_color.split("|")[0]+'/'+carData.trim_color.split("|")[0],
@@ -354,8 +353,13 @@ export default class CarInfoScene extends BaseComponent {
                                 <Text style={styles.priceText}>{carData.dealer_price>0?(this.carMoneyChange(carData.dealer_price) +'万'):''}</Text>
                                 </View>
                             }
-
                         </View>
+                        {
+                            (carData.lowest_pay_price>0||carData.lowest_pay_ratio>0) &&
+                            <View style={styles.preferentialView}>
+                                <Text style={styles.preferentialText}>第1车贷合作商户，首付{carData.lowest_pay_price>0?(this.carMoneyChange(carData.lowest_pay_price)+'万'):(carData.lowest_pay_ratio+'%')}即可提车</Text>
+                            </View>
+                        }
                     </View>
                     {
                         ((typeof(carData.labels)!= "undefined"?(carData.labels.length<=0?false:true):false)|| carData.describe!=='' || carData.city_name!=='' || carData.plate_number!=='') && (
@@ -489,7 +493,7 @@ class  SharedView extends Component{
 
     componentDidMount() {
 
-          weChat.registerApp('wx69699ad69f370cfc');
+          // weChat.registerApp('wx69699ad69f370cfc');
 
     }
 
@@ -739,6 +743,21 @@ const styles = StyleSheet.create({
         height: Pixel.getPixel(30),
 
 
+    },
+    preferentialView:{
+        backgroundColor:'#fff8ea',
+        paddingVertical:5,
+        width:ScreenWidth-30,
+        marginLeft:15,
+        marginRight:15,
+        marginBottom:10,
+        borderColor:"#fedc93",
+        borderWidth:StyleSheet.hairlineWidth,
+    },
+    preferentialText:{
+        color:fontAndColor.COLORB2,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+        marginLeft:10
     },
     subText: {
 
