@@ -67,7 +67,7 @@ export default class LoginFailSmsYes extends BaseComponent {
                         </Text>
                     </Text>
                     <Text style={styles.fontStyle}>
-                        登录BMS借款系统
+                        登录第1车贷APP
                     </Text>
                 </View>
                 <MyButton buttonType={MyButton.TEXTBUTTON}
