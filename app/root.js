@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import MyNavigator  from './component/MyNavigator';
 import ShowToast from "./component/toast/ShowToast";
-import AllLoading from './component/AllLoading';
 
 export default class root extends Component {
 
