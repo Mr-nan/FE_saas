@@ -99,7 +99,7 @@ export default class RootScene extends BaseComponent {
         parentStyle: styles.parentStyle,
         childStyle: styles.childStyle,
         opacity: 1,
-        content: require("../../images/welcome.jpg")
+        content: require("../../images/splash.png")
     }
 
     render() {
