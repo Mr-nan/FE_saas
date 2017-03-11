@@ -432,6 +432,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
+        backgroundColor: FontAndColor.COLORA3
     },
     container1: {
         flex: 1,

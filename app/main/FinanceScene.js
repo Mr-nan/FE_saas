@@ -74,7 +74,9 @@ export default class FinanceSence extends BaseComponet {
         let maps = {
             api: Urls.LOAN_SUBJECT
         };
-        request(Urls.FINANCE, 'Post', maps)
+        request(Urls.FINANCE, 'Post', maps,()=>{
+            this.props.backToLogin();
+        })
             .then((response) => {
                     loanList = response.mjson.data;
                     if (loanList.length > 1) {
@@ -116,7 +118,9 @@ export default class FinanceSence extends BaseComponet {
         let maps = {
             api: Urls.GET_MNY
         };
-        request(Urls.FINANCE, 'Post', maps)
+        request(Urls.FINANCE, 'Post', maps,()=>{
+            this.props.backToLogin();
+        })
             .then((response) => {
                     mnyData = response.mjson.data;
                     console.log(mnyData.credit_maxloanmny);
@@ -153,7 +157,9 @@ export default class FinanceSence extends BaseComponet {
             api: Urls.GET_APPLY_LIST,
             p: page
         };
-        request(Urls.FINANCE, 'Post', maps)
+        request(Urls.FINANCE, 'Post', maps,()=>{
+            this.props.backToLogin();
+        })
             .then((response) => {
                     movies.push(...response.mjson.data.list);
                     allPage = response.mjson.data.page;

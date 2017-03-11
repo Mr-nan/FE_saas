@@ -146,7 +146,9 @@ export  default  class carSourceListScene extends BaseComponent {
 
         let url = AppUrls.CAR_INDEX;
         APIParameter.page = 1;
-        request(url, 'post', APIParameter)
+        request(url, 'post', APIParameter,()=>{
+            this.props.backToLogin();
+        })
             .then((response) => {
 
                 carData = response.mjson.data.list;
@@ -190,7 +192,9 @@ export  default  class carSourceListScene extends BaseComponent {
         let url = AppUrls.CAR_INDEX;
         APIParameter.page += 1;
 
-        request(url, 'post', APIParameter)
+        request(url, 'post', APIParameter,()=>{
+            this.props.backToLogin();
+        })
             .then((response) => {
 
                 if (typeof(response.mjson.data.start) == "undefined") {

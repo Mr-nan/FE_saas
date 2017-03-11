@@ -79,7 +79,7 @@ export  default class RepaymentScene extends BaseComponent {
 
     _renderPlaceholderView() {
         return (
-            <View style={{width: width, height: height}}>
+            <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
                 <NavigationView
                     title="还款"
                     backIconClick={this.backPage}

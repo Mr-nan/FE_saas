@@ -82,7 +82,9 @@ export default class HomeScene extends BaseComponet {
             page: page,
             rows: 6
         };
-        request(Urls.HOME, 'Post', maps)
+        request(Urls.HOME, 'Post', maps,()=>{
+            this.props.backToLogin()
+        })
             .then((response) => {
                     allList.push(...response.mjson.data.carList.list);
                     StorageUtil.mGetItem(storageKeyNames.USER_INFO, (data) => {
