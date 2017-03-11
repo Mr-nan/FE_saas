@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
         borderWidth:StyleSheet.hairlineWidth,
         alignItems:'center',
         justifyContent:'center',
-        borderRadius:Pixel.getPixel(2),
+        borderRadius:2,
         overflow:'hidden',
         marginRight:Pixel.getPixel(15),
 

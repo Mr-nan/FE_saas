@@ -117,7 +117,7 @@ export default class CarInfoScene extends BaseComponent {
             carData.carIconsContentData=[
                 carData.manufacture!=''? this.dateReversal(carData.manufacture+'000'):'',
                 carData.init_reg!=''? this.dateReversal(carData.init_reg+'000'):'',
-                this.carMoneyChange(carData.mileage)+'万公里',
+                carData.mileage>0?this.carMoneyChange(carData.mileage)+'万公里':'',
                 carData.transfer_times+'次',
                 carData.nature_str,
                 carData.car_color.split("|")[0]+'/'+carData.trim_color.split("|")[0],
