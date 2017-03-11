@@ -204,13 +204,17 @@ export default class BrowsingHistoryScene extends BaceComponent {
 
     _navigatorRightView = () => {
         return (
-            <TouchableOpacity activeOpacity={0.8} onPress={()=>{
+            <TouchableOpacity  activeOpacity={0.8} onPress={()=>{
             this.deleteAllCliiection();
         }}>
-                <Text style={{color: 'white',
-                fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                textAlign: 'center',
-                backgroundColor: 'transparent',}}>清空历史</Text>
+                <View style={{paddingVertical:3, paddingHorizontal:5,backgroundColor:'transparent',borderWidth:StyleSheet.hairlineWidth,borderColor:'white',borderRadius:3}}>
+                <Text style={{
+                    color: 'white',
+                    fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                    textAlign: 'center',
+                    backgroundColor: 'transparent',
+                }}>清空历史</Text>
+                </View>
             </TouchableOpacity>
         );
     }
