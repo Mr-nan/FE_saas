@@ -55,7 +55,11 @@ const request = (url, method, params) => {
                         if (responseData.code == 1) {
                             resolve({mjson: responseData, mycode: 1});
                         } else {
-                            reject({mycode: responseData.code, mjson: responseData});
+                            if(responseData.code==7040011){
+
+                            }else{
+                                reject({mycode: responseData.code, mjson: responseData});
+                            }
                         }
                     }else{
                         console.log("error----------" + JSON.stringify(responseData));
