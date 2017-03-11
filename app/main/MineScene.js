@@ -155,7 +155,12 @@ export default class MineSectionListView extends BaseComponent {
 
                     }
                 } else {
-                    user_list.push( Car[3], Car[4]);
+                    if(datas.audit_status=='2'){
+                        user_list.push( Car[2], Car[3], Car[4]);
+                    }else{
+                        user_list.push( Car[3], Car[4]);
+                    }
+
                 }
                 let jsonData = user_list;
 
