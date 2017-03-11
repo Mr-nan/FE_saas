@@ -108,7 +108,6 @@ export default class CarInfoScene extends BaseComponent {
 
         let url = AppUrls.CAR_DETAIL;
         request(url, 'post', {
-
             id: this.props.carID,
 
         }).then((response) => {
@@ -117,7 +116,7 @@ export default class CarInfoScene extends BaseComponent {
             carData.carIconsContentData=[
                 carData.manufacture!=''? this.dateReversal(carData.manufacture+'000'):'',
                 carData.init_reg!=''? this.dateReversal(carData.init_reg+'000'):'',
-                this.carMoneyChange(carData.mileage)+'万公里',
+                carData.mileage>0?this.carMoneyChange(carData.mileage)+'万公里':'',
                 carData.transfer_times+'次',
                 carData.nature_str,
                 carData.car_color.split("|")[0]+'/'+carData.trim_color.split("|")[0],
@@ -199,7 +198,6 @@ export default class CarInfoScene extends BaseComponent {
 
         }).then((response) => {
 
-            console.log(response);
             if(response.mycode==1){
 
                 isStoreClick(true);
@@ -227,7 +225,6 @@ export default class CarInfoScene extends BaseComponent {
 
         }).then((response) => {
 
-            console.log(response);
             if(response.mycode==1){
 
                 isStoreClick(false);
@@ -266,7 +263,7 @@ export default class CarInfoScene extends BaseComponent {
     renderImagePage=(data,pageID)=>{
 
         return(
-            <TouchableOpacity onPress={()=>{this.showPhotoView()}}>
+            <TouchableOpacity onPress={()=>{this.showPhotoView()}} activeOpacity={1}>
                 <Image source={typeof data.url =='undefined'?data.require:{uri:data.url+'?x-oss-process=image/resize,w_'+Math.ceil(ScreenWidth)+',h_'+250}} style={styles.carImage}/>
             </TouchableOpacity>
 
@@ -279,7 +276,6 @@ export default class CarInfoScene extends BaseComponent {
         let newCarMoney = parseFloat(carMoney);
         let carMoneyStr = newCarMoney.toFixed(2);
         let moneyArray = carMoneyStr.split(".");
-        console.log(carMoney);
 
         if(moneyArray.length>1)
         {
@@ -345,7 +341,7 @@ export default class CarInfoScene extends BaseComponent {
                         }}/>
                     <View style={styles.contentContainer}>
                         <View style={styles.contentView}>
-                            <Text style={styles.titleText}>{carData.model_name+carData.series_name}</Text>
+                            <Text style={styles.titleText}>{carData.model_name}</Text>
                             {
                                 carData.dealer_price>0 &&
                                 <View style={styles.titleFootView}>
@@ -357,8 +353,13 @@ export default class CarInfoScene extends BaseComponent {
                                 <Text style={styles.priceText}>{carData.dealer_price>0?(this.carMoneyChange(carData.dealer_price) +'万'):''}</Text>
                                 </View>
                             }
-
                         </View>
+                        {
+                            (carData.lowest_pay_price>0||carData.lowest_pay_ratio>0) &&
+                            <View style={styles.preferentialView}>
+                                <Text style={styles.preferentialText}>第1车贷合作商户，首付{carData.lowest_pay_price>0?(this.carMoneyChange(carData.lowest_pay_price)+'万'):(carData.lowest_pay_ratio+'%')}即可提车</Text>
+                            </View>
+                        }
                     </View>
                     {
                         ((typeof(carData.labels)!= "undefined"?(carData.labels.length<=0?false:true):false)|| carData.describe!=='' || carData.city_name!=='' || carData.plate_number!=='') && (
@@ -367,14 +368,14 @@ export default class CarInfoScene extends BaseComponent {
                                     {
                                         (typeof(carData.labels)!= "undefined"?(carData.labels.length<=0?false:true):false) &&
                                         (
-                                            <View style={styles.carParameterView}>
+                                            <View style={[styles.carParameterView]}>
                                                 {
                                                     carData.labels.map((data, index) => {
                                                         return (
                                                             <View
                                                                 style={[styles.carParameterItem, {backgroundColor: carParameterViewColor[index % 3]}]}
                                                                 key={index}>
-                                                                <Text style={[styles.carParameterText, {color: carParameterTextColor[index % 3]}]}>{data.name}</Text>
+                                                                <Text style={[styles.carParameterText, {color: carParameterTextColor[index % 3]}]}> {data.name} </Text>
                                                             </View>)
                                                     })
                                                 }
@@ -492,10 +493,8 @@ class  SharedView extends Component{
 
     componentDidMount() {
 
-          if(weChat.registerApp=='')
-          {
-              weChat.registerApp('wx69699ad69f370cfc');
-          }
+          // weChat.registerApp('wx69699ad69f370cfc');
+
     }
 
     // 分享好友
@@ -504,7 +503,6 @@ class  SharedView extends Component{
             .then((isInstalled)=>{
             if(isInstalled){
 
-                console.log(carData);
                 let imageResource = require('../../images/carSourceImages/car_info_null.png');
                 let carContent = '';
 
@@ -529,12 +527,11 @@ class  SharedView extends Component{
                     thumbImage:carImage,
 
                 }).catch((error)=>{
-                    console.log(error.message);
                 })
             }else {
-                console.log('没有安装微信软件');
+                this.isVisible(false);
             }
-            });
+        });
     }
 
     // 分享朋友圈
@@ -564,10 +561,9 @@ class  SharedView extends Component{
                         thumbImage:carImage,
 
                     }).catch((error)=>{
-                        console.log(error.message);
                     })
                 }else {
-                    console.log('没有安装微信软件');
+                    this.isVisible(false);
                 }
             });
     }
@@ -608,8 +604,6 @@ class  SharedView extends Component{
 
 class PhotoView extends Component{
 
-
-
     // 构造
       constructor(props) {
         super(props);
@@ -619,7 +613,6 @@ class PhotoView extends Component{
             isVisible:false,
         };
       }
-
       show=(imageArray,index)=>{
 
           if(!this.state.isVisible){
@@ -630,7 +623,6 @@ class PhotoView extends Component{
               });
           }
       }
-
       hide=()=>{
 
           if(this.state.isVisible){
@@ -638,7 +630,6 @@ class PhotoView extends Component{
                   isVisible:false,
               });
           }
-
       }
 
     render(){
@@ -654,7 +645,7 @@ class PhotoView extends Component{
                     style={{flex: 1, backgroundColor: 'rgba(1,1,1,0.5)'}}
                     images={imageArray}
                     initialPage={index-1}
-                    onSingleTapConfirmed={() => {
+                    onSingleTapConfirmed={()=>{
                         this.hide();
                     }}
                 />
@@ -753,6 +744,21 @@ const styles = StyleSheet.create({
 
 
     },
+    preferentialView:{
+        backgroundColor:'#fff8ea',
+        paddingVertical:5,
+        width:ScreenWidth-30,
+        marginLeft:15,
+        marginRight:15,
+        marginBottom:10,
+        borderColor:"#fedc93",
+        borderWidth:StyleSheet.hairlineWidth,
+    },
+    preferentialText:{
+        color:fontAndColor.COLORB2,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+        marginLeft:10
+    },
     subText: {
 
         color: fontAndColor.COLORB0,
@@ -806,7 +812,8 @@ const styles = StyleSheet.create({
         borderRadius: 3,
         justifyContent: 'center',
         alignItems: 'center',
-        flexDirection:'row'
+        flexDirection:'row',
+        paddingVertical:Pixel.getPixel(5)
     },
     carParameterText: {
         fontSize:Pixel.getFontPixel(fontAndColor.MARKFONT),
@@ -901,7 +908,7 @@ const styles = StyleSheet.create({
     },
     callText: {
         color: 'white',
-        fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT),
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
     },
     PhotonContaier:{
 

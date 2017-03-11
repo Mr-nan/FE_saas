@@ -21,7 +21,7 @@ const request = (url, method, params) => {
             if (data.code === 1) {
                 token = data.result;
             }
-            console.log('token===' + token);
+            // console.log('token===' + token);
             let device_code = '';
 
             if (Platform.OS === 'android') {
@@ -39,28 +39,28 @@ const request = (url, method, params) => {
                     } else {
                         isOk = false;
                     }
-                    console.log(response);
+                    // console.log(response);
                     return response.json();
                 })
                 .then((responseData) => {
                     if (isOk) {
                         for (let key of Object.keys(params)) {
-                            console.log(key+"===" + params[key]);
+                            // console.log(key+"===" + params[key]);
                         }
                         // console.log('------'+url + '?token=' + token + '&device_code=' + device_code);
-                        console.log("success----------" + JSON.stringify(responseData));
+                        // console.log("success----------" + JSON.stringify(responseData));
                         if (responseData.code == 1) {
                             resolve({mjson: responseData, mycode: 1});
                         } else {
                             reject({mycode: responseData.code, mjson: responseData});
                         }
                         // } else {
-                        console.log("error----------" + JSON.stringify(responseData));
+                        // console.log("error----------" + JSON.stringify(responseData));
                         reject({mycode: -300});
                     }
                 })
                 .catch((error) => {
-                    console.log("error----------error" + error);
+                    // console.log("error----------error" + error);
                     reject({mycode: -500, error: error});
                 });
         })

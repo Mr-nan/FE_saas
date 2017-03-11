@@ -27,7 +27,6 @@ const SQLite = new SQLiteUtil();
 export default class AutoDate extends Component{
 
     constructor(props){
-        console.log('================>>>>>>>>>>constructor');
         super(props);
         this.type = '';
         let manufacture = this.props.carData.manufacture;

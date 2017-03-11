@@ -46,7 +46,6 @@ export default class NoneSineScene extends BaseComponent {
         };        request(Urls.FINANCE, 'Post', maps)
 
             .then((response) => {
-                    console.log(response.mjson);
                     if (page == 1 && response.mjson.data.contract_list.length <= 0) {
                         this.setState({renderPlaceholderOnly: 'null'});
                     } else {
@@ -144,7 +143,6 @@ export default class NoneSineScene extends BaseComponent {
                 <TouchableOpacity
                     style={styles.buttonStyle}
                     onPress={() => {
-                        console.log(rowID + "--" + selectionID)
                         this.toNextPage({
                             name: 'ContractSignScene',
                             component: ContractSignScene,

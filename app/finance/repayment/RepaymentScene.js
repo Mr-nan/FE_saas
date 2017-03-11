@@ -24,7 +24,7 @@ import SingleRepaymentPage from '../page/SingleRepaymentPage';
 import NavigationView from '../../component/AllNavigationView';
 import * as fontAndColor from '../../constant/fontAndColor';
 import PlanListScene from './PlanListScene';
-import RepaymentInfoScene from '../repayment/NewRepaymentInfoScene';
+import RepaymentInfoScene from '../repayment/RepaymentInfoScene';
 import InventoryPlanInfoScene from '../repayment/InventoryPlanInfoScene';
 
 export  default class RepaymentScene extends BaseComponent {
@@ -79,7 +79,7 @@ export  default class RepaymentScene extends BaseComponent {
 
     _renderPlaceholderView() {
         return (
-            <View style={{width: width, height: height}}>
+            <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
                 <NavigationView
                     title="还款"
                     backIconClick={this.backPage}

@@ -315,10 +315,10 @@ export  default  class SingDetaileSence extends BaseComponent {
                         this.props.showModal(false);
                         if(error.mycode!= -300||error.mycode!= -500){
 
-                            this.props.showToast('服务器连接有问题')
+                            this.props.showToast(error.mjson.msg);
                         }else {
 
-                            this.props.showToast(error.mjson.msg);
+                            this.props.showToast('服务器连接有问题')
                         }
 
 
@@ -441,11 +441,15 @@ export  default  class SingDetaileSence extends BaseComponent {
                                  confimClick={this.modifyLengNum}
                                  cancleClick={(callback)=>{callback(false)}}/>
 
-                <LendSuccessAlert ref={(lend)=>{this.change=lend}} confimClick={()=>{this.backPage()}} title='修改成功'
+                <LendSuccessAlert ref={(lend)=>{this.change=lend}} confimClick={()=>{
+                    this.props.backRefresh();
+                    this.backPage()}} title='修改成功'
                                   subtitle='恭喜您修改借款成功'/>
                 <ModalAlert title='取消借款' subtitle="您确定要取消借款吗" ref={(cancle)=>{this.canleAlert=cancle}}
                             confimClick={this.cancleLoad} cancleClick={(setmodilVis)=>{setmodilVis(false)}}/>
-                <LendSuccessAlert ref={(canleS)=>{this.successCancle=canleS}} confimClick={()=>{this.backPage()}}
+                <LendSuccessAlert ref={(canleS)=>{this.successCancle=canleS}} confimClick={()=>{
+                    this.props.backRefresh();
+                    this.backPage()}}
                                   title='取消成功' subtitle='取消借款成功'/>
                 <AllNavigationView
                     title="借款详情"

@@ -225,7 +225,6 @@ class MyCarSourceUpperFrameView extends BaceComponent {
 
         }).then((response) => {
 
-            console.log(response.mjson);
             carUpperFrameData=response.mjson.data.list;
             carUpperFrameStatus = response.mjson.data.status;
             if (carUpperFrameData.length) {
@@ -247,7 +246,6 @@ class MyCarSourceUpperFrameView extends BaceComponent {
 
         }, (error) => {
 
-            console.log(error);
             this.setState({
                 isRefreshing: false,
                 renderPlaceholderOnly: 'error',
@@ -268,7 +266,6 @@ class MyCarSourceUpperFrameView extends BaceComponent {
             row: 10,
 
         }).then((response) => {
-            console.log(response.mjson.data);
             carUpperFrameStatus = response.mjson.data.status;
             let carData = response.mjson.data.list;
             if (carData.length) {
@@ -289,7 +286,6 @@ class MyCarSourceUpperFrameView extends BaceComponent {
 
         }, (error) => {
 
-            console.log(error);
 
         });
     }
@@ -299,7 +295,6 @@ class MyCarSourceUpperFrameView extends BaceComponent {
 
         if (carUpperFrameData.length && !this.state.isRefreshing && carUpperFrameStatus != 2) {
             this.loadMoreData();
-            console.log('-----------');
         }
 
     };
@@ -403,7 +398,6 @@ class MyCarSourceDropFrameView extends BaceComponent {
 
         }).then((response) => {
 
-            console.log(response.mjson.data);
             carDropFrameData = response.mjson.data.list;
             carDropFrameStatus = response.mjson.data.status;
             if (carDropFrameData.length) {
@@ -427,7 +421,6 @@ class MyCarSourceDropFrameView extends BaceComponent {
 
         }, (error) => {
 
-            console.log(error);
             this.setState({
                 isRefreshing: false,
                 renderPlaceholderOnly: 'error',
@@ -448,7 +441,6 @@ class MyCarSourceDropFrameView extends BaceComponent {
 
         }).then((response) => {
 
-            console.log(response.mjson.data);
             carDropFrameStatus = response.mjson.data.status;
             let carData = response.mjson.data.list;
             if (carData.length) {
@@ -470,7 +462,6 @@ class MyCarSourceDropFrameView extends BaceComponent {
 
         }, (error) => {
 
-            console.log(error);
 
         });
     }
@@ -582,7 +573,6 @@ class MyCarSourceAuditView extends BaceComponent {
 
         }).then((response) => {
 
-            console.log(response.mjson.data);
             carAuditData = response.mjson.data.list;
             carAuditStatus = response.mjson.data.status;
             if (carAuditData.length) {
@@ -605,7 +595,6 @@ class MyCarSourceAuditView extends BaceComponent {
 
         }, (error) => {
 
-            console.log(error);
             this.setState({
                 isRefreshing: false,
                 renderPlaceholderOnly: 'error'
@@ -625,7 +614,6 @@ class MyCarSourceAuditView extends BaceComponent {
 
         }).then((response) => {
 
-            console.log(response.mjson.data);
             carAuditStatus = response.mjson.data.status;
             let carData = response.mjson.data.list;
             if (carData.length) {
@@ -646,7 +634,6 @@ class MyCarSourceAuditView extends BaceComponent {
 
         }, (error) => {
 
-            console.log(error);
 
         });
     }
@@ -725,7 +712,7 @@ const styles = StyleSheet.create({
     loadView: {
         flex: 1,
         backgroundColor: 'white',
-        marginTop: 5,
+        marginTop: Pixel.getPixel(5),
     },
     viewContainer: {
         flex: 1,
@@ -734,7 +721,7 @@ const styles = StyleSheet.create({
     listView: {
 
         backgroundColor: fontAndColor.COLORA3,
-        marginTop: 5
+        marginTop: Pixel.getPixel(5),
     }
 
 })

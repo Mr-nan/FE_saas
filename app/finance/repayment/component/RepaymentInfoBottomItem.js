@@ -32,7 +32,6 @@ export  default class RepaymentInfoBottomItem extends PureComponent {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps);
         this.setState({
             formulaStr: nextProps.formulaStr,
             allMoney: nextProps.allMoney,

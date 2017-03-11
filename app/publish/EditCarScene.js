@@ -57,7 +57,6 @@ export default class EditCarScene extends BaseComponent {
                             carType:carType
                         });
                     } else {
-                        console.log(data.error);
                     }
                 });
         }
@@ -117,7 +116,6 @@ export default class EditCarScene extends BaseComponent {
                                                         carType:carType
                                                     });
                                                 } else {
-                                                    console.log(data.error);
                                                 }
                                             });
                                     } else {
@@ -129,13 +127,11 @@ export default class EditCarScene extends BaseComponent {
                                         });
                                     }
                                 } else {
-                                    console.log(data.error);
                                 }
                             });
                     }
                 },
                 (error) => {
-                    console.log(error);
                 }
             );
         }

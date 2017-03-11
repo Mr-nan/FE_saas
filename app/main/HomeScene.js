@@ -82,15 +82,16 @@ export default class HomeScene extends BaseComponet {
             page: page,
             rows: 6
         };
-        request(Urls.HOME, 'Post', maps)
+        request(Urls.HOME, 'Post', maps,()=>{
+            this.props.backToLogin()
+        })
             .then((response) => {
                     allList.push(...response.mjson.data.carList.list);
                     StorageUtil.mGetItem(storageKeyNames.USER_INFO, (data) => {
                         if (data.code == 1) {
                             let datas = JSON.parse(data.result);
-                            console.log(datas);
                             if (datas.user_level == 2) {
-                                if (datas.enterprise_list[0].role_type == '1') {
+                                if (datas.enterprise_list[0].role_type == '1'||datas.enterprise_list[0].role_type == '6') {
                                 } else if (datas.enterprise_list[0].role_type == '2') {
                                     bossFuncArray.splice(0, 2);
                                 } else {
@@ -357,7 +358,7 @@ export default class HomeScene extends BaseComponet {
                 <View
                     style={{width: Pixel.getPixel(166), backgroundColor: '#ffffff', justifyContent: 'center'}}>
                     <Image style={cellSheet.imageStyle}
-                           source={movie.img ? {uri: movie.img + '?x-oss-process=image/resize,w_' + 166 + ',h_' + 111} : require('../../images/carSourceImages/car_null_img.png')}/>
+                           source={movie.img ? {uri: movie.img + '?x-oss-process=image/resize,w_' + 206 + ',h_' + 151} : require('../../images/carSourceImages/car_null_img.png')}/>
 
                     <Text style={cellSheet.despritonStyle}
                           numberOfLines={2}>{DIDIAN + movie.model_name}</Text>

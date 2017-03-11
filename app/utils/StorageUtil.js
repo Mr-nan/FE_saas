@@ -10,10 +10,10 @@ export default class StorageUtil {
         AsyncStorage.setItem(keyName, keyValue, function (errs) {
             //TODO:错误处理
             if (errs) {
-                console.log('存储错误');
+                // console.log('存储错误');
             }
             if (!errs) {
-                console.log('存储无误');
+                // console.log('存储无误');
             }
         });
     }
@@ -33,7 +33,7 @@ export default class StorageUtil {
     static  mRemoveItem(keyName) {
         AsyncStorage.removeItem(keyName, function (errs) {
             if (!errs) {
-                console.log('移除成功');
+                // console.log('移除成功');
             }
         });
     }

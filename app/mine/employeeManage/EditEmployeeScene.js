@@ -61,7 +61,6 @@ export default class EditEmployeeScene extends BaseComponent {
 
             }).then((response) => {
                 this.props.showModal(false);
-                console.log(response);
                 if (response.mjson.code == '1') {
 
                     this.props.showToast("提交成功");
@@ -78,20 +77,17 @@ export default class EditEmployeeScene extends BaseComponent {
                 this.isClick=true;
                 this.props.showModal(false);
                 this.props.showToast(error.mjson.msg);
-                console.log(error);
 
             });
 
     }
     loadData = () => {
-        console.log(Car[0]);
         let url = AppUrls.BASEURL + 'v1/user.employee/view';
         request(url, 'post', {
             staff_id : this.props.id,
 
         }).then((response) => {
 
-            console.log(response);
             if (response.mjson.code == '1') {
                 this.roleId=response.mjson.data.company.role_id;
                 this.sex =response.mjson.data.base.sex;
@@ -102,7 +98,6 @@ export default class EditEmployeeScene extends BaseComponent {
 
         }, (error) => {
 
-            console.log(error);
 
         });
 
@@ -114,7 +109,6 @@ export default class EditEmployeeScene extends BaseComponent {
 
         }).then((response) => {
 
-            console.log(response);
             if (response.mjson.code == '1') {
                 this.props.showToast("注销成功");
                 if (this.props.callBack) {
@@ -127,7 +121,6 @@ export default class EditEmployeeScene extends BaseComponent {
 
         }, (error) => {
 
-            console.log(error);
 
         });
 
@@ -202,14 +195,12 @@ export default class EditEmployeeScene extends BaseComponent {
 
         StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST, (data) => {
             if (data.code == 1 && data.result != null) {
-                console.log(data.result);
                 this.comps = JSON.parse(data.result);
                 for(let value of JSON.parse(data.result) ){
                     this.companys.push(value.enterprise_name);
                     this.company_ids.push(value.enterprise_uid);
                 }
             }
-            console.log(this.companys+'---'+this.company_ids)
         })
         // 初始状态
         //    拿到所有的json数据
@@ -406,7 +397,6 @@ export default class EditEmployeeScene extends BaseComponent {
                 Car[SECTIONID].cars[ROWID].name =this.companyName;
             }
         }
-        console.log(this.items+'--');
         let jsonData = Car;
 
         //    定义变量
@@ -462,7 +452,13 @@ export default class EditEmployeeScene extends BaseComponent {
             this.sex=Number.parseInt(rowID)+1+'';
         }else if (SECTIONID ===1&& ROWID ===1){
 
-            this.roleId= Number.parseInt(rowID)+1+'';
+            for(let value of this.props.roleData){
+
+                if(value.role_name==this.props.roleList[rowID]){
+
+                    this.roleId = value.role_id;
+                }
+            }
         }
         Car[SECTIONID].cars[ROWID].name = this.currentData[rowID];
 
