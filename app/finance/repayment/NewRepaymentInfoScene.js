@@ -50,7 +50,15 @@ export  default class NewRepaymentInfoScene extends BaseComponent {
                     renderTabBar={() => <RepaymenyTabBar tabName={["还款详情", "还款计划"]}/>}
                 >
                     <RepaymentInfoPage loan_id={this.props.loan_id} loan_number={this.props.loan_number}  tabLabel="ios-paper"/>
-                    <PlanInfoScene  loan_id={this.props.loan_id} loan_number={this.props.loan_number} tabLabel="ios-paper1"></PlanInfoScene>
+                    <PlanInfoScene callBack={(params)=>{
+                        this.toNextPage(params)
+                    }} showToast={(content)=>{
+                        this.props.showToast(content)
+                    }} showModal={(value)=>{
+                        this.props.showModal(value);
+                    }}  loan_id={this.props.loan_id}
+                                    loan_number={this.props.loan_number}
+                                    tabLabel="ios-paper1"></PlanInfoScene>
                 </ScrollableTabView>
                 <NavigationView
                     title="还款详情"
@@ -63,7 +71,7 @@ export  default class NewRepaymentInfoScene extends BaseComponent {
 
     _renderPlaceholderView() {
         return (
-            <View style={{width: width, height: height}}>
+            <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
                 <NavigationView
                     title="还款详情"
                     backIconClick={this.backPage}
