@@ -45,7 +45,6 @@ export  default class PurchasePickerChildItem extends PureComponent {
                 </View>
             );
         }
-        console.log(this.props.imgUrl.url);
         return (
             <View style={styles.parentView}>
                 <TouchableOpacity activeOpacity={0.8}

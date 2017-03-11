@@ -123,7 +123,6 @@ export default class FinanceSence extends BaseComponet {
         })
             .then((response) => {
                     mnyData = response.mjson.data;
-                    console.log(mnyData.credit_maxloanmny);
                     that.setState({
                         allData: {
                             keyongedu: mnyData.credit_maxloanmny / 10000,

@@ -90,7 +90,6 @@ export default class HomeScene extends BaseComponet {
                     StorageUtil.mGetItem(storageKeyNames.USER_INFO, (data) => {
                         if (data.code == 1) {
                             let datas = JSON.parse(data.result);
-                            console.log(datas);
                             if (datas.user_level == 2) {
                                 if (datas.enterprise_list[0].role_type == '1'||datas.enterprise_list[0].role_type == '6') {
                                 } else if (datas.enterprise_list[0].role_type == '2') {

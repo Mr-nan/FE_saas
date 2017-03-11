@@ -50,8 +50,6 @@ export default class CollectionIntent extends BaseComponent {
                 }
             }
 
-            console.log(yearArr.toString());
-            console.log(mileArr.toString());
             let url = AppUrls.BASEURL + 'v1/receiveIntention/save';
             request(url, 'post', {
 
@@ -61,7 +59,6 @@ export default class CollectionIntent extends BaseComponent {
 
             }).then((response) => {
 
-                console.log(response);
                 if (response.mjson.code == '1') {
 
                     this.props.showToast("提交成功");
@@ -70,7 +67,6 @@ export default class CollectionIntent extends BaseComponent {
 
             }, (error) => {
 
-                console.log(error);
 
             });
 
@@ -81,7 +77,6 @@ export default class CollectionIntent extends BaseComponent {
         let url = AppUrls.BASEURL + 'v1/receiveIntention/index';
         request(url, 'post', {}).then((response) => {
 
-            console.log(response);
             if (response.mjson.data == null) {
                 this.setState({renderPlaceholderOnly: 'null'});
             } else {
@@ -100,7 +95,6 @@ export default class CollectionIntent extends BaseComponent {
 
         }, (error) => {
             this.setState({renderPlaceholderOnly: 'error'});
-            console.log(error);
 
         });
 
@@ -109,7 +103,6 @@ export default class CollectionIntent extends BaseComponent {
     getSelectedItems(arrs, items, params) {
         if (items.length > 0) {
             for (let item of items) {
-                console.log(item);
                 if (arrs == this.state.arr) {// 车系
 
                     params.push(item.value);
@@ -132,7 +125,6 @@ export default class CollectionIntent extends BaseComponent {
             }
 
         }
-        console.log(params);
     }
 
     constructor(props) {
@@ -204,7 +196,6 @@ export default class CollectionIntent extends BaseComponent {
     //  选择车型
     checkedCarClick = (carObject) => {
 // {brand_id: 2, series_id: 2446, series_name: "拉共达Taraf", model_id: 29702, model_name: "2015款 拉共达Taraf 6.0L 标准型"}
-        console.log(carObject);
 
         for (let i = 0; i < this.brandSeriesArr.length; i++) {
             if ((this.brandSeriesArr[i].split('|', 1)) == (carObject.brand_id)) {
@@ -268,18 +259,15 @@ export default class CollectionIntent extends BaseComponent {
 
     countItem(item, array) {//获取车龄区间或里程区间选中的个数
         let index = array.findIndex(a => a === item);
-        console.log(item.isSelected + '---' + index);
         if (array === this.state.arr1) {
             if (item.isSelected) {
                 if (this.carYearArr.has(index+'')) {
-                    console.log('----');
                     this.carYearArr.delete(index+'')
                 }
             } else {
                 this.carYearArr.set(index, index + '|' + array[index].value);
 
             }
-            console.log(this.carYearArr);
         } else if (array === this.state.arr2) {
             if (item.isSelected) {
                 if (this.mileageArr.has(index+'')) {
@@ -288,7 +276,6 @@ export default class CollectionIntent extends BaseComponent {
             } else {
                 this.mileageArr.set(index, index + '|' + array[index].value);
             }
-            console.log(this.mileageArr);
         }
         array[index].isSelected = !array[index].isSelected;
     }

@@ -68,7 +68,6 @@ export  default  class carSourceListScene extends BaseComponent {
     constructor(props) {
         super(props);
         // 初始状态
-        console.log(this.props.openBeanch);
         const carSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
 
         this.state = {
@@ -213,7 +212,6 @@ export  default  class carSourceListScene extends BaseComponent {
                 for (let i = 0; i < data.length; i++) {
                     carData.push(data[i]);
                 }
-                console.log(carData.length);
 
                 this.setState({
                     dataSource: this.state.dataSource.cloneWithRows(carData),

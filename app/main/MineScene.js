@@ -138,7 +138,6 @@ export default class MineSectionListView extends BaseComponent {
             if (data.code == 1) {
                 let user_list = [];
                 let datas = JSON.parse(data.result);
-                console.log(data.result);
                 if (datas.user_level == 2) {
                     if (datas.enterprise_list[0].role_type == '1'||datas.enterprise_list[0].role_type == '6') {
                         user_list.push(...Car);
@@ -255,7 +254,6 @@ export default class MineSectionListView extends BaseComponent {
     }
 
     _navigator(rowData) {
-        console.log(rowData.name);
         switch (rowData.name) {
             case '账户管理':
                 this.navigatorParams.name = 'AccountManageScene'

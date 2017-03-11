@@ -22,58 +22,58 @@ import LoginGesture from '../login/LoginGesture';
 
 export default class RootScene extends BaseComponent {
     initFinish = () => {
-        // StorageUtil.mSetItem(KeyNames.NEED_GESTURE, 'true');
-        // let that = this;
-        // setTimeout(
-        //     () => {
-        //         StorageUtil.mGetItem(KeyNames.FIRST_INTO, (res) => {
-        //             if (res.result == null) {
-        //                 that.navigatorParams.component = WelcomScene;
-        //                 that.toNextPage(that.navigatorParams);
-        //             } else {
-        //
-        //                 StorageUtil.mGetItem(KeyNames.ISLOGIN, (res) => {
-        //                     if (res.result !== StorageUtil.ERRORCODE) {
-        //                         if (res.result == null) {
-        //                             that.navigatorParams.component = LoginAndRegister;
-        //                             that.toNextPage(that.navigatorParams);
-        //                         } else {
-        //                             if (res.result == "true") {
-        //
-        //                                 StorageUtil.mGetItem(KeyNames.USER_INFO, (data) => {
-        //                                     let datas = JSON.parse(data.result);
-        //                                     if (datas.user_level == 2) {
-        //                                         if (datas.enterprise_list == null || datas.enterprise_list.length <= 0) {
-        //                                             that.navigatorParams.component = LoginAndRegister;
-        //                                             that.toNextPage(that.navigatorParams);
-        //                                         } else {
-        //                                             if (datas.enterprise_list[0].role_type == '2') {
-        //                                                 that.navigatorParams.component = LoginGesture;
-        //                                                 that.navigatorParams.params = {from: 'RootScene'}
-        //                                                 that.toNextPage(that.navigatorParams);
-        //                                             } else {
-        //                                                 that.navigatorParams.component = MainPage;
-        //                                                 that.navigatorParams.params = {}
-        //                                                 that.toNextPage(that.navigatorParams);
-        //                                             }
-        //                                         }
-        //                                     } else {
-        //                                         that.navigatorParams.component = MainPage;
-        //                                         that.navigatorParams.params = {}
-        //                                         that.toNextPage(that.navigatorParams);
-        //                                     }
-        //                                 });
-        //                             } else {
-        //                                 that.navigatorParams.component = LoginAndRegister;
-        //                                 that.toNextPage(that.navigatorParams);
-        //                             }
-        //                         }
-        //                     }
-        //                 });
-        //             }
-        //         });
-        //     }, 500
-        // );
+        StorageUtil.mSetItem(KeyNames.NEED_GESTURE, 'true');
+        let that = this;
+        setTimeout(
+            () => {
+                StorageUtil.mGetItem(KeyNames.FIRST_INTO, (res) => {
+                    if (res.result == null) {
+                        that.navigatorParams.component = WelcomScene;
+                        that.toNextPage(that.navigatorParams);
+                    } else {
+
+                        StorageUtil.mGetItem(KeyNames.ISLOGIN, (res) => {
+                            if (res.result !== StorageUtil.ERRORCODE) {
+                                if (res.result == null) {
+                                    that.navigatorParams.component = LoginAndRegister;
+                                    that.toNextPage(that.navigatorParams);
+                                } else {
+                                    if (res.result == "true") {
+
+                                        StorageUtil.mGetItem(KeyNames.USER_INFO, (data) => {
+                                            let datas = JSON.parse(data.result);
+                                            if (datas.user_level == 2) {
+                                                if (datas.enterprise_list == null || datas.enterprise_list.length <= 0) {
+                                                    that.navigatorParams.component = LoginAndRegister;
+                                                    that.toNextPage(that.navigatorParams);
+                                                } else {
+                                                    if (datas.enterprise_list[0].role_type == '2') {
+                                                        that.navigatorParams.component = LoginGesture;
+                                                        that.navigatorParams.params = {from: 'RootScene'}
+                                                        that.toNextPage(that.navigatorParams);
+                                                    } else {
+                                                        that.navigatorParams.component = MainPage;
+                                                        that.navigatorParams.params = {}
+                                                        that.toNextPage(that.navigatorParams);
+                                                    }
+                                                }
+                                            } else {
+                                                that.navigatorParams.component = MainPage;
+                                                that.navigatorParams.params = {}
+                                                that.toNextPage(that.navigatorParams);
+                                            }
+                                        });
+                                    } else {
+                                        that.navigatorParams.component = LoginAndRegister;
+                                        that.toNextPage(that.navigatorParams);
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+            }, 500
+        );
     }
 
     onPress = () => {
@@ -105,8 +105,7 @@ export default class RootScene extends BaseComponent {
 
     render() {
         return (
-            <Image style={{flex:1,resizeMode:'stretch'}} source={require('../../images/splash.png')}></Image>
-
+            <View></View>
         );
     }
 }
@@ -116,7 +115,8 @@ const styles = StyleSheet.create({
         flex: 1
     },
     childStyle: {
-        flex:1
+        width: width,
+        height: height
     },
 });
 

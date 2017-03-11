@@ -43,9 +43,7 @@ export default class AddEmployeeScene extends BaseComponent {
                 this.company_idss.push(this.company_ids[value]);
             }
         }
-        console.log(this.company_idss);
         let url = AppUrls.BASEURL + 'v1/user.employee/save';
-        console.log(Car[2].cars[0].name + "-" + Car[2].cars[1].name + '-' + Car[2].cars[2].name + '-' + this.roleId + "----" + Car[0].cars[0].name);
         request(url, 'post', {
             account: Car[2].cars[0].name,
             company_ids: this.company_idss.toString(),
@@ -57,7 +55,6 @@ export default class AddEmployeeScene extends BaseComponent {
 
         }).then((response) => {
             this.props.showModal(false);
-            console.log(response);
             if (response.mjson.code == '1') {
                 this.props.showToast("提交成功");
                 if (this.props.callBack) {
@@ -73,7 +70,6 @@ export default class AddEmployeeScene extends BaseComponent {
             this.props.showModal(false);
             this.isClick = true;
             this.props.showToast(error.mjson.msg);
-            console.log(error);
 
         });
 
@@ -139,7 +135,6 @@ export default class AddEmployeeScene extends BaseComponent {
 
         StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST, (data) => {
             if (data.code == 1 && data.result != null) {
-                console.log(data.result);
                 this.comps = JSON.parse(data.result);
                 for (let value of JSON.parse(data.result)) {
                     this.companys.push(value.enterprise_name);
@@ -322,7 +317,6 @@ export default class AddEmployeeScene extends BaseComponent {
                 this.items = itemIds;
             }
         }
-        console.log(this.items + '--');
         let jsonData = Car;
 
         //    定义变量
