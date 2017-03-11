@@ -85,7 +85,7 @@ export default class LoginFailPwd extends BaseComponent {
                 <View style={{width: width, height: Pixel.getPixel(10)} }/>
                 <LoginInputText
                     ref="password"
-                    textPlaceholder={'请设置BMS登录密码'}
+                    textPlaceholder={'请设置登录密码'}
                     rightIcon={false}
                     leftIcon={true}
                     clearValue={true}
