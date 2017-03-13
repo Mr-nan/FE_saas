@@ -54,7 +54,7 @@ export default class AccountInfoScene extends BaseComponent {
         super(props);
         // 初始状态
         //    拿到所有的json数据
-        Car[0].cars[0].name=this.props.items.name;
+        Car[0].cars[0].name=this.props.items.bankusername;
         Car[0].cars[1].name=this.props.items.bankaccount;
         Car[0].cars[2].name=this.props.items.bankname;
         Car[0].cars[3].name=this.props.items.bankbranch;

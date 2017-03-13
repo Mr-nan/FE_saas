@@ -64,7 +64,7 @@ export  default class SelectCompanyScene extends BaseComponent {
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
                 <NavigationView
-                    title="用户管理"
+                    title="账户管理"
                     backIconClick={this.backPage}
                 />
                 <ListView
@@ -128,7 +128,7 @@ export  default class SelectCompanyScene extends BaseComponent {
             <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
                 {this.loadView()}
                 <NavigationView
-                    title="用户管理"
+                    title="账户管理"
                     backIconClick={this.backPage}
                 />
             </View>
