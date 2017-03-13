@@ -431,7 +431,7 @@ export default class Register extends BaseComponent {
                     // this.props.showModal(false);
                     if (response.mjson.code == "1") {
                         this.refs.smsCode.StartCountDown();
-                        this.refs.smsCode.setInputTextValue(response.mjson.data.code + "");
+                        // this.refs.smsCode.setInputTextValue(response.mjson.data.code + "");
                     } else {
                         this.props.showToast(response.mjson.msg);
                     }
