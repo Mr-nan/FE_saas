@@ -62,7 +62,7 @@ export default class Setting extends BaseComponent {
                     centerText={"关于服务平台"}
                     rightText={""}
                     leftImageCallBack={this.backPage}/>
-                <Image source={require("./../../../images/setting/logo.png")} style={styles.logoStyle}/>
+                <Image source={require("./../../../images/setting/logo.jpg")} style={styles.logoStyle}/>
                 <Text style={{
                     marginTop: 15,
                     fontSize: FontAndColor.LITTLEFONT,
