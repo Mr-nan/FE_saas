@@ -4,8 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.facebook.react.ReactApplication;
-import com.theweflex.react.WeChatPackage;
-import com.liuchungui.react_native_umeng_push.UmengPushPackage;
+import cn.reactnative.modules.update.UpdatePackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -23,6 +22,7 @@ import com.fe_sass.react_native_umeng_push.UmengPushApplication;
 import com.fe_sass.react_native_umeng_push.UmengPushPackage;
 import com.theweflex.react.WeChatPackage;
 import com.react.rnspinkit.RNSpinkitPackage;
+import cn.reactnative.modules.update.UpdateContext;
 
 
 public class MainApplication extends UmengPushApplication implements ReactApplication {
@@ -32,13 +32,16 @@ public class MainApplication extends UmengPushApplication implements ReactApplic
     public boolean getUseDeveloperSupport() {
       return BuildConfig.DEBUG;
     }
+    @Override
+        protected String getJSBundleFile() {
+            return UpdateContext.getBundleUrl(MainApplication.this);
+        }
 
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new WeChatPackage(),
-            new UmengPushPackage(),
+          new UpdatePackage(),
           new SQLitePluginPackage(),
           new UmengPushPackage(),
           new ImagePickerPackage(),
