@@ -20,6 +20,7 @@ import BaseComponent from '../component/BaseComponent';
 import NavigationView from '../component/AllNavigationView';
 import Gallery from 'react-native-gallery';
 import PixelUtil from '../utils/PixelUtil';
+import {LendSuccessAlert} from '../finance/lend/component/ModelComponent';
 import * as weChat from 'react-native-wechat';
 const Pixel = new PixelUtil();
 
@@ -158,13 +159,14 @@ export default class CarInfoScene extends BaseComponent {
     };
 
     callClick =() => {
-        Linking.openURL('tel:4006561290,100002#');
+        Linking.openURL('tel:4000888918,100001#');
     };
 
     // 打开分享
     showShared=()=>{
 
-        this.refs.sharedView.isVisible(true);
+        this.refs.LendSuccessAlert.setModelVisible(true);
+        // this.refs.sharedView.isVisible(true);
     }
 
 
@@ -450,6 +452,8 @@ export default class CarInfoScene extends BaseComponent {
                 />
                 <PhotoView ref="photoView"/>
                 <SharedView ref="sharedView" carData={this.state.carData}/>
+                <LendSuccessAlert ref="LendSuccessAlert" title="提示" subtitle="分享功能内测期间暂不开放"/>
+
             </View>
 
         )
@@ -496,7 +500,7 @@ class  SharedView extends Component{
 
     componentDidMount() {
 
-          weChat.registerApp('wx69699ad69f370cfc');
+          // weChat.registerApp('wx69699ad69f370cfc');
 
     }
 
