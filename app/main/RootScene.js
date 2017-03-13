@@ -105,7 +105,7 @@ export default class RootScene extends BaseComponent {
 
     render() {
         return (
-            <View></View>
+            <View style={{backgroundColor: '#00000000'}}></View>
         );
     }
 }

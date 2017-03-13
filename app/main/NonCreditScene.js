@@ -29,10 +29,10 @@ export default class NonCreditScene extends BaseComponent {
                  所以我们还不能为您提供金融服务，请拨打电话联系我司客服人员进行授信申请！
                 </Text>
                 <TouchableOpacity onPress={()=>{
-                    Linking.openURL('tel:400-800-8888#');
+                    Linking.openURL('tel:400-088-8918#');
                 }} activeOpacity={0.8} style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(44),justifyContent:'center',
                 alignItems:'center',backgroundColor: fontAndColor.COLORB0,marginTop:Pixel.getPixel(25)}}>
-                    <Text style={{fontSize: fontAndColor.NAVIGATORFONT34,color:'#fff'}}>拨打400-800-8888</Text>
+                    <Text style={{fontSize: fontAndColor.NAVIGATORFONT34,color:'#fff'}}>拨打400-088-8918</Text>
                 </TouchableOpacity>
             </View>
         );
