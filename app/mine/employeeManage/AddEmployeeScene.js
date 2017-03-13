@@ -49,7 +49,7 @@ export default class AddEmployeeScene extends BaseComponent {
             account: Car[2].cars[0].name,
             company_ids: this.company_idss.toString(),
             password: md5.hex_md5(Car[2].cars[1].name),
-            repassword: md5.hex_md5(Car[2].cars[2].name),
+            repassword: md5.hex_md5(Car[2].cars[1].name),
             role_id: this.roleId,   //角色ID【必填】	number	1：实际控制人 2：财务 3：收车人员 4：销售人员
             sex: this.sex,//number	1：男（默认）；2：女
             username: Car[0].cars[0].name
