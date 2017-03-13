@@ -1,8 +1,4 @@
 rootProject.name = 'FE_Sass'
-include ':react-native-wechat'
-project(':react-native-wechat').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-wechat/android')
-include ':react-native-umeng-push'
-project(':react-native-umeng-push').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-umeng-push/android')
 include ':react-native-image-picker', ':react-native-vin-scan'
 project(':react-native-image-picker').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-image-picker/android')
 
@@ -18,7 +14,7 @@ project(':react-native-sqlite-storage').projectDir = new File(rootProject.projec
 include ':PushSDK'
 project(':PushSDK').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-umeng-sdk/android/PushSDK')
 
-include ':react-native-wheel-picker'
+include ':react-nagtive-wheel-picker'
 project(':react-native-wheel-picker').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-wheel-picker/android')
 
 include ':react-native-spinkit'
