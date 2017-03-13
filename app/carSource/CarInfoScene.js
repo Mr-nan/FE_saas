@@ -272,17 +272,20 @@ export default class CarInfoScene extends BaseComponent {
 
     carMoneyChange=(carMoney)=>{
 
-
         let newCarMoney = parseFloat(carMoney);
         let carMoneyStr = newCarMoney.toFixed(2);
         let moneyArray = carMoneyStr.split(".");
+
+        console.log(carMoney+'/'+newCarMoney +'/' + carMoneyStr +'/' +moneyArray);
 
         if(moneyArray.length>1)
         {
             if(moneyArray[1]>0){
 
                 return moneyArray[0]+'.'+moneyArray[1];
+
             }else {
+
                 return moneyArray[0];
             }
 
@@ -357,7 +360,7 @@ export default class CarInfoScene extends BaseComponent {
                         {
                             (carData.lowest_pay_price>0||carData.lowest_pay_ratio>0) &&
                             <View style={styles.preferentialView}>
-                                <Text style={styles.preferentialText}>第1车贷合作商户，首付{carData.lowest_pay_price>0?(this.carMoneyChange(carData.lowest_pay_price)+'万'):(carData.lowest_pay_ratio+'%')}即可提车</Text>
+                                <Text style={styles.preferentialText}>第1车贷合作商户，首付{carData.lowest_pay_price>0?(this.carMoneyChange(carData.lowest_pay_price)+'万'):(this.carMoneyChange(carData.lowest_pay_ratio)+'%')}即可提车</Text>
                             </View>
                         }
                     </View>
