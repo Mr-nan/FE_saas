@@ -199,6 +199,13 @@ export const APPLYREPAYMENT = 'api/v1/Repayment/applyRepayment';
 /**
  * from @zhaojian
  *
+ * 获取优惠券列表
+ **/
+export const REPAYMENT_GET_ADJUST_USE = 'api/v5/Repayment/get_adjust_use';
+
+/**
+ * from @zhaojian
+ *
  * 获取库融还款计划详情
  **/
 export const REPAYMENT_GETONLINEINFO = 'api/v2/Repayment/getOnlineInfo';
