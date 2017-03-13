@@ -171,7 +171,6 @@ export default class ModelSelect extends PureComponent {
                                 if (data.code === 1) {
                                     this.props.refreshCar(data.result.rows.item(0));
                                 } else {
-                                    console.log(data.error);
                                 }
                             });
                     } else {
@@ -187,12 +186,10 @@ export default class ModelSelect extends PureComponent {
                                         });
                                     }
                                 } else {
-                                    console.log(data.error);
                                 }
                             });
                     }
                 } else {
-                    console.log(data.error);
                 }
             });
     };
@@ -234,7 +231,6 @@ export default class ModelSelect extends PureComponent {
                                 if (data.code === 1) {
                                     this.props.refreshCar(data.result.rows.item(0));
                                 } else {
-                                    console.log(data.error);
                                 }
                             });
                         this.setState({
@@ -254,12 +250,10 @@ export default class ModelSelect extends PureComponent {
                                         });
                                     }
                                 } else {
-                                    console.log(data.error);
                                 }
                             });
                     }
                 } else {
-                    console.log(data.error);
                 }
             });
         this.props.carNumberBack(false);
@@ -290,7 +284,6 @@ export default class ModelSelect extends PureComponent {
                     });
                     this._onVinChange(vl);
                 }, (error) => {
-                    console.log(error);
                 });
             } else {
                 this.timer = setTimeout(
@@ -301,7 +294,6 @@ export default class ModelSelect extends PureComponent {
                             });
                             this._onVinChange(vl);
                         }, (error) => {
-                            console.log(error);
                         });
                     },
                     500

@@ -44,7 +44,6 @@ export default class ContractManageScene extends BaseComponent {
         };        request(Urls.FINANCE, 'Post', maps)
 
             .then((response) => {
-            console.log(response.mjson);
                     if (page == 1 && response.mjson.data.length <= 0) {
                         this.setState({renderPlaceholderOnly: 'null'});
                     } else {

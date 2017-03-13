@@ -34,6 +34,7 @@ export default class AddEmployeeScene extends BaseComponent {
     initFinish = () => {
     }
     saveData = () => {
+        this.company_idss=[];
         this.props.showModal(true);
         this.isClick = false;
         if (this.items.length > 0) {
@@ -43,21 +44,18 @@ export default class AddEmployeeScene extends BaseComponent {
                 this.company_idss.push(this.company_ids[value]);
             }
         }
-        console.log(this.company_idss);
         let url = AppUrls.BASEURL + 'v1/user.employee/save';
-        console.log(Car[2].cars[0].name + "-" + Car[2].cars[1].name + '-' + Car[2].cars[2].name + '-' + this.roleId + "----" + Car[0].cars[0].name);
         request(url, 'post', {
             account: Car[2].cars[0].name,
             company_ids: this.company_idss.toString(),
             password: md5.hex_md5(Car[2].cars[1].name),
-            repassword: md5.hex_md5(Car[2].cars[2].name),
+            repassword: md5.hex_md5(Car[2].cars[1].name),
             role_id: this.roleId,   //角色ID【必填】	number	1：实际控制人 2：财务 3：收车人员 4：销售人员
             sex: this.sex,//number	1：男（默认）；2：女
             username: Car[0].cars[0].name
 
         }).then((response) => {
             this.props.showModal(false);
-            console.log(response);
             if (response.mjson.code == '1') {
                 this.props.showToast("提交成功");
                 if (this.props.callBack) {
@@ -73,7 +71,6 @@ export default class AddEmployeeScene extends BaseComponent {
             this.props.showModal(false);
             this.isClick = true;
             this.props.showToast(error.mjson.msg);
-            console.log(error);
 
         });
 
@@ -139,7 +136,6 @@ export default class AddEmployeeScene extends BaseComponent {
 
         StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST, (data) => {
             if (data.code == 1 && data.result != null) {
-                console.log(data.result);
                 this.comps = JSON.parse(data.result);
                 for (let value of JSON.parse(data.result)) {
                     this.companys.push(value.enterprise_name);
@@ -322,7 +318,7 @@ export default class AddEmployeeScene extends BaseComponent {
                 this.items = itemIds;
             }
         }
-        console.log(this.items + '--');
+        console.log(this.items);
         let jsonData = Car;
 
         //    定义变量
@@ -378,7 +374,13 @@ export default class AddEmployeeScene extends BaseComponent {
             this.sex = Number.parseInt(rowID) + 1 + '';
         } else if (SECTIONID === 1 && ROWID === 1) {
 
-            this.roleId = Number.parseInt(rowID) + 1 + '';
+            for(let value of this.props.roleData){
+
+                if(value.role_name==this.props.roleList[rowID]){
+
+                    this.roleId = value.role_id;
+                }
+            }
         }
         Car[SECTIONID].cars[ROWID].name = this.currentData[rowID];
 
@@ -513,7 +515,7 @@ const styles = StyleSheet.create({
     },
     rowLeftTitle: {
         marginLeft: Pixel.getPixel(15),
-        width: 60,
+        width: Pixel.getPixel(60),
         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),
         color: FontAndColor.COLORA0,
 

@@ -41,6 +41,7 @@ import * as Urls from '../constant/appUrls';
 import * as fontAndColor from '../constant/fontAndColor';
 import SelectCompanyScene from '../finance/SelectCompanyScene';
 import AginSelectCompanyScene from '../finance/AginSelectCompanyScene';
+import {LendSuccessAlert} from '../finance/lend/component/ModelComponent'
 let loanList = [];
 
 export class HomeHeaderItemInfo {
@@ -73,7 +74,9 @@ export default class FinanceSence extends BaseComponet {
         let maps = {
             api: Urls.LOAN_SUBJECT
         };
-        request(Urls.FINANCE, 'Post', maps)
+        request(Urls.FINANCE, 'Post', maps,()=>{
+            this.props.backToLogin();
+        })
             .then((response) => {
                     loanList = response.mjson.data;
                     if (loanList.length > 1) {
@@ -83,9 +86,9 @@ export default class FinanceSence extends BaseComponet {
                             this.setState({renderPlaceholderOnly: 'select'});
                         } else {
                             this.setState({
-                                customerName:loanList[0].companyname
+                                customerName: loanList[0].companyname
                             });
-                           this.setLoan();
+                            this.setLoan();
                         }
                     }
                 },
@@ -115,10 +118,11 @@ export default class FinanceSence extends BaseComponet {
         let maps = {
             api: Urls.GET_MNY
         };
-        request(Urls.FINANCE, 'Post', maps)
+        request(Urls.FINANCE, 'Post', maps,()=>{
+            this.props.backToLogin();
+        })
             .then((response) => {
                     mnyData = response.mjson.data;
-                    console.log(mnyData.credit_maxloanmny);
                     that.setState({
                         allData: {
                             keyongedu: mnyData.credit_maxloanmny / 10000,
@@ -152,7 +156,9 @@ export default class FinanceSence extends BaseComponet {
             api: Urls.GET_APPLY_LIST,
             p: page
         };
-        request(Urls.FINANCE, 'Post', maps)
+        request(Urls.FINANCE, 'Post', maps,()=>{
+            this.props.backToLogin();
+        })
             .then((response) => {
                     movies.push(...response.mjson.data.list);
                     allPage = response.mjson.data.page;
@@ -237,6 +243,8 @@ export default class FinanceSence extends BaseComponet {
                                     />
                                 }
                 />
+                <LendSuccessAlert title="提示" subtitle="采购融资功能正在维护中，请您移步BMS系统申请采购融资" ref='cgdModal'
+                                  confimClick={()=>{}}/>
             </View>
         )
     }
@@ -269,34 +277,34 @@ export default class FinanceSence extends BaseComponet {
             return (<View/>);
         } else {
             if (movie.type == 1) {
-                nextPage= KurongDetaileScene;
+                nextPage = KurongDetaileScene;
                 this.buttonParams.content = '库容';
                 this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB4}];
                 this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB4}];
             }
             else if (movie.type == 2) {
-                nextPage= SingDetaileSence;
+                nextPage = SingDetaileSence;
                 this.buttonParams.content = '单车';
                 this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB0}];
                 this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB0}];
             } else if (movie.type == 3) {
-                nextPage= KurongDetaileScene;
+                nextPage = KurongDetaileScene;
                 this.buttonParams.content = '信贷';
                 this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB1}];
                 this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB1}];
             } else if (movie.type == 4) {
-                nextPage= KurongDetaileScene;
+                nextPage = KurongDetaileScene;
                 this.buttonParams.content = '库融';
                 this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB4}];
                 this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB4}];
             } else {
                 if (movie.product_type_change_status == 0) {
-                    nextPage= CGDDetailSence;
+                    nextPage = CGDDetailSence;
                     this.buttonParams.content = '采购';
                     this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB1}];
                     this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB1}];
                 } else if (movie.product_type_change_status == 1) {
-                    nextPage= SingDetaileSence;
+                    nextPage = SingDetaileSence;
                     this.buttonParams.content = '单车采购';
                     this.buttonParams.parentStyle = [cellSheet.parentStyle, {
                         borderColor: fontAndColor.COLORB1,
@@ -304,7 +312,7 @@ export default class FinanceSence extends BaseComponet {
                     }];
                     this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB1}];
                 } else {
-                    nextPage= SingDetaileSence;
+                    nextPage = SingDetaileSence;
                     this.buttonParams.content = '单车';
                     this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB0}];
                     this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB0}];
@@ -323,15 +331,19 @@ export default class FinanceSence extends BaseComponet {
             this.typeButtonParams.content = movie.status_str;
             return (
                 <TouchableOpacity activeOpacity={0.8} onPress={() => {
-                this.navigatorParams.name = 'DetaileSence';
-                this.navigatorParams.component = nextPage;
-                    this.navigatorParams.params={
+                    if(nextPage===CGDDetailSence){
+                        this.refs.cgdModal.setModelVisible(true);
+                    }else{
+                        this.navigatorParams.name = 'DetaileSence';
+                        this.navigatorParams.component = nextPage;
+                        this.navigatorParams.params={
                         loanNumber:movie.loan_code,
                         backRefresh:()=>{
                             this.allRefresh()
                         }
                     }
-                this.props.callBack(this.navigatorParams);
+                        this.props.callBack(this.navigatorParams);
+                    }
             }} style={[cellSheet.row, cellSheet.padding]}>
                     <View style={cellSheet.rowViewStyle}>
                         <View style={[{
@@ -408,17 +420,18 @@ export default class FinanceSence extends BaseComponet {
                 purchase_archives_after_status: mnyData.purchase_archives_after_status,
                 purchase_archives_first_status: mnyData.purchase_archives_first_status,
                 purchase_status: mnyData.purchase_status,
-                customerName:this.state.customerName,
-                backRefresh:()=>{
+                customerName: this.state.customerName,
+                backRefresh: () => {
                     this.allRefresh()
-                }}
+                }
+            }
             ;
             this.props.callBack(this.navigatorParams);
         } else {
             this.navigatorParams.name = "RepaymentScene";
             this.navigatorParams.component = RepaymentScene;
             this.navigatorParams.params = {
-                customerName:this.state.customerName,
+                customerName: this.state.customerName,
 
             };
             this.props.callBack(this.navigatorParams);
@@ -452,7 +465,7 @@ export default class FinanceSence extends BaseComponet {
                         <View style={{flex:1}}></View>
                         <View style={{flex:3,alignItems: 'center'}}>
                             <Text numberOfLines={1}
-                                style={{fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34),
+                                  style={{fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34),
                                 color:'#fff',marginTop:Pixel.getTitlePixel(25),backgroundColor: '#00000000'}}>
                                 金融 ({this.state.customerName})</Text>
                         </View>

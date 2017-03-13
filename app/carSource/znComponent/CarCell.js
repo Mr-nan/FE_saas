@@ -43,13 +43,13 @@ export default class CarCell extends Component {
 
                 <View style={styles.imageView}>
                     <Image style={styles.image}
-                           source={carCellData.img?{uri:carCellData.img+'?x-oss-process=image/resize,w_'+120+',h_'+80}:require('../../../images/carSourceImages/car_null_img.png')}/>
+                           source={carCellData.img?{uri:carCellData.img+'?x-oss-process=image/resize,w_'+160+',h_'+120}:require('../../../images/carSourceImages/car_null_img.png')}/>
                 </View>
 
                 <View style={[styles.textContainer]}>
 
                     <View style={{backgroundColor:'white'}}>
-                        <Text style={styles.mainText}>{carCellData.city_name!=""?('['+carCellData.city_name+']'):""+carCellData.brand_name+carCellData.model_name}</Text>
+                        <Text style={styles.mainText}>{(carCellData.city_name!=""?('['+carCellData.city_name+']'):"")+(carCellData.model_name)}</Text>
 
                     </View>
                     <View style={{backgroundColor:'white'}}>
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     cellFootText:{
 
         color:fontAndColor.COLORA2,
-        fontSize:fontAndColor.LITTLEFONT,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT) ,
     },
 
 

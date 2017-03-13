@@ -160,7 +160,6 @@ export default class CarBrandSelectScene extends BaseComponent {
 
         }, (error) => {
 
-            console.log(error);
             this.stopLoadData();
 
         });
@@ -212,7 +211,6 @@ export default class CarBrandSelectScene extends BaseComponent {
 
     // 每一行中的数据
     renderRow = (rowData, sectionID, rowID) => {
-        console.log(rowData.brand_icon + '?x-oss-process=image/resize,w_' + 40 + ',h_' + 40);
         return (
             <TouchableOpacity onPress={() => {
 
@@ -241,7 +239,7 @@ export default class CarBrandSelectScene extends BaseComponent {
             }}>
                 <View style={styles.rowCell}>
                     <Image style={styles.rowCellImag}
-                           source={{uri:rowData.brand_icon+'?x-oss-process=image/resize,w_'+40+',h_'+40}}></Image>
+                           source={{uri:rowData.brand_icon+'?x-oss-process=image/resize,w_'+80+',h_'+80}}></Image>
                     <Text style={styles.rowCellText}>{rowData.brand_name}</Text>
                 </View>
             </TouchableOpacity>
@@ -285,10 +283,10 @@ export default class CarBrandSelectScene extends BaseComponent {
     _indexAndScrollClick = (index) => {
 
         let listView = this.refs.listView;
-        let scrollY = index * 40;
+        let scrollY = index * Pixel.getPixel(40);
         for (let i = 0; i < index; i++) {
             let rowIndex = carData[i].car.length;
-            scrollY += +rowIndex * 44;
+            scrollY += +rowIndex * Pixel.getPixel(44);
         }
         listView.scrollTo({x: 0, y: scrollY, animated: true});
 
@@ -416,7 +414,6 @@ class CarSeriesList extends BaseComponent {
             }
 
         }, (error) => {
-            console.log(error);
         });
 
     }
@@ -628,7 +625,6 @@ class CarModelList extends BaseComponent {
 
         }, (error) => {
 
-            console.log(error);
 
         });
 

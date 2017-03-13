@@ -27,7 +27,6 @@ export default class SelectMaskComponent extends Component {
         this.compData.map((data) => {
             data['selected'] = false;
         });
-        console.log(this.compData);
         this.state = {
             dataSource: this.ds.cloneWithRows(this.compData),
             modalVisible: false,
@@ -38,7 +37,6 @@ export default class SelectMaskComponent extends Component {
     changeData = (data) => {
         itemIds=[];
         this.compData = new Array(...data);
-        console.log(this.compData);
         this.compData.map((data) => {
             data['selected'] = false;
         });
@@ -81,7 +79,6 @@ export default class SelectMaskComponent extends Component {
             }
         }
 
-        console.log(itemIds);
     }
 
     render() {
@@ -95,7 +92,6 @@ export default class SelectMaskComponent extends Component {
                     () => {
                         this._hideModal();
                         this.props.onClick(itemIds)
-                        console.log(itemIds+'---');
                     }}>
 
                     <View>

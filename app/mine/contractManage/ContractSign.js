@@ -33,7 +33,6 @@ export default class ContractSign extends BaseComponent {
 
     render() {
         const isShow=this.props.show;
-        console.log(isShow+'212121');
         return (
             <View style={styles.container}>
                 <NavigationBar

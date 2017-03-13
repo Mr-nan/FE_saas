@@ -82,7 +82,7 @@ export default class LoginFailSmsNo extends BaseComponent {
                     viewStytle={styles.itemStyel}/>
                 <LoginInputText
                     ref="phone"
-                    textPlaceholder={'请填写有些手机号'}
+                    textPlaceholder={'请填写手机号'}
                     rightIcon={false}
                     leftIcon={false}
                     clearValue={true}

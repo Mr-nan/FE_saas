@@ -46,6 +46,15 @@ export default class BaseComponent extends Component {
         }
     }
 
+    backToLogin = (mProps) => {
+        const navigator = this.props.navigator;
+        if (navigator) {
+            navigator.immediatelyResetRouteStack([{
+                ...mProps
+            }])
+        }
+    }
+
     backPage = () => {
         const navigator = this.props.navigator;
         if (navigator) {

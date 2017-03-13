@@ -68,7 +68,6 @@ export  default  class carSourceListScene extends BaseComponent {
     constructor(props) {
         super(props);
         // 初始状态
-        console.log(this.props.openBeanch);
         const carSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
 
         this.state = {
@@ -100,12 +99,10 @@ export  default  class carSourceListScene extends BaseComponent {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log('123');
         StorageUtil.mGetItem(storageKeyNames.NEED_OPENBRAND,(data)=>{
             if(data.code==1){
                if(data.result=='true'){
                     this.presCarTypeScene();
-
                }
             }
         });
@@ -137,7 +134,7 @@ export  default  class carSourceListScene extends BaseComponent {
     // 筛选数据刷新
     filterData = () => {
         carData = [];
-        this.setState({isRefreshing: true, dataSource: this.state.dataSource.cloneWithRows(carData),});
+        this.setState({dataSource:this.state.dataSource.cloneWithRows(carData)});
         this.props.showModal(true);
         this.loadData();
 
@@ -148,7 +145,9 @@ export  default  class carSourceListScene extends BaseComponent {
 
         let url = AppUrls.CAR_INDEX;
         APIParameter.page = 1;
-        request(url, 'post', APIParameter)
+        request(url, 'post', APIParameter,()=>{
+            this.props.backToLogin();
+        })
             .then((response) => {
 
                 carData = response.mjson.data.list;
@@ -192,7 +191,9 @@ export  default  class carSourceListScene extends BaseComponent {
         let url = AppUrls.CAR_INDEX;
         APIParameter.page += 1;
 
-        request(url, 'post', APIParameter)
+        request(url, 'post', APIParameter,()=>{
+            this.props.backToLogin();
+        })
             .then((response) => {
 
                 if (typeof(response.mjson.data.start) == "undefined") {
@@ -211,7 +212,6 @@ export  default  class carSourceListScene extends BaseComponent {
                 for (let i = 0; i < data.length; i++) {
                     carData.push(data[i]);
                 }
-                console.log(carData.length);
 
                 this.setState({
                     dataSource: this.state.dataSource.cloneWithRows(carData),
@@ -226,7 +226,6 @@ export  default  class carSourceListScene extends BaseComponent {
     toEnd = () => {
 
         if (carData.length && APIParameter.status == 1 && !this.state.isRefreshing) {
-            console.log('加载ing');
             this.loadMoreData();
         }
 
@@ -399,7 +398,12 @@ export  default  class carSourceListScene extends BaseComponent {
             },
         });
         APIParameter.order_type = value;
-        this.filterData();
+        if (this.refs.headView.state.isCheckRecommend) {
+            this.refs.headView.setCheckRecommend(false)
+        } else {
+            this.filterData();
+        }
+
     };
 
     sequencingClick = () => {
@@ -709,7 +713,7 @@ class CarListNavigatorView extends Component {
                         <View style={styles.navigatorSousuoView}>
                             <Image style={{marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(10)}}
                                    source={require('../../images/carSourceImages/sousuoicon.png')}/>
-                            <Text style={styles.navigatorSousuoText}>按品牌、车型搜索</Text>
+                            <Text style={styles.navigatorSousuoText}>按品牌、车系搜索</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
