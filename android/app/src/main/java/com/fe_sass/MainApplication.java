@@ -4,8 +4,6 @@ import android.app.Application;
 import android.util.Log;
 
 import com.facebook.react.ReactApplication;
-import com.theweflex.react.WeChatPackage;
-import com.liuchungui.react_native_umeng_push.UmengPushPackage;
 import cn.reactnative.modules.update.UpdatePackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
@@ -43,9 +41,7 @@ public class MainApplication extends UmengPushApplication implements ReactApplic
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new WeChatPackage(),
-            new UmengPushPackage(),
-          new UpdatePackage(),
+            new UpdatePackage(),
           new SQLitePluginPackage(),
           new UmengPushPackage(),
           new ImagePickerPackage(),
