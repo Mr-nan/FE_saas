@@ -178,7 +178,6 @@ const styles = StyleSheet.create({
     },
     rowView: {
         height:Pixel.getPixel(77),
-        flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: 'white',
         borderTopColor: fontAndColor.COLORA4,
