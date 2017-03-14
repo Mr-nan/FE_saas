@@ -11,6 +11,12 @@ export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 
 /**
+ * 正式地址
+ */
+// export const BASEURL = 'http://gatewayapi.dycd.com/';
+
+
+/**
  * 预发布地址
  */
  // export const BASEURL = "http://st.open.bms.dycd.com/api/";
