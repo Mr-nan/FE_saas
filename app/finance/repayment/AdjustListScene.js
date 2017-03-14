@@ -22,11 +22,11 @@ import * as fontAndColor from '../../constant/fontAndColor';
 let movies = [];
 import BaseComponent from '../../component/BaseComponent';
 import NavigationView from '../../component/AllNavigationView';
-import PlanParentItem from './component/PlanParentItem';
 import OldPlanScene from './OldPlanListScene';
-import  PlanInfoScene from './PlanInfoScene';
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
+import StorageUtil from '../../utils/StorageUtil';
+import * as StorageKeyNames from "../../constant/storageKeyNames";
 export  default class AdjustListScene extends BaseComponent {
 
     constructor(props) {
@@ -54,28 +54,33 @@ export  default class AdjustListScene extends BaseComponent {
     }
 
     getData = () => {
-        let maps = {
-            api: Urls.REPAYMENT_GET_ADJUST_USE,
-            planid:this.props.items.planid,
-            user_id:''
-        };
-        request(Urls.FINANCE, 'Post', maps)
-            .then((response) => {
-                    movies = response.mjson.data;
-                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    this.setState({
-                        source: ds.cloneWithRows(movies),
-                        renderPlaceholderOnly: 'success',
-                        isRefreshing: false
-                    });
-                },
-                (error) => {
-                    if (error.mycode == '-2100045'||error.mycode == '-1') {
-                        this.setState({renderPlaceholderOnly: 'null', isRefreshing: false});
-                    } else {
-                        this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
-                    }
-                });
+        StorageUtil.mGetItem(StorageKeyNames.USER_INFO,(datas)=>{
+              if(datas.code==1){
+                  let data = JSON.parse(datas.result);
+                  let maps = {
+                      api: Urls.REPAYMENT_GET_ADJUST_USE,
+                      planid:this.props.items.planid,
+                      user_id:data.base_user_id,
+                  };
+                  request(Urls.FINANCE, 'Post', maps)
+                      .then((response) => {
+                              movies = response.mjson.data;
+                              let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                              this.setState({
+                                  source: ds.cloneWithRows(movies),
+                                  renderPlaceholderOnly: 'success',
+                                  isRefreshing: false
+                              });
+                          },
+                          (error) => {
+                              if (error.mycode == '-2100045'||error.mycode == '-1') {
+                                  this.setState({renderPlaceholderOnly: 'null', isRefreshing: false});
+                              } else {
+                                  this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
+                              }
+                          });
+              }
+        });
     }
 
     refreshingData = () => {

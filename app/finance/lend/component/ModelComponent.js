@@ -39,7 +39,7 @@ export class LendSuccessAlert extends Component{
         const {confimClick}=this.props;
 
         this.setModelVisible(false);
-        confimClick();
+        confimClick&&confimClick();
 
     }
     render(){
