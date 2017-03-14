@@ -1399,6 +1399,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/LinkingIOS",
+					"$(SRCROOT)/../node_modules/react-native-update/ios",
 				);
 				INFOPLIST_FILE = FE_Sass/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
@@ -1432,6 +1433,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/LinkingIOS",
+					"$(SRCROOT)/../node_modules/react-native-update/ios",
 				);
 				INFOPLIST_FILE = FE_Sass/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
