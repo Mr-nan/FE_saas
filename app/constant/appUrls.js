@@ -149,6 +149,13 @@ export const LOAN_SUBJECT = 'api/v1/user/get_loan_subject_list';
 /**
  * from @zhaojian
  *
+ * 获取更新信息
+ **/
+export const APP_UPDATE = BASEURL+'v1/Finacenoauth/index';
+
+/**
+ * from @zhaojian
+ *
  * 获取还款列表
  **/
 export const REPAYMENT_GETLIST = 'api/v2/Repayment/getList';

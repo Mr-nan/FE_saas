@@ -15,6 +15,7 @@ import BaseComponent from "../../component/BaseComponent";
 import PixelUtil from "../../utils/PixelUtil";
 import * as FontAndColor from "../../constant/fontAndColor";
 import NavigationBar from "../../component/NavigationBar";
+import* as StorageKeyNames from '../../constant/storageKeyNames';
 
 var Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
@@ -67,7 +68,7 @@ export default class Setting extends BaseComponent {
                     marginTop: 15,
                     fontSize: FontAndColor.LITTLEFONT,
                     color: FontAndColor.COLORA0
-                }}>当前版本1.0</Text>
+                }}>{"当前版本" + StorageKeyNames.VERSON_NAME}</Text>
                 <Image source={require("./../../../images/login/add.png")} style={styles.QRCodeStyle}/>
                 <Text
                     style={{color: FontAndColor.COLORA0, fontSize: Pixel.getPixel(17), fontWeight: 'bold'}}>扫描二维码</Text>

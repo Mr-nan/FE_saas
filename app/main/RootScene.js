@@ -10,7 +10,6 @@ import {
 
 import BaseComponent from '../component/BaseComponent';
 import MyButton from '../component/MyButton';
-import lendMoney from '../finance/lend/LendMoneyScene'
 var {height, width} = Dimensions.get('window');
 import MainPage from './MainPage';
 import LoginAndRegister from '../login/LoginAndRegister';
@@ -18,10 +17,33 @@ import StorageUtil from '../utils/StorageUtil';
 import * as KeyNames from '../constant/storageKeyNames';
 import WelcomScene from './WelcomScene';
 import LoginGesture from '../login/LoginGesture';
-
+import {request} from '../utils/RequestUtil';
+import * as Urls from '../constant/appUrls';
+import  UpLoadScene from './UpLoadScene';
+const versionCode = 2.0;
 
 export default class RootScene extends BaseComponent {
     initFinish = () => {
+        let maps = {
+            type: '6',
+            api:'api/v1/App/Update'
+        };
+        request(Urls.APP_UPDATE, 'Post', maps)
+            .then((response) => {
+                    if (response.mjson.data.versioncode != versionCode) {
+                        this.navigatorParams.component = UpLoadScene;
+                        this.navigatorParams.params = {url:response.mjson.data.downloadurl}
+                        this.toNextPage(this.navigatorParams);
+                    } else {
+                        this.toJump();
+                    }
+                },
+                (error) => {
+                        this.toJump();
+                });
+    }
+
+    toJump = () => {
         StorageUtil.mSetItem(KeyNames.NEED_GESTURE, 'true');
         let that = this;
         setTimeout(
