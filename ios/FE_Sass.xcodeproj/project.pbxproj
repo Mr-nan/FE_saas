@@ -44,6 +44,7 @@
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8764F52B800544BDB35F20A3 /* libRCTBEEPickerManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82B903BCC1514330B41DB29B /* libRCTBEEPickerManager.a */; };
 		A71F92341425474AB56D2770 /* libSQLite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A1229226735478EA2FEAE52 /* libSQLite.a */; };
+		D62C41529EA9417394C8EF7F /* libRCTHotUpdate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B791F4600ED84D1686624D24 /* libRCTHotUpdate.a */; };
 		E369CDF31E6D0FD000401BFC /* libSVehicleLicense.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E369CDF21E6D0FD000401BFC /* libSVehicleLicense.a */; };
 		E36AEB611E6ABEE8000F4E11 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E36AEB601E6ABEE8000F4E11 /* CoreMotion.framework */; };
 		E36AEB821E6ABF0C000F4E11 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E36AEB811E6ABF0C000F4E11 /* AudioToolbox.framework */; };
@@ -73,7 +74,6 @@
 		E3B817081E613EB600279287 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3B817071E613EB600279287 /* CoreTelephony.framework */; };
 		E3B817091E613ECF00279287 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D769E2B1E602A630039526C /* libc++.tbd */; };
 		E3B8170B1E613ED600279287 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E3B8170A1E613ED600279287 /* libz.tbd */; };
-		D62C41529EA9417394C8EF7F /* libRCTHotUpdate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B791F4600ED84D1686624D24 /* libRCTHotUpdate.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -266,6 +266,13 @@
 			remoteGlobalIDString = D42CB3511B2538DE00FD0AE2;
 			remoteInfo = RNSpinkit;
 		};
+		7DB2CB5E1E778E3800DE146C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F55352ADD8C9461A82BA524E /* RCTHotUpdate.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 91C5EFFF1C76ECA90037E727;
+			remoteInfo = RCTHotUpdate;
+		};
 		832341B41AAA6A8300B99B32 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */;
@@ -348,6 +355,7 @@
 		A08B9B7AF08C41A082FB247D /* RCTWeChat.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTWeChat.xcodeproj; path = "../node_modules/react-native-wechat/ios/RCTWeChat.xcodeproj"; sourceTree = "<group>"; };
 		B2004FD539E84DDD82569B93 /* libRCTBEEPickerManager.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTBEEPickerManager.a; sourceTree = "<group>"; };
 		B52D7A8211964E0BBCE73C67 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		B791F4600ED84D1686624D24 /* libRCTHotUpdate.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTHotUpdate.a; sourceTree = "<group>"; };
 		BD7DC422982C4AC0B3993A09 /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		E369CDF21E6D0FD000401BFC /* libSVehicleLicense.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libSVehicleLicense.a; sourceTree = "<group>"; };
 		E36AEB601E6ABEE8000F4E11 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
@@ -384,9 +392,8 @@
 		E3B817051E613EAC00279287 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		E3B817071E613EB600279287 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		E3B8170A1E613ED600279287 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		F55352ADD8C9461A82BA524E /* RCTHotUpdate.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTHotUpdate.xcodeproj; path = "../node_modules/react-native-update/ios/RCTHotUpdate.xcodeproj"; sourceTree = "<group>"; };
 		F9DEF7E783804F5BB00F2C8B /* RNSpinkit.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSpinkit.xcodeproj; path = "../node_modules/react-native-spinkit/ios/RNSpinkit.xcodeproj"; sourceTree = "<group>"; };
-		F55352ADD8C9461A82BA524E /* RCTHotUpdate.xcodeproj */ = {isa = PBXFileReference; name = "RCTHotUpdate.xcodeproj"; path = "../node_modules/react-native-update/ios/RCTHotUpdate.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		B791F4600ED84D1686624D24 /* libRCTHotUpdate.a */ = {isa = PBXFileReference; name = "libRCTHotUpdate.a"; path = "libRCTHotUpdate.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -608,6 +615,14 @@
 			isa = PBXGroup;
 			children = (
 				7D769F0F1E6572180039526C /* libRNSpinkit.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7DB2CB561E778E3800DE146C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7DB2CB5F1E778E3800DE146C /* libRCTHotUpdate.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -886,6 +901,10 @@
 					ProjectRef = 00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */;
 				},
 				{
+					ProductGroup = 7DB2CB561E778E3800DE146C /* Products */;
+					ProjectRef = F55352ADD8C9461A82BA524E /* RCTHotUpdate.xcodeproj */;
+				},
+				{
 					ProductGroup = 00C302BC1ABCB91800DB3ED1 /* Products */;
 					ProjectRef = 00C302BB1ABCB91800DB3ED1 /* RCTImage.xcodeproj */;
 				},
@@ -1122,6 +1141,13 @@
 			fileType = archive.ar;
 			path = libRNSpinkit.a;
 			remoteRef = 7D769F0E1E6572180039526C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		7DB2CB5F1E778E3800DE146C /* libRCTHotUpdate.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTHotUpdate.a;
+			remoteRef = 7DB2CB5E1E778E3800DE146C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		832341B51AAA6A8300B99B32 /* libRCTText.a */ = {
