@@ -41,10 +41,7 @@ public class MainApplication extends UmengPushApplication implements ReactApplic
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-<<<<<<< HEAD
             new UpdatePackage(),
-=======
->>>>>>> 1c9d32e43d810dbe09812de02c0c333d148be174
           new SQLitePluginPackage(),
           new UmengPushPackage(),
           new ImagePickerPackage(),
