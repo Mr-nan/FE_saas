@@ -11,7 +11,7 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import "RCTLinkingManager.h"
-#import "RCTHotUpdate.h"
+#import <RCTHotUpdate/RCTHotUpdate.h>
 
 @implementation AppDelegate
 
