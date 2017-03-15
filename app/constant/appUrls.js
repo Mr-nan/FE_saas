@@ -75,6 +75,11 @@ export const CAR_INDEX = BASEURL + V + 'car/index';
 export const CAR_DETAIL = BASEURL + V + 'car/detail';
 
 /**
+ * 获取客服电话号码
+ */
+export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/getCustomService';
+
+/**
  * 获取我的车源-已上架/下架
  */
 export const CAR_USER_CAR = BASEURL + V + 'user/car';
