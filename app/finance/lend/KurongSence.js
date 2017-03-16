@@ -233,6 +233,7 @@ export default class KurongSence extends BaseComponent {
                     titleIOS="请选择日期"
                     confirmTextIOS='确定'
                     cancelTextIOS='取消'
+                    minimumDate= {new Date()}
                 />
                 <LendSuccessAlert ref={(lend)=>{this.lendAlert=lend}} confimClick={()=>{
                     this.props.backRefresh();

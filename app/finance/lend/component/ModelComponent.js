@@ -39,7 +39,7 @@ export class LendSuccessAlert extends Component{
         const {confimClick}=this.props;
 
         this.setModelVisible(false);
-        confimClick();
+        confimClick&&confimClick();
 
     }
     render(){
@@ -126,7 +126,7 @@ export class ModifyBorrowing extends Component{
                         <Text style={styles.title}>修改借款</Text>
 
                         <View style={styles.input}>
-                            <TextInput onChangeText={this.props.onchangeText} style={styles.inputText} placeholder='请输入借款金额' keyboardType='decimal-pad'></TextInput>
+                            <TextInput underlineColorAndroid={"#00000000"} onChangeText={this.props.onchangeText} style={styles.inputText} placeholder='请输入借款金额' keyboardType='decimal-pad'></TextInput>
                         </View>
                         <View style={styles.showMessage}>
                             <Text style={styles.showMessageText}>*可借额度{this.props.minLend}-{this.props.maxLend}万</Text>

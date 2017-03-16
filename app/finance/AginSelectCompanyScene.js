@@ -85,6 +85,12 @@ export  default class SelectCompanyScene extends BaseComponent {
 
 
     _renderRow = (movie, sectionId, rowId) => {
+        let names = '';
+        if(movie.companyname==null||movie.companyname==''){
+            names = movie.name;
+        }else{
+            names = movie.name+'('+movie.companyname+')';
+        }
         return (
             <TouchableOpacity
                 onPress={()=> {
@@ -103,7 +109,7 @@ export  default class SelectCompanyScene extends BaseComponent {
                 <View style={{flex: 4, justifyContent: 'center'}}>
                     <Text
                         style={{fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30), color: fontAndColor.COLORA0}}>
-                        {movie.companyname}</Text>
+                        {names}</Text>
                     <Text
                         style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),

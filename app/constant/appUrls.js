@@ -7,13 +7,19 @@
 /**
  * 测试地址
  */
-export const BASEURL = 'http://api-gateway.test.dycd.com/';
+// export const BASEURL = 'http://api-gateway.test.dycd.com/';
+
+
+/**
+ * 正式地址
+ */
+export const BASEURL = 'http://gatewayapi.dycd.com/';
 
 
 /**
  * 预发布地址
  */
-//  export const BASEURL = "http://st.open.bms.dycd.com/api/";
+ // export const BASEURL = "http://st.open.bms.dycd.com/api/";
 
 
 /**
@@ -67,6 +73,11 @@ export const CAR_INDEX = BASEURL + V + 'car/index';
  * 获取车辆详情
  */
 export const CAR_DETAIL = BASEURL + V + 'car/detail';
+
+/**
+ * 获取客服电话号码
+ */
+export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/getCustomService';
 
 /**
  * 获取我的车源-已上架/下架
@@ -139,6 +150,13 @@ export const USER_EMPLOYE = BASEURL + V + "user.employe/index";
  * 获取借款主体
 **/
 export const LOAN_SUBJECT = 'api/v1/user/get_loan_subject_list';
+
+/**
+ * from @zhaojian
+ *
+ * 获取更新信息
+ **/
+export const APP_UPDATE = BASEURL+'v1/system/index';
 
 /**
  * from @zhaojian

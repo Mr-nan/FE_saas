@@ -5,8 +5,11 @@ import {
     StatusBar,
     Modal,
     Image,
-    Text
+    Text,
+    Platform,
+    Alert
 } from 'react-native';
+
 import MyNavigator  from './component/MyNavigator';
 import ShowToast from "./component/toast/ShowToast";
 

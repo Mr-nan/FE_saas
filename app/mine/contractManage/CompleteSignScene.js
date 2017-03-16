@@ -182,7 +182,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'white',
         borderTopColor: fontAndColor.COLORA4,
-        flexDirection: 'row',
         borderTopWidth: 1,
     },
     rowLeftTitle: {

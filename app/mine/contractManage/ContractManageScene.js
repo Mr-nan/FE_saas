@@ -101,8 +101,9 @@ export default class ContractManageScene extends BaseComponent {
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return ( <View style={styles.container}>
-                <NavigatorView title='合同管理' backIconClick={this.backPage}/>
+
                 {this.loadView()}
+                <NavigatorView title='合同管理' backIconClick={this.backPage}/>
             </View>);
         }else {
             return (<View style={styles.container}>
@@ -174,7 +175,6 @@ const styles = StyleSheet.create({
     },
     rowView: {
         height: 44,
-        flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: 'white',
         borderBottomColor: fontAndColor.COLORA4,

@@ -64,7 +64,7 @@ export  default class SelectCompanyScene extends BaseComponent {
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
                 <NavigationView
-                    title="用户管理"
+                    title="账户管理"
                     backIconClick={this.backPage}
                 />
                 <ListView
@@ -78,6 +78,12 @@ export  default class SelectCompanyScene extends BaseComponent {
     }
 
     _renderRow = (movie, sectionId, rowId) => {
+        let names = '';
+        if(movie.companyname==null||movie.companyname==''){
+            names = movie.name;
+        }else{
+            names = movie.name+'('+movie.companyname+')';
+        }
         return (
             <TouchableOpacity
                 onPress={()=> {
@@ -98,7 +104,7 @@ export  default class SelectCompanyScene extends BaseComponent {
                 <View style={{flex: 4, justifyContent: 'center'}}>
                     <Text
                         style={{fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30), color: fontAndColor.COLORA0}}>
-                        {movie.companyname}</Text>
+                        {names}</Text>
                     <Text
                         style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
@@ -128,7 +134,7 @@ export  default class SelectCompanyScene extends BaseComponent {
             <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
                 {this.loadView()}
                 <NavigationView
-                    title="用户管理"
+                    title="账户管理"
                     backIconClick={this.backPage}
                 />
             </View>

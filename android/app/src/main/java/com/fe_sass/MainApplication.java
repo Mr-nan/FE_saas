@@ -31,6 +31,7 @@ public class MainApplication extends UmengPushApplication implements ReactApplic
       return BuildConfig.DEBUG;
     }
 
+
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
