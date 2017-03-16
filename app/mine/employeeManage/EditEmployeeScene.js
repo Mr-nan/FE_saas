@@ -277,7 +277,7 @@ export default class EditEmployeeScene extends BaseComponent {
                 {/**      导航栏          */}
                 <NavigationView
                     backIconClick={this.backPage}
-                    title="添加员工"
+                    title="编辑员工"
                     renderRihtFootView={this._navigatorRightView}
                 />
 
@@ -314,18 +314,26 @@ export default class EditEmployeeScene extends BaseComponent {
         for (let i = 0; i < Car.length; i++) {
             let cars = Car[i].cars;
             for (let j = 0; j < cars.length; j++) {
-                if (cars[j].name <= 0) {
-                    this.props.showToast("请输入" + Car[i].cars[j].title);
-                    return;
+                if(!(i==2 && (j==1 || j==2))){
+
+                    if (cars[j].name <= 0) {
+                        this.props.showToast("请输入" + Car[i].cars[j].title);
+                        return;
+                    }
                 }
             }
         }
-        if (Car[2].cars[0].name.length != 11) {
-            this.props.showToast("请输入正确的用户名");
+        if(Car[2].cars[0].name == this.props.mobile){//手机号没改,密码传''
+            Car[2].cars[1].name='';
         }else if (Car[2].cars[1].name.length < 6) {
             this.props.showToast("密码必须为6~16位");
+            return;
         }else if (Car[2].cars[1].name !== Car[2].cars[2].name) {
             this.props.showToast("两次输入的密码不同");
+            return;
+        }
+        if (Car[2].cars[0].name.length != 11) {
+            this.props.showToast("请输入正确的用户名");
         }else{
             this.saveData()
         }
