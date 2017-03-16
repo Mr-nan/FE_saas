@@ -301,9 +301,9 @@ export default class Register extends BaseComponent {
             this.props.showToast("密码必须为6~16位");
         } else if (typeof(name) == "undefined" || name == "") {
             this.props.showToast("用户名不能为空");
-        }/* else if (typeof(businessName) == "undefined" || businessName == "") {
+        } else if (typeof(businessName) == "undefined" || businessName == "") {
             this.props.showToast("商家名称不能为空");
-        }*/ else if (password !== passwoedAgain) {
+        } else if (password !== passwoedAgain) {
             this.props.showToast("两次密码输入不一致");
         } /*else if (typeof(idcardf) == "undefined" || idcardf == "") {
             this.props.showToast("身份证正面不能为空");
