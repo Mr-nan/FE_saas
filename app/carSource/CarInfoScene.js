@@ -161,7 +161,7 @@ export default class CarInfoScene extends BaseComponent {
     callClick =() => {
 
         this.props.showModal(true);
-        request(AppUrls.CAR_CUSTOMER_PHONE_NUMBER,'get',{}).then((response) => {
+        request(AppUrls.CAR_CUSTOMER_PHONE_NUMBER,'Post',{}).then((response) => {
             this.props.showModal(false);
            if(response.mjson.code==1)
            {
