@@ -7,13 +7,19 @@ import {
     Image,
     Text,
     Platform,
-    Alert
+    Alert,
+    AppState
 } from 'react-native';
 
 import MyNavigator  from './component/MyNavigator';
 import ShowToast from "./component/toast/ShowToast";
+import CodePush from 'react-native-code-push';
 
 export default class root extends Component {
+
+    componentWillMount() {
+        CodePush.sync();
+    }
 
     render() {
         return (

@@ -67,7 +67,7 @@ export default class KurongSence extends BaseComponent {
         {title: '可借额度', key: 'maxMoney'},
         {title: '借款类型', key: 'type'}
     ];
-    dateBlob =['30天','60天','90天','180天'];
+    dateBlob =['30天','60天','90天','180天','360天'];
     initFinish() {
         this.getData();
 
