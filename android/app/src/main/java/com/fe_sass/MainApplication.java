@@ -14,7 +14,7 @@ import com.beefe.picker.PickerViewPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.vin.scan.VinScanPackage;
 import com.zyu.ReactNativeWheelPickerPackage;
-
+import com.microsoft.codepush.react.CodePush;
 import java.util.Arrays;
 import java.util.List;
 import com.fe_sass.react_native_umeng_push.UmengPushApplication;
@@ -26,6 +26,12 @@ import com.react.rnspinkit.RNSpinkitPackage;
 public class MainApplication extends UmengPushApplication implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+
+    @Override
+    protected String getJSBundleFile() {
+      return CodePush.getJSBundleFile();
+    }
+
     @Override
     public boolean getUseDeveloperSupport() {
       return BuildConfig.DEBUG;
@@ -43,7 +49,8 @@ public class MainApplication extends UmengPushApplication implements ReactApplic
           new ReactNativeWheelPickerPackage(),
           new WeChatPackage(),
           new VinScanPackage(),
-          new RNSpinkitPackage()
+          new RNSpinkitPackage(),
+          new CodePush("nud3l-FlqnIsfZLXl71g-CDlIHIzVJvFYEdiG", getApplicationContext(), BuildConfig.DEBUG)
       );
     }
   };
