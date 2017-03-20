@@ -63,13 +63,13 @@ export default class Setting extends BaseComponent {
                     centerText={"关于服务平台"}
                     rightText={""}
                     leftImageCallBack={this.backPage}/>
-                <Image source={require("./../../../images/setting/logo.jpg")} style={styles.logoStyle}/>
+                <Image source={require("./../../../images/setting/logo.png")} style={styles.logoStyle}/>
                 <Text style={{
                     marginTop: 15,
                     fontSize: FontAndColor.LITTLEFONT,
                     color: FontAndColor.COLORA0
                 }}>{"当前版本" + StorageKeyNames.VERSON_NAME}</Text>
-                <Image source={require("./../../../images/login/add.png")} style={styles.QRCodeStyle}/>
+                <Image source={require("./../../../images/setting/logo_code.jpg")} style={styles.QRCodeStyle}/>
                 <Text
                     style={{color: FontAndColor.COLORA0, fontSize: Pixel.getPixel(17), fontWeight: 'bold'}}>扫描二维码</Text>
                 <Text style={{

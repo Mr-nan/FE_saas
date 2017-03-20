@@ -159,7 +159,24 @@ export default class CarInfoScene extends BaseComponent {
     };
 
     callClick =() => {
-        Linking.openURL('tel:4000888918,100001#');
+
+        this.props.showModal(true);
+        request(AppUrls.CAR_CUSTOMER_PHONE_NUMBER,'post',{}).then((response) => {
+            this.props.showModal(false);
+           if(response.mjson.code==1)
+           {
+               Linking.openURL('tel:'+response.mjson.data.phone);
+
+           }else {
+               this.props.showToast(response.mjson.msg);
+
+           }
+        }, (error) => {
+            this.props.showModal(false);
+            this.props.showToast(error.msg);
+
+        });
+
     };
 
     // 打开分享

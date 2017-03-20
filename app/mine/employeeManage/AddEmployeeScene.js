@@ -245,14 +245,11 @@ export default class AddEmployeeScene extends BaseComponent {
                                       }}
                 />
 
-                { /**      界面listview          */}
-                <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={5}>
                     <ListView
                         style={styles.listStyle}
                         dataSource={this.state.source}
                         renderRow={this._renderRow}
                         renderSectionHeader={this._renderSectionHeader}/>
-                </KeyboardAvoidingView>
             </View>
         );
     }
