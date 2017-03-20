@@ -334,7 +334,7 @@ export default class CarInfoScene extends BaseComponent {
         return (
             <View ref="carInfoScene" style={{flex: 1, backgroundColor: 'white'}}>
 
-                <ScrollView style={{marginBottom: Pixel.getPixel(44)}}
+                <ScrollView style={{marginBottom: Pixel.getPixel (44)}}
                             scrollEventThrottle={200}
                             onScroll={this.setNavitgationBackgroundColor}
                 >
