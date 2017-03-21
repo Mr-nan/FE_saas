@@ -28,6 +28,7 @@ import * as Urls from '../../constant/appUrls';
 import StorageUtil from '../../utils/StorageUtil';
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import * as fontAndClolr from '../../constant/fontAndColor';
+import MyButton from '../../component/MyButton';
 
 const bg = require('../../../images/financeImages/bottomyouhuijuan.png');
 const duigou = require('../../../images/financeImages/bottomduigou.png');
@@ -44,6 +45,9 @@ export  default class AdjustListScene extends BaseComponent {
             isRefreshing: false,
         };
         this.selected;
+        this.adjustmoney = 0;
+        this.coupon_id = -1;
+        this.coupon_number = -1;
     }
 
     componentWillUnmount() {
@@ -105,7 +109,7 @@ export  default class AdjustListScene extends BaseComponent {
                 <View style={styles.textAllStyle}>
                     <Text style={styles.headerTextStyle}>到期日</Text>
                     <Text style={styles.headerTextStyle}>调整前</Text>
-                    <Text style={styles.headerTextStyle}>调整金额</Text>
+                    <Text style={styles.headerTextStyle}>抵扣金额</Text>
                     <Text style={styles.headerTextStyle}>调整后</Text>
                 </View>
                 <View style={[styles.textAllStyle, {
@@ -117,8 +121,8 @@ export  default class AdjustListScene extends BaseComponent {
                 }]}>
                     <Text style={styles.headerTextsStyle}>{this.props.items.dead_line}</Text>
                     <Text style={styles.headerTextsStyle}>{this.props.items.repaymentmny}</Text>
-                    <Text style={styles.headerTextsStyle}>{this.props.items.adjustmoney}</Text>
-                    <Text style={styles.headerTextsStyle}>{this.props.items.aftermny}</Text>
+                    <Text style={styles.headerTextsStyle}>{this.adjustmoney}</Text>
+                    <Text style={styles.headerTextsStyle}>{this.props.items.repaymentmny - this.adjustmoney}</Text>
                 </View>
             </View>
         );
@@ -129,32 +133,64 @@ export  default class AdjustListScene extends BaseComponent {
             return this._renderPlaceholderView();
         }
         return (
-            <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
+            <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1, alignItems: 'center'}}>
                 <NavigationView
                     title="选择优惠券"
-                    backIconClick={this.backPage}
-                />
+                    backIconClick={this.backPage}/>
                 <ListView
-                    style={{marginTop: Pixel.getTitlePixel(70)}}
+                    style={{marginTop: Pixel.getTitlePixel(70), flex: 1}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
-                    renderHeader={this._renderHeader}
-                />
+                    renderHeader={this._renderHeader}/>
+                <MyButton buttonType={MyButton.TEXTBUTTON}
+                          content={'确定'}
+                          parentStyle={styles.loginBtnStyle}
+                          childStyle={styles.loginButtonTextStyle}
+                          mOnPress={this.submit}/>
             </View>
         );
     }
 
-    _selectCoupon = (rowId) => {
+    // 使用优惠劵
+    submit = () => {
+        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (datas) => {
+            if (datas.code == 1) {
+                let data = JSON.parse(datas.result);
+                let maps = {
+                    api: Urls.REPAYMENT_GET_ADJUST_SAVE,
+                    plan_id: this.props.items.planid,
+                    merge_id: data.base_user_id,
+                    adjustmoney: this.adjustmoney,
+                    coupon_id: this.coupon_id,
+                    coupon_number: this.coupon_number,
+                    key: '',
+                };
+                request(Urls.FINANCE, 'Post', maps)
+                    .then((response) => {
+
+                        },
+                        (error) => {
+                            if (error.mycode == '-2100045' || error.mycode == '-1') {
+
+                            } else {
+
+                            }
+                        });
+            }
+        });
+    }
+    _selectCoupon = (rowId, itemData) => {
         this.selected = rowId;
+        this.adjustmoney = rowId;
         this.setState({
             source: ds.cloneWithRows(['1', '2', '3']),
         });
     };
 
-    _renderRow = (movie, sectionId, rowId) => {
+    _renderRow = (itemData, sectionId, rowId) => {
         return (
-            <TouchableOpacity onPress={() => this._selectCoupon(rowId)}>
+            <TouchableOpacity onPress={() => this._selectCoupon(rowId, itemData)}>
                 <Image style={styles.container} source={bg}>
                     <View style={styles.leftContainer}>
                         <Text style={styles.leftTitle}>还息优惠券</Text>
@@ -313,5 +349,19 @@ const styles = StyleSheet.create({
         color: '#000000',
         textAlign: 'center',
         fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT)
+    },
+    loginBtnStyle: {
+        height: Pixel.getPixel(44),
+        width: width - Pixel.getPixel(30),
+        backgroundColor: fontAndColor.COLORB0,
+        marginTop: Pixel.getPixel(30),
+        marginBottom: Pixel.getPixel(15),
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: Pixel.getPixel(4),
+    },
+    loginButtonTextStyle: {
+        color: fontAndColor.COLORA3,
+        fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT)
     },
 })
