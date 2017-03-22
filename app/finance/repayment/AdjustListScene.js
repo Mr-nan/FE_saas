@@ -105,7 +105,7 @@ export  default class AdjustListScene extends BaseComponent {
                 <View style={styles.textAllStyle}>
                     <Text style={styles.headerTextStyle}>到期日</Text>
                     <Text style={styles.headerTextStyle}>调整前</Text>
-                    <Text style={styles.headerTextStyle}>调整金额</Text>
+                    <Text style={styles.headerTextStyle}>抵扣金额</Text>
                     <Text style={styles.headerTextStyle}>调整后</Text>
                 </View>
                 <View style={[styles.textAllStyle, {
@@ -175,13 +175,12 @@ export  default class AdjustListScene extends BaseComponent {
             return this._renderPlaceholderView();
         }
         return (
-            <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
+            <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1, alignItems: 'center'}}>
                 <NavigationView
                     title="选择优惠券"
-                    backIconClick={this.backPage}
-                />
+                    backIconClick={this.backPage}/>
                 <ListView
-                    style={{marginTop: Pixel.getTitlePixel(70)}}
+                    style={{marginTop: Pixel.getTitlePixel(70), flex: 1}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
@@ -197,8 +196,37 @@ export  default class AdjustListScene extends BaseComponent {
         );
     }
 
-    _selectCoupon = (rowId) => {
+    // 使用优惠劵
+    submit = () => {
+        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (datas) => {
+            if (datas.code == 1) {
+                let data = JSON.parse(datas.result);
+                let maps = {
+                    api: Urls.REPAYMENT_GET_ADJUST_SAVE,
+                    plan_id: this.props.items.planid,
+                    merge_id: data.base_user_id,
+                    adjustmoney: this.adjustmoney,
+                    coupon_id: this.coupon_id,
+                    coupon_number: this.coupon_number,
+                    key: '',
+                };
+                request(Urls.FINANCE, 'Post', maps)
+                    .then((response) => {
+
+                        },
+                        (error) => {
+                            if (error.mycode == '-2100045' || error.mycode == '-1') {
+
+                            } else {
+
+                            }
+                        });
+            }
+        });
+    }
+    _selectCoupon = (rowId, itemData) => {
         this.selected = rowId;
+        this.adjustmoney = rowId;
         this.setState({
             source: ds.cloneWithRows(movies.list),
         });
@@ -222,7 +250,7 @@ export  default class AdjustListScene extends BaseComponent {
         let coupon_begindate = movie.coupon_begindate.split(' ')[0].replace('-','.').replace('-','.');
         let coupon_enddate = movie.coupon_enddate.split(' ')[0].replace('-','.').replace('-','.');
         return (
-            <TouchableOpacity onPress={() => this._selectCoupon(rowId)}>
+            <TouchableOpacity onPress={() => this._selectCoupon(rowId, itemData)}>
                 <Image style={styles.container} source={bg}>
                     <View style={styles.leftContainer}>
                         <Text style={styles.leftTitle}>{movie.coupon_name}</Text>
