@@ -35,6 +35,7 @@ export default class LoginInputText extends Component {
         rightIcon: true,
         rightButton: false,
         clearValue: false,
+        import: false,
 
         maxLength: 1000,
 
@@ -53,6 +54,7 @@ export default class LoginInputText extends Component {
         rightButton: PropTypes.bool,
         secureTextEntry: PropTypes.bool,
         clearValue: PropTypes.bool,//清除输入框内容
+        import: PropTypes.bool,//是否为必填项
 
         leftIconUri: PropTypes.number,
         rightIconSource: PropTypes.object,
@@ -113,6 +115,14 @@ export default class LoginInputText extends Component {
                     : null
                 }
 
+                {this.props.import ?
+                    <Text style={{
+                        color: FontAndColor.COLORB2,
+                        fontSize: FontAndColor.BUTTONFONT,
+                        paddingRight: Pixel.getPixel(2)
+                    }}>*</Text>
+                    : null
+                }
                 <View style={
                     {
                         flex: 1,
