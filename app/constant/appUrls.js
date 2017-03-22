@@ -241,12 +241,12 @@ export const NEWREPAYMENT_APPLY_REPAYMENT = 'api/v5/NewRepayment/apply_repayment
  **/
 export const REPAYMENT_GET_ADJUST_USE = 'api/v5/Repayment/get_adjust_use';
 
-/**
- * from @huangning
- *
- * 使用优惠券列表
- **/
-export const REPAYMENT_GET_ADJUST_SAVE = 'api/v5/Repayment/get_adjust_save';
+// /**
+//  * from @huangning
+//  *
+//  * 使用优惠券列表
+//  **/
+// export const REPAYMENT_GET_ADJUST_SAVE = 'api/v5/Repayment/get_adjust_save';
 
 /**
  * from @zhaojian
