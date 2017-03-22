@@ -28,11 +28,13 @@ import * as Urls from '../../constant/appUrls';
 import StorageUtil from '../../utils/StorageUtil';
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import * as fontAndClolr from '../../constant/fontAndColor';
-
+import MyButton from '../../component/MyButton';
 const bg = require('../../../images/financeImages/bottomyouhuijuan.png');
 const duigou = require('../../../images/financeImages/bottomduigou.png');
 let viewWidth = Pixel.getPixel(0);
 let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+import {LendSuccessAlert} from '../lend/component/ModelComponent'
+import  AllLoading from '../../component/AllLoading';
 export  default class AdjustListScene extends BaseComponent {
 
     constructor(props) {
@@ -43,7 +45,7 @@ export  default class AdjustListScene extends BaseComponent {
             source: [],
             isRefreshing: false,
         };
-        this.selected;
+        this.selected='';
     }
 
     componentWillUnmount() {
@@ -73,7 +75,7 @@ export  default class AdjustListScene extends BaseComponent {
                     .then((response) => {
                             movies = response.mjson.data;
                             this.setState({
-                                source: ds.cloneWithRows(movies),
+                                source: ds.cloneWithRows(movies.list),
                                 renderPlaceholderOnly: 'success',
                                 isRefreshing: false
                             });
@@ -81,11 +83,9 @@ export  default class AdjustListScene extends BaseComponent {
                         (error) => {
                             if (error.mycode == '-2100045' || error.mycode == '-1') {
                                 this.setState({
-                                    source: ds.cloneWithRows(movies),
-                                    renderPlaceholderOnly: 'success',
+                                    renderPlaceholderOnly: 'null',
                                     isRefreshing: false
                                 });
-                                // this.setState({renderPlaceholderOnly: 'null', isRefreshing: false});
                             } else {
                                 this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
                             }
@@ -115,13 +115,59 @@ export  default class AdjustListScene extends BaseComponent {
                     paddingTop: Pixel.getPixel(10),
                     paddingBottom: Pixel.getPixel(10)
                 }]}>
-                    <Text style={styles.headerTextsStyle}>{this.props.items.dead_line}</Text>
-                    <Text style={styles.headerTextsStyle}>{this.props.items.repaymentmny}</Text>
-                    <Text style={styles.headerTextsStyle}>{this.props.items.adjustmoney}</Text>
-                    <Text style={styles.headerTextsStyle}>{this.props.items.aftermny}</Text>
+                    <Text style={styles.headerTextsStyle}>{movies.enddate}</Text>
+                    <Text style={styles.headerTextsStyle}>{movies.repaymentmny}</Text>
+                    <Text style={styles.headerTextsStyle}>{movies.adjustmoney}</Text>
+                    <Text style={styles.headerTextsStyle}>{movies.aftermoney}</Text>
                 </View>
             </View>
         );
+    }
+
+    buttonParams = {
+        buttonType: MyButton.TEXTBUTTON,
+        parentStyle: styles.parentStyle,
+        childStyle: styles.childStyle,
+        opacity: 0.9,
+        content: '确认',
+        mOnPress: () => {
+            if(this.selected!=''){
+                this.refs.allloading.changeShowType(true,'优惠券金额超过抵扣利息的部分将不予留存！');
+            }else{
+                this.props.showToast("请选择优惠券");
+            }
+        }
+    }
+
+    sendContent=()=>{
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (datas) => {
+            if (datas.code == 1) {
+                let data = JSON.parse(datas.result);
+                let maps = {
+                    api: Urls.REPAYMENT_GET_ADJUST_SAVE,
+                    planid: this.props.items.planid,
+                    merge_id: data.base_user_id,
+                    coupon_number:movies.list[this.selected].coupon_code,
+                    coupon_id:movies.list[this.selected].coupon_id,
+                    adjustmoney:movies.list[this.selected].coupon_mny,
+                };
+                request(Urls.FINANCE, 'Post', maps)
+                    .then((response) => {
+                            this.props.showModal(false);
+                            this.props.showToast('使用成功');
+                            this.allRefresh();
+                        },
+                        (error) => {
+                            this.props.showModal(false);
+                            if (error.mycode == '-300' || error.mycode == '-500') {
+                                this.props.showToast('网络连接失败');
+                            } else {
+                                this.props.showToast(error.mjson.msg);
+                            }
+                        });
+            }
+        });
     }
 
     render() {
@@ -141,6 +187,12 @@ export  default class AdjustListScene extends BaseComponent {
                     renderSeparator={this._renderSeparator}
                     renderHeader={this._renderHeader}
                 />
+                <LendSuccessAlert title="使用规则" subtitle="仅适用于还息，可以叠加使用" ref='cgdModal'
+                                  confimClick={()=>{}}/>
+                <MyButton {...this.buttonParams}/>
+                <AllLoading ref="allloading" callBack={()=>{
+                 this.sendContent();
+                }}/>
             </View>
         );
     }
@@ -148,24 +200,41 @@ export  default class AdjustListScene extends BaseComponent {
     _selectCoupon = (rowId) => {
         this.selected = rowId;
         this.setState({
-            source: ds.cloneWithRows(['1', '2', '3']),
+            source: ds.cloneWithRows(movies.list),
         });
     };
 
+    getTimeStr = (selecttime) => {
+        let date = new Date(selecttime);
+        let seperator1 = ".";
+        let month = date.getMonth() + 1;
+        let strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        return currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;
+    }
+
     _renderRow = (movie, sectionId, rowId) => {
+        let coupon_begindate = movie.coupon_begindate.split(' ')[0].replace('-','.').replace('-','.');
+        let coupon_enddate = movie.coupon_enddate.split(' ')[0].replace('-','.').replace('-','.');
         return (
             <TouchableOpacity onPress={() => this._selectCoupon(rowId)}>
                 <Image style={styles.container} source={bg}>
                     <View style={styles.leftContainer}>
-                        <Text style={styles.leftTitle}>还息优惠券</Text>
-                        <Text style={styles.leftBottom}>有效期:2016.12.20-2017.02.20</Text>
+                        <Text style={styles.leftTitle}>{movie.coupon_name}</Text>
+                        <Text style={styles.leftBottom}>有效期:{coupon_begindate}-{coupon_enddate}</Text>
                     </View>
                     <View style={styles.rightContainer}>
                         <View style={styles.rightTitleContainer}>
                             <Text style={[styles.rightTitle, styles.rightTitleAlign]}>¥</Text>
-                            <Text style={styles.rightTitle}>25</Text>
+                            <Text style={styles.rightTitle}>{movie.coupon_mny}</Text>
                         </View>
                         <TouchableOpacity style={styles.rightBottom} onPress={() => {
+                                this.refs.cgdModal.setModelVisible(true);
                         }}>
                             <View>
                                 <Text style={styles.rightBottomText}>使用规则</Text>
@@ -314,4 +383,17 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT)
     },
+    parentStyle: {
+        height: Pixel.getPixel(44),
+        width: width,
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        bottom: 0,
+        backgroundColor: fontAndColor.COLORB0,
+    },
+    childStyle: {
+        fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+        color: '#ffffff',
+    }
 })

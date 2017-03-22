@@ -65,7 +65,7 @@ export  default class RepaymentInfoTopItem extends PureComponent {
                 <View style={styles.lineStyle}/>
                 <View style={styles.itemStyle}>
                     <Text style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0)}]}>
-                        {this.props.items.model_name_str}
+                        {this.props.items.model_name}
                     </Text>
                 </View>
             </View>

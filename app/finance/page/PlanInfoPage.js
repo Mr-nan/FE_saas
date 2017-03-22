@@ -24,6 +24,7 @@ let viewWidth = Pixel.getPixel(40);
 let list = [];
 let relist = [];
 import AdjustListScene from '../repayment/AdjustListScene';
+import  AllLoading from '../../component/AllLoading';
 export default class PlanInfoPage extends BaseComponent {
 
     // 构造
@@ -95,6 +96,13 @@ export default class PlanInfoPage extends BaseComponent {
                           childStyle={styles.loginButtonTextStyle}
                           mOnPress={this._useCoupon}/>
 
+                <AllLoading ref="allloading" callBack={()=>{
+                   this.props.callBack({
+                    name: 'AdjustListScene',
+                    component: AdjustListScene,
+                    params: {items: list[this.state.xuanzhong]}
+            });
+                }}/>
             </View>
         );
     }
@@ -108,10 +116,10 @@ export default class PlanInfoPage extends BaseComponent {
     }
 
     _useCoupon = () => {
-        if(this.state.xuanzhong==''){
-          this.props.showToast('请选择还款计划');
-        }else{
-          this.props.callBack({name:'AdjustListScene',component:AdjustListScene,params:{items:list[this.state.xuanzhong]}});
+        if (this.state.xuanzhong == '') {
+            this.props.showToast('请选择还款计划');
+        } else {
+           this.refs.allloading.changeShowType(true,'如果该笔融资发生提前还款导致已使用优惠券作废，将不予退还！');
         }
     }
     // 每一行中的数据
@@ -132,10 +140,12 @@ export default class PlanInfoPage extends BaseComponent {
                     <Text style={styles.rowTextStyle}>{rowData.dead_line}</Text>
                     <Text style={styles.rowTextStyle}>{rowData.repaymentmny}</Text>
                     <TouchableOpacity activeOpacity={1} onPress={() => {
-
-                        this._moneyAdjustClick(rowID)
+                        if(rowData.adjustmoney!='0'){
+                            this._moneyAdjustClick(rowID)
+                        }
                     }}>
-                        <Text style={[styles.rowTextStyle,rowData.adjustmoney!='0'?styles.textColors:{}]}>{rowData.adjustmoney}</Text>
+                        <Text
+                            style={[styles.rowTextStyle,rowData.adjustmoney!='0'?styles.textColors:{}]}>{rowData.adjustmoney}</Text>
                     </TouchableOpacity>
 
                     <Text style={styles.rowTextStyle}>{rowData.aftermny}</Text>
@@ -153,9 +163,9 @@ export default class PlanInfoPage extends BaseComponent {
     }
     _rowClick = (rowID) => {
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-     let array = new Array(...list);
+        let array = new Array(...list);
         this.setState({
-            xuanzhong:rowID,
+            xuanzhong: rowID,
             dataSource: ds.cloneWithRows(array),
         });
 
@@ -248,8 +258,8 @@ const styles = StyleSheet.create({
         color: fontAndClolr.COLORA3,
         fontSize: Pixel.getFontPixel(fontAndClolr.BUTTONFONT30)
     },
-    textColors:{
-        color:fontAndClolr.COLORB0
+    textColors: {
+        color: fontAndClolr.COLORB0
     }
 
 

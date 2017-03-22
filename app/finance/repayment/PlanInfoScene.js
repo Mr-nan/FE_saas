@@ -63,7 +63,7 @@ export  default class PlanInfoScene extends BaseComponent {
 
     getData = () => {
         let maps = {
-            api: Urls.GETPLANINFO,
+            api: Urls.REPAYMENT_GET_PLAN_INFO,
             loan_code: this.props.loan_code,
             loan_number: this.props.loan_number,
             plan_id: this.props.plan_id,
@@ -79,6 +79,7 @@ export  default class PlanInfoScene extends BaseComponent {
                     moneyList.push({name: '计息天数', data: movies.loan_day});
                     moneyList.push({name: '综合费率', data: movies.loan_rebate_str});
                     moneyList.push({name: '利息总额', data: movies.interest});
+                    moneyList.push({name: '优惠券抵扣金额', data: movies.used_mny_total});
 
                     nameList.push({name: '渠道名称', data: movies.qvdaoname});
                     nameList.push({
@@ -88,7 +89,11 @@ export  default class PlanInfoScene extends BaseComponent {
                     nameList.push({name: '开户行', data: movies.bank_info.bank + ''});
                     nameList.push({name: '开户支行', data: movies.bank_info.branch + ''});
                     nameList.push({name: '还款账号', data: movies.bank_info.repaymentnumber + ''});
-                    nameList.push({name: '保证金', data: movies.bondmny});
+                    if(movies.bondmny=='undefined'){
+                        nameList.push({name: '保证金', data: '0'});
+                    }else{
+                        nameList.push({name: '保证金', data: movies.bondmny});
+                    }
                     this.setState({
                         renderPlaceholderOnly: 'success'
                     });

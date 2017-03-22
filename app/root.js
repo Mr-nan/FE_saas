@@ -17,9 +17,9 @@ import CodePush from 'react-native-code-push';
 
 export default class root extends Component {
 
-    componentWillMount() {
-        CodePush.sync();
-    }
+    // componentWillMount() {
+    //     CodePush.sync();
+    // }
 
     render() {
         return (

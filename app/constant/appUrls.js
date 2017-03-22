@@ -189,9 +189,23 @@ export const GETPLANINFO = 'api/v2/Repayment/getPlanInfo';
 /**
  * from @zhaojian
  *
+ * 新获取还款计划详情
+ **/
+export const REPAYMENT_GET_PLAN_INFO = 'api/v5/Repayment/get_plan_info';
+
+/**
+ * from @zhaojian
+ *
  * 获取还款详情
  **/
 export const REPAYMENT_GETINFO = 'api/v2/Repayment/getInfo';
+
+/**
+ * from @zhaojian
+ *
+ * 获取提前还款详情
+ **/
+export const NEWREPAYMENT_CREDIT_APPLY_REPAYMENT = 'api/v5/NewRepayment/credit_apply_repayment';
 
 /**
  * from @zhaojian
@@ -217,9 +231,23 @@ export const APPLYREPAYMENT = 'api/v1/Repayment/applyRepayment';
 /**
  * from @zhaojian
  *
+ * 新申请提前还款
+ **/
+export const NEWREPAYMENT_APPLY_REPAYMENT = 'api/v5/NewRepayment/apply_repayment';
+
+/**
+ * from @zhaojian
+ *
  * 获取优惠券列表
  **/
 export const REPAYMENT_GET_ADJUST_USE = 'api/v5/Repayment/get_adjust_use';
+
+/**
+ * from @zhaojian
+ *
+ * 使用优惠券
+ **/
+export const REPAYMENT_GET_ADJUST_SAVE = 'api/v5/Repayment/get_adjust_save';
 
 /**
  * from @zhaojian
