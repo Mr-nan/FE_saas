@@ -30,6 +30,7 @@ export default class AmountConfirm extends BaseComponent {
             renderPlaceholderOnly: true,
             values: "",//输入框输入内容
             test: "",
+            boundState: "未绑定",
         };
     }
 
@@ -104,12 +105,9 @@ export default class AmountConfirm extends BaseComponent {
                         color: FontAndColor.COLORA0,
                         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),
                     }}>绑定状态</Text>
-                    <Text style={{
-                        flex: 1,
-                        color: FontAndColor.COLORA1,
-                        fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT),
-                        textAlign: 'right'
-                    }}>未邦定</Text>
+                    <Text
+                        style={this.state.boundState == "未绑定" ? styles.boundStateStyle : styles.boundSuccessStyle}>
+                        {this.state.boundState == "未绑定" ? "未绑定" : "已绑定"}</Text>
                 </View>
                 <View style={{backgroundColor: FontAndColor.COLORA4, width: width, height: Pixel.getPixel(1)}}/>
                 <View style={{
@@ -315,4 +313,16 @@ const styles = StyleSheet.create({
         textAlign: 'right',
         fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT30),
     },
+    boundStateStyle: {
+        flex: 1,
+        color: FontAndColor.COLORA1,
+        fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT),
+        textAlign: 'right'
+    },
+    boundSuccessStyle: {
+        flex: 1,
+        color: FontAndColor.COLORB0,
+        fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT),
+        textAlign: 'right'
+    }
 })
