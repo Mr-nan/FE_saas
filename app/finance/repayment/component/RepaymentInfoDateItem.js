@@ -58,6 +58,7 @@ export  default class RepaymentInfoDateItem extends PureComponent {
                 <DateTimePicker
                     isVisible={this.state.isDateTimePickerVisible}
                     onConfirm={this._handleDatePicked}
+                    minimumDate={new Date()}
                     onCancel={this._hideDateTimePicker}
                     titleIOS="请选择日期"
                     confirmTextIOS='确定'

@@ -1,4 +1,3 @@
-
 /**
  * 开发地址
  */
@@ -19,7 +18,7 @@ export const BASEURL = 'http://api-gateway.test.dycd.com/';
 /**
  * 预发布地址
  */
- // export const BASEURL = "http://st.open.bms.dycd.com/api/";
+// export const BASEURL = "http://st.open.bms.dycd.com/api/";
 
 
 /**
@@ -102,7 +101,7 @@ export const VININFO = BASEURL + V + 'car/vininfo';
 /**
  * 添加&修改车源
  */
-export const CAR_SAVE = BASEURL + V +'car/save';
+export const CAR_SAVE = BASEURL + V + 'car/save';
 
 /**
  * 图形验证码
@@ -148,7 +147,7 @@ export const USER_EMPLOYE = BASEURL + V + "user.employe/index";
  * from @zhaojian
  *
  * 获取借款主体
-**/
+ **/
 export const LOAN_SUBJECT = 'api/v1/user/get_loan_subject_list';
 
 /**
@@ -156,7 +155,7 @@ export const LOAN_SUBJECT = 'api/v1/user/get_loan_subject_list';
  *
  * 获取更新信息
  **/
-export const APP_UPDATE = BASEURL+'v1/system/index';
+export const APP_UPDATE = BASEURL + 'v1/system/index';
 
 /**
  * from @zhaojian
@@ -189,9 +188,23 @@ export const GETPLANINFO = 'api/v2/Repayment/getPlanInfo';
 /**
  * from @zhaojian
  *
+ * 新获取还款计划详情
+ **/
+export const REPAYMENT_GET_PLAN_INFO = 'api/v5/Repayment/get_plan_info';
+
+/**
+ * from @zhaojian
+ *
  * 获取还款详情
  **/
 export const REPAYMENT_GETINFO = 'api/v2/Repayment/getInfo';
+
+/**
+ * from @zhaojian
+ *
+ * 获取提前还款详情
+ **/
+export const NEWREPAYMENT_CREDIT_APPLY_REPAYMENT = 'api/v5/NewRepayment/credit_apply_repayment';
 
 /**
  * from @zhaojian
@@ -217,9 +230,30 @@ export const APPLYREPAYMENT = 'api/v1/Repayment/applyRepayment';
 /**
  * from @zhaojian
  *
+ * 新申请提前还款
+ **/
+export const NEWREPAYMENT_APPLY_REPAYMENT = 'api/v5/NewRepayment/apply_repayment';
+
+/**
+ * from @zhaojian
+ *
  * 获取优惠券列表
  **/
 export const REPAYMENT_GET_ADJUST_USE = 'api/v5/Repayment/get_adjust_use';
+
+/**
+ * from @huangning
+ *
+ * 使用优惠券列表
+ **/
+export const REPAYMENT_GET_ADJUST_SAVE = 'api/v5/Repayment/get_adjust_save';
+
+/**
+ * from @zhaojian
+ *
+ * 使用优惠券
+ **/
+export const REPAYMENT_GET_ADJUST_SAVE = 'api/v5/Repayment/get_adjust_save';
 
 /**
  * from @zhaojian
@@ -263,30 +297,30 @@ export const GET_MNY = 'api/v3/account/get_mny';
  *
  * 获取借款首页数据
  **/
-export const GET_APPLY_INFO='api/v3/account/get_apply_info';
+export const GET_APPLY_INFO = 'api/v3/account/get_apply_info';
 /**
  * from @lhc
  *
  * 修改借款金额
  **/
-export const SET_APPLY_MNY ='api/v3/account/set_apply_mny'
+export const SET_APPLY_MNY = 'api/v3/account/set_apply_mny'
 /**
  * from @lhc
  * 获取订单车辆列表
  **/
-export const  GET_APPLY_CARLIST='api/v2/account/get_apply_carlist';
+export const GET_APPLY_CARLIST = 'api/v2/account/get_apply_carlist';
 
 /**
  * from @lhc
  * 获取订单车辆详情
  **/
 
-export const  GET_CAR_INFO='api/v1/account/get_car_info'
+export const GET_CAR_INFO = 'api/v1/account/get_car_info'
 /**
  * from @lhc
  * 取消借款单车/库容
  **/
-export const CANCEL_LOAN='api/v3/account/cancel_loan'
+export const CANCEL_LOAN = 'api/v3/account/cancel_loan'
 
 /**
  * from @zhaojian
@@ -335,7 +369,7 @@ export const APPLY_EXTENSION_CARLIST = 'api/v1/account/apply_extension_carlist';
  *
  * 申请借款
  **/
-export const APPLY_LOAN='api/v3/account/apply_loan'
+export const APPLY_LOAN = 'api/v3/account/apply_loan'
 
 /**
  * 短信验证码

@@ -36,6 +36,7 @@ import * as storageKeyNames from '../constant/storageKeyNames';
 import WebScene from './WebScene';
 import  CarMySourceScene from '../carSource/CarMySourceScene';
 import  NewRepaymentInfoScene from '../finance/repayment/NewRepaymentInfoScene';
+import AllLoading from '../component/AllLoading';
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 let allList = [];
 export class HomeHeaderItemInfo {
@@ -196,6 +197,8 @@ export default class HomeScene extends BaseComponet {
                     }
                     onEndReached={this.toEnd}
                 />
+
+
 
             </View>
         )

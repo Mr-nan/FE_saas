@@ -128,6 +128,70 @@ export default class MineSectionListView extends BaseComponent {
         super(props);
         // 初始状态
         //    拿到所有的json数据
+         Car = [
+            {
+                "cars": [
+                    {
+                        "icon": require('../../images/mainImage/zhanghuguanli.png'),
+                        "name": "账户管理"
+                    },
+                    {
+                        "icon": require('../../images/mainImage/yuangongguanli.png'),
+                        "name": "员工管理"
+                    },
+                ],
+                "title": "section0"
+            },
+            {
+                "cars": [
+                    // {
+                    //     "icon": require('../../images/mainImage/youhuiquanguanli.png'),
+                    //     "name": "优惠券管理"
+                    // },
+                    {
+                        "icon": require('../../images/mainImage/hetongguanli.png'),
+                        "name": "合同管理"
+                    },
+                ],
+                "title": "section1"
+            },
+            {
+                "cars": [
+                    {
+                        "icon": require('../../images/mainImage/myCarSource.png'),
+                        "name": "我的车源"
+                    },
+                    {
+                        "icon": require('../../images/mainImage/shoucangjilu.png'),
+                        "name": "收藏记录"
+                    },
+                    {
+                        "icon": require('../../images/mainImage/liulanlishi.png'),
+                        "name": "浏览历史"
+                    },
+
+                ],
+                "title": "section2"
+            },
+            {
+                "cars": [
+                    {
+                        "icon": require('../../images/mainImage/shezhi.png'),
+                        "name": "设置"
+                    },
+                ],
+                "title": "section3"
+            },
+            {
+                "cars": [
+                    {
+                        "icon": require('../../images/mainImage/shezhi.png'),
+                        "name": "blank"
+                    },
+                ],
+                "title": "section3"
+            },
+        ]
         this.state = {
             renderPlaceholderOnly: 'blank'
         };

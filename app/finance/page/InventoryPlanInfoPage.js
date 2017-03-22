@@ -20,32 +20,19 @@ const Pixel = new PixelUtil();
 import * as fontAndColor from '../../constant/fontAndColor';
 let movies = {};
 import BaseComponent from '../../component/BaseComponent';
-import NewRepaymentInfoTopItem from '../repayment/component/NewRepaymentInfoTopItem';
-import MyButton from '../../component/MyButton';
-import RepaymentInfoContentItem from '../repayment/component/RepaymentInfoContentItem';
-import AllBottomItem from '../repayment/component/AllBottomItem';
-import RepaymentCreditInfoScene from '../repayment/RepaymentCreditInfoScene';
-let moneyList = [];
-let nameList = [];
-
+import  InventoryRepaymentInfoTop from '../repayment/component/NewInventoryRepaymentInfoTop';
+import  InventoryAdjustInfoScene from '../repayment/InventoryAdjustInfoScene';
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
-export  default class RepaymentInfoPage extends BaseComponent {
+export default class InventoryRepaymentInfoScene extends BaseComponent {
 
     constructor(props) {
         super(props);
         // 初始状态
-        let mList = ['1', '2', '3', '4'];
-        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            source: ds.cloneWithRows(mList),
+            source: [],
             renderPlaceholderOnly: 'blank'
         };
-    }
-
-    componentWillUnmount() {
-        moneyList = [];
-        nameList = [];
     }
 
     componentDidMount() {
@@ -60,53 +47,28 @@ export  default class RepaymentInfoPage extends BaseComponent {
     }
 
     allRefresh = () => {
-        moneyList = [];
-        nameList = [];
         this.setState({renderPlaceholderOnly: 'loading'});
         this.getData();
     }
 
     getData = () => {
         let maps = {
-            api: Urls.NEWREPAYMENT_GET_INFO,
+            api: Urls.REPAYMENT_GETONLINEINFO,
             loan_id: this.props.loan_id,
-            loan_number: this.props.loan_number,
-            type: '2',
+            type: '4',
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
                     movies = response.mjson.data;
-                    moneyList.push({name: '利息总额', data: movies.interest_total});
-                    moneyList.push({name: '已还利息', data: movies.interest});
-                    moneyList.push({name: '待还利息', data: movies.interest_other});
-                    moneyList.push({name: '使用优惠券数量', data: movies.coupon_info.coupon_repayment});
-                    moneyList.push({name: '使用优惠券金额', data: movies.coupon_info.coupon_number});
-                    moneyList.push({name: '优惠券还息金额', data: movies.coupon_info.coupon_usable});
-
-                    nameList.push({name: '渠道名称', data: movies.qvdaoname});
-                    nameList.push({name: '还款账户', data: movies.bank_info.repaymentaccount});
-                    nameList.push({name: '开户行', data: movies.bank_info.bank});
-                    nameList.push({name: '开户支行', data: movies.bank_info.branch});
-                    nameList.push({name: '还款账号', data: movies.bank_info.repaymentnumber});
-                    this.setState({renderPlaceholderOnly: 'success'});
+                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                    this.setState({renderPlaceholderOnly: 'success', source: ds.cloneWithRows(movies.list)});
                 },
                 (error) => {
                     this.setState({renderPlaceholderOnly: 'error'});
                 });
     }
 
-    buttonParams = {
-        buttonType: MyButton.TEXTBUTTON,
-        parentStyle: styles.parentStyle,
-        childStyle: styles.childStyle,
-        opacity: 0.9,
-        content: '申请提前还款',
-        mOnPress: () => {
-             this.props.callBack({name:'RepaymentCreditInfoScene',component:RepaymentCreditInfoScene,params:{
-                 loan_number:this.props.loan_number,from:'SingleRepaymentPage'
-             }});
-        }
-    }
+
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
@@ -114,14 +76,14 @@ export  default class RepaymentInfoPage extends BaseComponent {
         }
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
+                <InventoryRepaymentInfoTop itemData={movies}/>
                 <ListView
-                    style={{marginTop:Pixel.getPixel(5)}}
+                    style={{marginTop: Pixel.getPixel(10)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
                     showsVerticalScrollIndicator={false}
                 />
-                <MyButton {...this.buttonParams}/>
             </View>
         );
     }
@@ -135,24 +97,40 @@ export  default class RepaymentInfoPage extends BaseComponent {
     }
 
     _renderRow = (movie, sectionId, rowId) => {
-        if (rowId == 0) {
-            return (
-                <NewRepaymentInfoTopItem items={movies}/>
-            )
-        } else if(rowId == 1){
-            return (
-                <RepaymentInfoContentItem items={nameList}/>
-            )
-        }else if(rowId == 2){
-            return (
-                <RepaymentInfoContentItem items={moneyList}/>
-            )
-        }else{
-            return (
-                <AllBottomItem/>
-            )
+        let repaymentStatus = '';
+        if (movie.status == '0') {
+            repaymentStatus = '未还';
+        } else if (movie.status == '1') {
+            repaymentStatus = '待确认';
+        } else {
+            repaymentStatus = '已还';
         }
+        return (
+            <TouchableOpacity onPress={()=>{
+                 if(movie.adjustmoney!=null&&movie.adjustmoney!='0'&&movie.adjustmoney!='无'&&movie.adjustmoney!=' '){
 
+                     this.props.callBack({name:'InventoryAdjustInfoScene',component:InventoryAdjustInfoScene,params:{planid:movie.planid}});
+                 }
+            }} activeOpacity={0.8}
+                              style={{width:width,height:Pixel.getPixel(75),
+                backgroundColor: '#ffffff',flexDirection:'row',
+                paddingRight:Pixel.getPixel(15),paddingLeft:Pixel.getPixel(15)}}>
+                <View style={{flex:1,justifyContent:'center'}}>
+                    <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30), color:fontAndColor.COLORA0}}>
+                        还款日：{movie.dead_line}</Text>
+                    <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                    color:fontAndColor.COLORA1,marginTop:Pixel.getPixel(9)}}>{repaymentStatus}</Text>
+                </View>
+                <View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
+                    <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                    color:fontAndColor.COLORB2,}}>
+                        {movie.plantype == '1' ? '本'+movie.repaymentmny : '息'+movie.repaymentmny}
+                    </Text>
+                    <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                    color:fontAndColor.COLORA1,marginTop:Pixel.getPixel(9)}}>调整：{movie.adjustmoney}</Text>
+                </View>
+            </TouchableOpacity>
+        )
     }
 
     _renderSeparator(sectionId, rowId) {
@@ -171,7 +149,7 @@ const styles = StyleSheet.create({
         height: 43,
     },
     Separator: {
-        height: Pixel.getPixel(10),
+        height: Pixel.getPixel(1),
         backgroundColor: fontAndColor.COLORA3
 
     },

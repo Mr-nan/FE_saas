@@ -22,7 +22,7 @@ import RepaymenyTabBar from './component/RepaymenyTabBar';
 import NavigationView from '../../component/AllNavigationView';
 import * as fontAndColor from '../../constant/fontAndColor';
 import PlanListScene from './PlanListScene';
-import RepaymentInfoPage from '../page/RepaymentInfoPage';
+import InventoryPlanInfoPage from '../page/InventoryPlanInfoPage';
 import PlanInfoScene from '../page/PlanInfoPage';
 export  default class NewRepaymentInfoScene extends BaseComponent {
 
@@ -30,6 +30,7 @@ export  default class NewRepaymentInfoScene extends BaseComponent {
         super(props, context);
         this.state = {renderPlaceholderOnly: 'blank'};
     }
+
 
     initFinish = () => {
         this.setState({renderPlaceholderOnly: 'success'});
@@ -49,9 +50,10 @@ export  default class NewRepaymentInfoScene extends BaseComponent {
                     locked={true}
                     renderTabBar={() => <RepaymenyTabBar tabName={["还款详情", "还款计划"]}/>}
                 >
-                    <RepaymentInfoPage callBack={(params)=>{
+                    <InventoryPlanInfoPage callBack={(params)=>{
                         this.toNextPage(params)
                     }} loan_id={this.props.loan_id} loan_number={this.props.loan_number}  tabLabel="ios-paper"/>
+
                     <PlanInfoScene callBack={(params)=>{
                         this.toNextPage(params)
                     }} showToast={(content)=>{
