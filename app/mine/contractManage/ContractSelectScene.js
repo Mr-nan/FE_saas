@@ -20,45 +20,19 @@ import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 import BaseComponent from "../../component/BaseComponent";
 import NavigatorView from '../../component/AllNavigationView';
+import AdjustManageListScene from './AdjustManageListScene';
 /*
  * 获取屏幕的宽和高
  **/
 const {width, height} = Dimensions.get('window');
-let page = 1;
-let allPage = 1;
-let allSouce = [];
-export default class ContractManageScene extends BaseComponent {
+export default class AdjustManageScene extends BaseComponent {
     initFinish = () => {
-        this.getData();
-    }
-
-    componentWillUnmount() {
-        allSouce = [];
-    }
-
-    getData = () => {
-        let maps = {
-            page: page,
-            rows: 10,
-            api : Urls.LOAN_SUBJECT,
-        };
-        request(Urls.FINANCE, 'Post', maps)
-            .then((response) => {
-                    if (page == 1 && response.mjson.data.length <= 0) {
-                        this.setState({renderPlaceholderOnly: 'null'});
-                    } else {
-                        allSouce.push(...response.mjson.data);
-                        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                        this.setState({
-                            dataSource: ds.cloneWithRows(allSouce),
-                            isRefreshing: false
-                        });
-                        this.setState({renderPlaceholderOnly: 'success'});
-                    }
-                },
-                (error) => {
-                    this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
-                });
+        let select = ["线上签署","线下签署"];
+        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.setState({
+            dataSource:ds.cloneWithRows(select),
+            renderPlaceholderOnly:'success'
+        });
     }
     // 构造
     constructor(props) {
@@ -71,32 +45,6 @@ export default class ContractManageScene extends BaseComponent {
 
     }
 
-    refreshingData = () => {
-        allSouce = [];
-        this.setState({isRefreshing: true});
-        page = 1;
-        this.getData();
-    };
-
-    toEnd = () => {
-        if (this.state.isRefreshing) {
-
-        } else {
-            if (page < allPage) {
-                page++;
-                this.getData();
-            }
-        }
-
-    };
-
-    renderListFooter = () => {
-        if (this.state.isRefreshing) {
-            return null;
-        } else {
-            return (<LoadMoreFooter isLoadAll={page>=allPage?true:false}/>)
-        }
-    }
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
@@ -108,24 +56,10 @@ export default class ContractManageScene extends BaseComponent {
         }else {
             return (<View style={styles.container}>
                 <NavigatorView title='合同管理' backIconClick={this.backPage}/>
-
-
-                <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(64)}}
+                <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(74)}}
                           dataSource={this.state.dataSource}
                           renderRow={this._renderRow}
                           enableEmptySections = {true}
-                          renderFooter={
-                              this.renderListFooter
-                          }
-                          onEndReached={this.toEnd}
-                          refreshControl={
-                              <RefreshControl
-                                  refreshing={this.state.isRefreshing}
-                                  onRefresh={this.refreshingData}
-                                  tintColor={[fontAndColor.COLORB0]}
-                                  colors={[fontAndColor.COLORB0]}
-                              />
-                          }
                 />
 
             </View>);
@@ -142,15 +76,15 @@ export default class ContractManageScene extends BaseComponent {
                             this.setState({renderPlaceholderOnly: 'loading'});
                             this.getData();
                         },
-                name: 'SignContractScene',
-                component: SignContractScene,
+                name: 'AdjustManageListScene',
+                component: AdjustManageListScene,
                 params: {
-                    opt_user_id: rowData.user_id,
+                    base_id: rowData.merge_id,
                 },
             })}}>
                 <View style={styles.rowView} >
-                    <Text style={styles.rowLeftTitle}>{rowData.companyname}</Text>
-                    <Text style={styles.rowRightTitle} >{rowData.contract_num}份未签署合同</Text>
+                    <Text style={styles.rowLeftTitle}>{rowData}</Text>
+                    <Text style={styles.rowRightTitle} ></Text>
                     <Image source={cellJianTou} style={styles.image}></Image>
 
                 </View>
