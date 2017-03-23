@@ -148,7 +148,7 @@ export default class LoginScene extends BaseComponent {
                         <LoginAutoSearchInputText
                             ref="loginUsername"
                             searchBtShow={true}
-                            inputPlaceholder={"请输入用户名123123"}
+                            inputPlaceholder={"请输入用户名"}
                             itemStyel={[styles.itemStyel]}
                             keyboardType={'phone-pad'}
                             clearValue={true}
