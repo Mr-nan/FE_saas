@@ -100,14 +100,14 @@ export default class NavigationBar extends PureComponent {
 
 const styles = StyleSheet.create({
     buttonStyle: {
-        width: Pixel.getPixel(80),
+        width: Pixel.getPixel(100),
         paddingTop: Pixel.getPixel(5),
         paddingBottom: Pixel.getPixel(5),
         paddingLeft: Pixel.getPixel(15),
         paddingRight: Pixel.getPixel(15),
     },
     rightButtonStyle: {
-        width: Pixel.getPixel(80),
+        width: Pixel.getPixel(100),
         paddingTop: Pixel.getPixel(5),
         paddingBottom: Pixel.getPixel(5),
         paddingLeft: Pixel.getPixel(15),
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
         paddingTop: Pixel.getPixel(5),
         paddingBottom: Pixel.getPixel(5),
         color: FontAndColor.COLORA3,
-        width: Pixel.getPixel(80),
+        width: Pixel.getPixel(100),
     },
     rightTextStyle: {
         textAlign: 'right',
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
         paddingTop: Pixel.getPixel(5),
         paddingBottom: Pixel.getPixel(5),
         color: FontAndColor.COLORA3,
-        width: Pixel.getPixel(80),
+        width: Pixel.getPixel(100),
     },
     centerTextStyle: {
         flex: 1,

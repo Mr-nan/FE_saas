@@ -6,6 +6,7 @@ import * as FontAndColor from "../constant/fontAndColor";
 import LoginScene from "./LoginScene";
 import Register from "./Register";
 import PixelUtil from "../utils/PixelUtil";
+import OBDDevice from "./OBDDevice";
 
 var Pixel = new PixelUtil();
 var Dimensions = require('Dimensions');
@@ -54,6 +55,15 @@ export default class LoginAndRegister extends BaseComponent {
                     this.toNextPage({
                         name: 'Register',
                         component: Register,
+                        params: {},
+                    })
+                }}/>
+
+                <MyButton buttonType={MyButton.TEXTBUTTON} content="OBD设备" parentStyle={styles.buttonStyle}
+                          childStyle={styles.buttonTextStyle} mOnPress={() => {
+                    this.toNextPage({
+                        name: 'OBDDevice',
+                        component: OBDDevice,
                         params: {},
                     })
                 }}/>
