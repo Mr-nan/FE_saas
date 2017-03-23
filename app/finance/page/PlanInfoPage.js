@@ -25,6 +25,7 @@ let list = [];
 let relist = [];
 import AdjustListScene from '../repayment/AdjustListScene';
 import  AllLoading from '../../component/AllLoading';
+import  AdjustListModal from '../../component/AdjustListModal';
 export default class PlanInfoPage extends BaseComponent {
 
     // 构造
@@ -103,6 +104,7 @@ export default class PlanInfoPage extends BaseComponent {
                     params: {items: list[this.state.xuanzhong]}
             });
                 }}/>
+                <AdjustListModal ref="showadjust"/>
             </View>
         );
     }
@@ -171,7 +173,7 @@ export default class PlanInfoPage extends BaseComponent {
 
     }
     _moneyAdjustClick = (rowID) => {
-        alert(rowID)
+        this.refs.showadjust.changeShowType(true,list[rowID].relist);
     }
     // Header
     _renderHeader = () => {

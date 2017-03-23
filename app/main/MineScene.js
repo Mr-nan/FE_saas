@@ -19,6 +19,7 @@ import repayDetailsScene from '../mine/accountManage/repayDetailsScene'
 import ContractManageScene from '../mine/contractManage/ContractManageScene';
 
 import AccountManageScene from '../mine/accountManage/AccountManageScene'
+import AdjustManageScene from '../mine/adjustManage/AdjustManageScene'
 import EmployeeManageScene from '../mine/employeeManage/EmployeeManageScene'
 import CouponAllScene from '../mine/couponManage/CouponAllScene'
 import Setting from './../mine/setting/Setting'
@@ -144,10 +145,10 @@ export default class MineSectionListView extends BaseComponent {
             },
             {
                 "cars": [
-                    // {
-                    //     "icon": require('../../images/mainImage/youhuiquanguanli.png'),
-                    //     "name": "优惠券管理"
-                    // },
+                    {
+                        "icon": require('../../images/mainImage/youhuiquanguanli.png'),
+                        "name": "优惠券管理"
+                    },
                     {
                         "icon": require('../../images/mainImage/hetongguanli.png'),
                         "name": "合同管理"
@@ -330,8 +331,8 @@ export default class MineSectionListView extends BaseComponent {
                 this.navigatorParams.component = AccountManageScene
                 break;
             case '优惠券管理':
-                this.navigatorParams.name = 'CouponAllScene'
-                this.navigatorParams.component = CouponAllScene
+                this.navigatorParams.name = 'AdjustManageScene'
+                this.navigatorParams.component = AdjustManageScene
                 break;
             case '积分管理':
                 break;

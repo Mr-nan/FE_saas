@@ -20,6 +20,7 @@ import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 import BaseComponent from "../../component/BaseComponent";
 import NavigatorView from '../../component/AllNavigationView';
+import AdjustManageListScene from './AdjustManageListScene';
 /*
  * 获取屏幕的宽和高
  **/
@@ -27,7 +28,7 @@ const {width, height} = Dimensions.get('window');
 let page = 1;
 let allPage = 1;
 let allSouce = [];
-export default class ContractManageScene extends BaseComponent {
+export default class AdjustManageScene extends BaseComponent {
     initFinish = () => {
         this.getData();
     }
@@ -103,14 +104,14 @@ export default class ContractManageScene extends BaseComponent {
             return ( <View style={styles.container}>
 
                 {this.loadView()}
-                <NavigatorView title='合同管理' backIconClick={this.backPage}/>
+                <NavigatorView title='优惠券' backIconClick={this.backPage}/>
             </View>);
         }else {
             return (<View style={styles.container}>
-                <NavigatorView title='合同管理' backIconClick={this.backPage}/>
+                <NavigatorView title='优惠券' backIconClick={this.backPage}/>
 
 
-                <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(64)}}
+                <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(74)}}
                           dataSource={this.state.dataSource}
                           renderRow={this._renderRow}
                           enableEmptySections = {true}
@@ -142,15 +143,15 @@ export default class ContractManageScene extends BaseComponent {
                             this.setState({renderPlaceholderOnly: 'loading'});
                             this.getData();
                         },
-                name: 'SignContractScene',
-                component: SignContractScene,
+                name: 'AdjustManageListScene',
+                component: AdjustManageListScene,
                 params: {
-                    opt_user_id: rowData.user_id,
+                    base_id: rowData.merge_id,
                 },
             })}}>
                 <View style={styles.rowView} >
                     <Text style={styles.rowLeftTitle}>{rowData.companyname}</Text>
-                    <Text style={styles.rowRightTitle} >{rowData.contract_num}份未签署合同</Text>
+                    <Text style={styles.rowRightTitle} ></Text>
                     <Image source={cellJianTou} style={styles.image}></Image>
 
                 </View>
