@@ -195,6 +195,13 @@ export const REPAYMENT_GET_PLAN_INFO = 'api/v5/Repayment/get_plan_info';
 /**
  * from @zhaojian
  *
+ * 单个企业优惠券列表
+ **/
+export const USER_COUPON_LISTBYUID = BASEURL+'v1/user.coupon/listByUid';
+
+/**
+ * from @zhaojian
+ *
  * 获取还款详情
  **/
 export const REPAYMENT_GETINFO = 'api/v2/Repayment/getInfo';
@@ -241,12 +248,6 @@ export const NEWREPAYMENT_APPLY_REPAYMENT = 'api/v5/NewRepayment/apply_repayment
  **/
 export const REPAYMENT_GET_ADJUST_USE = 'api/v5/Repayment/get_adjust_use';
 
-/**
- * from @huangning
- *
- * 使用优惠券列表
- **/
-export const REPAYMENT_GET_ADJUST_SAVE = 'api/v5/Repayment/get_adjust_save';
 
 /**
  * from @zhaojian
