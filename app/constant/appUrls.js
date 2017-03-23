@@ -197,7 +197,7 @@ export const REPAYMENT_GET_PLAN_INFO = 'api/v5/Repayment/get_plan_info';
  *
  * 单个企业优惠券列表
  **/
-export const USER_COUPON_LISTBYUID = BASEURL+'v1/user.coupon/listByUid';
+export const USER_COUPON_LISTBYUID = BASEURL + 'v1/user.coupon/listByUid';
 
 /**
  * from @zhaojian
@@ -349,6 +349,20 @@ export const GET_APPLY_LOAN_DATA = 'api/v3/account/get_apply_loan_data';
  * 申请展期
  **/
 export const DO_EXTENSION = 'api/v1/account/do_extension';
+
+/**
+ * from @huangning
+ *
+ * 绑定OBD设备
+ **/
+export const BINDOBD = 'api/v1/purchaAuto/bindObd';
+
+/**
+ * from @huangning
+ *
+ * 检测OBD
+ **/
+export const AUTODETECTOBD = "api/v1/purchaAuto/autoDetectObd";
 
 /**
  * from @huangning
