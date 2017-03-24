@@ -8,29 +8,25 @@
  */
 
 #import "AppDelegate.h"
-#import <CodePush/CodePush.h>
+#import "CodePush.h"
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import "RCTLinkingManager.h"
 #import <RCTHotUpdate/RCTHotUpdate.h>
 
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
- NSURL *jsCodeLocation;
+NSURL *jsCodeLocation;
 
-#if DEBUG
-  // 原来的jsCodeLocation
-  
 #ifdef DEBUG
     jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 #else
     jsCodeLocation = [CodePush bundleURL];
 #endif
-#else
-  jsCodeLocation=[RCTHotUpdate bundleURL];
-#endif
+
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"FE_Sass"

@@ -21,6 +21,7 @@ import NavigationView from '../component/AllNavigationView';
 import Gallery from 'react-native-gallery';
 import PixelUtil from '../utils/PixelUtil';
 import {LendSuccessAlert} from '../finance/lend/component/ModelComponent';
+import CGDSelectPatternScene from '../finance/lend/CGDSelectPatternScene';
 import * as weChat from 'react-native-wechat';
 const Pixel = new PixelUtil();
 
@@ -29,8 +30,9 @@ import * as AppUrls from "../constant/appUrls";
 
 var ScreenWidth = Dimensions.get('window').width;
 var ScreenHeight = Dimensions.get('window').height;
-
 let resolveAssetSource = require('resolveAssetSource');
+
+
 
 const carParameterViewColor = [
 
@@ -182,7 +184,15 @@ export default class CarInfoScene extends BaseComponent {
     // 打开分享
     showShared=()=>{
 
-        this.refs.LendSuccessAlert.setModelVisible(true);
+        let navigatorParams = {
+            name: "CGDSelectPatternScene",
+            component: CGDSelectPatternScene,
+            params: {
+
+            }
+        }
+        this.toNextPage(navigatorParams);
+        // this.refs.LendSuccessAlert.setModelVisible(true);
         // this.refs.sharedView.isVisible(true);
     }
 
@@ -334,7 +344,7 @@ export default class CarInfoScene extends BaseComponent {
         return (
             <View ref="carInfoScene" style={{flex: 1, backgroundColor: 'white'}}>
 
-                <ScrollView style={{marginBottom: Pixel.getPixel(44)}}
+                <ScrollView style={{marginBottom: Pixel.getPixel (44)}}
                             scrollEventThrottle={200}
                             onScroll={this.setNavitgationBackgroundColor}
                 >
