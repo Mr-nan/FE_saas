@@ -31,6 +31,7 @@ export default class BrowseImageView extends BaseComponent{
                              onCancel={this.onCancel}
                              index={this.props.index}
                              onClick={this.onCancel}
+                             saveToLocalByLongPress={false}
                 />
         )
     }
