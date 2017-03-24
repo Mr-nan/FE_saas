@@ -124,9 +124,9 @@ export default class SetPwd extends BaseComponent {
         } else {
             let device_code = '';
             if (Platform.OS === 'android') {
-                device_code = 'dycd_bms_android';
+                device_code = 'dycd_platform_android';
             } else {
-                device_code = 'dycd_bms_ios';
+                device_code = 'dycd_platform_ios';
             }
             let maps = {
                 device_code: device_code,
