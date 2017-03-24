@@ -18,7 +18,6 @@ import * as FontAndColor from "../constant/fontAndColor";
 import PixelUtil from "../utils/PixelUtil";
 import MyButton from '../component/MyButton';
 import LoginInputText from './component/LoginInputText';
-import Qrcodes from './Qrcodes';
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -154,11 +153,7 @@ export default class AmountConfirm extends BaseComponent {
                     <View style={{width: Pixel.getPixel(22)}}/>
                     <MyButton buttonType={MyButton.TEXTBUTTON} content="手动绑定" parentStyle={styles.buttonStyle}
                               childStyle={styles.buttonTextStyle} mOnPress={() => {
-                        this.toNextPage({
-                            name: 'Qrcodes',
-                            component: Qrcodes,
-                            params: {},
-                        })
+
 
                     }}/>
                 </View>

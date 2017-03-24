@@ -218,9 +218,9 @@ export default class KurongSence extends BaseComponent {
                                         PostData.loan_life=num;
                                         this.dateLimit.changeText(placeHodel);
                                         if(num=="360"){
-                                            this.getData("360天")
+                                            this.getData("360")
                                         }else{
-                                             this.getData(num+"天")
+                                             this.getData(num)
                                         }
                                     },
                                 });

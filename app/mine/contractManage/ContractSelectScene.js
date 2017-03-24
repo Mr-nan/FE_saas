@@ -12,22 +12,18 @@ import  {
 
 import * as fontAndColor from '../../constant/fontAndColor';
 import  PixelUtil from '../../utils/PixelUtil'
-import SignContractScene from '../contractManage/SignContractScene'
 var Pixel = new PixelUtil();
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
-import  LoadMoreFooter from '../../component/LoadMoreFooter';
-import {request} from '../../utils/RequestUtil';
-import * as Urls from '../../constant/appUrls';
 import BaseComponent from "../../component/BaseComponent";
 import NavigatorView from '../../component/AllNavigationView';
-import AdjustManageListScene from './AdjustManageListScene';
+import ContractManageScene from './ContractManageScene';
 /*
  * 获取屏幕的宽和高
  **/
 const {width, height} = Dimensions.get('window');
 export default class AdjustManageScene extends BaseComponent {
     initFinish = () => {
-        let select = ["线上签署","线下签署"];
+        let select = ["售后回租合同","非售后回租合同"];
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.setState({
             dataSource:ds.cloneWithRows(select),
@@ -67,21 +63,18 @@ export default class AdjustManageScene extends BaseComponent {
     }
 
     // 每一行中的数据
-    _renderRow = (rowData, rowID, selectionID) => {
+    _renderRow = (rowData, selectionID, rowID) => {
         return (
             <TouchableOpacity
                 onPress={()=>{
-                    this.toNextPage({
-                        callBack: () => {
-                            this.setState({renderPlaceholderOnly: 'loading'});
-                            this.getData();
-                        },
-                name: 'AdjustManageListScene',
-                component: AdjustManageListScene,
-                params: {
-                    base_id: rowData.merge_id,
-                },
-            })}}>
+                  if(rowID==0){
+                      this.toNextPage({name:'ContractManageScene',component:ContractManageScene,params:{from:'xs'}});
+                  }else{
+                      this.toNextPage({name:'ContractManageScene',component:ContractManageScene,params:{from:'xx'}});
+                  }
+                }}
+                activeOpacity={0.9}
+            >
                 <View style={styles.rowView} >
                     <Text style={styles.rowLeftTitle}>{rowData}</Text>
                     <Text style={styles.rowRightTitle} ></Text>
