@@ -48,9 +48,8 @@ export  default class ContractInfoScene extends BaseComponent {
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
                     RJson = response.mjson;
-                    let ds = new ViewPager.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                     this.setState({
-                        dataSource: ds.cloneWithPages(RJson.data.contract_list[0].contract_url),
+                        dataSource: RJson.data.contract_list[namePage].contract_url,
                         renderPlaceholderOnly: 'success',
                     });
                 },
@@ -94,10 +93,10 @@ export  default class ContractInfoScene extends BaseComponent {
                     }} activeOpacity={0.8} style={{flex:1,backgroundColor:fontAndColor.COLORA2,justifyContent:'center'
                     ,alignItems:'center',flexDirection:'row'}}>
                         <Image style={{width:Pixel.getPixel(14),height:Pixel.getPixel(15)}}
-                               source={require('../../../images/financeImages/contractInfo.png')}/>
+                               source={require('../../../../images/financeImages/contractInfo.png')}/>
                         <Text numberOfLines={1} style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                         color:'#fff',width:width/2-Pixel.getPixel(Pixel.getPixel(28)),marginLeft:Pixel.getPixel(5)}}>
-                            {RJson.data[numberPage].contract[namePage].name}</Text>
+                            {RJson.data.contract_list[namePage].contract_name}</Text>
                     </TouchableOpacity>
                     {this.props.showButton == true ? <TouchableOpacity onPress={()=>{
                        this.contractSign();

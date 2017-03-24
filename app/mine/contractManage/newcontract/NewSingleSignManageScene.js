@@ -15,7 +15,7 @@ import * as fontAndColor from '../../../constant/fontAndColor';
 import  PixelUtil from '../../../utils/PixelUtil'
 var Pixel = new PixelUtil();
 const cellJianTou = require('../../../../images/mainImage/celljiantou@2x.png');
-import ContractSignScene from '../ContractSignScene';
+import ContractSignScene from './NewContractInfoScene';
 import BaseComponent from "../../../component/BaseComponent";
 import {request} from '../../../utils/RequestUtil';
 import * as Urls from '../../../constant/appUrls';
@@ -143,16 +143,14 @@ export default class SingleSignManageScene extends BaseComponent {
                         name: 'ContractSignScene',
                         component: ContractSignScene,
                         params: {
-                            contract_id: rowData.contract_id,   //合同ID
-                            contract_log_id: rowData.contract_log_id,	//合同日志ID
-                            product_type_code: rowData.product_type_code,	//产品类型编码
+                            payment_number: rowData.payment_number,   //合同ID
                             showButton: false
                         },
                     })
                 }}>
                 <View style={styles.rowView}>
                     <View style={styles.rowLeft}>
-                        <Text style={styles.rowLeftTitle}>{rowData.product_type_ch}</Text>
+                        <Text style={styles.rowLeftTitle}>{rowData.product}</Text>
                         <Text style={styles.rowLeftTitle1}>{rowData.payment_number}</Text>
                     </View>
                     <Image source={cellJianTou} style={styles.image}></Image>

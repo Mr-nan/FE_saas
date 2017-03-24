@@ -15,6 +15,7 @@ import {
 const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../../utils/PixelUtil';
 const Pixel = new PixelUtil();
+import * as fontAndColor from '../../../constant/fontAndColor';
 import BaseComponent from '../../../component/BaseComponent';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import RepaymenyTabBar from '../../../finance/repayment/component/RepaymenyTabBar';
@@ -30,7 +31,7 @@ export  default class SignContractScene extends BaseComponent {
 
     render() {
         return (
-        <View style={{width:width,height:height}}>
+        <View style={{width:width,height:height,backgroundColor: fontAndColor.COLORA3}}>
             <NavigationView
                 title="合同管理"
                 backIconClick={this.backPage}

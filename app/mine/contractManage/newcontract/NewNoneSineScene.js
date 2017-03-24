@@ -14,7 +14,7 @@ import  {
 import * as fontAndColor from '../../../constant/fontAndColor';
 import  PixelUtil from '../../../utils/PixelUtil'
 var Pixel = new PixelUtil();
-import ContractSignScene from '../ContractSignScene';
+import ContractSignScene from './NewContractInfoScene';
 import BaseComponent from "../../../component/BaseComponent";
 import {request} from '../../../utils/RequestUtil';
 import * as Urls from '../../../constant/appUrls';
