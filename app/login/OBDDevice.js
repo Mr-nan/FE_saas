@@ -18,7 +18,7 @@ import * as FontAndColor from "../constant/fontAndColor";
 import PixelUtil from "../utils/PixelUtil";
 import MyButton from '../component/MyButton';
 import LoginInputText from './component/LoginInputText';
-import Qrcodes from './Qrcodes';
+
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
