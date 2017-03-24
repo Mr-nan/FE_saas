@@ -14,12 +14,12 @@ import  {
 import * as fontAndColor from '../../../constant/fontAndColor';
 import  PixelUtil from '../../../utils/PixelUtil'
 var Pixel = new PixelUtil();
-const cellJianTou = require('../../../../images/mainImage/celljiantou@2x.png');
-import ContractSignScene from '../contractManage/ContractSignScene';
-import BaseComponent from "../../component/BaseComponent";
-import {request} from '../../utils/RequestUtil';
-import * as Urls from '../../constant/appUrls';
-import  LoadMoreFooter from '../../component/LoadMoreFooter';
+const cellJianTou = require('../../../../images/mainImage/celljiantou.png');
+import ContractSignScene from '../ContractSignScene';
+import BaseComponent from "../../../component/BaseComponent";
+import {request} from '../../../utils/RequestUtil';
+import * as Urls from '../../../constant/appUrls';
+import  LoadMoreFooter from '../../../component/LoadMoreFooter';
 /*
  * 获取屏幕的宽和高
  **/
