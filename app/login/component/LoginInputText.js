@@ -155,7 +155,8 @@ export default class LoginInputText extends Component {
                                         source={this.props.rightIconSource ? this.props.rightIconSource : require('./../../../images/login/loadingf_fali.png')}
                                         style={[styles.iconStyle, {
                                             width: Pixel.getPixel(100),
-                                            height: Pixel.getPixel(32)
+                                            height: Pixel.getPixel(32),
+                                            resizeMode: 'stretch'
                                         }, this.props.rightIconStyle]}/>
                                 </TouchableWithoutFeedback>
                                 : this.renderLoading()
