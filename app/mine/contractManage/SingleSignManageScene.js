@@ -50,6 +50,7 @@ export default class SingleSignManageScene extends BaseComponent {
                     if (page == 1 && response.mjson.data.contract_list.length <= 0) {
                         this.setState({renderPlaceholderOnly: 'null'});
                     } else {
+                        allPage= response.mjson.data.total/10;
                         allSouce.push(...response.mjson.data.contract_list);
                         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({

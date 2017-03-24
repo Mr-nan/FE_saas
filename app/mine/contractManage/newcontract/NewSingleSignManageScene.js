@@ -41,16 +41,17 @@ export default class SingleSignManageScene extends BaseComponent {
         let maps = {
             page: page,
             rows: 10,
-            api : Urls.CONTRACTLIST,
+            api : Urls.CONTRACT_LOAN_LIST,
             opt_user_id: this.props.opt_user_id,
-            sign_status: '4',
+            sign_status: '1',
         };        request(Urls.FINANCE, 'Post', maps)
 
             .then((response) => {
-                    if (page == 1 && response.mjson.data.contract_list.length <= 0) {
+                    if (page == 1 && response.mjson.data.payment_list.length <= 0) {
                         this.setState({renderPlaceholderOnly: 'null'});
                     } else {
-                        allSouce.push(...response.mjson.data.contract_list);
+                        allPage= response.mjson.data.total/10;
+                        allSouce.push(...response.mjson.data.payment_list);
                         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
                             dataSource: ds.cloneWithRows(allSouce),

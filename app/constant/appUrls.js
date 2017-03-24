@@ -1,12 +1,12 @@
 /**
  * 开发地址
  */
-export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
  */
-// export const BASEURL = 'http://api-gateway.test.dycd.com/';
+export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 
 /**
@@ -268,6 +268,13 @@ export const REPAYMENT_GETONLINEINFO = 'api/v2/Repayment/getOnlineInfo';
  * 获取合同数据
  **/
 export const GET_CONTRACT_DATA = 'api/v1/account/get_contract_data';
+
+/**
+ * from @zhaojian
+ *
+ * 线下库容获取合同数据
+ **/
+export const CONTRACT_LOAN_CONTRACT_LIST = 'api/v1/contract/loan_contract_list';
 
 /**
  * from @zhaojian

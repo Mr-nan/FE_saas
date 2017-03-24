@@ -22,6 +22,7 @@ import NavigationView from '../../../component/AllNavigationView';
 import NoneSineScene from './NewNoneSineScene';
 import SingleSignManageScene from './NewSingleSignManageScene';
 import CompleteSignScene from './NewCompleteSignScene';
+import NewErrorSignScene from './NewErrorSignScene';
 export  default class SignContractScene extends BaseComponent {
 
     initFinish = () => {
@@ -46,7 +47,7 @@ export  default class SignContractScene extends BaseComponent {
 
                 <CompleteSignScene tabLabel="ios-chatboxes" opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
 
-                <CompleteSignScene tabLabel="ios-error" opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
+                <NewErrorSignScene tabLabel="ios-error" opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
             </ScrollableTabView>
         </View>
         );
