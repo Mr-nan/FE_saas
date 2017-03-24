@@ -18,11 +18,15 @@ import * as FontAndColor from "../constant/fontAndColor";
 import PixelUtil from "../utils/PixelUtil";
 import MyButton from '../component/MyButton';
 import LoginInputText from './component/LoginInputText';
+import {request} from "../utils/RequestUtil";
+import * as AppUrls from "../constant/appUrls";
+import PurchasePickerItem from '../finance/component/PurchasePickerItem';
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
 var onePT = 1 / PixelRatio.get(); //一个像素
+var Platform = require('Platform');
 export default class AmountConfirm extends BaseComponent {
     constructor(props) {
         super(props);
@@ -31,6 +35,7 @@ export default class AmountConfirm extends BaseComponent {
             values: "",//输入框输入内容
             test: "",
             boundState: "未绑定",
+            source: {},
         };
     }
 
@@ -179,6 +184,8 @@ export default class AmountConfirm extends BaseComponent {
                                   mOnPress={() => {
                                   }}/>
                     </View>
+
+                    {/*<PurchasePickerItem items={movie} childList={childItems[rowId]}/>*/}
                 </View>
                 <View style={{flex: 1}}/>
                 <MyButton buttonType={MyButton.TEXTBUTTON}
@@ -191,7 +198,45 @@ export default class AmountConfirm extends BaseComponent {
     }
 
     submit = () => {
-        alert("xxxx")
+        let maps = {
+            api: AppUrls.BINDOBD,
+            bind_type: "",
+            file_list: "",
+            info_id: "",
+            obd_number: "",
+        };
+        request(AppUrls.FINANCE, 'Post', maps)
+            .then((response) => {
+                    this.props.showToast("OBD绑定成功");
+                    this.backPage();
+                }, (error) => {
+                    if (error.mjson.code == -300 || error.mjson.code == -500) {
+                        this.props.showToast("网络请求失败");
+                    } else {
+                        this.props.showToast(error.mjson.msg + "");
+                    }
+                }
+            )
+    }
+
+    checkOBD = () => {
+        let maps = {
+            api: AppUrls.AUTODETECTOBD,
+            frame_number: "",
+            obd_number: "",
+        };
+        request(AppUrls.FINANCE, 'Post', maps)
+            .then((response) => {
+                    this.props.showToast("OBD检测成功");
+                    this.backPage();
+                }, (error) => {
+                    if (error.mjson.code == -300 || error.mjson.code == -500) {
+                        this.props.showToast("网络请求失败");
+                    } else {
+                        this.props.showToast(error.mjson.msg + "");
+                    }
+                }
+            )
     }
 }
 
