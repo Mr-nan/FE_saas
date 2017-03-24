@@ -1,12 +1,12 @@
 /**
  * 开发地址
  */
-// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
  */
-export const BASEURL = 'http://api-gateway.test.dycd.com/';
+// export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 
 /**
@@ -248,7 +248,7 @@ export const REPAYMENT_GET_ADJUST_USE = 'api/v5/Repayment/get_adjust_use';
  *
  * 使用优惠券
  **/
-export const REPAYMENT_GET_ADJUST_SAVE = 'api/v5/Repayment/get_adjust_save';
+// export const REPAYMENT_GET_ADJUST_SAVE = 'api/v5/Repayment/get_adjust_save';
 
 /**
  * from @zhaojian
@@ -429,6 +429,11 @@ export const AUTH_UPLOAD_FILE = BASEURL + V + "auth/upload";
  * 合同列表
  */
 export const CONTRACTLIST = 'api/v1/Contract/contractList';
+
+/**
+ * 线下合同列表
+ */
+export const CONTRACT_LOAN_LIST = 'api/v1/contract/loan_list';
 /**
  * 查看合同详情
  */

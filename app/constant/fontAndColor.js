@@ -23,6 +23,9 @@ export const COLORB2 = "#fa5741";
 export const COLORB3 = "#ffbd2f";
 export const COLORB4 = "#2f9bfa";
 export const COLORB5 = "#69dcda";
+export const COLORB6 = "#fff8ea";
+
+
 
 export const FILLETSIZE = 5;
 
