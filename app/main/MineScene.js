@@ -16,7 +16,7 @@ import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
 
 import repayDetailsScene from '../mine/accountManage/repayDetailsScene'
-import ContractManageScene from '../mine/contractManage/ContractManageScene';
+import ContractManageScene from '../mine/contractManage/ContractSelectScene';
 
 import AccountManageScene from '../mine/accountManage/AccountManageScene'
 import AdjustManageScene from '../mine/adjustManage/AdjustManageScene'
