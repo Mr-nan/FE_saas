@@ -22,6 +22,7 @@ import Gallery from 'react-native-gallery';
 import PixelUtil from '../utils/PixelUtil';
 import {LendSuccessAlert} from '../finance/lend/component/ModelComponent';
 import CGDSelectPatternScene from '../finance/lend/CGDSelectPatternScene';
+import CarZoomImageScene from './CarZoomImagScene';
 import * as weChat from 'react-native-wechat';
 const Pixel = new PixelUtil();
 
@@ -206,13 +207,24 @@ export default class CarInfoScene extends BaseComponent {
             return;
         }
 
-        carImageArray=[];
-       this.state.carData.imgs.map((data,index)=>{
 
-           carImageArray.push(data.url);
+        let navigatorParams = {
+            name: "CarZoomImageScene",
+            component: CarZoomImageScene,
+            params: {
+                images:this.state.carData.imgs,
+                index:this.state.currentImageIndex-1,
+            }
+        }
+        this.toNextPage(navigatorParams);
 
-       })
-        this.refs.photoView.show(carImageArray,this.state.currentImageIndex);
+       //  carImageArray=[];
+       // this.state.carData.imgs.map((data,index)=>{
+       //
+       //     carImageArray.push(data.url);
+       //
+       // })
+       //  this.refs.photoView.show(carImageArray,this.state.currentImageIndex);
 
     };
 
