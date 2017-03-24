@@ -12,8 +12,7 @@ import  {
 
 import * as fontAndColor from '../../constant/fontAndColor';
 import  PixelUtil from '../../utils/PixelUtil'
-import SignContractScene from './SignContractScene'
-import NewSignContractScene from './newcontract/NewSignContractScene'
+import SignContractScene from '../contractManage/SignContractScene'
 var Pixel = new PixelUtil();
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 import  LoadMoreFooter from '../../component/LoadMoreFooter';
@@ -21,6 +20,7 @@ import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 import BaseComponent from "../../component/BaseComponent";
 import NavigatorView from '../../component/AllNavigationView';
+import AdjustManageListScene from './AdjustManageListScene';
 /*
  * 获取屏幕的宽和高
  **/
@@ -28,7 +28,7 @@ const {width, height} = Dimensions.get('window');
 let page = 1;
 let allPage = 1;
 let allSouce = [];
-export default class ContractManageScene extends BaseComponent {
+export default class AdjustManageScene extends BaseComponent {
     initFinish = () => {
         this.getData();
     }
@@ -41,7 +41,7 @@ export default class ContractManageScene extends BaseComponent {
         let maps = {
             page: page,
             rows: 10,
-            api: Urls.LOAN_SUBJECT,
+            api : Urls.LOAN_SUBJECT,
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
@@ -104,17 +104,17 @@ export default class ContractManageScene extends BaseComponent {
             return ( <View style={styles.container}>
 
                 {this.loadView()}
-                <NavigatorView title='合同管理' backIconClick={this.backPage}/>
+                <NavigatorView title='优惠券' backIconClick={this.backPage}/>
             </View>);
-        } else {
+        }else {
             return (<View style={styles.container}>
-                <NavigatorView title='合同管理' backIconClick={this.backPage}/>
+                <NavigatorView title='优惠券' backIconClick={this.backPage}/>
 
 
-                <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(64)}}
+                <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(74)}}
                           dataSource={this.state.dataSource}
                           renderRow={this._renderRow}
-                          enableEmptySections={true}
+                          enableEmptySections = {true}
                           renderFooter={
                               this.renderListFooter
                           }
@@ -138,26 +138,20 @@ export default class ContractManageScene extends BaseComponent {
         return (
             <TouchableOpacity
                 onPress={()=>{
-                    if(this.props.from=='xs'){
-                         this.toNextPage({
+                    this.toNextPage({
                         callBack: () => {
                             this.setState({renderPlaceholderOnly: 'loading'});
                             this.getData();
                         },
-                name: 'SignContractScene',
-                component: SignContractScene,
+                name: 'AdjustManageListScene',
+                component: AdjustManageListScene,
                 params: {
-                    opt_user_id: rowData.user_id,
+                    base_id: rowData.merge_id,
                 },
-            })
-                    }else{
-                        this.toNextPage({name:'NewSignContractScene',component:NewSignContractScene,params:{opt_user_id: rowData.user_id,}});
-                    }
-                   }}>
-                <View style={styles.rowView}>
+            })}}>
+                <View style={styles.rowView} >
                     <Text style={styles.rowLeftTitle}>{rowData.companyname}</Text>
-                    <Text
-                        style={styles.rowRightTitle}>{this.props.from == 'xs' ? rowData.contract_num + '份未签署合同' : ''}</Text>
+                    <Text style={styles.rowRightTitle} ></Text>
                     <Image source={cellJianTou} style={styles.image}></Image>
 
                 </View>
@@ -201,8 +195,8 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
 
     },
-    image: {
-        marginRight: Pixel.getPixel(15),
+    image:{
+        marginRight:Pixel.getPixel(15),
     }
 
 

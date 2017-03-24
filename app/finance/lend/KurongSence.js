@@ -69,19 +69,24 @@ export default class KurongSence extends BaseComponent {
     ];
     dateBlob =['30天','60天','90天','180天','360天'];
     initFinish() {
-        this.getData();
+        this.getData('');
 
     }
-    getData = () => {
+    getData = (loan_life) => {
         let maps = {
             api: apis.GET_APPLY_LOAN_DATA,
-            apply_type:PostData.apply_type
+            apply_type:PostData.apply_type,
+            loan_life:loan_life
         };
+        if(loan_life!=''){
+            this.props.showModal(true);
+        }
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
-
+                    if(loan_life!=''){
+                        this.props.showModal(false);
+                    }
                     let tempjson =response.mjson.data
-
                         ShowData.companyName=this.props.customerName,
                         ShowData.lendType=tempjson.product_type,
                         ShowData.maxMoney=changeToMillion(tempjson.min_loanmny)+'-'+changeToMillion(tempjson.max_loanmny)+'万',
@@ -89,14 +94,20 @@ export default class KurongSence extends BaseComponent {
                         ShowData.type=tempjson.loantype_str,
                         ShowData.tempMin=changeToMillion(tempjson.min_loanmny),
                         ShowData.tempMax=changeToMillion(tempjson.max_loanmny),
-
                     this.setState({
-
                         renderPlaceholderOnly:STATECODE.loadSuccess
                     })
+                console.log(tempjson.oneyear_inventory_financing_status);
+                if(tempjson.oneyear_inventory_financing_status=='1'){
+                    this.dateBlob =['30天','60天','90天','180天','360天'];
+                }else{
+                    this.dateBlob =['30天','60天','90天','180天'];
+                }
                 },
                 (error) => {
-
+                    if(loan_life!=''){
+                        this.props.showModal(false);
+                    }
                     this.setState({
                         renderPlaceholderOnly:STATECODE.loadError
                     })
@@ -202,11 +213,15 @@ export default class KurongSence extends BaseComponent {
                                     pickerTitleText:'选择期限天数',
                                     onPickerConfirm: data => {
                                         let tempString=data.toString();
-                                        let  placeHodel =tempString==='0'?this.dateBlob[0]:tempString
-                                        let  num = Number.parseInt(placeHodel)
-                                        PostData.loan_life=num
-                                        this.dateLimit.changeText(placeHodel)
-
+                                        let  placeHodel =tempString==='0'?this.dateBlob[0]:tempString;
+                                        let  num = Number.parseInt(placeHodel);
+                                        PostData.loan_life=num;
+                                        this.dateLimit.changeText(placeHodel);
+                                        if(num=="360"){
+                                            this.getData("360")
+                                        }else{
+                                             this.getData(num)
+                                        }
                                     },
                                 });
                                 Picker.show();

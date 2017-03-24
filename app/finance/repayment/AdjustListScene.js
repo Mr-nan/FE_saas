@@ -33,7 +33,7 @@ const bg = require('../../../images/financeImages/bottomyouhuijuan.png');
 const duigou = require('../../../images/financeImages/bottomduigou.png');
 let viewWidth = Pixel.getPixel(0);
 let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-import {LendSuccessAlert} from '../lend/component/ModelComponent'
+import AdjustModal from '../../component/AdjustModal';
 import  AllLoading from '../../component/AllLoading';
 export  default class AdjustListScene extends BaseComponent {
 
@@ -186,8 +186,7 @@ export  default class AdjustListScene extends BaseComponent {
                     renderSeparator={this._renderSeparator}
                     renderHeader={this._renderHeader}
                 />
-                <LendSuccessAlert title="使用规则" subtitle="仅适用于还息，可以叠加使用" ref='cgdModal'
-                                  confimClick={()=>{}}/>
+                <AdjustModal ref='cgdModal'/>
                 <MyButton {...this.buttonParams}/>
                 <AllLoading ref="allloading" callBack={()=>{
                  this.sendContent();
@@ -224,7 +223,7 @@ export  default class AdjustListScene extends BaseComponent {
             }
         });
     }
-    _selectCoupon = (rowId, itemData) => {
+    _selectCoupon = (rowId) => {
         this.selected = rowId;
         this.adjustmoney = rowId;
         this.setState({
@@ -250,7 +249,7 @@ export  default class AdjustListScene extends BaseComponent {
         let coupon_begindate = movie.coupon_begindate.split(' ')[0].replace('-','.').replace('-','.');
         let coupon_enddate = movie.coupon_enddate.split(' ')[0].replace('-','.').replace('-','.');
         return (
-            <TouchableOpacity onPress={() => this._selectCoupon(rowId, itemData)}>
+            <TouchableOpacity onPress={() => this._selectCoupon(rowId)}>
                 <Image style={styles.container} source={bg}>
                     <View style={styles.leftContainer}>
                         <Text style={styles.leftTitle}>{movie.coupon_name}</Text>
@@ -262,7 +261,7 @@ export  default class AdjustListScene extends BaseComponent {
                             <Text style={styles.rightTitle}>{movie.coupon_mny}</Text>
                         </View>
                         <TouchableOpacity style={styles.rightBottom} onPress={() => {
-                                this.refs.cgdModal.setModelVisible(true);
+                                this.refs.cgdModal.changeShowType(true,movie.coupon_rule.coupon_remark);
                         }}>
                             <View>
                                 <Text style={styles.rightBottomText}>使用规则</Text>

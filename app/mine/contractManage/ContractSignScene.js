@@ -99,7 +99,7 @@ export  default class ContractSignScene extends BaseComponent {
             return this._renderPlaceholderView();
         }
         return (
-            <View style={{flex:1}}>
+            <View style={{flex:1,backgroundColor: fontAndColor.COLORA3}}>
                 <NavigationView
                     title="合同"
                     backIconClick={this.backPage}
@@ -154,7 +154,7 @@ export  default class ContractSignScene extends BaseComponent {
 
     _renderPlaceholderView() {
         return (
-            <View style={{width: width, height: height}}>
+            <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
                 {this.loadView()}
                 <NavigationView
                     title="合同"
