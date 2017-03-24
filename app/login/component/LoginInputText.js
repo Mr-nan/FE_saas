@@ -151,11 +151,13 @@ export default class LoginInputText extends Component {
                             !this.state.rightIconLodding ?
                                 <TouchableWithoutFeedback
                                     onPress={this.props.rightIconClick ? this.props.rightIconClick : this.clickBtn}>
-                                    <Image source={this.props.rightIconSource}
-                                           style={[styles.iconStyle, {
-                                               width: Pixel.getPixel(100),
-                                               height: Pixel.getPixel(32)
-                                           }, this.props.rightIconStyle]}/>
+                                    <Image
+                                        source={this.props.rightIconSource ? this.props.rightIconSource : require('./../../../images/login/loadingf_fali.png')}
+                                        style={[styles.iconStyle, {
+                                            width: Pixel.getPixel(100),
+                                            height: Pixel.getPixel(32),
+                                            resizeMode: 'stretch'
+                                        }, this.props.rightIconStyle]}/>
                                 </TouchableWithoutFeedback>
                                 : this.renderLoading()
                             : null

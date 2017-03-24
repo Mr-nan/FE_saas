@@ -79,7 +79,7 @@ export  default class PlanInfoScene extends BaseComponent {
                     moneyList.push({name: '计息天数', data: movies.loan_day});
                     moneyList.push({name: '综合费率', data: movies.loan_rebate_str});
                     moneyList.push({name: '利息总额', data: movies.interest});
-                    // moneyList.push({name: '优惠券抵扣金额', data: movies.used_mny_total});
+                    moneyList.push({name: '优惠券抵扣金额', data: movies.used_mny_total});
 
                     nameList.push({name: '渠道名称', data: movies.qvdaoname});
                     nameList.push({
