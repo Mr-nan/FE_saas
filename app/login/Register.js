@@ -402,6 +402,9 @@ export default class Register extends BaseComponent {
                 });
             }, (error) => {
                 this.refs.verifycode.lodingStatus(false);
+                this.setState({
+                    verifyCode: null,
+                });
                 if (error.mycode == -300 || error.mycode == -500) {
                     this.props.showToast("获取失败");
                 } else {
