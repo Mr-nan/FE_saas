@@ -38,13 +38,15 @@ export  default class SignContractScene extends BaseComponent {
                 style={{marginTop: Pixel.getTitlePixel(64),flex:1}}
                 initialPage={0}
                 locked={true}
-                renderTabBar={() => <RepaymenyTabBar tabName={["未签署", "单方签署", "已签署"]}/>}
+                renderTabBar={() => <RepaymenyTabBar tabName={["未签署", "签署中", "签署成功","签署失败"]}/>}
             >
                 <NoneSineScene tabLabel="ios-paper"  opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
 
                 <SingleSignManageScene tabLabel="ios-people" opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
 
                 <CompleteSignScene tabLabel="ios-chatboxes" opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
+
+                <CompleteSignScene tabLabel="ios-error" opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
             </ScrollableTabView>
         </View>
         );
