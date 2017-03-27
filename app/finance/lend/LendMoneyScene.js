@@ -20,6 +20,7 @@ import BaseComponent from '../../component/BaseComponent';
 import SingelCarScene from './SingelCarScene';
 import KurongSence from './KurongSence';
 import PixelUtil from '../../utils/PixelUtil';
+import CGDDetailSence from './CGDDetailSence'
 const Pixel = new PixelUtil();
 import {confimCarcell} from './ConfimCGDPriceSence'
 import {LendSuccessAlert} from './component/ModelComponent'
@@ -107,9 +108,13 @@ export  default class LendMoneySence extends BaseComponent {
         }
         else {
 
-            this.navigatorParams.name = "CGDSelectPatternScene";
-            this.navigatorParams.component = CGDSelectPatternScene;
+            this.navigatorParams.name='CGDDetail';
+            this.navigatorParams.component=CGDDetailSence;
+            // this.navigatorParams.name = "CGDSelectPatternScene";
+            // this.navigatorParams.component = CGDSelectPatternScene;
             this.toNextPage(this.navigatorParams);
+
+
 
             // this.cgdMessage.setModelVisible(true)
         }
