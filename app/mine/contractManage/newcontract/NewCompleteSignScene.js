@@ -15,7 +15,7 @@ import * as fontAndColor from '../../../constant/fontAndColor';
 import  PixelUtil from '../../../utils/PixelUtil'
 var Pixel = new PixelUtil();
 const cellJianTou = require('../../../../images/mainImage/celljiantou.png');
-import ContractSignScene from '../ContractSignScene';
+import ContractSignScene from './NewContractInfoScene';
 import BaseComponent from "../../../component/BaseComponent";
 import {request} from '../../../utils/RequestUtil';
 import * as Urls from '../../../constant/appUrls';
@@ -41,16 +41,17 @@ export default class CompleteSignScene extends BaseComponent {
         let maps = {
             page: page,
             rows: 10,
-            api : Urls.CONTRACTLIST,
+            api : Urls.CONTRACT_LOAN_LIST,
             opt_user_id: this.props.opt_user_id,
-            sign_status: '3',
+            sign_status: '2',
         };        request(Urls.FINANCE, 'Post', maps)
 
             .then((response) => {
-                    if (page == 1 && response.mjson.data.contract_list.length <= 0) {
+                    if (page == 1 && response.mjson.data.payment_list.length <= 0) {
                         this.setState({renderPlaceholderOnly: 'null'});
                     } else {
-                        allSouce.push(...response.mjson.data.contract_list);
+                        allPage= response.mjson.data.total/10;
+                        allSouce.push(...response.mjson.data.payment_list);
                         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
                             dataSource: ds.cloneWithRows(allSouce),
@@ -142,16 +143,14 @@ export default class CompleteSignScene extends BaseComponent {
                         name: 'ContractSignScene',
                         component: ContractSignScene,
                         params: {
-                            contract_id: rowData.contract_id,   //合同ID
-                            contract_log_id: rowData.contract_log_id,	//合同日志ID
-                            product_type_code: rowData.product_type_code,	//产品类型编码
+                            payment_number: rowData.payment_number,   //合同ID
                             showButton: false
                         },
                     })
                 }}>
                 <View style={styles.rowView}>
                     <View style={styles.rowLeft}>
-                        <Text style={styles.rowLeftTitle}>{rowData.product_type_ch}</Text>
+                        <Text style={styles.rowLeftTitle}>{rowData.product}</Text>
                         <Text style={styles.rowLeftTitle1}>{rowData.payment_number}</Text>
                     </View>
                     <Image source={cellJianTou} style={styles.image}></Image>

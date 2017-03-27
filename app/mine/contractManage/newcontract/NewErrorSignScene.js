@@ -14,7 +14,7 @@ import  {
 import * as fontAndColor from '../../../constant/fontAndColor';
 import  PixelUtil from '../../../utils/PixelUtil'
 var Pixel = new PixelUtil();
-const cellJianTou = require('../../../../images/mainImage/celljiantou@2x.png');
+const cellJianTou = require('../../../../images/mainImage/celljiantou.png');
 import ContractSignScene from './NewContractInfoScene';
 import BaseComponent from "../../../component/BaseComponent";
 import {request} from '../../../utils/RequestUtil';
@@ -28,7 +28,7 @@ let allPage = 1;
 let allSouce = [];
 const {width, height} = Dimensions.get('window');
 
-export default class SingleSignManageScene extends BaseComponent {
+export default class CompleteSignScene extends BaseComponent {
     initFinish = () => {
         this.getData();
     }
@@ -43,7 +43,7 @@ export default class SingleSignManageScene extends BaseComponent {
             rows: 10,
             api : Urls.CONTRACT_LOAN_LIST,
             opt_user_id: this.props.opt_user_id,
-            sign_status: '1',
+            sign_status: '3',
         };        request(Urls.FINANCE, 'Post', maps)
 
             .then((response) => {
@@ -177,10 +177,10 @@ const styles = StyleSheet.create({
     },
     rowView: {
         height:Pixel.getPixel(77),
+        flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: 'white',
         borderTopColor: fontAndColor.COLORA4,
-        flexDirection: 'row',
         borderTopWidth: 1,
     },
     rowLeftTitle: {

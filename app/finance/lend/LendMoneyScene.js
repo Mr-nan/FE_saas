@@ -23,6 +23,7 @@ import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import {confimCarcell} from './ConfimCGDPriceSence'
 import {LendSuccessAlert} from './component/ModelComponent'
+import CGDSelectPatternScene from './CGDSelectPatternScene';
 class TitleImage extends PureComponent {
     // 构造
     render() {
@@ -106,7 +107,11 @@ export  default class LendMoneySence extends BaseComponent {
         }
         else {
 
-            this.cgdMessage.setModelVisible(true)
+            this.navigatorParams.name = "CGDSelectPatternScene";
+            this.navigatorParams.component = CGDSelectPatternScene;
+            this.toNextPage(this.navigatorParams);
+
+            // this.cgdMessage.setModelVisible(true)
         }
 
     }

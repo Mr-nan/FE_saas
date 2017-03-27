@@ -1,3 +1,8 @@
+/**
+ * Created by lcus on 17/3/24.
+ */
+//采购贷车辆详情页面
+
 import React, {Component} from 'react';
 import {
     StyleSheet,
@@ -6,7 +11,6 @@ import {
     Image,
     Text
 } from 'react-native';
-
 import {CommnetListItem, CommentHandItem} from './component/ComponentBlob'
 import {width, height, fontadapeSize, adapeSize,STATECODE,PAGECOLOR,getRowData,getSectionData,changeToMillion} from './component/MethodComponent'
 import  AllNavigationView from '../../component/AllNavigationView';
@@ -15,11 +19,9 @@ import {request} from '../../utils/RequestUtil'
 import *as apis from '../../constant/appUrls'
 import ImagePageView from 'react-native-viewpager'
 
-const handTitltBlob= {
+const ImageSouce= {
 
-    cancle:'取消借款',
-    confim:'确认金额',
-    obeservery:'车辆监控'
+    imageSouce:[]
 
 }
 export default class OrderCarDetailScene extends BaseComponent{
@@ -92,14 +94,17 @@ export default class OrderCarDetailScene extends BaseComponent{
 
         let dataSource = {};
         let section1=[
-            {title: '借款单号', key: '北京'},
-            {title:'状态',key:'2015 款 奥迪'},
-            {title: '产品类型', key: 'LVF900123sdadsasd'},
-            {title: '借款类型', key:'白色'},
-            {title: '借款金额', key: '10w公里'},
-            {title: '借款费率', key: '2016年五月'},
-            {title: '借款期限', key: '王波'},
-            {title: '用款时间',     key:'李洋'},
+            {title: '出售城市', key: '北京'},
+            {title:'车型',key:'2015 款 奥迪'},
+            {title: '车架号', key: 'LVF900123sdadsasd'},
+            {title: '外观颜色', key:'白色'},
+            {title: '行驶里程', key: '10w公里'},
+            {title: '首次上牌时间', key: '2016年五月'},
+            {title: '收车人', key: '王波'},
+            {title: '登记人',     key:'李洋'},
+            {title: '收购价（万元）', key: '30万元'},
+            {title: '放款额', key: '26万元'},
+            {title: '车辆位置', key: '北京大健康大看得见阿老师到家啦圣诞节啦莱克斯顿金坷垃四大皆空辣死答案是大所大所多撒大所大所大所大所大所大所大多了'},
         ]
         dataSource['section1']=section1
         if(carData.length>0){
@@ -123,18 +128,18 @@ export default class OrderCarDetailScene extends BaseComponent{
         if (sectionID === 'section2') {
             if(rowId==='0'){
                 return(
-                    <View style={styles.ImageBackView}>
-                        <Text style={styles.thumbTitle}>{'车辆照片'}</Text>
-                        <ImagePageView
+                  <View style={styles.ImageBackView}>
+                      <Text style={styles.thumbTitle}>{'车辆照片'}</Text>
+                          <ImagePageView
 
-                            dataSource={this.state.imagePikerData}    //数据源（必须）
-                            renderPage={this.renderImagePage}     //page页面渲染方法（必须）
-                            isLoop={false}                        //是否可以循环
-                            autoPlay={false}                      //是否自动
-                            locked={false}                        //为true时禁止滑动翻页
-                        />
+                              dataSource={this.state.imagePikerData}    //数据源（必须）
+                              renderPage={this.renderImagePage}     //page页面渲染方法（必须）
+                              isLoop={false}                        //是否可以循环
+                              autoPlay={false}                      //是否自动
+                              locked={false}                        //为true时禁止滑动翻页
+                          />
 
-                    </View>
+                  </View>
                 )
 
             }else {
@@ -164,7 +169,7 @@ export default class OrderCarDetailScene extends BaseComponent{
     renderSeparator =(sectionID,rowId,adjacentRowHighlighted)=>{
 
         let separtrorHegigth =1;
-        if (rowId==='1'){
+        if (rowId==='1'||rowId==='7'||rowId=='9'){
             separtrorHegigth=10;
         }
         return (
@@ -196,8 +201,9 @@ export default class OrderCarDetailScene extends BaseComponent{
                     renderRow={this.renderRow}
                     renderSeparator={this.renderSeparator}
                     renderSectionHeader={this.renderSectionHeader}
+                    showsVerticalScrollIndicator={false}
                 />
-                <AllNavigationView title='借款详情' backIconClick={()=>{ this.backPage();}}/>
+                <AllNavigationView title='车辆详情' backIconClick={()=>{ this.backPage();}}/>
             </View>
         )
     }

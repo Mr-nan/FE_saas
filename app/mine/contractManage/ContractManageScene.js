@@ -138,21 +138,24 @@ export default class ContractManageScene extends BaseComponent {
         return (
             <TouchableOpacity
                 onPress={()=>{
+                    if(rowData.is_done_credit=='1'){
                     if(this.props.from=='xs'){
                          this.toNextPage({
                         callBack: () => {
                             this.setState({renderPlaceholderOnly: 'loading'});
                             this.getData();
                         },
-                name: 'SignContractScene',
-                component: SignContractScene,
-                params: {
+                    name: 'SignContractScene',
+                    component: SignContractScene,
+                    params: {
                     opt_user_id: rowData.user_id,
-                },
-            })
+                        },
+                        })
                     }else{
                         this.toNextPage({name:'NewSignContractScene',component:NewSignContractScene,params:{opt_user_id: rowData.user_id,}});
                     }
+                    }
+
                    }}>
                 <View style={styles.rowView}>
                     <Text style={styles.rowLeftTitle}>{rowData.companyname}</Text>

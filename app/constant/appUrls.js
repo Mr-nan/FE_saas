@@ -195,13 +195,6 @@ export const REPAYMENT_GET_PLAN_INFO = 'api/v5/Repayment/get_plan_info';
 /**
  * from @zhaojian
  *
- * 单个企业优惠券列表
- **/
-export const USER_COUPON_LISTBYUID = BASEURL + 'v1/user.coupon/listByUid';
-
-/**
- * from @zhaojian
- *
  * 获取还款详情
  **/
 export const REPAYMENT_GETINFO = 'api/v2/Repayment/getInfo';
@@ -248,6 +241,8 @@ export const NEWREPAYMENT_APPLY_REPAYMENT = 'api/v5/NewRepayment/apply_repayment
  **/
 export const REPAYMENT_GET_ADJUST_USE = 'api/v5/Repayment/get_adjust_use';
 
+
+
 /**
  * from @zhaojian
  *
@@ -268,6 +263,13 @@ export const REPAYMENT_GETONLINEINFO = 'api/v2/Repayment/getOnlineInfo';
  * 获取合同数据
  **/
 export const GET_CONTRACT_DATA = 'api/v1/account/get_contract_data';
+
+/**
+ * from @zhaojian
+ *
+ * 线下库容获取合同数据
+ **/
+export const CONTRACT_LOAN_CONTRACT_LIST = 'api/v1/contract/loan_contract_list';
 
 /**
  * from @zhaojian
@@ -349,20 +351,6 @@ export const GET_APPLY_LOAN_DATA = 'api/v3/account/get_apply_loan_data';
  * 申请展期
  **/
 export const DO_EXTENSION = 'api/v1/account/do_extension';
-
-/**
- * from @huangning
- *
- * 绑定OBD设备
- **/
-export const BINDOBD = 'api/v1/purchaAuto/bindObd';
-
-/**
- * from @huangning
- *
- * 检测OBD
- **/
-export const AUTODETECTOBD = "api/v1/purchaAuto/autoDetectObd";
 
 /**
  * from @huangning

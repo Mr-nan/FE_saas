@@ -9,7 +9,8 @@ import {
     InteractionManager,
     ListView,
     PixelRatio,
-    TextInput
+    TextInput,
+    Image
 } from "react-native";
 import BaseComponent from "../component/BaseComponent";
 import NavigationBar from "../component/NavigationBar";
@@ -24,11 +25,11 @@ var onePT = 1 / PixelRatio.get(); //一个像素
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 var contents = [
-    {name: "黑色", des: "xxxxxxxxxxxx", color: '#000000'},
-    {name: "白色", des: "xxxxxxxxxxxx", color: '#E1E1E1'},
-    {name: "银灰色", des: "xxxxxxxxxxxx", color: '#999999'},
-    {name: "深灰色", des: "xxxxxxxxxxxx", color: '#707070'},
-    {name: "红色", des: "xxxxxxxxxxxx", color: '#FF0000'},
+    {name: "艾迪十多个我考吗率扩", des: "初评放款额", color: '#000000'},
+    {name: "艾迪十多个我考吗率扩", des: "初评放款额", color: '#E1E1E1'},
+    {name: "艾迪十多个我考吗率扩", des: "初评放款额", color: '#999999'},
+    {name: "艾迪十多个我考吗率扩", des: "初评放款额", color: '#707070'},
+    {name: "艾迪十多个我考吗率扩", des: "初评放款额", color: '#FF0000'},
 ];
 
 let map = new Map();
@@ -116,7 +117,7 @@ export default class AmountConfirm extends BaseComponent {
                         backgroundColor: '#ffffff'
                     }}
                     renderRow={this._renderRow}
-                    />
+                />
 
                 <View style={{
                     width: width,
@@ -184,12 +185,21 @@ export default class AmountConfirm extends BaseComponent {
             <TouchableOpacity onPress={() => this.finshPage(data, rowID)}>
                 <View style={styles.itemStyle}>
                     {typeof(map.get(rowID)) == 'undefined' ?
-                        <View style={styles.itemIconStyle}/>
-                        : <View style={[styles.itemIconStyle, {borderColor: FontAndColor.COLORA1}]}/>
+                        <Image source={require("./../../images/login/amou_unchoose.png")} style={styles.itemIconStyle}/>
+                        :
+                        <Image source={require("./../../images/login/amou_choose.png")} style={styles.itemIconStyle}/>
                     }
                     <View style={{flex: 1, marginLeft: Pixel.getPixel(15)}}>
                         <Text style={styles.itemTextStyle}>{data.name}</Text>
-                        <Text style={[styles.itemTextStyle, {color: FontAndColor.COLORA1}]}>{data.des}</Text>
+                        <Text style={[styles.itemTextStyle, {
+                            color: FontAndColor.COLORA1,
+                            fontSize: FontAndColor.CONTENTFONT
+                        }]}>
+                            {data.des + " : "}
+                            <Text style={{color: FontAndColor.COLORB2, fontSize: FontAndColor.CONTENTFONT}}>
+                                25万
+                            </Text>
+                        </Text>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -228,7 +238,7 @@ const styles = StyleSheet.create({
     },
     itemStyle: {
         width: width,
-        height: Pixel.getPixel(60),
+        height: Pixel.getPixel(75),
         flexDirection: 'row',
         alignItems: 'center',
         borderBottomWidth: Pixel.getPixel(1),
@@ -237,8 +247,8 @@ const styles = StyleSheet.create({
 
     },
     itemIconStyle: {
-        width: 30,
-        height: 30,
+        width: 25,
+        height: 25,
         marginLeft: 15,
         borderRadius: 15,
         paddingTop: 5,
@@ -248,7 +258,9 @@ const styles = StyleSheet.create({
     },
     itemTextStyle: {
         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT),
-        color: FontAndColor.COLORA0
+        color: FontAndColor.COLORA0,
+        paddingTop: Pixel.getPixel(2),
+        paddingBottom: Pixel.getPixel(2),
     },
     buttonTextStyle: {
         color: FontAndColor.COLORA3,

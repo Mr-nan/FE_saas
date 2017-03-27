@@ -166,6 +166,7 @@ export default class Register extends BaseComponent {
                                 maxLength={16}
                                 leftIcon={false}
                                 clearValue={true}
+                                import={true}
                                 rightIcon={false}/>
                         </View>
                         <View style={styles.inputTextLine}/>
