@@ -19,7 +19,10 @@ import AllNavigationView from '../../component/AllNavigationView'
 import BaseComponent from '../../component/BaseComponent';
 import SingelCarScene from './SingelCarScene';
 import KurongSence from './KurongSence';
+import CGDLendScenes from './CGDLendScenes'
+import CGDDetailSence from './CGDDetailSence'
 import PixelUtil from '../../utils/PixelUtil';
+import CGDCarDetailScenes from './CGDCarDetailScenes'
 const Pixel = new PixelUtil();
 import {confimCarcell} from './ConfimCGDPriceSence'
 import {LendSuccessAlert} from './component/ModelComponent'
@@ -105,8 +108,10 @@ export  default class LendMoneySence extends BaseComponent {
             this.toNextPage(this.navigatorParams);
         }
         else {
-
-            this.cgdMessage.setModelVisible(true)
+            this.navigatorParams.name = "caigoudai";
+            this.navigatorParams.component =CGDDetailSence;
+            this.toNextPage(this.navigatorParams);
+            // this.cgdMessage.setModelVisible(true)
         }
 
     }
