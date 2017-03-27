@@ -28,7 +28,7 @@ var Pixel = new PixelUtil();
 var onePT = 1 / PixelRatio.get(); //一个像素
 var Platform = require('Platform');
 const childItems = [];
-export default class AmountConfirm extends Component {
+export default class AmountConfirm extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -42,10 +42,6 @@ export default class AmountConfirm extends Component {
 
     defaultProps = {
         payment_number: 123456789,
-    }
-
-    componentWillMount() {
-        this.initFinish();
     }
 
     initFinish = () => {
@@ -207,16 +203,16 @@ export default class AmountConfirm extends Component {
 
                 <View style={{
                     width: width,
-                    backgroundColor: '#FFFFFF',
                     flexDirection: 'column',
-                    paddingTop: Pixel.getPixel(16),
-                    paddingBottom: Pixel.getPixel(16),
                     flex: 1,
+                    marginTop: Pixel.getPixel(15)
                 }}>
                     <Text style={{
+                        backgroundColor: '#FFFFFF',
                         color: FontAndColor.COLORA0,
                         paddingLeft: Pixel.getPixel(15),
                         paddingRight: Pixel.getPixel(15),
+                        paddingTop: Pixel.getPixel(15),
                     }}>OBD设备照片</Text>
                     {
                         this.state.source ?
@@ -244,7 +240,6 @@ export default class AmountConfirm extends Component {
     }
 
     _renderSeparator(sectionId, rowId) {
-
         return (
             <View style={styles.Separator} key={sectionId + rowId}>
             </View>
@@ -400,7 +395,7 @@ const styles = StyleSheet.create({
         height: Pixel.getPixel(44),
         width: width - Pixel.getPixel(30),
         backgroundColor: FontAndColor.COLORB0,
-        marginTop: Pixel.getPixel(30),
+        marginTop: Pixel.getPixel(20),
         marginBottom: Pixel.getPixel(15),
         justifyContent: 'center',
         alignItems: 'center',
