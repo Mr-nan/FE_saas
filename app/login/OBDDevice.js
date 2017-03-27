@@ -10,7 +10,7 @@ import {
     ListView,
     PixelRatio,
     TextInput,
-    Image
+    Image,
 } from "react-native";
 import BaseComponent from "../component/BaseComponent";
 import NavigationBar from "../component/NavigationBar";
@@ -27,7 +27,8 @@ var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
 var onePT = 1 / PixelRatio.get(); //一个像素
 var Platform = require('Platform');
-export default class AmountConfirm extends BaseComponent {
+const childItems = [];
+export default class AmountConfirm extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -42,10 +43,49 @@ export default class AmountConfirm extends BaseComponent {
     defaultProps = {
         payment_number: 123456789,
     }
+
+    componentWillMount() {
+        this.initFinish();
+    }
+
     initFinish = () => {
-        InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: false});
-        });
+        let that = this;
+        let maps = {
+            reqtoken: '6ba44af9f09684a7bad5e49ae3005b9a',
+            source_type: '1',
+            archives_status: '2',
+            key: '29c30afd7f67a2c0f94a8b55f12f9d7c',
+            device_code: 'dycd_bms_android',
+        };
+        request('https://qaopenbms.dycd.com/api/v1/purchaAuto/getPurchaAutoPicCate', 'Post', maps)
+            .then((response) => {
+                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                    for (let i = 0; i < response.mjson.retdata.cate_list.length; i++) {
+                        childItems.push({
+                            code: response.mjson.retdata.cate_list[i].code,
+                            id: response.mjson.retdata.cate_list[i].id,
+                            list: []
+                        });
+                    }
+                    that.setState({
+                        source: ds.cloneWithRows(response.mjson.retdata.cate_list),
+                        renderPlaceholderOnly: false
+                    });
+                },
+                (response) => {
+                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                    for (let i = 0; i < response.mjson.retdata.cate_list.length; i++) {
+                        childItems.push({
+                            code: response.mjson.retdata.cate_list[i].code,
+                            id: response.mjson.retdata.cate_list[i].id,
+                            list: []
+                        });
+                    }
+                    that.setState({
+                        source: ds.cloneWithRows(response.mjson.retdata.cate_list),
+                        renderPlaceholderOnly: false
+                    });
+                });
     }
 
     render() {
@@ -129,7 +169,7 @@ export default class AmountConfirm extends BaseComponent {
                         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),
                     }}>设备号</Text>
                     <LoginInputText
-                        ref="device_id"
+                        ref="obd_number"
                         textPlaceholder={'请输入'}
                         viewStytle={styles.itemStyel}
                         inputTextStyle={styles.inputTextStyle}
@@ -154,6 +194,7 @@ export default class AmountConfirm extends BaseComponent {
                               childStyle={this.state.test == "" ? styles.buttonTextStyle : styles.buttonTextSelectStyle}
                               mOnPress={() => {
                                   this.setState({test: 'xxx'});
+                                  this.checkOBD();
                               }}/>
                     <View style={{width: Pixel.getPixel(22)}}/>
                     <MyButton buttonType={MyButton.TEXTBUTTON} content="手动绑定" parentStyle={styles.buttonStyle}
@@ -168,26 +209,25 @@ export default class AmountConfirm extends BaseComponent {
                     width: width,
                     backgroundColor: '#FFFFFF',
                     flexDirection: 'column',
-                    paddingLeft: Pixel.getPixel(15),
-                    paddingRight: Pixel.getPixel(15),
                     paddingTop: Pixel.getPixel(16),
                     paddingBottom: Pixel.getPixel(16),
+                    flex: 1,
                 }}>
-                    <Text style={{color: FontAndColor.COLORA0}}>OBD设备照片</Text>
-                    <View style={{marginTop: Pixel.getPixel(15)}}>
-                        <MyButton buttonType={MyButton.IMAGEBUTTON}
-                                  content={
-                                      require('./../../images/login/add.png')
-                                  }
-                                  parentStyle={[styles.myButtonStyle]}
-                                  childStyle={styles.myImageButtonStyle}
-                                  mOnPress={() => {
-                                  }}/>
-                    </View>
+                    <Text style={{
+                        color: FontAndColor.COLORA0,
+                        paddingLeft: Pixel.getPixel(15),
+                        paddingRight: Pixel.getPixel(15),
+                    }}>OBD设备照片</Text>
+                    {
+                        this.state.source ?
+                            <ListView
+                                dataSource={this.state.source}
+                                renderRow={this._renderRow}
+                                renderSeparator={this._renderSeparator}/>
+                            : null
+                    }
 
-                    {/*<PurchasePickerItem items={movie} childList={childItems[rowId]}/>*/}
                 </View>
-                <View style={{flex: 1}}/>
                 <MyButton buttonType={MyButton.TEXTBUTTON}
                           content={'完成'}
                           parentStyle={styles.loginBtnStyle}
@@ -197,20 +237,37 @@ export default class AmountConfirm extends BaseComponent {
         );
     }
 
+    _renderRow = (movie, sectionId, rowId) => {
+        return (
+            <PurchasePickerItem items={movie} childList={childItems[rowId]}/>
+        )
+    }
+
+    _renderSeparator(sectionId, rowId) {
+
+        return (
+            <View style={styles.Separator} key={sectionId + rowId}>
+            </View>
+        )
+    }
+
+    // 绑定OBD设备
     submit = () => {
+        let obd_number = this.refs.obd_number.getInputTextValue();
+        alert(obd_number);
         let maps = {
             api: AppUrls.BINDOBD,
             bind_type: "",
             file_list: "",
             info_id: "",
-            obd_number: "",
+            obd_number: obd_number,
         };
         request(AppUrls.FINANCE, 'Post', maps)
             .then((response) => {
                     this.props.showToast("OBD绑定成功");
                     this.backPage();
                 }, (error) => {
-                    if (error.mjson.code == -300 || error.mjson.code == -500) {
+                    if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("网络请求失败");
                     } else {
                         this.props.showToast(error.mjson.msg + "");
@@ -219,18 +276,21 @@ export default class AmountConfirm extends BaseComponent {
             )
     }
 
+    // 检测OBD设备号
     checkOBD = () => {
+        let obd_number = this.refs.obd_number.getInputTextValue();
+        alert(obd_number);
         let maps = {
             api: AppUrls.AUTODETECTOBD,
             frame_number: "",
-            obd_number: "",
+            obd_number: obd_number,
         };
         request(AppUrls.FINANCE, 'Post', maps)
             .then((response) => {
                     this.props.showToast("OBD检测成功");
                     this.backPage();
                 }, (error) => {
-                    if (error.mjson.code == -300 || error.mjson.code == -500) {
+                    if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("网络请求失败");
                     } else {
                         this.props.showToast(error.mjson.msg + "");
@@ -370,5 +430,20 @@ const styles = StyleSheet.create({
         color: FontAndColor.COLORB0,
         fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT),
         textAlign: 'right'
-    }
+    },
+    image: {
+        width: 43,
+        height: 43,
+    },
+    Separator: {
+        backgroundColor: FontAndColor.COLORA3,
+        height: Pixel.getPixel(10),
+
+    },
+    margin: {
+        marginRight: Pixel.getPixel(15),
+        marginLeft: Pixel.getPixel(15)
+
+    },
+    topViewStyle: {flex: 1, height: Pixel.getPixel(44), justifyContent: 'center'}
 })
