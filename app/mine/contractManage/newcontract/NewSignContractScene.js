@@ -15,6 +15,7 @@ import {
 const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../../utils/PixelUtil';
 const Pixel = new PixelUtil();
+import * as fontAndColor from '../../../constant/fontAndColor';
 import BaseComponent from '../../../component/BaseComponent';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import RepaymenyTabBar from '../../../finance/repayment/component/RepaymenyTabBar';
@@ -22,6 +23,7 @@ import NavigationView from '../../../component/AllNavigationView';
 import NoneSineScene from './NewNoneSineScene';
 import SingleSignManageScene from './NewSingleSignManageScene';
 import CompleteSignScene from './NewCompleteSignScene';
+import NewErrorSignScene from './NewErrorSignScene';
 export  default class SignContractScene extends BaseComponent {
 
     initFinish = () => {
@@ -29,7 +31,7 @@ export  default class SignContractScene extends BaseComponent {
 
     render() {
         return (
-        <View style={{width:width,height:height}}>
+        <View style={{width:width,height:height,backgroundColor: fontAndColor.COLORA3}}>
             <NavigationView
                 title="合同管理"
                 backIconClick={this.backPage}
@@ -46,7 +48,7 @@ export  default class SignContractScene extends BaseComponent {
 
                 <CompleteSignScene tabLabel="ios-chatboxes" opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
 
-                <CompleteSignScene tabLabel="ios-error" opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
+                <NewErrorSignScene tabLabel="ios-error" opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
             </ScrollableTabView>
         </View>
         );

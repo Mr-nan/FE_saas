@@ -19,13 +19,11 @@ import AllNavigationView from '../../component/AllNavigationView'
 import BaseComponent from '../../component/BaseComponent';
 import SingelCarScene from './SingelCarScene';
 import KurongSence from './KurongSence';
-import CGDLendScenes from './CGDLendScenes'
-import CGDDetailSence from './CGDDetailSence'
 import PixelUtil from '../../utils/PixelUtil';
-import CGDCarDetailScenes from './CGDCarDetailScenes'
 const Pixel = new PixelUtil();
 import {confimCarcell} from './ConfimCGDPriceSence'
 import {LendSuccessAlert} from './component/ModelComponent'
+import CGDSelectPatternScene from './CGDSelectPatternScene';
 class TitleImage extends PureComponent {
     // 构造
     render() {
@@ -108,9 +106,11 @@ export  default class LendMoneySence extends BaseComponent {
             this.toNextPage(this.navigatorParams);
         }
         else {
-            this.navigatorParams.name = "caigoudai";
-            this.navigatorParams.component =CGDDetailSence;
+
+            this.navigatorParams.name = "CGDSelectPatternScene";
+            this.navigatorParams.component = CGDSelectPatternScene;
             this.toNextPage(this.navigatorParams);
+
             // this.cgdMessage.setModelVisible(true)
         }
 
