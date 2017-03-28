@@ -62,8 +62,8 @@ export  default class ContractInfoScene extends BaseComponent {
     contractSign = () => {
         this.props.showModal(true);
         let maps = {
-            api: Urls.CONTRACT_SIGN,
-            loan_code: this.props.loan_code,
+            api: Urls.SIGN_CONTRACT_BY_ONE,
+            payment_number: this.props.payment_number,
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
@@ -85,10 +85,7 @@ export  default class ContractInfoScene extends BaseComponent {
         }
         return (
             <View style={{flex:1,backgroundColor: fontAndColor.COLORA3}}>
-                <NavigationView
-                    title="合同"
-                    backIconClick={this.backPage}
-                />
+
                 <WebView style={{marginTop:Pixel.getTitlePixel(64),flex:1}}
                          source={{uri:RJson.data.contract_list[namePage].contract_url,method: 'GET'}}
                          javaScriptEnabled={true}
@@ -125,6 +122,11 @@ export  default class ContractInfoScene extends BaseComponent {
                     namePage=rowID;
                     this.getData();
                 }}
+                />
+
+                <NavigationView
+                    title="合同"
+                    backIconClick={this.backPage}
                 />
             </View>
         );
