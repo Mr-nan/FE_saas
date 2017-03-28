@@ -46,49 +46,6 @@ export default class AmountConfirm extends BaseComponent {
 
     initFinish = () => {
         this.getPurchaAutoPicCate();
-        {/*let that = this;*/
-        }
-        {/*let maps = {*/
-        }
-        {/*reqtoken: '6ba44af9f09684a7bad5e49ae3005b9a',*/
-        }
-        {/*source_type: '1',*/
-        }
-        {/*archives_status: '2',*/
-        }
-        {/*key: '29c30afd7f67a2c0f94a8b55f12f9d7c',*/
-        }
-        //     device_code: 'dycd_bms_android',
-        // };
-        // request('https://qaopenbms.dycd.com/api/v1/purchaAuto/getPurchaAutoPicCate', 'Post', maps)
-        //     .then((response) => {
-        //             let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        //             for (let i = 0; i < response.mjson.retdata.cate_list.length; i++) {
-        //                 childItems.push({
-        //                     code: response.mjson.retdata.cate_list[i].code,
-        //                     id: response.mjson.retdata.cate_list[i].id,
-        //                     list: []
-        //                 });
-        //             }
-        //             that.setState({
-        //                 source: ds.cloneWithRows(response.mjson.retdata.cate_list),
-        //                 renderPlaceholderOnly: false
-        //             });
-        //         },
-        //         (response) => {
-        //             let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        //             for (let i = 0; i < response.mjson.retdata.cate_list.length; i++) {
-        //                 childItems.push({
-        //                     code: response.mjson.retdata.cate_list[i].code,
-        //                     id: response.mjson.retdata.cate_list[i].id,
-        //                     list: []
-        //                 });
-        //             }
-        //             that.setState({
-        //                 source: ds.cloneWithRows(response.mjson.retdata.cate_list),
-        //                 renderPlaceholderOnly: false
-        //             });
-        //         });
     }
 
     render() {
@@ -256,11 +213,10 @@ export default class AmountConfirm extends BaseComponent {
     // 绑定OBD设备
     submit = () => {
         let obd_number = this.refs.obd_number.getInputTextValue();
-        alert(JSON.stringify(childItems));
         let maps = {
             api: AppUrls.BINDOBD,
             bind_type: "",
-            file_list: "",
+            file_list: JSON.stringify(childItems),
             info_id: "",
             obd_number: obd_number,
         };
