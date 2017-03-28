@@ -277,6 +277,13 @@ export const CONTRACT_LOAN_CONTRACT_LIST = 'api/v1/contract/loan_contract_list';
  **/
 export const CONTRACT_SIGN = 'api/v1/account/contract_sign';
 
+/**
+ * from @zhaojian
+ *
+ * 新签署合同
+ **/
+export const SIGN_CONTRACT_BY_ONE = 'api/v1/contract/sign_contract_by_one';
+
 
 /**
  * from @zhaojian
