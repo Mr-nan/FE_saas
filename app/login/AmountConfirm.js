@@ -10,13 +10,15 @@ import {
     ListView,
     PixelRatio,
     TextInput,
-    Image
+    Image,
 } from "react-native";
 import BaseComponent from "../component/BaseComponent";
 import NavigationBar from "../component/NavigationBar";
 import * as FontAndColor from "../constant/fontAndColor";
 import PixelUtil from "../utils/PixelUtil";
 import MyButton from '../component/MyButton';
+import * as AppUrls from "../constant/appUrls";
+import {request} from "../utils/RequestUtil";
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -50,6 +52,7 @@ export default class AmountConfirm extends BaseComponent {
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: false});
         });
+        this.getAutoList();
     }
 
     render() {
@@ -173,7 +176,7 @@ export default class AmountConfirm extends BaseComponent {
                     }}>万元</Text>
                     <MyButton buttonType={MyButton.TEXTBUTTON} content="确认" parentStyle={styles.buttonStyle}
                               childStyle={styles.buttonTextStyle} mOnPress={() => {
-                        alert(this.state.values)
+                        this.makeSure();
                     }}/>
                 </View>
             </View>
@@ -216,6 +219,51 @@ export default class AmountConfirm extends BaseComponent {
         this.setState({
             source: ds.cloneWithRows(contents),
         });
+    }
+
+
+    //  获取采购贷车辆列表
+    getAutoList = () => {
+        // let obd_number = this.refs.obd_number.getInputTextValue();
+        let maps = {
+            api: AppUrls.PURCHAAUTOAUTOLIST,
+            payment_number: "",
+        };
+        request(AppUrls.FINANCE, 'Post', maps)
+            .then((response) => {
+                    this.props.showToast("数据请求成功");
+                }, (error) => {
+                    if (error.mycode == -300 || error.mycode == -500) {
+                        this.props.showToast("网络请求失败");
+                    } else {
+                        this.props.showToast(error.mjson.msg + "");
+                    }
+                }
+            )
+    }
+
+    //  采购贷确认借款金额
+    makeSure = () => {
+        // let obd_number = this.refs.obd_number.getInputTextValue();
+        let maps = {
+            key: "",
+            car_lists: "",
+            loan_code: "",
+            loan_mny: "",
+            api: AppUrls.ACCOUNTCONFIRM_AMOUNT,
+        };
+        request(AppUrls.FINANCE, 'Post', maps)
+            .then((response) => {
+                    this.props.showToast("OBD检测成功");
+                    this.backPage();
+                }, (error) => {
+                    if (error.mycode == -300 || error.mycode == -500) {
+                        this.props.showToast("网络请求失败");
+                    } else {
+                        this.props.showToast(error.mjson.msg + "");
+                    }
+                }
+            )
     }
 }
 

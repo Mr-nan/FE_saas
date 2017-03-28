@@ -7,6 +7,7 @@ import LoginScene from "./LoginScene";
 import Register from "./Register";
 import PixelUtil from "../utils/PixelUtil";
 import OBDDevice from "./OBDDevice";
+import AmountConfirm from './AmountConfirm';
 
 var Pixel = new PixelUtil();
 var Dimensions = require('Dimensions');
@@ -59,14 +60,14 @@ export default class LoginAndRegister extends BaseComponent {
                     })
                 }}/>
 
-                {/*<MyButton buttonType={MyButton.TEXTBUTTON} content="OBD设备" parentStyle={styles.buttonStyle}*/}
-                          {/*childStyle={styles.buttonTextStyle} mOnPress={() => {*/}
-                    {/*this.toNextPage({*/}
-                        {/*name: 'OBDDevice',*/}
-                        {/*component: OBDDevice,*/}
-                        {/*params: {},*/}
-                    {/*})*/}
-                {/*}}/>*/}
+                <MyButton buttonType={MyButton.TEXTBUTTON} content="OBD设备" parentStyle={styles.buttonStyle}
+                          childStyle={styles.buttonTextStyle} mOnPress={() => {
+                    this.toNextPage({
+                        name: 'OBDDevice AmountConfirm',
+                        component: OBDDevice,
+                        params: {},
+                    })
+                }}/>
             </Image>
         );
     }
