@@ -54,7 +54,7 @@ export const commnetStyle=StyleSheet.create({
         top:Pixel.getTitlePixel(64),
         width:width,
         bottom:adapeSize(50),
-        backgroundColor:'white'
+        backgroundColor:PAGECOLOR.COLORA3
     },
 
     bottomWarp:{
@@ -62,6 +62,7 @@ export const commnetStyle=StyleSheet.create({
         width:width,
         height:adapeSize(50),
         bottom:0,
+        backgroundColor:'white'
     }
 
 
@@ -270,6 +271,25 @@ export class LendRate extends PureComponent {
     }
 }
 
+
+export class CommentHandItem extends  PureComponent{
+
+    render(){
+
+        const {leftTitle,showValue,textStyle,handel}=this.props;
+        return (
+
+            <TouchableOpacity style={styles.commentHandeItem}>
+                <Text style={styles.commentListItemLeft}>{leftTitle}</Text>
+                <Text style={[styles.commentListItemRight,textStyle]}>{showValue}</Text>
+                <Image style={{width:adapeSize(20),height:adapeSize(16),marginRight:adapeSize(10)}} source={require('../../../../images/mainImage/celljiantou.png')}/>
+            </TouchableOpacity>
+
+        )
+    }
+
+}
+
 export class CommnetListItem extends PureComponent{
 
 
@@ -282,6 +302,7 @@ export class CommnetListItem extends PureComponent{
            <View style={styles.commentListItemView}>
                <Text style={styles.commentListItemLeft}>{leftTitle}</Text>
                <Text style={[styles.commentListItemRight,textStyle]}>{showValue}</Text>
+
            </View>
 
        )
@@ -441,6 +462,14 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
 
     },
+    commentHandeItem:{
+        flex:1,
+        flexDirection:'row',
+        justifyContent:'flex-start',
+        alignItems:'center',
+        backgroundColor: 'white',
+    },
+
     commentListItemLeft:{
 
         paddingLeft:adapeSize(15),

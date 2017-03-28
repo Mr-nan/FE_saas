@@ -63,10 +63,8 @@ export  default  class CGDSelectPatternScene  extends  BaseComponent{
                     renderRow={this.renderRow}
                     renderHeader={this.renderHeadView}
                 />
-                <TouchableOpacity onPress={()=>{alert('确定'+isCarinvoice +':'+isOBD)}}>
-                    <View style={styles.footButton}>
+                <TouchableOpacity style={styles.footButton} onPress={()=>{alert('确定'+isCarinvoice +':'+isOBD)}}>
                         <Text style={styles.footButtonText}>确定</Text>
-                    </View>
                 </TouchableOpacity>
                 <NavigatorView title='选择模式' backIconClick={() => {
                     this.backPage()
