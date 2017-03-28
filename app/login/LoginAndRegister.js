@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {AppRegistry, View, Text, StyleSheet, Image, InteractionManager, TouchableWithoutFeedback} from "react-native";
+import {AppRegistry, View, Text, StyleSheet, Image, InteractionManager, TouchableWithoutFeedback,BackAndroid,NativeModules} from "react-native";
 import BaseComponent from "../component/BaseComponent";
 import MyButton from "../component/MyButton";
 import * as FontAndColor from "../constant/fontAndColor";
@@ -20,6 +20,16 @@ export default class LoginAndRegister extends BaseComponent {
         this.state = {
             renderPlaceholderOnly: true,
         }
+    }
+
+    handleBack = () => {
+        NativeModules.VinScan.goBack();
+        return true;
+    }
+
+    componentDidMount() {
+        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        this.initFinish();
     }
 
     initFinish = () => {

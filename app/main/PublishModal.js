@@ -11,7 +11,10 @@ import {
     Modal,
     StyleSheet,
     Dimensions,
-    TouchableOpacity
+    TouchableOpacity,
+    NativeModules,
+    BackAndroid,
+    InteractionManager
 } from 'react-native';
 
 import * as fontAndColor from '../constant/fontAndColor';
@@ -27,6 +30,19 @@ const { width,height } = Dimensions.get('window');
 import CollectionIntent from '../collectionIntent/CollectionIntent';
 
 export default class PublishModal extends BaseComponent {
+
+    handleBack = () => {
+        NativeModules.VinScan.goBack();
+        return true;
+    }
+
+    componentDidMount() {
+        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
+    }
 
     initFinish=()=>{};
 

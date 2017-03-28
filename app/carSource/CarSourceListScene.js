@@ -15,6 +15,9 @@ import {
     RefreshControl,
     Dimensions,
     Modal,
+    NativeModules,
+    BackAndroid,
+    InteractionManager
 
 } from 'react-native';
 
@@ -63,6 +66,19 @@ const APIParameter = {
 
 
 export  default  class carSourceListScene extends BaseComponent {
+
+    handleBack = () => {
+        NativeModules.VinScan.goBack();
+        return true;
+    }
+
+    componentDidMount() {
+        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
+    }
 
     // 构造
     constructor(props) {

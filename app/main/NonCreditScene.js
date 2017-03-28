@@ -6,7 +6,10 @@ import {
     Dimensions,
     TouchableOpacity,
     Text,
-    Linking
+    Linking,
+    NativeModules,
+    BackAndroid,
+    InteractionManager
 } from 'react-native';
 
 import BaseComponent from '../component/BaseComponent';
@@ -16,6 +19,19 @@ import  PixelUtil from '../utils/PixelUtil'
 let Pixel = new PixelUtil();
 
 export default class NonCreditScene extends BaseComponent {
+
+    handleBack = () => {
+        NativeModules.VinScan.goBack();
+        return true;
+    }
+
+    componentDidMount() {
+        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
+    }
     initFinish = () => {
 
     }
