@@ -9,7 +9,9 @@ import {
     Image,
     PixelRatio,
     TouchableWithoutFeedback,
-    InteractionManager
+    InteractionManager,
+    NativeModules,
+    BackAndroid
 } from "react-native";
 import BaseComponent from "../component/BaseComponent";
 import LoginInputText from "./component/LoginInputText";
@@ -52,6 +54,19 @@ export default class LoginScene extends BaseComponent {
             verifyCode: null,
             renderPlaceholderOnly: true,
         }
+    }
+
+    handleBack = () => {
+        NativeModules.VinScan.goBack();
+        return true;
+    }
+
+    componentDidMount() {
+        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
     }
 
     initFinish = () => {

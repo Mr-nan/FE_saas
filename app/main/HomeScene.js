@@ -13,7 +13,9 @@ import  {
     Image,
     TouchableOpacity,
     InteractionManager,
-    RefreshControl
+    RefreshControl,
+    BackAndroid,
+    NativeModules
 } from  'react-native'
 
 import * as fontAndClolr from '../constant/fontAndColor';
@@ -72,6 +74,19 @@ export default class HomeScene extends BaseComponet {
             headSource: [],
             pageData: []
         };
+    }
+
+    handleBack = () => {
+        NativeModules.VinScan.goBack();
+        return true;
+    }
+
+    componentDidMount() {
+        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
     }
 
 //初始化结束后,请求网络,将数据添加到界面
