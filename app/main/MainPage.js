@@ -10,7 +10,10 @@ import {
     StyleSheet,
     Dimensions,
     PixelRatio,
-    TouchableOpacity
+    TouchableOpacity,
+    NativeModules,
+    BackAndroid,
+    InteractionManager
 } from 'react-native';
 
 const {width, height} = Dimensions.get('window');
@@ -55,6 +58,7 @@ export default class MainPage extends BaseComponent {
     static defaultProps = {
         identity: 'boss'
     };
+
 
     initFinish = () => {
 

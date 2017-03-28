@@ -74,4 +74,13 @@ public class VinScanModule extends ReactContextBaseJavaModule implements Activit
             mVLPromise = null;
         }
     }
+
+     @ReactMethod
+        public void goBack(){
+        Activity currentActivity = getCurrentActivity();
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                currentActivity.startActivity(intent);
+        }
 }

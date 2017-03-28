@@ -9,7 +9,10 @@ import {
     View,
     Image,
     StyleSheet,
-    TouchableOpacity
+    TouchableOpacity,
+    NativeModules,
+    BackAndroid,
+    InteractionManager
 } from 'react-native';
 
 import  PixelUtil from '../utils/PixelUtil';
@@ -21,6 +24,19 @@ const publishNew = require('../../images/mainImage/publishNew.png');
 const Pixel = new PixelUtil();
 
 export default class PublishScene extends BaseComponent {
+
+    handleBack = () => {
+        NativeModules.VinScan.goBack();
+        return true;
+    }
+
+    componentDidMount() {
+        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
+    }
 
     initFinish=()=>{};
 

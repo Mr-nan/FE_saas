@@ -142,7 +142,8 @@ export default class PlanInfoPage extends BaseComponent {
                     <Text style={styles.rowTextStyle}>{rowData.dead_line}</Text>
                     <Text style={styles.rowTextStyle}>{rowData.repaymentmny}</Text>
                     <TouchableOpacity activeOpacity={1} onPress={() => {
-                        if(rowData.adjustmoney!='0'){
+                        if(rowData.adjustmoney!='0'&&rowData.relist){
+                            console.log('123123');
                             this._moneyAdjustClick(rowID)
                         }
                     }}>
@@ -173,6 +174,7 @@ export default class PlanInfoPage extends BaseComponent {
 
     }
     _moneyAdjustClick = (rowID) => {
+        console.log('321321321');
         this.refs.showadjust.changeShowType(true,list[rowID].relist);
     }
     // Header
@@ -197,7 +199,7 @@ const styles = StyleSheet.create({
     container: {
 
         flex: 1,
-        marginTop: Pixel.getPixel(0),   //设置listView 顶在最上面
+        marginTop: Pixel.getPixel(0),
         backgroundColor: fontAndClolr.COLORA3,
     },
     listStyle: {},

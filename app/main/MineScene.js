@@ -7,7 +7,10 @@ import  {
     StyleSheet,
     Dimensions,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    NativeModules,
+    BackAndroid,
+    InteractionManager
 } from  'react-native'
 
 import * as fontAndClolr from '../constant/fontAndColor';
@@ -123,6 +126,20 @@ const options = {
 import BaseComponent from '../component/BaseComponent';
 
 export default class MineSectionListView extends BaseComponent {
+
+
+    handleBack = () => {
+        NativeModules.VinScan.goBack();
+        return true;
+    }
+
+    componentDidMount() {
+        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
+    }
 
     // 构造
     constructor(props) {

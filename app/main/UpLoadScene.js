@@ -13,7 +13,8 @@ import {
     ListView,
     InteractionManager,
     WebView,
-    BackAndroid
+    BackAndroid,
+    NativeModules
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
@@ -23,6 +24,11 @@ import NavigationView from '../component/AllNavigationView';
 import * as fontAndColor from '../constant/fontAndColor';
 import BaseComponent from '../component/BaseComponent';
 export  default class WebScene extends BaseComponent {
+
+    handleBack = () => {
+        NativeModules.VinScan.goBack();
+        return true;
+    }
 
     constructor(props) {
         super(props);

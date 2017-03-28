@@ -1,12 +1,12 @@
 /**
  * 开发地址
  */
-// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
  */
-export const BASEURL = 'http://api-gateway.test.dycd.com/';
+// export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 
 /**
@@ -350,6 +350,41 @@ export const GET_APPLY_LOAN_DATA = 'api/v3/account/get_apply_loan_data';
  * 申请展期
  **/
 export const DO_EXTENSION = 'api/v1/account/do_extension';
+
+/**
+ * from @huangning
+ *
+ * 绑定OBD设备
+ **/
+export const BINDOBD = 'api/v1/purchaAuto/bindObd';
+
+/**
+ * from @huangning
+ *
+ * 检测OBD
+ **/
+export const AUTODETECTOBD = "api/v1/purchaAuto/autoDetectObd";
+
+/**
+ * from @huangning
+ *
+ * 获取采购贷车辆照片分类
+ **/
+export const GETPURCHAAUTOPICCATE = "api/v2/purchaAuto/getPurchaAutoPicCate";
+
+/**
+ * from @huangning
+ *
+ * 获取采购贷车辆列表
+ **/
+export const PURCHAAUTOAUTOLIST = "api/v1/purchaAuto/autoList";
+
+/**
+ * from @huangning
+ *
+ * 采购贷确认借款金额
+ **/
+export const ACCOUNTCONFIRM_AMOUNT = "api/v3/account/confirm_amount";
 
 /**
  * from @huangning

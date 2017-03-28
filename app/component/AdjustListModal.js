@@ -6,7 +6,8 @@ import {
     Modal,
     Image,
     Text,
-    TouchableOpacity
+    TouchableOpacity,
+    ListView
 } from 'react-native';
 import  PixelUtil from '../utils/PixelUtil'
 let Pixel = new PixelUtil();
@@ -25,11 +26,11 @@ export default class AdjustModal extends Component {
     }
 
     changeShowType = (value, source) => {
-        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.setState({
-            isShow: value,
-            source: ds.cloneWithRows(source)
-        });
+            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+            this.setState({
+                isShow: value,
+                source: ds.cloneWithRows(source)
+            });
     }
 
 
@@ -61,11 +62,12 @@ export default class AdjustModal extends Component {
                                 <Text style={{fontSize: Pixel.getPixel(fontAndColor.MARKFONT22),color: fontAndColor.COLORA1}}>调整金额</Text>
                             </View>
                         </View>
-                        <ListView
-                            dataSource={this.state.source}
-                            renderRow={this._renderRow}
-                            renderSeparator={this._renderSeparator}
-                        />
+                        {this.state.isShow?<ListView
+                                dataSource={this.state.source}
+                                renderRow={this._renderRow}
+                                renderSeparator={this._renderSeparator}
+                            />:<View/>}
+
                         <TouchableOpacity onPress={()=>{
                              this.setState({
                             isShow: false

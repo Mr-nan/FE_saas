@@ -11,7 +11,8 @@ import {
     Dimensions,
     TouchableOpacity,
     InteractionManager,
-    Modal
+    Modal,
+    WebView
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
@@ -22,7 +23,7 @@ import BaseComponent from '../../../component/BaseComponent';
 import NavigationView from '../../../component/AllNavigationView';
 import * as fontAndColor from '../../../constant/fontAndColor';
 import ViewPager from 'react-native-viewpager';
-import SelectLoanNumber from '../../../finance/lend/component/SelectLoanNumber';
+import SelectLoanNumber from '../../../finance/lend/component/NewSelectLoanNumber';
 let numberPage = 0;
 let namePage = 0;
 import {request} from '../../../utils/RequestUtil';
@@ -67,6 +68,10 @@ export  default class ContractInfoScene extends BaseComponent {
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
                     this.props.showToast('签署成功');
+                    this.setState({
+                        renderPlaceholderOnly:'loading'
+                    });
+                    this.getData();
                 },
                 (error) => {
                     this.props.showToast('签署失败');
@@ -79,14 +84,19 @@ export  default class ContractInfoScene extends BaseComponent {
             return this._renderPlaceholderView();
         }
         return (
-            <View style={{flex:1}}>
+            <View style={{flex:1,backgroundColor: fontAndColor.COLORA3}}>
                 <NavigationView
                     title="合同"
                     backIconClick={this.backPage}
                 />
-                <Image style={{marginTop:Pixel.getTitlePixel(64),flex:1}}>
+                <WebView style={{marginTop:Pixel.getTitlePixel(64),flex:1}}
+                         source={{uri:RJson.data.contract_list[namePage].contract_url,method: 'GET'}}
+                         javaScriptEnabled={true}
+                         domStorageEnabled={true}
+                         scalesPageToFit={false}
+                >
 
-                </Image>
+                </WebView>
                 <View style={{width:width,height:Pixel.getPixel(44),flexDirection: 'row'}}>
                     <TouchableOpacity onPress={()=>{
                         this.refs.selectloannumber.openModalForName(RJson.data.contract_list);
