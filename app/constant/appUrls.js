@@ -229,6 +229,13 @@ export const APPLYREPAYMENT = 'api/v1/Repayment/applyRepayment';
 /**
  * from @zhaojian
  *
+ * 单个企业优惠券
+ **/
+export const COUPON_LISTBYUID = BASEURL+'v1/user.coupon/listByUid';
+
+/**
+ * from @zhaojian
+ *
  * 新申请提前还款
  **/
 export const NEWREPAYMENT_APPLY_REPAYMENT = 'api/v5/NewRepayment/apply_repayment';
