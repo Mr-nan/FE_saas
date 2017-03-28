@@ -1,12 +1,12 @@
 /**
  * 开发地址
  */
-// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
  */
-export const BASEURL = 'http://api-gateway.test.dycd.com/';
+// export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 
 /**
@@ -195,13 +195,6 @@ export const REPAYMENT_GET_PLAN_INFO = 'api/v5/Repayment/get_plan_info';
 /**
  * from @zhaojian
  *
- * 单个企业优惠券列表
- **/
-export const USER_COUPON_LISTBYUID = BASEURL + 'v1/user.coupon/listByUid';
-
-/**
- * from @zhaojian
- *
  * 获取还款详情
  **/
 export const REPAYMENT_GETINFO = 'api/v2/Repayment/getInfo';
@@ -247,6 +240,8 @@ export const NEWREPAYMENT_APPLY_REPAYMENT = 'api/v5/NewRepayment/apply_repayment
  * 获取优惠券列表
  **/
 export const REPAYMENT_GET_ADJUST_USE = 'api/v5/Repayment/get_adjust_use';
+
+
 
 /**
  * from @zhaojian
@@ -370,6 +365,27 @@ export const BINDOBD = 'api/v1/purchaAuto/bindObd';
  * 检测OBD
  **/
 export const AUTODETECTOBD = "api/v1/purchaAuto/autoDetectObd";
+
+/**
+ * from @huangning
+ *
+ * 获取采购贷车辆照片分类
+ **/
+export const GETPURCHAAUTOPICCATE = "api/v2/purchaAuto/getPurchaAutoPicCate";
+
+/**
+ * from @huangning
+ *
+ * 获取采购贷车辆列表
+ **/
+export const PURCHAAUTOAUTOLIST = "api/v1/purchaAuto/autoList";
+
+/**
+ * from @huangning
+ *
+ * 采购贷确认借款金额
+ **/
+export const ACCOUNTCONFIRM_AMOUNT = "api/v3/account/confirm_amount";
 
 /**
  * from @huangning

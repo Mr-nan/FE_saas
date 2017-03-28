@@ -120,6 +120,13 @@
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = FE_Sass;
 		};
+		12B036D51E7FDC4A005E5D3D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F0FC9342AFCC48C188DD558A /* CodePush.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = CodePush;
+		};
 		139105C01AF99BAD00B5F7CC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */;
@@ -259,13 +266,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RCTLinking;
-		};
-		7D0E01871E7FD880001A93BC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F0FC9342AFCC48C188DD558A /* CodePush.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 134814201AA4EA6300B7C361;
-			remoteInfo = CodePush;
 		};
 		7D769F0E1E6572180039526C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -550,6 +550,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		12B036D21E7FDC49005E5D3D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				12B036D61E7FDC4A005E5D3D /* libCodePush.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		139105B71AF99BAD00B5F7CC /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -611,14 +619,6 @@
 			children = (
 				78C398B91ACF4ADC00677621 /* libRCTLinking.a */,
 				3DAD3E881DF850E9000B6D8A /* libRCTLinking-tvOS.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		7D0E01841E7FD880001A93BC /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				7D0E01881E7FD880001A93BC /* libCodePush.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -890,7 +890,7 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 7D0E01841E7FD880001A93BC /* Products */;
+					ProductGroup = 12B036D21E7FDC49005E5D3D /* Products */;
 					ProjectRef = F0FC9342AFCC48C188DD558A /* CodePush.xcodeproj */;
 				},
 				{
@@ -1006,6 +1006,13 @@
 			fileType = archive.ar;
 			path = libRCTVibration.a;
 			remoteRef = 00C302E31ABCB9EE00DB3ED1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		12B036D61E7FDC4A005E5D3D /* libCodePush.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libCodePush.a;
+			remoteRef = 12B036D51E7FDC4A005E5D3D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		139105C11AF99BAD00B5F7CC /* libRCTSettings.a */ = {
@@ -1139,13 +1146,6 @@
 			fileType = archive.ar;
 			path = libRCTLinking.a;
 			remoteRef = 78C398B81ACF4ADC00677621 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		7D0E01881E7FD880001A93BC /* libCodePush.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libCodePush.a;
-			remoteRef = 7D0E01871E7FD880001A93BC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		7D769F0F1E6572180039526C /* libRNSpinkit.a */ = {
@@ -1408,8 +1408,9 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/LinkingIOS",
-					"$(SRCROOT)/../node_modules/react-native-code-push/**",
 					"$(SRCROOT)/../node_modules/react-native-update/ios",
+					"$(SRCROOT)/../node_modules/react-native-code-push/ios",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/Image/**",
 				);
 				INFOPLIST_FILE = FE_Sass/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
@@ -1443,8 +1444,9 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/LinkingIOS",
-					"$(SRCROOT)/../node_modules/react-native-code-push/**",
 					"$(SRCROOT)/../node_modules/react-native-update/ios",
+					"$(SRCROOT)/../node_modules/react-native-code-push/ios",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/Image/**",
 				);
 				INFOPLIST_FILE = FE_Sass/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;

@@ -28,7 +28,7 @@ var Pixel = new PixelUtil();
 var onePT = 1 / PixelRatio.get(); //一个像素
 var Platform = require('Platform');
 const childItems = [];
-export default class AmountConfirm extends Component {
+export default class AmountConfirm extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -44,48 +44,51 @@ export default class AmountConfirm extends Component {
         payment_number: 123456789,
     }
 
-    componentWillMount() {
-        this.initFinish();
-    }
-
     initFinish = () => {
-        let that = this;
-        let maps = {
-            reqtoken: '6ba44af9f09684a7bad5e49ae3005b9a',
-            source_type: '1',
-            archives_status: '2',
-            key: '29c30afd7f67a2c0f94a8b55f12f9d7c',
-            device_code: 'dycd_bms_android',
-        };
-        request('https://qaopenbms.dycd.com/api/v1/purchaAuto/getPurchaAutoPicCate', 'Post', maps)
-            .then((response) => {
-                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    for (let i = 0; i < response.mjson.retdata.cate_list.length; i++) {
-                        childItems.push({
-                            code: response.mjson.retdata.cate_list[i].code,
-                            id: response.mjson.retdata.cate_list[i].id,
-                            list: []
-                        });
-                    }
-                    that.setState({
-                        source: ds.cloneWithRows(response.mjson.retdata.cate_list),
-                        renderPlaceholderOnly: false
-                    });
-                },
-                (response) => {
-                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    for (let i = 0; i < response.mjson.retdata.cate_list.length; i++) {
-                        childItems.push({
-                            code: response.mjson.retdata.cate_list[i].code,
-                            id: response.mjson.retdata.cate_list[i].id,
-                            list: []
-                        });
-                    }
-                    that.setState({
-                        source: ds.cloneWithRows(response.mjson.retdata.cate_list),
-                        renderPlaceholderOnly: false
-                    });
-                });
+        this.getPurchaAutoPicCate();
+        {/*let that = this;*/
+        }
+        {/*let maps = {*/
+        }
+        {/*reqtoken: '6ba44af9f09684a7bad5e49ae3005b9a',*/
+        }
+        {/*source_type: '1',*/
+        }
+        {/*archives_status: '2',*/
+        }
+        {/*key: '29c30afd7f67a2c0f94a8b55f12f9d7c',*/
+        }
+        //     device_code: 'dycd_bms_android',
+        // };
+        // request('https://qaopenbms.dycd.com/api/v1/purchaAuto/getPurchaAutoPicCate', 'Post', maps)
+        //     .then((response) => {
+        //             let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        //             for (let i = 0; i < response.mjson.retdata.cate_list.length; i++) {
+        //                 childItems.push({
+        //                     code: response.mjson.retdata.cate_list[i].code,
+        //                     id: response.mjson.retdata.cate_list[i].id,
+        //                     list: []
+        //                 });
+        //             }
+        //             that.setState({
+        //                 source: ds.cloneWithRows(response.mjson.retdata.cate_list),
+        //                 renderPlaceholderOnly: false
+        //             });
+        //         },
+        //         (response) => {
+        //             let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        //             for (let i = 0; i < response.mjson.retdata.cate_list.length; i++) {
+        //                 childItems.push({
+        //                     code: response.mjson.retdata.cate_list[i].code,
+        //                     id: response.mjson.retdata.cate_list[i].id,
+        //                     list: []
+        //                 });
+        //             }
+        //             that.setState({
+        //                 source: ds.cloneWithRows(response.mjson.retdata.cate_list),
+        //                 renderPlaceholderOnly: false
+        //             });
+        //         });
     }
 
     render() {
@@ -207,16 +210,16 @@ export default class AmountConfirm extends Component {
 
                 <View style={{
                     width: width,
-                    backgroundColor: '#FFFFFF',
                     flexDirection: 'column',
-                    paddingTop: Pixel.getPixel(16),
-                    paddingBottom: Pixel.getPixel(16),
                     flex: 1,
+                    marginTop: Pixel.getPixel(15)
                 }}>
                     <Text style={{
+                        backgroundColor: '#FFFFFF',
                         color: FontAndColor.COLORA0,
                         paddingLeft: Pixel.getPixel(15),
                         paddingRight: Pixel.getPixel(15),
+                        paddingTop: Pixel.getPixel(15),
                     }}>OBD设备照片</Text>
                     {
                         this.state.source ?
@@ -244,7 +247,6 @@ export default class AmountConfirm extends Component {
     }
 
     _renderSeparator(sectionId, rowId) {
-
         return (
             <View style={styles.Separator} key={sectionId + rowId}>
             </View>
@@ -254,7 +256,7 @@ export default class AmountConfirm extends Component {
     // 绑定OBD设备
     submit = () => {
         let obd_number = this.refs.obd_number.getInputTextValue();
-        alert(obd_number);
+        alert(JSON.stringify(childItems));
         let maps = {
             api: AppUrls.BINDOBD,
             bind_type: "",
@@ -293,6 +295,49 @@ export default class AmountConfirm extends Component {
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("网络请求失败");
                     } else {
+                        this.props.showToast(error.mjson.msg + "");
+                    }
+                }
+            )
+    }
+
+    // 获取采购贷车辆照片分类
+    getPurchaAutoPicCate = () => {
+        let maps = {
+            api: AppUrls.GETPURCHAAUTOPICCATE,
+            source_type: '3',
+            archives_status: '2',
+        };
+        request(AppUrls.FINANCE, 'Post', maps)
+            .then((response) => {
+                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                    for (let i = 0; i < response.mjson.retdata.cate_list.length; i++) {
+                        childItems.push({
+                            code: response.mjson.retdata.cate_list[i].code,
+                            id: response.mjson.retdata.cate_list[i].id,
+                            list: []
+                        });
+                    }
+                    this.setState({
+                        source: ds.cloneWithRows(response.mjson.retdata.cate_list),
+                        renderPlaceholderOnly: false
+                    });
+                }, (error) => {
+                    if (error.mycode == -300 || error.mycode == -500) {
+                        this.props.showToast("网络请求失败");
+                    } else {
+                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                        for (let i = 0; i < response.mjson.retdata.cate_list.length; i++) {
+                            childItems.push({
+                                code: response.mjson.retdata.cate_list[i].code,
+                                id: response.mjson.retdata.cate_list[i].id,
+                                list: []
+                            });
+                        }
+                        this.setState({
+                            source: ds.cloneWithRows(response.mjson.retdata.cate_list),
+                            renderPlaceholderOnly: false
+                        });
                         this.props.showToast(error.mjson.msg + "");
                     }
                 }
@@ -400,7 +445,7 @@ const styles = StyleSheet.create({
         height: Pixel.getPixel(44),
         width: width - Pixel.getPixel(30),
         backgroundColor: FontAndColor.COLORB0,
-        marginTop: Pixel.getPixel(30),
+        marginTop: Pixel.getPixel(20),
         marginBottom: Pixel.getPixel(15),
         justifyContent: 'center',
         alignItems: 'center',
