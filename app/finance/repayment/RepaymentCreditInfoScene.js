@@ -61,6 +61,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
     componentWillUnmount() {
         moneyList = [];
         nameList = [];
+        adjustLsit = [];
     }
 
     initFinish = () => {
@@ -70,6 +71,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
     allRefresh = () => {
         moneyList = [];
         nameList = [];
+        adjustLsit = [];
         this.setState({renderPlaceholderOnly: 'loading'});
         this.getData();
     }
