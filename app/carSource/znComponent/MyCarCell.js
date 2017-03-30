@@ -69,7 +69,7 @@ export default class MyCarCell extends Component {
                     <View style={styles.cellContentView}>
                         <View style={styles.imageView} >
                             <Image style={styles.image}
-                                   source={carCellData.img?{uri:carCellData.img+'?x-oss-process=image/resize,w_'+120+',h_'+80}:require('../../../images/carSourceImages/car_null_img.png')}/>
+                                   source={carCellData.img?{uri:carCellData.img+'?x-oss-process=image/resize,w_'+320+',h_'+240}:require('../../../images/carSourceImages/car_null_img.png')}/>
                         </View>
                         <View style={[styles.textContainer]}>
                             <View style={{backgroundColor:'white'}}>

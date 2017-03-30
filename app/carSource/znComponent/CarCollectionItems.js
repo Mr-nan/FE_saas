@@ -45,7 +45,7 @@ export default class CarCollectionItems extends Component {
 
                     <View style={styles.imageView}>
                         <Image style={styles.image}
-                               source={carCellData.img?{uri:carCellData.img+'?x-oss-process=image/resize,w_'+120+',h_'+80}:require('../../../images/carSourceImages/car_null_img.png')}>
+                               source={carCellData.img?{uri:carCellData.img+'?x-oss-process=image/resize,w_'+320+',h_'+240}:require('../../../images/carSourceImages/car_null_img.png')}>
                             {
                                 (carCellData.status==3||carCellData.status==4) &&<View style={styles.carTypeView}>
                                     <Text style={styles.carTypeText}>{carCellData.status==3?'已下架':'已成交'}</Text>
