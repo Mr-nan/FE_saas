@@ -1,4 +1,4 @@
-import React, {Component,} from "react";
+import React, {Component} from "react";
 import {
     AppRegistry,
     View,
@@ -10,17 +10,17 @@ import {
     ListView,
     PixelRatio,
     TextInput,
-    Image,
+    Image
 } from "react-native";
 import BaseComponent from "../component/BaseComponent";
 import NavigationBar from "../component/NavigationBar";
 import * as FontAndColor from "../constant/fontAndColor";
 import PixelUtil from "../utils/PixelUtil";
-import MyButton from '../component/MyButton';
-import LoginInputText from './component/LoginInputText';
+import MyButton from "../component/MyButton";
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
-import PurchasePickerItem from '../finance/component/PurchasePickerItem';
+import PurchasePickerItem from "../finance/component/PurchasePickerItem";
+import DeviceNumber from './DeviceNumber';
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -28,16 +28,17 @@ var Pixel = new PixelUtil();
 var onePT = 1 / PixelRatio.get(); //一个像素
 var Platform = require('Platform');
 const childItems = [];
-export default class AmountConfirm extends BaseComponent {
+export default class OBDDevice extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
             renderPlaceholderOnly: true,
             values: "",//输入框输入内容
-            test: "",
+            obd_number: "",
             boundState: "未绑定",
             source: {},
         };
+        this.bind_type = -1;
     }
 
     defaultProps = {
@@ -72,6 +73,7 @@ export default class AmountConfirm extends BaseComponent {
                     leftTextShow={false}
                     centerText={"OBD设备"}
                     rightText={"安装说明"}
+                    rightTextCallBack={() => alert("xxxx")}
                     leftImageCallBack={this.backPage}/>
 
                 <View style={{
@@ -128,15 +130,23 @@ export default class AmountConfirm extends BaseComponent {
                         color: FontAndColor.COLORA0,
                         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),
                     }}>设备号</Text>
-                    <LoginInputText
-                        ref="obd_number"
-                        textPlaceholder={'请输入'}
-                        viewStytle={styles.itemStyel}
-                        inputTextStyle={styles.inputTextStyle}
-                        secureTextEntry={false}
-                        clearValue={false}
-                        leftIcon={false}
-                        rightIcon={false}/>
+                    {
+                        this.state.obd_number ?
+                            <Text style={{
+                                color: FontAndColor.COLORA0,
+                                fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT30),
+                                textAlign: 'right',
+                                flex: 1
+                            }}>{this.state.obd_number}</Text>
+                            :
+                            <Text style={{
+                                color: FontAndColor.COLORA1,
+                                fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT30),
+                                textAlign: 'right',
+                                flex: 1
+                            }}>请输入</Text>
+                    }
+
                 </View>
                 <View style={{backgroundColor: FontAndColor.COLORA4, width: width, height: Pixel.getPixel(1)}}/>
                 <View style={{
@@ -150,17 +160,25 @@ export default class AmountConfirm extends BaseComponent {
                 }}>
                     <View style={{flex: 1}}/>
                     <MyButton buttonType={MyButton.TEXTBUTTON} content="检测"
-                              parentStyle={this.state.test == "" ? styles.buttonStyle : styles.buttonSelectStyle}
-                              childStyle={this.state.test == "" ? styles.buttonTextStyle : styles.buttonTextSelectStyle}
+                              parentStyle={this.state.obd_number ? styles.buttonSelectStyle : styles.buttonStyle}
+                              childStyle={this.state.obd_number ? styles.buttonTextSelectStyle : styles.buttonTextStyle}
                               mOnPress={() => {
-                                  this.setState({test: 'xxx'});
-                                  this.checkOBD();
+                                  this.checkOBD(1);
                               }}/>
                     <View style={{width: Pixel.getPixel(22)}}/>
                     <MyButton buttonType={MyButton.TEXTBUTTON} content="手动绑定" parentStyle={styles.buttonStyle}
                               childStyle={styles.buttonTextStyle} mOnPress={() => {
-
-
+                        this.toNextPage({
+                            name: 'DeviceNumber',
+                            component: DeviceNumber,
+                            params: {
+                                callBack: (obd_number) => {
+                                    this.setState({
+                                        obd_number: obd_number,
+                                    });
+                                }
+                            },
+                        })
                     }}/>
                 </View>
                 <View style={{backgroundColor: FontAndColor.COLORA4, width: width, height: Pixel.getPixel(1)}}/>
@@ -212,19 +230,21 @@ export default class AmountConfirm extends BaseComponent {
 
     // 绑定OBD设备
     submit = () => {
-        let obd_number = this.refs.obd_number.getInputTextValue();
         let maps = {
             api: AppUrls.BINDOBD,
-            bind_type: "",
+            bind_type: "2",
             file_list: JSON.stringify(childItems),
-            info_id: "",
-            obd_number: obd_number,
+            info_id: "12345678",
+            obd_number: this.state.obd_number,
         };
+        this.props.showModal(true);
         request(AppUrls.FINANCE, 'Post', maps)
             .then((response) => {
+                    this.props.showModal(false);
                     this.props.showToast("OBD绑定成功");
                     this.backPage();
                 }, (error) => {
+                    this.props.showModal(false);
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("网络请求失败");
                     } else {
@@ -235,22 +255,43 @@ export default class AmountConfirm extends BaseComponent {
     }
 
     // 检测OBD设备号
-    checkOBD = () => {
-        let obd_number = this.refs.obd_number.getInputTextValue();
-        alert(obd_number);
-        let maps = {
-            api: AppUrls.AUTODETECTOBD,
-            frame_number: "",
-            obd_number: obd_number,
-        };
+    checkOBD = (bind_type) => {
+        let maps;
+        if (bind_type == 1) {
+            maps = {
+                api: AppUrls.AUTODETECTOBD,
+                frame_number: "LBEHDAEB58Y038860",
+            };
+        } else {
+            maps = {
+                api: AppUrls.AUTODETECTOBD,
+                frame_number: "LBEHDAEB58Y038860",
+                obd_number: this.state.obd_number,
+            };
+        }
+        this.props.showModal(true);
         request(AppUrls.FINANCE, 'Post', maps)
             .then((response) => {
+                    this.props.showModal(false);
                     this.props.showToast("OBD检测成功");
-                    this.backPage();
+                    if (bind_type == 1) {
+                        this.bind_type = 1;
+                    } else {
+                        this.bind_type = 2;
+                    }
+                    this.setState({
+                        boundState: '已绑定',
+                        obd_number: response.mjson.retdata.obd_number,
+                    });
                 }, (error) => {
+                    this.props.showModal(false);
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("网络请求失败");
                     } else {
+                        this.setState({
+                            boundState: '未绑定',
+                            obd_number: ''
+                        });
                         this.props.showToast(error.mjson.msg + "");
                     }
                 }
@@ -267,33 +308,21 @@ export default class AmountConfirm extends BaseComponent {
         request(AppUrls.FINANCE, 'Post', maps)
             .then((response) => {
                     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    for (let i = 0; i < response.mjson.retdata.cate_list.length; i++) {
+                    for (let i = 0; i < response.mjson.data.cate_list.length; i++) {
                         childItems.push({
-                            code: response.mjson.retdata.cate_list[i].code,
-                            id: response.mjson.retdata.cate_list[i].id,
+                            code: response.mjson.data.cate_list[i].code,
+                            id: response.mjson.data.cate_list[i].id,
                             list: []
                         });
                     }
                     this.setState({
-                        source: ds.cloneWithRows(response.mjson.retdata.cate_list),
+                        source: ds.cloneWithRows(response.mjson.data.cate_list),
                         renderPlaceholderOnly: false
                     });
                 }, (error) => {
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("网络请求失败");
                     } else {
-                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                        for (let i = 0; i < response.mjson.retdata.cate_list.length; i++) {
-                            childItems.push({
-                                code: response.mjson.retdata.cate_list[i].code,
-                                id: response.mjson.retdata.cate_list[i].id,
-                                list: []
-                            });
-                        }
-                        this.setState({
-                            source: ds.cloneWithRows(response.mjson.retdata.cate_list),
-                            renderPlaceholderOnly: false
-                        });
                         this.props.showToast(error.mjson.msg + "");
                     }
                 }
