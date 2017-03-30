@@ -32,20 +32,47 @@ export  default  class CGDSelectPatternScene  extends  BaseComponent{
 
     initFinish = () => {
 
-        isCarinvoice = 0;
-        isOBD = 0;
+        isCarinvoice = 1;
+        isOBD = 1;
+        this.loadData();
 
     }
+
+    loadData=()=>{
+
+        request(AppUrls.FINANCE,'post',{
+
+            obd_status:isCarinvoice,
+            invoice_status:isOBD,
+            api:'api/v3/account/apply_pattern_list',
+
+        }).then((response) => {
+
+           if(response.mjson.code == 1){
+
+               this.setState({
+
+                   dataSource:this.state.dataSource.cloneWithRows(response.mjson.data),
+               });
+
+           }else {
+
+           }
+
+        }, (error) => {
+
+            console.log(error);
+
+        });
+    };
 
     // 构造
       constructor(props) {
         super(props);
         // 初始状态
-
-
           let ds = new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2});
         this.state = {
-            dataSource:ds.cloneWithRows(['row1','row2','row3']),
+            dataSource:ds,
         };
       }
 
@@ -76,15 +103,21 @@ export  default  class CGDSelectPatternScene  extends  BaseComponent{
     renderRow =(rowData)=> {
 
         return(
-            <CGDSelectPatternCell/>
+            <CGDSelectPatternCell cellData={rowData}/>
         )
     };
 
     renderHeadView =()=> {
         return(
             <View style={styles.headViewContainer}>
-                <CGDSelectView title="二手车交易发票" selectClick={(btnType)=>{isCarinvoice = btnType}}/>
-                <CGDSelectView title="OBD设备" selectClick={(btnType)=>{isOBD = btnType}}/>
+                <CGDSelectView title="二手车交易发票" selectClick={(btnType)=>{
+                    isCarinvoice = btnType;
+                    this.loadData();
+                }}/>
+                <CGDSelectView title="OBD设备" selectClick={(btnType)=>{
+                    isOBD = btnType;
+                    this.loadData();
+                }}/>
                 <View style={styles.headViewTitleView}>
                     <Text style={styles.headViewTitleText}>该模式收费标准</Text>
                     <Text style={styles.headViewTitleSubText}>（放款时按每台车融资额砍头收取）</Text>
@@ -145,20 +178,22 @@ class CGDSelectView extends  Component {
 class CGDSelectPatternCell extends Component{
 
     render(){
+        const {loan_upper,loan_lower,obd_fee,service_fee} = this.props.cellData;
+
         return(
             <View style={styles.cellContainer}>
                 <View style={styles.cellContentView}>
                     <View style={styles.cellContentLeftView}>
-                        <Text style={styles.cellTitleText}>10万（含）及以下</Text>
+                        <Text style={styles.cellTitleText}>{loan_lower>0?(loan_upper/10000+'-'+loan_lower/10000+'万(含)'):(loan_upper/10000+'万以下')}</Text>
                     </View>
                     <View style={styles.cellContentRightView}>
                         <View style={styles.cellContentItemView}>
                             <Text style={styles.cellContentItemTitle}>采购贷服务费</Text>
-                            <Text style={styles.cellContentItemText}>1000元</Text>
+                            <Text style={styles.cellContentItemText}>{service_fee}元</Text>
                         </View>
                         <View style={styles.cellContentItemView}>
                             <Text style={styles.cellContentItemTitle}>OBD服务费</Text>
-                            <Text style={styles.cellContentItemText}>10元</Text>
+                            <Text style={styles.cellContentItemText}>{obd_fee}元</Text>
                         </View>
                     </View>
                 </View>
