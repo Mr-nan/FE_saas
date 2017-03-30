@@ -52,6 +52,7 @@ export  default class AdjustManageListScene extends BaseComponent {
     }
 
     allRefresh = () => {
+        movies = [];
         this.setState({renderPlaceholderOnly: 'loading'});
         this.getData();
     }
@@ -70,7 +71,7 @@ export  default class AdjustManageListScene extends BaseComponent {
                     });
                 },
                 (error) => {
-                    if (error.mycode == '-2100045' || error.mycode == '-1') {
+                    if (error.mycode == '-2100045' || error.mycode == '-1'||error.mycode == '1020022') {
                         this.setState({
                             renderPlaceholderOnly: 'null',
                             isRefreshing: false
