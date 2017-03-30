@@ -106,14 +106,14 @@ export default class Setting extends BaseComponent {
                 </TouchableOpacity>
 
                 <View style={{height: Pixel.getPixel(1), backgroundColor: FontAndColor.COLORA4}}/>
-                <MyButton buttonType={MyButton.TEXTBUTTON} content="OBD设备" parentStyle={styles.buttonStyle}
-                          childStyle={styles.buttonTextStyle} mOnPress={() => {
-                    this.toNextPage({
-                        name: 'OBDDevice AmountConfirm',
-                        component: OBDDevice,
-                        params: {},
-                    })
-                }}/>
+                {/*<MyButton buttonType={MyButton.TEXTBUTTON} content="OBD设备" parentStyle={styles.buttonStyle}*/}
+                          {/*childStyle={styles.buttonTextStyle} mOnPress={() => {*/}
+                    {/*this.toNextPage({*/}
+                        {/*name: 'OBDDevice AmountConfirm',*/}
+                        {/*component: OBDDevice,*/}
+                        {/*params: {},*/}
+                    {/*})*/}
+                {/*}}/>*/}
                 <View style={{flex: 1}}/>
 
                 <MyButton buttonType={MyButton.TEXTBUTTON}
