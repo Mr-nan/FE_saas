@@ -61,7 +61,7 @@ export  default class AdjustManageListScene extends BaseComponent {
         let maps = {
             base_id: this.props.base_id
         };
-        request(Urls.USER_COUPON_LISTBYUID, 'Post', maps)
+        request(Urls.COUPON_LISTBYUID, 'Post', maps)
             .then((response) => {
                     movies = response.mjson.data;
                     this.setState({

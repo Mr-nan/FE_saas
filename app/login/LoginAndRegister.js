@@ -70,14 +70,6 @@ export default class LoginAndRegister extends BaseComponent {
                     })
                 }}/>
 
-                <MyButton buttonType={MyButton.TEXTBUTTON} content="OBD设备" parentStyle={styles.buttonStyle}
-                          childStyle={styles.buttonTextStyle} mOnPress={() => {
-                    this.toNextPage({
-                        name: 'OBDDevice AmountConfirm',
-                        component: OBDDevice,
-                        params: {},
-                    })
-                }}/>
             </Image>
         );
     }
