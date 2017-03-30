@@ -40,28 +40,40 @@ export  default  class CGDSelectPatternScene  extends  BaseComponent{
 
     loadData=()=>{
 
+        this.props.showModal(true);
+        this.setState({
+
+            dataSource:new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2}),
+            renderPlaceholderOnly:'success',
+
+        });
         request(AppUrls.FINANCE,'post',{
 
-            obd_status:isCarinvoice,
-            invoice_status:isOBD,
+            obd_status:isOBD,
+            invoice_status:isCarinvoice,
             api:'api/v3/account/apply_pattern_list',
 
         }).then((response) => {
 
-           if(response.mjson.code == 1){
+            this.props.showModal(false);
+            console.log(response.mjson);
+            if(response.mjson.code == 1){
 
                this.setState({
-
                    dataSource:this.state.dataSource.cloneWithRows(response.mjson.data),
                });
 
            }else {
-
+                this.props.showToast(response.mjson.msg);
            }
 
         }, (error) => {
 
-            console.log(error);
+            this.props.showModal(false);
+            this.setState({
+                renderPlaceholderOnly:'error',
+
+            });
 
         });
     };
@@ -73,22 +85,36 @@ export  default  class CGDSelectPatternScene  extends  BaseComponent{
           let ds = new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2});
         this.state = {
             dataSource:ds,
+            renderPlaceholderOnly:'success',
         };
       }
 
 
 
     render() {
+        if (this.state.renderPlaceholderOnly!=='success') {
+            return (
+                <View style={{flex:1,backgroundColor:fontAndColor.COLORA3}}>
+                    {this.loadView()}
+                    <NavigatorView title='选择模式' backIconClick={() => {
+                        this.backPage()
+                    }}/>
+                </View>)
+        }
+
         return (
             <View style={styles.rootContainer}>
                 <View style={styles.headViewHintView}>
                     <Image style={{width:20,height:20}} source={require('../../../images/financeImages/hintImage.png')}/>
                     <Text style={styles.headViewHintText}>模式一旦选择将不可变更</Text>
                 </View>
+                {
+                      this.renderHeadView()
+                }
                 <ListView
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}
-                    renderHeader={this.renderHeadView}
+
                 />
                 <TouchableOpacity style={styles.footButton} onPress={()=>{alert('确定'+isCarinvoice +':'+isOBD)}}>
                         <Text style={styles.footButtonText}>确定</Text>
@@ -136,8 +162,8 @@ class CGDSelectView extends  Component {
         super(props);
         // 初始状态
         this.state = {
-            isConfirm:false,
-            currentIndex:0,
+            isConfirm:true,
+            currentIndex:1,
         };
       }
 
@@ -189,17 +215,42 @@ class CGDSelectPatternCell extends Component{
                     <View style={styles.cellContentRightView}>
                         <View style={styles.cellContentItemView}>
                             <Text style={styles.cellContentItemTitle}>采购贷服务费</Text>
-                            <Text style={styles.cellContentItemText}>{service_fee}元</Text>
+                            <Text style={styles.cellContentItemText}>{this.carMoneyChange(service_fee)}元</Text>
                         </View>
                         <View style={styles.cellContentItemView}>
                             <Text style={styles.cellContentItemTitle}>OBD服务费</Text>
-                            <Text style={styles.cellContentItemText}>{obd_fee}元</Text>
+                            <Text style={styles.cellContentItemText}>{this.carMoneyChange(obd_fee)}元</Text>
                         </View>
                     </View>
                 </View>
                <View style={styles.cellBottomLine}/>
             </View>
         )
+    }
+    carMoneyChange=(carMoney)=>{
+
+        let newCarMoney = parseFloat(carMoney);
+        let carMoneyStr = newCarMoney.toFixed(2);
+        let moneyArray = carMoneyStr.split(".");
+
+        console.log(carMoney+'/'+newCarMoney +'/' + carMoneyStr +'/' +moneyArray);
+
+        if(moneyArray.length>1)
+        {
+            if(moneyArray[1]>0){
+
+                return moneyArray[0]+'.'+moneyArray[1];
+
+            }else {
+
+                return moneyArray[0];
+            }
+
+        }else {
+            return carMoneyStr;
+        }
+
+
     }
 
 }
@@ -212,6 +263,7 @@ const styles = StyleSheet.create({
         backgroundColor:fontAndColor.COLORA3,
         paddingTop:Pixel.getTitlePixel(64),
 
+
     },
     headViewHintView:{
         flexDirection:'row',
@@ -219,6 +271,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
         paddingLeft:15,
         backgroundColor:fontAndColor.COLORB6,
+
     },
     headViewHintText:{
         color:fontAndColor.COLORB2,
