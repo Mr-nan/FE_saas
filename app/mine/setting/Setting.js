@@ -22,6 +22,7 @@ import OBDDevice from "../../login/OBDDevice";
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import LoginAndRegister from "../../login/LoginAndRegister";
+import AmountConfirm from '../../login/AmountConfirm';
 
 var Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
