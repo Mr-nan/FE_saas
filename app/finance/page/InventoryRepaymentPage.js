@@ -47,6 +47,8 @@ export  default class InventoryRepaymentPage extends BaseComponent {
     }
 
     componentWillUnmount() {
+         page = 1;
+         allPage = 1;
         allList = [];
     }
 
@@ -63,7 +65,7 @@ export  default class InventoryRepaymentPage extends BaseComponent {
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
                     allList.push(...response.mjson.data.list);
-                    allPage = response.mjson.data.total;
+                    allPage = response.mjson.data.total/10;
                     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                     this.setState({
                         source: ds.cloneWithRows(allList),
