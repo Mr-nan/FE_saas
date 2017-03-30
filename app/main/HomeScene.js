@@ -376,7 +376,7 @@ export default class HomeScene extends BaseComponet {
                 <View
                     style={{width: Pixel.getPixel(166), backgroundColor: '#ffffff', justifyContent: 'center'}}>
                     <Image style={cellSheet.imageStyle}
-                           source={movie.img ? {uri: movie.img + '?x-oss-process=image/resize,w_' + 206 + ',h_' + 151} : require('../../images/carSourceImages/car_null_img.png')}/>
+                           source={movie.img ? {uri: movie.img + '?x-oss-process=image/resize,w_' + 320 + ',h_' + 240} : require('../../images/carSourceImages/car_null_img.png')}/>
 
                     <Text style={cellSheet.despritonStyle}
                           numberOfLines={2}>{DIDIAN + movie.model_name}</Text>

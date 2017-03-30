@@ -185,15 +185,15 @@ export default class CarInfoScene extends BaseComponent {
     // 打开分享
     showShared=()=>{
 
-        let navigatorParams = {
-            name: "CGDSelectPatternScene",
-            component: CGDSelectPatternScene,
-            params: {
-
-            }
-        }
-        this.toNextPage(navigatorParams);
-        // this.refs.LendSuccessAlert.setModelVisible(true);
+        // let navigatorParams = {
+        //     name: "CGDSelectPatternScene",
+        //     component: CGDSelectPatternScene,
+        //     params: {
+        //
+        //     }
+        // }
+        // this.toNextPage(navigatorParams);
+        this.refs.LendSuccessAlert.setModelVisible(true);
         // this.refs.sharedView.isVisible(true);
     }
 
@@ -305,7 +305,7 @@ export default class CarInfoScene extends BaseComponent {
 
         return(
             <TouchableOpacity onPress={()=>{this.showPhotoView()}} activeOpacity={1}>
-                <Image source={typeof data.url =='undefined'?data.require:{uri:data.url+'?x-oss-process=image/resize,w_'+Math.ceil(ScreenWidth)+',h_'+250}} style={styles.carImage}/>
+                <Image source={typeof data.url =='undefined'?data.require:{uri:data.url+'?x-oss-process=image/resize,w_'+Math.ceil(ScreenWidth)+',h_'+555}} style={styles.carImage}/>
             </TouchableOpacity>
 
         );

@@ -43,7 +43,7 @@ export default class CarCell extends Component {
 
                 <View style={styles.imageView}>
                     <Image style={styles.image}
-                           source={carCellData.img?{uri:carCellData.img+'?x-oss-process=image/resize,w_'+160+',h_'+120}:require('../../../images/carSourceImages/car_null_img.png')}/>
+                           source={carCellData.img?{uri:carCellData.img+'?x-oss-process=image/resize,w_'+320+',h_'+240}:require('../../../images/carSourceImages/car_null_img.png')}/>
                 </View>
 
                 <View style={[styles.textContainer]}>
