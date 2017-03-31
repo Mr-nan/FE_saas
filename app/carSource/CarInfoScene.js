@@ -185,15 +185,15 @@ export default class CarInfoScene extends BaseComponent {
     // 打开分享
     showShared=()=>{
 
-        let navigatorParams = {
-            name: "CGDSelectPatternScene",
-            component: CGDSelectPatternScene,
-            params: {
-
-            }
-        }
-        this.toNextPage(navigatorParams);
-        // this.refs.LendSuccessAlert.setModelVisible(true);
+        // let navigatorParams = {
+        //     name: "CGDSelectPatternScene",
+        //     component: CGDSelectPatternScene,
+        //     params: {
+        //
+        //     }
+        // }
+        // this.toNextPage(navigatorParams);
+        this.refs.LendSuccessAlert.setModelVisible(true);
         // this.refs.sharedView.isVisible(true);
     }
 

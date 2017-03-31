@@ -107,11 +107,11 @@ export  default class LendMoneySence extends BaseComponent {
         }
         else {
 
-            this.navigatorParams.name = "CGDSelectPatternScene";
-            this.navigatorParams.component = CGDSelectPatternScene;
-            this.toNextPage(this.navigatorParams);
+            // this.navigatorParams.name = "CGDSelectPatternScene";
+            // this.navigatorParams.component = CGDSelectPatternScene;
+            // this.toNextPage(this.navigatorParams);
 
-            // this.cgdMessage.setModelVisible(true)
+            this.cgdMessage.setModelVisible(true)
         }
 
     }

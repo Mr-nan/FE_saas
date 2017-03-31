@@ -8,8 +8,6 @@
  */
 
 #import "AppDelegate.h"
-#import <CodePush/CodePush.h>
-#import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import "RCTLinkingManager.h"
 
@@ -19,13 +17,7 @@
 {
  NSURL *jsCodeLocation;
 
-
-#ifdef DEBUG
    jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
-#else   
-  jsCodeLocation = [CodePush bundleURL];
-#endif
-  
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"FE_Sass"
                                                initialProperties:nil
@@ -40,10 +32,11 @@
   return YES;
 }
 
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
-{
-    return [RCTLinkingManager application:application openURL:url
-                      sourceApplication:sourceApplication annotation:annotation];
-}
+//- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+//  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+//{
+//    return [RCTLinkingManager application:application openURL:url
+//                      sourceApplication:sourceApplication annotation:annotation];
+//}
+
 @end
