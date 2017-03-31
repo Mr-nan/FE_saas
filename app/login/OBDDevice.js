@@ -73,7 +73,9 @@ export default class OBDDevice extends BaseComponent {
                     leftTextShow={false}
                     centerText={"OBD设备"}
                     rightText={"安装说明"}
-                    rightTextCallBack={() => alert("xxxx")}
+                    rightTextCallBack={() => {
+                        alert(this.state.source == {})
+                    }}
                     leftImageCallBack={this.backPage}/>
 
                 <View style={{
