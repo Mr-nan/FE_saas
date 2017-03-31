@@ -145,7 +145,7 @@ export  default class AdjustListScene extends BaseComponent {
             if (datas.code == 1) {
                 let data = JSON.parse(datas.result);
                 let maps = {
-                    api: Urls.REPAYMENT_GET_ADJUST_SAVE,
+                    api: Urls.REPAYMENT_GET_ADJUST_USE,
                     planid: this.props.items.planid,
                     merge_id: data.base_user_id,
                     coupon_number:movies.list[this.selected].coupon_code,
@@ -345,12 +345,14 @@ const styles = StyleSheet.create({
     },
     leftTitle: {
         fontSize: Pixel.getFontPixel(15),
-        color: '#000000'
+        color: '#000000',
+        backgroundColor:'#00000000'
     },
     leftBottom: {
         marginTop: Pixel.getPixel(5),
         fontSize: Pixel.getFontPixel(12),
-        color: '#9e9e9e'
+        color: '#9e9e9e',
+        backgroundColor:'#00000000'
     },
     rightContainer: {
         width: Pixel.getPixel(120),
@@ -362,7 +364,8 @@ const styles = StyleSheet.create({
     },
     rightTitle: {
         fontSize: Pixel.getFontPixel(26),
-        color: '#05c5c2'
+        color: '#05c5c2',
+        backgroundColor:'#00000000'
     },
     rightTitleAlign: {
         marginRight: Pixel.getPixel(3)
@@ -378,7 +381,8 @@ const styles = StyleSheet.create({
     },
     rightBottomText: {
         fontSize: Pixel.getFontPixel(14),
-        color: '#9e9e9e'
+        color: '#9e9e9e',
+        backgroundColor:'#00000000'
     },
     imgContainer: {
         height: Pixel.getPixel(33),
