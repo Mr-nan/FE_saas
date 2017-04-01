@@ -10,7 +10,9 @@ import {
     ScrollView,
     Dimensions,
     TouchableOpacity,
-    ListView
+    ListView,
+    RefreshControl,
+    InteractionManager
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
@@ -18,31 +20,120 @@ import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import * as fontAndColor from '../../constant/fontAndColor';
 import MyButton from '../../component/MyButton';
-let MovleData = require('../../main/MoveData.json');
-let movies = MovleData.subjects;
-export  default class SingleRepaymentPage extends Component {
+import BaseComponent from '../../component/BaseComponent';
+let allList = [];
+import {request} from '../../utils/RequestUtil';
+import * as Urls from '../../constant/appUrls';
+import  LoadMoreFooter from '../../component/LoadMoreFooter';
+let page = 1;
+let allPage = 1;
+export  default class SingleRepaymentPage extends BaseComponent {
 
     constructor(props) {
         super(props);
         // 初始状态
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-
         this.state = {
-            source: ds.cloneWithRows(movies)
-
+            source: [],
+            renderPlaceholderOnly: 'blank',
+            isRefreshing: false
         };
     }
 
+    componentDidMount() {
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
+    }
+
+    componentWillUnmount() {
+        allList = [];
+        page = 1;
+        allPage = 1;
+    }
+
+    initFinish = () => {
+        this.getData();
+    }
+
+    getData = () => {
+        let maps = {
+            api: Urls.REPAYMENT_GETLIST,
+            type: '2',
+            p: page
+        };
+        request(Urls.FINANCE, 'Post', maps)
+            .then((response) => {
+                    allList.push(...response.mjson.data.list);
+                    allPage = response.mjson.data.page;
+                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                    this.setState({
+                        source: ds.cloneWithRows(allList),
+                        renderPlaceholderOnly: 'success',
+                        isRefreshing: false
+                    });
+                },
+                (error) => {
+                    if (error.mycode == '-2100045') {
+                        this.setState({renderPlaceholderOnly: 'null', isRefreshing: false});
+                    } else {
+                        this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
+                    }
+                });
+    }
+
+    refreshingData = () => {
+        allList = [];
+        this.setState({isRefreshing: true});
+        page = 1;
+        allPage = 1;
+        this.getData();
+    };
+
+    toEnd = () => {
+        if (this.state.isRefreshing) {
+
+        } else {
+            if (page < allPage) {
+                page++;
+                this.getData();
+            }
+        }
+
+    };
+
+    renderListFooter = () => {
+        if (this.state.isRefreshing) {
+            return null;
+        } else {
+            return (<LoadMoreFooter isLoadAll={page>=allPage?true:false}/>)
+        }
+    }
 
     render() {
-
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return (<View style={{backgroundColor: fontAndColor.COLORA3, flex: 1, paddingTop: Pixel.getPixel(15)}}>
+                {this.loadView()}
+            </View>);
+        }
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1, paddingTop: Pixel.getPixel(15)}}>
                 <ListView
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
-                    bounces={false}
+                    renderFooter={
+                                    this.renderListFooter
+                                }
+                    onEndReached={this.toEnd}
+                    refreshControl={
+                                    <RefreshControl
+                                        refreshing={this.state.isRefreshing}
+                                        onRefresh={this.refreshingData}
+                                        tintColor={[fontAndColor.COLORB0]}
+                                        colors={[fontAndColor.COLORB0]}
+                                    />
+                                }
                 />
             </View>
         );
@@ -66,17 +157,19 @@ export  default class SingleRepaymentPage extends Component {
     _renderRow = (movie) => {
 
         return (
-            <View style={[styles.allBack]}>
+            <TouchableOpacity onPress={()=>{
+                this.props.callBack(movie.loan_id,movie.loan_number,movie.type);
+            }} activeOpacity={0.8} style={[styles.allBack]}>
                 <View style={[styles.rowViewStyle, styles.margin]}>
                     <View style={[styles.rowTopViewStyle, {justifyContent: 'flex-start', flex: 3,}]}>
                         <MyButton {...this.buttonParams} content="单车"/>
-                        <Text style={styles.rowTopTextStyle}>源之宝汽车经销公司</Text>
+                        <Text style={styles.rowTopTextStyle}>{this.props.customerName}</Text>
                     </View>
                     <View style={[styles.rowTopViewStyle, {
                         flex: 2,
                         justifyContent: 'flex-end'
                     }]}>
-                        <Text style={styles.rowTopGrayTextStyle}>201701100225</Text>
+                        <Text style={styles.rowTopGrayTextStyle}>{movie.loan_number}</Text>
                     </View>
                 </View>
                 <View style={[styles.line]}></View>
@@ -89,7 +182,7 @@ export  default class SingleRepaymentPage extends Component {
                         <Text style={[styles.centerBottomText, {
                             color: fontAndColor.COLORA0
                         }]}>
-                            2017-1-20
+                            {movie.loan_time_str}
                         </Text>
                     </View>
                     <View style={[styles.centerChild, styles.margin, {alignItems: 'flex-end'}]}>
@@ -99,7 +192,7 @@ export  default class SingleRepaymentPage extends Component {
                         <Text style={[styles.centerBottomText, {
                             color: fontAndColor.COLORB2
                         }]}>
-                            10万
+                            {movie.total_repayment}
                         </Text>
                     </View>
                 </View>
@@ -109,11 +202,11 @@ export  default class SingleRepaymentPage extends Component {
                         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                         color: fontAndColor.COLORA1
                     }}>
-                        奔驰M级(进口)2015款 ML 4MATIC 动感型
+                        {movie.model_name_str}
                     </Text>
                 </View>
                 <View style={{width: width, height: Pixel.getPixel(1), backgroundColor: fontAndColor.COLORA4}}></View>
-            </View>
+            </TouchableOpacity>
 
         )
     }
@@ -140,11 +233,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     rowTopTextStyle: {
-        marginLeft: Pixel.getPixel(7), fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+        marginLeft: Pixel.getPixel(7), fontSize: Pixel.getFontPixel(14),
         color: fontAndColor.COLORA0
     },
     rowTopGrayTextStyle: {
-        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT20),
+        fontSize: Pixel.getFontPixel(12),
         color: fontAndColor.COLORA1
     },
     margin: {
@@ -164,10 +257,10 @@ const styles = StyleSheet.create({
         color: fontAndColor.COLORB0,
     },
     allBack: {
-        width: width, height: Pixel.getPixel(163),backgroundColor:'#ffffff',alignItems:'center'
+        width: width, height: Pixel.getPixel(163), backgroundColor: '#ffffff', alignItems: 'center'
     },
     line: {
-        width: width-Pixel.getPixel(30),
+        width: width - Pixel.getPixel(30),
         height: Pixel.getPixel(1),
         backgroundColor: fontAndColor.COLORA3
     },
@@ -188,9 +281,9 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
         marginTop: Pixel.getPixel(8)
     },
-    bottomView:{
+    bottomView: {
         height: Pixel.getPixel(44),
         justifyContent: 'center',
-        width:width-Pixel.getPixel(30)
+        width: width - Pixel.getPixel(30)
     }
 })

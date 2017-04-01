@@ -2,6 +2,9 @@ package com.fe_sass;
 
 import com.facebook.react.ReactActivity;
 
+import com.theweflex.react.WeChatPackage;
+import java.util.Arrays;
+import java.util.List;
 public class MainActivity extends ReactActivity {
 
     /**
@@ -12,4 +15,5 @@ public class MainActivity extends ReactActivity {
     protected String getMainComponentName() {
         return "FE_Sass";
     }
+
 }

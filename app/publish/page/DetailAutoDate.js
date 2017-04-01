@@ -21,8 +21,6 @@ const Pixel = new PixelUtil();
 const { width,height } = Dimensions.get('window');
 const background = require('../../../images/publish/background.png');
 const arrow = require('../../../images/publish/date-select.png');
-import SQLiteUtil from '../../utils/SQLiteUtil';
-const SQLite = new SQLiteUtil();
 
 export default class DetailAutoDate extends Component{
 
@@ -31,16 +29,16 @@ export default class DetailAutoDate extends Component{
         this.type = '';
         let manufacture = this.props.carData.manufacture;
         let init_reg = this.props.carData.init_reg;
-        let hasRegister = this.props.carData.v_type === '1' || this.props.carData.v_type === '';
-        if(this.props.carData.model !== ''){
+        let hasRegister = this.props.carType === '1' || this.props.carType === '';
+        if(this.isEmpty(this.props.carData.model) === false){
             let model = JSON.parse(this.props.carData.model);
             let model_year = model.model_year;
             if(typeof(model_year) == "undefined" || model_year === ""){
                 model_year='2000';
             }
-            if(manufacture === '') manufacture = model_year +'-06';
-            if(init_reg === '') init_reg = model_year +'-06';
-            SQLite.changeData(
+            if(manufacture === '') manufacture = model_year +'-06-01';
+            if(init_reg === '') init_reg = model_year +'-06-01';
+            this.props.sqlUtil.changeData(
                 'UPDATE publishCar SET manufacture = ?,init_reg = ? WHERE vin = ?',
                 [ manufacture,init_reg, this.props.carData.vin]);
         }
@@ -53,6 +51,14 @@ export default class DetailAutoDate extends Component{
         }
     }
 
+    isEmpty = (str)=>{
+        if(typeof(str) != 'undefined' && str !== ''){
+            return false;
+        }else {
+            return true;
+        }
+    };
+
     componentWillMount(){
 
     }
@@ -63,9 +69,15 @@ export default class DetailAutoDate extends Component{
         });
     }
 
-    componentWillReceiveProps(nextProps: Object) {
+    componentWillReceiveProps(nextProps) {
         this.setState({
-            hasRegister: nextProps.carData.v_type === '1'|| this.props.carData.v_type === ''
+            hasRegister: nextProps.carType === '1'|| nextProps.carType === ''
+        },()=>{
+            if(this.state.hasRegister === false) {
+                this.props.sqlUtil.changeData(
+                    'UPDATE publishCar SET init_reg = ? WHERE vin = ?',
+                    ['', this.props.carData.vin]);
+            }
         });
     }
 
@@ -78,15 +90,15 @@ export default class DetailAutoDate extends Component{
     }
 
     _handleDatePicked = (date)=>{
-        let d = this.dateFormat(date,'yyyy-MM');
+        let d = this.dateFormat(date,'yyyy-MM-dd');
         if(this.type === 'factory'){
             this.setState({factoryDate:d});
-            SQLite.changeData(
+            this.props.sqlUtil.changeData(
                 'UPDATE publishCar SET manufacture = ? WHERE vin = ?',
                 [ d, this.props.carData.vin]);
         }else{
             this.setState({registerDate:d});
-            SQLite.changeData(
+            this.props.sqlUtil.changeData(
                 'UPDATE publishCar SET init_reg = ? WHERE vin = ?',
                 [ d, this.props.carData.vin]);
         }
@@ -137,7 +149,7 @@ export default class DetailAutoDate extends Component{
                         onPress={()=>{this._labelPress('factory')}}
                     >
                         <View style={styles.center}>
-                            <Text style={[styles.fontMain,styles.leftText]}>出厂时间</Text>
+                            <Text style={[styles.fontMain,styles.leftText]}>出厂日期</Text>
                             <Text style={[styles.fontMain,styles.fillSpace]} >{this.state.factoryDate}</Text>
                             <Image style={styles.imgContainer} source={arrow}/>
                         </View>
@@ -148,7 +160,7 @@ export default class DetailAutoDate extends Component{
                         onPress={()=>{this._labelPress('register')}}
                     >
                         <View style={styles.center}>
-                            <Text style={[styles.fontMain,styles.leftText]}>初登时间</Text>
+                            <Text style={[styles.fontMain,styles.leftText]}>初登日期</Text>
                             <Text style={[styles.fontMain,styles.fillSpace]} >{this.state.registerDate}</Text>
                             <Image style={styles.imgContainer} source={arrow}/>
                         </View>

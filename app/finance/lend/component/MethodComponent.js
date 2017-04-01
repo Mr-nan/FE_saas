@@ -6,9 +6,11 @@ import { Dimensions } from 'react-native';
 
 const STATECODE ={
 
-    loading:'loading',
-    loadSuccess:'loaded',
-    loadError:'error'
+    loading:'blank',
+    loadSuccess:'success',
+    loadError:'error',
+    empty:'empty'
+
 }
 
 const PAGECOLOR = {
@@ -60,4 +62,14 @@ const fontadapeSize = (size)=> {
     return adapeSize(size) + 2;
 }
 
-export {STATECODE,PAGECOLOR,width,height,dateFormat,adapeSize,fontadapeSize,changeToMillion}
+const getSectionData = (dataBlob, sectionID) => {
+
+    return dataBlob[sectionID];
+}
+const getRowData = (datatBlob, sectionId, rowId) => {
+
+    return datatBlob[sectionId][rowId];
+}
+
+
+export {STATECODE,PAGECOLOR,width,height,dateFormat,adapeSize,fontadapeSize,changeToMillion,getSectionData,getRowData}

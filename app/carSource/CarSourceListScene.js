@@ -2,7 +2,7 @@
  * Created by zhengnan on 17/2/9.
  */
 
-import React,{Component} from 'react';
+import React, {Component} from 'react';
 
 import {
     StyleSheet,
@@ -15,235 +15,252 @@ import {
     RefreshControl,
     Dimensions,
     Modal,
+    NativeModules,
+    BackAndroid,
+    InteractionManager
 
 } from 'react-native';
-const {width, height} = Dimensions.get('window');
+
+
 import * as fontAndColor    from '../constant/fontAndColor';
 import BaseComponent        from '../component/BaseComponent';
-import HeadView             from './znComponent/CarSourceSelectHeadView';
+import {CarSourceSelectHeadView, CarSourceSelectView}         from './znComponent/CarSourceSelectHeadView';
 import ListFooter           from './znComponent/LoadMoreFooter';
-import SGListView           from 'react-native-sglistview';
 import CarCell              from './znComponent/CarCell';
 import CarInfoScene         from './CarInfoScene';
 import CarBrandSelectScene  from './CarBrandSelectScene';
+import CarScreeningScene    from  './CarScreeningScene';
 import CityListScene        from './CityListScene';
+import {SequencingButton, SequencingView} from './znComponent/CarSequencingView';
+import * as AppUrls         from "../constant/appUrls";
 import  {request}           from '../utils/RequestUtil';
 import PixelUtil            from '../utils/PixelUtil';
-
-const Pixel = new PixelUtil();
-
-const carAgeSource = [
-    {
-        title:'1年以内' ,
-        value:'0|1',
-    },
-    {
-        title:'3年以内',
-        value:'0|3',
-    },
-    {
-        title:'5年以内' ,
-        value:'0|4',
-    },
-    {
-        title:'8年以内' ,
-        value:'0|8',
-    },
-    {
-        title:'10年以内' ,
-        value:'0|10',
-    },
-
-];
-
-const carKMSource = [
-    {
-        title:'1万公里以内',
-        value:'0|1',
-    },
-    {
-        title:'3万公里以内' ,
-        value:'0|3',
-    },
-    {
-        title:'5万公里以内' ,
-        value:'0|5',
-    },
-    {
-        title:'10万公里以内' ,
-        value:'0|10',
-    },
+import * as storageKeyNames from '../constant/storageKeyNames';
+import StorageUtil from '../utils/StorageUtil';
 
 
-];
-
-const sequencingDataSource = [
-    {
-        title:'最新发布',
-        value:'1',
-    },
-    {
-        title:'里程少',
-        value:'2',
-    },
-    {
-        title:'车龄短' ,
-        value:'3',
-    },
-];
-
-let carData = new Array;
+let Pixel = new PixelUtil();
+let carFilterData = require('./carData/carFilterData.json');
+let carAgeSource = carFilterData.carAgeSource;
+let carKMSource = carFilterData.carKMSource;
+let sequencingDataSource = carFilterData.sequencingDataSource;
+let currentCheckedIndex = 1;
+let checkedSource = [];
+let carData = [];
 
 const APIParameter = {
 
-    brand_id:0,
-    series_id:0,
-    model_id:0,
-    provice_id:0,
-    city_id:0,
-    order_type:0,
-    coty:0,
-    mileage:0,
-    rows:10,
-    page:1,
-    start:0,
-    type:1,
-    status:1,
+    brand_id: 0,
+    series_id: 0,
+    model_id: 0,
+    provice_id: 0,
+    city_id: 0,
+    order_type: 0,
+    coty: 0,
+    mileage: 0,
+    v_type:0,
+    rows: 10,
+    page: 1,
+    start: 0,
+    type: 1,
+    status: 1,
+
 };
 
-export  default  class  carSourceListScene extends  BaseComponent{
+
+export  default  class carSourceListScene extends BaseComponent {
+
+    handleBack = () => {
+        NativeModules.VinScan.goBack();
+        return true;
+    }
+
+    componentDidMount() {
+        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
+    }
+
     // 构造
     constructor(props) {
         super(props);
         // 初始状态
-
-        const carSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id });
+        const carSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
 
         this.state = {
 
-            isRefreshing:false,
-            dataSource:carSource,
-            checkedSource:carAgeSource,
-            isHide:true,
-            isFillData:1,
-            isHideSequencing:true,
-            isLoadMore:true,
-            currentCheckedIndex:1,
-            sequencingType:{
-                title:'',
-                value:'',
+            isRefreshing: false,
+            dataSource: carSource,
+            isHide: true,
+            isFillData: 1,
+            sequencingType: {
+                title: '',
+                value: '',
             },
-            checkedCarType:{
-                title:'',
-                brand_id:'',
-                series_id:'',
+            checkedCarType: {
+                title: '',
+                brand_id: '',
+                series_id: '',
             },
-            checkedCarAgeType:{
-                title:'',
-                value:'',
+            checkedCarAgeType: {
+                title: '',
+                value: '',
             },
-            checkedCarKMType:{
-                title:'',
-                value:'',
+            checkedCarKMType: {
+                title: '',
+                value: '',
             },
+            checkedCarGenre:{
+                title: '',
+                value: '',
+            },
+            checkedCity:{
+                title: '',
+                value: '',
+            },
+
             renderPlaceholderOnly: 'blank',
         };
 
     }
 
-    initFinish=()=>{
+    componentWillReceiveProps(nextProps) {
+        StorageUtil.mGetItem(storageKeyNames.NEED_OPENBRAND,(data)=>{
+            if(data.code==1){
+               if(data.result=='true'){
+                    this.presCarTypeScene();
+               }
+            }
+        });
+        StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
+    }
 
+    initFinish = () => {
+        StorageUtil.mGetItem(storageKeyNames.NEED_OPENBRAND,(data)=>{
+            if(data.code==1){
+                if(data.result=='true'){
+                    this.presCarTypeScene();
+
+                }
+            }
+        });
+        StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
+        this.loadData();
     };
 
     // 下拉刷新数据
-    refreshingData=()=>{
-
-        this.setState({isRefreshing:true});
+    refreshingData = () => {
+        carData = [];
+        this.setState({isRefreshing: true});
         this.loadData();
 
     };
 
-    componentWillMount() {
 
-        this.refreshingData();
+    // 筛选数据刷新
+    filterData = () => {
+        carData = [];
+        this.setState({dataSource:this.state.dataSource.cloneWithRows(carData)});
+        this.props.showModal(true);
+        this.loadData();
+
     }
 
     // 获取数据
-    loadData=()=>{
+    loadData = () => {
 
-        let url = 'http://dev.api-gateway.dycd.com/' + 'v1/car/index';
-
-        APIParameter.page=0;
-        request(url,'post',APIParameter)
+        let url = AppUrls.CAR_INDEX;
+        APIParameter.page = 1;
+        request(url, 'post', APIParameter,()=>{
+            this.props.backToLogin();
+        })
             .then((response) => {
 
                 carData = response.mjson.data.list;
+                if (typeof(response.mjson.data.start) == "undefined") {
+                    APIParameter.start = 0;
+
+                } else {
+                    APIParameter.start = response.mjson.data.start;
+                }
                 APIParameter.status = response.mjson.data.status;
-                if(this.state.isFillData !== APIParameter.status)
-                {
+
+                if (this.state.isFillData !== APIParameter.status) {
                     this.setState({
-                        isFillData:APIParameter.status,
+                        isFillData: APIParameter.status,
+                        dataSource: this.state.dataSource.cloneWithRows(carData),
+                        isRefreshing: false,
+                        renderPlaceholderOnly: 'success',
+                    });
+                } else {
+                    this.setState({
+                        dataSource: this.state.dataSource.cloneWithRows(carData),
+                        isRefreshing: false,
+                        renderPlaceholderOnly: 'success',
                     });
                 }
-                this.setState({
-                    dataSource:this.state.dataSource.cloneWithRows(carData),
-                    isRefreshing:false,
-                });
-                this.setState({renderPlaceholderOnly: 'success'});
-        }, (error) => {
+                this.props.showModal(false);
 
+            }, (error) => {
+                this.props.showModal(false);
                 this.setState({
-                    isRefreshing:false,
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'error'
                 });
 
             });
 
     };
 
-    loadMoreData=()=>{
+    loadMoreData = () => {
 
-        let url = 'http://dev.api-gateway.dycd.com/' + 'v1/car/index';
-        APIParameter.page +=1;
+        let url = AppUrls.CAR_INDEX;
+        APIParameter.page += 1;
 
-        request(url,'post',APIParameter)
+        request(url, 'post', APIParameter,()=>{
+            this.props.backToLogin();
+        })
             .then((response) => {
 
+                if (typeof(response.mjson.data.start) == "undefined") {
+                    APIParameter.start = 0;
+                } else {
+                    APIParameter.start = response.mjson.data.start;
+                }
                 APIParameter.status = response.mjson.data.status;
-
-                if(this.state.isFillData !== APIParameter.status)
-                {
+                if (this.state.isFillData !== APIParameter.status) {
                     this.setState({
-                        isFillData:APIParameter.status,
+                        isFillData: APIParameter.status,
                     });
                 }
-                let data = new  Array;
-                data =response.mjson.data.list
-                for (let i=0;i<data.length;i++)
-                {
+                let data = new Array;
+                data = response.mjson.data.list
+                for (let i = 0; i < data.length; i++) {
                     carData.push(data[i]);
                 }
 
                 this.setState({
-                    dataSource:this.state.dataSource.cloneWithRows(carData),
+                    dataSource: this.state.dataSource.cloneWithRows(carData),
                 });
 
             }, (error) => {
 
 
-
             });
     }
 
-    toEnd=()=>{
+    toEnd = () => {
 
-       if(carData.length && APIParameter.status==1)
-       {
-           this.loadMoreData();
-       }
+        if (carData.length && APIParameter.status == 1 && !this.state.isRefreshing) {
+            this.loadMoreData();
+        }
 
     };
 
-    loactionClick=()=>{
+    // 选择城市列表
+    loactionClick = () => {
 
         let navigatorParams = {
             name: "CityListScene",
@@ -256,35 +273,91 @@ export  default  class  carSourceListScene extends  BaseComponent{
         this.props.callBack(navigatorParams);
     }
 
-    presCarTypeScene=()=>{
+    presCarTypeScene = () => {
+
         let navigatorParams = {
-            name:"CarBrandSelectScene",
-            component:CarBrandSelectScene,
-            params:{
-                checkedCarType:this.state.checkedCarType,
-                checkedCarClick:this.checkedCarClick,
+            name: "CarBrandSelectScene",
+            component: CarBrandSelectScene,
+            params: {
+                checkedCarType: this.state.checkedCarType,
+                checkedCarClick: this.checkedCarClick,
+                status: 1,
+                isHeadInteraction: true,
+                // isCheckedCarModel:true,
+
             }
         };
         this.props.callBack(navigatorParams);
 
     }
 
+    ScreeningClick=()=>{
+
+        let {checkedCarType,checkedCarAgeType,checkedCarKMType,checkedCarGenre,checkedCity }= this.state;
+
+        let screeningObject = {
+            checkedCarType:{title:checkedCarType.title,brand_id:checkedCarType.brand_id,series_id:checkedCarType.series_id},
+            checkedCarAgeType:{title:checkedCarAgeType.title,value:checkedCarAgeType.value},
+            checkedCarKMType:{title:checkedCarKMType.title,value:checkedCarKMType.value},
+            checkedCarGenre:{title:checkedCarGenre.title,value:checkedCarGenre.value},
+            checkedCity:{title:checkedCity.title,value:checkedCity.value},
+        };
+        let navigatorParams = {
+            name: "CarScreeningScene",
+            component: CarScreeningScene,
+            params: {
+                screeningObject:screeningObject,
+                screeningCompleteClick:this.screeningCompleteClick
+            }
+        };
+        this.props.callBack(navigatorParams);
+    }
+
+
+    screeningCompleteClick=(screeningObject)=>{
+
+        this.setState({
+            checkedCarType: screeningObject.checkedCarType,
+            checkedCarAgeType:screeningObject.checkedCarAgeType,
+            checkedCarKMType:screeningObject.checkedCarKMType,
+            checkedCarGenre:screeningObject.checkedCarGenre,
+            checkedCity:screeningObject.checkedCity,
+        });
+
+        APIParameter.brand_id = screeningObject.checkedCarType.brand_id;
+        APIParameter.series_id = screeningObject.checkedCarType.series_id;
+        APIParameter.mileage = screeningObject.checkedCarKMType.value;
+        APIParameter.coty = screeningObject.checkedCarAgeType.value;
+        APIParameter.city_id = screeningObject.checkedCity.value;
+        APIParameter.v_type = screeningObject.checkedCarGenre.value;
+
+        if (this.refs.headView.state.isCheckRecommend) {
+            this.refs.headView.setCheckRecommend(false)
+        } else {
+            this.filterData();
+        }
+    }
 
     //  筛选条件事件
-    headViewOnPres = (index,isHighlighted,setImgHighlighted)=> {
+    headViewOnPres = (index, isHighlighted, setImgHighlighted) => {
 
-        if(index===1) {
+        this.refs.headView.checkSelect(currentCheckedIndex); // 取消之前选择按钮状态
+        currentCheckedIndex = index;
 
-           this.presCarTypeScene();
+        if (index === 1) {
+
+            this.presCarTypeScene();
+            if (!this.state.isHide) {
+                this.setState({
+                    isHide: true,
+                });
+            }
             return;
         }
 
-        this.refs.headView.checkSelect(this.state.currentCheckedIndex); // 取消之前选择按钮状态
 
-        let {checkedSource} = this.state;
-        if(!isHighlighted)
-        {
-            switch(index) {
+        if (!isHighlighted) {
+            switch (index) {
 
                 case 2:
                     checkedSource = carAgeSource;
@@ -298,285 +371,353 @@ export  default  class  carSourceListScene extends  BaseComponent{
         }
 
         this.setState({
-
-            checkedSource,
-            isHide:isHighlighted,
-            currentCheckedIndex: index,
+            isHide: isHighlighted,
         });
-
         setImgHighlighted(!isHighlighted); // 回调按钮状态
+
 
     };
 
     // 选择意向
-    checkRecommendClick =(isCheck)=>{
-        if(isCheck)
-        {
-            APIParameter.type=1;
+    checkRecommendClick = (isCheck) => {
+
+        if (isCheck) {
+            APIParameter.type = 1;
             this.allDelectClick();
-        }else
-        {
-            APIParameter.type=0;
+
+        } else {
+            APIParameter.type = 0;
+            this.filterData();
         }
-        this.refreshingData();
 
     };
 
     //  选择车型
-    checkedCarClick=(carType)=>{
+    checkedCarClick = (carObject) => {
 
+        APIParameter.brand_id = carObject.brand_id;
+        APIParameter.series_id = carObject.series_id;
         this.setState({
-            checkedCarType:{
-                title:carType,
-                brand_id:'',
-                model_id:'',
+            checkedCarType: {
+                title: carObject.series_id == 0 ? carObject.brand_name : carObject.series_name,
+                brand_id: carObject.brand_id,
+                series_id: carObject.series_id,
             },
         });
 
-        if(this.refs.headView.state.isCheckRecommend)
-        {
+        if (this.refs.headView.state.isCheckRecommend) {
             this.refs.headView.setCheckRecommend(false)
-        }else {
-            this.refreshingData();
+        } else {
+            this.filterData();
         }
 
     };
 
     // 筛选车龄和里程
-    checkCarAgeAnKMClick=(data,index)=>{
+    checkCarAgeAnKMClick = (data, index) => {
 
-        this.refs.headView.checkSelect(this.state.currentCheckedIndex);
+        this.refs.headView.checkSelect(currentCheckedIndex);
 
-        let {checkedCarAgeType,checkedCarKMType} = this.state;
+        let {checkedCarAgeType, checkedCarKMType} = this.state;
 
-        if(this.state.currentCheckedIndex == 2)
-        {
-            checkedCarAgeType ={
-                title:this.state.checkedSource[index].title,
-                value:this.state.checkedSource[index].value,
+        if (currentCheckedIndex == 2) {
+            checkedCarAgeType = {
+                title: checkedSource[index].title,
+                value: checkedSource[index].value,
             }
-            APIParameter.coty=checkedCarAgeType.value;
+            APIParameter.coty = checkedCarAgeType.value;
 
         }
-        if (this.state.currentCheckedIndex == 3)
-        {
+        if (currentCheckedIndex == 3) {
             checkedCarKMType = {
-                title:this.state.checkedSource[index].title,
-                value:this.state.checkedSource[index].value,
+                title: checkedSource[index].title,
+                value: checkedSource[index].value,
             }
 
-            APIParameter.mileage=checkedCarKMType.value;
+            APIParameter.mileage = checkedCarKMType.value;
         }
-
 
         this.setState({
 
             checkedCarAgeType,
             checkedCarKMType,
-            isHide:true,
+            isHide: true,
 
         });
 
-        if(this.refs.headView.state.isCheckRecommend)
-        {
+        if (this.refs.headView.state.isCheckRecommend) {
             this.refs.headView.setCheckRecommend(false)
-        }else {
-            this.refreshingData();
+        } else {
+            this.filterData();
         }
 
     };
+
+    hideCheckedView = () => {
+        this.refs.headView.checkSelect(currentCheckedIndex); // 取消之前选择按钮状态
+        this.setState({
+            isHide: true,
+        });
+    }
 
     // 筛选排序
-    sequencingCheckedClick=(title,value)=>{
+    sequencingCheckedClick = (title, value) => {
 
-        this.hideSequencingView();
         this.setState({
-            sequencingType:{
+            sequencingType: {
 
-                title:title,
-                value:value,
+                title: title,
+                value: value,
 
             },
         });
-        APIParameter.order_type=value;
-        this.refreshingData();
-    };
-
-    sequencingClick=()=>{
-        this.setState({
-            sequencingType:{
-                title:'',
-                value:'',
-            },
-        });
-        APIParameter.order_type=0;
-        this.refreshingData();
-    };
-
-    carTypeClick=()=>{
-        this.setState({
-            checkedCarType:'',
-        });
-
-    };
-
-    carAgeClick=()=>{
-        this.setState({
-            checkedCarAgeType:{
-                title:'',
-                value:'',
-            },
-        });
-
-        APIParameter.coty=0;
-        if(this.refs.headView.state.isCheckRecommend)
-        {
+        APIParameter.order_type = value;
+        if (this.refs.headView.state.isCheckRecommend) {
             this.refs.headView.setCheckRecommend(false)
-        }else {
-            this.refreshingData();
+        } else {
+            this.filterData();
+        }
+
+    };
+
+    sequencingClick = () => {
+        this.setState({
+            sequencingType: {
+                title: '',
+                value: '',
+            },
+        });
+        APIParameter.order_type = 0;
+        this.filterData();
+    };
+
+    carTypeClick = () => {
+        this.setState({
+            checkedCarType: {
+                title: '',
+                brand_id: '',
+                series_id: '',
+            },
+        });
+        APIParameter.brand_id = 0;
+        APIParameter.series_id = 0;
+        if (this.refs.headView.state.isCheckRecommend) {
+            this.refs.headView.setCheckRecommend(false)
+        } else {
+            this.filterData();
         }
     };
 
-    carKMClick=()=>{
+    carAgeClick = () => {
         this.setState({
-            checkedCarKMType:{
-                title:'',
-                value:'',
+            checkedCarAgeType: {
+                title: '',
+                value: '',
             },
         });
-        APIParameter.mileage=0;
-        if(this.refs.headView.state.isCheckRecommend)
-        {
+
+        APIParameter.coty = 0;
+        if (this.refs.headView.state.isCheckRecommend) {
             this.refs.headView.setCheckRecommend(false)
-        }else {
-            this.refreshingData();
+        } else {
+            this.filterData();
         }
     };
 
-    allDelectClick=()=>{
+    carKMClick = () => {
+        this.setState({
+            checkedCarKMType: {
+                title: '',
+                value: '',
+            },
+        });
+        APIParameter.mileage = 0;
+        if (this.refs.headView.state.isCheckRecommend) {
+            this.refs.headView.setCheckRecommend(false)
+        } else {
+            this.filterData();
+        }
+    };
+
+    carGenreClick = () => {
+        this.setState({
+            checkedCarGenre: {
+                title: '',
+                value: '',
+            },
+        });
+        APIParameter.v_type = 0;
+        if (this.refs.headView.state.isCheckRecommend) {
+            this.refs.headView.setCheckRecommend(false)
+        } else {
+            this.filterData();
+        }
+    };
+
+    carCityClick = () => {
+        this.setState({
+            checkedCity: {
+                title: '',
+                value: '',
+            },
+        });
+        APIParameter.city_id = 0;
+        if (this.refs.headView.state.isCheckRecommend) {
+            this.refs.headView.setCheckRecommend(false)
+        } else {
+            this.filterData();
+        }
+    };
+
+    allDelectClick = () => {
 
         this.setState({
-            sequencingType:{
-                title:'',
-                value:'',
+            sequencingType: {
+                title: '',
+                value: '',
             },
-            checkedCarType:{
-                title:'',
-                value:'',
+            checkedCarType: {
+                title: '',
+                value: '',
             },
-            checkedCarAgeType:{
-                title:'',
-                value:'',
+            checkedCarAgeType: {
+                title: '',
+                value: '',
             },
-            checkedCarKMType:{
-            title:'',
-                value:'',
-        },
+            checkedCarKMType: {
+                title: '',
+                value: '',
+            },
+            checkedCarGenre:{
+                title: '',
+                value: '',
+            },
+            checkedCity:{
+                title: '',
+                value: '',
+            },
         });
 
-            APIParameter.order_type=0;
-            APIParameter.mileage=0;
-            APIParameter.coty=0;
+        APIParameter.order_type = 0;
+        APIParameter.mileage = 0;
+        APIParameter.coty = 0;
+        APIParameter.brand_id = 0;
+        APIParameter.series_id = 0;
+        APIParameter.v_type=0;
+        APIParameter.city_id=0;
 
-        if(this.refs.headView.state.isCheckRecommend)
-        {
+        if (this.refs.headView.state.isCheckRecommend) {
             this.refs.headView.setCheckRecommend(false);
 
-        }else {
-            this.refreshingData();
+        } else {
+            this.filterData();
         }
 
     };
 
-    showSequencingView=()=>{
+    showSequencingView = () => {
 
-        this.setState({
-            isHideSequencing:false,
-        });
+        this.refs.SequencingView.visibleCilck(true);
 
     };
 
-    hideSequencingView=()=>{
 
-        this.setState({
-            isHideSequencing:true,
-        });
-    };
+    carCellOnPres = (carID, sectionID, rowID) => {
 
+        let navigatorParams = {
 
-
-    carCellOnPres = (carID,sectionID,rowID)=>{
-
-       let navigatorParams =   {
-
-            name:"CarInfoScene",
-            component:CarInfoScene,
-            params:{
-                carID:carID,
+            name: "CarInfoScene",
+            component: CarInfoScene,
+            params: {
+                carID: carID,
             }
         };
         this.props.callBack(navigatorParams);
     };
 
-   renderListFooter=()=>{
+    renderListFooter = () => {
 
-       if(this.state.isRefreshing)
-       {
-           return null;
-       }else
-       {
-           return (<ListFooter isLoadAll={this.state.isFillData==1?false:true}/>)
-       }
+        if (this.state.isRefreshing) {
+            return null;
+        } else {
 
-   }
+            let isCarFoot = true;
 
-    render(){
-        if (this.state.renderPlaceholderOnly !== 'success') {
-            return this._renderPlaceholderView();
+            if (APIParameter.brand_id == 0
+                && APIParameter.series_id == 0
+                && APIParameter.model_id == 0
+                && APIParameter.provice_id == 0
+                && APIParameter.city_id == 0
+                && APIParameter.order_type == 0
+                && APIParameter.coty == 0
+                && APIParameter.mileage == 0 && APIParameter.type == 0) {
+
+                isCarFoot = false;
+
+            };
+
+            return (<ListFooter isLoadAll={this.state.isFillData==1?false:true} isCarFoot={isCarFoot}
+                                footAllClick={this.allDelectClick}/>)
         }
-        return(
+
+    }
+
+    renderPlaceholderView = () => {
+        return (
+            <View style={{flex:1,backgroundColor:fontAndColor.COLORA3,alignItems: 'center'}}>
+                {this.loadView()}
+            </View>
+        );
+    }
+
+    render() {
+
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return this.renderPlaceholderView();
+        }
+        return (
 
             <View style={styles.contaier}>
-                <View style={styles.contaier}>
-                    <CarListNavigatorView searchClick={this.presCarTypeScene} loactionClick={this.loactionClick}/>
-                    <View style={{height:40}}>
-                        <HeadView ref="headView" onPres={this.headViewOnPres} checkRecommendClick={this.checkRecommendClick}/>
-                    </View>
-                    {
+                <CarListNavigatorView searchClick={this.presCarTypeScene}  ScreeningClick={this.ScreeningClick} loactionClick={this.loactionClick}/>
+                <CarSourceSelectHeadView ref="headView" onPres={this.headViewOnPres}
+                                         checkRecommendClick={this.checkRecommendClick}/>
+                {
 
-                        (this.state.checkedCarKMType.title || this.state.checkedCarAgeType.title || this.state.checkedCarType.title || this.state.sequencingType.title)?
-                            ( <CheckedContentView
+                    (this.state.checkedCarKMType.title || this.state.checkedCarAgeType.title || this.state.checkedCarType.title || this.state.sequencingType.title || this.state.checkedCity.title || this.state.checkedCarGenre.title) ?
+                        ( <CheckedContentView
                                 sequencingType={this.state.sequencingType}
                                 carType={this.state.checkedCarType}
                                 carAge={this.state.checkedCarAgeType}
                                 carKM={this.state.checkedCarKMType}
+                                carGenre={this.state.checkedCarGenre}
+                                carCity={this.state.checkedCity}
                                 sequencingClick={this.sequencingClick}
                                 carTypeClick={this.carTypeClick}
                                 carAgeClick={this.carAgeClick}
                                 carKMClick={this.carKMClick}
+                                carGenreClick = {this.carGenreClick}
+                                carCityClick={this.carCityClick}
                                 allDelectClick={this.allDelectClick}
                             />
-                        ):(null)
-                    }
+                        ) : (null)
+                }
 
-                    {
-                        this.state.dataSource && (
-                            <SGListView
-                                dataSource={this.state.dataSource}
-                                ref={'carListView'}
-                                initialListSize={10}
-                                stickyHeaderIndices={[]}
-                                onEndReachedThreshold={1}
-                                scrollRenderAheadDistance={1}
-                                pageSize={10}
-                                renderRow={(item,sectionID,rowID) =>
+                {
+                    this.state.dataSource && (
+                        <ListView
+                            dataSource={this.state.dataSource}
+                            initialListSize={10}
+                            onEndReachedThreshold={1}
+                            stickyHeaderIndices={[]}//仅ios
+                            scrollRenderAheadDistance={10}
+                            pageSize={10}
+                            enableEmptySections={true}
+                            renderRow={(item,sectionID,rowID) =>
                                     <CarCell style={styles.carCell} carCellData={item} onPress={()=>{this.carCellOnPres(item.id,sectionID,rowID)}}/>
                                 }
-                                renderFooter={
-                                    this.renderListFooter
-                                }
-                                onEndReached={this.toEnd}
-                                refreshControl={
+                            renderFooter={this.renderListFooter}
+                            onEndReached={this.toEnd}
+                            refreshControl={
                                     <RefreshControl
                                         refreshing={this.state.isRefreshing}
                                         onRefresh={this.refreshingData}
@@ -584,114 +725,102 @@ export  default  class  carSourceListScene extends  BaseComponent{
                                         colors={[fontAndColor.COLORB0]}
                                     />
                                 }
-                            />)
-                    }
-
-                </View>
+                        />)
+                }
                 <SequencingButton buttonClick={this.showSequencingView}/>
+                <SequencingView
+                    ref="SequencingView"
+                    checkedType={this.state.sequencingType}
+                    checkedClick={this.sequencingCheckedClick}
+                    sequencingDataSource={sequencingDataSource}/>
                 {
-                    this.state.isHideSequencing ?(null):(<SequencingView checkedType={this.state.sequencingType} checkedClick={this.sequencingCheckedClick} hideClick={this.hideSequencingView}/>)
+                    !this.state.isHide && (
+                        <CarSourceSelectView
+                            checkedSource={checkedSource}
+                            checkCarAgeAnKMClick={this.checkCarAgeAnKMClick}
+                            currentCheckedIndex={currentCheckedIndex}
+                            hideClick={this.hideCheckedView}
+                            checkedTypeString={currentCheckedIndex == 2 ? this.state.checkedCarAgeType.title:this.state.checkedCarKMType.title}/>)
                 }
-                {
 
-                    this.state.isHide ?(null):(
-                        <View style={styles.selectView}>
-                            <View style={{backgroundColor:'white'}}>
-                                <ScrollView>
-                                    {
-                                        this.state.checkedSource.map((data,index)=>{
-                                            return(
-                                                <TouchableOpacity  key={index} onPress={()=>{
-
-                                                    this.checkCarAgeAnKMClick(data,index);
-                                                }}>
-                                                    <View style={styles.checkedCell} >
-
-                                                        {
-                                                            this.state.currentCheckedIndex == 2 ? (
-                                                                <Text  style={[styles.checkedCellText,data.title==this.state.checkedCarAgeType.title && {color:fontAndColor.COLORB0}]} >{data.title}</Text>
-                                                            ) : (
-                                                                <Text  style={[styles.checkedCellText,data.title==this.state.checkedCarKMType.title && {color:fontAndColor.COLORB0}]} >{data.title}</Text>
-                                                            )
-                                                        }
-
-                                                    </View>
-                                                </TouchableOpacity>
-
-                                            )
-                                        })
-                                    }
-                                </ScrollView>
-                            </View>
-                            <TouchableOpacity style={styles.contaier} onPress={()=>{
-                                this.refs.headView.checkSelect(this.state.currentCheckedIndex);
-                                this.setState({
-                                    isHide:true,
-                                });
-                            }}>
-                            </TouchableOpacity>
-
-                        </View>)
-                }
             </View>
 
         )
 
     }
-    _renderPlaceholderView = () => {
-        return (
-            <View style={{width: width, height: height,backgroundColor:fontAndColor.COLORA3,alignItems: 'center'}}>
-                {this.loadView()}
-            </View>
-        );
-    }
 }
 
 
-class CheckedContentView extends  Component {
+class CheckedContentView extends Component {
 
     render() {
-        const {sequencingType,carType,carAge,carKM,sequencingClick,carTypeClick,carAgeClick,carKMClick,allDelectClick} = this.props;
+        const {sequencingType, carType, carAge, carKM,carGenre,carCity, sequencingClick, carTypeClick, carAgeClick, carKMClick, carGenreClick,carCityClick,allDelectClick} = this.props;
         return (
 
             <View style={styles.checkedContentView}>
                 {
-                    sequencingType.title?(
-                        <TouchableOpacity onPress={sequencingClick}>
-                            <View style={styles.checkedContentItem}>
-                                <Text style={styles.checkedItemText}>{sequencingType.title}</Text>
-                                <Image style={styles.checkedDeleteImg} source={require('../../images/deleteIcon2x.png')}/>
-                            </View>
-                        </TouchableOpacity>):(null)
+                    carGenre.title ? (
+                            <TouchableOpacity onPress={carGenreClick}>
+                                <View style={styles.checkedContentItem}>
+                                    <Text style={styles.checkedItemText}>{carGenre.title}</Text>
+                                    <Image style={styles.checkedDeleteImg}
+                                           source={require('../../images/deleteIcon2x.png')}/>
+                                </View>
+                            </TouchableOpacity>) : (null)
 
                 }
                 {
-                    carType.title?(
-                        <TouchableOpacity onPress={carTypeClick}>
-                            <View style={styles.checkedContentItem}>
-                                <Text style={styles.checkedItemText}>{carType.title}</Text>
-                                <Image style={styles.checkedDeleteImg} source={require('../../images/deleteIcon2x.png')}/>
-                            </View>
-                        </TouchableOpacity>):(null)
+                    carCity.title ? (
+                            <TouchableOpacity onPress={carCityClick}>
+                                <View style={styles.checkedContentItem}>
+                                    <Text style={styles.checkedItemText}>{carCity.title}</Text>
+                                    <Image style={styles.checkedDeleteImg}
+                                           source={require('../../images/deleteIcon2x.png')}/>
+                                </View>
+                            </TouchableOpacity>) : (null)
 
                 }
                 {
-                    carAge.title?(
-                        <TouchableOpacity onPress={carAgeClick}>
-                            <View style={styles.checkedContentItem}>
-                                <Text style={styles.checkedItemText}>{carAge.title}</Text>
-                                <Image style={styles.checkedDeleteImg} source={require('../../images/deleteIcon2x.png')}/>
-                            </View>
-                        </TouchableOpacity>):(null)
+                    sequencingType.title ? (
+                            <TouchableOpacity onPress={sequencingClick}>
+                                <View style={styles.checkedContentItem}>
+                                    <Text style={styles.checkedItemText}>{sequencingType.title}</Text>
+                                    <Image style={styles.checkedDeleteImg}
+                                           source={require('../../images/deleteIcon2x.png')}/>
+                                </View>
+                            </TouchableOpacity>) : (null)
+
                 }
                 {
-                    carKM.title?(
-                        <TouchableOpacity onPress={carKMClick}>
-                            <View style={styles.checkedContentItem}>
-                                <Text style={styles.checkedItemText}>{carKM.title}</Text>
-                                <Image style={styles.checkedDeleteImg} source={require('../../images/deleteIcon2x.png')}/>
-                            </View>
-                        </TouchableOpacity>):(null)
+                    carType.title ? (
+                            <TouchableOpacity onPress={carTypeClick}>
+                                <View style={styles.checkedContentItem}>
+                                    <Text style={styles.checkedItemText}>{carType.title}</Text>
+                                    <Image style={styles.checkedDeleteImg}
+                                           source={require('../../images/deleteIcon2x.png')}/>
+                                </View>
+                            </TouchableOpacity>) : (null)
+
+                }
+                {
+                    carAge.title ? (
+                            <TouchableOpacity onPress={carAgeClick}>
+                                <View style={styles.checkedContentItem}>
+                                    <Text style={styles.checkedItemText}>{carAge.title}</Text>
+                                    <Image style={styles.checkedDeleteImg}
+                                           source={require('../../images/deleteIcon2x.png')}/>
+                                </View>
+                            </TouchableOpacity>) : (null)
+                }
+                {
+                    carKM.title ? (
+                            <TouchableOpacity onPress={carKMClick}>
+                                <View style={styles.checkedContentItem}>
+                                    <Text style={styles.checkedItemText}>{carKM.title}</Text>
+                                    <Image style={styles.checkedDeleteImg}
+                                           source={require('../../images/deleteIcon2x.png')}/>
+                                </View>
+                            </TouchableOpacity>) : (null)
                 }
 
 
@@ -707,61 +836,8 @@ class CheckedContentView extends  Component {
 
 }
 
-class SequencingButton extends  Component{
 
-    render(){
-
-        const {buttonClick} = this.props;
-        return(
-            <TouchableOpacity style={styles.sequencingButton} onPress={buttonClick}>
-                    <Image  source={require('../../images/carSourceImages/sort@2x.png')}/>
-                    <Text style={styles.sequencingText}>排序</Text>
-            </TouchableOpacity>
-        )
-    }
-
-}
-
-class SequencingView extends Component{
-
-    render(){
-        const {checkedType,checkedClick,hideClick}=this.props;
-
-        return(
-            <View style={styles.SeqencingView}>
-                <TouchableOpacity style={styles.contaier} onPress={hideClick}>
-                </TouchableOpacity>
-                <View style={{backgroundColor:'white'}}>
-                    <ScrollView>
-                        {
-                            sequencingDataSource.map((data,index)=>{
-
-                                return(
-                                    <TouchableOpacity  key={index} onPress={()=>{
-
-                                       checkedClick(data.title,data.value);
-                                        hideClick();
-
-                                    }}>
-                                        <View style={styles.checkedCell}>
-                                            {
-                                                <Text style={[styles.checkedCellText,data.title == checkedType && {color:fontAndColor.COLORB0}]} >{data.title}</Text>
-                                            }
-                                        </View>
-                                    </TouchableOpacity>
-                                )
-                            })
-                        }
-                    </ScrollView>
-                </View>
-
-            </View>
-        )
-    }
-}
-
-
-class CarListNavigatorView extends Component{
+class CarListNavigatorView extends Component {
 
     render() {
         return (
@@ -769,13 +845,20 @@ class CarListNavigatorView extends Component{
             <View style={styles.navigatorView}>
                 <View style={styles.navitgatorContentView}>
                     {/*<TouchableOpacity style={styles.navigatorLoactionView} onPress={this.props.loactionClick}>*/}
-                        {/*<Image style={{marginLeft:15}} source={require('../../images/carSourceImages/location.png')}/>*/}
-                        {/*<Text style={styles.navigatorText}>全国</Text>*/}
+                    {/*<Image style={{marginLeft:15}} source={require('../../images/carSourceImages/location.png')}/>*/}
+                    {/*<Text style={styles.navigatorText}>全国</Text>*/}
                     {/*</TouchableOpacity>*/}
                     <TouchableOpacity onPress={this.props.searchClick}>
                         <View style={styles.navigatorSousuoView}>
-                            <Image style={{marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(10)}} source={require('../../images/carSourceImages/sousuoicon.png')}/>
-                            <Text style={styles.navigatorSousuoText}>按车型信息搜索</Text>
+                            <Image style={{marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(10)}}
+                                   source={require('../../images/carSourceImages/sousuoicon.png')}/>
+                            <Text style={styles.navigatorSousuoText}>按品牌、车系搜索</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this.props.ScreeningClick}>
+                        <View style={{marginLeft:Pixel.getPixel(20),width:Pixel.getPixel(50),height:Pixel.getPixel(40),justifyContent:'center',
+                            alignItems:'center'}}>
+                            <Text style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>筛选</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -785,179 +868,119 @@ class CarListNavigatorView extends Component{
     }
 }
 
+
 var ScreenWidth = Dimensions.get('window').width;
-
-
 const styles = StyleSheet.create({
 
-
-    contaier:{
-        flex:1,
+    contaier: {
+        flex: 1,
+        backgroundColor: fontAndColor.COLORA3
     },
-    checkedContentView:{
+    checkedContentView: {
 
-        backgroundColor:fontAndColor.COLORA3,
-        flexDirection:'row',
-        alignItems:'center',
+        backgroundColor: fontAndColor.COLORA3,
+        flexDirection: 'row',
+        alignItems: 'center',
         // justifyContent:'space-between',
         flexWrap: 'wrap',
     },
 
-    checkedContentItem:{
+    checkedContentItem: {
 
-        backgroundColor:'#FFFFFF',
-        flexDirection:'row',
-        alignItems:'center',
-        justifyContent:'center',
-        height:Pixel.getPixel(20),
-        paddingHorizontal:Pixel.getPixel(5),
-        marginLeft:Pixel.getPixel(15),
-        marginTop:Pixel.getPixel(5),
-        marginBottom:Pixel.getPixel(5),
-        borderRadius:4,
+        backgroundColor: '#FFFFFF',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: Pixel.getPixel(20),
+        paddingHorizontal: Pixel.getPixel(5),
+        marginLeft: Pixel.getPixel(15),
+        marginTop: Pixel.getPixel(5),
+        marginBottom: Pixel.getPixel(5),
+        borderRadius: 4,
     },
-    checkedItemText:{
-        color:fontAndColor.COLORA0,
-        fontSize:fontAndColor.CONTENTFONT,
-
-    },
-    checkedDeleteImg:{
-
-        width:Pixel.getPixel(10),
-        height:Pixel.getPixel(10),
-        marginLeft:Pixel.getPixel(5),
-    },
-    checkedDelectView:{
-
-        height:Pixel.getPixel(20),
-        width:Pixel.getPixel(50),
-        borderRadius:4,
-        borderWidth:StyleSheet.hairlineWidth,
-        borderColor:fontAndColor.COLORA2,
-        alignItems:'center',
-        justifyContent:'center',
-        marginBottom:Pixel.getPixel(10),
-        marginLeft:Pixel.getPixel(15),
-        marginTop:Pixel.getPixel(10),
-
+    checkedItemText: {
+        color: fontAndColor.COLORA0,
+        fontSize: fontAndColor.CONTENTFONT,
 
     },
-    checkedDelectText:{
-        color:fontAndColor.COLORA2,
-        fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT),
+    checkedDeleteImg: {
 
+        width: Pixel.getPixel(10),
+        height: Pixel.getPixel(10),
+        marginLeft: Pixel.getPixel(5),
     },
-    selectView:{
-        top:Pixel.getTitlePixel(104),
-        backgroundColor:'rgba(0, 0, 0,0.3)',
-        left:0,
-        right:0,
-        position:'absolute',
-        bottom:0,
-    },
-    carCell:{
-        height :Pixel.getPixel(110),
-    },
-    checkedCell:{
+    checkedDelectView: {
 
-        backgroundColor:'white',
-        height:Pixel.getPixel(44),
-        alignItems:'center',
-        justifyContent:'center',
-        borderBottomWidth:StyleSheet.hairlineWidth,
-        borderBottomColor:fontAndColor.COLORA4,
-
-    },
-    checkedCellText:{
-
-        fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT),
-        textAlign:'center',
-        color:fontAndColor.COLORA0,
-
-    },
-
-    sequencingButton:{
-
-        flexDirection:'row',
-        position:'absolute',
-        width:Pixel.getPixel(70),
-        height:Pixel.getPixel(30),
-        right:Pixel.getPixel(20),
-        borderRadius:15,
-        backgroundColor:'rgba(0, 0, 0,0.7)',
-        justifyContent:'center',
-        alignItems:'center',
-        bottom:Pixel.getPixel(25),
-    },
-    sequencingText:{
-
-        color:'white',
-        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
-        marginLeft:Pixel.getPixel(5),
-
-    },
-
-    SeqencingView:{
-
-        position:'absolute',
-        backgroundColor:'rgba(0, 0, 0,0.3)',
-        justifyContent:'flex-end',
-        top:0,
-        right:0,
-        bottom:0,
-        left:0,
-
-    },
-
-    navigatorView:{
-
-        top:Pixel.getTitlePixel(0),
-        height:Pixel.getPixel(64),
-        backgroundColor:fontAndColor.COLORB0,
-        flexDirection:'row',
-
-    },
-    navitgatorContentView:{
-
-        flex:1,
-        flexDirection:'row',
-        marginTop:Pixel.getTitlePixel(20),
-        height:Pixel.getPixel(44),
-        alignItems:'center',
-        justifyContent:'center',
-
-    },
-
-    navigatorLoactionView:{
-
-        flexDirection:'row',
-        width:Pixel.getPixel(85),
-        alignItems:'center',
+        height: Pixel.getPixel(20),
+        width: Pixel.getPixel(50),
+        borderRadius: 4,
+        borderWidth: StyleSheet.hairlineWidth,
+        borderColor: fontAndColor.COLORA2,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: Pixel.getPixel(10),
+        marginLeft: Pixel.getPixel(15),
+        marginTop: Pixel.getPixel(10),
 
 
     },
-    navigatorSousuoView:{
-        height:Pixel.getPixel(25),
-        borderRadius:5,
-        backgroundColor:'white',
-        alignItems:'center',
-        width:Pixel.getPixel(ScreenWidth-40),
-        flexDirection:'row',
-        justifyContent:'center',
+    checkedDelectText: {
+        color: fontAndColor.COLORA2,
+        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT),
 
+    },
+
+    carCell: {
+        height: Pixel.getPixel(110),
+    },
+
+
+    navigatorView: {
+
+        top: 0,
+        height: Pixel.getTitlePixel(64),
+        backgroundColor: fontAndColor.COLORB0,
+        flexDirection: 'row',
+
+    },
+    navitgatorContentView: {
+
+        flex: 1,
+        flexDirection: 'row',
+        marginTop: Pixel.getTitlePixel(20),
+        height: Pixel.getPixel(44),
+        alignItems: 'center',
+        justifyContent: 'center',
+
+    },
+
+    navigatorLoactionView: {
+
+        flexDirection: 'row',
+        width: Pixel.getPixel(85),
+        alignItems: 'center',
 
 
     },
-    navigatorText:{
-      marginLeft:Pixel.getPixel(6),
-        color:'white',
-        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
+    navigatorSousuoView: {
+        height: Pixel.getPixel(25),
+        borderRadius: 5,
+        backgroundColor: 'white',
+        alignItems: 'center',
+        width: ScreenWidth - Pixel.getPixel(110),
+        flexDirection: 'row',
+        justifyContent: 'center',
+    },
+    navigatorText: {
+        marginLeft: Pixel.getPixel(6),
+        color: 'white',
+        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT),
 
     },
-    navigatorSousuoText:{
+    navigatorSousuoText: {
 
-        color:fontAndColor.COLORA1,
-        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
+        color: fontAndColor.COLORA1,
+        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT),
 
     },
 

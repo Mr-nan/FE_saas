@@ -22,6 +22,58 @@ import {CommenButton} from './ComponentBlob'
 
 import dismissKeyboard from 'dismissKeyboard';
 
+
+export class LendSuccessAlert extends Component{
+
+    state={
+        show:false,
+    }
+    setModelVisible=(value)=>{
+
+        this.setState({
+            show:value
+        })
+    }
+    confimClick=()=>{
+
+        const {confimClick}=this.props;
+
+        this.setModelVisible(false);
+        confimClick&&confimClick();
+
+    }
+    render(){
+
+
+        const {title,subtitle}=this.props;
+
+        return(
+
+            <Modal animationType='none'
+                   transparent={true}
+                   visible={this.state.show}
+                   onShow={() => {
+                   }}
+                   onRequestClose={() => {
+                   }}
+            >
+                <TouchableOpacity style={commentAlertStyle.mask} activeOpacity={1} onPress={()=>{
+                    dismissKeyboard();
+                }}>
+                    <View style={commentAlertStyle.container}>
+                        <Text style={commentAlertStyle.title}>{title}</Text>
+                        <Text style={commentAlertStyle.subtitle}>{subtitle}</Text>
+                        <View style={commentAlertStyle.successWarp}>
+                            <CommenButton buttonStyle={[commentAlertStyle.successButton,{marginBottom:adapeSize(20)}, commentAlertStyle.buttonLeft]} onPress={this.confimClick} title="好的"/>
+                        </View>
+                    </View>
+                </TouchableOpacity>
+            </Modal>
+        )
+    }
+
+}
+
 //修改借款金额
 export class ModifyBorrowing extends Component{
 
@@ -29,7 +81,7 @@ export class ModifyBorrowing extends Component{
       constructor(props) {
         super(props);
         // 初始状态
-        this.state = {visible:true};
+        this.state = {visible:false};
       }
 
     static propTypes={
@@ -60,7 +112,7 @@ export class ModifyBorrowing extends Component{
 
             <Modal animationType='none'
                    transparent={true}
-                   visible={this.state.show}
+                   visible={this.state.visible}
                    onShow={() => {
                    }}
                    onRequestClose={() => {
@@ -74,10 +126,10 @@ export class ModifyBorrowing extends Component{
                         <Text style={styles.title}>修改借款</Text>
 
                         <View style={styles.input}>
-                            <TextInput style={styles.inputText} placeholder='请输入借款金额' keyboardType='decimal-pad'></TextInput>
+                            <TextInput underlineColorAndroid={"#00000000"} onChangeText={this.props.onchangeText} style={styles.inputText} placeholder='请输入借款金额' keyboardType='decimal-pad'></TextInput>
                         </View>
                         <View style={styles.showMessage}>
-                            <Text style={styles.showMessageText}>*可借额度{3}-{360}万</Text>
+                            <Text style={styles.showMessageText}>*可借额度{this.props.minLend}-{this.props.maxLend}万</Text>
                         </View>
 
                         <View style={styles.handelWarp}>
@@ -205,12 +257,11 @@ export class ModalList extends PureComponent{
 }
 
 
-
 export class ModalAlert extends PureComponent{
 
 
     state={
-        show:true,
+        show:false,
     }
 
     setModelVisible=(value)=>{
@@ -222,10 +273,17 @@ export class ModalAlert extends PureComponent{
 
     confimClick=()=>{
 
+        const {confimClick} =this.props;
+
+        confimClick(this.setModelVisible)
+
     }
 
     cancleClick=()=>{
 
+        const {cancleClick} =this.props;
+
+        cancleClick(this.setModelVisible)
 
     }
 
@@ -233,6 +291,7 @@ export class ModalAlert extends PureComponent{
     render(){
 
 
+        const {title,subtitle}=this.props;
         return(
 
             <Modal animationType='none'
@@ -247,7 +306,8 @@ export class ModalAlert extends PureComponent{
                     dismissKeyboard();
                 }}>
                     <View style={commentAlertStyle.container}>
-                        <Text style={commentAlertStyle.title}>你好</Text>
+                        <Text style={commentAlertStyle.title}>{title}</Text>
+                        <Text style={commentAlertStyle.subtitle}>{subtitle}</Text>
                         <View style={commentAlertStyle.buttonsWarp}>
 
                             <CommenButton buttonStyle={[commentAlertStyle.buttonstyle,{marginRight:adapeSize(10)}, commentAlertStyle.buttonLeft]} onPress={this.confimClick} title="确定"/>
@@ -269,7 +329,7 @@ export  class ModalCGD extends PureComponent{
 
 
     state={
-        show:true,
+        show:false,
         selected:behand,
     }
 
@@ -282,16 +342,14 @@ export  class ModalCGD extends PureComponent{
 
     behandClick=()=>{
 
-
         const {getValue}=this.props;
-
         this.setState({
 
             selected: behand,
             show:false,
         })
 
-        getValue('1')
+        getValue('2')
     }
 
     focusClick=()=>{
@@ -301,7 +359,7 @@ export  class ModalCGD extends PureComponent{
             selected: foncus,
             show:false,
         })
-        getValue('2')
+        getValue('1')
 
     }
 
@@ -394,23 +452,35 @@ const commentAlertStyle=StyleSheet.create({
         backgroundColor:'white',
         alignItems:'center',
         width:adapeSize(260),
-        height:adapeSize(160),
         justifyContent:'flex-start',
         borderRadius:5,
     },
 
     title:{
 
-        marginTop:adapeSize(30),
+        marginTop:adapeSize(25),
+        fontSize: fontadapeSize(17),
+    },
+    subtitle:{
+        marginTop:adapeSize(10),
         fontSize:adapeSize(17),
+        color:PAGECOLOR.COLORA1,
+        marginLeft:adapeSize(5),
+        marginRight:adapeSize(5),
     },
     buttonsWarp:{
 
         flexDirection:'row',
-        marginTop:adapeSize(40),
+        marginTop:adapeSize(25),
         alignItems:'center',
     },
 
+    successWarp:{
+
+        flexDirection:'row',
+        marginTop:adapeSize(30),
+        alignItems:'center',
+    },
     buttonstyle:{
 
         width:adapeSize(100),
@@ -420,6 +490,7 @@ const commentAlertStyle=StyleSheet.create({
         alignItems:'center',
         justifyContent:'center',
         borderRadius:5,
+        marginBottom:adapeSize(10)
     },
 
     buttonLeft:{
@@ -430,8 +501,16 @@ const commentAlertStyle=StyleSheet.create({
     buttonRight:{
 
         backgroundColor:PAGECOLOR.COLORA4
-    }
+    },
+    successButton:{
 
+        width:adapeSize(160),
+        height:adapeSize(44),
+        backgroundColor:'blue',
+        alignItems:'center',
+        justifyContent:'center',
+        borderRadius:5,
+    },
 
 
 })

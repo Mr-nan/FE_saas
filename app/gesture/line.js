@@ -1,11 +1,13 @@
-import { isEquals, getTransform } from './helper'
-import React, { PropTypes, Component } from 'react'
-import { StyleSheet, View } from 'react-native'
+import {isEquals, getTransform} from './helper'
+import React, {PropTypes, Component} from 'react'
+import {StyleSheet, View} from 'react-native'
+import PixelUtil from "../utils/PixelUtil";
+
+var Pixel = new PixelUtil();
 
 export default class Line extends Component {
     constructor(props) {
         super(props);
-
         this.state = this.props;
     }
 
@@ -14,16 +16,15 @@ export default class Line extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if ( nextProps.color !== this.props.color ) {
+        if (nextProps.color !== this.props.color) {
             this.setState({color: nextProps.color});
         }
     }
 
     render() {
-        console.log(this.state)
-        let { start, end, color } = this.state;
+        let {start, end, color} = this.state;
 
-        if ( isEquals(start, end) ) return null;
+        if (isEquals(start, end)) return null;
 
         let transform = getTransform(start, end);
         let length = transform.d;
@@ -35,7 +36,7 @@ export default class Line extends Component {
             <View ref='line' style={[
                 styles.line, {backgroundColor: color, left: start.x, top: start.y, width: length},
                 {transform: [{translateX: moveX}, {translateY: moveY}, {rotateZ: angle}]}
-            ]} />
+            ]}/>
         )
     }
 }
@@ -61,7 +62,7 @@ Line.defaultProps = {
 const styles = StyleSheet.create({
     line: {
         position: 'absolute',
-        height: 1
+        height: Pixel.getPixel(2),
     }
 })
 

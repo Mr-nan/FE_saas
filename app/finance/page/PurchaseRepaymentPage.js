@@ -11,6 +11,7 @@ import {
     Dimensions,
     TouchableOpacity,
     ListView,
+    RefreshControl,
     InteractionManager
 } from 'react-native';
 //图片加文字
@@ -19,32 +20,98 @@ import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import * as fontAndColor from '../../constant/fontAndColor';
 import MyButton from '../../component/MyButton';
-let MovleData = require('../../main/MoveData.json');
-let movies = MovleData.subjects;
-export  default class PurchaseRepaymentPage extends Component {
+import BaseComponent from '../../component/BaseComponent';
+let allList = [];
+import {request} from '../../utils/RequestUtil';
+import * as Urls from '../../constant/appUrls';
+import  LoadMoreFooter from '../../component/LoadMoreFooter';
+let page = 1;
+let allPage = 1;
+export  default class PurchaseRepaymentPage extends BaseComponent {
 
     constructor(props) {
         super(props);
         // 初始状态
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-
         this.state = {
-            source: ds.cloneWithRows(movies),
-            renderPlaceholderOnly: true
-
+            source: [],
+            renderPlaceholderOnly: 'blank',
+            isRefreshing: false
         };
     }
 
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: false});
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
         });
     }
 
+    componentWillUnmount() {
+        allList = [];
+    }
+
+    initFinish = () => {
+        this.getData();
+    }
+
+    getData = () => {
+        let maps = {
+            api: Urls.REPAYMENT_GETLIST,
+            type: '5',
+            p: page
+        };
+        request(Urls.FINANCE, 'Post', maps)
+            .then((response) => {
+                    allList.push(...response.mjson.data.list);
+                    allPage = response.mjson.data.total;
+                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                    this.setState({
+                        source: ds.cloneWithRows(allList),
+                        renderPlaceholderOnly: 'success',
+                        isRefreshing: false
+                    });
+                },
+                (error) => {
+                    if (error.mycode == '-2100045') {
+                        this.setState({renderPlaceholderOnly: 'null', isRefreshing: false});
+                    } else {
+                        this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
+                    }
+                });
+    }
+
+    refreshingData = () => {
+        allList = [];
+        this.setState({isRefreshing: true});
+        page = 1;
+        this.getData();
+    };
+
+    toEnd = () => {
+        if (this.state.isRefreshing) {
+
+        } else {
+            if (page < allPage) {
+                page++;
+                this.getData();
+            }
+        }
+
+    };
+
+    renderListFooter = () => {
+        if (this.state.isRefreshing) {
+            return null;
+        } else {
+            return (<LoadMoreFooter isLoadAll={page>=allPage?true:false}/>)
+        }
+    }
 
     render() {
-        if (this.state.renderPlaceholderOnly) {
-            return this._renderPlaceholderView();
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return (<View style={{backgroundColor: fontAndColor.COLORA3, flex: 1, paddingTop: Pixel.getPixel(15)}}>
+                {this.loadView()}
+            </View>);
         }
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1, paddingTop: Pixel.getPixel(15)}}>
@@ -52,16 +119,19 @@ export  default class PurchaseRepaymentPage extends Component {
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
-                    bounces={false}
+                    renderFooter={
+                                    this.renderListFooter
+                                }
+                    onEndReached={this.toEnd}
+                    refreshControl={
+                                    <RefreshControl
+                                        refreshing={this.state.isRefreshing}
+                                        onRefresh={this.refreshingData}
+                                        tintColor={[fontAndColor.COLORB0]}
+                                        colors={[fontAndColor.COLORB0]}
+                                    />
+                                }
                 />
-            </View>
-        );
-    }
-
-    _renderPlaceholderView() {
-        return (
-            <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1, paddingTop: Pixel.getPixel(15)}}>
-
             </View>
         );
     }
@@ -84,35 +154,56 @@ export  default class PurchaseRepaymentPage extends Component {
     _renderRow = (movie) => {
 
         return (
-            <View style={[styles.allBack]}>
+            <TouchableOpacity onPress={()=>{
+                this.props.callBack(movie.loan_id,movie.loan_number,movie.type);
+            }} activeOpacity={0.8} style={[styles.allBack]}>
                 <View style={[styles.rowViewStyle, styles.margin]}>
                     <View style={[styles.rowTopViewStyle, {justifyContent: 'flex-start', flex: 3,}]}>
-                        <MyButton {...this.buttonParams} content="库融"/>
-                        <Text style={styles.rowTopTextStyle}>源之宝汽车经销公司</Text>
+                        <MyButton {...this.buttonParams} content="采购"/>
+                        <Text style={styles.rowTopTextStyle}>{this.props.customerName}</Text>
                     </View>
                     <View style={[styles.rowTopViewStyle, {
                         flex: 2,
                         justifyContent: 'flex-end'
                     }]}>
-                        <Text style={styles.rowTopGrayTextStyle}>201701100225</Text>
+                        <Text style={styles.rowTopGrayTextStyle}>{movie.loan_number}</Text>
                     </View>
                 </View>
                 <View style={[styles.line]}></View>
                 <View
                     style={[styles.centerView]}>
                     <View style={[styles.centerChild, styles.margin, {alignItems: 'flex-start'}]}>
-                        <Text style={[styles.centerText,{color: fontAndColor.COLORA1}]}>
+                        <Text style={styles.centerText}>
                             到账日期
+                        </Text>
+                        <Text style={[styles.centerBottomText, {
+                            color: fontAndColor.COLORA0
+                        }]}>
+                            {movie.loan_time_str}
                         </Text>
                     </View>
                     <View style={[styles.centerChild, styles.margin, {alignItems: 'flex-end'}]}>
-                        <Text style={[styles.centerText,{color: fontAndColor.COLORA0}]}>
-                            2017-1-20
+                        <Text style={styles.centerText}>
+                            本息合计
+                        </Text>
+                        <Text style={[styles.centerBottomText, {
+                            color: fontAndColor.COLORB2
+                        }]}>
+                            {movie.total_repayment}
                         </Text>
                     </View>
                 </View>
+                <View style={[styles.line]}></View>
+                <View style={[styles.bottomView]}>
+                    <Text style={{
+                        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                        color: fontAndColor.COLORA1
+                    }}>
+                        {movie.model_name_str}
+                    </Text>
+                </View>
                 <View style={{width: width, height: Pixel.getPixel(1), backgroundColor: fontAndColor.COLORA4}}></View>
-            </View>
+            </TouchableOpacity>
 
         )
     }
@@ -135,7 +226,6 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     rowTopViewStyle: {
-        height: Pixel.getPixel(40),
         flexDirection: 'row',
         alignItems: 'center',
     },
@@ -152,7 +242,7 @@ const styles = StyleSheet.create({
     },
     parentStyle: {
         borderWidth: 1,
-        borderColor: fontAndColor.COLORB4,
+        borderColor: fontAndColor.COLORB0,
         borderRadius: 3,
         height: Pixel.getPixel(16),
         width: Pixel.getPixel(34),
@@ -161,36 +251,36 @@ const styles = StyleSheet.create({
     },
     childStyle: {
         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-        color: fontAndColor.COLORB4,
+        color: fontAndColor.COLORB0,
     },
     allBack: {
-        width: width, height: Pixel.getPixel(89),backgroundColor:'#ffffff',alignItems:'center'
+        width: width, height: Pixel.getPixel(163), backgroundColor: '#ffffff', alignItems: 'center'
     },
     line: {
-        width: width-Pixel.getPixel(30),
+        width: width - Pixel.getPixel(30),
         height: Pixel.getPixel(1),
         backgroundColor: fontAndColor.COLORA3
     },
     centerView: {
         width: width,
-        height: Pixel.getPixel(44),
+        height: Pixel.getPixel(72),
         flexDirection: 'row'
     },
     centerChild: {
-        flex: 1, height: Pixel.getPixel(44),
+        flex: 1, height: Pixel.getPixel(72),
         justifyContent: 'center'
     },
     centerText: {
-        fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-
+        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+        color: fontAndColor.COLORA1
     },
     centerBottomText: {
         fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
         marginTop: Pixel.getPixel(8)
     },
-    bottomView:{
+    bottomView: {
         height: Pixel.getPixel(44),
         justifyContent: 'center',
-        width:width-Pixel.getPixel(30)
+        width: width - Pixel.getPixel(30)
     }
 })

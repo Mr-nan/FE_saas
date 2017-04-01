@@ -29,7 +29,7 @@ export default class CarCell extends Component {
 
         const date = new Date();
         date.setTime(time);
-        return(date.getFullYear()+"年"+(date.getMonth()+1)+"月"+date.getDate());
+        return(date.getFullYear()+"年"+(date.getMonth()+1)+"月");
 
     };
 
@@ -42,17 +42,18 @@ export default class CarCell extends Component {
             <View style={[styles.container,styles.lineBottom]} >
 
                 <View style={styles.imageView}>
-                    <Image style={styles.image} source={{uri:carCellData.img}}/>
+                    <Image style={styles.image}
+                           source={carCellData.img?{uri:carCellData.img+'?x-oss-process=image/resize,w_'+320+',h_'+240}:require('../../../images/carSourceImages/car_null_img.png')}/>
                 </View>
 
                 <View style={[styles.textContainer]}>
 
                     <View style={{backgroundColor:'white'}}>
-                        <Text style={styles.mainText}>{'['+carCellData.city_name+']'+carCellData.brand_name+carCellData.model_name}</Text>
+                        <Text style={styles.mainText}>{(carCellData.city_name!=""?('['+carCellData.city_name+']'):"")+(carCellData.model_name)}</Text>
 
                     </View>
                     <View style={{backgroundColor:'white'}}>
-                        <Text style={styles.subTitleText}>{this.dateReversal(carCellData.create_time+'000')+'/'+carCellData.mileage+'万公里'}</Text>
+                        <Text style={styles.subTitleText}>{this.dateReversal(carCellData.manufacture+'000')+'/'+carCellData.mileage+'万公里'}</Text>
                     </View>
 
                 </View>
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
     lineBottom:{
 
         borderBottomWidth:StyleSheet.hairlineWidth,
-        borderColor:fontAndColor.COLORA4,
+        borderColor:fontAndColor.COLORA3,
 
     },
 
@@ -102,7 +103,7 @@ const styles = StyleSheet.create({
         marginLeft:Pixel.getPixel(15),
         width:Pixel.getPixel(120),
         height:Pixel.getPixel(80),
-        backgroundColor:'#FFF45C',
+        resizeMode: 'stretch'
 
     },
 
@@ -136,16 +137,16 @@ const styles = StyleSheet.create({
         alignItems:'center',
         justifyContent:'center',
         borderRadius:2,
-        marginRight:15,
-        bottom:15,
-        right:15,
+        marginRight:Pixel.getPixel(15),
+        bottom:Pixel.getPixel(15),
+        right:Pixel.getPixel(15),
         position:'absolute',
 
     },
     cellFootText:{
 
         color:fontAndColor.COLORA2,
-        fontSize:fontAndColor.LITTLEFONT,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT) ,
     },
 
 

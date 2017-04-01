@@ -1,7 +1,7 @@
 import StorageUtil from "./StorageUtil";
 var Platform = require('Platform');
 import * as StorageKeyNames from "../constant/storageKeyNames";
-const request = (url, method, params) => {
+const request = (url, method, params,backToLogin) => {
 
     let isOk;
     let body = '';
@@ -16,19 +16,23 @@ const request = (url, method, params) => {
     }
 
     return new Promise((resolve, reject) => {
-        StorageUtil.mGetItem(StorageKeyNames.token, (data) => {
+        StorageUtil.mGetItem(StorageKeyNames.TOKEN, (data) => {
             let token = '';
             if (data.code === 1) {
                 token = data.result;
             }
+            console.log('token===' + token);
             let device_code = '';
-            if(Platform.OS==='android')
-            {
-                device_code='dycd_dms_manage_android';
-            }else{
-                device_code='dycd_dms_manage_android';
+
+            if (Platform.OS === 'android') {
+                device_code = 'dycd_platform_android';
+            } else {
+                device_code = 'dycd_platform_ios';
             }
-            fetch(url + '?token=' + token + '&device_code='+device_code, {
+
+            console.log(url + '?token=' + token + '&device_code=' + device_code+'&'+body);
+
+            fetch(url + '?token=' + token + '&device_code=' + device_code+'&'+body, {
                 method,
                 body
             })
@@ -43,16 +47,27 @@ const request = (url, method, params) => {
                 })
                 .then((responseData) => {
                     if (isOk) {
-                        // console.log("success----------" + JSON.stringify(responseData));
-                        resolve({mjson: responseData, mycode: 1});
-                    } else {
-                        // console.log("error----------" + JSON.stringify(responseData));
-                        resolve(responseData);
+                        for (let key of Object.keys(params)) {
+                            console.log(key+"===" + params[key]);
+                        }
+                        console.log("success----------" + JSON.stringify(responseData));
+                        if (responseData.code == 1) {
+                            resolve({mjson: responseData, mycode: 1});
+                        } else {
+                            if(responseData.code==7040011){
+                                backToLogin();
+                            }else{
+                                reject({mycode: responseData.code, mjson: responseData});
+                            }
+                        }
+                    }else{
+                        console.log("error----------" + JSON.stringify(responseData));
+                        reject({mycode: -300});
                     }
                 })
                 .catch((error) => {
-                    // console.log("error----------" + error);
-                    reject(error);
+                    console.log("error----------error" + error);
+                    reject({mycode: -500, error: error});
                 });
         })
     });

@@ -1,137 +1,163 @@
-import  React, {Component, PropTypes} from  'react'
-import  {
-
-    View,
-    Text,
-    ListView,
+/**
+ * Created by lhc on 2017/2/15.
+ */
+import React, {Component} from 'react';
+import {
     StyleSheet,
-    Dimensions,
+    Text,
+    View,
     Image,
-    TouchableOpacity
-} from  'react-native'
-
-import * as fontAndClolr from '../../constant/fontAndColor';
-import  PixelUtil from '../../utils/PixelUtil'
-import SignContractScene from '../contractManage/SignContractScene'
-var Pixel = new PixelUtil();
-const cellJianTou = require('../../../images/mainImage/celljiantou.png');
-import NavigationBar from "../../component/NavigationBar";
-import AccountInfoScene from '../accountManage/AccountInfoScene';
-import BaseComponent from "../../component/BaseComponent";
-// let Car = require('./Car.json');
-/*
- * 获取屏幕的宽和高
- **/
+    ScrollView,
+    Dimensions,
+    TouchableOpacity,
+    ListView,
+    InteractionManager
+} from 'react-native';
+//图片加文字
 const {width, height} = Dimensions.get('window');
+import PixelUtil from '../../utils/PixelUtil';
+const Pixel = new PixelUtil();
+import * as fontAndColor from '../../constant/fontAndColor';
+import BaseComponent from '../../component/BaseComponent';
+import NavigationView from '../../component/AllNavigationView';
+const childItems = [];
+import {request} from '../../utils/RequestUtil';
+import * as Urls from '../../constant/appUrls';
+import AccountInfoScene from './AccountInfoScene';
+export  default class SelectCompanyScene extends BaseComponent {
 
-export default class AccountManageScene extends BaseComponent {
-    initFinish = () => {
-    }
-    // 构造
     constructor(props) {
         super(props);
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        // 初始状态
         this.state = {
-            dataSource: ds.cloneWithRows([
-                'John', 'Joel', 'James', 'Jimmy'
-            ]),
-            show: true,
+            renderPlaceholderOnly: 'blank',
+            source: []
         };
-
     }
 
-    render() {
-        return (
-            <View style={styles.container}>
-                <NavigationBar
-                    centerText={'用户管理'}
-                    rightText={''}
-                    leftImageCallBack={this.backPage}
+    initFinish = () => {
+        this.getData();
+    }
 
+    getData = () => {
+        let maps = {
+            api: Urls.LOAN_SUBJECT
+        };
+        request(Urls.FINANCE, 'Post', maps)
+            .then((response) => {
+                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                    this.setState({
+                        source: ds.cloneWithRows(response.mjson.data),
+                        renderPlaceholderOnly: 'success'
+                    });
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error'});
+                });
+    }
+
+
+    render() {
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return this._renderPlaceholderView();
+        }
+        return (
+            <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
+                <NavigationView
+                    title="账户管理"
+                    backIconClick={this.backPage}
                 />
                 <ListView
-                    contentContainerStyle={styles.listStyle}
-                    dataSource={this.state.dataSource}
+                    style={{marginTop: Pixel.getTitlePixel(79)}}
+                    dataSource={this.state.source}
                     renderRow={this._renderRow}
+                    renderSeparator={this._renderSeparator}
                 />
-
             </View>
         );
     }
 
-    // 每一行中的数据
-    _renderRow = (rowData, rowID, selectionID) => {
+    _renderRow = (movie, sectionId, rowId) => {
+        let names = '';
+        if(movie.companyname==null||movie.companyname==''){
+            names = movie.name;
+        }else{
+            names = movie.name+'('+movie.companyname+')';
+        }
         return (
             <TouchableOpacity
-                style={{marginTop:15}}
-                onPress={() => {
-                    console.log(rowID + "--" + selectionID)
-                    this.toNextPage({
-                        name: 'AccountInfoScene',
-                        component: AccountInfoScene,
-                        params: {show: false},
-                    })
+                onPress={()=> {
+                    this.toNextPage({name:'AccountInfoScene',component:AccountInfoScene,params:{
+                         items:movie
+                    }});
+                }}
+                activeOpacity={0.8}
+                style={{
+                    width: width, height: Pixel.getPixel(77),
+                    backgroundColor: '#fff', paddingLeft: Pixel.getPixel(15),
+                    paddingRight: Pixel.getPixel(15), flexDirection: 'row'
                 }}>
-                <View style={styles.rowView}>
-                    <Image source={require('../../../images/edit_icon.png')} style={styles.leftImage}/>
-                    <View style={styles.rowLeft}>
-                        <Text style={styles.rowLeftTitle}>第一车贷二手车公司</Text>
-                        <Text style={styles.rowLeftTitle1}>20161111</Text>
-                    </View>
-                    <Image source={cellJianTou} style={styles.image}></Image>
-
+                <View style={{flex: 1, justifyContent: 'center'}}>
+                    <Image style={{width: Pixel.getPixel(38), height: Pixel.getPixel(33)}}
+                           source={require('../../../images/financeImages/companyIcon.png')}></Image>
+                </View>
+                <View style={{flex: 4, justifyContent: 'center'}}>
+                    <Text
+                        style={{fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30), color: fontAndColor.COLORA0}}>
+                        {names}</Text>
+                    <Text
+                        style={{
+                            fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                            color: fontAndColor.COLORA1,
+                            marginTop: Pixel.getPixel(10)
+                        }}>
+                        {movie.bankaccount}</Text>
+                </View>
+                <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
+                    <Image style={{width: Pixel.getPixel(12), height: Pixel.getPixel(12)}}
+                           source={require('../../../images/mainImage/celljiantou.png')}/>
                 </View>
             </TouchableOpacity>
+        )
+    }
+
+    _renderSeparator(sectionId, rowId) {
+
+        return (
+            <View style={styles.Separator} key={sectionId + rowId}>
+            </View>
+        )
+    }
+
+    _renderPlaceholderView() {
+        return (
+            <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
+                {this.loadView()}
+                <NavigationView
+                    title="账户管理"
+                    backIconClick={this.backPage}
+                />
+            </View>
         );
     }
+
+
 }
-
 const styles = StyleSheet.create({
-    container: {
 
-        flex: 1,
-        marginTop: Pixel.getPixel(0),   //设置listView 顶在最上面
-        backgroundColor: fontAndClolr.COLORA3,
-    },
-    listStyle: {
-        marginTop: Pixel.getPixel(0)
-    },
-    rowView: {
-        height: Pixel.getPixel(77),
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: 'white',
-        flexDirection: 'row'
-    },
-    rowLeftTitle: {
-        fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT28),
-        color: fontAndClolr.COLORA0,
-
-    },
-    rowLeftTitle1: {
-        fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT28),
-        color: fontAndClolr.COLORA2,
-
-    },
-    rowLeft: {
-        marginLeft: Pixel.getPixel(15),
-        flex: 1,
-        flexDirection: 'column',
-    },
-    rowRightTitle: {
-        marginRight: Pixel.getPixel(10),
-        color: fontAndClolr.COLORA2,
-        fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT28),
-
-    },
     image: {
-        marginRight: Pixel.getPixel(15),
+        width: 43,
+        height: 43,
     },
-    leftImage:{
-        width:Pixel.getPixel(38),
-        height:Pixel.getPixel(38),
-        marginLeft:Pixel.getPixel(15)
-    }
+    Separator: {
+        backgroundColor: fontAndColor.COLORA3,
+        height: Pixel.getPixel(10),
 
+    },
+    margin: {
+        marginRight: Pixel.getPixel(15),
+        marginLeft: Pixel.getPixel(15)
 
-});
+    },
+    topViewStyle: {flex: 1, height: Pixel.getPixel(44), justifyContent: 'center'}
+})

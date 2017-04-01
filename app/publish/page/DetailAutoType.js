@@ -19,8 +19,6 @@ const Pixel = new PixelUtil();
 
 const {width,height} = Dimensions.get('window');
 const background = require('../../../images/publish/background.png');
-import SQLiteUtil from '../../utils/SQLiteUtil';
-const SQLite = new SQLiteUtil();
 
 export default class DetailAutoType extends Component {
 
@@ -52,7 +50,7 @@ export default class DetailAutoType extends Component {
 
     componentWillMount() {
         let v_type = this.props.carData.v_type;
-        if(v_type !== ''){
+        if(this.isEmpty(v_type) === false){
             this.viewData.map((data)=>{
                 data.selected = (data.index == v_type);
             });
@@ -65,11 +63,19 @@ export default class DetailAutoType extends Component {
                     v_type = data.index;
                 }
             });
-            SQLite.changeData(
+            this.props.sqlUtil.changeData(
                 'UPDATE publishCar SET v_type =? WHERE vin = ?',
                 [ v_type, this.props.carData.vin]);
         }
     }
+
+    isEmpty = (str)=>{
+        if(typeof(str) != 'undefined' && str !== ''){
+            return false;
+        }else {
+            return true;
+        }
+    };
 
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
@@ -88,12 +94,10 @@ export default class DetailAutoType extends Component {
         this.setState((prevState, props) => ({
             dataSource: this.viewData
         }));
-        SQLite.changeData(
+        this.props.sqlUtil.changeData(
             'UPDATE publishCar SET v_type = ? WHERE vin = ?',
             [ this.viewData[i].index, this.props.carData.vin]);
-        let newData = new Object(...this.props.carData);
-        newData['v_type'] = this.viewData[i].index;
-        this.props.refreshCar(newData);
+        this.props.refreshType(this.viewData[i].index);
 
     };
 

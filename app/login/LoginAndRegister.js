@@ -1,28 +1,59 @@
 import React, {Component} from "react";
-import {AppRegistry, View, Text, StyleSheet, Image} from "react-native";
+import {AppRegistry, View, Text, StyleSheet, Image, InteractionManager, TouchableWithoutFeedback,BackAndroid,NativeModules} from "react-native";
 import BaseComponent from "../component/BaseComponent";
 import MyButton from "../component/MyButton";
 import * as FontAndColor from "../constant/fontAndColor";
 import LoginScene from "./LoginScene";
-import Register from './Register';
+import Register from "./Register";
 import PixelUtil from "../utils/PixelUtil";
-import LoginFailPwd from './LoginFailPwd';
-import SetPwd from './SetPwd';
-import LoginGesturePassword from './LoginGesture';
-import SetLoginPwdGesture from './SetLoginPwdGesture';
-import Setting from './../mine/setting/Setting'
+import OBDDevice from "./OBDDevice";
+import AmountConfirm from './AmountConfirm';
 
 var Pixel = new PixelUtil();
+var Dimensions = require('Dimensions');
+var {width, height} = Dimensions.get('window');
 
 export default class LoginAndRegister extends BaseComponent {
+
+    constructor(props) {
+        super(props);
+        //初始化方法
+        this.state = {
+            renderPlaceholderOnly: true,
+        }
+    }
+
+    handleBack = () => {
+        NativeModules.VinScan.goBack();
+        return true;
+    }
+
+    componentDidMount() {
+        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        this.initFinish();
+    }
+
     initFinish = () => {
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+            // this.Verifycode();
+        });
     }
 
     render() {
+        if (this.state.renderPlaceholderOnly) {
+            return ( <TouchableWithoutFeedback onPress={() => {
+                this.setState({
+                    show: false,
+                });
+            }}>
+                <View/>
+            </TouchableWithoutFeedback>);
+        }
         return (
-            <View style={styles.container}>
-                <Image source={require('./../../images/test.png')} style={styles.iconStyle}/>
-                <MyButton buttonType={MyButton.TEXTBUTTON} content="登录" parentStyle={styles.buttonStyle}
+            <Image source={require('./../../images/login/loginAndRegist.png')} style={styles.iconStyle}>
+                <MyButton buttonType={MyButton.TEXTBUTTON} content="登录"
+                          parentStyle={[styles.buttonStyle, {marginTop: height / 3 * 2}]}
                           childStyle={styles.buttonTextStyle} mOnPress={() => {
                     this.toNextPage({
                         name: 'LoginScene',
@@ -38,39 +69,8 @@ export default class LoginAndRegister extends BaseComponent {
                         params: {},
                     })
                 }}/>
-                <MyButton buttonType={MyButton.TEXTBUTTON} content="修改密码" parentStyle={styles.buttonStyle}
-                          childStyle={styles.buttonTextStyle} mOnPress={() => {
-                    this.toNextPage({
-                        name: 'SetPwd',
-                        component: SetPwd,
-                        params: {},
-                    })
-                }}/>
-                <MyButton buttonType={MyButton.TEXTBUTTON} content="首次设置登录密码" parentStyle={styles.buttonStyle}
-                          childStyle={styles.buttonTextStyle} mOnPress={() => {
-                    this.toNextPage({
-                        name: 'LoginFailPwd',
-                        component: LoginFailPwd,
-                        params: {},
-                    })
-                }}/>
-                <MyButton buttonType={MyButton.TEXTBUTTON} content="手势密码" parentStyle={styles.buttonStyle}
-                          childStyle={styles.buttonTextStyle} mOnPress={() => {
-                    this.toNextPage({
-                        name: 'LoginGesturePassword',
-                        component: LoginGesturePassword,
-                        params: {},
-                    })
-                }}/>
-                <MyButton buttonType={MyButton.TEXTBUTTON} content="设置" parentStyle={styles.buttonStyle}
-                          childStyle={styles.buttonTextStyle} mOnPress={() => {
-                    this.toNextPage({
-                        name: 'Setting',
-                        component: Setting,
-                        params: {},
-                    })
-                }}/>
-            </View>
+
+            </Image>
         );
     }
 }
@@ -79,7 +79,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: '#F0F0F2'
     },
     fontStyle: {
         color: '#cc092f',
@@ -88,24 +87,24 @@ const styles = StyleSheet.create({
         marginTop: Pixel.getPixel(50),
     },
     iconStyle: {
-        height: Pixel.getPixel(100),
-        width: Pixel.getPixel(100),
+        flex: 1,
+        height: height,
+        width: width,
         resizeMode: 'cover',
-        marginTop: Pixel.getPixel(10),
-        marginBottom: Pixel.getPixel(30),
-
+        alignItems: 'center',
     },
     buttonStyle: {
-        borderColor: FontAndColor.COLORA1,
+        borderColor: FontAndColor.COLORA3,
         borderWidth: 1,
-        width: Pixel.getPixel(200),
-        height: Pixel.getPixel(35),
+        width: width - Pixel.getPixel(80),
+        height: Pixel.getPixel(44),
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: Pixel.getPixel(10),
-        marginBottom: Pixel.getPixel(10),
+        marginTop: Pixel.getPixel(12),
+        marginBottom: Pixel.getPixel(12),
     },
     buttonTextStyle: {
         fontSize: Pixel.getFontPixel(18),
+        color: FontAndColor.COLORA3,
     }
 });

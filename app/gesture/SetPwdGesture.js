@@ -55,6 +55,7 @@ export default class SetPwdGesture extends Component {
         onStart: PropTypes.func,
         onEnd: PropTypes.func,
         onReset: PropTypes.func,
+        onUpdatePwd: PropTypes.func,
         interval: PropTypes.number,//设置手势清除时长
         allowCross: PropTypes.bool,
         innerCircle: PropTypes.bool,
@@ -107,6 +108,7 @@ export default class SetPwdGesture extends Component {
                     {this.renderLines()}
                     <Line ref='line' color={color}/>
                 </View>
+                {this.props.BottomView}
             </View>
         )
     }
@@ -278,7 +280,10 @@ export default class SetPwdGesture extends Component {
                 this.refs.line.setNativeProps({start: point});
             }
         }
-
+        if (this.props.onUpdatePwd) {
+            let password = helper.getRealPassword(this.sequence);
+            this.props.onUpdatePwd(password);
+        }
         if (this.sequence.length === 9) this.onEnd();
     }
 

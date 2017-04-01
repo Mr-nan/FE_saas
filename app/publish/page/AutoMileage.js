@@ -26,6 +26,7 @@ const Pixel = new PixelUtil();
 import SQLiteUtil from '../../utils/SQLiteUtil';
 const SQLite = new SQLiteUtil();
 import * as Net from '../../utils/RequestUtil';
+import * as AppUrls from "../../constant/appUrls";
 
 const {width, height} = Dimensions.get('window');
 const background = require('../../../images/publish/background.png');
@@ -37,9 +38,11 @@ export default class AutoMileage extends Component {
 
     constructor(props) {
         super(props);
+        this.shop_id = this.props.shopID;
+        this.carData = this.props.carData;
         this.initValue = [0, 0, 0, 0, 0];
         let mileage = this.props.carData.mileage;
-        if (mileage !== '') {
+        if (this.isEmpty(mileage) === false) {
             mileage = mileage.split("").reverse().join("");
             for (let i = 0; i < mileage.length; i++) {
                 if (i < 2) {
@@ -61,6 +64,14 @@ export default class AutoMileage extends Component {
         };
     }
 
+    isEmpty = (str)=>{
+        if(typeof(str) != 'undefined' && str !== ''){
+            return false;
+        }else {
+            return true;
+        }
+    };
+
     componentWillMount() {
 
     }
@@ -72,7 +83,7 @@ export default class AutoMileage extends Component {
     }
 
     componentWillUnmount() {
-
+        this.timer && clearTimeout(this.timer);
     }
 
     onPickerSelect = (key, value) => {
@@ -106,6 +117,10 @@ export default class AutoMileage extends Component {
         return concat;
     };
 
+    componentWillReceiveProps(nextProps) {
+        this.shop_id = nextProps.shopID;
+        this.carData = nextProps.carData;
+    }
 
     _renderPlaceholderView = () => {
         return (<Image style={[styles.img,{height:height-this.props.barHeight}]} source={background}/>);
@@ -117,45 +132,112 @@ export default class AutoMileage extends Component {
 
     //发布
     _publish = () => {
-        SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
-            [this.props.carData.vin],
-            (data) => {
-                if (data.code === 1) {
-                    let rd = data.result.rows.item(0);
-                    let modelInfo = JSON.parse(rd.model);
-                    let params = {
-                        vin: rd.vin,
-                        brand_id: modelInfo.brand_id,
-                        model_id: modelInfo.model_id,
-                        series_id: modelInfo.series_id,
-                        pictures: rd.pictures,
-                        v_type: rd.v_type,
-                        manufacture: rd.manufacture,
-                        init_reg: rd.init_reg,
-                        mileage: rd.mileage,
-                        show_shop_id: 57,
+        try{
+            SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
+                [this.carData.vin],
+                (data) => {
+                    if (data.code === 1) {
+                        let rd = data.result.rows.item(0);
+                        if(this.isEmpty(rd.model) === true){
+                            this.props.showHint('请选择车型信息');
+                            return;
+                        }
 
-                    };
-                    let url = 'http://dev.api-gateway.dycd.com/' + 'v1/car/save?token=0ac50af9a02b752ca0f48790dc8ea6d1&device_code=dycd_dms_manage_android';
-                    Net.request(url, 'post', params)
-                        .then((response) => {
-                                if (response.mycode === 1) {
-                                    SQLite.changeData(
-                                        'DELETE From publishCar WHERE vin = ?',
-                                        [this.props.carData.vin]);
-                                    this.successModal.openModal();
-                                }
-                            },
-                            (error) => {
-                                console.log(error);
-                            });
-                    console.log();
-                } else {
-                    console.log(data.error);
-                }
-            });
+                        if(this.isEmpty(rd.pictures) === true){
+                            this.props.showHint('请拍摄车辆照片');
+                            return;
+                        }
+                        if(rd.v_type === '1' && this.isEmpty(rd.mileage) === false && rd.mileage === '0.00'){
+                            this.props.showHint('请填写车辆里程');
+                            return;
+                        }
+                        if(this.isEmpty(rd.manufacture) === true){
+                            this.props.showHint('请选择车辆出厂日期');
+                            return;
+                        }
+                        if(rd.v_type === '1' && this.isEmpty(rd.init_reg) === true){
+                            this.props.showHint('请选择车辆初登日期');
+                            return;
+                        }
+                        this.props.showLoading();
+                        let modelInfo = JSON.parse(rd.model);
+                        let params = {
+                            vin: rd.vin,
+                            brand_id: modelInfo.brand_id,
+                            model_id: modelInfo.model_id,
+                            series_id: modelInfo.series_id,
+                            pictures: rd.pictures,
+                            v_type: rd.v_type,
+                            manufacture: rd.manufacture,
+                            init_reg: rd.init_reg,
+                            mileage: rd.mileage,
+                            show_shop_id: this.shop_id,
+                        };
+
+                        Net.request(AppUrls.CAR_SAVE, 'post', params)
+                            .then((response) => {
+                                    if (response.mycode === 1) {
+                                        SQLite.changeData(
+                                            'DELETE From publishCar WHERE vin = ?',
+                                            [this.props.carData.vin]);
+                                        this.props.closeLoading();
+                                        if(IS_ANDROID === true){
+                                            this.successModal.openModal();
+                                        }else{
+                                            this.timer = setTimeout(
+                                                () => { this.successModal.openModal(); },
+                                                500
+                                            );
+                                        }
+                                    }
+                                },
+                                (error) => {
+                                    this.props.closeLoading();
+                                    if(error.mycode === -300 || error.mycode === -500){
+                                        if(IS_ANDROID === true){
+                                            this.props.showHint('网络请求失败');
+                                        }else {
+                                            this.timer = setTimeout(
+                                                () => { this.props.showHint('网络请求失败'); },
+                                                500
+                                            );
+                                        }
+                                    }else{
+                                        if(IS_ANDROID === true){
+                                            this.props.showHint(error.mjson.msg);
+                                        }else {
+                                            this.timer = setTimeout(
+                                                () => { this.props.showHint(error.mjson.msg); },
+                                                500
+                                            );
+                                        }
+                                    }
+                                });
+                    } else {
+                        this.props.closeLoading();
+                        if(IS_ANDROID){
+                            this.props.showHint(JSON.stringify(data.error));
+                        }else {
+                            this.timer = setTimeout(
+                                () => { this.props.showHint(JSON.stringify(data.error)); },
+                                500
+                            );
+                        }
+                    }
+                });
+        }catch (error){
+            this.props.closeLoading();
+            if(IS_ANDROID === true){
+                this.props.showHint(JSON.stringify(error));
+            }else {
+                this.timer = setTimeout(
+                    () => { this.props.showHint(JSON.stringify(error));},
+                    500
+                );
+            }
+        }
+
     };
-
 
     _renderRihtFootView = () => {
         return (
@@ -222,7 +304,7 @@ export default class AutoMileage extends Component {
                                         itemStyle={{color:"#FFFFFF", fontSize:26,fontWeight:'bold'}}
                                         onValueChange={(index) => this.onPickerSelect(3,index)}>
                                     {this.state.itemList.map((value, i) => (
-                                        <PickerItem label={value} value={i} key={"second"+value}/>
+                                        <PickerItem label={value} value={i} key={"four"+value}/>
                                     ))}
                                 </Picker>
                             </View>
@@ -232,7 +314,7 @@ export default class AutoMileage extends Component {
                                         itemStyle={{color:"#FFFFFF", fontSize:26,fontWeight:'bold'}}
                                         onValueChange={(index) => this.onPickerSelect(4,index)}>
                                     {this.state.itemList.map((value, i) => (
-                                        <PickerItem label={value} value={i} key={"three"+value}/>
+                                        <PickerItem label={value} value={i} key={"five"+value}/>
                                     ))}
                                 </Picker>
                             </View>
@@ -264,6 +346,7 @@ const styles = StyleSheet.create({
     },
     fillSpace: {
         flex: 1,
+        overflow:'hidden',
     },
     preContainer: {
         height: Pixel.getPixel(44),

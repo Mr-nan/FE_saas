@@ -25,6 +25,49 @@ const Pixel = new PixelUtil();
 import {width,height,adapeSize,PAGECOLOR,fontadapeSize} from './MethodComponent'
 
 
+export class ComentImageButton extends  PureComponent{
+
+    render(){
+        const {btnStyle,ImgSource, onPress}=this.props;
+        return (
+            <TouchableOpacity style={btnStyle} onPress = {onPress}>
+                <Image source={ImgSource}/>
+            </TouchableOpacity>
+        )
+    }
+
+}
+
+
+
+
+export const commnetStyle=StyleSheet.create({
+
+    container:{
+
+        flex:1,
+        backgroundColor:PAGECOLOR.COLORA3
+    },
+
+    ListWarp:{
+        position:'absolute',
+        top:Pixel.getTitlePixel(64),
+        width:width,
+        bottom:adapeSize(50),
+        backgroundColor:PAGECOLOR.COLORA3
+    },
+
+    bottomWarp:{
+        position:'absolute',
+        width:width,
+        height:adapeSize(50),
+        bottom:0,
+        backgroundColor:'white'
+    }
+
+
+})
+
 export class LendItem extends PureComponent {
 
 
@@ -89,11 +132,11 @@ export class LendCarItemCell extends PureComponent{
 
     render(){
 
-        const {carName,orderState,orderNum,price}=this.props;
+        const {carName,orderState,orderNum,price, onPress}=this.props;
 
         return(
 
-            <View style={styles.lendCarItemCellWarp}>
+            <TouchableOpacity onPress={onPress} style={styles.lendCarItemCellWarp}>
 
                 <View style={styles.lendCarItemCellInstWarp}>
 
@@ -107,7 +150,7 @@ export class LendCarItemCell extends PureComponent{
                     <Text style={styles.lendCarItemPrice}>{price}</Text>
                 </View>
 
-            </View>
+            </TouchableOpacity>
 
         )
     }
@@ -131,13 +174,13 @@ export class LendInputItem extends PureComponent {
 
 
 
-        const {title,placeholder,unit,unitStyle}=this.props;
+        const {title,placeholder,unit,unitStyle,onChangeText}=this.props;
 
         return (
             <View style={styles.itemView}>
 
                 <Text style={styles.itemLeftText}>{title}</Text>
-                <TextInput underlineColorAndroid={"#00000000"} style={styles.itemInput} placeholder={placeholder} keyboardType={'decimal-pad'}/>
+                <TextInput underlineColorAndroid={"#00000000"} style={styles.itemInput} placeholder={placeholder} keyboardType={'decimal-pad'} onChangeText={onChangeText}/>
                 <Text style={[styles.itemPlacehodel,unitStyle]}>{unit}</Text>
             </View>
         )
@@ -151,9 +194,16 @@ export class LendDatePike extends PureComponent {
         // 初始状态
         this.state = {
             value:'',
+            placeholder:this.props.placeholder,
         };
     }
 
+    setPlaceHodel=(vlaue)=>{
+
+        this.dateInput.setNativeProps({
+            placeholder:vlaue
+        })
+    }
     onPress=()=>{
 
         const {onPress}=this.props;
@@ -176,7 +226,7 @@ export class LendDatePike extends PureComponent {
 
     render() {
 
-        const {lefTitle,placeholder,imageSouce,imageStyle}=this.props
+        const {lefTitle,imageSouce,imageStyle}=this.props
 
         return (
             <TouchableOpacity
@@ -184,8 +234,8 @@ export class LendDatePike extends PureComponent {
                 style={[styles.itemView, {borderBottomColor: '#d8d8d8', borderBottomWidth: adapeSize(0.5)}] }>
                 <Text  style={styles.itemLeftText}>{lefTitle}</Text>
 
-                <TextInput underlineColorAndroid={"#00000000"} ref='dateInput' editable={false} style={[styles.itemInput, {marginRight: adapeSize(17)}]}
-                           placeholder={placeholder} value={this.state.value} />
+                <TextInput  underlineColorAndroid={"#00000000"} ref={(date)=>{this.dateInput=date}} editable={false} style={[styles.itemInput, {marginRight: adapeSize(17)}]}
+                           placeholder={this.state.placeholder} value={this.state.value} />
                 <Image style={[styles.itemPikerDate,imageStyle]} source={imageSouce}/>
             </TouchableOpacity>
         )
@@ -197,23 +247,44 @@ export class LendUseful extends PureComponent {
 
     render() {
 
+        const {onEndEidt}=this.props;
         return (
             <View style={styles.itemUserful}>
-                <Text style={styles.itemLeftText}>用款用途</Text>
-                <TextInput style={styles.itemUserfulInput} placeholder={'请简要描述借款用途'} multiline={true}/>
+                <Text style={styles.itemLeftText}>借款用途</Text>
+                <TextInput underlineColorAndroid={"#00000000"} onChangeText={onEndEidt} style={styles.itemUserfulInput} placeholder={'请简要描述借款用途'} multiline={true}/>
             </View>
         )
     }
 }
+
 export class LendRate extends PureComponent {
+
 
     render() {
         return (
             <View style={styles.itemRate}>
                 <Image style={styles.itemRateThumb} source={require('../../../../images/financeImages/lendRate.png')}/>
                 <Text style={styles.itemRateText}> 借款费率</Text>
-                <Text style={styles.itRateNum}>12.0%</Text>
+                <Text style={styles.itRateNum}>{this.props.rate}</Text>
             </View>
+        )
+    }
+}
+
+
+export class CommentHandItem extends  PureComponent{
+
+    render(){
+
+        const {leftTitle,showValue,textStyle,handel}=this.props;
+        return (
+
+            <TouchableOpacity style={styles.commentHandeItem}>
+                <Text style={styles.commentListItemLeft}>{leftTitle}</Text>
+                <Text style={[styles.commentListItemRight,textStyle]}>{showValue}</Text>
+                <Image style={{width:adapeSize(20),height:adapeSize(16),marginRight:adapeSize(10)}} source={require('../../../../images/mainImage/celljiantou.png')}/>
+            </TouchableOpacity>
+
         )
     }
 
@@ -231,6 +302,7 @@ export class CommnetListItem extends PureComponent{
            <View style={styles.commentListItemView}>
                <Text style={styles.commentListItemLeft}>{leftTitle}</Text>
                <Text style={[styles.commentListItemRight,textStyle]}>{showValue}</Text>
+
            </View>
 
        )
@@ -319,7 +391,7 @@ const styles = StyleSheet.create({
     itemUserful: {
 
         flexDirection: 'row',
-        height: adapeSize(350 / 2),
+        height: adapeSize(300 / 2),
         alignItems: 'flex-start',
         borderBottomColor: '#d8d8d8',
         borderBottomWidth: adapeSize(0.5),
@@ -390,12 +462,20 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
 
     },
+    commentHandeItem:{
+        flex:1,
+        flexDirection:'row',
+        justifyContent:'flex-start',
+        alignItems:'center',
+        backgroundColor: 'white',
+    },
+
     commentListItemLeft:{
 
         paddingLeft:adapeSize(15),
         textAlign:'left',
         color:'#9e9e9e',
-        flex:0.4,
+        flex:0.3,
     },
     commentListItemRight:{
 
@@ -449,9 +529,9 @@ const styles = StyleSheet.create({
 
     CGDCarWarp:{
 
-
         flexDirection:'row',
         justifyContent:'flex-start',
+        backgroundColor:'white'
 
     },
     CGDCarImage:{

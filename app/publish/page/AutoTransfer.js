@@ -6,7 +6,6 @@ import {
     View,
     Image,
     Text,
-    TextInput,
     Dimensions,
     StyleSheet,
     Platform,
@@ -32,12 +31,30 @@ export default class AutoTransfer extends Component {
 
     constructor(props) {
         super(props);
+        this.vinNum = this.props.carData.vin;
+        let transfer = this.props.carData.transfer_number;
+        let initValue = 0;
+        if(this.isEmpty(transfer) === false){
+            if(transfer === '10以上'){
+                initValue = 11;
+            }else {
+                initValue = parseInt(transfer);
+            }
+        }
         this.state = {
-            selected1: 0,
+            selected1: initValue,
             itemList: ['0', '1', '2', '3', '4', '5', '6', '7','8','10','10以上'],
             renderPlaceholderOnly: true
         };
     }
+
+    isEmpty = (str)=>{
+        if(typeof(str) != 'undefined' && str !== ''){
+            return false;
+        }else {
+            return true;
+        }
+    };
 
     componentWillMount() {
 
@@ -57,6 +74,9 @@ export default class AutoTransfer extends Component {
         const newState = {};
         newState[key] = value;
         this.setState(newState);
+        this.props.sqlUtil.changeData(
+            'UPDATE publishCar SET transfer_number = ? WHERE vin = ?',
+            [this.state.itemList[value], this.vinNum]);
     };
 
     _renderPlaceholderView = ()=>{
@@ -91,12 +111,11 @@ export default class AutoTransfer extends Component {
                         renderRihtFootView={this._renderRihtFootView} />
                     <Image style={styles.imgContainer} source={transferNum}>
                         <View style={styles.inputContainer}>
-                            {/*<TextInput  style={styles.inputNum} underlineColorAndroid='transparent' defaultValue={'2'}/>*/}
-                            <View style={styles.pickContainer}>
-                                <Picker  style={[IS_ANDROID && styles.fillSpace]}
-                                         selectedValue={this.state.selected1}
-                                         itemStyle={{color:"#FFFFFF", fontSize:16,fontWeight:'bold'}}
-                                         onValueChange={(index) => this.onPickerSelect('selected1',index)}>
+                            <View style={IS_ANDROID ? styles.pickAndroidContainer: styles.pickIOSContainer}>
+                                <Picker style={[IS_ANDROID && styles.fillSpace]}
+                                        selectedValue={this.state.selected1}
+                                        itemStyle={{color:"#FFFFFF", fontSize:16,fontWeight:'bold'}}
+                                        onValueChange={(index) => this.onPickerSelect('selected1',index)}>
                                     {this.state.itemList.map((value, i) => (
                                         <PickerItem label={value} value={i} key={"first"+value}/>
                                     ))}
@@ -133,11 +152,18 @@ const styles = StyleSheet.create({
     inputContainer:{
         flexDirection:'row',
         width:Pixel.getPixel(70),
+        height:Pixel.getPixel(40),
+
+    },
+    pickAndroidContainer:{
+        flex:1,
         height:Pixel.getPixel(40)
     },
-    pickContainer:{
+    pickIOSContainer:{
         flex:1,
         height:Pixel.getPixel(40),
+        justifyContent:'center',
+        overflow:'hidden'
     },
     inputNum:{
         width:Pixel.getPixel(60),

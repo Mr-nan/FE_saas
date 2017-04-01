@@ -13,7 +13,9 @@ import  {
     Image,
     InteractionManager,
     TouchableOpacity,
-    RefreshControl
+    RefreshControl,
+    NativeModules,
+    BackAndroid
 } from  'react-native'
 
 let mnyData = {};
@@ -21,20 +23,28 @@ let movies = [];
 let page = 1;
 let allPage = 0;
 import  HomeHeaderItem from './component/HomeHeaderItem';
-import * as fontAndColor from '../constant/fontAndColor';
 import  PixelUtil from '../utils/PixelUtil'
+import KurongDetaileScene from '../finance/lend/KurongDetaileScene';
+import CGDDetailSence from '../finance/lend/CGDDetailSence';
+import SingDetaileSence from '../finance/lend/SingDetaileSence';
 var Pixel = new PixelUtil();
 /*
  * 获取屏幕的宽和高
  **/
 const {width, height} = Dimensions.get('window');
 import LendMoneySence from '../finance/lend/LendMoneyScene';
-import SingDetaileSence from '../finance/lend/SingDetaileSence';
+
 import MyButton from '../component/MyButton';
 import RepaymentScene from '../finance/repayment/RepaymentScene';
 import BaseComponet from '../component/BaseComponent';
-import {request} from '../utils/testRequestUtil';
+import {request} from '../utils/RequestUtil';
 import  LoadMoreFooter from '../component/LoadMoreFooter';
+import * as Urls from '../constant/appUrls';
+import * as fontAndColor from '../constant/fontAndColor';
+import SelectCompanyScene from '../finance/SelectCompanyScene';
+import AginSelectCompanyScene from '../finance/AginSelectCompanyScene';
+import {LendSuccessAlert} from '../finance/lend/component/ModelComponent'
+let loanList = [];
 
 export class HomeHeaderItemInfo {
     constructor(ref, key, functionTitle, describeTitle, functionImage) {
@@ -52,25 +62,82 @@ const bossFuncArray = [
     new HomeHeaderItemInfo('jiekuan', 'page1', '借款', '一步快速搞定', require('../../images/financeImages/borrowicon.png')),
     new HomeHeaderItemInfo('huankuan', 'page2', '还款', '智能自动提醒', require('../../images/financeImages/repaymenticon.png')),
 ];
-const employerFuncArray = [bossFuncArray[0], bossFuncArray[1]];
 
 
 export default class FinanceSence extends BaseComponet {
+    handleBack = () => {
+        NativeModules.VinScan.goBack();
+        return true;
+    }
+
+    componentDidMount() {
+        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
+    }
+
 
     initFinish = () => {
-        this.getMnyData();
+
+        this.getData();
+    }
+
+    getData = () => {
+        loanList = [];
+        let maps = {
+            api: Urls.LOAN_SUBJECT
+        };
+        request(Urls.FINANCE, 'Post', maps,()=>{
+            this.props.backToLogin();
+        })
+            .then((response) => {
+                    loanList = response.mjson.data;
+                    if (loanList.length > 1) {
+                        this.setState({renderPlaceholderOnly: 'select'});
+                    } else {
+                        if (loanList[0].is_done_credit == 0) {
+                            this.setState({renderPlaceholderOnly: 'select'});
+                        } else {
+                            this.setState({
+                                customerName: loanList[0].companyname
+                            });
+                            this.setLoan();
+                        }
+                    }
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error'});
+                });
+    }
+
+    setLoan = () => {
+        let maps = {
+            api: Urls.OPT_LOAN_SUBJECT,
+            opt_merge_id: loanList[0].merge_id,
+            opt_user_id: loanList[0].user_id,
+        };
+        request(Urls.FINANCE, 'Post', maps)
+            .then((response) => {
+
+                    this.getMnyData();
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error'});
+                });
     }
 
     getMnyData = () => {
         let that = this;
         let maps = {
-            reqtoken: 'e9ab1d1bb12b2f824df9503ba4f0e4cd',
-            key: '784caccb098f595a69e7a9ee017a4609',
-            device_code: 'dycd_bms_android',
+            api: Urls.GET_MNY
         };
-        request('https://openbms.dycd.com/api/v3/account/get_mny', 'Post', maps)
+        request(Urls.FINANCE, 'Post', maps,()=>{
+            this.props.backToLogin();
+        })
             .then((response) => {
-                    mnyData = response.mjson.retdata;
+                    mnyData = response.mjson.data;
                     that.setState({
                         allData: {
                             keyongedu: mnyData.credit_maxloanmny / 10000,
@@ -87,36 +154,48 @@ export default class FinanceSence extends BaseComponet {
     }
 
     toEnd = () => {
-        // page++;
-        // this.getApplyData();
+        if (this.state.isRefreshing) {
+
+        } else {
+            if (page < allPage) {
+                page++;
+                this.getApplyData();
+            }
+        }
+
     };
 
     getApplyData = () => {
-        let that = this;
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         let maps = {
-            reqtoken: 'e9ab1d1bb12b2f824df9503ba4f0e4cd',
-            key: '6f9dc3e38ce73e562fea441fe896a6c6',
-            device_code: 'dycd_bms_android',
+            api: Urls.GET_APPLY_LIST,
             p: page
         };
-        request('https://openbms.dycd.com/api/v3/account/get_apply_list', 'Post', maps)
+        request(Urls.FINANCE, 'Post', maps,()=>{
+            this.props.backToLogin();
+        })
             .then((response) => {
-                    if (response.mjson.retcode == 1) {
-                        movies = response.mjson.retdata.list;
-                        allPage = response.mjson.retdata.page;
-                        this.setState({renderPlaceholderOnly: 'success', source: ds.cloneWithRows(movies)});
-                        this.setState({isRefreshing: false});
+                    movies.push(...response.mjson.data.list);
+                    allPage = response.mjson.data.page;
+                    this.setState({renderPlaceholderOnly: 'success', source: ds.cloneWithRows(movies)});
+                    this.setState({isRefreshing: false});
+                },
+                (error) => {
+                    if (error.mycode == '-2100045') {
+                        this.setState({
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'success',
+                            source: ds.cloneWithRows(['1'])
+                        });
+
                     } else {
                         this.setState({renderPlaceholderOnly: 'error'});
                     }
-                },
-                (error) => {
-                    this.setState({renderPlaceholderOnly: 'error'});
                 });
     }
 
     allRefresh = () => {
+        movies = [];
         this.setState({renderPlaceholderOnly: 'loading'});
         page = 1;
         this.getMnyData();
@@ -134,17 +213,28 @@ export default class FinanceSence extends BaseComponet {
                 baozhengjinyue: mnyData.bond_mny / 10000,
             },
             renderPlaceholderOnly: 'blank',
-            isRefreshing: false
+            isRefreshing: false,
+            customerName: ''
         };
     }
 
     refreshingData = () => {
+        movies = [];
         this.setState({isRefreshing: true});
         page = 1;
         this.getMnyData();
     };
 
     render() {
+        if (this.state.renderPlaceholderOnly === 'select') {
+            return (<SelectCompanyScene showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} loanList={loanList} callBack={(companyname)=>{this.setState({
+                customerName:companyname
+            });
+                            this.allRefresh();
+                            }}/>);
+        }
         if (this.state.renderPlaceholderOnly !== 'success') {
             return this._renderPlaceholderView();
         }
@@ -155,7 +245,6 @@ export default class FinanceSence extends BaseComponet {
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
                     renderHeader={this._renderHeader}
-                    bounces={false}
                     renderFooter={
                                     this.renderListFooter
                                 }
@@ -169,18 +258,18 @@ export default class FinanceSence extends BaseComponet {
                                     />
                                 }
                 />
+                <LendSuccessAlert title="提示" subtitle="采购融资功能正在维护中，请您移步BMS系统申请采购融资" ref='cgdModal'
+                                  confimClick={()=>{}}/>
             </View>
         )
     }
 
     renderListFooter = () => {
-
         if (this.state.isRefreshing) {
             return null;
         } else {
-            return (<LoadMoreFooter isLoadAll={page==allPage?true:false}/>)
+            return (<LoadMoreFooter isLoadAll={page>=allPage?true:false}/>)
         }
-
     }
 
     buttonParams = {
@@ -198,96 +287,119 @@ export default class FinanceSence extends BaseComponet {
     }
 
     _renderRow = (movie) => {
-        if (movie.type == 1) {
-            this.buttonParams.content = '库容';
-            this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB4}];
-            this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB4}];
-        }
-        else if (movie.type == 2) {
-            this.buttonParams.content = '单车';
-            this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB0}];
-            this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB0}];
-        } else if (movie.type == 3) {
-            this.buttonParams.content = '信贷';
-            this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB1}];
-            this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB1}];
-        } else if (movie.type == 4) {
-            this.buttonParams.content = '库融';
-            this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB4}];
-            this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB4}];
+        let nextPage = {};
+        if (movie == '1') {
+            return (<View/>);
         } else {
-            if (movie.product_type_change_status == 0) {
-                this.buttonParams.content = '采购';
-                this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB1}];
-                this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB1}];
-            } else if (movie.product_type_change_status == 1) {
-                this.buttonParams.content = '单车采购';
-                this.buttonParams.parentStyle = [cellSheet.parentStyle, {
-                    borderColor: fontAndColor.COLORB1,
-                    width: Pixel.getPixel(58)
-                }];
-                this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB1}];
-            } else {
+            if (movie.type == 1) {
+                nextPage = KurongDetaileScene;
+                this.buttonParams.content = '库融';
+                this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB4}];
+                this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB4}];
+            }
+            else if (movie.type == 2) {
+                nextPage = SingDetaileSence;
                 this.buttonParams.content = '单车';
                 this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB0}];
                 this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB0}];
+            } else if (movie.type == 3) {
+                nextPage = KurongDetaileScene;
+                this.buttonParams.content = '信贷';
+                this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB1}];
+                this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB1}];
+            } else if (movie.type == 4) {
+                nextPage = KurongDetaileScene;
+                this.buttonParams.content = '库融';
+                this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB4}];
+                this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB4}];
+            } else {
+                if (movie.product_type_change_status == 0) {
+                    nextPage = CGDDetailSence;
+                    this.buttonParams.content = '采购';
+                    this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB1}];
+                    this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB1}];
+                } else if (movie.product_type_change_status == 1) {
+                    nextPage = SingDetaileSence;
+                    this.buttonParams.content = '单车采购';
+                    this.buttonParams.parentStyle = [cellSheet.parentStyle, {
+                        borderColor: fontAndColor.COLORB1,
+                        width: Pixel.getPixel(58)
+                    }];
+                    this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB1}];
+                } else {
+                    nextPage = SingDetaileSence;
+                    this.buttonParams.content = '单车';
+                    this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB0}];
+                    this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB0}];
+                }
             }
-        }
 
-        if (movie.status == 1) {
-            this.typeButtonParams.childStyle = [cellSheet.typeChildStyle, {color: fontAndColor.COLORB3}];
-        } else if (movie.status == 7) {
-            this.typeButtonParams.childStyle = [cellSheet.typeChildStyle, {color: fontAndColor.COLORB2}];
-        } else if (movie.status == 6 || movie.status == 0 || movie.status == 5) {
-            this.typeButtonParams.childStyle = [cellSheet.typeChildStyle, {color: fontAndColor.COLORA1}];
-        } else {
-            this.typeButtonParams.childStyle = [cellSheet.typeChildStyle, {color: fontAndColor.COLORB0}];
-        }
-        this.typeButtonParams.content = movie.status_str;
-        return (
-            <TouchableOpacity activeOpacity={0.8} onPress={() => {
-                this.navigatorParams.name = 'SingDetaileSence';
-                this.navigatorParams.component = SingDetaileSence;
-                this.props.callBack(this.navigatorParams);
+            if (movie.status == 1) {
+                this.typeButtonParams.childStyle = [cellSheet.typeChildStyle, {color: fontAndColor.COLORB3}];
+            } else if (movie.status == 7) {
+                this.typeButtonParams.childStyle = [cellSheet.typeChildStyle, {color: fontAndColor.COLORB2}];
+            } else if (movie.status == 6 || movie.status == 0 || movie.status == 5) {
+                this.typeButtonParams.childStyle = [cellSheet.typeChildStyle, {color: fontAndColor.COLORA1}];
+            } else {
+                this.typeButtonParams.childStyle = [cellSheet.typeChildStyle, {color: fontAndColor.COLORB0}];
+            }
+            this.typeButtonParams.content = movie.status_str;
+            return (
+                <TouchableOpacity activeOpacity={0.8} onPress={() => {
+                    if(nextPage===CGDDetailSence){
+                        this.refs.cgdModal.setModelVisible(true);
+                    }else{
+                        this.navigatorParams.name = 'DetaileSence';
+                        this.navigatorParams.component = nextPage;
+                        this.navigatorParams.params={
+                        loanNumber:movie.loan_code,
+                        backRefresh:()=>{
+                            this.allRefresh()
+                        }
+                    }
+                        this.props.callBack(this.navigatorParams);
+                    }
             }} style={[cellSheet.row, cellSheet.padding]}>
-                <View style={cellSheet.rowViewStyle}>
-                    <View style={[{
+                    <View style={cellSheet.rowViewStyle}>
+                        <View style={[{
                         height: Pixel.getPixel(40),
                         justifyContent: 'flex-start', flex: 3, flexDirection: 'row',
                         alignItems: 'center'
                     }]}>
-                        <MyButton {...this.buttonParams}/>
-                        <Text style={cellSheet.rowTopTextStyle}>源之宝汽车经销公司</Text>
-                    </View>
-                    <View style={[{
+                            <MyButton {...this.buttonParams}/>
+                            <Text numberOfLines={1} style={cellSheet.rowTopTextStyle}>{this.state.customerName}</Text>
+                        </View>
+                        <View style={[{
                         height: Pixel.getPixel(40),
                         flex: 2,
                         justifyContent: 'center',
                         alignItems: 'flex-end'
                     }]}>
-                        <Text style={cellSheet.rowTopGrayTextStyle}>{movie.loan_code}</Text>
+                            <Text style={cellSheet.rowTopGrayTextStyle}>{movie.loan_code}</Text>
+                        </View>
                     </View>
-                </View>
-                <View style={{height: 0.5, backgroundColor: fontAndColor.COLORA4}}></View>
-                <View style={cellSheet.rowBottomViewStyle}>
-                    <View style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-start'}]}>
-                        <Text style={cellSheet.rowBottomLittleStyle}>借款金额</Text>
-                        <Text
-                            style={[cellSheet.rowBottomBigStyle, {color: fontAndColor.COLORB2}]}>{movie.loan_mny}</Text>
+                    <View style={{height: 0.5, backgroundColor: fontAndColor.COLORA4}}></View>
+                    <View style={cellSheet.rowBottomViewStyle}>
+                        <View style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-start'}]}>
+                            <Text style={cellSheet.rowBottomLittleStyle}>借款金额</Text>
+                            <Text
+                                style={[cellSheet.rowBottomBigStyle, {color: fontAndColor.COLORB2}]}>{movie.loan_mny}</Text>
+                        </View>
+                        <View style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-start'}]}>
+                            <Text style={cellSheet.rowBottomLittleStyle}>借款期限</Text>
+                            <Text
+                                style={[cellSheet.rowBottomBigStyle, {color: fontAndColor.COLORA0}]}>{movie.loan_life}</Text>
+                        </View>
+                        <View
+                            style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-end', justifyContent: 'center'}]}>
+                            <MyButton {...this.typeButtonParams}/>
+                        </View>
                     </View>
-                    <View style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-start'}]}>
-                        <Text style={cellSheet.rowBottomLittleStyle}>借款期限</Text>
-                        <Text
-                            style={[cellSheet.rowBottomBigStyle, {color: fontAndColor.COLORA0}]}>{movie.loan_life}</Text>
-                    </View>
-                    <View style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-end', justifyContent: 'center'}]}>
-                        <MyButton {...this.typeButtonParams}/>
-                    </View>
-                </View>
-            </TouchableOpacity>
+                </TouchableOpacity>
 
 
-        )
+            )
+        }
     }
 
     _renderSeparator(sectionId, rowId) {
@@ -301,7 +413,7 @@ export default class FinanceSence extends BaseComponet {
 
     _renderPlaceholderView = () => {
         return (
-            <View style={{width: width, height: height,backgroundColor:fontAndColor.COLORA3,alignItems: 'center'}}>
+            <View style={{flex:1,backgroundColor:fontAndColor.COLORA3,alignItems: 'center'}}>
                 {this.loadView()}
             </View>
         );
@@ -322,12 +434,21 @@ export default class FinanceSence extends BaseComponet {
                 inventory_financing_status: mnyData.inventory_financing_status,
                 purchase_archives_after_status: mnyData.purchase_archives_after_status,
                 purchase_archives_first_status: mnyData.purchase_archives_first_status,
-                purchase_status: mnyData.purchase_status
-            };
+                purchase_status: mnyData.purchase_status,
+                customerName: this.state.customerName,
+                backRefresh: () => {
+                    this.allRefresh()
+                }
+            }
+            ;
             this.props.callBack(this.navigatorParams);
         } else {
             this.navigatorParams.name = "RepaymentScene";
             this.navigatorParams.component = RepaymentScene;
+            this.navigatorParams.params = {
+                customerName: this.state.customerName,
+
+            };
             this.props.callBack(this.navigatorParams);
         }
     }
@@ -353,27 +474,63 @@ export default class FinanceSence extends BaseComponet {
 
         return (
             <View>
-                <View style={[cellSheet.titleStyle, cellSheet.titleViewStyle]}>
-                    <Image style={[cellSheet.titleStyle, cellSheet.titleImageStyle]}
-                           source={require('../../images/financeImages/dinancebg.png')}/>
-                    <Text style={cellSheet.titleOneTextStyle}>可用额度(万)</Text>
-                    <Text style={cellSheet.titleTwoTextStyle}>{this.state.allData.keyongedu}</Text>
-                    <Text style={cellSheet.titleThreeTextStyle}>贷款余额(万)</Text>
-                    <Text style={cellSheet.titleFourTextStyle}>{this.state.allData.daikuanyue}</Text>
-                    <View style={cellSheet.titleViewBottomStyle}>
-                        <View style={cellSheet.titleViewBottomBGStyle}></View>
-                        <View style={[cellSheet.titleViewBottomViewStyle, {paddingRight: Pixel.getPixel(40)}]}>
-                            <Text style={cellSheet.titleViewTextStyle}>保证金额度:</Text>
-                            <Text
-                                style={[cellSheet.titleViewTextStyle, {fontWeight: 'bold'}]}>{this.state.allData.baozhengjinedu}万</Text>
+                <Image style={[cellSheet.titleStyle]}
+                       source={require('../../images/financeImages/dinancebg.png')}>
+                    <View style={{width:width,height:Pixel.getTitlePixel(105),flexDirection:'row'}}>
+                        <View style={{flex:1}}></View>
+                        <View style={{flex:3,alignItems: 'center'}}>
+                            <Text numberOfLines={1}
+                                  style={{fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34),
+                                color:'#fff',marginTop:Pixel.getTitlePixel(25),backgroundColor: '#00000000'}}>
+                                金融 ({this.state.customerName})</Text>
                         </View>
-                        <View style={[cellSheet.titleViewBottomViewStyle, {paddingLeft: Pixel.getPixel(40)}]}>
-                            <Text style={[cellSheet.titleViewTextStyle]}>保证金余额:</Text>
-                            <Text
-                                style={[cellSheet.titleViewTextStyle, {fontWeight: 'bold'}]}>{this.state.allData.baozhengjinyue}万</Text>
+                        <View style={{flex:1}}>
+                            {loanList.length > 1 ? <TouchableOpacity onPress={()=>{
+                            this.props.callBack({name:'AginSelectCompanyScene',
+                            component:AginSelectCompanyScene,params:{loanList:loanList,callBack:(companyname)=>{this.setState({
+                            customerName:companyname
+                                });
+                            this.allRefresh();
+                            }}})}
+                            } activeOpacity={0.8} style={{width:Pixel.getPixel(64),height:Pixel.getPixel(22),borderColor:'#fff',borderWidth:1,
+                              borderRadius:3,justifyContent:'center',alignItems:'center',marginTop:Pixel.getTitlePixel(26)}}>
+                                    <Text
+                                        style={{fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),color: '#fff',backgroundColor: '#00000000'}}>切换公司</Text>
+                                </TouchableOpacity> : <View/>}
                         </View>
                     </View>
-                </View>
+                    <View
+                        style={{width:width,height:Pixel.getBottomPixel(85),flexDirection:'row'}}>
+                        <View style={{flex:1,alignItems: 'center'}}>
+                            <Text
+                                style={{fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),color: '#fff',backgroundColor: '#00000000'}}>可用额度(万)</Text>
+                            <Text
+                                style={{fontSize: Pixel.getFontPixel(32),color: '#fff',marginTop:Pixel.getPixel(7),fontWeight: 'bold',backgroundColor: '#00000000'}}>{this.state.allData.keyongedu}</Text>
+                        </View>
+                        <View style={{flex:1,alignItems: 'center'}}>
+                            <Text
+                                style={{fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),color: '#fff',backgroundColor: '#00000000'}}>贷款余额(万)</Text>
+                            <Text
+                                style={{fontSize: Pixel.getFontPixel(32),color: '#fff',marginTop:Pixel.getPixel(7),fontWeight: 'bold',backgroundColor: '#00000000'}}>{this.state.allData.daikuanyue}</Text>
+                        </View>
+                    </View>
+                    <View
+                        style={{width:width,height:Pixel.getPixel(40),backgroundColor: 'rgba(56,199,232,0.35)',
+                        paddingRight:Pixel.getPixel(15),paddingLeft:Pixel.getPixel(15),flexDirection:'row'}}>
+                        <View style={{flex:1,flexDirection:'row',alignItems: 'center',justifyContent:'flex-start'}}>
+                            <Text
+                                style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),color: '#fff',backgroundColor: '#00000000'}}>保证金额度:</Text>
+                            <Text
+                                style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),color: '#fff',backgroundColor: '#00000000',fontWeight: 'bold'}}>{this.state.allData.baozhengjinedu}万</Text>
+                        </View>
+                        <View style={{flex:1,flexDirection:'row',alignItems: 'center',justifyContent:'flex-end'}}>
+                            <Text
+                                style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),color: '#fff',backgroundColor: '#00000000'}}>保证金余额:</Text>
+                            <Text
+                                style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),color: '#fff',backgroundColor: '#00000000',fontWeight: 'bold'}}>{this.state.allData.baozhengjinyue}万</Text>
+                        </View>
+                    </View>
+                </Image>
                 <View style={cellSheet.header}>
                     {items}
                 </View>

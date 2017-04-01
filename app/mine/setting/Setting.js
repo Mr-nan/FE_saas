@@ -1,25 +1,67 @@
 import React, {Component} from "react";
-import {AppRegistry, View, Text, StyleSheet, Image, Dimensions, PixelRatio, TouchableOpacity} from "react-native";
-import BaseComponent from '../../component/BaseComponent';
-import PixelUtil from '../../utils/PixelUtil';
-import * as FontAndColor from '../../constant/fontAndColor';
-import NavigationBar from '../../component/NavigationBar';
-import MyButton from '../../component/MyButton';
-import AccountSecurity from './AccountSecurity';
-import AbountPlatform from './AbountPlatform';
+import {
+    AppRegistry,
+    View,
+    Text,
+    StyleSheet,
+    Image,
+    Dimensions,
+    PixelRatio,
+    TouchableOpacity,
+    InteractionManager,
+    TouchableWithoutFeedback
+} from "react-native";
+import BaseComponent from "../../component/BaseComponent";
+import PixelUtil from "../../utils/PixelUtil";
+import * as FontAndColor from "../../constant/fontAndColor";
+import NavigationBar from "../../component/NavigationBar";
+import MyButton from "../../component/MyButton";
+import AccountSecurity from "./AccountSecurity";
+import AbountPlatform from "./AbountPlatform";
+import OBDDevice from "../../login/OBDDevice";
+import StorageUtil from "../../utils/StorageUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
+import LoginAndRegister from "../../login/LoginAndRegister";
+import AmountConfirm from '../../login/AmountConfirm';
 
 var Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;
 var onePT = 1 / PixelRatio.get(); //一个像素
-import StorageUtil from "../../utils/StorageUtil";
-import * as StorageKeyNames from "../../constant/storageKeyNames";
-import LoginAndRegister from '../../login/LoginAndRegister';
+
 export default class Setting extends BaseComponent {
+    constructor(props) {
+        super(props);
+        this.state = {
+            renderPlaceholderOnly: true,
+        }
+    }
+
     initFinish = () => {
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+            // this.Verifycode();
+        });
     }
 
     render() {
+        if (this.state.renderPlaceholderOnly) {
+            return ( <TouchableWithoutFeedback onPress={() => {
+                this.setState({
+                    show: false,
+                });
+            }}>
+                <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
+                    <NavigationBar
+                        leftImageShow={false}
+                        leftTextShow={true}
+                        leftText={""}
+                        centerText={"设置"}
+                        rightText={""}
+                    />
+                </View>
+            </TouchableWithoutFeedback>);
+        }
         return (
             <View style={styles.container}>
                 <NavigationBar
@@ -64,6 +106,14 @@ export default class Setting extends BaseComponent {
                 </TouchableOpacity>
 
                 <View style={{height: Pixel.getPixel(1), backgroundColor: FontAndColor.COLORA4}}/>
+                {/*<MyButton buttonType={MyButton.TEXTBUTTON} content="OBD设备" parentStyle={styles.buttonStyle}*/}
+                          {/*childStyle={styles.buttonTextStyle} mOnPress={() => {*/}
+                    {/*this.toNextPage({*/}
+                        {/*name: 'OBDDevice AmountConfirm',*/}
+                        {/*component: OBDDevice,*/}
+                        {/*params: {},*/}
+                    {/*})*/}
+                {/*}}/>*/}
                 <View style={{flex: 1}}/>
 
                 <MyButton buttonType={MyButton.TEXTBUTTON}

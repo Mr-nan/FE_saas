@@ -1,5 +1,15 @@
-import React, {Component,PureComponent} from "react";
-import {AppRegistry, View, Text, StyleSheet, Image, Dimensions} from "react-native";
+import React, {Component, PureComponent} from "react";
+import {
+    AppRegistry,
+    View,
+    Text,
+    StyleSheet,
+    Image,
+    Dimensions,
+    InteractionManager,
+    TouchableWithoutFeedback,
+    TouchableOpacity
+} from "react-native";
 import SetPwdGesture from "../gesture/SetPwdGesture";
 import BaseComponent from "../component/BaseComponent";
 import PixelUtil from "../utils/PixelUtil";
@@ -7,66 +17,107 @@ import * as FontAndColor from "../constant/fontAndColor";
 import NavigationBar from '../component/NavigationBar';
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
-
+import MainPage from '../main/MainPage';
 var Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;
 
-var Password = '';
 export default class SetLoginPwdGesture extends BaseComponent {
     constructor(props) {
         super(props);
         //初始化方法
         this.state = {
             message: '绘制解锁图案',
-            status: 'normal'
+            status: 'normal',
+            renderPlaceholderOnly: true,
         }
+        this.savePwd = '';
+        this.Passwords = '';
+        this.setCount = 4;
     }
 
     initFinish = () => {
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+            // this.Verifycode();
+        });
     }
 
     render() {
+        if (this.state.renderPlaceholderOnly) {
+            return ( <TouchableWithoutFeedback onPress={() => {
+                this.setState({
+                    show: false,
+                });
+            }}>
+                <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
+                    <NavigationBar
+                        leftImageShow={false}
+                        leftTextShow={true}
+                        leftText={""}
+                        centerText={"设置手势密码"}
+                        rightText={""}
+                    />
+                </View>
+            </TouchableWithoutFeedback>);
+        }
         return (
             <SetPwdGesture
                 ref='pg'
                 NavigationBar={
                     <View style={styles.topStyle}>
-                        <NavigationBar
-                            leftImageShow={true}
-                            leftTextShow={false}
-                            centerText={"设置手势密码"}
-                            rightText={""}
-                            leftImageCallBack={this.backPage}/>
+                        {
+                            this.props.from == 'login' ?
+                                <NavigationBar
+                                    leftImageShow={false}
+                                    leftTextShow={true}
+                                    centerText={"设置手势密码"}
+                                    rightText={""}
+                                    leftText={''}
+                                    leftImageCallBack={this.backPage}/>
+                                :
+                                <NavigationBar
+                                    leftImageShow={true}
+                                    leftTextShow={false}
+                                    centerText={"设置手势密码"}
+                                    rightText={""}
+                                    leftImageCallBack={this.backPage}/>
+                        }
                         <View style={styles.padResultsStyle}>
                             <View style={{flexDirection: 'row'}}>
-                                {Password.indexOf("1") > -1 ? <View style={styles.cycleChoseStyle}/> :
+                                {this.savePwd.indexOf("1") > -1 ? <View style={styles.cycleChoseStyle}/> :
                                     <View style={styles.cycleStyle}/>}
-                                {Password.indexOf("2") > -1 ? <View style={styles.cycleChoseStyle}/> :
+                                {this.savePwd.indexOf("2") > -1 ? <View style={styles.cycleChoseStyle}/> :
                                     <View style={styles.cycleStyle}/>}
-                                {Password.indexOf("3") > -1 ? <View style={styles.cycleChoseStyle}/> :
-                                    <View style={styles.cycleStyle}/>}
-                            </View>
-                            <View style={{flexDirection: 'row'}}>
-                                {Password.indexOf("4") > -1 ? <View style={styles.cycleChoseStyle}/> :
-                                    <View style={styles.cycleStyle}/>}
-                                {Password.indexOf("5") > -1 ? <View style={styles.cycleChoseStyle}/> :
-                                    <View style={styles.cycleStyle}/>}
-                                {Password.indexOf("6") > -1 ? <View style={styles.cycleChoseStyle}/> :
+                                {this.savePwd.indexOf("3") > -1 ? <View style={styles.cycleChoseStyle}/> :
                                     <View style={styles.cycleStyle}/>}
                             </View>
                             <View style={{flexDirection: 'row'}}>
-                                {Password.indexOf("7") > -1 ? <View style={styles.cycleChoseStyle}/> :
+                                {this.savePwd.indexOf("4") > -1 ? <View style={styles.cycleChoseStyle}/> :
                                     <View style={styles.cycleStyle}/>}
-                                {Password.indexOf("8") > -1 ? <View style={styles.cycleChoseStyle}/> :
+                                {this.savePwd.indexOf("5") > -1 ? <View style={styles.cycleChoseStyle}/> :
                                     <View style={styles.cycleStyle}/>}
-                                {Password.indexOf("9") > -1 ? <View style={styles.cycleChoseStyle}/> :
+                                {this.savePwd.indexOf("6") > -1 ? <View style={styles.cycleChoseStyle}/> :
+                                    <View style={styles.cycleStyle}/>}
+                            </View>
+                            <View style={{flexDirection: 'row'}}>
+                                {this.savePwd.indexOf("7") > -1 ? <View style={styles.cycleChoseStyle}/> :
+                                    <View style={styles.cycleStyle}/>}
+                                {this.savePwd.indexOf("8") > -1 ? <View style={styles.cycleChoseStyle}/> :
+                                    <View style={styles.cycleStyle}/>}
+                                {this.savePwd.indexOf("9") > -1 ? <View style={styles.cycleChoseStyle}/> :
                                     <View style={styles.cycleStyle}/>}
                             </View>
                         </View>
                         <Text style={this.state.status !== "wrong" ? styles.topMessageStyle : styles.topMessageWStyle}>
                             {this.state.message}
                         </Text>
+
+                        <Text style={{
+                            color: FontAndColor.COLORA1,
+                            fontSize: Pixel.getFontPixel(14),
+                            height: Pixel.getPixel(20),
+                        }}>   {this.savePwd == '' ? " 请至少连接4个圆，完成手势密码" : ""}</Text>
                     </View>
                 }
                 status={this.state.status}
@@ -74,18 +125,38 @@ export default class SetLoginPwdGesture extends BaseComponent {
                 style={styles.gestureStyle}
                 interval={500}
                 onStart={() => this.onStart()}
-                onEnd={(password) => this.onEnd(password)}/>
+                onUpdatePwd={(password) => {
+                    if (this.Passwords == "" && this.savePwd != password) {
+                        this.savePwd = password;
+                        this.setState({
+                            status: 'normal',
+                        });
+                    }
+                }}
+                onEnd={(password) => this.onEnd(password)}
+                BottomView={
+                    <TouchableOpacity style={{marginTop: Height / 2 - Pixel.getPixel(30)}} onPress={() => {
+                        this.savePwd = '';
+                        this.Passwords = '';
+                        this.setCount = 4;
+                        this.setState({
+                            status: 'normal',
+                            message: '重新绘制解锁图案',
+                        });
+                    }}>
+                        <Text style={styles.bottomSytle }>重置手势密码</Text>
+                    </TouchableOpacity>}/>
         );
     }
 
     onEnd(pwd) {
-        if (Password === '') {
+        if (this.Passwords == '') {
             // The first password
             if (pwd.length > 3) {
-                Password = pwd;
+                this.Passwords = pwd;
                 this.setState({
                     status: 'normal',
-                    message: '重新绘制解锁图案',
+                    message: '再次绘制解锁图案',
                 });
             } else {
                 this.setState({
@@ -95,25 +166,65 @@ export default class SetLoginPwdGesture extends BaseComponent {
             }
         } else {
             // The second password
-            if (pwd === Password) {
+            if (pwd == this.Passwords) {
                 this.setState({
                     status: 'right',
                     message: '密码设置成功',
                 });
-                StorageUtil.mSetItem(StorageKeyNames.GESTURE, Password);
-                Password = '';
-                this.backPage();
+
+                StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
+                    if (data.code == 1) {
+                        if (data.result != null) {
+                            StorageUtil.mSetItem(data.result + "", this.Passwords);
+                            this.Passwords = '';
+                        }
+                    }
+                })
+                if (this.props.from == 'login') {
+                    this.loginPage(this.loginSuccess)
+                    StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
+                    StorageUtil.mSetItem(StorageKeyNames.NEED_GESTURE, 'false');
+                } else {
+                    this.props.showToast("设置成功");
+                    this.backPage();
+                }
             } else {
-                this.setState({
-                    status: 'wrong',
-                    message: '验证失败请重新输入'
-                });
+                if (this.setCount > 0) {
+                    this.setState({
+                        status: 'wrong',
+                        message: '验证失败,还有' + this.setCount + '次机会'
+                    });
+                    this.setCount--;
+                } else {
+                    this.savePwd = '';
+                    this.Passwords = '';
+                    this.setCount = 4;
+                    this.setState({
+                        status: 'wrong',
+                        message: '重新绘制解锁图案',
+                    });
+                }
             }
         }
     }
 
+    loginSuccess = {
+        name: 'MainPage',
+        component: MainPage,
+        params: {}
+    }
+
+    loginPage = (mProps) => {
+        const navigator = this.props.navigator;
+        if (navigator) {
+            navigator.immediatelyResetRouteStack([{
+                ...mProps
+            }])
+        }
+    }
+
     onStart() {
-        if (Password === '') {
+        if (this.Passwords == '') {
             this.setState({
                 status: 'normal',
                 message: '绘制解锁图案',
@@ -121,7 +232,7 @@ export default class SetLoginPwdGesture extends BaseComponent {
         } else {
             this.setState({
                 status: 'normal',
-                message: '重新绘制解锁图案',
+                message: '再次绘制解锁图案',
             });
         }
     }
@@ -173,5 +284,9 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         marginBottom: 35,
         marginTop: 35
-    }
+    },
+    bottomSytle: {
+        fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT),
+        color: FontAndColor.COLORA2,
+    },
 });

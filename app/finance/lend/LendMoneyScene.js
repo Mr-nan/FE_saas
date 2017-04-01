@@ -19,9 +19,11 @@ import AllNavigationView from '../../component/AllNavigationView'
 import BaseComponent from '../../component/BaseComponent';
 import SingelCarScene from './SingelCarScene';
 import KurongSence from './KurongSence';
-import CGDLendScenes from './CGDLendScenes';
-
-
+import PixelUtil from '../../utils/PixelUtil';
+const Pixel = new PixelUtil();
+import {confimCarcell} from './ConfimCGDPriceSence'
+import {LendSuccessAlert} from './component/ModelComponent'
+import CGDSelectPatternScene from './CGDSelectPatternScene';
 class TitleImage extends PureComponent {
     // 构造
     render() {
@@ -52,9 +54,7 @@ class PageItem extends PureComponent {
                                         onPress={this.onPress}/>
                         </Image>
                     </TouchableOpacity>
-
                 </View>
-
             </View>
         )
     }
@@ -89,23 +89,31 @@ export  default class LendMoneySence extends BaseComponent {
     navigatorParams = {
         name: 'SingelCarScene',
         component: SingelCarScene,
-        params: {}
+        params: {customerName:this.props.customerName,backRefresh:()=>{
+            this.props.backRefresh();
+        }}
     }
 
     onPress = (key) => {
         if (key === 'single') {
             this.navigatorParams.name = "SingelCarScene";
             this.navigatorParams.component = SingelCarScene;
+            this.toNextPage(this.navigatorParams);
         }
         else if (key === 'kurong') {
             this.navigatorParams.name = "KurongSence";
             this.navigatorParams.component = KurongSence;
+            this.toNextPage(this.navigatorParams);
         }
         else {
-            this.navigatorParams.name = "CGDLendScenes";
-            this.navigatorParams.component = CGDLendScenes;
+
+            // this.navigatorParams.name = "CGDSelectPatternScene";
+            // this.navigatorParams.component = CGDSelectPatternScene;
+            // this.toNextPage(this.navigatorParams);
+
+            this.cgdMessage.setModelVisible(true)
         }
-        this.toNextPage(this.navigatorParams);
+
     }
 
     render() {
@@ -128,21 +136,23 @@ export  default class LendMoneySence extends BaseComponent {
 
         return (
 
-            <View style={{flex:1}}>
-            <ScrollView showsVerticalScrollIndicator={false}
-                        style={{marginTop: 44, backgroundColor: PAGECOLOR.COLORA3, paddingTop: adapeSize(15)} }>
-                {viewBlob}
+            <View style={{flex: 1}}>
 
-            </ScrollView>
+                <ScrollView showsVerticalScrollIndicator={false}
+                            style={{marginTop:Pixel.getTitlePixel(64) , backgroundColor: PAGECOLOR.COLORA3, paddingTop: adapeSize(15)} }>
+                    {viewBlob}
 
-            <AllNavigationView title="申请借款" backIconClick={()=>{
+                </ScrollView>
+                <LendSuccessAlert title="提示" subtitle="采购融资功能正在维护中，请您移步BMS系统申请采购融资" ref={(message)=>{this.cgdMessage=message}}confimClick={()=>{}}/>
 
-                this.backPage();
-            }}/>
+                <AllNavigationView title="借款" backIconClick={()=> {
+
+                    this.backPage();
+                }}/>
+
             </View>
         )
     }
-
 
 }
 

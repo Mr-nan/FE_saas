@@ -12,65 +12,68 @@ import  {
 
 import * as fontAndClolr from '../../constant/fontAndColor';
 import  PixelUtil from '../../utils/PixelUtil'
+import NavigationView from '../../component/AllNavigationView';
+import BaseComponent from '../../component/BaseComponent';
 var Pixel = new PixelUtil();
-const Car = [
-    {
-        "cars": [
-            {
-                "title":"姓名",
-                "name": "wangyang"
-            },
-            {
-                "title":"性别",
-                "name": "nv"
-            },
-
-        ],
-        "title": "section0"
-    },
-    {
-        "cars": [
-            {
-                "title":"所属公司",
-                "name": "北京爱法克有限责任公司"
-            },
-            {
-                "title":"角色",
-                "name": "管理员"
-            },
-        ],
-        "title": "section1"
-    },
-    {
-        "cars": [
-            {
-                "title":"账号",
-                "name": "12344566675"
-            },
-            {
-                "title":"密码",
-                "name": "888888888"
-            },
-            {
-                "title":"确认密码",
-                "name": "********"
-            },
-
-        ],
-        "title": "section2"
-    },
-]
-
+// {"id":1412,"username":"陈海","mobile":"18510867932","sex":"男","company":"台州市路桥淇文二手车经纪有限公司","role":"财务"}
 // let Car = require('./Car.json');
 /*
  * 获取屏幕的宽和高
  **/
 const {width, height} = Dimensions.get('window');
 
-export default class CountInfo extends Component {
+export default class SeeEmployeeInfoScene extends BaseComponent {
     // 构造
     constructor(props) {
         super(props);
+        const {username, mobile, sex, company,role} = this.props;
+        var Car = [
+            {
+                "cars": [
+                    {
+                        "title": "姓名",
+                        "name": username
+                    },
+                    {
+                        "title": "性别",
+                        "name": sex
+                    },
+
+                ],
+                "title": "section0"
+            },
+            {
+                "cars": [
+                    {
+                        "title": "所属公司",
+                        "name": company
+                    },
+                    {
+                        "title": "角色",
+                        "name": role
+                    },
+                ],
+                "title": "section1"
+            },
+            {
+                "cars": [
+                    {
+                        "title": "账号",
+                        "name": mobile
+                    },
+                    {
+                        "title": "密码",
+                        "name": "********"
+                    },
+                    {
+                        "title": "确认密码",
+                        "name": "********"
+                    },
+
+                ],
+                "title": "section2"
+            },
+        ]
         // 初始状态
         //    拿到所有的json数据
         var jsonData = Car;
@@ -126,9 +129,12 @@ export default class CountInfo extends Component {
     render() {
         return (
             <View style={styles.container}>
-
+                <NavigationView
+                    title='员工信息'
+                    backIconClick={this.backPage}
+                />
                 <ListView
-                    contentContainerStyle={styles.listStyle}
+                    style={styles.listStyle}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSectionHeader={this._renderSectionHeader}
@@ -139,9 +145,9 @@ export default class CountInfo extends Component {
     }
 
     // 每一行中的数据
-    _renderRow = (rowData)=> {
+    _renderRow = (rowData) => {
         return (
-            <View style={styles.rowView} >
+            <View style={styles.rowView}>
 
                 <Text style={styles.rowLeftTitle}>{rowData.title}</Text>
                 <Text style={styles.rowRightTitle}>{rowData.name }</Text>
@@ -163,10 +169,10 @@ const styles = StyleSheet.create({
 
         flex: 1,
         marginTop: Pixel.getPixel(0),   //设置listView 顶在最上面
-        backgroundColor:fontAndClolr.COLORA3,
+        backgroundColor: fontAndClolr.COLORA3,
     },
     listStyle: {
-        marginTop:Pixel.getPixel(64)
+        marginTop: Pixel.getTitlePixel(64)
     },
     sectionView: {
         height: Pixel.getPixel(10),
@@ -176,25 +182,24 @@ const styles = StyleSheet.create({
         height: 44,
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor:'white',
-        borderBottomColor:fontAndClolr.COLORA4,
-        borderBottomWidth:1,
-        flexDirection:'row'
+        backgroundColor: 'white',
+        borderBottomColor: fontAndClolr.COLORA4,
+        borderBottomWidth: 1,
+        flexDirection: 'row'
     },
     rowLeftTitle: {
-        marginLeft:Pixel.getPixel(15),
-        flex:1,
-        fontSize:Pixel.getFontPixel(fontAndClolr.LITTLEFONT28) ,
-        color:fontAndClolr.COLORA0,
+        marginLeft: Pixel.getPixel(15),
+        flex: 1,
+        fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT28),
+        color: fontAndClolr.COLORA0,
 
     },
     rowRightTitle: {
-        marginRight:Pixel.getPixel(15),
-        color:fontAndClolr.COLORA1,
-        fontSize:Pixel.getFontPixel(fontAndClolr.LITTLEFONT28) ,
+        marginRight: Pixel.getPixel(15),
+        color: fontAndClolr.COLORA1,
+        fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT28),
 
     },
-
 
 
 });

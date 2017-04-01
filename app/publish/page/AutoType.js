@@ -50,9 +50,17 @@ export default class AutoType extends Component {
         };
     }
 
+    isEmpty = (str)=>{
+        if(typeof(str) != 'undefined' && str !== ''){
+            return false;
+        }else {
+            return true;
+        }
+    };
+
     componentWillMount() {
         let v_type = this.props.carData.v_type;
-        if(v_type !== ''){
+        if(this.isEmpty(v_type) === false){
             this.viewData.map((data)=>{
                 data.selected = (data.index == v_type);
             });
@@ -91,7 +99,8 @@ export default class AutoType extends Component {
         SQLite.changeData(
             'UPDATE publishCar SET v_type = ? WHERE vin = ?',
             [ this.viewData[i].index, this.props.carData.vin]);
-        let newData = new Object(...this.props.carData);
+        let newData = new Object();
+        Object.assign(newData,this.props.carData);
         newData['v_type'] = this.viewData[i].index;
         this.props.refreshCar(newData);
 

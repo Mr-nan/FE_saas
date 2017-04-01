@@ -1,5 +1,15 @@
 import React, {Component} from "react";
-import {AppRegistry, View, Text, StyleSheet, Image, Dimensions, TouchableOpacity} from "react-native";
+import {
+    AppRegistry,
+    View,
+    Text,
+    StyleSheet,
+    Image,
+    Dimensions,
+    TouchableOpacity,
+    InteractionManager,
+    TouchableWithoutFeedback
+} from "react-native";
 import PwdGesture from "../gesture/PwdGesture";
 import BaseComponent from "../component/BaseComponent";
 import PixelUtil from "../utils/PixelUtil";
@@ -7,31 +17,80 @@ import * as FontAndColor from "../constant/fontAndColor";
 import NavigationBar from '../component/NavigationBar';
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
+import LoginScene from './LoginScene';
+import MainPage from '../main/MainPage';
 
-var Pixel = new PixelUtil();
+let Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;
 
-var Password = '';
+let Password = '';
 export default class GesturePassword extends BaseComponent {
     constructor(props) {
         super(props);
         //初始化方法
         this.state = {
+            renderPlaceholderOnly: true,
             message: '请绘制手势密码',
-            status: 'normal'
+            status: 'normal',
+            phone: '',
+            url: '',
         }
     }
 
     initFinish = () => {
-        StorageUtil.mGetItem(StorageKeyNames.GESTURE, (data) => {
-            if (data.code === 1) {
-                Password = data.result;
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+            // this.Verifycode();
+        });
+
+        StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
+            if (data.code == 1) {
+                if (data.result != null) {
+                    this.setState({
+                        phone: data.result,
+                    });
+                    StorageUtil.mGetItem(data.result + "", (data) => {
+                        if (data.code == 1) {
+                            if (data.result != null) {
+                                Password = data.result;
+                            } else {
+                                Password = "";
+                            }
+                        }
+                    })
+                }
+            }
+        })
+
+        StorageUtil.mGetItem(StorageKeyNames.HEAD_PORTRAIT_URL, (data) => {
+            if (data.code == 1) {
+                if (data.result != null) {
+                    this.setState({
+                        url: data.result,
+                    });
+                }
             }
         })
     }
 
     render() {
+        if (this.state.renderPlaceholderOnly) {
+            return ( <TouchableWithoutFeedback onPress={() => {
+                this.setState({
+                    show: false,
+                });
+            }}>
+                <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
+                    <NavigationBar
+                        leftImageShow={false}
+                        leftTextShow={true}
+                        leftText={""}
+                        centerText={"解锁手势密码"}
+                        rightText={""}/>
+                </View>
+            </TouchableWithoutFeedback>);
+        }
         return (
             <PwdGesture
                 ref='pg'
@@ -42,14 +101,15 @@ export default class GesturePassword extends BaseComponent {
                             leftTextShow={false}
                             centerText={"解锁手势密码"}
                             rightText={""}
-                            leftImage={require('./../../images/login/left_cancel.png')}
+                            leftImage={require('./../../images/login/left_cancle.png')}
                             leftImageCallBack={this.backPage}/>
 
-                        <Image style={styles.avatarStyle} source={require("./../../images/login/clear.png")}/>
+                        {this.state.url ? <Image style={styles.avatarStyle}
+                                                 source={{uri: this.state.url}}/> :
+                            <Image style={styles.avatarStyle}
+                                   source={require("./../../images/mainImage/zhanghuguanli.png")}/>}
 
-                        <Text style={ styles.topMessageStyle }>
-                            用户名：1234567890
-                        </Text>
+                        <Text style={ styles.topMessageStyle }>用户名：{this.state.phone}</Text>
 
                         <Text style={this.state.status !== "wrong" ? styles.topMessageStyle : styles.topMessageWStyle}>
                             {this.state.message}
@@ -59,21 +119,22 @@ export default class GesturePassword extends BaseComponent {
                 Bottom={
                     <View style={{marginTop: Height / 2 * 0.95, flexDirection: 'row'}}>
                         <TouchableOpacity onPress={() => {
-                            this.toNextPage({
-                                name: 'LoginFailSmsYes',
-                                component: null,
-                                params: {},
+                            StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
+                                if (data.code == 1) {
+                                    if (data.result != null) {
+                                        StorageUtil.mRemoveItem(data.result + "");
+                                    }
+                                }
                             })
+                            StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'false');
+                            this.loginPage({name: 'LoginScene', component: LoginScene});
                         }}>
                             <Text style={styles.bottomLeftSytle}>忘记手势密码？</Text>
                         </TouchableOpacity>
                         <View style={{flex: 1}}/>
                         <TouchableOpacity onPress={() => {
-                            this.toNextPage({
-                                name: 'LoginFailSmsYes',
-                                component: null,
-                                params: {},
-                            })
+                            StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'false');
+                            this.loginPage({name: 'LoginScene', component: LoginScene});
                         }}>
                             <Text style={styles.bottomRightSytle}>切换登录</Text>
                         </TouchableOpacity>
@@ -88,13 +149,28 @@ export default class GesturePassword extends BaseComponent {
         );
     }
 
-    onEnd(pwd) {
-        if (pwd === Password) {
+    loginPage = (mProps) => {
+        const navigator = this.props.navigator;
+        if (navigator) {
+            navigator.immediatelyResetRouteStack([{
+                ...mProps
+            }])
+        }
+    }
+
+    onEnd = (pwd) => {
+        if (pwd == Password) {
             this.setState({
                 status: 'right',
                 message: '验证成功',
             });
-
+            StorageUtil.mSetItem(StorageKeyNames.NEED_GESTURE, 'false');
+            if (this.props.from == 'RootScene') {
+                this.loginPage({name: 'MainPage', component: MainPage});
+            } else {
+                this.props.callBack();
+                this.backPage();
+            }
         } else {
             this.setState({
                 status: 'wrong',

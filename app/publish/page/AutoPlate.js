@@ -9,6 +9,7 @@ import {
     Dimensions,
     StyleSheet,
     TextInput,
+    Platform,
     TouchableOpacity,
     InteractionManager
 } from 'react-native';
@@ -23,16 +24,34 @@ import PlateModal from '../component/PlateModal';
 const background = require('../../../images/publish/background.png');
 const preBg = require('../../../images/publish/car-plate-pre.png');
 const proBg = require('../../../images/publish/car-plate.png');
+const IS_ANDROID = Platform.OS === 'android';
 
 export default class AutoPlate extends Component {
 
     constructor(props) {
         super(props);
+        this.initValue =['','','','','','',''];
+        this.vinNum = this.props.carData.vin;
+        let plate = this.props.carData.plate_number;
+        if(this.isEmpty(plate) === false){
+            for(let i=0;i<plate.length;i++){
+                this.initValue[i] = plate.charAt(i);
+            }
+        }
+        if(this.initValue[0] === '') this.initValue[0] = '京';
         this.state = {
-            city:'京',
+            city:this.initValue[0],
             renderPlaceholderOnly: true
         }
     }
+
+    isEmpty = (str)=>{
+        if(typeof(str) != 'undefined' && str !== ''){
+            return false;
+        }else {
+            return true;
+        }
+    };
 
     componentWillMount() {
 
@@ -56,6 +75,8 @@ export default class AutoPlate extends Component {
         this.setState({
             city:city
         });
+        this.initValue[0] = city;
+        this._insertPlate();
     };
 
     _renderPlaceholderView = ()=>{
@@ -75,6 +96,63 @@ export default class AutoPlate extends Component {
             </TouchableOpacity>
         );
     };
+
+    _onPlateChange= (text,type) =>{
+
+        this.initValue[type] = text;
+        this._insertPlate();
+        if(text.length !== 0){
+            switch (type){
+                case 1:
+                    this.firstInput.setNativeProps({
+                        text:text
+                    });
+                    this.secondInput.focus();
+                    break;
+                case 2:
+                    this.secondInput.setNativeProps({
+                        text:text
+                    });
+                    this.threeInput.focus();
+                    break;
+                case 3:
+                    this.threeInput.setNativeProps({
+                        text:text
+                    });
+                    this.fourInput.focus();
+                    break;
+                case 4:
+                    this.fourInput.setNativeProps({
+                        text:text
+                    });
+                    this.fiveInput.focus();
+                    break;
+                case 5:
+                    this.fiveInput.setNativeProps({
+                        text:text
+                    });
+                    this.sixInput.focus();
+                    break;
+                case 6:
+                    this.sixInput.setNativeProps({
+                        text:text
+                    });
+                    break;
+            }
+        }
+    };
+
+    _insertPlate(){
+        let plate='';
+        for(let i=0;i < this.initValue.length;i++){
+            plate += this.initValue[i];
+        }
+
+        this.props.sqlUtil.changeData(
+            'UPDATE publishCar SET plate_number = ? WHERE vin = ?',
+            [plate, this.vinNum]);
+    }
+
 
     render() {
         if (this.state.renderPlaceholderOnly) {
@@ -100,12 +178,24 @@ export default class AutoPlate extends Component {
                         </TouchableOpacity>
 
                         <Image style={styles.proContainer} source={proBg}>
-                            <TextInput style={styles.fontBold} underlineColorAndroid='transparent' defaultValue={'N'}/>
-                            <TextInput style={styles.fontBold} underlineColorAndroid='transparent' defaultValue={'S'}/>
-                            <TextInput style={styles.fontBold} underlineColorAndroid='transparent' defaultValue={'2'}/>
-                            <TextInput style={styles.fontBold} underlineColorAndroid='transparent' defaultValue={'5'}/>
-                            <TextInput style={styles.fontBold} underlineColorAndroid='transparent' defaultValue={'6'}/>
-                            <TextInput style={styles.fontBold} underlineColorAndroid='transparent' defaultValue={'9'}/>
+                            <TextInput ref={(input)=>{this.firstInput = input}}
+                                style={IS_ANDROID ? styles.fontAndroidBold: styles.fontIOSBold} underlineColorAndroid='transparent'
+                                       defaultValue={this.initValue[1]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,1)}/>
+                            <TextInput ref={(input)=>{this.secondInput = input}}
+                                       style={IS_ANDROID ? styles.fontAndroidBold: styles.fontIOSBold} underlineColorAndroid='transparent'
+                                       defaultValue={this.initValue[2]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,2)}/>
+                            <TextInput ref={(input)=>{this.threeInput = input}}
+                                       style={IS_ANDROID ? styles.fontAndroidBold: styles.fontIOSBold} underlineColorAndroid='transparent'
+                                       defaultValue={this.initValue[3]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,3)}/>
+                            <TextInput ref={(input)=>{this.fourInput = input}}
+                                       style={IS_ANDROID ? styles.fontAndroidBold: styles.fontIOSBold} underlineColorAndroid='transparent'
+                                       defaultValue={this.initValue[4]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,4)}/>
+                            <TextInput ref={(input)=>{this.fiveInput = input}}
+                                       style={IS_ANDROID ? styles.fontAndroidBold: styles.fontIOSBold} underlineColorAndroid='transparent'
+                                       defaultValue={this.initValue[5]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,5)}/>
+                            <TextInput ref={(input)=>{this.sixInput = input}}
+                                       style={IS_ANDROID ? styles.fontAndroidBold: styles.fontIOSBold} underlineColorAndroid='transparent'
+                                       defaultValue={this.initValue[6]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,6)}/>
                         </Image>
                     </View>
                 </Image>
@@ -118,7 +208,7 @@ export default class AutoPlate extends Component {
 const styles = StyleSheet.create({
     container: {
         width:width,
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
     },
     imgContainer: {
         width:width,
@@ -154,7 +244,15 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         textAlign:'center'
     },
-    fontBold: {
+    fontAndroidBold: {
+        height: Pixel.getPixel(44),
+        width: Pixel.getPixel(44),
+        fontSize: Pixel.getFontPixel(20),
+        fontWeight: 'bold',
+        color: '#FFFFFF',
+        textAlign:'left'
+    },
+    fontIOSBold: {
         height: Pixel.getPixel(44),
         width: Pixel.getPixel(44),
         fontSize: Pixel.getFontPixel(20),

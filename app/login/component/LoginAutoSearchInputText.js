@@ -15,8 +15,7 @@ export default class Search extends Component {
         super(props);
         //初始化方法
         this.state = {
-            show: false,
-            value: ""
+            value: "",
         }
     }
 
@@ -50,19 +49,15 @@ export default class Search extends Component {
 
     //执行搜索操作搜索--此处执行搜索操作时隐藏
     goSearch = (text) => {
-        if (text === "") {
-            var value = text;
+        if (text == "") {
             this.props.callBackSearchResult(true);
             this.setState({
-                show: true,
-                value: value
+                value: text
             });
         } else {
-            var value = text;
             this.props.callBackSearchResult(false);
             this.setState({
-                show: false,
-                value: value
+                value: text
             });
         }
     }
@@ -71,32 +66,34 @@ export default class Search extends Component {
         return this.state.value
     }
 
-    //显示默认内容 组件获取焦点时执行
+    setInputTextValue = (text) => {
+        this.setState({
+            value: text
+        });
+    }
+
+    //文本框获取焦点时判断是否隐藏收索结果框
     showDefultContext = () => {
-        if (this.state.value === "") {
+        if (this.state.value == "") {
             this.props.callBackSearchResult(true);
-            this.setState({
-                show: true
-            });
+        } else {
+            this.props.callBackSearchResult(false);
         }
     }
 
     //隐藏
     hide(val) {
         this.props.callBackSearchResult(false);
-        this.setState({
-            show: false,
-            value: val
-        });
     }
 
-    //隐藏
+    //设置输入框内容
     setValue(val) {
         this.setState({
             value: val
         });
     }
 
+    //清空输入框内容
     clearValue = () => {
         this.props.callBackSearchResult(true);
         this.setState({
@@ -122,6 +119,7 @@ export default class Search extends Component {
                                    value={this.state.value}
                                    onFocus={this.showDefultContext}
                                    keyboardType={this.props.keyboardType}
+                                   maxLength={11}
                                    onChangeText={this.goSearch}/>
                         {
                             this.props.clearValue && this.state.value.length > 0 ?

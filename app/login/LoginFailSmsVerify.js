@@ -1,25 +1,33 @@
 import React, {Component} from "react";
-import {AppRegistry, View, Text, StyleSheet, TouchableOpacity} from "react-native";
+import {
+    AppRegistry,
+    View,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    InteractionManager,
+    TouchableWithoutFeedback
+} from "react-native";
 import BaseComponent from "../component/BaseComponent";
 import NavigationBar from "../component/NavigationBar";
 import * as FontAndColor from "../constant/fontAndColor";
 import PixelUtil from "../utils/PixelUtil";
-import MainPage from '../main/MainPage';
+import MyButton from "../component/MyButton";
+import LoginInputText from "./component/LoginInputText";
+import LoginFailPwd from "./LoginFailPwd";
+import {request} from "../utils/RequestUtil";
+import * as AppUrls from "../constant/appUrls";
+import StorageUtil from "../utils/StorageUtil";
+import * as StorageKeyNames from "../constant/storageKeyNames";
+import LoddingAlert from '../component/toast/LoddingAlert';
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
-import MyButton from '../component/MyButton';
-import LoginInputText from './component/LoginInputText';
-import LoginFailPwd from './LoginFailPwd';
-import {request} from "../utils/RequestUtil";
-import * as AppUrls from "../constant/appUrls";
-import ShowToast from '../component/toast/ShowToast';
-import StorageUtil from "../utils/StorageUtil";
-import * as StorageKeyNames from "../constant/storageKeyNames";
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
+var Platform = require('Platform');
 
 var imgSrc: '';
 var imgSid: '';
@@ -30,19 +38,42 @@ export default class LoginFailSmsVerify extends BaseComponent {
         super(props);
         this.state = {
             verifyCodeUrl: null,
+            renderPlaceholderOnly: true,
         }
     }
 
     initFinish = () => {
-        this.Verifycode();
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+            this.Verifycode();
+        });
     }
 
     render() {
+        if (this.state.renderPlaceholderOnly) {
+            return ( <TouchableWithoutFeedback onPress={() => {
+                this.setState({
+                    show: false,
+                });
+            }}>
+                <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
+                    <NavigationBar
+                        leftImageShow={false}
+                        leftTextShow={true}
+                        leftText={""}
+                        centerText={"短信验证"}
+                        rightText={""}
+                    />
+                </View>
+            </TouchableWithoutFeedback>);
+        }
         return (
             <View style={styles.container}>
+                <LoddingAlert ref="lodding"/>
                 <NavigationBar
                     leftImageShow={true}
                     leftTextShow={false}
+                    clearValue={true}
                     centerText={"短信验证"}
                     rightText={"  "}
                     leftImageCallBack={this.backPage}/>
@@ -51,14 +82,17 @@ export default class LoginFailSmsVerify extends BaseComponent {
                     ref="userName"
                     textPlaceholder={'请输入手机号码'}
                     rightIcon={false}
+                    clearValue={true}
                     viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
                     keyboardType={'phone-pad'}
+                    maxLength={11}
                     leftIconUri={require('./../../images/login/phone.png')}/>
                 <View style={{width: width, height: Pixel.getPixel(10)} }/>
                 <LoginInputText
                     ref="verifycode"
                     textPlaceholder={'请输入验证码'}
                     viewStytle={styles.itemStyel}
+                    keyboardType={'phone-pad'}
                     leftIconUri={require('./../../images/login/virty.png')}
                     rightIconSource={this.state.verifyCodeUrl ? this.state.verifyCodeUrl : null}
                     rightIconClick={this.Verifycode}
@@ -67,6 +101,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
                 <LoginInputText
                     ref="smscode"
                     textPlaceholder={'请输入短信验证码'}
+                    keyboardType={'phone-pad'}
                     viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
                     leftIconUri={require('./../../images/login/sms.png')}
                     rightIcon={false}
@@ -78,16 +113,13 @@ export default class LoginFailSmsVerify extends BaseComponent {
                           parentStyle={styles.buttonStyle}
                           childStyle={styles.buttonTextStyle}
                           mOnPress={this.login}/>
-                <ShowToast ref='toast' msg={this.props.msg}></ShowToast>
             </View>
         );
     }
 
     Verifycode = () => {
         this.refs.verifycode.lodingStatus(true);
-        let maps = {
-            device_code: "dycd_dms_manage_android",
-        };
+        let maps = {};
         request(AppUrls.IDENTIFYING, 'Post', maps)
             .then((response) => {
                 this.refs.verifycode.lodingStatus(false);
@@ -98,7 +130,14 @@ export default class LoginFailSmsVerify extends BaseComponent {
                 });
             }, (error) => {
                 this.refs.verifycode.lodingStatus(false);
-                this.refs.toast.changeType(ShowToast.TOAST, "获取失败");
+                this.setState({
+                    verifyCode: null,
+                });
+                if (error.mycode == -300 || error.mycode == -500) {
+                    this.props.showToast("获取失败");
+                } else {
+                    this.props.showToast(error.mjson.msg + "");
+                }
             });
     }
 
@@ -106,28 +145,44 @@ export default class LoginFailSmsVerify extends BaseComponent {
     Smscode = () => {
         let userName = this.refs.userName.getInputTextValue();
         let verifyCode = this.refs.verifycode.getInputTextValue();
-        if (typeof(userName) == "undefined" || userName == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "请输入正确的用户名");
+        if (typeof(userName) == "undefined" || userName == "" || userName.length != 11) {
+            this.props.showToast("请输入正确的用户名");
         } else if (typeof(verifyCode) == "undefined" || verifyCode == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "验证码不能为空");
+            this.props.showToast("验证码不能为空");
         } else {
+            let device_code = '';
+            if (Platform.OS === 'android') {
+                device_code = 'dycd_platform_android';
+            } else {
+                device_code = 'dycd_platform_ios';
+            }
             let maps = {
-                device_code: "dycd_dms_manage_android",
+                device_code: device_code,
                 img_code: verifyCode,
                 img_sid: imgSid,
                 phone: userName,
                 type: "2",
             };
+            // this.props.showModal(true);
             request(AppUrls.SEND_SMS, 'Post', maps)
                 .then((response) => {
+                    // this.props.showModal(false);
                     if (response.mjson.code == "1") {
                         this.refs.smscode.StartCountDown();
-                        this.refs.toast.changeType(ShowToast.TOAST, response.mjson.data.code + "");
+                        // this.refs.smscode.setInputTextValue(response.mjson.data.code + "");
                     } else {
-                        this.refs.toast.changeType(ShowToast.TOAST, response.mjson.msg + "");
+                        this.props.showToast(response.mjson.msg + "");
                     }
                 }, (error) => {
-                    this.refs.toast.changeType(ShowToast.TOAST, "短信验证码获取失败");
+                    // this.props.showModal(false);
+                    if (error.mycode == -300 || error.mycode == -500) {
+                        this.props.showToast("短信验证码获取失败");
+                    } else if (error.mycode == 7040012) {
+                        this.Verifycode();
+                        this.props.showToast(error.mjson.msg + "");
+                    } else {
+                        this.props.showToast(error.mjson.msg + "");
+                    }
                 });
         }
     }
@@ -147,49 +202,72 @@ export default class LoginFailSmsVerify extends BaseComponent {
         let verifyCode = this.refs.verifycode.getInputTextValue();
         let smsCode = this.refs.smscode.getInputTextValue();
         if (typeof(userName) == "undefined" || userName == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "请输入正确的用户名");
+            this.props.showToast("用户名不能为空");
+        } else if (userName.length != 11) {
+            this.props.showToast("请输入正确的用户名");
         } else if (typeof(verifyCode) == "undefined" || verifyCode == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "验证码不能为空");
+            this.props.showToast("验证码不能为空");
         } else if (typeof(smsCode) == "undefined" || smsCode == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "短信验证码不能为空");
+            this.props.showToast("短信验证码不能为空");
         } else {
+            let device_code = '';
+            if (Platform.OS === 'android') {
+                device_code = 'dycd_platform_android';
+            } else {
+                device_code = 'dycd_platform_ios';
+            }
             let maps = {
+                device_code: device_code,
                 code: smsCode,
-                device_code: "dycd_dms_manage_android",
                 login_type: "1",
                 phone: userName,
                 pwd: "",
             };
+            // this.props.showModal(true);
+            this.refs.lodding.setShow(true);
             request(AppUrls.LOGIN, 'Post', maps)
                 .then((response) => {
-                    if (response.mjson.code == "1") {
-                        this.refs.toast.changeType(ShowToast.TOAST, "登录成功");
+                    // this.props.showModal(false);
+                    this.refs.lodding.setShow(false);
+                    if (response.mycode == "1") {
                         // 保存用户登录状态
-                        StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
+                        StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '1');
                         StorageUtil.mSetItem(StorageKeyNames.USER_INFO, JSON.stringify(response.mjson.data));
                         // 保存用户信息
-                        StorageUtil.mSetItem(StorageKeyNames.base_user_id, response.mjson.data.base_user_id + "");
-                        StorageUtil.mSetItem(StorageKeyNames.enterprise_list, JSON.stringify(response.mjson.data.enterprise_list));
-                        StorageUtil.mSetItem(StorageKeyNames.head_portrait_url, response.mjson.data.head_portrait_url + "");
-                        StorageUtil.mSetItem(StorageKeyNames.idcard_number, response.mjson.data.idcard_number + "");
-                        StorageUtil.mSetItem(StorageKeyNames.phone, response.mjson.data.phone + "");
-                        StorageUtil.mSetItem(StorageKeyNames.real_name, response.mjson.data.real_name + "");
-                        StorageUtil.mSetItem(StorageKeyNames.token, response.mjson.data.token + "");
-                        StorageUtil.mSetItem(StorageKeyNames.user_level, response.mjson.data.user_level + "");
-                        this.loginPage(this.loginSuccess)
+                        StorageUtil.mSetItem(StorageKeyNames.BASE_USER_ID, response.mjson.data.base_user_id + "");
+                        StorageUtil.mSetItem(StorageKeyNames.ENTERPRISE_LIST, JSON.stringify(response.mjson.data.enterprise_list));
+                        StorageUtil.mSetItem(StorageKeyNames.HEAD_PORTRAIT_URL, response.mjson.data.head_portrait_url + "");
+                        StorageUtil.mSetItem(StorageKeyNames.IDCARD_NUMBER, response.mjson.data.idcard_number + "");
+                        StorageUtil.mSetItem(StorageKeyNames.PHONE, response.mjson.data.phone + "");
+                        StorageUtil.mSetItem(StorageKeyNames.REAL_NAME, response.mjson.data.real_name + "");
+                        StorageUtil.mSetItem(StorageKeyNames.TOKEN, response.mjson.data.token + "");
+                        StorageUtil.mSetItem(StorageKeyNames.USER_LEVEL, response.mjson.data.user_level + "");
+
+                        this.loginPage(this.setLoginPwd);
                     } else {
-                        this.refs.toast.changeType(ShowToast.TOAST, response.mjson.msg);
+                        this.props.showToast(response.mjson.msg);
                     }
                 }, (error) => {
-                    this.refs.toast.changeType(ShowToast.TOAST, "登录失败");
+                    // this.props.showModal(false);
+                    this.refs.lodding.setShow(false);
+                    if (error.mycode == -300 || error.mycode == -500) {
+                        this.props.showToast("登录失败");
+                    } else if (error.mycode == 7040004) {
+                        this.Verifycode();
+                        this.props.showToast(error.mjson.msg + "");
+                    } else {
+                        this.props.showToast(error.mjson.msg + "");
+                    }
                 });
         }
     }
 
-    loginSuccess = {
-        name: 'MainPage',
-        component: MainPage,
-        params: {}
+    setLoginPwd = {
+        name: 'LoginFailPwd',
+        component: LoginFailPwd,
+        params: {
+            from: 'login'
+        }
     }
 
     loginPage = (mProps) => {

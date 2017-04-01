@@ -24,8 +24,6 @@ export  default class PurchasePickerChildItem extends PureComponent {
     }
 
     render() {
-        console.log(this.props.index);
-        console.log(this.props.lastIndex);
         return (
             <View style={styles.parentView}>
                 <View style={{

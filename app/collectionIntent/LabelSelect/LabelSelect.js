@@ -162,7 +162,6 @@ class Label extends Component {
     static defaultProps = {
         onCancel: () => {
         },
-        enable: true,
         readOnly: false,
         layoutSize: false
     }
@@ -174,14 +173,19 @@ class Label extends Component {
         };
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.state = {
+            enable: nextProps.enables,
+        };
+    }
+
     setPressDown = () => {
         let en = this.state.enable;
-        console.log(en + "");
         this.setState({enable: !en});
     }
 
     render() {
-        const {enable, readOnly, onCancel, isBigSize} = this.props;
+        const {readOnly, onCancel, isBigSize} = this.props;
         return (
             <View>
                 <TouchableOpacity onPress={() => {
@@ -193,11 +197,11 @@ class Label extends Component {
                     }
                 }}>
                     <View
-                        style={[Styles.selectedItem, readOnly && this.state.enable && Styles.disableColor, !isBigSize && Styles.layoutSize]}>
+                        style={[Styles.selectedItem, this.state.enable && Styles.disableColor, !isBigSize && Styles.layoutSize]}>
                         <Text
-                            style={[Styles.labelText, readOnly && this.state.enable && Styles.disableText]}>{this.props.children}</Text>
+                            style={[Styles.labelText, this.state.enable && Styles.disableText]}>{this.props.children}</Text>
 
-                        {enable && !readOnly && <TouchableOpacity
+                        {!readOnly && <TouchableOpacity
                             style={Styles.closeContainer}
                             underlayColor="transparent"
                             activeOpacity={0.5}>

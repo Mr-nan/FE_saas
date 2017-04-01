@@ -1,5 +1,13 @@
 import React, {Component} from "react";
-import {AppRegistry, View, Text, StyleSheet, TouchableOpacity} from "react-native";
+import {
+    AppRegistry,
+    View,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    InteractionManager,
+    TouchableWithoutFeedback
+} from "react-native";
 import BaseComponent from "../component/BaseComponent";
 import NavigationBar from "../component/NavigationBar";
 import * as FontAndColor from "../constant/fontAndColor";
@@ -10,10 +18,38 @@ var Pixel = new PixelUtil();
 import MyButton from '../component/MyButton';
 import LoginInputText from './component/LoginInputText';
 export default class LoginFailSmsNo extends BaseComponent {
+    constructor(props) {
+        super(props);
+        this.state = {
+            renderPlaceholderOnly: true,
+        }
+    }
+
     initFinish = () => {
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+            // this.Verifycode();
+        });
     }
 
     render() {
+        if (this.state.renderPlaceholderOnly) {
+            return ( <TouchableWithoutFeedback onPress={() => {
+                this.setState({
+                    show: false,
+                });
+            }}>
+                <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
+                    <NavigationBar
+                        leftImageShow={false}
+                        leftTextShow={true}
+                        leftText={""}
+                        centerText={"登录遇到问题"}
+                        rightText={""}
+                    />
+                </View>
+            </TouchableWithoutFeedback>);
+        }
         return (
             <View style={styles.container}>
                 <NavigationBar
@@ -32,6 +68,7 @@ export default class LoginFailSmsNo extends BaseComponent {
                     textPlaceholder={"请填写借款人姓名"}
                     rightIcon={false}
                     leftIcon={false}
+                    clearValue={true}
                     leftText={"借款人姓名"}
                     viewStytle={styles.itemStyel}/>
                 <LoginInputText
@@ -39,14 +76,16 @@ export default class LoginFailSmsNo extends BaseComponent {
                     textPlaceholder={'请填写借款人所在企业名称'}
                     rightIcon={false}
                     leftIcon={false}
+                    clearValue={true}
                     leftText={"企业名称"}
                     inputTextStyle={{paddingLeft: Pixel.getPixel(30)}}
                     viewStytle={styles.itemStyel}/>
                 <LoginInputText
                     ref="phone"
-                    textPlaceholder={'请填写有些手机号'}
+                    textPlaceholder={'请填写手机号'}
                     rightIcon={false}
                     leftIcon={false}
+                    clearValue={true}
                     leftText={"联系手机"}
                     inputTextStyle={{paddingLeft: Pixel.getPixel(30)}}
                     viewStytle={styles.itemStyel}

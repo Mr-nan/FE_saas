@@ -8,6 +8,7 @@ import {
     Text,
     Dimensions,
     StyleSheet,
+    Platform,
     InteractionManager,
     TouchableOpacity
 } from 'react-native';
@@ -17,7 +18,8 @@ import AllNavigationView from '../../component/AllNavigationView';
 import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import ImageSource from '../component/ImageSource';
-import * as Net from '../../utils/RequestUtil';
+import * as ImageUpload from '../../utils/ImageUpload';
+import * as AppUrls from "../../constant/appUrls";
 
 const {width, height} = Dimensions.get('window');
 const background = require('../../../images/publish/background.png');
@@ -27,6 +29,7 @@ import ImagePicker from "react-native-image-picker";
 
 import SQLiteUtil from '../../utils/SQLiteUtil';
 const SQLite = new SQLiteUtil();
+const IS_ANDROID = Platform.OS === 'android';
 
 const options = {
     //弹出框选项
@@ -50,7 +53,7 @@ export default class AutoPhoto extends Component {
     constructor(props) {
         super(props);
         let hasPhoto = false;
-        if(this.props.carData.pictures !==''){
+        if(this.isEmpty(this.props.carData.pictures) === false){
             this.pictures = JSON.parse(this.props.carData.pictures);
             this.selectSource = {uri: this.pictures[0].url};
             hasPhoto = true;
@@ -62,6 +65,14 @@ export default class AutoPhoto extends Component {
             renderPlaceholderOnly: true
         }
     }
+
+    isEmpty = (str)=>{
+        if(typeof(str) != 'undefined' && str !== ''){
+            return false;
+        }else {
+            return true;
+        }
+    };
 
     componentWillMount() {
 
@@ -82,11 +93,33 @@ export default class AutoPhoto extends Component {
     };
 
     _labelPress = () => {
-        this.imageSource.openModal();
+        if(IS_ANDROID === true){
+            this.imageSource.openModal();
+        }else{
+            ImagePicker.showImagePicker(options, (response) => {
+                if (response.didCancel) {
+                } else if (response.error) {
+                } else if (response.customButton) {
+                } else {
+                    this._uploadPicture(response);
+                }
+            });
+        }
     };
 
     _rePhoto = () => {
-        this.imageSource.openModal();
+        if(IS_ANDROID === true){
+            this.imageSource.openModal();
+        }else{
+            ImagePicker.showImagePicker(options, (response) => {
+                if (response.didCancel) {
+                } else if (response.error) {
+                } else if (response.customButton) {
+                } else {
+                    this._uploadPicture(response);
+                }
+            });
+        }
     };
 
     _onBack = () => {
@@ -95,69 +128,57 @@ export default class AutoPhoto extends Component {
 
     _galleryClick = () => {
         ImagePicker.launchImageLibrary(options, (response) => {
-            if (response.didCancel) {
-                console.log('User cancelled image picker');
-            }
-            else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-            }
-            else if (response.customButton) {
-                console.log('User tapped custom button: ', response.customButton);
-            }
+            if (response.didCancel) {}
+            else if (response.error) {}
+            else if (response.customButton) {}
             else {
-
-                let url = 'http://dev.api-gateway.dycd.com/' + 'v1/index/upload';
-                let params ={
-                    filename : response.fileName,
-                    file:'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g,'%2B')
-                };
-
-                Net.request(url,'post',params).then(
-                    (response)=>{
-
-                        this.selectSource = {uri: response.mjson.data.url};
-                        this.setState({
-                            hasPhoto:true
-                        });
-
-                        let left ={
-                            name : 'left_anterior',
-                            file_id : response.mjson.data.file_id,
-                            url: response.mjson.data.url,
-                        };
-                        this.pictures = [];
-                        this.pictures.push(left);
-
-                        SQLite.changeData(
-                            'UPDATE publishCar SET pictures = ? WHERE vin = ?',
-                            [ JSON.stringify(this.pictures), this.props.carData.vin]);
-
-                    },(error)=>{
-                    console.log(error);
-                });
-
+                this._uploadPicture(response);
             }
         });
     };
 
+    _uploadPicture = (response)=>{
+        let params ={
+            file:'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g,'%2B')
+        };
+        this.props.showLoading();
+        ImageUpload.request(AppUrls.INDEX_UPLOAD,'Post',params).then(
+            (response)=>{
+                if(response.mycode === 1){
+                    this.selectSource = {uri: response.mjson.data.url};
+                    this.setState({
+                        hasPhoto:true
+                    });
+
+                    let left ={
+                        name : 'left_anterior',
+                        file_id : response.mjson.data.file_id,
+                        url: response.mjson.data.url,
+                    };
+                    this.pictures = [];
+                    this.pictures.push(left);
+
+                    SQLite.changeData(
+                        'UPDATE publishCar SET pictures = ? WHERE vin = ?',
+                        [ JSON.stringify(this.pictures), this.props.carData.vin]);
+                    this.props.closeLoading();
+                }else {
+                    this.props.closeLoading();
+                    this.props.showHint('上传失败');
+                }
+            },(error)=>{
+                this.props.closeLoading();
+                this.props.showHint(JSON.stringify(error));
+            });
+    };
+
     _cameraClick = () => {
         ImagePicker.launchCamera(options, (response) => {
-            if (response.didCancel) {
-                console.log('User cancelled image picker');
-            }
-            else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-            }
-            else if (response.customButton) {
-                console.log('User tapped custom button: ', response.customButton);
-            }
+            if (response.didCancel) {}
+            else if (response.error) {}
+            else if (response.customButton) {}
             else {
-
-                console.log(response.data);
-                this.selectSource = {uri: 'data:image/jpeg;base64,' + response.data};
-                this.setState({
-                    hasPhoto: true
-                });
+                this._uploadPicture(response);
             }
         });
     };

@@ -11,14 +11,13 @@ import {
     ListView,
     TouchableOpacity,
 } from 'react-native';
-
-
+import BaseComponent from '../../component/BaseComponent';
+import AllNavigationView from '../../component/AllNavigationView'
 import {LendDatePike,LendInputItem,CommenButton} from './component/ComponentBlob'
 
 import {adapeSize,width,PAGECOLOR} from './component/MethodComponent'
 
-export default class CGDaddCarScenes extends Component{
-
+export default class CGDaddCarScenes extends BaseComponent{
     // 构造
       constructor(props) {
         super(props);
@@ -34,10 +33,8 @@ export default class CGDaddCarScenes extends Component{
         this.state = {
 
             dataSource: ds.cloneWithRowsAndSections(this.titleBlob)
-
         };
       }
-
 
     getSectionData = (dataBlob,sectionID) => {
 
@@ -52,7 +49,7 @@ export default class CGDaddCarScenes extends Component{
 
         return (
             <View key={`${sectionID}-${rowId}`} style={{
-                height:adjacentRowHighlighted?2:1,
+                height:adjacentRowHighlighted?1:1,
                 backgroundColor:adjacentRowHighlighted?'#3B5998' : '#CCCCCC'
             }}>
 
@@ -69,7 +66,7 @@ export default class CGDaddCarScenes extends Component{
             return <LendInputItem title={rowData.title} placeholder={rowData.placeHodel} unitStyle={{width:0}}/>
         }else {
 
-            return <LendDatePike lefTitle={rowData.title} placeholder={rowData.placeHodel} imageSouce={require('../../../images/financeImages/celljiantou.png')}/>
+            return <LendDatePike imageStyle={{width:15,height:15}} lefTitle={rowData.title} placeholder={rowData.placeHodel} imageSouce={require('../../../images/mainImage/celljiantou.png')}/>
         }
 
 
@@ -104,18 +101,17 @@ export default class CGDaddCarScenes extends Component{
           ],
           section3=[
 
-              {title:'收购价(万元)',placeHodel:'请选择',key:'price'},
+              {title:'收购价(万元)',placeHodel:'请输入',key:'price'},
 
           ]
       ];
 
-
     render() {
 
         return (
-           <View style={{flex:1}}>
+           <View style={{flex:1,backgroundColor:PAGECOLOR.COLORA3}}>
             <ListView
-                style={{marginBottom:adapeSize(50)}}
+                style={{marginTop:64}}
                 dataSource={this.state.dataSource}
                 renderRow={this.renderRow }
                 renderSectionHeader={this.renderSectionHeader}
@@ -124,11 +120,12 @@ export default class CGDaddCarScenes extends Component{
                <CommenButton textStyle={{color:'white'}}buttonStyle={styles.buttonStyleLeft} onPress={()=>{
 
                }} title="下一步"/>
+               <AllNavigationView title='添加车辆' backIconClick={()=>{
+                   this.backPage();
+               }}/>
           </View>
         )
     }
-
-
 
 }
 

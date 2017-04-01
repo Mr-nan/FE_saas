@@ -16,7 +16,7 @@ const SQLite = React.createClass({
             this._successCB('close');
             db.close();
         } else {
-            console.log("SQLiteStorage not open");
+            // console.log("SQLiteStorage not open");
         }
 
     },
@@ -61,7 +61,7 @@ const SQLite = React.createClass({
                 +'init_reg VARCHAR default "",'
                 +'mileage VARCHAR default "",'
                 +'plate_number VARCHAR default "",'
-                +'emission_standards VARCHAR default "",'
+                +'emission VARCHAR default "",'
                 +'label VARCHAR default "",'
                 +'nature_use VARCHAR default "",'
                 +'car_color VARCHAR default "",'
@@ -87,15 +87,15 @@ const SQLite = React.createClass({
             this._successCB('close');
             db.close();
         } else {
-            console.log("SQLiteStorage not open");
+            // console.log("SQLiteStorage not open");
         }
         db = null;
     },
     _successCB(name){
-        console.log("SQLiteStorage " + name + " success");
+        // console.log("SQLiteStorage " + name + " success");
     },
     _errorCB(name, err){
-        console.log("SQLiteStorage " + name + " error:" + err);
+        // console.log("SQLiteStorage " + name + " error:" + err);
     },
     /**
      * from @zhaojian
@@ -125,9 +125,9 @@ const SQLite = React.createClass({
             function (tx) {
                 tx.executeSql(sql, array);
             }, function (error) {
-                console.log('shibai' + error.message);
+                // console.log('shibai' + error.message);
             }, function () {
-                console.log('chenggong');
+                // console.log('chenggong');
             }
         );
     }

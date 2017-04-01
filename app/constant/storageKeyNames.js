@@ -1,17 +1,23 @@
+export const VERSON_NAME = "2.1"; // 版本名
+export const VERSON_CODE = "1"; // 版本号
 export const ISLOGIN = "islogin";//标识用户是否登录
 export const CAR_SEARCH = "car_search";
 export const CITY_SEARCH = "city_search";
 export const USER_INFO = "user_info";//保存用户信息
 export const GESTURE = "gesture";
-export const USERNAME = "USERNAME";
-
+export const USERNAME = "username";
+export const LOGIN_TYPE = "login_type"
+export const FIRST_INTO = "first_into"
+export const CAR_TYPE_FOOTMARK = "car_type_footmark"; // 车品牌足迹
 /* userinfo start */
-export const base_user_id = "base_user_id";//用户ID
-export const enterprise_list = "enterprise_list";//	企业列表	array<object>
-export const head_portrait_url = "head_portrait_url";// 用户头像url
-export const idcard_number = "  idcard_number";//用户身份证号
-export const phone = "phone";//用户手机号
-export const real_name = "real_name";//用户姓名
-export const token = "token";
-export const user_level = "user_level"; //	0：初级注册用户，1:正式用户 2：管理员用户
+export const BASE_USER_ID = "base_user_id";//用户ID
+export const ENTERPRISE_LIST = "enterprise_list";//	企业列表	array<object> enterprise_list
+export const HEAD_PORTRAIT_URL = "head_portrait_url";// 用户头像url head_portrait_url
+export const IDCARD_NUMBER = "idcard_number";//用户身份证号 idcard_number
+export const PHONE = "phone";//用户手机号 phone
+export const REAL_NAME = "real_name";//用户姓名 real_name
+export const TOKEN = "token"; //token
+export const USER_LEVEL = "user_level"; //	0：初级注册用户，1:正式用户 2：管理员用户  user_level
+export const NEED_GESTURE = "need_gesture"; //	是否需要手势解锁
 /* userinfo end */
+export const NEED_OPENBRAND = "need_openbrand"; //	需要打开车型列表

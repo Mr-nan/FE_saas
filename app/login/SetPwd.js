@@ -1,51 +1,100 @@
 import React, {Component} from "react";
-import {AppRegistry, View, Text, StyleSheet, TouchableOpacity} from "react-native";
+import {
+    AppRegistry,
+    View,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    InteractionManager,
+    TouchableWithoutFeedback
+} from "react-native";
 import BaseComponent from "../component/BaseComponent";
 import NavigationBar from "../component/NavigationBar";
 import * as FontAndColor from "../constant/fontAndColor";
 import PixelUtil from "../utils/PixelUtil";
+import MyButton from "../component/MyButton";
+import LoginInputText from "./component/LoginInputText";
+import {request} from "../utils/RequestUtil";
+import * as AppUrls from "../constant/appUrls";
+import md5 from "react-native-md5";
+import LoddingAlert from '../component/toast/LoddingAlert';
+
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
-import MyButton from '../component/MyButton';
-import LoginInputText from './component/LoginInputText';
-import {request} from "../utils/RequestUtil";
-import * as AppUrls from "../constant/appUrls";
-import ShowToast from "../component/toast/ShowToast";
+var Platform = require('Platform');
 
 export default class SetPwd extends BaseComponent {
+    constructor(props) {
+        super(props);
+        this.state = {
+            renderPlaceholderOnly: true,
+        }
+    }
+
     initFinish = () => {
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+            // this.Verifycode();
+        });
     }
 
     render() {
+        if (this.state.renderPlaceholderOnly) {
+            return ( <TouchableWithoutFeedback onPress={() => {
+                this.setState({
+                    show: false,
+                });
+            }}>
+                <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
+                    <NavigationBar
+                        leftImageShow={false}
+                        leftTextShow={true}
+                        leftText={""}
+                        centerText={"修改登录密码"}
+                        rightText={""}
+                    />
+                </View>
+            </TouchableWithoutFeedback>);
+        }
         return (
             <View style={styles.container}>
+                <LoddingAlert ref="lodding"/>
                 <NavigationBar
                     leftImageShow={true}
                     leftTextShow={false}
                     centerText={"修改登录密码"}
                     rightText={"  "}
+                    clearValue={true}
                     leftImageCallBack={this.backPage}/>
                 <View style={{width: width, height: Pixel.getPixel(15)} }/>
                 <LoginInputText
                     ref="oldPassword"
                     rightIcon={false}
                     leftIcon={false}
+                    clearValue={true}
                     textPlaceholder={"请输入原登录密码"}
+                    secureTextEntry={true}
                     viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}/>
                 <View style={{width: width, height: Pixel.getPixel(10)} }/>
                 <LoginInputText
                     ref="newPassword"
                     rightIcon={false}
                     leftIcon={false}
+                    clearValue={true}
                     textPlaceholder={"请设置新密码"}
+                    secureTextEntry={true}
+                    maxLength={16}
                     viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}/>
                 <View style={{width: width, height: Pixel.getPixel(10)} }/>
                 <LoginInputText
                     ref="newPasswordAgain"
                     rightIcon={false}
                     leftIcon={false}
+                    clearValue={true}
                     textPlaceholder={"请再次填写新密码"}
+                    secureTextEntry={true}
+                    maxLength={16}
                     viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}/>
                 <View style={{width: width, height: Pixel.getPixel(44)} }/>
                 <MyButton buttonType={MyButton.TEXTBUTTON}
@@ -53,18 +102,8 @@ export default class SetPwd extends BaseComponent {
                           parentStyle={styles.buttonStyle}
                           childStyle={styles.buttonTextStyle}
                           mOnPress={this.setPwd}/>
-                <ShowToast ref='toast' msg={this.props.msg}></ShowToast>
             </View>
         );
-    }
-
-    rightTextCallBack = () => {
-        // this.toNextPage({
-        //     name: 'Register',
-        //     component: LoginFail,
-        //     params: {},
-        // })
-        alert("设置成功")
     }
 
     //修改密码
@@ -73,28 +112,48 @@ export default class SetPwd extends BaseComponent {
         let newPassword = this.refs.newPassword.getInputTextValue();
         let newPasswordAgain = this.refs.newPasswordAgain.getInputTextValue();
         if (typeof(oldPassword) == "undefined" || oldPassword == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "原密码不能为空");
+            this.props.showToast("原密码不能为空");
         } else if (typeof(newPassword) == "undefined" || newPassword == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "新密码不能为空");
+            this.props.showToast("新密码不能为空");
+        } else if (newPassword.length < 6) {
+            this.props.showToast("密码必须为6~16位");
         } else if (typeof(newPasswordAgain) == "undefined" || newPasswordAgain == "") {
-            this.refs.toast.changeType(ShowToast.TOAST, "再次确认密码不能为空");
+            this.props.showToast("再次确认密码不能为空");
         } else if (newPassword !== newPasswordAgain) {
-            this.refs.toast.changeType(ShowToast.TOAST, "两次密码输入不一致");
+            this.props.showToast("两次密码输入不一致");
         } else {
+            let device_code = '';
+            if (Platform.OS === 'android') {
+                device_code = 'dycd_platform_android';
+            } else {
+                device_code = 'dycd_platform_ios';
+            }
             let maps = {
-                old_pwd: oldPassword,
-                confirm_pwd: newPasswordAgain,
-                pwd: newPassword,
+                device_code: device_code,
+                old_pwd: md5.hex_md5(oldPassword),
+                confirm_pwd: md5.hex_md5(newPasswordAgain),
+                pwd: md5.hex_md5(newPassword),
             };
+            // this.props.showModal(true);
+            this.refs.lodding.setShow(true);
             request(AppUrls.CHANGEPWD, 'Post', maps)
                 .then((response) => {
-                    if (response.mjson.code == "1") {
-                        this.refs.toast.changeType(ShowToast.TOAST, "设置成功");
+                    // this.props.showModal(false);
+                    this.refs.lodding.setShow(false);
+                    if (response.mycode == "1") {
+                        this.props.showToast("设置成功");
+                        this.backPage();
                     } else {
-                        this.refs.toast.changeType(ShowToast.TOAST, response.mjson.msg);
+                        this.props.showToast(response.mjson.msg + "");
                     }
                 }, (error) => {
-                    this.refs.toast.changeType(ShowToast.TOAST, "设置失败");
+                    // this.props.showModal(false);
+                    this.refs.lodding.setShow(false);
+                    if (error.mycode == -300 || error.mycode == -500) {
+                        this.props.showToast("设置失败");
+                    } else {
+                        this.props.showToast(error.mjson.msg + "");
+                    }
                 });
         }
     }

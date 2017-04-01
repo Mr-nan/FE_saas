@@ -54,13 +54,17 @@ export default class AccountInfoScene extends BaseComponent {
         super(props);
         // 初始状态
         //    拿到所有的json数据
-        var jsonData = Car;
+        Car[0].cars[0].name=this.props.items.bankusername;
+        Car[0].cars[1].name=this.props.items.bankaccount;
+        Car[0].cars[2].name=this.props.items.bankname;
+        Car[0].cars[3].name=this.props.items.bankbranch;
+        let jsonData = Car;
 
         //    定义变量
-        var dataBlob = {},
+        let dataBlob = {},
             sectionIDs = [],
             rowIDs = [];
-        for (var i = 0; i < jsonData.length; i++) {
+        for (let i = 0; i < jsonData.length; i++) {
             //    1.拿到所有的sectionId
             sectionIDs.push(i);
 
@@ -71,10 +75,10 @@ export default class AccountInfoScene extends BaseComponent {
             rowIDs[i] = [];
 
             //    4.取出改组中所有的数据
-            var cars = jsonData[i].cars;
+            let cars = jsonData[i].cars;
 
             //    5.便利cars,设置每组的列表数据
-            for (var j = 0; j < cars.length; j++) {
+            for (let j = 0; j < cars.length; j++) {
                 //    改组中的每条对应的rowId
                 rowIDs[i].push(j);
 
@@ -131,7 +135,7 @@ export default class AccountInfoScene extends BaseComponent {
         return (
             <View style={styles.rowView} >
 
-                <Text style={styles.rowLeftTitle}>{rowData.name}</Text>
+                <Text style={styles.rowLeftTitle}>{rowData.title}</Text>
                 <Text style={styles.rowRightTitle}>{rowData.name}</Text>
 
             </View>
@@ -167,7 +171,6 @@ const styles = StyleSheet.create({
         backgroundColor:'white',
         borderBottomColor:fontAndClolr.COLORA4,
         borderBottomWidth:1,
-        flexDirection:'row'
     },
     rowLeftTitle: {
         marginLeft:Pixel.getPixel(15),

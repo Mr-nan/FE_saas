@@ -6,19 +6,19 @@
 'use strict';
 
 import React, {
-	Component,
-	PropTypes
+    Component,
+    PropTypes
 } from 'react';
 
 import {
-	StyleSheet,
-	View,
-	Dimensions,
-	Text,
-	Animated,
-	Image,
-	Modal,
-	Easing
+    StyleSheet,
+    View,
+    Dimensions,
+    Text,
+    Animated,
+    Image,
+    Modal,
+    Easing
 } from 'react-native';
 
 //定义各种提示的图标，类型有success(成功)、warning(警告)、wrong(错误)、help(帮助信息)、info(提示信息)
@@ -29,99 +29,113 @@ const _help = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXH
 const _info = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAFhUlEQVR4XuWbi5EUNxCG1RGAIzBEwBGBuQjgIjBEYIjAJgLjCAwRABHYF4GPCIAIbCJo1zfV2urRamak2ZFmqVXV1j12Ro+//36o1ZLQuKnq/RDCTyGEK/vw9wP7+NG/hBD4/BdCuLPPrYjwd7MmLXpWVRb7cwjhiS36lGEA4+8QwjsR4fdN22YAmKRZ9MuMdLeaNAx5Y2BswoyTAbCF/2ILh9659tXRGilOTZ73o6rw88eJ/ngfIP44VUVOAkBVkTgTyS38NoTwFvqKCJKrbqqKrUCNnpsdSfsAiJci8q66c3thFQA2sT9tcn7sbwbI27WLnlqIjQkQqNi95DlsxIs1Y1YDoKrPQggs3ks9LvzNqZRckqSpHCCkQMAGQPiw1If/vgoAVf3dBvZ9fISirReeLsoYgfo9Tb5DCK9KQSgGQFWROhSMDamz8CrESydW+pwxElvj1QIVfFHSRxEAqvo+hAD1Y/vE32t0rmRStc8YGxDEI/fuBxG5WeprEYCM5Heh/NJCzDYAAlFnbItMmAVAVdExfHxsRGNeDZbm1f17VUUdcM+xEStgMLNtEgDTLagfG3E5Pvnsm6riFj0TbqZsVRYA06l/nKtD55/0tvRrkTZ1AIRoE3CRj3M2awqAv1yQg7W/OheDVwqKCZGwO3oHItLr9P0jAFQVHcflxTZJn9LJzD2nqqjVlxYAZ9SYQAkbcWgjAIw6nx31P4qId39brPnQR2JkHzYCAc8QgyVUgXEOm7EUgN9CCL/aDJtTPzFW1yKC3m7aMqrwWkRY59AOAGSkP3pw01lZZz0AYChV9YIdscADgK8k1qch/QetrX5HANi4sSWPBvGViBDjjBiA7rP/pjWXvknGBy24qc1TXpG5CQswug8PAFgOD78fWxODlKqRqR1e566F/vvxzBYg5NgGwAcVSKzxdxPx1dqlROWGEDkCgPTJwdGOfGXtQOf6fBLjwLrHYjT8tzf99wApowY/AACBTtz0fBWRaAibz9FJBONHHLBJqntu4qqKN4jZ5hsA8D6yaeSXMYJ+19YkEMqM6SPD1wAw/oeLklpToFcckHiDscCTSTTd+JwJA/xm7xYG+ACoCw1dcLKHCrD7ZLtPuwMAdZK5NABCCkDTcPRMVMAz4AiAi2fApQHwDRXwgcGlATB4AW+JL9INXnwgdGmhsGf8EAr7zdAhU9I6DLY8xB6BEDvfWNtwvet2uPdeIN0OC80kwXY0HiN1S4jsAIBP/H4SkatcSix7hNRCJXYAwGe+Rikx0mF7JEW72YBMNmhI/PpzAR8Q9UqL9wTA1zoM9IfVUwcjR2do37MKZE69sgcj6elJcxb0sgFJ2m906jV3ODpZVLAVG3oAkNH9/OGoucOUBUWVVmsBcSVu2J8mFSjJoc9R1nv3Aom14JW+lxRNzRdITOTqmqtC6WLWPGcGkP0OYf5wIuzbXJGUr6/pdnCxZpGnvFNTJtctQjxlQbXv1hZKLlZe1k5g7+dLSmXTykuiNzJHzc/xeoCzCIC5R581Gg4UDIRVN0G2Xpj5esp7EApRXrFwigAwEFImrLqg0GDx1DJj5WOS4xDmloxVDICBkBZP82/YwaBd2TBzbacqs10FgIFACi29oLDZLa4lqc3cUlt1gaMaAAOBIgpA8BXZfBWBoKx+U0aYxCnizJXrc0ON2yvVY64CwEWMTAa1SG9x8QjeApAouqqemAHNnp0yV1gXa5g8SZA61+ZG9b9LLFqMBGs6mLnF5bsBgHgfON4Rzg0T7yOwWH6fuoi52S21kxjgV+Bq/kg8Tt34rME29yw3UGEcAVmxq5sbdDMAEjCQIOqBFP1FpjUAcFljUKcWlaRNAMgwI94iB5h4fT5lCbSO94qjurD/2ETSU8j/DysOGj3Jqj6HAAAAAElFTkSuQmCC';
 const _iconArray = [_success, _info, _help, _warning, _wrong];
 class Toast extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			opacity: new Animated.Value(0),
-			flag: false,
-			type: this.props.type
-		};
-	}
-	static defaultProps = {
-		type: 'info',
-		msg: '提示信息',
-		timeout: 2000
-	};
-	static propTypes = {
-		type: PropTypes.oneOf(['success', 'info', 'help', 'warning', 'wrong']).isRequired, //类型
-		msg: PropTypes.string.isRequired, //提示信息
-		timeout: PropTypes.number //关闭时间，默认2000毫秒
-	}
-	componentWillUnmount() {
-		this.timer && clearTimeout(this.timer);
-	}
-	changeType = (_type) => {
-		this.setState({
-			type: _type
-		});
-	}
-	open = () => {
-		this.setState({
-			flag: true
-		});
-		setTimeout(() => {
-			this.setState({
-				flag: false
-			});
-		}, this.props.timeout);
-	}
-	getIconUri = () => {
-		const {
-			type
-		} = this.state;
-		const _arr = ['success', 'info', 'help', 'warning', 'wrong'];
-		return _iconArray[_arr.indexOf(type)];
-	}
-	render() {
-		return (
-			<Modal
-	          animationType={"fade"}
-	          transparent={true}
-	          visible={this.state.flag}
-	          onRequestClose={() => {}}
-	          >
-	          	<View style={styles.taostModal}>
-	          		<View style={[styles.toast]}>
-						<Image 
-			            	source={{uri: this.getIconUri()}}
-			            	resizeMode={Image.resizeMode.contain}
-			      			style={styles.thumbnail}/>
-						<Text style={styles.text}>{this.props.msg}</Text>
-					</View>
-	          	</View>
-			</Modal>
-		);
-	}
+    constructor(props) {
+        super(props);
+        this.state = {
+            opacity: new Animated.Value(0),
+            flag: false,
+            type: this.props.type,
+            modal: false
+        };
+    }
+
+    static defaultProps = {
+        type: 'info',
+        msg: '提示信息',
+        timeout: 2000
+    };
+    static propTypes = {
+        type: PropTypes.oneOf(['success', 'info', 'help', 'warning', 'wrong']).isRequired, //类型
+        msg: PropTypes.string.isRequired, //提示信息
+        timeout: PropTypes.number //关闭时间，默认2000毫秒
+    }
+
+    componentWillUnmount() {
+        this.timer && clearTimeout(this.timer);
+    }
+
+    changeType = (_type) => {
+        this.setState({
+            type: _type
+        });
+    }
+    open = () => {
+        this.setState({
+            flag: true,
+            modal: false
+        });
+        setTimeout(() => {
+            this.setState({
+                flag: false,
+                modal: false
+            });
+        }, this.props.timeout);
+    }
+
+    openLoading = (value) => {
+        this.setState({
+            flag: value,
+            modal: true
+        });
+        this.timer && clearTimeout(this.timer);
+    }
+
+    getIconUri = () => {
+        const {
+            type
+        } = this.state;
+        const _arr = ['success', 'info', 'help', 'warning', 'wrong'];
+        return _iconArray[_arr.indexOf(type)];
+    }
+
+    render() {
+        return (
+            <Modal
+                animationType={"fade"}
+                transparent={true}
+                visible={this.state.flag}
+                onRequestClose={() => {}}
+            >
+                {this.state.modal ? <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+                        <Image style={{width:60,height:60}} source={require('../../../images/setDataLoading.gif')}/>
+                    </View> : <View style={styles.taostModal}>
+                        <View style={[styles.toast]}>
+                            <Text style={styles.text}>{this.props.msg}</Text>
+                        </View>
+                    </View>}
+            </Modal>
+        );
+    }
 }
 const _width = Dimensions.get('window').width;
 const styles = StyleSheet.create({
-	taostModal: {
-		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'flex-end',
-		flexDirection: 'column',
-	},
-	toast: {
-		height: 45,
-		backgroundColor: 'rgba(70,70,70,.7)',
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'center',
-		padding: 5,
-		borderRadius: 5,
-		marginBottom: 45,
-	},
-	thumbnail: {
-		width: 26,
-		height: 26,
-		marginRight: 10,
-		marginLeft: 10,
-	},
-	text: {
-		padding: 3,
-		fontSize: 16,
-		color: '#fff'
-	}
+    taostModal: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        flexDirection: 'column',
+    },
+    toast: {
+        height: 45,
+        backgroundColor: 'rgba(70,70,70,.7)',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 5,
+        borderRadius: 5,
+        marginBottom: 45,
+    },
+    thumbnail: {
+        width: 26,
+        height: 26,
+        marginRight: 10,
+        marginLeft: 10,
+    },
+    text: {
+        padding: 3,
+        fontSize: 16,
+        color: '#fff'
+    }
 });
 
 

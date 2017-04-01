@@ -3,16 +3,32 @@ import {
     View,
     Text,
     StyleSheet,
+    TouchableOpacity,
+
 } from 'react-native';
+import PixelUtil            from '../../utils/PixelUtil';
+const Pixel = new PixelUtil();
+import * as fontAnColor from '../../constant/fontAndColor'
+
 class LoadMoreFooter extends Component {
     constructor(props) {
         super(props);
     }
     render() {
+
+        const {isLoadAll,isCarFoot,footAllClick} = this.props;
         return (
+            <TouchableOpacity  onPress={()=>{
+
+                if(isCarFoot && isLoadAll)
+                {
+                    footAllClick();
+                }
+            }} activeOpacity={1}>
             <View  style={styles.footer}>
-                <Text style={styles.footerTitle}>{this.props.isLoadAll ? '已加载全部' : '正在加载更多……'}</Text>
+                <Text style={styles.footerTitle}>{isLoadAll ? (isCarFoot?'查看全部车源>' :'已加载全部'): '正在加载更多……'}</Text>
             </View>
+            </TouchableOpacity>
         )
     }
 }
@@ -22,12 +38,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        height: 40,
+        height:Pixel.getPixel(60) ,
     },
     footerTitle: {
-        marginLeft: 10,
-        fontSize: 15,
-        color: 'gray'
+        marginLeft: Pixel.getPixel(10),
+        fontSize: Pixel.getFontPixel(fontAnColor.LITTLEFONT28),
+        color: fontAnColor.COLORA2,
     }
 })
 

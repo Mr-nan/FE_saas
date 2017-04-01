@@ -21,48 +21,57 @@ import ScrollableTabView from 'react-native-scrollable-tab-view';
 import RepaymenyTabBar from './component/RepaymenyTabBar';
 import InventoryRepaymentPage from '../page/InventoryRepaymentPage';
 import SingleRepaymentPage from '../page/SingleRepaymentPage';
-import PurchaseRepaymentPage from '../page/PurchaseRepaymentPage';
 import NavigationView from '../../component/AllNavigationView';
 import * as fontAndColor from '../../constant/fontAndColor';
 import PlanListScene from './PlanListScene';
+import RepaymentInfoScene from '../repayment/NewRepaymentInfoScene';
+import InventoryPlanInfoScene from '../repayment/NewInventoryPlanInfoScene';
 
 export  default class RepaymentScene extends BaseComponent {
 
     constructor(props, context) {
         super(props, context);
-        this.state = {renderPlaceholderOnly: true};
+        this.state = {renderPlaceholderOnly: 'blank'};
     }
 
 
     initFinish = () => {
-        InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: false});
-        });
+        this.setState({renderPlaceholderOnly: 'success'});
     }
 
     render() {
-        if (this.state.renderPlaceholderOnly) {
+        if (this.state.renderPlaceholderOnly !== 'success') {
             return this._renderPlaceholderView();
         }
         return (
-            <View style={{width: width, height: height}}>
+            <View style={{flex:1,backgroundColor: fontAndColor.COLORA3}}>
+                <ScrollableTabView
+                    style={{marginTop: Pixel.getTitlePixel(64), flex: 1}}
+                    initialPage={0}
+                    locked={true}
+                    renderTabBar={() => <RepaymenyTabBar tabName={["单车融资", "库存融资"]}/>}
+                >
+                    <SingleRepaymentPage customerName={this.props.customerName} callBack={(loan_id,loan_number,type)=>{
+                      this.toNextPage({name:'RepaymentInfoScene',component:RepaymentInfoScene,
+                      params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'SingleRepaymentPage'}});
+                    }} tabLabel="ios-paper"/>
+
+                    <InventoryRepaymentPage customerName={this.props.customerName} callBack={(loan_id,loan_number,type)=>{
+                      this.toNextPage({name:'InventoryPlanInfoScene',component:InventoryPlanInfoScene,
+                      params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'InventoryRepaymentPage'}});
+                    }} tabLabel="ios-people"/>
+
+                    {/*<PurchaseRepaymentPage customerName={this.props.customerName} callBack={(loan_id,loan_number,type)=>{*/}
+                      {/*this.toNextPage({name:'RepaymentInfoScene',component:RepaymentInfoScene,*/}
+                      {/*params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'PurchaseRepaymentPage'}});*/}
+                    {/*}} tabLabel="ios-chatboxes"/>*/}
+
+                </ScrollableTabView>
                 <NavigationView
                     title="还款"
                     backIconClick={this.backPage}
                     renderRihtFootView={this._navigatorRightView}
                 />
-                <ScrollableTabView
-                    style={{marginTop: Pixel.getTitlePixel(64), flex: 1}}
-                    initialPage={0}
-                    renderTabBar={() => <RepaymenyTabBar tabName={["单车融资", "库存融资", "采购融资"]}/>}
-                >
-                    <SingleRepaymentPage tabLabel="ios-paper"/>
-
-                    <InventoryRepaymentPage tabLabel="ios-people"/>
-
-                    <PurchaseRepaymentPage tabLabel="ios-chatboxes"/>
-
-                </ScrollableTabView>
             </View>
         );
 
@@ -70,7 +79,7 @@ export  default class RepaymentScene extends BaseComponent {
 
     _renderPlaceholderView() {
         return (
-            <View style={{width: width, height: height}}>
+            <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
                 <NavigationView
                     title="还款"
                     backIconClick={this.backPage}
@@ -78,23 +87,22 @@ export  default class RepaymentScene extends BaseComponent {
             </View>
         );
     }
-    navigatorParams={
-        name:"PlanListScene",
-        component:PlanListScene,
-        params:{
 
-        }
+    navigatorParams = {
+        name: "PlanListScene",
+        component: PlanListScene,
+        params: {}
     }
-    _navigatorRightView=()=>{
+    _navigatorRightView = () => {
         return (
-        <TouchableOpacity activeOpacity={0.8} onPress={()=>{
+            <TouchableOpacity activeOpacity={0.8} onPress={()=>{
             this.toNextPage(this.navigatorParams)
         }}>
-            <Text style={{color: 'white',
+                <Text style={{color: 'white',
                 fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                 textAlign: 'center',
                 backgroundColor: 'transparent',}}>还款计划</Text>
-        </TouchableOpacity>
+            </TouchableOpacity>
         );
     }
 }

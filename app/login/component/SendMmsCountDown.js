@@ -1,21 +1,11 @@
 import React, {Component, PropTypes} from "react";
-import {
-    AppRegistry,
-    StyleSheet,
-    Text,
-    View,
-    TextInput,
-    Image,
-    PixelRatio,
-} from "react-native";
-import MyButton from '../../component/MyButton';
-import  * as FontAndColor from '../../constant/fontAndColor';
-import BaseComponent from '../../component/BaseComponent';
-import PixelUtil from '../../utils/PixelUtil';
+import {AppRegistry, StyleSheet, Text, View, TextInput, Image, PixelRatio} from "react-native";
+import MyButton from "../../component/MyButton";
+import * as FontAndColor from "../../constant/fontAndColor";
+import PixelUtil from "../../utils/PixelUtil";
 var Pixel = new PixelUtil();
 
-var countTime = 30;
-var timer;
+const TIME = 60;
 export default class sendMmsCountDown extends Component {
     constructor(props) {
         super(props);
@@ -24,6 +14,10 @@ export default class sendMmsCountDown extends Component {
             countDown: false,
             value: '获取验证码'
         }
+        this.countTime = TIME;
+        this.timer = null;
+        this.oldTime = 0;
+        this.newTime = 10000;
     }
 
     static propTypes = {
@@ -43,25 +37,36 @@ export default class sendMmsCountDown extends Component {
                 <MyButton buttonType={MyButton.TEXTBUTTON} content={this.state.value}
                           parentStyle={this.state.countDown ? styles.pressButtonStyle : styles.buttonStyle}
                           childStyle={this.state.countDown ? styles.pressTextStyle : styles.textStyle}
-                          mOnPress={this.props.callBackSms}/>
+                          mOnPress={this.onSendPress}/>
             </View>
         );
     }
 
+    onSendPress = () => {
+        //屏蔽用户连续点击
+        this.newTime = (new Date()).valueOf();
+        if ((this.newTime - this.oldTime) > 2000) {
+            this.oldTime = this.newTime;
+            if (this.countTime == TIME) {
+                this.props.callBackSms();
+            }
+        }
+    }
+
     //开始计算操作
     StartCountDown = () => {
-        if (!this.state.countDown) {
-            timer = setInterval(() => {
-                if (countTime <= 0) {
+        if (!this.state.countDown && this.timer == null) {
+            this.timer = setInterval(() => {
+                if (this.countTime <= 0) {
                     this.setState({
                         countDown: false,
                         value: '获取验证码',
                     });
-                    this.endCountDown(timer);
+                    this.endCountDown();
                 } else {
                     this.setState({
                         countDown: true,
-                        value: --countTime + 'S后重发',
+                        value: --this.countTime + 'S后重发',
                     });
                 }
             }, 1000)
@@ -69,13 +74,19 @@ export default class sendMmsCountDown extends Component {
     }
 
     //结束计算操作
-    endCountDown = (timer) => {
-        clearInterval(timer);
-        countTime = 30;
+    endCountDown = () => {
+        if (this.timer != null) {
+            clearInterval(this.timer);
+            this.timer = null;
+        }
+        this.countTime = TIME;
     }
 
     componentWillUnmount() {
-        clearInterval(timer);
+        if (this.timer != null) {
+            clearInterval(this.timer);
+            this.timer = null;
+        }
     }
 }
 

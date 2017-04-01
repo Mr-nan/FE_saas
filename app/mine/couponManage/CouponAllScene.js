@@ -64,7 +64,6 @@ export default class CouponAllScene extends BaseComponent {
         return (
             <TouchableOpacity
                 onPress={()=>{
-                    console.log(rowID+"--"+selectionID)
                     this.toNextPage({
                         name: 'SignContractScene',
                         component: SignContractScene,
@@ -97,7 +96,6 @@ const styles = StyleSheet.create({
     },
     rowView: {
         height: 44,
-        flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: 'white',
         borderBottomColor: fontAndClolr.COLORA4,

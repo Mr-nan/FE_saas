@@ -21,9 +21,9 @@ export default class VinInfo extends Component{
 
     constructor(props){
         super(props);
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: ds.cloneWithRows(this.props.viewData),
+            dataSource: this.ds.cloneWithRows(this.props.viewData),
             modalVisible: false
         };
     }
@@ -34,11 +34,18 @@ export default class VinInfo extends Component{
         });
     };
 
-    openModal = (text)=>{
+
+    refresh = (data)=>{
+        this.setState({
+            dataSource: this.ds.cloneWithRows(data),
+        });
+    };
+
+    openModal = (mType)=>{
         this.setState({
             modalVisible: true
         });
-        this.text = text;
+        this.mType = mType;
     };
 
     render(){
@@ -66,7 +73,7 @@ export default class VinInfo extends Component{
             <TouchableOpacity
                 activeOpacity={0.8}
                 key={rowID}
-                onPress={()=>{this.props.vinPress(this.text,rowID),this._hiedModal()}}>
+                onPress={()=>{this.props.vinPress(this.mType,rowID),this._hiedModal()}}>
                 <View  style={styles.rowStyle}>
                     <Text style={styles.fontMain}>{rowData.model_name}</Text>
                 </View>

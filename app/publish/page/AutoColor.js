@@ -30,6 +30,21 @@ export default class AutoColor extends Component {
 
     constructor(props) {
         super(props);
+        this.vinNum = this.props.carData.vin;
+        let car_color = this.props.carData.car_color;
+        let trim_color = this.props.carData.trim_color;
+        // if(this.isEmpty(car_color) === true) {
+        //     car_color = '黑色';
+        //     this.props.sqlUtil.changeData(
+        //         'UPDATE publishCar SET car_color = ? WHERE vin = ?',
+        //         [car_color, this.vinNum]);
+        // }
+        // if(this.isEmpty(trim_color) === true) {
+        //     trim_color = '黑色';
+        //     this.props.sqlUtil.changeData(
+        //         'UPDATE publishCar SET trim_color = ? WHERE vin = ?',
+        //         [trim_color, this.vinNum]);
+        // }
         //车身 fill为true填充颜色，false填充图片
         this.viewShell = [
             {
@@ -114,7 +129,7 @@ export default class AutoColor extends Component {
             },
             {
                 title: '紫色',
-                selected: true,
+                selected: false,
                 fill: true,
                 color: '#6c1d90',
                 img: '',
@@ -228,12 +243,31 @@ export default class AutoColor extends Component {
                 index: 7
             },
         ];
+
+        this.viewShell.map((shell)=>{
+            if(shell.title != ''){
+                shell.selected = (shell.title === car_color);
+            }
+        });
+
+        this.viewInterior.map((interior)=>{
+            interior.selected = (interior.title === trim_color);
+        });
         this.state = {
             carShell: this.viewShell,
             carInterior: this.viewInterior,
             renderPlaceholderOnly: true
         }
     }
+
+
+    isEmpty = (str)=>{
+        if(typeof(str) != 'undefined' && str !== ''){
+            return false;
+        }else {
+            return true;
+        }
+    };
 
     componentWillMount() {
 
@@ -255,21 +289,40 @@ export default class AutoColor extends Component {
     }
 
     _shellPress = (i) => {
+        let shell ='';
         this.viewShell.map((data,index)=>{
             if(data.title !== ''){
-                data.selected = (i === index);
+                if(i === index){
+                    data.selected = true;
+                    shell = data.title;
+                }else{
+                    data.selected = false;
+                }
             }
         });
+
         this.shellGrid.refresh(this.viewShell);
+        this.props.sqlUtil.changeData(
+            'UPDATE publishCar SET car_color = ? WHERE vin = ?',
+            [shell, this.vinNum]);
     };
 
     _interiorPress = (i) => {
+        let interior='';
         this.viewInterior.map((data,index)=>{
-            if(data.title !== ''){
-                data.selected = (i === index);
+            if(data.title != ''){
+                if(i === index){
+                    data.selected = true;
+                    interior = data.title;
+                }else{
+                    data.selected = false;
+                }
             }
         });
         this.interiorGrid.refresh(this.viewInterior);
+        this.props.sqlUtil.changeData(
+            'UPDATE publishCar SET trim_color = ? WHERE vin = ?',
+            [interior, this.vinNum]);
     };
 
     _renderShell = (data, i) => {

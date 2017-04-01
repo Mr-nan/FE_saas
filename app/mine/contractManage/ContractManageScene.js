@@ -1,63 +1,136 @@
 import  React, {Component, PropTypes} from  'react'
 import  {
-
-    View,
-    Text,
-    ListView,
     StyleSheet,
+    View,
+    TouchableOpacity,
+    Text,
     Dimensions,
-    Image,
-    TouchableOpacity
+    ListView,
+    RefreshControl,
+    Image
 } from  'react-native'
 
-import * as fontAndClolr from '../../constant/fontAndColor';
+import * as fontAndColor from '../../constant/fontAndColor';
 import  PixelUtil from '../../utils/PixelUtil'
-import SignContractScene from '../contractManage/SignContractScene'
+import SignContractScene from './SignContractScene'
+import NewSignContractScene from './newcontract/NewSignContractScene'
 var Pixel = new PixelUtil();
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
-import NavigationBar from "../../component/NavigationBar";
-import CountInfoScene from '../accountManage/AccountInfoScene';
+import  LoadMoreFooter from '../../component/LoadMoreFooter';
+import {request} from '../../utils/RequestUtil';
+import * as Urls from '../../constant/appUrls';
 import BaseComponent from "../../component/BaseComponent";
-// let Car = require('./Car.json');
+import NavigatorView from '../../component/AllNavigationView';
 /*
  * 获取屏幕的宽和高
  **/
 const {width, height} = Dimensions.get('window');
-
+let page = 1;
+let allPage = 1;
+let allSouce = [];
 export default class ContractManageScene extends BaseComponent {
     initFinish = () => {
+        this.getData();
+    }
+
+    componentWillUnmount() {
+        allSouce = [];
+    }
+
+    getData = () => {
+        let maps = {
+            page: page,
+            rows: 10,
+            api: Urls.LOAN_SUBJECT,
+        };
+        request(Urls.FINANCE, 'Post', maps)
+            .then((response) => {
+                    if (page == 1 && response.mjson.data.length <= 0) {
+                        this.setState({renderPlaceholderOnly: 'null'});
+                    } else {
+                        allSouce.push(...response.mjson.data);
+                        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                        this.setState({
+                            dataSource: ds.cloneWithRows(allSouce),
+                            isRefreshing: false
+                        });
+                        this.setState({renderPlaceholderOnly: 'success'});
+                    }
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
+                });
     }
     // 构造
     constructor(props) {
         super(props);
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: ds.cloneWithRows([
-                'John', 'Joel', 'James', 'Jimmy'
-            ]),
+            dataSource: {},
+            renderPlaceholderOnly: 'blank',
+            isRefreshing: false
         };
 
     }
 
+    refreshingData = () => {
+        allSouce = [];
+        this.setState({isRefreshing: true});
+        page = 1;
+        this.getData();
+    };
+
+    toEnd = () => {
+        if (this.state.isRefreshing) {
+
+        } else {
+            if (page < allPage) {
+                page++;
+                this.getData();
+            }
+        }
+
+    };
+
+    renderListFooter = () => {
+        if (this.state.isRefreshing) {
+            return null;
+        } else {
+            return (<LoadMoreFooter isLoadAll={page>=allPage?true:false}/>)
+        }
+    }
+
     render() {
-        return (
-            <View style={styles.container}>
-                <NavigationBar
-                    centerText={'合同管理'}
-                    rightText={''}
-                    leftImageCallBack={this.backPage}
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return ( <View style={styles.container}>
 
+                {this.loadView()}
+                <NavigatorView title='合同管理' backIconClick={this.backPage}/>
+            </View>);
+        } else {
+            return (<View style={styles.container}>
+                <NavigatorView title='合同管理' backIconClick={this.backPage}/>
+
+
+                <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(64)}}
+                          dataSource={this.state.dataSource}
+                          renderRow={this._renderRow}
+                          enableEmptySections={true}
+                          renderFooter={
+                              this.renderListFooter
+                          }
+                          onEndReached={this.toEnd}
+                          refreshControl={
+                              <RefreshControl
+                                  refreshing={this.state.isRefreshing}
+                                  onRefresh={this.refreshingData}
+                                  tintColor={[fontAndColor.COLORB0]}
+                                  colors={[fontAndColor.COLORB0]}
+                              />
+                          }
                 />
 
-
-                <ListView
-                    contentContainerStyle={styles.listStyle}
-                    dataSource={this.state.dataSource}
-                    renderRow={this._renderRow}
-                />
-
-            </View>
-        );
+            </View>);
+        }
     }
 
     // 每一行中的数据
@@ -65,15 +138,31 @@ export default class ContractManageScene extends BaseComponent {
         return (
             <TouchableOpacity
                 onPress={()=>{
-                    console.log(rowID+"--"+selectionID)
-                    this.toNextPage({
-                name: 'SignContractScene',
-                component: SignContractScene,
-                params: {rowID},
-            })}}>
-                <View style={styles.rowView} >
-                    <Text style={styles.rowLeftTitle}>第一车贷是个公司</Text>
-                    {selectionID!=='2' ? <Text style={styles.rowRightTitle} >7份合同</Text>:null}
+                    if(rowData.is_done_credit=='1'){
+                    if(this.props.from=='xs'){
+                         this.toNextPage({
+                        callBack: () => {
+                            this.setState({renderPlaceholderOnly: 'loading'});
+                            this.getData();
+                        },
+                    name: 'SignContractScene',
+                    component: SignContractScene,
+                    params: {
+                    opt_user_id: rowData.user_id,
+                        },
+                        })
+                    }else{
+                        this.toNextPage({name:'NewSignContractScene',component:NewSignContractScene,params:{opt_user_id: rowData.user_id,}});
+                    }
+                    }else{
+                        this.props.showToast('当前企业未完成授信');
+                    }
+
+                   }}>
+                <View style={styles.rowView}>
+                    <Text style={styles.rowLeftTitle}>{rowData.companyname}</Text>
+                    <Text
+                        style={styles.rowRightTitle}>{this.props.from == 'xs' ? rowData.contract_num + '份未签署合同' : ''}</Text>
                     <Image source={cellJianTou} style={styles.image}></Image>
 
                 </View>
@@ -87,39 +176,38 @@ const styles = StyleSheet.create({
 
         flex: 1,
         marginTop: Pixel.getPixel(0),   //设置listView 顶在最上面
-        backgroundColor: fontAndClolr.COLORA3,
+        backgroundColor: fontAndColor.COLORA3,
     },
     listStyle: {
         marginTop: Pixel.getPixel(15)
     },
     sectionView: {
         height: Pixel.getPixel(10),
-        backgroundColor: fontAndClolr.COLORA3,
+        backgroundColor: fontAndColor.COLORA3,
     },
     rowView: {
         height: 44,
-        flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: 'white',
-        borderBottomColor: fontAndClolr.COLORA4,
+        borderBottomColor: fontAndColor.COLORA4,
         borderBottomWidth: 1,
         flexDirection: 'row'
     },
     rowLeftTitle: {
         marginLeft: Pixel.getPixel(15),
         flex: 1,
-        fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT28),
-        color: fontAndClolr.COLORA0,
+        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+        color: fontAndColor.COLORA0,
 
     },
     rowRightTitle: {
         marginRight: Pixel.getPixel(10),
-        color: fontAndClolr.COLORA2,
-        fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT28),
+        color: fontAndColor.COLORA2,
+        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
 
     },
-    image:{
-        marginRight:Pixel.getPixel(15),
+    image: {
+        marginRight: Pixel.getPixel(15),
     }
 
 
