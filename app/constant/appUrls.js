@@ -255,7 +255,7 @@ export const REPAYMENT_GET_ADJUST_USE = 'api/v5/Repayment/get_adjust_use';
  *
  * 使用优惠券
  **/
-// export const REPAYMENT_GET_ADJUST_SAVE = 'api/v5/Repayment/get_adjust_save';
+export const REPAYMENT_GET_ADJUST_SAVE = 'api/v5/Repayment/get_adjust_save';
 
 /**
  * from @zhaojian
