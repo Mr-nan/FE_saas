@@ -104,17 +104,10 @@ export  default  class CGDSelectPatternScene  extends  BaseComponent{
 
         return (
             <View style={styles.rootContainer}>
-                <View style={styles.headViewHintView}>
-                    <Image style={{width:20,height:20}} source={require('../../../images/financeImages/hintImage.png')}/>
-                    <Text style={styles.headViewHintText}>模式一旦选择将不可变更</Text>
-                </View>
-                {
-                      this.renderHeadView()
-                }
                 <ListView
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}
-
+                    renderHeader={this.renderHeadView}
                 />
                 <TouchableOpacity style={styles.footButton} onPress={()=>{alert('确定'+isCarinvoice +':'+isOBD)}}>
                         <Text style={styles.footButtonText}>确定</Text>
@@ -136,6 +129,10 @@ export  default  class CGDSelectPatternScene  extends  BaseComponent{
     renderHeadView =()=> {
         return(
             <View style={styles.headViewContainer}>
+                <View style={styles.headViewHintView}>
+                    <Image style={{width:20,height:20}} source={require('../../../images/financeImages/hintImage.png')}/>
+                    <Text style={styles.headViewHintText}>模式一旦选择将不可变更</Text>
+                </View>
                 <CGDSelectView title="二手车交易发票" selectClick={(btnType)=>{
                     isCarinvoice = btnType;
                     this.loadData();
@@ -148,7 +145,6 @@ export  default  class CGDSelectPatternScene  extends  BaseComponent{
                     <Text style={styles.headViewTitleText}>该模式收费标准</Text>
                     <Text style={styles.headViewTitleSubText}>（放款时按每台车融资额砍头收取）</Text>
                 </View>
-                <View style={styles.headViewBottomLine}/>
             </View>
         )
     }
@@ -279,7 +275,6 @@ const styles = StyleSheet.create({
         marginLeft:10
     },
     headViewContainer:{
-        flex:1,
         backgroundColor:fontAndColor.COLORA3,
     },
     headViewBottomLine:{
@@ -291,13 +286,14 @@ const styles = StyleSheet.create({
         position: 'absolute',
     },
     headViewTitleView:{
-        flex:1,
         flexDirection:'row',
         paddingLeft:15,
         alignItems:'center',
         height:Pixel.getPixel(50),
         backgroundColor:'white',
-        marginTop:10
+        marginTop:10,
+        borderBottomWidth:StyleSheet.hairlineWidth,
+        borderBottomColor:fontAndColor.COLORA4,
     },
     headViewTitleText:{
         color:fontAndColor.COLORA0,
@@ -308,14 +304,12 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
     },
     headViewSelectView:{
-        flex:1,
         height:50,
         backgroundColor:'white',
         flexDirection:'row',
         marginTop:10,
     },
     headViewSelectLeftView:{
-        flex:1,
         width:ScreenWidth/2,
         justifyContent:'center',
         paddingLeft:Pixel.getPixel(15),
