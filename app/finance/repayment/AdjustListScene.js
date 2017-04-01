@@ -345,12 +345,14 @@ const styles = StyleSheet.create({
     },
     leftTitle: {
         fontSize: Pixel.getFontPixel(15),
-        color: '#000000'
+        color: '#000000',
+        backgroundColor:'#00000000'
     },
     leftBottom: {
         marginTop: Pixel.getPixel(5),
         fontSize: Pixel.getFontPixel(12),
-        color: '#9e9e9e'
+        color: '#9e9e9e',
+        backgroundColor:'#00000000'
     },
     rightContainer: {
         width: Pixel.getPixel(120),
@@ -361,8 +363,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     rightTitle: {
-        fontSize: Pixel.getFontPixel(26),
-        color: '#05c5c2'
+        fontSize: Pixel.getFontPixel(25),
+        color: '#05c5c2',
+        backgroundColor:'#00000000'
     },
     rightTitleAlign: {
         marginRight: Pixel.getPixel(3)
@@ -378,14 +381,15 @@ const styles = StyleSheet.create({
     },
     rightBottomText: {
         fontSize: Pixel.getFontPixel(14),
-        color: '#9e9e9e'
+        color: '#9e9e9e',
+        backgroundColor:'#00000000'
     },
     imgContainer: {
-        height: Pixel.getPixel(33),
-        width: Pixel.getPixel(33),
+        height: Pixel.getPixel(30),
+        width: Pixel.getPixel(30),
         position: 'absolute',
-        bottom: Pixel.getFontPixel(3),
-        right: Pixel.getFontPixel(3),
+        bottom: 0,
+        right: Pixel.getPixel(7),
     },
     listHeader: {
         width: width,

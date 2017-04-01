@@ -137,7 +137,7 @@ export  default class RepaymentInfoPage extends BaseComponent {
     _renderRow = (movie, sectionId, rowId) => {
         if (rowId == 0) {
             return (
-                <NewRepaymentInfoTopItem items={movies}/>
+                <NewRepaymentInfoTopItem items={movies} loan_number={this.props.loan_number}/>
             )
         } else if(rowId == 1){
             return (
