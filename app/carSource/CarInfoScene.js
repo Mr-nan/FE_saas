@@ -21,16 +21,14 @@ import NavigationView from '../component/AllNavigationView';
 import Gallery from 'react-native-gallery';
 import PixelUtil from '../utils/PixelUtil';
 import {LendSuccessAlert} from '../finance/lend/component/ModelComponent';
-import CGDSelectPatternScene from '../finance/lend/CGDSelectPatternScene';
 import CarZoomImageScene from './CarZoomImagScene';
-import * as weChat from 'react-native-wechat';
+// import * as weChat from 'react-native-wechat';
 const Pixel = new PixelUtil();
 
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 
 var ScreenWidth = Dimensions.get('window').width;
-var ScreenHeight = Dimensions.get('window').height;
 let resolveAssetSource = require('resolveAssetSource');
 
 
