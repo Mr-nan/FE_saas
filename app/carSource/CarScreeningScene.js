@@ -281,17 +281,17 @@ const styles = StyleSheet.create({
     },
     checkedItemText:{
         color:fontAndColor.COLORA2,
-        fontSize:fontAndColor.CONTENTFONT24,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
     },
     titleText:{
         color:fontAndColor.COLORA0,
-        fontSize:fontAndColor.LITTLEFONT28,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
         fontWeight:'bold'
 
     },
     contentText:{
         color:fontAndColor.COLORA2,
-        fontSize:fontAndColor.LITTLEFONT28,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
         marginRight:Pixel.getPixel(5),
     },
 
