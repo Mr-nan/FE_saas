@@ -1,7 +1,7 @@
 /**
  * 开发地址
  */
-export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
@@ -60,6 +60,11 @@ export const CAR_HOME_SERIES = BASEURL + V + 'home/series';
  * 获取车型
  */
 export const CAR_HOME_MODELS = BASEURL + V + 'home/models';
+
+/**
+ * 获取区域
+ */
+export const INDEX_CITY = BASEURL + V + 'index/city';
 
 
 /**
@@ -393,6 +398,13 @@ export const GETPURCHAAUTOPICCATE = "api/v2/purchaAuto/getPurchaAutoPicCate";
  * 获取采购贷车辆列表
  **/
 export const PURCHAAUTOAUTOLIST = "api/v1/purchaAuto/autoList";
+
+/**
+ * from @ZN
+ *
+ * 采购贷选择模式
+ **/
+export const APPLY_PATTERN_LIST = 'api/v3/account/apply_pattern_list';
 
 /**
  * from @huangning

@@ -51,7 +51,7 @@ export  default  class CGDSelectPatternScene  extends  BaseComponent{
 
             obd_status:isOBD,
             invoice_status:isCarinvoice,
-            api:'api/v3/account/apply_pattern_list',
+            api:AppUrls.APPLY_PATTERN_LIST,
 
         }).then((response) => {
 
@@ -263,16 +263,16 @@ const styles = StyleSheet.create({
     },
     headViewHintView:{
         flexDirection:'row',
-        height:35,
+        height:Pixel.getPixel(35),
         alignItems:'center',
-        paddingLeft:15,
+        paddingLeft:Pixel.getPixel(15),
         backgroundColor:fontAndColor.COLORB6,
 
     },
     headViewHintText:{
         color:fontAndColor.COLORB2,
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-        marginLeft:10
+        marginLeft:Pixel.getPixel(10)
     },
     headViewContainer:{
         backgroundColor:fontAndColor.COLORA3,
@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
         height:Pixel.getPixel(50),
         backgroundColor:'white',
-        marginTop:10,
+        marginTop:Pixel.getPixel(10),
         borderBottomWidth:StyleSheet.hairlineWidth,
         borderBottomColor:fontAndColor.COLORA4,
     },
@@ -304,10 +304,10 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
     },
     headViewSelectView:{
-        height:50,
+        height:Pixel.getPixel(50),
         backgroundColor:'white',
         flexDirection:'row',
-        marginTop:10,
+        marginTop:Pixel.getPixel(10),
     },
     headViewSelectLeftView:{
         width:ScreenWidth/2,
@@ -348,8 +348,8 @@ const styles = StyleSheet.create({
 
     },
     cellBottomLine:{
-        left:15,
-        right:15,
+        left:Pixel.getPixel(15),
+        right:Pixel.getPixel(15),
         bottom:0,
         height:StyleSheet.hairlineWidth,
         backgroundColor:fontAndColor.COLORA4,
@@ -370,7 +370,7 @@ const styles = StyleSheet.create({
     },
     cellContentLeftView:{
         justifyContent:'center',
-        paddingLeft:15,
+        paddingLeft:Pixel.getPixel(15),
         width:ScreenWidth/2
     },
     cellContentRightView:{
@@ -378,7 +378,7 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         justifyContent:'space-between',
         width:ScreenWidth/2,
-        paddingRight:15,
+        paddingRight:Pixel.getPixel(15),
     },
 
     cellContentItemView:{
@@ -403,7 +403,7 @@ const styles = StyleSheet.create({
         left:0,
         right:0,
         bottom:0,
-        height:44,
+        height:Pixel.getPixel(44),
         backgroundColor:fontAndColor.COLORB0,
         justifyContent:'center',
         alignItems:'center',

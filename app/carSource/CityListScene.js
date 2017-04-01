@@ -90,8 +90,7 @@ export default class CityListScene extends BaseComponent {
         }
 
         this.props.showModal(true);
-        let url = AppUrls.BASEURL + 'v1/index/city';
-        request(url, 'post', {
+        request(AppUrls.INDEX_CITY, 'post', {
 
         }).then((response) => {
 

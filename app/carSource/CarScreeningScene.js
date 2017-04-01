@@ -169,7 +169,7 @@ class CheckedView extends Component{
                     {
                         this.props.dataArray.map((data, index) => {
                             return (
-                                <TouchableOpacity style={{height:20, marginTop:10,marginBottom:5,
+                                <TouchableOpacity style={{height:Pixel.getPixel(20), marginTop:Pixel.getPixel(10),marginBottom:Pixel.getPixel(5),
                                 }} onPress={()=>
                                 {
                                     if(this.state.currentChecked!=data.title){
@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
 
         borderColor:fontAndColor.COLORA2,
         borderWidth:StyleSheet.hairlineWidth,
-        marginRight:Pixel.getPixel(20),
+        marginRight:Pixel.getPixel(15),
         backgroundColor:'white',
         height:Pixel.getPixel(20),
         alignItems:'center',
