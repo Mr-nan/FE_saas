@@ -143,7 +143,14 @@ export default class PlanInfoPage extends BaseComponent {
         return (
             <TouchableOpacity style={styles.rowView}
                               onPress={() => {
-                                  this._rowClick(rowID)
+                                  if(rowData.adjustmoney!='0'){
+                                      if(rowData.relist){
+                                          this._moneyAdjustClick(rowID)
+                                      }
+                                  }else{
+                                      this._rowClick(rowID)
+                                  }
+
                               }}>
                 <View style={styles.textAllStyle}>
                     <Text style={styles.rowTextStyle}>{rowData.dead_line}</Text>
