@@ -60,6 +60,11 @@ export const CAR_HOME_SERIES = BASEURL + V + 'home/series';
  */
 export const CAR_HOME_MODELS = BASEURL + V + 'home/models';
 
+/**
+ * 获取区域
+ */
+export const INDEX_CITY = BASEURL + V + 'index/city';
+
 
 /**
  * 获取车源列表
@@ -254,7 +259,7 @@ export const REPAYMENT_GET_ADJUST_USE = 'api/v5/Repayment/get_adjust_use';
  *
  * 使用优惠券
  **/
-// export const REPAYMENT_GET_ADJUST_SAVE = 'api/v5/Repayment/get_adjust_save';
+export const REPAYMENT_GET_ADJUST_SAVE = 'api/v5/Repayment/get_adjust_save';
 
 /**
  * from @zhaojian
@@ -392,6 +397,13 @@ export const GETPURCHAAUTOPICCATE = "api/v2/purchaAuto/getPurchaAutoPicCate";
  * 获取采购贷车辆列表
  **/
 export const PURCHAAUTOAUTOLIST = "api/v1/purchaAuto/autoList";
+
+/**
+ * from @ZN
+ *
+ * 采购贷选择模式
+ **/
+export const APPLY_PATTERN_LIST = 'api/v3/account/apply_pattern_list';
 
 /**
  * from @huangning

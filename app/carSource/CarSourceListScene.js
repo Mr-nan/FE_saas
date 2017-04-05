@@ -29,6 +29,7 @@ import ListFooter           from './znComponent/LoadMoreFooter';
 import CarCell              from './znComponent/CarCell';
 import CarInfoScene         from './CarInfoScene';
 import CarBrandSelectScene  from './CarBrandSelectScene';
+import CarScreeningScene    from  './CarScreeningScene';
 import CityListScene        from './CityListScene';
 import {SequencingButton, SequencingView} from './znComponent/CarSequencingView';
 import * as AppUrls         from "../constant/appUrls";
@@ -57,11 +58,13 @@ const APIParameter = {
     order_type: 0,
     coty: 0,
     mileage: 0,
+    v_type:0,
     rows: 10,
     page: 1,
     start: 0,
     type: 1,
     status: 1,
+
 };
 
 
@@ -109,6 +112,15 @@ export  default  class carSourceListScene extends BaseComponent {
                 title: '',
                 value: '',
             },
+            checkedCarGenre:{
+                title: '',
+                value: '',
+            },
+            checkedCity:{
+                title: '',
+                value: '',
+            },
+
             renderPlaceholderOnly: 'blank',
         };
 
@@ -279,6 +291,52 @@ export  default  class carSourceListScene extends BaseComponent {
 
     }
 
+    ScreeningClick=()=>{
+
+        let {checkedCarType,checkedCarAgeType,checkedCarKMType,checkedCarGenre,checkedCity }= this.state;
+
+        let screeningObject = {
+            checkedCarType:{title:checkedCarType.title,brand_id:checkedCarType.brand_id,series_id:checkedCarType.series_id},
+            checkedCarAgeType:{title:checkedCarAgeType.title,value:checkedCarAgeType.value},
+            checkedCarKMType:{title:checkedCarKMType.title,value:checkedCarKMType.value},
+            checkedCarGenre:{title:checkedCarGenre.title,value:checkedCarGenre.value},
+            checkedCity:{title:checkedCity.title,value:checkedCity.value},
+        };
+        let navigatorParams = {
+            name: "CarScreeningScene",
+            component: CarScreeningScene,
+            params: {
+                screeningObject:screeningObject,
+                screeningCompleteClick:this.screeningCompleteClick
+            }
+        };
+        this.props.callBack(navigatorParams);
+    }
+
+
+    screeningCompleteClick=(screeningObject)=>{
+
+        this.setState({
+            checkedCarType: screeningObject.checkedCarType,
+            checkedCarAgeType:screeningObject.checkedCarAgeType,
+            checkedCarKMType:screeningObject.checkedCarKMType,
+            checkedCarGenre:screeningObject.checkedCarGenre,
+            checkedCity:screeningObject.checkedCity,
+        });
+
+        APIParameter.brand_id = screeningObject.checkedCarType.brand_id;
+        APIParameter.series_id = screeningObject.checkedCarType.series_id;
+        APIParameter.mileage = screeningObject.checkedCarKMType.value;
+        APIParameter.coty = screeningObject.checkedCarAgeType.value;
+        APIParameter.city_id = screeningObject.checkedCity.value;
+        APIParameter.v_type = screeningObject.checkedCarGenre.value;
+
+        if (this.refs.headView.state.isCheckRecommend) {
+            this.refs.headView.setCheckRecommend(false)
+        } else {
+            this.filterData();
+        }
+    }
 
     //  筛选条件事件
     headViewOnPres = (index, isHighlighted, setImgHighlighted) => {
@@ -481,6 +539,36 @@ export  default  class carSourceListScene extends BaseComponent {
         }
     };
 
+    carGenreClick = () => {
+        this.setState({
+            checkedCarGenre: {
+                title: '',
+                value: '',
+            },
+        });
+        APIParameter.v_type = 0;
+        if (this.refs.headView.state.isCheckRecommend) {
+            this.refs.headView.setCheckRecommend(false)
+        } else {
+            this.filterData();
+        }
+    };
+
+    carCityClick = () => {
+        this.setState({
+            checkedCity: {
+                title: '',
+                value: '',
+            },
+        });
+        APIParameter.city_id = 0;
+        if (this.refs.headView.state.isCheckRecommend) {
+            this.refs.headView.setCheckRecommend(false)
+        } else {
+            this.filterData();
+        }
+    };
+
     allDelectClick = () => {
 
         this.setState({
@@ -500,6 +588,14 @@ export  default  class carSourceListScene extends BaseComponent {
                 title: '',
                 value: '',
             },
+            checkedCarGenre:{
+                title: '',
+                value: '',
+            },
+            checkedCity:{
+                title: '',
+                value: '',
+            },
         });
 
         APIParameter.order_type = 0;
@@ -507,6 +603,8 @@ export  default  class carSourceListScene extends BaseComponent {
         APIParameter.coty = 0;
         APIParameter.brand_id = 0;
         APIParameter.series_id = 0;
+        APIParameter.v_type=0;
+        APIParameter.city_id=0;
 
         if (this.refs.headView.state.isCheckRecommend) {
             this.refs.headView.setCheckRecommend(false);
@@ -556,8 +654,7 @@ export  default  class carSourceListScene extends BaseComponent {
 
                 isCarFoot = false;
 
-            }
-            ;
+            };
 
             return (<ListFooter isLoadAll={this.state.isFillData==1?false:true} isCarFoot={isCarFoot}
                                 footAllClick={this.allDelectClick}/>)
@@ -581,21 +678,25 @@ export  default  class carSourceListScene extends BaseComponent {
         return (
 
             <View style={styles.contaier}>
-                <CarListNavigatorView searchClick={this.presCarTypeScene} loactionClick={this.loactionClick}/>
+                <CarListNavigatorView searchClick={this.presCarTypeScene}  ScreeningClick={this.ScreeningClick} loactionClick={this.loactionClick}/>
                 <CarSourceSelectHeadView ref="headView" onPres={this.headViewOnPres}
                                          checkRecommendClick={this.checkRecommendClick}/>
                 {
 
-                    (this.state.checkedCarKMType.title || this.state.checkedCarAgeType.title || this.state.checkedCarType.title || this.state.sequencingType.title) ?
+                    (this.state.checkedCarKMType.title || this.state.checkedCarAgeType.title || this.state.checkedCarType.title || this.state.sequencingType.title || this.state.checkedCity.title || this.state.checkedCarGenre.title) ?
                         ( <CheckedContentView
                                 sequencingType={this.state.sequencingType}
                                 carType={this.state.checkedCarType}
                                 carAge={this.state.checkedCarAgeType}
                                 carKM={this.state.checkedCarKMType}
+                                carGenre={this.state.checkedCarGenre}
+                                carCity={this.state.checkedCity}
                                 sequencingClick={this.sequencingClick}
                                 carTypeClick={this.carTypeClick}
                                 carAgeClick={this.carAgeClick}
                                 carKMClick={this.carKMClick}
+                                carGenreClick = {this.carGenreClick}
+                                carCityClick={this.carCityClick}
                                 allDelectClick={this.allDelectClick}
                             />
                         ) : (null)
@@ -653,10 +754,32 @@ export  default  class carSourceListScene extends BaseComponent {
 class CheckedContentView extends Component {
 
     render() {
-        const {sequencingType, carType, carAge, carKM, sequencingClick, carTypeClick, carAgeClick, carKMClick, allDelectClick} = this.props;
+        const {sequencingType, carType, carAge, carKM,carGenre,carCity, sequencingClick, carTypeClick, carAgeClick, carKMClick, carGenreClick,carCityClick,allDelectClick} = this.props;
         return (
 
             <View style={styles.checkedContentView}>
+                {
+                    carGenre.title ? (
+                            <TouchableOpacity onPress={carGenreClick}>
+                                <View style={styles.checkedContentItem}>
+                                    <Text style={styles.checkedItemText}>{carGenre.title}</Text>
+                                    <Image style={styles.checkedDeleteImg}
+                                           source={require('../../images/deleteIcon2x.png')}/>
+                                </View>
+                            </TouchableOpacity>) : (null)
+
+                }
+                {
+                    carCity.title ? (
+                            <TouchableOpacity onPress={carCityClick}>
+                                <View style={styles.checkedContentItem}>
+                                    <Text style={styles.checkedItemText}>{carCity.title}</Text>
+                                    <Image style={styles.checkedDeleteImg}
+                                           source={require('../../images/deleteIcon2x.png')}/>
+                                </View>
+                            </TouchableOpacity>) : (null)
+
+                }
                 {
                     sequencingType.title ? (
                             <TouchableOpacity onPress={sequencingClick}>
@@ -730,6 +853,12 @@ class CarListNavigatorView extends Component {
                             <Image style={{marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(10)}}
                                    source={require('../../images/carSourceImages/sousuoicon.png')}/>
                             <Text style={styles.navigatorSousuoText}>按品牌、车系搜索</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this.props.ScreeningClick}>
+                        <View style={{marginLeft:Pixel.getPixel(20),width:Pixel.getPixel(50),height:Pixel.getPixel(40),justifyContent:'center',
+                            alignItems:'center'}}>
+                            <Text style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>筛选</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -838,7 +967,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor: 'white',
         alignItems: 'center',
-        width: ScreenWidth - Pixel.getPixel(40),
+        width: ScreenWidth - Pixel.getPixel(110),
         flexDirection: 'row',
         justifyContent: 'center',
     },

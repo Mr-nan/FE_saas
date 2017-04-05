@@ -160,6 +160,7 @@ export default class CarBrandSelectScene extends BaseComponent {
 
         }, (error) => {
 
+            this.props.showToast(error.mjson.msg);
             this.stopLoadData();
 
         });

@@ -124,7 +124,7 @@ export  default class AdjustManageListScene extends BaseComponent {
                             <Text style={styles.rightTitle}>{movie.coupon_mny}</Text>
                         </View>
                         <TouchableOpacity style={styles.rightBottom} onPress={() => {
-                                this.refs.cgdModal.changeShowType(true,movie.using_scope);
+                                this.refs.cgdModal.changeShowType(true,movie.coupon_remark);
                         }}>
                             <View>
                                 <Text style={styles.rightBottomText}>使用规则</Text>
