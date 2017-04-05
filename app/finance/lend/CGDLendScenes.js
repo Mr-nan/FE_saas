@@ -194,7 +194,6 @@ const styles = StyleSheet.create({
         bottom: adapeSize(16),
         width: width,
         flexDirection: 'row',
-
     },
     buttonStyleRight: {
 

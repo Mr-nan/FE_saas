@@ -20,7 +20,6 @@ export const BASEURL = 'http://api-gateway.test.dycd.com/';
  */
 // export const BASEURL = "http://st.open.bms.dycd.com/api/";
 
-
 /**
  * 版本号1
  */

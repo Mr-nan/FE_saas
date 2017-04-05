@@ -333,45 +333,12 @@ export default class OBDDevice extends BaseComponent {
 }
 
 const styles = StyleSheet.create({
-    containerStyle: {
-        flex: 1,
-        backgroundColor: FontAndColor.COLORA3,
-    },
     container: {
         flex: 1,
         marginTop: Pixel.getPixel(0),   //设置listView 顶在最上面
         backgroundColor: 'white',
         backgroundColor: FontAndColor.COLORA3,
         alignItems: 'center'
-    },
-    listStyle: {
-        // justifyContent: 'flex-start',
-        // flexDirection: 'row',
-        // flexWrap: 'wrap',
-        // alignItems: 'flex-start',
-    },
-    itemStyle: {
-        width: width,
-        height: Pixel.getPixel(60),
-        flexDirection: 'row',
-        alignItems: 'center',
-        borderBottomWidth: Pixel.getPixel(1),
-        borderBottomColor: FontAndColor.COLORA4,
-        justifyContent: 'center',
-    },
-    itemIconStyle: {
-        width: 30,
-        height: 30,
-        marginLeft: 15,
-        borderRadius: 15,
-        paddingTop: 5,
-        paddingBottom: 5,
-        borderColor: FontAndColor.COLORB0,
-        borderWidth: Pixel.getPixel(1),
-    },
-    itemTextStyle: {
-        fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT),
-        color: FontAndColor.COLORA0
     },
     buttonTextStyle: {
         color: FontAndColor.COLORA3,
@@ -383,11 +350,6 @@ const styles = StyleSheet.create({
         backgroundColor: FontAndColor.COLORB0,
         alignItems: 'center',
         justifyContent: 'center',
-
-    },
-    bottomItemTextStyle: {
-        fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT),
-        color: FontAndColor.COLORB2
     },
     buttonStyle: {
         borderColor: FontAndColor.COLORB0,
@@ -417,17 +379,6 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(18),
         color: FontAndColor.COLORA2,
     },
-    imageButtonStyle: {
-        width: Pixel.getPixel(78),
-        height: Pixel.getPixel(58),
-    },
-    myButtonStyle: {
-        marginBottom: Pixel.getPixel(10),
-    },
-    myImageButtonStyle: {
-        width: Pixel.getPixel(78),
-        height: Pixel.getPixel(58),
-    },
     loginBtnStyle: {
         height: Pixel.getPixel(44),
         width: width - Pixel.getPixel(30),
@@ -442,15 +393,6 @@ const styles = StyleSheet.create({
         color: FontAndColor.COLORA3,
         fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT)
     },
-    itemStyel: {flex: 1},
-    inputTextStyle: {
-        backgroundColor: '#ffffff',
-        paddingLeft: 0,
-        paddingRight: 0,
-        margin: 0,
-        textAlign: 'right',
-        fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT30),
-    },
     boundStateStyle: {
         flex: 1,
         color: FontAndColor.COLORA1,
@@ -463,19 +405,8 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT),
         textAlign: 'right'
     },
-    image: {
-        width: 43,
-        height: 43,
-    },
     Separator: {
         backgroundColor: FontAndColor.COLORA3,
         height: Pixel.getPixel(10),
-
     },
-    margin: {
-        marginRight: Pixel.getPixel(15),
-        marginLeft: Pixel.getPixel(15)
-
-    },
-    topViewStyle: {flex: 1, height: Pixel.getPixel(44), justifyContent: 'center'}
 })

@@ -44,6 +44,13 @@ export default class PlanInfoPage extends BaseComponent {
         relist = [];
     }
 
+    allRefresh = () => {
+        list = [];
+        relist = [];
+        this.getData();
+    }
+
+
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: 'loading'});
