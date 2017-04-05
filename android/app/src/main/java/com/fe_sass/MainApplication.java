@@ -13,6 +13,8 @@ import org.pgsqlite.SQLitePluginPackage;
 import com.beefe.picker.PickerViewPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.vin.scan.VinScanPackage;
+import com.qr.scan.QrScanPackage;
+import com.custom.camera.CustomCameraPackage;
 import com.zyu.ReactNativeWheelPickerPackage;
 import com.microsoft.codepush.react.CodePush;
 import java.util.Arrays;
@@ -49,6 +51,8 @@ public class MainApplication extends UmengPushApplication implements ReactApplic
           new ReactNativeWheelPickerPackage(),
           new WeChatPackage(),
           new VinScanPackage(),
+          new QrScanPackage(),
+          new CustomCameraPackage(),
           new RNSpinkitPackage(),
           new CodePush("nud3l-FlqnIsfZLXl71g-CDlIHIzVJvFYEdiG", getApplicationContext(), BuildConfig.DEBUG)
       );
