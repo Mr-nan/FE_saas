@@ -14,7 +14,8 @@ import {
     InteractionManager,
     WebView,
     BackAndroid,
-    NativeModules
+    NativeModules,
+    Linking
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
@@ -43,6 +44,7 @@ export  default class WebScene extends BaseComponent {
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: false});
         });
+        Linking.openURL(this.props.url);
     }
 
 
@@ -51,14 +53,23 @@ export  default class WebScene extends BaseComponent {
             return this._renderPlaceholderView();
         }
         return (
-            <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
-                <WebView
-                    style={{width:width,height:height,backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(64)}}
-                    source={{uri:this.props.url,method: 'GET'}}
-                    javaScriptEnabled={true}
-                    domStorageEnabled={true}
-                    scalesPageToFit={false}
-                />
+            <View style={{backgroundColor: fontAndColor.COLORA3,
+            flex: 1}}>
+
+                <View style={{flex:1,justifyContent:'center',
+                alignItems:'center'}}>
+                    <TouchableOpacity onPress={()=>{
+                        Linking.openURL(this.props.url);
+                    }} activeOpacity={0.9} style={{
+                        width:width/2,height:Pixel.getPixel(50),
+                        backgroundColor:fontAndColor.COLORB0,
+                        alignItems:'center',justifyContent:'center'
+                    }}>
+                        <Text style={{fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                            color:'#fff'}}>打开浏览器下载</Text>
+                    </TouchableOpacity>
+                </View>
+
                 <NavigationView
                     title="更新"
                 />
