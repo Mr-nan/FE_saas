@@ -20,7 +20,7 @@ import LoginGesture from '../login/LoginGesture';
 import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
 import  UpLoadScene from './UpLoadScene';
-const versionCode = 3.0;
+const versionCode = 1.0;
 
 export default class RootScene extends BaseComponent {
     initFinish = () => {
@@ -30,13 +30,13 @@ export default class RootScene extends BaseComponent {
         };
         request(Urls.APP_UPDATE, 'Post', maps)
             .then((response) => {
-                    if (response.mjson.data.versioncode != versionCode) {
-                        this.navigatorParams.component = UpLoadScene;
-                        this.navigatorParams.params = {url:response.mjson.data.downloadurl}
-                        this.toNextPage(this.navigatorParams);
-                    } else {
+                    // if (response.mjson.data.versioncode != versionCode) {
+                    //     this.navigatorParams.component = UpLoadScene;
+                    //     this.navigatorParams.params = {url:response.mjson.data.downloadurl}
+                    //     this.toNextPage(this.navigatorParams);
+                    // } else {
                         this.toJump();
-                    }
+                    // }
                 },
                 (error) => {
                         this.toJump();
