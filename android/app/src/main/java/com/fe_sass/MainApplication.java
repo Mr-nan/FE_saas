@@ -4,9 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.facebook.react.ReactApplication;
-import com.theweflex.react.WeChatPackage;
 import cn.reactnative.modules.update.UpdatePackage;
-import com.liuchungui.react_native_umeng_push.UmengPushPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -20,9 +18,6 @@ import com.zyu.ReactNativeWheelPickerPackage;
 import com.microsoft.codepush.react.CodePush;
 import java.util.Arrays;
 import java.util.List;
-import com.fe_sass.react_native_umeng_push.UmengPushApplication;
-import com.fe_sass.react_native_umeng_push.UmengPushPackage;
-import com.theweflex.react.WeChatPackage;
 import com.react.rnspinkit.RNSpinkitPackage;
 
 
@@ -45,15 +40,10 @@ public class MainApplication extends UmengPushApplication implements ReactApplic
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new WeChatPackage(),
-            new UpdatePackage(),
-            new UmengPushPackage(),
           new SQLitePluginPackage(),
-          new UmengPushPackage(),
           new ImagePickerPackage(),
           new PickerViewPackage(),
           new ReactNativeWheelPickerPackage(),
-          new WeChatPackage(),
           new VinScanPackage(),
           new RNSpinkitPackage(),
           new CodePush("nud3l-FlqnIsfZLXl71g-CDlIHIzVJvFYEdiG", getApplicationContext(), BuildConfig.DEBUG)
