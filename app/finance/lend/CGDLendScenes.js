@@ -27,6 +27,7 @@ import {ModalCGD} from './component/ModelComponent'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import {request} from '../../utils/RequestUtil'
 import *as apis from '../../constant/appUrls'
+import CGDAddCarScene from './CGDAddCarScene'
 export  default  class CGDLendScenes extends BaseComponent {
 
     constructor(props) {
@@ -148,6 +149,10 @@ export  default  class CGDLendScenes extends BaseComponent {
                     alignItems: 'center'}]}>
 
                     <CommenButton textStyle={styles.textLeft} buttonStyle={styles.buttonStyleRight} onPress={() => {
+
+                        this.navigatorParams.name = "CGDAddCarScene";
+                        this.navigatorParams.component = CGDAddCarScene;
+                        this.navigatorParams.params = {isOBD:this.props.isOBD};
                      this.toNextPage(this.navigatorParams)
                     }} title="添加车辆"/>
                     <CommenButton textStyle={{color: 'white'}} buttonStyle={styles.buttonStyleLeft} onPress={() => {

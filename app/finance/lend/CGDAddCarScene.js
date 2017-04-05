@@ -23,9 +23,11 @@ import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import CGDCarColor from './CGDCarColor';
 import CarBrandSelectScene from '../../carSource/CarBrandSelectScene';
+import CityListScene from '../../carSource/CityListScene';
 import VinInfo from './component/VinInfo';
 import * as Net from '../../utils/RequestUtil';
 import * as AppUrls from '../../constant/appUrls';
+import PurchasePickerScene from './PurchasePickerScene';
 
 const selectImg = require('../../../images/financeImages/celljiantou.png');
 const scanImg = require('../../../images/financeImages/scan.png');
@@ -50,12 +52,13 @@ export default class CGDAddCarScene extends BaseComponent {
             register_user_id: '',
             purchas_price: '',
             file_list: '',
-            bind_type: '',
+            bind_type: this.props.isOBD,
             obd_number: '',
             payment_id: '',
             base_id:'',
             info_id:''
         };
+
         this.scanType = [
             {model_name: '扫描前风挡'},
             {model_name: '扫描行驶证'}
@@ -71,9 +74,114 @@ export default class CGDAddCarScene extends BaseComponent {
     }
 
     initFinish = () => {
+                        // let detailParams = {
+                        //     api: AppUrls.PURCHA_AUTO_DETAIL,
+                        //     info_id:'525465'
+                        // };
+                        // Net.request(AppUrls.FINANCE, 'post', detailParams).then(
+                        //     (response2) => {
+                        //         if (response2.mycode === 1) {
+                        //             this._closeLoading();
+                        //             let rdb2 = response2.mjson.data.detail;
+                        //
+                        //              let dt = this.dateReversal(rdb2.init_reg);
+                        //             this.carData.sell_city_id = rdb2.city_id;
+                        //             this.carData.brand_id = rdb2.brand_id;
+                        //             this.carData.model_id = rdb2.model_id;
+                        //             this.carData.series_id = rdb2.series_id;
+                        //             this.carData.frame_number = rdb2.frame_number;
+                        //             this.carData.car_color = rdb2.car_color;
+                        //             this.carData.mileage = dt;
+                        //             this.carData.init_reg = rdb2.init_reg;
+                        //             this.carData.rev_user_id = rdb2.rev_user_id;
+                        //             this.carData.register_user_id = rdb2.register_user_id;
+                        //             this.carData.purchas_price = rdb2.purchas_price;
+                        //             this.carData.file_list = rdb2.file_list;
+                        //             this.carData.obd_number = rdb2.obd_number;
+                        //             this.carData.base_id = rdb2.base_id;
+                        //             this.carData.info_id = rdb2.info_id;
+                        //
+                        //             this.state = {
+                        //                 city_name: rdb2.city_name,
+                        //                 modelName: rdb2.model_name,
+                        //                 car_color: rdb2.car_color,
+                        //                 init_reg: dt,
+                        //                 carReceive: rdb.rev_user_name,
+                        //                 carRegister: rdb.register_user_name
+                        //             };
+                        //
+                        //             this.vinInput.setNativeProps({
+                        //                 text: rdb2.frame_number
+                        //             });
+                        //
+                        //             this.milInput.setNativeProps({
+                        //                 text: rdb2.mileage
+                        //             });
+                        //
+                        //             this.priceInput.setNativeProps({
+                        //                 text: rdb2.purchas_price
+                        //             });
+                        //         }
+                        //     },
+                        //     (error) => {
+                        //         if (IS_ANDROID === true) {
+                        //             this._showHint('获取车辆数据失败');
+                        //         } else {
+                        //             this.timer = setTimeout(
+                        //                 () => {
+                        //                     this._showHint('获取车辆数据失败');
+                        //                 },
+                        //                 500
+                        //             );
+                        //         }
+                        //     }
+                        // );
+
+        this._showLoading();
+        let peopleParams = {
+            api: AppUrls.GET_BUSINESS_LIST,
+        };
+        Net.request(AppUrls.FINANCE, 'post', peopleParams).then(
+            (response) => {
+                if (response.mycode === 1) {
+                    let rdb = response.mjson.data;
+                    console.log('=====================>>>>>>>>>');
+                    console.log(rdb);
+                    if (rdb.rev_user_list.length === 0) {
+                        this._showHint('请先配置收车人');
+                        this.timer = setTimeout(
+                            () => {
+                                this._onBack();
+                            },
+                            1000
+                        );
+                        return;
+                    } else {
+                        this.revData = rdb.rev_user_list;
+                        this.revShowData = rdb.rev_user_list.map((rev) => {
+                            return (rev.name + '(' + rev.cardid + ')');
+                        });
+                    }
+                    if (rdb.reg_user_list.length === 0) {
+                        this._showHint('请先配置登记人');
+                        this.timer = setTimeout(
+                            () => {
+                                this._onBack();
+                            },
+                            1000
+                        );
+                        return;
+                    } else {
+                        this.regData = rdb.reg_user_list;
+                        this.regShowData = rdb.reg_user_list.map((reg) => {
+                            return (reg.name + '(' + reg.cardid + ')');
+                        });
+                    }
+
+                    if(this.props.updateCar && this.props.updateCar === true){
                         let detailParams = {
                             api: AppUrls.PURCHA_AUTO_DETAIL,
-                            info_id:'525465'
+                            info_id:this.props.info_id
                         };
                         Net.request(AppUrls.FINANCE, 'post', detailParams).then(
                             (response2) => {
@@ -133,135 +241,30 @@ export default class CGDAddCarScene extends BaseComponent {
                                 }
                             }
                         );
-
-        // this._showLoading();
-        // let peopleParams = {
-        //     api: AppUrls.GET_BUSINESS_LIST,
-        // };
-        // Net.request(AppUrls.FINANCE, 'post', peopleParams).then(
-        //     (response) => {
-        //         if (response.mycode === 1) {
-        //             let rdb = response.mjson.data;
-        //             console.log('=====================>>>>>>>>>');
-        //             console.log(rdb);
-        //             if (rdb.rev_user_list.length === 0) {
-        //                 this._showHint('请先配置收车人');
-        //                 this.timer = setTimeout(
-        //                     () => {
-        //                         this._onBack();
-        //                     },
-        //                     1000
-        //                 );
-        //                 return;
-        //             } else {
-        //                 this.revData = rdb.rev_user_list;
-        //                 this.revShowData = rdb.rev_user_list.map((rev) => {
-        //                     return (rev.name + '(' + rev.cardid + ')');
-        //                 });
-        //             }
-        //             if (rdb.reg_user_list.length === 0) {
-        //                 this._showHint('请先配置登记人');
-        //                 this.timer = setTimeout(
-        //                     () => {
-        //                         this._onBack();
-        //                     },
-        //                     1000
-        //                 );
-        //                 return;
-        //             } else {
-        //                 this.regData = rdb.reg_user_list;
-        //                 this.regShowData = rdb.reg_user_list.map((reg) => {
-        //                     return (reg.name + '(' + reg.cardid + ')');
-        //                 });
-        //             }
-        //
-        //             if(this.props.updateCar && this.props.updateCar === true){
-        //                 let detailParams = {
-        //                     api: AppUrls.PURCHA_AUTO_DETAIL,
-        //                     info_id:this.props.info_id
-        //                 };
-        //                 Net.request(AppUrls.FINANCE, 'post', detailParams).then(
-        //                     (response2) => {
-        //                         if (response2.mycode === 1) {
-        //                             this._closeLoading();
-        //                             let rdb2 = response2.mjson.data.detail;
-        //
-        //                              let dt = this.dateReversal(rdb2.init_reg);
-        //                             this.carData.sell_city_id = rdb2.city_id;
-        //                             this.carData.brand_id = rdb2.brand_id;
-        //                             this.carData.model_id = rdb2.model_id;
-        //                             this.carData.series_id = rdb2.series_id;
-        //                             this.carData.frame_number = rdb2.frame_number;
-        //                             this.carData.car_color = rdb2.car_color;
-        //                             this.carData.mileage = dt;
-        //                             this.carData.init_reg = rdb2.init_reg;
-        //                             this.carData.rev_user_id = rdb2.rev_user_id;
-        //                             this.carData.register_user_id = rdb2.register_user_id;
-        //                             this.carData.purchas_price = rdb2.purchas_price;
-        //                             this.carData.file_list = rdb2.file_list;
-        //                             this.carData.obd_number = rdb2.obd_number;
-        //                             this.carData.base_id = rdb2.base_id;
-        //                             this.carData.info_id = rdb2.info_id;
-        //
-        //                             this.state = {
-        //                                 city_name: rdb2.city_name,
-        //                                 modelName: rdb2.model_name,
-        //                                 car_color: rdb2.car_color,
-        //                                 init_reg: dt,
-        //                                 carReceive: rdb.rev_user_name,
-        //                                 carRegister: rdb.register_user_name
-        //                             };
-        //
-        //                             this.vinInput.setNativeProps({
-        //                                 text: rdb2.frame_number
-        //                             });
-        //
-        //                             this.milInput.setNativeProps({
-        //                                 text: rdb2.mileage
-        //                             });
-        //
-        //                             this.priceInput.setNativeProps({
-        //                                 text: rdb2.purchas_price
-        //                             });
-        //                         }
-        //                     },
-        //                     (error) => {
-        //                         if (IS_ANDROID === true) {
-        //                             this._showHint('获取车辆数据失败');
-        //                         } else {
-        //                             this.timer = setTimeout(
-        //                                 () => {
-        //                                     this._showHint('获取车辆数据失败');
-        //                                 },
-        //                                 500
-        //                             );
-        //                         }
-        //                     }
-        //                 );
-        //             }
-        //             this._closeLoading();
-        //         }
-        //     },
-        //     (error) => {
-        //         this._closeLoading();
-        //         if (IS_ANDROID === true) {
-        //             this._showHint('获取收车人失败');
-        //         } else {
-        //             this.timer = setTimeout(
-        //                 () => {
-        //                     this._showHint('获取收车人失败');
-        //                 },
-        //                 500
-        //             );
-        //         }
-        //         this.timer = setTimeout(
-        //             () => {
-        //                 this._onBack();
-        //             },
-        //             1000
-        //         );
-        //     }
-        // );
+                    }
+                    this._closeLoading();
+                }
+            },
+            (error) => {
+                this._closeLoading();
+                if (IS_ANDROID === true) {
+                    this._showHint('获取收车人失败');
+                } else {
+                    this.timer = setTimeout(
+                        () => {
+                            this._showHint('获取收车人失败');
+                        },
+                        500
+                    );
+                }
+                this.timer = setTimeout(
+                    () => {
+                        this._onBack();
+                    },
+                    1000
+                );
+            }
+        );
     };
 
     _showLoading = () => {
@@ -278,10 +281,21 @@ export default class CGDAddCarScene extends BaseComponent {
     };
 
     _onCityPress = () => {
+        let navigatorParams = {
+            name: "CityListScene",
+            component: CityListScene,
+            params: {
+                checkedCityClick: this._checkedCityClick,
+            }
+        };
+        this.toNextPage(navigatorParams);
+    };
+
+    _checkedCityClick = (cityObj)=>{
         this.setState({
-            city_name: 'has been pressed',
-            isDateTimePickerVisible: false,
+            city_name: cityObj.city_name
         });
+        this.carData.sell_city_id = cityObj.city_id;
     };
 
     _onModelPress = () => {
@@ -359,11 +373,11 @@ export default class CGDAddCarScene extends BaseComponent {
                         this._closeLoading();
                         if (rdb.is_exists == 1) {
                             if (IS_ANDROID === true) {
-                                this._showHint('车架号有误');
+                                this._showHint('车架号已存在');
                             } else {
                                 this.timer = setTimeout(
                                     () => {
-                                        this._showHint('车架号有误');
+                                        this._showHint('车架号已存在');
                                     },
                                     500
                                 );
@@ -448,8 +462,8 @@ export default class CGDAddCarScene extends BaseComponent {
             selectedValue: [0],
             onPickerConfirm: (data) => {
                 let sel;
-                this.revShowData.map((sel, i) => {
-                    if (sel === data) {
+                this.revShowData.map((dt, i) => {
+                    if (dt === data[0]) {
                         sel = i;
                     }
                 });
@@ -482,8 +496,8 @@ export default class CGDAddCarScene extends BaseComponent {
             selectedValue: [0],
             onPickerConfirm: (data) => {
                 let sel;
-                this.regShowData.map((sel, i) => {
-                    if (sel === data) {
+                this.regShowData.map((dt, i) => {
+                    if (dt === data[0]) {
                         sel = i;
                     }
                 });
@@ -505,6 +519,9 @@ export default class CGDAddCarScene extends BaseComponent {
     };
 
     _onOKPress = () => {
+
+        console.log('============>>>>>>>');
+        console.log(JSON.stringify(this.carData));
 
         if (this.is_exists === true) {
             this._showHint('车架号有误');
@@ -542,6 +559,14 @@ export default class CGDAddCarScene extends BaseComponent {
             this._showHint('请填写收购价');
             return;
         }
+
+        let pickerParams = {
+            name: 'PurchasePickerScene',
+            component: PurchasePickerScene,
+            params: {carData: this.carData}
+        };
+
+        this.toNextPage(pickerParams);
 
     };
 
