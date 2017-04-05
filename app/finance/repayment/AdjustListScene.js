@@ -156,7 +156,8 @@ export  default class AdjustListScene extends BaseComponent {
                     .then((response) => {
                             this.props.showModal(false);
                             this.props.showToast('使用成功');
-                            this.allRefresh();
+                            this.props.refresh();
+                            this.backPage();
                         },
                         (error) => {
                             this.props.showModal(false);

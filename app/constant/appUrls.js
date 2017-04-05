@@ -20,7 +20,6 @@ export const BASEURL = 'http://gatewayapi.dycd.com/';
  */
 // export const BASEURL = "http://st.open.bms.dycd.com/api/";
 
-
 /**
  * 版本号1
  */
@@ -512,3 +511,15 @@ export const CHECKOUT_CONTRACT = '/api/v1/Contract/contractDetail';
  * 签署合同
  **/
 export const CONTRACT_SIGN_MINE = 'api/v1/Contract/signContract';
+/**
+ * 获取商户登记人/收车人列表
+ **/
+export const GET_BUSINESS_LIST = 'api/v1/purchaseloanBusiness/getBusinessList';
+/**
+ * 获取采购贷车辆详情
+ **/
+export const PURCHA_AUTO_DETAIL = 'api/v2/purchaAuto/autoDetail';
+/**
+ * 获取车架好是否已存在以及校验规则
+ **/
+export const PURCHA_CHECK_IN = 'api/v2/purchaAuto/checkVin';

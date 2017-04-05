@@ -276,10 +276,10 @@ export class CommentHandItem extends  PureComponent{
 
     render(){
 
-        const {leftTitle,showValue,textStyle,handel}=this.props;
+        const {leftTitle,showValue,textStyle,warpstyle,handel}=this.props;
         return (
 
-            <TouchableOpacity style={styles.commentHandeItem}>
+            <TouchableOpacity style={[styles.commentHandeItem,warpstyle]}>
                 <Text style={styles.commentListItemLeft}>{leftTitle}</Text>
                 <Text style={[styles.commentListItemRight,textStyle]}>{showValue}</Text>
                 <Image style={{width:adapeSize(20),height:adapeSize(16),marginRight:adapeSize(10)}} source={require('../../../../images/mainImage/celljiantou.png')}/>
@@ -296,7 +296,7 @@ export class CommnetListItem extends PureComponent{
 
    render(){
 
-       const {leftTitle,showValue,textStyle}=this.props;
+       const {leftTitle,showValue,textStyle,}=this.props;
        return (
 
            <View style={styles.commentListItemView}>
@@ -316,15 +316,17 @@ export class CGDCarItem extends PureComponent{
 
     render(){
 
+
+
         return(
             <View style={styles.CGDCarWarp}>
 
                 <Image source={require('../../../../images/financeImages/car.png')} style={styles.CGDCarImage}/>
                 <View style={styles.CGDInstWarpTop}>
                     <Text style={styles.CGDInstTitle} numberOfLines={2}>[北京]奥迪7(进口) 2014款 FSI fuck 技术型</Text>
+                    <View style={{backgroundColor:'red',width:adapeSize(45),alignItems:'center'}}><Text >OBD</Text></View>
                     <View style={styles.CGDInstWarpBooton}>
                         <Text style={styles.CGDInserDate}>2014-6-12</Text>
-                        <Text style={styles.CGDInsetPrice}>12W</Text>
                     </View>
                 </View>
             </View>
@@ -531,7 +533,8 @@ const styles = StyleSheet.create({
 
         flexDirection:'row',
         justifyContent:'flex-start',
-        backgroundColor:'white'
+        backgroundColor:'white',
+
 
     },
     CGDCarImage:{
@@ -544,12 +547,12 @@ const styles = StyleSheet.create({
     },
     CGDInstWarpTop:{
 
+
         marginLeft:adapeSize(10),
         marginRight:adapeSize(15),
-        justifyContent:'flex-start',
         flex:1,
         marginTop:adapeSize(15),
-        marginBottom:adapeSize(15)
+        marginBottom:adapeSize(15),
     },
 
     CGDInstWarpBooton:{
@@ -565,7 +568,6 @@ const styles = StyleSheet.create({
     CGDInstTitle:{
 
         fontSize:fontadapeSize(14),
-
 
     },
     CGDInserDate:{
