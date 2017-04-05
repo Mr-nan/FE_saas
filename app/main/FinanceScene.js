@@ -13,7 +13,9 @@ import  {
     Image,
     InteractionManager,
     TouchableOpacity,
-    RefreshControl
+    RefreshControl,
+    NativeModules,
+    BackAndroid
 } from  'react-native'
 
 let mnyData = {};
@@ -63,6 +65,19 @@ const bossFuncArray = [
 
 
 export default class FinanceSence extends BaseComponet {
+    handleBack = () => {
+        NativeModules.VinScan.goBack();
+        return true;
+    }
+
+    componentDidMount() {
+        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
+    }
+
 
     initFinish = () => {
 
@@ -278,7 +293,7 @@ export default class FinanceSence extends BaseComponet {
         } else {
             if (movie.type == 1) {
                 nextPage = KurongDetaileScene;
-                this.buttonParams.content = '库容';
+                this.buttonParams.content = '库融';
                 this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB4}];
                 this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB4}];
             }

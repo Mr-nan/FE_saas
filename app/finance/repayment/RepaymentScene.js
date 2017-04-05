@@ -25,7 +25,7 @@ import NavigationView from '../../component/AllNavigationView';
 import * as fontAndColor from '../../constant/fontAndColor';
 import PlanListScene from './PlanListScene';
 import RepaymentInfoScene from '../repayment/NewRepaymentInfoScene';
-import InventoryPlanInfoScene from '../repayment/InventoryPlanInfoScene';
+import InventoryPlanInfoScene from '../repayment/NewInventoryPlanInfoScene';
 
 export  default class RepaymentScene extends BaseComponent {
 
@@ -44,7 +44,7 @@ export  default class RepaymentScene extends BaseComponent {
             return this._renderPlaceholderView();
         }
         return (
-            <View style={{flex:1}}>
+            <View style={{flex:1,backgroundColor: fontAndColor.COLORA3}}>
                 <ScrollableTabView
                     style={{marginTop: Pixel.getTitlePixel(64), flex: 1}}
                     initialPage={0}

@@ -121,7 +121,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                         this.allRefresh();
                     },
                     (error) => {
-                        if (error.mycode==-300||error.mycode==-500) {
+                        if (error.mycode == -300 || error.mycode == -500) {
                             this.props.showToast('申请失败');
                         } else {
                             this.props.showToast(error.mjson.msg);
@@ -174,7 +174,17 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
         } else if (rowId == 1) {
             return (
                 <RepaymentInfoDateItem callBack={(time)=>{
-                    let date = new Date(time);
+                    let selecttime = time/1000;
+                    let lasttime = parseFloat(movies.dead_line);
+                    let firsttime = parseFloat(movies.loan_time);
+                    if(selecttime>=lasttime){
+                        selecttime = lasttime-(60*60*24)
+                    }else{
+                       if(selecttime-firsttime<(5*60*60*24)){
+                            selecttime = firsttime+(5*60*60*24);
+                        }
+                    }
+                    let date = new Date(selecttime);
                     let seperator1 = "/";
                     let month = date.getMonth() + 1;
                     let strDate = date.getDate();
@@ -189,7 +199,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                     this.setState({
                         source: ds.cloneWithRows(newList),
-                        loan_day:Math.ceil((time/1000-parseFloat(movies.loan_time))/60/60/24),
+                        loan_day:Math.ceil((selecttime-parseFloat(movies.loan_time))/60/60/24),
                         loan_dayStr:currentdate
                     });
                 }}/>

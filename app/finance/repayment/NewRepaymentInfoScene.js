@@ -49,7 +49,9 @@ export  default class NewRepaymentInfoScene extends BaseComponent {
                     locked={true}
                     renderTabBar={() => <RepaymenyTabBar tabName={["还款详情", "还款计划"]}/>}
                 >
-                    <RepaymentInfoPage loan_id={this.props.loan_id} loan_number={this.props.loan_number}  tabLabel="ios-paper"/>
+                    <RepaymentInfoPage callBack={(params)=>{
+                        this.toNextPage(params)
+                    }} loan_id={this.props.loan_id} loan_number={this.props.loan_number}  tabLabel="ios-paper"/>
                     <PlanInfoScene callBack={(params)=>{
                         this.toNextPage(params)
                     }} showToast={(content)=>{

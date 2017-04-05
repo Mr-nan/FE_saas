@@ -11,22 +11,23 @@ import {
     InteractionManager,
     TouchableWithoutFeedback
 } from "react-native";
-import BaseComponent from '../../component/BaseComponent';
-import PixelUtil from '../../utils/PixelUtil';
-import * as FontAndColor from '../../constant/fontAndColor';
-import NavigationBar from '../../component/NavigationBar';
-import MyButton from '../../component/MyButton';
-import AccountSecurity from './AccountSecurity';
-import AbountPlatform from './AbountPlatform';
-import CarOverdue from '../../finance/lend/CarOverdue';
+import BaseComponent from "../../component/BaseComponent";
+import PixelUtil from "../../utils/PixelUtil";
+import * as FontAndColor from "../../constant/fontAndColor";
+import NavigationBar from "../../component/NavigationBar";
+import MyButton from "../../component/MyButton";
+import AccountSecurity from "./AccountSecurity";
+import AbountPlatform from "./AbountPlatform";
+import OBDDevice from "../../login/OBDDevice";
+import StorageUtil from "../../utils/StorageUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
+import LoginAndRegister from "../../login/LoginAndRegister";
+import AmountConfirm from '../../login/AmountConfirm';
 
 var Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;
 var onePT = 1 / PixelRatio.get(); //一个像素
-import StorageUtil from "../../utils/StorageUtil";
-import * as StorageKeyNames from "../../constant/storageKeyNames";
-import LoginAndRegister from '../../login/LoginAndRegister';
 
 export default class Setting extends BaseComponent {
     constructor(props) {
@@ -105,6 +106,14 @@ export default class Setting extends BaseComponent {
                 </TouchableOpacity>
 
                 <View style={{height: Pixel.getPixel(1), backgroundColor: FontAndColor.COLORA4}}/>
+                {/*<MyButton buttonType={MyButton.TEXTBUTTON} content="OBD设备" parentStyle={styles.buttonStyle}*/}
+                          {/*childStyle={styles.buttonTextStyle} mOnPress={() => {*/}
+                    {/*this.toNextPage({*/}
+                        {/*name: 'OBDDevice AmountConfirm',*/}
+                        {/*component: OBDDevice,*/}
+                        {/*params: {},*/}
+                    {/*})*/}
+                {/*}}/>*/}
                 <View style={{flex: 1}}/>
 
                 <MyButton buttonType={MyButton.TEXTBUTTON}

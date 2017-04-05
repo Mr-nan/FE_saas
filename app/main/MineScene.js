@@ -7,7 +7,10 @@ import  {
     StyleSheet,
     Dimensions,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    NativeModules,
+    BackAndroid,
+    InteractionManager
 } from  'react-native'
 
 import * as fontAndClolr from '../constant/fontAndColor';
@@ -16,9 +19,10 @@ import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
 
 import repayDetailsScene from '../mine/accountManage/repayDetailsScene'
-import ContractManageScene from '../mine/contractManage/ContractManageScene';
+import ContractManageScene from '../mine/contractManage/ContractSelectScene';
 
 import AccountManageScene from '../mine/accountManage/AccountManageScene'
+import AdjustManageScene from '../mine/adjustManage/AdjustManageScene'
 import EmployeeManageScene from '../mine/employeeManage/EmployeeManageScene'
 import CouponAllScene from '../mine/couponManage/CouponAllScene'
 import Setting from './../mine/setting/Setting'
@@ -123,11 +127,89 @@ import BaseComponent from '../component/BaseComponent';
 
 export default class MineSectionListView extends BaseComponent {
 
+
+    handleBack = () => {
+        NativeModules.VinScan.goBack();
+        return true;
+    }
+
+    componentDidMount() {
+        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
+    }
+
     // 构造
     constructor(props) {
         super(props);
         // 初始状态
         //    拿到所有的json数据
+         Car = [
+            {
+                "cars": [
+                    {
+                        "icon": require('../../images/mainImage/zhanghuguanli.png'),
+                        "name": "账户管理"
+                    },
+                    {
+                        "icon": require('../../images/mainImage/yuangongguanli.png'),
+                        "name": "员工管理"
+                    },
+                ],
+                "title": "section0"
+            },
+            {
+                "cars": [
+                    {
+                        "icon": require('../../images/mainImage/youhuiquanguanli.png'),
+                        "name": "优惠券管理"
+                    },
+                    {
+                        "icon": require('../../images/mainImage/hetongguanli.png'),
+                        "name": "合同管理"
+                    },
+                ],
+                "title": "section1"
+            },
+            {
+                "cars": [
+                    {
+                        "icon": require('../../images/mainImage/myCarSource.png'),
+                        "name": "我的车源"
+                    },
+                    {
+                        "icon": require('../../images/mainImage/shoucangjilu.png'),
+                        "name": "收藏记录"
+                    },
+                    {
+                        "icon": require('../../images/mainImage/liulanlishi.png'),
+                        "name": "浏览历史"
+                    },
+
+                ],
+                "title": "section2"
+            },
+            {
+                "cars": [
+                    {
+                        "icon": require('../../images/mainImage/shezhi.png'),
+                        "name": "设置"
+                    },
+                ],
+                "title": "section3"
+            },
+            {
+                "cars": [
+                    {
+                        "icon": require('../../images/mainImage/shezhi.png'),
+                        "name": "blank"
+                    },
+                ],
+                "title": "section3"
+            },
+        ]
         this.state = {
             renderPlaceholderOnly: 'blank'
         };
@@ -266,8 +348,8 @@ export default class MineSectionListView extends BaseComponent {
                 this.navigatorParams.component = AccountManageScene
                 break;
             case '优惠券管理':
-                this.navigatorParams.name = 'CouponAllScene'
-                this.navigatorParams.component = CouponAllScene
+                this.navigatorParams.name = 'AdjustManageScene'
+                this.navigatorParams.component = AdjustManageScene
                 break;
             case '积分管理':
                 break;

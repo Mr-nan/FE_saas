@@ -24,6 +24,7 @@ import NewRepaymentInfoTopItem from '../repayment/component/NewRepaymentInfoTopI
 import MyButton from '../../component/MyButton';
 import RepaymentInfoContentItem from '../repayment/component/RepaymentInfoContentItem';
 import AllBottomItem from '../repayment/component/AllBottomItem';
+import RepaymentCreditInfoScene from '../repayment/RepaymentCreditInfoScene';
 let moneyList = [];
 let nameList = [];
 
@@ -98,22 +99,12 @@ export  default class RepaymentInfoPage extends BaseComponent {
         buttonType: MyButton.TEXTBUTTON,
         parentStyle: styles.parentStyle,
         childStyle: styles.childStyle,
-        opacity: 0.7,
+        opacity: 0.9,
         content: '申请提前还款',
         mOnPress: () => {
-            let maps = {
-                api: Urls.APPLYREPAYMENT,
-                loan_number: this.props.loan_number,
-                use_time: this.state.loan_dayStr
-            };
-            request(Urls.FINANCE, 'Post', maps)
-                .then((response) => {
-                        this.props.showToast('申请成功');
-                        this.allRefresh();
-                    },
-                    (error) => {
-                        this.props.showToast('申请失败');
-                    });
+             this.props.callBack({name:'RepaymentCreditInfoScene',component:RepaymentCreditInfoScene,params:{
+                 loan_number:this.props.loan_number,from:'SingleRepaymentPage'
+             }});
         }
     }
 
@@ -146,7 +137,7 @@ export  default class RepaymentInfoPage extends BaseComponent {
     _renderRow = (movie, sectionId, rowId) => {
         if (rowId == 0) {
             return (
-                <NewRepaymentInfoTopItem items={movies}/>
+                <NewRepaymentInfoTopItem items={movies} loan_number={this.props.loan_number}/>
             )
         } else if(rowId == 1){
             return (

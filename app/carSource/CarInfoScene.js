@@ -21,6 +21,8 @@ import NavigationView from '../component/AllNavigationView';
 import Gallery from 'react-native-gallery';
 import PixelUtil from '../utils/PixelUtil';
 import {LendSuccessAlert} from '../finance/lend/component/ModelComponent';
+import CGDSelectPatternScene from '../finance/lend/CGDSelectPatternScene';
+import CarZoomImageScene from './CarZoomImagScene';
 import * as weChat from 'react-native-wechat';
 const Pixel = new PixelUtil();
 
@@ -29,8 +31,9 @@ import * as AppUrls from "../constant/appUrls";
 
 var ScreenWidth = Dimensions.get('window').width;
 var ScreenHeight = Dimensions.get('window').height;
-
 let resolveAssetSource = require('resolveAssetSource');
+
+
 
 const carParameterViewColor = [
 
@@ -182,6 +185,14 @@ export default class CarInfoScene extends BaseComponent {
     // 打开分享
     showShared=()=>{
 
+        // let navigatorParams = {
+        //     name: "CGDSelectPatternScene",
+        //     component: CGDSelectPatternScene,
+        //     params: {
+        //
+        //     }
+        // }
+        // this.toNextPage(navigatorParams);
         this.refs.LendSuccessAlert.setModelVisible(true);
         // this.refs.sharedView.isVisible(true);
     }
@@ -196,13 +207,24 @@ export default class CarInfoScene extends BaseComponent {
             return;
         }
 
-        carImageArray=[];
-       this.state.carData.imgs.map((data,index)=>{
 
-           carImageArray.push(data.url);
+        let navigatorParams = {
+            name: "CarZoomImageScene",
+            component: CarZoomImageScene,
+            params: {
+                images:this.state.carData.imgs,
+                index:this.state.currentImageIndex-1,
+            }
+        }
+        this.toNextPage(navigatorParams);
 
-       })
-        this.refs.photoView.show(carImageArray,this.state.currentImageIndex);
+       //  carImageArray=[];
+       // this.state.carData.imgs.map((data,index)=>{
+       //
+       //     carImageArray.push(data.url);
+       //
+       // })
+       //  this.refs.photoView.show(carImageArray,this.state.currentImageIndex);
 
     };
 
@@ -283,7 +305,7 @@ export default class CarInfoScene extends BaseComponent {
 
         return(
             <TouchableOpacity onPress={()=>{this.showPhotoView()}} activeOpacity={1}>
-                <Image source={typeof data.url =='undefined'?data.require:{uri:data.url+'?x-oss-process=image/resize,w_'+Math.ceil(ScreenWidth)+',h_'+250}} style={styles.carImage}/>
+                <Image source={typeof data.url =='undefined'?data.require:{uri:data.url+'?x-oss-process=image/resize,w_'+Math.ceil(ScreenWidth)+',h_'+555}} style={styles.carImage}/>
             </TouchableOpacity>
 
         );
@@ -334,7 +356,7 @@ export default class CarInfoScene extends BaseComponent {
         return (
             <View ref="carInfoScene" style={{flex: 1, backgroundColor: 'white'}}>
 
-                <ScrollView style={{marginBottom: Pixel.getPixel(44)}}
+                <ScrollView style={{marginBottom: Pixel.getPixel (44)}}
                             scrollEventThrottle={200}
                             onScroll={this.setNavitgationBackgroundColor}
                 >

@@ -27,9 +27,8 @@ var Pixel = new PixelUtil();
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 
-// const carData = require('./carData');
 
-const footprintData = ['A6L', '捷达王', '汉难达', '奥拓'];
+let cityData = new Array;
 
 export default class CityListScene extends BaseComponent {
 
@@ -85,18 +84,32 @@ export default class CityListScene extends BaseComponent {
 
     loadData = ()=> {
 
-        let url = AppUrls.BASEURL + 'v1/index/city';
-        request(url, 'post', {
+        if(cityData.length>0){
+            this.setListData(cityData);
+            return;
+        }
 
-            status: 0,
+        this.props.showModal(true);
+        request(AppUrls.INDEX_CITY, 'post', {
 
         }).then((response) => {
 
-            // this.setListData(response.mjson.data);
+            this.props.showModal(false);
+
+            if(response.mjson.code == 1){
+
+                cityData = response.mjson.data;
+                this.setListData(response.mjson.data);
+
+            }else {
+
+                this.props.showToast(response.mjson.msg)
+            }
+
 
         }, (error) => {
-
-
+            this.props.showModal(false);
+            this.props.showToast(error.msg);
         });
 
 
@@ -112,7 +125,7 @@ export default class CityListScene extends BaseComponent {
             dataBlob[i] = array[i].title;
             sectionTitleArray.push(array[i].title);
             //把组中的每行数据的数组放入cars
-            cars = array[i].car;
+            cars = array[i].list;
             //先确定rowIDs的第一维
             rowIDs[i] = [];
             //遍历cars数组,确定rowIDs的第二维
@@ -171,12 +184,12 @@ export default class CityListScene extends BaseComponent {
         return (
             <TouchableOpacity onPress={() => {
 
-                this.loadCarSeriesData(rowData.brand_id,rowData.brand_name)
+                this._checkedCityClick({city_id:rowData.city_id,city_name:rowData.city_name});
+                {/*this.loadCarSeriesData(rowData.city_id,rowData.city_name)*/}
 
             }}>
                 <View style={styles.rowCell}>
-                    <Image style={styles.rowCellImag}></Image>
-                    <Text style={styles.rowCellText}>{rowData.brand_name}</Text>
+                    <Text style={styles.rowCellText}>{rowData.city_name}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -192,9 +205,9 @@ export default class CityListScene extends BaseComponent {
         );
     }
 
-    _checkedCarType = (carType) => {
+    _checkedCityClick = (cityType) => {
 
-        this.props.checkedCarClick(carType);
+        this.props.checkedCityClick(cityType);
         this.backPage();
 
     };
@@ -202,10 +215,10 @@ export default class CityListScene extends BaseComponent {
     _indexAndScrollClick = (index)=> {
 
         let listView = this.refs.listView;
-        let scrollY = index * 40;
+        let scrollY = index * Pixel.getPixel(40);
         for (let i = 0; i < index; i++) {
-            let rowIndex =this.state.carData[i].car.length;
-            scrollY += +rowIndex * 44;
+            let rowIndex =this.state.carData[i].list.length;
+            scrollY += +rowIndex * Pixel.getPixel(44);
         }
         listView.scrollTo({x: 0, y: scrollY, animated: true});
 
@@ -225,17 +238,6 @@ export default class CityListScene extends BaseComponent {
 
         return (
             <View style={styles.rootContainer}>
-                <View style={styles.carBrandHeadView}>
-                    <Text style={styles.carBrandHeadText}>足迹:</Text>
-                    {
-                        footprintData.map((data, index) => {
-                            return (
-                                <View style={styles.footprintView} key={index}>
-                                    <Text style={styles.footprintText}>{data}</Text>
-                                </View>)
-                        })
-                    }
-                </View>
                 {
                     this.state.dataSource && (
                         <ListView ref="listView"
@@ -377,6 +379,7 @@ const styles = StyleSheet.create({
     rootContainer: {
         flex: 1,
         backgroundColor: 'white',
+        paddingTop:Pixel.getTitlePixel(64),
     },
 
     carBrandHeadView: {
@@ -463,6 +466,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: 'white',
+        paddingLeft:Pixel.getPixel(15),
 
     },
     rowCellImag: {
@@ -481,7 +485,7 @@ const styles = StyleSheet.create({
 
         position: 'absolute',
         bottom:0,
-        top:113,
+        top:64,
         backgroundColor:'transparent',
         right:0,
         width:45,

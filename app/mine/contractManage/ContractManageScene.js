@@ -12,7 +12,8 @@ import  {
 
 import * as fontAndColor from '../../constant/fontAndColor';
 import  PixelUtil from '../../utils/PixelUtil'
-import SignContractScene from '../contractManage/SignContractScene'
+import SignContractScene from './SignContractScene'
+import NewSignContractScene from './newcontract/NewSignContractScene'
 var Pixel = new PixelUtil();
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 import  LoadMoreFooter from '../../component/LoadMoreFooter';
@@ -40,9 +41,9 @@ export default class ContractManageScene extends BaseComponent {
         let maps = {
             page: page,
             rows: 10,
-            api : Urls.LOAN_SUBJECT,
-        };        request(Urls.FINANCE, 'Post', maps)
-
+            api: Urls.LOAN_SUBJECT,
+        };
+        request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
                     if (page == 1 && response.mjson.data.length <= 0) {
                         this.setState({renderPlaceholderOnly: 'null'});
@@ -105,7 +106,7 @@ export default class ContractManageScene extends BaseComponent {
                 {this.loadView()}
                 <NavigatorView title='合同管理' backIconClick={this.backPage}/>
             </View>);
-        }else {
+        } else {
             return (<View style={styles.container}>
                 <NavigatorView title='合同管理' backIconClick={this.backPage}/>
 
@@ -113,7 +114,7 @@ export default class ContractManageScene extends BaseComponent {
                 <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(64)}}
                           dataSource={this.state.dataSource}
                           renderRow={this._renderRow}
-                          enableEmptySections = {true}
+                          enableEmptySections={true}
                           renderFooter={
                               this.renderListFooter
                           }
@@ -137,20 +138,31 @@ export default class ContractManageScene extends BaseComponent {
         return (
             <TouchableOpacity
                 onPress={()=>{
-                    this.toNextPage({
+                    if(rowData.is_done_credit=='1'){
+                    if(this.props.from=='xs'){
+                         this.toNextPage({
                         callBack: () => {
                             this.setState({renderPlaceholderOnly: 'loading'});
                             this.getData();
                         },
-                name: 'SignContractScene',
-                component: SignContractScene,
-                params: {
+                    name: 'SignContractScene',
+                    component: SignContractScene,
+                    params: {
                     opt_user_id: rowData.user_id,
-                },
-            })}}>
-                <View style={styles.rowView} >
+                        },
+                        })
+                    }else{
+                        this.toNextPage({name:'NewSignContractScene',component:NewSignContractScene,params:{opt_user_id: rowData.user_id,}});
+                    }
+                    }else{
+                        this.props.showToast('当前企业未完成授信');
+                    }
+
+                   }}>
+                <View style={styles.rowView}>
                     <Text style={styles.rowLeftTitle}>{rowData.companyname}</Text>
-                    <Text style={styles.rowRightTitle} >{rowData.contract_num}份未签署合同</Text>
+                    <Text
+                        style={styles.rowRightTitle}>{this.props.from == 'xs' ? rowData.contract_num + '份未签署合同' : ''}</Text>
                     <Image source={cellJianTou} style={styles.image}></Image>
 
                 </View>
@@ -194,8 +206,8 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
 
     },
-    image:{
-        marginRight:Pixel.getPixel(15),
+    image: {
+        marginRight: Pixel.getPixel(15),
     }
 
 

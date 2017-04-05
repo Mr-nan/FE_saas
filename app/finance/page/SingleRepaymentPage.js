@@ -233,11 +233,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     rowTopTextStyle: {
-        marginLeft: Pixel.getPixel(7), fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+        marginLeft: Pixel.getPixel(7), fontSize: Pixel.getFontPixel(14),
         color: fontAndColor.COLORA0
     },
     rowTopGrayTextStyle: {
-        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT20),
+        fontSize: Pixel.getFontPixel(12),
         color: fontAndColor.COLORA1
     },
     margin: {

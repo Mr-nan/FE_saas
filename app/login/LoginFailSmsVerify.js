@@ -130,6 +130,9 @@ export default class LoginFailSmsVerify extends BaseComponent {
                 });
             }, (error) => {
                 this.refs.verifycode.lodingStatus(false);
+                this.setState({
+                    verifyCode: null,
+                });
                 if (error.mycode == -300 || error.mycode == -500) {
                     this.props.showToast("获取失败");
                 } else {
@@ -149,9 +152,9 @@ export default class LoginFailSmsVerify extends BaseComponent {
         } else {
             let device_code = '';
             if (Platform.OS === 'android') {
-                device_code = 'dycd_bms_android';
+                device_code = 'dycd_platform_android';
             } else {
-                device_code = 'dycd_bms_ios';
+                device_code = 'dycd_platform_ios';
             }
             let maps = {
                 device_code: device_code,
@@ -209,12 +212,12 @@ export default class LoginFailSmsVerify extends BaseComponent {
         } else {
             let device_code = '';
             if (Platform.OS === 'android') {
-                device_code = 'dycd_bms_android';
+                device_code = 'dycd_platform_android';
             } else {
-                device_code = 'dycd_bms_ios';
+                device_code = 'dycd_platform_ios';
             }
             let maps = {
-                device_code:device_code,
+                device_code: device_code,
                 code: smsCode,
                 login_type: "1",
                 phone: userName,

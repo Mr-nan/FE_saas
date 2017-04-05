@@ -13,7 +13,9 @@ import  {
     Image,
     TouchableOpacity,
     InteractionManager,
-    RefreshControl
+    RefreshControl,
+    BackAndroid,
+    NativeModules
 } from  'react-native'
 
 import * as fontAndClolr from '../constant/fontAndColor';
@@ -36,6 +38,7 @@ import * as storageKeyNames from '../constant/storageKeyNames';
 import WebScene from './WebScene';
 import  CarMySourceScene from '../carSource/CarMySourceScene';
 import  NewRepaymentInfoScene from '../finance/repayment/NewRepaymentInfoScene';
+import AllLoading from '../component/AllLoading';
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 let allList = [];
 export class HomeHeaderItemInfo {
@@ -71,6 +74,19 @@ export default class HomeScene extends BaseComponet {
             headSource: [],
             pageData: []
         };
+    }
+
+    handleBack = () => {
+        NativeModules.VinScan.goBack();
+        return true;
+    }
+
+    componentDidMount() {
+        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
     }
 
 //初始化结束后,请求网络,将数据添加到界面
@@ -196,6 +212,8 @@ export default class HomeScene extends BaseComponet {
                     }
                     onEndReached={this.toEnd}
                 />
+
+
 
             </View>
         )
@@ -358,7 +376,7 @@ export default class HomeScene extends BaseComponet {
                 <View
                     style={{width: Pixel.getPixel(166), backgroundColor: '#ffffff', justifyContent: 'center'}}>
                     <Image style={cellSheet.imageStyle}
-                           source={movie.img ? {uri: movie.img + '?x-oss-process=image/resize,w_' + 206 + ',h_' + 151} : require('../../images/carSourceImages/car_null_img.png')}/>
+                           source={movie.img ? {uri: movie.img + '?x-oss-process=image/resize,w_' + 320 + ',h_' + 240} : require('../../images/carSourceImages/car_null_img.png')}/>
 
                     <Text style={cellSheet.despritonStyle}
                           numberOfLines={2}>{DIDIAN + movie.model_name}</Text>

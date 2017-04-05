@@ -11,6 +11,8 @@ import {
     Dimensions,
     TouchableOpacity,
     InteractionManager,
+    NativeModules,
+    BackAndroid
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
@@ -23,6 +25,19 @@ import StorageUtil from '../utils/StorageUtil';
 import * as KeyNames from '../constant/storageKeyNames';
 
 export  default class WelcomScene extends BaseComponent {
+
+    handleBack = () => {
+        NativeModules.VinScan.goBack();
+        return true;
+    }
+
+    componentDidMount() {
+        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
+    }
 
     constructor(props, context) {
         super(props, context);

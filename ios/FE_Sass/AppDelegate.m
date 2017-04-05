@@ -8,11 +8,9 @@
  */
 
 #import "AppDelegate.h"
-#import <CodePush/CodePush.h>
-#import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import "RCTLinkingManager.h"
-#import <RCTHotUpdate/RCTHotUpdate.h>
+#import <React/RCTBundleURLProvider.h>
 
 @implementation AppDelegate
 
@@ -20,18 +18,7 @@
 {
  NSURL *jsCodeLocation;
 
-#if DEBUG
-  // 原来的jsCodeLocation
-  
-#ifdef DEBUG
-    jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
-#else
-    jsCodeLocation = [CodePush bundleURL];
-#endif
-#else
-  jsCodeLocation=[RCTHotUpdate bundleURL];
-#endif
-
+   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"FE_Sass"
                                                initialProperties:nil
@@ -46,10 +33,6 @@
   return YES;
 }
 
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
-{
-    return [RCTLinkingManager application:application openURL:url
-                      sourceApplication:sourceApplication annotation:annotation];
-}
+
+
 @end

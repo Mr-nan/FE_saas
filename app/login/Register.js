@@ -65,6 +65,7 @@ export default class Register extends BaseComponent {
             renderPlaceholderOnly: true,
         }
         this.id;
+        this.timer = null;
     }
 
     initFinish = () => {
@@ -118,6 +119,7 @@ export default class Register extends BaseComponent {
                                 clearValue={true}
                                 maxLength={11}
                                 keyboardType={'phone-pad'}
+                                import={true}
                                 rightIcon={false}/>
                             <LoginInputText
                                 ref="verifycode"
@@ -125,6 +127,7 @@ export default class Register extends BaseComponent {
                                 viewStytle={styles.itemStyel}
                                 inputTextStyle={styles.inputTextStyle}
                                 leftIcon={false}
+                                import={true}
                                 keyboardType={'phone-pad'}
                                 rightIconClick={this.Verifycode}
                                 rightIconStyle={{width: Pixel.getPixel(100)}}
@@ -136,6 +139,7 @@ export default class Register extends BaseComponent {
                                 inputTextStyle={styles.inputTextStyle}
                                 rightButton={true}
                                 rightIcon={false}
+                                import={true}
                                 callBackSms={this.sendSms}
                                 keyboardType={'phone-pad'}
                                 leftIcon={false}/>
@@ -150,6 +154,7 @@ export default class Register extends BaseComponent {
                                 secureTextEntry={true}
                                 clearValue={true}
                                 leftIcon={false}
+                                import={true}
                                 maxLength={16}
                                 rightIcon={false}/>
                             <LoginInputText
@@ -161,6 +166,7 @@ export default class Register extends BaseComponent {
                                 maxLength={16}
                                 leftIcon={false}
                                 clearValue={true}
+                                import={true}
                                 rightIcon={false}/>
                         </View>
                         <View style={styles.inputTextLine}/>
@@ -171,6 +177,7 @@ export default class Register extends BaseComponent {
                                 viewStytle={styles.itemStyel}
                                 inputTextStyle={styles.inputTextStyle}
                                 leftIcon={false}
+                                import={true}
                                 clearValue={true}
                                 rightIcon={false}/>
                             <LoginInputText
@@ -179,6 +186,7 @@ export default class Register extends BaseComponent {
                                 viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
                                 inputTextStyle={styles.inputTextStyle}
                                 leftIcon={false}
+                                import={true}
                                 clearValue={true}
                                 rightIcon={false}/>
                         </View>
@@ -306,17 +314,17 @@ export default class Register extends BaseComponent {
         } else if (password !== passwoedAgain) {
             this.props.showToast("两次密码输入不一致");
         } /*else if (typeof(idcardf) == "undefined" || idcardf == "") {
-            this.props.showToast("身份证正面不能为空");
-        } else if (typeof(idcardback) == "undefined" || idcardback == "") {
-            this.props.showToast("身份证反面不能为空");
-        } else if (typeof(businessid) == "undefined" || businessid == "") {
-            this.props.showToast("营业执照不能为空");
-        } */else {
+         this.props.showToast("身份证正面不能为空");
+         } else if (typeof(idcardback) == "undefined" || idcardback == "") {
+         this.props.showToast("身份证反面不能为空");
+         } else if (typeof(businessid) == "undefined" || businessid == "") {
+         this.props.showToast("营业执照不能为空");
+         } */ else {
             let device_code = '';
             if (Platform.OS === 'android') {
-                device_code = 'dycd_bms_android';
+                device_code = 'dycd_platform_android';
             } else {
-                device_code = 'dycd_bms_ios';
+                device_code = 'dycd_platform_ios';
             }
             let maps = {
                 device_code: device_code,
@@ -377,9 +385,9 @@ export default class Register extends BaseComponent {
         this.refs.verifycode.lodingStatus(true);
         let device_code = '';
         if (Platform.OS === 'android') {
-            device_code = 'dycd_bms_android';
+            device_code = 'dycd_platform_android';
         } else {
-            device_code = 'dycd_bms_ios';
+            device_code = 'dycd_platform_ios';
         }
         let maps = {
             device_code: device_code,
@@ -395,6 +403,9 @@ export default class Register extends BaseComponent {
                 });
             }, (error) => {
                 this.refs.verifycode.lodingStatus(false);
+                this.setState({
+                    verifyCode: null,
+                });
                 if (error.mycode == -300 || error.mycode == -500) {
                     this.props.showToast("获取失败");
                 } else {
@@ -414,9 +425,9 @@ export default class Register extends BaseComponent {
         } else {
             let device_code = '';
             if (Platform.OS === 'android') {
-                device_code = 'dycd_bms_android';
+                device_code = 'dycd_platform_android';
             } else {
-                device_code = 'dycd_bms_ios';
+                device_code = 'dycd_platform_ios';
             }
             let maps = {
                 device_code: device_code,

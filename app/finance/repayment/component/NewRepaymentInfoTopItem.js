@@ -33,12 +33,12 @@ export  default class NewRepaymentInfoTopItem extends PureComponent {
                 <View style={styles.itemStyle}>
                     <View style={{flex:1,justifyContent:'center',alignItems:'flex-start'}}>
                         <Text style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0)}]}>
-                            单号:12312312
+                            单号:{this.props.loan_number}
                         </Text>
                     </View>
                     <View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
                         <Text style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0)}]}>
-                            放款时间:2017-02-21
+                            放款时间:{this.props.items.loan_time_str}
                         </Text>
                     </View>
                 </View>
@@ -49,7 +49,7 @@ export  default class NewRepaymentInfoTopItem extends PureComponent {
                             放款额:
                         </Text>
                         <Text style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0),color:fontAndColor.COLORA0}]}>
-                            5万元 | 3个月
+                            {this.props.items.loan_mny_str} | {this.props.items.loanperiod_type_str}
                         </Text>
                     </View>
 

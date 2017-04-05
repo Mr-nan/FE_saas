@@ -21,6 +21,7 @@ const Console = new ConsoleUtils();
 export default class BaseComponent extends Component {
 
     handleBack = () => {
+        console.log('11111111111111111');
         this.backPage();
         return true;
     }

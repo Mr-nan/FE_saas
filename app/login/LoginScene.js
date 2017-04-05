@@ -9,7 +9,9 @@ import {
     Image,
     PixelRatio,
     TouchableWithoutFeedback,
-    InteractionManager
+    InteractionManager,
+    NativeModules,
+    BackAndroid
 } from "react-native";
 import BaseComponent from "../component/BaseComponent";
 import LoginInputText from "./component/LoginInputText";
@@ -52,6 +54,19 @@ export default class LoginScene extends BaseComponent {
             verifyCode: null,
             renderPlaceholderOnly: true,
         }
+    }
+
+    handleBack = () => {
+        NativeModules.VinScan.goBack();
+        return true;
+    }
+
+    componentDidMount() {
+        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
     }
 
     initFinish = () => {
@@ -252,9 +267,9 @@ export default class LoginScene extends BaseComponent {
         } else {
             let device_code = '';
             if (Platform.OS === 'android') {
-                device_code = 'dycd_bms_android';
+                device_code = 'dycd_platform_android';
             } else {
-                device_code = 'dycd_bms_ios';
+                device_code = 'dycd_platform_ios';
             }
             let maps = {
                 device_code: device_code,
@@ -292,9 +307,9 @@ export default class LoginScene extends BaseComponent {
         this.refs.loginVerifycode.lodingStatus(true);
         let device_code = '';
         if (Platform.OS === 'android') {
-            device_code = 'dycd_bms_android';
+            device_code = 'dycd_platform_android';
         } else {
-            device_code = 'dycd_bms_ios';
+            device_code = 'dycd_platform_ios';
         }
         let maps = {
             device_code: device_code,
@@ -310,6 +325,9 @@ export default class LoginScene extends BaseComponent {
                 });
             }, (error) => {
                 this.refs.loginVerifycode.lodingStatus(false);
+                this.setState({
+                    verifyCode: null,
+                });
                 if (error.mycode == -300 || error.mycode == -500) {
                     this.props.showToast("获取失败");
                 } else {
@@ -338,9 +356,9 @@ export default class LoginScene extends BaseComponent {
             // this.props.showModal(true);
             let device_code = '';
             if (Platform.OS === 'android') {
-                device_code = 'dycd_bms_android';
+                device_code = 'dycd_platform_android';
             } else {
-                device_code = 'dycd_bms_ios';
+                device_code = 'dycd_platform_ios';
             }
             let maps = {
                 device_code: device_code,
