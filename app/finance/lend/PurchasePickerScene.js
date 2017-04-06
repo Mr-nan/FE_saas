@@ -44,8 +44,8 @@ export  default class PurchasePickerScene extends BaseComponent {
         let that = this;
         let maps = {
             source_type: '1',
-            archives_status: '1',
-            obd_status:'1',
+            archives_status: this.props.carData.bind_type,
+            obd_status:this.props.carData.isCarinvoice,
             api:MyUrl.PURCHAAUTO_GETPURCHAAUTOPICCATE
         };
         request(MyUrl.FINANCE, 'Post', maps)
