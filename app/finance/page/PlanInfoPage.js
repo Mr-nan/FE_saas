@@ -68,6 +68,9 @@ export default class PlanInfoPage extends BaseComponent {
             loan_number: this.props.loan_number,
             type: '3',
         };
+        if(this.props.planid){
+            maps.planid=this.props.planid
+        }
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
                     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
