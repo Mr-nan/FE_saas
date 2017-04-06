@@ -57,7 +57,8 @@ export default class CGDAddCarScene extends BaseComponent {
             obd_number: '',
             payment_id: '',
             base_id:'',
-            info_id:''
+            info_id:'',
+            isCarinvoice:this.props.isCarinvoice
         };
 
         this.scanType = [
