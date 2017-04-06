@@ -56,9 +56,9 @@ export  default class RepaymentScene extends BaseComponent {
                       params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'SingleRepaymentPage'}});
                     }} tabLabel="ios-paper"/>
 
-                    <InventoryRepaymentPage customerName={this.props.customerName} callBack={(loan_id,loan_number,type)=>{
+                    <InventoryRepaymentPage customerName={this.props.customerName} callBack={(loan_id,loan_number,type,planid)=>{
                       this.toNextPage({name:'InventoryPlanInfoScene',component:InventoryPlanInfoScene,
-                      params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'InventoryRepaymentPage'}});
+                      params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'InventoryRepaymentPage',planid:planid}});
                     }} tabLabel="ios-people"/>
 
                     {/*<PurchaseRepaymentPage customerName={this.props.customerName} callBack={(loan_id,loan_number,type)=>{*/}

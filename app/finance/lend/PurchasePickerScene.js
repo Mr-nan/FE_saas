@@ -22,7 +22,8 @@ import BaseComponent from '../../component/BaseComponent';
 import NavigationView from '../../component/AllNavigationView';
 import PurchasePickerItem from '../component/PurchasePickerItem';
 import {request} from '../../utils/RequestUtil';
-const childItems = [];
+import * as MyUrl from '../../constant/appUrls';
+let childItems = [];
 export  default class PurchasePickerScene extends BaseComponent {
 
     constructor(props) {
@@ -30,63 +31,60 @@ export  default class PurchasePickerScene extends BaseComponent {
         // 初始状态
         // const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            renderPlaceholderOnly: true,
+            renderPlaceholderOnly: 'blank',
             source: {}
         };
     }
 
     componentWillUnmount() {
-        childItems.splice(0, childItems.length);
+        childItems=[];
     }
 
     initFinish = () => {
         let that = this;
         let maps = {
-            reqtoken: 'e9ab1d1bb12b2f824df9503ba4f0e4cd',
             source_type: '1',
-            archives_status: '2',
-            key: '5f9864159325c4e67ff9928b375997c9',
-            device_code: 'dycd_bms_android',
+            archives_status: '1',
+            obd_status:'1',
+            api:MyUrl.PURCHAAUTO_GETPURCHAAUTOPICCATE
         };
-        request('https://openbms.dycd.com/api/v1/purchaAuto/getPurchaAutoPicCate', 'Post', maps)
+        request(MyUrl.FINANCE, 'Post', maps)
             .then((response) => {
                     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                     that.setState({
-                        source: ds.cloneWithRows(response.mjson.retdata.cate_list)
+                        source: ds.cloneWithRows(response.mjson.data.cate_list)
                     });
-                    for (let i = 0; i < response.mjson.retdata.cate_list.length; i++) {
+                    for (let i = 0; i < response.mjson.data.cate_list.length; i++) {
                         childItems.push({
-                            code: response.mjson.retdata.cate_list[i].code,
-                            id: response.mjson.retdata.cate_list[i].id,
+                            code: response.mjson.data.cate_list[i].code,
+                            id: response.mjson.data.cate_list[i].id,
                             list: []
                         });
                     }
-                    InteractionManager.runAfterInteractions(() => {
-                        this.setState({renderPlaceholderOnly: false});
-                    });
+                        this.setState({renderPlaceholderOnly: 'success'});
                 },
                 (error) => {
-
+                    this.setState({renderPlaceholderOnly: 'error'});
                 });
     }
 
 
     render() {
-        if (this.state.renderPlaceholderOnly) {
+        if (this.state.renderPlaceholderOnly!='success') {
             return this._renderPlaceholderView();
         }
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
-                <NavigationView
-                    title="车辆照片"
-                    backIconClick={this.backPage}
-                    renderRihtFootView={this._navigatorRightView}
-                />
                 <ListView
                     style={{marginTop: Pixel.getTitlePixel(79)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
+                />
+                <NavigationView
+                    title="车辆照片"
+                    backIconClick={this.backPage}
+                    renderRihtFootView={this._navigatorRightView}
                 />
             </View>
         );
@@ -108,7 +106,8 @@ export  default class PurchasePickerScene extends BaseComponent {
 
     _renderPlaceholderView() {
         return (
-            <View style={{width: width, height: height}}>
+            <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
+                {this.loadView()}
                 <NavigationView
                     title="车辆照片"
                     backIconClick={this.backPage}

@@ -1,12 +1,12 @@
 /**
  * 开发地址
  */
-export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
  */
-// export const BASEURL = 'http://api-gateway.test.dycd.com/';
+export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 
 /**
@@ -195,6 +195,13 @@ export const GETPLANINFO = 'api/v2/Repayment/getPlanInfo';
  * 新获取还款计划详情
  **/
 export const REPAYMENT_GET_PLAN_INFO = 'api/v5/Repayment/get_plan_info';
+
+/**
+ * from @zhaojian
+ *
+ * 获取采购贷车辆照片分类
+ **/
+export const PURCHAAUTO_GETPURCHAAUTOPICCATE = 'api/v2/purchaAuto/getPurchaAutoPicCate';
 
 /**
  * from @zhaojian
