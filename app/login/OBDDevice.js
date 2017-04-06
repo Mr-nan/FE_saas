@@ -36,7 +36,7 @@ export default class OBDDevice extends BaseComponent {
             renderPlaceholderOnly: true,
             values: "",//输入框输入内容
             obd_number: "",
-            boundState: "未绑定",
+            boundState: "未检测",
             source: {},
         };
         this.bind_type = 1;
@@ -421,7 +421,7 @@ export default class OBDDevice extends BaseComponent {
                         this.props.showToast("网络请求失败");
                     } else {
                         this.setState({
-                            boundState: '检测失败，请重试',
+                            boundState: '未绑定',
                         });
                         this.props.showToast(error.mjson.msg + "");
                     }
