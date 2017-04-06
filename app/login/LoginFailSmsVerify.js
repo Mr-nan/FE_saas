@@ -32,6 +32,7 @@ var Platform = require('Platform');
 var imgSrc: '';
 var imgSid: '';
 var smsCode: '';
+
 export default class LoginFailSmsVerify extends BaseComponent {
 
     constructor(props) {
@@ -242,7 +243,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
                         StorageUtil.mSetItem(StorageKeyNames.REAL_NAME, response.mjson.data.real_name + "");
                         StorageUtil.mSetItem(StorageKeyNames.TOKEN, response.mjson.data.token + "");
                         StorageUtil.mSetItem(StorageKeyNames.USER_LEVEL, response.mjson.data.user_level + "");
-
+                        this.setLoginPwd.params.userName = userName;
                         this.loginPage(this.setLoginPwd);
                     } else {
                         this.props.showToast(response.mjson.msg);
@@ -266,7 +267,8 @@ export default class LoginFailSmsVerify extends BaseComponent {
         name: 'LoginFailPwd',
         component: LoginFailPwd,
         params: {
-            from: 'login'
+            from: 'login',
+            userName: '',
         }
     }
 

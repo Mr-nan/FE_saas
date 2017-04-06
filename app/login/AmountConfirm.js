@@ -246,7 +246,6 @@ export default class AmountConfirm extends BaseComponent {
     makeSure = () => {
         // let obd_number = this.refs.obd_number.getInputTextValue();
         let maps = {
-            key: "",
             car_lists: "",
             loan_code: "",
             loan_mny: "",
