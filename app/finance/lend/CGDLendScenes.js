@@ -65,11 +65,21 @@ export  default  class CGDLendScenes extends BaseComponent {
         this.getLendInfo();
 
     }
+    getType=(state)=>{
+
+        let  temp =Number.parseInt(state);
+
+        return temp==1?'有':'无'
+    }
+
+
     titleNameBlob = (jsonData, carData) => {
 
         let dataSource = {};
+        let type=this.getType(this.props.isCarinvoice)+'手续'+this.getType(this.props.isOBD)+'OBD';
+
         dataSource['section1'] = [
-            {title: '模式', value:'无手续有OBD'},
+            {title: '模式', value:type},
             {title: '借款额度', value: changeToMillion(jsonData.min_loanmny) + '-' + changeToMillion(jsonData.max_loanmny) + '万'},
             {title: '借款费率', value: jsonData.rate}
         ]
@@ -241,7 +251,6 @@ export  default  class CGDLendScenes extends BaseComponent {
             </View>);
         }
         return (
-
             <View style={commnetStyle.container}>
 
                <View style={commnetStyle.ListWarp}>
@@ -332,7 +341,6 @@ const styles = StyleSheet.create({
     textLeft: {
 
         color: '#05c5c2'
-
     },
     section:{
 
