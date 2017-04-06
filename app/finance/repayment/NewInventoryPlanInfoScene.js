@@ -50,11 +50,13 @@ export  default class NewRepaymentInfoScene extends BaseComponent {
                     locked={true}
                     renderTabBar={() => <RepaymenyTabBar tabName={["还款详情", "还款计划"]}/>}
                 >
-                    <InventoryPlanInfoPage callBack={(params)=>{
+                    <InventoryPlanInfoPage ref="inventoryplaninfopage" callBack={(params)=>{
+                        params.params.refresh = ()=>{this.refresh();}
                         this.toNextPage(params)
                     }} loan_id={this.props.loan_id} loan_number={this.props.loan_number}  tabLabel="ios-paper"/>
 
-                    <PlanInfoScene callBack={(params)=>{
+                    <PlanInfoScene planid={this.props.planid} ref="planinfoscene" callBack={(params)=>{
+                        params.params.refresh = ()=>{this.refresh();}
                         this.toNextPage(params)
                     }} showToast={(content)=>{
                         this.props.showToast(content)
@@ -71,6 +73,11 @@ export  default class NewRepaymentInfoScene extends BaseComponent {
             </View>
         );
 
+    }
+
+    refresh =()=>{
+        this.refs.inventoryplaninfopage.allRefresh();
+        this.refs.planinfoscene.allRefresh();
     }
 
     _renderPlaceholderView() {

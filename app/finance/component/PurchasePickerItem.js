@@ -10,7 +10,8 @@ import {
     ScrollView,
     Dimensions,
     TouchableOpacity,
-    ListView
+    ListView,
+    NativeModules
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
@@ -48,7 +49,13 @@ export  default class PurchasePickerItem extends PureComponent {
                         this.setState({childMovie: news});
                     }} allLength={this.state.childMovie.list.length} key={i} index={i} mOnPress={(index) => {
                         if (this.state.childMovie.list.length < 8) {
-                            this.selectPhotoTapped('addPicker')
+                            {/*this.selectPhotoTapped('addPicker')*/}
+                            NativeModules.CustomCamera.takePic().then((response) => {
+                                               console.log("============>>>>>>>>>");
+                                               console.log(response.data);
+                                         }, (error) => {
+
+                })
                         }
                     }}/>)
             }

@@ -22,12 +22,13 @@ import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import {request} from "../../utils/RequestUtil";
 import * as AppUrls from "../../constant/appUrls";
+import CGDLendScenes from './CGDLendScenes'
 
 var ScreenWidth = Dimensions.get('window').width;
 let isCarinvoice = 0;
 let isOBD = 0;
 
-export  default  class CGDSelectPatternScene  extends  BaseComponent{
+export  default  class CGDSelectPatternScene extends BaseComponent {
 
 
     initFinish = () => {
@@ -38,40 +39,40 @@ export  default  class CGDSelectPatternScene  extends  BaseComponent{
 
     }
 
-    loadData=()=>{
+    loadData = () => {
 
         this.props.showModal(true);
         this.setState({
 
-            dataSource:new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2}),
-            renderPlaceholderOnly:'success',
+            dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
+            renderPlaceholderOnly: 'success',
 
         });
-        request(AppUrls.FINANCE,'post',{
+        request(AppUrls.FINANCE, 'post', {
 
-            obd_status:isOBD,
-            invoice_status:isCarinvoice,
-            api:AppUrls.APPLY_PATTERN_LIST,
+            obd_status: isOBD,
+            invoice_status: isCarinvoice,
+            api: AppUrls.APPLY_PATTERN_LIST,
 
         }).then((response) => {
 
             this.props.showModal(false);
             console.log(response.mjson);
-            if(response.mjson.code == 1){
+            if (response.mjson.code == 1) {
 
-               this.setState({
-                   dataSource:this.state.dataSource.cloneWithRows(response.mjson.data),
-               });
+                this.setState({
+                    dataSource: this.state.dataSource.cloneWithRows(response.mjson.data),
+                });
 
-           }else {
+            } else {
                 this.props.showToast(response.mjson.msg);
-           }
+            }
 
         }, (error) => {
 
             this.props.showModal(false);
             this.setState({
-                renderPlaceholderOnly:'error',
+                renderPlaceholderOnly: 'error',
 
             });
 
@@ -79,22 +80,21 @@ export  default  class CGDSelectPatternScene  extends  BaseComponent{
     };
 
     // 构造
-      constructor(props) {
+    constructor(props) {
         super(props);
         // 初始状态
-          let ds = new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2});
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource:ds,
-            renderPlaceholderOnly:'success',
+            dataSource: ds,
+            renderPlaceholderOnly: 'success',
         };
-      }
-
+    }
 
 
     render() {
-        if (this.state.renderPlaceholderOnly!=='success') {
+        if (this.state.renderPlaceholderOnly !== 'success') {
             return (
-                <View style={{flex:1,backgroundColor:fontAndColor.COLORA3}}>
+                <View style={{flex: 1, backgroundColor: fontAndColor.COLORA3}}>
                     {this.loadView()}
                     <NavigatorView title='选择模式' backIconClick={() => {
                         this.backPage()
@@ -109,8 +109,15 @@ export  default  class CGDSelectPatternScene  extends  BaseComponent{
                     renderRow={this.renderRow}
                     renderHeader={this.renderHeadView}
                 />
-                <TouchableOpacity style={styles.footButton} onPress={()=>{alert('确定'+isCarinvoice +':'+isOBD)}}>
-                        <Text style={styles.footButtonText}>确定</Text>
+                <TouchableOpacity style={styles.footButton} onPress={() => {
+                    let colorParams = {
+                        name: 'CGDLendScenes',
+                        component: CGDLendScenes,
+                        params: {isCarinvoice: isCarinvoice, isOBD: isOBD}
+                    };
+                    this.toNextPage(colorParams);
+                }}>
+                    <Text style={styles.footButtonText}>确定</Text>
                 </TouchableOpacity>
                 <NavigatorView title='选择模式' backIconClick={() => {
                     this.backPage()
@@ -119,25 +126,26 @@ export  default  class CGDSelectPatternScene  extends  BaseComponent{
         )
     }
 
-    renderRow =(rowData)=> {
+    renderRow = (rowData) => {
 
-        return(
+        return (
             <CGDSelectPatternCell cellData={rowData}/>
         )
     };
 
-    renderHeadView =()=> {
-        return(
+    renderHeadView = () => {
+        return (
             <View style={styles.headViewContainer}>
                 <View style={styles.headViewHintView}>
-                    <Image style={{width:20,height:20}} source={require('../../../images/financeImages/hintImage.png')}/>
+                    <Image style={{width: 20, height: 20}}
+                           source={require('../../../images/financeImages/hintImage.png')}/>
                     <Text style={styles.headViewHintText}>模式一旦选择将不可变更</Text>
                 </View>
-                <CGDSelectView title="二手车交易发票" selectClick={(btnType)=>{
+                <CGDSelectView title="二手车交易发票" selectClick={(btnType) => {
                     isCarinvoice = btnType;
                     this.loadData();
                 }}/>
-                <CGDSelectView title="OBD设备" selectClick={(btnType)=>{
+                <CGDSelectView title="OBD设备" selectClick={(btnType) => {
                     isOBD = btnType;
                     this.loadData();
                 }}/>
@@ -151,33 +159,41 @@ export  default  class CGDSelectPatternScene  extends  BaseComponent{
 
 }
 
-class CGDSelectView extends  Component {
+class CGDSelectView extends Component {
 
     // 构造
-      constructor(props) {
+    constructor(props) {
         super(props);
         // 初始状态
         this.state = {
-            isConfirm:true,
-            currentIndex:1,
+            isConfirm: true,
+            currentIndex: 1,
         };
-      }
+    }
 
-    render(){
-        return(
+    render() {
+        return (
             <View style={styles.headViewSelectView}>
                 <View style={styles.headViewSelectLeftView}>
                     <Text style={styles.headViewSelectTitle}>{this.props.title}</Text>
                 </View>
                 <View style={styles.headViewSelectRightView}>
-                    <TouchableOpacity onPress={()=>{this.selectBtnCilck(1)}}>
-                        <View style={[styles.headViewSelectBtn,{marginRight:10},this.state.isConfirm && {borderColor:fontAndColor.COLORB0}]}>
-                            <Text style={[styles.headViewSelectBtnText,this.state.isConfirm && {color:fontAndColor.COLORB0}]}>有</Text>
+                    <TouchableOpacity onPress={() => {
+                        this.selectBtnCilck(1)
+                    }}>
+                        <View
+                            style={[styles.headViewSelectBtn, {marginRight: 10}, this.state.isConfirm && {borderColor: fontAndColor.COLORB0}]}>
+                            <Text
+                                style={[styles.headViewSelectBtnText, this.state.isConfirm && {color: fontAndColor.COLORB0}]}>有</Text>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={()=>{this.selectBtnCilck(0)}}>
-                        <View style={[styles.headViewSelectBtn ,!this.state.isConfirm && {borderColor:fontAndColor.COLORB0}]}>
-                            <Text style={[styles.headViewSelectBtnText,!this.state.isConfirm && {color:fontAndColor.COLORB0}]}>无</Text>
+                    <TouchableOpacity onPress={() => {
+                        this.selectBtnCilck(0)
+                    }}>
+                        <View
+                            style={[styles.headViewSelectBtn, !this.state.isConfirm && {borderColor: fontAndColor.COLORB0}]}>
+                            <Text
+                                style={[styles.headViewSelectBtnText, !this.state.isConfirm && {color: fontAndColor.COLORB0}]}>无</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -185,28 +201,29 @@ class CGDSelectView extends  Component {
         )
     }
 
-    selectBtnCilck=(btnType)=> {
+    selectBtnCilck = (btnType) => {
 
         if (this.state.currentIndex == btnType) return;
         this.props.selectClick(btnType);
         this.setState({
-            currentIndex:btnType,
-            isConfirm:!this.state.isConfirm,
+            currentIndex: btnType,
+            isConfirm: !this.state.isConfirm,
         });
 
     };
 }
 
-class CGDSelectPatternCell extends Component{
+class CGDSelectPatternCell extends Component {
 
-    render(){
-        const {loan_upper,loan_lower,obd_fee,service_fee} = this.props.cellData;
+    render() {
+        const {loan_upper, loan_lower, obd_fee, service_fee} = this.props.cellData;
 
-        return(
+        return (
             <View style={styles.cellContainer}>
                 <View style={styles.cellContentView}>
                     <View style={styles.cellContentLeftView}>
-                        <Text style={styles.cellTitleText}>{loan_lower>0?(loan_upper/10000+'-'+loan_lower/10000+'万(含)'):(loan_upper/10000+'万以下')}</Text>
+                        <Text
+                            style={styles.cellTitleText}>{loan_lower > 0 ? (loan_upper / 10000 + '-' + loan_lower / 10000 + '万(含)') : (loan_upper / 10000 + '万以下')}</Text>
                     </View>
                     <View style={styles.cellContentRightView}>
                         <View style={styles.cellContentItemView}>
@@ -219,30 +236,30 @@ class CGDSelectPatternCell extends Component{
                         </View>
                     </View>
                 </View>
-               <View style={styles.cellBottomLine}/>
+                <View style={styles.cellBottomLine}/>
             </View>
         )
     }
-    carMoneyChange=(carMoney)=>{
+
+    carMoneyChange = (carMoney) => {
 
         let newCarMoney = parseFloat(carMoney);
         let carMoneyStr = newCarMoney.toFixed(2);
         let moneyArray = carMoneyStr.split(".");
 
-        console.log(carMoney+'/'+newCarMoney +'/' + carMoneyStr +'/' +moneyArray);
+        console.log(carMoney + '/' + newCarMoney + '/' + carMoneyStr + '/' + moneyArray);
 
-        if(moneyArray.length>1)
-        {
-            if(moneyArray[1]>0){
+        if (moneyArray.length > 1) {
+            if (moneyArray[1] > 0) {
 
-                return moneyArray[0]+'.'+moneyArray[1];
+                return moneyArray[0] + '.' + moneyArray[1];
 
-            }else {
+            } else {
 
                 return moneyArray[0];
             }
 
-        }else {
+        } else {
             return carMoneyStr;
         }
 
@@ -253,166 +270,166 @@ class CGDSelectPatternCell extends Component{
 
 const styles = StyleSheet.create({
 
-    rootContainer:{
+    rootContainer: {
 
-        flex:1,
-        backgroundColor:fontAndColor.COLORA3,
-        paddingTop:Pixel.getTitlePixel(64),
+        flex: 1,
+        backgroundColor: fontAndColor.COLORA3,
+        paddingTop: Pixel.getTitlePixel(64),
 
-
-    },
-    headViewHintView:{
-        flexDirection:'row',
-        height:Pixel.getPixel(35),
-        alignItems:'center',
-        paddingLeft:Pixel.getPixel(15),
-        backgroundColor:fontAndColor.COLORB6,
 
     },
-    headViewHintText:{
-        color:fontAndColor.COLORB2,
-        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-        marginLeft:Pixel.getPixel(10)
+    headViewHintView: {
+        flexDirection: 'row',
+        height: Pixel.getPixel(35),
+        alignItems: 'center',
+        paddingLeft: Pixel.getPixel(15),
+        backgroundColor: fontAndColor.COLORB6,
+
     },
-    headViewContainer:{
-        backgroundColor:fontAndColor.COLORA3,
+    headViewHintText: {
+        color: fontAndColor.COLORB2,
+        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+        marginLeft: Pixel.getPixel(10)
     },
-    headViewBottomLine:{
-        left:0,
-        right:0,
-        bottom:0,
-        height:StyleSheet.hairlineWidth,
-        backgroundColor:fontAndColor.COLORA4,
+    headViewContainer: {
+        backgroundColor: fontAndColor.COLORA3,
+    },
+    headViewBottomLine: {
+        left: 0,
+        right: 0,
+        bottom: 0,
+        height: StyleSheet.hairlineWidth,
+        backgroundColor: fontAndColor.COLORA4,
         position: 'absolute',
     },
-    headViewTitleView:{
-        flexDirection:'row',
-        paddingLeft:15,
-        alignItems:'center',
-        height:Pixel.getPixel(50),
-        backgroundColor:'white',
-        marginTop:Pixel.getPixel(10),
-        borderBottomWidth:StyleSheet.hairlineWidth,
-        borderBottomColor:fontAndColor.COLORA4,
+    headViewTitleView: {
+        flexDirection: 'row',
+        paddingLeft: 15,
+        alignItems: 'center',
+        height: Pixel.getPixel(50),
+        backgroundColor: 'white',
+        marginTop: Pixel.getPixel(10),
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderBottomColor: fontAndColor.COLORA4,
     },
-    headViewTitleText:{
-        color:fontAndColor.COLORA0,
-        fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+    headViewTitleText: {
+        color: fontAndColor.COLORA0,
+        fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
     },
-    headViewTitleSubText:{
-        color:fontAndColor.COLORA0,
+    headViewTitleSubText: {
+        color: fontAndColor.COLORA0,
         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
     },
-    headViewSelectView:{
-        height:Pixel.getPixel(50),
-        backgroundColor:'white',
-        flexDirection:'row',
-        marginTop:Pixel.getPixel(10),
+    headViewSelectView: {
+        height: Pixel.getPixel(50),
+        backgroundColor: 'white',
+        flexDirection: 'row',
+        marginTop: Pixel.getPixel(10),
     },
-    headViewSelectLeftView:{
-        width:ScreenWidth/2,
-        justifyContent:'center',
-        paddingLeft:Pixel.getPixel(15),
+    headViewSelectLeftView: {
+        width: ScreenWidth / 2,
+        justifyContent: 'center',
+        paddingLeft: Pixel.getPixel(15),
     },
-    headViewSelectRightView:{
-        flex:1,
-        width:ScreenWidth/2,
-        justifyContent:'flex-end',
-        paddingRight:Pixel.getPixel(15),
-        flexDirection:'row',
-        alignItems:'center',
+    headViewSelectRightView: {
+        flex: 1,
+        width: ScreenWidth / 2,
+        justifyContent: 'flex-end',
+        paddingRight: Pixel.getPixel(15),
+        flexDirection: 'row',
+        alignItems: 'center',
     },
-    headViewSelectTitle:{
-        fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-        fontWeight:'bold'
+    headViewSelectTitle: {
+        fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+        fontWeight: 'bold'
     },
-    headViewSelectBtn:{
-        borderWidth:StyleSheet.hairlineWidth,
-        borderRadius:2,
-        borderColor:fontAndColor.COLORA2,
-        width:Pixel.getPixel(57),
-        height:Pixel.getPixel(27),
-        justifyContent:'center',
-        alignItems:'center',
+    headViewSelectBtn: {
+        borderWidth: StyleSheet.hairlineWidth,
+        borderRadius: 2,
+        borderColor: fontAndColor.COLORA2,
+        width: Pixel.getPixel(57),
+        height: Pixel.getPixel(27),
+        justifyContent: 'center',
+        alignItems: 'center',
     },
-    headViewSelectBtnText:{
-        color:fontAndColor.COLORA2,
-        fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+    headViewSelectBtnText: {
+        color: fontAndColor.COLORA2,
+        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
     },
-    cellContainer:{
+    cellContainer: {
 
-        flex:1,
-        height:Pixel.getPixel(66),
-        backgroundColor:'yellow',
-        backgroundColor:'white',
+        flex: 1,
+        height: Pixel.getPixel(66),
+        backgroundColor: 'yellow',
+        backgroundColor: 'white',
 
     },
-    cellBottomLine:{
-        left:Pixel.getPixel(15),
-        right:Pixel.getPixel(15),
-        bottom:0,
-        height:StyleSheet.hairlineWidth,
-        backgroundColor:fontAndColor.COLORA4,
+    cellBottomLine: {
+        left: Pixel.getPixel(15),
+        right: Pixel.getPixel(15),
+        bottom: 0,
+        height: StyleSheet.hairlineWidth,
+        backgroundColor: fontAndColor.COLORA4,
         position: 'absolute',
 
     },
-    cellContentView:{
+    cellContentView: {
 
-        flex:1,
-        height:Pixel.getPixel(65),
-        justifyContent:'space-between',
-        alignItems:'center',
-        flexDirection:'row',
+        flex: 1,
+        height: Pixel.getPixel(65),
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexDirection: 'row',
     },
-    cellTitleText:{
-        color:fontAndColor.COLORA0,
-        fontSize:fontAndColor.BUTTONFONT30,
+    cellTitleText: {
+        color: fontAndColor.COLORA0,
+        fontSize: fontAndColor.BUTTONFONT30,
     },
-    cellContentLeftView:{
-        justifyContent:'center',
-        paddingLeft:Pixel.getPixel(15),
-        width:ScreenWidth/2
+    cellContentLeftView: {
+        justifyContent: 'center',
+        paddingLeft: Pixel.getPixel(15),
+        width: ScreenWidth / 2
     },
-    cellContentRightView:{
+    cellContentRightView: {
 
-        justifyContent:'center',
-        justifyContent:'space-between',
-        width:ScreenWidth/2,
-        paddingRight:Pixel.getPixel(15),
+        justifyContent: 'center',
+        justifyContent: 'space-between',
+        width: ScreenWidth / 2,
+        paddingRight: Pixel.getPixel(15),
     },
 
-    cellContentItemView:{
-        flexDirection:'row',
-        justifyContent:'space-between',
-        marginBottom:2.5,
-        marginTop:2.5,
-
-    },
-    cellContentItemTitle:{
-
-        fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-        color:fontAndColor.COLORA1,
+    cellContentItemView: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 2.5,
+        marginTop: 2.5,
 
     },
-    cellContentItemText:{
-        fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-        color:fontAndColor.COLORA0,
-    },
-    footButton:{
+    cellContentItemTitle: {
 
-        left:0,
-        right:0,
-        bottom:0,
-        height:Pixel.getPixel(44),
-        backgroundColor:fontAndColor.COLORB0,
-        justifyContent:'center',
-        alignItems:'center',
+        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+        color: fontAndColor.COLORA1,
+
+    },
+    cellContentItemText: {
+        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+        color: fontAndColor.COLORA0,
+    },
+    footButton: {
+
+        left: 0,
+        right: 0,
+        bottom: 0,
+        height: Pixel.getPixel(44),
+        backgroundColor: fontAndColor.COLORB0,
+        justifyContent: 'center',
+        alignItems: 'center',
         position: 'absolute',
     },
-    footButtonText:{
+    footButtonText: {
 
-        color:'white',
-        fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+        color: 'white',
+        fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
     },
 
 });

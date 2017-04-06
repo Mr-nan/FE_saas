@@ -20,26 +20,26 @@ import LoginGesture from '../login/LoginGesture';
 import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
 import  UpLoadScene from './UpLoadScene';
-const versionCode = 2.0;
+const versionCode = 3.0;
 
 export default class RootScene extends BaseComponent {
     initFinish = () => {
         let maps = {
             type: '6',
-            api:'api/v1/App/Update'
+            api: 'api/v1/App/Update'
         };
         request(Urls.APP_UPDATE, 'Post', maps)
             .then((response) => {
                     // if (response.mjson.data.versioncode != versionCode) {
                     //     this.navigatorParams.component = UpLoadScene;
-                    //     this.navigatorParams.params = {url:response.mjson.data.downloadurl}
+                    //     this.navigatorParams.params = {url: response.mjson.data.downloadurl}
                     //     this.toNextPage(this.navigatorParams);
                     // } else {
                         this.toJump();
                     // }
                 },
                 (error) => {
-                        this.toJump();
+                    this.toJump();
                 });
     }
 

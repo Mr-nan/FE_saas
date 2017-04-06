@@ -4,9 +4,6 @@ import android.app.Application;
 import android.util.Log;
 
 import com.facebook.react.ReactApplication;
-import com.theweflex.react.WeChatPackage;
-import cn.reactnative.modules.update.UpdatePackage;
-import com.liuchungui.react_native_umeng_push.UmengPushPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -16,6 +13,8 @@ import org.pgsqlite.SQLitePluginPackage;
 import com.beefe.picker.PickerViewPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.vin.scan.VinScanPackage;
+import com.qr.scan.QrScanPackage;
+import com.custom.camera.CustomCameraPackage;
 import com.zyu.ReactNativeWheelPickerPackage;
 import com.microsoft.codepush.react.CodePush;
 import java.util.Arrays;
@@ -45,9 +44,6 @@ public class MainApplication extends UmengPushApplication implements ReactApplic
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new WeChatPackage(),
-            new UpdatePackage(),
-            new UmengPushPackage(),
           new SQLitePluginPackage(),
           new UmengPushPackage(),
           new ImagePickerPackage(),
@@ -55,6 +51,8 @@ public class MainApplication extends UmengPushApplication implements ReactApplic
           new ReactNativeWheelPickerPackage(),
           new WeChatPackage(),
           new VinScanPackage(),
+          new QrScanPackage(),
+          new CustomCameraPackage(),
           new RNSpinkitPackage(),
           new CodePush("nud3l-FlqnIsfZLXl71g-CDlIHIzVJvFYEdiG", getApplicationContext(), BuildConfig.DEBUG)
       );
