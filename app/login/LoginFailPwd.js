@@ -40,6 +40,7 @@ export default class LoginFailPwd extends BaseComponent {
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: false});
             // this.Verifycode();
+            this.refs.phone.setInputTextValue(this.props.userName);
         });
     }
 
@@ -77,8 +78,9 @@ export default class LoginFailPwd extends BaseComponent {
                     ref="phone"
                     textPlaceholder={'请输入手机号码'}
                     rightIcon={false}
-                    clearValue={true}
+                    clearValue={false}
                     maxLength={11}
+                    editable={false}
                     viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
                     keyboardType={'phone-pad'}
                     leftIconUri={require('./../../images/login/phone.png')}/>
