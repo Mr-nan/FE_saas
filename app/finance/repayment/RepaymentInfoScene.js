@@ -180,8 +180,8 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                     if(selecttime>=lasttime){
                         selecttime = lasttime-(60*60*24)
                     }else{
-                       if(selecttime-firsttime<(5*60*60*24)){
-                            selecttime = firsttime+(5*60*60*24);
+                       if(selecttime-firsttime<(10*60*60*24)){
+                            selecttime = firsttime+(10*60*60*24);
                         }
                     }
                     let date = new Date(selecttime);
