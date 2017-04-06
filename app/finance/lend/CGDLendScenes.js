@@ -152,7 +152,7 @@ export  default  class CGDLendScenes extends BaseComponent {
 
                         this.navigatorParams.name = "CGDAddCarScene";
                         this.navigatorParams.component = CGDAddCarScene;
-                        this.navigatorParams.params = {isOBD:this.props.isOBD};
+                        this.navigatorParams.params = {isOBD:this.props.isOBD,isCarinvoice:this.props.isCarinvoice};
                      this.toNextPage(this.navigatorParams)
                     }} title="添加车辆"/>
                     <CommenButton textStyle={{color: 'white'}} buttonStyle={styles.buttonStyleLeft} onPress={() => {
