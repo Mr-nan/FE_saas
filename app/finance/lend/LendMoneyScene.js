@@ -19,6 +19,8 @@ import AllNavigationView from '../../component/AllNavigationView'
 import BaseComponent from '../../component/BaseComponent';
 import SingelCarScene from './SingelCarScene';
 import KurongSence from './KurongSence';
+import CGDLendScenes from './CGDLendScenes'
+import CGDDetailSence from './CGDDetailSence'
 import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import {confimCarcell} from './ConfimCGDPriceSence'
@@ -107,11 +109,11 @@ export  default class LendMoneySence extends BaseComponent {
         }
         else {
 
-            // this.navigatorParams.name = "CGDSelectPatternScene";
-            // this.navigatorParams.component = CGDSelectPatternScene;
-            // this.toNextPage(this.navigatorParams);
+            this.navigatorParams.name = "CGDSelectPatternScene";
+            this.navigatorParams.component = CGDDetailSence;
+            this.toNextPage(this.navigatorParams);
 
-            this.cgdMessage.setModelVisible(true)
+            // this.cgdMessage.setModelVisible(true)
         }
 
     }

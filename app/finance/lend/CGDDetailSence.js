@@ -7,7 +7,7 @@ import {
     Text
 } from 'react-native';
 
-import {CommnetListItem, CommentHandItem,commnetStyle,CGDCarItem} from './component/ComponentBlob'
+import {CommnetListItem, CommentHandItem,commnetStyle,CGDCarItem,CommenButton} from './component/ComponentBlob'
 import {width, height, fontadapeSize, adapeSize,STATECODE,PAGECOLOR,getRowData,getSectionData,changeToMillion} from './component/MethodComponent'
 import  AllNavigationView from '../../component/AllNavigationView';
 import BaseComponent from '../../component/BaseComponent';
@@ -15,13 +15,9 @@ import {request} from '../../utils/RequestUtil'
 import *as apis from '../../constant/appUrls'
 import ImagePageView from 'react-native-viewpager'
 
-const handTitltBlob= {
+let ControlState=[];
+const  postId='201703200008'
 
-    cancle:'取消借款',
-    confim:'确认金额',
-    obeservery:'签署合同',
-
-}
 export default class OrderCarDetailScene extends BaseComponent{
 
     constructor(props) {
@@ -41,20 +37,109 @@ export default class OrderCarDetailScene extends BaseComponent{
             renderPlaceholderOnly: STATECODE.loading,
             imagePikerData: ImageData.cloneWithPages(['https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1490350847146&di=9bbc00bb5ae5df9c1b550cf76f710fac&imgtype=0&src=http%3A%2F%2Fimg4.duitang.com%2Fuploads%2Fitem%2F201508%2F23%2F20150823033054_AUiBL.thumb.700_0.jpeg','https://www.baidu.com/img/bd_logo1.png'])
         }
+        OrderHanderState=[];
     }
+
+    initFinish() {
+        this.getLoanCodeStateList();
+    }
+    getLendInfo=()=>{
+
+        let maps = {
+            api: apis.GET_APPLY_INFO,
+            loan_code:postId
+    };
+
+     request(apis.FINANCE, 'Post', maps)
+            .then((response) => {
+                    let tempjson = response.mjson.data;
+                    ControlState=this.confimOrderState(Number.parseInt(tempjson.payment_status),Number.parseInt(tempjson.payment_schedule))
+                    this.setState({
+                        dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(tempjson, [])),
+                        // renderPlaceholderOnly: STATECODE.loadSuccess
+                    })
+                },
+                (error) => {
+
+                    this.setState({
+                        renderPlaceholderOnly:STATECODE.loadError
+                    })
+                    if(error.mycode!= -300||error.mycode!= -500){
+                        this.props.showToast(error.mjson.msg);
+
+                    }else {
+
+                        this.props.showToast('服务器连接有问题')
+                    }
+                });
+
+
+    }
+    getCarListInfo=()=>{
+        let maps = {
+            api: apis.AUTOLIST,
+            payment_number:postId
+        };
+        request(apis.FINANCE, 'Post', maps)
+            .then((response) => {
+                    let tempjson = response.mjson.data;
+
+                },
+                (error) => {
+
+                    this.setState({
+                        renderPlaceholderOnly:STATECODE.loadError
+                    })
+                    if(error.mycode!= -300||error.mycode!= -500){
+                        this.props.showToast(error.mjson.msg);
+
+                    }else {
+
+                        this.props.showToast('服务器连接有问题')
+                    }
+                });
+
+    }
+    getLoanCodeStateList=()=>{
+        let maps = {
+            api: apis.AUTOLIST,
+            loan_code:postId
+        };
+        request(apis.FINANCE, 'Post', maps)
+            .then((response) => {
+                    let tempjson = response.mjson.data;
+
+                },
+                (error) => {
+
+                    this.setState({
+                        renderPlaceholderOnly:STATECODE.loadError
+                    })
+                    if(error.mycode!= -300||error.mycode!= -500){
+                        this.props.showToast(error.mjson.msg);
+
+                    }else {
+
+                        this.props.showToast('服务器连接有问题')
+                    }
+                });
+
+    }
+
+
 
     titleNameBlob=(jsonData,carData)=>{
 
         let dataSource = {};
         let section1=[
-            {title: '借款单号', key: '北京'},
-            {title:'状态',key:'2015 款 奥迪'},
-            {title: '产品类型', key: 'LVF900123sdadsasd'},
-            {title: '借款类型', key:'白色'},
-            {title: '借款金额', key: '10w公里'},
-            {title: '借款费率', key: '2016年五月'},
-            {title: '借款期限', key: '王波'},
-            {title: '用款时间',     key:'李洋'},
+            {title: '借款单号', key: jsonData.loan_code},
+            {title:'状态',key:jsonData.payment_status_str},
+            {title: '产品类型', key: jsonData.product_type},
+            {title: '借款类型', key:'---'},
+            {title: '借款金额', key: jsonData.payment_loanmny_str},
+            {title: '借款费率', key: jsonData.payment_rate_str},
+            {title: '借款期限', key: jsonData.loanperiodstr},
+            {title: '用款时间',     key:jsonData.use_time_str},
         ]
         dataSource['section1']=section1
         if(carData.length>0){
@@ -63,7 +148,26 @@ export default class OrderCarDetailScene extends BaseComponent{
         return dataSource;
     }
 
-    renderRow = (rowData, sectionID, rowId, highlightRow) => {
+    confimOrderState=(state,isComplete)=>{
+        let NameBlobs=[];
+
+        if (state>0&&state<=32||state==50){
+            NameBlobs=Array.of('取消借款')
+        }else if (state==33){
+            NameBlobs=Array.of('取消借款','确认金额')
+        }else if (state===35){
+            NameBlobs=Array.of('签署合同')
+        }else if (state==40||state==42||isComplete==4){
+            NameBlobs=Array.of('查看合同')
+        } else if (state==41) {
+            NameBlobs=Array.of('取消借款','确认金额','查看合同')
+        }
+
+        return NameBlobs;
+    }
+
+
+renderRow = (rowData, sectionID, rowId, highlightRow) => {
 
         if (sectionID==='section1') {
 
@@ -113,20 +217,28 @@ export default class OrderCarDetailScene extends BaseComponent{
             </View>
         )
     }
+    buttonClick=(title)=>{
+
+        alert(title)
+    }
+
+
 
     render(){
+        let tempBlobs=[];
+        if (ControlState.length>0){
+            let lengegth =ControlState.length-1
+            ControlState.map((item,index)=>{
 
-        // if(this.state.renderPlaceholderOnly!==STATECODE.loadSuccess)
-        // {
-        //     return(
-        //         <View style={styles.container}>
-        //             {this.loadView()}
-        //             <AllNavigationView title='车辆详情' backIconClick={()=>{
-        //                 this.backPage();
-        //             }}/>
-        //         </View>);
-        // }
+                tempBlobs.push(<CommenButton key={item} textStyle={index==lengegth?{color: 'white'}:{color:PAGECOLOR.COLORB0}} buttonStyle={index==lengegth?styles.buttonStyleFill:styles.buttonStyleNotFill} onPress={() => {
+
+                    this.buttonClick(item);
+                    }} title={item}/>)
+            })
+
+        }
         return(
+
             <View style={styles.container}>
                 <ListView
                     style={commnetStyle.ListWarp}
@@ -135,7 +247,7 @@ export default class OrderCarDetailScene extends BaseComponent{
                     renderSeparator={this.renderSeparator}
                     renderSectionHeader={this.renderSectionHeader}
                 />
-                <View style={commnetStyle.bottomWarp}></View>
+                <View style={[commnetStyle.bottomWarp,styles.buttonsFlex]}>{tempBlobs}</View>
                 <AllNavigationView title='借款详情' backIconClick={()=>{ this.backPage();}}/>
             </View>
         )
@@ -153,6 +265,13 @@ const styles = StyleSheet.create({
         backgroundColor:'white'
 
     },
+    buttonsFlex:{
+        alignItems:'center',
+        justifyContent:'flex-end',
+        flexDirection:'row'
+
+    },
+
     thumbTitle:{
         marginTop:adapeSize(16),
         marginBottom:adapeSize(12),
@@ -183,6 +302,32 @@ const styles = StyleSheet.create({
 
         marginLeft:adapeSize(14),
         color:PAGECOLOR.COLORA2
-    }
+    },
+    buttonStyleFill: {
+
+        height: adapeSize(32),
+        backgroundColor: PAGECOLOR.COLORB0,
+        marginRight: adapeSize(15),
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: 5,
+        borderRadius: 5,
+        width:adapeSize(80)
+    },
+    buttonStyleNotFill: {
+
+        height: adapeSize(32),
+        backgroundColor: 'white',
+        marginRight: adapeSize(15),
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: 5,
+        borderRadius: 5,
+        width:adapeSize(80),
+        borderColor:PAGECOLOR.COLORB0,
+        borderWidth:1
+
+
+    },
 
 })
