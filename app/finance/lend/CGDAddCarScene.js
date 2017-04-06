@@ -10,12 +10,13 @@ import {
     StyleSheet,
     Platform,
     NativeModules,
-    TouchableOpacity
+    TouchableOpacity,
+    ScrollView,
+    KeyboardAvoidingView,
 }from 'react-native';
 
 import Picker from 'react-native-picker';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 import BaseComponent from '../../component/BaseComponent';
 import AllNavigationView from '../../component/AllNavigationView';
 import * as fontAndColor from '../../constant/fontAndColor';
@@ -573,7 +574,8 @@ export default class CGDAddCarScene extends BaseComponent {
     render() {
         return (
             <View style={styles.container}>
-                <KeyboardAwareScrollView>
+                <ScrollView>
+                    <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={25}>
                     <AllNavigationView
                         backIconClick={this._onBack}
                         title='车辆信息'
@@ -703,7 +705,8 @@ export default class CGDAddCarScene extends BaseComponent {
                         />
                         <Text style={styles.rightHintFont}>万元</Text>
                     </View>
-                </KeyboardAwareScrollView>
+                    </KeyboardAvoidingView>
+                </ScrollView>
 
                 <View style={styles.fillSpace}>
                     <TouchableOpacity style={styles.btnOk} activeOpacity={0.6} onPress={this._onOKPress}>

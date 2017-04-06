@@ -12,7 +12,6 @@
     "react-native-code-push": "^1.17.2-beta",
     "react-native-gallery": "0.0.17",
     "react-native-image-picker": "^0.25.7",
-    "react-native-keyboard-aware-scroll-view": "^0.2.7",
     "react-native-image-zoom-viewer": "^1.2.47",
     "react-native-md5": "^1.0.0",
     "react-native-modal-datetime-picker": "^3.0.1",
