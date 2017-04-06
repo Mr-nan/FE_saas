@@ -48,6 +48,7 @@ export  default class ContractSignScene extends BaseComponent {
             contract_id: this.props.contract_id,    //合同ID
             contract_log_id: this.props.contract_log_id,	//合同日志ID
             product_type_code: this.props.product_type_code,	//产品类型编码
+
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
@@ -77,7 +78,8 @@ export  default class ContractSignScene extends BaseComponent {
             api: Urls.CONTRACT_SIGN_MINE,
             contract_id: this.props.contract_id,    //合同ID
             contract_log_id: this.props.contract_log_id,
-            sign_part: this.sign_part
+            sign_part: this.sign_part,
+            opt_user_id:this.props.opt_user_id
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
