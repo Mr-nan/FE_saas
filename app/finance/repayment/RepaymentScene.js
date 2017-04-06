@@ -53,7 +53,7 @@ export  default class RepaymentScene extends BaseComponent {
                 >
                     <SingleRepaymentPage customerName={this.props.customerName} callBack={(loan_id,loan_number,type)=>{
                       this.toNextPage({name:'RepaymentInfoScene',component:RepaymentInfoScene,
-                      params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'SingleRepaymentPage'}});
+                      params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'SingleRepaymentPage',planid:planid}});
                     }} tabLabel="ios-paper"/>
 
                     <InventoryRepaymentPage customerName={this.props.customerName} callBack={(loan_id,loan_number,type,planid)=>{
