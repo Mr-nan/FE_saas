@@ -69,8 +69,11 @@ export default class OBDDevice extends BaseComponent {
                     rightText={"保存"}
                     rightTextCallBack={() => {
                         let obd_number = this.refs.obd_number.getInputTextValue();
-                        this.props.callBack(obd_number);
-                        this.backPage();
+                        if (obd_number != '') {
+                            this.props.callBack(obd_number);
+                            this.backPage();
+                        }
+
                     }}
                     leftImageCallBack={this.backPage}/>
 
