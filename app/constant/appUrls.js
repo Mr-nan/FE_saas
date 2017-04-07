@@ -1,12 +1,12 @@
 /**
  * 开发地址
  */
-// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
  */
-export const BASEURL = 'http://api-gateway.test.dycd.com/';
+// export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 
 /**
@@ -174,6 +174,13 @@ export const REPAYMENT_GETLIST = 'api/v2/Repayment/getList';
  * 获取还款历史
  **/
 export const GETHISTORICALLIST = 'api/v1/Repayment/getHistoricalList';
+
+/**
+ * from @zhaojian
+ *
+ * 添加采购贷车辆
+ **/
+export const PURCHAAUTO_ADDAUTO = 'api/v2/purchaAuto/addAuto';
 
 /**
  * from @zhaojian
