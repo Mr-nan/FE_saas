@@ -155,9 +155,15 @@ export  default class PurchasePickerScene extends BaseComponent {
         request(MyUrl.FINANCE, 'Post', maps)
             .then((response) => {
                     this.props.showModal(false);
+                    this.props.showToast("添加成功，请绑定OBD")
                 },
                 (error) => {
                     this.props.showModal(false);
+                    if(error.mycode==-300||error.mycode==-500){
+                        this.props.showToast("网络连接失败")
+                    }else{
+                        this.props.showToast(error.mjson.msg)
+                    }
                 });
     }
 
