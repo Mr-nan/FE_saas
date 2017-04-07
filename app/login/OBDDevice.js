@@ -392,9 +392,9 @@ export default class OBDDevice extends BaseComponent {
     submit = () => {
         let maps = {
             api: AppUrls.BINDOBD,
-            bind_type: "2",
+            bind_type: this.bind_type,
             file_list: JSON.stringify(childItems),
-            info_id: "12345678",
+            info_id: this.props.info_id,
             obd_number: this.state.obd_number,
         };
         this.props.showModal(true);
