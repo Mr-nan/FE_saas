@@ -92,7 +92,7 @@ export  default class PurchasePickerScene extends BaseComponent {
 
     _renderRow = (movie, sectionId, rowId) => {
         return (
-            <PurchasePickerItem items={movie} childList={childItems[rowId]}/>
+            <PurchasePickerItem showModal={(value)=>{this.props.showModal(value)}} showToast={(value)=>{this.props.showToast(value)}} items={movie} childList={childItems[rowId]}/>
         )
     }
 

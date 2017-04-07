@@ -113,48 +113,59 @@ export  default class PurchasePickerItem extends PureComponent {
                 } else {
                     // You can also display the image using data:
                     // let source = { uri: 'data:image/jpeg;base64,' + response.data };
-                        let news = {...this.state.childMovie};
-                        news.list.push({url: response.uri});
-                        this.setState({
-                            childMovie: news
-                        });
+                    //     let news = {...this.state.childMovie};
+                    //     news.list.push({url: response.uri});
+                    //     this.setState({
+                    //         childMovie: news
+                    //     });
+                    this._uploadPicture(response);
                 }
             });
         }
     }
 
-    _uploadPicture = (response)=>{
+    _uploadPicture = (responses)=>{
+        this.props.showModal(true);
         let params ={
-            file:'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g,'%2B')
+            file:'data:image/jpeg;base64,' + encodeURI(responses.data).replace(/\+/g,'%2B')
         };
-        this.props.showLoading();
         ImageUpload.request(MyUrl.INDEX_UPLOAD,'Post',params).then(
             (response)=>{
+                this.props.showModal(false);
                 if(response.mycode === 1){
-                    this.selectSource = {uri: response.mjson.data.url};
-                    this.setState({
-                        hasPhoto:true
-                    });
-
-                    let left ={
-                        name : 'left_anterior',
-                        file_id : response.mjson.data.file_id,
-                        url: response.mjson.data.url,
-                    };
-                    this.pictures = [];
-                    this.pictures.push(left);
-
-                    SQLite.changeData(
-                        'UPDATE publishCar SET pictures = ? WHERE vin = ?',
-                        [ JSON.stringify(this.pictures), this.props.carData.vin]);
-                    this.props.closeLoading();
+                    // this.selectSource = {uri: response.mjson.data.url};
+                    this.props.showToast('上传成功')
+                    console.log(response.mjson.data.url);
+                    let news = {...this.state.childMovie};
+                        news.list.push({url: response.mjson.data.url});
+                        this.setState({
+                            childMovie: news
+                        });
+                    // this.setState({
+                    //     hasPhoto:true
+                    // });
+                    //
+                    // let left ={
+                    //     name : 'left_anterior',
+                    //     file_id : response.mjson.data.file_id,
+                    //     url: response.mjson.data.url,
+                    // };
+                    // this.pictures = [];
+                    // this.pictures.push(left);
+                    //
+                    // SQLite.changeData(
+                    //     'UPDATE publishCar SET pictures = ? WHERE vin = ?',
+                    //     [ JSON.stringify(this.pictures), this.props.carData.vin]);
+                    // this.props.closeLoading();
                 }else {
-                    this.props.closeLoading();
-                    this.props.showHint('上传失败');
+                    // this.props.closeLoading();
+                    this.props.showToast('上传失败')
                 }
             },(error)=>{
-                this.props.closeLoading();
-                this.props.showHint(JSON.stringify(error));
+                this.props.showModal(false);
+                // this.props.closeLoading();
+                this.props.showToast(JSON.stringify(error));
+                // console.log(JSON.stringify(error));
             });
     };
 
