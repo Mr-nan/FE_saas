@@ -179,8 +179,10 @@ export  default  class CGDLendScenes extends BaseComponent {
 
     }
     carItemClick=(infoId)=>{
-
-        alert(infoId);
+        this.navigatorParams.name = "CGDAddCarScene";
+        this.navigatorParams.component = CGDAddCarScene;
+        this.navigatorParams.params = {isOBD:this.props.isOBD,isCarinvoice:this.props.isCarinvoice,InfoId:infoId,updateCar:true};
+        this.toNextPage(this.navigatorParams)
 
     }
 
