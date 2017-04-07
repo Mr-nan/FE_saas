@@ -10,7 +10,8 @@ import {
     ListView,
     PixelRatio,
     TextInput,
-    Image
+    Image,
+    NativeModules
 } from "react-native";
 import BaseComponent from "../component/BaseComponent";
 import NavigationBar from "../component/NavigationBar";
@@ -162,21 +163,32 @@ export default class OBDDevice extends BaseComponent {
                         <View style={{width: Pixel.getPixel(22)}}/>
                         <MyButton buttonType={MyButton.TEXTBUTTON} content="手动绑定" parentStyle={styles.buttonStyle}
                                   childStyle={styles.buttonTextStyle} mOnPress={() => {
-                            this.toNextPage({
-                                name: 'DeviceNumber',
-                                component: DeviceNumber,
-                                params: {
-                                    callBack: (obd_number) => {
-                                        if (obd_number != '') {
-                                            this.setState({
-                                                obd_number: obd_number,
-                                                boundState: '未检测',
-                                            });
-                                            this.bind_type = 2;
-                                        }
-                                    }
-                                },
-                            })
+                            NativeModules.QrScan.scan().then((data) => {
+                                if (data.scan_hand) {
+                                    this.toNextPage({
+                                        name: 'DeviceNumber',
+                                        component: DeviceNumber,
+                                        params: {
+                                            callBack: (obd_number) => {
+                                                if (obd_number != '') {
+                                                    this.setState({
+                                                        obd_number: obd_number,
+                                                        boundState: '未检测',
+                                                    });
+                                                    this.bind_type = 2;
+                                                }
+                                            }
+                                        },
+                                    })
+                                } else {
+                                    this.setState({
+                                        obd_number: data.scan_result,
+                                        boundState: '未检测',
+                                    });
+                                    this.bind_type = 2;
+                                }
+                            }, (error) => {
+                            });
                         }}/>
                     </View>
                     <View style={{
@@ -304,21 +316,32 @@ export default class OBDDevice extends BaseComponent {
                     <View style={{width: Pixel.getPixel(22)}}/>
                     <MyButton buttonType={MyButton.TEXTBUTTON} content="手动绑定" parentStyle={styles.buttonStyle}
                               childStyle={styles.buttonTextStyle} mOnPress={() => {
-                        this.toNextPage({
-                            name: 'DeviceNumber',
-                            component: DeviceNumber,
-                            params: {
-                                callBack: (obd_number) => {
-                                    if (obd_number != '') {
-                                        this.setState({
-                                            obd_number: obd_number,
-                                            boundState: '未检测',
-                                        });
-                                        this.bind_type = 2;
-                                    }
-                                }
-                            },
-                        })
+                        NativeModules.QrScan.scan().then((data) => {
+                            if (data.scan_hand) {
+                                this.toNextPage({
+                                    name: 'DeviceNumber',
+                                    component: DeviceNumber,
+                                    params: {
+                                        callBack: (obd_number) => {
+                                            if (obd_number != '') {
+                                                this.setState({
+                                                    obd_number: obd_number,
+                                                    boundState: '未检测',
+                                                });
+                                                this.bind_type = 2;
+                                            }
+                                        }
+                                    },
+                                })
+                            } else {
+                                this.setState({
+                                    obd_number: data.scan_result,
+                                    boundState: '未检测',
+                                });
+                                this.bind_type = 2;
+                            }
+                        }, (error) => {
+                        });
                     }}/>
                 </View>
                 <View style={{backgroundColor: FontAndColor.COLORA4, width: width, height: Pixel.getPixel(1)}}/>

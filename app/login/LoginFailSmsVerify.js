@@ -32,6 +32,7 @@ var Platform = require('Platform');
 var imgSrc: '';
 var imgSid: '';
 var smsCode: '';
+
 export default class LoginFailSmsVerify extends BaseComponent {
 
     constructor(props) {
@@ -164,9 +165,11 @@ export default class LoginFailSmsVerify extends BaseComponent {
                 type: "2",
             };
             // this.props.showModal(true);
+            this.refs.lodding.setShow(true);
             request(AppUrls.SEND_SMS, 'Post', maps)
                 .then((response) => {
                     // this.props.showModal(false);
+                    this.refs.lodding.setShow(false);
                     if (response.mjson.code == "1") {
                         this.refs.smscode.StartCountDown();
                         // this.refs.smscode.setInputTextValue(response.mjson.data.code + "");
@@ -175,6 +178,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
                     }
                 }, (error) => {
                     // this.props.showModal(false);
+                    this.refs.lodding.setShow(false);
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("短信验证码获取失败");
                     } else if (error.mycode == 7040012) {
@@ -242,7 +246,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
                         StorageUtil.mSetItem(StorageKeyNames.REAL_NAME, response.mjson.data.real_name + "");
                         StorageUtil.mSetItem(StorageKeyNames.TOKEN, response.mjson.data.token + "");
                         StorageUtil.mSetItem(StorageKeyNames.USER_LEVEL, response.mjson.data.user_level + "");
-
+                        this.setLoginPwd.params.userName = userName;
                         this.loginPage(this.setLoginPwd);
                     } else {
                         this.props.showToast(response.mjson.msg);
@@ -266,7 +270,8 @@ export default class LoginFailSmsVerify extends BaseComponent {
         name: 'LoginFailPwd',
         component: LoginFailPwd,
         params: {
-            from: 'login'
+            from: 'login',
+            userName: '',
         }
     }
 

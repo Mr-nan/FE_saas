@@ -224,10 +224,9 @@ export default class AmountConfirm extends BaseComponent {
 
     //  获取采购贷车辆列表
     getAutoList = () => {
-        // let obd_number = this.refs.obd_number.getInputTextValue();
         let maps = {
             api: AppUrls.PURCHAAUTOAUTOLIST,
-            payment_number: "",
+            payment_number: this.props.loan_code,
         };
         request(AppUrls.FINANCE, 'Post', maps)
             .then((response) => {
@@ -244,12 +243,11 @@ export default class AmountConfirm extends BaseComponent {
 
     //  采购贷确认借款金额
     makeSure = () => {
-        // let obd_number = this.refs.obd_number.getInputTextValue();
+        let inputText = this.refs.inputText.getInputTextValue();
         let maps = {
-            key: "",
             car_lists: "",
-            loan_code: "",
-            loan_mny: "",
+            loan_code: this.props.loan_code,
+            loan_mny: inputText,
             api: AppUrls.ACCOUNTCONFIRM_AMOUNT,
         };
         request(AppUrls.FINANCE, 'Post', maps)

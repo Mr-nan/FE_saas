@@ -328,6 +328,13 @@ export const GET_APPLY_INFO = 'api/v3/account/get_apply_info';
 /**
  * from @lhc
  *
+ * 获取借款进度列表
+ **/
+export const GET_PAYMENT_SCHEDULE_ALL='api/v1/account/get_payment_schedule_all'
+
+/**
+ * from @lhc
+ *
  * 修改借款金额
  **/
 export const SET_APPLY_MNY = 'api/v3/account/set_apply_mny'
@@ -369,6 +376,12 @@ export const OPT_LOAN_SUBJECT = 'api/v1/user/opt_loan_subject';
  * 单车借款信息
  **/
 export const GET_APPLY_LOAN_DATA = 'api/v3/account/get_apply_loan_data';
+/**
+ * from @lhc
+ *
+ * 采购贷借款车辆列表
+ **/
+export const AUTOLIST='api/v2/purchaAuto/autoList'
 
 /**
  * from @huangning

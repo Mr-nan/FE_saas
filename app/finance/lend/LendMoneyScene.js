@@ -63,9 +63,6 @@ class PageItem extends PureComponent {
 }
 
 export  default class LendMoneySence extends BaseComponent {
-    initFinish = () => {
-
-    }
 
     dataSource = [
         {
@@ -74,19 +71,33 @@ export  default class LendMoneySence extends BaseComponent {
             title: '单车融资',
             key: 'single'
         },
-        {
-            backImage: require('../../../images/financeImages/backkurong.png'),
-            imageSource: require('../../../images/financeImages/kurongIcon.png'),
-            title: '库融融资',
-            key: 'kurong'
-        },
-        {
-            backImage: require('../../../images/financeImages/backcaigou.png'),
-            imageSource: require('../../../images/financeImages/caigouIcon.png'),
-            title: '采购融资',
-            key: 'caigoudai'
-        },
     ]
+    componentWillMount(){
+
+        if (Number.parseInt(this.props.inventory_financing_status)==1){
+
+            this.dataSource.push( {
+                backImage: require('../../../images/financeImages/backkurong.png'),
+                imageSource: require('../../../images/financeImages/kurongIcon.png'),
+                title: '库融融资',
+                key: 'kurong'
+            })
+        }
+        if (Number.parseInt(this.props.purchase_status)==1){
+            this.dataSource.push({
+                backImage: require('../../../images/financeImages/backcaigou.png'),
+                imageSource: require('../../../images/financeImages/caigouIcon.png'),
+                title: '采购融资',
+                key: 'caigoudai'
+            })
+        }
+    }
+
+    initFinish = () => {
+
+
+    }
+
     navigatorParams = {
         name: 'SingelCarScene',
         component: SingelCarScene,
@@ -116,7 +127,6 @@ export  default class LendMoneySence extends BaseComponent {
         }
 
     }
-
     render() {
 
 
