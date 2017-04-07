@@ -24,8 +24,8 @@ import SingleRepaymentPage from '../page/SingleRepaymentPage';
 import NavigationView from '../../component/AllNavigationView';
 import * as fontAndColor from '../../constant/fontAndColor';
 import PlanListScene from './PlanListScene';
-import RepaymentInfoScene from '../repayment/RepaymentInfoScene';
-import InventoryPlanInfoScene from '../repayment/InventoryPlanInfoScene';
+import RepaymentInfoScene from '../repayment/NewRepaymentInfoScene';
+import InventoryPlanInfoScene from '../repayment/NewInventoryPlanInfoScene';
 
 export  default class RepaymentScene extends BaseComponent {
 
