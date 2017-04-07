@@ -157,7 +157,7 @@ export  default class PurchasePickerScene extends BaseComponent {
             .then((response) => {
                     this.props.showModal(false);
                     this.props.showToast("添加成功，请绑定OBD");
-                    this.toNextPage({name:'OBDDevice',componet:OBDDevice,params:{
+                    this.toNextPage({name:'OBDDevice',component:OBDDevice,params:{
                         frame_number:this.props.carData.frame_number,
                         info_id:response.mjson.data.info_id
                     }});

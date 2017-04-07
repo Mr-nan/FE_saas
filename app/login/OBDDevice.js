@@ -420,12 +420,12 @@ export default class OBDDevice extends BaseComponent {
         if (bind_type == 1) {
             maps = {
                 api: AppUrls.AUTODETECTOBD,
-                frame_number: "LBEHDAEB58Y038860",
+                frame_number: this.props.frame_number,
             };
         } else {
             maps = {
                 api: AppUrls.AUTODETECTOBD,
-                frame_number: "LBEHDAEB58Y038860",
+                frame_number: this.props.frame_number,
                 obd_number: this.state.obd_number,
             };
         }
