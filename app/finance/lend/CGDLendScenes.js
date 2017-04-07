@@ -96,17 +96,19 @@ export  default  class CGDLendScenes extends BaseComponent {
 
                 tempCarDate.push(
                     {
-                        auto_id: item.auto_id,
-                        model_name: item.model_name,
-                        state: item.status_str,
-                        order: item.frame_number,
-                        price: item.lend_mny,//放款额
-                        plate_number: item.plate_number,//车牌号
-                        loan_number: item.loan_number,
+                        brand_name: item.brand_name,
+                        icon: item.cover.icon,
+                        frame_number: item.frame_number,
+                        price: item.first_assess_loan,//放款额
+                        obd_bind_status: item.obd_bind_status,//车牌号
+                        info_id: item.info_id,
+                        model_name:item.model_name,
+                        init_reg:item.init_reg
                     }
                 )
+                dataSource['section3'] = tempCarDate;
             })
-            dataSource['section3'] = [];
+
         }
         return dataSource;
     }
@@ -126,10 +128,8 @@ export  default  class CGDLendScenes extends BaseComponent {
                             showData.tempMin=changeToMillion(tempjson.min_loanmny);
                         showData.tempMax=changeToMillion(tempjson.max_loanmny);
 
-                        this.setState({
-                            dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(tempjson, [])),
-                            renderPlaceholderOnly: STATECODE.loadSuccess
-                        })
+                        this.getCarListInfo(tempjson);
+
                     },
                     (error) => {
 
@@ -148,7 +148,7 @@ export  default  class CGDLendScenes extends BaseComponent {
 
     }
 
-    getCarListInfo=()=>{
+    getCarListInfo=(templendInfo)=>{
         let maps = {
             api: apis.AUTOLIST,
         };
@@ -156,7 +156,11 @@ export  default  class CGDLendScenes extends BaseComponent {
             .then((response) => {
                     let tempjson = response.mjson.data;
 
-
+                    console.log(tempjson.list);
+                    this.setState({
+                        dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(templendInfo, tempjson.list)),
+                        renderPlaceholderOnly: STATECODE.loadSuccess
+                    })
                 },
                 (error) => {
 
@@ -174,6 +178,15 @@ export  default  class CGDLendScenes extends BaseComponent {
 
 
     }
+    carItemClick=(infoId)=>{
+        this.navigatorParams.name = "CGDAddCarScene";
+        this.navigatorParams.component = CGDAddCarScene;
+        this.navigatorParams.params = {isOBD:this.props.isOBD,isCarinvoice:this.props.isCarinvoice,InfoId:infoId,updateCar:true};
+        this.toNextPage(this.navigatorParams)
+
+    }
+
+
 
     //datePiker的方法
     _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false })
@@ -205,7 +218,18 @@ export  default  class CGDLendScenes extends BaseComponent {
                                  imageSouce={require('../../../images/financeImages/dateIcon.png')} onPress={this.onPress}/>
         } else {
             return (
-                <CGDCarItem/>
+                // brand_name: item.brand_name,
+                // icon: item.cover.icon,
+                // frame_number: item.frame_number,
+                // price: item.first_assess_loan,//放款额
+                // obd_bind_status: item.obd_bind_status,//车牌号
+                // info_id: item.info_id,
+                // model_name:item.model_name,
+                // init_reg:item.init_reg
+                //url,title,obdState,date
+                <CGDCarItem url={rowData.icon}title={rowData.model_name}obdState={rowData.obd_bind_status}date={rowData.init_reg} onPress={()=>{
+                    this.carItemClick(rowData.info_id);
+                }}/>
             )
         }
     }

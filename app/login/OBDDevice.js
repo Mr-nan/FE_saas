@@ -392,9 +392,9 @@ export default class OBDDevice extends BaseComponent {
     submit = () => {
         let maps = {
             api: AppUrls.BINDOBD,
-            bind_type: "2",
+            bind_type: this.bind_type,
             file_list: JSON.stringify(childItems),
-            info_id: "12345678",
+            info_id: this.props.info_id,
             obd_number: this.state.obd_number,
         };
         this.props.showModal(true);
@@ -420,12 +420,12 @@ export default class OBDDevice extends BaseComponent {
         if (bind_type == 1) {
             maps = {
                 api: AppUrls.AUTODETECTOBD,
-                frame_number: "LBEHDAEB58Y038860",
+                frame_number: this.props.frame_number,
             };
         } else {
             maps = {
                 api: AppUrls.AUTODETECTOBD,
-                frame_number: "LBEHDAEB58Y038860",
+                frame_number: this.props.frame_number,
                 obd_number: this.state.obd_number,
             };
         }
