@@ -25,6 +25,7 @@ import {request} from '../../utils/RequestUtil';
 import * as MyUrl from '../../constant/appUrls';
 let childItems = [];
 let results = [];
+import OBDDevice from '../../login/OBDDevice';
 export  default class PurchasePickerScene extends BaseComponent {
 
     constructor(props) {
@@ -155,7 +156,11 @@ export  default class PurchasePickerScene extends BaseComponent {
         request(MyUrl.FINANCE, 'Post', maps)
             .then((response) => {
                     this.props.showModal(false);
-                    this.props.showToast("添加成功，请绑定OBD")
+                    this.props.showToast("添加成功，请绑定OBD");
+                    this.toNextPage({name:'OBDDevice',componet:OBDDevice,params:{
+                        frame_number:this.props.carData.frame_number,
+                        info_id:response.mjson.data.info_id
+                    }});
                 },
                 (error) => {
                     this.props.showModal(false);
