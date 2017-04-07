@@ -346,9 +346,9 @@ export default class FinanceSence extends BaseComponet {
             this.typeButtonParams.content = movie.status_str;
             return (
                 <TouchableOpacity activeOpacity={0.8} onPress={() => {
-                    if(nextPage===CGDDetailSence){
-                        this.refs.cgdModal.setModelVisible(true);
-                    }else{
+                    {/*if(nextPage===CGDDetailSence){*/}
+                        {/*this.refs.cgdModal.setModelVisible(true);*/}
+                    {/*}else{*/}
                         this.navigatorParams.name = 'DetaileSence';
                         this.navigatorParams.component = nextPage;
                         this.navigatorParams.params={
@@ -358,7 +358,7 @@ export default class FinanceSence extends BaseComponet {
                         }
                     }
                         this.props.callBack(this.navigatorParams);
-                    }
+                    {/*}*/}
             }} style={[cellSheet.row, cellSheet.padding]}>
                     <View style={cellSheet.rowViewStyle}>
                         <View style={[{

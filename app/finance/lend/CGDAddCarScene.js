@@ -525,42 +525,42 @@ export default class CGDAddCarScene extends BaseComponent {
         console.log('============>>>>>>>');
         console.log(JSON.stringify(this.carData));
 
-        // if (this.is_exists === true) {
-        //     this._showHint('车架号有误');
-        //     return;
-        // }
-        // if (this.isEmpty(this.carData.sell_city_id) === true) {
-        //     this._showHint('请选择出售城市');
-        //     return;
-        // }
-        // if (this.isEmpty(this.carData.model_id) === true) {
-        //     this._showHint('请选择车型');
-        //     return;
-        // }
-        // if (this.isEmpty(this.carData.car_color) === true) {
-        //     this._showHint('请选择外观颜色');
-        //     return;
-        // }
-        // if (this.isEmpty(this.carData.mileage) === true) {
-        //     this._showHint('请填写行驶里程');
-        //     return;
-        // }
-        // if (this.isEmpty(this.carData.init_reg) === true) {
-        //     this._showHint('请选择首次上牌时间');
-        //     return;
-        // }
-        // if (this.isEmpty(this.carData.rev_user_id) === true) {
-        //     this._showHint('请选择收车人');
-        //     return;
-        // }
-        // if (this.isEmpty(this.carData.register_user_id) === true) {
-        //     this._showHint('请选择登记人');
-        //     return;
-        // }
-        // if (this.isEmpty(this.carData.purchas_price) === true) {
-        //     this._showHint('请填写收购价');
-        //     return;
-        // }
+        if (this.is_exists === true) {
+            this._showHint('车架号有误');
+            return;
+        }
+        if (this.isEmpty(this.carData.sell_city_id) === true) {
+            this._showHint('请选择出售城市');
+            return;
+        }
+        if (this.isEmpty(this.carData.model_id) === true) {
+            this._showHint('请选择车型');
+            return;
+        }
+        if (this.isEmpty(this.carData.car_color) === true) {
+            this._showHint('请选择外观颜色');
+            return;
+        }
+        if (this.isEmpty(this.carData.mileage) === true) {
+            this._showHint('请填写行驶里程');
+            return;
+        }
+        if (this.isEmpty(this.carData.init_reg) === true) {
+            this._showHint('请选择首次上牌时间');
+            return;
+        }
+        if (this.isEmpty(this.carData.rev_user_id) === true) {
+            this._showHint('请选择收车人');
+            return;
+        }
+        if (this.isEmpty(this.carData.register_user_id) === true) {
+            this._showHint('请选择登记人');
+            return;
+        }
+        if (this.isEmpty(this.carData.purchas_price) === true) {
+            this._showHint('请填写收购价');
+            return;
+        }
 
         let pickerParams = {
             name: 'PurchasePickerScene',

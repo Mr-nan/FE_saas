@@ -178,6 +178,13 @@ export const GETHISTORICALLIST = 'api/v1/Repayment/getHistoricalList';
 /**
  * from @zhaojian
  *
+ * 添加采购贷车辆
+ **/
+export const PURCHAAUTO_ADDAUTO = 'api/v2/purchaAuto/addAuto';
+
+/**
+ * from @zhaojian
+ *
  * 获取还款计划列表
  **/
 export const GETPLANLIST = 'api/v2/Repayment/getPlanList';

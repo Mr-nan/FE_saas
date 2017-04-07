@@ -437,9 +437,11 @@ export default class Register extends BaseComponent {
                 type: "1",
             };
             // this.props.showModal(true);
+            this.refs.lodding.setShow(true);
             request(AppUrls.SEND_SMS, 'Post', maps)
                 .then((response) => {
                     // this.props.showModal(false);
+                    this.refs.lodding.setShow(false);
                     if (response.mjson.code == "1") {
                         this.refs.smsCode.StartCountDown();
                         // this.refs.smsCode.setInputTextValue(response.mjson.data.code + "");
@@ -448,6 +450,7 @@ export default class Register extends BaseComponent {
                     }
                 }, (error) => {
                     // this.props.showModal(false);
+                    this.refs.lodding.setShow(false);
                     this.Verifycode();
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("短信验证码获取失败");
