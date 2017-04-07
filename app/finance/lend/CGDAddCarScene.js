@@ -500,11 +500,17 @@ export default class CGDAddCarScene extends BaseComponent {
             return;
         }
 
+        let upd = false;
+        if(this.props.updateCar && this.props.updateCar === true){
+            upd = true;
+        }
+
         let pickerParams = {
             name: 'PurchasePickerScene',
             component: PurchasePickerScene,
-            params: {carData: this.carData}
+            params: {carData: this.carData,updateCar:upd}
         };
+
 
         this.toNextPage(pickerParams);
 
