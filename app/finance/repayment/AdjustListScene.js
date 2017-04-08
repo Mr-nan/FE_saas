@@ -181,7 +181,7 @@ export  default class AdjustListScene extends BaseComponent {
                     title="选择优惠券"
                     backIconClick={this.backPage}/>
                 <ListView
-                    style={{marginTop: Pixel.getTitlePixel(70), flex: 1}}
+                    style={{marginTop: Pixel.getTitlePixel(70), flex: 1,marginBottom: Pixel.getPixel(45)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}

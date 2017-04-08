@@ -165,14 +165,16 @@ export  default class PurchasePickerScene extends BaseComponent {
                     this.props.showModal(false);
                     if(this.props.carData.isCarinvoice=='0'){
                         this.props.showToast("添加成功");
+                        this.props.backRefresh();
                         const navigator = this.props.navigator;
                         if (navigator){
                             navigator.popToRoute(navigator.getCurrentRoutes()[3]);
                         }
                     }else{
                         this.props.showToast("添加成功，请绑定OBD");
+                        this.props.backRefresh();
                         this.toNextPage({
-                            name: 'OBDDevice', componet: OBDDevice, params: {
+                            name: 'OBDDevice', component: OBDDevice, params: {
                                 frame_number: this.props.carData.frame_number,
                                 info_id: response.mjson.data.info_id
                             }
