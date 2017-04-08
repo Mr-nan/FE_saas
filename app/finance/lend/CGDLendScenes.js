@@ -188,7 +188,10 @@ export  default  class CGDLendScenes extends BaseComponent {
     carItemClick=(infoId)=>{
         this.navigatorParams.name = "CGDAddCarScene";
         this.navigatorParams.component = CGDAddCarScene;
-        this.navigatorParams.params = {isOBD:this.props.isOBD,isCarinvoice:this.props.isCarinvoice,InfoId:infoId,updateCar:true};
+        this.navigatorParams.params = {isOBD:this.props.isOBD,isCarinvoice:this.props.isCarinvoice,InfoId:infoId,updateCar:true,
+            backRefresh:()=>{
+            this.refreshAll();
+        }};
         this.toNextPage(this.navigatorParams)
 
     }
@@ -236,7 +239,7 @@ export  default  class CGDLendScenes extends BaseComponent {
                 // model_name:item.model_name,
                 // init_reg:item.init_reg
                 //url,title,obdState,date
-                <CGDCarItem url={rowData.icon}title={rowData.model_name}obdState={rowData.obd_bind_status}date={rowData.init_reg} onPress={()=>{
+                <CGDCarItem  url={rowData.icon}title={rowData.model_name}obdState={rowData.obd_bind_status}date={rowData.init_reg} onPress={()=>{
                     this.carItemClick(rowData.info_id);
                 }}/>
             )
