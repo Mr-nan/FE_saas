@@ -29,7 +29,7 @@ var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
 var onePT = 1 / PixelRatio.get(); //一个像素
 var Platform = require('Platform');
-const childItems = [];
+let childItems = [];
 export default class OBDDevice extends BaseComponent {
     constructor(props) {
         super(props);
@@ -45,6 +45,11 @@ export default class OBDDevice extends BaseComponent {
 
     defaultProps = {
         payment_number: 123456789,
+    }
+
+    componentWillUnmount() {
+        results = [];
+        childItems = [];
     }
 
     initFinish = () => {
@@ -260,8 +265,10 @@ export default class OBDDevice extends BaseComponent {
                         color: FontAndColor.COLORA0,
                         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),
                     }}>绑定状态</Text>
-                    <Text style={this.state.boundState == "已绑定" ? styles.boundSuccessStyle : styles.boundStateStyle }>
-                        {this.state.boundState}
+                    <Text
+                        style={this.props.carData.obd_bind_status == "1" ? styles.boundSuccessStyle :
+                            this.state.boundState == "已绑定" ? styles.boundSuccessStyle : styles.boundStateStyle }>
+                        {this.props.carData.obd_bind_status == "1" ? "已绑定" : this.state.boundState}
                     </Text>
                 </View>
                 <View style={{backgroundColor: FontAndColor.COLORA4, width: width, height: Pixel.getPixel(1)}}/>
@@ -279,20 +286,26 @@ export default class OBDDevice extends BaseComponent {
                         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),
                     }}>设备号</Text>
                     {
-                        this.state.obd_number ?
-                            <Text style={{
+                        this.props.carData.obd_bind_status == "1" ? <Text style={{
                                 color: FontAndColor.COLORA0,
                                 fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT30),
                                 textAlign: 'right',
                                 flex: 1
-                            }}>{this.state.obd_number}</Text>
-                            :
-                            <Text style={{
-                                color: FontAndColor.COLORA1,
-                                fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT30),
-                                textAlign: 'right',
-                                flex: 1
-                            }}>请输入</Text>
+                            }}>{this.props.carData.obd_number}</Text> :
+                            this.state.obd_number ?
+                                <Text style={{
+                                    color: FontAndColor.COLORA0,
+                                    fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT30),
+                                    textAlign: 'right',
+                                    flex: 1
+                                }}>{this.state.obd_number}</Text>
+                                :
+                                <Text style={{
+                                    color: FontAndColor.COLORA1,
+                                    fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT30),
+                                    textAlign: 'right',
+                                    flex: 1
+                                }}>请输入</Text>
                     }
 
                 </View>
@@ -408,7 +421,11 @@ export default class OBDDevice extends BaseComponent {
                 .then((response) => {
                         this.props.showModal(false);
                         this.props.showToast("OBD绑定成功");
-                        this.backPage();
+                        this.props.backRefresh();
+                        const navigator = this.props.navigator;
+                        if (navigator) {
+                            navigator.popToRoute(navigator.getCurrentRoutes()[3]);
+                        }
                     }, (error) => {
                         this.props.showModal(false);
                         if (error.mycode == -300 || error.mycode == -500) {
@@ -440,6 +457,7 @@ export default class OBDDevice extends BaseComponent {
             };
         }
         this.props.showModal(true);
+        this.props.carData.obd_bind_status = 0;
         request(AppUrls.FINANCE, 'Post', maps)
             .then((response) => {
                     this.props.showModal(false);
