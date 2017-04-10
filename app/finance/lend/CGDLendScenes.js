@@ -216,15 +216,7 @@ export  default  class CGDLendScenes extends BaseComponent {
                                  imageSouce={require('../../../images/financeImages/dateIcon.png')} onPress={this.onPress}/>
         } else {
             return (
-                // brand_name: item.brand_name,
-                // icon: item.cover.icon,
-                // frame_number: item.frame_number,
-                // price: item.first_assess_loan,//放款额
-                // obd_bind_status: item.obd_bind_status,//车牌号
-                // info_id: item.info_id,
-                // model_name:item.model_name,
-                // init_reg:item.init_reg
-                //url,title,obdState,date
+
                 <CGDCarItem url={rowData.icon}title={rowData.model_name}obdState={rowData.obd_bind_status}date={rowData.init_reg} onPress={()=>{
                     this.carItemClick(rowData.info_id);
                 }}/>
