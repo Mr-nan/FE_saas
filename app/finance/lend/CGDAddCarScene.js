@@ -166,9 +166,12 @@ export default class CGDAddCarScene extends BaseComponent {
                                     this.priceInput.setNativeProps({
                                         text: rdb2.purchas_price + ''
                                     });
+
+                                    this.is_exists = false;
                                 }
                             },
                             (error) => {
+                                this.is_exists = true;
                                 if (IS_ANDROID === true) {
                                     this._showHint('获取车辆数据失败');
                                 } else {
@@ -527,9 +530,7 @@ export default class CGDAddCarScene extends BaseComponent {
                     />
 
                     <View style={[styles.itemBackground, styles.alignTop]}>
-                        <Text ref={(text) => {
-                            this.cityText = text
-                        }} style={styles.leftFont}>出售城市</Text>
+                        <Text style={styles.leftFont}>出售城市</Text>
                         <View style={styles.fillSpace}/>
                         <TouchableOpacity onPress={this._onCityPress}>
                             <View style={styles.rightContainer}>
