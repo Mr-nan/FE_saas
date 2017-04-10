@@ -316,7 +316,7 @@ export class CGDCarItem extends PureComponent{
 
     render(){
 
-        const {url,title,obdState,date,onPress}=this.props;
+        const {url,title,obdState,date,onPress,deletePress}=this.props;
 
         return(
             <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={styles.CGDCarWarp}>
@@ -329,6 +329,9 @@ export class CGDCarItem extends PureComponent{
                         <Text style={styles.CGDInserDate}>{date}</Text>
                     </View>
                 </View>
+                <TouchableOpacity style={{justifyContent:'center',alignItems:'center',marginRight:adapeSize(10)}} onPress={deletePress}>
+                    <Text style={{color:'red'}}>{'删除'}</Text>
+                </TouchableOpacity>
             </TouchableOpacity>
 
         )
