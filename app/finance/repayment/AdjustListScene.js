@@ -151,6 +151,7 @@ export  default class AdjustListScene extends BaseComponent {
                     coupon_number:movies.list[this.selected].coupon_code,
                     coupon_id:movies.list[this.selected].coupon_id,
                     adjustmoney:movies.list[this.selected].coupon_mny,
+                    coupon_type:movies.list[this.selected].coupon_rule.coupon_type
                 };
                 request(Urls.FINANCE, 'Post', maps)
                     .then((response) => {
