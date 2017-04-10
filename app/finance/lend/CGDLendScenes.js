@@ -79,7 +79,6 @@ export  default  class CGDLendScenes extends BaseComponent {
     }
 
     refreshAll=()=>{
-        this.props.showModal(true);
         this.getLendInfo();
     }
 

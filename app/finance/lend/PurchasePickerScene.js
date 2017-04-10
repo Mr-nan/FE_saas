@@ -45,11 +45,12 @@ export  default class PurchasePickerScene extends BaseComponent {
     }
 
     initFinish = () => {
+
         let that = this;
         let maps = {
             source_type: '1',
-            archives_status: this.props.carData.bind_type,
-            obd_status: this.props.carData.isCarinvoice,
+            archives_status: this.props.carData.isCarinvoice,
+            obd_status: this.props.carData.bind_type,
             api: MyUrl.PURCHAAUTO_GETPURCHAAUTOPICCATE
         };
         request(MyUrl.FINANCE, 'Post', maps)
@@ -111,8 +112,7 @@ export  default class PurchasePickerScene extends BaseComponent {
                             this.props.backRefresh();
                             this.toNextPage({
                                 name: 'OBDDevice', component: OBDDevice, params: {
-                                    frame_number: this.props.carData.frame_number,
-                                    info_id: response.mjson.data.info_id,backRefresh:()=>{
+                                    backRefresh:()=>{
                                         this.props.backRefresh();
                                     },carData:this.props.carData
                                 }
@@ -209,8 +209,7 @@ export  default class PurchasePickerScene extends BaseComponent {
                         this.props.backRefresh();
                         this.toNextPage({
                             name: 'OBDDevice', component: OBDDevice, params: {
-                                frame_number: this.props.carData.frame_number,
-                                info_id: response.mjson.data.info_id,backRefresh:()=>{
+                               backRefresh:()=>{
                                     this.props.backRefresh();
                                 },carData:this.props.carData
                             }

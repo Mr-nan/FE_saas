@@ -226,7 +226,7 @@ export default class AmountConfirm extends BaseComponent {
     getAutoList = () => {
         let maps = {
             api: AppUrls.PURCHAAUTOAUTOLIST,
-            payment_number: this.props.loan_code,
+            payment_number: 201703200008/*this.props.loan_code*/,
         };
         request(AppUrls.FINANCE, 'Post', maps)
             .then((response) => {
