@@ -189,7 +189,7 @@ export  default class AdjustListScene extends BaseComponent {
                 />
                 <AdjustModal ref='cgdModal'/>
                 <MyButton {...this.buttonParams}/>
-                <AllLoading ref="allloading" callBack={()=>{
+                <AllLoading callEsc={()=>{}} ref="allloading" callBack={()=>{
                  this.sendContent();
                 }}/>
             </View>

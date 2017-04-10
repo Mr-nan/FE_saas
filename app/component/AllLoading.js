@@ -58,6 +58,7 @@ export default class AllLoading extends Component {
                         <View style={{width:width-width/4-Pixel.getPixel(40),height:Pixel.getPixel(35),
                          marginTop:Pixel.getPixel(16),flexDirection:'row'}}>
                             <TouchableOpacity onPress={()=>{
+                                this.props.callEsc();
                                  this.setState({
                                     isShow: false
                                     });

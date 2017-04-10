@@ -25,6 +25,7 @@ import {request} from '../../utils/RequestUtil';
 import * as MyUrl from '../../constant/appUrls';
 let childItems = [];
 let results = [];
+import  AllLoading from '../../component/AllLoading';
 import OBDDevice from '../../login/OBDDevice';
 export  default class PurchasePickerScene extends BaseComponent {
 
@@ -100,6 +101,23 @@ export  default class PurchasePickerScene extends BaseComponent {
                     backIconClick={this.backPage}
                     renderRihtFootView={this._navigatorRightView}
                 />
+                <AllLoading callEsc={()=>{
+                        this.props.backRefresh();
+                        const navigator = this.props.navigator;
+                        if (navigator){
+                            navigator.popToRoute(navigator.getCurrentRoutes()[3]);
+                        }
+                }} ref="allloading" callBack={()=>{
+                            this.props.backRefresh();
+                            this.toNextPage({
+                                name: 'OBDDevice', component: OBDDevice, params: {
+                                    frame_number: this.props.carData.frame_number,
+                                    info_id: response.mjson.data.info_id,backRefresh:()=>{
+                                        this.props.backRefresh();
+                                    },carData:this.props.carData
+                                }
+                            });
+                }}/>
             </View>
         );
     }
@@ -192,7 +210,9 @@ export  default class PurchasePickerScene extends BaseComponent {
                         this.toNextPage({
                             name: 'OBDDevice', component: OBDDevice, params: {
                                 frame_number: this.props.carData.frame_number,
-                                info_id: response.mjson.data.info_id
+                                info_id: response.mjson.data.info_id,backRefresh:()=>{
+                                    this.props.backRefresh();
+                                },carData:this.props.carData
                             }
                         });
                     }
@@ -237,14 +257,32 @@ export  default class PurchasePickerScene extends BaseComponent {
                             navigator.popToRoute(navigator.getCurrentRoutes()[3]);
                         }
                     }else{
-                        this.props.showToast("编辑成功，请绑定OBD");
-                        this.props.backRefresh();
-                        this.toNextPage({
-                            name: 'OBDDevice', component: OBDDevice, params: {
-                                frame_number: this.props.carData.frame_number,
-                                info_id: response.mjson.data.info_id
-                            }
-                        });
+                        if(this.props.carData.obd_bind_status=='1'){
+                            this.refs.allloading.changeShowType(true,'编辑成功,是否重新绑定OBD？');
+                        }else{
+                            this.props.showToast("编辑成功，请绑定OBD");
+                            this.props.backRefresh();
+                            this.toNextPage({
+                                name: 'OBDDevice', component: OBDDevice, params: {
+                                    frame_number: this.props.carData.frame_number,
+                                    info_id: response.mjson.data.info_id,backRefresh:()=>{
+                                        this.props.backRefresh();
+                                    },
+                                    carData:this.props.carData
+                                }
+                            });
+                        }
+                        // this.refs.allloading.changeShowType(true,'是否重新绑定OBD？');
+                        // this.props.showToast("编辑成功，请绑定OBD");
+                        // this.props.backRefresh();
+                        // this.toNextPage({
+                        //     name: 'OBDDevice', component: OBDDevice, params: {
+                        //         frame_number: this.props.carData.frame_number,
+                        //         info_id: response.mjson.data.info_id,backRefresh:()=>{
+                        //             this.props.backRefresh();
+                        //         }
+                        //     }
+                        // });
                     }
 
                 },
