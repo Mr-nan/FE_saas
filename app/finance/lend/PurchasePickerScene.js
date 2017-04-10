@@ -111,8 +111,7 @@ export  default class PurchasePickerScene extends BaseComponent {
                             this.props.backRefresh();
                             this.toNextPage({
                                 name: 'OBDDevice', component: OBDDevice, params: {
-                                    frame_number: this.props.carData.frame_number,
-                                    info_id: response.mjson.data.info_id,backRefresh:()=>{
+                                    backRefresh:()=>{
                                         this.props.backRefresh();
                                     },carData:this.props.carData
                                 }
@@ -209,8 +208,7 @@ export  default class PurchasePickerScene extends BaseComponent {
                         this.props.backRefresh();
                         this.toNextPage({
                             name: 'OBDDevice', component: OBDDevice, params: {
-                                frame_number: this.props.carData.frame_number,
-                                info_id: response.mjson.data.info_id,backRefresh:()=>{
+                               backRefresh:()=>{
                                     this.props.backRefresh();
                                 },carData:this.props.carData
                             }
