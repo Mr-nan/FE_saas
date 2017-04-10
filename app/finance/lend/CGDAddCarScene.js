@@ -58,7 +58,8 @@ export default class CGDAddCarScene extends BaseComponent {
             payment_id: '',
             base_id:'',
             info_id:'',
-            isCarinvoice:this.props.isCarinvoice
+            isCarinvoice:this.props.isCarinvoice,
+            obd_bind_status:'0'
         };
 
         this.scanType = [
@@ -145,6 +146,7 @@ export default class CGDAddCarScene extends BaseComponent {
                                     this.carData.obd_number = rdb2.obd_number;
                                     this.carData.base_id = rdb2.base_id;
                                     this.carData.info_id = rdb2.info_id;
+                                    this.carData.obd_bind_status = rdb2.obd_bind_status;
 
                                     this.setState({
                                         city_name: rdb2.city_name,
@@ -166,9 +168,12 @@ export default class CGDAddCarScene extends BaseComponent {
                                     this.priceInput.setNativeProps({
                                         text: rdb2.purchas_price + ''
                                     });
+
+                                    this.is_exists = false;
                                 }
                             },
                             (error) => {
+                                this.is_exists = true;
                                 if (IS_ANDROID === true) {
                                     this._showHint('获取车辆数据失败');
                                 } else {
@@ -529,9 +534,7 @@ export default class CGDAddCarScene extends BaseComponent {
                     />
 
                     <View style={[styles.itemBackground, styles.alignTop]}>
-                        <Text ref={(text) => {
-                            this.cityText = text
-                        }} style={styles.leftFont}>出售城市</Text>
+                        <Text style={styles.leftFont}>出售城市</Text>
                         <View style={styles.fillSpace}/>
                         <TouchableOpacity onPress={this._onCityPress}>
                             <View style={styles.rightContainer}>
