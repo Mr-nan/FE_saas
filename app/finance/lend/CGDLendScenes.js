@@ -72,6 +72,11 @@ export  default  class CGDLendScenes extends BaseComponent {
         return temp==1?'有':'无'
     }
 
+    refreshAll=()=>{
+        this.props.showModal(true);
+        this.getLendInfo();
+    }
+
 
     titleNameBlob = (jsonData, carData) => {
 
@@ -132,7 +137,7 @@ export  default  class CGDLendScenes extends BaseComponent {
 
                     },
                     (error) => {
-
+                        this.props.showModal(false);
                         this.setState({
                             renderPlaceholderOnly:STATECODE.loadError
                         })
@@ -148,12 +153,14 @@ export  default  class CGDLendScenes extends BaseComponent {
 
     }
 
+
     getCarListInfo=(templendInfo)=>{
         let maps = {
             api: apis.AUTOLIST,
         };
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
+                    this.props.showModal(false);
                     let tempjson = response.mjson.data;
 
                     console.log(tempjson.list);
@@ -163,7 +170,7 @@ export  default  class CGDLendScenes extends BaseComponent {
                     })
                 },
                 (error) => {
-
+                    this.props.showModal(false);
                     this.setState({
                         renderPlaceholderOnly:STATECODE.loadError
                     })
@@ -181,7 +188,10 @@ export  default  class CGDLendScenes extends BaseComponent {
     carItemClick=(infoId)=>{
         this.navigatorParams.name = "CGDAddCarScene";
         this.navigatorParams.component = CGDAddCarScene;
-        this.navigatorParams.params = {isOBD:this.props.isOBD,isCarinvoice:this.props.isCarinvoice,InfoId:infoId,updateCar:true};
+        this.navigatorParams.params = {isOBD:this.props.isOBD,isCarinvoice:this.props.isCarinvoice,InfoId:infoId,updateCar:true,
+            backRefresh:()=>{
+            this.refreshAll();
+        }};
         this.toNextPage(this.navigatorParams)
 
     }
@@ -202,6 +212,8 @@ export  default  class CGDLendScenes extends BaseComponent {
 
         this.setState({ isDateTimePickerVisible: true });
     }
+
+
 
 
     renderRow = (rowData, sectionID, rowID, highLght) => {
@@ -227,7 +239,7 @@ export  default  class CGDLendScenes extends BaseComponent {
                 // model_name:item.model_name,
                 // init_reg:item.init_reg
                 //url,title,obdState,date
-                <CGDCarItem url={rowData.icon}title={rowData.model_name}obdState={rowData.obd_bind_status}date={rowData.init_reg} onPress={()=>{
+                <CGDCarItem  url={rowData.icon}title={rowData.model_name}obdState={rowData.obd_bind_status}date={rowData.init_reg} onPress={()=>{
                     this.carItemClick(rowData.info_id);
                 }}/>
             )
@@ -291,10 +303,12 @@ export  default  class CGDLendScenes extends BaseComponent {
                     alignItems: 'center'}]}>
 
                     <CommenButton textStyle={styles.textLeft} buttonStyle={styles.buttonStyleRight} onPress={() => {
-
                         this.navigatorParams.name = "CGDAddCarScene";
                         this.navigatorParams.component = CGDAddCarScene;
-                        this.navigatorParams.params = {isOBD:this.props.isOBD,isCarinvoice:this.props.isCarinvoice};
+                        this.navigatorParams.params = {isOBD:this.props.isOBD,
+                        isCarinvoice:this.props.isCarinvoice,backRefresh:()=>{
+                            this.refreshAll();
+                        }};
                      this.toNextPage(this.navigatorParams)
                     }} title="添加车辆"/>
                     <CommenButton textStyle={{color: 'white'}} buttonStyle={styles.buttonStyleLeft} onPress={() => {

@@ -185,6 +185,13 @@ export const PURCHAAUTO_ADDAUTO = 'api/v2/purchaAuto/addAuto';
 /**
  * from @zhaojian
  *
+ * 更新采购贷车辆
+ **/
+export const PURCHAAUTO_UPDATEAUTO = 'api/v2/purchaAuto/updateAuto';
+
+/**
+ * from @zhaojian
+ *
  * 获取还款计划列表
  **/
 export const GETPLANLIST = 'api/v2/Repayment/getPlanList';

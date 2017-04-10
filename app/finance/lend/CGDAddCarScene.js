@@ -511,7 +511,9 @@ export default class CGDAddCarScene extends BaseComponent {
         let pickerParams = {
             name: 'PurchasePickerScene',
             component: PurchasePickerScene,
-            params: {carData: this.carData,updateCar:upd}
+            params: {carData: this.carData,updateCar:upd,backRefresh:()=>{
+                console.log('aaaaaaaaaa');
+            }}
         };
 
 

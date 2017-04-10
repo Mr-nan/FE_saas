@@ -148,8 +148,6 @@ export  default class PurchasePickerItem extends PureComponent {
                     // console.log(response.mjson.data.url);
                     let news = {...this.state.childMovie};
                       let fileid =   response.mjson.data.file_id;
-                      console.log(news.list);
-                        news.list = [];
                         news.list.push({url: response.mjson.data.url,fileId:fileid});
                         this.props.results.push({code:this.props.items.code,code_id:this.props.items.id,file_id:response.mjson.data.file_id});
                         this.setState({

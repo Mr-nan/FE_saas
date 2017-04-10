@@ -111,7 +111,7 @@ export  default class AdjustManageListScene extends BaseComponent {
     _renderRow = (movie, sectionId, rowId) => {
         let money = '';
         if(movie.used_status=='0'){
-            money = movie.coupon_mny;
+            money = '';
         }else if(movie.used_status=='1'){
             money = '已使用';
         }else if(movie.used_status=='2'){
@@ -127,11 +127,12 @@ export  default class AdjustManageListScene extends BaseComponent {
                     <View style={styles.leftContainer}>
                         <Text style={styles.leftTitle}>{movie.coupon_name}</Text>
                         <Text style={styles.leftBottom}>有效期:{coupon_begindate}-{coupon_enddate}</Text>
+                        <Text style={styles.leftBottom}>{money}</Text>
                     </View>
                     <View style={styles.rightContainer}>
                         <View style={styles.rightTitleContainer}>
-                            <Text style={[styles.rightTitle, styles.rightTitleAlign]}>{movie.used_status=='0'?'¥':''}</Text>
-                            <Text style={styles.rightTitle}>{money}</Text>
+                            <Text style={[styles.rightTitle, styles.rightTitleAlign,movie.used_status=='0'?{color: '#05c5c2'}:{color: '#9e9e9e'}]}>¥</Text>
+                            <Text style={[styles.rightTitle,movie.used_status=='0'?{color: '#05c5c2'}:{color: '#9e9e9e'}]}>{movie.coupon_mny}</Text>
                         </View>
                         <TouchableOpacity style={styles.rightBottom} onPress={() => {
                                 this.refs.cgdModal.changeShowType(true,movie.coupon_remark);
