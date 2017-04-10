@@ -23,7 +23,7 @@ import * as AppUrls from "../constant/appUrls";
 import PurchasePickerItem from "../finance/component/PurchasePickerItem";
 import DeviceNumber from './DeviceNumber';
 import WebScene from '../main/WebScene';
-
+let results = [];
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
@@ -377,7 +377,12 @@ export default class OBDDevice extends BaseComponent {
 
     _renderRow = (movie, sectionId, rowId) => {
         return (
-            <PurchasePickerItem items={movie} childList={childItems[rowId]}/>
+            <PurchasePickerItem results={results} showModal={(value) => {
+                this.props.showModal(value)
+            }}
+                                showToast={(value) => {
+                                    this.props.showToast(value)
+                                }} items={movie} childList={childItems[rowId]}/>
         )
     }
 
@@ -390,28 +395,33 @@ export default class OBDDevice extends BaseComponent {
 
     // 绑定OBD设备
     submit = () => {
-        let maps = {
-            api: AppUrls.BINDOBD,
-            bind_type: this.bind_type,
-            file_list: JSON.stringify(childItems),
-            info_id: this.props.info_id,
-            obd_number: this.state.obd_number,
-        };
-        this.props.showModal(true);
-        request(AppUrls.FINANCE, 'Post', maps)
-            .then((response) => {
-                    this.props.showModal(false);
-                    this.props.showToast("OBD绑定成功");
-                    this.backPage();
-                }, (error) => {
-                    this.props.showModal(false);
-                    if (error.mycode == -300 || error.mycode == -500) {
-                        this.props.showToast("网络请求失败");
-                    } else {
-                        this.props.showToast(error.mjson.msg + "");
+        if (JSON.stringify(results) != []) {
+            let maps = {
+                api: AppUrls.BINDOBD,
+                bind_type: this.bind_type,
+                file_list: JSON.stringify(results),
+                info_id: this.props.carData.info_id,
+                obd_number: this.state.obd_number,
+            };
+            this.props.showModal(true);
+            request(AppUrls.FINANCE, 'Post', maps)
+                .then((response) => {
+                        this.props.showModal(false);
+                        this.props.showToast("OBD绑定成功");
+                        this.backPage();
+                    }, (error) => {
+                        this.props.showModal(false);
+                        if (error.mycode == -300 || error.mycode == -500) {
+                            this.props.showToast("网络请求失败");
+                        } else {
+                            this.props.showToast(error.mjson.msg + "");
+                        }
                     }
-                }
-            )
+                )
+        } else {
+            this.props.showToast("照片不能为空");
+        }
+
     }
 
     // 检测OBD设备号
@@ -420,12 +430,12 @@ export default class OBDDevice extends BaseComponent {
         if (bind_type == 1) {
             maps = {
                 api: AppUrls.AUTODETECTOBD,
-                frame_number: this.props.frame_number,
+                frame_number: this.props.carData.frame_number,
             };
         } else {
             maps = {
                 api: AppUrls.AUTODETECTOBD,
-                frame_number: this.props.frame_number,
+                frame_number: this.props.carData.frame_number,
                 obd_number: this.state.obd_number,
             };
         }
@@ -436,7 +446,7 @@ export default class OBDDevice extends BaseComponent {
                     this.props.showToast("OBD检测成功");
                     this.setState({
                         boundState: '已绑定',
-                        obd_number: response.mjson.retdata.obd_number,
+                        obd_number: response.mjson.data.obd_number,
                     });
                 }, (error) => {
                     this.props.showModal(false);
@@ -468,6 +478,24 @@ export default class OBDDevice extends BaseComponent {
                             id: response.mjson.data.cate_list[i].id,
                             list: []
                         });
+                    }
+                    if (this.props.carData.obd_bind_status == '1') {
+                        for (let i = 0; i < childItems.length; i++) {
+                            for (let j = 0; j < this.props.carData.file_list.length; j++) {
+                                if (childItems[i].code == this.props.carData.file_list[j].code) {
+                                    childItems[i].list.push({
+                                        url: this.props.carData.file_list[j].icon,
+                                        fileId: this.props.carData.file_list[j].file_id
+                                    });
+                                    results.push({
+                                        code: this.props.carData.file_list[j].code,
+                                        code_id: this.props.carData.file_list[j].id,
+                                        file_id: this.props.carData.file_list[j].file_id
+                                    });
+                                }
+                            }
+                        }
+
                     }
                     this.setState({
                         source: ds.cloneWithRows(response.mjson.data.cate_list),
