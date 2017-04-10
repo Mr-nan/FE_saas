@@ -58,7 +58,8 @@ export default class CGDAddCarScene extends BaseComponent {
             payment_id: '',
             base_id:'',
             info_id:'',
-            isCarinvoice:this.props.isCarinvoice
+            isCarinvoice:this.props.isCarinvoice,
+            obd_bind_status:'0'
         };
 
         this.scanType = [
@@ -145,6 +146,7 @@ export default class CGDAddCarScene extends BaseComponent {
                                     this.carData.obd_number = rdb2.obd_number;
                                     this.carData.base_id = rdb2.base_id;
                                     this.carData.info_id = rdb2.info_id;
+                                    this.carData.obd_bind_status = rdb2.obd_bind_status;
 
                                     this.setState({
                                         city_name: rdb2.city_name,
