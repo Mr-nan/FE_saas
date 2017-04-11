@@ -6,8 +6,8 @@ import * as FontAndColor from "../constant/fontAndColor";
 import LoginScene from "./LoginScene";
 import Register from "./Register";
 import PixelUtil from "../utils/PixelUtil";
-import OBDDevice from "./OBDDevice";
-import AmountConfirm from './AmountConfirm';
+import OBDDevice from "../finance/lend/OBDDevice";
+import AmountConfirm from '../finance/lend/AmountConfirm';
 
 var Pixel = new PixelUtil();
 var Dimensions = require('Dimensions');

@@ -324,7 +324,7 @@ export class CGDCarItem extends PureComponent{
                 <Image source={{uri:url}} style={styles.CGDCarImage}/>
                 <View style={styles.CGDInstWarpTop}>
                     <Text style={styles.CGDInstTitle} numberOfLines={2}>{title}</Text>
-                    <View style={obdState==1?{backgroundColor:'red',width:adapeSize(45),alignItems:'center'}:{backgroundColor:'green',width:adapeSize(45),alignItems:'center'}}><Text >OBD</Text></View>
+                    <View style={obdState==1?{backgroundColor:'green',width:adapeSize(45),alignItems:'center'}:{backgroundColor:'red',width:adapeSize(45),alignItems:'center'}}><Text >OBD</Text></View>
                     <View style={styles.CGDInstWarpBooton}>
                         <Text style={styles.CGDInserDate}>{date}</Text>
                     </View>

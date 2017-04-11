@@ -412,6 +412,7 @@ export default class CGDAddCarScene extends BaseComponent {
                         sel = i;
                     }
                 });
+
                 this.carData.rev_user_id = this.revData[sel].bussiness_id;
                 this.setState({
                     carReceive: this.revData[sel].name

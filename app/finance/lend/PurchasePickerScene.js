@@ -26,7 +26,7 @@ import * as MyUrl from '../../constant/appUrls';
 let childItems = [];
 let results = [];
 import  AllLoading from '../../component/AllLoading';
-import OBDDevice from '../../login/OBDDevice';
+import OBDDevice from './OBDDevice';
 export  default class PurchasePickerScene extends BaseComponent {
 
     constructor(props) {

@@ -18,11 +18,11 @@ import NavigationBar from "../../component/NavigationBar";
 import MyButton from "../../component/MyButton";
 import AccountSecurity from "./AccountSecurity";
 import AbountPlatform from "./AbountPlatform";
-import OBDDevice from "../../login/OBDDevice";
+import OBDDevice from "../../finance/lend/OBDDevice";
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import LoginAndRegister from "../../login/LoginAndRegister";
-import AmountConfirm from '../../login/AmountConfirm';
+import AmountConfirm from '../../finance/lend/AmountConfirm';
 
 var Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
@@ -106,14 +106,14 @@ export default class Setting extends BaseComponent {
                 </TouchableOpacity>
 
                 <View style={{height: Pixel.getPixel(1), backgroundColor: FontAndColor.COLORA4}}/>
-                {/*<MyButton buttonType={MyButton.TEXTBUTTON} content="OBD设备" parentStyle={styles.buttonStyle}*/}
-                          {/*childStyle={styles.buttonTextStyle} mOnPress={() => {*/}
-                    {/*this.toNextPage({*/}
-                        {/*name: 'OBDDevice AmountConfirm',*/}
-                        {/*component: OBDDevice,*/}
-                        {/*params: {},*/}
-                    {/*})*/}
-                {/*}}/>*/}
+                <MyButton buttonType={MyButton.TEXTBUTTON} content="OBD设备" parentStyle={styles.buttonStyle}
+                          childStyle={styles.buttonTextStyle} mOnPress={() => {
+                    this.toNextPage({
+                        name: 'OBDDevice AmountConfirm',
+                        component: OBDDevice,
+                        params: {},
+                    })
+                }}/>
                 <View style={{flex: 1}}/>
 
                 <MyButton buttonType={MyButton.TEXTBUTTON}

@@ -12,13 +12,13 @@ import {
     TextInput,
     Image,
 } from "react-native";
-import BaseComponent from "../component/BaseComponent";
-import NavigationBar from "../component/NavigationBar";
-import * as FontAndColor from "../constant/fontAndColor";
-import PixelUtil from "../utils/PixelUtil";
-import MyButton from '../component/MyButton';
-import * as AppUrls from "../constant/appUrls";
-import {request} from "../utils/RequestUtil";
+import BaseComponent from "../../component/BaseComponent";
+import NavigationBar from "../../component/NavigationBar";
+import * as FontAndColor from "../../constant/fontAndColor";
+import PixelUtil from "../../utils/PixelUtil";
+import MyButton from '../../component/MyButton';
+import * as AppUrls from "../../constant/appUrls";
+import {request} from "../../utils/RequestUtil";
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -188,9 +188,11 @@ export default class AmountConfirm extends BaseComponent {
             <TouchableOpacity onPress={() => this.finshPage(data, rowID)}>
                 <View style={styles.itemStyle}>
                     {typeof(map.get(rowID)) == 'undefined' ?
-                        <Image source={require("./../../images/login/amou_unchoose.png")} style={styles.itemIconStyle}/>
+                        <Image source={require("./../../../images/login/amou_unchoose.png")}
+                               style={styles.itemIconStyle}/>
                         :
-                        <Image source={require("./../../images/login/amou_choose.png")} style={styles.itemIconStyle}/>
+                        <Image source={require("./../../../images/login/amou_choose.png")}
+                               style={styles.itemIconStyle}/>
                     }
                     <View style={{flex: 1, marginLeft: Pixel.getPixel(15)}}>
                         <Text style={styles.itemTextStyle}>{data.name}</Text>
