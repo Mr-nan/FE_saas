@@ -115,7 +115,15 @@ android {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
            // signingConfig signingConfigs.release
+           buildConfigField "String", "CODEPUSH_KEY", '"Z1HGCCOTjRR-JnusRncdEk1rr06wVJvFYEdiG"'
         }
+
+        releaseStaging {
+
+                            buildConfigField "String", "CODEPUSH_KEY", '"Z1HGCCOTjRR-JnusRncdEk1rr06wVJvFYEdiG"'
+
+                        }
+
     }
     splits {
         abi {
