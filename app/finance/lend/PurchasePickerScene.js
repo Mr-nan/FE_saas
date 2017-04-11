@@ -25,7 +25,8 @@ import {request} from '../../utils/RequestUtil';
 import * as MyUrl from '../../constant/appUrls';
 let childItems = [];
 let results = [];
-import OBDDevice from '../../login/OBDDevice';
+import  AllLoading from '../../component/AllLoading';
+import OBDDevice from './OBDDevice';
 export  default class PurchasePickerScene extends BaseComponent {
 
     constructor(props) {
@@ -44,11 +45,12 @@ export  default class PurchasePickerScene extends BaseComponent {
     }
 
     initFinish = () => {
+
         let that = this;
         let maps = {
             source_type: '1',
-            archives_status: this.props.carData.bind_type,
-            obd_status: this.props.carData.isCarinvoice,
+            archives_status: this.props.carData.isCarinvoice,
+            obd_status: this.props.carData.bind_type,
             api: MyUrl.PURCHAAUTO_GETPURCHAAUTOPICCATE
         };
         request(MyUrl.FINANCE, 'Post', maps)
@@ -100,6 +102,22 @@ export  default class PurchasePickerScene extends BaseComponent {
                     backIconClick={this.backPage}
                     renderRihtFootView={this._navigatorRightView}
                 />
+                <AllLoading callEsc={()=>{
+                        this.props.backRefresh();
+                        const navigator = this.props.navigator;
+                        if (navigator){
+                            navigator.popToRoute(navigator.getCurrentRoutes()[3]);
+                        }
+                }} ref="allloading" callBack={()=>{
+                            this.props.backRefresh();
+                            this.toNextPage({
+                                name: 'OBDDevice', component: OBDDevice, params: {
+                                    backRefresh:()=>{
+                                        this.props.backRefresh();
+                                    },carData:this.props.carData
+                                }
+                            });
+                }}/>
             </View>
         );
     }
@@ -191,8 +209,9 @@ export  default class PurchasePickerScene extends BaseComponent {
                         this.props.backRefresh();
                         this.toNextPage({
                             name: 'OBDDevice', component: OBDDevice, params: {
-                                frame_number: this.props.carData.frame_number,
-                                info_id: response.mjson.data.info_id
+                               backRefresh:()=>{
+                                    this.props.backRefresh();
+                                },carData:this.props.carData
                             }
                         });
                     }
@@ -237,14 +256,32 @@ export  default class PurchasePickerScene extends BaseComponent {
                             navigator.popToRoute(navigator.getCurrentRoutes()[3]);
                         }
                     }else{
-                        this.props.showToast("编辑成功，请绑定OBD");
-                        this.props.backRefresh();
-                        this.toNextPage({
-                            name: 'OBDDevice', component: OBDDevice, params: {
-                                frame_number: this.props.carData.frame_number,
-                                info_id: response.mjson.data.info_id
-                            }
-                        });
+                        if(this.props.carData.obd_bind_status=='1'){
+                            this.refs.allloading.changeShowType(true,'编辑成功,是否重新绑定OBD？');
+                        }else{
+                            this.props.showToast("编辑成功，请绑定OBD");
+                            this.props.backRefresh();
+                            this.toNextPage({
+                                name: 'OBDDevice', component: OBDDevice, params: {
+                                    frame_number: this.props.carData.frame_number,
+                                    info_id: response.mjson.data.info_id,backRefresh:()=>{
+                                        this.props.backRefresh();
+                                    },
+                                    carData:this.props.carData
+                                }
+                            });
+                        }
+                        // this.refs.allloading.changeShowType(true,'是否重新绑定OBD？');
+                        // this.props.showToast("编辑成功，请绑定OBD");
+                        // this.props.backRefresh();
+                        // this.toNextPage({
+                        //     name: 'OBDDevice', component: OBDDevice, params: {
+                        //         frame_number: this.props.carData.frame_number,
+                        //         info_id: response.mjson.data.info_id,backRefresh:()=>{
+                        //             this.props.backRefresh();
+                        //         }
+                        //     }
+                        // });
                     }
 
                 },

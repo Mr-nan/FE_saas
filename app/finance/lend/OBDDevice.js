@@ -13,23 +13,23 @@ import {
     Image,
     NativeModules
 } from "react-native";
-import BaseComponent from "../component/BaseComponent";
-import NavigationBar from "../component/NavigationBar";
-import * as FontAndColor from "../constant/fontAndColor";
-import PixelUtil from "../utils/PixelUtil";
-import MyButton from "../component/MyButton";
-import {request} from "../utils/RequestUtil";
-import * as AppUrls from "../constant/appUrls";
-import PurchasePickerItem from "../finance/component/PurchasePickerItem";
+import BaseComponent from "../../component/BaseComponent";
+import NavigationBar from "../../component/NavigationBar";
+import * as FontAndColor from "../../constant/fontAndColor";
+import PixelUtil from "../../utils/PixelUtil";
+import MyButton from "../../component/MyButton";
+import {request} from "../../utils/RequestUtil";
+import * as AppUrls from "../../constant/appUrls";
+import PurchasePickerItem from "../component/PurchasePickerItem";
 import DeviceNumber from './DeviceNumber';
-import WebScene from '../main/WebScene';
-
+import WebScene from '../../main/WebScene';
+let results = [];
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
 var onePT = 1 / PixelRatio.get(); //一个像素
 var Platform = require('Platform');
-const childItems = [];
+let childItems = [];
 export default class OBDDevice extends BaseComponent {
     constructor(props) {
         super(props);
@@ -45,6 +45,11 @@ export default class OBDDevice extends BaseComponent {
 
     defaultProps = {
         payment_number: 123456789,
+    }
+
+    componentWillUnmount() {
+        results = [];
+        childItems = [];
     }
 
     initFinish = () => {
@@ -82,7 +87,7 @@ export default class OBDDevice extends BaseComponent {
                                 height: Pixel.getPixel(18),
                                 marginTop: Pixel.getPixel(-13)
                             }}
-                            source={require('./../../images/login/tanhao.png')}/>
+                            source={require('./../../../images/login/tanhao.png')}/>
 
                         <Text style={{
                             flex: 1,
@@ -236,7 +241,7 @@ export default class OBDDevice extends BaseComponent {
                 }}>
                     <Image
                         style={{width: Pixel.getPixel(18), height: Pixel.getPixel(18), marginTop: Pixel.getPixel(-13)}}
-                        source={require('./../../images/login/tanhao.png')}/>
+                        source={require('./../../../images/login/tanhao.png')}/>
 
                     <Text style={{
                         flex: 1,
@@ -260,8 +265,10 @@ export default class OBDDevice extends BaseComponent {
                         color: FontAndColor.COLORA0,
                         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),
                     }}>绑定状态</Text>
-                    <Text style={this.state.boundState == "已绑定" ? styles.boundSuccessStyle : styles.boundStateStyle }>
-                        {this.state.boundState}
+                    <Text
+                        style={this.props.carData.obd_bind_status == "1" ? styles.boundSuccessStyle :
+                            this.state.boundState == "已绑定" ? styles.boundSuccessStyle : styles.boundStateStyle }>
+                        {this.props.carData.obd_bind_status == "1" ? "已绑定" : this.state.boundState}
                     </Text>
                 </View>
                 <View style={{backgroundColor: FontAndColor.COLORA4, width: width, height: Pixel.getPixel(1)}}/>
@@ -279,20 +286,26 @@ export default class OBDDevice extends BaseComponent {
                         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),
                     }}>设备号</Text>
                     {
-                        this.state.obd_number ?
-                            <Text style={{
+                        this.props.carData.obd_bind_status == "1" ? <Text style={{
                                 color: FontAndColor.COLORA0,
                                 fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT30),
                                 textAlign: 'right',
                                 flex: 1
-                            }}>{this.state.obd_number}</Text>
-                            :
-                            <Text style={{
-                                color: FontAndColor.COLORA1,
-                                fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT30),
-                                textAlign: 'right',
-                                flex: 1
-                            }}>请输入</Text>
+                            }}>{this.props.carData.obd_number}</Text> :
+                            this.state.obd_number ?
+                                <Text style={{
+                                    color: FontAndColor.COLORA0,
+                                    fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT30),
+                                    textAlign: 'right',
+                                    flex: 1
+                                }}>{this.state.obd_number}</Text>
+                                :
+                                <Text style={{
+                                    color: FontAndColor.COLORA1,
+                                    fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT30),
+                                    textAlign: 'right',
+                                    flex: 1
+                                }}>请输入</Text>
                     }
 
                 </View>
@@ -377,7 +390,12 @@ export default class OBDDevice extends BaseComponent {
 
     _renderRow = (movie, sectionId, rowId) => {
         return (
-            <PurchasePickerItem items={movie} childList={childItems[rowId]}/>
+            <PurchasePickerItem results={results} showModal={(value) => {
+                this.props.showModal(value)
+            }}
+                                showToast={(value) => {
+                                    this.props.showToast(value)
+                                }} items={movie} childList={childItems[rowId]}/>
         )
     }
 
@@ -390,28 +408,37 @@ export default class OBDDevice extends BaseComponent {
 
     // 绑定OBD设备
     submit = () => {
-        let maps = {
-            api: AppUrls.BINDOBD,
-            bind_type: this.bind_type,
-            file_list: JSON.stringify(childItems),
-            info_id: this.props.info_id,
-            obd_number: this.state.obd_number,
-        };
-        this.props.showModal(true);
-        request(AppUrls.FINANCE, 'Post', maps)
-            .then((response) => {
-                    this.props.showModal(false);
-                    this.props.showToast("OBD绑定成功");
-                    this.backPage();
-                }, (error) => {
-                    this.props.showModal(false);
-                    if (error.mycode == -300 || error.mycode == -500) {
-                        this.props.showToast("网络请求失败");
-                    } else {
-                        this.props.showToast(error.mjson.msg + "");
+        if (JSON.stringify(results) != []) {
+            let maps = {
+                api: AppUrls.BINDOBD,
+                bind_type: this.bind_type,
+                file_list: JSON.stringify(results),
+                info_id: this.props.carData.info_id,
+                obd_number: this.state.obd_number,
+            };
+            this.props.showModal(true);
+            request(AppUrls.FINANCE, 'Post', maps)
+                .then((response) => {
+                        this.props.showModal(false);
+                        this.props.showToast("OBD绑定成功");
+                        this.props.backRefresh();
+                        const navigator = this.props.navigator;
+                        if (navigator) {
+                            navigator.popToRoute(navigator.getCurrentRoutes()[3]);
+                        }
+                    }, (error) => {
+                        this.props.showModal(false);
+                        if (error.mycode == -300 || error.mycode == -500) {
+                            this.props.showToast("网络请求失败");
+                        } else {
+                            this.props.showToast(error.mjson.msg + "");
+                        }
                     }
-                }
-            )
+                )
+        } else {
+            this.props.showToast("照片不能为空");
+        }
+
     }
 
     // 检测OBD设备号
@@ -420,23 +447,24 @@ export default class OBDDevice extends BaseComponent {
         if (bind_type == 1) {
             maps = {
                 api: AppUrls.AUTODETECTOBD,
-                frame_number: this.props.frame_number,
+                frame_number: this.props.carData.frame_number,
             };
         } else {
             maps = {
                 api: AppUrls.AUTODETECTOBD,
-                frame_number: this.props.frame_number,
+                frame_number: this.props.carData.frame_number,
                 obd_number: this.state.obd_number,
             };
         }
         this.props.showModal(true);
+        this.props.carData.obd_bind_status = 0;
         request(AppUrls.FINANCE, 'Post', maps)
             .then((response) => {
                     this.props.showModal(false);
                     this.props.showToast("OBD检测成功");
                     this.setState({
                         boundState: '已绑定',
-                        obd_number: response.mjson.retdata.obd_number,
+                        obd_number: response.mjson.data.obd_number,
                     });
                 }, (error) => {
                     this.props.showModal(false);
@@ -468,6 +496,24 @@ export default class OBDDevice extends BaseComponent {
                             id: response.mjson.data.cate_list[i].id,
                             list: []
                         });
+                    }
+                    if (this.props.carData.obd_bind_status == '1') {
+                        for (let i = 0; i < childItems.length; i++) {
+                            for (let j = 0; j < this.props.carData.file_list.length; j++) {
+                                if (childItems[i].code == this.props.carData.file_list[j].code) {
+                                    childItems[i].list.push({
+                                        url: this.props.carData.file_list[j].icon,
+                                        fileId: this.props.carData.file_list[j].file_id
+                                    });
+                                    results.push({
+                                        code: this.props.carData.file_list[j].code,
+                                        code_id: this.props.carData.file_list[j].id,
+                                        file_id: this.props.carData.file_list[j].file_id
+                                    });
+                                }
+                            }
+                        }
+
                     }
                     this.setState({
                         source: ds.cloneWithRows(response.mjson.data.cate_list),

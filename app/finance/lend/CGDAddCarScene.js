@@ -423,7 +423,6 @@ export default class CGDAddCarScene extends BaseComponent {
                         carReceive: this.revData[data].name
                     });
                 }
-
             },
             onPickerCancel: (data) => {
             },
@@ -530,7 +529,7 @@ export default class CGDAddCarScene extends BaseComponent {
             name: 'PurchasePickerScene',
             component: PurchasePickerScene,
             params: {carData: this.carData,updateCar:upd,backRefresh:()=>{
-                console.log('aaaaaaaaaa');
+                this.props.backRefresh();
             }}
         };
 
