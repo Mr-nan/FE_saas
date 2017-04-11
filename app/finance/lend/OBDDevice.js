@@ -43,10 +43,6 @@ export default class OBDDevice extends BaseComponent {
         this.bind_type = 1;
     }
 
-    defaultProps = {
-        payment_number: 123456789,
-    }
-
     componentWillUnmount() {
         results = [];
         childItems = [];
