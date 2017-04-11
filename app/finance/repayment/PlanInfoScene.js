@@ -63,7 +63,7 @@ export  default class PlanInfoScene extends BaseComponent {
 
     getData = () => {
         let maps = {
-            api: Urls.GETPLANINFO,
+            api: Urls.REPAYMENT_GET_PLAN_INFO,
             loan_code: this.props.loan_code,
             loan_number: this.props.loan_number,
             plan_id: this.props.plan_id,
