@@ -99,8 +99,8 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                     nameList.push({name: '保证金', data: movies.bondmny});
 
                     adjustLsit.push({name: '使用优惠券数量', data: movies.coupon_info.coupon_number});
-                    adjustLsit.push({name: '使用优惠券金额', data: movies.coupon_info.coupon_repayment});
-                    adjustLsit.push({name: '优惠券还息金额', data: movies.coupon_info.coupon_usable});
+                    adjustLsit.push({name: '使用优惠券金额', data: movies.coupon_info.coupon_usable});
+                    adjustLsit.push({name: '优惠券还息金额', data: movies.coupon_info.coupon_repayment});
                     this.setState({renderPlaceholderOnly: 'success', loan_day: movies.loan_day});
                 },
                 (error) => {
