@@ -406,16 +406,23 @@ export default class CGDAddCarScene extends BaseComponent {
             pickerFontColor: [0, 0, 0, 1],
             selectedValue: [0],
             onPickerConfirm: (data) => {
-                let sel;
-                this.revShowData.map((dt, i) => {
-                    if (dt === data[0]) {
-                        sel = i;
-                    }
-                });
-                this.carData.rev_user_id = this.revData[sel].bussiness_id;
-                this.setState({
-                    carReceive: this.revData[sel].name
-                });
+                if (IS_ANDROID === true) {
+                    let sel;
+                    this.revShowData.map((dt, i) => {
+                        if (dt === data[0]) {
+                            sel = i;
+                        }
+                    });
+                    this.carData.rev_user_id = this.revData[sel].bussiness_id;
+                    this.setState({
+                        carReceive: this.revData[sel].name
+                    });
+                }else{
+                    this.carData.rev_user_id = this.revData[data].bussiness_id;
+                    this.setState({
+                        carReceive: this.revData[data].name
+                    });
+                }
             },
             onPickerCancel: (data) => {
             },
@@ -440,16 +447,24 @@ export default class CGDAddCarScene extends BaseComponent {
             pickerFontColor: [0, 0, 0, 1],
             selectedValue: [0],
             onPickerConfirm: (data) => {
-                let sel;
-                this.regShowData.map((dt, i) => {
-                    if (dt === data[0]) {
-                        sel = i;
-                    }
-                });
-                this.carData.register_user_id = this.regData[sel].bussiness_id;
-                this.setState({
-                    carRegister: this.regData[sel].name
-                });
+                if (IS_ANDROID === true) {
+                    let sel;
+                    this.regShowData.map((dt, i) => {
+                        if (dt === data[0]) {
+                            sel = i;
+                        }
+                    });
+                    this.carData.register_user_id = this.regData[sel].bussiness_id;
+                    this.setState({
+                        carRegister: this.regData[sel].name
+                    });
+                }else{
+                    this.carData.register_user_id = this.regData[data].bussiness_id;
+                    this.setState({
+                        carRegister: this.regData[data].name
+                    });
+                }
+
             },
             onPickerCancel: (data) => {
             },

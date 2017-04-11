@@ -8,7 +8,6 @@
  */
 export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
-
 /**
  * 正式地址
  */
@@ -357,7 +356,11 @@ export const SET_APPLY_MNY = 'api/v3/account/set_apply_mny'
  * 获取订单车辆列表
  **/
 export const GET_APPLY_CARLIST = 'api/v2/account/get_apply_carlist';
-
+/**
+ * from @lhc
+ * 删除车辆
+ **/
+export const DELETEAUTO='api/v2/purchaAuto/deleteAuto'
 /**
  * from @lhc
  * 获取订单车辆详情

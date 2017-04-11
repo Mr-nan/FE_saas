@@ -13,16 +13,16 @@ import {
     Image,
     NativeModules
 } from "react-native";
-import BaseComponent from "../component/BaseComponent";
-import NavigationBar from "../component/NavigationBar";
-import * as FontAndColor from "../constant/fontAndColor";
-import PixelUtil from "../utils/PixelUtil";
-import MyButton from "../component/MyButton";
-import {request} from "../utils/RequestUtil";
-import * as AppUrls from "../constant/appUrls";
-import PurchasePickerItem from "../finance/component/PurchasePickerItem";
+import BaseComponent from "../../component/BaseComponent";
+import NavigationBar from "../../component/NavigationBar";
+import * as FontAndColor from "../../constant/fontAndColor";
+import PixelUtil from "../../utils/PixelUtil";
+import MyButton from "../../component/MyButton";
+import {request} from "../../utils/RequestUtil";
+import * as AppUrls from "../../constant/appUrls";
+import PurchasePickerItem from "../component/PurchasePickerItem";
 import DeviceNumber from './DeviceNumber';
-import WebScene from '../main/WebScene';
+import WebScene from '../../main/WebScene';
 let results = [];
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -87,7 +87,7 @@ export default class OBDDevice extends BaseComponent {
                                 height: Pixel.getPixel(18),
                                 marginTop: Pixel.getPixel(-13)
                             }}
-                            source={require('./../../images/login/tanhao.png')}/>
+                            source={require('./../../../images/login/tanhao.png')}/>
 
                         <Text style={{
                             flex: 1,
@@ -241,7 +241,7 @@ export default class OBDDevice extends BaseComponent {
                 }}>
                     <Image
                         style={{width: Pixel.getPixel(18), height: Pixel.getPixel(18), marginTop: Pixel.getPixel(-13)}}
-                        source={require('./../../images/login/tanhao.png')}/>
+                        source={require('./../../../images/login/tanhao.png')}/>
 
                     <Text style={{
                         flex: 1,

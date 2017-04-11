@@ -12,15 +12,15 @@ import {
     TextInput,
     Image,
 } from "react-native";
-import BaseComponent from "../component/BaseComponent";
-import NavigationBar from "../component/NavigationBar";
-import * as FontAndColor from "../constant/fontAndColor";
-import PixelUtil from "../utils/PixelUtil";
-import MyButton from '../component/MyButton';
-import LoginInputText from './component/LoginInputText';
-import {request} from "../utils/RequestUtil";
-import * as AppUrls from "../constant/appUrls";
-import PurchasePickerItem from '../finance/component/PurchasePickerItem';
+import BaseComponent from "../../component/BaseComponent";
+import NavigationBar from "../../component/NavigationBar";
+import * as FontAndColor from "../../constant/fontAndColor";
+import PixelUtil from "../../utils/PixelUtil";
+import MyButton from '../../component/MyButton';
+import LoginInputText from '../../login/component/LoginInputText';
+import {request} from "../../utils/RequestUtil";
+import * as AppUrls from "../../constant/appUrls";
+import PurchasePickerItem from '../component/PurchasePickerItem';
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
