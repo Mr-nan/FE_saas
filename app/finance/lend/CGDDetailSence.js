@@ -169,15 +169,15 @@ export default class OrderCarDetailScene extends BaseComponent {
         let NameBlobs = [];
 
         if (state > 0 && state <= 32 || state == 50) {
-            NameBlobs = Array.of('取消借款')
+            NameBlobs =['取消借款']
         } else if (state == 33) {
-            NameBlobs = Array.of('取消借款', '确认金额')
+            NameBlobs = ['取消借款', '确认金额']
         } else if (state === 35) {
-            NameBlobs = Array.of('签署合同')
+            NameBlobs = ['签署合同']
         } else if (state == 40 || state == 42 || isComplete == 4) {
-            NameBlobs = Array.of('查看合同')
+            NameBlobs = ['查看合同']
         } else if (state == 41) {
-            NameBlobs = Array.of('取消借款', '确认金额', '查看合同')
+            NameBlobs = ['取消借款', '确认金额', '查看合同']
         }
 
         return NameBlobs;
