@@ -67,7 +67,7 @@ export  default class PurchasePickerChildItem extends PureComponent {
                                       height: Pixel.getPixel(14),
                                       position: 'absolute'
                                   }} onPress={() => {
-                    this.props.deleteOnPress(this.props.index);
+                    this.props.deleteOnPress(this.props.index,this.props.fileId.fileId);
                 }}>
                     <Image style={{
                         width: Pixel.getPixel(14),

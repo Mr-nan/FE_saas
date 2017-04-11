@@ -77,7 +77,7 @@ export default class PlanInfoPage extends BaseComponent {
                     list = response.mjson.data.list;
                     relist = response.mjson.data.relist;
                     if (list != null && list.length > 0) {
-                        this.setState({renderPlaceholderOnly: 'success', dataSource: ds.cloneWithRows(list)});
+                        this.setState({renderPlaceholderOnly: 'success', dataSource: ds.cloneWithRows(list),xuanzhong:''});
                     } else {
                         this.setState({renderPlaceholderOnly: 'null'});
                     }

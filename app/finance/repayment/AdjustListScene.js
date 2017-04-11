@@ -151,6 +151,7 @@ export  default class AdjustListScene extends BaseComponent {
                     coupon_number:movies.list[this.selected].coupon_code,
                     coupon_id:movies.list[this.selected].coupon_id,
                     adjustmoney:movies.list[this.selected].coupon_mny,
+                    coupon_type:movies.list[this.selected].coupon_rule.coupon_type
                 };
                 request(Urls.FINANCE, 'Post', maps)
                     .then((response) => {
@@ -181,7 +182,7 @@ export  default class AdjustListScene extends BaseComponent {
                     title="选择优惠券"
                     backIconClick={this.backPage}/>
                 <ListView
-                    style={{marginTop: Pixel.getTitlePixel(70), flex: 1}}
+                    style={{marginTop: Pixel.getTitlePixel(70), flex: 1,marginBottom: Pixel.getPixel(45)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
@@ -189,7 +190,7 @@ export  default class AdjustListScene extends BaseComponent {
                 />
                 <AdjustModal ref='cgdModal'/>
                 <MyButton {...this.buttonParams}/>
-                <AllLoading ref="allloading" callBack={()=>{
+                <AllLoading callEsc={()=>{}} ref="allloading" callBack={()=>{
                  this.sendContent();
                 }}/>
             </View>

@@ -6,13 +6,12 @@
 /**
  * 测试地址
  */
-// export const BASEURL = 'http://api-gateway.test.dycd.com/';
-
+export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 正式地址
  */
-export const BASEURL = 'http://gatewayapi.dycd.com/';
+// export const BASEURL = 'http://gatewayapi.dycd.com/';
 
 
 /**
@@ -174,6 +173,20 @@ export const REPAYMENT_GETLIST = 'api/v2/Repayment/getList';
  * 获取还款历史
  **/
 export const GETHISTORICALLIST = 'api/v1/Repayment/getHistoricalList';
+
+/**
+ * from @zhaojian
+ *
+ * 添加采购贷车辆
+ **/
+export const PURCHAAUTO_ADDAUTO = 'api/v2/purchaAuto/addAuto';
+
+/**
+ * from @zhaojian
+ *
+ * 更新采购贷车辆
+ **/
+export const PURCHAAUTO_UPDATEAUTO = 'api/v2/purchaAuto/updateAuto';
 
 /**
  * from @zhaojian
@@ -343,7 +356,11 @@ export const SET_APPLY_MNY = 'api/v3/account/set_apply_mny'
  * 获取订单车辆列表
  **/
 export const GET_APPLY_CARLIST = 'api/v2/account/get_apply_carlist';
-
+/**
+ * from @lhc
+ * 删除车辆
+ **/
+export const DELETEAUTO='api/v2/purchaAuto/deleteAuto'
 /**
  * from @lhc
  * 获取订单车辆详情
@@ -355,6 +372,7 @@ export const GET_CAR_INFO = 'api/v1/account/get_car_info'
  * 取消借款单车/库容
  **/
 export const CANCEL_LOAN = 'api/v3/account/cancel_loan'
+
 
 /**
  * from @zhaojian

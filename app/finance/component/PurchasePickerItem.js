@@ -44,10 +44,17 @@ export  default class PurchasePickerItem extends PureComponent {
             for (let i = 0; i < length; i++) {
                 movieItems.push(
                     <PurchasePickerChildItem
+                        fileId={this.state.childMovie.list[i]}
                         imgUrl={this.state.childMovie.list[i]} showOnPress={() => {
-                    }} deleteOnPress={(index) => {
+                    }} deleteOnPress={(index,fileId) => {
                         let news = {...this.state.childMovie};
                         news.list.splice(index, 1);
+                        for(let i = 0;i<=this.props.results.length;i++){
+                            if(this.props.results[i].file_id==fileId){
+                                this.props.results.splice(i,1);
+                                break;
+                            }
+                        }
                         this.setState({childMovie: news});
                     }} allLength={this.state.childMovie.list.length} key={i} index={i} mOnPress={(index) => {
                         if (this.state.childMovie.list.length < 8) {
@@ -85,10 +92,10 @@ export  default class PurchasePickerItem extends PureComponent {
             takePhotoButtonTitle: '拍照',
             chooseFromLibraryButtonTitle: '选择相册',
             allowsEditing: true,
-            noData: true,
+            noData: false,
             quality: 1.0,
-            maxWidth: 500,
-            maxHeight: 500,
+            maxWidth: 480,
+            maxHeight: 800,
             storageOptions: {
                 skipBackup: true,
                 path: 'images',
@@ -96,9 +103,10 @@ export  default class PurchasePickerItem extends PureComponent {
         };
         if(id=='buyer_seller_vehicle'){
             NativeModules.CustomCamera.takePic().then((response) => {
-                console.log("============>>>>>>>>>");
-                console.log(response.data);
+                // console.log("============>>>>>>>>>");
+                // console.log(response.data);
                 this.props.showModal(true);
+                this._uploadPicture(response);
             }, (error) => {
 
             })
@@ -113,48 +121,64 @@ export  default class PurchasePickerItem extends PureComponent {
                 } else {
                     // You can also display the image using data:
                     // let source = { uri: 'data:image/jpeg;base64,' + response.data };
-                        let news = {...this.state.childMovie};
-                        news.list.push({url: response.uri});
-                        this.setState({
-                            childMovie: news
-                        });
+                    //     let news = {...this.state.childMovie};
+                    //     news.list.push({url: response.uri});
+                    //     this.setState({
+                    //         childMovie: news
+                    //     });
+                    this._uploadPicture(response);
+                    // console.log('aaaaaaaaaaaaaaaaaaaaa'+response.data);
                 }
             });
         }
     }
 
-    _uploadPicture = (response)=>{
+    _uploadPicture = (responses)=>{
+        this.props.showModal(true);
         let params ={
-            file:'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g,'%2B')
+            file:'data:image/jpeg;base64,' + encodeURI(responses.data).replace(/\+/g,'%2B')
         };
-        this.props.showLoading();
         ImageUpload.request(MyUrl.INDEX_UPLOAD,'Post',params).then(
             (response)=>{
+                this.props.showModal(false);
                 if(response.mycode === 1){
-                    this.selectSource = {uri: response.mjson.data.url};
-                    this.setState({
-                        hasPhoto:true
-                    });
+                    // this.selectSource = {uri: response.mjson.data.url};
+                    console.log(response);
+                    this.props.showToast('上传成功')
+                    // console.log(response.mjson.data.url);
+                    let news = {...this.state.childMovie};
+                      let fileid =   response.mjson.data.file_id;
+                        news.list.push({url: response.mjson.data.url,fileId:fileid});
+                        this.props.results.push({code:this.props.items.code,code_id:this.props.items.id,file_id:response.mjson.data.file_id});
+                        this.setState({
+                            childMovie: news
+                        });
 
-                    let left ={
-                        name : 'left_anterior',
-                        file_id : response.mjson.data.file_id,
-                        url: response.mjson.data.url,
-                    };
-                    this.pictures = [];
-                    this.pictures.push(left);
-
-                    SQLite.changeData(
-                        'UPDATE publishCar SET pictures = ? WHERE vin = ?',
-                        [ JSON.stringify(this.pictures), this.props.carData.vin]);
-                    this.props.closeLoading();
+                    // this.setState({
+                    //     hasPhoto:true
+                    // });
+                    //
+                    // let left ={
+                    //     name : 'left_anterior',
+                    //     file_id : response.mjson.data.file_id,
+                    //     url: response.mjson.data.url,
+                    // };
+                    // this.pictures = [];
+                    // this.pictures.push(left);
+                    //
+                    // SQLite.changeData(
+                    //     'UPDATE publishCar SET pictures = ? WHERE vin = ?',
+                    //     [ JSON.stringify(this.pictures), this.props.carData.vin]);
+                    // this.props.closeLoading();
                 }else {
-                    this.props.closeLoading();
-                    this.props.showHint('上传失败');
+                    // this.props.closeLoading();
+                    this.props.showToast('上传失败')
                 }
             },(error)=>{
-                this.props.closeLoading();
-                this.props.showHint(JSON.stringify(error));
+                this.props.showModal(false);
+                // this.props.closeLoading();
+                this.props.showToast(JSON.stringify(error));
+                // console.log(JSON.stringify(error));
             });
     };
 

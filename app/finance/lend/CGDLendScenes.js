@@ -16,11 +16,7 @@ const PostData = {
     apply_type: '5',
     loan_mny: '',
     archives_type:'1',
-    use_time: '',
-    isinvoice:'',
-    isobd:'',
-    loan_code:'',
-    car_lists:''
+    use_time:''
 }
 const showData={
     maxMoney:'',
@@ -28,10 +24,20 @@ const showData={
     tempMin:'',
     tempMax:''
 }
+const tempDelete={
+    base_id:'',
+    info_id:'',
+    itemAtInex:''
+}
+const verificationtips={
+    use_time:'请选择用款时间',
+    loan_mny:'请输入用款金额',
+}
 import BaseComponent from '../../component/BaseComponent';
 
 import {LendDatePike, LendInputItem, LendItem, CGDCarItem, CommenButton,commnetStyle,} from './component/ComponentBlob'
 import {width, adapeSize,PAGECOLOR,changeToMillion,getRowData,getSectionData,dateFormat,STATECODE} from './component/MethodComponent'
+import {ModalAlert,LendSuccessAlert} from './component/ModelComponent'
 import CGDaddCarScenes from './CGDaddCarScenes';
 import  AllNavigatior from '../../component/AllNavigationView'
 import {ModalCGD} from './component/ModelComponent'
@@ -72,6 +78,10 @@ export  default  class CGDLendScenes extends BaseComponent {
         return temp==1?'有':'无'
     }
 
+    refreshAll=()=>{
+        this.getLendInfo();
+    }
+
 
     titleNameBlob = (jsonData, carData) => {
 
@@ -96,17 +106,20 @@ export  default  class CGDLendScenes extends BaseComponent {
 
                 tempCarDate.push(
                     {
-                        auto_id: item.auto_id,
-                        model_name: item.model_name,
-                        state: item.status_str,
-                        order: item.frame_number,
-                        price: item.lend_mny,//放款额
-                        plate_number: item.plate_number,//车牌号
-                        loan_number: item.loan_number,
+                        brand_name: item.brand_name,
+                        icon: item.cover.icon,
+                        frame_number: item.frame_number,
+                        price: item.first_assess_loan,//放款额
+                        obd_bind_status: item.obd_bind_status,//车牌号
+                        info_id: item.info_id,
+                        model_name:item.model_name,
+                        init_reg:item.init_reg,
+                        base_id:item.base_id
                     }
                 )
+                dataSource['section3'] = tempCarDate;
             })
-            dataSource['section3'] = [];
+
         }
         return dataSource;
     }
@@ -118,6 +131,8 @@ export  default  class CGDLendScenes extends BaseComponent {
                 api: apis.GET_APPLY_LOAN_DATA,
                 apply_type:'5',
                 archives_type:'1',
+                isinvoice:this.props.isCarinvoice,
+                isobd:this.props.isOBD
             };
 
             request(apis.FINANCE, 'Post', maps)
@@ -126,13 +141,11 @@ export  default  class CGDLendScenes extends BaseComponent {
                             showData.tempMin=changeToMillion(tempjson.min_loanmny);
                         showData.tempMax=changeToMillion(tempjson.max_loanmny);
 
-                        this.setState({
-                            dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(tempjson, [])),
-                            renderPlaceholderOnly: STATECODE.loadSuccess
-                        })
+                        this.getCarListInfo(tempjson);
+
                     },
                     (error) => {
-
+                        this.props.showModal(false);
                         this.setState({
                             renderPlaceholderOnly:STATECODE.loadError
                         })
@@ -148,18 +161,24 @@ export  default  class CGDLendScenes extends BaseComponent {
 
     }
 
-    getCarListInfo=()=>{
+
+    getCarListInfo=(templendInfo)=>{
         let maps = {
             api: apis.AUTOLIST,
         };
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
+                    this.props.showModal(false);
                     let tempjson = response.mjson.data;
 
-
+                    console.log(tempjson.list);
+                    this.setState({
+                        dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(templendInfo, tempjson.list)),
+                        renderPlaceholderOnly: STATECODE.loadSuccess
+                    })
                 },
                 (error) => {
-
+                    this.props.showModal(false);
                     this.setState({
                         renderPlaceholderOnly:STATECODE.loadError
                     })
@@ -174,6 +193,110 @@ export  default  class CGDLendScenes extends BaseComponent {
 
 
     }
+    lendMoneyClick=()=>{
+
+        let infoIsall =true;
+        let isHasCar =true;
+        let  moneyAdape=true;
+        let  carAdape =true;
+        for(temp in PostData){if(PostData[temp]===''){ this.props.showToast(verificationtips[temp]);infoIsall=false;break }}
+        if (infoIsall){let CarList =this.state.dataSource._dataBlob['section3'];if(!CarList||CarList.length==0){this.props.showToast('请添加车辆');isHasCar=false}}
+
+        if (infoIsall&&isHasCar&&(Number.parseFloat(PostData.loan_mny)<Number.parseFloat(showData.tempMin)||Number.parseFloat(PostData.loan_mny)>Number.parseFloat(showData.tempMax))){
+            moneyAdape=false;
+            this.props.showToast('借款金额范围为'+showData.maxMoney)
+        }
+
+
+        if(infoIsall&&isHasCar&&moneyAdape){
+
+            let CarList =this.state.dataSource._dataBlob['section3']
+            let tempCarList=[]
+            CarList.map((item)=>{tempCarList.push(item.info_id)})
+            let carIdList =tempCarList.join(',')
+
+            let maps ={
+                api:apis.APPLY_LOAN,
+                apply_type:PostData.apply_type,
+                isobd:this.props.isOBD,
+                isinvoice:this.props.isCarinvoice,
+                loan_mny:PostData.loan_mny,
+                use_time:PostData.use_time,
+                car_lists:carIdList
+            }
+            if (this.props.loan_code){
+                Object.assign(maps,{loan_code:this.props.loan_code})
+            }
+            this.props.showModal(true);
+            request(apis.FINANCE, 'Post', maps)
+                .then((response) => {
+                        this.props.showModal(false);
+                        this.apSuccess.setModelVisible(true);
+
+                    },
+                    (error) => {
+                        this.props.showModal(false);
+                        if(error.mycode!= -300||error.mycode!= -500){
+                            this.props.showToast(error.mjson.msg);
+
+                        }else {
+
+                            this.props.showToast('服务器连接有问题')
+                        }
+                    });
+
+        }
+
+
+    }
+    deleteCarClick=(info_id,base_id)=>{
+        let maps = {
+            api: apis.DELETEAUTO,
+            base_id:base_id,
+            info_id:info_id,
+        };
+        this.props.showModal(true);
+        request(apis.FINANCE, 'Post', maps)
+            .then((response) => {
+                    this.props.showModal(false);
+
+                    let tempDataSource =Object.assign({},this.state.dataSource);
+                    tempDataSource._dataBlob['section3'].splice(tempDelete.itemAtInex,1);
+                    console.log(tempDataSource._dataBlob)
+
+                    this.setState({
+                        dataSource: this.state.dataSource.cloneWithRowsAndSections(tempDataSource._dataBlob),
+                    })
+                    this.props.showToast('删除成功');
+                },
+                (error) => {
+                    this.props.showModal(false);
+                    if(error.mycode!= -300||error.mycode!= -500){
+                        this.props.showToast(error.mjson.msg);
+
+                    }else {
+
+                        this.props.showToast('服务器连接有问题')
+                    }
+                });
+
+
+
+
+    }
+
+    carItemClick=(infoId)=>{
+        this.navigatorParams.name = "CGDAddCarScene";
+        this.navigatorParams.component = CGDAddCarScene;
+        this.navigatorParams.params = {isOBD:this.props.isOBD,isCarinvoice:this.props.isCarinvoice,InfoId:infoId,updateCar:true,
+            backRefresh:()=>{
+            this.refreshAll();
+        }};
+        this.toNextPage(this.navigatorParams)
+
+    }
+
+
 
     //datePiker的方法
     _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false })
@@ -205,7 +328,15 @@ export  default  class CGDLendScenes extends BaseComponent {
                                  imageSouce={require('../../../images/financeImages/dateIcon.png')} onPress={this.onPress}/>
         } else {
             return (
-                <CGDCarItem/>
+
+                <CGDCarItem  url={rowData.icon}title={rowData.model_name}obdState={rowData.obd_bind_status}date={rowData.init_reg} onPress={()=>{
+                    this.carItemClick(rowData.info_id);
+                }} deletePress={()=>{
+                    this.deleteCar.setModelVisible(true);
+                    tempDelete.base_id=rowData.base_id
+                    tempDelete.info_id=rowData.info_id
+                    tempDelete.itemAtInex=rowID
+                }}/>
             )
         }
     }
@@ -223,7 +354,15 @@ export  default  class CGDLendScenes extends BaseComponent {
 
     renderSectionHeader = (_, sectionId) => {
 
-        if (sectionId !== 'section3') {
+        if(sectionId=='section1'&&this.props.loan_code){
+
+            return (
+                <View style={styles.section}>
+                    <Text>审核不通过</Text>
+                </View>
+            )
+        }
+        else if (sectionId !== 'section3') {
 
             return <View style={{height: adapeSize(15), backgroundColor: '#f0eff5'}}></View>
         }
@@ -267,15 +406,15 @@ export  default  class CGDLendScenes extends BaseComponent {
                     alignItems: 'center'}]}>
 
                     <CommenButton textStyle={styles.textLeft} buttonStyle={styles.buttonStyleRight} onPress={() => {
-
                         this.navigatorParams.name = "CGDAddCarScene";
                         this.navigatorParams.component = CGDAddCarScene;
-                        this.navigatorParams.params = {isOBD:this.props.isOBD,isCarinvoice:this.props.isCarinvoice};
+                        this.navigatorParams.params = {isOBD:this.props.isOBD,
+                        isCarinvoice:this.props.isCarinvoice,backRefresh:()=>{
+                            this.refreshAll();
+                        }};
                      this.toNextPage(this.navigatorParams)
                     }} title="添加车辆"/>
-                    <CommenButton textStyle={{color: 'white'}} buttonStyle={styles.buttonStyleLeft} onPress={() => {
-
-                    }} title="申请借款"/>
+                    <CommenButton textStyle={{color: 'white'}} buttonStyle={styles.buttonStyleLeft} onPress={this.lendMoneyClick} title="申请借款"/>
                 </View>
                 <DateTimePicker
                     isVisible={this.state.isDateTimePickerVisible}
@@ -285,6 +424,14 @@ export  default  class CGDLendScenes extends BaseComponent {
                     confirmTextIOS='确定'
                     cancelTextIOS='取消'
                 />
+                <ModalAlert ref={(deleteCar)=>{this.deleteCar=deleteCar}} title='删除车辆'subtitle='您确定要删除车辆吗' confimClick={(setHide)=>{
+                    setHide(false);
+                    this.deleteCarClick(tempDelete.info_id,tempDelete.base_id);
+                }} cancleClick={(setHide)=>{setHide(false)}}/>
+                <LendSuccessAlert ref={(success)=>{this.apSuccess=success}} confimClick={()=>{
+                    this.props.backRefresh();
+                    this.backToTop()
+                }}/>
                 <AllNavigatior title='采购融资' backIconClick={()=>{
                     this.backPage();
                 }}/>

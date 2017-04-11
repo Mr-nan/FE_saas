@@ -58,7 +58,8 @@ export default class CGDAddCarScene extends BaseComponent {
             payment_id: '',
             base_id:'',
             info_id:'',
-            isCarinvoice:this.props.isCarinvoice
+            isCarinvoice:this.props.isCarinvoice,
+            obd_bind_status:'0'
         };
 
         this.scanType = [
@@ -76,68 +77,6 @@ export default class CGDAddCarScene extends BaseComponent {
     }
 
     initFinish = () => {
-                        // let detailParams = {
-                        //     api: AppUrls.PURCHA_AUTO_DETAIL,
-                        //     info_id:'525465'
-                        // };
-                        // Net.request(AppUrls.FINANCE, 'post', detailParams).then(
-                        //     (response2) => {
-                        //         if (response2.mycode === 1) {
-                        //             this._closeLoading();
-                        //             let rdb2 = response2.mjson.data.detail;
-                        //
-                        //              let dt = this.dateReversal(rdb2.init_reg);
-                        //             this.carData.sell_city_id = rdb2.city_id;
-                        //             this.carData.brand_id = rdb2.brand_id;
-                        //             this.carData.model_id = rdb2.model_id;
-                        //             this.carData.series_id = rdb2.series_id;
-                        //             this.carData.frame_number = rdb2.frame_number;
-                        //             this.carData.car_color = rdb2.car_color;
-                        //             this.carData.mileage = dt;
-                        //             this.carData.init_reg = rdb2.init_reg;
-                        //             this.carData.rev_user_id = rdb2.rev_user_id;
-                        //             this.carData.register_user_id = rdb2.register_user_id;
-                        //             this.carData.purchas_price = rdb2.purchas_price;
-                        //             this.carData.file_list = rdb2.file_list;
-                        //             this.carData.obd_number = rdb2.obd_number;
-                        //             this.carData.base_id = rdb2.base_id;
-                        //             this.carData.info_id = rdb2.info_id;
-                        //
-                        //             this.state = {
-                        //                 city_name: rdb2.city_name,
-                        //                 modelName: rdb2.model_name,
-                        //                 car_color: rdb2.car_color,
-                        //                 init_reg: dt,
-                        //                 carReceive: rdb.rev_user_name,
-                        //                 carRegister: rdb.register_user_name
-                        //             };
-                        //
-                        //             this.vinInput.setNativeProps({
-                        //                 text: rdb2.frame_number
-                        //             });
-                        //
-                        //             this.milInput.setNativeProps({
-                        //                 text: rdb2.mileage
-                        //             });
-                        //
-                        //             this.priceInput.setNativeProps({
-                        //                 text: rdb2.purchas_price
-                        //             });
-                        //         }
-                        //     },
-                        //     (error) => {
-                        //         if (IS_ANDROID === true) {
-                        //             this._showHint('获取车辆数据失败');
-                        //         } else {
-                        //             this.timer = setTimeout(
-                        //                 () => {
-                        //                     this._showHint('获取车辆数据失败');
-                        //                 },
-                        //                 500
-                        //             );
-                        //         }
-                        //     }
-                        // );
 
         this._showLoading();
         let peopleParams = {
@@ -183,7 +122,7 @@ export default class CGDAddCarScene extends BaseComponent {
                     if(this.props.updateCar && this.props.updateCar === true){
                         let detailParams = {
                             api: AppUrls.PURCHA_AUTO_DETAIL,
-                            info_id:this.props.info_id
+                            info_id:this.props.InfoId
                         };
                         Net.request(AppUrls.FINANCE, 'post', detailParams).then(
                             (response2) => {
@@ -207,30 +146,34 @@ export default class CGDAddCarScene extends BaseComponent {
                                     this.carData.obd_number = rdb2.obd_number;
                                     this.carData.base_id = rdb2.base_id;
                                     this.carData.info_id = rdb2.info_id;
+                                    this.carData.obd_bind_status = rdb2.obd_bind_status;
 
-                                    this.state = {
+                                    this.setState({
                                         city_name: rdb2.city_name,
                                         modelName: rdb2.model_name,
                                         car_color: rdb2.car_color,
                                         init_reg: dt,
-                                        carReceive: rdb.rev_user_name,
-                                        carRegister: rdb.register_user_name
-                                    };
+                                        carReceive: rdb2.rev_user_name,
+                                        carRegister: rdb2.register_user_name
+                                    });
 
                                     this.vinInput.setNativeProps({
-                                        text: rdb2.frame_number
+                                        text: rdb2.frame_number+ ''
                                     });
 
                                     this.milInput.setNativeProps({
-                                        text: rdb2.mileage
+                                        text: rdb2.mileage+ ''
                                     });
 
                                     this.priceInput.setNativeProps({
-                                        text: rdb2.purchas_price
+                                        text: rdb2.purchas_price + ''
                                     });
+
+                                    this.is_exists = false;
                                 }
                             },
                             (error) => {
+                                this.is_exists = true;
                                 if (IS_ANDROID === true) {
                                     this._showHint('获取车辆数据失败');
                                 } else {
@@ -463,16 +406,23 @@ export default class CGDAddCarScene extends BaseComponent {
             pickerFontColor: [0, 0, 0, 1],
             selectedValue: [0],
             onPickerConfirm: (data) => {
-                let sel;
-                this.revShowData.map((dt, i) => {
-                    if (dt === data[0]) {
-                        sel = i;
-                    }
-                });
-                this.carData.rev_user_id = this.revData[sel].bussiness_id;
-                this.setState({
-                    carReceive: this.revData[sel].name
-                });
+                if (IS_ANDROID === true) {
+                    let sel;
+                    this.revShowData.map((dt, i) => {
+                        if (dt === data[0]) {
+                            sel = i;
+                        }
+                    });
+                    this.carData.rev_user_id = this.revData[sel].bussiness_id;
+                    this.setState({
+                        carReceive: this.revData[sel].name
+                    });
+                }else{
+                    this.carData.rev_user_id = this.revData[data].bussiness_id;
+                    this.setState({
+                        carReceive: this.revData[data].name
+                    });
+                }
             },
             onPickerCancel: (data) => {
             },
@@ -497,16 +447,24 @@ export default class CGDAddCarScene extends BaseComponent {
             pickerFontColor: [0, 0, 0, 1],
             selectedValue: [0],
             onPickerConfirm: (data) => {
-                let sel;
-                this.regShowData.map((dt, i) => {
-                    if (dt === data[0]) {
-                        sel = i;
-                    }
-                });
-                this.carData.register_user_id = this.regData[sel].bussiness_id;
-                this.setState({
-                    carRegister: this.regData[sel].name
-                });
+                if (IS_ANDROID === true) {
+                    let sel;
+                    this.regShowData.map((dt, i) => {
+                        if (dt === data[0]) {
+                            sel = i;
+                        }
+                    });
+                    this.carData.register_user_id = this.regData[sel].bussiness_id;
+                    this.setState({
+                        carRegister: this.regData[sel].name
+                    });
+                }else{
+                    this.carData.register_user_id = this.regData[data].bussiness_id;
+                    this.setState({
+                        carRegister: this.regData[data].name
+                    });
+                }
+
             },
             onPickerCancel: (data) => {
             },
@@ -525,48 +483,56 @@ export default class CGDAddCarScene extends BaseComponent {
         console.log('============>>>>>>>');
         console.log(JSON.stringify(this.carData));
 
-        // if (this.is_exists === true) {
-        //     this._showHint('车架号有误');
-        //     return;
-        // }
-        // if (this.isEmpty(this.carData.sell_city_id) === true) {
-        //     this._showHint('请选择出售城市');
-        //     return;
-        // }
-        // if (this.isEmpty(this.carData.model_id) === true) {
-        //     this._showHint('请选择车型');
-        //     return;
-        // }
-        // if (this.isEmpty(this.carData.car_color) === true) {
-        //     this._showHint('请选择外观颜色');
-        //     return;
-        // }
-        // if (this.isEmpty(this.carData.mileage) === true) {
-        //     this._showHint('请填写行驶里程');
-        //     return;
-        // }
-        // if (this.isEmpty(this.carData.init_reg) === true) {
-        //     this._showHint('请选择首次上牌时间');
-        //     return;
-        // }
-        // if (this.isEmpty(this.carData.rev_user_id) === true) {
-        //     this._showHint('请选择收车人');
-        //     return;
-        // }
-        // if (this.isEmpty(this.carData.register_user_id) === true) {
-        //     this._showHint('请选择登记人');
-        //     return;
-        // }
-        // if (this.isEmpty(this.carData.purchas_price) === true) {
-        //     this._showHint('请填写收购价');
-        //     return;
-        // }
+        if (this.is_exists === true) {
+            this._showHint('车架号有误');
+            return;
+        }
+        if (this.isEmpty(this.carData.sell_city_id) === true) {
+            this._showHint('请选择出售城市');
+            return;
+        }
+        if (this.isEmpty(this.carData.model_id) === true) {
+            this._showHint('请选择车型');
+            return;
+        }
+        if (this.isEmpty(this.carData.car_color) === true) {
+            this._showHint('请选择外观颜色');
+            return;
+        }
+        if (this.isEmpty(this.carData.mileage) === true) {
+            this._showHint('请填写行驶里程');
+            return;
+        }
+        if (this.isEmpty(this.carData.init_reg) === true) {
+            this._showHint('请选择首次上牌时间');
+            return;
+        }
+        if (this.isEmpty(this.carData.rev_user_id) === true) {
+            this._showHint('请选择收车人');
+            return;
+        }
+        if (this.isEmpty(this.carData.register_user_id) === true) {
+            this._showHint('请选择登记人');
+            return;
+        }
+        if (this.isEmpty(this.carData.purchas_price) === true) {
+            this._showHint('请填写收购价');
+            return;
+        }
+
+        let upd = false;
+        if(this.props.updateCar && this.props.updateCar === true){
+            upd = true;
+        }
 
         let pickerParams = {
             name: 'PurchasePickerScene',
             component: PurchasePickerScene,
-            params: {carData: this.carData}
+            params: {carData: this.carData,updateCar:upd,backRefresh:()=>{
+                this.props.backRefresh();
+            }}
         };
+
 
         this.toNextPage(pickerParams);
 
@@ -583,9 +549,7 @@ export default class CGDAddCarScene extends BaseComponent {
                     />
 
                     <View style={[styles.itemBackground, styles.alignTop]}>
-                        <Text ref={(text) => {
-                            this.cityText = text
-                        }} style={styles.leftFont}>出售城市</Text>
+                        <Text style={styles.leftFont}>出售城市</Text>
                         <View style={styles.fillSpace}/>
                         <TouchableOpacity onPress={this._onCityPress}>
                             <View style={styles.rightContainer}>

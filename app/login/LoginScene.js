@@ -279,9 +279,11 @@ export default class LoginScene extends BaseComponent {
                 type: "2",
             };
             // this.props.showModal(true);
+            this.refs.lodding.setShow(true);
             request(AppUrls.SEND_SMS, 'Post', maps)
                 .then((response) => {
                     // this.props.showModal(false);
+                    this.refs.lodding.setShow(false);
                     if (response.mycode == "1") {
                         this.refs.loginSmscode.StartCountDown();
                         // this.refs.loginSmscode.setInputTextValue(response.mjson.data.code + "");
@@ -290,6 +292,7 @@ export default class LoginScene extends BaseComponent {
                     }
                 }, (error) => {
                     // this.props.showModal(false);
+                    this.refs.lodding.setShow(false);
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("获取验证码失败");
                     } else if (error.mycode == 7040012) {

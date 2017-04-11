@@ -5,7 +5,9 @@ import {
     StyleSheet,
     Dimensions,
     TouchableOpacity,
-    Image
+    Image,
+    BackAndroid,
+    InteractionManager
 } from 'react-native';
 
 import BaseComponent from '../component/BaseComponent';
@@ -20,9 +22,20 @@ import LoginGesture from '../login/LoginGesture';
 import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
 import  UpLoadScene from './UpLoadScene';
+import codePush from 'react-native-code-push'
 const versionCode = 4.0;
 
 export default class RootScene extends BaseComponent {
+
+    componentDidMount() {
+        codePush.sync();
+        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
+    }
+
     initFinish = () => {
         let maps = {
             type: '6',
@@ -30,13 +43,13 @@ export default class RootScene extends BaseComponent {
         };
         request(Urls.APP_UPDATE, 'Post', maps)
             .then((response) => {
-                    if (response.mjson.data.versioncode != versionCode) {
-                        this.navigatorParams.component = UpLoadScene;
-                        this.navigatorParams.params = {url: response.mjson.data.downloadurl}
-                        this.toNextPage(this.navigatorParams);
-                    } else {
+                    // if (response.mjson.data.versioncode != versionCode) {
+                    //     this.navigatorParams.component = UpLoadScene;
+                    //     this.navigatorParams.params = {url: response.mjson.data.downloadurl}
+                    //     this.toNextPage(this.navigatorParams);
+                    // } else {
                         this.toJump();
-                    }
+                    // }
                 },
                 (error) => {
                     this.toJump();

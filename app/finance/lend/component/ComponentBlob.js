@@ -316,20 +316,23 @@ export class CGDCarItem extends PureComponent{
 
     render(){
 
-
+        const {url,title,obdState,date,onPress,deletePress}=this.props;
 
         return(
-            <View style={styles.CGDCarWarp}>
+            <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={styles.CGDCarWarp}>
 
-                <Image source={require('../../../../images/financeImages/car.png')} style={styles.CGDCarImage}/>
+                <Image source={{uri:url}} style={styles.CGDCarImage}/>
                 <View style={styles.CGDInstWarpTop}>
-                    <Text style={styles.CGDInstTitle} numberOfLines={2}>[北京]奥迪7(进口) 2014款 FSI fuck 技术型</Text>
-                    <View style={{backgroundColor:'red',width:adapeSize(45),alignItems:'center'}}><Text >OBD</Text></View>
+                    <Text style={styles.CGDInstTitle} numberOfLines={2}>{title}</Text>
+                    <View style={obdState==1?{backgroundColor:'green',width:adapeSize(45),alignItems:'center'}:{backgroundColor:'red',width:adapeSize(45),alignItems:'center'}}><Text >OBD</Text></View>
                     <View style={styles.CGDInstWarpBooton}>
-                        <Text style={styles.CGDInserDate}>2014-6-12</Text>
+                        <Text style={styles.CGDInserDate}>{date}</Text>
                     </View>
                 </View>
-            </View>
+                <TouchableOpacity style={{justifyContent:'center',alignItems:'center',marginRight:adapeSize(10)}} onPress={deletePress}>
+                    <Text style={{color:'red'}}>{deletePress&&'删除'}</Text>
+                </TouchableOpacity>
+            </TouchableOpacity>
 
         )
     }
