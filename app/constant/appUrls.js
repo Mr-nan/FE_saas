@@ -343,7 +343,7 @@ export const GET_APPLY_INFO = 'api/v3/account/get_apply_info';
  *
  * 获取借款进度列表
  **/
-export const GET_PAYMENT_SCHEDULE_ALL='api/v1/account/get_payment_schedule_all'
+export const GET_PAYMENT_SCHEDULE_ALL='api/v1/account/get_payment_schedule'
 
 /**
  * from @lhc
@@ -464,6 +464,7 @@ export const DO_EXTENSIONPC = 'api/v3/account/extension_contract_pc';
  **/
 export const APPLY_EXTENSION_CARLIST = 'api/v1/account/apply_extension_carlist';
 
+
 /**
  * from @zhaojian
  *
@@ -561,3 +562,4 @@ export const PURCHA_AUTO_DETAIL = 'api/v2/purchaAuto/autoDetail';
  * 获取车架好是否已存在以及校验规则
  **/
 export const PURCHA_CHECK_IN = 'api/v2/purchaAuto/checkVin';
+

@@ -18,13 +18,14 @@ import BaseComponent from '../../component/BaseComponent';
 import {request} from '../../utils/RequestUtil'
 import *as apis from '../../constant/appUrls'
 import ImagePageView from 'react-native-viewpager'
+import CarTrackScene from './CarTrackScene'
 
 const ImageSouce= {
 
     imageSouce:[]
 
 }
-export default class OrderCarDetailScene extends BaseComponent{
+export default class CGDCarDetailScenes extends BaseComponent{
 
     constructor(props) {
         super(props);
@@ -42,8 +43,6 @@ export default class OrderCarDetailScene extends BaseComponent{
             dataSource: ds.cloneWithRowsAndSections(this.titleNameBlob({},[])),
             renderPlaceholderOnly: STATECODE.loading,
             carImageData: ImageData.cloneWithPages([]),
-            obdImageData: ImageData.cloneWithPages([]),
-            ziLiaoImageData:ImageData.cloneWithPages([]),
         }
     }
 
@@ -66,8 +65,7 @@ export default class OrderCarDetailScene extends BaseComponent{
 
                     this.setState({
                         renderPlaceholderOnly: STATECODE.loadSuccess,
-                        dataSource:this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(tempjson,[])),
-                        // imagePikerData:this.state.imagePikerData.cloneWithPages(ImageSouce.imageSouce),
+                        dataSource:this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(tempjson,tempjson.file_list)),
                     })
                 },
                 (error) => {
@@ -103,7 +101,24 @@ export default class OrderCarDetailScene extends BaseComponent{
         ]
         dataSource['section1']=section1
         if(carData.length>0){
-            dataSource['section2']=carData;
+
+            let autoBase=[];
+            let mention=[];
+            let obdBase=[];
+            carData.map((item)=>{
+
+                if (item.type=='auto'){
+                    mention.push(item)
+                }else if (item.type=='mention'){
+                    autoBase.push(item)
+                }else if (item.type=='obd'){
+                    obdBase.push(item)
+                }
+            })
+            let tempData=[autoBase,mention,obdBase]
+
+            dataSource['section2']=tempData;
+
         }
         return dataSource;
     }
@@ -118,32 +133,49 @@ export default class OrderCarDetailScene extends BaseComponent{
 
     renderRow = (rowData, sectionID, rowId, highlightRow) => {
 
-
         if (sectionID === 'section2') {
-            if(rowId==='0'){
+
+            if (rowData.length>0){
+
+                let  temptitle ='';
+                if (rowId==0) temptitle='车辆照片';
+                if (rowId==1) temptitle='提档资料';
+                if (rowId==2) temptitle='OBD照片';
+                let tempData=[];
+                rowData.map((item)=>{tempData.push(item.url)});
+
+                let temp=this.state.carImageData.cloneWithPages(tempData);
                 return(
-                  <View style={styles.ImageBackView}>
-                      <Text style={styles.thumbTitle}>{'车辆照片'}</Text>
-                          <ImagePageView
-
-                              dataSource={this.state.imagePikerData}    //数据源（必须）
-                              renderPage={this.renderImagePage}     //page页面渲染方法（必须）
-                              isLoop={false}                        //是否可以循环
-                              autoPlay={false}                      //是否自动
-                              locked={false}                        //为true时禁止滑动翻页
-                          />
-
-                  </View>
+                    <View style={styles.ImageBackView}>
+                        <Text style={styles.thumbTitle}>{temptitle}</Text>
+                        <ImagePageView
+                            dataSource={temp}    //数据源（必须）
+                            renderPage={this.renderImagePage}     //page页面渲染方法（必须）
+                            isLoop={false}                        //是否可以循环
+                            autoPlay={false}                      //是否自动
+                            locked={false}                        //为true时禁止滑动翻页
+                        />
+                    </View>
                 )
-
-            }else {
-
-                return null;
             }
+            return null;
+
+
         }else if (rowData.title ==='车辆位置'){
 
             return (
-                <CommentHandItem leftTitle={rowData.title} showValue={rowData.key} handel={()=>{}}/>
+                <CommentHandItem textStyle={{paddingTop:adapeSize(15),paddingBottom:adapeSize(15)}} leftTitle={rowData.title} showValue={'点击查看'} handel={()=>{
+
+                   navigatorParams = {
+                     name: 'CarTrackScene',
+                     component: CarTrackScene,
+                    params: {
+                     webUrl:rowData.key
+                     }
+                    }
+                    this.toNextPage(navigatorParams);
+
+                }}/>
             )
         }
 
@@ -177,16 +209,16 @@ export default class OrderCarDetailScene extends BaseComponent{
 
     render(){
 
-        // if(this.state.renderPlaceholderOnly!==STATECODE.loadSuccess)
-        // {
-        //     return(
-        //         <View style={styles.container}>
-        //             {this.loadView()}
-        //             <AllNavigationView title='车辆详情' backIconClick={()=>{
-        //                 this.backPage();
-        //             }}/>
-        //         </View>);
-        // }
+        if(this.state.renderPlaceholderOnly!==STATECODE.loadSuccess)
+        {
+            return(
+                <View style={styles.container}>
+                    {this.loadView()}
+                    <AllNavigationView title='车辆详情' backIconClick={()=>{
+                        this.backPage();
+                    }}/>
+                </View>);
+        }
         return(
             <View style={styles.container}>
                 <ListView
