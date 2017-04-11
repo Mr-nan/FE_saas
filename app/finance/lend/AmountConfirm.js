@@ -37,7 +37,13 @@ export default class AmountConfirm extends BaseComponent {
             values: "",//输入框输入内容
             carNumber: 0,
             totalMoney: 0,
+            car_lists: '',
         };
+    }
+
+    componentWillUnmount() {
+        contents = [];
+        map = new Map();
     }
 
     initFinish = () => {
@@ -147,7 +153,7 @@ export default class AmountConfirm extends BaseComponent {
                 }}>
                     <Text style={{fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT), color: FontAndColor.COLORA0}}>借款金额：</Text>
                     <TextInput
-                        ref="inputText"
+                        ref="inputTexts"
                         underlineColorAndroid={"#00000000"}
                         placeholderTextColor={FontAndColor.COLORA4}
                         placeholder={'0.00'}
@@ -182,7 +188,7 @@ export default class AmountConfirm extends BaseComponent {
         return (
             <TouchableOpacity onPress={() => this.finshPage(data, rowID)}>
                 <View style={styles.itemStyle}>
-                    {typeof(map.get(rowID)) == 'undefined' ?
+                    {typeof(map.get(data.info_id)) == 'undefined' ?
                         <Image source={require("./../../../images/login/amou_unchoose.png")}
                                style={styles.itemIconStyle}/>
                         :
@@ -208,18 +214,26 @@ export default class AmountConfirm extends BaseComponent {
     }
 
     finshPage = (data, rowID) => {
-        if (typeof(map.get(rowID)) == 'undefined') {
-            map.set(rowID, data);
+        if (typeof(map.get(data.info_id)) == 'undefined') {
+            map.set(data.info_id, data);
         } else {
-            map.delete(rowID);
+            map.delete(data.info_id);
         }
         let money = 0;
         for (let key of map.keys()) {
             money = money + map.get(key).purchas_price;
         }
+
+        let car_lists = "";
+        for (let key of contents) {
+            if (map.get(key.info_id) == undefined) {
+                car_lists = car_lists + key.info_id + ",";
+            }
+        }
         this.setState({
             carNumber: map.size,
             totalMoney: money,
+            car_lists: car_lists,
             source: ds.cloneWithRows(contents),
         });
     }
@@ -229,15 +243,18 @@ export default class AmountConfirm extends BaseComponent {
     getAutoList = () => {
         let maps = {
             api: AppUrls.PURCHAAUTOAUTOLIST,
-            payment_number: 201703200008/*this.props.loan_code*/,
+            payment_number: 201704070001/* 201703200008 this.props.loan_code*/,
         };
+        this.props.showModal(true);
         request(AppUrls.FINANCE, 'Post', maps)
             .then((response) => {
+                    this.props.showModal(false);
                     contents = response.mjson.data.list;
                     this.setState({
                         source: ds.cloneWithRows(contents),
                     });
                 }, (error) => {
+                    this.props.showModal(false);
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("网络请求失败");
                     } else {
@@ -249,25 +266,31 @@ export default class AmountConfirm extends BaseComponent {
 
     //  采购贷确认借款金额
     makeSure = () => {
-        let inputText = this.refs.inputText.getInputTextValue();
-        let maps = {
-            car_lists: "",
-            loan_code: this.props.loan_code,
-            loan_mny: inputText,
-            api: AppUrls.ACCOUNTCONFIRM_AMOUNT,
-        };
-        request(AppUrls.FINANCE, 'Post', maps)
-            .then((response) => {
-                    this.props.showToast("OBD检测成功");
-                    this.backPage();
-                }, (error) => {
-                    if (error.mycode == -300 || error.mycode == -500) {
-                        this.props.showToast("网络请求失败");
-                    } else {
-                        this.props.showToast(error.mjson.msg + "");
+        if (this.state.values > this.state.totalMoney) {
+            this.props.showToast("借款金额不能大于最高融资额");
+        } else {
+            let maps = {
+                car_lists: this.state.car_lists,
+                loan_code: this.props.loan_code,
+                loan_mny: this.state.values,
+                api: AppUrls.ACCOUNTCONFIRM_AMOUNT,
+            };
+            this.props.showModal(true);
+            request(AppUrls.FINANCE, 'Post', maps)
+                .then((response) => {
+                        this.props.showModal(false);
+                        this.props.showToast("OBD检测成功");
+                        this.backPage();
+                    }, (error) => {
+                        this.props.showModal(false);
+                        if (error.mycode == -300 || error.mycode == -500) {
+                            this.props.showToast("网络请求失败");
+                        } else {
+                            this.props.showToast(error.mjson.msg + "");
+                        }
                     }
-                }
-            )
+                )
+        }
     }
 }
 
