@@ -330,7 +330,7 @@ export class CGDCarItem extends PureComponent{
                     </View>
                 </View>
                 <TouchableOpacity style={{justifyContent:'center',alignItems:'center',marginRight:adapeSize(10)}} onPress={deletePress}>
-                    <Text style={{color:'red'}}>{'删除'}</Text>
+                    <Text style={{color:'red'}}>{deletePress&&'删除'}</Text>
                 </TouchableOpacity>
             </TouchableOpacity>
 
