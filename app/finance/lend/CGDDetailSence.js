@@ -6,7 +6,7 @@ import {
     Image,
     Text
 } from 'react-native';
-
+import AllNavigatior from '../../component/AllNavigationView'
 import {CommnetListItem, CommentHandItem, commnetStyle, CGDCarItem, CommenButton} from './component/ComponentBlob'
 import {
     width,
@@ -25,9 +25,9 @@ import {request} from '../../utils/RequestUtil'
 import *as apis from '../../constant/appUrls'
 import ImagePageView from 'react-native-viewpager'
 import AmountConfirm from './AmountConfirm';
-
+import CGDCarDetailScenes from './CGDCarDetailScenes'
+import PurchaseLoanStatusScene from './PurchaseLoanStatusScene'
 let ControlState = [];
-const postId = '201703200008'
 let loan_code;
 
 export default class OrderCarDetailScene extends BaseComponent {
@@ -45,32 +45,29 @@ export default class OrderCarDetailScene extends BaseComponent {
         )//
         const ImageData = new ImagePageView.DataSource({pageHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: ds.cloneWithRowsAndSections(this.titleNameBlob({}, ['https://www.baidu.com/img/bd_logo1.png', 'https://www.baidu.com/img/bd_logo1.png'])),
+            dataSource: ds.cloneWithRowsAndSections(this.titleNameBlob({}, [])),
             renderPlaceholderOnly: STATECODE.loading,
-            imagePikerData: ImageData.cloneWithPages(['https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1490350847146&di=9bbc00bb5ae5df9c1b550cf76f710fac&imgtype=0&src=http%3A%2F%2Fimg4.duitang.com%2Fuploads%2Fitem%2F201508%2F23%2F20150823033054_AUiBL.thumb.700_0.jpeg', 'https://www.baidu.com/img/bd_logo1.png'])
         }
         OrderHanderState = [];
     }
 
     initFinish() {
-        this.getLoanCodeStateList();
+        this.getLendInfo();
     }
 
     getLendInfo = () => {
 
         let maps = {
             api: apis.GET_APPLY_INFO,
-            loan_code: postId
+            loan_code: this.props.loanNumber
         };
 
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
                     let tempjson = response.mjson.data;
                     ControlState = this.confimOrderState(Number.parseInt(tempjson.payment_status), Number.parseInt(tempjson.payment_schedule))
-                    this.setState({
-                        dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(tempjson, [])),
-                        // renderPlaceholderOnly: STATECODE.loadSuccess
-                    })
+
+                this.getCarListInfo(tempjson);
                 },
                 (error) => {
 
@@ -88,15 +85,18 @@ export default class OrderCarDetailScene extends BaseComponent {
 
 
     }
-    getCarListInfo = () => {
+    getCarListInfo = (lendInfo) => {
         let maps = {
             api: apis.AUTOLIST,
-            payment_number: postId
+            payment_number: this.props.loanNumber
         };
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
                     let tempjson = response.mjson.data;
-
+                    this.setState({
+                        dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(lendInfo, tempjson.list)),
+                        renderPlaceholderOnly: STATECODE.loadSuccess
+                    })
                 },
                 (error) => {
 
@@ -113,30 +113,16 @@ export default class OrderCarDetailScene extends BaseComponent {
                 });
 
     }
-    getLoanCodeStateList = () => {
-        let maps = {
-            api: apis.AUTOLIST,
-            loan_code: postId
-        };
-        request(apis.FINANCE, 'Post', maps)
-            .then((response) => {
-                    let tempjson = response.mjson.data;
+    carItemClick=(carId)=>{
 
-                },
-                (error) => {
-
-                    this.setState({
-                        renderPlaceholderOnly: STATECODE.loadError
-                    })
-                    if (error.mycode != -300 || error.mycode != -500) {
-                        this.props.showToast(error.mjson.msg);
-
-                    } else {
-
-                        this.props.showToast('服务器连接有问题')
-                    }
-                });
-
+        navigatorParams = {
+            name: 'CGDCarDetailScenes',
+            component: CGDCarDetailScenes,
+            params: {
+                carId:carId
+            }
+        }
+        this.toNextPage(navigatorParams);
     }
 
 
@@ -155,7 +141,26 @@ export default class OrderCarDetailScene extends BaseComponent {
         ]
         dataSource['section1'] = section1
         if (carData.length > 0) {
-            dataSource['section2'] = carData;
+
+            let tempCarDate = [];
+
+            carData.map((item) => {
+
+                tempCarDate.push(
+                    {
+                        brand_name: item.brand_name,
+                        icon: item.cover.icon,
+                        frame_number: item.frame_number,
+                        price: item.first_assess_loan,//放款额
+                        obd_bind_status: item.obd_bind_status,//车牌号
+                        info_id: item.info_id,
+                        model_name:item.model_name,
+                        init_reg:item.init_reg,
+                        base_id:item.base_id
+                    }
+                )
+                dataSource['section2'] = tempCarDate;
+            })
         }
         return dataSource;
     }
@@ -187,7 +192,17 @@ export default class OrderCarDetailScene extends BaseComponent {
 
                 return (
                     <CommentHandItem warpstyle={{height: adapeSize(44)}} leftTitle={rowData.title}
-                                     showValue={rowData.key} handel={() => {
+                                     showValue={rowData.key} textStyle ={{color:PAGECOLOR.COLORA1}}handel={() => {
+
+                navigatorParams = {
+                     name: 'PurchaseLoanStatusScene',
+                     component: PurchaseLoanStatusScene,
+                     params: {
+                     loanNumber:this.props.loanNumber
+                     }
+                    }
+                    this.toNextPage(navigatorParams);
+
                     }}/>
                 )
             }
@@ -198,7 +213,9 @@ export default class OrderCarDetailScene extends BaseComponent {
         }
         if (sectionID === 'section2') {
 
-            return (<CGDCarItem/>)
+            return (<CGDCarItem  url={rowData.icon}title={rowData.model_name}obdState={rowData.obd_bind_status}date={rowData.init_reg} onPress={()=>{
+                    this.carItemClick(rowData.info_id);
+                }}/>)
         }
 
     }
@@ -247,6 +264,17 @@ export default class OrderCarDetailScene extends BaseComponent {
 
 
     render() {
+
+        if(this.state.renderPlaceholderOnly!==STATECODE.loadSuccess){
+            return( <View style={styles.container}>
+                {this.loadView()}
+                <AllNavigatior title='借款详情' backIconClick={()=>{
+                   this.backPage();
+               }}/>
+
+            </View>);
+        }
+
         let tempBlobs = [];
         if (ControlState.length > 0) {
             let lengegth = ControlState.length - 1

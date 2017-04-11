@@ -18,11 +18,15 @@ const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import * as fontAndColor from '../../constant/fontAndColor';
-let MovleData = require('./../loanStatus.json');
-let movies = MovleData.retdata;
 import BaseComponent from '../../component/BaseComponent';
-import NavigationView from '../../component/AllNavigationView';
 import PurchasePickerChildItem from '../component/PurchaseLoanStatusItem';
+import *as apis from '../../constant/appUrls'
+import AllNavigationView from '../../component/AllNavigationView';
+import {request} from '../../utils/RequestUtil'
+import {
+    STATECODE,
+
+} from './component/MethodComponent'
 export  default class PurchaseLoanStatusScene extends BaseComponent {
 
     constructor(props) {
@@ -30,26 +34,65 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
         // 初始状态
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            source: ds.cloneWithRows(movies),
-            renderPlaceholderOnly: true
+            dataSource: ds.cloneWithRows([]),
+            renderPlaceholderOnly: STATECODE.loading
         };
     }
 
 
     initFinish = () => {
-        InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: false});
-        });
+        this.getOrderStateList()
+    }
+
+    getOrderStateList=()=>{
+
+        let maps = {
+            api: apis.GET_PAYMENT_SCHEDULE_ALL,
+            loan_code: this.props.loanNumber
+        };
+        request(apis.FINANCE, 'Post', maps)
+            .then((response) => {
+                    let tempjson = response.mjson.data;
+                    this.setState({
+                        dataSource: this.state.dataSource.cloneWithRows(tempjson),
+                        renderPlaceholderOnly: STATECODE.loadSuccess
+                    })
+                },
+                (error) => {
+
+                    this.setState({
+                        renderPlaceholderOnly: STATECODE.loadError
+                    })
+                    if (error.mycode != -300 || error.mycode != -500) {
+                        this.props.showToast(error.mjson.msg);
+
+                    } else {
+
+                        this.props.showToast('服务器连接有问题')
+                    }
+                });
+
+
+
     }
 
 
+
+
     render() {
-        if (this.state.renderPlaceholderOnly) {
-            return this._renderPlaceholderView();
+        if(this.state.renderPlaceholderOnly!==STATECODE.loadSuccess){
+            return( <View style={styles.container}>
+                {this.loadView()}
+                <AllNavigationView title='订单状态' backIconClick={()=>{
+                   this.backPage();
+               }}/>
+
+            </View>
+            );
         }
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
-                <NavigationView
+                <AllNavigationView
                     title="状态跟踪"
                     backIconClick={this.backPage}
                 />
@@ -82,12 +125,13 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                         <Text style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color: fontAndColor.COLORA0
-                        }}>{movies[0].payment_number}</Text>
+
+                        }}>{this.props.loanNumber}</Text>
                     </View>
                 </View>
                 <ListView
                     style={{marginTop: Pixel.getPixel(15)}}
-                    dataSource={this.state.source}
+                    dataSource={this.state.dataSource}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
                 />
@@ -97,7 +141,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
 
     _renderRow = (movie, sectionId, rowId) => {
         return (
-            <PurchasePickerChildItem lastIndex={movies.length-1} index={rowId} items={movie}/>
+            <PurchasePickerChildItem lastIndex={this.state.dataSource._dataBlob.length-1} index={rowId} items={movie}/>
         )
     }
 
@@ -137,5 +181,10 @@ const styles = StyleSheet.create({
         marginLeft: Pixel.getPixel(15)
 
     },
-    topViewStyle: {flex: 1, height: Pixel.getPixel(44), justifyContent: 'center'}
+    topViewStyle: {flex: 1, height: Pixel.getPixel(44), justifyContent: 'center'},
+
+    container: {
+        flex: 1,
+        backgroundColor: 'white'
+    }
 })

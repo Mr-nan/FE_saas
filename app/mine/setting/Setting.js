@@ -110,7 +110,7 @@ export default class Setting extends BaseComponent {
                           childStyle={styles.buttonTextStyle} mOnPress={() => {
                     this.toNextPage({
                         name: 'OBDDevice AmountConfirm',
-                        component: OBDDevice,
+                        component: AmountConfirm,
                         params: {},
                     })
                 }}/>

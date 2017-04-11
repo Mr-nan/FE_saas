@@ -18,13 +18,14 @@ import BaseComponent from '../../component/BaseComponent';
 import {request} from '../../utils/RequestUtil'
 import *as apis from '../../constant/appUrls'
 import ImagePageView from 'react-native-viewpager'
+import CarTrackScene from './CarTrackScene'
 
 const ImageSouce= {
 
     imageSouce:[]
 
 }
-export default class OrderCarDetailScene extends BaseComponent{
+export default class CGDCarDetailScenes extends BaseComponent{
 
     constructor(props) {
         super(props);
@@ -39,78 +40,86 @@ export default class OrderCarDetailScene extends BaseComponent{
         )//
         const ImageData = new ImagePageView.DataSource({pageHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: ds.cloneWithRowsAndSections(this.titleNameBlob({},['https://www.baidu.com/img/bd_logo1.png','https://www.baidu.com/img/bd_logo1.png'])),
+            dataSource: ds.cloneWithRowsAndSections(this.titleNameBlob({},[])),
             renderPlaceholderOnly: STATECODE.loading,
-            imagePikerData: ImageData.cloneWithPages(['https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1490350847146&di=9bbc00bb5ae5df9c1b550cf76f710fac&imgtype=0&src=http%3A%2F%2Fimg4.duitang.com%2Fuploads%2Fitem%2F201508%2F23%2F20150823033054_AUiBL.thumb.700_0.jpeg','https://www.baidu.com/img/bd_logo1.png'])
+            carImageData: ImageData.cloneWithPages([]),
         }
     }
 
     initFinish() {
 
-        // this.getCarInfo();
+        this.getCarInfo();
     }
 
-    // getCarInfo=()=>{
-    //
-    //     let maps = {
-    //         api: apis.GET_CAR_INFO,
-    //         auto_id: this.props.auto_id,
-    //         type:this.props.type
-    //
-    //     };
-    //     request(apis.FINANCE, 'Post', maps)
-    //         .then((response) => {
-    //
-    //                 let tempjson = response.mjson.data
-    //
-    //                 tempjson.img_list.map((item)=>{
-    //
-    //                     ImageSouce.imageSouce.push(item.fileurl)
-    //                 })
-    //
-    //
-    //                 this.setState({
-    //                     renderPlaceholderOnly: STATECODE.loadSuccess,
-    //                     dataSource:this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(tempjson,tempjson.img_list)),
-    //                     imagePikerData:this.state.imagePikerData.cloneWithPages(ImageSouce.imageSouce),
-    //                 })
-    //             },
-    //             (error) => {
-    //                 this.setState({
-    //                     renderPlaceholderOnly:STATECODE.loadError,
-    //                 })
-    //                 if(error.mycode!= -300||error.mycode!= -500){
-    //                     this.props.showToast(error.mjson.msg);
-    //
-    //                 }else {
-    //                     this.props.showToast('服务器连接有问题')
-    //
-    //                 }
-    //             });
-    // }
+    getCarInfo=()=>{
+
+        let maps = {
+            api: apis.PURCHA_AUTO_DETAIL,
+            info_id: this.props.carId,
+
+        };
+        request(apis.FINANCE, 'Post', maps)
+            .then((response) => {
+
+                    let tempjson = response.mjson.data.detail;
+
+                    this.setState({
+                        renderPlaceholderOnly: STATECODE.loadSuccess,
+                        dataSource:this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(tempjson,tempjson.file_list)),
+                    })
+                },
+                (error) => {
+                    this.setState({
+                        renderPlaceholderOnly:STATECODE.loadError,
+                    })
+                    if(error.mycode!= -300||error.mycode!= -500){
+                        this.props.showToast(error.mjson.msg);
+
+                    }else {
+                        this.props.showToast('服务器连接有问题')
+
+                    }
+                });
+    }
 
 
     titleNameBlob=(jsonData,carData)=>{
 
+        console.log(jsonData);
         let dataSource = {};
         let section1=[
-            {title: '出售城市', key: '北京'},
-            {title:'车型',key:'2015 款 奥迪'},
-            {title: '车架号', key: 'LVF900123sdadsasd'},
-            {title: '外观颜色', key:'白色'},
-            {title: '行驶里程', key: '10w公里'},
-            {title: '首次上牌时间', key: '2016年五月'},
-            {title: '收车人', key: '王波'},
-            {title: '登记人',     key:'李洋'},
-            {title: '收购价（万元）', key: '30万元'},
-            {title: '放款额', key: '26万元'},
-            {title: '车辆位置', key: '北京大健康大看得见阿老师到家啦圣诞节啦莱克斯顿金坷垃四大皆空辣死答案是大所大所多撒大所大所大所大所大所大所大多了'},
+            {title: '出售城市', key: jsonData.city_name},
+            {title:'车型',key:jsonData.model_name},
+            {title: '车架号', key: jsonData.frame_number},
+            {title: '外观颜色', key:jsonData.car_color},
+            {title: '行驶里程', key: jsonData.mileage},
+            {title: '首次上牌时间', key: jsonData.init_reg},
+            {title: '收车人', key: jsonData.rev_user_name},
+            {title: '登记人',     key:jsonData.register_user_name},
+            {title: '收购价（万元）', key: jsonData.purchas_price},
+            {title: '车辆位置', key: jsonData.obd_track_url},
         ]
         dataSource['section1']=section1
         if(carData.length>0){
-            dataSource['section2']=carData;
-        }
 
+            let autoBase=[];
+            let mention=[];
+            let obdBase=[];
+            carData.map((item)=>{
+
+                if (item.type=='auto'){
+                    mention.push(item)
+                }else if (item.type=='mention'){
+                    autoBase.push(item)
+                }else if (item.type=='obd'){
+                    obdBase.push(item)
+                }
+            })
+            let tempData=[autoBase,mention,obdBase]
+
+            dataSource['section2']=tempData;
+
+        }
         return dataSource;
     }
 
@@ -124,32 +133,49 @@ export default class OrderCarDetailScene extends BaseComponent{
 
     renderRow = (rowData, sectionID, rowId, highlightRow) => {
 
-
         if (sectionID === 'section2') {
-            if(rowId==='0'){
+
+            if (rowData.length>0){
+
+                let  temptitle ='';
+                if (rowId==0) temptitle='车辆照片';
+                if (rowId==1) temptitle='提档资料';
+                if (rowId==2) temptitle='OBD照片';
+                let tempData=[];
+                rowData.map((item)=>{tempData.push(item.url)});
+
+                let temp=this.state.carImageData.cloneWithPages(tempData);
                 return(
-                  <View style={styles.ImageBackView}>
-                      <Text style={styles.thumbTitle}>{'车辆照片'}</Text>
-                          <ImagePageView
-
-                              dataSource={this.state.imagePikerData}    //数据源（必须）
-                              renderPage={this.renderImagePage}     //page页面渲染方法（必须）
-                              isLoop={false}                        //是否可以循环
-                              autoPlay={false}                      //是否自动
-                              locked={false}                        //为true时禁止滑动翻页
-                          />
-
-                  </View>
+                    <View style={styles.ImageBackView}>
+                        <Text style={styles.thumbTitle}>{temptitle}</Text>
+                        <ImagePageView
+                            dataSource={temp}    //数据源（必须）
+                            renderPage={this.renderImagePage}     //page页面渲染方法（必须）
+                            isLoop={false}                        //是否可以循环
+                            autoPlay={false}                      //是否自动
+                            locked={false}                        //为true时禁止滑动翻页
+                        />
+                    </View>
                 )
-
-            }else {
-
-                return null;
             }
+            return null;
+
+
         }else if (rowData.title ==='车辆位置'){
 
             return (
-                <CommentHandItem leftTitle={rowData.title} showValue={rowData.key} handel={()=>{}}/>
+                <CommentHandItem textStyle={{paddingTop:adapeSize(15),paddingBottom:adapeSize(15)}} leftTitle={rowData.title} showValue={'点击查看'} handel={()=>{
+
+                   navigatorParams = {
+                     name: 'CarTrackScene',
+                     component: CarTrackScene,
+                    params: {
+                     webUrl:rowData.key
+                     }
+                    }
+                    this.toNextPage(navigatorParams);
+
+                }}/>
             )
         }
 
@@ -183,16 +209,16 @@ export default class OrderCarDetailScene extends BaseComponent{
 
     render(){
 
-        // if(this.state.renderPlaceholderOnly!==STATECODE.loadSuccess)
-        // {
-        //     return(
-        //         <View style={styles.container}>
-        //             {this.loadView()}
-        //             <AllNavigationView title='车辆详情' backIconClick={()=>{
-        //                 this.backPage();
-        //             }}/>
-        //         </View>);
-        // }
+        if(this.state.renderPlaceholderOnly!==STATECODE.loadSuccess)
+        {
+            return(
+                <View style={styles.container}>
+                    {this.loadView()}
+                    <AllNavigationView title='车辆详情' backIconClick={()=>{
+                        this.backPage();
+                    }}/>
+                </View>);
+        }
         return(
             <View style={styles.container}>
                 <ListView

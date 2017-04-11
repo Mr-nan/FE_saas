@@ -197,10 +197,18 @@ export  default  class CGDLendScenes extends BaseComponent {
 
         let infoIsall =true;
         let isHasCar =true;
-        for(temp in PostData){if(PostData[temp]===''){ this.props.showToast(verificationtips[temp]);infoComolete=false;break }}
-        if (infoIsall){let CarList =this.state.dataSource._dataBlob['section3'];if(CarList.length==0){this.props.showToast('请添加车辆');isHasCar=false}}
+        let  moneyAdape=true;
+        let  carAdape =true;
+        for(temp in PostData){if(PostData[temp]===''){ this.props.showToast(verificationtips[temp]);infoIsall=false;break }}
+        if (infoIsall){let CarList =this.state.dataSource._dataBlob['section3'];if(!CarList||CarList.length==0){this.props.showToast('请添加车辆');isHasCar=false}}
 
-        if(infoIsall&&isHasCar){
+        if (infoIsall&&isHasCar&&(Number.parseFloat(PostData.loan_mny)<Number.parseFloat(showData.tempMin)||Number.parseFloat(PostData.loan_mny)>Number.parseFloat(showData.tempMax))){
+            moneyAdape=false;
+            this.props.showToast('借款金额范围为'+showData.maxMoney)
+        }
+
+
+        if(infoIsall&&isHasCar&&moneyAdape){
 
             let CarList =this.state.dataSource._dataBlob['section3']
             let tempCarList=[]
@@ -209,6 +217,7 @@ export  default  class CGDLendScenes extends BaseComponent {
 
             let maps ={
                 api:apis.APPLY_LOAN,
+                apply_type:PostData.apply_type,
                 isobd:this.props.isOBD,
                 isinvoice:this.props.isCarinvoice,
                 loan_mny:PostData.loan_mny,

@@ -279,7 +279,7 @@ export class CommentHandItem extends  PureComponent{
         const {leftTitle,showValue,textStyle,warpstyle,handel}=this.props;
         return (
 
-            <TouchableOpacity style={[styles.commentHandeItem,warpstyle]}>
+            <TouchableOpacity style={[styles.commentHandeItem,warpstyle] }onPress={handel}>
                 <Text style={styles.commentListItemLeft}>{leftTitle}</Text>
                 <Text style={[styles.commentListItemRight,textStyle]}>{showValue}</Text>
                 <Image style={{width:adapeSize(20),height:adapeSize(16),marginRight:adapeSize(10)}} source={require('../../../../images/mainImage/celljiantou.png')}/>
@@ -330,7 +330,7 @@ export class CGDCarItem extends PureComponent{
                     </View>
                 </View>
                 <TouchableOpacity style={{justifyContent:'center',alignItems:'center',marginRight:adapeSize(10)}} onPress={deletePress}>
-                    <Text style={{color:'red'}}>{'删除'}</Text>
+                    <Text style={{color:'red'}}>{deletePress&&'删除'}</Text>
                 </TouchableOpacity>
             </TouchableOpacity>
 
