@@ -428,9 +428,11 @@ export  default  class CGDLendScenes extends BaseComponent {
                     setHide(false);
                     this.deleteCarClick(tempDelete.info_id,tempDelete.base_id);
                 }} cancleClick={(setHide)=>{setHide(false)}}/>
-                <LendSuccessAlert ref={(success)=>{this.apSuccess=success}} confimClick={()=>{
+                <LendSuccessAlert  title="借款成功"subtitle='恭喜您借款成功' ref={(success)=>{this.apSuccess=success}} confimClick={()=>{
                     this.props.backRefresh();
-                    this.backToTop()
+                      this.backToTop()
+
+
                 }}/>
                 <AllNavigatior title='采购融资' backIconClick={()=>{
                     this.backPage();

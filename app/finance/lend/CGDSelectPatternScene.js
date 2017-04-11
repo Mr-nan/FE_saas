@@ -113,7 +113,9 @@ export  default  class CGDSelectPatternScene extends BaseComponent {
                     let colorParams = {
                         name: 'CGDLendScenes',
                         component: CGDLendScenes,
-                        params: {isCarinvoice: isCarinvoice, isOBD: isOBD}
+                        params: {isCarinvoice: isCarinvoice, isOBD: isOBD,customerName:this.props.customerName,backRefresh:()=>{
+                this.props.backRefresh();
+        }}
                     };
                     this.toNextPage(colorParams);
                 }}>
