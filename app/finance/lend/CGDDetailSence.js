@@ -26,6 +26,7 @@ import *as apis from '../../constant/appUrls'
 import ImagePageView from 'react-native-viewpager'
 import AmountConfirm from './AmountConfirm';
 import CGDCarDetailScenes from './CGDCarDetailScenes'
+import PurchaseLoanStatusScene from './PurchaseLoanStatusScene'
 let ControlState = [];
 let loan_code;
 
@@ -191,7 +192,17 @@ export default class OrderCarDetailScene extends BaseComponent {
 
                 return (
                     <CommentHandItem warpstyle={{height: adapeSize(44)}} leftTitle={rowData.title}
-                                     showValue={rowData.key} handel={() => {
+                                     showValue={rowData.key} textStyle ={{color:PAGECOLOR.COLORA1}}handel={() => {
+
+                navigatorParams = {
+                     name: 'PurchaseLoanStatusScene',
+                     component: PurchaseLoanStatusScene,
+                     params: {
+                     loanNumber:this.props.loanNumber
+                     }
+                    }
+                    this.toNextPage(navigatorParams);
+
                     }}/>
                 )
             }
