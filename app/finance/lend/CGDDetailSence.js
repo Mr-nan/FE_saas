@@ -24,7 +24,7 @@ import BaseComponent from '../../component/BaseComponent';
 import {request} from '../../utils/RequestUtil'
 import *as apis from '../../constant/appUrls'
 import ImagePageView from 'react-native-viewpager'
-import AmountConfirm from '../../login/AmountConfirm';
+import AmountConfirm from './AmountConfirm';
 
 let ControlState = [];
 const postId = '201703200008'
