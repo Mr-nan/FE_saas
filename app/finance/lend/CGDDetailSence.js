@@ -263,6 +263,11 @@ export default class OrderCarDetailScene extends BaseComponent {
                 name: 'ContractInfoScene', component: ContractInfoScene,
                 params: {loan_code:loan_code,showButton:true}
             })
+        }else if(title == '查看合同'){
+            this.toNextPage({
+                name: 'ContractInfoScene', component: ContractInfoScene,
+                params: {loan_code:loan_code,showButton:false}
+            })
         }
     }
 
