@@ -197,8 +197,8 @@ export  default  class CGDLendScenes extends BaseComponent {
 
         let infoIsall =true;
         let isHasCar =true;
-        for(temp in PostData){if(PostData[temp]===''){ this.props.showToast(verificationtips[temp]);infoComolete=false;break }}
-        if (infoIsall){let CarList =this.state.dataSource._dataBlob['section3'];if(CarList.length==0){this.props.showToast('请添加车辆');isHasCar=false}}
+        for(temp in PostData){if(PostData[temp]===''){ this.props.showToast(verificationtips[temp]);infoIsall=false;break }}
+        if (infoIsall){let CarList =this.state.dataSource._dataBlob['section3'];if(!CarList||CarList.length==0){this.props.showToast('请添加车辆');isHasCar=false}}
 
         if(infoIsall&&isHasCar){
 
