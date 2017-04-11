@@ -85,7 +85,7 @@ static NSString *saoText = @"将二维码/条形码放入框内，即可自动�
 
   
     [self.navigationController dismissViewControllerAnimated:YES completion:^{
-       self.JsBolock(_resultStr,@"false");
+       self.JsBolock(_resultStr,@"0");
     }];
 }
 
@@ -250,7 +250,7 @@ static NSString *saoText = @"将二维码/条形码放入框内，即可自动�
     if(CGRectContainsPoint(_inputLabel.frame, point))
     {
       [self.navigationController dismissViewControllerAnimated:YES completion:^{
-        self.JsBolock(@"呵呵",@"true");
+        self.JsBolock(@"呵呵",@"1");
       }];
     
     }

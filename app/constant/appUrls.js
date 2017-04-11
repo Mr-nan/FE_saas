@@ -373,6 +373,7 @@ export const GET_CAR_INFO = 'api/v1/account/get_car_info'
  **/
 export const CANCEL_LOAN = 'api/v3/account/cancel_loan'
 
+
 /**
  * from @zhaojian
  *

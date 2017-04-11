@@ -15,7 +15,7 @@ RCT_EXPORT_MODULE();
 RCT_REMAP_METHOD(scan,
                  resolver:(RCTPromiseResolveBlock)resolve
                  rejecter:(RCTPromiseRejectBlock)reject){
-  
+  dispatch_async(dispatch_get_main_queue(), ^{
   OBDScanController *obd=[[OBDScanController alloc]init];
   AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
   obd.JsBolock=^(NSString*successInfo,NSString* error){
@@ -25,6 +25,8 @@ RCT_REMAP_METHOD(scan,
                 @"scan_result":successInfo,
                 @"scan_hand":error
                 });
+      
+      
     }else{
       reject(@"back",@"I am back" ,[NSError errorWithDomain:error code:191 userInfo:@{}]);
     }
@@ -35,7 +37,7 @@ RCT_REMAP_METHOD(scan,
   
   [app.window.rootViewController presentViewController:[[UINavigationController alloc]initWithRootViewController:obd] animated:YES completion:nil];
 
-  
+  });
   
 }
 @end
