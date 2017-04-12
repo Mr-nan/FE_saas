@@ -280,6 +280,7 @@ export default class AmountConfirm extends BaseComponent {
                 .then((response) => {
                         this.props.showModal(false);
                         this.props.showToast("确认成功");
+                        this.props.callback(),
                         this.backPage();
                     }, (error) => {
                         this.props.showModal(false);
