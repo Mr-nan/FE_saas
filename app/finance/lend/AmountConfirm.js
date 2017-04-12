@@ -26,7 +26,7 @@ var Pixel = new PixelUtil();
 var onePT = 1 / PixelRatio.get(); //一个像素
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
-let contents = [];
+// let contents = [];
 let map = new Map();
 export default class AmountConfirm extends BaseComponent {
     constructor(props) {
@@ -38,21 +38,20 @@ export default class AmountConfirm extends BaseComponent {
             totalMoney: 0,
             car_lists: '',
         };
+        this.contents = [];
+
     }
 
     componentWillUnmount() {
-        contents = [];
+        // contents = [];
         map = new Map();
     }
 
     initFinish = () => {
         InteractionManager.runAfterInteractions(() => {
-            this.setState({
-                renderPlaceholderOnly: false,
-                source: ds.cloneWithRows(contents),
-            });
+            this.getAutoList();
         });
-        this.getAutoList();
+
     }
 
     render() {
@@ -224,7 +223,7 @@ export default class AmountConfirm extends BaseComponent {
         }
 
         let car_lists = "";
-        for (let key of contents) {
+        for (let key of this.contents) {
             if (map.get(key.info_id) == undefined) {
                 car_lists = car_lists + key.info_id + ",";
             }
@@ -233,7 +232,7 @@ export default class AmountConfirm extends BaseComponent {
             carNumber: map.size,
             totalMoney: money,
             car_lists: car_lists,
-            source: ds.cloneWithRows(contents),
+            source: ds.cloneWithRows(this.contents),
         });
     }
 
@@ -248,9 +247,10 @@ export default class AmountConfirm extends BaseComponent {
         request(AppUrls.FINANCE, 'Post', maps)
             .then((response) => {
                     this.props.showModal(false);
-                    contents = response.mjson.data.list;
+                    this.contents = response.mjson.data.list;
                     this.setState({
-                        source: ds.cloneWithRows(contents),
+                        renderPlaceholderOnly: false,
+                        source: ds.cloneWithRows(this.contents),
                     });
                 }, (error) => {
                     this.props.showModal(false);
@@ -280,7 +280,7 @@ export default class AmountConfirm extends BaseComponent {
                         this.props.showModal(false);
                         this.props.showToast("确认成功");
                         this.props.callback(),
-                        this.backPage();
+                            this.backPage();
                     }, (error) => {
                         this.props.showModal(false);
                         if (error.mycode == -300 || error.mycode == -500) {
