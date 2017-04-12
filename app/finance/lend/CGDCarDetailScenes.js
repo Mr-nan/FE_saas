@@ -97,8 +97,8 @@ export default class CGDCarDetailScenes extends BaseComponent{
             {title: '收车人', key: jsonData.rev_user_name},
             {title: '登记人',     key:jsonData.register_user_name},
             {title: '收购价（万元）', key: jsonData.purchas_price+'万元'},
-            {title:'放款额',key:jsonData.first_assess_loan},
-            {title: '车辆位置', key: jsonData.obd_track_url+'万元'},
+            {title:'放款额',key:jsonData.first_assess_loan+'万元'},
+            {title: '车辆位置', key: jsonData.obd_track_url},
         ]
         dataSource['section1']=section1
         if(carData.length>0){
