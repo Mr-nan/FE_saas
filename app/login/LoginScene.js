@@ -370,11 +370,12 @@ export default class LoginScene extends BaseComponent {
                 phone: userName,
                 pwd: md5.hex_md5(passWord),
             };
-            this.refs.lodding.setShow(true);
+            // this.refs.lodding.setShow(true);
+            this.props.showModal(true);
             request(AppUrls.LOGIN, 'Post', maps)
                 .then((response) => {
-                    // this.props.showModal(false);
-                    this.refs.lodding.setShow(false);
+                    this.props.showModal(false);
+                    // this.refs.lodding.setShow(false);
                     if (response.mycode == "1") {
                         // 保存用户登录状态
                         StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '2');
@@ -438,8 +439,8 @@ export default class LoginScene extends BaseComponent {
                         this.props.showToast(response.mjson.msg + "");
                     }
                 }, (error) => {
-                    // this.props.showModal(false);
-                    this.refs.lodding.setShow(false);
+                    this.props.showModal(false);
+                    // this.refs.lodding.setShow(false);
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("登录失败");
                     } else if (error.mycode == 7040004) {
