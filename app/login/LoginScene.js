@@ -81,10 +81,6 @@ export default class LoginScene extends BaseComponent {
         });
     }
 
-    static defaultProps = {
-        saveData: ["13001286215", "13001286216", "13001260002"],
-    };
-
     loginSuccess = {
         name: 'MainPage',
         component: MainPage,
