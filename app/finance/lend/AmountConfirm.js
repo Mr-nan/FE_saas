@@ -27,7 +27,6 @@ var onePT = 1 / PixelRatio.get(); //一个像素
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 let contents = [];
-
 let map = new Map();
 export default class AmountConfirm extends BaseComponent {
     constructor(props) {
