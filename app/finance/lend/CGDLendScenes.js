@@ -204,7 +204,7 @@ export  default  class CGDLendScenes extends BaseComponent {
 
         if (infoIsall&&isHasCar&&(Number.parseFloat(PostData.loan_mny)<Number.parseFloat(showData.tempMin)||Number.parseFloat(PostData.loan_mny)>Number.parseFloat(showData.tempMax))){
             moneyAdape=false;
-            this.props.showToast('借款金额范围为'+showData.maxMoney)
+            this.props.showToast('借款金额范围为'+showData.tempMin+'-'+showData.tempMax+'万元')
         }
 
 
@@ -222,7 +222,8 @@ export  default  class CGDLendScenes extends BaseComponent {
                 isinvoice:this.props.isCarinvoice,
                 loan_mny:PostData.loan_mny,
                 use_time:PostData.use_time,
-                car_lists:carIdList
+                car_lists:carIdList,
+                archives_type:PostData.archives_type
             }
             if (this.props.loan_code){
                 Object.assign(maps,{loan_code:this.props.loan_code})
@@ -232,7 +233,6 @@ export  default  class CGDLendScenes extends BaseComponent {
                 .then((response) => {
                         this.props.showModal(false);
                         this.apSuccess.setModelVisible(true);
-
                     },
                     (error) => {
                         this.props.showModal(false);
@@ -261,8 +261,9 @@ export  default  class CGDLendScenes extends BaseComponent {
                     this.props.showModal(false);
 
                     let tempDataSource =Object.assign({},this.state.dataSource);
+                    console.log(tempDataSource._dataBlob['section3'])
                     tempDataSource._dataBlob['section3'].splice(tempDelete.itemAtInex,1);
-                    console.log(tempDataSource._dataBlob)
+                    console.log(tempDataSource._dataBlob['section3'])
 
                     this.setState({
                         dataSource: this.state.dataSource.cloneWithRowsAndSections(tempDataSource._dataBlob),

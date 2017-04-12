@@ -27,6 +27,7 @@ import ImagePageView from 'react-native-viewpager'
 import AmountConfirm from './AmountConfirm';
 import CGDCarDetailScenes from './CGDCarDetailScenes'
 import PurchaseLoanStatusScene from './PurchaseLoanStatusScene'
+import {LendSuccessAlert,ModalAlert} from './component/ModelComponent'
 let ControlState = [];
 let loan_code;
 import ContractInfoScene from './ContractInfoScene';
@@ -124,6 +125,30 @@ export default class OrderCarDetailScene extends BaseComponent {
             }
         }
         this.toNextPage(navigatorParams);
+    }
+    canclelend=()=>{
+
+        let maps = {
+            api: apis.CANCEL_LOAN,
+            loan_code: this.props.loanNumber
+        };
+        this.props.showModal(true);
+        request(apis.FINANCE, 'Post', maps)
+            .then((response) => {
+                    this.props.showModal(false);
+                    this.cancleSuccess.setModelVisible(true);
+                },
+                (error) => {
+                    this.props.showModal(false)
+                    if (error.mycode != -300 || error.mycode != -500) {
+                        this.props.showToast(error.mjson.msg);
+
+                    } else {
+
+                        this.props.showToast('服务器连接有问题')
+                    }
+                });
+
     }
 
 
@@ -268,6 +293,9 @@ export default class OrderCarDetailScene extends BaseComponent {
                 name: 'ContractInfoScene', component: ContractInfoScene,
                 params: {loan_code:loan_code,showButton:false}
             })
+        }else if (title == '取消借款'){
+
+            this.cancle.setModelVisible(true);
         }
     }
 
@@ -312,6 +340,17 @@ export default class OrderCarDetailScene extends BaseComponent {
                 <View style={[commnetStyle.bottomWarp, styles.buttonsFlex]}>{tempBlobs}</View>
                 <AllNavigationView title='借款详情' backIconClick={() => {
                     this.backPage();
+                }}/>
+
+                <ModalAlert ref={(deleteCar)=>{this.cancle=deleteCar}} title='取消借款'subtitle='您确定要取消借款' confimClick={(setHide)=>{
+                    setHide(false);
+                    this.canclelend();
+                }} cancleClick={(setHide)=>{setHide(false)}}/>
+                <LendSuccessAlert  title="取消成功"subtitle='恭喜您取消成功' ref={(success)=>{this.cancleSuccess=success}} confimClick={()=>{
+                      this.props.backRefresh();
+                      this.backToTop()
+
+
                 }}/>
             </View>
         )
