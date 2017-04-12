@@ -173,7 +173,6 @@ export class LendInputItem extends PureComponent {
     render() {
 
 
-
         const {title,placeholder,unit,unitStyle,onChangeText}=this.props;
 
         return (
