@@ -353,8 +353,6 @@ export default class OrderCarDetailScene extends BaseComponent {
                 <LendSuccessAlert  title="取消成功"subtitle='恭喜您取消成功' ref={(success)=>{this.cancleSuccess=success}} confimClick={()=>{
                       this.props.backRefresh();
                       this.backToTop()
-
-
                 }}/>
             </View>
         )
