@@ -29,6 +29,7 @@ import CGDCarDetailScenes from './CGDCarDetailScenes'
 import PurchaseLoanStatusScene from './PurchaseLoanStatusScene'
 let ControlState = [];
 let loan_code;
+import ContractInfoScene from './ContractInfoScene';
 
 export default class OrderCarDetailScene extends BaseComponent {
 
@@ -257,8 +258,16 @@ export default class OrderCarDetailScene extends BaseComponent {
                     loan_code: loan_code,
                 },
             })
-        } else {
-            alert(title)
+        } else if (title == '签署合同') {
+            this.toNextPage({
+                name: 'ContractInfoScene', component: ContractInfoScene,
+                params: {loan_code:loan_code,showButton:true}
+            })
+        }else if(title == '查看合同'){
+            this.toNextPage({
+                name: 'ContractInfoScene', component: ContractInfoScene,
+                params: {loan_code:loan_code,showButton:false}
+            })
         }
     }
 
