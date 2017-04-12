@@ -33,7 +33,7 @@ public class QrScanModule extends ReactContextBaseJavaModule implements Activity
                 boolean scan_hand = data.getBooleanExtra("SCAN_HAND",false);
                 String scan_result = data.getStringExtra("SCAN_RESULT");
                 WritableMap map = Arguments.createMap();
-                map.putString("scan_hand",scan_hand ? "1" : "0");
+                map.putString("scan_hand",scan_hand ? "input" : "scan");
                 map.putString("scan_result",scan_result);
                 mVLPromise.resolve(map);
                 mVLPromise = null;

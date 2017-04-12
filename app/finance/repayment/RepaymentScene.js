@@ -26,6 +26,8 @@ import * as fontAndColor from '../../constant/fontAndColor';
 import PlanListScene from './PlanListScene';
 import RepaymentInfoScene from '../repayment/NewRepaymentInfoScene';
 import InventoryPlanInfoScene from '../repayment/NewInventoryPlanInfoScene';
+import NewPurchaseRepaymentInfoScene from '../repayment/NewPurchaseRepaymentInfoScene';
+import PurchaseRepaymentPage from '../page/PurchaseRepaymentPage';
 
 export  default class RepaymentScene extends BaseComponent {
 
@@ -62,7 +64,7 @@ export  default class RepaymentScene extends BaseComponent {
                     }} tabLabel="ios-people"/>
 
                     {/*<PurchaseRepaymentPage customerName={this.props.customerName} callBack={(loan_id,loan_number,type)=>{*/}
-                      {/*this.toNextPage({name:'RepaymentInfoScene',component:RepaymentInfoScene,*/}
+                      {/*this.toNextPage({name:'NewPurchaseRepaymentInfoScene',component:NewPurchaseRepaymentInfoScene,*/}
                       {/*params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'PurchaseRepaymentPage'}});*/}
                     {/*}} tabLabel="ios-chatboxes"/>*/}
 

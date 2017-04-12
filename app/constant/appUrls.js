@@ -11,13 +11,13 @@ export const BASEURL = 'http://api-gateway.test.dycd.com/';
 /**
  * 正式地址
  */
-// export const BASEURL = 'http://gatewayapi.dycd.com/';
+// export const BASEURL = 'https://gatewayapi.dycd.com/';
 
 
 /**
  * 预发布地址
  */
-// export const BASEURL = "http://st.open.bms.dycd.com/api/";
+// export const BASEURL = 'https://stgatewayapi.dycd.com/';
 
 /**
  * 版本号1
@@ -256,7 +256,7 @@ export const APPLYREPAYMENT = 'api/v1/Repayment/applyRepayment';
  *
  * 单个企业优惠券
  **/
-export const COUPON_LISTBYUID = BASEURL+'v1/user.coupon/listByUid';
+export const COUPON_LISTBYUID = BASEURL + 'v1/user.coupon/listByUid';
 
 /**
  * from @zhaojian
@@ -271,7 +271,6 @@ export const NEWREPAYMENT_APPLY_REPAYMENT = 'api/v5/NewRepayment/apply_repayment
  * 获取优惠券列表
  **/
 export const REPAYMENT_GET_ADJUST_USE = 'api/v5/Repayment/get_adjust_use';
-
 
 
 /**
@@ -343,7 +342,7 @@ export const GET_APPLY_INFO = 'api/v3/account/get_apply_info';
  *
  * 获取借款进度列表
  **/
-export const GET_PAYMENT_SCHEDULE_ALL='api/v1/account/get_payment_schedule_all'
+export const GET_PAYMENT_SCHEDULE_ALL = 'api/v1/account/get_payment_schedule'
 
 /**
  * from @lhc
@@ -360,7 +359,7 @@ export const GET_APPLY_CARLIST = 'api/v2/account/get_apply_carlist';
  * from @lhc
  * 删除车辆
  **/
-export const DELETEAUTO='api/v2/purchaAuto/deleteAuto'
+export const DELETEAUTO = 'api/v2/purchaAuto/deleteAuto'
 /**
  * from @lhc
  * 获取订单车辆详情
@@ -399,7 +398,7 @@ export const GET_APPLY_LOAN_DATA = 'api/v3/account/get_apply_loan_data';
  *
  * 采购贷借款车辆列表
  **/
-export const AUTOLIST='api/v2/purchaAuto/autoList'
+export const AUTOLIST = 'api/v2/purchaAuto/autoList'
 
 /**
  * from @huangning
@@ -463,6 +462,7 @@ export const DO_EXTENSIONPC = 'api/v3/account/extension_contract_pc';
  * 申请展期
  **/
 export const APPLY_EXTENSION_CARLIST = 'api/v1/account/apply_extension_carlist';
+
 
 /**
  * from @zhaojian
@@ -561,3 +561,4 @@ export const PURCHA_AUTO_DETAIL = 'api/v2/purchaAuto/autoDetail';
  * 获取车架好是否已存在以及校验规则
  **/
 export const PURCHA_CHECK_IN = 'api/v2/purchaAuto/checkVin';
+
