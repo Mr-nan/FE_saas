@@ -377,8 +377,9 @@ export default class FinanceSence extends BaseComponet {
                             this.allRefresh()
                         }
                     }
-                    }
                     this.props.callBack(this.navigatorParams);
+                    }
+
             }} style={[cellSheet.row, cellSheet.padding]}>
                     <View style={cellSheet.rowViewStyle}>
                         <View style={[{
