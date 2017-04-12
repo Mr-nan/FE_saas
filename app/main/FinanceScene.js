@@ -90,7 +90,7 @@ export default class FinanceSence extends BaseComponet {
         let maps = {
             api: Urls.LOAN_SUBJECT
         };
-        request(Urls.FINANCE, 'Post', maps,()=>{
+        request(Urls.FINANCE, 'Post', maps, () => {
             this.props.backToLogin();
         })
             .then((response) => {
@@ -134,7 +134,7 @@ export default class FinanceSence extends BaseComponet {
         let maps = {
             api: Urls.GET_MNY
         };
-        request(Urls.FINANCE, 'Post', maps,()=>{
+        request(Urls.FINANCE, 'Post', maps, () => {
             this.props.backToLogin();
         })
             .then((response) => {
@@ -172,7 +172,7 @@ export default class FinanceSence extends BaseComponet {
             api: Urls.GET_APPLY_LIST,
             p: page
         };
-        request(Urls.FINANCE, 'Post', maps,()=>{
+        request(Urls.FINANCE, 'Post', maps, () => {
             this.props.backToLogin();
         })
             .then((response) => {
@@ -228,13 +228,16 @@ export default class FinanceSence extends BaseComponet {
 
     render() {
         if (this.state.renderPlaceholderOnly === 'select') {
-            return (<SelectCompanyScene showModal={(value)=>{
-                    this.props.showModal(value);
-                }} showToast={(content)=>{this.props.showToast(content)}} loanList={loanList} callBack={(companyname)=>{this.setState({
-                customerName:companyname
-            });
-                            this.allRefresh();
-                            }}/>);
+            return (<SelectCompanyScene showModal={(value) => {
+                this.props.showModal(value);
+            }} showToast={(content) => {
+                this.props.showToast(content)
+            }} loanList={loanList} callBack={(companyname) => {
+                this.setState({
+                    customerName: companyname
+                });
+                this.allRefresh();
+            }}/>);
         }
         if (this.state.renderPlaceholderOnly !== 'success') {
             return this._renderPlaceholderView();
@@ -247,20 +250,21 @@ export default class FinanceSence extends BaseComponet {
                     renderSeparator={this._renderSeparator}
                     renderHeader={this._renderHeader}
                     renderFooter={
-                                    this.renderListFooter
-                                }
+                        this.renderListFooter
+                    }
                     onEndReached={this.toEnd}
                     refreshControl={
-                                    <RefreshControl
-                                        refreshing={this.state.isRefreshing}
-                                        onRefresh={this.refreshingData}
-                                        tintColor={[fontAndColor.COLORB0]}
-                                        colors={[fontAndColor.COLORB0]}
-                                    />
-                                }
+                        <RefreshControl
+                            refreshing={this.state.isRefreshing}
+                            onRefresh={this.refreshingData}
+                            tintColor={[fontAndColor.COLORB0]}
+                            colors={[fontAndColor.COLORB0]}
+                        />
+                    }
                 />
                 <LendSuccessAlert title="提示" subtitle="采购融资功能正在维护中，请您移步BMS系统申请采购融资" ref='cgdModal'
-                                  confimClick={()=>{}}/>
+                                  confimClick={() => {
+                                  }}/>
             </View>
         )
     }
@@ -269,7 +273,7 @@ export default class FinanceSence extends BaseComponet {
         if (this.state.isRefreshing) {
             return null;
         } else {
-            return (<LoadMoreFooter isLoadAll={page>=allPage?true:false}/>)
+            return (<LoadMoreFooter isLoadAll={page >= allPage ? true : false}/>)
         }
     }
 
@@ -347,54 +351,57 @@ export default class FinanceSence extends BaseComponet {
             this.typeButtonParams.content = movie.status_str;
             return (
                 <TouchableOpacity activeOpacity={0.8} onPress={() => {
-                    if(nextPage===CGDDetailSence){
-                        {/*this.refs.cgdModal.setModelVisible(true);*/}
-                        if(movie.payment_status=='31'){
-                        this.navigatorParams.name = 'CGDLendScenes';
-                        this.navigatorParams.component = CGDLendScenes;
-                        this.navigatorParams.params={
-                        loan_code:movie.loan_code,
-                        backRefresh:()=>{
-                            this.allRefresh()
-                        },customerName: this.state.customerName,
-                    }
-                        }else{
+                    if (nextPage === CGDDetailSence) {
+                        {/*this.refs.cgdModal.setModelVisible(true);*/
+                        }
+                        if (movie.payment_status == '31') {
+                            this.navigatorParams.name = 'CGDLendScenes';
+                            this.navigatorParams.component = CGDLendScenes;
+                            this.navigatorParams.params = {
+                                loan_code: movie.loan_code,
+                                backRefresh: () => {
+                                    this.allRefresh()
+                                }, customerName: this.state.customerName,
+                            }
+                        } else {
+                            this.navigatorParams.name = 'DetaileSence';
+                            this.navigatorParams.component = nextPage;
+                            this.navigatorParams.params = {
+                                loanNumber: movie.loan_code,
+                                backRefresh: () => {
+                                    this.allRefresh()
+                                }
+                            }
+                        }
+                    } else {
                         this.navigatorParams.name = 'DetaileSence';
                         this.navigatorParams.component = nextPage;
-                        this.navigatorParams.params={
-                        loanNumber:movie.loan_code,
-                        backRefresh:()=>{
-                            this.allRefresh()
+                        this.navigatorParams.params = {
+                            loanNumber: movie.loan_code,
+                            backRefresh: () => {
+                                this.allRefresh()
+                            }
                         }
-                    }
-                        }
-                    }else{
-                        this.navigatorParams.name = 'DetaileSence';
-                        this.navigatorParams.component = nextPage;
-                        this.navigatorParams.params={
-                        loanNumber:movie.loan_code,
-                        backRefresh:()=>{
-                            this.allRefresh()
-                        }
-                    }
+
                     }
                     this.props.callBack(this.navigatorParams);
-            }} style={[cellSheet.row, cellSheet.padding]}>
+
+                }} style={[cellSheet.row, cellSheet.padding]}>
                     <View style={cellSheet.rowViewStyle}>
                         <View style={[{
-                        height: Pixel.getPixel(40),
-                        justifyContent: 'flex-start', flex: 3, flexDirection: 'row',
-                        alignItems: 'center'
-                    }]}>
+                            height: Pixel.getPixel(40),
+                            justifyContent: 'flex-start', flex: 3, flexDirection: 'row',
+                            alignItems: 'center'
+                        }]}>
                             <MyButton {...this.buttonParams}/>
                             <Text numberOfLines={1} style={cellSheet.rowTopTextStyle}>{this.state.customerName}</Text>
                         </View>
                         <View style={[{
-                        height: Pixel.getPixel(40),
-                        flex: 2,
-                        justifyContent: 'center',
-                        alignItems: 'flex-end'
-                    }]}>
+                            height: Pixel.getPixel(40),
+                            flex: 2,
+                            justifyContent: 'center',
+                            alignItems: 'flex-end'
+                        }]}>
                             <Text style={cellSheet.rowTopGrayTextStyle}>{movie.loan_code}</Text>
                         </View>
                     </View>
@@ -433,7 +440,7 @@ export default class FinanceSence extends BaseComponet {
 
     _renderPlaceholderView = () => {
         return (
-            <View style={{flex:1,backgroundColor:fontAndColor.COLORA3,alignItems: 'center'}}>
+            <View style={{flex: 1, backgroundColor: fontAndColor.COLORA3, alignItems: 'center'}}>
                 {this.loadView()}
             </View>
         );
@@ -496,58 +503,125 @@ export default class FinanceSence extends BaseComponet {
             <View>
                 <Image style={[cellSheet.titleStyle]}
                        source={require('../../images/financeImages/dinancebg.png')}>
-                    <View style={{width:width,height:Pixel.getTitlePixel(105),flexDirection:'row'}}>
-                        <View style={{flex:1}}></View>
-                        <View style={{flex:3,alignItems: 'center'}}>
+                    <View style={{width: width, height: Pixel.getTitlePixel(105), flexDirection: 'row'}}>
+                        <View style={{flex: 1}}></View>
+                        <View style={{flex: 3, alignItems: 'center'}}>
                             <Text numberOfLines={1}
-                                  style={{fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34),
-                                color:'#fff',marginTop:Pixel.getTitlePixel(25),backgroundColor: '#00000000'}}>
+                                  style={{
+                                      fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34),
+                                      color: '#fff', marginTop: Pixel.getTitlePixel(25), backgroundColor: '#00000000'
+                                  }}>
                                 金融 ({this.state.customerName})</Text>
                         </View>
-                        <View style={{flex:1}}>
-                            {loanList.length > 1 ? <TouchableOpacity onPress={()=>{
-                            this.props.callBack({name:'AginSelectCompanyScene',
-                            component:AginSelectCompanyScene,params:{loanList:loanList,callBack:(companyname)=>{this.setState({
-                            customerName:companyname
-                                });
-                            this.allRefresh();
-                            }}})}
-                            } activeOpacity={0.8} style={{width:Pixel.getPixel(64),height:Pixel.getPixel(22),borderColor:'#fff',borderWidth:1,
-                              borderRadius:3,justifyContent:'center',alignItems:'center',marginTop:Pixel.getTitlePixel(26)}}>
+                        <View style={{flex: 1}}>
+                            {loanList.length > 1 ? <TouchableOpacity onPress={() => {
+                                    this.props.callBack({
+                                        name: 'AginSelectCompanyScene',
+                                        component: AginSelectCompanyScene, params: {
+                                            loanList: loanList, callBack: (companyname) => {
+                                                this.setState({
+                                                    customerName: companyname
+                                                });
+                                                this.allRefresh();
+                                            }
+                                        }
+                                    })
+                                }
+                                } activeOpacity={0.8} style={{
+                                    width: Pixel.getPixel(64),
+                                    height: Pixel.getPixel(22),
+                                    borderColor: '#fff',
+                                    borderWidth: 1,
+                                    borderRadius: 3,
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    marginTop: Pixel.getTitlePixel(26)
+                                }}>
                                     <Text
-                                        style={{fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),color: '#fff',backgroundColor: '#00000000'}}>切换公司</Text>
+                                        style={{
+                                            fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                            color: '#fff',
+                                            backgroundColor: '#00000000'
+                                        }}>切换公司</Text>
                                 </TouchableOpacity> : <View/>}
                         </View>
                     </View>
                     <View
-                        style={{width:width,height:Pixel.getBottomPixel(85),flexDirection:'row'}}>
-                        <View style={{flex:1,alignItems: 'center'}}>
+                        style={{width: width, height: Pixel.getBottomPixel(85), flexDirection: 'row'}}>
+                        <View style={{flex: 1, alignItems: 'center'}}>
                             <Text
-                                style={{fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),color: '#fff',backgroundColor: '#00000000'}}>可用额度(万)</Text>
+                                style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                    color: '#fff',
+                                    backgroundColor: '#00000000'
+                                }}>可用额度(万)</Text>
                             <Text
-                                style={{fontSize: Pixel.getFontPixel(32),color: '#fff',marginTop:Pixel.getPixel(7),fontWeight: 'bold',backgroundColor: '#00000000'}}>{this.state.allData.keyongedu}</Text>
+                                style={{
+                                    fontSize: Pixel.getFontPixel(32),
+                                    color: '#fff',
+                                    marginTop: Pixel.getPixel(7),
+                                    fontWeight: 'bold',
+                                    backgroundColor: '#00000000',
+                                    flex: 1,
+                                    width: width / 2,
+                                    textAlign: 'center'
+                                }}>{this.state.allData.keyongedu}</Text>
                         </View>
-                        <View style={{flex:1,alignItems: 'center'}}>
+                        <View style={{flex: 1, alignItems: 'center'}}>
                             <Text
-                                style={{fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),color: '#fff',backgroundColor: '#00000000'}}>贷款余额(万)</Text>
+                                style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                    color: '#fff',
+                                    backgroundColor: '#00000000'
+                                }}>贷款余额(万)</Text>
                             <Text
-                                style={{fontSize: Pixel.getFontPixel(32),color: '#fff',marginTop:Pixel.getPixel(7),fontWeight: 'bold',backgroundColor: '#00000000'}}>{this.state.allData.daikuanyue}</Text>
+                                style={{
+                                    fontSize: Pixel.getFontPixel(32),
+                                    color: '#fff',
+                                    marginTop: Pixel.getPixel(7),
+                                    fontWeight: 'bold',
+                                    backgroundColor: '#00000000',
+                                    flex: 1,
+                                    width: width / 2,
+                                    textAlign: 'center'
+                                }}>{this.state.allData.daikuanyue}</Text>
                         </View>
                     </View>
                     <View
-                        style={{width:width,height:Pixel.getPixel(40),backgroundColor: 'rgba(56,199,232,0.35)',
-                        paddingRight:Pixel.getPixel(15),paddingLeft:Pixel.getPixel(15),flexDirection:'row'}}>
-                        <View style={{flex:1,flexDirection:'row',alignItems: 'center',justifyContent:'flex-start'}}>
+                        style={{
+                            width: width, height: Pixel.getPixel(40), backgroundColor: 'rgba(56,199,232,0.35)',
+                            paddingRight: Pixel.getPixel(15), paddingLeft: Pixel.getPixel(15), flexDirection: 'row'
+                        }}>
+                        <View
+                            style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start'}}>
                             <Text
-                                style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),color: '#fff',backgroundColor: '#00000000'}}>保证金额度:</Text>
+                                style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                                    color: '#fff',
+                                    backgroundColor: '#00000000'
+                                }}>保证金额度:</Text>
                             <Text
-                                style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),color: '#fff',backgroundColor: '#00000000',fontWeight: 'bold'}}>{this.state.allData.baozhengjinedu}万</Text>
+                                style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                                    color: '#fff',
+                                    backgroundColor: '#00000000',
+                                    fontWeight: 'bold'
+                                }}>{this.state.allData.baozhengjinedu}万</Text>
                         </View>
-                        <View style={{flex:1,flexDirection:'row',alignItems: 'center',justifyContent:'flex-end'}}>
+                        <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end'}}>
                             <Text
-                                style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),color: '#fff',backgroundColor: '#00000000'}}>保证金余额:</Text>
+                                style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                                    color: '#fff',
+                                    backgroundColor: '#00000000'
+                                }}>保证金余额:</Text>
                             <Text
-                                style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),color: '#fff',backgroundColor: '#00000000',fontWeight: 'bold'}}>{this.state.allData.baozhengjinyue}万</Text>
+                                style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                                    color: '#fff',
+                                    backgroundColor: '#00000000',
+                                    fontWeight: 'bold'
+                                }}>{this.state.allData.baozhengjinyue}万</Text>
                         </View>
                     </View>
                 </Image>

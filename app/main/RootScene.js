@@ -23,7 +23,7 @@ import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
 import  UpLoadScene from './UpLoadScene';
 // import codePush from 'react-native-code-push'
-const versionCode = 4.0;
+const versionCode = 5.0;
 
 export default class RootScene extends BaseComponent {
 
