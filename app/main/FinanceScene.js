@@ -45,7 +45,7 @@ import SelectCompanyScene from '../finance/SelectCompanyScene';
 import AginSelectCompanyScene from '../finance/AginSelectCompanyScene';
 import {LendSuccessAlert} from '../finance/lend/component/ModelComponent'
 let loanList = [];
-import CGDSelectPatternScene from '../finance/lend/CGDSelectPatternScene';
+import CGDLendScenes from '../finance/lend/CGDLendScenes';
 
 export class HomeHeaderItemInfo {
     constructor(ref, key, functionTitle, describeTitle, functionImage) {
@@ -350,14 +350,13 @@ export default class FinanceSence extends BaseComponet {
                     if(nextPage===CGDDetailSence){
                         {/*this.refs.cgdModal.setModelVisible(true);*/}
                         if(movie.payment_status=='31'){
-                        this.navigatorParams.name = 'CGDSelectPatternScene';
-                        this.navigatorParams.component = CGDSelectPatternScene;
+                        this.navigatorParams.name = 'CGDLendScenes';
+                        this.navigatorParams.component = CGDLendScenes;
                         this.navigatorParams.params={
-                        loanNumber:movie.loan_code,
+                        loan_code:movie.loan_code,
                         backRefresh:()=>{
                             this.allRefresh()
                         },customerName: this.state.customerName,
-                        isEdit:'3'
                     }
                         }else{
                         this.navigatorParams.name = 'DetaileSence';
