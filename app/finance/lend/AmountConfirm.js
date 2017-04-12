@@ -243,7 +243,7 @@ export default class AmountConfirm extends BaseComponent {
     getAutoList = () => {
         let maps = {
             api: AppUrls.PURCHAAUTOAUTOLIST,
-            payment_number: 201704070001/* 201703200008 this.props.loan_code*/,
+            payment_number: this.props.loan_code,
         };
         this.props.showModal(true);
         request(AppUrls.FINANCE, 'Post', maps)
@@ -279,7 +279,7 @@ export default class AmountConfirm extends BaseComponent {
             request(AppUrls.FINANCE, 'Post', maps)
                 .then((response) => {
                         this.props.showModal(false);
-                        this.props.showToast("OBD检测成功");
+                        this.props.showToast("确认成功");
                         this.backPage();
                     }, (error) => {
                         this.props.showModal(false);
