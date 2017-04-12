@@ -45,6 +45,7 @@ import SelectCompanyScene from '../finance/SelectCompanyScene';
 import AginSelectCompanyScene from '../finance/AginSelectCompanyScene';
 import {LendSuccessAlert} from '../finance/lend/component/ModelComponent'
 let loanList = [];
+import CGDSelectPatternScene from '../finance/lend/CGDSelectPatternScene';
 
 export class HomeHeaderItemInfo {
     constructor(ref, key, functionTitle, describeTitle, functionImage) {
@@ -346,9 +347,19 @@ export default class FinanceSence extends BaseComponet {
             this.typeButtonParams.content = movie.status_str;
             return (
                 <TouchableOpacity activeOpacity={0.8} onPress={() => {
-                    {/*if(nextPage===CGDDetailSence){*/}
+                    if(nextPage===CGDDetailSence){
                         {/*this.refs.cgdModal.setModelVisible(true);*/}
-                    {/*}else{*/}
+                        if(movie.payment_status=='31'){
+                        this.navigatorParams.name = 'CGDSelectPatternScene';
+                        this.navigatorParams.component = CGDSelectPatternScene;
+                        this.navigatorParams.params={
+                        loanNumber:movie.loan_code,
+                        backRefresh:()=>{
+                            this.allRefresh()
+                        },customerName: this.state.customerName,
+                        isEdit:'3'
+                    }
+                        }else{
                         this.navigatorParams.name = 'DetaileSence';
                         this.navigatorParams.component = nextPage;
                         this.navigatorParams.params={
@@ -357,8 +368,18 @@ export default class FinanceSence extends BaseComponet {
                             this.allRefresh()
                         }
                     }
-                        this.props.callBack(this.navigatorParams);
-                    {/*}*/}
+                        }
+                    }else{
+                        this.navigatorParams.name = 'DetaileSence';
+                        this.navigatorParams.component = nextPage;
+                        this.navigatorParams.params={
+                        loanNumber:movie.loan_code,
+                        backRefresh:()=>{
+                            this.allRefresh()
+                        }
+                    }
+                    }
+                    this.props.callBack(this.navigatorParams);
             }} style={[cellSheet.row, cellSheet.padding]}>
                     <View style={cellSheet.rowViewStyle}>
                         <View style={[{
