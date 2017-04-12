@@ -39,6 +39,8 @@ static NSString *saoText = @"将二维码/条形码放入框内，即可自动�
     return self;
 }
 
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"手动绑定";
@@ -80,8 +82,11 @@ static NSString *saoText = @"将二维码/条形码放入框内，即可自动�
 }
 //点击确定按钮事件响应
 -(void)backAction{
-    self.OBDBlock(_resultStr,@"2");
-    [self.navigationController popViewControllerAnimated:YES];
+
+  
+    [self.navigationController dismissViewControllerAnimated:YES completion:^{
+       self.JsBolock(_resultStr,@"scan");
+    }];
 }
 
 - (void)setupCamera{
@@ -244,8 +249,10 @@ static NSString *saoText = @"将二维码/条形码放入框内，即可自动�
     CGPoint point = [touch locationInView:self.view];
     if(CGRectContainsPoint(_inputLabel.frame, point))
     {
-//        OBDInputController *inputVC = [[OBDInputController alloc] init];
-//        [self.navigationController pushViewController:inputVC animated:YES];
+      [self.navigationController dismissViewControllerAnimated:YES completion:^{
+        self.JsBolock(@"呵呵",@"input");
+      }];
+    
     }
 }
 

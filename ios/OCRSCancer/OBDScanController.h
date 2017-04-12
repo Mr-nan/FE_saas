@@ -11,6 +11,7 @@
 
 
 typedef void(^OBDNumBlock)(NSString *OBDnum,NSString *type);
+typedef void (^JSOBDScanBlock)(NSString *OBDNum,NSString* type);
 
 @interface OBDScanController : UIViewController<AVCaptureMetadataOutputObjectsDelegate>
 {
@@ -25,6 +26,7 @@ typedef void(^OBDNumBlock)(NSString *OBDnum,NSString *type);
 @property (strong,nonatomic)AVCaptureSession * session;
 @property (strong,nonatomic)AVCaptureVideoPreviewLayer * preview;
 @property (nonatomic, retain) UIImageView * line;
+@property (nonatomic,strong)JSOBDScanBlock JsBolock;
 
 @property (nonatomic,strong)OBDNumBlock OBDBlock;
 

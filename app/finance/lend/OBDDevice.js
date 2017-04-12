@@ -43,10 +43,6 @@ export default class OBDDevice extends BaseComponent {
         this.bind_type = 1;
     }
 
-    defaultProps = {
-        payment_number: 123456789,
-    }
-
     componentWillUnmount() {
         results = [];
         childItems = [];
@@ -169,6 +165,8 @@ export default class OBDDevice extends BaseComponent {
                         <MyButton buttonType={MyButton.TEXTBUTTON} content="手动绑定" parentStyle={styles.buttonStyle}
                                   childStyle={styles.buttonTextStyle} mOnPress={() => {
                             NativeModules.QrScan.scan().then((data) => {
+
+                                console.log(data)
                                 if (data.scan_hand == 1) {
                                     this.toNextPage({
                                         name: 'DeviceNumber',
@@ -330,6 +328,7 @@ export default class OBDDevice extends BaseComponent {
                     <MyButton buttonType={MyButton.TEXTBUTTON} content="手动绑定" parentStyle={styles.buttonStyle}
                               childStyle={styles.buttonTextStyle} mOnPress={() => {
                         NativeModules.QrScan.scan().then((data) => {
+                            console.log(data)
                             if (data.scan_hand == 1) {
                                 this.toNextPage({
                                     name: 'DeviceNumber',

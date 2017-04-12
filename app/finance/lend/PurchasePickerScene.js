@@ -205,6 +205,7 @@ export  default class PurchasePickerScene extends BaseComponent {
                             navigator.popToRoute(navigator.getCurrentRoutes()[3]);
                         }
                     }else{
+                        this.props.carData.info_id = response.mjson.data.info_id;
                         this.props.showToast("添加成功，请绑定OBD");
                         this.props.backRefresh();
                         this.toNextPage({
