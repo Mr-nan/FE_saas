@@ -352,27 +352,26 @@ export default class FinanceSence extends BaseComponet {
             return (
                 <TouchableOpacity activeOpacity={0.8} onPress={() => {
                     if (nextPage === CGDDetailSence) {
-                        {/*this.refs.cgdModal.setModelVisible(true);*/
-                        }
-                        if (movie.payment_status == '31') {
-                            this.navigatorParams.name = 'CGDLendScenes';
-                            this.navigatorParams.component = CGDLendScenes;
-                            this.navigatorParams.params = {
-                                loan_code: movie.loan_code,
-                                backRefresh: () => {
-                                    this.allRefresh()
-                                }, customerName: this.state.customerName,
-                            }
-                        } else {
-                            this.navigatorParams.name = 'DetaileSence';
-                            this.navigatorParams.component = nextPage;
-                            this.navigatorParams.params = {
-                                loanNumber: movie.loan_code,
-                                backRefresh: () => {
-                                    this.allRefresh()
-                                }
-                            }
-                        }
+                        this.refs.cgdModal.setModelVisible(true);
+                        {/*if (movie.payment_status == '31') {*/}
+                            {/*this.navigatorParams.name = 'CGDLendScenes';*/}
+                            {/*this.navigatorParams.component = CGDLendScenes;*/}
+                            {/*this.navigatorParams.params = {*/}
+                                {/*loan_code: movie.loan_code,*/}
+                                {/*backRefresh: () => {*/}
+                                    {/*this.allRefresh()*/}
+                                {/*}, customerName: this.state.customerName,*/}
+                            {/*}*/}
+                        {/*} else {*/}
+                            {/*this.navigatorParams.name = 'DetaileSence';*/}
+                            {/*this.navigatorParams.component = nextPage;*/}
+                            {/*this.navigatorParams.params = {*/}
+                                {/*loanNumber: movie.loan_code,*/}
+                                {/*backRefresh: () => {*/}
+                                    {/*this.allRefresh()*/}
+                                {/*}*/}
+                            {/*}*/}
+                        {/*}*/}
                     } else {
                         this.navigatorParams.name = 'DetaileSence';
                         this.navigatorParams.component = nextPage;
