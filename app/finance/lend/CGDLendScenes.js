@@ -134,6 +134,7 @@ export  default  class CGDLendScenes extends BaseComponent {
                         init_reg:item.init_reg,
                         base_id:item.base_id,
                         invoice_upload_status:item.invoice_upload_status,
+                        mileage:item.mileage
                     }
                 )
                 dataSource['section3'] = tempCarDate;
@@ -423,7 +424,7 @@ export  default  class CGDLendScenes extends BaseComponent {
         } else {
             return (
 
-                <CGDCarItem  url={rowData.icon}title={rowData.model_name}obdState={rowData.obd_bind_status}date={rowData.init_reg} onPress={()=>{
+                <CGDCarItem  url={rowData.icon}title={rowData.model_name}obdState={rowData.obd_bind_status} shouxuState={rowData.invoice_upload_status}date={rowData.init_reg+' / '+rowData.mileage+'万公里'} onPress={()=>{
                     this.carItemClick(rowData.info_id);
                 }} deletePress={()=>{
                     this.deleteCar.setModelVisible(true);
