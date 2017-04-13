@@ -197,7 +197,7 @@ export  default class PurchasePickerScene extends BaseComponent {
         request(MyUrl.FINANCE, 'Post', maps)
             .then((response) => {
                     this.props.showModal(false);
-                    if(this.props.carData.isCarinvoice=='0'){
+                    if(this.props.carData.bind_type=='0'){
                         this.props.showToast("添加成功");
                         this.props.backRefresh();
                         const navigator = this.props.navigator;
@@ -249,7 +249,7 @@ export  default class PurchasePickerScene extends BaseComponent {
         request(MyUrl.FINANCE, 'Post', maps)
             .then((response) => {
                     this.props.showModal(false);
-                    if(this.props.carData.isCarinvoice=='0'){
+                    if(this.props.carData.bind_type=='0'){
                         this.props.showToast("编辑成功");
                         this.props.backRefresh();
                         const navigator = this.props.navigator;

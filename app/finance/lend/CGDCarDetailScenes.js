@@ -96,7 +96,8 @@ export default class CGDCarDetailScenes extends BaseComponent{
             {title: '首次上牌时间', key: jsonData.init_reg},
             {title: '收车人', key: jsonData.rev_user_name},
             {title: '登记人',     key:jsonData.register_user_name},
-            {title: '收购价（万元）', key: jsonData.purchas_price},
+            {title: '收购价（万元）', key: jsonData.purchas_price+'万元'},
+            {title:'放款额',key:jsonData.first_assess_loan+'万元'},
             {title: '车辆位置', key: jsonData.obd_track_url},
         ]
         dataSource['section1']=section1
@@ -195,7 +196,7 @@ export default class CGDCarDetailScenes extends BaseComponent{
     renderSeparator =(sectionID,rowId,adjacentRowHighlighted)=>{
 
         let separtrorHegigth =1;
-        if (rowId==='1'||rowId==='7'||rowId=='9'){
+        if (rowId==='1'||rowId==='7'||rowId=='9'||rowId=='10'){
             separtrorHegigth=10;
         }
         return (

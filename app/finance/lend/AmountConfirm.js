@@ -26,43 +26,29 @@ var Pixel = new PixelUtil();
 var onePT = 1 / PixelRatio.get(); //一个像素
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
-let contents = [];
-
-let map = new Map();
 export default class AmountConfirm extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-            renderPlaceholderOnly: true,
+            renderPlaceholderOnly: 'blank',
             values: "",//输入框输入内容
             carNumber: 0,
             totalMoney: 0,
             car_lists: '',
         };
-    }
+        this.contents = [];
+        this.map = new Map();
 
-    componentWillUnmount() {
-        contents = [];
-        map = new Map();
     }
 
     initFinish = () => {
-        InteractionManager.runAfterInteractions(() => {
-            this.setState({
-                renderPlaceholderOnly: false,
-                source: ds.cloneWithRows(contents),
-            });
-        });
         this.getAutoList();
     }
 
     render() {
-        if (this.state.renderPlaceholderOnly) {
-            return ( <TouchableWithoutFeedback onPress={() => {
-                this.setState({
-                    show: false,
-                });
-            }}>
+
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return (
                 <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
                     <NavigationBar
                         leftImageShow={false}
@@ -70,8 +56,9 @@ export default class AmountConfirm extends BaseComponent {
                         leftText={""}
                         centerText={"确认金额"}
                         rightText={""}/>
+                    {this.loadView()}
                 </View>
-            </TouchableWithoutFeedback>);
+            )
         }
         return (
             <View style={styles.container}>
@@ -188,7 +175,7 @@ export default class AmountConfirm extends BaseComponent {
         return (
             <TouchableOpacity onPress={() => this.finshPage(data, rowID)}>
                 <View style={styles.itemStyle}>
-                    {typeof(map.get(data.info_id)) == 'undefined' ?
+                    {typeof(this.map.get(data.info_id)) == 'undefined' ?
                         <Image source={require("./../../../images/login/amou_unchoose.png")}
                                style={styles.itemIconStyle}/>
                         :
@@ -203,7 +190,7 @@ export default class AmountConfirm extends BaseComponent {
                         }]}>
                             {'初评放款额' + " : "}
                             <Text style={{color: FontAndColor.COLORB2, fontSize: FontAndColor.CONTENTFONT}}>
-                                {data.purchas_price}万
+                                {data.first_assess_loan}万
                             </Text>
                         </Text>
                     </View>
@@ -214,51 +201,61 @@ export default class AmountConfirm extends BaseComponent {
     }
 
     finshPage = (data, rowID) => {
-        if (typeof(map.get(data.info_id)) == 'undefined') {
-            map.set(data.info_id, data);
+        if (typeof(this.map.get(data.info_id)) == 'undefined') {
+            this.map.set(data.info_id, data);
         } else {
-            map.delete(data.info_id);
+            this.map.delete(data.info_id);
         }
         let money = 0;
-        for (let key of map.keys()) {
-            money = money + map.get(key).purchas_price;
+        for (let key of this.map.keys()) {
+            money = money + this.map.get(key).first_assess_loan;
         }
 
         let car_lists = "";
-        for (let key of contents) {
-            if (map.get(key.info_id) == undefined) {
+        for (let key of this.contents) {
+            if (this.map.get(key.info_id) == undefined) {
                 car_lists = car_lists + key.info_id + ",";
             }
         }
         this.setState({
-            carNumber: map.size,
+            carNumber: this.map.size,
             totalMoney: money,
             car_lists: car_lists,
-            source: ds.cloneWithRows(contents),
+            source: ds.cloneWithRows(this.contents),
         });
     }
 
 
     //  获取采购贷车辆列表
     getAutoList = () => {
+        this.setState({renderPlaceholderOnly: 'loading'});
         let maps = {
             api: AppUrls.PURCHAAUTOAUTOLIST,
-            payment_number: 201704070001/* 201703200008 this.props.loan_code*/,
+            payment_number: this.props.loan_code,
         };
-        this.props.showModal(true);
         request(AppUrls.FINANCE, 'Post', maps)
             .then((response) => {
-                    this.props.showModal(false);
-                    contents = response.mjson.data.list;
+                    this.contents = response.mjson.data.list;
                     this.setState({
-                        source: ds.cloneWithRows(contents),
+                        renderPlaceholderOnly: 'success',
+                        source: ds.cloneWithRows(this.contents),
                     });
                 }, (error) => {
-                    this.props.showModal(false);
                     if (error.mycode == -300 || error.mycode == -500) {
-                        this.props.showToast("网络请求失败");
+                        this.setState({
+                            renderPlaceholderOnly: 'error',
+                        })
                     } else {
-                        this.props.showToast(error.mjson.msg + "");
+                        if (error.mycode == -1) {
+                            this.setState({
+                                renderPlaceholderOnly: 'null',
+                            })
+                        } else {
+                            this.props.showToast(error.mjson.msg + "");
+                            this.setState({
+                                renderPlaceholderOnly: 'error',
+                            })
+                        }
                     }
                 }
             )
@@ -279,8 +276,9 @@ export default class AmountConfirm extends BaseComponent {
             request(AppUrls.FINANCE, 'Post', maps)
                 .then((response) => {
                         this.props.showModal(false);
-                        this.props.showToast("OBD检测成功");
-                        this.backPage();
+                        this.props.showToast("确认成功");
+                        this.props.callback(),
+                            this.backPage();
                     }, (error) => {
                         this.props.showModal(false);
                         if (error.mycode == -300 || error.mycode == -500) {

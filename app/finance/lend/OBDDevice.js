@@ -167,7 +167,7 @@ export default class OBDDevice extends BaseComponent {
                             NativeModules.QrScan.scan().then((data) => {
 
                                 console.log(data)
-                                if (data.scan_hand == 1) {
+                                if (data.scan_hand == "input") {
                                     this.toNextPage({
                                         name: 'DeviceNumber',
                                         component: DeviceNumber,
@@ -329,7 +329,7 @@ export default class OBDDevice extends BaseComponent {
                               childStyle={styles.buttonTextStyle} mOnPress={() => {
                         NativeModules.QrScan.scan().then((data) => {
                             console.log(data)
-                            if (data.scan_hand == 1) {
+                            if (data.scan_hand == "input") {
                                 this.toNextPage({
                                     name: 'DeviceNumber',
                                     component: DeviceNumber,

@@ -81,10 +81,6 @@ export default class LoginScene extends BaseComponent {
         });
     }
 
-    static defaultProps = {
-        saveData: ["13001286215", "13001286216", "13001260002"],
-    };
-
     loginSuccess = {
         name: 'MainPage',
         component: MainPage,
@@ -356,7 +352,6 @@ export default class LoginScene extends BaseComponent {
         } else if (typeof(smsCode) == "undefined" || smsCode == "") {
             this.props.showToast("短信验证码不能为空");
         } else {
-            // this.props.showModal(true);
             let device_code = '';
             if (Platform.OS === 'android') {
                 device_code = 'dycd_platform_android';
@@ -370,11 +365,10 @@ export default class LoginScene extends BaseComponent {
                 phone: userName,
                 pwd: md5.hex_md5(passWord),
             };
-            this.refs.lodding.setShow(true);
+            this.props.showModal(true);
             request(AppUrls.LOGIN, 'Post', maps)
                 .then((response) => {
-                    // this.props.showModal(false);
-                    this.refs.lodding.setShow(false);
+                    this.props.showModal(false);
                     if (response.mycode == "1") {
                         // 保存用户登录状态
                         StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '2');
@@ -438,8 +432,7 @@ export default class LoginScene extends BaseComponent {
                         this.props.showToast(response.mjson.msg + "");
                     }
                 }, (error) => {
-                    // this.props.showModal(false);
-                    this.refs.lodding.setShow(false);
+                    this.props.showModal(false);
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("登录失败");
                     } else if (error.mycode == 7040004) {

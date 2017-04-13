@@ -51,7 +51,7 @@ export  default class RepaymentScene extends BaseComponent {
                     style={{marginTop: Pixel.getTitlePixel(64), flex: 1}}
                     initialPage={0}
                     locked={true}
-                    renderTabBar={() => <RepaymenyTabBar tabName={["单车融资", "库存融资","采购融资"]}/>}
+                    renderTabBar={() => <RepaymenyTabBar tabName={["单车融资", "库存融资"]}/>}
                 >
                     <SingleRepaymentPage customerName={this.props.customerName} callBack={(loan_id,loan_number,type)=>{
                       this.toNextPage({name:'RepaymentInfoScene',component:RepaymentInfoScene,
@@ -63,10 +63,10 @@ export  default class RepaymentScene extends BaseComponent {
                       params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'InventoryRepaymentPage',planid:planid}});
                     }} tabLabel="ios-people"/>
 
-                    <PurchaseRepaymentPage customerName={this.props.customerName} callBack={(loan_id,loan_number,type)=>{
-                      this.toNextPage({name:'NewPurchaseRepaymentInfoScene',component:NewPurchaseRepaymentInfoScene,
-                      params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'PurchaseRepaymentPage'}});
-                    }} tabLabel="ios-chatboxes"/>
+                    {/*<PurchaseRepaymentPage customerName={this.props.customerName} callBack={(loan_id,loan_number,type)=>{*/}
+                      {/*this.toNextPage({name:'NewPurchaseRepaymentInfoScene',component:NewPurchaseRepaymentInfoScene,*/}
+                      {/*params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'PurchaseRepaymentPage'}});*/}
+                    {/*}} tabLabel="ios-chatboxes"/>*/}
 
                 </ScrollableTabView>
                 <NavigationView
