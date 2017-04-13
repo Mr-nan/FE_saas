@@ -284,8 +284,8 @@ export  default  class CGDLendScenes extends BaseComponent {
             showData.tempCarList.map((item)=>{
                 let obdState =Number.parseInt(item.obd_bind_status);
                 let invoice  =Number.parseInt(item.invoice_upload_status);
-                if(invoice>isinvoice){
-                    this.props.showToast('请补全发票信息')
+                if(invoice<isinvoice){
+                    this.props.showToast('请补全手续信息')
                     return
                 }
                if(tempisObd==obdState){
