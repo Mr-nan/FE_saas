@@ -196,6 +196,11 @@ export class LendDatePike extends PureComponent {
             placeholder:this.props.placeholder,
         };
     }
+    componentDidMount(){
+        const {defaultShowValue}=this.props
+        defaultShowValue&&this.changeText(defaultShowValue);
+    }
+
 
     setPlaceHodel=(vlaue)=>{
 
@@ -325,7 +330,6 @@ export class CGDCarItem extends PureComponent{
                     <Text style={styles.CGDInstTitle} numberOfLines={2}>{title}</Text>
                     <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
                         <View style={[styles.carItemFlage,obdState==1?{backgroundColor:'green'}:{backgroundColor:'red'}]}><Text >OBD</Text></View>
-                        <View style={[styles.carItemFlage,{marginLeft:adapeSize(10)},shouxuState==1?{backgroundColor:'green'}:{backgroundColor:'red'}]}><Text style={{paddingTop:adapeSize(1),paddingBottom:adapeSize(1)}}>手续</Text></View>
 
                     </View>
 
