@@ -156,7 +156,7 @@ export  default  class CGDLendScenes extends BaseComponent {
             request(apis.FINANCE, 'Post', maps)
                 .then((response) => {
                         let tempjson = response.mjson.data;
-                            showData.tempMin=changeToMillion(tempjson.min_loanmny);
+                        showData.tempMin=changeToMillion(tempjson.min_loanmny);
                         showData.tempMax=changeToMillion(tempjson.max_loanmny);
                         showData.tempLendInfo=tempjson;
                         this.getCarListInfo(tempjson);
@@ -184,7 +184,6 @@ export  default  class CGDLendScenes extends BaseComponent {
         let maps = {
             api: apis.GET_APPLY_INFO,
             loan_code: this.props.loan_code
-
         };
 
         request(apis.FINANCE, 'Post', maps)
@@ -198,6 +197,8 @@ export  default  class CGDLendScenes extends BaseComponent {
                         createtimestr:tempjson.createtimestr,
                         payment_audit_reason:tempjson.payment_audit_reason,
                     };
+                    PostData.loan_mny=Number.parseFloat(tempjson.payment_loanmny_str)
+                    PostData.use_time=tempjson.use_time_str,
                     this.getLendInfo(showData.tempLendInfo.isobd,showData.tempLendInfo.isinvoice);
                 },
                 (error) => {
@@ -220,10 +221,8 @@ export  default  class CGDLendScenes extends BaseComponent {
     getCarListInfo=(templendInfo)=>{
         let maps = {
             api: apis.AUTOLIST,
+            loan_code:this.props.loan_code
         };
-        if (this.props.loan_code){
-            Object.assign(maps,{loan_code:this.props.loan_code})
-        }
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
                     this.props.showModal(false);
@@ -310,19 +309,16 @@ export  default  class CGDLendScenes extends BaseComponent {
             let tempOBDState=this.props.loan_code?this.props.isOBD:showData.tempLendInfo.isobd;
             let tempCarinvoice =this.props.loan_code?this.props.isCarinvoice:showData.tempLendInfo.isinvoice;
 
-
-            let maps ={
-                api:apis.APPLY_LOAN,
-                apply_type:PostData.apply_type,
-                isobd:tempOBDState,
-                isinvoice:tempCarinvoice,
-                loan_mny:PostData.loan_mny,
-                use_time:PostData.use_time,
-                car_lists:carIdList,
-                archives_type:PostData.archives_type
-            }
-            if (this.props.loan_code){
-                Object.assign(maps,{loan_code:this.props.loan_code})
+            let maps = {
+                api: apis.APPLY_LOAN,
+                apply_type: PostData.apply_type,
+                isobd: tempOBDState,
+                isinvoice: tempCarinvoice,
+                loan_mny: PostData.loan_mny,
+                use_time: PostData.use_time,
+                car_lists: carIdList,
+                archives_type: PostData.archives_type,
+                loan_code: this.props.loan_code
             }
             this.props.showModal(true);
             request(apis.FINANCE, 'Post', maps)
@@ -354,13 +350,9 @@ export  default  class CGDLendScenes extends BaseComponent {
             .then((response) => {
                     this.props.showModal(false);
 
-                    let tempDataSource =Object.assign({},this.state.dataSource);
-                    console.log(tempDataSource._dataBlob['section3'])
-                    tempDataSource._dataBlob['section3'].splice(tempDelete.itemAtInex,1);
-                    console.log(tempDataSource._dataBlob['section3'])
-
+                    showData.tempCarList.splice(tempDelete.itemAtInex,1);
                     this.setState({
-                        dataSource: this.state.dataSource.cloneWithRowsAndSections(tempDataSource._dataBlob),
+                        dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(showData.tempLendInfo, showData.tempCarList)),
                     })
                     this.props.showToast('删除成功');
                 },
@@ -374,6 +366,7 @@ export  default  class CGDLendScenes extends BaseComponent {
                         this.props.showToast('服务器连接有问题')
                     }
                 });
+
 
 
 
@@ -416,10 +409,10 @@ export  default  class CGDLendScenes extends BaseComponent {
             return (<LendItem leftTitle={rowData.title} rightTitle={rowData.value}/>)
         } else if (sectionID === 'section2' && rowID === '0') {
 
-            return <LendInputItem placeholder={'请输入借款金额'} title={rowData.title} onChangeText={(text)=>{PostData.loan_mny=text}}/>
+            return <LendInputItem placeholder={'请输入借款金额'} title={rowData.title} onChangeText={(text)=>{PostData.loan_mny=text} }showValue={PostData.loan_mny}/>
         } else if (sectionID === 'section2' && rowID === '1') {
 
-            return <LendDatePike ref={(piker)=>{this.datePiker =piker}} lefTitle={rowData.title} placeholder='请选择用款时间'
+            return <LendDatePike ref={(piker)=>{this.datePiker =piker;PostData.use_time&&piker.changeText(PostData.use_time)}} showData={'3333'} lefTitle={rowData.title} placeholder='请选择用款时间'
                                  imageSouce={require('../../../images/financeImages/dateIcon.png')} onPress={this.onPress}/>
         } else {
             return (
@@ -504,7 +497,7 @@ export  default  class CGDLendScenes extends BaseComponent {
                         this.navigatorParams.name = "CGDAddCarScene";
                         this.navigatorParams.component = CGDAddCarScene;
                         this.navigatorParams.params = {isOBD:this.props.isOBD,
-                        isCarinvoice:this.props.isCarinvoice,backRefresh:()=>{
+                        isCarinvoice:this.props.isCarinvoice,paymentId:this.props.loan_code,backRefresh:()=>{
                             this.refreshAll();
                         }};
                      this.toNextPage(this.navigatorParams)

@@ -173,13 +173,13 @@ export class LendInputItem extends PureComponent {
     render() {
 
 
-        const {title,placeholder,unit,unitStyle,onChangeText}=this.props;
+        const {title,placeholder,unit,unitStyle,onChangeText,showValue}=this.props;
 
         return (
             <View style={styles.itemView}>
 
                 <Text style={styles.itemLeftText}>{title}</Text>
-                <TextInput underlineColorAndroid={"#00000000"} style={styles.itemInput} placeholder={placeholder} keyboardType={'decimal-pad'} onChangeText={onChangeText}/>
+                <TextInput underlineColorAndroid={"#00000000"} style={styles.itemInput} placeholder={placeholder} keyboardType={'decimal-pad'} onChangeText={onChangeText} defaultValue={showValue}/>
                 <Text style={[styles.itemPlacehodel,unitStyle]}>{unit}</Text>
             </View>
         )
@@ -234,7 +234,7 @@ export class LendDatePike extends PureComponent {
                 <Text  style={styles.itemLeftText}>{lefTitle}</Text>
 
                 <TextInput  underlineColorAndroid={"#00000000"} ref={(date)=>{this.dateInput=date}} editable={false} style={[styles.itemInput, {marginRight: adapeSize(17)}]}
-                           placeholder={this.state.placeholder} value={this.state.value} />
+                           placeholder={this.state.placeholder} value={this.state.value}/>
                 <Image style={[styles.itemPikerDate,imageStyle]} source={imageSouce}/>
             </TouchableOpacity>
         )
