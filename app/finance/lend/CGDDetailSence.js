@@ -182,7 +182,9 @@ export default class OrderCarDetailScene extends BaseComponent {
                         info_id: item.info_id,
                         model_name: item.model_name,
                         init_reg: item.init_reg,
-                        base_id: item.base_id
+                        base_id: item.base_id,
+                        mileage:item.mileage,
+                        invoice_upload_status:item.invoice_upload_status
                     }
                 )
                 dataSource['section2'] = tempCarDate;
@@ -199,7 +201,7 @@ export default class OrderCarDetailScene extends BaseComponent {
         } else if (state == 33) {
             NameBlobs = ['取消借款', '确认金额']
         } else if (state === 35) {
-            NameBlobs = ['签署合同']
+            NameBlobs = ['取消借款','签署合同']
         } else if (state == 40 || state == 42 || isComplete == 4) {
             NameBlobs = ['查看合同']
         } else if (state == 41) {
@@ -240,7 +242,7 @@ export default class OrderCarDetailScene extends BaseComponent {
         if (sectionID === 'section2') {
 
             return (<CGDCarItem url={rowData.icon} title={rowData.model_name} obdState={rowData.obd_bind_status}
-                                date={rowData.init_reg} onPress={() => {
+                                date={rowData.init_reg+' / '+rowData.mileage+'万公里'} shouxuState ={rowData.invoice_upload_status} onPress={() => {
                 this.carItemClick(rowData.info_id);
             }}/>)
         }

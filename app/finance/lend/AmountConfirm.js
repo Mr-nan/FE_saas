@@ -190,7 +190,7 @@ export default class AmountConfirm extends BaseComponent {
                         }]}>
                             {'初评放款额' + " : "}
                             <Text style={{color: FontAndColor.COLORB2, fontSize: FontAndColor.CONTENTFONT}}>
-                                {data.purchas_price}万
+                                {data.first_assess_loan}万
                             </Text>
                         </Text>
                     </View>
@@ -208,7 +208,7 @@ export default class AmountConfirm extends BaseComponent {
         }
         let money = 0;
         for (let key of this.map.keys()) {
-            money = money + this.map.get(key).purchas_price;
+            money = money + this.map.get(key).first_assess_loan;
         }
 
         let car_lists = "";
