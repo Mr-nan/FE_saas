@@ -173,13 +173,13 @@ export class LendInputItem extends PureComponent {
     render() {
 
 
-        const {title,placeholder,unit,unitStyle,onChangeText}=this.props;
+        const {title,placeholder,unit,unitStyle,onChangeText,showValue}=this.props;
 
         return (
             <View style={styles.itemView}>
 
                 <Text style={styles.itemLeftText}>{title}</Text>
-                <TextInput underlineColorAndroid={"#00000000"} style={styles.itemInput} placeholder={placeholder} keyboardType={'decimal-pad'} onChangeText={onChangeText}/>
+                <TextInput underlineColorAndroid={"#00000000"} style={styles.itemInput} placeholder={placeholder} keyboardType={'decimal-pad'} onChangeText={onChangeText} defaultValue={showValue}/>
                 <Text style={[styles.itemPlacehodel,unitStyle]}>{unit}</Text>
             </View>
         )
@@ -196,6 +196,11 @@ export class LendDatePike extends PureComponent {
             placeholder:this.props.placeholder,
         };
     }
+    componentDidMount(){
+        const {defaultShowValue}=this.props
+        defaultShowValue&&this.changeText(defaultShowValue);
+    }
+
 
     setPlaceHodel=(vlaue)=>{
 
@@ -234,7 +239,7 @@ export class LendDatePike extends PureComponent {
                 <Text  style={styles.itemLeftText}>{lefTitle}</Text>
 
                 <TextInput  underlineColorAndroid={"#00000000"} ref={(date)=>{this.dateInput=date}} editable={false} style={[styles.itemInput, {marginRight: adapeSize(17)}]}
-                           placeholder={this.state.placeholder} value={this.state.value} />
+                           placeholder={this.state.placeholder} value={this.state.value}/>
                 <Image style={[styles.itemPikerDate,imageStyle]} source={imageSouce}/>
             </TouchableOpacity>
         )
@@ -325,7 +330,6 @@ export class CGDCarItem extends PureComponent{
                     <Text style={styles.CGDInstTitle} numberOfLines={2}>{title}</Text>
                     <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
                         <View style={[styles.carItemFlage,obdState==1?{backgroundColor:'green'}:{backgroundColor:'red'}]}><Text >OBD</Text></View>
-                        <View style={[styles.carItemFlage,{marginLeft:adapeSize(10)},shouxuState==1?{backgroundColor:'green'}:{backgroundColor:'red'}]}><Text style={{paddingTop:adapeSize(1),paddingBottom:adapeSize(1)}}>手续</Text></View>
 
                     </View>
 
