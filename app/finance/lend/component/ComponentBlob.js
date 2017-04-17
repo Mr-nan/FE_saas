@@ -56,6 +56,13 @@ export const commnetStyle=StyleSheet.create({
         bottom:adapeSize(50),
         backgroundColor:PAGECOLOR.COLORA3
     },
+    ListWarpss:{
+        position:'absolute',
+        top:Pixel.getTitlePixel(114),
+        width:width,
+        bottom:adapeSize(50),
+        backgroundColor:PAGECOLOR.COLORA3
+    },
 
     bottomWarp:{
         position:'absolute',

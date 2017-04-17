@@ -86,13 +86,24 @@ export default class CGDCarDetailScenes extends BaseComponent{
     titleNameBlob=(jsonData,carData)=>{
 
         let dataSource = {};
+        let date = new Date(jsonData.init_reg*1000);
+        let seperator1 = "-";
+        let month = date.getMonth() + 1;
+        let strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        let currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;
         let section1=[
             {title: '出售城市', key: jsonData.city_name},
             {title:'车型',key:jsonData.model_name},
             {title: '车架号', key: jsonData.frame_number},
             {title: '外观颜色', key:jsonData.car_color},
             {title: '行驶里程', key: jsonData.mileage},
-            {title: '首次上牌时间', key: jsonData.init_reg},
+            {title: '首次上牌时间', key:currentdate },
             {title: '收车人', key: jsonData.rev_user_name},
             {title: '登记人',     key:jsonData.register_user_name},
             {title: '收购价（万元）', key: jsonData.purchas_price+'万元'},
@@ -141,7 +152,7 @@ export default class CGDCarDetailScenes extends BaseComponent{
 
                 let  temptitle ='';
                 if (rowId==0) temptitle='车辆照片';
-                if (rowId==1) temptitle='提档资料';
+                if (rowId==1) temptitle='二手车交易发票';
                 if (rowId==2) temptitle='OBD照片';
                 let tempData=[];
                 rowData.map((item)=>{tempData.push(item.url)});

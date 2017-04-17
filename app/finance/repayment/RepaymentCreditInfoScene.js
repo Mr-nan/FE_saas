@@ -181,7 +181,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
             )
         } else if (rowId == 1) {
             return (
-                <RepaymentInfoDateItem callBack={(time)=>{
+                <RepaymentInfoDateItem loanday={movies.loan_day} status={movies.paymen_status} callBack={(time)=>{
                     let selecttime = time/1000;
                     let lasttime = parseFloat(Date.parse(movies.dead_line)/1000);
                     let firsttime = parseFloat(movies.loan_time);
