@@ -346,6 +346,7 @@ export default class CarInfoScene extends BaseComponent {
                     <NavigationView
                         ref="navtigation"
                         title="车源详情"
+                        wrapStyle={{backgroundColor:'rgba(0,0,0,0)'}}
                         backIconClick={this.backIconClick}
                     />
             </View>);

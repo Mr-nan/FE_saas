@@ -46,7 +46,7 @@ export default class CarInfoNavigationView extends PureComponent {
         return (
             <View style={[styles.navigation,wrapStyle,this.state.navigationBackgroundColor && {backgroundColor:this.state.navigationBackgroundColor}]}>
                 <View style={styles.content}>
-                     <TouchableOpacity style={{width: Pixel.getPixel(80), height: Pixel.getPixel(44),justifyContent:'center'}}
+                     <TouchableOpacity style={{width: Pixel.getPixel(100), height: Pixel.getPixel(64),justifyContent:'center'}}
                                       onPress={backIconClick}>
                     {backIconClick && <Image style={styles.backIcon} source={require('../../images/carSourceImages/back.png')}/>}
                      </TouchableOpacity>
