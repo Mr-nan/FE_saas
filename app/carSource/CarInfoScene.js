@@ -17,7 +17,7 @@ import {
 import *as fontAndColor from '../constant/fontAndColor';
 import ImagePageView from 'react-native-viewpager';
 import BaseComponent from '../component/BaseComponent';
-import NavigationView from '../component/AllNavigationView';
+import NavigationView from '../component/CarNavigationView';
 import Gallery from 'react-native-gallery';
 import PixelUtil from '../utils/PixelUtil';
 import {LendSuccessAlert} from '../finance/lend/component/ModelComponent';
@@ -733,10 +733,10 @@ class NavigationRightView extends Component{
                     }
 
                 }}>
-                    <Image source={ this.state.isStore? require('../../images/carSourceImages/store.png') : require('../../images/carSourceImages/store_nil.png')}></Image>
+                    <Image source={ this.state.isStore? require('../../images/carSourceImages/presc.png') : require('../../images/carSourceImages/newsc.png')}></Image>
                 </TouchableOpacity>
                 <TouchableOpacity style={{marginLeft: Pixel.getPixel(10)}} onPress={this.props.showShared}>
-                    <Image source={require('../../images/carSourceImages/share_nil.png')}></Image>
+                    <Image source={require('../../images/carSourceImages/newfx.png')}></Image>
                 </TouchableOpacity>
             </View>
         )
