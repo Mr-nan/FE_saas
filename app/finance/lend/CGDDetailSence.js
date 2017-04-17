@@ -7,7 +7,7 @@ import {
     Text
 } from 'react-native';
 import AllNavigatior from '../../component/AllNavigationView'
-import {CommnetListItem, CommentHandItem, commnetStyle, CGDCarItem, CommenButton} from './component/ComponentBlob'
+import {CommnetListItem, CommentHandItem, commnetStyle, CGDCarItems, CommenButton} from './component/ComponentBlob'
 import {
     width,
     height,
@@ -242,7 +242,10 @@ export default class OrderCarDetailScene extends BaseComponent {
         if (sectionID === 'section2') {
             //
             return (<CGDCarItem url={rowData.icon} title={rowData.model_name}
-                                shouxuState ={rowData.invoice_upload_status}  obdState={rowData.obd_bind_status}
+                                invoice_upload_status ={rowData.invoice_upload_status}
+                                obd_bind_status={rowData.obd_bind_status}
+                                obd_audit_status={rowData.obd_audit_status}
+                                invoice_audit_status={rowData.invoice_audit_status}
                                 date={rowData.init_reg+' / '+rowData.mileage+'万公里'}  onPress={() => {
                 this.carItemClick(rowData.info_id);
             }}/>)

@@ -367,10 +367,25 @@ export class CGDCarItems extends PureComponent{
 
     render(){
 
-        const {url,title,obdState,shouxuState,date,onPress,deletePress}=this.props;
+        const {url,title,invoice_upload_status,obd_bind_status,obd_audit_status,invoice_audit_status,date,onPress,deletePress}=this.props;
 
-        let obdclor = '';
-        let invoice = '';
+        let obdclor = '#d8d8d8';
+        let invoice = '#d8d8d8';
+        if(obd_bind_status=='1'){
+            if(obd_audit_status=='1'){
+                obdclor = '#00ff00';
+            }else if(obd_audit_status=='2'){
+                obdclor = '#ff0000';
+            }
+        }
+
+        if(invoice_upload_status=='1'){
+            if(invoice_audit_status=='1'){
+                invoice = '#00ff00';
+            }else if(invoice_audit_status=='2'){
+                invoice = '#ff0000';
+            }
+        }
 
         return(
             <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={styles.CGDCarWarp}>
@@ -379,12 +394,10 @@ export class CGDCarItems extends PureComponent{
                 <View style={styles.CGDInstWarpTop}>
                     <Text style={styles.CGDInstTitle} numberOfLines={2}>{title}</Text>
                     <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
-                        <View style={[styles.carItemFlage,obdState==1?{backgroundColor:'#ffffff'}:
-                        {backgroundColor:'#d8d8d8'}]}><Text >OBD</Text></View>
+                        <View style={[styles.carItemFlage,{backgroundColor:obdclor}]}><Text >OBD</Text></View>
                         <View style={[styles.carItemFlage,
                         typeof(shouxuState)=="undefined"?{width:0}:{width:adapeSize(60),
-                        marginLeft:adapeSize(5)},shouxuState==1?{backgroundColor:'#ffffff'}
-                        :{backgroundColor:'#d8d8d8'}]}>
+                        marginLeft:adapeSize(5)},{backgroundColor:invoice}]}>
                             <Text style={{paddingTop:adapeSize(1),paddingBottom:adapeSize(1)}}>交易发票
                             </Text></View>
                     </View>
