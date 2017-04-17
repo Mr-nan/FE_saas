@@ -25,6 +25,7 @@ let showData={
     tempMax:'',
     tempCarList:[],
     tempLendInfo:{},
+    tempDetailInfo:{},
 }
 const tempDelete={
     base_id:'',
@@ -193,7 +194,7 @@ export  default  class CGDLendScenes extends BaseComponent {
             .then((response) => {
                     let tempjson = response.mjson.data;
 
-                    showData.tempLendInfo={
+                    showData.tempDetailInfo={
                         isinvoice:tempjson.isinvoice=='有'?1:0,
                         isobd:tempjson.isobd=='有'?1:0,
                         payment_loanmny_str:tempjson.payment_loanmny_str,
@@ -202,7 +203,7 @@ export  default  class CGDLendScenes extends BaseComponent {
                     };
                     PostData.loan_mny=(Number.parseFloat(tempjson.payment_loanmny_str)).toString();
                     PostData.use_time=tempjson.use_time_str;
-                    this.getLendInfo(showData.tempLendInfo.isobd,showData.tempLendInfo.isinvoice);
+                    this.getLendInfo(showData.tempDetailInfo.isobd,showData.tempDetailInfo.isinvoice);
                 },
                 (error) => {
 
@@ -213,7 +214,6 @@ export  default  class CGDLendScenes extends BaseComponent {
                         this.props.showToast(error.mjson.msg);
 
                     } else {
-
                         this.props.showToast('服务器连接有问题')
                     }
                 });
@@ -284,9 +284,9 @@ export  default  class CGDLendScenes extends BaseComponent {
             }
         }
         if(infoIsall&&isHasCar&&moneyAdape){
+            let tempisObd=this.props.loan_code?showData.tempDetailInfo.isobd:this.props.isOBD;
+            let isinvoice =this.props.loan_code?showData.tempDetailInfo.isinvoice:this.props.isCarinvoice;
 
-            let tempisObd=this.props.isOBD
-            let isinvoice=this.props.isCarinvoice;
             showData.tempCarList.map((item)=>{
                 let obdState =Number.parseInt(item.obd_bind_status);
                 let invoice  =Number.parseInt(item.invoice_upload_status);
@@ -313,8 +313,8 @@ export  default  class CGDLendScenes extends BaseComponent {
             let tempCarList=[]
             CarList.map((item)=>{tempCarList.push(item.info_id)})
             let carIdList =tempCarList.join(',')
-            let tempOBDState=this.props.loan_code?this.props.isOBD:showData.tempLendInfo.isobd;
-            let tempCarinvoice =this.props.loan_code?this.props.isCarinvoice:showData.tempLendInfo.isinvoice;
+            let tempOBDState=this.props.loan_code?showData.tempDetailInfo.isobd:this.props.isOBD;
+            let tempCarinvoice =this.props.loan_code?showData.tempDetailInfo.isinvoicethis:this.props.isCarinvoice;
 
             let maps = {
                 api: apis.APPLY_LOAN,
@@ -424,7 +424,7 @@ export  default  class CGDLendScenes extends BaseComponent {
         } else {
             return (
 
-                <CGDCarItem  url={rowData.icon}title={rowData.model_name}obdState={rowData.obd_bind_status} date={rowData.init_reg+' / '+rowData.mileage+'万公里'} onPress={()=>{
+                <CGDCarItem  url={rowData.icon}title={rowData.model_name}obdState={rowData.obd_bind_status} shouxuState={rowData.invoice_upload_status} date={rowData.init_reg+' / '+rowData.mileage+'万公里'} onPress={()=>{
                     this.carItemClick(rowData.info_id);
                 }} deletePress={()=>{
                     this.deleteCar.setModelVisible(true);

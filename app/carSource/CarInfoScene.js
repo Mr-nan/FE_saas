@@ -193,8 +193,8 @@ export default class CarInfoScene extends BaseComponent {
         //     }
         // }
         // this.toNextPage(navigatorParams);
-        this.refs.LendSuccessAlert.setModelVisible(true);
-        // this.refs.sharedView.isVisible(true);
+        // this.refs.LendSuccessAlert.setModelVisible(true);
+        this.refs.sharedView.isVisible(true);
     }
 
 
@@ -539,7 +539,7 @@ class  SharedView extends Component{
 
     componentDidMount() {
 
-          // weChat.registerApp('wx69699ad69f370cfc');
+          weChat.registerApp('wx6211535f6243c779');
 
     }
 

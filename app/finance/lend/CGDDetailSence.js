@@ -159,7 +159,7 @@ export default class OrderCarDetailScene extends BaseComponent {
             {title: '借款单号', key: jsonData.loan_code},
             {title: '状态', key: jsonData.payment_status_str},
             {title: '产品类型', key: jsonData.product_type},
-            {title: '借款类型', key: '---'},
+            //{title: '借款类型', key: '---'},
             {title: '借款金额', key: jsonData.payment_loanmny_str},
             {title: '借款费率', key: jsonData.payment_rate_str},
             {title: '借款期限', key: jsonData.loanperiodstr},
@@ -240,9 +240,9 @@ export default class OrderCarDetailScene extends BaseComponent {
 
         }
         if (sectionID === 'section2') {
-
-            return (<CGDCarItem url={rowData.icon} title={rowData.model_name} obdState={rowData.obd_bind_status}
-                                date={rowData.init_reg+' / '+rowData.mileage+'万公里'} shouxuState ={rowData.invoice_upload_status} onPress={() => {
+            //
+            return (<CGDCarItem url={rowData.icon} title={rowData.model_name} shouxuState ={rowData.invoice_upload_status} obdState={rowData.obd_bind_status}
+                                date={rowData.init_reg+' / '+rowData.mileage+'万公里'}  onPress={() => {
                 this.carItemClick(rowData.info_id);
             }}/>)
         }
