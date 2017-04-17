@@ -241,7 +241,8 @@ export default class OrderCarDetailScene extends BaseComponent {
         }
         if (sectionID === 'section2') {
             //
-            return (<CGDCarItem url={rowData.icon} title={rowData.model_name} shouxuState ={rowData.invoice_upload_status} obdState={rowData.obd_bind_status}
+            return (<CGDCarItem url={rowData.icon} title={rowData.model_name}
+                                shouxuState ={rowData.invoice_upload_status}  obdState={rowData.obd_bind_status}
                                 date={rowData.init_reg+' / '+rowData.mileage+'万公里'}  onPress={() => {
                 this.carItemClick(rowData.info_id);
             }}/>)

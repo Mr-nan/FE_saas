@@ -362,6 +362,49 @@ export class CGDCarItem extends PureComponent{
 
 }
 
+export class CGDCarItems extends PureComponent{
+
+
+    render(){
+
+        const {url,title,obdState,shouxuState,date,onPress,deletePress}=this.props;
+
+        let obdclor = '';
+        let invoice = '';
+
+        return(
+            <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={styles.CGDCarWarp}>
+
+                <Image source={{uri:url}} style={styles.CGDCarImage}/>
+                <View style={styles.CGDInstWarpTop}>
+                    <Text style={styles.CGDInstTitle} numberOfLines={2}>{title}</Text>
+                    <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
+                        <View style={[styles.carItemFlage,obdState==1?{backgroundColor:'#ffffff'}:
+                        {backgroundColor:'#d8d8d8'}]}><Text >OBD</Text></View>
+                        <View style={[styles.carItemFlage,
+                        typeof(shouxuState)=="undefined"?{width:0}:{width:adapeSize(60),
+                        marginLeft:adapeSize(5)},shouxuState==1?{backgroundColor:'#ffffff'}
+                        :{backgroundColor:'#d8d8d8'}]}>
+                            <Text style={{paddingTop:adapeSize(1),paddingBottom:adapeSize(1)}}>交易发票
+                            </Text></View>
+                    </View>
+
+                    <View style={styles.CGDInstWarpBooton}>
+                        <Text style={styles.CGDInserDate}>{date}</Text>
+                    </View>
+                </View>
+                <TouchableOpacity style={{justifyContent:'center',alignItems:'center',marginRight:adapeSize(10)}} onPress={deletePress}>
+                    <Text style={{color:'red'}}>{deletePress&&'删除'}</Text>
+                </TouchableOpacity>
+            </TouchableOpacity>
+
+        )
+    }
+
+
+
+}
+
 
 const styles = StyleSheet.create({
 
