@@ -115,6 +115,7 @@ android {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             // signingConfig signingConfigs.release
+            buildConfigField "String", "CODEPUSH_KEY", '"xmOhd_I_phLbpA3a4AKSbAMFaN5DVJvFYEdiG"'
         }
 
         releaseStaging {
