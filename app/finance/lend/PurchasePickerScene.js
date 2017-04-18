@@ -113,7 +113,12 @@ export  default class PurchasePickerScene extends BaseComponent {
                         this.props.backRefresh();
                         const navigator = this.props.navigator;
                         if (navigator){
-                            navigator.popToRoute(navigator.getCurrentRoutes()[3]);
+                            for(let i = 0;i<navigator.getCurrentRoutes().length;i++){
+                                if(navigator.getCurrentRoutes()[i].name=='CGDLendScenes'){
+                                     navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                                     break;
+                                }
+                            }
                         }
                 }} ref="allloading" callBack={()=>{
                             this.props.backRefresh();
@@ -121,10 +126,6 @@ export  default class PurchasePickerScene extends BaseComponent {
                                 name: 'OBDDevice', component: OBDDevice, params: {
                                     backRefresh:()=>{
                                         this.props.backRefresh();
-                                         const navigator = this.props.navigator;
-                        if (navigator){
-                            navigator.popToRoute(navigator.getCurrentRoutes()[3]);
-                        }
                                     },carData:this.props.carData
                                 }
                             });
@@ -212,8 +213,13 @@ export  default class PurchasePickerScene extends BaseComponent {
                         this.props.showToast("添加成功");
                         this.props.backRefresh();
                         const navigator = this.props.navigator;
-                        if (navigator) {
-                            navigator.popToRoute(navigator.getCurrentRoutes()[3]);
+                        if (navigator){
+                            for(let i = 0;i<navigator.getCurrentRoutes().length;i++){
+                                if(navigator.getCurrentRoutes()[i].name=='CGDLendScenes'){
+                                    navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                                    break;
+                                }
+                            }
                         }
                     } else {
                         this.props.carData.info_id = response.mjson.data.info_id;
@@ -224,8 +230,13 @@ export  default class PurchasePickerScene extends BaseComponent {
                                 backRefresh: () => {
                                     this.props.backRefresh();
                                     const navigator = this.props.navigator;
-                                    if (navigator) {
-                                        navigator.popToRoute(navigator.getCurrentRoutes()[3]);
+                                    if (navigator){
+                                        for(let i = 0;i<navigator.getCurrentRoutes().length;i++){
+                                            if(navigator.getCurrentRoutes()[i].name=='CGDLendScenes'){
+                                                navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                                                break;
+                                            }
+                                        }
                                     }
                                 }, carData: this.props.carData
                             }
@@ -268,8 +279,13 @@ export  default class PurchasePickerScene extends BaseComponent {
                         this.props.showToast("编辑成功");
                         this.props.backRefresh();
                         const navigator = this.props.navigator;
-                        if (navigator) {
-                            navigator.popToRoute(navigator.getCurrentRoutes()[3]);
+                        if (navigator){
+                            for(let i = 0;i<navigator.getCurrentRoutes().length;i++){
+                                if(navigator.getCurrentRoutes()[i].name=='CGDLendScenes'){
+                                    navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                                    break;
+                                }
+                            }
                         }
                     } else {
                         if (this.props.carData.obd_bind_status == '1') {
