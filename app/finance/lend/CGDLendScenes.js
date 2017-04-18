@@ -102,6 +102,9 @@ export  default  class CGDLendScenes extends BaseComponent {
     }
 
     refreshAll=()=>{
+        this.setState({
+            renderPlaceholderOnly: STATECODE.loading
+        })
         this.getCarListInfo(showData.tempLendInfo)
     }
 
