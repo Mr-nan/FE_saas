@@ -519,7 +519,7 @@ export  default  class CGDLendScenes extends BaseComponent {
                 {this.props.loan_code?<View style={{height:adapeSize(70),width:width,backgroundColor:'rgb(254,253,233)',position:'absolute',
         top:Pixel.getTitlePixel(64),flexDirection:'row',padding: Pixel.getPixel(15)}}>
                         <Text style={{color:'#ff0000',fontSize:Pixel.getFontPixel(14)}}>审核未通过：</Text>
-                        <Text style={{color:'#000000',fontSize:Pixel.getFontPixel(14)}} numberOfLines={3}>{reason}</Text>
+                        <Text style={{color:'#000000',fontSize:Pixel.getFontPixel(14)}} numberOfLines={2}>{reason}</Text>
 
                     </View>:<View/>}
 

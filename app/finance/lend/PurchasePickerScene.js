@@ -212,6 +212,10 @@ export  default class PurchasePickerScene extends BaseComponent {
                             name: 'OBDDevice', component: OBDDevice, params: {
                                backRefresh:()=>{
                                     this.props.backRefresh();
+                                   const navigator = this.props.navigator;
+                                   if (navigator){
+                                       navigator.popToRoute(navigator.getCurrentRoutes()[3]);
+                                   }
                                 },carData:this.props.carData
                             }
                         });
