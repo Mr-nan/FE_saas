@@ -110,7 +110,7 @@ export  default  class CGDLendScenes extends BaseComponent {
 
         let dataSource = {};
 
-        let type=this.getType(this.props.isCarinvoice)+'票'+this.getType(this.props.isOBD)+'OBD';
+        let type=this.getType(this.props.loan_code?showData.tempDetailInfo.isobd:this.props.isCarinvoice)+'票'+this.getType(this.props.loan_code?showData.tempDetailInfo.isinvoice:this.props.isOBD)+'OBD';
 
         dataSource['section1'] = [
             {title: '模式', value:type},
