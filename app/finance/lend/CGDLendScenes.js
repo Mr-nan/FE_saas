@@ -460,7 +460,7 @@ export  default  class CGDLendScenes extends BaseComponent {
             return (
                 <View style={styles.sections}>
                     <Text style={{color:'#ff0000',fontSize:Pixel.getFontPixel(14)}}> {'审核未通过:'}</Text>
-                    <Text style={{color:'#000000',fontSize:Pixel.getFontPixel(14)}} numberOfLines={2}>{showData.tempLendInfo.payment_audit_reason}</Text>
+                    <Text style={{color:'#000000',fontSize:Pixel.getFontPixel(14)}} numberOfLines={2}>{showData.tempDetailInfo.payment_audit_reason}</Text>
                 </View>
             )
         }
