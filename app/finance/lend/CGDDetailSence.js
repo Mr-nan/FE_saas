@@ -241,7 +241,7 @@ export default class OrderCarDetailScene extends BaseComponent {
         }
         if (sectionID === 'section2') {
             //
-            return (<CGDCarItem url={rowData.icon} title={rowData.model_name}
+            return (<CGDCarItems url={rowData.icon} title={rowData.model_name}
                                 invoice_upload_status ={rowData.invoice_upload_status}
                                 obd_bind_status={rowData.obd_bind_status}
                                 obd_audit_status={rowData.obd_audit_status}
