@@ -54,7 +54,7 @@ public class MainApplication extends UmengPushApplication implements ReactApplic
           new QrScanPackage(),
           new CustomCameraPackage(),
           new RNSpinkitPackage(),
-          new CodePush("Z1HGCCOTjRR-JnusRncdEk1rr06wVJvFYEdiG", getApplicationContext(), BuildConfig.DEBUG)
+          new CodePush("xmOhd_I_phLbpA3a4AKSbAMFaN5DVJvFYEdiG", getApplicationContext(), BuildConfig.DEBUG)
       );
     }
   };

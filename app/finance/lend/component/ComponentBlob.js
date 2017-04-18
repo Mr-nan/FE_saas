@@ -56,6 +56,13 @@ export const commnetStyle=StyleSheet.create({
         bottom:adapeSize(50),
         backgroundColor:PAGECOLOR.COLORA3
     },
+    ListWarpss:{
+        position:'absolute',
+        top:Pixel.getTitlePixel(114),
+        width:width,
+        bottom:adapeSize(50),
+        backgroundColor:PAGECOLOR.COLORA3
+    },
 
     bottomWarp:{
         position:'absolute',
@@ -173,13 +180,13 @@ export class LendInputItem extends PureComponent {
     render() {
 
 
-        const {title,placeholder,unit,unitStyle,onChangeText}=this.props;
+        const {title,placeholder,unit,unitStyle,onChangeText,showValue}=this.props;
 
         return (
             <View style={styles.itemView}>
 
                 <Text style={styles.itemLeftText}>{title}</Text>
-                <TextInput underlineColorAndroid={"#00000000"} style={styles.itemInput} placeholder={placeholder} keyboardType={'decimal-pad'} onChangeText={onChangeText}/>
+                <TextInput underlineColorAndroid={"#00000000"} style={styles.itemInput} placeholder={placeholder} keyboardType={'decimal-pad'} onChangeText={onChangeText} defaultValue={showValue}/>
                 <Text style={[styles.itemPlacehodel,unitStyle]}>{unit}</Text>
             </View>
         )
@@ -196,6 +203,11 @@ export class LendDatePike extends PureComponent {
             placeholder:this.props.placeholder,
         };
     }
+    componentDidMount(){
+        const {defaultShowValue}=this.props
+        defaultShowValue&&this.changeText(defaultShowValue);
+    }
+
 
     setPlaceHodel=(vlaue)=>{
 
@@ -234,7 +246,7 @@ export class LendDatePike extends PureComponent {
                 <Text  style={styles.itemLeftText}>{lefTitle}</Text>
 
                 <TextInput  underlineColorAndroid={"#00000000"} ref={(date)=>{this.dateInput=date}} editable={false} style={[styles.itemInput, {marginRight: adapeSize(17)}]}
-                           placeholder={this.state.placeholder} value={this.state.value} />
+                           placeholder={this.state.placeholder} value={this.state.value}/>
                 <Image style={[styles.itemPikerDate,imageStyle]} source={imageSouce}/>
             </TouchableOpacity>
         )
@@ -315,7 +327,7 @@ export class CGDCarItem extends PureComponent{
 
     render(){
 
-        const {url,title,obdState,date,onPress,deletePress}=this.props;
+        const {url,title,obdState,shouxuState,date,onPress,deletePress}=this.props;
 
         return(
             <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={styles.CGDCarWarp}>
@@ -323,7 +335,73 @@ export class CGDCarItem extends PureComponent{
                 <Image source={{uri:url}} style={styles.CGDCarImage}/>
                 <View style={styles.CGDInstWarpTop}>
                     <Text style={styles.CGDInstTitle} numberOfLines={2}>{title}</Text>
-                    <View style={obdState==1?{backgroundColor:'green',width:adapeSize(45),alignItems:'center'}:{backgroundColor:'red',width:adapeSize(45),alignItems:'center'}}><Text >OBD</Text></View>
+                    <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
+                        <View style={[styles.carItemFlage,obdState==1?{backgroundColor:'#ffffff'}:
+                        {backgroundColor:'#d8d8d8'}]}><Text >OBD</Text></View>
+                        <View style={[styles.carItemFlage,
+                        typeof(shouxuState)=="undefined"?{width:0}:{width:adapeSize(60),
+                        marginLeft:adapeSize(5)},shouxuState==1?{backgroundColor:'#ffffff'}
+                        :{backgroundColor:'#d8d8d8'}]}>
+                            <Text style={{paddingTop:adapeSize(1),paddingBottom:adapeSize(1)}}>交易发票
+                            </Text></View>
+                    </View>
+
+                    <View style={styles.CGDInstWarpBooton}>
+                        <Text style={styles.CGDInserDate}>{date}</Text>
+                    </View>
+                </View>
+                <TouchableOpacity style={{justifyContent:'center',alignItems:'center',marginRight:adapeSize(10)}} onPress={deletePress}>
+                    <Text style={{color:'red'}}>{deletePress&&'删除'}</Text>
+                </TouchableOpacity>
+            </TouchableOpacity>
+
+        )
+    }
+
+
+
+}
+
+export class CGDCarItems extends PureComponent{
+
+
+    render(){
+
+        const {url,title,invoice_upload_status,obd_bind_status,obd_audit_status,invoice_audit_status,date,onPress,deletePress}=this.props;
+
+        let obdclor = '#d8d8d8';
+        let invoice = '#d8d8d8';
+        if(obd_bind_status=='1'){
+            if(obd_audit_status=='1'){
+                obdclor = '#00ff00';
+            }else if(obd_audit_status=='2'){
+                obdclor = '#ff0000';
+            }
+        }
+
+        if(invoice_upload_status=='1'){
+            if(invoice_audit_status=='1'){
+                invoice = '#00ff00';
+            }else if(invoice_audit_status=='2'){
+                invoice = '#ff0000';
+            }
+        }
+
+        return(
+            <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={styles.CGDCarWarp}>
+
+                <Image source={{uri:url}} style={styles.CGDCarImage}/>
+                <View style={styles.CGDInstWarpTop}>
+                    <Text style={styles.CGDInstTitle} numberOfLines={2}>{title}</Text>
+                    <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
+                        <View style={[styles.carItemFlage,{backgroundColor:obdclor}]}><Text >OBD</Text></View>
+                        <View style={[styles.carItemFlage,
+                        typeof(shouxuState)=="undefined"?{width:0}:{width:adapeSize(60),
+                        marginLeft:adapeSize(5)},{backgroundColor:invoice}]}>
+                            <Text style={{paddingTop:adapeSize(1),paddingBottom:adapeSize(1)}}>交易发票
+                            </Text></View>
+                    </View>
+
                     <View style={styles.CGDInstWarpBooton}>
                         <Text style={styles.CGDInserDate}>{date}</Text>
                     </View>
@@ -371,7 +449,11 @@ const styles = StyleSheet.create({
 
 
     },
-
+    carItemFlage:{
+        width:adapeSize(45),
+        alignItems:'center',
+    }
+    ,
     itemInput: {
 
         flex: 1,

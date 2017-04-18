@@ -7,7 +7,7 @@ import {
     Text
 } from 'react-native';
 import AllNavigatior from '../../component/AllNavigationView'
-import {CommnetListItem, CommentHandItem, commnetStyle, CGDCarItem, CommenButton} from './component/ComponentBlob'
+import {CommnetListItem, CommentHandItem, commnetStyle, CGDCarItems, CommenButton} from './component/ComponentBlob'
 import {
     width,
     height,
@@ -159,7 +159,7 @@ export default class OrderCarDetailScene extends BaseComponent {
             {title: '借款单号', key: jsonData.loan_code},
             {title: '状态', key: jsonData.payment_status_str},
             {title: '产品类型', key: jsonData.product_type},
-            {title: '借款类型', key: '---'},
+            //{title: '借款类型', key: '---'},
             {title: '借款金额', key: jsonData.payment_loanmny_str},
             {title: '借款费率', key: jsonData.payment_rate_str},
             {title: '借款期限', key: jsonData.loanperiodstr},
@@ -182,7 +182,9 @@ export default class OrderCarDetailScene extends BaseComponent {
                         info_id: item.info_id,
                         model_name: item.model_name,
                         init_reg: item.init_reg,
-                        base_id: item.base_id
+                        base_id: item.base_id,
+                        mileage:item.mileage,
+                        invoice_upload_status:item.invoice_upload_status
                     }
                 )
                 dataSource['section2'] = tempCarDate;
@@ -199,7 +201,7 @@ export default class OrderCarDetailScene extends BaseComponent {
         } else if (state == 33) {
             NameBlobs = ['取消借款', '确认金额']
         } else if (state === 35) {
-            NameBlobs = ['签署合同']
+            NameBlobs = ['取消借款','签署合同']
         } else if (state == 40 || state == 42 || isComplete == 4) {
             NameBlobs = ['查看合同']
         } else if (state == 41) {
@@ -238,9 +240,13 @@ export default class OrderCarDetailScene extends BaseComponent {
 
         }
         if (sectionID === 'section2') {
-
-            return (<CGDCarItem url={rowData.icon} title={rowData.model_name} obdState={rowData.obd_bind_status}
-                                date={rowData.init_reg} onPress={() => {
+            //
+            return (<CGDCarItems url={rowData.icon} title={rowData.model_name}
+                                invoice_upload_status ={rowData.invoice_upload_status}
+                                obd_bind_status={rowData.obd_bind_status}
+                                obd_audit_status={rowData.obd_audit_status}
+                                invoice_audit_status={rowData.invoice_audit_status}
+                                date={rowData.init_reg+' / '+rowData.mileage+'万公里'}  onPress={() => {
                 this.carItemClick(rowData.info_id);
             }}/>)
         }

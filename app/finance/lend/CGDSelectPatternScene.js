@@ -113,9 +113,14 @@ export  default  class CGDSelectPatternScene extends BaseComponent {
                     let colorParams = {
                         name: 'CGDLendScenes',
                         component: CGDLendScenes,
-                        params: {isCarinvoice: isCarinvoice, isOBD: isOBD,customerName:this.props.customerName,backRefresh:()=>{
-                this.props.backRefresh();
-        }}
+                        params: {
+                            isCarinvoice: isCarinvoice,
+                            isOBD: isOBD,
+                            customerName: this.props.customerName,
+                            backRefresh: () => {
+                                this.props.backRefresh();
+                            }
+                        }
                     };
                     this.toNextPage(colorParams);
                 }}>
@@ -225,7 +230,7 @@ class CGDSelectPatternCell extends Component {
                 <View style={styles.cellContentView}>
                     <View style={styles.cellContentLeftView}>
                         <Text
-                            style={styles.cellTitleText}>{loan_lower > 0 ? (loan_upper / 10000 + '-' + loan_lower / 10000 + '万(含)') : (loan_upper / 10000 + '万以下')}</Text>
+                            style={styles.cellTitleText}>{loan_lower > 0 ? ( loan_lower / 10000 + '-' + loan_upper / 10000 + '万(含)') : (loan_upper / 10000 + '万以下')}</Text>
                     </View>
                     <View style={styles.cellContentRightView}>
                         <View style={styles.cellContentItemView}>

@@ -12,19 +12,20 @@ import {
     TouchableOpacity,
 } from 'react-native';
 
-const PostData = {
+let PostData = {
     apply_type: '5',
     loan_mny: '',
     archives_type:'1',
     use_time:'',
 }
-const showData={
+let showData={
     maxMoney:'',
     rate:'',
     tempMin:'',
     tempMax:'',
     tempCarList:[],
     tempLendInfo:{},
+    tempDetailInfo:{},
 }
 const tempDelete={
     base_id:'',
@@ -48,6 +49,9 @@ import DateTimePicker from 'react-native-modal-datetime-picker'
 import {request} from '../../utils/RequestUtil'
 import *as apis from '../../constant/appUrls'
 import CGDAddCarScene from './CGDAddCarScene'
+import PixelUtil from '../../utils/PixelUtil';
+const Pixel = new PixelUtil();
+
 export  default  class CGDLendScenes extends BaseComponent {
 
     constructor(props) {
@@ -68,6 +72,13 @@ export  default  class CGDLendScenes extends BaseComponent {
             renderPlaceholderOnly: STATECODE.loading
         }
     }
+
+    componentWillUnmount(){
+        PostData.use_time='';
+        PostData.loan_mny='';
+
+    }
+
 
 
     initFinish() {
@@ -91,12 +102,7 @@ export  default  class CGDLendScenes extends BaseComponent {
     }
 
     refreshAll=()=>{
-        if(this.props.loan_code){
-            this.getLendInfo(showData.tempLendInfo.isobd,showData.tempLendInfo.isinvoice);
-        }else {
-            this.getLendInfo(this.props.isOBD,this.props.isCarinvoice);
-        }
-
+        this.getCarListInfo(showData.tempLendInfo)
     }
 
 
@@ -104,7 +110,7 @@ export  default  class CGDLendScenes extends BaseComponent {
 
         let dataSource = {};
 
-        let type=this.getType(this.props.isCarinvoice)+'手续'+this.getType(this.props.isOBD)+'OBD';
+        let type=this.getType(this.props.isCarinvoice)+'票'+this.getType(this.props.isOBD)+'OBD';
 
         dataSource['section1'] = [
             {title: '模式', value:type},
@@ -134,6 +140,7 @@ export  default  class CGDLendScenes extends BaseComponent {
                         init_reg:item.init_reg,
                         base_id:item.base_id,
                         invoice_upload_status:item.invoice_upload_status,
+                        mileage:item.mileage
                     }
                 )
                 dataSource['section3'] = tempCarDate;
@@ -151,11 +158,10 @@ export  default  class CGDLendScenes extends BaseComponent {
                 isobd:obdState
             };
 
-
             request(apis.FINANCE, 'Post', maps)
                 .then((response) => {
                         let tempjson = response.mjson.data;
-                            showData.tempMin=changeToMillion(tempjson.min_loanmny);
+                        showData.tempMin=changeToMillion(tempjson.min_loanmny);
                         showData.tempMax=changeToMillion(tempjson.max_loanmny);
                         showData.tempLendInfo=tempjson;
                         this.getCarListInfo(tempjson);
@@ -182,22 +188,27 @@ export  default  class CGDLendScenes extends BaseComponent {
 
         let maps = {
             api: apis.GET_APPLY_INFO,
-            loan_code: this.props.loan_code
 
         };
+        if(this.props.loan_code){
+            Object.assign(maps,{loan_code: this.props.loan_code})
+        }
 
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
                     let tempjson = response.mjson.data;
 
-                    showData.tempLendInfo={
-                        isinvoice:tempjson.isinvoice,
-                        isobd:tempjson.isobd,
+                    showData.tempDetailInfo={
+                        isinvoice:tempjson.isinvoice=='有'?1:0,
+                        isobd:tempjson.isobd=='有'?1:0,
                         payment_loanmny_str:tempjson.payment_loanmny_str,
                         createtimestr:tempjson.createtimestr,
                         payment_audit_reason:tempjson.payment_audit_reason,
                     };
-                    this.getLendInfo(showData.tempLendInfo.isobd,showData.tempLendInfo.isinvoice);
+
+                    PostData.loan_mny=(Number.parseFloat(tempjson.payment_loanmny_str)).toString();
+                    PostData.use_time=tempjson.use_time_str;
+                    this.getLendInfo(showData.tempDetailInfo.isobd,showData.tempDetailInfo.isinvoice);
                 },
                 (error) => {
 
@@ -208,7 +219,6 @@ export  default  class CGDLendScenes extends BaseComponent {
                         this.props.showToast(error.mjson.msg);
 
                     } else {
-
                         this.props.showToast('服务器连接有问题')
                     }
                 });
@@ -219,10 +229,12 @@ export  default  class CGDLendScenes extends BaseComponent {
     getCarListInfo=(templendInfo)=>{
         let maps = {
             api: apis.AUTOLIST,
+
         };
-        if (this.props.loan_code){
-            Object.assign(maps,{loan_code:this.props.loan_code})
+        if(this.props.loan_code){
+            Object.assign(maps,{payment_number:this.props.loan_code})
         }
+
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
                     this.props.showModal(false);
@@ -277,17 +289,17 @@ export  default  class CGDLendScenes extends BaseComponent {
             }
         }
         if(infoIsall&&isHasCar&&moneyAdape){
+            let tempisObd=this.props.loan_code?showData.tempDetailInfo.isobd:this.props.isOBD;
+            let isinvoice =this.props.loan_code?showData.tempDetailInfo.isinvoice:this.props.isCarinvoice;
 
-            let tempisObd=this.props.isOBD
-            let isinvoice=this.props.isCarinvoice;
             showData.tempCarList.map((item)=>{
                 let obdState =Number.parseInt(item.obd_bind_status);
                 let invoice  =Number.parseInt(item.invoice_upload_status);
-                if(invoice>isinvoice){
-                    this.props.showToast('请补全发票信息')
+                if(invoice<isinvoice){
+                    this.props.showToast('请补全票据信息')
                     return
                 }
-               if(tempisObd==obdState){
+               if((tempisObd==obdState)&&(invoice==isinvoice)){
                     this.lendMoneyClick();
                }else if(obdState==1&&tempisObd==0){
                     this.infoMessage.setModelVisible(true)
@@ -306,22 +318,19 @@ export  default  class CGDLendScenes extends BaseComponent {
             let tempCarList=[]
             CarList.map((item)=>{tempCarList.push(item.info_id)})
             let carIdList =tempCarList.join(',')
-            let tempOBDState=this.props.loan_code?this.props.isOBD:showData.tempLendInfo.isobd;
-            let tempCarinvoice =this.props.loan_code?this.props.isCarinvoice:showData.tempLendInfo.isinvoice;
+            let tempOBDState=this.props.loan_code?showData.tempDetailInfo.isobd:this.props.isOBD;
+            let tempCarinvoice =this.props.loan_code?showData.tempDetailInfo.isinvoicethis:this.props.isCarinvoice;
 
-
-            let maps ={
-                api:apis.APPLY_LOAN,
-                apply_type:PostData.apply_type,
-                isobd:tempOBDState,
-                isinvoice:tempCarinvoice,
-                loan_mny:PostData.loan_mny,
-                use_time:PostData.use_time,
-                car_lists:carIdList,
-                archives_type:PostData.archives_type
-            }
-            if (this.props.loan_code){
-                Object.assign(maps,{loan_code:this.props.loan_code})
+            let maps = {
+                api: apis.APPLY_LOAN,
+                apply_type: PostData.apply_type,
+                isobd: tempOBDState,
+                isinvoice: tempCarinvoice,
+                loan_mny: PostData.loan_mny,
+                use_time: PostData.use_time,
+                car_lists: carIdList,
+                archives_type: PostData.archives_type,
+                loan_code: this.props.loan_code
             }
             this.props.showModal(true);
             request(apis.FINANCE, 'Post', maps)
@@ -353,13 +362,9 @@ export  default  class CGDLendScenes extends BaseComponent {
             .then((response) => {
                     this.props.showModal(false);
 
-                    let tempDataSource =Object.assign({},this.state.dataSource);
-                    console.log(tempDataSource._dataBlob['section3'])
-                    tempDataSource._dataBlob['section3'].splice(tempDelete.itemAtInex,1);
-                    console.log(tempDataSource._dataBlob['section3'])
-
+                    showData.tempCarList.splice(tempDelete.itemAtInex,1);
                     this.setState({
-                        dataSource: this.state.dataSource.cloneWithRowsAndSections(tempDataSource._dataBlob),
+                        dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(showData.tempLendInfo, showData.tempCarList)),
                     })
                     this.props.showToast('删除成功');
                 },
@@ -373,6 +378,7 @@ export  default  class CGDLendScenes extends BaseComponent {
                         this.props.showToast('服务器连接有问题')
                     }
                 });
+
 
 
 
@@ -415,15 +421,16 @@ export  default  class CGDLendScenes extends BaseComponent {
             return (<LendItem leftTitle={rowData.title} rightTitle={rowData.value}/>)
         } else if (sectionID === 'section2' && rowID === '0') {
 
-            return <LendInputItem placeholder={'请输入借款金额'} title={rowData.title} onChangeText={(text)=>{PostData.loan_mny=text}}/>
+            return <LendInputItem placeholder={'请输入借款金额'} title={rowData.title} onChangeText={(text)=>{PostData.loan_mny=text} } showValue={PostData.loan_mny}/>
         } else if (sectionID === 'section2' && rowID === '1') {
 
-            return <LendDatePike ref={(piker)=>{this.datePiker =piker}} lefTitle={rowData.title} placeholder='请选择用款时间'
-                                 imageSouce={require('../../../images/financeImages/dateIcon.png')} onPress={this.onPress}/>
+            return <LendDatePike ref={(piker)=>{this.datePiker =piker}} showData={'3333'} lefTitle={rowData.title} placeholder='请选择用款时间'
+                                 imageSouce={require('../../../images/financeImages/dateIcon.png')} onPress={this.onPress} defaultShowValue={PostData.use_time}/>
         } else {
             return (
 
-                <CGDCarItem  url={rowData.icon}title={rowData.model_name}obdState={rowData.obd_bind_status}date={rowData.init_reg} onPress={()=>{
+                <CGDCarItem  url={rowData.icon}title={rowData.model_name}obdState={rowData.obd_bind_status} shouxuState={rowData.invoice_upload_status} date={rowData.init_reg+' / '+rowData.mileage+'万公里'}
+                             onPress={()=>{
                     this.carItemClick(rowData.info_id);
                 }} deletePress={()=>{
                     this.deleteCar.setModelVisible(true);
@@ -451,8 +458,9 @@ export  default  class CGDLendScenes extends BaseComponent {
         if(sectionId=='section1'&&this.props.loan_code){
 
             return (
-                <View style={styles.section}>
-                    <Text>{showData.tempLendInfo.payment_audit_reason}</Text>
+                <View style={styles.sections}>
+                    <Text style={{color:'#ff0000',fontSize:Pixel.getFontPixel(14)}}> {'审核未通过:'}</Text>
+                    <Text style={{color:'#000000',fontSize:Pixel.getFontPixel(14)}} numberOfLines={2}>{showData.tempLendInfo.payment_audit_reason}</Text>
                 </View>
             )
         }
@@ -503,13 +511,14 @@ export  default  class CGDLendScenes extends BaseComponent {
                         this.navigatorParams.name = "CGDAddCarScene";
                         this.navigatorParams.component = CGDAddCarScene;
                         this.navigatorParams.params = {isOBD:this.props.isOBD,
-                        isCarinvoice:this.props.isCarinvoice,backRefresh:()=>{
+                        isCarinvoice:this.props.isCarinvoice,paymentId:this.props.loan_code,backRefresh:()=>{
                             this.refreshAll();
                         }};
                      this.toNextPage(this.navigatorParams)
                     }} title="添加车辆"/>
                     <CommenButton textStyle={{color: 'white'}} buttonStyle={styles.buttonStyleLeft} onPress={this.verificationInfo} title="申请借款"/>
                 </View>
+
                 <DateTimePicker
                     isVisible={this.state.isDateTimePickerVisible}
                     onConfirm={this._handleDatePicked}
@@ -594,6 +603,13 @@ const styles = StyleSheet.create({
         height: 30,
         alignItems: 'center',
         paddingLeft: 15
+    }
+    ,
+    sections:{
+        height:adapeSize(70),width:width,backgroundColor:'rgb(254,253,233)',
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 15
     }
 
 

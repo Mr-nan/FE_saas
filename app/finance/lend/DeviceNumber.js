@@ -72,6 +72,8 @@ export default class OBDDevice extends BaseComponent {
                         if (obd_number != '') {
                             this.props.callBack(obd_number);
                             this.backPage();
+                        } else {
+                            this.props.showToast("请输入设备号");
                         }
 
                     }}

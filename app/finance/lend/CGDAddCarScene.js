@@ -73,6 +73,9 @@ export default class CGDAddCarScene extends BaseComponent {
             init_reg: '请选择',
             carReceive: '请选择',
             carRegister: '请选择'
+        };
+        if(this.props.paymentId){
+            this.carData.payment_id = this.props.paymentId;
         }
     }
 
@@ -137,8 +140,8 @@ export default class CGDAddCarScene extends BaseComponent {
                                     this.carData.series_id = rdb2.series_id;
                                     this.carData.frame_number = rdb2.frame_number;
                                     this.carData.car_color = rdb2.car_color;
-                                    this.carData.mileage = dt;
-                                    this.carData.init_reg = rdb2.init_reg;
+                                    this.carData.mileage = rdb2.mileage+ '';
+                                    this.carData.init_reg = dt;
                                     this.carData.rev_user_id = rdb2.rev_user_id;
                                     this.carData.register_user_id = rdb2.register_user_id;
                                     this.carData.purchas_price = rdb2.purchas_price;
