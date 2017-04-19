@@ -305,7 +305,7 @@ export default class CGDAddCarScene extends BaseComponent {
                 vinParams = {
                     api: AppUrls.PURCHA_CHECK_IN,
                     frame_number:text,
-                    base_id:this.carData.base_id
+                    base_id:this.carData.baseID
                 };
             }else{
                 vinParams = {

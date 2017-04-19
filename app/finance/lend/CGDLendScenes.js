@@ -102,6 +102,9 @@ export  default  class CGDLendScenes extends BaseComponent {
     }
 
     refreshAll=()=>{
+        this.setState({
+            renderPlaceholderOnly: STATECODE.loading
+        })
         this.getCarListInfo(showData.tempLendInfo)
     }
 
@@ -385,10 +388,10 @@ export  default  class CGDLendScenes extends BaseComponent {
 
     }
 
-    carItemClick=(infoId)=>{
+    carItemClick=(infoId,base_id)=>{
         this.navigatorParams.name = "CGDAddCarScene";
         this.navigatorParams.component = CGDAddCarScene;
-        this.navigatorParams.params = {isOBD:this.props.isOBD,isCarinvoice:this.props.isCarinvoice,InfoId:infoId,updateCar:true,
+        this.navigatorParams.params = {isOBD:this.props.isOBD,isCarinvoice:this.props.isCarinvoice,InfoId:infoId,baseID:base_id,updateCar:true,
             backRefresh:()=>{
             this.refreshAll();
         }};
@@ -431,7 +434,7 @@ export  default  class CGDLendScenes extends BaseComponent {
 
                 <CGDCarItem  url={rowData.icon}title={rowData.model_name}obdState={rowData.obd_bind_status} shouxuState={rowData.invoice_upload_status} date={rowData.init_reg+' / '+rowData.mileage+'万公里'}
                              onPress={()=>{
-                    this.carItemClick(rowData.info_id);
+                    this.carItemClick(rowData.info_id,rowData.base_id);
                 }} deletePress={()=>{
                     this.deleteCar.setModelVisible(true);
                     tempDelete.base_id=rowData.base_id
