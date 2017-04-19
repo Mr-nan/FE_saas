@@ -7,7 +7,7 @@ import {
     Text
 } from 'react-native';
 import AllNavigatior from '../../component/AllNavigationView'
-import {CommnetListItem, CommentHandItem, commnetStyle, CGDCarItems, CommenButton} from './component/ComponentBlob'
+import {CommnetListItem, CommentHandItem, commnetStyle, CommenButton,CGDCarItems} from './component/ComponentBlob'
 import {
     width,
     height,
@@ -184,7 +184,9 @@ export default class OrderCarDetailScene extends BaseComponent {
                         init_reg: item.init_reg,
                         base_id: item.base_id,
                         mileage:item.mileage,
-                        invoice_upload_status:item.invoice_upload_status
+                        invoice_upload_status:item.invoice_upload_status,
+                        obd_audit_status:item.obd_audit_status,
+                        invoice_audit_status:item.invoice_audit_status
                     }
                 )
                 dataSource['section2'] = tempCarDate;

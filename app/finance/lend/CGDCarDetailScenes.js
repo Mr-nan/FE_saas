@@ -110,7 +110,7 @@ export default class CGDCarDetailScenes extends BaseComponent{
             {title:'放款额',key:jsonData.first_assess_loan+'万元'}
         ]
         if(jsonData.obd_audit_status =='1'){
-            Object.assign(section1, {title: '车辆位置', key: jsonData.obd_track_url})
+            section1.push({title: '车辆位置', key: jsonData.obd_track_url})
         }
         dataSource['section1']=section1
         if(carData.length>0){
@@ -121,9 +121,9 @@ export default class CGDCarDetailScenes extends BaseComponent{
             carData.map((item)=>{
 
                 if (item.type=='auto'){
-                    mention.push(item)
+                    autoBase .push(item)
                 }else if (item.type=='mention'){
-                    autoBase.push(item)
+                    mention.push(item)
                 }else if (item.type=='obd'){
                     obdBase.push(item)
                 }

@@ -364,11 +364,7 @@ export class CGDCarItem extends PureComponent{
 
 export class CGDCarItems extends PureComponent{
 
-
-    render(){
-
-        const {url,title,invoice_upload_status,obd_bind_status,obd_audit_status,invoice_audit_status,date,onPress,deletePress}=this.props;
-
+    getStateStyle=(obd_bind_status,obd_audit_status,invoice_upload_status,invoice_audit_status)=>{
         let obdclor = '#d8d8d8';
         let invoice = '#d8d8d8';
         if(obd_bind_status=='1'){
@@ -378,7 +374,6 @@ export class CGDCarItems extends PureComponent{
                 obdclor = '#ff0000';
             }
         }
-
         if(invoice_upload_status=='1'){
             if(invoice_audit_status=='1'){
                 invoice = '#00ff00';
@@ -387,6 +382,15 @@ export class CGDCarItems extends PureComponent{
             }
         }
 
+        return {obdColor:obdclor,invoiceClolr:invoice}
+    }
+
+        render(){
+
+        const {url,title,invoice_upload_status,obd_bind_status,obd_audit_status,invoice_audit_status,date,onPress,deletePress}=this.props;
+
+        const colorstyle =this.getStateStyle(obd_bind_status,obd_audit_status,invoice_upload_status,invoice_audit_status);
+
         return(
             <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={styles.CGDCarWarp}>
 
@@ -394,14 +398,13 @@ export class CGDCarItems extends PureComponent{
                 <View style={styles.CGDInstWarpTop}>
                     <Text style={styles.CGDInstTitle} numberOfLines={2}>{title}</Text>
                     <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
-                        <View style={[styles.carItemFlage,{backgroundColor:obdclor}]}><Text >OBD</Text></View>
+                        <View style={[styles.carItemFlage,{backgroundColor:colorstyle.obdColor}]}><Text >OBD</Text></View>
                         <View style={[styles.carItemFlage,
-                        typeof(shouxuState)=="undefined"?{width:0}:{width:adapeSize(60),
-                        marginLeft:adapeSize(5)},{backgroundColor:invoice}]}>
+                        typeof(invoice_upload_status)=="undefined"?{width:0}:{width:adapeSize(60),
+                        marginLeft:adapeSize(5)},{backgroundColor:colorstyle.invoiceClolr}]}>
                             <Text style={{paddingTop:adapeSize(1),paddingBottom:adapeSize(1)}}>交易发票
                             </Text></View>
                     </View>
-
                     <View style={styles.CGDInstWarpBooton}>
                         <Text style={styles.CGDInserDate}>{date}</Text>
                     </View>

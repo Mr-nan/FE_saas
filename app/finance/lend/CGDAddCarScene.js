@@ -305,7 +305,7 @@ export default class CGDAddCarScene extends BaseComponent {
                 vinParams = {
                     api: AppUrls.PURCHA_CHECK_IN,
                     frame_number:text,
-                    base_id:this.carData.base_id
+                    base_id:this.carData.baseID
                 };
             }else{
                 vinParams = {
@@ -482,9 +482,6 @@ export default class CGDAddCarScene extends BaseComponent {
     };
 
     _onOKPress = () => {
-
-        console.log('============>>>>>>>');
-        console.log(JSON.stringify(this.carData));
 
         if (this.is_exists === true) {
             this._showHint('车架号有误');
