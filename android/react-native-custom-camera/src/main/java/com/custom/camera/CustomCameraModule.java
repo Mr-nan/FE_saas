@@ -10,6 +10,7 @@ import android.media.Image;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 
 import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Arguments;
@@ -98,9 +99,8 @@ public class CustomCameraModule extends ReactContextBaseJavaModule implements Ac
         while (baos.toByteArray().length / 1024 > 100) { // 循环判断如果压缩后图片是否大于100kb,大于继续压缩
             baos.reset();// 重置baos即清空baos
             image.compress(Bitmap.CompressFormat.JPEG, options, baos);// 这里压缩options%，把压缩后的数据存放到baos中
+            if(options == 0) break;
             options -= 10;// 每次都减少10
-//			System.out.println("options--->" + options + "    "
-//					+ (baos.toByteArray().length / 1024));
         }
 
         byte[] bytes = baos.toByteArray();
