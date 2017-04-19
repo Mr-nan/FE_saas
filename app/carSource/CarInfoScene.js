@@ -17,7 +17,7 @@ import {
 import *as fontAndColor from '../constant/fontAndColor';
 import ImagePageView from 'react-native-viewpager';
 import BaseComponent from '../component/BaseComponent';
-import NavigationView from '../component/AllNavigationView';
+import NavigationView from '../component/CarNavigationView';
 import Gallery from 'react-native-gallery';
 import PixelUtil from '../utils/PixelUtil';
 import {LendSuccessAlert} from '../finance/lend/component/ModelComponent';
@@ -193,8 +193,8 @@ export default class CarInfoScene extends BaseComponent {
         //     }
         // }
         // this.toNextPage(navigatorParams);
-        this.refs.LendSuccessAlert.setModelVisible(true);
-        // this.refs.sharedView.isVisible(true);
+        // this.refs.LendSuccessAlert.setModelVisible(true);
+        this.refs.sharedView.isVisible(true);
     }
 
 
@@ -346,6 +346,7 @@ export default class CarInfoScene extends BaseComponent {
                     <NavigationView
                         ref="navtigation"
                         title="车源详情"
+                        wrapStyle={{backgroundColor:'rgba(0,0,0,0)'}}
                         backIconClick={this.backIconClick}
                     />
             </View>);
@@ -539,7 +540,7 @@ class  SharedView extends Component{
 
     componentDidMount() {
 
-          // weChat.registerApp('wx69699ad69f370cfc');
+          weChat.registerApp('wx6211535f6243c779');
 
     }
 
@@ -733,10 +734,10 @@ class NavigationRightView extends Component{
                     }
 
                 }}>
-                    <Image source={ this.state.isStore? require('../../images/carSourceImages/store.png') : require('../../images/carSourceImages/store_nil.png')}></Image>
+                    <Image source={ this.state.isStore? require('../../images/carSourceImages/presc.png') : require('../../images/carSourceImages/newsc.png')}></Image>
                 </TouchableOpacity>
                 <TouchableOpacity style={{marginLeft: Pixel.getPixel(10)}} onPress={this.props.showShared}>
-                    <Image source={require('../../images/carSourceImages/share_nil.png')}></Image>
+                    <Image source={require('../../images/carSourceImages/newfx.png')}></Image>
                 </TouchableOpacity>
             </View>
         )

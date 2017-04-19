@@ -49,6 +49,9 @@ import DateTimePicker from 'react-native-modal-datetime-picker'
 import {request} from '../../utils/RequestUtil'
 import *as apis from '../../constant/appUrls'
 import CGDAddCarScene from './CGDAddCarScene'
+import PixelUtil from '../../utils/PixelUtil';
+const Pixel = new PixelUtil();
+
 export  default  class CGDLendScenes extends BaseComponent {
 
     constructor(props) {
@@ -73,6 +76,7 @@ export  default  class CGDLendScenes extends BaseComponent {
     componentWillUnmount(){
         PostData.use_time='';
         PostData.loan_mny='';
+
     }
 
 
@@ -98,6 +102,9 @@ export  default  class CGDLendScenes extends BaseComponent {
     }
 
     refreshAll=()=>{
+        this.setState({
+            renderPlaceholderOnly: STATECODE.loading
+        })
         this.getCarListInfo(showData.tempLendInfo)
     }
 
@@ -106,7 +113,7 @@ export  default  class CGDLendScenes extends BaseComponent {
 
         let dataSource = {};
 
-        let type=this.getType(this.props.isCarinvoice)+'票'+this.getType(this.props.isOBD)+'OBD';
+        let type=this.getType(this.props.loan_code?showData.tempDetailInfo.isobd:this.props.isCarinvoice)+'票'+this.getType(this.props.loan_code?showData.tempDetailInfo.isinvoice:this.props.isOBD)+'OBD';
 
         dataSource['section1'] = [
             {title: '模式', value:type},
@@ -201,6 +208,7 @@ export  default  class CGDLendScenes extends BaseComponent {
                         createtimestr:tempjson.createtimestr,
                         payment_audit_reason:tempjson.payment_audit_reason,
                     };
+
                     PostData.loan_mny=(Number.parseFloat(tempjson.payment_loanmny_str)).toString();
                     PostData.use_time=tempjson.use_time_str;
                     this.getLendInfo(showData.tempDetailInfo.isobd,showData.tempDetailInfo.isinvoice);
@@ -380,10 +388,10 @@ export  default  class CGDLendScenes extends BaseComponent {
 
     }
 
-    carItemClick=(infoId)=>{
+    carItemClick=(infoId,base_id)=>{
         this.navigatorParams.name = "CGDAddCarScene";
         this.navigatorParams.component = CGDAddCarScene;
-        this.navigatorParams.params = {isOBD:this.props.isOBD,isCarinvoice:this.props.isCarinvoice,InfoId:infoId,updateCar:true,
+        this.navigatorParams.params = {isOBD:this.props.isOBD,isCarinvoice:this.props.isCarinvoice,InfoId:infoId,baseID:base_id,updateCar:true,
             backRefresh:()=>{
             this.refreshAll();
         }};
@@ -424,8 +432,9 @@ export  default  class CGDLendScenes extends BaseComponent {
         } else {
             return (
 
-                <CGDCarItem  url={rowData.icon}title={rowData.model_name}obdState={rowData.obd_bind_status} shouxuState={rowData.invoice_upload_status} date={rowData.init_reg+' / '+rowData.mileage+'万公里'} onPress={()=>{
-                    this.carItemClick(rowData.info_id);
+                <CGDCarItem  url={rowData.icon}title={rowData.model_name}obdState={rowData.obd_bind_status} shouxuState={rowData.invoice_upload_status} date={rowData.init_reg+' / '+rowData.mileage+'万公里'}
+                             onPress={()=>{
+                    this.carItemClick(rowData.info_id,rowData.base_id);
                 }} deletePress={()=>{
                     this.deleteCar.setModelVisible(true);
                     tempDelete.base_id=rowData.base_id
@@ -452,8 +461,9 @@ export  default  class CGDLendScenes extends BaseComponent {
         if(sectionId=='section1'&&this.props.loan_code){
 
             return (
-                <View style={styles.section}>
-                    <Text>{showData.tempLendInfo.payment_audit_reason}</Text>
+                <View style={styles.sections}>
+                    <Text style={{color:'#ff0000',fontSize:Pixel.getFontPixel(14)}}> {'审核未通过:'}</Text>
+                    <Text style={{color:'#000000',fontSize:Pixel.getFontPixel(14)}} numberOfLines={2}>{showData.tempDetailInfo.payment_audit_reason}</Text>
                 </View>
             )
         }
@@ -511,6 +521,7 @@ export  default  class CGDLendScenes extends BaseComponent {
                     }} title="添加车辆"/>
                     <CommenButton textStyle={{color: 'white'}} buttonStyle={styles.buttonStyleLeft} onPress={this.verificationInfo} title="申请借款"/>
                 </View>
+
                 <DateTimePicker
                     isVisible={this.state.isDateTimePickerVisible}
                     onConfirm={this._handleDatePicked}
@@ -595,6 +606,13 @@ const styles = StyleSheet.create({
         height: 30,
         alignItems: 'center',
         paddingLeft: 15
+    }
+    ,
+    sections:{
+        height:adapeSize(70),width:width,backgroundColor:'rgb(254,253,233)',
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 15
     }
 
 
