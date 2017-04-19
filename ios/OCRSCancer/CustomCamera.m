@@ -46,16 +46,7 @@ RCT_REMAP_METHOD(takePic,
 }
 - (NSString *) image2DataURL: (UIImage *) image
 {
-  NSData *imageData = nil;
-  NSString *mimeType = nil;
-  
-  if ([self imageHasAlpha: image]) {
-    imageData = UIImagePNGRepresentation(image);
-    mimeType = @"image/png";
-  } else {
-    imageData = UIImageJPEGRepresentation(image, 1.0f);
-    mimeType = @"image/jpeg";
-  }
+  NSData *imageData = UIImageJPEGRepresentation(image, 0.6f);;
   
   return [imageData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
   

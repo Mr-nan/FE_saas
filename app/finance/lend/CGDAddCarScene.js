@@ -483,9 +483,6 @@ export default class CGDAddCarScene extends BaseComponent {
 
     _onOKPress = () => {
 
-        console.log('============>>>>>>>');
-        console.log(JSON.stringify(this.carData));
-
         if (this.is_exists === true) {
             this._showHint('车架号有误');
             return;

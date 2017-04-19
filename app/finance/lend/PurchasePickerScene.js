@@ -11,7 +11,8 @@ import {
     Dimensions,
     TouchableOpacity,
     ListView,
-    InteractionManager
+    InteractionManager,
+    NativeModules
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
@@ -25,6 +26,8 @@ import {request} from '../../utils/RequestUtil';
 import * as MyUrl from '../../constant/appUrls';
 let childItems = [];
 let results = [];
+import ImagePicker from "react-native-image-picker";
+import ImageSource from '../../publish/component/NewImageSource';
 import  AllLoading from '../../component/AllLoading';
 import OBDDevice from './OBDDevice';
 export  default class PurchasePickerScene extends BaseComponent {
@@ -130,13 +133,16 @@ export  default class PurchasePickerScene extends BaseComponent {
                                 }
                             });
                 }}/>
+                <ImageSource ref={(modal) => {this.imageSource = modal}}/>
             </View>
         );
     }
 
     _renderRow = (movie, sectionId, rowId) => {
         return (
-            <PurchasePickerItem results={results} showModal={(value)=>{this.props.showModal(value)}}
+            <PurchasePickerItem openModal={(cameraClick,galleryClick)=>{
+                this.imageSource.openModal('open',cameraClick,galleryClick);
+            }} results={results} showModal={(value)=>{this.props.showModal(value)}}
                                 showToast={(value)=>{this.props.showToast(value)}} items={movie}
                                 childList={childItems[rowId]}/>
         )
