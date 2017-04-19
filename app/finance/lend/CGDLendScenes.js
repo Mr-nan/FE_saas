@@ -322,7 +322,7 @@ export  default  class CGDLendScenes extends BaseComponent {
             CarList.map((item)=>{tempCarList.push(item.info_id)})
             let carIdList =tempCarList.join(',')
             let tempOBDState=this.props.loan_code?showData.tempDetailInfo.isobd:this.props.isOBD;
-            let tempCarinvoice =this.props.loan_code?showData.tempDetailInfo.isinvoicethis:this.props.isCarinvoice;
+            let tempCarinvoice =this.props.loan_code?showData.tempDetailInfo.isinvoice:this.props.isCarinvoice;
 
             let maps = {
                 api: apis.APPLY_LOAN,
@@ -391,7 +391,9 @@ export  default  class CGDLendScenes extends BaseComponent {
     carItemClick=(infoId,base_id)=>{
         this.navigatorParams.name = "CGDAddCarScene";
         this.navigatorParams.component = CGDAddCarScene;
-        this.navigatorParams.params = {isOBD:this.props.isOBD,isCarinvoice:this.props.isCarinvoice,InfoId:infoId,baseID:base_id,updateCar:true,
+        let tempOBDState=this.props.loan_code?showData.tempDetailInfo.isobd:this.props.isOBD;
+        let tempCarinvoice =this.props.loan_code?showData.tempDetailInfo.isinvoice:this.props.isCarinvoice;
+        this.navigatorParams.params = {isOBD:tempOBDState,isCarinvoice:tempCarinvoice,InfoId:infoId,baseID:base_id,updateCar:true,
             backRefresh:()=>{
             this.refreshAll();
         }};
@@ -513,8 +515,10 @@ export  default  class CGDLendScenes extends BaseComponent {
                     <CommenButton textStyle={styles.textLeft} buttonStyle={styles.buttonStyleRight} onPress={() => {
                         this.navigatorParams.name = "CGDAddCarScene";
                         this.navigatorParams.component = CGDAddCarScene;
-                        this.navigatorParams.params = {isOBD:this.props.isOBD,
-                        isCarinvoice:this.props.isCarinvoice,paymentId:this.props.loan_code,backRefresh:()=>{
+                        let tempOBDState=this.props.loan_code?showData.tempDetailInfo.isobd:this.props.isOBD;
+                        let tempCarinvoice =this.props.loan_code?showData.tempDetailInfo.isinvoice:this.props.isCarinvoice;
+                        this.navigatorParams.params = {isOBD:tempOBDState,
+                        isCarinvoice:tempCarinvoice,paymentId:this.props.loan_code,backRefresh:()=>{
                             this.refreshAll();
                         }};
                      this.toNextPage(this.navigatorParams)
