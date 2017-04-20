@@ -71,6 +71,7 @@ export  default class PlanInfoScene extends BaseComponent {
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
+                    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                      movies = response.mjson.data;
                     dateList.push({name: '付息区间', data: movies.interval});
                     dateList.push({name: '最晚还款日', data: movies.date_str});
@@ -94,9 +95,17 @@ export  default class PlanInfoScene extends BaseComponent {
                     }else{
                         nameList.push({name: '保证金', data: movies.bondmny});
                     }
-                    this.setState({
-                        renderPlaceholderOnly: 'success'
-                    });
+                    let mList = ['1', '2', '3', '4'];
+                    if(movies.plan_type==4){
+                        this.setState({
+                            source: ds.cloneWithRows(mList),
+                            renderPlaceholderOnly: 'success'
+                        });
+                    }else{
+                        this.setState({
+                            renderPlaceholderOnly: 'success'
+                        });
+                    }
                 },
                 (error) => {
                     this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
