@@ -53,7 +53,6 @@ export default class LoginScene extends BaseComponent {
             value: "",
             verifyCode: null,
             renderPlaceholderOnly: true,
-            loading: false,
         }
     }
 
@@ -238,26 +237,8 @@ export default class LoginScene extends BaseComponent {
 
                     <Image source={require('./../../images/login/login_bg.png')}
                            style={{width: width, height: Pixel.getPixel(175)}}/>
-                    {
-                        this.state.loading == true ?
-                            <TouchableWithoutFeedback onPress={() => {
-                            }}>
-                                <View
-                                    style={{
-                                        flex: 1,
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        position: 'absolute',
-                                        width: width,
-                                        height: height,
-                                    }}>
-                                    <Image style={{width: 60, height: 60}}
-                                           source={require('../../images/setDataLoading.gif')}/>
-                                </View>
-                            </TouchableWithoutFeedback>
-                            : null
 
-                    }
+                    {this.loadingView()}
 
                 </View>
             </TouchableWithoutFeedback>

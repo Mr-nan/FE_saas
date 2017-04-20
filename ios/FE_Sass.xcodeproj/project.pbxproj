@@ -338,6 +338,7 @@
 		00E356EE1AD99517003FC87E /* FE_SassTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FE_SassTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* FE_SassTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FE_SassTests.m; sourceTree = "<group>"; };
+		121CE05A1EA88EE5003CA579 /* CodePush.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CodePush.h; path = "../node_modules/react-native-code-push/ios/CodePush/CodePush.h"; sourceTree = "<group>"; };
 		124A58E61E9C6D48007C1C15 /* QrScan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QrScan.h; sourceTree = "<group>"; };
 		124A58E71E9C6D48007C1C15 /* QrScan.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QrScan.m; sourceTree = "<group>"; };
 		124A59091E9C700F007C1C15 /* OBDScanController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBDScanController.h; sourceTree = "<group>"; };
@@ -558,6 +559,7 @@
 		033B617BF03E4DCEBBEDB683 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				121CE05A1EA88EE5003CA579 /* CodePush.h */,
 				7DB2CBB11E779CB400DE146C /* libbz2.1.0.tbd */,
 				E36AEB871E6ABF35000F4E11 /* Foundation.framework */,
 				E36AEB851E6ABF2A000F4E11 /* CoreMedia.framework */,
@@ -1459,6 +1461,7 @@
 					"$(SRCROOT)/../node_modules/react-native-update/ios",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/Image/**",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/React",
+					"$(SRCROOT)/../node_modules/react-native-code-push/ios/**",
 				);
 				INFOPLIST_FILE = FE_Sass/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
@@ -1495,6 +1498,7 @@
 					"$(SRCROOT)/../node_modules/react-native-update/ios",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/Image/**",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/React",
+					"$(SRCROOT)/../node_modules/react-native-code-push/ios/**",
 				);
 				INFOPLIST_FILE = FE_Sass/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
@@ -1545,6 +1549,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../node_modules/react-native-code-push/ios/**";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
@@ -1567,6 +1572,7 @@
 					"$(SRCROOT)/../node_modules/react-native-update/ios",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/Image/**",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/React",
+					"$(SRCROOT)/../node_modules/react-native-code-push/ios/**",
 				);
 				INFOPLIST_FILE = FE_Sass/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
@@ -1863,6 +1869,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../node_modules/react-native-code-push/ios/**";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1899,6 +1906,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../node_modules/react-native-code-push/ios/**";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
