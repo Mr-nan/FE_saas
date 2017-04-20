@@ -107,6 +107,18 @@ export  default class PurchaseRepaymentInfoPage extends BaseComponent {
              }});
         }
     }
+    buttonParams = {
+        buttonType: MyButton.TEXTBUTTON,
+        parentStyle: styles.parentStyle,
+        childStyle: styles.childStyle,
+        opacity: 0.9,
+        content: '申请提前还款',
+        mOnPress: () => {
+            this.props.callBack({name:'RepaymentCreditInfoScene',component:RepaymentCreditInfoScene,params:{
+                loan_number:this.props.loan_number,from:'SingleRepaymentPage'
+            }});
+        }
+    }
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
@@ -121,6 +133,7 @@ export  default class PurchaseRepaymentInfoPage extends BaseComponent {
                     renderSeparator={this._renderSeparator}
                     showsVerticalScrollIndicator={false}
                 />
+                <MyButton {...this.buttonParams}/>
             </View>
         );
     }
