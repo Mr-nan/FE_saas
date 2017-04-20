@@ -155,7 +155,6 @@ export default class LoginScene extends BaseComponent {
                     />
 
                     <View style={styles.inputTextSytle}>
-                        <LoddingAlert ref="lodding"/>
                         <LoginAutoSearchInputText
                             ref="loginUsername"
                             searchBtShow={true}

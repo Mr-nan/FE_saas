@@ -70,7 +70,6 @@ export default class LoginFailSmsVerify extends BaseComponent {
         }
         return (
             <View style={styles.container}>
-                <LoddingAlert ref="lodding"/>
                 <NavigationBar
                     leftImageShow={true}
                     leftTextShow={false}
@@ -114,6 +113,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
                           parentStyle={styles.buttonStyle}
                           childStyle={styles.buttonTextStyle}
                           mOnPress={this.login}/>
+                {this.loadingView()}
             </View>
         );
     }
@@ -165,11 +165,15 @@ export default class LoginFailSmsVerify extends BaseComponent {
                 type: "2",
             };
             // this.props.showModal(true);
-            this.refs.lodding.setShow(true);
+            this.setState({
+                loading: true,
+            });
             request(AppUrls.SEND_SMS, 'Post', maps)
                 .then((response) => {
                     // this.props.showModal(false);
-                    this.refs.lodding.setShow(false);
+                    this.setState({
+                        loading: false,
+                    });
                     if (response.mjson.code == "1") {
                         this.refs.smscode.StartCountDown();
                         // this.refs.smscode.setInputTextValue(response.mjson.data.code + "");
@@ -178,7 +182,9 @@ export default class LoginFailSmsVerify extends BaseComponent {
                     }
                 }, (error) => {
                     // this.props.showModal(false);
-                    this.refs.lodding.setShow(false);
+                    this.setState({
+                        loading: false,
+                    });
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("短信验证码获取失败");
                     } else if (error.mycode == 7040012) {
@@ -228,11 +234,15 @@ export default class LoginFailSmsVerify extends BaseComponent {
                 pwd: "",
             };
             // this.props.showModal(true);
-            this.refs.lodding.setShow(true);
+            this.setState({
+                loading: true,
+            });
             request(AppUrls.LOGIN, 'Post', maps)
                 .then((response) => {
                     // this.props.showModal(false);
-                    this.refs.lodding.setShow(false);
+                    this.setState({
+                        loading: false,
+                    });
                     if (response.mycode == "1") {
                         // 保存用户登录状态
                         StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '1');
@@ -253,7 +263,9 @@ export default class LoginFailSmsVerify extends BaseComponent {
                     }
                 }, (error) => {
                     // this.props.showModal(false);
-                    this.refs.lodding.setShow(false);
+                    this.setState({
+                        loading: false,
+                    });
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("登录失败");
                     } else if (error.mycode == 7040004) {
