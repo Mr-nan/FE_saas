@@ -71,7 +71,7 @@ export default class PlanItem extends PureComponent {
                     marginLeft: Pixel.getPixel(10),
                     fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                     color: fontAndColor.COLORA0
-                }}>源之宝汽车经销公司</Text>
+                }}>{this.props.customerName}</Text>
             </View>
             <View style={{
                 flex: 1,

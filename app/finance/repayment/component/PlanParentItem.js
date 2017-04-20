@@ -32,7 +32,7 @@ export  default class PlanParentItem extends PureComponent {
         let movieItems = [];
         if (this.state.show !== 'row') {
             for (let i = 0; i < movie.list.length; i++) {
-                movieItems.push(<PlanChildItem key={i} items={movie.list[i]} mOnPress={this.props.mOnPress}/>)
+                movieItems.push(<PlanChildItem customerName={this.props.customerName} key={i} items={movie.list[i]} mOnPress={this.props.mOnPress}/>)
             }
         }
         return (
