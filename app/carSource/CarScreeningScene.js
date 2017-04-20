@@ -286,8 +286,6 @@ const styles = StyleSheet.create({
     titleText:{
         color:fontAndColor.COLORA0,
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-        fontWeight:'bold'
-
     },
     contentText:{
         color:fontAndColor.COLORA2,
