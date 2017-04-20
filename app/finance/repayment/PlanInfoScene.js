@@ -96,7 +96,7 @@ export  default class PlanInfoScene extends BaseComponent {
                         nameList.push({name: '保证金', data: movies.bondmny});
                     }
                     let mList = ['1', '2', '3', '4'];
-                    if(movies.plan_type==4){
+                    if(movies.plan_type=='4'){
                         this.setState({
                             source: ds.cloneWithRows(mList),
                             renderPlaceholderOnly: 'success'

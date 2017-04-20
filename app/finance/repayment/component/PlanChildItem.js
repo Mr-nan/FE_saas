@@ -25,6 +25,15 @@ export default class PlanItem extends PureComponent {
         let count = 0;
         this.buttonParams.parentStyle.push(styles.parentStyle);
         this.buttonParams.childStyle.push(styles.childStyle)
+        let xi = '';
+        let money = '0';
+        if(movie.plan_type=='4'){
+            xi='费';
+            money = movie.repaymentmny;
+        }else{
+            xi='息';
+            money = movie.interest;
+        }
         if (movie.type === '1') {
             count = 2;
             this.buttonParams.parentStyle.push({borderColor: fontAndColor.COLORB4});
@@ -121,7 +130,7 @@ export default class PlanItem extends PureComponent {
                 <Text style={{
                     fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                     color: fontAndColor.COLORB2
-                }}>息={movie.interest}元</Text>
+                }}>{xi+'='+money}元</Text>
             </View>
         </View>);
         if (count === 3) {
