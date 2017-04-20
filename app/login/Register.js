@@ -94,7 +94,6 @@ export default class Register extends BaseComponent {
         }
         return (
             <View style={styles.container}>
-                <LoddingAlert ref="lodding"/>
                 <ImageSource galleryClick={this._galleryClick}
                              cameraClick={this._cameraClick}
                              ref={(modal) => {
@@ -284,6 +283,7 @@ export default class Register extends BaseComponent {
                         </View>
                     </View>
                 </ScrollView>
+                {this.loadingView()}
             </View>
         );
     }
@@ -337,10 +337,14 @@ export default class Register extends BaseComponent {
                 idcard_img: idcardf + "," + idcardback,
                 license_img: businessid,
             };
-            this.refs.lodding.setShow(true);
+            this.setState({
+                loading: true,
+            });
             request(AppUrls.REGISTER, 'Post', maps)
                 .then((response) => {
-                    this.refs.lodding.setShow(false);
+                    this.setState({
+                        loading: false,
+                    });
                     if (response.mycode == "1") {
                         uid = response.mjson.data.uid;
                         this.props.showToast("注册成功");
@@ -349,7 +353,9 @@ export default class Register extends BaseComponent {
                         this.props.showToast(response.mjson.msg + "");
                     }
                 }, (error) => {
-                    this.refs.lodding.setShow(false);
+                    this.setState({
+                        loading: false,
+                    });
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("注册失败");
                     } else if (error.mycode == 7040004) {
@@ -437,11 +443,15 @@ export default class Register extends BaseComponent {
                 type: "1",
             };
             // this.props.showModal(true);
-            this.refs.lodding.setShow(true);
+            this.setState({
+                loading: true,
+            });
             request(AppUrls.SEND_SMS, 'Post', maps)
                 .then((response) => {
                     // this.props.showModal(false);
-                    this.refs.lodding.setShow(false);
+                    this.setState({
+                        loading: false,
+                    });
                     if (response.mjson.code == "1") {
                         this.refs.smsCode.StartCountDown();
                         // this.refs.smsCode.setInputTextValue(response.mjson.data.code + "");
@@ -450,7 +460,9 @@ export default class Register extends BaseComponent {
                     }
                 }, (error) => {
                     // this.props.showModal(false);
-                    this.refs.lodding.setShow(false);
+                    this.setState({
+                        loading: false,
+                    });
                     this.Verifycode();
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("短信验证码获取失败");
@@ -508,11 +520,15 @@ export default class Register extends BaseComponent {
             base64_file: 'data:image/jpeg;base64,' + encodeURI(response.data).replace(/\+/g, '%2B')
         };
         // this.props.showModal(true);
-        this.refs.lodding.setShow(true);
+        this.setState({
+            loading: true,
+        });
         ImageUpload.request(AppUrls.AUTH_UPLOAD_FILE, 'Post', params)
             .then((response) => {
                 // this.props.showModal(false);
-                this.refs.lodding.setShow(false);
+                this.setState({
+                    loading: false,
+                });
                 if (response.mycode == 1) {
                     let source = {uri: response.mjson.data.url};
                     if (id === 'idcard') {
@@ -548,7 +564,9 @@ export default class Register extends BaseComponent {
                 }
             }, (error) => {
                 // this.props.showModal(false);
-                this.refs.lodding.setShow(false);
+                this.setState({
+                    loading: false,
+                });
                 this.props.showToast("图片上传失败");
             });
     }
