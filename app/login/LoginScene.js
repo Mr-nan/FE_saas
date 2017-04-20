@@ -53,6 +53,7 @@ export default class LoginScene extends BaseComponent {
             value: "",
             verifyCode: null,
             renderPlaceholderOnly: true,
+            loading: false,
         }
     }
 
@@ -237,6 +238,27 @@ export default class LoginScene extends BaseComponent {
 
                     <Image source={require('./../../images/login/login_bg.png')}
                            style={{width: width, height: Pixel.getPixel(175)}}/>
+                    {
+                        this.state.loading == true ?
+                            <TouchableWithoutFeedback onPress={() => {
+                            }}>
+                                <View
+                                    style={{
+                                        flex: 1,
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        position: 'absolute',
+                                        width: width,
+                                        height: height,
+                                    }}>
+                                    <Image style={{width: 60, height: 60}}
+                                           source={require('../../images/setDataLoading.gif')}/>
+                                </View>
+                            </TouchableWithoutFeedback>
+                            : null
+
+                    }
+
                 </View>
             </TouchableWithoutFeedback>
         );
@@ -275,11 +297,15 @@ export default class LoginScene extends BaseComponent {
                 type: "2",
             };
             // this.props.showModal(true);
-            this.refs.lodding.setShow(true);
+            this.setState({
+                loading: true,
+            });
             request(AppUrls.SEND_SMS, 'Post', maps)
                 .then((response) => {
                     // this.props.showModal(false);
-                    this.refs.lodding.setShow(false);
+                    this.setState({
+                        loading: false,
+                    });
                     if (response.mycode == "1") {
                         this.refs.loginSmscode.StartCountDown();
                         // this.refs.loginSmscode.setInputTextValue(response.mjson.data.code + "");
@@ -288,7 +314,9 @@ export default class LoginScene extends BaseComponent {
                     }
                 }, (error) => {
                     // this.props.showModal(false);
-                    this.refs.lodding.setShow(false);
+                    this.setState({
+                        loading: false,
+                    });
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("获取验证码失败");
                     } else if (error.mycode == 7040012) {
@@ -365,10 +393,16 @@ export default class LoginScene extends BaseComponent {
                 phone: userName,
                 pwd: md5.hex_md5(passWord),
             };
-            this.props.showModal(true);
+            // this.props.showModal(true);
+            this.setState({
+                loading: true,
+            });
             request(AppUrls.LOGIN, 'Post', maps)
                 .then((response) => {
-                    this.props.showModal(false);
+                    // this.props.showModal(false);
+                    this.setState({
+                        loading: false,
+                    });
                     if (response.mycode == "1") {
                         // 保存用户登录状态
                         StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '2');
@@ -432,7 +466,10 @@ export default class LoginScene extends BaseComponent {
                         this.props.showToast(response.mjson.msg + "");
                     }
                 }, (error) => {
-                    this.props.showModal(false);
+                    // this.props.showModal(false);
+                    this.setState({
+                        loading: false,
+                    });
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("登录失败");
                     } else if (error.mycode == 7040004) {
