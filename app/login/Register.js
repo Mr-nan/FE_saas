@@ -43,7 +43,7 @@ const options = {
     cancelButtonTitle: '取消',
     takePhotoButtonTitle: '拍照',
     chooseFromLibraryButtonTitle: '选择相册',
-    allowsEditing: true,
+    allowsEditing: false,
     noData: false,
     quality: 1.0,
     maxWidth: 480,
@@ -613,6 +613,7 @@ const styles = StyleSheet.create({
     imageButtonStyle: {
         width: Pixel.getPixel(80),
         height: Pixel.getPixel(60),
+        resizeMode: 'contain'
     },
     imageClearButtonStyle: {
         width: Pixel.getPixel(17),
