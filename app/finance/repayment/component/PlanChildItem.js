@@ -30,6 +30,9 @@ export default class PlanItem extends PureComponent {
         if(movie.plan_type=='4'){
             xi='费';
             money = movie.repaymentmny;
+        }else if(movie.plan_type=='2'){
+            xi='本+息';
+            money = movie.repaymentmny;
         }else{
             xi='息';
             money = movie.interest;
