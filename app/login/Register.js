@@ -20,9 +20,8 @@ import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 import md5 from "react-native-md5";
 import LoginAndRegister from "./LoginAndRegister";
-import * as ImageUpload from '../utils/ImageUpload';
-import ImageSource from '../publish/component/ImageSource';
-import LoddingAlert from '../component/toast/LoddingAlert';
+import * as ImageUpload from "../utils/ImageUpload";
+import ImageSource from "../publish/component/ImageSource";
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');

@@ -19,7 +19,6 @@ import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
-import LoddingAlert from '../component/toast/LoddingAlert';
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -244,20 +243,41 @@ export default class LoginFailSmsVerify extends BaseComponent {
                         loading: false,
                     });
                     if (response.mycode == "1") {
-                        // 保存用户登录状态
-                        StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '1');
-                        StorageUtil.mSetItem(StorageKeyNames.USER_INFO, JSON.stringify(response.mjson.data));
-                        // 保存用户信息
-                        StorageUtil.mSetItem(StorageKeyNames.BASE_USER_ID, response.mjson.data.base_user_id + "");
-                        StorageUtil.mSetItem(StorageKeyNames.ENTERPRISE_LIST, JSON.stringify(response.mjson.data.enterprise_list));
-                        StorageUtil.mSetItem(StorageKeyNames.HEAD_PORTRAIT_URL, response.mjson.data.head_portrait_url + "");
-                        StorageUtil.mSetItem(StorageKeyNames.IDCARD_NUMBER, response.mjson.data.idcard_number + "");
-                        StorageUtil.mSetItem(StorageKeyNames.PHONE, response.mjson.data.phone + "");
-                        StorageUtil.mSetItem(StorageKeyNames.REAL_NAME, response.mjson.data.real_name + "");
-                        StorageUtil.mSetItem(StorageKeyNames.TOKEN, response.mjson.data.token + "");
-                        StorageUtil.mSetItem(StorageKeyNames.USER_LEVEL, response.mjson.data.user_level + "");
-                        this.setLoginPwd.params.userName = userName;
-                        this.loginPage(this.setLoginPwd);
+                        if (response.mjson.data.user_level == 2) {
+                            if (response.mjson.data.enterprise_list == [] && response.mjson.data.enterprise_list == "") {
+                                this.props.showToast("无授信企业");
+                            } else {
+                                // 保存用户登录状态
+                                StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '1');
+                                StorageUtil.mSetItem(StorageKeyNames.USER_INFO, JSON.stringify(response.mjson.data));
+                                // 保存用户信息
+                                StorageUtil.mSetItem(StorageKeyNames.BASE_USER_ID, response.mjson.data.base_user_id + "");
+                                StorageUtil.mSetItem(StorageKeyNames.ENTERPRISE_LIST, JSON.stringify(response.mjson.data.enterprise_list));
+                                StorageUtil.mSetItem(StorageKeyNames.HEAD_PORTRAIT_URL, response.mjson.data.head_portrait_url + "");
+                                StorageUtil.mSetItem(StorageKeyNames.IDCARD_NUMBER, response.mjson.data.idcard_number + "");
+                                StorageUtil.mSetItem(StorageKeyNames.PHONE, response.mjson.data.phone + "");
+                                StorageUtil.mSetItem(StorageKeyNames.REAL_NAME, response.mjson.data.real_name + "");
+                                StorageUtil.mSetItem(StorageKeyNames.TOKEN, response.mjson.data.token + "");
+                                StorageUtil.mSetItem(StorageKeyNames.USER_LEVEL, response.mjson.data.user_level + "");
+                                this.setLoginPwd.params.userName = userName;
+                                this.loginPage(this.setLoginPwd);
+                            }
+                        } else {
+                            // 保存用户登录状态
+                            StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '1');
+                            StorageUtil.mSetItem(StorageKeyNames.USER_INFO, JSON.stringify(response.mjson.data));
+                            // 保存用户信息
+                            StorageUtil.mSetItem(StorageKeyNames.BASE_USER_ID, response.mjson.data.base_user_id + "");
+                            StorageUtil.mSetItem(StorageKeyNames.ENTERPRISE_LIST, JSON.stringify(response.mjson.data.enterprise_list));
+                            StorageUtil.mSetItem(StorageKeyNames.HEAD_PORTRAIT_URL, response.mjson.data.head_portrait_url + "");
+                            StorageUtil.mSetItem(StorageKeyNames.IDCARD_NUMBER, response.mjson.data.idcard_number + "");
+                            StorageUtil.mSetItem(StorageKeyNames.PHONE, response.mjson.data.phone + "");
+                            StorageUtil.mSetItem(StorageKeyNames.REAL_NAME, response.mjson.data.real_name + "");
+                            StorageUtil.mSetItem(StorageKeyNames.TOKEN, response.mjson.data.token + "");
+                            StorageUtil.mSetItem(StorageKeyNames.USER_LEVEL, response.mjson.data.user_level + "");
+                            this.setLoginPwd.params.userName = userName;
+                            this.loginPage(this.setLoginPwd);
+                        }
                     } else {
                         this.props.showToast(response.mjson.msg);
                     }
