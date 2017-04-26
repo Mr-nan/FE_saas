@@ -244,7 +244,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
                     });
                     if (response.mycode == "1") {
                         if (response.mjson.data.user_level == 2) {
-                            if (response.mjson.data.enterprise_list == [] && response.mjson.data.enterprise_list == "") {
+                            if (response.mjson.data.enterprise_list == [] || response.mjson.data.enterprise_list == "") {
                                 this.props.showToast("无授信企业");
                             } else {
                                 // 保存用户登录状态
