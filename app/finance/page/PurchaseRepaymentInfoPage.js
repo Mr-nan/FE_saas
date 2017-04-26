@@ -25,6 +25,7 @@ import MyButton from '../../component/MyButton';
 import RepaymentInfoContentItem from '../repayment/component/RepaymentInfoContentItem';
 import AllBottomItem from '../repayment/component/AllBottomItem';
 import RepaymentCreditInfoScene from '../repayment/RepaymentCreditInfoScene';
+import ServerMoneyListModal from '../../component/ServerMoneyListModal';
 let moneyList = [];
 let nameList = [];
 
@@ -79,6 +80,7 @@ export  default class PurchaseRepaymentInfoPage extends BaseComponent {
                     moneyList.push({name: '利息总额', data: movies.interest_total});
                     moneyList.push({name: '已还利息', data: movies.interest});
                     moneyList.push({name: '待还利息', data: movies.interest_other});
+                    moneyList.push({name: '服务费', data: movies.all_fee});
                     moneyList.push({name: '使用优惠券数量', data: movies.coupon_info.coupon_number});
                     moneyList.push({name: '使用优惠券金额', data: movies.coupon_info.coupon_usable});
                     moneyList.push({name: '优惠券还息金额', data: movies.coupon_info.coupon_repayment});
@@ -134,6 +136,7 @@ export  default class PurchaseRepaymentInfoPage extends BaseComponent {
                     showsVerticalScrollIndicator={false}
                 />
                 <MyButton {...this.buttonParams}/>
+                <ServerMoneyListModal ref="servermoneylistmodal"/>
             </View>
         );
     }
@@ -157,7 +160,9 @@ export  default class PurchaseRepaymentInfoPage extends BaseComponent {
             )
         }else if(rowId == 2){
             return (
-                <RepaymentInfoContentItem items={moneyList}/>
+                <RepaymentInfoContentItem items={moneyList} onPress={()=>{
+                        this.refs.servermoneylistmodal.changeShowType(true,movies.list_fee);
+                }}/>
             )
         }else{
             return (
