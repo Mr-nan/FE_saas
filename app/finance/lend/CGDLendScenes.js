@@ -302,10 +302,6 @@ export  default  class CGDLendScenes extends BaseComponent {
                     this.props.showToast('请补全票据信息')
                     return
                 }
-                console.log(obdState);
-                console.log(tempisObd);
-                console.log(isinvoice);
-                console.log(invoice);
                if((tempisObd==obdState)&&(invoice==isinvoice)){
                     this.lendMoneyClick();
                }else{
