@@ -193,8 +193,8 @@ export default class CarInfoScene extends BaseComponent {
         //     }
         // }
         // this.toNextPage(navigatorParams);
-        this.refs.LendSuccessAlert.setModelVisible(true);
-        // this.refs.sharedView.isVisible(true);
+        // this.refs.LendSuccessAlert.setModelVisible(true);
+        this.refs.sharedView.isVisible(true);
     }
 
 

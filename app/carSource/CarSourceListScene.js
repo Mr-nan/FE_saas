@@ -855,12 +855,12 @@ class CarListNavigatorView extends Component {
                             <Text style={styles.navigatorSousuoText}>按品牌、车系搜索</Text>
                         </View>
                     </TouchableOpacity>
-                    {/*<TouchableOpacity onPress={this.props.ScreeningClick}>*/}
-                        {/*<View style={{marginLeft:Pixel.getPixel(20),width:Pixel.getPixel(50),height:Pixel.getPixel(40),justifyContent:'center',*/}
-                            {/*alignItems:'center'}}>*/}
-                            {/*<Text style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>筛选</Text>*/}
-                        {/*</View>*/}
-                    {/*</TouchableOpacity>*/}
+                    <TouchableOpacity onPress={this.props.ScreeningClick}>
+                        <View style={{marginLeft:Pixel.getPixel(20),width:Pixel.getPixel(50),height:Pixel.getPixel(40),justifyContent:'center',
+                            alignItems:'center'}}>
+                            <Text style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>筛选</Text>
+                        </View>
+                    </TouchableOpacity>
                 </View>
             </View>
 
