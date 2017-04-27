@@ -302,13 +302,20 @@ export  default  class CGDLendScenes extends BaseComponent {
                     this.props.showToast('请补全票据信息')
                     return
                 }
+                console.log(obdState);
+                console.log(tempisObd);
+                console.log(isinvoice);
+                console.log(invoice);
                if((tempisObd==obdState)&&(invoice==isinvoice)){
                     this.lendMoneyClick();
-               }else if(obdState==1&&tempisObd==0){
-                    this.infoMessage.setModelVisible(true)
-               }else {
-                   this.props.showToast('请完成车辆OBD绑定')
-                   return
+               }else{
+                   if(obdState==1&&tempisObd==0){
+                       this.infoMessage.setModelVisible(true)
+                   }else if(obdState==0&&tempisObd==1){
+                       this.props.showToast('请完成车辆OBD绑定')
+                   }else{
+                       this.lendMoneyClick();
+                   }
                }
             })
         }
