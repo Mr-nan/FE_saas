@@ -41,12 +41,15 @@ import StorageUtil from '../utils/StorageUtil';
 
 let Pixel = new PixelUtil();
 let carFilterData = require('./carData/carFilterData.json');
-let carAgeSource = carFilterData.carAgeSource;
-let carKMSource = carFilterData.carKMSource;
+let carAgeSource = [];
+let carKMSource = [];
+let carTypeSource = [];
 let sequencingDataSource = carFilterData.sequencingDataSource;
 let currentCheckedIndex = 1;
 let checkedSource = [];
 let carData = [];
+let isCheckRecommend = true;
+
 
 const APIParameter = {
 
@@ -130,24 +133,61 @@ export  default  class carSourceListScene extends BaseComponent {
         StorageUtil.mGetItem(storageKeyNames.NEED_OPENBRAND,(data)=>{
             if(data.code==1){
                if(data.result=='true'){
+
                     this.presCarTypeScene();
+
                }
             }
         });
+
+        StorageUtil.mGetItem(storageKeyNames.NEED_CHECK_RECOMMEND,(data)=>{
+
+            if(data.code == 1){
+                if(data.result == 'true'){
+                    if (this.refs.headView.state.isCheckRecommend)
+                    {
+                        this.refs.headView.setCheckRecommend(false);
+                    }
+                }
+            }
+        });
+
         StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
+        StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND,'false');
+
     }
 
     initFinish = () => {
+
         StorageUtil.mGetItem(storageKeyNames.NEED_OPENBRAND,(data)=>{
             if(data.code==1){
                 if(data.result=='true'){
                     this.presCarTypeScene();
+                    return;
+                }
 
+            }
+        });
+
+        StorageUtil.mGetItem(storageKeyNames.NEED_CHECK_RECOMMEND,(data)=>{
+
+            if(data.code == 1){
+                if(data.result == 'true'){
+                    isCheckRecommend = false
+                    APIParameter.type = 0;
+                    this.loadData();
+                    return;
                 }
             }
         });
+
         StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
+        StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND,'false');
+
         this.loadData();
+
+
+
     };
 
     // 下拉刷新数据
@@ -259,6 +299,20 @@ export  default  class carSourceListScene extends BaseComponent {
 
     };
 
+
+    // 获取筛选数据
+    loadCarConfigData=(succeedAction)=>{
+
+            this.props.showModal(true);
+            request(AppUrls.CAR_CONFIG,'post',{}).then((response) => {
+                succeedAction(response.mjson.data);
+                this.props.showModal(false);
+            }, (error) => {
+                this.props.showModal(false);
+                this.props.showToast(error.msg);
+            });
+    }
+
     // 选择城市列表
     loactionClick = () => {
 
@@ -273,6 +327,8 @@ export  default  class carSourceListScene extends BaseComponent {
         this.props.callBack(navigatorParams);
     }
 
+
+
     presCarTypeScene = () => {
 
         let navigatorParams = {
@@ -283,6 +339,7 @@ export  default  class carSourceListScene extends BaseComponent {
                 checkedCarClick: this.checkedCarClick,
                 status: 1,
                 isHeadInteraction: true,
+                unlimitedAction:this.carTypeClick,
                 // isCheckedCarModel:true,
 
             }
@@ -293,7 +350,19 @@ export  default  class carSourceListScene extends BaseComponent {
 
     ScreeningClick=()=>{
 
-        let {checkedCarType,checkedCarAgeType,checkedCarKMType,checkedCarGenre,checkedCity }= this.state;
+
+        if(carAgeSource.length<=0||carKMSource.length<=0||carTypeSource.length<=0){
+            this.loadCarConfigData((carConfigData)=>{
+
+                carAgeSource = carConfigData.auto_age;
+                carKMSource = carConfigData.auto_mileage;
+                carTypeSource = carConfigData.auto_type;
+                this.ScreeningClick();
+            });
+            return;
+        }
+
+        let {checkedCarType,checkedCarAgeType,checkedCarKMType,checkedCarGenre,checkedCity}= this.state;
 
         let screeningObject = {
             checkedCarType:{title:checkedCarType.title,brand_id:checkedCarType.brand_id,series_id:checkedCarType.series_id},
@@ -301,6 +370,9 @@ export  default  class carSourceListScene extends BaseComponent {
             checkedCarKMType:{title:checkedCarKMType.title,value:checkedCarKMType.value},
             checkedCarGenre:{title:checkedCarGenre.title,value:checkedCarGenre.value},
             checkedCity:{title:checkedCity.title,value:checkedCity.value},
+            carAgeSource:carAgeSource,
+            carKMSource:carKMSource,
+            carTypeSource:carTypeSource,
         };
         let navigatorParams = {
             name: "CarScreeningScene",
@@ -355,26 +427,53 @@ export  default  class carSourceListScene extends BaseComponent {
             return;
         }
 
-
         if (!isHighlighted) {
-            switch (index) {
+            if(carAgeSource.length<=0 || carKMSource.length<=0){
 
-                case 2:
-                    checkedSource = carAgeSource;
-                    break;
-                case 3:
-                    checkedSource = carKMSource;
-                    break;
-                default:
-                    break;
+                this.loadCarConfigData((configData)=>{
+                    carAgeSource = configData.auto_age;
+                    carKMSource = configData.auto_mileage;
+                    carTypeSource = configData.auto_type;
+                    switch (index) {
+                        case 2:
+                            checkedSource = carAgeSource;
+                            break;
+                        case 3:
+                            checkedSource = carKMSource;
+                            break;
+                        default:
+                            break;
+                    }
+                    this.setState({
+                        isHide: isHighlighted,
+                    });
+                    setImgHighlighted(!isHighlighted); // 回调按钮状态
+                });
+
+            }else {
+
+                switch (index) {
+                    case 2:
+                        checkedSource = carAgeSource;
+                        break;
+                    case 3:
+                        checkedSource = carKMSource;
+                        break;
+                    default:
+                        break;
+                }
+                this.setState({
+                    isHide: isHighlighted,
+                });
+                setImgHighlighted(!isHighlighted); // 回调按钮状态
             }
+
+        }else {
+            this.setState({
+                isHide: isHighlighted,
+            });
+            setImgHighlighted(!isHighlighted); // 回调按钮状态
         }
-
-        this.setState({
-            isHide: isHighlighted,
-        });
-        setImgHighlighted(!isHighlighted); // 回调按钮状态
-
 
     };
 
@@ -384,6 +483,7 @@ export  default  class carSourceListScene extends BaseComponent {
         if (isCheck) {
             APIParameter.type = 1;
             this.allDelectClick();
+
 
         } else {
             APIParameter.type = 0;
@@ -422,7 +522,7 @@ export  default  class carSourceListScene extends BaseComponent {
 
         if (currentCheckedIndex == 2) {
             checkedCarAgeType = {
-                title: checkedSource[index].title,
+                title: checkedSource[index].name,
                 value: checkedSource[index].value,
             }
             APIParameter.coty = checkedCarAgeType.value;
@@ -430,7 +530,7 @@ export  default  class carSourceListScene extends BaseComponent {
         }
         if (currentCheckedIndex == 3) {
             checkedCarKMType = {
-                title: checkedSource[index].title,
+                title: checkedSource[index].name,
                 value: checkedSource[index].value,
             }
 
@@ -680,7 +780,8 @@ export  default  class carSourceListScene extends BaseComponent {
             <View style={styles.contaier}>
                 <CarListNavigatorView searchClick={this.presCarTypeScene}  ScreeningClick={this.ScreeningClick} loactionClick={this.loactionClick}/>
                 <CarSourceSelectHeadView ref="headView" onPres={this.headViewOnPres}
-                                         checkRecommendClick={this.checkRecommendClick}/>
+                                         checkRecommendClick={this.checkRecommendClick}
+                                         isCheckRecommend = {isCheckRecommend}/>
                 {
 
                     (this.state.checkedCarKMType.title || this.state.checkedCarAgeType.title || this.state.checkedCarType.title || this.state.sequencingType.title || this.state.checkedCity.title || this.state.checkedCarGenre.title) ?

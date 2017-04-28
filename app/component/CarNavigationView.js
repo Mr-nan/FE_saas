@@ -27,36 +27,89 @@ export default class CarInfoNavigationView extends PureComponent {
         // 初始状态
         this.state = {
 
-            navigationBackgroundColor:null,
+            navigationBackgroundColor:false,
 
         };
       }
 
-      setNavigationBackgroindColor=(color)=>{
+      setNavigationBackgroindColor=(bool)=>{
 
+          this.refs.navigationRightView.changeImgClick(bool);
           this.setState({
-              navigationBackgroundColor:color,
+              navigationBackgroundColor:bool,
           });
       }
 
     render() {
 
-        const {title, backIconClick, renderRihtFootView,wrapStyle} = this.props;
+        const {title, backIconClick,wrapStyle,isStore,addStoreAction,cancelStoreAction,showShared} = this.props;
 
         return (
-            <View style={[styles.navigation,wrapStyle,this.state.navigationBackgroundColor && {backgroundColor:this.state.navigationBackgroundColor}]}>
+            <View style={[styles.navigation,wrapStyle,this.state.navigationBackgroundColor && {backgroundColor:fontAndColor.COLORB0}]}>
                 <View style={styles.content}>
                      <TouchableOpacity style={{width: Pixel.getPixel(100), height: Pixel.getPixel(64),justifyContent:'center'}}
                                       onPress={backIconClick}>
-                    {backIconClick && <Image style={styles.backIcon} source={require('../../images/carSourceImages/back.png')}/>}
+                    {backIconClick && <Image style={styles.backIcon}  source={ this.state.navigationBackgroundColor==false? require('../../images/carSourceImages/back.png') : require('../../images/mainImage/navigatorBack.png')}/>}
                      </TouchableOpacity>
                     <Text style={styles.titleText}>{title}</Text>
                     <View style={styles.imageFoot}>
-                        {
-                            renderRihtFootView && renderRihtFootView()
-                        }
+                       <NavigationRightView ref="navigationRightView" isStore={isStore} addStoreAction={addStoreAction} cancelStoreAction={cancelStoreAction} showShared={showShared}/>
                     </View>
                 </View>
+            </View>
+        )
+    }
+
+}
+
+
+class NavigationRightView extends Component{
+    // 构造
+    constructor(props) {
+        super(props);
+        // 初始状态
+        this.state = {
+
+            isStore:this.props.isStore,
+            isChangeImg:false,
+
+        };
+    }
+
+    isStoreClick=(isStore)=>{
+
+        this.setState({
+            isStore:isStore,
+
+        })
+    }
+
+    changeImgClick=(bool)=>{
+        this.setState({
+            isChangeImg:bool,
+        })
+    }
+
+    render(){
+        return(
+            <View style={{flexDirection: 'row'}}>
+                <TouchableOpacity onPress={()=>{
+
+                    if(this.state.isStore){
+
+                        this.props.cancelStoreAction(this.isStoreClick);
+
+                    }else {
+
+                        this.props.addStoreAction(this.isStoreClick);
+                    }
+
+                }}>
+                    <Image source={ this.state.isChangeImg==false? (this.state.isStore? require('../../images/carSourceImages/presc.png') : require('../../images/carSourceImages/newsc.png')) : (this.state.isStore? require('../../images/carSourceImages/store.png') : require('../../images/carSourceImages/storenil.png'))}></Image>
+                </TouchableOpacity>
+                <TouchableOpacity style={{marginLeft: Pixel.getPixel(10)}} onPress={this.props.showShared}>
+                    <Image source={ this.state.isChangeImg==false? require('../../images/carSourceImages/newfx.png') : require('../../images/carSourceImages/share_nil.png')}></Image>
+                </TouchableOpacity>
             </View>
         )
     }
@@ -77,8 +130,6 @@ const styles = StyleSheet.create({
     backIcon: {
 
         marginLeft: Pixel.getPixel(12),
-        height: Pixel.getPixel(20),
-        width: Pixel.getPixel(20),
     },
 
     titleText: {
@@ -93,7 +144,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',
-        // backgroundColor:'red',
         width: Pixel.getPixel(80),
         marginRight:Pixel.getPixel(15),
 

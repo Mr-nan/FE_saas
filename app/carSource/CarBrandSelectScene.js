@@ -293,7 +293,20 @@ export default class CarBrandSelectScene extends BaseComponent {
 
 
     };
+    renderRightFootView = () => {
 
+        return (
+          this.props.unlimitedAction &&  <TouchableOpacity onPress={()=>{this.props.unlimitedAction();this.backPage();}}>
+                <View style={{paddingVertical:3, paddingHorizontal:5,backgroundColor:'transparent',borderWidth:StyleSheet.hairlineWidth,borderColor:'white',borderRadius:3}}>
+                    <Text style={{
+                        color: 'white',
+                        fontSize: Pixel.getFontPixel(fontAnColor.BUTTONFONT30),
+                        textAlign: 'center',
+                        backgroundColor: 'transparent',}}>不限</Text>
+                </View>
+            </TouchableOpacity>
+        )
+    }
 
     render() {
         if (this.state.renderPlaceholderOnly) {
@@ -350,6 +363,7 @@ export default class CarBrandSelectScene extends BaseComponent {
                 <NavigationView
                     title="选择品牌"
                     backIconClick={this._backIconClick}
+                    renderRihtFootView={this.renderRightFootView}
                 />
                 {
                     this.state.isHideCarSubBrand ? (null) : (
@@ -389,14 +403,12 @@ class CarSeriesList extends BaseComponent {
         super(props);
         this.state = {
 
-            carTitle: carObject.brand_name + '/全部车系',
+            carTitle:carObject.brand_name +(isHeadInteraction ? '/全部车系':''),
             brandIcon: carObject.brand_icon,
             valueRight: new Animated.Value(0),
         };
         this.loadCarSeriesData(carObject.brand_id, carObject.brand_name);
-
     }
-
     loadCarSeriesData = (carBrandID, carBrandName) => {
 
         let url = AppUrls.CAR_HOME_SERIES;
@@ -598,7 +610,7 @@ class CarModelList extends BaseComponent {
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
         this.state = ({
 
-            carTitle: carObject.series_name + '/全部车型',
+            carTitle: carObject.series_name + (isHeadInteraction?'/全部车型':''),
             valueRight: new Animated.Value(0),
             modelsData: ds,
         });

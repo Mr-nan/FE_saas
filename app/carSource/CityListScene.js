@@ -225,6 +225,21 @@ export default class CityListScene extends BaseComponent {
 
     };
 
+    renderRightFootView = () => {
+
+        return (
+            this.props.unlimitedAction &&  <TouchableOpacity onPress={()=>{this.props.unlimitedAction();this.backPage();}}>
+                <View style={{paddingVertical:3, paddingHorizontal:5,backgroundColor:'transparent',borderWidth:StyleSheet.hairlineWidth,borderColor:'white',borderRadius:3}}>
+                    <Text style={{
+                        color: 'white',
+                        fontSize: Pixel.getFontPixel(fontAnColor.BUTTONFONT30),
+                        textAlign: 'center',
+                        backgroundColor: 'transparent',}}>全国</Text>
+                </View>
+            </TouchableOpacity>
+        )
+    }
+
     render() {
         if (this.state.renderPlaceholderOnly) {
             return (
@@ -261,6 +276,7 @@ export default class CityListScene extends BaseComponent {
                 <NavigationView
                     title="选择城市"
                     backIconClick={this._backIconClick}
+                    renderRihtFootView={this.renderRightFootView}
                 />
                 {
                     this.state.isHideCarSubBrand ? (null) : (
