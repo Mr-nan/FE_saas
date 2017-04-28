@@ -101,10 +101,10 @@ export default class EditCarScene extends BaseComponent {
                                         let dprice = rdb.dealer_price == '0.0000' ? '':rdb.dealer_price;
                                         SQLite.changeData('INSERT INTO publishCar (vin,model,pictures,v_type,manufacture,init_reg,' +
                                             'mileage,plate_number,emission,label,nature_use,car_color,trim_color,' +
-                                            'transfer_number,dealer_price,describe) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                                            'transfer_number,dealer_price,describe,modify) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
                                             [this.carVin, JSON.stringify(modelInfo), pictures,rdb.v_type+'', mf, rg, rdb.mileage,
                                                 rdb.plate_number, rdb.emission_standards, JSON.stringify(rdb.label), rdb.nature_use, rdb.car_color, rdb.trim_color,
-                                                rdb.transfer_times, dprice, rdb.describe]);
+                                                rdb.transfer_times, dprice, rdb.describe,rdb.modification_instructions]);
                                         SQLite.selectData('SELECT * FROM publishCar WHERE vin = ?',
                                             [this.carVin],
                                             (data) => {
@@ -244,7 +244,8 @@ export default class EditCarScene extends BaseComponent {
                             label: rd.label,
                             nature_use: rd.nature_use,
                             plate_number: rd.plate_number,
-                            transfer_times: rd.transfer_number
+                            transfer_times: rd.transfer_number,
+                            modification_instructions:rd.modify
                         };
                         if (!this.fromNew) {
                             params['id'] = this.carId;
@@ -431,6 +432,7 @@ export default class EditCarScene extends BaseComponent {
                                carData={this.state.carData}
                                publishData={this._publish}
                                onBack={()=>this._onBack(11)}
+                               goToPage={this._goToPage}
                                barHeight={barHeight} tabLabel="AutoOther"/>
                 </ScrollableTabView>
             </Image>
