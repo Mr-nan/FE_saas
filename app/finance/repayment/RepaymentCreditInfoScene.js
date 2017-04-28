@@ -91,7 +91,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                     moneyList.push({name: '利息总额', data: movies.interest_total});
                     moneyList.push({name: '已还利息', data: movies.interest});
                     moneyList.push({name: '贷款利息', data: movies.interest_other})
-                    moneyList.push({name: '服务费', data: movies.all_fee});;
+                    moneyList.push({name: '服务费', data: movies.all_fee});
 
                     nameList.push({name: '渠道名称', data: movies.qvdaoname});
                     nameList.push({name: '还款账户', data: movies.bank_info.repaymentaccount});
@@ -230,15 +230,26 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                 <RepaymentInfoContentItem items={nameList}/>
             )
         } else if (rowId == 5) {
+            let name = '';
+            let money = 0;
+            if(parseFloat(movies.all_fee)>0){
+                money = (parseFloat(movies.loan_mny)
+                +parseFloat(movies.loan_mny)*parseFloat(movies.loan_rebate)/100/360*
+                this.state.loan_day-parseFloat(movies.bondmny)+parseFloat(movies.all_fee)).toFixed(2);
+                name = '应还总额=本金+本金*综合费率/360*计息天数-保证金'+'+服务费';
+            }else{
+                money = (parseFloat(movies.loan_mny)
+                +parseFloat(movies.loan_mny)*parseFloat(movies.loan_rebate)/100/360*
+                this.state.loan_day-parseFloat(movies.bondmny)).toFixed(2);
+                name = '应还总额=本金+本金*综合费率/360*计息天数-保证金';
+            }
             return (
                 <RepaymentInfoBottomItem ref="RepaymentInfoBottomItem"
-                                         allMoney={(parseFloat(movies.loan_mny)
-                                         +parseFloat(movies.loan_mny)*parseFloat(movies.loan_rebate)/100/360*
-                                         this.state.loan_day-parseFloat(movies.bondmny)).toFixed(2)}
+                                         allMoney={money}
                                          formula={'='+movies.loan_mny+'+'
                                          +movies.loan_mny+'*'+movies.loan_rebate/100+'/360*'
                                          +this.state.loan_day+'-'+movies.bondmny}
-                                         formulaStr={'应还总额=本金+本金*综合费率/360*计息天数-保证金'}
+                                         formulaStr={name}
                 />
             )
         } else {
