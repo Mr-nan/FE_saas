@@ -83,12 +83,8 @@ export  default class ContractInfoScene extends BaseComponent {
             return this._renderPlaceholderView();
         }
         return (
-            <View style={{flex:1}}>
-                <NavigationView
-                    title="合同"
-                    backIconClick={this.backPage}
-                    renderRihtFootView={this._navigatorRightView}
-                />
+            <View style={{flex:1,backgroundColor: fontAndColor.COLORA3}}>
+
                 <View style={{marginTop:Pixel.getTitlePixel(64),flex:1}}>
                     <ViewPager
                         dataSource={this.state.dataSource}    //数据源（必须）
@@ -129,6 +125,11 @@ export  default class ContractInfoScene extends BaseComponent {
                     this.getData();
                 }}
                 />
+                <NavigationView
+                    title="合同"
+                    backIconClick={this.backPage}
+                    renderRihtFootView={this._navigatorRightView}
+                />
             </View>
         );
 
@@ -149,13 +150,15 @@ export  default class ContractInfoScene extends BaseComponent {
 
     _renderPage = (data) => {
 
+        let nowdate = Date.parse(new Date());
+
         return (
             <Image onLoadEnd={()=>{
                 this.props.showModal(false);
             }} onLoadStart={()=>{
                 this.props.showModal(true);
             }} style={{flex:1}}
-                   source={{uri: data}}
+                   source={{uri: data+'?'+nowdate}}
             />
         );
 

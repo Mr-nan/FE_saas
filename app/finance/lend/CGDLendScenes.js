@@ -102,6 +102,9 @@ export  default  class CGDLendScenes extends BaseComponent {
     }
 
     refreshAll=()=>{
+        this.setState({
+            renderPlaceholderOnly: STATECODE.loading
+        })
         this.getCarListInfo(showData.tempLendInfo)
     }
 
@@ -110,7 +113,7 @@ export  default  class CGDLendScenes extends BaseComponent {
 
         let dataSource = {};
 
-        let type=this.getType(this.props.isCarinvoice)+'票'+this.getType(this.props.isOBD)+'OBD';
+        let type=this.getType(this.props.loan_code?showData.tempDetailInfo.isobd:this.props.isCarinvoice)+'票'+this.getType(this.props.loan_code?showData.tempDetailInfo.isinvoice:this.props.isOBD)+'OBD';
 
         dataSource['section1'] = [
             {title: '模式', value:type},
@@ -301,11 +304,14 @@ export  default  class CGDLendScenes extends BaseComponent {
                 }
                if((tempisObd==obdState)&&(invoice==isinvoice)){
                     this.lendMoneyClick();
-               }else if(obdState==1&&tempisObd==0){
-                    this.infoMessage.setModelVisible(true)
-               }else {
-                   this.props.showToast('请完成车辆OBD绑定')
-                   return
+               }else{
+                   if(obdState==1&&tempisObd==0){
+                       this.infoMessage.setModelVisible(true)
+                   }else if(obdState==0&&tempisObd==1){
+                       this.props.showToast('请完成车辆OBD绑定')
+                   }else{
+                       this.lendMoneyClick();
+                   }
                }
             })
         }
@@ -319,7 +325,7 @@ export  default  class CGDLendScenes extends BaseComponent {
             CarList.map((item)=>{tempCarList.push(item.info_id)})
             let carIdList =tempCarList.join(',')
             let tempOBDState=this.props.loan_code?showData.tempDetailInfo.isobd:this.props.isOBD;
-            let tempCarinvoice =this.props.loan_code?showData.tempDetailInfo.isinvoicethis:this.props.isCarinvoice;
+            let tempCarinvoice =this.props.loan_code?showData.tempDetailInfo.isinvoice:this.props.isCarinvoice;
 
             let maps = {
                 api: apis.APPLY_LOAN,
@@ -385,10 +391,12 @@ export  default  class CGDLendScenes extends BaseComponent {
 
     }
 
-    carItemClick=(infoId)=>{
+    carItemClick=(infoId,base_id)=>{
         this.navigatorParams.name = "CGDAddCarScene";
         this.navigatorParams.component = CGDAddCarScene;
-        this.navigatorParams.params = {isOBD:this.props.isOBD,isCarinvoice:this.props.isCarinvoice,InfoId:infoId,updateCar:true,
+        let tempOBDState=this.props.loan_code?showData.tempDetailInfo.isobd:this.props.isOBD;
+        let tempCarinvoice =this.props.loan_code?showData.tempDetailInfo.isinvoice:this.props.isCarinvoice;
+        this.navigatorParams.params = {isOBD:tempOBDState,isCarinvoice:tempCarinvoice,InfoId:infoId,baseID:base_id,updateCar:true,
             backRefresh:()=>{
             this.refreshAll();
         }};
@@ -431,7 +439,7 @@ export  default  class CGDLendScenes extends BaseComponent {
 
                 <CGDCarItem  url={rowData.icon}title={rowData.model_name}obdState={rowData.obd_bind_status} shouxuState={rowData.invoice_upload_status} date={rowData.init_reg+' / '+rowData.mileage+'万公里'}
                              onPress={()=>{
-                    this.carItemClick(rowData.info_id);
+                    this.carItemClick(rowData.info_id,rowData.base_id);
                 }} deletePress={()=>{
                     this.deleteCar.setModelVisible(true);
                     tempDelete.base_id=rowData.base_id
@@ -510,8 +518,10 @@ export  default  class CGDLendScenes extends BaseComponent {
                     <CommenButton textStyle={styles.textLeft} buttonStyle={styles.buttonStyleRight} onPress={() => {
                         this.navigatorParams.name = "CGDAddCarScene";
                         this.navigatorParams.component = CGDAddCarScene;
-                        this.navigatorParams.params = {isOBD:this.props.isOBD,
-                        isCarinvoice:this.props.isCarinvoice,paymentId:this.props.loan_code,backRefresh:()=>{
+                        let tempOBDState=this.props.loan_code?showData.tempDetailInfo.isobd:this.props.isOBD;
+                        let tempCarinvoice =this.props.loan_code?showData.tempDetailInfo.isinvoice:this.props.isCarinvoice;
+                        this.navigatorParams.params = {isOBD:tempOBDState,
+                        isCarinvoice:tempCarinvoice,paymentId:this.props.loan_code,backRefresh:()=>{
                             this.refreshAll();
                         }};
                      this.toNextPage(this.navigatorParams)

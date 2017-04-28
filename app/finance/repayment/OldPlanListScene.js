@@ -60,7 +60,11 @@ export  default class OldPlanListScene extends BaseComponent {
                     });
                 },
                 (error) => {
-                    this.setState({renderPlaceholderOnly: 'error'});
+                    if (error.mycode == '-2100045'||error.mycode == '-1') {
+                        this.setState({renderPlaceholderOnly: 'null'});
+                    } else {
+                        this.setState({renderPlaceholderOnly: 'error'});
+                    }
                 });
     }
 

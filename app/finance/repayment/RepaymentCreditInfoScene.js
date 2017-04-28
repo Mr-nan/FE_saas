@@ -27,6 +27,7 @@ import RepaymentInfoContentItem from './component/RepaymentInfoContentItem';
 import RepaymentInfoBottomItem from './component/RepaymentInfoBottomItem';
 import AllBottomItem from './component/AllBottomItem';
 import MyButton from '../../component/MyButton';
+import ServerMoneyListModal from '../../component/ServerMoneyListModal';
 let moneyList = [];
 let nameList = [];
 let adjustLsit = [];
@@ -89,7 +90,8 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                     moneyList.push({name: '综合费率', data: movies.loan_rebate+'%'});
                     moneyList.push({name: '利息总额', data: movies.interest_total});
                     moneyList.push({name: '已还利息', data: movies.interest});
-                    moneyList.push({name: '贷款利息', data: movies.interest_other});
+                    moneyList.push({name: '贷款利息', data: movies.interest_other})
+                    moneyList.push({name: '服务费', data: movies.all_fee});;
 
                     nameList.push({name: '渠道名称', data: movies.qvdaoname});
                     nameList.push({name: '还款账户', data: movies.bank_info.repaymentaccount});
@@ -158,6 +160,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                 />
                 {movies.paymen_status == '0' ? this.props.from == 'SingleRepaymentPage' ?
                         <MyButton {...this.buttonParams}/> : <View/> : <View/>}
+                <ServerMoneyListModal ref="servermoneylistmodal"/>
             </View>
         );
     }
@@ -214,7 +217,9 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
             )
         } else if (rowId == 2) {
             return (
-                <RepaymentInfoContentItem items={moneyList}/>
+                <RepaymentInfoContentItem items={moneyList} onPress={()=>{
+                        this.refs.servermoneylistmodal.changeShowType(true,movies.list_fee);
+                }}/>
             )
         }else if (rowId == 3) {
             return (

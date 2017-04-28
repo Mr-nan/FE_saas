@@ -8,12 +8,12 @@ import {
     Image,
     TouchableWithoutFeedback,
     ActivityIndicator,
-    PixelRatio,
+    PixelRatio
 } from "react-native";
-import  * as FontAndColor from '../../constant/fontAndColor';
-import SendMmsCountDown from './SendMmsCountDown';
-import PixelUtil from '../../utils/PixelUtil';
-import MyButton from '../../component/MyButton';
+import * as FontAndColor from "../../constant/fontAndColor";
+import SendMmsCountDown from "./SendMmsCountDown";
+import PixelUtil from "../../utils/PixelUtil";
+import MyButton from "../../component/MyButton";
 
 var Pixel = new PixelUtil();
 var Dimensions = require('Dimensions');

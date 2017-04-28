@@ -22,7 +22,6 @@ import StorageUtil from "../utils/StorageUtil";
 import SetLoginPwdGesture from "./SetLoginPwdGesture";
 import MainPage from "../main/MainPage";
 import * as StorageKeyNames from "../constant/storageKeyNames";
-import LoddingAlert from '../component/toast/LoddingAlert';
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -64,7 +63,6 @@ export default class LoginFailPwd extends BaseComponent {
         }
         return (
             <View style={styles.container}>
-                <LoddingAlert ref="lodding"/>
                 <NavigationBar
                     leftImageShow={false}
                     leftTextShow={true}
@@ -111,6 +109,7 @@ export default class LoginFailPwd extends BaseComponent {
                           parentStyle={styles.buttonStyle}
                           childStyle={styles.buttonTextStyle}
                           mOnPress={this.setPwd}/>
+                {this.loadingView()}
             </View>
         );
     }
@@ -146,11 +145,15 @@ export default class LoginFailPwd extends BaseComponent {
                 pwd: md5.hex_md5(newPassword),
             };
             // this.props.showModal(true);
-            this.refs.lodding.setShow(true);
+            this.setState({
+                loading: true,
+            });
             request(AppUrls.SETPWD, 'Post', maps)
                 .then((response) => {
                     // this.props.showModal(false);
-                    this.refs.lodding.setShow(false);
+                    this.setState({
+                        loading: false,
+                    });
                     if (response.mycode == "1") {
                         StorageUtil.mGetItem(response.mjson.data.phone + "", (data) => {
                             if (data.code == 1) {
@@ -167,7 +170,9 @@ export default class LoginFailPwd extends BaseComponent {
                     }
                 }, (error) => {
                     // this.props.showModal(false);
-                    this.refs.lodding.setShow(false);
+                    this.setState({
+                        loading: false,
+                    });
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("设置失败");
                     } else {

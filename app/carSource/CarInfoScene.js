@@ -538,12 +538,12 @@ export default class CarInfoScene extends BaseComponent {
                                 </View>
                             }
                         </View>
-                        {
-                            (carData.lowest_pay_price>0||carData.lowest_pay_ratio>0) &&
-                            <View style={styles.preferentialView}>
-                                <Text style={styles.preferentialText}>第1车贷合作商户，首付{carData.lowest_pay_price>0?(this.carMoneyChange(carData.lowest_pay_price)+'万'):(this.carMoneyChange(carData.lowest_pay_ratio)+'%')}即可提车</Text>
-                            </View>
-                        }
+                        {/*{*/}
+                            {/*(carData.lowest_pay_price>0||carData.lowest_pay_ratio>0) &&*/}
+                            {/*<View style={styles.preferentialView}>*/}
+                                {/*<Text style={styles.preferentialText}>第1车贷合作商户，首付{carData.lowest_pay_price>0?(this.carMoneyChange(carData.lowest_pay_price)+'万'):(this.carMoneyChange(carData.lowest_pay_ratio)+'%')}即可提车</Text>*/}
+                            {/*</View>*/}
+                        {/*}*/}
                     </View>
                     {
                         ((typeof(carData.labels)!= "undefined"?(carData.labels.length<=0?false:true):false)|| carData.describe!=='' || carData.city_name!=='' || carData.plate_number!=='') && (

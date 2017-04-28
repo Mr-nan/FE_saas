@@ -423,7 +423,12 @@ export default class OBDDevice extends BaseComponent {
                         this.props.backRefresh();
                         const navigator = this.props.navigator;
                         if (navigator) {
-                            navigator.popToRoute(navigator.getCurrentRoutes()[3]);
+                            for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
+                                if (navigator.getCurrentRoutes()[i].name == 'CGDLendScenes') {
+                                    navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                                    break;
+                                }
+                            }
                         }
                     }, (error) => {
                         this.props.showModal(false);

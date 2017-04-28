@@ -12,11 +12,11 @@ import BaseComponent from "../component/BaseComponent";
 import NavigationBar from "../component/NavigationBar";
 import * as FontAndColor from "../constant/fontAndColor";
 import PixelUtil from "../utils/PixelUtil";
+import MyButton from "../component/MyButton";
+import LoginInputText from "./component/LoginInputText";
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
-import MyButton from '../component/MyButton';
-import LoginInputText from './component/LoginInputText';
 export default class LoginFailSmsNo extends BaseComponent {
     constructor(props) {
         super(props);

@@ -46,7 +46,7 @@ export  default class RepaymentInfoDateItem extends PureComponent {
                     <Text style={[styles.loanCodeStyle]}>还款日期</Text>
                 </View>
                 <TouchableOpacity onPress={()=>{
-                    if(this.props.payment_status=='0'){
+                    if(this.props.status=='0'){
                         this.setState({
                      isDateTimePickerVisible:true
                  });

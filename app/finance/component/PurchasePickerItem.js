@@ -22,6 +22,7 @@ import * as fontAndColor from '../../constant/fontAndColor';
 import  PurchasePickerChildItem from './PurchasePickerChildItem';
 import ImagePicker from "react-native-image-picker";
 import * as MyUrl from '../../constant/appUrls';
+
 export  default class PurchasePickerItem extends PureComponent {
 
     constructor(props) {
@@ -92,7 +93,7 @@ export  default class PurchasePickerItem extends PureComponent {
             cancelButtonTitle: '取消',
             takePhotoButtonTitle: '拍照',
             chooseFromLibraryButtonTitle: '选择相册',
-            allowsEditing: true,
+            allowsEditing: false,
             noData: false,
             quality: 1.0,
             maxWidth: 480,
@@ -103,14 +104,8 @@ export  default class PurchasePickerItem extends PureComponent {
             }
         };
         if(id=='buyer_seller_vehicle'){
-            NativeModules.CustomCamera.takePic().then((response) => {
-                // console.log("============>>>>>>>>>");
-                // console.log(response.data);
-                this.props.showModal(true);
-                this._uploadPicture(response);
-            }, (error) => {
+            this.props.openModal(()=>{this.openCamera()},()=>{this.openPicker()});
 
-            })
         }else{
             ImagePicker.showImagePicker(options, (response) => {
                 if (response.didCancel) {
@@ -132,6 +127,44 @@ export  default class PurchasePickerItem extends PureComponent {
                 }
             });
         }
+    }
+
+    openPicker=()=>{
+        const options = {
+            //弹出框选项
+            title: '请选择',
+            cancelButtonTitle: '取消',
+            takePhotoButtonTitle: '拍照',
+            chooseFromLibraryButtonTitle: '选择相册',
+            allowsEditing: false,
+            noData: false,
+            quality: 1.0,
+            maxWidth: 480,
+            maxHeight: 800,
+            storageOptions: {
+                skipBackup: true,
+                path: 'images',
+            }
+        };
+        ImagePicker.launchImageLibrary(options, (response) => {
+            if (response.didCancel) {}
+            else if (response.error) {}
+            else if (response.customButton) {}
+            else {
+                this._uploadPicture(response);
+            }
+        });
+    }
+
+    openCamera=()=>{
+        NativeModules.CustomCamera.takePic().then((response) => {
+            // console.log("============>>>>>>>>>");
+            // console.log(response.data);
+            this.props.showModal(true);
+            this._uploadPicture(response);
+        }, (error) => {
+
+        })
     }
 
     _uploadPicture = (responses)=>{

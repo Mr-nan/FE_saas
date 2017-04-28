@@ -11,7 +11,8 @@ import {
     Dimensions,
     TouchableOpacity,
     ListView,
-    InteractionManager
+    InteractionManager,
+    NativeModules
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
@@ -25,6 +26,8 @@ import {request} from '../../utils/RequestUtil';
 import * as MyUrl from '../../constant/appUrls';
 let childItems = [];
 let results = [];
+import ImagePicker from "react-native-image-picker";
+import ImageSource from '../../publish/component/NewImageSource';
 import  AllLoading from '../../component/AllLoading';
 import OBDDevice from './OBDDevice';
 export  default class PurchasePickerScene extends BaseComponent {
@@ -66,12 +69,19 @@ export  default class PurchasePickerScene extends BaseComponent {
                             list: []
                         });
                     }
-                    if(this.props.updateCar){
+                    if (this.props.updateCar) {
                         for (let i = 0; i < childItems.length; i++) {
                             for (let j = 0; j < this.props.carData.file_list.length; j++) {
-                                if(childItems[i].code==this.props.carData.file_list[j].code){
-                                    childItems[i].list.push({url:this.props.carData.file_list[j].icon,fileId:this.props.carData.file_list[j].file_id});
-                                    results.push({code:this.props.carData.file_list[j].code,code_id:this.props.carData.file_list[j].id,file_id:this.props.carData.file_list[j].file_id});
+                                if (childItems[i].code == this.props.carData.file_list[j].code) {
+                                    childItems[i].list.push({
+                                        url: this.props.carData.file_list[j].icon,
+                                        fileId: this.props.carData.file_list[j].file_id
+                                    });
+                                    results.push({
+                                        code: this.props.carData.file_list[j].code,
+                                        code_id: this.props.carData.file_list[j].id,
+                                        file_id: this.props.carData.file_list[j].file_id
+                                    });
                                 }
                             }
                         }
@@ -106,7 +116,12 @@ export  default class PurchasePickerScene extends BaseComponent {
                         this.props.backRefresh();
                         const navigator = this.props.navigator;
                         if (navigator){
-                            navigator.popToRoute(navigator.getCurrentRoutes()[3]);
+                            for(let i = 0;i<navigator.getCurrentRoutes().length;i++){
+                                if(navigator.getCurrentRoutes()[i].name=='CGDLendScenes'){
+                                     navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                                     break;
+                                }
+                            }
                         }
                 }} ref="allloading" callBack={()=>{
                             this.props.backRefresh();
@@ -118,13 +133,16 @@ export  default class PurchasePickerScene extends BaseComponent {
                                 }
                             });
                 }}/>
+                <ImageSource ref={(modal) => {this.imageSource = modal}}/>
             </View>
         );
     }
 
     _renderRow = (movie, sectionId, rowId) => {
         return (
-            <PurchasePickerItem results={results} showModal={(value)=>{this.props.showModal(value)}}
+            <PurchasePickerItem openModal={(cameraClick,galleryClick)=>{
+                this.imageSource.openModal('open',cameraClick,galleryClick);
+            }} results={results} showModal={(value)=>{this.props.showModal(value)}}
                                 showToast={(value)=>{this.props.showToast(value)}} items={movie}
                                 childList={childItems[rowId]}/>
         )
@@ -197,22 +215,36 @@ export  default class PurchasePickerScene extends BaseComponent {
         request(MyUrl.FINANCE, 'Post', maps)
             .then((response) => {
                     this.props.showModal(false);
-                    if(this.props.carData.bind_type=='0'){
+                    if (this.props.carData.bind_type == '0') {
                         this.props.showToast("添加成功");
                         this.props.backRefresh();
                         const navigator = this.props.navigator;
                         if (navigator){
-                            navigator.popToRoute(navigator.getCurrentRoutes()[3]);
+                            for(let i = 0;i<navigator.getCurrentRoutes().length;i++){
+                                if(navigator.getCurrentRoutes()[i].name=='CGDLendScenes'){
+                                    navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                                    break;
+                                }
+                            }
                         }
-                    }else{
+                    } else {
                         this.props.carData.info_id = response.mjson.data.info_id;
                         this.props.showToast("添加成功，请绑定OBD");
                         this.props.backRefresh();
                         this.toNextPage({
                             name: 'OBDDevice', component: OBDDevice, params: {
-                               backRefresh:()=>{
+                                backRefresh: () => {
                                     this.props.backRefresh();
-                                },carData:this.props.carData
+                                    const navigator = this.props.navigator;
+                                    if (navigator){
+                                        for(let i = 0;i<navigator.getCurrentRoutes().length;i++){
+                                            if(navigator.getCurrentRoutes()[i].name=='CGDLendScenes'){
+                                                navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }, carData: this.props.carData
                             }
                         });
                     }
@@ -242,33 +274,38 @@ export  default class PurchasePickerScene extends BaseComponent {
             rev_user_id: this.props.carData.rev_user_id,
             sell_city_id: this.props.carData.sell_city_id,
             series_id: this.props.carData.series_id,
-            info_id:this.props.carData.info_id,
+            info_id: this.props.carData.info_id,
             api: MyUrl.PURCHAAUTO_UPDATEAUTO
         };
         this.props.showModal(true);
         request(MyUrl.FINANCE, 'Post', maps)
             .then((response) => {
                     this.props.showModal(false);
-                    if(this.props.carData.bind_type=='0'){
+                    if (this.props.carData.bind_type == '0') {
                         this.props.showToast("编辑成功");
                         this.props.backRefresh();
                         const navigator = this.props.navigator;
                         if (navigator){
-                            navigator.popToRoute(navigator.getCurrentRoutes()[3]);
+                            for(let i = 0;i<navigator.getCurrentRoutes().length;i++){
+                                if(navigator.getCurrentRoutes()[i].name=='CGDLendScenes'){
+                                    navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                                    break;
+                                }
+                            }
                         }
-                    }else{
-                        if(this.props.carData.obd_bind_status=='1'){
-                            this.refs.allloading.changeShowType(true,'编辑成功,是否重新绑定OBD？');
-                        }else{
+                    } else {
+                        if (this.props.carData.obd_bind_status == '1') {
+                            this.refs.allloading.changeShowType(true, '编辑成功,是否重新绑定OBD？');
+                        } else {
                             this.props.showToast("编辑成功，请绑定OBD");
                             this.props.backRefresh();
                             this.toNextPage({
                                 name: 'OBDDevice', component: OBDDevice, params: {
                                     frame_number: this.props.carData.frame_number,
-                                    info_id: response.mjson.data.info_id,backRefresh:()=>{
+                                    info_id: response.mjson.data.info_id, backRefresh: () => {
                                         this.props.backRefresh();
                                     },
-                                    carData:this.props.carData
+                                    carData: this.props.carData
                                 }
                             });
                         }

@@ -230,7 +230,7 @@ export default class MineSectionListView extends BaseComponent {
                         user_list.push( Car[2], Car[3], Car[4]);
                     }
                 } else if (datas.user_level == 1) {
-                    if (datas.enterprise_list[0] == '1'||datas.enterprise_list[0] == '6') {
+                    if (datas.enterprise_list[0].role_type == '1'||datas.enterprise_list[0].role_type == '6') {
                         user_list.push( Car[0], Car[2], Car[3], Car[4]);
                     } else {
                         Car[0].cars.splice(1,1);

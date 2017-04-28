@@ -19,7 +19,6 @@ import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
-import LoddingAlert from '../component/toast/LoddingAlert';
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -70,7 +69,6 @@ export default class LoginFailSmsVerify extends BaseComponent {
         }
         return (
             <View style={styles.container}>
-                <LoddingAlert ref="lodding"/>
                 <NavigationBar
                     leftImageShow={true}
                     leftTextShow={false}
@@ -114,6 +112,7 @@ export default class LoginFailSmsVerify extends BaseComponent {
                           parentStyle={styles.buttonStyle}
                           childStyle={styles.buttonTextStyle}
                           mOnPress={this.login}/>
+                {this.loadingView()}
             </View>
         );
     }
@@ -165,11 +164,15 @@ export default class LoginFailSmsVerify extends BaseComponent {
                 type: "2",
             };
             // this.props.showModal(true);
-            this.refs.lodding.setShow(true);
+            this.setState({
+                loading: true,
+            });
             request(AppUrls.SEND_SMS, 'Post', maps)
                 .then((response) => {
                     // this.props.showModal(false);
-                    this.refs.lodding.setShow(false);
+                    this.setState({
+                        loading: false,
+                    });
                     if (response.mjson.code == "1") {
                         this.refs.smscode.StartCountDown();
                         // this.refs.smscode.setInputTextValue(response.mjson.data.code + "");
@@ -178,7 +181,9 @@ export default class LoginFailSmsVerify extends BaseComponent {
                     }
                 }, (error) => {
                     // this.props.showModal(false);
-                    this.refs.lodding.setShow(false);
+                    this.setState({
+                        loading: false,
+                    });
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("短信验证码获取失败");
                     } else if (error.mycode == 7040012) {
@@ -228,32 +233,59 @@ export default class LoginFailSmsVerify extends BaseComponent {
                 pwd: "",
             };
             // this.props.showModal(true);
-            this.refs.lodding.setShow(true);
+            this.setState({
+                loading: true,
+            });
             request(AppUrls.LOGIN, 'Post', maps)
                 .then((response) => {
                     // this.props.showModal(false);
-                    this.refs.lodding.setShow(false);
+                    this.setState({
+                        loading: false,
+                    });
                     if (response.mycode == "1") {
-                        // 保存用户登录状态
-                        StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '1');
-                        StorageUtil.mSetItem(StorageKeyNames.USER_INFO, JSON.stringify(response.mjson.data));
-                        // 保存用户信息
-                        StorageUtil.mSetItem(StorageKeyNames.BASE_USER_ID, response.mjson.data.base_user_id + "");
-                        StorageUtil.mSetItem(StorageKeyNames.ENTERPRISE_LIST, JSON.stringify(response.mjson.data.enterprise_list));
-                        StorageUtil.mSetItem(StorageKeyNames.HEAD_PORTRAIT_URL, response.mjson.data.head_portrait_url + "");
-                        StorageUtil.mSetItem(StorageKeyNames.IDCARD_NUMBER, response.mjson.data.idcard_number + "");
-                        StorageUtil.mSetItem(StorageKeyNames.PHONE, response.mjson.data.phone + "");
-                        StorageUtil.mSetItem(StorageKeyNames.REAL_NAME, response.mjson.data.real_name + "");
-                        StorageUtil.mSetItem(StorageKeyNames.TOKEN, response.mjson.data.token + "");
-                        StorageUtil.mSetItem(StorageKeyNames.USER_LEVEL, response.mjson.data.user_level + "");
-                        this.setLoginPwd.params.userName = userName;
-                        this.loginPage(this.setLoginPwd);
+                        if (response.mjson.data.user_level == 2) {
+                            if (response.mjson.data.enterprise_list == [] || response.mjson.data.enterprise_list == "") {
+                                this.props.showToast("无授信企业");
+                            } else {
+                                // 保存用户登录状态
+                                StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '1');
+                                StorageUtil.mSetItem(StorageKeyNames.USER_INFO, JSON.stringify(response.mjson.data));
+                                // 保存用户信息
+                                StorageUtil.mSetItem(StorageKeyNames.BASE_USER_ID, response.mjson.data.base_user_id + "");
+                                StorageUtil.mSetItem(StorageKeyNames.ENTERPRISE_LIST, JSON.stringify(response.mjson.data.enterprise_list));
+                                StorageUtil.mSetItem(StorageKeyNames.HEAD_PORTRAIT_URL, response.mjson.data.head_portrait_url + "");
+                                StorageUtil.mSetItem(StorageKeyNames.IDCARD_NUMBER, response.mjson.data.idcard_number + "");
+                                StorageUtil.mSetItem(StorageKeyNames.PHONE, response.mjson.data.phone + "");
+                                StorageUtil.mSetItem(StorageKeyNames.REAL_NAME, response.mjson.data.real_name + "");
+                                StorageUtil.mSetItem(StorageKeyNames.TOKEN, response.mjson.data.token + "");
+                                StorageUtil.mSetItem(StorageKeyNames.USER_LEVEL, response.mjson.data.user_level + "");
+                                this.setLoginPwd.params.userName = userName;
+                                this.loginPage(this.setLoginPwd);
+                            }
+                        } else {
+                            // 保存用户登录状态
+                            StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '1');
+                            StorageUtil.mSetItem(StorageKeyNames.USER_INFO, JSON.stringify(response.mjson.data));
+                            // 保存用户信息
+                            StorageUtil.mSetItem(StorageKeyNames.BASE_USER_ID, response.mjson.data.base_user_id + "");
+                            StorageUtil.mSetItem(StorageKeyNames.ENTERPRISE_LIST, JSON.stringify(response.mjson.data.enterprise_list));
+                            StorageUtil.mSetItem(StorageKeyNames.HEAD_PORTRAIT_URL, response.mjson.data.head_portrait_url + "");
+                            StorageUtil.mSetItem(StorageKeyNames.IDCARD_NUMBER, response.mjson.data.idcard_number + "");
+                            StorageUtil.mSetItem(StorageKeyNames.PHONE, response.mjson.data.phone + "");
+                            StorageUtil.mSetItem(StorageKeyNames.REAL_NAME, response.mjson.data.real_name + "");
+                            StorageUtil.mSetItem(StorageKeyNames.TOKEN, response.mjson.data.token + "");
+                            StorageUtil.mSetItem(StorageKeyNames.USER_LEVEL, response.mjson.data.user_level + "");
+                            this.setLoginPwd.params.userName = userName;
+                            this.loginPage(this.setLoginPwd);
+                        }
                     } else {
                         this.props.showToast(response.mjson.msg);
                     }
                 }, (error) => {
                     // this.props.showModal(false);
-                    this.refs.lodding.setShow(false);
+                    this.setState({
+                        loading: false,
+                    });
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("登录失败");
                     } else if (error.mycode == 7040004) {

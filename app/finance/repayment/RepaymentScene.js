@@ -93,7 +93,7 @@ export  default class RepaymentScene extends BaseComponent {
     navigatorParams = {
         name: "PlanListScene",
         component: PlanListScene,
-        params: {}
+        params: {customerName:this.props.customerName}
     }
     _navigatorRightView = () => {
         return (

@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from "react";
 import {AppRegistry, StyleSheet, Text, View, PixelRatio, TextInput, Image} from "react-native";
 import * as FontAndColor from "../../constant/fontAndColor";
 import PixelUtil from "../../utils/PixelUtil";
-import MyButton from '../../component/MyButton';
+import MyButton from "../../component/MyButton";
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
