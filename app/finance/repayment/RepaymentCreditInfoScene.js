@@ -232,23 +232,28 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
         } else if (rowId == 5) {
             let name = '';
             let money = 0;
+            let formula = '';
             if(parseFloat(movies.all_fee)>0){
                 money = (parseFloat(movies.loan_mny)
                 +parseFloat(movies.loan_mny)*parseFloat(movies.loan_rebate)/100/360*
                 this.state.loan_day-parseFloat(movies.bondmny)+parseFloat(movies.all_fee)).toFixed(2);
                 name = '应还总额=本金+本金*综合费率/360*计息天数-保证金'+'+服务费';
+                formula = '='+movies.loan_mny+'+'
+                    +movies.loan_mny+'*'+movies.loan_rebate/100+'/360*'
+                    +this.state.loan_day+'-'+movies.bondmny+'+'+movies.all_fee
             }else{
                 money = (parseFloat(movies.loan_mny)
                 +parseFloat(movies.loan_mny)*parseFloat(movies.loan_rebate)/100/360*
                 this.state.loan_day-parseFloat(movies.bondmny)).toFixed(2);
                 name = '应还总额=本金+本金*综合费率/360*计息天数-保证金';
+                formula = '='+movies.loan_mny+'+'
+                    +movies.loan_mny+'*'+movies.loan_rebate/100+'/360*'
+                    +this.state.loan_day+'-'+movies.bondmny
             }
             return (
                 <RepaymentInfoBottomItem ref="RepaymentInfoBottomItem"
                                          allMoney={money}
-                                         formula={'='+movies.loan_mny+'+'
-                                         +movies.loan_mny+'*'+movies.loan_rebate/100+'/360*'
-                                         +this.state.loan_day+'-'+movies.bondmny}
+                                         formula={formula}
                                          formulaStr={name}
                 />
             )
