@@ -34,6 +34,17 @@ export const V2 = "v2/";
 export const V3 = "v3/";
 
 /**
+ * 分享测试地址
+ */
+export const FENXIANGTEST = 'http://test.bms.dycd.com/platform/car_detail.html';
+
+/**
+ * 分享正式地址
+ */
+export const FENXIANGOPEN = 'http://m.dycd.com/platform/car_detail.html';
+
+
+/**
  * 上传图片
  */
 export const INDEX_UPLOAD = BASEURL + V + 'index/upload';

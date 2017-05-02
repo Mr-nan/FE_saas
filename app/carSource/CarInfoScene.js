@@ -723,6 +723,7 @@ class  SharedView extends Component{
                     fenxiangUrl = AppUrls.FENXIANGOPEN;
                 }
                 let carImage = typeof carData.imgs[0].url == 'undefined'?resolveAssetSource(imageResource).uri:carData.imgs[0].url;
+                console.log(fenxiangUrl+'?id='+carData.id);
                 weChat.shareToSession({
                     type: 'news',
                     title:carData.model_name,
