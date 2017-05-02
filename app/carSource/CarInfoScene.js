@@ -19,18 +19,18 @@ import ImagePageView from 'react-native-viewpager';
 import BaseComponent from '../component/BaseComponent';
 import NavigationView from '../component/CarNavigationView';
 import Gallery from 'react-native-gallery';
-import PixelUtil from '../utils/PixelUtil';
 import {LendSuccessAlert} from '../finance/lend/component/ModelComponent';
-import CGDSelectPatternScene from '../finance/lend/CGDSelectPatternScene';
+import {CarDeploySwitchoverButton,CarConfigurationView}   from './znComponent/CarInfoAllComponent';
 import CarZoomImageScene from './CarZoomImagScene';
-import * as weChat from 'react-native-wechat';
+import CarUpkeepScene from './CarUpkeepScene';
+import *as weChat from 'react-native-wechat';
+import PixelUtil from '../utils/PixelUtil';
 const Pixel = new PixelUtil();
 
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 
 var ScreenWidth = Dimensions.get('window').width;
-var ScreenHeight = Dimensions.get('window').height;
 let resolveAssetSource = require('resolveAssetSource');
 
 
@@ -82,9 +82,149 @@ const carIconsData = [
         image: require('../../images/carSourceImages/carColor.png'),
         imageHigh: require('../../images/carSourceImages/carColor_h.png'),
     },
-
 ];
 
+
+const carConfigurationData = [
+
+    {
+        title:'基本参数',
+        carInfo:[{
+            title:'h1',
+            value:'h2'
+        },{
+            title:'h1',
+            value:'h2'
+        },{
+            title:'h1',
+            value:'h2'
+        },{
+            title:'h1',
+            value:'h2'
+        }],
+    },
+    {
+        title:'发动机',
+        carInfo:[{
+            title:'a1',
+            value:'a2'
+        },{
+            title:'a1',
+            value:'a2'
+        },{
+            title:'h1',
+            value:'h2'
+        },{
+            title:'h1',
+            value:'h2'
+        }],
+    },{
+        title:'发动机',
+        carInfo:[{
+            title:'a1',
+            value:'a2'
+        },{
+            title:'a1',
+            value:'a2'
+        },{
+            title:'h1',
+            value:'h2'
+        },{
+            title:'h1',
+            value:'h2'
+        }],
+    },{
+        title:'发动机',
+        carInfo:[{
+            title:'a1',
+            value:'a2'
+        },{
+            title:'a1',
+            value:'a2'
+        },{
+            title:'h1',
+            value:'h2'
+        },{
+            title:'h1',
+            value:'h2'
+        }],
+    },{
+        title:'发动机',
+        carInfo:[{
+            title:'a1',
+            value:'a2'
+        },{
+            title:'a1',
+            value:'a2'
+        },{
+            title:'h1',
+            value:'h2'
+        },{
+            title:'h1',
+            value:'h2'
+        }],
+    },{
+        title:'发动机',
+        carInfo:[{
+            title:'a1',
+            value:'a2'
+        },{
+            title:'a1',
+            value:'a2'
+        },{
+            title:'h1',
+            value:'h2'
+        },{
+            title:'h1',
+            value:'h2'
+        }],
+    },{
+        title:'发动机',
+        carInfo:[{
+            title:'a1',
+            value:'a2'
+        },{
+            title:'a1',
+            value:'a2'
+        },{
+            title:'h1',
+            value:'h2'
+        },{
+            title:'h1',
+            value:'h2'
+        }],
+    },{
+        title:'发动机',
+        carInfo:[{
+            title:'a1',
+            value:'a2'
+        },{
+            title:'a12222',
+            value:'a2ss22'
+        },{
+            title:'h1',
+            value:'h2'
+        },{
+            title:'h1',
+            value:'h2'
+        }],
+    },{
+        title:'发动机',
+        carInfo:[{
+            title:'a1',
+            value:'a2'
+        },{
+            title:'a1',
+            value:'a2'
+        },{
+            title:'h1',
+            value:'h2'
+        },{
+            title:'h1',
+            value:'h2'
+        }],
+    },
+];
 
 let carImageArray = [];
 
@@ -100,6 +240,7 @@ export default class CarInfoScene extends BaseComponent {
             renderPlaceholderOnly: 'blank',
             carData:{imgs:[]},
             currentImageIndex:1,
+            switchoverCarInfo:0,
         };
     }
 
@@ -185,16 +326,8 @@ export default class CarInfoScene extends BaseComponent {
     // 打开分享
     showShared=()=>{
 
-        // let navigatorParams = {
-        //     name: "CGDSelectPatternScene",
-        //     component: CGDSelectPatternScene,
-        //     params: {
-        //
-        //     }
-        // }
-        // this.toNextPage(navigatorParams);
-        this.refs.LendSuccessAlert.setModelVisible(true);
-        // this.refs.sharedView.isVisible(true);
+        // this.refs.LendSuccessAlert.setModelVisible(true);
+        this.refs.sharedView.isVisible(true);
     }
 
 
@@ -228,6 +361,17 @@ export default class CarInfoScene extends BaseComponent {
 
     };
 
+    // 车辆维修保养记录
+    pushCarUpkeepScene=()=>{
+        let navigationParams={
+            name: "CarUpkeepScene",
+            component: CarUpkeepScene,
+            params: {
+
+            }
+        }
+        this.toNextPage(navigationParams);
+    };
 
     // 添加收藏
     addStoreAction=(isStoreClick)=>{
@@ -285,19 +429,14 @@ export default class CarInfoScene extends BaseComponent {
     }
 
 
-    navigatorRightView = ()=> {
-        return (
-           <NavigationRightView isStore={this.state.carData.is_collection==0?false:true} addStoreAction={this.addStoreAction} cancelStoreAction={this.cancelStoreAction} showShared={this.showShared}/>
-        );
-    };
-
     setNavitgationBackgroundColor=(event)=>{
 
         if(event.nativeEvent.contentOffset.y>20){
 
-            this.refs.navtigation.setNavigationBackgroindColor(fontAndColor.COLORB0);
+            this.refs.navtigation.setNavigationBackgroindColor(true);
+
         }else{
-            this.refs.navtigation.setNavigationBackgroindColor('rgba(0,0,0,0)');
+            this.refs.navtigation.setNavigationBackgroindColor(false);
         }
     }
 
@@ -317,7 +456,7 @@ export default class CarInfoScene extends BaseComponent {
         let carMoneyStr = newCarMoney.toFixed(2);
         let moneyArray = carMoneyStr.split(".");
 
-        console.log(carMoney+'/'+newCarMoney +'/' + carMoneyStr +'/' +moneyArray);
+        // console.log(carMoney+'/'+newCarMoney +'/' + carMoneyStr +'/' +moneyArray);
 
         if(moneyArray.length>1)
         {
@@ -357,7 +496,7 @@ export default class CarInfoScene extends BaseComponent {
         return (
             <View ref="carInfoScene" style={{flex: 1, backgroundColor: 'white'}}>
 
-                <ScrollView style={{marginBottom: Pixel.getPixel (44)}}
+                <ScrollView style={{marginBottom: Pixel.getPixel(44),backgroundColor:fontAndColor.COLORA3}}
                             scrollEventThrottle={200}
                             onScroll={this.setNavitgationBackgroundColor}
                 >
@@ -399,12 +538,12 @@ export default class CarInfoScene extends BaseComponent {
                                 </View>
                             }
                         </View>
-                        {
-                            (carData.lowest_pay_price>0||carData.lowest_pay_ratio>0) &&
-                            <View style={styles.preferentialView}>
-                                <Text style={styles.preferentialText}>第1车贷合作商户，首付{carData.lowest_pay_price>0?(this.carMoneyChange(carData.lowest_pay_price)+'万'):(this.carMoneyChange(carData.lowest_pay_ratio)+'%')}即可提车</Text>
-                            </View>
-                        }
+                        {/*{*/}
+                            {/*(carData.lowest_pay_price>0||carData.lowest_pay_ratio>0) &&*/}
+                            {/*<View style={styles.preferentialView}>*/}
+                                {/*<Text style={styles.preferentialText}>第1车贷合作商户，首付{carData.lowest_pay_price>0?(this.carMoneyChange(carData.lowest_pay_price)+'万'):(this.carMoneyChange(carData.lowest_pay_ratio)+'%')}即可提车</Text>*/}
+                            {/*</View>*/}
+                        {/*}*/}
                     </View>
                     {
                         ((typeof(carData.labels)!= "undefined"?(carData.labels.length<=0?false:true):false)|| carData.describe!=='' || carData.city_name!=='' || carData.plate_number!=='') && (
@@ -439,7 +578,7 @@ export default class CarInfoScene extends BaseComponent {
                                             {
                                                 carData.city_name!==''&&(<View style={styles.carAddressSubView}>
                                                     <Text style={styles.carAddressTitleText}>所在地: </Text>
-                                                    <Text style={styles.carAddressSubTitleText}>{carData.provice_name +(carData.provice_name===carData.city_name?" ":("-"+carData.city_name))}</Text>
+                                                    <Text style={styles.carAddressSubTitleText}>{carData.provice_name +(carData.provice_name===carData.city_name?" ":("  "+carData.city_name))}</Text>
                                                 </View>)
                                             }
                                         </View>
@@ -457,20 +596,32 @@ export default class CarInfoScene extends BaseComponent {
                         )
 
                     }
-
-
                     <View style={styles.carIconsContainer}>
-                        <View style={styles.carIconsView}>
-                            {
-                                carIconsData.map((data, index) => {
-                                    return (
-                                        <CarIconView imageData={data.image} imageHighData={data.imageHigh}
-                                                     content={carData.carIconsContentData&&carData.carIconsContentData[index]} title={data.title}
-                                                     key={index}/>
-                                    )
-                                })
-                            }
-                        </View>
+                        <CarDeploySwitchoverButton switchoverAction={(type)=>{
+
+                            this.setState({
+                                switchoverCarInfo:type,
+                            });
+
+                        }}/>
+                        {
+                            this.state.switchoverCarInfo==0?
+                                (<View style={styles.carIconsView}>
+                                    {
+                                        carIconsData.map((data, index) => {
+                                            return (
+                                                <CarIconView imageData={data.image} imageHighData={data.imageHigh}
+                                                             content={carData.carIconsContentData&&carData.carIconsContentData[index]} title={data.title}
+                                                             key={index}/>
+                                            )
+                                        })
+                                    }
+                                </View>):(<CarConfigurationView carConfigurationData={carConfigurationData}/>)
+
+                        }
+                        <TouchableOpacity onPress={this.pushCarUpkeepScene} activeOpacity={1}>
+                        <Image style={{marginTop:10,width:ScreenWidth}} source={require('../../images/carSourceImages/carUpkeepButton.png')} resizeMode='stretch'/>
+                        </TouchableOpacity>
                     </View>
                 </ScrollView>
                 <TouchableOpacity style={styles.callView} onPress={this.callClick}>
@@ -488,7 +639,7 @@ export default class CarInfoScene extends BaseComponent {
                     wrapStyle={{backgroundColor:'rgba(0,0,0,0)'}}
                     title="车源详情"
                     backIconClick={this.backIconClick}
-                    renderRihtFootView={this.navigatorRightView}
+                    isStore={this.state.carData.is_collection==0?false:true} addStoreAction={this.addStoreAction} cancelStoreAction={this.cancelStoreAction} showShared={this.showShared}
                 />
                 <PhotoView ref="photoView"/>
                 <SharedView ref="sharedView" carData={this.state.carData}/>
@@ -565,12 +716,18 @@ class  SharedView extends Component{
 
                     carContent+=" | "+carData.carIconsContentData[0]+'出厂';
                 }
+                let fenxiangUrl = '';
+                if(AppUrls.BASEURL=='http://api-gateway.test.dycd.com/'){
+                    fenxiangUrl = AppUrls.FENXIANGTEST;
+                }else{
+                    fenxiangUrl = AppUrls.FENXIANGOPEN;
+                }
                 let carImage = typeof carData.imgs[0].url == 'undefined'?resolveAssetSource(imageResource).uri:carData.imgs[0].url;
                 weChat.shareToSession({
                     type: 'news',
                     title:carData.model_name,
                     description:carContent,
-                    webpageUrl:'http://finance.test.dycd.com/platform/car_detail.html?id='+carData.id,
+                    webpageUrl:fenxiangUrl+'?id='+carData.id,
                     thumbImage:carImage,
 
                 }).catch((error)=>{
@@ -701,49 +858,6 @@ class PhotoView extends Component{
     }
 }
 
-class NavigationRightView extends Component{
-    // 构造
-      constructor(props) {
-        super(props);
-        // 初始状态
-        this.state = {
-
-            isStore:this.props.isStore,
-        };
-      }
-
-      isStoreClick=(isStore)=>{
-
-          this.setState({
-              isStore:isStore,
-          })
-      }
-
-    render(){
-        return(
-            <View style={{flexDirection: 'row'}}>
-                <TouchableOpacity onPress={()=>{
-
-                    if(this.state.isStore){
-
-                        this.props.cancelStoreAction(this.isStoreClick);
-
-                    }else {
-
-                        this.props.addStoreAction(this.isStoreClick);
-                    }
-
-                }}>
-                    <Image source={ this.state.isStore? require('../../images/carSourceImages/presc.png') : require('../../images/carSourceImages/newsc.png')}></Image>
-                </TouchableOpacity>
-                <TouchableOpacity style={{marginLeft: Pixel.getPixel(10)}} onPress={this.props.showShared}>
-                    <Image source={require('../../images/carSourceImages/newfx.png')}></Image>
-                </TouchableOpacity>
-            </View>
-        )
-    }
-
-}
 
 const styles = StyleSheet.create({
 
@@ -902,11 +1016,7 @@ const styles = StyleSheet.create({
     },
     carIconsContainer: {
 
-        marginBottom: Pixel.getPixel(15),
-        marginHorizontal: Pixel.getPixel(15),
-        backgroundColor: 'white',
-
-
+        marginTop:Pixel.getPixel(10),
     },
     carIconsView: {
 

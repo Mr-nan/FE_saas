@@ -25,18 +25,43 @@ export  default class RepaymentInfoContentItem extends PureComponent {
     render() {
         let itemList = [];
         for (let i = 0; i < this.props.items.length; i++) {
+            let color = fontAndColor.COLORA0;
+            let value = this.props.items[i].data;
+            let canClick = false;
+            if(this.props.items[i].name=='服务费'){
+                if(parseFloat(this.props.items[i].data)>0){
+                    color = fontAndColor.COLORA2;
+                    value = this.props.items[i].data+'  >';
+                    canClick = true;
+                }else{
+                    color = fontAndColor.COLORA0;
+                    value = this.props.items[i].data;
+                }
+            }else if(this.props.items[i].name=='最晚还款日'){
+                color = fontAndColor.COLORB2;
+                value = this.props.items[i].data;
+            }else{
+                color = fontAndColor.COLORA0;
+                value = this.props.items[i].data;
+            }
+
             itemList.push(
-                <View key={i} style={styles.itemStyle}>
+                <TouchableOpacity onPress={()=>{
+                    if(canClick){
+                        this.props.onPress();
+                    }
+                }} activeOpacity={1} key={i} style={styles.itemStyle}>
                     <View style={{flex:1,justifyContent:'flex-start',alignItems:'center',flexDirection:'row'}}>
                         <Text style={[styles.loanCodeStyle]}>{this.props.items[i].name}</Text>
                     </View>
                     <View activeOpacity={0.8}
                           style={{flex:2,justifyContent:'flex-end',alignItems:'center',flexDirection:'row'}}>
                         <Text
-                            style={[styles.loanCodeStyle,this.props.items[i].name=='最晚还款日'?{color:fontAndColor.COLORB2}:{color:fontAndColor.COLORA0}]}>
-                            {this.props.items[i].data}</Text>
+                            style={[styles.loanCodeStyle,
+                            {color:color}]}>
+                            {value}</Text>
                     </View>
-                </View>
+                </TouchableOpacity>
             );
             if (i !== this.props.items.length - 1) {
                 itemList.push(

@@ -27,6 +27,7 @@ import RepaymentInfoContentItem from './component/RepaymentInfoContentItem';
 import RepaymentInfoBottomItem from './component/RepaymentInfoBottomItem';
 import AllBottomItem from './component/AllBottomItem';
 import MyButton from '../../component/MyButton';
+import ServerMoneyListModal from '../../component/ServerMoneyListModal';
 let moneyList = [];
 let nameList = [];
 let adjustLsit = [];
@@ -89,7 +90,8 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                     moneyList.push({name: '综合费率', data: movies.loan_rebate+'%'});
                     moneyList.push({name: '利息总额', data: movies.interest_total});
                     moneyList.push({name: '已还利息', data: movies.interest});
-                    moneyList.push({name: '贷款利息', data: movies.interest_other});
+                    moneyList.push({name: '贷款利息', data: movies.interest_other})
+                    moneyList.push({name: '服务费', data: movies.all_fee});
 
                     nameList.push({name: '渠道名称', data: movies.qvdaoname});
                     nameList.push({name: '还款账户', data: movies.bank_info.repaymentaccount});
@@ -158,6 +160,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                 />
                 {movies.paymen_status == '0' ? this.props.from == 'SingleRepaymentPage' ?
                         <MyButton {...this.buttonParams}/> : <View/> : <View/>}
+                <ServerMoneyListModal ref="servermoneylistmodal"/>
             </View>
         );
     }
@@ -214,7 +217,9 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
             )
         } else if (rowId == 2) {
             return (
-                <RepaymentInfoContentItem items={moneyList}/>
+                <RepaymentInfoContentItem items={moneyList} onPress={()=>{
+                        this.refs.servermoneylistmodal.changeShowType(true,movies.list_fee);
+                }}/>
             )
         }else if (rowId == 3) {
             return (
@@ -225,15 +230,31 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                 <RepaymentInfoContentItem items={nameList}/>
             )
         } else if (rowId == 5) {
+            let name = '';
+            let money = 0;
+            let formula = '';
+            if(parseFloat(movies.all_fee)>0){
+                money = (parseFloat(movies.loan_mny)
+                +parseFloat(movies.loan_mny)*parseFloat(movies.loan_rebate)/100/360*
+                this.state.loan_day-parseFloat(movies.bondmny)+parseFloat(movies.all_fee)).toFixed(2);
+                name = '应还总额=本金+本金*综合费率/360*计息天数-保证金'+'+服务费';
+                formula = '='+movies.loan_mny+'+'
+                    +movies.loan_mny+'*'+movies.loan_rebate/100+'/360*'
+                    +this.state.loan_day+'-'+movies.bondmny+'+'+movies.all_fee
+            }else{
+                money = (parseFloat(movies.loan_mny)
+                +parseFloat(movies.loan_mny)*parseFloat(movies.loan_rebate)/100/360*
+                this.state.loan_day-parseFloat(movies.bondmny)).toFixed(2);
+                name = '应还总额=本金+本金*综合费率/360*计息天数-保证金';
+                formula = '='+movies.loan_mny+'+'
+                    +movies.loan_mny+'*'+movies.loan_rebate/100+'/360*'
+                    +this.state.loan_day+'-'+movies.bondmny
+            }
             return (
                 <RepaymentInfoBottomItem ref="RepaymentInfoBottomItem"
-                                         allMoney={(parseFloat(movies.loan_mny)
-                                         +parseFloat(movies.loan_mny)*parseFloat(movies.loan_rebate)/100/360*
-                                         this.state.loan_day-parseFloat(movies.bondmny)).toFixed(2)}
-                                         formula={'='+movies.loan_mny+'+'
-                                         +movies.loan_mny+'*'+movies.loan_rebate/100+'/360*'
-                                         +this.state.loan_day+'-'+movies.bondmny}
-                                         formulaStr={'应还总额=本金+本金*综合费率/360*计息天数-保证金'}
+                                         allMoney={money}
+                                         formula={formula}
+                                         formulaStr={name}
                 />
             )
         } else {

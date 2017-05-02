@@ -32,9 +32,9 @@ export default class CarInfoScene extends BaseComponent {
                 <ScrollView>
                     <SelectView     ref="cityView"     title="地区"       content={screeningObject.checkedCity.title!=''?screeningObject.checkedCity.title:'请选择'} selectCilck={this.pushCitySceneAction}/>
                     <SelectView     ref="carView"      title="品牌车系"    content={(screeningObject.checkedCarType.title!='')?screeningObject.checkedCarType.title:'请选择'} selectCilck={this.pushCarBrandSceneAction}/>
-                    <CheckedView    title="车龄" dataArray={carFilterData.carAgeSource}    checkedClick={this.carAgeClick} currentChecked={screeningObject.checkedCarAgeType.title}/>
-                    <CheckedView    title="里程" dataArray={carFilterData.carKMSource}     checkedClick={this.carKMClick} currentChecked={screeningObject.checkedCarKMType.title}/>
-                    <CheckedView    title="类型" dataArray={carFilterData.carTypeSource}      checkedClick={this.carTypeClick}    currentChecked={screeningObject.checkedCarGenre.title}/>
+                    <CheckedView    title="车龄" dataArray={screeningObject.carAgeSource}    checkedClick={this.carAgeClick} currentChecked={screeningObject.checkedCarAgeType.title}/>
+                    <CheckedView    title="里程" dataArray={screeningObject.carKMSource}     checkedClick={this.carKMClick} currentChecked={screeningObject.checkedCarKMType.title}/>
+                    <CheckedView    title="类型" dataArray={screeningObject.carTypeSource}   checkedClick={this.carTypeClick}    currentChecked={screeningObject.checkedCarGenre.title}/>
                 </ScrollView>
                 <NavigationView title="筛选" backIconClick={this.backPage} renderRihtFootView={this.renderRightFootView}/>
             </View>
@@ -68,6 +68,7 @@ export default class CarInfoScene extends BaseComponent {
             component: CityListScene,
             params: {
                 checkedCityClick:this.checkedCityClick,
+                unlimitedAction:this.cityUnlimitedAction,
             }
         }
         this.toNextPage(navigatorParams);
@@ -81,10 +82,25 @@ export default class CarInfoScene extends BaseComponent {
                 checkedCarClick:this.checkedCarClick,
                 status: 1,
                 isHeadInteraction: true,
+                unlimitedAction:this.carUnlimitedAction,
             }
         }
         this.toNextPage(navigatorParams);
     };
+
+    cityUnlimitedAction=()=>{
+
+        this.refs.cityView.setContent('全国');
+        this.props.screeningObject.checkedCity.title = '';
+        this.props.screeningObject.checkedCity.value = 0;
+    }
+
+    carUnlimitedAction=()=>{
+        this.refs.carView.setContent('不限');
+        this.props.screeningObject.checkedCarType.title = '';
+        this.props.screeningObject.checkedCarType.brand_id = 0;
+        this.props.screeningObject.checkedCarType.series_id = 0;
+    }
 
     checkedCityClick=(cityType)=>{
         this.refs.cityView.setContent(cityType.city_name);
@@ -172,16 +188,16 @@ class CheckedView extends Component{
                                 <TouchableOpacity style={{height:Pixel.getPixel(20), marginTop:Pixel.getPixel(10),marginBottom:Pixel.getPixel(5),
                                 }} onPress={()=>
                                 {
-                                    if(this.state.currentChecked!=data.title){
+                                    if(this.state.currentChecked!=data.name){
                                         this.setState({
-                                            currentChecked:data.title,
+                                            currentChecked:data.name,
                                         });
-                                        this.props.checkedClick({title:data.title,value:data.value});
+                                        this.props.checkedClick({title:data.name,value:data.value});
                                     }
 
                                 }} activeOpacity={1} key={index}>
-                                    <View style={[styles.checkedItemView,(this.state.currentChecked==data.title?{borderColor:fontAndColor.COLORB0}:{borderColor:fontAndColor.COLORA2})]}>
-                                        <Text style={[styles.checkedItemText,(this.state.currentChecked==data.title?{color:fontAndColor.COLORB0}:{color:fontAndColor.COLORA2})] }>{data.title}</Text>
+                                    <View style={[styles.checkedItemView,(this.state.currentChecked==data.name?{borderColor:fontAndColor.COLORB0}:{borderColor:fontAndColor.COLORA2})]}>
+                                        <Text style={[styles.checkedItemText,(this.state.currentChecked==data.name?{color:fontAndColor.COLORB0}:{color:fontAndColor.COLORA2})] }> {data.name} </Text>
                                     </View>
                                 </TouchableOpacity>
                             )
@@ -285,7 +301,8 @@ const styles = StyleSheet.create({
     },
     titleText:{
         color:fontAndColor.COLORA0,
-        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
+
     },
     contentText:{
         color:fontAndColor.COLORA2,

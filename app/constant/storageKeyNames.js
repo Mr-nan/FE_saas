@@ -21,3 +21,4 @@ export const USER_LEVEL = "user_level"; //	0：初级注册用户，1:正式用�
 export const NEED_GESTURE = "need_gesture"; //	是否需要手势解锁
 /* userinfo end */
 export const NEED_OPENBRAND = "need_openbrand"; //	需要打开车型列表
+export const NEED_CHECK_RECOMMEND = "checkRecommend";   // 取消推荐车源

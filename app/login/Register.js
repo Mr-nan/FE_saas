@@ -20,9 +20,8 @@ import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 import md5 from "react-native-md5";
 import LoginAndRegister from "./LoginAndRegister";
-import * as ImageUpload from '../utils/ImageUpload';
-import ImageSource from '../publish/component/ImageSource';
-import LoddingAlert from '../component/toast/LoddingAlert';
+import * as ImageUpload from "../utils/ImageUpload";
+import ImageSource from "../publish/component/ImageSource";
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -43,7 +42,7 @@ const options = {
     cancelButtonTitle: '取消',
     takePhotoButtonTitle: '拍照',
     chooseFromLibraryButtonTitle: '选择相册',
-    allowsEditing: true,
+    allowsEditing: false,
     noData: false,
     quality: 1.0,
     maxWidth: 480,
@@ -613,6 +612,7 @@ const styles = StyleSheet.create({
     imageButtonStyle: {
         width: Pixel.getPixel(80),
         height: Pixel.getPixel(60),
+        resizeMode: 'contain'
     },
     imageClearButtonStyle: {
         width: Pixel.getPixel(17),

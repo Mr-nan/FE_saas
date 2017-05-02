@@ -30,7 +30,7 @@ export class CarSourceSelectHeadView extends Component{
         // 初始状态
         this.state = {
 
-            isCheckRecommend:true,
+            isCheckRecommend:this.props.isCheckRecommend,
         };
       }
 
@@ -60,7 +60,7 @@ export class CarSourceSelectHeadView extends Component{
 
         });
 
-        this.props.checkRecommendClick(!this.state.isCheckRecommend);
+        this.props.checkRecommendClick(isCheck);
 
     }
 
@@ -165,7 +165,7 @@ export class CarSourceSelectView extends Component{
                                                 {
                                                         <Text
                                                             style={[styles.checkedCellText,
-                                                                data.title==checkedTypeString && {color:fontAndColor.COLORB0}]}>{data.title}
+                                                                data.name==checkedTypeString && {color:fontAndColor.COLORB0}]}>{data.name}
                                                         </Text>
                                                 }
 

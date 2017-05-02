@@ -22,6 +22,7 @@ const Pixel = new PixelUtil();
 import NavigationView from '../component/AllNavigationView';
 import * as fontAndColor from '../constant/fontAndColor';
 import BaseComponent from '../component/BaseComponent';
+let oldUrl = '';
 export  default class WebScene extends BaseComponent {
 
     constructor(props) {
@@ -33,10 +34,20 @@ export  default class WebScene extends BaseComponent {
     }
 
     componentDidMount() {
+        oldUrl = this.props.webUrl;
         BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: false});
         });
+    }
+
+    handleBack = () => {
+        if(oldUrl==this.props.webUrl){
+            this.backPage();
+        }else{
+            this.refs.www.goBack();
+        }
+        return true;
     }
 
 
@@ -47,18 +58,31 @@ export  default class WebScene extends BaseComponent {
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
                 <WebView
+                    ref="www"
                     style={{width:width,height:height,backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(64)}}
                     source={{uri:this.props.webUrl,method: 'GET'}}
                     javaScriptEnabled={true}
                     domStorageEnabled={true}
                     scalesPageToFit={false}
+                    onNavigationStateChange={this.onNavigationStateChange.bind(this)}
                 />
                 <NavigationView
                     title="公告"
-                    backIconClick={this.backPage}
+                    backIconClick={()=>{
+                        if(oldUrl==this.props.webUrl){
+                                this.backPage();
+                        }else{
+                            this.refs.www.goBack();
+                        }
+
+                    }}
                 />
             </View>
         );
+    }
+
+    onNavigationStateChange=(navState)=> {
+        oldUrl=navState.url;
     }
 
     _renderPlaceholderView() {

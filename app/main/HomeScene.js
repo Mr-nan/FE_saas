@@ -226,7 +226,7 @@ export default class HomeScene extends BaseComponet {
         } else {
             return (
                 <TouchableOpacity onPress={()=> {
-                    this.props.jumpScene('carpage');
+                    this.props.jumpScene('carpage','checkRecommend');
                 }} activeOpacity={0.8} style={{
                     width: width, height: Pixel.getPixel(60), backgroundColor: fontAndClolr.COLORA3,
                     alignItems: 'center'

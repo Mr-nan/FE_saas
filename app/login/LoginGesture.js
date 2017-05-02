@@ -14,11 +14,11 @@ import PwdGesture from "../gesture/PwdGesture";
 import BaseComponent from "../component/BaseComponent";
 import PixelUtil from "../utils/PixelUtil";
 import * as FontAndColor from "../constant/fontAndColor";
-import NavigationBar from '../component/NavigationBar';
+import NavigationBar from "../component/NavigationBar";
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
-import LoginScene from './LoginScene';
-import MainPage from '../main/MainPage';
+import LoginScene from "./LoginScene";
+import MainPage from "../main/MainPage";
 
 let Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;

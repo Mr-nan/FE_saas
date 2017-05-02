@@ -30,8 +30,7 @@ import MyButton from "../component/MyButton";
 import LoginFailSmsYes from "./LoginFailSmsYes";
 import SetLoginPwdGesture from "./SetLoginPwdGesture";
 import md5 from "react-native-md5";
-import LoginGesture from './LoginGesture';
-import LoddingAlert from '../component/toast/LoddingAlert';
+import LoginGesture from "./LoginGesture";
 
 var Pixel = new PixelUtil();
 var Dimensions = require('Dimensions');
@@ -384,64 +383,129 @@ export default class LoginScene extends BaseComponent {
                         loading: false,
                     });
                     if (response.mycode == "1") {
-                        // 保存用户登录状态
-                        StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '2');
-                        // 保存登录成功后的用户信息
-                        StorageUtil.mGetItem(StorageKeyNames.USERNAME, (data) => {
-                            if (data.code == 1) {
-                                if (data.result == null || data.result == "") {
-                                    StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName);
-                                } else if (data.result.indexOf(userName) == -1) {
-                                    StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName + "," + data.result);
-                                } else if (data.result == userName) {
-                                } else {
-                                    let names;
-                                    if (data.result.indexOf(userName + ",") == -1) {
-                                        if (data.result.indexOf("," + userName) == -1) {
-                                            names = data.result.replace(userName, "")
+                        if (response.mjson.data.user_level == 2) {
+                            if (response.mjson.data.enterprise_list == [] || response.mjson.data.enterprise_list == "") {
+                                this.props.showToast("用户信息解析错误");
+                            } else {
+                                // 保存用户登录状态
+                                StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '2');
+                                // 保存登录成功后的用户信息
+                                StorageUtil.mGetItem(StorageKeyNames.USERNAME, (data) => {
+                                    if (data.code == 1) {
+                                        if (data.result == null || data.result == "") {
+                                            StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName);
+                                        } else if (data.result.indexOf(userName) == -1) {
+                                            StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName + "," + data.result);
+                                        } else if (data.result == userName) {
                                         } else {
-                                            names = data.result.replace("," + userName, "")
+                                            let names;
+                                            if (data.result.indexOf(userName + ",") == -1) {
+                                                if (data.result.indexOf("," + userName) == -1) {
+                                                    names = data.result.replace(userName, "")
+                                                } else {
+                                                    names = data.result.replace("," + userName, "")
+                                                }
+                                            } else {
+                                                names = data.result.replace(userName + ",", "")
+                                            }
+                                            StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName + "," + names);
                                         }
-                                    } else {
-                                        names = data.result.replace(userName + ",", "")
                                     }
-                                    StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName + "," + names);
-                                }
-                            }
-                        })
+                                })
 
-                        StorageUtil.mSetItem(StorageKeyNames.USER_INFO, JSON.stringify(response.mjson.data));
-                        // 保存用户信息
-                        StorageUtil.mSetItem(StorageKeyNames.BASE_USER_ID, response.mjson.data.base_user_id + "");
-                        StorageUtil.mSetItem(StorageKeyNames.ENTERPRISE_LIST, JSON.stringify(response.mjson.data.enterprise_list));
-                        StorageUtil.mSetItem(StorageKeyNames.HEAD_PORTRAIT_URL, response.mjson.data.head_portrait_url + "");
-                        StorageUtil.mSetItem(StorageKeyNames.IDCARD_NUMBER, response.mjson.data.idcard_number + "");
-                        StorageUtil.mSetItem(StorageKeyNames.PHONE, response.mjson.data.phone + "");
-                        StorageUtil.mSetItem(StorageKeyNames.REAL_NAME, response.mjson.data.real_name + "");
-                        StorageUtil.mSetItem(StorageKeyNames.TOKEN, response.mjson.data.token + "");
-                        StorageUtil.mSetItem(StorageKeyNames.USER_LEVEL, response.mjson.data.user_level + "");
-                        StorageUtil.mGetItem(response.mjson.data.phone + "", (data) => {
-                            if (data.code == 1) {
-                                if (data.result != null) {
-                                    if (response.mjson.data.user_level == 2) {
-                                        if (response.mjson.data.enterprise_list[0].role_type == '2') {
-                                            this.loginPage({
-                                                name: 'LoginGesture',
-                                                component: LoginGesture,
-                                                params: {from: 'RootScene'}
-                                            })
+                                StorageUtil.mSetItem(StorageKeyNames.USER_INFO, JSON.stringify(response.mjson.data));
+                                // 保存用户信息
+                                StorageUtil.mSetItem(StorageKeyNames.BASE_USER_ID, response.mjson.data.base_user_id + "");
+                                StorageUtil.mSetItem(StorageKeyNames.ENTERPRISE_LIST, JSON.stringify(response.mjson.data.enterprise_list));
+                                StorageUtil.mSetItem(StorageKeyNames.HEAD_PORTRAIT_URL, response.mjson.data.head_portrait_url + "");
+                                StorageUtil.mSetItem(StorageKeyNames.IDCARD_NUMBER, response.mjson.data.idcard_number + "");
+                                StorageUtil.mSetItem(StorageKeyNames.PHONE, response.mjson.data.phone + "");
+                                StorageUtil.mSetItem(StorageKeyNames.REAL_NAME, response.mjson.data.real_name + "");
+                                StorageUtil.mSetItem(StorageKeyNames.TOKEN, response.mjson.data.token + "");
+                                StorageUtil.mSetItem(StorageKeyNames.USER_LEVEL, response.mjson.data.user_level + "");
+                                StorageUtil.mGetItem(response.mjson.data.phone + "", (data) => {
+                                    if (data.code == 1) {
+                                        if (data.result != null) {
+                                            if (response.mjson.data.user_level == 2) {
+                                                if (response.mjson.data.enterprise_list[0].role_type == '2') {
+                                                    this.loginPage({
+                                                        name: 'LoginGesture',
+                                                        component: LoginGesture,
+                                                        params: {from: 'RootScene'}
+                                                    })
+                                                } else {
+                                                    this.loginPage(this.loginSuccess)
+                                                }
+                                            } else {
+                                                this.loginPage(this.loginSuccess)
+                                            }
+                                            StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
+                                        } else {
+                                            this.loginPage(this.setLoginGesture)
+                                        }
+                                    }
+                                })
+                            }
+                        } else {
+                            // 保存用户登录状态
+                            StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '2');
+                            // 保存登录成功后的用户信息
+                            StorageUtil.mGetItem(StorageKeyNames.USERNAME, (data) => {
+                                if (data.code == 1) {
+                                    if (data.result == null || data.result == "") {
+                                        StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName);
+                                    } else if (data.result.indexOf(userName) == -1) {
+                                        StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName + "," + data.result);
+                                    } else if (data.result == userName) {
+                                    } else {
+                                        let names;
+                                        if (data.result.indexOf(userName + ",") == -1) {
+                                            if (data.result.indexOf("," + userName) == -1) {
+                                                names = data.result.replace(userName, "")
+                                            } else {
+                                                names = data.result.replace("," + userName, "")
+                                            }
+                                        } else {
+                                            names = data.result.replace(userName + ",", "")
+                                        }
+                                        StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName + "," + names);
+                                    }
+                                }
+                            })
+
+                            StorageUtil.mSetItem(StorageKeyNames.USER_INFO, JSON.stringify(response.mjson.data));
+                            // 保存用户信息
+                            StorageUtil.mSetItem(StorageKeyNames.BASE_USER_ID, response.mjson.data.base_user_id + "");
+                            StorageUtil.mSetItem(StorageKeyNames.ENTERPRISE_LIST, JSON.stringify(response.mjson.data.enterprise_list));
+                            StorageUtil.mSetItem(StorageKeyNames.HEAD_PORTRAIT_URL, response.mjson.data.head_portrait_url + "");
+                            StorageUtil.mSetItem(StorageKeyNames.IDCARD_NUMBER, response.mjson.data.idcard_number + "");
+                            StorageUtil.mSetItem(StorageKeyNames.PHONE, response.mjson.data.phone + "");
+                            StorageUtil.mSetItem(StorageKeyNames.REAL_NAME, response.mjson.data.real_name + "");
+                            StorageUtil.mSetItem(StorageKeyNames.TOKEN, response.mjson.data.token + "");
+                            StorageUtil.mSetItem(StorageKeyNames.USER_LEVEL, response.mjson.data.user_level + "");
+                            StorageUtil.mGetItem(response.mjson.data.phone + "", (data) => {
+                                if (data.code == 1) {
+                                    if (data.result != null) {
+                                        if (response.mjson.data.user_level == 2) {
+                                            if (response.mjson.data.enterprise_list[0].role_type == '2') {
+                                                this.loginPage({
+                                                    name: 'LoginGesture',
+                                                    component: LoginGesture,
+                                                    params: {from: 'RootScene'}
+                                                })
+                                            } else {
+                                                this.loginPage(this.loginSuccess)
+                                            }
                                         } else {
                                             this.loginPage(this.loginSuccess)
                                         }
+                                        StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
                                     } else {
-                                        this.loginPage(this.loginSuccess)
+                                        this.loginPage(this.setLoginGesture)
                                     }
-                                    StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
-                                } else {
-                                    this.loginPage(this.setLoginGesture)
                                 }
-                            }
-                        })
+                            })
+                        }
                     } else {
                         this.props.showToast(response.mjson.msg + "");
                     }
