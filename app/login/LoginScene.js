@@ -11,7 +11,7 @@ import {
     TouchableWithoutFeedback,
     InteractionManager,
     NativeModules,
-    BackAndroid,
+    BackAndroid
 } from "react-native";
 import BaseComponent from "../component/BaseComponent";
 import LoginInputText from "./component/LoginInputText";
@@ -348,80 +348,70 @@ export default class LoginScene extends BaseComponent {
         let passWord = this.refs.loginPassword.getInputTextValue();
         let verifyCode = this.refs.loginVerifycode.getInputTextValue();
         let smsCode = this.refs.loginSmscode.getInputTextValue();
-
-        NativeModules.CustomCamera.takePic().then((response) => {
-            // console.log("============>>>>>>>>>");
-            // console.log(response.data);
-
-        }, (error) => {
-
-        })
-
-
-        // if (typeof(passWord) == "undefined" || userName == "" || userName.length != 11) {
-        //     this.props.showToast("请输入正确的用户名");
-        // } else if (typeof(passWord) == "undefined" || passWord == "") {
-        //     this.props.showToast("密码不能为空");
-        // } else if (passWord.length < 6) {
-        //     this.props.showToast("密码必须为6~16位");
-        // } else if (typeof(verifyCode) == "undefined" || verifyCode == "") {
-        //     this.props.showToast("验证码不能为空");
-        // } else if (typeof(smsCode) == "undefined" || smsCode == "") {
-        //     this.props.showToast("短信验证码不能为空");
-        // } else {
-        //     let device_code = '';
-        //     if (Platform.OS === 'android') {
-        //         device_code = 'dycd_platform_android';
-        //     } else {
-        //         device_code = 'dycd_platform_ios';
-        //     }
-        //     let maps = {
-        //         device_code: device_code,
-        //         code: smsCode,
-        //         login_type: "2",
-        //         phone: userName,
-        //         pwd: md5.hex_md5(passWord),
-        //     };
-        //     // this.props.showModal(true);
-        //     this.setState({
-        //         loading: true,
-        //     });
-        //     request(AppUrls.LOGIN, 'Post', maps)
-        //         .then((response) => {
-        //             // this.props.showModal(false);
-        //             this.setState({
-        //                 loading: false,
-        //             });
-        //             if (response.mycode == "1") {
-        //                 if (response.mjson.data.user_level == 2) {
-        //                     if (response.mjson.data.enterprise_list == [] || response.mjson.data.enterprise_list == "") {
-        //                         this.props.showToast("用户信息解析错误");
-        //                     } else {
-        //                         // 保存用户登录状态
-        //                         StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '2');
-        //                         // 保存登录成功后的用户信息
-        //                         StorageUtil.mGetItem(StorageKeyNames.USERNAME, (data) => {
-        //                             if (data.code == 1) {
-        //                                 if (data.result == null || data.result == "") {
-        //                                     StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName);
-        //                                 } else if (data.result.indexOf(userName) == -1) {
-        //                                     StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName + "," + data.result);
-        //                                 } else if (data.result == userName) {
-        //                                 } else {
-        //                                     let names;
-        //                                     if (data.result.indexOf(userName + ",") == -1) {
-        //                                         if (data.result.indexOf("," + userName) == -1) {
-        //                                             names = data.result.replace(userName, "")
-        //                                         } else {
-        //                                             names = data.result.replace("," + userName, "")
-        //                                         }
-        //                                     } else {
-        //                                         names = data.result.replace(userName + ",", "")
-        //                                     }
-        //                                     StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName + "," + names);
-        //                                 }
-        //                             }
-        //                         })
+        if (typeof(passWord) == "undefined" || userName == "" || userName.length != 11) {
+            this.props.showToast("请输入正确的用户名");
+        } else if (typeof(passWord) == "undefined" || passWord == "") {
+            this.props.showToast("密码不能为空");
+        } else if (passWord.length < 6) {
+            this.props.showToast("密码必须为6~16位");
+        } else if (typeof(verifyCode) == "undefined" || verifyCode == "") {
+            this.props.showToast("验证码不能为空");
+        } else if (typeof(smsCode) == "undefined" || smsCode == "") {
+            this.props.showToast("短信验证码不能为空");
+        } else {
+            let device_code = '';
+            if (Platform.OS === 'android') {
+                device_code = 'dycd_platform_android';
+            } else {
+                device_code = 'dycd_platform_ios';
+            }
+            let maps = {
+                device_code: device_code,
+                code: smsCode,
+                login_type: "2",
+                phone: userName,
+                pwd: md5.hex_md5(passWord),
+            };
+            // this.props.showModal(true);
+            this.setState({
+                loading: true,
+            });
+            request(AppUrls.LOGIN, 'Post', maps)
+                .then((response) => {
+                    // this.props.showModal(false);
+                    this.setState({
+                        loading: false,
+                    });
+                    if (response.mycode == "1") {
+                        if (response.mjson.data.user_level == 2) {
+                            if (response.mjson.data.enterprise_list == [] || response.mjson.data.enterprise_list == "") {
+                                this.props.showToast("用户信息解析错误");
+                            } else {
+                                // 保存用户登录状态
+                                StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '2');
+                                // 保存登录成功后的用户信息
+                                StorageUtil.mGetItem(StorageKeyNames.USERNAME, (data) => {
+                                    if (data.code == 1) {
+                                        if (data.result == null || data.result == "") {
+                                            StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName);
+                                        } else if (data.result.indexOf(userName) == -1) {
+                                            StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName + "," + data.result);
+                                        } else if (data.result == userName) {
+                                        } else {
+                                            let names;
+                                            if (data.result.indexOf(userName + ",") == -1) {
+                                                if (data.result.indexOf("," + userName) == -1) {
+                                                    names = data.result.replace(userName, "")
+                                                } else {
+                                                    names = data.result.replace("," + userName, "")
+                                                }
+                                            } else {
+                                                names = data.result.replace(userName + ",", "")
+                                            }
+                                            StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName + "," + names);
+                                        }
+                                    }
+                                })
 
                                 StorageUtil.mSetItem(StorageKeyNames.USER_INFO, JSON.stringify(response.mjson.data));
                                 // 保存用户信息
