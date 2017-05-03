@@ -98,6 +98,15 @@ export class CarConfigurationView extends BaseComponent{
       }
 
       loadData=()=>{
+
+             if(this.props.modelID==''||this.props.modelID=='0')
+             {
+                 this.setState({
+                     renderPlaceholderOnly:'null',
+                 });
+                 return;
+             }
+
               request(AppUrls.CAR_CONFIGURATION,'post',{
                   model_id:this.props.modelID,
               }).then((response) => {
@@ -110,8 +119,6 @@ export class CarConfigurationView extends BaseComponent{
                           renderPlaceholderOnly:'null',
                       });
                   }
-
-
               }, (error) => {
 
                   this.setState({

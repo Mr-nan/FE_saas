@@ -112,12 +112,11 @@ export default class AutoOther extends Component {
 
     _configPress = ()=>{
 
-        console.log(JSON.parse(this.props.carData.model));
             configParams = {
                 name: 'AutoConfig',
                 component: AutoConfig,
                 params: {
-                    modelID:this.props.carData.model.model_id,
+                    modelID:this.props.carData.model!==''?(JSON.parse(this.props.carData.model)).model_id:'',
                 }
             };
             this.props.goToPage(configParams);
