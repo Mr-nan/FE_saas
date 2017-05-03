@@ -88,6 +88,11 @@ export const CAR_INDEX = BASEURL + V + 'car/index';
 export const CAR_DETAIL = BASEURL + V + 'car/detail';
 
 /**
+ * 获取车辆配置信息
+ */
+export const CAR_CONFIGURATION = BASEURL + V + 'car/modelsConfig';
+
+/**
  * 获取客服电话号码
  */
 export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/getCustomService';

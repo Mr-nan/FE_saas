@@ -283,6 +283,21 @@ export default class CarInfoScene extends BaseComponent {
         });
     }
 
+    loadConfigurationData=()=>{
+
+        request(AppUrls.CAR_CONFIGURATION,'post',{
+            model_id:this.props.modelID,
+        }).then((response) => {
+
+            console.log(response);
+
+        }, (error) => {
+
+            console.log(error);
+        });
+
+    }
+
     dateReversal=(time)=>{
 
         const date = new Date();
@@ -598,6 +613,11 @@ export default class CarInfoScene extends BaseComponent {
                     }
                     <View style={styles.carIconsContainer}>
                         <CarDeploySwitchoverButton switchoverAction={(type)=>{
+
+                            if(type==1){
+
+                                this.loadConfigurationData();
+                            }
 
                             this.setState({
                                 switchoverCarInfo:type,
