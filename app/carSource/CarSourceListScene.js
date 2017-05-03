@@ -731,7 +731,6 @@ export  default  class carSourceListScene extends BaseComponent {
             component: CarInfoScene,
             params: {
                 carID: carID,
-                modelID:modelID,
             }
         };
         this.props.callBack(navigatorParams);
@@ -816,7 +815,7 @@ export  default  class carSourceListScene extends BaseComponent {
                             pageSize={10}
                             enableEmptySections={true}
                             renderRow={(item,sectionID,rowID) =>
-                                    <CarCell style={styles.carCell} carCellData={item} onPress={()=> this.carCellOnPres(item.id,item.model_id,sectionID,rowID)}/>
+                                    <CarCell style={styles.carCell} carCellData={item} onPress={()=> this.carCellOnPres(item.id,sectionID,rowID)}/>
                                 }
                             renderFooter={this.renderListFooter}
                             onEndReached={this.toEnd}

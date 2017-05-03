@@ -84,148 +84,7 @@ const carIconsData = [
     },
 ];
 
-
-const carConfigurationData = [
-
-    {
-        title:'基本参数',
-        carInfo:[{
-            title:'h1',
-            value:'h2'
-        },{
-            title:'h1',
-            value:'h2'
-        },{
-            title:'h1',
-            value:'h2'
-        },{
-            title:'h1',
-            value:'h2'
-        }],
-    },
-    {
-        title:'发动机',
-        carInfo:[{
-            title:'a1',
-            value:'a2'
-        },{
-            title:'a1',
-            value:'a2'
-        },{
-            title:'h1',
-            value:'h2'
-        },{
-            title:'h1',
-            value:'h2'
-        }],
-    },{
-        title:'发动机',
-        carInfo:[{
-            title:'a1',
-            value:'a2'
-        },{
-            title:'a1',
-            value:'a2'
-        },{
-            title:'h1',
-            value:'h2'
-        },{
-            title:'h1',
-            value:'h2'
-        }],
-    },{
-        title:'发动机',
-        carInfo:[{
-            title:'a1',
-            value:'a2'
-        },{
-            title:'a1',
-            value:'a2'
-        },{
-            title:'h1',
-            value:'h2'
-        },{
-            title:'h1',
-            value:'h2'
-        }],
-    },{
-        title:'发动机',
-        carInfo:[{
-            title:'a1',
-            value:'a2'
-        },{
-            title:'a1',
-            value:'a2'
-        },{
-            title:'h1',
-            value:'h2'
-        },{
-            title:'h1',
-            value:'h2'
-        }],
-    },{
-        title:'发动机',
-        carInfo:[{
-            title:'a1',
-            value:'a2'
-        },{
-            title:'a1',
-            value:'a2'
-        },{
-            title:'h1',
-            value:'h2'
-        },{
-            title:'h1',
-            value:'h2'
-        }],
-    },{
-        title:'发动机',
-        carInfo:[{
-            title:'a1',
-            value:'a2'
-        },{
-            title:'a1',
-            value:'a2'
-        },{
-            title:'h1',
-            value:'h2'
-        },{
-            title:'h1',
-            value:'h2'
-        }],
-    },{
-        title:'发动机',
-        carInfo:[{
-            title:'a1',
-            value:'a2'
-        },{
-            title:'a12222',
-            value:'a2ss22'
-        },{
-            title:'h1',
-            value:'h2'
-        },{
-            title:'h1',
-            value:'h2'
-        }],
-    },{
-        title:'发动机',
-        carInfo:[{
-            title:'a1',
-            value:'a2'
-        },{
-            title:'a1',
-            value:'a2'
-        },{
-            title:'h1',
-            value:'h2'
-        },{
-            title:'h1',
-            value:'h2'
-        }],
-    },
-];
-
+let carConfigurationData = [];
 let carImageArray = [];
 
 export default class CarInfoScene extends BaseComponent {
@@ -245,6 +104,7 @@ export default class CarInfoScene extends BaseComponent {
     }
 
     initFinish = () => {
+        carConfigurationData=[];
         this.loadData();
     }
 
@@ -283,20 +143,7 @@ export default class CarInfoScene extends BaseComponent {
         });
     }
 
-    loadConfigurationData=()=>{
 
-        request(AppUrls.CAR_CONFIGURATION,'post',{
-            model_id:this.props.modelID,
-        }).then((response) => {
-
-            console.log(response);
-
-        }, (error) => {
-
-            console.log(error);
-        });
-
-    }
 
     dateReversal=(time)=>{
 
@@ -614,11 +461,6 @@ export default class CarInfoScene extends BaseComponent {
                     <View style={styles.carIconsContainer}>
                         <CarDeploySwitchoverButton switchoverAction={(type)=>{
 
-                            if(type==1){
-
-                                this.loadConfigurationData();
-                            }
-
                             this.setState({
                                 switchoverCarInfo:type,
                             });
@@ -636,12 +478,12 @@ export default class CarInfoScene extends BaseComponent {
                                             )
                                         })
                                     }
-                                </View>):(<CarConfigurationView carConfigurationData={carConfigurationData}/>)
+                                </View>):(<CarConfigurationView carConfigurationData={carConfigurationData}  renderCarConfigurationDataAction={(data)=>{carConfigurationData=data;console.log(data)}} modelID ={this.state.carData.model_id}/>)
 
                         }
-                        <TouchableOpacity onPress={this.pushCarUpkeepScene} activeOpacity={1}>
-                        <Image style={{marginTop:10,width:ScreenWidth}} source={require('../../images/carSourceImages/carUpkeepButton.png')} resizeMode='stretch'/>
-                        </TouchableOpacity>
+                        {/*<TouchableOpacity onPress={this.pushCarUpkeepScene} activeOpacity={1}>*/}
+                        {/*<Image style={{marginTop:10,width:ScreenWidth}} source={require('../../images/carSourceImages/carUpkeepButton.png')} resizeMode='stretch'/>*/}
+                        {/*</TouchableOpacity>*/}
                     </View>
                 </ScrollView>
                 <TouchableOpacity style={styles.callView} onPress={this.callClick}>
