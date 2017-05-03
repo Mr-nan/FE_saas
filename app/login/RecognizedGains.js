@@ -50,6 +50,7 @@ export default class RecognizedGains extends BaseComponent {
     initFinish = () => {
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: false});
+            this.getWZInfo();
         });
     }
 
@@ -161,11 +162,16 @@ export default class RecognizedGains extends BaseComponent {
                           childStyle={styles.loginButtonTextStyle}
                           mOnPress={() => {
                               if (this.state.agree) {
-                                  {/*this.toNextPage({*/}
-                                      {/*name: 'RecognizedGains',*/}
-                                      {/*component: RecognizedGains,*/}
-                                      {/*params: {},*/}
-                                  {/*})*/}
+                                  {/*this.toNextPage({*/
+                                  }
+                                  {/*name: 'RecognizedGains',*/
+                                  }
+                                  {/*component: RecognizedGains,*/
+                                  }
+                                  {/*params: {},*/
+                                  }
+                                  {/*})*/
+                                  }
                               } else {
                                   this.props.showToast("请选择服务协议");
                               }
@@ -195,6 +201,26 @@ export default class RecognizedGains extends BaseComponent {
         return (
             <View style={styles.Separator} key={sectionId + rowId}/>
         )
+    }
+
+    //获取微众申请页面数据
+    getWZInfo = () => {
+        let maps = {
+            api: AppUrls.GET_IOU_LIST,
+            loan_code: this.props.loan_code,
+        };
+        this.props.showModal(true);
+        request(AppUrls.FINANCE, 'Post', maps)
+            .then((response) => {
+                this.props.showModal(false);
+            }, (error) => {
+                this.props.showModal(false);
+                if (error.mycode == -300 || error.mycode == -500) {
+                    this.props.showToast("获取失败");
+                } else {
+                    this.props.showToast(error.mjson.msg + "");
+                }
+            });
     }
 }
 
