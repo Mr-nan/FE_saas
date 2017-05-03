@@ -17,8 +17,11 @@ var ScreenWidth = Dimensions.get('window').width;
 
 import *as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
+import BaseComponent from '../../component/BaseComponent';
 const Pixel = new PixelUtil();
 
+import {request} from "../../utils/RequestUtil";
+import * as AppUrls from "../../constant/appUrls";
 
 // 切换头部按钮
 export class CarDeploySwitchoverButton extends Component{
@@ -62,7 +65,7 @@ export class CarDeploySwitchoverButton extends Component{
 }
 
 // 车辆配置view
-export class CarConfigurationView extends Component{
+export class CarConfigurationView extends BaseComponent{
 
     // 构造
       constructor(props) {
@@ -75,38 +78,94 @@ export class CarConfigurationView extends Component{
             sectionHeaderHasChanged:(s1,s2) => s1!==s2,
         });
 
+
+
+        // 初始状态
+        this.state = {
+            renderPlaceholderOnly: this.props.carConfigurationData.length>0?'success':'blank',
+            dataSource:dataSource,
+        };
+      }
+
+      initFinish=()=>{
+
+          if(this.props.carConfigurationData.length){
+              this.setData(this.props.carConfigurationData);
+          }else {
+              this.loadData();
+          }
+
+      }
+
+      loadData=()=>{
+              request(AppUrls.CAR_CONFIGURATION,'post',{
+                  model_id:this.props.modelID,
+              }).then((response) => {
+
+                  if(response.mycode==1){
+                      this.setData(response.mjson.data);
+                      this.props.renderCarConfigurationDataAction && this.props.renderCarConfigurationDataAction(response.mjson.data);
+                  }else {
+                      this.setState({
+                          renderPlaceholderOnly:'null',
+                      });
+                  }
+
+
+              }, (error) => {
+
+                  this.setState({
+                      renderPlaceholderOnly:'error',
+                  });
+              });
+      }
+
+      setData=(array)=>{
           var dataBlob = {}, sectionIDs = [], rowIDs = [], rows = [];
-          var array = this.props.carConfigurationData;
 
           for (var i = 0; i < array.length; i++) {
               sectionIDs.push(i);
               dataBlob[i] = array[i].title;
-              rows = array[i].carInfo;
+              rows = array[i].data;
               rowIDs[i] = [];
               for (var j = 0; j < rows.length; j++) {
-                  rowIDs[i].push(j);
-                  //把每一行中的内容放入dataBlob对象中
-                  dataBlob[i + ':' + j] = rows[j];
+
+                  if(rows[j].value!=='-'){
+                      rowIDs[i].push(j);
+                      //把每一行中的内容放入dataBlob对象中
+                      dataBlob[i + ':' + j] = rows[j];
+                  }
               }
           }
 
-        // 初始状态
-        this.state = {
-            dataSource:dataSource.cloneWithRowsAndSections(dataBlob,sectionIDs,rowIDs),
-        };
+          this.setState({
+              dataSource:this.state.dataSource.cloneWithRowsAndSections(dataBlob,sectionIDs,rowIDs),
+              renderPlaceholderOnly:'success',
+          });
       }
 
     render(){
+
+        if (this.state.renderPlaceholderOnly!=='success') {
+            return (
+                <View style={{flex: 1, backgroundColor:fontAndColor.COLORA3}}>
+                    {this.loadView()}
+                </View>);
+        }
+
         return(
         <View style={{flex:1}}>
             <ListView
-                      dataSource={this.state.dataSource} renderRow={(rowData, sectionID, rowID)=>{
+
+                dataSource={this.state.dataSource} renderRow={(rowData, sectionID, rowID)=>{
                 return(<View  style={styles.carConfigurationViewItem}>
                     <Text style={styles.carConfigurationViewItemtTitleText}>{rowData.title}</Text>
-                    <Text style={styles.carConfigurationViewItemtValueText}>{rowData.value}</Text>
+                    <Text style={styles.carConfigurationViewItemtValueText}>{rowData.value==1?'标配':(rowData.value==0?'选配':rowData.value)}</Text>
                 </View>) }} renderSectionHeader={(sectionData, sectionId)=>{return(<View style={styles.carConfigurationViewItemHead}>
                 <Text style={styles.carConfigurationViewItemHeadText}>{sectionData}</Text>
-            </View>)}}/>
+
+            </View>)}}
+                enableEmptySections={true}/>
         </View>
         )
     }

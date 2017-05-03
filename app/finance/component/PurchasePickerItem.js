@@ -81,6 +81,7 @@ export  default class PurchasePickerItem extends PureComponent {
                 <View style={{width: width, marginTop: Pixel.getPixel(7), flexDirection: 'row', flexWrap: 'wrap'}}>
                     {movieItems}
                 </View>
+                <
             </View>
         );
     }
@@ -158,9 +159,6 @@ export  default class PurchasePickerItem extends PureComponent {
 
     openCamera=()=>{
         NativeModules.CustomCamera.takePic().then((response) => {
-            // console.log("============>>>>>>>>>");
-            // console.log(response.data);
-            this.props.showModal(true);
             this._uploadPicture(response);
         }, (error) => {
 

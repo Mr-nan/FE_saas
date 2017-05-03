@@ -722,7 +722,8 @@ export  default  class carSourceListScene extends BaseComponent {
     };
 
 
-    carCellOnPres = (carID, sectionID, rowID) => {
+    carCellOnPres = (carID, modelID,sectionID, rowID) => {
+
 
         let navigatorParams = {
 
@@ -814,7 +815,7 @@ export  default  class carSourceListScene extends BaseComponent {
                             pageSize={10}
                             enableEmptySections={true}
                             renderRow={(item,sectionID,rowID) =>
-                                    <CarCell style={styles.carCell} carCellData={item} onPress={()=>{this.carCellOnPres(item.id,sectionID,rowID)}}/>
+                                    <CarCell style={styles.carCell} carCellData={item} onPress={()=> this.carCellOnPres(item.id,sectionID,rowID)}/>
                                 }
                             renderFooter={this.renderListFooter}
                             onEndReached={this.toEnd}

@@ -177,8 +177,8 @@ export default class CGDCarDetailScenes extends BaseComponent{
         }else if (rowData.title ==='车辆位置'){
 
             return (
-                <CommentHandItem textStyle={{paddingTop:adapeSize(15),paddingBottom:adapeSize(15)}} leftTitle={rowData.title} showValue={'点击查看'} handel={()=>{
-
+                <CommentHandItem textStyle={{paddingTop:adapeSize(15),paddingBottom:adapeSize(15)}}
+                                 leftTitle={rowData.title} showValue={'点击查看'} handel={()=>{
                    navigatorParams = {
                      name: 'CarTrackScene',
                      component: CarTrackScene,
@@ -270,7 +270,8 @@ const styles = StyleSheet.create({
         height: adapeSize(250),
         width:width-adapeSize(24),
         marginLeft:adapeSize(14),
-        marginRight:adapeSize(14)
+        marginRight:adapeSize(14),
+            resizeMode:'stretch'
     },
     sectionStyle:{
         backgroundColor:PAGECOLOR.COLORA3,

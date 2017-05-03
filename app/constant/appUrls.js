@@ -1,13 +1,14 @@
 /**
  * 开发地址
  */
-// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地
  */
-export const BASEURL = 'http://api-gateway.test.dycd.com/';
-/**、
+// export const BASEURL = 'http://api-gateway.test.dycd.com/';
+
+/**
  * 正式地址
  */
 // export const BASEURL = 'https://gatewayapi.dycd.com/';
@@ -85,6 +86,11 @@ export const CAR_INDEX = BASEURL + V + 'car/index';
  * 获取车辆详情
  */
 export const CAR_DETAIL = BASEURL + V + 'car/detail';
+
+/**
+ * 获取车辆配置信息
+ */
+export const CAR_CONFIGURATION = BASEURL + V + 'car/modelsConfig';
 
 /**
  * 获取客服电话号码

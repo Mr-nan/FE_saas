@@ -133,7 +133,7 @@ export  default class PurchasePickerScene extends BaseComponent {
                                 }
                             });
                 }}/>
-                <ImageSource ref={(modal) => {this.imageSource = modal}}/>
+                <ImageSource ref='imageSource'/>
             </View>
         );
     }
@@ -141,7 +141,7 @@ export  default class PurchasePickerScene extends BaseComponent {
     _renderRow = (movie, sectionId, rowId) => {
         return (
             <PurchasePickerItem openModal={(cameraClick,galleryClick)=>{
-                this.imageSource.openModal('open',cameraClick,galleryClick);
+                this.refs.imageSource.openModal('open',cameraClick,galleryClick);
             }} results={results} showModal={(value)=>{this.props.showModal(value)}}
                                 showToast={(value)=>{this.props.showToast(value)}} items={movie}
                                 childList={childItems[rowId]}/>
