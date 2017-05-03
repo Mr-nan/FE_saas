@@ -6,11 +6,12 @@
 /**
  * 测试地
  */
-// export const BASEURL = 'http://api-gateway.test.dycd.com/';
-/**、
+export const BASEURL = 'http://api-gateway.test.dycd.com/';
+
+/**
  * 正式地址
  */
-export const BASEURL = 'https://gatewayapi.dycd.com/';
+// export const BASEURL = 'https://gatewayapi.dycd.com/';
 
 
 /**
@@ -32,6 +33,16 @@ export const V2 = "v2/";
  * 版本号3
  */
 export const V3 = "v3/";
+
+/**
+ * 分享测试地址
+ */
+export const FENXIANGTEST = 'http://test.bms.dycd.com/platform/car_detail.html';
+
+/**
+ * 分享正式地址
+ */
+export const FENXIANGOPEN = 'http://m.dycd.com/platform/car_detail.html';
 
 /**
  * 上传图片
