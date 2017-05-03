@@ -81,7 +81,6 @@ export  default class PurchasePickerItem extends PureComponent {
                 <View style={{width: width, marginTop: Pixel.getPixel(7), flexDirection: 'row', flexWrap: 'wrap'}}>
                     {movieItems}
                 </View>
-                <
             </View>
         );
     }
