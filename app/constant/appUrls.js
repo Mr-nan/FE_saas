@@ -7,8 +7,7 @@
  * 测试地
  */
 export const BASEURL = 'http://api-gateway.test.dycd.com/';
-
-/**
+/**、
  * 正式地址
  */
 // export const BASEURL = 'https://gatewayapi.dycd.com/';
@@ -43,6 +42,7 @@ export const FENXIANGTEST = 'http://test.bms.dycd.com/platform/car_detail.html';
  * 分享正式地址
  */
 export const FENXIANGOPEN = 'http://m.dycd.com/platform/car_detail.html';
+
 
 /**
  * 上传图片
