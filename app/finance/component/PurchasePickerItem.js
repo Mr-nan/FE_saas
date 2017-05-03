@@ -85,7 +85,7 @@ export  default class PurchasePickerItem extends PureComponent {
         );
     }
 
-    selectPhotoTapped = (id) => {
+    selectPhotoTapped =(id) => {
         console.log('--------------------'+id);
         const options = {
             //弹出框选项

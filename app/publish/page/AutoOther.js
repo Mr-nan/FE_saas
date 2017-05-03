@@ -15,6 +15,8 @@ import {
     KeyboardAvoidingView,
 } from 'react-native';
 
+
+
 import * as fontAndColor from '../../constant/fontAndColor';
 import AllNavigationView from '../../component/AllNavigationView';
 import PixelUtil from '../../utils/PixelUtil';
@@ -29,6 +31,7 @@ export default class AutoOther extends Component {
 
     constructor(props) {
         super(props);
+        console.log(this.props.carData);
         this.vinNum = this.props.carData.vin;
         this.dealer_price = this.props.carData.dealer_price;
         this.describe = this.props.carData.describe;
@@ -108,12 +111,18 @@ export default class AutoOther extends Component {
     };
 
     _configPress = ()=>{
-        configParams = {
-            name: 'AutoConfig',
-            component: AutoConfig,
-            params: {}
-        };
-        this.props.goToPage(configParams);
+
+            configParams = {
+                name: 'AutoConfig',
+                component: AutoConfig,
+                params: {
+                    modelID:this.props.carData.model!==''?(JSON.parse(this.props.carData.model)).model_id:'',
+                }
+            };
+            this.props.goToPage(configParams);
+
+
+
     };
 
     render() {

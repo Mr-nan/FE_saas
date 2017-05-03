@@ -22,6 +22,8 @@ import BaseComponent from '../component/BaseComponent';
 import AllNavigationView from '../component/AllNavigationView';
 import * as fontAndColor from '../constant/fontAndColor';
 import PixelUtil from '../utils/PixelUtil';
+import {CarConfigurationView}   from './../carSource/znComponent/CarInfoAllComponent';
+
 const Pixel = new PixelUtil();
 
 import * as Net from '../utils/RequestUtil';
@@ -37,7 +39,7 @@ export default class CGDAddCarScene extends BaseComponent {
     }
 
     initFinish = () => {
-
+        console.log(this.props.modelID);
     };
 
     _showLoading = () => {
@@ -65,10 +67,7 @@ export default class CGDAddCarScene extends BaseComponent {
                     backIconClick={this._onBack}
                     title='车辆配置'
                 />
-                <View style={styles.noDataContainer}>
-                    <Image style={styles.imgContainer} source={config_no_data}/>
-                    <Text style={styles.noDataFont}>暂无车辆数据</Text>
-                </View>
+                <CarConfigurationView carConfigurationData={[]} modelID ={this.props.modelID}/>
             </View>
         )
     }
@@ -79,6 +78,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: fontAndColor.COLORA3,
+        paddingTop:Pixel.getTitlePixel(64),
     },
     noDataContainer:{
         flex:1,
