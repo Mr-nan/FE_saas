@@ -133,7 +133,7 @@ export  default class PurchasePickerScene extends BaseComponent {
                                 }
                             });
                 }}/>
-                <ImageSource ref={(modal) => {this.imageSource = modal}}/>
+                <ImageSource ref='imageSource'/>
             </View>
         );
     }
