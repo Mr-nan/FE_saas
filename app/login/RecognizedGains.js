@@ -105,7 +105,17 @@ export default class RecognizedGains extends BaseComponent {
                     paddingBottom: Pixel.getPixel(10),
                 }}>注意：<Text style={{color: FontAndColor.COLORA1}}>请确保银行预留手机号码准确,短信验证码将发送给您银行银行预留手机号码。</Text></Text>
 
-                <TouchableWithoutFeedback >
+                <TouchableWithoutFeedback onPress={() => {
+                    if (this.state.agree) {
+                        this.setState({
+                            agree: false,
+                        });
+                    } else {
+                        this.setState({
+                            agree: true,
+                        });
+                    }
+                }}>
                     <View style={{
                         width: width,
                         paddingTop: Pixel.getPixel(15),
@@ -113,14 +123,35 @@ export default class RecognizedGains extends BaseComponent {
                         paddingLeft: Pixel.getPixel(15),
                         paddingRight: Pixel.getPixel(15),
                     }}>
-                        <Text style={{fontSize: Pixel.getFontPixel(12), color: FontAndColor.COLORA2}}>
+                        <Text style={{
+                            fontSize: Pixel.getFontPixel(12),
+                            color: FontAndColor.COLORA2,
+                        }}>
                             <Image style={{
-                                width: Pixel.getPixel(45),
-                                height: Pixel.getPixel(45),
+                                width: Pixel.getPixel(1),
+                                height: Pixel.getPixel(75),
                             }}
-                                   source={require('./../../images/login/amou_choose.png')}/>
-                            我已详细阅读并同意《债券转让协议及借款合同》
+                                   source={require('./../../images/publish/car-plate.png')}/>
+                            我已详细阅读并同意《信息使用授权书》 《微众银行个人电子账户服务协议》 《征信授权书》
                         </Text>
+                        {this.state.agree == true ?
+                            <Image style={{
+                                position: 'absolute',
+                                width: Pixel.getPixel(17),
+                                height: Pixel.getPixel(17),
+                                marginTop: Pixel.getPixel(14),
+                                marginLeft: Pixel.getPixel(20)
+                            }}
+                                   source={require('./../../images/login/amou_choose.png')}/> :
+                            <Image style={{
+                                position: 'absolute',
+                                width: Pixel.getPixel(17),
+                                height: Pixel.getPixel(17),
+                                marginTop: Pixel.getPixel(14),
+                                marginLeft: Pixel.getPixel(20)
+                            }}
+                                   source={require('./../../images/login/amou_unchoose.png')}/>}
+
                     </View>
                 </TouchableWithoutFeedback>
 
@@ -129,6 +160,15 @@ export default class RecognizedGains extends BaseComponent {
                           parentStyle={styles.loginBtnStyle}
                           childStyle={styles.loginButtonTextStyle}
                           mOnPress={() => {
+                              if (this.state.agree) {
+                                  {/*this.toNextPage({*/}
+                                      {/*name: 'RecognizedGains',*/}
+                                      {/*component: RecognizedGains,*/}
+                                      {/*params: {},*/}
+                                  {/*})*/}
+                              } else {
+                                  this.props.showToast("请选择服务协议");
+                              }
                           }}/>
             </View>
         );
