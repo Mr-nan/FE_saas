@@ -1,16 +1,17 @@
 /**
  * 开发地址
  */
-export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地
  */
-// export const BASEURL = 'http://api-gateway.test.dycd.com/';
+export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 正式地址
  */
+
 // export const BASEURL = 'https://gatewayapi.dycd.com/';
 
 
@@ -439,11 +440,6 @@ export const GETAPPLYDATA = "/api/v1/microchinese/get_apply_data";
  * 微众额度申请
  */
 export const APPLY_MNY = "/api/v1/microchinese/apply_mny";
-
-/**
- * 获取微众申请页面数据
- */
-export const GETAPPLYDATA = "/api/v1/microchinese/get_apply_data";
 
 /**
  * from @huangning
