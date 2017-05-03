@@ -74,7 +74,9 @@ export  default class PurchasePickerItem extends PureComponent {
         return (
             <View style={styles.parentView}>
                 <View style={{width: width, marginTop: Pixel.getPixel(15), flexDirection: 'row'}}>
-                    {movie.explain=='1'?<Text style={{fontSize: fontAndColor.BUTTONFONT30, color: fontAndColor.COLORB2}}>*</Text>:<View/>}
+                    {movie.explain == '1' ?
+                        <Text style={{fontSize: fontAndColor.BUTTONFONT30, color: fontAndColor.COLORB2}}>*</Text> :
+                        <View/>}
 
                     <Text style={{fontSize: fontAndColor.BUTTONFONT30, color: fontAndColor.COLORA0}}>{movie.name}</Text>
                 </View>
@@ -86,7 +88,7 @@ export  default class PurchasePickerItem extends PureComponent {
     }
 
     selectPhotoTapped = (id) => {
-        console.log('--------------------'+id);
+        console.log('--------------------' + id);
         const options = {
             //弹出框选项
             title: '请选择',
@@ -103,10 +105,14 @@ export  default class PurchasePickerItem extends PureComponent {
                 path: 'images',
             }
         };
-        if(id=='buyer_seller_vehicle'){
-            this.props.openModal(()=>{this.openCamera()},()=>{this.openPicker()});
+        if (id == 'buyer_seller_vehicle') {
+            this.props.openModal((response) => {
+                this.openCamera(response)
+            }, (response) => {
+                this.openPicker(response)
+            });
 
-        }else{
+        } else {
             ImagePicker.showImagePicker(options, (response) => {
                 if (response.didCancel) {
 
@@ -129,64 +135,39 @@ export  default class PurchasePickerItem extends PureComponent {
         }
     }
 
-    openPicker=()=>{
-        const options = {
-            //弹出框选项
-            title: '请选择',
-            cancelButtonTitle: '取消',
-            takePhotoButtonTitle: '拍照',
-            chooseFromLibraryButtonTitle: '选择相册',
-            allowsEditing: false,
-            noData: false,
-            quality: 1.0,
-            maxWidth: 480,
-            maxHeight: 800,
-            storageOptions: {
-                skipBackup: true,
-                path: 'images',
-            }
-        };
-        ImagePicker.launchImageLibrary(options, (response) => {
-            if (response.didCancel) {}
-            else if (response.error) {}
-            else if (response.customButton) {}
-            else {
-                this._uploadPicture(response);
-            }
-        });
+    openPicker = (response) => {
+        this._uploadPicture(response);
     }
 
-    openCamera=()=>{
-        NativeModules.CustomCamera.takePic().then((response) => {
-            // console.log("============>>>>>>>>>");
-            // console.log(response.data);
-            this.props.showModal(true);
-            this._uploadPicture(response);
-        }, (error) => {
+    openCamera = (response) => {
+        this._uploadPicture(response);
 
-        })
     }
 
-    _uploadPicture = (responses)=>{
+    _uploadPicture = (responses) => {
         this.props.showModal(true);
-        let params ={
-            file:'data:image/jpeg;base64,' + encodeURI(responses.data).replace(/\+/g,'%2B')
+        let params = {
+            file: 'data:image/jpeg;base64,' + encodeURI(responses.data).replace(/\+/g, '%2B')
         };
-        ImageUpload.request(MyUrl.INDEX_UPLOAD,'Post',params).then(
-            (response)=>{
+        ImageUpload.request(MyUrl.INDEX_UPLOAD, 'Post', params).then(
+            (response) => {
                 this.props.showModal(false);
-                if(response.mycode === 1){
+                if (response.mycode === 1) {
                     // this.selectSource = {uri: response.mjson.data.url};
                     console.log(response);
                     this.props.showToast('上传成功')
                     // console.log(response.mjson.data.url);
                     let news = {...this.state.childMovie};
-                      let fileid =   response.mjson.data.file_id;
-                        news.list.push({url: response.mjson.data.url,fileId:fileid});
-                        this.props.results.push({code:this.props.items.code,code_id:this.props.items.id,file_id:response.mjson.data.file_id});
-                        this.setState({
-                            childMovie: news
-                        });
+                    let fileid = response.mjson.data.file_id;
+                    news.list.push({url: response.mjson.data.url, fileId: fileid});
+                    this.props.results.push({
+                        code: this.props.items.code,
+                        code_id: this.props.items.id,
+                        file_id: response.mjson.data.file_id
+                    });
+                    this.setState({
+                        childMovie: news
+                    });
 
                     // this.setState({
                     //     hasPhoto:true
@@ -204,11 +185,11 @@ export  default class PurchasePickerItem extends PureComponent {
                     //     'UPDATE publishCar SET pictures = ? WHERE vin = ?',
                     //     [ JSON.stringify(this.pictures), this.props.carData.vin]);
                     // this.props.closeLoading();
-                }else {
+                } else {
                     // this.props.closeLoading();
                     this.props.showToast('上传失败')
                 }
-            },(error)=>{
+            }, (error) => {
                 this.props.showModal(false);
                 // this.props.closeLoading();
                 this.props.showToast(JSON.stringify(error));

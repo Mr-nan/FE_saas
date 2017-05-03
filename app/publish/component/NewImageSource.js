@@ -8,22 +8,20 @@ import {
     Modal,
     TouchableOpacity,
     Dimensions,
-    StyleSheet
+    StyleSheet,
+    NativeModules
 } from 'react-native';
 
 import * as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 const {width,height} = Dimensions.get('window');
-
 export default class ImageSource extends Component{
 
     constructor(props){
         super(props);
         this.state = {
-            modalVisible: false,
-            cameraClick:()=>{},
-            galleryClick:()=>{}
+            modalVisible: false
         };
     }
 
@@ -33,12 +31,10 @@ export default class ImageSource extends Component{
         });
     };
 
-    openModal = (name,cameraClick,galleryClick)=>{
-        this.name = name;
+    openModal = (cameraClick,galleryClick)=>{
+        this.name = '';
         this.setState({
             modalVisible: true,
-            cameraClick:cameraClick,
-            galleryClick:galleryClick
         });
     };
 
@@ -52,7 +48,7 @@ export default class ImageSource extends Component{
                     <View style={styles.contentContainer}>
                         <TouchableOpacity
                             activeOpacity={0.6}
-                            onPress={()=>{this._cancelClick();this.state.cameraClick();}}>
+                            onPress={()=>{this._cancelClick();this.cameraClick();}}>
                             <View style={styles.btnContainer}>
                                 <Text style={styles.fontMain}>拍摄</Text>
                             </View>
@@ -60,7 +56,7 @@ export default class ImageSource extends Component{
                         <View style={styles.splitLine}/>
                         <TouchableOpacity
                             activeOpacity={0.6}
-                            onPress={()=>{this._cancelClick();this.state.galleryClick();}}>
+                            onPress={()=>{this._cancelClick();this.galleryClick();}}>
                             <View style={styles.btnContainer}>
                                 <Text style={styles.fontMain}>从手机相册选择</Text>
                             </View>
@@ -78,6 +74,43 @@ export default class ImageSource extends Component{
             </Modal>
         );
     }
+    cameraClick=()=>{
+        NativeModules.CustomCamera.takePic().then((response) => {
+            // console.log("============>>>>>>>>>");
+            // console.log(response.data);
+            console.log('11111');
+        }, (error) => {
+
+        })
+    }
+
+    galleryClick=()=>{
+        const options = {
+            //弹出框选项
+            title: '请选择',
+            cancelButtonTitle: '取消',
+            takePhotoButtonTitle: '拍照',
+            chooseFromLibraryButtonTitle: '选择相册',
+            allowsEditing: false,
+            noData: false,
+            quality: 1.0,
+            maxWidth: 480,
+            maxHeight: 800,
+            storageOptions: {
+                skipBackup: true,
+                path: 'images',
+            }
+        };
+        ImagePicker.launchImageLibrary(options, (response) => {
+            if (response.didCancel) {}
+            else if (response.error) {}
+            else if (response.customButton) {}
+            else {
+                console.log('22222');
+            }
+        });
+    }
+
 }
 
 const styles = StyleSheet.create({
