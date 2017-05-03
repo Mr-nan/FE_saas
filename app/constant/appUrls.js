@@ -431,6 +431,21 @@ export const DO_EXTENSION = 'api/v1/account/do_extension';
 export const BINDOBD = 'api/v1/purchaAuto/bindObd';
 
 /**
+ * 获取微众申请页面数据
+ */
+export const GETAPPLYDATA = "/api/v1/microchinese/get_apply_data";
+
+/**
+ * 微众额度申请
+ */
+export const APPLY_MNY = "/api/v1/microchinese/apply_mny";
+
+/**
+ * 获取微众申请页面数据
+ */
+export const GETAPPLYDATA = "/api/v1/microchinese/get_apply_data";
+
+/**
  * from @huangning
  *
  * 检测OBD

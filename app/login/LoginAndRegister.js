@@ -16,6 +16,7 @@ import * as FontAndColor from "../constant/fontAndColor";
 import LoginScene from "./LoginScene";
 import Register from "./Register";
 import PixelUtil from "../utils/PixelUtil";
+import QuotaApplication from './QuotaApplication';
 
 var Pixel = new PixelUtil();
 var Dimensions = require('Dimensions');
@@ -77,7 +78,6 @@ export default class LoginAndRegister extends BaseComponent {
                         params: {},
                     })
                 }}/>
-
             </Image>
         );
     }
