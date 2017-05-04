@@ -270,29 +270,17 @@ export default class QuotaApplication extends BaseComponent {
         } else if (typeof(userName) == "undefined" || userName == "") {
             this.props.showToast("请输入手机号");
         } else {
-            let device_code = '';
-            if (Platform.OS === 'android') {
-                device_code = 'dycd_platform_android';
-            } else {
-                device_code = 'dycd_platform_ios';
-            }
             let maps = {
-                device_code: device_code,
+                api: AppUrls.GET_SMS_VERIFY_CODE,
                 img_code: verifyCode,
                 img_sid: imgSid,
                 phone: userName,
-                type: "1",
+                sms_type: "microchinese_mny_apply"
             };
-            // this.props.showModal(true);
-            this.setState({
-                loading: true,
-            });
-            request(AppUrls.SEND_SMS, 'Post', maps)
+            this.props.showModal(true);
+            request(AppUrls.FINANCE, 'Post', maps)
                 .then((response) => {
-                    // this.props.showModal(false);
-                    this.setState({
-                        loading: false,
-                    });
+                    this.props.showModal(false);
                     if (response.mjson.code == "1") {
                         this.refs.smsCode.StartCountDown();
                         // this.refs.smsCode.setInputTextValue(response.mjson.data.code + "");
@@ -300,10 +288,7 @@ export default class QuotaApplication extends BaseComponent {
                         this.props.showToast(response.mjson.msg);
                     }
                 }, (error) => {
-                    // this.props.showModal(false);
-                    this.setState({
-                        loading: false,
-                    });
+                    this.props.showModal(false);
                     this.Verifycode();
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("短信验证码获取失败");
@@ -369,7 +354,7 @@ export default class QuotaApplication extends BaseComponent {
                     this.toNextPage({
                         name: 'RecognizedGains',
                         component: RecognizedGains,
-                        params: {},
+                        params: {loan_code: '1234566'},
                     })
                 }, (error) => {
                     this.props.showModal(false);
@@ -377,6 +362,11 @@ export default class QuotaApplication extends BaseComponent {
                         this.props.showToast("获取失败");
                     } else {
                         this.props.showToast(error.mjson.msg + "");
+                        this.toNextPage({
+                            name: 'RecognizedGains',
+                            component: RecognizedGains,
+                            params: {loan_code: '1234566'},
+                        })
                     }
                 });
         }
