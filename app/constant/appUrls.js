@@ -435,9 +435,25 @@ export const BINDOBD = 'api/v1/purchaAuto/bindObd';
 export const GETAPPLYDATA = "/api/v1/microchinese/get_apply_data";
 
 /**
+ * 获取借据数据列表
+ */
+export const GET_IOU_LIST = "/api/v1/microchinese/get_iou_list";
+
+/**
+ * 确认借据操作
+ */
+export const CONFIRM_APPLY = "/api/v1/microchinese/confirm_apply";
+
+
+/**
  * 微众额度申请
  */
 export const APPLY_MNY = "/api/v1/microchinese/apply_mny";
+
+/**
+ * 获取短信验证码
+ */
+export const GET_SMS_VERIFY_CODE = "/api/v1/public/get_sms_verify_code";
 
 /**
  * from @huangning
