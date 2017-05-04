@@ -76,11 +76,11 @@ export default class AutoOther extends Component {
         return (<Image style={[styles.img, {height: height - this.props.barHeight}]} source={background}/>);
     };
 
-    _onBack = () => {
+    _onBack =() => {
         this.props.onBack();
     };
 
-    _renderRihtFootView = () => {
+    _renderRihtFootView =() => {
         return (
             <TouchableOpacity
                 activeOpacity={0.6}
@@ -131,14 +131,10 @@ export default class AutoOther extends Component {
         }
         return (
             <View style={styles.container}>
+
                 <Image style={[styles.img, {height: height - this.props.barHeight}]} source={background}>
                     <ScrollView>
                         <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={75}>
-                            <AllNavigationView
-                                backIconClick={this._onBack}
-                                title='其他信息'
-                                wrapStyle={styles.wrapStyle}
-                                renderRihtFootView={this._renderRihtFootView}/>
                             <View style={styles.avoidContainer}>
                                 <View style={[styles.rectangleContainer, styles.firstMargin]}>
                                     <Text style={[styles.fontMain, styles.leftText]}>销售价：</Text>
@@ -175,6 +171,11 @@ export default class AutoOther extends Component {
                         </KeyboardAvoidingView>
                     </ScrollView>
                 </Image>
+                <AllNavigationView
+                    backIconClick={this._onBack}
+                    title='其他信息'
+                    wrapStyle={styles.wrapStyle}
+                    renderRihtFootView={this._renderRihtFootView}/>
             </View>
         );
     }
