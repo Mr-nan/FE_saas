@@ -439,6 +439,11 @@ export const GETAPPLYDATA = "/api/v1/microchinese/get_apply_data";
  */
 export const GET_IOU_LIST = "/api/v1/microchinese/get_iou_list";
 
+/**
+ * 确认借据操作
+ */
+export const CONFIRM_APPLY = "/api/v1/microchinese/confirm_apply";
+
 
 /**
  * 微众额度申请

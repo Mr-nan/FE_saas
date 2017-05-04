@@ -40,6 +40,7 @@ export default class QuotaApplication extends BaseComponent {
             name: "",
             idcard: "",
             phone: "",
+            agreement: "",
         };
     }
 
@@ -316,6 +317,7 @@ export default class QuotaApplication extends BaseComponent {
                     name: response.mjson.data.username,
                     idcard: response.mjson.data.idcard_number,
                     phone: response.mjson.data.phone,
+                    agreement: response.mjson.data.agreement,
                 });
             }, (error) => {
                 this.props.showModal(false);
@@ -346,6 +348,7 @@ export default class QuotaApplication extends BaseComponent {
                 bank_reserve_phone: bank_phone,
                 bank_card: bank_id,
                 phone_code: smsCode,
+                contract_base: this.state.agreement,
             };
             this.props.showModal(true);
             request(AppUrls.FINANCE, 'Post', maps)
