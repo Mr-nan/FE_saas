@@ -112,12 +112,11 @@ export default class AutoOther extends Component {
 
     _configPress = ()=>{
 
-        console.log(this.props.carData.model.model_id);
             configParams = {
                 name: 'AutoConfig',
                 component: AutoConfig,
                 params: {
-                    modelID:this.props.carData.model.model_id,
+                    modelID:this.props.carData.model!==''?(JSON.parse(this.props.carData.model)).model_id:'',
                 }
             };
             this.props.goToPage(configParams);
@@ -135,11 +134,6 @@ export default class AutoOther extends Component {
                 <Image style={[styles.img, {height: height - this.props.barHeight}]} source={background}>
                     <ScrollView>
                         <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={75}>
-                            <AllNavigationView
-                                backIconClick={this._onBack}
-                                title='其他信息'
-                                wrapStyle={styles.wrapStyle}
-                                renderRihtFootView={this._renderRihtFootView}/>
                             <View style={styles.avoidContainer}>
                                 <View style={[styles.rectangleContainer, styles.firstMargin]}>
                                     <Text style={[styles.fontMain, styles.leftText]}>销售价：</Text>
@@ -176,6 +170,11 @@ export default class AutoOther extends Component {
                         </KeyboardAvoidingView>
                     </ScrollView>
                 </Image>
+                <AllNavigationView
+                    backIconClick={this._onBack}
+                    title='其他信息'
+                    wrapStyle={styles.wrapStyle}
+                    renderRihtFootView={this._renderRihtFootView}/>
             </View>
         );
     }
