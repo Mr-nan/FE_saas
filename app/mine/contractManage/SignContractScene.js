@@ -18,28 +18,67 @@ const Pixel = new PixelUtil();
 import * as fontAndColor from '../../constant/fontAndColor';
 import BaseComponent from '../../component/BaseComponent';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
+// import RepaymenyTabBar from './ConstractTabBar';
 import RepaymenyTabBar from '../../finance/repayment/component/RepaymenyTabBar';
 import NavigationView from '../../component/AllNavigationView';
 import NoneSineScene from '../contractManage/NoneSineScene';
 import SingleSignManageScene from '../contractManage/SingleSignManageScene';
 import CompleteSignScene from '../contractManage/CompleteSignScene';
+import {request} from '../../utils/RequestUtil';
+import * as Urls from '../../constant/appUrls';
+let first = '';
+let last = '';
 export  default class SignContractScene extends BaseComponent {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            renderPlaceholderOnly: 'blank',
+        };
+    }
+
     initFinish = () => {
+        // this.getData();
+    }
+
+    getData=()=>{
+        first = '';
+        last = '';
+        let maps = {
+            api : Urls.GET_CONTRACT_REMIND,
+            opt_user_id: this.props.opt_user_id,
+            opt_merge_id:this.props.opt_merge_id
+        };
+        request(Urls.FINANCE, 'Post', maps)
+            .then((response) => {
+                  if(response.mjson.data!=null){
+                      if(response.mjson.data.wait_ctc_sign_num!=null&&response.mjson.data.wait_ctc_sign_num!='0'){
+                            last = '、('+response.mjson.data.wait_ctc_sign_num+')';
+                      }
+                      if(response.mjson.data.wait_sign_num!=null&&response.mjson.data.wait_sign_num!='0'){
+                          first = '、('+response.mjson.data.wait_sign_num+')';
+                      }
+                  }
+                    this.setState({renderPlaceholderOnly:'success'});
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly:'success'});
+                });
     }
 
     render() {
+        // if(this.state.renderPlaceholderOnly!='success'){
+        //     return this._renderPlaceholderView();
+        //
+        // }
         return (
         <View style={{width:width,height:height,backgroundColor: fontAndColor.COLORA3}}>
-            <NavigationView
-                title="合同管理"
-                backIconClick={this.backPage}
-            />
             <ScrollableTabView
-                style={{marginTop: Pixel.getTitlePixel(64),flex:1}}
+                style={{marginTop: Pixel.getTitlePixel(64)}}
                 initialPage={0}
                 locked={true}
-                renderTabBar={() => <RepaymenyTabBar tabName={["未签署", "单方签署", "已签署"]}/>}
+                scrollWithoutAnimation={true}
+                renderTabBar={() => <RepaymenyTabBar tabName={["未签署"+first, "单方签署", "已签署"]}/>}
             >
                 <NoneSineScene tabLabel="ios-paper"  opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
 
@@ -47,7 +86,23 @@ export  default class SignContractScene extends BaseComponent {
 
                 <CompleteSignScene tabLabel="ios-chatboxes" opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
             </ScrollableTabView>
+            <NavigationView
+                title="合同管理"
+                backIconClick={this.backPage}
+            />
         </View>
+        );
+    }
+
+    _renderPlaceholderView() {
+        return (
+            <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
+                {this.loadView()}
+                <NavigationView
+                    title="合同管理"
+                    backIconClick={this.backPage}
+                />
+            </View>
         );
     }
 }

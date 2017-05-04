@@ -1,7 +1,7 @@
 /**
  * 开发地址
  */
-export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地
@@ -16,7 +16,7 @@ export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 /**
  * 预发布地址
  */
-// export const BASEURL = 'https://stgatewayapi.dycd.com/';
+export const BASEURL = 'https://stgatewayapi.dycd.com/';
 
 /**
  * 版本号1
@@ -575,6 +575,11 @@ export const AUTH_UPLOAD_FILE = BASEURL + V + "auth/upload";
  * 合同列表
  */
 export const CONTRACTLIST = 'api/v1/Contract/contractList';
+
+/**
+ * 获取合同提示信息
+ */
+export const GET_CONTRACT_REMIND = 'api/v1/contract/get_contract_remind';
 
 /**
  * 线下合同列表
