@@ -502,7 +502,7 @@ export default class FinanceSence extends BaseComponet {
             <View>
                 <Image style={[cellSheet.titleStyle]}
                        source={require('../../images/financeImages/dinancebg.png')}>
-                    <View style={{width: width, height: Pixel.getTitlePixel(105), flexDirection: 'row'}}>
+                    <View style={{width: width, flexDirection: 'row',}}>
                         <View style={{flex: 1}}></View>
                         <View style={{flex: 3, alignItems: 'center'}}>
                             <Text numberOfLines={1}
@@ -545,51 +545,55 @@ export default class FinanceSence extends BaseComponet {
                                 </TouchableOpacity> : <View/>}
                         </View>
                     </View>
-                    <View
-                        style={{width: width, height: Pixel.getBottomPixel(85), flexDirection: 'row'}}>
-                        <View style={{flex: 1, alignItems: 'center'}}>
-                            <Text
-                                style={{
-                                    fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                                    color: '#fff',
-                                    backgroundColor: '#00000000'
-                                }}>可用额度(万)</Text>
-                            <Text
-                                style={{
-                                    fontSize: Pixel.getFontPixel(32),
-                                    color: '#fff',
-                                    marginTop: Pixel.getPixel(7),
-                                    fontWeight: 'bold',
-                                    backgroundColor: '#00000000',
-                                    flex: 1,
-                                    width: width / 2,
-                                    textAlign: 'center'
-                                }}>{this.state.allData.keyongedu}</Text>
+                    <View>
+                        <View
+                            style={{width: width, height: Pixel.getBottomPixel(65), flexDirection: 'row', backgroundColor:'yellow',marginTop:Pixel.getPixel(20)}}>
+                            <View style={{flex: 1, alignItems: 'center'}}>
+                                <Text
+                                    style={{
+                                        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                        color: '#fff',
+                                        backgroundColor: '#00000000'
+                                    }}>可用额度(万)</Text>
+                                <Text
+                                    style={{
+                                        fontSize: Pixel.getFontPixel(32),
+                                        color: '#fff',
+                                        marginTop: Pixel.getPixel(7),
+                                        fontWeight: 'bold',
+                                        backgroundColor: '#00000000',
+                                        flex: 1,
+                                        width: width / 2,
+                                        textAlign: 'center'
+                                    }}>{this.state.allData.keyongedu}</Text>
+                            </View>
+                            <View style={{flex: 1, alignItems: 'center'}}>
+                                <Text
+                                    style={{
+                                        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                        color: '#fff',
+                                        backgroundColor: '#00000000'
+                                    }}>贷款余额(万)</Text>
+                                <Text
+                                    style={{
+                                        fontSize: Pixel.getFontPixel(32),
+                                        color: '#fff',
+                                        marginTop: Pixel.getPixel(7),
+                                        fontWeight: 'bold',
+                                        backgroundColor: '#00000000',
+                                        flex: 1,
+                                        width: width / 2,
+                                        textAlign: 'center'
+                                    }}>{this.state.allData.daikuanyue}</Text>
+                            </View>
                         </View>
-                        <View style={{flex: 1, alignItems: 'center'}}>
-                            <Text
-                                style={{
-                                    fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                                    color: '#fff',
-                                    backgroundColor: '#00000000'
-                                }}>贷款余额(万)</Text>
-                            <Text
-                                style={{
-                                    fontSize: Pixel.getFontPixel(32),
-                                    color: '#fff',
-                                    marginTop: Pixel.getPixel(7),
-                                    fontWeight: 'bold',
-                                    backgroundColor: '#00000000',
-                                    flex: 1,
-                                    width: width / 2,
-                                    textAlign: 'center'
-                                }}>{this.state.allData.daikuanyue}</Text>
-                        </View>
+                        <View style={{backgroundColor:'red',height:Pixel.getPixel(40)}}></View>
                     </View>
                     <View
                         style={{
                             width: width, height: Pixel.getPixel(40), backgroundColor: 'rgba(56,199,232,0.35)',
-                            paddingRight: Pixel.getPixel(15), paddingLeft: Pixel.getPixel(15), flexDirection: 'row'
+                            paddingRight: Pixel.getPixel(15), paddingLeft: Pixel.getPixel(15), flexDirection: 'row',
+                            bottom:0,position: 'absolute',
                         }}>
                         <View
                             style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start'}}>
