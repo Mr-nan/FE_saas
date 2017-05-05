@@ -24,6 +24,8 @@ import NavigationView from '../../component/AllNavigationView';
 import NoneSineScene from '../contractManage/NoneSineScene';
 import SingleSignManageScene from '../contractManage/SingleSignManageScene';
 import CompleteSignScene from '../contractManage/CompleteSignScene';
+import ConvertibleBondNoSignScene from '../contractManage/ConvertibleBondNoSignScene';
+import ConvertibleBondSignScene from '../contractManage/ConvertibleBondSignScene';
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 let first = '';
@@ -85,8 +87,8 @@ export  default class SignContractScene extends BaseComponent {
                 <SingleSignManageScene tabLabel="ios-people" opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
 
                 <CompleteSignScene tabLabel="ios-chatboxes" opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
-                <CompleteSignScene tabLabel="ios-chatboxes1" opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
-                <CompleteSignScene tabLabel="ios-chatboxes2" opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
+                <ConvertibleBondNoSignScene tabLabel="ios-chatboxes1" companyname={this.props.companyname} opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
+                <ConvertibleBondSignScene tabLabel="ios-chatboxes2" companyname={this.props.companyname} opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
             </ScrollableTabView>
             <NavigationView
                 title="合同管理"
