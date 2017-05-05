@@ -18,8 +18,8 @@ const Pixel = new PixelUtil();
 import * as fontAndColor from '../../constant/fontAndColor';
 import BaseComponent from '../../component/BaseComponent';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
-// import RepaymenyTabBar from './ConstractTabBar';
-import RepaymenyTabBar from '../../finance/repayment/component/RepaymenyTabBar';
+import RepaymenyTabBar from './ConstractTabBar';
+// import RepaymenyTabBar from '../../finance/repayment/component/RepaymenyTabBar';
 import NavigationView from '../../component/AllNavigationView';
 import NoneSineScene from '../contractManage/NoneSineScene';
 import SingleSignManageScene from '../contractManage/SingleSignManageScene';
@@ -38,7 +38,7 @@ export  default class SignContractScene extends BaseComponent {
     }
 
     initFinish = () => {
-        // this.getData();
+        this.getData();
     }
 
     getData=()=>{
@@ -67,10 +67,10 @@ export  default class SignContractScene extends BaseComponent {
     }
 
     render() {
-        // if(this.state.renderPlaceholderOnly!='success'){
-        //     return this._renderPlaceholderView();
-        //
-        // }
+        if(this.state.renderPlaceholderOnly!='success'){
+            return this._renderPlaceholderView();
+
+        }
         return (
         <View style={{width:width,height:height,backgroundColor: fontAndColor.COLORA3}}>
             <ScrollableTabView
@@ -78,13 +78,15 @@ export  default class SignContractScene extends BaseComponent {
                 initialPage={0}
                 locked={true}
                 scrollWithoutAnimation={true}
-                renderTabBar={() => <RepaymenyTabBar tabName={["未签署"+first, "单方签署", "已签署"]}/>}
+                renderTabBar={() => <RepaymenyTabBar tabName={["未签署"+first, "单方签署", "已签署", "转债权未签"+last, "转债权已签"]}/>}
             >
                 <NoneSineScene tabLabel="ios-paper"  opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
 
                 <SingleSignManageScene tabLabel="ios-people" opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
 
                 <CompleteSignScene tabLabel="ios-chatboxes" opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
+                <CompleteSignScene tabLabel="ios-chatboxes1" opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
+                <CompleteSignScene tabLabel="ios-chatboxes2" opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
             </ScrollableTabView>
             <NavigationView
                 title="合同管理"

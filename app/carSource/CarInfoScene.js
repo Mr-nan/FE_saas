@@ -189,7 +189,8 @@ export default class CarInfoScene extends BaseComponent {
     showShared=()=>{
 
         // this.refs.LendSuccessAlert.setModelVisible(true);
-        this.refs.sharedView.isVisible(true);
+        // this.refs.sharedView.isVisible(true);
+        this.sharedWechatSession(this.state.carData);
     }
 
 
@@ -510,6 +511,49 @@ export default class CarInfoScene extends BaseComponent {
             </View>
 
         )
+    }
+
+    sharedWechatSession=(carData)=>{
+        weChat.isWXAppInstalled()
+            .then((isInstalled)=>{
+                if(isInstalled){
+
+                    let imageResource = require('../../images/carSourceImages/car_info_null.png');
+                    let carContent = '';
+
+                    if(carData.city_name!=""){
+
+                        carContent = carData.city_name+' | ';
+                    }
+                    if(carData.plate_number!=""){
+
+                        carContent +=carData.plate_number.substring(0,2);
+                    }
+                    if(carData.carIconsContentData[0]!=""){
+
+                        carContent+=" | "+carData.carIconsContentData[0]+'出厂';
+                    }
+                    let fenxiangUrl = '';
+                    if(AppUrls.BASEURL=='http://api-gateway.test.dycd.com/'){
+                        fenxiangUrl = AppUrls.FENXIANGTEST;
+                    }else{
+                        fenxiangUrl = AppUrls.FENXIANGOPEN;
+                    }
+                    let carImage = typeof carData.imgs[0].url == 'undefined'?resolveAssetSource(imageResource).uri:carData.imgs[0].url;
+                    console.log(fenxiangUrl+'?id='+carData.id);
+                    weChat.shareToSession({
+                        type: 'news',
+                        title:carData.model_name,
+                        description:carContent,
+                        webpageUrl:fenxiangUrl+'?id='+carData.id,
+                        thumbImage:carImage,
+
+                    }).catch((error)=>{
+                    })
+                }else {
+                    this.isVisible(false);
+                }
+            });
     }
 
 }
