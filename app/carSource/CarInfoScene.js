@@ -458,44 +458,33 @@ export default class CarInfoScene extends BaseComponent {
                         )
 
                     }
-                    <View style={styles.carIconsView}>
+                    <View style={styles.carIconsContainer}>
+                        <CarDeploySwitchoverButton switchoverAction={(type)=>{
+
+                            this.setState({
+                                switchoverCarInfo:type,
+                            });
+
+                        }}/>
                         {
-                            carIconsData.map((data, index) => {
-                                return (
-                                    <CarIconView imageData={data.image} imageHighData={data.imageHigh}
-                                                 content={carData.carIconsContentData&&carData.carIconsContentData[index]} title={data.title}
-                                                 key={index}/>
-                                )
-                            })
+                            this.state.switchoverCarInfo==0?
+                                (<View style={styles.carIconsView}>
+                                    {
+                                        carIconsData.map((data, index) => {
+                                            return (
+                                                <CarIconView imageData={data.image} imageHighData={data.imageHigh}
+                                                             content={carData.carIconsContentData&&carData.carIconsContentData[index]} title={data.title}
+                                                             key={index}/>
+                                            )
+                                        })
+                                    }
+                                </View>):(<CarConfigurationView carConfigurationData={carConfigurationData}  renderCarConfigurationDataAction={(data)=>{carConfigurationData=data;console.log(data)}} modelID ={this.state.carData.model_id}/>)
+
                         }
-                    </View>
-                    {/*<View style={styles.carIconsContainer}>*/}
-                        {/*<CarDeploySwitchoverButton switchoverAction={(type)=>{*/}
-
-                            {/*this.setState({*/}
-                                {/*switchoverCarInfo:type,*/}
-                            {/*});*/}
-
-                        {/*}}/>*/}
-                        {/*{*/}
-                            {/*this.state.switchoverCarInfo==0?*/}
-                                {/*(<View style={styles.carIconsView}>*/}
-                                    {/*{*/}
-                                        {/*carIconsData.map((data, index) => {*/}
-                                            {/*return (*/}
-                                                {/*<CarIconView imageData={data.image} imageHighData={data.imageHigh}*/}
-                                                             {/*content={carData.carIconsContentData&&carData.carIconsContentData[index]} title={data.title}*/}
-                                                             {/*key={index}/>*/}
-                                            {/*)*/}
-                                        {/*})*/}
-                                    {/*}*/}
-                                {/*</View>):(<CarConfigurationView carConfigurationData={carConfigurationData}  renderCarConfigurationDataAction={(data)=>{carConfigurationData=data;console.log(data)}} modelID ={this.state.carData.model_id}/>)*/}
-
-                        {/*}*/}
                         {/*<TouchableOpacity onPress={this.pushCarUpkeepScene} activeOpacity={1}>*/}
                         {/*<Image style={{marginTop:10,width:ScreenWidth}} source={require('../../images/carSourceImages/carUpkeepButton.png')} resizeMode='stretch'/>*/}
                         {/*</TouchableOpacity>*/}
-                    {/*</View>*/}
+                    </View>
                 </ScrollView>
                 <TouchableOpacity style={styles.callView} onPress={this.callClick}>
                     <View style={{alignItems:'center',justifyContent:'center',width:ScreenWidth*0.5}}>
