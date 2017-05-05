@@ -562,12 +562,6 @@ class  SharedView extends Component{
         });
     }
 
-    componentDidMount() {
-
-          weChat.registerApp('wx6211535f6243c779');
-
-    }
-
     // 分享好友
     sharedWechatSession=(carData)=>{
         weChat.isWXAppInstalled()
