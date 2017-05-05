@@ -36,7 +36,7 @@ export default class RepaymenyTabBar extends PureComponent {
                 {tabChild}
             </ScrollView>
             <Image source={require('../../../images/mainImage/transRight.png')} style={{
-           height: Pixel.getPixel(40),width:60,position: 'absolute',right:0}}/>
+           height: Pixel.getPixel(40),width:41,position: 'absolute',right:0}}/>
             </View>;
     }
 }

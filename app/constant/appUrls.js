@@ -6,12 +6,12 @@
 /**
  * 测试地
  */
-// export const BASEURL = 'http://api-gateway.test.dycd.com/';
+export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 正式地址
  */
-export const BASEURL = 'https://gatewayapi.dycd.com/';
+// export const BASEURL = 'https://gatewayapi.dycd.com/';
 
 /**
  * 预发布地址
@@ -575,6 +575,11 @@ export const AUTH_UPLOAD_FILE = BASEURL + V + "auth/upload";
  * 合同列表
  */
 export const CONTRACTLIST = 'api/v1/Contract/contractList';
+
+/**
+ * 转债权合同列表
+ */
+export const GET_CTC_CONTRACT_LIST_FOR_APP = 'api/v1/contract/get_ctc_contract_list_for_app';
 
 /**
  * 获取合同提示信息
