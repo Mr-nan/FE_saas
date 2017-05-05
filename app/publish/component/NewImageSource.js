@@ -1,7 +1,7 @@
 /**
  * Created by Administrator on 2017/2/13.
  */
-import React,{ Component } from 'react';
+import React, {Component} from 'react';
 import {
     View,
     Text,
@@ -14,36 +14,39 @@ import {
 import * as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
-const {width,height} = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
+let camera = false;
+let gallery = false;
+export default class ImageSource extends Component {
 
-export default class ImageSource extends Component{
-
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             modalVisible: false,
-            cameraClick:()=>{},
-            galleryClick:()=>{}
+            cameraClick: () => {
+            },
+            galleryClick: () => {
+            }
         };
     }
 
-    _cancelClick = ()=>{
+    _cancelClick = () => {
         this.setState({
             modalVisible: false
         });
     };
 
-    openModal = (name,cameraClick,galleryClick)=>{
+    openModal = (name, cameraClick, galleryClick) => {
         this.name = name;
         this.setState({
             modalVisible: true,
-            cameraClick:cameraClick,
-            galleryClick:galleryClick
+            cameraClick: cameraClick,
+            galleryClick: galleryClick
         });
     };
 
-    render(){
-        return(
+    render() {
+        return (
             <Modal
                 transparent={true}
                 visible={this.state.modalVisible}
@@ -52,7 +55,7 @@ export default class ImageSource extends Component{
                     <View style={styles.contentContainer}>
                         <TouchableOpacity
                             activeOpacity={0.6}
-                            onPress={()=>{this._cancelClick();this.state.cameraClick();}}>
+                            onPress={()=>{this._cancelClick();camera = true;}}>
                             <View style={styles.btnContainer}>
                                 <Text style={styles.fontMain}>拍摄</Text>
                             </View>
@@ -60,7 +63,7 @@ export default class ImageSource extends Component{
                         <View style={styles.splitLine}/>
                         <TouchableOpacity
                             activeOpacity={0.6}
-                            onPress={()=>{this._cancelClick();this.state.galleryClick();}}>
+                            onPress={()=>{this._cancelClick();gallery = true;}}>
                             <View style={styles.btnContainer}>
                                 <Text style={styles.fontMain}>从手机相册选择</Text>
                             </View>
@@ -78,37 +81,48 @@ export default class ImageSource extends Component{
             </Modal>
         );
     }
+
+    componentDidUpdate() {
+        if (this.state.modalVisible == false && camera == true) {
+            this.state.cameraClick();
+        }
+        if (this.state.modalVisible == false && gallery == true) {
+            this.state.galleryClick();
+        }
+        gallery = false;
+        camera = false;
+    }
 }
 
 const styles = StyleSheet.create({
-    container:{
-        width:width,
-        flex:1,
-        backgroundColor:'rgba(0,0,0,0.3)',
-        justifyContent:'flex-end'
+    container: {
+        width: width,
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.3)',
+        justifyContent: 'flex-end'
     },
-    contentContainer:{
-        backgroundColor:fontAndColor.COLORA3
+    contentContainer: {
+        backgroundColor: fontAndColor.COLORA3
     },
-    btnContainer:{
-        width:width,
-        height:Pixel.getPixel(44),
-        alignItems:'center',
-        justifyContent:'center',
-        backgroundColor:'#FFFFFF'
+    btnContainer: {
+        width: width,
+        height: Pixel.getPixel(44),
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#FFFFFF'
     },
-    fontMain:{
-        color:'#000000',
-        fontSize:Pixel.getFontPixel(15)
+    fontMain: {
+        color: '#000000',
+        fontSize: Pixel.getFontPixel(15)
     },
-    splitLine:{
-        borderColor:fontAndColor.COLORA4,
-        borderWidth:0.5
+    splitLine: {
+        borderColor: fontAndColor.COLORA4,
+        borderWidth: 0.5
     },
-    splitView:{
-        width:width,
-        height:Pixel.getPixel(10),
-        backgroundColor:'transparent'
+    splitView: {
+        width: width,
+        height: Pixel.getPixel(10),
+        backgroundColor: 'transparent'
     }
 });
 
