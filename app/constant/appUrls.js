@@ -577,6 +577,11 @@ export const AUTH_UPLOAD_FILE = BASEURL + V + "auth/upload";
 export const CONTRACTLIST = 'api/v1/Contract/contractList';
 
 /**
+ * 转债权合同列表
+ */
+export const GET_CTC_CONTRACT_LIST_FOR_APP = 'api/v1/contract/get_ctc_contract_list_for_app';
+
+/**
  * 获取合同提示信息
  */
 export const GET_CONTRACT_REMIND = 'api/v1/contract/get_contract_remind';
