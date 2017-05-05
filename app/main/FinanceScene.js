@@ -547,8 +547,8 @@ export default class FinanceSence extends BaseComponet {
                     </View>
                     <View>
                         <View
-                            style={{width: width, height: Pixel.getBottomPixel(65), flexDirection: 'row', backgroundColor:'yellow',marginTop:Pixel.getPixel(20)}}>
-                            <View style={{flex: 1, alignItems: 'center'}}>
+                            style={{width: width, height: Pixel.getBottomPixel(65), flexDirection: 'row', backgroundColor:'yellow',marginTop:Pixel.getPixel(20),justifyContent:'space-between'}}>
+                            <View style={{flex: 1, alignItems: 'center',}}>
                                 <Text
                                     style={{
                                         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
@@ -563,7 +563,24 @@ export default class FinanceSence extends BaseComponet {
                                         fontWeight: 'bold',
                                         backgroundColor: '#00000000',
                                         flex: 1,
-                                        width: width / 2,
+                                        textAlign: 'center'
+                                    }}>{this.state.allData.keyongedu}</Text>
+                            </View>
+                            <View style={{flex: 1, alignItems: 'center',}}>
+                                <Text
+                                    style={{
+                                        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                        color: '#fff',
+                                        backgroundColor: '#00000000'
+                                    }}>微众可用额度(万)</Text>
+                                <Text
+                                    style={{
+                                        fontSize: Pixel.getFontPixel(32),
+                                        color: '#fff',
+                                        marginTop: Pixel.getPixel(7),
+                                        fontWeight: 'bold',
+                                        backgroundColor: '#00000000',
+                                        flex: 1,
                                         textAlign: 'center'
                                     }}>{this.state.allData.keyongedu}</Text>
                             </View>
@@ -582,12 +599,17 @@ export default class FinanceSence extends BaseComponet {
                                         fontWeight: 'bold',
                                         backgroundColor: '#00000000',
                                         flex: 1,
-                                        width: width / 2,
                                         textAlign: 'center'
                                     }}>{this.state.allData.daikuanyue}</Text>
                             </View>
                         </View>
-                        <View style={{backgroundColor:'red',height:Pixel.getPixel(40)}}></View>
+                        <View style={{backgroundColor:'red',height:Pixel.getPixel(40), alignItems:'center',justifyContent:'center'}}>
+                            <TouchableOpacity>
+                                <View style={{height:Pixel.getPixel(20),borderRadius:Pixel.getPixel(10),borderColor:'white',borderWidth:StyleSheet.hairlineWidth,alignItems:'center',justifyContent:'center',overflow:'hidden'}}>
+                                    <Text style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}}>  立即激活微众额度  </Text>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                     <View
                         style={{
