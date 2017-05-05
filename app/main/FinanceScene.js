@@ -145,7 +145,8 @@ export default class FinanceSence extends BaseComponet {
                             daikuanyue: mnyData.loan_balance_mny / 10000,
                             baozhengjinedu: mnyData.bond_total_mny / 10000,
                             baozhengjinyue: mnyData.bond_mny / 10000,
-                        }
+                        },
+                        mnyData:mnyData,
                     });
                     that.getApplyData();
                 },
@@ -213,6 +214,7 @@ export default class FinanceSence extends BaseComponet {
                 baozhengjinedu: mnyData.bond_total_mny / 10000,
                 baozhengjinyue: mnyData.bond_mny / 10000,
             },
+            mnyData:mnyData,
             renderPlaceholderOnly: 'blank',
             isRefreshing: false,
             customerName: ''
@@ -265,6 +267,7 @@ export default class FinanceSence extends BaseComponet {
                 <LendSuccessAlert title="提示" subtitle="采购融资功能正在维护中，请您移步BMS系统申请采购融资" ref='cgdModal'
                                   confimClick={() => {
                                   }}/>
+                <LendSuccessAlert ref="showAlert" title={'审核未通过'} subtitle={this.state.mnyData.microchinese_audit_reason}/>
             </View>
         )
     }
@@ -480,7 +483,7 @@ export default class FinanceSence extends BaseComponet {
     }
 
 
-    _renderHeader = () => {
+    _renderHeader =() => {
         let tablist;
         tablist = bossFuncArray;
         let items = [];
@@ -547,7 +550,7 @@ export default class FinanceSence extends BaseComponet {
                     </View>
                     <View>
                         <View
-                            style={{width: width, height: Pixel.getBottomPixel(65), flexDirection: 'row', backgroundColor:'yellow',marginTop:Pixel.getPixel(20),justifyContent:'space-between'}}>
+                            style={{width: width, height: Pixel.getBottomPixel(65), flexDirection: 'row',marginTop:Pixel.getPixel(30),justifyContent:'space-between'}}>
                             <View style={{flex: 1, alignItems: 'center',}}>
                                 <Text
                                     style={{
@@ -557,7 +560,7 @@ export default class FinanceSence extends BaseComponet {
                                     }}>可用额度(万)</Text>
                                 <Text
                                     style={{
-                                        fontSize: Pixel.getFontPixel(32),
+                                        fontSize: Pixel.getFontPixel(28),
                                         color: '#fff',
                                         marginTop: Pixel.getPixel(7),
                                         fontWeight: 'bold',
@@ -575,7 +578,7 @@ export default class FinanceSence extends BaseComponet {
                                     }}>微众可用额度(万)</Text>
                                 <Text
                                     style={{
-                                        fontSize: Pixel.getFontPixel(32),
+                                        fontSize: Pixel.getFontPixel(28),
                                         color: '#fff',
                                         marginTop: Pixel.getPixel(7),
                                         fontWeight: 'bold',
@@ -584,7 +587,7 @@ export default class FinanceSence extends BaseComponet {
                                         textAlign: 'center'
                                     }}>{this.state.allData.keyongedu}</Text>
                             </View>
-                            <View style={{flex: 1, alignItems: 'center'}}>
+                            <View style={{flex: 1, alignItems: 'center',borderLeftColor:'white',borderLeftWidth:StyleSheet.hairlineWidth}}>
                                 <Text
                                     style={{
                                         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
@@ -593,7 +596,7 @@ export default class FinanceSence extends BaseComponet {
                                     }}>贷款余额(万)</Text>
                                 <Text
                                     style={{
-                                        fontSize: Pixel.getFontPixel(32),
+                                        fontSize: Pixel.getFontPixel(28),
                                         color: '#fff',
                                         marginTop: Pixel.getPixel(7),
                                         fontWeight: 'bold',
@@ -603,13 +606,17 @@ export default class FinanceSence extends BaseComponet {
                                     }}>{this.state.allData.daikuanyue}</Text>
                             </View>
                         </View>
-                        <View style={{backgroundColor:'red',height:Pixel.getPixel(40), alignItems:'center',justifyContent:'center'}}>
-                            <TouchableOpacity>
-                                <View style={{height:Pixel.getPixel(20),borderRadius:Pixel.getPixel(10),borderColor:'white',borderWidth:StyleSheet.hairlineWidth,alignItems:'center',justifyContent:'center',overflow:'hidden'}}>
-                                    <Text style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}}>  立即激活微众额度  </Text>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
+                        {
+                            this.state.mnyData.is_microchinese_mny==0?
+                                (<View style={{height:Pixel.getPixel(40), alignItems:'center',justifyContent:'center'}}>
+                                    <TouchableOpacity onPress={()=>{this.refs.showAlert.setModelVisible(true)}}>
+                                        <View style={{height:Pixel.getPixel(20),borderRadius:Pixel.getPixel(10),borderColor:'white',borderWidth:Pixel.getPixel(1),alignItems:'center',justifyContent:'center',overflow:'hidden'}}>
+                                            <Text style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                                backgroundColor:'#00000000'}}>  立即激活微众额度  </Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>) : (null)
+                        }
                     </View>
                     <View
                         style={{
@@ -653,7 +660,6 @@ export default class FinanceSence extends BaseComponet {
                 <View style={cellSheet.header}>
                     {items}
                 </View>
-
             </View>
 
         )
