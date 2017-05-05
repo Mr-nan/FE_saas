@@ -207,6 +207,8 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                     }
                     let currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;
                     let newList = ['1', '2', '3', '4', '5', '6','7'];
+                    console.log((selecttime-parseFloat(movies.loan_time))/60/60/24);
+                    console.log(currentdate);
                     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                     this.setState({
                         source: ds.cloneWithRows(newList),

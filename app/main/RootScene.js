@@ -12,7 +12,7 @@ import {
 
 import BaseComponent from '../component/BaseComponent';
 import MyButton from '../component/MyButton';
-var {height, width} = Dimensions.get('window');
+let {height, width} = Dimensions.get('window');
 import MainPage from './MainPage';
 import LoginAndRegister from '../login/LoginAndRegister';
 import StorageUtil from '../utils/StorageUtil';
