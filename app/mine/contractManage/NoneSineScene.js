@@ -43,7 +43,8 @@ export default class NoneSineScene extends BaseComponent {
             api : Urls.CONTRACTLIST,
             opt_user_id: this.props.opt_user_id,
             sign_status: '1',
-        };        request(Urls.FINANCE, 'Post', maps)
+        };
+        request(Urls.FINANCE, 'Post', maps)
 
             .then((response) => {
                     if (page == 1 && response.mjson.data.contract_list.length <= 0) {

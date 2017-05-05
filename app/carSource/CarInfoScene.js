@@ -458,33 +458,44 @@ export default class CarInfoScene extends BaseComponent {
                         )
 
                     }
-                    <View style={styles.carIconsContainer}>
-                        <CarDeploySwitchoverButton switchoverAction={(type)=>{
-
-                            this.setState({
-                                switchoverCarInfo:type,
-                            });
-
-                        }}/>
+                    <View style={styles.carIconsView}>
                         {
-                            this.state.switchoverCarInfo==0?
-                                (<View style={styles.carIconsView}>
-                                    {
-                                        carIconsData.map((data, index) => {
-                                            return (
-                                                <CarIconView imageData={data.image} imageHighData={data.imageHigh}
-                                                             content={carData.carIconsContentData&&carData.carIconsContentData[index]} title={data.title}
-                                                             key={index}/>
-                                            )
-                                        })
-                                    }
-                                </View>):(<CarConfigurationView carConfigurationData={carConfigurationData}  renderCarConfigurationDataAction={(data)=>{carConfigurationData=data;console.log(data)}} modelID ={this.state.carData.model_id}/>)
-
+                            carIconsData.map((data, index) => {
+                                return (
+                                    <CarIconView imageData={data.image} imageHighData={data.imageHigh}
+                                                 content={carData.carIconsContentData&&carData.carIconsContentData[index]} title={data.title}
+                                                 key={index}/>
+                                )
+                            })
                         }
+                    </View>
+                    {/*<View style={styles.carIconsContainer}>*/}
+                        {/*<CarDeploySwitchoverButton switchoverAction={(type)=>{*/}
+
+                            {/*this.setState({*/}
+                                {/*switchoverCarInfo:type,*/}
+                            {/*});*/}
+
+                        {/*}}/>*/}
+                        {/*{*/}
+                            {/*this.state.switchoverCarInfo==0?*/}
+                                {/*(<View style={styles.carIconsView}>*/}
+                                    {/*{*/}
+                                        {/*carIconsData.map((data, index) => {*/}
+                                            {/*return (*/}
+                                                {/*<CarIconView imageData={data.image} imageHighData={data.imageHigh}*/}
+                                                             {/*content={carData.carIconsContentData&&carData.carIconsContentData[index]} title={data.title}*/}
+                                                             {/*key={index}/>*/}
+                                            {/*)*/}
+                                        {/*})*/}
+                                    {/*}*/}
+                                {/*</View>):(<CarConfigurationView carConfigurationData={carConfigurationData}  renderCarConfigurationDataAction={(data)=>{carConfigurationData=data;console.log(data)}} modelID ={this.state.carData.model_id}/>)*/}
+
+                        {/*}*/}
                         {/*<TouchableOpacity onPress={this.pushCarUpkeepScene} activeOpacity={1}>*/}
                         {/*<Image style={{marginTop:10,width:ScreenWidth}} source={require('../../images/carSourceImages/carUpkeepButton.png')} resizeMode='stretch'/>*/}
                         {/*</TouchableOpacity>*/}
-                    </View>
+                    {/*</View>*/}
                 </ScrollView>
                 <TouchableOpacity style={styles.callView} onPress={this.callClick}>
                     <View style={{alignItems:'center',justifyContent:'center',width:ScreenWidth*0.5}}>
@@ -619,12 +630,18 @@ class  SharedView extends Component{
 
                         carContent+=" | "+carData.carIconsContentData[0]+'出厂';
                     }
+                    let fenxiangUrl = '';
+                    if(AppUrls.BASEURL=='http://api-gateway.test.dycd.com/'){
+                        fenxiangUrl = AppUrls.FENXIANGTEST;
+                    }else{
+                        fenxiangUrl = AppUrls.FENXIANGOPEN;
+                    }
                     let carImage = typeof carData.imgs[0].url == 'undefined'?resolveAssetSource(imageResource).uri:carData.imgs[0].url;
                     weChat.shareToTimeline({
                         type:'news',
                         title:carData.model_name,
                         description:carContent,
-                        webpageUrl:'http://finance.test.dycd.com/platform/car_detail.html?id='+carData.id,
+                        webpageUrl:fenxiangUrl+'?id='+carData.id,
                         thumbImage:carImage,
 
                     }).catch((error)=>{

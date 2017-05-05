@@ -15,7 +15,6 @@ import BaseComponent from "../component/BaseComponent";
 import NavigationBar from "../component/NavigationBar";
 import * as FontAndColor from "../constant/fontAndColor";
 import PixelUtil from "../utils/PixelUtil";
-import LoginInputText from './component/LoginInputText';
 import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 import MyButton from "../component/MyButton";
@@ -31,27 +30,18 @@ var imgSid: '';
 
 var itemWidth = width;
 
-var contents = [
-    {name: "黑色", color: '#000000'},
-    {name: "白色", color: '#E1E1E1'},
-    {name: "银灰色", color: '#999999'},
-
-];
 export default class RecognizedGains extends BaseComponent {
 
     constructor(props) {
         super(props);
         this.state = {
             renderPlaceholderOnly: true,
-            source: ds.cloneWithRows(contents),
+            source: [],
         };
     }
 
     initFinish = () => {
-        InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: false});
-            this.getWZInfo();
-        });
+        this.getWZInfo();
     }
 
     render() {
@@ -162,16 +152,7 @@ export default class RecognizedGains extends BaseComponent {
                           childStyle={styles.loginButtonTextStyle}
                           mOnPress={() => {
                               if (this.state.agree) {
-                                  {/*this.toNextPage({*/
-                                  }
-                                  {/*name: 'RecognizedGains',*/
-                                  }
-                                  {/*component: RecognizedGains,*/
-                                  }
-                                  {/*params: {},*/
-                                  }
-                                  {/*})*/
-                                  }
+                                  this.submitWZInfo();
                               } else {
                                   this.props.showToast("请选择服务协议");
                               }
@@ -183,8 +164,8 @@ export default class RecognizedGains extends BaseComponent {
     _renderRow = (data, sindex, rowID) => {
         return (
             <TouchableOpacity style={styles.itemStyle} onPress={() => this.finshPage(data)}>
-                <Text style={[styles.itemIconStyle, {flex: 1}]}>{data.color}</Text>
-                <Text style={styles.itemTextStyle}>{data.name}</Text>
+                <Text style={[styles.itemIconStyle, {flex: 1}]}>{data.loan_number}</Text>
+                <Text style={styles.itemTextStyle}>{data.money_str}</Text>
             </TouchableOpacity>
 
         )
@@ -203,10 +184,34 @@ export default class RecognizedGains extends BaseComponent {
         )
     }
 
-    //获取微众申请页面数据
+    //获取借据数据列表
     getWZInfo = () => {
         let maps = {
             api: AppUrls.GET_IOU_LIST,
+            loan_code: this.props.loan_code,
+        };
+        this.props.showModal(true);
+        request(AppUrls.FINANCE, 'Post', maps)
+            .then((response) => {
+                this.props.showModal(false);
+                this.setState({
+                    source: ds.cloneWithRows(response.mjson.data.iou_list),
+                    renderPlaceholderOnly: false
+                });
+            }, (error) => {
+                this.props.showModal(false);
+                if (error.mycode == -300 || error.mycode == -500) {
+                    this.props.showToast("获取失败");
+                } else {
+                    this.props.showToast(error.mjson.msg + "");
+                }
+            });
+    }
+
+    //确认借据操作
+    submitWZInfo = () => {
+        let maps = {
+            api: AppUrls.CONFIRM_APPLY,
             loan_code: this.props.loan_code,
         };
         this.props.showModal(true);

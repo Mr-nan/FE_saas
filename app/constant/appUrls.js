@@ -1,12 +1,12 @@
 /**
  * 开发地址
  */
-export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地
  */
-// export const BASEURL = 'http://api-gateway.test.dycd.com/';
+export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 正式地址
@@ -439,6 +439,11 @@ export const GETAPPLYDATA = "/api/v1/microchinese/get_apply_data";
  */
 export const GET_IOU_LIST = "/api/v1/microchinese/get_iou_list";
 
+/**
+ * 确认借据操作
+ */
+export const CONFIRM_APPLY = "/api/v1/microchinese/confirm_apply";
+
 
 /**
  * 微众额度申请
@@ -570,6 +575,11 @@ export const AUTH_UPLOAD_FILE = BASEURL + V + "auth/upload";
  * 合同列表
  */
 export const CONTRACTLIST = 'api/v1/Contract/contractList';
+
+/**
+ * 获取合同提示信息
+ */
+export const GET_CONTRACT_REMIND = 'api/v1/contract/get_contract_remind';
 
 /**
  * 线下合同列表
