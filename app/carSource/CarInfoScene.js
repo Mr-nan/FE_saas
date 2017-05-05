@@ -189,8 +189,7 @@ export default class CarInfoScene extends BaseComponent {
     showShared=()=>{
 
         // this.refs.LendSuccessAlert.setModelVisible(true);
-        // this.refs.sharedView.isVisible(true);
-        this.sharedWechatSession(this.state.carData);
+        this.refs.sharedView.isVisible(true);
     }
 
 
@@ -459,44 +458,33 @@ export default class CarInfoScene extends BaseComponent {
                         )
 
                     }
-                    <View style={styles.carIconsView}>
+                    <View style={styles.carIconsContainer}>
+                        <CarDeploySwitchoverButton switchoverAction={(type)=>{
+
+                            this.setState({
+                                switchoverCarInfo:type,
+                            });
+
+                        }}/>
                         {
-                            carIconsData.map((data, index) => {
-                                return (
-                                    <CarIconView imageData={data.image} imageHighData={data.imageHigh}
-                                                 content={carData.carIconsContentData&&carData.carIconsContentData[index]} title={data.title}
-                                                 key={index}/>
-                                )
-                            })
+                            this.state.switchoverCarInfo==0?
+                                (<View style={styles.carIconsView}>
+                                    {
+                                        carIconsData.map((data, index) => {
+                                            return (
+                                                <CarIconView imageData={data.image} imageHighData={data.imageHigh}
+                                                             content={carData.carIconsContentData&&carData.carIconsContentData[index]} title={data.title}
+                                                             key={index}/>
+                                            )
+                                        })
+                                    }
+                                </View>):(<CarConfigurationView carConfigurationData={carConfigurationData}  renderCarConfigurationDataAction={(data)=>{carConfigurationData=data;console.log(data)}} modelID ={this.state.carData.model_id}/>)
+
                         }
-                    </View>
-                    {/*<View style={styles.carIconsContainer}>*/}
-                        {/*<CarDeploySwitchoverButton switchoverAction={(type)=>{*/}
-
-                            {/*this.setState({*/}
-                                {/*switchoverCarInfo:type,*/}
-                            {/*});*/}
-
-                        {/*}}/>*/}
-                        {/*{*/}
-                            {/*this.state.switchoverCarInfo==0?*/}
-                                {/*(<View style={styles.carIconsView}>*/}
-                                    {/*{*/}
-                                        {/*carIconsData.map((data, index) => {*/}
-                                            {/*return (*/}
-                                                {/*<CarIconView imageData={data.image} imageHighData={data.imageHigh}*/}
-                                                             {/*content={carData.carIconsContentData&&carData.carIconsContentData[index]} title={data.title}*/}
-                                                             {/*key={index}/>*/}
-                                            {/*)*/}
-                                        {/*})*/}
-                                    {/*}*/}
-                                {/*</View>):(<CarConfigurationView carConfigurationData={carConfigurationData}  renderCarConfigurationDataAction={(data)=>{carConfigurationData=data;console.log(data)}} modelID ={this.state.carData.model_id}/>)*/}
-
-                        {/*}*/}
                         {/*<TouchableOpacity onPress={this.pushCarUpkeepScene} activeOpacity={1}>*/}
                         {/*<Image style={{marginTop:10,width:ScreenWidth}} source={require('../../images/carSourceImages/carUpkeepButton.png')} resizeMode='stretch'/>*/}
                         {/*</TouchableOpacity>*/}
-                    {/*</View>*/}
+                    </View>
                 </ScrollView>
                 <TouchableOpacity style={styles.callView} onPress={this.callClick}>
                     <View style={{alignItems:'center',justifyContent:'center',width:ScreenWidth*0.5}}>
@@ -522,49 +510,6 @@ export default class CarInfoScene extends BaseComponent {
             </View>
 
         )
-    }
-
-    sharedWechatSession=(carData)=>{
-        weChat.isWXAppInstalled()
-            .then((isInstalled)=>{
-                if(isInstalled){
-
-                    let imageResource = require('../../images/carSourceImages/car_info_null.png');
-                    let carContent = '';
-
-                    if(carData.city_name!=""){
-
-                        carContent = carData.city_name+' | ';
-                    }
-                    if(carData.plate_number!=""){
-
-                        carContent +=carData.plate_number.substring(0,2);
-                    }
-                    if(carData.carIconsContentData[0]!=""){
-
-                        carContent+=" | "+carData.carIconsContentData[0]+'出厂';
-                    }
-                    let fenxiangUrl = '';
-                    if(AppUrls.BASEURL=='http://api-gateway.test.dycd.com/'){
-                        fenxiangUrl = AppUrls.FENXIANGTEST;
-                    }else{
-                        fenxiangUrl = AppUrls.FENXIANGOPEN;
-                    }
-                    let carImage = typeof carData.imgs[0].url == 'undefined'?resolveAssetSource(imageResource).uri:carData.imgs[0].url;
-                    console.log(fenxiangUrl+'?id='+carData.id);
-                    weChat.shareToSession({
-                        type: 'news',
-                        title:carData.model_name,
-                        description:carContent,
-                        webpageUrl:fenxiangUrl+'?id='+carData.id,
-                        thumbImage:carImage,
-
-                    }).catch((error)=>{
-                    })
-                }else {
-                    this.isVisible(false);
-                }
-            });
     }
 
 }
@@ -674,18 +619,12 @@ class  SharedView extends Component{
 
                         carContent+=" | "+carData.carIconsContentData[0]+'出厂';
                     }
-                    let fenxiangUrl = '';
-                    if(AppUrls.BASEURL=='http://api-gateway.test.dycd.com/'){
-                        fenxiangUrl = AppUrls.FENXIANGTEST;
-                    }else{
-                        fenxiangUrl = AppUrls.FENXIANGOPEN;
-                    }
                     let carImage = typeof carData.imgs[0].url == 'undefined'?resolveAssetSource(imageResource).uri:carData.imgs[0].url;
                     weChat.shareToTimeline({
                         type:'news',
                         title:carData.model_name,
                         description:carContent,
-                        webpageUrl:fenxiangUrl+'?id='+carData.id,
+                        webpageUrl:'http://finance.test.dycd.com/platform/car_detail.html?id='+carData.id,
                         thumbImage:carImage,
 
                     }).catch((error)=>{
