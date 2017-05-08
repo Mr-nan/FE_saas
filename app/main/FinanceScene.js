@@ -24,9 +24,6 @@ let page = 1;
 let allPage = 0;
 
 
-let is_microchinese_mny = 3;
-
-
 import  HomeHeaderItem from './component/HomeHeaderItem';
 import  PixelUtil from '../utils/PixelUtil'
 import KurongDetaileScene from '../finance/lend/KurongDetaileScene';
@@ -149,11 +146,11 @@ export default class FinanceSence extends BaseComponet {
 
                     let title = '';
 
-                    if(is_microchinese_mny==1){
+                    if(mnyData.is_microchinese_mny==1){
                         title='立即激活微众额度';
-                    }else if(is_microchinese_mny ==2){
+                    }else if(mnyData.is_microchinese_mny ==2){
                         title='待审核';
-                    }else if(is_microchinese_mny == 4){
+                    }else if(mnyData.is_microchinese_mny == 4){
                         title='审核不通过';
                     }
 
