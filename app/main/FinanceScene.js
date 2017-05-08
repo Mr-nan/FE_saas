@@ -46,6 +46,8 @@ import AginSelectCompanyScene from '../finance/AginSelectCompanyScene';
 import {LendSuccessAlert} from '../finance/lend/component/ModelComponent'
 let loanList = [];
 import CGDLendScenes from '../finance/lend/CGDLendScenes';
+import ReceiptInfoScene from '../finance/page/ReceiptInfoScene';
+
 
 export class HomeHeaderItemInfo {
     constructor(ref, key, functionTitle, describeTitle, functionImage) {
@@ -267,7 +269,8 @@ export default class FinanceSence extends BaseComponet {
                 <LendSuccessAlert title="提示" subtitle="采购融资功能正在维护中，请您移步BMS系统申请采购融资" ref='cgdModal'
                                   confimClick={() => {
                                   }}/>
-                <LendSuccessAlert ref="showAlert" title={'审核未通过'} subtitle={this.state.mnyData.microchinese_audit_reason}/>
+                <LendSuccessAlert ref="showAlert"       title={'审核未通过'} subtitle={this.state.mnyData.microchinese_audit_reason}/>
+                <LendSuccessAlert ref="showTitleAlert"  title={'提示'}      subtitle={'微众额度以车贷可用额度为准'}/>
             </View>
         )
     }
@@ -570,12 +573,15 @@ export default class FinanceSence extends BaseComponet {
                                     }}>{this.state.allData.keyongedu}</Text>
                             </View>
                             <View style={{flex: 1, alignItems: 'center',}}>
+                                <TouchableOpacity style={{flexDirection:'row'}} activeOpacity={1} onPress={()=>{this.refs.showTitleAlert.setModelVisible(true)}}>
                                 <Text
                                     style={{
                                         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                                         color: '#fff',
                                         backgroundColor: '#00000000'
                                     }}>微众可用额度(万)</Text>
+                                    <Image source={require('../../images/financeImages/titleAlertImg.png')} style={{marginLeft:5}}/>
+                                </TouchableOpacity>
                                 <Text
                                     style={{
                                         fontSize: Pixel.getFontPixel(28),
@@ -609,7 +615,17 @@ export default class FinanceSence extends BaseComponet {
                         {
                             this.state.mnyData.is_microchinese_mny==0?
                                 (<View style={{height:Pixel.getPixel(40), alignItems:'center',justifyContent:'center'}}>
-                                    <TouchableOpacity onPress={()=>{this.refs.showAlert.setModelVisible(true)}}>
+                                    <TouchableOpacity onPress={()=>{
+                                        {/*this.refs.showAlert.setModelVisible(true)*/}
+                                        let navigationParams={
+                                            name: "ReceiptInfoScene",
+                                            component: ReceiptInfoScene,
+                                            params: {
+
+                                            }
+                                        }
+                                        this.props.callBack(navigationParams);
+                                    }}>
                                         <View style={{height:Pixel.getPixel(20),borderRadius:Pixel.getPixel(10),borderColor:'white',borderWidth:Pixel.getPixel(1),alignItems:'center',justifyContent:'center',overflow:'hidden'}}>
                                             <Text style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                                                 backgroundColor:'#00000000'}}>  立即激活微众额度  </Text>
