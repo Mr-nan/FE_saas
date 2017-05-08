@@ -22,6 +22,11 @@ let mnyData = {};
 let movies = [];
 let page = 1;
 let allPage = 0;
+
+
+let is_microchinese_mny = 3;
+
+
 import  HomeHeaderItem from './component/HomeHeaderItem';
 import  PixelUtil from '../utils/PixelUtil'
 import KurongDetaileScene from '../finance/lend/KurongDetaileScene';
@@ -141,12 +146,24 @@ export default class FinanceSence extends BaseComponet {
         })
             .then((response) => {
                     mnyData = response.mjson.data;
+
+                    let title = '';
+
+                    if(is_microchinese_mny==1){
+                        title='立即激活微众额度';
+                    }else if(is_microchinese_mny ==2){
+                        title='待审核';
+                    }else if(is_microchinese_mny == 4){
+                        title='审核不通过';
+                    }
+
                     that.setState({
                         allData: {
                             keyongedu: mnyData.credit_maxloanmny / 10000,
                             daikuanyue: mnyData.loan_balance_mny / 10000,
                             baozhengjinedu: mnyData.bond_total_mny / 10000,
                             baozhengjinyue: mnyData.bond_mny / 10000,
+                            microchineseTitle:title,
                         },
                         mnyData:mnyData,
                     });
@@ -215,6 +232,7 @@ export default class FinanceSence extends BaseComponet {
                 daikuanyue: mnyData.loan_balance_mny / 10000,
                 baozhengjinedu: mnyData.bond_total_mny / 10000,
                 baozhengjinyue: mnyData.bond_mny / 10000,
+                microchineseTitle:'',
             },
             mnyData:mnyData,
             renderPlaceholderOnly: 'blank',
@@ -560,7 +578,7 @@ export default class FinanceSence extends BaseComponet {
                                         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                                         color: '#fff',
                                         backgroundColor: '#00000000'
-                                    }}>可用额度(万)</Text>
+                                    }}>{this.state.mnyData.is_microchinese_mny==3&&'综合'}可用额度(万)</Text>
                                 <Text
                                     style={{
                                         fontSize: Pixel.getFontPixel(28),
@@ -572,27 +590,30 @@ export default class FinanceSence extends BaseComponet {
                                         textAlign: 'center'
                                     }}>{this.state.allData.keyongedu}</Text>
                             </View>
-                            <View style={{flex: 1, alignItems: 'center',}}>
-                                <TouchableOpacity style={{flexDirection:'row'}} activeOpacity={1} onPress={()=>{this.refs.showTitleAlert.setModelVisible(true)}}>
-                                <Text
-                                    style={{
-                                        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                                        color: '#fff',
-                                        backgroundColor: '#00000000'
-                                    }}>微众可用额度(万)</Text>
-                                    <Image source={require('../../images/financeImages/titleAlertImg.png')} style={{marginLeft:5}}/>
-                                </TouchableOpacity>
-                                <Text
-                                    style={{
-                                        fontSize: Pixel.getFontPixel(28),
-                                        color: '#fff',
-                                        marginTop: Pixel.getPixel(7),
-                                        fontWeight: 'bold',
-                                        backgroundColor: '#00000000',
-                                        flex: 1,
-                                        textAlign: 'center'
-                                    }}>{this.state.allData.keyongedu}</Text>
-                            </View>
+                            {
+                               this.state.mnyData.is_microchinese_mny ==3 &&(
+                                    <View style={{flex: 1, alignItems: 'center',}}>
+                                    <TouchableOpacity style={{flexDirection:'row'}} activeOpacity={1} onPress={()=>{this.refs.showTitleAlert.setModelVisible(true)}}>
+                                        <Text
+                                            style={{
+                                                fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                                color: '#fff',
+                                                backgroundColor: '#00000000'
+                                            }}>微众可用额度(万)</Text>
+                                        <Image source={require('../../images/financeImages/titleAlert.png')} style={{marginLeft:5}}/>
+                                    </TouchableOpacity>
+                                    <Text
+                                        style={{
+                                            fontSize: Pixel.getFontPixel(28),
+                                            color: '#fff',
+                                            marginTop: Pixel.getPixel(7),
+                                            fontWeight: 'bold',
+                                            backgroundColor: '#00000000',
+                                            flex: 1,
+                                            textAlign: 'center'
+                                        }}>{this.state.mnyData.microchinese_mny/10000}</Text>
+                                </View>)
+                            }
                             <View style={{flex: 1, alignItems: 'center',borderLeftColor:'white',borderLeftWidth:StyleSheet.hairlineWidth}}>
                                 <Text
                                     style={{
@@ -613,22 +634,29 @@ export default class FinanceSence extends BaseComponet {
                             </View>
                         </View>
                         {
-                            this.state.mnyData.is_microchinese_mny==0?
+                            (this.state.mnyData.is_microchinese_mny!==0 && this.state.mnyData.is_microchinese_mny!==3)?
                                 (<View style={{height:Pixel.getPixel(40), alignItems:'center',justifyContent:'center'}}>
                                     <TouchableOpacity onPress={()=>{
-                                        {/*this.refs.showAlert.setModelVisible(true)*/}
-                                        let navigationParams={
-                                            name: "ReceiptInfoScene",
-                                            component: ReceiptInfoScene,
-                                            params: {
 
+                                        if(this.state.mnyData.is_microchinese_mny==4){
+                                            this.refs.showAlert.setModelVisible(true)
+                                        }else if (this.state.mnyData.is_microchinese_mny == 1){
+                                            let navigationParams={
+                                                name: "ReceiptInfoScene",
+                                                component: ReceiptInfoScene,
+                                                params: {
+
+                                                }
                                             }
+                                            this.props.callBack(navigationParams);
                                         }
-                                        this.props.callBack(navigationParams);
-                                    }}>
-                                        <View style={{height:Pixel.getPixel(20),borderRadius:Pixel.getPixel(10),borderColor:'white',borderWidth:Pixel.getPixel(1),alignItems:'center',justifyContent:'center',overflow:'hidden'}}>
+
+                                    }} activeOpacity={1}>
+                                        <View style={{height:Pixel.getPixel(20),borderRadius:Pixel.getPixel(10),borderColor:'white',borderWidth:Pixel.getPixel(1),alignItems:'center',justifyContent:'center',overflow:'hidden',
+                                            paddingHorizontal:Pixel.getPixel(20),
+                                        }}>
                                             <Text style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                                                backgroundColor:'#00000000'}}>  立即激活微众额度  </Text>
+                                                backgroundColor:'#00000000'}}>  {this.state.allData.microchineseTitle}  </Text>
                                         </View>
                                     </TouchableOpacity>
                                 </View>) : (null)
