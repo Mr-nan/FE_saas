@@ -40,7 +40,6 @@ const Car = [
     },
 ]
 
-// let Car = require('./Car.json');
 /*
  * 获取屏幕的宽和高
  **/
