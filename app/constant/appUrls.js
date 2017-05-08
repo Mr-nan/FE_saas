@@ -64,13 +64,20 @@ export const CAR_HOME_BRAND = BASEURL + V + 'home/brand';
  */
 export const CAR_HOME_SERIES = BASEURL + V + 'home/series';
 
+
+
 /**
  * 获取车型
  */
 export const CAR_HOME_MODELS = BASEURL + V + 'home/models';
 
 /**
- * 获取区域
+ * 获取省份
+ */
+export const GET_PROVINCE = BASEURL + V + 'home/getProvince';
+
+/**
+ * 获取
  */
 export const INDEX_CITY = BASEURL + V + 'index/city';
 

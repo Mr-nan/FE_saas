@@ -137,7 +137,7 @@ export class CarConfigurationView extends BaseComponent{
               rowIDs[i] = [];
               for (var j = 0; j < rows.length; j++) {
 
-                  if(rows[j].value!=='-'){
+                  if(rows[j].value!==''){
                       rowIDs[i].push(j);
                       //把每一行中的内容放入dataBlob对象中
                       dataBlob[i + ':' + j] = rows[j];
@@ -163,8 +163,13 @@ export class CarConfigurationView extends BaseComponent{
         return(
         <View style={{flex:1}}>
             <ListView
-
-                dataSource={this.state.dataSource} renderRow={(rowData, sectionID, rowID)=>{
+                dataSource={this.state.dataSource}
+                renderHeader={()=>{return(
+                    <View style={{paddingHorizontal:Pixel.getPixel(15),paddingVertical:Pixel.getPixel(10),backgroundColor:'white'}}>
+                        <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getPixel(fontAndColor.LITTLEFONT28)}}>{this.props.carConfiguraInfo}</Text>
+                    </View>
+                )}}
+                renderRow={(rowData, sectionID, rowID)=>{
                 return(<View  style={styles.carConfigurationViewItem}>
                     <Text style={styles.carConfigurationViewItemtTitleText}>{rowData.title}</Text>
                     <Text style={styles.carConfigurationViewItemtValueText}>{rowData.value==1?'标配':(rowData.value==0?'选配':rowData.value)}</Text>

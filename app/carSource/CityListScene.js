@@ -90,21 +90,23 @@ export default class CityListScene extends BaseComponent {
         }
 
         this.props.showModal(true);
-        request(AppUrls.INDEX_CITY, 'post', {
+        request(AppUrls.GET_PROVINCE, 'post', {
 
         }).then((response) => {
 
             this.props.showModal(false);
 
-            if(response.mjson.code == 1){
+            // if(response.mjson.code == 1){
+            //
+            //     cityData = response.mjson.data;
+            //     this.setListData(response.mjson.data);
+            //
+            // }else {
+            //
+            //     this.props.showToast(response.mjson.msg)
+            // }
 
-                cityData = response.mjson.data;
-                this.setListData(response.mjson.data);
-
-            }else {
-
-                this.props.showToast(response.mjson.msg)
-            }
+            console.log(response);
 
 
         }, (error) => {
