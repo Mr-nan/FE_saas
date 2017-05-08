@@ -148,7 +148,17 @@ export default class CompleteSignScene extends BaseComponent {
     // 每一行中的数据
     _renderRow = (rowData, rowID, selectionID) => {
         return (
-            <View style={{backgroundColor: '#fff',width:width,height:Pixel.getPixel(111),paddingLeft:Pixel.getPixel(15),
+            <TouchableOpacity onPress={()=>{
+                        this.toNextPage({
+                            name: 'RecognizedGains',
+                            component: RecognizedGains,
+                            params: {
+                                loan_code:rowData.loan_code,
+                                loan_number:rowData.loan_number,
+                                isShow:false
+                            },
+                        })
+            }} activeOpacity={1} style={{backgroundColor: '#fff',width:width,height:Pixel.getPixel(111),paddingLeft:Pixel.getPixel(15),
             paddingRight:Pixel.getPixel(15)}}>
                 <View style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(65),flexDirection:'row'}}>
                     <View style={{flex:1,justifyContent:'center',}}>
@@ -171,7 +181,7 @@ export default class CompleteSignScene extends BaseComponent {
                         <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                         color:fontAndColor.COLORA1}}>{rowData.contract_name}</Text>
                     </View>
-                    <TouchableOpacity activeOpacity={1} style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>
+                    <View  style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>
                         <View style={{
                             backgroundColor: fontAndColor.COLORA4,
                             width:Pixel.getPixel(80),height:Pixel.getPixel(30),justifyContent:'center',alignItems: 'center'
@@ -181,9 +191,9 @@ export default class CompleteSignScene extends BaseComponent {
                                 已签署
                             </Text>
                         </View>
-                    </TouchableOpacity>
+                    </View>
                 </View>
-            </View>
+            </TouchableOpacity>
         );
     }
 

@@ -16,7 +16,6 @@ var Pixel = new PixelUtil();
 import NavigationBar from "../../component/NavigationBar";
 import BaseComponent from "../../component/BaseComponent";
 import ShareSpanner from '../../mine/contractManage/ContractSpanner'
-// let Car = require('./Car.json');
 /*
  * 获取屏幕的宽和高
  **/

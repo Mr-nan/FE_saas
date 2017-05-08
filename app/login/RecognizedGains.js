@@ -76,7 +76,7 @@ export default class RecognizedGains extends BaseComponent {
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
-                    renderFooter={this._renderFooter}
+                    renderFooter={this.props.isShow==true?this._renderFooter:<View/>}
                 />
 
 
@@ -189,6 +189,8 @@ export default class RecognizedGains extends BaseComponent {
         let maps = {
             api: AppUrls.GET_IOU_LIST,
             loan_code: this.props.loan_code,
+            loan_number:this.props.loan_number
+
         };
         this.props.showModal(true);
         request(AppUrls.FINANCE, 'Post', maps)
@@ -218,6 +220,8 @@ export default class RecognizedGains extends BaseComponent {
         request(AppUrls.FINANCE, 'Post', maps)
             .then((response) => {
                 this.props.showModal(false);
+                this.props.callBack();
+                this.backPage();
             }, (error) => {
                 this.props.showModal(false);
                 if (error.mycode == -300 || error.mycode == -500) {
