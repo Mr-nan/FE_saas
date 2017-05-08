@@ -520,7 +520,7 @@ export default class CarInfoScene extends BaseComponent {
                             alignItems:'center',justifyContent:'space-between',backgroundColor:'white',marginTop:10
                         }} onPress={this.pushCarConfigScene}>
                             <View style={{flexDirection:'row',alignItems:'center'}}>
-                            <Image source={require('../../images/carSourceImages/carConfig.png')}/>
+                            <Image source={require('../../images/carSourceImages/carConfigImg.png')}/>
                             <Text style={{color:fontAndColor.COLORA0, fontSize:fontAndColor.LITTLEFONT28,marginLeft:Pixel.getPixel(10)}}>车辆配置信息</Text>
                             </View>
                             <Image source={require('../../images/mainImage/celljiantou.png')}/>
