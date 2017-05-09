@@ -295,7 +295,7 @@ export default class Register extends BaseComponent {
                         }} activeOpacity={0.8} style={{marginTop:Pixel.getPixel(15),width:width-Pixel.getPixel(30),height:
                         Pixel.getPixel(44),backgroundColor: FontAndColor.COLORB0,alignItems: 'center',justifyContent:'center'
                         }}>
-                            <Text style={{color:'#fff',fontSize: Pixel.getPixel(FontAndColor.CONTENTFONT24)}}>提交</Text>
+                            <Text style={{color:'#fff',fontSize: Pixel.getPixel(FontAndColor.LITTLEFONT28)}}>提交</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
