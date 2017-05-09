@@ -23,6 +23,7 @@ import {LendSuccessAlert} from '../finance/lend/component/ModelComponent';
 import {CarDeploySwitchoverButton,CarConfigurationView}   from './znComponent/CarInfoAllComponent';
 import CarZoomImageScene from './CarZoomImagScene';
 import CarUpkeepScene from './CarUpkeepScene';
+import AutoConfig      from '../publish/AutoConfig';
 import *as weChat from 'react-native-wechat';
 import PixelUtil from '../utils/PixelUtil';
 const Pixel = new PixelUtil();
@@ -234,6 +235,29 @@ export default class CarInfoScene extends BaseComponent {
         }
         this.toNextPage(navigationParams);
     };
+
+    // 车辆配置信息
+    pushCarConfigScene=()=>{
+        let navigationParams={
+            name: "AutoConfig",
+            component: AutoConfig,
+            params: {
+
+                modelID:this.state.carData.model_id,
+                carConfiguraInfo:this.state.carData.modification_instructions,
+                carConfigurationData:carConfigurationData,
+                renderCarConfigurationDataAction:this.renderCarConfigDataAction,
+            }
+        }
+        this.toNextPage(navigationParams);
+    };
+
+    renderCarConfigDataAction=(data)=>{
+        carConfigurationData=data;
+        console.log(data);
+    }
+
+
 
     // 添加收藏
     addStoreAction=(isStoreClick)=>{
@@ -459,28 +483,48 @@ export default class CarInfoScene extends BaseComponent {
 
                     }
                     <View style={styles.carIconsContainer}>
-                        <CarDeploySwitchoverButton switchoverAction={(type)=>{
+                        <View style={styles.carIconsView}>
+                            {
+                                carIconsData.map((data, index) => {
+                                    return (
+                                        <CarIconView imageData={data.image} imageHighData={data.imageHigh}
+                                                     content={carData.carIconsContentData&&carData.carIconsContentData[index]} title={data.title}
+                                                     key={index}/>
+                                    )
+                                })
+                            }
+                        </View>
+                        {/*<CarDeploySwitchoverButton switchoverAction={(type)=>{*/}
 
-                            this.setState({
-                                switchoverCarInfo:type,
-                            });
+                            {/*this.setState({*/}
+                                {/*switchoverCarInfo:type,*/}
+                            {/*});*/}
 
-                        }}/>
-                        {
-                            this.state.switchoverCarInfo==0?
-                                (<View style={styles.carIconsView}>
-                                    {
-                                        carIconsData.map((data, index) => {
-                                            return (
-                                                <CarIconView imageData={data.image} imageHighData={data.imageHigh}
-                                                             content={carData.carIconsContentData&&carData.carIconsContentData[index]} title={data.title}
-                                                             key={index}/>
-                                            )
-                                        })
-                                    }
-                                </View>):(<CarConfigurationView carConfigurationData={carConfigurationData}  renderCarConfigurationDataAction={(data)=>{carConfigurationData=data;console.log(data)}} modelID ={this.state.carData.model_id}/>)
+                        {/*}}/>*/}
+                        {/*{*/}
+                            {/*this.state.switchoverCarInfo==0?*/}
+                                {/*(<View style={styles.carIconsView}>*/}
+                                    {/*{*/}
+                                        {/*carIconsData.map((data, index) => {*/}
+                                            {/*return (*/}
+                                                {/*<CarIconView imageData={data.image} imageHighData={data.imageHigh}*/}
+                                                             {/*content={carData.carIconsContentData&&carData.carIconsContentData[index]} title={data.title}*/}
+                                                             {/*key={index}/>*/}
+                                            {/*)*/}
+                                        {/*})*/}
+                                    {/*}*/}
+                                {/*</View>):(<CarConfigurationView carConfigurationData={carConfigurationData}  renderCarConfigurationDataAction={(data)=>{carConfigurationData=data;console.log(data)}} modelID ={this.state.carData.model_id}/>)*/}
 
-                        }
+                        {/*}*/}
+                        <TouchableOpacity style={{flexDirection:'row',paddingHorizontal:Pixel.getPixel(15),height:Pixel.getPixel(44),
+                            alignItems:'center',justifyContent:'space-between',backgroundColor:'white',marginTop:10
+                        }} onPress={this.pushCarConfigScene}>
+                            <View style={{flexDirection:'row',alignItems:'center'}}>
+                            <Image source={require('../../images/carSourceImages/carConfigImg.png')}/>
+                            <Text style={{color:fontAndColor.COLORA0, fontSize:fontAndColor.LITTLEFONT28,marginLeft:Pixel.getPixel(10)}}>车辆配置信息</Text>
+                            </View>
+                            <Image source={require('../../images/mainImage/celljiantou.png')}/>
+                        </TouchableOpacity>
                         {/*<TouchableOpacity onPress={this.pushCarUpkeepScene} activeOpacity={1}>*/}
                         {/*<Image style={{marginTop:10,width:ScreenWidth}} source={require('../../images/carSourceImages/carUpkeepButton.png')} resizeMode='stretch'/>*/}
                         {/*</TouchableOpacity>*/}

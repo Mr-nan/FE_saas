@@ -106,6 +106,8 @@ export default class CityListScene extends BaseComponent {
                 this.props.showToast(response.mjson.msg)
             }
 
+            console.log(response);
+
 
         }, (error) => {
             this.props.showModal(false);
