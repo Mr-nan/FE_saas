@@ -18,11 +18,11 @@ import MycarScene from '../carSource/CarMySourceScene';
 import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
 
-import repayDetailsScene from '../mine/accountManage/repayDetailsScene'
 import ContractManageScene from '../mine/contractManage/ContractSelectScene';
 
 import AccountManageScene from '../mine/accountManage/AccountTypeSelectScene'
 import WaitActivationAccountScene from '../mine/accountManage/WaitActivationAccountScene'
+import AccountScene from '../mine/accountManage/AccountScene'
 
 import AdjustManageScene from '../mine/adjustManage/AdjustManageScene'
 import EmployeeManageScene from '../mine/employeeManage/EmployeeManageScene'
@@ -349,8 +349,11 @@ export default class MineSectionListView extends BaseComponent {
                 // this.navigatorParams.name = 'AccountManageScene'
                 // this.navigatorParams.component = AccountManageScene
 
-                this.navigatorParams.name = 'WaitActivationAccountScene'
-                this.navigatorParams.component = WaitActivationAccountScene
+                // this.navigatorParams.name = 'WaitActivationAccountScene'
+                // this.navigatorParams.component = WaitActivationAccountScene
+
+                this.navigatorParams.name = 'AccountScene'
+                this.navigatorParams.component = AccountScene
                 break;
             case '优惠券管理':
                 this.navigatorParams.name = 'AdjustManageScene'
