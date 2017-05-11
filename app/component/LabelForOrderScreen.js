@@ -1,0 +1,204 @@
+import React, {PureComponent, PropTypes} from 'react';
+import {
+    View,
+    Text,
+    Image,
+    Modal,
+    ScrollView,
+    TouchableHighlight,
+    TouchableOpacity,
+} from 'react-native';
+
+import  PixelUtil from '../utils/PixelUtil'
+let Pixel = new PixelUtil();
+let Dimensions = require('Dimensions');
+let {width, height, scale} = Dimensions.get('window');
+import  * as FontAndColor from '../constant/fontAndColor';
+export default class LabelForOrderScreen extends PureComponent {
+    static propTypes = {
+        onCancel: PropTypes.func,
+        readOnly: PropTypes.bool,
+        enable: PropTypes.bool,
+        layoutSize: PropTypes.bool,
+    }
+    static defaultProps = {
+        onCancel: () => {
+        },
+        readOnly: false,
+        layoutSize: false
+    }
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            enable: false,
+        };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.state = {
+            enable: nextProps.enables,
+        };
+    }
+
+    setPressDown = () => {
+        let en = this.state.enable;
+        if (en) {
+            for (let i = 0; i < this.props.value.length; i++) {
+                if (this.props.value[i] == this.props.item.value) {
+                    this.props.value.splice(i, 1);
+                    break;
+                }
+            }
+        } else {
+            this.props.value.push(this.props.item.value);
+        }
+        console.log(this.props.value);
+        this.setState({enable: !en});
+    }
+
+    render() {
+        return (
+            <TouchableOpacity
+                style={[Styles.selectedItem, this.state.enable && Styles.disableColor]}
+                onPress={() => {
+                    this.setPressDown()
+                }}>
+                <Text
+                    style={[Styles.labelText, this.state.enable && Styles.disableText]}>{this.props.item.title}</Text>
+            </TouchableOpacity>
+
+        );
+    }
+}
+
+const Styles = {
+    selectedView: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        flexWrap: 'wrap'
+    },
+    selectedItem: {
+        marginRight: Pixel.getPixel(5),
+        height: Pixel.getPixel(35),
+        borderWidth: 2 / scale,
+        borderRadius: 3,
+        borderColor: FontAndColor.COLORA2,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflow: 'hidden',
+        padding: Pixel.getPixel(3),
+        flex:1,
+        marginLeft: Pixel.getPixel(5)
+    },
+    addItem: {
+        padding: Pixel.getPixel(7)
+    },
+    disableColor: {
+        borderColor: FontAndColor.COLORB0,
+    },
+    labelText: {
+        fontSize: Pixel.getPixel(14),
+        color: FontAndColor.COLORA2
+    },
+    closeContainer: {
+        paddingLeft: Pixel.getPixel(3),
+        paddingRight: Pixel.getPixel(3),
+
+    },
+    closeIcon: {
+        width: Pixel.getPixel(12),
+        height: Pixel.getPixel(12)
+    },
+    addIcon: {
+        width: Pixel.getPixel(12),
+        height: Pixel.getPixel(12)
+    },
+    modalMask: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#00000077'
+    },
+    modalContainer: {},
+    modal: {
+        height: Pixel.getPixel(height * 0.6),
+        width: Pixel.getPixel(width * 0.6),
+        overflow: 'hidden',
+        borderRadius: 10,
+        backgroundColor: '#fff'
+    },
+    title: {
+        paddingHorizontal: Pixel.getPixel(20),
+        paddingVertical: Pixel.getPixel(10),
+        borderBottomWidth: 2 / scale,
+        borderBottomColor: '#bbb'
+    },
+    titleText: {
+        fontSize: Pixel.getPixel(18),
+        lineHeight: 20
+    },
+    scrollView: {
+        height: Pixel.getPixel(height * 0.6 - 80)
+    },
+    buttonView: {
+        height: 40,
+        backgroundColor: FontAndColor.COLORB0,
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-around'
+    },
+    modalButton: {
+        width: Pixel.getPixel(width * 0.3),
+        paddingLeft: Pixel.getPixel(20),
+        paddingRight: Pixel.getPixel(20),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    modalItem: {
+        height: Pixel.getPixel(50),
+        paddingHorizontal: Pixel.getPixel(20),
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderBottomWidth: 2 / scale,
+        borderBottomColor: '#bbb'
+    },
+    modalText: {
+        fontSize: Pixel.getPixel(16)
+    },
+    buttonText: {
+        color: '#fff',
+        fontSize: Pixel.getPixel(16)
+    },
+    confirmButton: {
+        borderLeftWidth: 2 / scale,
+        borderLeftColor: '#fff'
+    },
+    outerCircle: {
+        borderWidth: 2 / scale,
+        borderColor: '#888',
+        width: Pixel.getPixel(20),
+        height: Pixel.getPixel(20),
+        borderRadius: 10,
+        overflow: 'hidden',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    enableCircle: {
+        borderColor: FontAndColor.COLORB0
+    },
+    innerCircle: {
+        backgroundColor: FontAndColor.COLORB0,
+        width: Pixel.getPixel(16),
+        height: Pixel.getPixel(16),
+        borderRadius: 8,
+        overflow: 'hidden'
+    },
+    disableText: {
+        color: FontAndColor.COLORB0
+    }
+};
