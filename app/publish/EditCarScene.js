@@ -101,7 +101,7 @@ export default class EditCarScene extends BaseComponent {
                                         let dprice = rdb.dealer_price == '0.0000' ? '':rdb.dealer_price;
                                         SQLite.changeData('INSERT INTO publishCar (vin,model,pictures,v_type,manufacture,init_reg,' +
                                             'mileage,plate_number,emission,label,nature_use,car_color,trim_color,' +
-                                            'transfer_number,dealer_price,describe,modify) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                                            'transfer_number,dealer_price,describe,modify) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
                                             [this.carVin, JSON.stringify(modelInfo), pictures,rdb.v_type+'', mf, rg, rdb.mileage,
                                                 rdb.plate_number, rdb.emission_standards, JSON.stringify(rdb.label), rdb.nature_use, rdb.car_color, rdb.trim_color,
                                                 rdb.transfer_times, dprice, rdb.describe,rdb.modification_instructions]);

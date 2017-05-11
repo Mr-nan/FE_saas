@@ -38,7 +38,6 @@ import PixelUtil            from '../utils/PixelUtil';
 import * as storageKeyNames from '../constant/storageKeyNames';
 import StorageUtil from '../utils/StorageUtil';
 
-
 let Pixel = new PixelUtil();
 let carFilterData = require('./carData/carFilterData.json');
 let carAgeSource = [];
@@ -121,7 +120,8 @@ export  default  class carSourceListScene extends BaseComponent {
             },
             checkedCity:{
                 title: '',
-                value: '',
+                province_id:'',
+                city_id:''
             },
 
             renderPlaceholderOnly: 'blank',
@@ -350,7 +350,6 @@ export  default  class carSourceListScene extends BaseComponent {
 
     ScreeningClick=()=>{
 
-
         if(carAgeSource.length<=0||carKMSource.length<=0||carTypeSource.length<=0){
             this.loadCarConfigData((carConfigData)=>{
 
@@ -369,7 +368,7 @@ export  default  class carSourceListScene extends BaseComponent {
             checkedCarAgeType:{title:checkedCarAgeType.title,value:checkedCarAgeType.value},
             checkedCarKMType:{title:checkedCarKMType.title,value:checkedCarKMType.value},
             checkedCarGenre:{title:checkedCarGenre.title,value:checkedCarGenre.value},
-            checkedCity:{title:checkedCity.title,value:checkedCity.value},
+            checkedCity:{title:checkedCity.title,provice_id:checkedCity.province_id,city_id:checkedCity.city_id},
             carAgeSource:carAgeSource,
             carKMSource:carKMSource,
             carTypeSource:carTypeSource,
@@ -400,7 +399,8 @@ export  default  class carSourceListScene extends BaseComponent {
         APIParameter.series_id = screeningObject.checkedCarType.series_id;
         APIParameter.mileage = screeningObject.checkedCarKMType.value;
         APIParameter.coty = screeningObject.checkedCarAgeType.value;
-        APIParameter.city_id = screeningObject.checkedCity.value;
+        APIParameter.provice_id = screeningObject.checkedCity.provice_id;
+        APIParameter.city_id = screeningObject.checkedCity.city_id;
         APIParameter.v_type = screeningObject.checkedCarGenre.value;
 
         if (this.refs.headView.state.isCheckRecommend) {
@@ -658,9 +658,11 @@ export  default  class carSourceListScene extends BaseComponent {
         this.setState({
             checkedCity: {
                 title: '',
-                value: '',
+                provice_id:'',
+                city_id:'',
             },
         });
+        APIParameter.provice_id =0;
         APIParameter.city_id = 0;
         if (this.refs.headView.state.isCheckRecommend) {
             this.refs.headView.setCheckRecommend(false)
@@ -678,7 +680,8 @@ export  default  class carSourceListScene extends BaseComponent {
             },
             checkedCarType: {
                 title: '',
-                value: '',
+                brand_id: '',
+                series_id: '',
             },
             checkedCarAgeType: {
                 title: '',
@@ -694,7 +697,8 @@ export  default  class carSourceListScene extends BaseComponent {
             },
             checkedCity:{
                 title: '',
-                value: '',
+                provice_id:'',
+                city_id:'',
             },
         });
 
@@ -704,6 +708,7 @@ export  default  class carSourceListScene extends BaseComponent {
         APIParameter.brand_id = 0;
         APIParameter.series_id = 0;
         APIParameter.v_type=0;
+        APIParameter.provice_id = 0;
         APIParameter.city_id=0;
 
         if (this.refs.headView.state.isCheckRecommend) {

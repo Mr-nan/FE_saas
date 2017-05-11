@@ -35,6 +35,7 @@ import {request} from '../../utils/RequestUtil'
 import *as apis from '../../constant/appUrls'
 import ContractInfoScene from './ContractInfoScene';
 import CarOverdue from './CarOverdue';
+import RecognizedGains from '../../login/RecognizedGains';
 
 
 const controlCode = {
@@ -45,7 +46,8 @@ const controlCode = {
     maxLend: '',
     minLend: '',
     changeMoney: '',
-    loan_code:''
+    loan_code:'',
+    is_microchinese_contract:''
 }
 
 
@@ -90,6 +92,7 @@ export  default  class SingDetaileSence extends BaseComponent {
                     controlCode.lendType = tempjson.type;
                     controlCode.minLend = changeToMillion(tempjson.min_loanmny);
                     controlCode.loan_code = tempjson.loan_code;
+                    controlCode. is_microchinese_contract = tempjson. is_microchinese_contract;
                     let Maxmum = Number.parseFloat(tempjson.max_loanmny) + Number.parseFloat(tempjson.payment_loanmny)
                     controlCode.maxLend = changeToMillion(Maxmum)
 
@@ -197,7 +200,7 @@ export  default  class SingDetaileSence extends BaseComponent {
     }
 
 
-    getControlTitleblob = (stateCode, extendCode) => {
+    getControlTitleblob = (stateCode, extendCode, is_microchinese_contract) => {
 
         if (stateCode !== '' && extendCode !== '') {
 
@@ -218,6 +221,10 @@ export  default  class SingDetaileSence extends BaseComponent {
                 } else {
                     tempTitle = ['查看合同']
                 }
+            }
+
+            if(stateCode!=2&& is_microchinese_contract==1){
+                tempTitle = ['签署转债权合同']
             }
 
             return tempTitle;
@@ -290,6 +297,10 @@ export  default  class SingDetaileSence extends BaseComponent {
         }else if(title ==="申请展期"){
             this.toNextPage({
                 name: 'CarOverdue', component: CarOverdue, params: {loan_code: controlCode.loan_code}
+            });
+        }else if(title ==="签署转债权合同"){
+            this.toNextPage({
+                name: 'RecognizedGains', component: RecognizedGains, params: {loan_code: controlCode.loan_code,isShow:true}
             });
         }
 
@@ -407,7 +418,7 @@ export  default  class SingDetaileSence extends BaseComponent {
                 </View>);
         }
         let tempButtons = [];
-        let tempButtonTitles = this.getControlTitleblob(controlCode.stateCode, controlCode.extendCode);
+        let tempButtonTitles = this.getControlTitleblob(controlCode.stateCode, controlCode.extendCode,controlCode.is_microchinese_contract);
 
         tempButtonTitles.map((item) => {
                 tempButtons.push(<CommenButton buttonStyle={this.getButtonStyleWithTitle(item)}

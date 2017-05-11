@@ -14,13 +14,12 @@ import BaseComponent from '../component/BaseComponent';
 import NavigationView from '../component/AllNavigationView';
 import CityListScene from './CityListScene';
 import CarBrandSelectScene from './CarBrandSelectScene'
+import ProvinceListScene from './ProvinceListScene';
 import PixelUtil from '../utils/PixelUtil';
 const Pixel = new PixelUtil();
-import {request} from "../utils/RequestUtil";
-import * as AppUrls from "../constant/appUrls";
+
 
 let carFilterData = require('./carData/carFilterData.json');
-var ScreenWidth = Dimensions.get('window').width;
 
 export default class CarInfoScene extends BaseComponent {
 
@@ -72,6 +71,15 @@ export default class CarInfoScene extends BaseComponent {
             }
         }
         this.toNextPage(navigatorParams);
+        // let navigatorParams = {
+        //     name: "ProvinceListScene",
+        //     component: ProvinceListScene,
+        //     params: {
+        //             checkedCityClick:this.checkedCityClick,
+        //             unlimitedAction:this.cityUnlimitedAction,
+        //     }
+        // }
+        // this.toNextPage(navigatorParams);
     };
 
     pushCarBrandSceneAction=()=>{
@@ -92,7 +100,8 @@ export default class CarInfoScene extends BaseComponent {
 
         this.refs.cityView.setContent('全国');
         this.props.screeningObject.checkedCity.title = '';
-        this.props.screeningObject.checkedCity.value = 0;
+        this.props.screeningObject.checkedCity.city_id='';
+        this.props.screeningObject.checkedCity.provice_id =0;
     }
 
     carUnlimitedAction=()=>{
@@ -105,7 +114,8 @@ export default class CarInfoScene extends BaseComponent {
     checkedCityClick=(cityType)=>{
         this.refs.cityView.setContent(cityType.city_name);
         this.props.screeningObject.checkedCity.title = cityType.city_name;
-        this.props.screeningObject.checkedCity.value = cityType.city_id;
+        this.props.screeningObject.checkedCity.city_id = cityType.city_id;
+        this.props.screeningObject.checkedCity.provice_id = cityType.provice_id;
     }
 
     checkedCarClick=(carObject)=>{
@@ -114,7 +124,6 @@ export default class CarInfoScene extends BaseComponent {
         this.props.screeningObject.checkedCarType.title = title;
         this.props.screeningObject.checkedCarType.brand_id = carObject.brand_id;
         this.props.screeningObject.checkedCarType.series_id = carObject.series_id;
-
     }
 
     carAgeClick=(checkedObject)=>{

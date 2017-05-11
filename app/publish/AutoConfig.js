@@ -67,7 +67,10 @@ export default class CGDAddCarScene extends BaseComponent {
                     backIconClick={this._onBack}
                     title='车辆配置'
                 />
-                <CarConfigurationView carConfigurationData={[]} modelID ={this.props.modelID}/>
+                <CarConfigurationView carConfigurationData={this.props.carConfigurationData}
+                                      modelID ={this.props.modelID}
+                                      renderCarConfigurationDataAction={this.props.renderCarConfigurationDataAction}
+                                      carConfiguraInfo={this.props.carConfiguraInfo}/>
             </View>
         )
     }

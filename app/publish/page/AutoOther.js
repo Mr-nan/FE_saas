@@ -117,6 +117,7 @@ export default class AutoOther extends Component {
                 component: AutoConfig,
                 params: {
                     modelID:this.props.carData.model!==''?(JSON.parse(this.props.carData.model)).model_id:'',
+                    carConfigurationData:[],
                 }
             };
             this.props.goToPage(configParams);
@@ -149,23 +150,23 @@ export default class AutoOther extends Component {
                                                underlineColorAndroid='transparent' defaultValue={this.describe}
                                                onChangeText={this._onDescribe}/>
                                 </View>
-                                {/*<View style={[styles.modifyContainer, styles.alignMargin]}>*/}
-                                    {/*<Text style={[styles.fontMain, styles.leftText]}>配置改装说明：</Text>*/}
-                                    {/*<TextInput style={[styles.fontMain, styles.modifyInput]}*/}
-                                               {/*underlineColorAndroid='transparent' defaultValue={this.modify}*/}
-                                               {/*multiline={true}*/}
-                                               {/*maxLength={50}*/}
-                                               {/*onChangeText={this._onModify}/>*/}
-                                {/*</View>*/}
-                                {/*<View style={styles.configureContainer}>*/}
-                                    {/*<View style={styles.fillSpace}/>*/}
-                                    {/*<TouchableOpacity style={styles.configPress}*/}
-                                                      {/*activeOpacity={0.6}*/}
-                                                      {/*onPress={()=>{this._configPress()}}>*/}
-                                        {/*<Text style={[styles.fontMain, styles.leftText]}>查看车辆标准配置</Text>*/}
-                                        {/*<Image style={styles.imgContainer} source={arrow}/>*/}
-                                    {/*</TouchableOpacity>*/}
-                                {/*</View>*/}
+                                <View style={[styles.modifyContainer, styles.alignMargin]}>
+                                    <Text style={[styles.fontMain, styles.leftText]}>配置改装说明：</Text>
+                                    <TextInput style={[styles.fontMain, styles.modifyInput]}
+                                               underlineColorAndroid='transparent' defaultValue={this.modify}
+                                               multiline={true}
+                                               maxLength={50}
+                                               onChangeText={this._onModify}/>
+                                </View>
+                                <View style={styles.configureContainer}>
+                                    <View style={styles.fillSpace}/>
+                                    <TouchableOpacity style={styles.configPress}
+                                                      activeOpacity={0.6}
+                                                      onPress={()=>{this._configPress()}}>
+                                        <Text style={[styles.fontMain, styles.leftText]}>查看车辆标准配置</Text>
+                                        <Image style={styles.imgContainer} source={arrow}/>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                         </KeyboardAvoidingView>
                     </ScrollView>

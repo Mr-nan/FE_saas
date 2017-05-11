@@ -183,7 +183,7 @@ export default class CompleteSignScene extends BaseComponent {
                                     this.setState({renderPlaceholderOnly: 'loading'});
                                     page = 1;
                                     this.getData();
-                                }
+                                },isShow:true
                             },
                         })
                     }} activeOpacity={1} style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>

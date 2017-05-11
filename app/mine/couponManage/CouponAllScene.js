@@ -17,7 +17,6 @@ var Pixel = new PixelUtil();
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 import NavigationBar from "../../component/NavigationBar";
 import BaseComponent from "../../component/BaseComponent";
-// let Car = require('./Car.json');
 /*
  * 获取屏幕的宽和高
  **/
