@@ -84,14 +84,14 @@ export default class MyCarCell extends Component {
                     <View style={styles.cellFootView}>
                         <TouchableOpacity onPress={()=>{this.footButtonClick('编辑',this.props.type,carCellData)}}>
                             <View style={styles.cellFoot}>
-                                <Text style={styles.cellFootText}>编辑</Text>
+                                <Text style={styles.cellFootText}> 编辑 </Text>
                             </View>
                         </TouchableOpacity>
                         {
                             carType==2 &&
                             <TouchableOpacity onPress={()=>{this.footButtonClick('下架',this.props.type,carCellData)}}>
                                 <View style={styles.cellFoot}>
-                                    <Text style={styles.cellFootText}>下架</Text>
+                                    <Text style={styles.cellFootText}> 下架 </Text>
                                 </View>
                             </TouchableOpacity>
                         }
@@ -99,7 +99,7 @@ export default class MyCarCell extends Component {
                             (carType==1||carType==3 ) &&
                             <TouchableOpacity onPress={()=>{this.footButtonClick('上架',this.props.type,carCellData)}}>
                                 <View style={styles.cellFoot}>
-                                    <Text style={styles.cellFootText}>上架</Text>
+                                    <Text style={styles.cellFootText}> 上架 </Text>
                                 </View>
                             </TouchableOpacity>
 
