@@ -57,7 +57,6 @@ let selectData={
           );
 
           let dataBlob={},sectionIDS=[],rowIDS=[],rows=[];
-          console.log(provinceData);
           for (var i=0;i<provinceData.length;i++){
 
               sectionIDS.push(i);
