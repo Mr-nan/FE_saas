@@ -10,6 +10,9 @@ import {
     Image,
     TouchableOpacity,
     Dimensions,
+    TextInput,
+    KeyboardAvoidingView,
+    ScrollView
 }   from 'react-native';
 
 import BaseComponent from '../component/BaseComponent';
@@ -19,15 +22,88 @@ import PixelUtil from '../utils/PixelUtil';
 
 const Pixel = new  PixelUtil();
 const sceneWidth = Dimensions.get('window').width;
-const titleData = [
+let   currentCarType ='二手车';
+const titleData1 = [
     [
         {
             title:'车辆类型',
             isShowTag:false,
             value:'扫描',
             isShowTail:true,
-            selectArray:['二手车','新车','平行进口车'],
+            selectDict:{current:currentCarType,data:[{title:'二手车',value:1},{title:'新车',value:2},{title:'平行进口车',value:3}]},
+        },
+        {
+            title:'车架号',
+            isShowTag:true,
+            value:'请选择',
+            isShowTail:true,
+        },
+        {
+            title:'排量',
+            isShowTag:true,
+            isShowTail:false,
+            tailView:()=>{
+               return(
+                   <TextInput style={{height: 40, borderColor: 'gray', width:200,textAlign:'right'}} placeholder='请输入'/>
+               )
+            }
+        },
+        {
+            title:'排放标准',
+            isShowTag:true,
+            value:'请选择',
+            isShowTail:true,
+        },
+        {
+            title:'车身颜色',
+            isShowTag:true,
+            value:'请选择',
+            isShowTail:true,
+        },
+    ],
+    [   {
+            title:'出厂日期',
+            isShowTag:true,
+            value:'请选择',
+            isShowTail:true,
+    },
+        {
+            title:'出厂日期',
+            isShowTag:true,
+            value:'请选择',
+            isShowTail:true,
+        },
 
+    ],
+    [   {
+            title:'标准配置',
+            isShowTag:false,
+            value:'查看',
+            isShowTail:false,
+    },
+        {
+            title:'配置改装说明',
+            isShowTag:false,
+            value:'请填写',
+            isShowTail:false,
+            tailView:()=>{
+                return(
+                    <TextInput style={{height: 40, borderColor: 'gray', width:200,textAlign:'right'}} placeholder='请输入'/>
+                )
+            }
+
+        },
+    ]
+
+];
+const titleData2 = [
+    [
+        {
+            title:'车辆类型',
+            isShowTag:false,
+            value:'扫描',
+            isShowTail:true,
+            selectDict:{current:currentCarType,data:[{title:'二手车',value:1},{title:'新车',value:2},{title:'平行进口车',value:3}]},
         },
         {
             title:'车架号',
@@ -55,36 +131,16 @@ const titleData = [
         },
     ],
     [   {
-            title:'出厂日期',
-            isShowTag:true,
-            value:'请选择',
-            isShowTail:true,
-
-
-    },
-        {
-            title:'出厂日期',
-            isShowTag:true,
-            value:'请选择',
-            isShowTail:true,
-
-        },
-
-    ],
-    [   {
             title:'标准配置',
             isShowTag:false,
             value:'查看',
             isShowTail:false,
-
-
     },
         {
             title:'配置改装说明',
             isShowTag:false,
             value:'请填写',
             isShowTail:false,
-
         },
     ]
 
@@ -107,27 +163,36 @@ export default class CarPublishScene extends BaseComponent{
               rowHasChanged:(r1,r2)=>r1!==r2,
           });
 
-          let dataBloble={},sectionIDs=[],rowIDs=[];
-          for(let i=0;i<titleData.length;i++){
-              sectionIDs.push(i);
-              let tmp=[];
-              dataBloble[i]=i;
-              tmp = titleData[i];
-              rowIDs[i]=[];
-              for (let j=0;j<tmp.length;j++){
-                  rowIDs[i].push(j);
-                  dataBloble[i+':'+j]=tmp[j];
-              }
-          }
+          let listData = this.createListData(titleData1);
 
         this.state = {
-            dataSource:dataSource.cloneWithRowsAndSections(dataBloble,sectionIDs,rowIDs),
+            dataSource:dataSource.cloneWithRowsAndSections(listData.dataBloble,listData.sectionIDs,listData.rowIDs),
         };
+      }
+
+      createListData=(array)=> {
+          let dataBloble = {}, sectionIDs = [], rowIDs = [];
+          for (let i = 0; i < array.length; i++) {
+              sectionIDs.push(i);
+              let tmp = [];
+              dataBloble[i] = i;
+              tmp = array[i];
+              rowIDs[i] = [];
+              for (let j = 0; j < tmp.length; j++) {
+                  rowIDs[i].push(j);
+                  dataBloble[i + ':' + j] = tmp[j];
+              }
+          }
+          listData={dataBloble:dataBloble,sectionIDs:sectionIDs,rowIDs:rowIDs};
+          return (listData);
       }
 
     render(){
         return(
+
             <View style={styles.rootContainer}>
+                <KeyboardAvoidingView behavior='height' >
+                    <ScrollView>
                 <ListView
                     dataSource={this.state.dataSource}
                     renderSectionHeader={()=>{
@@ -135,13 +200,17 @@ export default class CarPublishScene extends BaseComponent{
                     }}
                     renderRow={this.renderRow}
                     renderFooter={this.renderFooter}/>
+                    </ScrollView>
+                </KeyboardAvoidingView>
                 <AllNavigationView title="车辆基本信息" backIconClick={this.backPage}/>
-            </View>)
+            </View>
+                )
     }
 
     renderRow =(rowData,SectionID,rowID)=>{
-        return( rowData.selectArray?(<CellSelectView cellData={rowData}/>):(<CellView cellData={rowData}/>))
+        return( rowData.selectDict?(<CellSelectView currentTitle={rowData.selectDict.current} cellData={rowData} cellSelectAction={this.cellSelectAction}/>):(<CellView cellData={rowData}/>))
     }
+
     renderFooter =()=>{
         return(
             <View style={styles.footContainer}>
@@ -151,6 +220,21 @@ export default class CarPublishScene extends BaseComponent{
                     </View>
                 </TouchableOpacity>
             </View>)
+    }
+
+    cellSelectAction=(selectDict)=>{
+
+        let listData = {};
+        if(selectDict.value==1){
+            listData = this.createListData(titleData1);
+        }else
+        {
+            listData = this.createListData(titleData2);
+        }
+
+        this.setState({
+            dataSource:this.state.dataSource.cloneWithRowsAndSections(listData.dataBloble,listData.sectionIDs,listData.rowIDs),
+        })
     }
 }
 
@@ -188,7 +272,7 @@ class CellSelectView extends Component{
         super(props);
         // 初始状态
         this.state = {
-            currentChecked:'二手车',
+            currentChecked:this.props.currentTitle,
         };
       }
 
@@ -204,20 +288,20 @@ class CellSelectView extends Component{
                 </View>
                 <View style={{flexDirection:'row'}}>
                     {
-                        cellData.selectArray.map((data,index)=>{
+                        cellData.selectDict.data.map((data,index)=>{
                             return (
                                 <TouchableOpacity style={{height:Pixel.getPixel(20), marginTop:Pixel.getPixel(10),marginBottom:Pixel.getPixel(5),
                                 }} onPress={()=>
                                 {
-                                    if(this.state.currentChecked!=data){
+                                    if(this.state.currentChecked!=data.title){
                                         this.setState({
-                                            currentChecked:data,
+                                            currentChecked:data.title,
                                         });
+                                        this.props.cellSelectAction({title:data.title,value:data.value})
                                     }
-
                                 }} activeOpacity={1} key={index}>
-                                    <View style={[styles.checkedItemView,(this.state.currentChecked==data?{borderColor:fontAndColor.COLORB0}:{borderColor:fontAndColor.COLORA2})]}>
-                                        <Text style={[styles.checkedItemText,(this.state.currentChecked==data?{color:fontAndColor.COLORB0}:{color:fontAndColor.COLORA2})] }> {data} </Text>
+                                    <View style={[styles.checkedItemView,(this.state.currentChecked==data.title?{borderColor:fontAndColor.COLORB0}:{borderColor:fontAndColor.COLORA2})]}>
+                                        <Text style={[styles.checkedItemText,(this.state.currentChecked==data.title?{color:fontAndColor.COLORB0}:{color:fontAndColor.COLORA2})] }> {data.title} </Text>
                                     </View>
                                 </TouchableOpacity>
                             )
