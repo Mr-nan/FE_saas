@@ -23,6 +23,9 @@ import NavigationView from '../../component/AllNavigationView';
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 import AccountTitle from './component/AccountTitle';
+import RechargeScene from './RechargeScene';
+import WithdrawalsScene from './WithdrawalsScene';
+import BankCardScene from './BankCardScene';
 export  default class AccountScene extends BaseComponent {
 
     constructor(props) {
@@ -49,11 +52,30 @@ export  default class AccountScene extends BaseComponent {
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
                 <ListView
-                    style={{marginTop: Pixel.getTitlePixel(64)}}
+                    style={{marginTop: Pixel.getTitlePixel(64),marginBottom:Pixel.getPixel(45)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderHeader={this._renderHeader}
+                    renderSeparator={this._renderSeparator}
+                    showsVerticalScrollIndicator={false}
                 />
+                <View style={{width:width,height:Pixel.getPixel(44),backgroundColor: fontAndColor.COLORA3,
+                flexDirection:'row',position: 'absolute',bottom: 0}}>
+                    <TouchableOpacity onPress={()=>{
+                        this.toNextPage({name:'WithdrawalsScene',component:WithdrawalsScene,params:{callBack:()=>{
+
+                        }}})
+                    }} activeOpacity={0.8} style={{flex:1,justifyContent:'center',alignItems: 'center',backgroundColor:'#fff'}}>
+                        <Text style={{color: fontAndColor.COLORB0,fontSize: Pixel.getFontPixel(15)}}>提现</Text>
+                    </TouchableOpacity>
+                    <View style={{width:1,justifyContent:'center',
+                    alignItems: 'center',height:Pixel.getPixel(44)}}></View>
+                    <TouchableOpacity onPress={()=>{
+                        this.toNextPage({name:'RechargeScene',component:RechargeScene,params:{}})
+                    }} activeOpacity={0.8} style={{flex:1,justifyContent:'center',alignItems: 'center',backgroundColor:'#fff'}}>
+                        <Text style={{color: fontAndColor.COLORB0,fontSize: Pixel.getFontPixel(15)}}>充值</Text>
+                    </TouchableOpacity>
+                </View>
                 <NavigationView
                     title="账户管理"
                     backIconClick={this.backPage}
@@ -64,15 +86,36 @@ export  default class AccountScene extends BaseComponent {
 
     _renderRow = (movie, sectionId, rowId) => {
         return (
-            <View style={{width:width,height:Pixel.getPixel(30),backgroundColor: '#f0f'}}>
-
+            <View style={{width:width,height:Pixel.getPixel(72),backgroundColor: '#fff',flexDirection: 'row',
+            paddingRight:Pixel.getPixel(15),paddingLeft:Pixel.getPixel(15)}}>
+                <View style={{flex:1,justifyContent:'center'}}>
+                    <Text style={{color: '#000',fontSize: Pixel.getPixel(14)}}>
+                        充值
+                    </Text>
+                    <Text style={{color: fontAndColor.COLORA1,fontSize: Pixel.getPixel(12)}}>
+                        2017-04-26 13:00
+                    </Text>
+                </View>
+                <View style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>
+                    <Text style={{color: '#000',fontSize: Pixel.getPixel(20)}}>
+                        13万
+                    </Text>
+                </View>
             </View>
         )
     }
     _renderHeader = () => {
         return (
-            <AccountTitle bankCard={()=>{}} flow={()=>{}} changePwd={()=>{}}
-                          resetPwd={()=>{}} changePhone={()=>{}} accountSetting={()=>{}}/>
+            <AccountTitle bankCard={()=>{this.toNextPage({name:'BankCardScene',component:BankCardScene,params:{}})}}
+                          flow={()=>{}} changePwd={()=>{}}
+                          resetPwd={()=>{}} changePhone={()=>{}} accountSetting={()=>{}} moreFlow={()=>{}}/>
+        )
+    }
+
+    _renderSeparator(sectionId, rowId) {
+        return (
+            <View style={styles.Separator} key={sectionId + rowId}>
+            </View>
         )
     }
 
@@ -99,7 +142,7 @@ const styles = StyleSheet.create({
     },
     Separator: {
         backgroundColor: fontAndColor.COLORA3,
-        height: Pixel.getPixel(10),
+        height: 1,
 
     },
     margin: {

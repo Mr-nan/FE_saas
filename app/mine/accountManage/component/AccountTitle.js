@@ -28,7 +28,7 @@ export class listValue {
         this.click = click;
     }
 }
-export  default class AccountScene extends PureComponent {
+export  default class AccountTitle extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -44,13 +44,46 @@ export  default class AccountScene extends PureComponent {
 
     render() {
         let itemList = [];
+        itemList.push(<View key={'top'} style={{width:width,height:Pixel.getPixel(30),backgroundColor:fontAndColor.COLORA3,
+        justifyContent:'center'}}>
+            <Text style={{color:fontAndColor.COLORA1,fontSize: Pixel.getPixel(fontAndColor.CONTENTFONT24),
+            marginLeft:Pixel.getPixel(15)}}>账户功能</Text>
+        </View>);
         for(let i = 0;i<list.length;i++){
-            itemList.push(<View key={i+'11'} style={{width:width,height:Pixel.getPixel(44),backgroundColor:'#fff',marginTop:1}}>
-
-            </View>);
+            itemList.push(<TouchableOpacity onPress={()=>{
+                list[i].click();
+            }} activeOpacity={0.8} key={i+'11'} style={{width:width,height:Pixel.getPixel(44),backgroundColor:'#fff',
+            marginTop:Pixel.getPixel(1),flexDirection: 'row'}}>
+                <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+                    <Image style={{width:Pixel.getPixel(24),height:Pixel.getPixel(24)}}
+                    source={list[i].imageFile}/>
+                </View>
+                <View style={{flex:4,justifyContent:'center'}}>
+                    <Text style={{fontSize: Pixel.getFontPixel(14),color: '#000'}}>{list[i].key}</Text>
+                </View>
+                <View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
+                    <Image style={{width:Pixel.getPixel(14),height:Pixel.getPixel(14),marginRight:Pixel.getPixel(15)}}
+                           source={require('../../../../images/mainImage/celljiantou.png')}/>
+                </View>
+            </TouchableOpacity>);
         }
+        itemList.push(<View key={'end'} style={{width:width,height:Pixel.getPixel(30),backgroundColor:fontAndColor.COLORA3,
+        flexDirection: 'row'}}>
+            <View style={{flex:1,justifyContent:'center'}}>
+                <Text style={{color:fontAndColor.COLORA1,fontSize: Pixel.getPixel(fontAndColor.CONTENTFONT24),
+            marginLeft:Pixel.getPixel(15)}}>最近流水</Text>
+            </View>
+            <TouchableOpacity onPress={()=>{
+                    this.props.moreFlow();
+            }} activeOpacity={0.9} style={{flex:1,flexDirection: 'row',justifyContent:'flex-end',alignItems:'center'}}>
+
+                <Text style={{color:fontAndColor.COLORA2,fontSize: Pixel.getPixel(fontAndColor.CONTENTFONT24)}}>更多 </Text>
+                <Image style={{width:Pixel.getPixel(14),height:Pixel.getPixel(14),marginRight:Pixel.getPixel(15)}}
+                       source={require('../../../../images/mainImage/celljiantou.png')}/>
+            </TouchableOpacity>
+        </View>);
         return (
-            <View style={{width:width,height:Pixel.getPixel(464),backgroundColor:fontAndColor.COLORA3}}>
+            <View style={{width:width,height:Pixel.getPixel(470),backgroundColor:fontAndColor.COLORA3}}>
                 <View style={{width:width,height:Pixel.getPixel(140),backgroundColor:fontAndColor.COLORB0}}>
                     <View style={{width:width,height:Pixel.getPixel(35),backgroundColor:'rgba(105,105,105,0.1)',
                 justifyContent:'center'}}>
