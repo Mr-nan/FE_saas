@@ -17,6 +17,9 @@ import * as fontAndColor from '../../constant/fontAndColor';
 import NavigatorView from '../../component/AllNavigationView';
 import PixelUtil from '../../utils/PixelUtil'
 import OrderScreeningScene from "./OrderScreeningScene";
+import OrderSearchScene from "./OrderSearchScene";
+import ProcurementOrderDetailScene from "./ProcurementOrderDetailScene";
+import SalesOrderDetailScene from "./SalesOrderDetailScene";
 
 var Pixel = new PixelUtil();
 
@@ -93,11 +96,12 @@ export default class OrderListScene extends BaseComponent {
                 <TouchableOpacity
                     onPress={() => {
                         this.toNextPage({
-                            name: 'OrderScreeningScene',
-                            component: OrderScreeningScene,
+                            name: 'OrderSearchScene',
+                            component: OrderSearchScene,
                             params: {
+/*                                type: this.props.type,
                                 startDate1: this.state.startDate,
-                                endDate1: this.state.endDate,
+                                endDate1: this.state.endDate,*/
                                 returnConditions: this.returnConditions
                             }
                         });
@@ -115,6 +119,7 @@ export default class OrderListScene extends BaseComponent {
                             name: 'OrderScreeningScene',
                             component: OrderScreeningScene,
                             params: {
+                                type: this.props.type,
                                 startDate1: this.state.startDate,
                                 endDate1: this.state.endDate,
                                 returnConditions: this.returnConditions
@@ -152,7 +157,23 @@ export default class OrderListScene extends BaseComponent {
     _renderRow = (rowData, selectionID, rowID) => {
         //item 布局
         return (
-            <TouchableOpacity activeOpacity={0.8}>
+            <TouchableOpacity
+                onPress={() => {
+                    if (this.props.type === 'procurement') {
+                        this.toNextPage({
+                            name: 'ProcurementOrderDetailScene',
+                            component: ProcurementOrderDetailScene,
+                            params: {}
+                        });
+                    } else {
+                        this.toNextPage({
+                            name: 'SalesOrderDetailScene',
+                            component: SalesOrderDetailScene,
+                            params: {}
+                        });
+                    }
+                }}
+                activeOpacity={0.8}>
                 <View style={styles.rowView}>
                     <View style={styles.rowTitleLine}>
                         <Text style={styles.rowTitleText}>中盛名车行</Text>

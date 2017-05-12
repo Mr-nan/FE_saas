@@ -46,17 +46,29 @@ export default class OrderScreeningScene extends BaseComponent {
             startTime: '',
             endTime: ''
         };
-        let mList = ['1', '2', '3'];
+        let mList = [];
+        if (this.props.type === 'procurement') {
+            mList = ['1', '2', '3'];
+            order_state.push({title: '已拍下', isSelected: false, value: 0});
+            order_state.push({title: '待付订金', isSelected: false, value: 1});
+            order_state.push({title: '待付尾款', isSelected: false, value: 2});
+            order_state.push({title: '待确认发车', isSelected: false, value: 3});
+            order_state.push({title: '待确认收货', isSelected: false, value: 4});
+            order_state.push({title: '已完成', isSelected: false, value: 5});
+            order_state.push({title: '申请取消订单中', isSelected: false, value: 6});
+            order_state.push({title: '处理取消订单中', isSelected: false, value: 7});
+            order_state.push({title: '交易关闭', isSelected: false, value: 8});
+        } else {
+            mList = ['1', '3'];
+            order_state.push({title: '待确定成交价', isSelected: false, value: 0});
+            order_state.push({title: '查看到账', isSelected: false, value: 1});
+            order_state.push({title: '已完成', isSelected: false, value: 2});
+            order_state.push({title: '申请取消订单中', isSelected: false, value: 3});
+            order_state.push({title: '处理取消订单中', isSelected: false, value: 4});
+            order_state.push({title: '交易关闭', isSelected: false, value: 5});
+        }
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        order_state.push({title: '已拍下', isSelected: false, value: 0});
-        order_state.push({title: '待付订金', isSelected: false, value: 1});
-        order_state.push({title: '待付尾款', isSelected: false, value: 2});
-        order_state.push({title: '待确认发车', isSelected: false, value: 3});
-        order_state.push({title: '待确认收货', isSelected: false, value: 4});
-        order_state.push({title: '已完成', isSelected: false, value: 5});
-        order_state.push({title: '申请取消订单中', isSelected: false, value: 6});
-        order_state.push({title: '处理取消订单中', isSelected: false, value: 7});
-        order_state.push({title: '交易关闭', isSelected: false, value: 8});
+
 
         pay_type.push({title: '全部', isSelected: false, value: 0});
         pay_type.push({title: '订单融资', isSelected: false, value: 1});
@@ -212,11 +224,11 @@ const styles = StyleSheet.create({
     },
     carType: {
         marginLeft: Pixel.getPixel(15),
-        fontSize: fontAndColor.BUTTONFONT30,
+        fontSize: Pixel.getPixel(fontAndColor.BUTTONFONT30),
         marginTop: Pixel.getPixel(17)
     },
     containerChild: {
-        height: Pixel.getPixel(178),
+        //height: Pixel.getPixel(178),
         backgroundColor: '#ffffff',
         //paddingLeft: Pixel.getPixel(12),
         //marginBottom: Pixel.getPixel(10)
