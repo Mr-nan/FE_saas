@@ -20,19 +20,24 @@ const Pixel = new PixelUtil();
 import * as fontAndColor from '../../constant/fontAndColor';
 import BaseComponent from '../../component/BaseComponent';
 import NavigationView from '../../component/AllNavigationView';
-const childItems = [];
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 import AccountInfoScene from './AccountInfoScene';
-export  default class BankCardScene extends BaseComponent {
+import ScrollableTabView from 'react-native-scrollable-tab-view';
+import RepaymenyTabBar from '../../finance/repayment/component/RepaymenyTabBar';
+import FlowAllPage from './pager/FlowAllPage';
+import FlowRechargePage from './pager/FlowRechargePage';
+import FlowWithdrawalsPage from './pager/FlowWithdrawalsPage';
+import FlowTransactionPage from './pager/FlowTransactionPage';
+import SelectDate from './component/SelectDate';
+let index = 0;
+export  default class AccountFlowScene extends BaseComponent {
 
     constructor(props) {
         super(props);
         // 初始状态
-        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             renderPlaceholderOnly: 'blank',
-            source: ds.cloneWithRows(['1'])
         };
     }
 
@@ -48,51 +53,60 @@ export  default class BankCardScene extends BaseComponent {
         }
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
-                <ListView
-                    style={{marginTop: Pixel.getTitlePixel(79),marginRight:Pixel.getPixel(15),marginLeft:Pixel.getPixel(15)}}
-                    dataSource={this.state.source}
-                    renderRow={this._renderRow}
-                />
+                <ScrollableTabView
+                    style={{marginTop: Pixel.getTitlePixel(64), flex: 1}}
+                    initialPage={0}
+                    locked={true}
+                    onChangeTab={(obj) => {
+                            index = obj.i;
+                        }
+                    }
+                    renderTabBar={() => <RepaymenyTabBar tabName={["全部", "充值",'提现','交易']}/>}
+                >
+                    <FlowAllPage ref="flowallpage" tabLabel="ios-paper1"/>
+                    <FlowRechargePage ref="flowrechargepage" tabLabel="ios-paper2"/>
+                    <FlowWithdrawalsPage ref="flowwithdrawalspage" tabLabel="ios-paper3"/>
+                    <FlowTransactionPage ref="flowtransactionpage" tabLabel="ios-paper4"/>
+
+                </ScrollableTabView>
+                <SelectDate ref="selectdate" callBack={(time)=>{
+                    console.log(time+'----------'+index);
+                       if(index==0){
+                            this.refs.flowallpage.changeTime(time);
+                       }else if(index==1){
+                            this.refs.flowrechargepage.changeTime(time);
+                       }else if(index==2){
+                            this.refs.flowwithdrawalspage.changeTime(time);
+                       }else if(index==3){
+                            this.refs.flowtransactionpage.changeTime(time);
+                       }
+                }}/>
                 <NavigationView
-                    title="银行卡"
+                    title="账户流水"
                     backIconClick={this.backPage}
+                    renderRihtFootView={this._navigatorRightView}
                 />
             </View>
         );
     }
 
-    _renderRow = (movie, sectionId, rowId) => {
-            return (
-                <View
-                    style={{ height: Pixel.getPixel(100),backgroundColor: '#fff', flexDirection: 'row'
-                    ,width:width-Pixel.getPixel(30),borderWidth: 1,borderColor: fontAndColor.COLORA4,
-                    borderRadius:Pixel.getPixel(6),paddingRight:Pixel.getPixel(15),paddingLeft:Pixel.getPixel(15)
-                }}>
-                    <View style={{flex:1,justifyContent:'center'}}>
-                        <Text style={{fontSize: Pixel.getFontPixel(17),color:'#000'}}>银行卡号</Text>
-                        <Text style={{fontSize: Pixel.getFontPixel(15),color:fontAndColor.COLORA1,marginTop:Pixel.getPixel(5)}}>
-                            6227 **** **** *** 6275
-                        </Text>
-                    </View>
-                    <TouchableOpacity onPress={()=>{
-                        this.props.showToast('解绑')
-                    }} activeOpacity={0.8} style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>
-                        <Text style={{fontSize: Pixel.getFontPixel(15),color:fontAndColor.COLORA2}}>解除绑定</Text>
-                    </TouchableOpacity>
-                </View>
-            )
-
-
+    _navigatorRightView = () => {
+        return (
+            <TouchableOpacity activeOpacity={0.8} onPress={() => {
+                    this.refs.selectdate.changeVisible(true);
+            }}>
+                <Image style={{width:Pixel.getPixel(20),height:Pixel.getPixel(20)}}
+                       source={require('../../../images/mainImage/selecttime.png')}/>
+            </TouchableOpacity>
+        );
     }
-
-
 
     _renderPlaceholderView() {
         return (
             <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
                 {this.loadView()}
                 <NavigationView
-                    title="银行卡"
+                    title="账户流水"
                     backIconClick={this.backPage}
                 />
             </View>

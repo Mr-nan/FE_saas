@@ -26,6 +26,7 @@ import AccountTitle from './component/AccountTitle';
 import RechargeScene from './RechargeScene';
 import WithdrawalsScene from './WithdrawalsScene';
 import BankCardScene from './BankCardScene';
+import AccountFlowScene from './AccountFlowScene';
 export  default class AccountScene extends BaseComponent {
 
     constructor(props) {
@@ -107,7 +108,7 @@ export  default class AccountScene extends BaseComponent {
     _renderHeader = () => {
         return (
             <AccountTitle bankCard={()=>{this.toNextPage({name:'BankCardScene',component:BankCardScene,params:{}})}}
-                          flow={()=>{}} changePwd={()=>{}}
+                          flow={()=>{this.toNextPage({name:'AccountFlowScene',component:AccountFlowScene,params:{}})}} changePwd={()=>{}}
                           resetPwd={()=>{}} changePhone={()=>{}} accountSetting={()=>{}} moreFlow={()=>{}}/>
         )
     }
