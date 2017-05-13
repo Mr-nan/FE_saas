@@ -107,7 +107,7 @@ export default class PlanInfoPage extends BaseComponent {
                           childStyle={styles.loginButtonTextStyle}
                           mOnPress={this._useCoupon}/>
 
-                <AllLoading ref="allloading" callBack={()=>{
+                <AllLoading callEsc={()=>{}} ref="allloading" callBack={()=>{
                    this.props.callBack({
                     name: 'AdjustListScene',
                     component: AdjustListScene,

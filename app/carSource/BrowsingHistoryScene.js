@@ -173,6 +173,7 @@ export default class BrowsingHistoryScene extends BaceComponent {
             <View style={styles.rootContainer}>
                 <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(64)}}
                           dataSource={this.state.carData}
+                          showsVerticalScrollIndicator={false}
                           renderRow={(rowData) =>
                           <CarCell from="BrowsingHistoryScene" items={rowData} mOnPress={(id)=>{
                                this.toNextPage({name:'CarInfoScene',component:CarInfoScene,params:{carID:id}});

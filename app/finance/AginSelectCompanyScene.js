@@ -55,6 +55,7 @@ export  default class SelectCompanyScene extends BaseComponent {
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
+                    showsVerticalScrollIndicator={false}
                 />
             </View>
         );
