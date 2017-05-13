@@ -34,36 +34,15 @@ export  default class Switch extends PureComponent {
     }
 
     render() {
-        return(<View style={{width:Pixel.getPixel(50),height:Pixel.getPixel(31)}}></View>);
+        return(<View style={{width:Pixel.getPixel(50),height:Pixel.getPixel(31),
+        borderRadius:100,backgroundColor:'#4AD762',justifyContent:'center',
+        paddingLeft: Pixel.getPixel(2),paddingRight: Pixel.getPixel(2)
+        }}>
+            <View style={{width:Pixel.getPixel(27),height:Pixel.getPixel(27),backgroundColor:'#fff',borderRadius:100}}></View>
+        </View>);
     }
 
-    _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false })
 
-    _handleDatePicked = (date) => {
-        let tempdate=dateFormat(date,'yyyy-MM-dd');
-        // let tempdate=dateFormat(Date.parse(new Date()),'yyyy-MM-dd')
-        // let select = Date.parse(new Date(date));
-        // let mm = Date.parse(new Date());
-        // let aa = Math.ceil((select-mm)/1000/60/60/24);
-        this.props.callBack(tempdate);
-        this._hideDateTimePicker();
-    }
-
-}
-const dateFormat = (date,fmt) => {
-    let o = {
-        "M+": date.getMonth() + 1, //月份
-        "d+": date.getDate(), //日
-        "h+": date.getHours(), //小时
-        "m+": date.getMinutes(), //分
-        "s+": date.getSeconds(), //秒
-        "q+": Math.floor((date.getMonth() + 3) / 3), //季度
-        "S": date.getMilliseconds() //毫秒
-    };
-    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
-    for (let k in o)
-        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-    return fmt;
 }
 const styles = StyleSheet.create({
 
