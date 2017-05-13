@@ -35,7 +35,8 @@ export  default class PurchasePickerItem extends PureComponent {
     render() {
         let movie = this.props.items;
         let movieItems = [];
-        if (this.state.childMovie.list.length > 0) {
+        if (this.state.childMovie.list.length > 0)
+        {
             let length = 0;
             if (this.state.childMovie.list.length < 8) {
                 length = this.state.childMovie.list.length + 1;
@@ -66,7 +67,6 @@ export  default class PurchasePickerItem extends PureComponent {
         } else {
             movieItems.push(<PurchasePickerChildItem allLength={this.state.childMovie.list.length} key={0} index={0}
                                                      mOnPress={(index) => {
-
                                                          this.selectPhotoTapped(movie.code)
                                                      }}/>)
         }
@@ -75,7 +75,6 @@ export  default class PurchasePickerItem extends PureComponent {
             <View style={styles.parentView}>
                 <View style={{width: width, marginTop: Pixel.getPixel(15), flexDirection: 'row'}}>
                     {movie.explain=='1'?<Text style={{fontSize: fontAndColor.BUTTONFONT30, color: fontAndColor.COLORB2}}>*</Text>:<View/>}
-
                     <Text style={{fontSize: fontAndColor.BUTTONFONT30, color: fontAndColor.COLORA0}}>{movie.name}</Text>
                 </View>
                 <View style={{width: width, marginTop: Pixel.getPixel(7), flexDirection: 'row', flexWrap: 'wrap'}}>
@@ -105,7 +104,6 @@ export  default class PurchasePickerItem extends PureComponent {
         };
         if(id=='buyer_seller_vehicle'){
             this.props.openModal(()=>{this.openCamera()},()=>{this.openPicker()});
-
         }else{
             ImagePicker.showImagePicker(options, (response) => {
                 if (response.didCancel) {
