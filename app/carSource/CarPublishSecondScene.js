@@ -18,78 +18,117 @@ import {
 import BaseComponent from '../component/BaseComponent';
 import AllNavigationView from '../component/AllNavigationView';
 import {CellView,CellSelectView} from './znComponent/CarPublishCell';
+import CarSelectRegisterPersonScene from './CarSelectRegisterPersonScene';
+import CarUpImageScene   from './CarUpImageScene';
 import *as fontAndColor from '../constant/fontAndColor';
 import PixelUtil from '../utils/PixelUtil';
 
 const Pixel = new  PixelUtil();
 const sceneWidth = Dimensions.get('window').width;
 let   currentCarType ='非运营';
-const titleData1 = [
+let   selectPerson = '请选择';
+let   titleData1 = [
     [
         {
-            title:'车辆类型',
+            title:'使用性质',
             isShowTag:false,
-            value:'扫描',
             isShowTail:true,
             selectDict:{current:currentCarType,data:[{title:'营运',value:1},{title:'非运营',value:2}]},
         },
         {
-            title:'车架号',
+            title:'过户次数',
             isShowTag:true,
-            value:'请选择',
             isShowTail:true,
-        },
-        {
-            title:'排量',
-            isShowTag:true,
-            isShowTail:false,
             tailView:()=>{
                 return(
-                    <TextInput style={{height: 40, borderColor: 'gray', width:200,textAlign:'right'}} placeholder='请输入'/>
+                    <TextInput style={styles.textInput} placeholder='请输入'/>
                 )
             }
         },
         {
-            title:'排放标准',
+            title:'车牌号',
             isShowTag:true,
-            value:'请选择',
-            isShowTail:true,
+            isShowTail:false,
+            tailView:()=>{
+                return(
+                    <TextInput style={styles.textInput} placeholder='请输入'/>
+                )
+            }
         },
         {
-            title:'车身颜色',
+            title:'表显里程',
             isShowTag:true,
-            value:'请选择',
             isShowTail:true,
-        },
-    ],
-    [   {
-        title:'出厂日期',
-        isShowTag:true,
-        value:'请选择',
-        isShowTail:true,
-    },
-        {
-            title:'出厂日期',
-            isShowTag:true,
-            value:'请选择',
-            isShowTail:true,
+            tailView:()=>{
+                return(
+                    <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                        <TextInput style={styles.textInput} placeholder='请输入'/>
+                        <Text style={styles.textInputTitle}>万公里</Text>
+                    </View>
+                )
+            }
         },
 
     ],
     [   {
-        title:'标准配置',
+        title:'参考价',
         isShowTag:false,
         value:'查看',
-        isShowTail:false,
+        isShowTail:true,
     },
         {
-            title:'配置改装说明',
+            title:'市场价',
+            isShowTag:true,
+            isShowTail:true,
+            tailView:()=>{
+              return(  <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                    <TextInput style={styles.textInput} placeholder='请输入'/>
+                    <Text style={styles.textInputTitle}>万元</Text>
+                </View>)
+            }
+        },
+        {
+            title:'底价',
             isShowTag:false,
-            value:'请填写',
+            isShowTail:true,
+            tailView:()=>{
+              return(  <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                    <TextInput style={styles.textInput} placeholder='请输入'/>
+                    <Text style={styles.textInputTitle}>万元</Text>
+                </View>)
+            }
+        },
+        {
+            title:'会员价',
+            isShowTag:false,
+            isShowTail:true,
+            tailView:()=>{
+              return(  <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                    <TextInput style={styles.textInput} placeholder='请输入'/>
+                    <Text style={styles.textInputTitle}>万元</Text>
+                </View>)
+            }
+        },
+
+    ],
+    [   {
+        title:'车辆所在地',
+        isShowTag:true,
+        value:'请选择',
+        isShowTail:true,
+    },{
+        title:'登记人',
+        isShowTag:true,
+        value:selectPerson,
+        isShowTail:true,
+    },
+        {
+            title:'车况描述',
+            isShowTag:false,
             isShowTail:false,
             tailView:()=>{
                 return(
-                    <TextInput style={{height: 40, borderColor: 'gray', width:200,textAlign:'right'}} placeholder='请输入'/>
+                    <TextInput style={styles.textInput} placeholder='请填写'/>
                 )
             }
 
@@ -97,51 +136,91 @@ const titleData1 = [
     ]
 
 ];
-const titleData2 = [
+
+let titleData2 = [
     [
         {
-            title:'车辆类型',
-            isShowTag:false,
-            value:'扫描',
-            isShowTail:true,
-            selectDict:{current:currentCarType,data:[{title:'二手车',value:1},{title:'新车',value:2},{title:'平行进口车',value:3}]},
-        },
-        {
-            title:'车架号',
+            title:'过户次数',
             isShowTag:true,
             value:'请选择',
             isShowTail:true,
         },
         {
-            title:'排量',
+            title:'车牌号',
             isShowTag:true,
-            value:'请输入',
             isShowTail:false,
+            tailView:()=>{
+                return(
+                    <TextInput style={styles.textInput} placeholder='请输入'/>
+                )
+            }
         },
         {
-            title:'排放标准',
+            title:'表显里程',
             isShowTag:true,
-            value:'请选择',
             isShowTail:true,
+            tailView:()=>{
+                return(
+                    <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                        <TextInput style={styles.textInput} placeholder='请输入'/>
+                        <Text style={styles.textInputTitle}>万公里</Text>
+                    </View>
+                )
+            }
         },
-        {
-            title:'车身颜色',
-            isShowTag:true,
-            value:'请选择',
-            isShowTail:true,
-        },
+
     ],
     [   {
-        title:'标准配置',
+        title:'参考价',
         isShowTag:false,
         value:'查看',
-        isShowTail:false,
+        isShowTail:true,
     },
         {
-            title:'配置改装说明',
+            title:'市场价',
+            isShowTag:true,
+            tailView:()=>{
+                return(  <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                    <TextInput style={styles.textInput} placeholder='请输入'/>
+                    <Text style={styles.textInputTitle}>万元</Text>
+                </View>)
+            }
+        }, {
+        title:'底价',
+        isShowTag:false,
+        tailView:()=>{
+            return(  <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                <TextInput style={styles.textInput} placeholder='请输入'/>
+                <Text style={styles.textInputTitle}>万元</Text>
+            </View>)
+        }
+    }, {
+        title:'会员价',
+        isShowTag:false,
+        tailView:()=>{
+            return(  <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                <TextInput style={styles.textInput} placeholder='请输入'/>
+                <Text style={styles.textInputTitle}>万元</Text>
+            </View>)
+        }
+    },
+
+    ],
+    [   {
+        title:'车辆所在地',
+        isShowTag:true,
+        value:'请选择',
+        isShowTail:true,
+    },
+        {
+            title:'车况描述',
             isShowTag:false,
-            value:'请填写',
             isShowTail:false,
+            tailView:()=>{
+                return(
+                    <TextInput style={styles.textInput} placeholder='请填写'/>
+                )
+            }
         },
     ]
 
@@ -158,7 +237,7 @@ export default class CarPublishSecondScene extends BaseComponent{
         // 初始状态
 
         this.state = {
-            titleData:titleData1,
+            titleData:this.props.carType=='二手车'? titleData1 :titleData2,
         };
     }
 
@@ -166,18 +245,31 @@ export default class CarPublishSecondScene extends BaseComponent{
         return(
             <View style={styles.rootContainer}>
                 <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={Pixel.getTitlePixel(-64)}>
-                    <ScrollView style={{width:sceneWidth,height:Dimensions.get('window').height}}>
+                    <ScrollView style={{width:sceneWidth,height:Dimensions.get('window').height - Pixel.getTitlePixel(64)}}>
                         {
                             this.state.titleData.map((data,index)=>{
                                 return(
                                     <View style={{marginTop:10,backgroundColor:'white'}} key={index}>
                                         {
                                             data.map((rowData,subIndex)=>{
-                                                return( rowData.selectDict?(
+                                                return( rowData.selectDict?
+                                                        (
+                                                    <TouchableOpacity
+                                                        key={subIndex}
+                                                        activeOpacity={1}
+                                                        onPress={()=>this.cellCilck(rowData.title)}>
                                                         <CellSelectView
                                                             currentTitle={rowData.selectDict.current}
                                                             cellData={rowData}
-                                                            cellSelectAction={this.cellSelectAction} key={subIndex}/> ):(<CellView cellData={rowData} key={subIndex}/>))
+                                                            cellSelectAction={this.cellSelectAction} />
+                                                    </TouchableOpacity>):
+                                                    (
+                                                        <TouchableOpacity key={subIndex}
+                                                                          activeOpacity={1}
+                                                                          onPress={()=>this.cellCilck(rowData.title)}>
+                                                        <CellView cellData={rowData}/>
+                                                        </TouchableOpacity>)
+                                                    )
                                             })
                                         }
                                     </View>
@@ -185,7 +277,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                             })
                         }
                         <View style={styles.footContainer}>
-                            <TouchableOpacity >
+                            <TouchableOpacity onPress={this.nextAction}>
                                 <View style={styles.footView}>
                                     <Text style={styles.footText}>下一步</Text>
                                 </View>
@@ -200,18 +292,50 @@ export default class CarPublishSecondScene extends BaseComponent{
 
     cellSelectAction=(selectDict)=>{
 
-        if(selectDict.value==1){
-            this.setState({
-                titleData:titleData1,
-            })
-        }else
-        {
-            this.setState({
-                titleData:titleData2,
-            })
-        }
+    }
+
+    selectPersonClick=(data)=>{
+        selectPerson=data;
+        titleData1[2][1].value = selectPerson;
+        this.updateUI();
 
     }
+
+    updateUI=()=>{
+        this.setState({
+            titleData:titleData1,
+        });
+    }
+
+
+    cellCilck=(cellTitle)=>{
+
+        if(cellTitle=='登记人')
+        {
+            let navigatorParams = {
+                name: "CarSelectRegisterPersonScene",
+                component: CarSelectRegisterPersonScene,
+                params: {
+                    selectPersonClick:this.selectPersonClick,
+                    currentPerson:selectPerson,
+                }
+            };
+            this.toNextPage(navigatorParams);
+
+        }
+    }
+
+    nextAction=()=>{
+        let navigatorParams = {
+            name: "CarUpImageScene",
+            component: CarUpImageScene,
+            params: {
+
+            }
+        };
+        this.toNextPage(navigatorParams);
+    }
+
 }
 
 
@@ -225,7 +349,8 @@ const styles = StyleSheet.create({
     footContainer:{
         justifyContent:'center',
         alignItems:'center',
-        marginTop:Pixel.getPixel(20)
+        marginTop:Pixel.getPixel(20),
+        marginBottom:Pixel.getPixel(20),
     },
     footView:{
         backgroundColor:fontAndColor.COLORB0,
@@ -240,4 +365,17 @@ const styles = StyleSheet.create({
         color:'white',
         fontSize:fontAndColor.BUTTONFONT30
     },
+    textInput:{
+        height: 40,
+        borderColor: fontAndColor.COLORA0,
+        width:200,
+        textAlign:'right',
+        fontSize:fontAndColor.LITTLEFONT28,
+    },
+    textInputTitle:{
+        color:fontAndColor.COLORA0,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+        marginLeft:Pixel.getPixel(5),
+        textAlign:'right',
+    }
 });

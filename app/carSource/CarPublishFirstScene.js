@@ -18,7 +18,7 @@ import {
 import BaseComponent from '../component/BaseComponent';
 import AllNavigationView from '../component/AllNavigationView';
 import {CellView,CellSelectView} from './znComponent/CarPublishCell';
-import CarPublishSecondScene from 'CarPublishSecondScene';
+import CarPublishSecondScene from './CarPublishSecondScene';
 import *as fontAndColor from '../constant/fontAndColor';
 import PixelUtil from '../utils/PixelUtil';
 
@@ -30,12 +30,17 @@ const titleData1 = [
         {
             title:'车辆类型',
             isShowTag:false,
-            value:'扫描',
             isShowTail:true,
             selectDict:{current:currentCarType,data:[{title:'二手车',value:1},{title:'新车',value:2},{title:'平行进口车',value:3}]},
         },
         {
             title:'车架号',
+            isShowTag:true,
+            value:'扫描',
+            isShowTail:true,
+        },
+        {
+            title:'车型',
             isShowTag:true,
             value:'请选择',
             isShowTail:true,
@@ -46,7 +51,7 @@ const titleData1 = [
             isShowTail:false,
             tailView:()=>{
                return(
-                   <TextInput style={{height: 40, borderColor: 'gray', width:200,textAlign:'right'}} placeholder='请输入'/>
+                   <TextInput style={styles.textInput} placeholder='请输入'/>
                )
             }
         },
@@ -62,15 +67,21 @@ const titleData1 = [
             value:'请选择',
             isShowTail:true,
         },
+        {
+            title:'内饰颜色',
+            isShowTag:true,
+            value:'请选择',
+            isShowTail:true,
+        },
     ],
     [   {
             title:'出厂日期',
             isShowTag:true,
             value:'请选择',
             isShowTail:true,
-    },
+        },
         {
-            title:'出厂日期',
+            title:'初登日期',
             isShowTag:true,
             value:'请选择',
             isShowTail:true,
@@ -90,7 +101,7 @@ const titleData1 = [
             isShowTail:false,
             tailView:()=>{
                 return(
-                    <TextInput style={{height: 40, borderColor: 'gray', width:200,textAlign:'right'}} placeholder='请输入'/>
+                    <TextInput style={styles.textInput} placeholder='请填写'/>
                 )
             }
 
@@ -110,14 +121,24 @@ const titleData2 = [
         {
             title:'车架号',
             isShowTag:true,
+            value:'扫描',
+            isShowTail:true,
+        },
+        {
+            title:'车型',
+            isShowTag:true,
             value:'请选择',
             isShowTail:true,
         },
         {
             title:'排量',
             isShowTag:true,
-            value:'请输入',
             isShowTail:false,
+            tailView:()=>{
+                return(
+                    <TextInput style={styles.textInput} placeholder='请输入'/>
+                )
+            }
         },
         {
             title:'排放标准',
@@ -130,9 +151,23 @@ const titleData2 = [
             isShowTag:true,
             value:'请选择',
             isShowTail:true,
+        },{
+            title:'内饰颜色',
+            isShowTag:true,
+            value:'请选择',
+            isShowTail:true,
         },
     ],
-    [   {
+    [
+        {
+            title:'出厂日期',
+            isShowTag:true,
+            value:'请选择',
+            isShowTail:true,
+        },
+    ],
+    [
+        {
             title:'标准配置',
             isShowTag:false,
             value:'查看',
@@ -167,7 +202,7 @@ export default class CarPublishFirstScene extends BaseComponent{
         return(
             <View style={styles.rootContainer}>
                 <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={Pixel.getTitlePixel(-64)}>
-                    <ScrollView style={{width:sceneWidth,height:Dimensions.get('window').height}}>
+                    <ScrollView style={{width:sceneWidth,height:Dimensions.get('window').height -Pixel.getTitlePixel(64)}}>
                         {
                             this.state.titleData.map((data,index)=>{
                                 return(
@@ -211,6 +246,8 @@ export default class CarPublishFirstScene extends BaseComponent{
                titleData:titleData2,
             })
         }
+
+        currentCarType=selectDict.title;
     }
 
     footBtnClick=()=>{
@@ -218,7 +255,7 @@ export default class CarPublishFirstScene extends BaseComponent{
             name: "CarPublishSecondScene",
             component: CarPublishSecondScene,
             params: {
-
+                carType:currentCarType,
             }
         }
         this.toNextPage(navigatorParams);
@@ -236,7 +273,9 @@ const styles = StyleSheet.create({
     footContainer:{
         justifyContent:'center',
         alignItems:'center',
-        marginTop:Pixel.getPixel(20)
+        marginTop:Pixel.getPixel(20),
+        marginBottom:Pixel.getPixel(20),
+
     },
     footView:{
         backgroundColor:fontAndColor.COLORB0,
@@ -251,4 +290,11 @@ const styles = StyleSheet.create({
         color:'white',
         fontSize:fontAndColor.BUTTONFONT30
     },
+    textInput:{
+        height: 40,
+        borderColor: fontAndColor.COLORA0,
+        width:200,
+        textAlign:'right',
+        fontSize:fontAndColor.LITTLEFONT28,
+    }
 });
