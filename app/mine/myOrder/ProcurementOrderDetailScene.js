@@ -20,7 +20,7 @@ import BaseComponent from "../../component/BaseComponent";
 import NavigatorView from '../../component/AllNavigationView';
 import * as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
-import Testview22 from "../../main/CarSourceScene";
+import CheckStand from "../../finance/CheckStand";
 const Pixel = new PixelUtil();
 
 export default class ProcurementOrderDetailScene extends BaseComponent {
@@ -46,6 +46,23 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     showsVerticalScrollIndicator={false}/>
 
                 <View style={{flex: 1}}/>
+                <View style={styles.bottomBar}>
+                    <View style={styles.buttonCancel}>
+                        <Text style={{color: fontAndColor.COLORA2}}>取消</Text>
+                    </View>
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.toNextPage({
+                                name: 'CheckStand',
+                                component: CheckStand,
+                                params: {}
+                            });
+                        }}>
+                        <View style={styles.buttonConfirm}>
+                            <Text style={{color: '#ffffff'}}>确认</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
             </View>
         )
     }
@@ -133,7 +150,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         } else if (rowData === '4') {
             return (
                 <View style={styles.itemType4}>
-                    <View style={{height: Pixel.getPixel(40), alignItems: 'center',flexDirection: 'row'}}>
+                    <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
                         <Text style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                             marginLeft: Pixel.getPixel(15)
@@ -144,7 +161,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         alignItems: 'center',
                         flexDirection: 'row',
                         marginLeft: Pixel.getPixel(15),
-                        marginTop: Pixel.getPixel(22),
+                        marginTop: Pixel.getPixel(20),
                         marginRight: Pixel.getPixel(15)
                     }}>
                         <Text style={styles.orderInfo}>支付定金</Text>
@@ -166,20 +183,24 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         } else if (rowData === '5') {
             return (
                 <View style={styles.itemType5}>
-                    <View style={{height: Pixel.getPixel(40), alignItems: 'center',flexDirection: 'row'}}>
+                    <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
                         <Text style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                             marginLeft: Pixel.getPixel(15)
                         }}>贷款信息</Text>
                         <View style={{flex: 1}}/>
-                        <Text>还款单号:</Text>
+                        <Text style={{color: fontAndColor.COLORA2}}>还款单号:</Text>
+                        <Text style={{color: fontAndColor.COLORA2}}>232222333</Text>
+                        <Image
+                            style={styles.backIcon}
+                            source={require('../../../images/mainImage/celljiantou.png')}/>
                     </View>
                     <View style={styles.separatedLine}/>
                     <View style={{
                         alignItems: 'center',
                         flexDirection: 'row',
                         marginLeft: Pixel.getPixel(15),
-                        marginTop: Pixel.getPixel(22),
+                        marginTop: Pixel.getPixel(20),
                         marginRight: Pixel.getPixel(15)
                     }}>
                         <Text style={styles.orderInfo}>最大可贷额度</Text>
@@ -215,7 +236,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         } else if (rowData === '6') {
             return (
                 <View style={styles.itemType4}>
-                    <View style={{height: Pixel.getPixel(40), alignItems: 'center',flexDirection: 'row'}}>
+                    <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
                         <Text style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                             marginLeft: Pixel.getPixel(15)
@@ -226,7 +247,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         alignItems: 'center',
                         flexDirection: 'row',
                         marginLeft: Pixel.getPixel(15),
-                        marginTop: Pixel.getPixel(22),
+                        marginTop: Pixel.getPixel(20),
                         marginRight: Pixel.getPixel(15)
                     }}>
                         <Text style={styles.orderInfo}>姓名</Text>
@@ -253,6 +274,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: fontAndColor.COLORA3
+    },
+    backIcon: {
+        marginRight: Pixel.getPixel(15),
+        marginLeft: Pixel.getPixel(12),
+        height: Pixel.getPixel(15),
+        width: Pixel.getPixel(15)
     },
     separatedLine: {
         marginRight: Pixel.getPixel(15),
@@ -314,7 +341,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         marginLeft: Pixel.getPixel(15),
-        marginTop: Pixel.getPixel(13),
+        marginTop: Pixel.getPixel(10),
         marginRight: Pixel.getPixel(15)
     },
     itemType5: {
@@ -337,6 +364,34 @@ const styles = StyleSheet.create({
         marginLeft: Pixel.getPixel(10),
         textAlign: 'left',
         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-        color: fontAndColor.COLORA2,
+        color: fontAndColor.COLORA2
+    },
+    bottomBar: {
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        backgroundColor: '#ffffff',
+        height: Pixel.getPixel(50),
+        flexDirection: 'row'
+    },
+    buttonConfirm: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: Pixel.getPixel(15),
+        backgroundColor: fontAndColor.COLORB0,
+        height: Pixel.getPixel(32),
+        width: Pixel.getPixel(100),
+        borderRadius: Pixel.getPixel(2),
+        borderWidth: Pixel.getPixel(1),
+        borderColor: fontAndColor.COLORB0
+    },
+    buttonCancel: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: Pixel.getPixel(15),
+        height: Pixel.getPixel(32),
+        width: Pixel.getPixel(100),
+        borderRadius: Pixel.getPixel(2),
+        borderWidth: Pixel.getPixel(1),
+        borderColor: fontAndColor.COLORA2
     }
 });
