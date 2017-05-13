@@ -1,5 +1,4 @@
 dependencies: \
-<<<<<<< HEAD
   /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/node_modules/react-native/Libraries/NativeAnimation/RCTNativeAnimatedNodesManager.m \
   /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/node_modules/react-native/Libraries/NativeAnimation/RCTNativeAnimatedNodesManager.h \
   /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTUIManager.h \
@@ -40,45 +39,3 @@ dependencies: \
   /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/node_modules/react-native/Libraries/NativeAnimation/Nodes/RCTTransformAnimatedNode.h \
   /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/node_modules/react-native/Libraries/NativeAnimation/Drivers/RCTFrameAnimation.h \
   /Users/ZN/Desktop/dycd-FE_Saas-git/FE_Saas/node_modules/react-native/Libraries/NativeAnimation/Drivers/RCTSpringAnimation.h
-=======
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/Libraries/NativeAnimation/RCTNativeAnimatedNodesManager.m \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/Libraries/NativeAnimation/RCTNativeAnimatedNodesManager.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTUIManager.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridge.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridgeDelegate.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTJavaScriptLoader.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTDefines.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridgeModule.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTFrameUpdate.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTInvalidating.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTRootView.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTViewManager.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTConvert.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/Yoga.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/YGEnums.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/YGMacros.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTAnimationType.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBorderStyle.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTLog.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTAssert.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTPointerEvents.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTTextDecorationLineType.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTEventDispatcher.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/UIView+React.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTComponent.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/Libraries/NativeAnimation/Nodes/RCTValueAnimatedNode.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/Libraries/NativeAnimation/Nodes/RCTAnimatedNode.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/Libraries/NativeAnimation/Drivers/RCTAnimationDriver.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/Libraries/NativeAnimation/Drivers/RCTEventAnimation.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/Libraries/NativeAnimation/Nodes/RCTAdditionAnimatedNode.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/Libraries/NativeAnimation/Nodes/RCTInterpolationAnimatedNode.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/Libraries/NativeAnimation/Nodes/RCTDiffClampAnimatedNode.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/Libraries/NativeAnimation/Nodes/RCTDivisionAnimatedNode.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/Libraries/NativeAnimation/Nodes/RCTModuloAnimatedNode.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/Libraries/NativeAnimation/Nodes/RCTMultiplicationAnimatedNode.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/Libraries/NativeAnimation/Nodes/RCTPropsAnimatedNode.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/Libraries/NativeAnimation/Nodes/RCTStyleAnimatedNode.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/Libraries/NativeAnimation/Nodes/RCTTransformAnimatedNode.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/Libraries/NativeAnimation/Drivers/RCTFrameAnimation.h \
-  /Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/node_modules/react-native/Libraries/NativeAnimation/Drivers/RCTSpringAnimation.h
->>>>>>> a6264db28ac824d24372b05ea375a137393fa431
