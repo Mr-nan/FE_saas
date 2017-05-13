@@ -18,10 +18,12 @@ import MycarScene from '../carSource/CarMySourceScene';
 import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
 
-import repayDetailsScene from '../mine/accountManage/repayDetailsScene'
 import ContractManageScene from '../mine/contractManage/ContractSelectScene';
 
-import AccountManageScene from '../mine/accountManage/AccountManageScene'
+import AccountManageScene from '../mine/accountManage/AccountTypeSelectScene'
+import WaitActivationAccountScene from '../mine/accountManage/WaitActivationAccountScene'
+import AccountScene from '../mine/accountManage/AccountScene'
+
 import AdjustManageScene from '../mine/adjustManage/AdjustManageScene'
 import EmployeeManageScene from '../mine/employeeManage/EmployeeManageScene'
 import CouponAllScene from '../mine/couponManage/CouponAllScene'
@@ -344,8 +346,14 @@ export default class MineSectionListView extends BaseComponent {
     _navigator(rowData) {
         switch (rowData.name) {
             case '账户管理':
-                this.navigatorParams.name = 'AccountManageScene'
-                this.navigatorParams.component = AccountManageScene
+                // this.navigatorParams.name = 'AccountManageScene'
+                // this.navigatorParams.component = AccountManageScene
+
+                // this.navigatorParams.name = 'WaitActivationAccountScene'
+                // this.navigatorParams.component = WaitActivationAccountScene
+
+                this.navigatorParams.name = 'AccountScene'
+                this.navigatorParams.component = AccountScene
                 break;
             case '优惠券管理':
                 this.navigatorParams.name = 'AdjustManageScene'
@@ -397,6 +405,11 @@ export default class MineSectionListView extends BaseComponent {
                     <Image source={rowData.icon} style={styles.rowLeftImage}/>
 
                     <Text style={styles.rowTitle}>{rowData.name}</Text>
+                    {rowData.name=='账户管理'?<Text style={{ marginRight: Pixel.getPixel(15),
+                    backgroundColor: '#00000000',color:fontAndClolr.COLORB2,fontSize:
+                    Pixel.getFontPixel(fontAndClolr.LITTLEFONT28)}}>未开户</Text>:
+                    <View/>}
+
 
                     <Image source={cellJianTou} style={styles.rowjiantouImage}/>
 
