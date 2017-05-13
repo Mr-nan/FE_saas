@@ -8,12 +8,12 @@ import {
     Image,
     TouchableWithoutFeedback,
     ActivityIndicator,
-    PixelRatio,
+    PixelRatio
 } from "react-native";
-import  * as FontAndColor from '../../constant/fontAndColor';
-import SendMmsCountDown from './SendMmsCountDown';
-import PixelUtil from '../../utils/PixelUtil';
-import MyButton from '../../component/MyButton';
+import * as FontAndColor from "../../constant/fontAndColor";
+import SendMmsCountDown from "./SendMmsCountDown";
+import PixelUtil from "../../utils/PixelUtil";
+import MyButton from "../../component/MyButton";
 
 var Pixel = new PixelUtil();
 var Dimensions = require('Dimensions');
@@ -36,6 +36,7 @@ export default class LoginInputText extends Component {
         rightButton: false,
         clearValue: false,
         import: false,
+        editable: true,
 
         maxLength: 1000,
 
@@ -55,6 +56,7 @@ export default class LoginInputText extends Component {
         secureTextEntry: PropTypes.bool,
         clearValue: PropTypes.bool,//清除输入框内容
         import: PropTypes.bool,//是否为必填项
+        editable: PropTypes.bool,
 
         leftIconUri: PropTypes.number,
         rightIconSource: PropTypes.object,
@@ -140,6 +142,7 @@ export default class LoginInputText extends Component {
                         maxLength={this.props.maxLength}
                         secureTextEntry={this.props.secureTextEntry}
                         value={this.state.values}
+                        editable={this.props.editable}
                         onChangeText={(text) => {
                             this.setState({
                                 values: text

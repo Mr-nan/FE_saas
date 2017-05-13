@@ -13,6 +13,7 @@
 #import <CoreMotion/CoreMotion.h>
 typedef void(^scanBlock)(NSString *scane,NSError *error);
 @class VinCameraViewController;
+
 @protocol CameraDelegate <NSObject>
 
 @required

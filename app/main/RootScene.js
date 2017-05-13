@@ -5,12 +5,14 @@ import {
     StyleSheet,
     Dimensions,
     TouchableOpacity,
-    Image
+    Image,
+    BackAndroid,
+    InteractionManager
 } from 'react-native';
 
 import BaseComponent from '../component/BaseComponent';
 import MyButton from '../component/MyButton';
-var {height, width} = Dimensions.get('window');
+let {height, width} = Dimensions.get('window');
 import MainPage from './MainPage';
 import LoginAndRegister from '../login/LoginAndRegister';
 import StorageUtil from '../utils/StorageUtil';
@@ -20,26 +22,37 @@ import LoginGesture from '../login/LoginGesture';
 import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
 import  UpLoadScene from './UpLoadScene';
-const versionCode = 2.0;
+import codePush from 'react-native-code-push'
+const versionCode = 2;
 
 export default class RootScene extends BaseComponent {
+
+    componentDidMount() {
+        codePush.sync();
+        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
+    }
+
     initFinish = () => {
         let maps = {
             type: '6',
-            api:'api/v1/App/Update'
+            api: 'api/v1/App/Update'
         };
         request(Urls.APP_UPDATE, 'Post', maps)
             .then((response) => {
-                    // if (response.mjson.data.versioncode != versionCode) {
-                    //     this.navigatorParams.component = UpLoadScene;
-                    //     this.navigatorParams.params = {url:response.mjson.data.downloadurl}
-                    //     this.toNextPage(this.navigatorParams);
-                    // } else {
+                    if (response.mjson.data.versioncode != versionCode) {
+                        this.navigatorParams.component = UpLoadScene;
+                        this.navigatorParams.params = {url: response.mjson.data.downloadurl}
+                        this.toNextPage(this.navigatorParams);
+                    } else {
                         this.toJump();
-                    // }
+                    }
                 },
                 (error) => {
-                        this.toJump();
+                    this.toJump();
                 });
     }
 

@@ -68,7 +68,8 @@ const SQLite = React.createClass({
                 +'trim_color VARCHAR default "",'
                 +'transfer_number VARCHAR default "",'
                 +'dealer_price VARCHAR default "",'
-                +'describe VARCHAR default ""'
+                +'describe VARCHAR default "",'
+                +'modify VARCHAR default ""'
                 + ');'
                 , [], () => {
                     this._successCB('executeSql');

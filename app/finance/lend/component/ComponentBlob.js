@@ -56,6 +56,13 @@ export const commnetStyle=StyleSheet.create({
         bottom:adapeSize(50),
         backgroundColor:PAGECOLOR.COLORA3
     },
+    ListWarpss:{
+        position:'absolute',
+        top:Pixel.getTitlePixel(114),
+        width:width,
+        bottom:adapeSize(50),
+        backgroundColor:PAGECOLOR.COLORA3
+    },
 
     bottomWarp:{
         position:'absolute',
@@ -173,14 +180,13 @@ export class LendInputItem extends PureComponent {
     render() {
 
 
-
-        const {title,placeholder,unit,unitStyle,onChangeText}=this.props;
+        const {title,placeholder,unit,unitStyle,onChangeText,showValue}=this.props;
 
         return (
             <View style={styles.itemView}>
 
                 <Text style={styles.itemLeftText}>{title}</Text>
-                <TextInput underlineColorAndroid={"#00000000"} style={styles.itemInput} placeholder={placeholder} keyboardType={'decimal-pad'} onChangeText={onChangeText}/>
+                <TextInput underlineColorAndroid={"#00000000"} style={styles.itemInput} placeholder={placeholder} keyboardType={'decimal-pad'} onChangeText={onChangeText} defaultValue={showValue}/>
                 <Text style={[styles.itemPlacehodel,unitStyle]}>{unit}</Text>
             </View>
         )
@@ -197,6 +203,11 @@ export class LendDatePike extends PureComponent {
             placeholder:this.props.placeholder,
         };
     }
+    componentDidMount(){
+        const {defaultShowValue}=this.props
+        defaultShowValue&&this.changeText(defaultShowValue);
+    }
+
 
     setPlaceHodel=(vlaue)=>{
 
@@ -235,7 +246,7 @@ export class LendDatePike extends PureComponent {
                 <Text  style={styles.itemLeftText}>{lefTitle}</Text>
 
                 <TextInput  underlineColorAndroid={"#00000000"} ref={(date)=>{this.dateInput=date}} editable={false} style={[styles.itemInput, {marginRight: adapeSize(17)}]}
-                           placeholder={this.state.placeholder} value={this.state.value} />
+                           placeholder={this.state.placeholder} value={this.state.value}/>
                 <Image style={[styles.itemPikerDate,imageStyle]} source={imageSouce}/>
             </TouchableOpacity>
         )
@@ -276,10 +287,10 @@ export class CommentHandItem extends  PureComponent{
 
     render(){
 
-        const {leftTitle,showValue,textStyle,handel}=this.props;
+        const {leftTitle,showValue,textStyle,warpstyle,handel}=this.props;
         return (
 
-            <TouchableOpacity style={styles.commentHandeItem}>
+            <TouchableOpacity style={[styles.commentHandeItem,warpstyle] }onPress={handel}>
                 <Text style={styles.commentListItemLeft}>{leftTitle}</Text>
                 <Text style={[styles.commentListItemRight,textStyle]}>{showValue}</Text>
                 <Image style={{width:adapeSize(20),height:adapeSize(16),marginRight:adapeSize(10)}} source={require('../../../../images/mainImage/celljiantou.png')}/>
@@ -296,7 +307,7 @@ export class CommnetListItem extends PureComponent{
 
    render(){
 
-       const {leftTitle,showValue,textStyle}=this.props;
+       const {leftTitle,showValue,textStyle,}=this.props;
        return (
 
            <View style={styles.commentListItemView}>
@@ -316,18 +327,92 @@ export class CGDCarItem extends PureComponent{
 
     render(){
 
-        return(
-            <View style={styles.CGDCarWarp}>
+        const {url,title,obdState,shouxuState,date,onPress,deletePress}=this.props;
 
-                <Image source={require('../../../../images/financeImages/car.png')} style={styles.CGDCarImage}/>
+        return(
+            <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={styles.CGDCarWarp}>
+
+                <Image source={{uri:url}} style={styles.CGDCarImage}/>
                 <View style={styles.CGDInstWarpTop}>
-                    <Text style={styles.CGDInstTitle} numberOfLines={2}>[北京]奥迪7(进口) 2014款 FSI fuck 技术型</Text>
+                    <Text style={styles.CGDInstTitle} numberOfLines={2}>{title}</Text>
+                    <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
+                        <View style={[styles.carItemFlage,obdState==1?{backgroundColor:'#ffffff'}:
+                        {backgroundColor:'#d8d8d8'}]}><Text >OBD</Text></View>
+                        <View style={[styles.carItemFlage,
+                        typeof(shouxuState)=="undefined"?{width:0}:{width:adapeSize(60),
+                        marginLeft:adapeSize(5)},shouxuState==1?{backgroundColor:'#ffffff'}
+                        :{backgroundColor:'#d8d8d8'}]}>
+                            <Text style={{paddingTop:adapeSize(1),paddingBottom:adapeSize(1)}}>交易发票
+                            </Text></View>
+                    </View>
+
                     <View style={styles.CGDInstWarpBooton}>
-                        <Text style={styles.CGDInserDate}>2014-6-12</Text>
-                        <Text style={styles.CGDInsetPrice}>12W</Text>
+                        <Text style={styles.CGDInserDate}>{date}</Text>
                     </View>
                 </View>
-            </View>
+                <TouchableOpacity style={{justifyContent:'center',alignItems:'center',marginRight:adapeSize(10)}} onPress={deletePress}>
+                    <Text style={{color:'red'}}>{deletePress&&'删除'}</Text>
+                </TouchableOpacity>
+            </TouchableOpacity>
+
+        )
+    }
+
+
+
+}
+
+export class CGDCarItems extends PureComponent{
+
+    getStateStyle=(obd_bind_status,obd_audit_status,invoice_upload_status,invoice_audit_status)=>{
+        let obdclor = '#d8d8d8';
+        let invoice = '#d8d8d8';
+        if(obd_bind_status=='1'){
+            if(obd_audit_status=='1'){
+                obdclor = '#00ff00';
+            }else if(obd_audit_status=='2'){
+                obdclor = '#ff0000';
+            }
+        }
+        if(invoice_upload_status=='1'){
+            if(invoice_audit_status=='1'){
+                invoice = '#00ff00';
+            }else if(invoice_audit_status=='2'){
+                invoice = '#ff0000';
+            }
+        }
+
+        return {obdColor:obdclor,invoiceClolr:invoice}
+    }
+
+        render(){
+
+        const {url,title,invoice_upload_status,obd_bind_status,obd_audit_status,invoice_audit_status,date,onPress,deletePress}=this.props;
+
+        const colorstyle =this.getStateStyle(obd_bind_status,obd_audit_status,invoice_upload_status,invoice_audit_status);
+
+        return(
+            <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={styles.CGDCarWarp}>
+
+                <Image source={{uri:url}} style={styles.CGDCarImage}/>
+                <View style={styles.CGDInstWarpTop}>
+                    <Text style={styles.CGDInstTitle} numberOfLines={2}>{title}</Text>
+                    <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
+                        <View style={[styles.carItemFlage,{backgroundColor:colorstyle.obdColor}]}><Text >OBD</Text></View>
+                        <View style={[styles.carItemFlage,
+                        typeof(invoice_upload_status)=="undefined"?{width:0}:{width:adapeSize(60),
+                        marginLeft:adapeSize(5)},{backgroundColor:colorstyle.invoiceClolr}]}>
+                            <Text style={{paddingTop:adapeSize(1),paddingBottom:adapeSize(1)}}>交易发票
+                            </Text></View>
+                    </View>
+                    <View style={styles.CGDInstWarpBooton}>
+                        <Text style={styles.CGDInserDate}>{date}</Text>
+                    </View>
+                </View>
+                <TouchableOpacity style={{justifyContent:'center',alignItems:'center',marginRight:adapeSize(10)}} onPress={deletePress}>
+                    <Text style={{color:'red'}}>{deletePress&&'删除'}</Text>
+                </TouchableOpacity>
+            </TouchableOpacity>
 
         )
     }
@@ -367,7 +452,11 @@ const styles = StyleSheet.create({
 
 
     },
-
+    carItemFlage:{
+        width:adapeSize(45),
+        alignItems:'center',
+    }
+    ,
     itemInput: {
 
         flex: 1,
@@ -531,7 +620,8 @@ const styles = StyleSheet.create({
 
         flexDirection:'row',
         justifyContent:'flex-start',
-        backgroundColor:'white'
+        backgroundColor:'white',
+
 
     },
     CGDCarImage:{
@@ -544,12 +634,12 @@ const styles = StyleSheet.create({
     },
     CGDInstWarpTop:{
 
+
         marginLeft:adapeSize(10),
         marginRight:adapeSize(15),
-        justifyContent:'flex-start',
         flex:1,
         marginTop:adapeSize(15),
-        marginBottom:adapeSize(15)
+        marginBottom:adapeSize(15),
     },
 
     CGDInstWarpBooton:{
@@ -565,7 +655,6 @@ const styles = StyleSheet.create({
     CGDInstTitle:{
 
         fontSize:fontadapeSize(14),
-
 
     },
     CGDInserDate:{

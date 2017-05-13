@@ -7,13 +7,12 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback,
     InteractionManager,
-    ListView,
+    ListView
 } from "react-native";
 import BaseComponent from "../component/BaseComponent";
 import NavigationBar from "../component/NavigationBar";
 import * as FontAndColor from "../constant/fontAndColor";
 import PixelUtil from "../utils/PixelUtil";
-import LoginFailSmsNo from "./LoginFailSmsNo";
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');

@@ -7,6 +7,7 @@ import {
     TouchableHighlight,
     BackAndroid,
     InteractionManager,
+    TouchableWithoutFeedback,
     Dimensions,
     Image,
     Text,
@@ -182,5 +183,27 @@ export default class BaseComponent extends Component {
 
     }
 
-
+    loadingView = () => {
+        let view;
+        if (this.state.loading == true) {
+            view = <TouchableWithoutFeedback onPress={() => {
+            }}>
+                <View
+                    style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        position: 'absolute',
+                        width: width,
+                        height: height,
+                    }}>
+                    <Image style={{width: 60, height: 60}}
+                           source={require('../../images/setDataLoading.gif')}/>
+                </View>
+            </TouchableWithoutFeedback>
+        } else {
+            view = null;
+        }
+        return view;
+    }
 }

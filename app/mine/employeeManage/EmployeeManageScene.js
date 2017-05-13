@@ -59,6 +59,7 @@ export default class EmployeeManageScene extends BaseComponent {
                     }
                 },
                 (error) => {
+                    this.props.showToast(error.mjson.msg);
                     this.setState({renderPlaceholderOnly: 'error'});
                 });
     }

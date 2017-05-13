@@ -27,6 +27,7 @@ import RepaymentInfoContentItem from './component/RepaymentInfoContentItem';
 import RepaymentInfoBottomItem from './component/RepaymentInfoBottomItem';
 import AllBottomItem from './component/AllBottomItem';
 import MyButton from '../../component/MyButton';
+import ServerMoneyListModal from '../../component/ServerMoneyListModal';
 let moneyList = [];
 let nameList = [];
 let adjustLsit = [];
@@ -89,7 +90,8 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                     moneyList.push({name: '综合费率', data: movies.loan_rebate+'%'});
                     moneyList.push({name: '利息总额', data: movies.interest_total});
                     moneyList.push({name: '已还利息', data: movies.interest});
-                    moneyList.push({name: '贷款利息', data: movies.interest_other});
+                    moneyList.push({name: '贷款利息', data: movies.interest_other})
+                    moneyList.push({name: '服务费', data: movies.all_fee});
 
                     nameList.push({name: '渠道名称', data: movies.qvdaoname});
                     nameList.push({name: '还款账户', data: movies.bank_info.repaymentaccount});
@@ -99,8 +101,8 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                     nameList.push({name: '保证金', data: movies.bondmny});
 
                     adjustLsit.push({name: '使用优惠券数量', data: movies.coupon_info.coupon_number});
-                    adjustLsit.push({name: '使用优惠券金额', data: movies.coupon_info.coupon_repayment});
-                    adjustLsit.push({name: '优惠券还息金额', data: movies.coupon_info.coupon_usable});
+                    adjustLsit.push({name: '使用优惠券金额', data: movies.coupon_info.coupon_usable});
+                    adjustLsit.push({name: '优惠券还息金额', data: movies.coupon_info.coupon_repayment});
                     this.setState({renderPlaceholderOnly: 'success', loan_day: movies.loan_day});
                 },
                 (error) => {
@@ -158,6 +160,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                 />
                 {movies.paymen_status == '0' ? this.props.from == 'SingleRepaymentPage' ?
                         <MyButton {...this.buttonParams}/> : <View/> : <View/>}
+                <ServerMoneyListModal ref="servermoneylistmodal"/>
             </View>
         );
     }
@@ -181,7 +184,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
             )
         } else if (rowId == 1) {
             return (
-                <RepaymentInfoDateItem callBack={(time)=>{
+                <RepaymentInfoDateItem loanday={movies.loan_day} status={movies.paymen_status} callBack={(time)=>{
                     let selecttime = time/1000;
                     let lasttime = parseFloat(Date.parse(movies.dead_line)/1000);
                     let firsttime = parseFloat(movies.loan_time);
@@ -204,6 +207,8 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                     }
                     let currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;
                     let newList = ['1', '2', '3', '4', '5', '6','7'];
+                    console.log((selecttime-parseFloat(movies.loan_time))/60/60/24);
+                    console.log(currentdate);
                     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                     this.setState({
                         source: ds.cloneWithRows(newList),
@@ -214,7 +219,9 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
             )
         } else if (rowId == 2) {
             return (
-                <RepaymentInfoContentItem items={moneyList}/>
+                <RepaymentInfoContentItem items={moneyList} onPress={()=>{
+                        this.refs.servermoneylistmodal.changeShowType(true,movies.list_fee);
+                }}/>
             )
         }else if (rowId == 3) {
             return (
@@ -225,15 +232,31 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                 <RepaymentInfoContentItem items={nameList}/>
             )
         } else if (rowId == 5) {
+            let name = '';
+            let money = 0;
+            let formula = '';
+            if(parseFloat(movies.all_fee)>0){
+                money = (parseFloat(movies.loan_mny)
+                +parseFloat(movies.loan_mny)*parseFloat(movies.loan_rebate)/100/360*
+                this.state.loan_day-parseFloat(movies.bondmny)-parseFloat(movies.interest)+parseFloat(movies.all_fee)).toFixed(2);
+                name = '应还总额=本金+本金*综合费率/360*计息天数-保证金-已还利息'+'+服务费';
+                formula = '='+movies.loan_mny+'+'
+                    +movies.loan_mny+'*'+movies.loan_rebate/100+'/360*'
+                    +this.state.loan_day+'-'+movies.bondmny+'-'+movies.interest+'+'+movies.all_fee
+            }else{
+                money = (parseFloat(movies.loan_mny)
+                +parseFloat(movies.loan_mny)*parseFloat(movies.loan_rebate)/100/360*
+                this.state.loan_day-parseFloat(movies.bondmny)-parseFloat(movies.interest)).toFixed(2);
+                name = '应还总额=本金+本金*综合费率/360*计息天数-保证金-已还利息';
+                formula = '='+movies.loan_mny+'+'
+                    +movies.loan_mny+'*'+movies.loan_rebate/100+'/360*'
+                    +this.state.loan_day+'-'+movies.bondmny+'-'+movies.interest;
+            }
             return (
                 <RepaymentInfoBottomItem ref="RepaymentInfoBottomItem"
-                                         allMoney={(parseFloat(movies.loan_mny)
-                                         +parseFloat(movies.loan_mny)*parseFloat(movies.loan_rebate)/100/360*
-                                         this.state.loan_day-parseFloat(movies.bondmny)).toFixed(2)}
-                                         formula={'='+movies.loan_mny+'+'
-                                         +movies.loan_mny+'*'+movies.loan_rebate/100+'/360*'
-                                         +this.state.loan_day+'-'+movies.bondmny}
-                                         formulaStr={'应还总额=本金+本金*综合费率/360*计息天数-保证金'}
+                                         allMoney={money}
+                                         formula={formula}
+                                         formulaStr={name}
                 />
             )
         } else {

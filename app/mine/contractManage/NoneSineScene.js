@@ -43,7 +43,8 @@ export default class NoneSineScene extends BaseComponent {
             api : Urls.CONTRACTLIST,
             opt_user_id: this.props.opt_user_id,
             sign_status: '1',
-        };        request(Urls.FINANCE, 'Post', maps)
+        };
+        request(Urls.FINANCE, 'Post', maps)
 
             .then((response) => {
                     if (page == 1 && response.mjson.data.contract_list.length <= 0) {
@@ -138,7 +139,7 @@ export default class NoneSineScene extends BaseComponent {
         return (
             <View style={styles.rowView}>
                 <View style={styles.rowLeft}>
-                <Text style={styles.rowLeftTitle}>{rowData.product_type_ch}</Text>
+                <Text style={styles.rowLeftTitle}>{rowData.contract_name}</Text>
                 <Text style={styles.rowLeftTitle1}>{rowData.payment_number}</Text>
                 </View>
                 <TouchableOpacity
@@ -151,6 +152,7 @@ export default class NoneSineScene extends BaseComponent {
                                 contract_id: rowData.contract_id,   //合同ID
                                 contract_log_id: rowData.contract_log_id,	//合同日志ID
                                 product_type_code: rowData.product_type_code,	//产品类型编码
+                                opt_user_id:this.props.opt_user_id,
                                 showButton: true,
                                 callBack: () => {
                                     allSouce = [];

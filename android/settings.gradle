@@ -1,11 +1,11 @@
 rootProject.name = 'FE_Sass'
-include ':react-native-wechat'
-project(':react-native-wechat').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-wechat/android')
+
+include ':react-native-vin-scan', ':react-native-qr-scan', ':react-native-custom-camera'
+
 include ':react-native-update'
 project(':react-native-update').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-update/android')
-include ':react-native-umeng-push'
-project(':react-native-umeng-push').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-umeng-push/android')
-include ':react-native-image-picker', ':react-native-vin-scan'
+
+include ':react-native-image-picker'
 project(':react-native-image-picker').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-image-picker/android')
 
 include ':react-native-picker'

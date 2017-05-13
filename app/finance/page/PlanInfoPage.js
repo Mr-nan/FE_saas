@@ -44,6 +44,13 @@ export default class PlanInfoPage extends BaseComponent {
         relist = [];
     }
 
+    allRefresh = () => {
+        list = [];
+        relist = [];
+        this.getData();
+    }
+
+
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: 'loading'});
@@ -61,13 +68,16 @@ export default class PlanInfoPage extends BaseComponent {
             loan_number: this.props.loan_number,
             type: '3',
         };
+        if(this.props.planid){
+            maps.planid=this.props.planid
+        }
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
                     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                     list = response.mjson.data.list;
                     relist = response.mjson.data.relist;
                     if (list != null && list.length > 0) {
-                        this.setState({renderPlaceholderOnly: 'success', dataSource: ds.cloneWithRows(list)});
+                        this.setState({renderPlaceholderOnly: 'success', dataSource: ds.cloneWithRows(list),xuanzhong:''});
                     } else {
                         this.setState({renderPlaceholderOnly: 'null'});
                     }
@@ -136,7 +146,14 @@ export default class PlanInfoPage extends BaseComponent {
         return (
             <TouchableOpacity style={styles.rowView}
                               onPress={() => {
-                                  this._rowClick(rowID)
+                                  if(rowData.adjustmoney!='0'){
+                                      if(rowData.relist){
+                                          this._moneyAdjustClick(rowID)
+                                      }
+                                  }else{
+                                      this._rowClick(rowID)
+                                  }
+
                               }}>
                 <View style={styles.textAllStyle}>
                     <Text style={styles.rowTextStyle}>{rowData.dead_line}</Text>

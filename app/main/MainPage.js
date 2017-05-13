@@ -87,6 +87,9 @@ export default class MainPage extends BaseComponent {
                     if(openSelectBranch=='true'){
                         this.setState({selectedTab: ref})
                         StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'true');
+                    }else if(openSelectBranch == 'checkRecommend'){
+                        this.setState({selectedTab: ref})
+                        StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND,'true');
                     }else{
                         if(ref==='financePage'){
                              StorageUtil.mGetItem(storageKeyNames.NEED_GESTURE,(datas)=>{
@@ -148,6 +151,9 @@ export default class MainPage extends BaseComponent {
                     if(openSelectBranch=='true'){
                         this.setState({selectedTab: ref})
                         StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'true');
+                    } else if(openSelectBranch == 'checkRecommend'){
+                        this.setState({selectedTab: ref})
+                        StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND,'true');
                     }else{
                         if(ref==='financePage'){
                              StorageUtil.mGetItem(storageKeyNames.NEED_GESTURE,(datas)=>{
@@ -201,6 +207,12 @@ export default class MainPage extends BaseComponent {
                     if(openSelectBranch=='true'){
                         this.setState({selectedTab: ref})
                         StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'true');
+
+                    }else if(openSelectBranch == 'checkRecommend'){
+
+                        this.setState({selectedTab: ref})
+                        StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND,'true');
+
                     }else{
                         if(ref==='financePage'){
                              StorageUtil.mGetItem(storageKeyNames.NEED_GESTURE,(datas)=>{
@@ -271,6 +283,9 @@ export default class MainPage extends BaseComponent {
                     if(openSelectBranch=='true'){
                         this.setState({selectedTab: ref})
                         StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'true');
+                    }else if(openSelectBranch == 'checkRecommend'){
+                        this.setState({selectedTab: ref})
+                        StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND,'true');
                     }else{
                         if(ref==='financePage'){
                              StorageUtil.mGetItem(storageKeyNames.NEED_GESTURE,(datas)=>{

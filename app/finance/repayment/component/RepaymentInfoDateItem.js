@@ -46,9 +46,12 @@ export  default class RepaymentInfoDateItem extends PureComponent {
                     <Text style={[styles.loanCodeStyle]}>还款日期</Text>
                 </View>
                 <TouchableOpacity onPress={()=>{
-                 this.setState({
+                    if(this.props.status=='0'){
+                        this.setState({
                      isDateTimePickerVisible:true
                  });
+                    }
+
                 }} activeOpacity={0.8}
                                   style={{flex:1,justifyContent:'flex-end',alignItems:'center',flexDirection:'row'}}>
                     <Text style={[styles.loanCodeStyle,{color:fontAndColor.COLORA2,marginRight:Pixel.getPixel(10)}]}>{this.state.selectTime}</Text>

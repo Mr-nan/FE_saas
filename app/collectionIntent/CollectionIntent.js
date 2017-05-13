@@ -21,13 +21,16 @@ import CarBrandSelectScene  from './../carSource/CarBrandSelectScene';
 import  {request}from '../utils/RequestUtil';
 import * as AppUrls from "../constant/appUrls";
 let isHeadInteraction = false;
+let auto_age = [];
+let auto_mileage = [];
 export default class CollectionIntent extends BaseComponent {
 
     initFinish = () => {
-        this.readData();
+        this.loadCarConfigData();
     }
 
     loadData = () => {
+        this.props.showModal(true);
         let yearArr = [];
         let mileArr = [];
         if (this.brandSeriesArr.length == 0 && this.carYearArr.size == 0 && this.mileageArr.size == 0) {
@@ -60,17 +63,52 @@ export default class CollectionIntent extends BaseComponent {
             }).then((response) => {
 
                 if (response.mjson.code == '1') {
-
+                    this.props.showModal(false);
                     this.props.showToast("提交成功");
                     this.backPage();
                 }
 
             }, (error) => {
-
-
+                    this.props.showModal(false);
+                    this.props.showToast(error.msg);
             });
 
         }
+    }
+
+    // 获取筛选数据
+    loadCarConfigData=()=>{
+        request(AppUrls.CAR_CONFIG,'post',{}).then((response) => {
+            auto_age=[];
+            auto_mileage = [];
+            if(response.mjson.code=='1'){
+
+                if(response.mjson.data == null){
+                    return ;
+                }else{
+                    for(let value of response.mjson.data.auto_age){
+                        auto_age.push({
+                            title: value.name,
+                            isSelected: false,
+                            value: value.value
+                        });
+                    }
+                    for(let value of response.mjson.data.auto_mileage){
+                        auto_mileage.push({
+                            title: value.name,
+                            isSelected: false,
+                            value: value.value
+                        });
+                    }
+                    this.setState({arr1:auto_age,arr2:auto_mileage});
+                    this.readData();
+                    console.log(this.state.arr1);
+                    console.log(this.state.arr2);
+                }
+            }
+        }, (error) => {
+            this.props.showToast(error.msg);
+        });
     }
 
     readData = () => {
@@ -134,59 +172,12 @@ export default class CollectionIntent extends BaseComponent {
         this.brandSeriesArr = [];
         this.isAdd = false;
         isHeadInteraction = this.props.isHeadInteraction;
+
         this.state = {
             renderPlaceholderOnly: 'blank',
             arr: [],
-            arr1: [{
-                title: '1年以内',
-                isSelected: false,
-                value: '0|1'
-            }, {
-                title: '1-3年',
-                isSelected: false,
-                value: '1|3'
-            }, {
-                title: '3-5年',
-                isSelected: false,
-                value: '3|5'
-            }, {
-                title: '5-8年',
-                isSelected: false,
-                value: '5|8'
-            }, {
-                title: '8-10年',
-                isSelected: false,
-                value: '8|10'
-            }, {
-                title: '10年以上',
-                isSelected: false,
-                value: '10|0'
-            }],
-            arr2: [{
-                title: '1万公里以内',
-                isSelected: false,
-                value: '0|1'
-            }, {
-                title: '1-3万公里',
-                isSelected: false,
-                value: '1|3'
-            }, {
-                title: '3-5万公里',
-                isSelected: false,
-                value: '3|5'
-            }, {
-                title: '5-8万公里',
-                isSelected: false,
-                value: '5|8'
-            }, {
-                title: '8-10万公里',
-                isSelected: false,
-                value: '8|10'
-            }, {
-                title: '10万公里以上',
-                isSelected: false,
-                value: '10|0'
-            }],
+            arr1: [],
+            arr2: [],
         };
         this.selectConfirm = this.selectConfirm.bind(this);
         this.deleteItem = this.deleteItem.bind(this);

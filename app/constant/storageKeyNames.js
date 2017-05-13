@@ -1,5 +1,5 @@
-export const VERSON_NAME = "2.1"; // 版本名
-export const VERSON_CODE = "1"; // 版本号
+export const VERSON_NAME = "2.4.1"; // 版本名
+export const VERSON_CODE = "6"; // 版本号
 export const ISLOGIN = "islogin";//标识用户是否登录
 export const CAR_SEARCH = "car_search";
 export const CITY_SEARCH = "city_search";
@@ -21,3 +21,4 @@ export const USER_LEVEL = "user_level"; //	0：初级注册用户，1:正式用�
 export const NEED_GESTURE = "need_gesture"; //	是否需要手势解锁
 /* userinfo end */
 export const NEED_OPENBRAND = "need_openbrand"; //	需要打开车型列表
+export const NEED_CHECK_RECOMMEND = "checkRecommend";   // 取消推荐车源

@@ -226,7 +226,7 @@ export default class HomeScene extends BaseComponet {
         } else {
             return (
                 <TouchableOpacity onPress={()=> {
-                    this.props.jumpScene('carpage');
+                    this.props.jumpScene('carpage','checkRecommend');
                 }} activeOpacity={0.8} style={{
                     width: width, height: Pixel.getPixel(60), backgroundColor: fontAndClolr.COLORA3,
                     alignItems: 'center'
@@ -246,7 +246,7 @@ export default class HomeScene extends BaseComponet {
 
     homeOnPress = (title) => {
         if (title == '收车') {
-            this.props.jumpScene('carpage');
+            this.props.jumpScene('carpage','checkRecommend');
         } else if (title == '卖车') {
             this.props.callBack({name:'CarMySourceScene',component:CarMySourceScene,params:{}});
         } else if (title == '借款') {
@@ -327,7 +327,7 @@ export default class HomeScene extends BaseComponet {
 
                     </View>
                     <TouchableOpacity style={{marginRight: Pixel.getPixel(20)}} onPress={()=> {
-                        this.props.jumpScene('carpage');
+                        this.props.jumpScene('carpage','checkRecommend');
                     }}>
                         <View style={{
                             flexDirection: 'row',

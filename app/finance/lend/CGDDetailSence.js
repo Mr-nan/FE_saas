@@ -6,23 +6,33 @@ import {
     Image,
     Text
 } from 'react-native';
-
-import {CommnetListItem, CommentHandItem} from './component/ComponentBlob'
-import {width, height, fontadapeSize, adapeSize,STATECODE,PAGECOLOR,getRowData,getSectionData,changeToMillion} from './component/MethodComponent'
+import AllNavigatior from '../../component/AllNavigationView'
+import {CommnetListItem, CommentHandItem, commnetStyle, CommenButton,CGDCarItems} from './component/ComponentBlob'
+import {
+    width,
+    height,
+    fontadapeSize,
+    adapeSize,
+    STATECODE,
+    PAGECOLOR,
+    getRowData,
+    getSectionData,
+    changeToMillion
+} from './component/MethodComponent'
 import  AllNavigationView from '../../component/AllNavigationView';
 import BaseComponent from '../../component/BaseComponent';
 import {request} from '../../utils/RequestUtil'
 import *as apis from '../../constant/appUrls'
 import ImagePageView from 'react-native-viewpager'
+import AmountConfirm from './AmountConfirm';
+import CGDCarDetailScenes from './CGDCarDetailScenes'
+import PurchaseLoanStatusScene from './PurchaseLoanStatusScene'
+import {LendSuccessAlert,ModalAlert} from './component/ModelComponent'
+let ControlState = [];
+let loan_code;
+import ContractInfoScene from './ContractInfoScene';
 
-const handTitltBlob= {
-
-    cancle:'取消借款',
-    confim:'确认金额',
-    obeservery:'车辆监控'
-
-}
-export default class OrderCarDetailScene extends BaseComponent{
+export default class OrderCarDetailScene extends BaseComponent {
 
     constructor(props) {
         super(props);
@@ -37,167 +47,321 @@ export default class OrderCarDetailScene extends BaseComponent{
         )//
         const ImageData = new ImagePageView.DataSource({pageHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: ds.cloneWithRowsAndSections(this.titleNameBlob({},['https://www.baidu.com/img/bd_logo1.png','https://www.baidu.com/img/bd_logo1.png'])),
+            dataSource: ds.cloneWithRowsAndSections(this.titleNameBlob({}, [])),
             renderPlaceholderOnly: STATECODE.loading,
-            imagePikerData: ImageData.cloneWithPages(['https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1490350847146&di=9bbc00bb5ae5df9c1b550cf76f710fac&imgtype=0&src=http%3A%2F%2Fimg4.duitang.com%2Fuploads%2Fitem%2F201508%2F23%2F20150823033054_AUiBL.thumb.700_0.jpeg','https://www.baidu.com/img/bd_logo1.png'])
         }
+        OrderHanderState = [];
     }
 
     initFinish() {
-
-        // this.getCarInfo();
+        this.getLendInfo();
     }
 
-    // getCarInfo=()=>{
-    //
-    //     let maps = {
-    //         api: apis.GET_CAR_INFO,
-    //         auto_id: this.props.auto_id,
-    //         type:this.props.type
-    //
-    //     };
-    //     request(apis.FINANCE, 'Post', maps)
-    //         .then((response) => {
-    //
-    //                 let tempjson = response.mjson.data
-    //
-    //                 tempjson.img_list.map((item)=>{
-    //
-    //                     ImageSouce.imageSouce.push(item.fileurl)
-    //                 })
-    //
-    //
-    //                 this.setState({
-    //                     renderPlaceholderOnly: STATECODE.loadSuccess,
-    //                     dataSource:this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(tempjson,tempjson.img_list)),
-    //                     imagePikerData:this.state.imagePikerData.cloneWithPages(ImageSouce.imageSouce),
-    //                 })
-    //             },
-    //             (error) => {
-    //                 this.setState({
-    //                     renderPlaceholderOnly:STATECODE.loadError,
-    //                 })
-    //                 if(error.mycode!= -300||error.mycode!= -500){
-    //                     this.props.showToast(error.mjson.msg);
-    //
-    //                 }else {
-    //                     this.props.showToast('服务器连接有问题')
-    //
-    //                 }
-    //             });
-    // }
+    getLendInfo = () => {
+
+        let maps = {
+            api: apis.GET_APPLY_INFO,
+            loan_code: this.props.loanNumber
+        };
+
+        request(apis.FINANCE, 'Post', maps)
+            .then((response) => {
+                    let tempjson = response.mjson.data;
+                    ControlState = this.confimOrderState(Number.parseInt(tempjson.payment_status), Number.parseInt(tempjson.payment_schedule))
+
+                    this.getCarListInfo(tempjson);
+                },
+                (error) => {
+
+                    this.setState({
+                        renderPlaceholderOnly: STATECODE.loadError
+                    })
+                    if (error.mycode != -300 || error.mycode != -500) {
+                        this.props.showToast(error.mjson.msg);
+
+                    } else {
+
+                        this.props.showToast('服务器连接有问题')
+                    }
+                });
 
 
-    titleNameBlob=(jsonData,carData)=>{
+    }
+    getCarListInfo = (lendInfo) => {
+        let maps = {
+            api: apis.AUTOLIST,
+            payment_number: this.props.loanNumber
+        };
+        request(apis.FINANCE, 'Post', maps)
+            .then((response) => {
+                    let tempjson = response.mjson.data;
+                    this.setState({
+                        dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(lendInfo, tempjson.list)),
+                        renderPlaceholderOnly: STATECODE.loadSuccess
+                    })
+                },
+                (error) => {
 
-        let dataSource = {};
-        let section1=[
-            {title: '借款单号', key: '北京'},
-            {title:'状态',key:'2015 款 奥迪'},
-            {title: '产品类型', key: 'LVF900123sdadsasd'},
-            {title: '借款类型', key:'白色'},
-            {title: '借款金额', key: '10w公里'},
-            {title: '借款费率', key: '2016年五月'},
-            {title: '借款期限', key: '王波'},
-            {title: '用款时间',     key:'李洋'},
-        ]
-        dataSource['section1']=section1
-        if(carData.length>0){
-            dataSource['section2']=carData;
+                    this.setState({
+                        renderPlaceholderOnly: STATECODE.loadError
+                    })
+                    if (error.mycode != -300 || error.mycode != -500) {
+                        this.props.showToast(error.mjson.msg);
+
+                    } else {
+
+                        this.props.showToast('服务器连接有问题')
+                    }
+                });
+
+    }
+    carItemClick = (carId) => {
+
+        navigatorParams = {
+            name: 'CGDCarDetailScenes',
+            component: CGDCarDetailScenes,
+            params: {
+                carId: carId
+            }
         }
+        this.toNextPage(navigatorParams);
+    }
+    canclelend=()=>{
 
+        let maps = {
+            api: apis.CANCEL_LOAN,
+            loan_code: this.props.loanNumber
+        };
+        this.props.showModal(true);
+        request(apis.FINANCE, 'Post', maps)
+            .then((response) => {
+                    this.props.showModal(false);
+                    this.cancleSuccess.setModelVisible(true);
+                },
+                (error) => {
+                    this.props.showModal(false)
+                    if (error.mycode != -300 || error.mycode != -500) {
+                        this.props.showToast(error.mjson.msg);
+
+                    } else {
+
+                        this.props.showToast('服务器连接有问题')
+                    }
+                });
+
+    }
+
+
+    titleNameBlob = (jsonData, carData) => {
+        loan_code = jsonData.loan_code;
+        let dataSource = {};
+        let section1 = [
+            {title: '借款单号', key: jsonData.loan_code},
+            {title: '状态', key: jsonData.payment_status_str},
+            {title: '产品类型', key: jsonData.product_type},
+            //{title: '借款类型', key: '---'},
+            {title: '借款金额', key: jsonData.payment_loanmny_str},
+            {title: '借款费率', key: jsonData.payment_rate_str},
+            {title: '借款期限', key: jsonData.loanperiodstr},
+            {title: '用款时间', key: jsonData.use_time_str},
+        ]
+        dataSource['section1'] = section1
+        if (carData.length > 0) {
+
+            let tempCarDate = [];
+
+            carData.map((item) => {
+
+                tempCarDate.push(
+                    {
+                        brand_name: item.brand_name,
+                        icon: item.cover.icon,
+                        frame_number: item.frame_number,
+                        price: item.first_assess_loan,//放款额
+                        obd_bind_status: item.obd_bind_status,//车牌号
+                        info_id: item.info_id,
+                        model_name: item.model_name,
+                        init_reg: item.init_reg,
+                        base_id: item.base_id,
+                        mileage:item.mileage,
+                        invoice_upload_status:item.invoice_upload_status,
+                        obd_audit_status:item.obd_audit_status,
+                        invoice_audit_status:item.invoice_audit_status
+                    }
+                )
+                dataSource['section2'] = tempCarDate;
+            })
+        }
         return dataSource;
     }
 
-    renderImagePage=(data,pageId)=>{
+    confimOrderState = (state, isComplete) => {
+        let NameBlobs = [];
 
-        return (
-            <Image source={{uri:data}} style={styles.thumb}/>
-        )
+        if (state > 0 && state <= 32 || state == 50) {
+            NameBlobs = ['取消借款']
+        } else if (state == 33) {
+            NameBlobs = ['取消借款', '确认金额']
+        } else if (state === 35) {
+            NameBlobs = ['取消借款','签署合同']
+        } else if (state == 40 || state == 42 || isComplete == 4) {
+            NameBlobs = ['查看合同']
+        } else if (state == 41) {
+            NameBlobs = ['取消借款', '确认金额', '查看合同']
+        }
 
+        return NameBlobs;
     }
+
 
     renderRow = (rowData, sectionID, rowId, highlightRow) => {
 
+        if (sectionID === 'section1') {
 
-        if (sectionID === 'section2') {
-            if(rowId==='0'){
-                return(
-                    <View style={styles.ImageBackView}>
-                        <Text style={styles.thumbTitle}>{'车辆照片'}</Text>
-                        <ImagePageView
+            if (rowData.title === '状态') {
 
-                            dataSource={this.state.imagePikerData}    //数据源（必须）
-                            renderPage={this.renderImagePage}     //page页面渲染方法（必须）
-                            isLoop={false}                        //是否可以循环
-                            autoPlay={false}                      //是否自动
-                            locked={false}                        //为true时禁止滑动翻页
-                        />
+                return (
+                    <CommentHandItem warpstyle={{height: adapeSize(44)}} leftTitle={rowData.title}
+                                     showValue={rowData.key} textStyle={{color: PAGECOLOR.COLORA1}} handel={() => {
 
-                    </View>
+                        navigatorParams = {
+                            name: 'PurchaseLoanStatusScene',
+                            component: PurchaseLoanStatusScene,
+                            params: {
+                                loanNumber: this.props.loanNumber
+                            }
+                        }
+                        this.toNextPage(navigatorParams);
+
+                    }}/>
                 )
-
-            }else {
-
-                return null;
             }
-        }else if (rowData.title ==='车辆位置'){
-
             return (
-                <CommentHandItem leftTitle={rowData.title} showValue={rowData.key} handel={()=>{}}/>
-            )
+                <CommnetListItem leftTitle={rowData.title} showValue={rowData.key}/>
+            );
+
+        }
+        if (sectionID === 'section2') {
+            //
+            return (<CGDCarItems url={rowData.icon} title={rowData.model_name}
+                                invoice_upload_status ={rowData.invoice_upload_status}
+                                obd_bind_status={rowData.obd_bind_status}
+                                obd_audit_status={rowData.obd_audit_status}
+                                invoice_audit_status={rowData.invoice_audit_status}
+                                date={rowData.init_reg+' / '+rowData.mileage+'万公里'}  onPress={() => {
+                this.carItemClick(rowData.info_id);
+            }}/>)
         }
 
-        return (
-            <CommnetListItem textStyle={rowData.title === '放款额' ? {color: PAGECOLOR.COLORB2} : null} leftTitle={rowData.title} showValue={rowData.key}/>
-        );
     }
     renderSectionHeader = (sectionData, sectionID) => {
+
+        if (sectionID === 'section2') {
+
+            return (
+                <View style={styles.section2Style}>
+                    <Text style={styles.sectionText}>车辆信息</Text>
+                </View>
+            )
+        }
         return (
-
             <View style={styles.sectionStyle}>
-
             </View>
         )
-
     }
-    renderSeparator =(sectionID,rowId,adjacentRowHighlighted)=>{
+    renderSeparator = (sectionID, rowId, adjacentRowHighlighted) => {
 
-        let separtrorHegigth =1;
-        if (rowId==='1'){
-            separtrorHegigth=10;
+        let separtrorHegigth = 1;
+        if (rowId === '1') {
+            separtrorHegigth = 10;
         }
         return (
             <View key={`${sectionID}-${rowId}`} style={{
-                height:adjacentRowHighlighted?2:separtrorHegigth,
-                backgroundColor:PAGECOLOR.COLORA3
+                height: adjacentRowHighlighted ? 2 : separtrorHegigth,
+                backgroundColor: PAGECOLOR.COLORA3
             }}>
             </View>
         )
     }
+    buttonClick = (title) => {
+        if (title == '确认金额') {
+            this.toNextPage({
+                name: 'AmountConfirm',
+                component: AmountConfirm,
+                params: {
+                    loan_code: loan_code,
+                    callback: () => {
+                        this.getLendInfo();
+                    }
+                },
+            })
+        } else if (title == '签署合同') {
+            this.toNextPage({
+                name: 'ContractInfoScene', component: ContractInfoScene,
+                params: {loan_code: loan_code, showButton: true}
+            })
+        } else if (title == '查看合同') {
+            this.toNextPage({
+                name: 'ContractInfoScene', component: ContractInfoScene,
+                params: {loan_code: loan_code, showButton: false}
+            })
+        }else if (title == '取消借款'){
 
-    render(){
+            this.cancle.setModelVisible(true);
+        }
+    }
 
-        // if(this.state.renderPlaceholderOnly!==STATECODE.loadSuccess)
-        // {
-        //     return(
-        //         <View style={styles.container}>
-        //             {this.loadView()}
-        //             <AllNavigationView title='车辆详情' backIconClick={()=>{
-        //                 this.backPage();
-        //             }}/>
-        //         </View>);
-        // }
-        return(
+
+    render() {
+
+        if (this.state.renderPlaceholderOnly !== STATECODE.loadSuccess) {
+            return ( <View style={styles.container}>
+                {this.loadView()}
+                <AllNavigatior title='借款详情' backIconClick={() => {
+                    this.backPage();
+                }}/>
+
+            </View>);
+        }
+
+        let tempBlobs = [];
+        if (ControlState.length > 0) {
+            let lengegth = ControlState.length - 1
+            ControlState.map((item, index) => {
+
+                tempBlobs.push(<CommenButton key={item}
+                                             textStyle={index == lengegth ? {color: 'white'} : {color: PAGECOLOR.COLORB0}}
+                                             buttonStyle={index == lengegth ? styles.buttonStyleFill : styles.buttonStyleNotFill}
+                                             onPress={() => {
+
+                                                 this.buttonClick(item);
+                                             }} title={item}/>)
+            })
+
+        }
+        return (
+
             <View style={styles.container}>
                 <ListView
-                    style={{marginTop:64}}
+                    style={commnetStyle.ListWarp}
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}
                     renderSeparator={this.renderSeparator}
                     renderSectionHeader={this.renderSectionHeader}
                 />
-                <AllNavigationView title='借款详情' backIconClick={()=>{ this.backPage();}}/>
+                <View style={[commnetStyle.bottomWarp, styles.buttonsFlex]}>{tempBlobs}</View>
+                <AllNavigationView title='借款详情' backIconClick={() => {
+                    this.backPage();
+                }}/>
+
+                <ModalAlert ref={(deleteCar)=>{this.cancle=deleteCar}} title='取消借款'subtitle='您确定要取消借款' confimClick={(setHide)=>{
+                    setHide(false);
+                    this.canclelend();
+                }} cancleClick={(setHide)=>{setHide(false)}}/>
+                <LendSuccessAlert  title="取消成功"subtitle='恭喜您取消成功' ref={(success)=>{this.cancleSuccess=success}} confimClick={()=>{
+                      this.props.backRefresh();
+                      this.backToTop()
+                }}/>
             </View>
         )
     }
@@ -210,28 +374,73 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: PAGECOLOR.COLORA3
     },
-    ImageBackView:{
-        backgroundColor:'white'
+    ImageBackView: {
+        backgroundColor: 'white'
 
     },
-    thumbTitle:{
-        marginTop:adapeSize(16),
-        marginBottom:adapeSize(12),
-        fontSize:fontadapeSize(15),
-        marginLeft:adapeSize(14),
+    buttonsFlex: {
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        flexDirection: 'row'
+
     },
-    thumb:{
-        backgroundColor:'white',
+
+    thumbTitle: {
+        marginTop: adapeSize(16),
+        marginBottom: adapeSize(12),
+        fontSize: fontadapeSize(15),
+        marginLeft: adapeSize(14),
+    },
+    thumb: {
+        backgroundColor: 'white',
         height: adapeSize(250),
-        width:width-adapeSize(24),
-        marginLeft:adapeSize(14),
-        marginRight:adapeSize(14)
+        width: width - adapeSize(24),
+        marginLeft: adapeSize(14),
+        marginRight: adapeSize(14)
     },
-    sectionStyle:{
-        backgroundColor:PAGECOLOR.COLORA3,
-        height:adapeSize(10),
-        alignItems:'flex-start',
-        justifyContent:'center'
-    }
+    sectionStyle: {
+        backgroundColor: PAGECOLOR.COLORA3,
+        height: adapeSize(10),
+        alignItems: 'flex-start',
+        justifyContent: 'center'
+    },
+    section2Style: {
+
+        backgroundColor: PAGECOLOR.COLORA3,
+        height: adapeSize(30),
+        alignItems: 'flex-start',
+        justifyContent: 'center'
+    },
+    sectionText: {
+
+        marginLeft: adapeSize(14),
+        color: PAGECOLOR.COLORA2
+    },
+    buttonStyleFill: {
+
+        height: adapeSize(32),
+        backgroundColor: PAGECOLOR.COLORB0,
+        marginRight: adapeSize(15),
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: 5,
+        borderRadius: 5,
+        width: adapeSize(80)
+    },
+    buttonStyleNotFill: {
+
+        height: adapeSize(32),
+        backgroundColor: 'white',
+        marginRight: adapeSize(15),
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: 5,
+        borderRadius: 5,
+        width: adapeSize(80),
+        borderColor: PAGECOLOR.COLORB0,
+        borderWidth: 1
+
+
+    },
 
 })

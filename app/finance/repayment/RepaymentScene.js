@@ -26,6 +26,8 @@ import * as fontAndColor from '../../constant/fontAndColor';
 import PlanListScene from './PlanListScene';
 import RepaymentInfoScene from '../repayment/NewRepaymentInfoScene';
 import InventoryPlanInfoScene from '../repayment/NewInventoryPlanInfoScene';
+import NewPurchaseRepaymentInfoScene from '../repayment/NewPurchaseRepaymentInfoScene';
+import PurchaseRepaymentPage from '../page/PurchaseRepaymentPage';
 
 export  default class RepaymentScene extends BaseComponent {
 
@@ -49,22 +51,22 @@ export  default class RepaymentScene extends BaseComponent {
                     style={{marginTop: Pixel.getTitlePixel(64), flex: 1}}
                     initialPage={0}
                     locked={true}
-                    renderTabBar={() => <RepaymenyTabBar tabName={["单车融资", "库存融资"]}/>}
+                    renderTabBar={() => <RepaymenyTabBar tabName={["单车融资", "库存融资",'采购融资']}/>}
                 >
                     <SingleRepaymentPage customerName={this.props.customerName} callBack={(loan_id,loan_number,type)=>{
                       this.toNextPage({name:'RepaymentInfoScene',component:RepaymentInfoScene,
                       params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'SingleRepaymentPage'}});
                     }} tabLabel="ios-paper"/>
 
-                    <InventoryRepaymentPage customerName={this.props.customerName} callBack={(loan_id,loan_number,type)=>{
+                    <InventoryRepaymentPage customerName={this.props.customerName} callBack={(loan_id,loan_number,type,planid)=>{
                       this.toNextPage({name:'InventoryPlanInfoScene',component:InventoryPlanInfoScene,
-                      params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'InventoryRepaymentPage'}});
+                      params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'InventoryRepaymentPage',planid:planid}});
                     }} tabLabel="ios-people"/>
 
-                    {/*<PurchaseRepaymentPage customerName={this.props.customerName} callBack={(loan_id,loan_number,type)=>{*/}
-                      {/*this.toNextPage({name:'RepaymentInfoScene',component:RepaymentInfoScene,*/}
-                      {/*params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'PurchaseRepaymentPage'}});*/}
-                    {/*}} tabLabel="ios-chatboxes"/>*/}
+                    <PurchaseRepaymentPage customerName={this.props.customerName} callBack={(loan_id,loan_number,type)=>{
+                      this.toNextPage({name:'NewPurchaseRepaymentInfoScene',component:NewPurchaseRepaymentInfoScene,
+                      params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'PurchaseRepaymentPage'}});
+                    }} tabLabel="ios-chatboxes"/>
 
                 </ScrollableTabView>
                 <NavigationView
@@ -91,7 +93,7 @@ export  default class RepaymentScene extends BaseComponent {
     navigatorParams = {
         name: "PlanListScene",
         component: PlanListScene,
-        params: {}
+        params: {customerName:this.props.customerName}
     }
     _navigatorRightView = () => {
         return (

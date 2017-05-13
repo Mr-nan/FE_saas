@@ -106,6 +106,8 @@ export default class CityListScene extends BaseComponent {
                 this.props.showToast(response.mjson.msg)
             }
 
+            console.log(response);
+
 
         }, (error) => {
             this.props.showModal(false);
@@ -184,7 +186,7 @@ export default class CityListScene extends BaseComponent {
         return (
             <TouchableOpacity onPress={() => {
 
-                this._checkedCityClick({city_id:rowData.city_id,city_name:rowData.city_name});
+                this._checkedCityClick({city_id:rowData.city_id,city_name:rowData.city_name,provice_id:0});
                 {/*this.loadCarSeriesData(rowData.city_id,rowData.city_name)*/}
 
             }}>
@@ -225,6 +227,21 @@ export default class CityListScene extends BaseComponent {
 
     };
 
+    renderRightFootView = () => {
+
+        return (
+            this.props.unlimitedAction &&  <TouchableOpacity onPress={()=>{this.props.unlimitedAction();this.backPage();}}>
+                <View style={{paddingVertical:3, paddingHorizontal:5,backgroundColor:'transparent',borderWidth:StyleSheet.hairlineWidth,borderColor:'white',borderRadius:3}}>
+                    <Text style={{
+                        color: 'white',
+                        fontSize: Pixel.getFontPixel(fontAnColor.BUTTONFONT30),
+                        textAlign: 'center',
+                        backgroundColor: 'transparent',}}>全国</Text>
+                </View>
+            </TouchableOpacity>
+        )
+    }
+
     render() {
         if (this.state.renderPlaceholderOnly) {
             return (
@@ -261,6 +278,7 @@ export default class CityListScene extends BaseComponent {
                 <NavigationView
                     title="选择城市"
                     backIconClick={this._backIconClick}
+                    renderRihtFootView={this.renderRightFootView}
                 />
                 {
                     this.state.isHideCarSubBrand ? (null) : (
@@ -275,74 +293,6 @@ export default class CityListScene extends BaseComponent {
             </View>
         )
     }
-}
-
-class CarSubBrand extends Component {
-
-
-    constructor(props) {
-        super(props);
-
-        const {data} = this.props;
-        const carSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id });
-        this.state = {
-            dataSource: carSource.ListViewDataSource.cloneWithRows(data),
-            valueRight:new Animated.Value(0),
-        };
-    }
-
-    // 每一行中的数据
-    renderRow = (rowData, sectionID, rowID) => {
-        return (
-
-            <TouchableOpacity onPress={() => {
-
-                this.props.checkedCarClick(rowData.name);
-
-            }}>
-                <View style={styles.rowCell}>
-                    <Text
-                        style={[styles.rowCellText, this.props.checkedCarType == rowData.name && {color: fontAnColor.COLORB0}]}>{rowData.name}</Text>
-                </View>
-            </TouchableOpacity>
-        )
-    };
-
-
-    componentDidMount() {
-
-        this.state.valueRight.setValue(ScreenWidth);
-        Animated.spring(
-            this.state.valueRight,
-            {
-                toValue:ScreenWidth*0.5,
-                friction:5,
-            }
-        ).start();
-
-    }
-
-
-    render() {
-
-        return (
-            <Animated.View style={[styles.carSubBrandView,{left:this.state.valueRight}]}>
-                <View style={styles.carSubBrandHeadView}>
-                    <Image style={styles.rowCellImag}/>
-                    <Text style={styles.rowCellText}>{this.props.title}</Text>
-                </View>
-                <ListView
-                    style={{flex: 1}}
-                    dataSource={this.state.dataSource}
-                    renderRow={this.renderRow}
-                    renderSectionHeader={this.renderSectionHeader}
-                    contentContainerStyle={styles.listStyle}
-                />
-            </Animated.View>
-        )
-
-    }
-
 }
 
 class ZNListIndexView extends Component{
@@ -385,10 +335,10 @@ const styles = StyleSheet.create({
     carBrandHeadView: {
 
         backgroundColor: 'white',
-        height: 49,
+        height: Pixel.getTitlePixel(49),
         alignItems: 'center',
         backgroundColor: 'white',
-        marginTop: 64,
+        marginTop: Pixel.getTitlePixel(64),
         flexDirection: 'row',
 
 
@@ -396,17 +346,17 @@ const styles = StyleSheet.create({
     carBrandHeadText: {
 
         color: fontAnColor.COLORA0,
-        fontSize: fontAnColor.LITTLEFONT,
+        fontSize: Pixel.getFontPixel(fontAnColor.CONTENTFONT),
         backgroundColor: 'white',
-        marginLeft: 15,
+        marginLeft: Pixel.getPixel(15),
     },
 
     footprintView: {
 
-        marginLeft: 7,
-        marginRight: 3,
-        paddingHorizontal: 10,
-        height: 20,
+        marginLeft: Pixel.getPixel(7),
+        marginRight: Pixel.getPixel(3),
+        paddingHorizontal: Pixel.getPixel(10),
+        height: Pixel.getPixel(20),
         borderRadius: 4,
         backgroundColor: fontAnColor.COLORA3,
         justifyContent: 'center'
@@ -414,20 +364,20 @@ const styles = StyleSheet.create({
     footprintText: {
 
         color: fontAnColor.COLORA0,
-        fontSize: fontAnColor.CONTENTFONT,
+        fontSize: Pixel.getFontPixel(fontAnColor.CONTENTFONT),
     },
 
     carSubBrandHeadView: {
 
         flexDirection: 'row',
         backgroundColor: 'white',
-        height: 44,
+        height: Pixel.getPixel(44),
         alignItems: 'center',
     },
     carSubBrandView: {
 
         backgroundColor: 'white',
-        top: 64,
+        top: Pixel.getTitlePixel(64),
         bottom: 0,
         position: 'absolute',
         width: ScreenWidth * 0.5,
@@ -450,19 +400,19 @@ const styles = StyleSheet.create({
 
     sectionHeader: {
         backgroundColor: fontAnColor.COLORA3,
-        height: 40,
+        height: Pixel.getPixel(40),
         justifyContent: 'center'
     },
     sectionText: {
-        marginLeft: 31,
+        marginLeft: Pixel.getPixel(31),
         color: fontAnColor.COLORA1,
-        fontSize: fontAnColor.LITTLEFONT,
+        fontSize: Pixel.getFontPixel(fontAnColor.LITTLEFONT),
     },
     rowCell: {
 
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderBottomColor: fontAnColor.COLORA3,
-        height: 44,
+        height: Pixel.getPixel(44),
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: 'white',
@@ -470,33 +420,33 @@ const styles = StyleSheet.create({
 
     },
     rowCellImag: {
-        width: 40,
-        height: 40,
-        marginLeft: 15,
+        width: Pixel.getPixel(40),
+        height: Pixel.getPixel(40),
+        marginLeft: Pixel.getPixel(15),
         backgroundColor: fontAnColor.COLORB0
     },
     rowCellText: {
-        marginLeft: 5,
+        marginLeft: Pixel.getPixel(5),
         color: fontAnColor.COLORA0,
-        fontSize: fontAnColor.LITTLEFONT,
+        fontSize: Pixel.getFontPixel(fontAnColor.LITTLEFONT),
     },
 
     indexView:{
 
         position: 'absolute',
         bottom:0,
-        top:64,
+        top:Pixel.getPixel(64),
         backgroundColor:'transparent',
         right:0,
-        width:45,
+        width:Pixel.getPixel(45),
         alignItems:'center',
         justifyContent:'center',
 
     },
     indexItem:{
 
-        marginTop:6,
-        width:30,
+        marginTop:Pixel.getPixel(6),
+        width:Pixel.getPixel(30),
         backgroundColor:'transparent',
 
 
@@ -504,7 +454,7 @@ const styles = StyleSheet.create({
     indexItemText:{
 
         color:fontAnColor.COLORA0,
-        fontSize:fontAnColor.CONTENTFONT,
+        fontSize:Pixel.getFontPixel(fontAnColor.CONTENTFONT),
         textAlign:'center',
     },
 

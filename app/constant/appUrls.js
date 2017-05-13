@@ -1,25 +1,22 @@
 /**
  * 开发地址
  */
-// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
- * 测试地址
+ * 测试地
  */
-export const BASEURL = 'http://api-gateway.test.dycd.com/';
-
+// export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 正式地址
  */
-// export const BASEURL = 'http://gatewayapi.dycd.com/';
-
+// export const BASEURL = 'https://gatewayapi.dycd.com/';
 
 /**
  * 预发布地址
  */
-// export const BASEURL = "http://st.open.bms.dycd.com/api/";
-
+// export const BASEURL = 'https://stgatewayapi.dycd.com/';
 
 /**
  * 版本号1
@@ -35,6 +32,17 @@ export const V2 = "v2/";
  * 版本号3
  */
 export const V3 = "v3/";
+
+/**
+ * 分享测试地址
+ */
+export const FENXIANGTEST = 'http://test.bms.dycd.com/platform/car_detail.html';
+
+/**
+ * 分享正式地址
+ */
+export const FENXIANGOPEN = 'http://m.dycd.com/platform/car_detail.html';
+
 
 /**
  * 上传图片
@@ -56,13 +64,20 @@ export const CAR_HOME_BRAND = BASEURL + V + 'home/brand';
  */
 export const CAR_HOME_SERIES = BASEURL + V + 'home/series';
 
+
+
 /**
  * 获取车型
  */
 export const CAR_HOME_MODELS = BASEURL + V + 'home/models';
 
 /**
- * 获取区域
+ * 获取省份
+ */
+export const GET_PROVINCE = BASEURL + V + 'home/getProvince';
+
+/**
+ * 获取
  */
 export const INDEX_CITY = BASEURL + V + 'index/city';
 
@@ -77,6 +92,11 @@ export const CAR_INDEX = BASEURL + V + 'car/index';
  * 获取车辆详情
  */
 export const CAR_DETAIL = BASEURL + V + 'car/detail';
+
+/**
+ * 获取车辆配置信息
+ */
+export const CAR_CONFIGURATION = BASEURL + V + 'car/modelsConfig';
 
 /**
  * 获取客服电话号码
@@ -179,6 +199,20 @@ export const GETHISTORICALLIST = 'api/v1/Repayment/getHistoricalList';
 /**
  * from @zhaojian
  *
+ * 添加采购贷车辆
+ **/
+export const PURCHAAUTO_ADDAUTO = 'api/v2/purchaAuto/addAuto';
+
+/**
+ * from @zhaojian
+ *
+ * 更新采购贷车辆
+ **/
+export const PURCHAAUTO_UPDATEAUTO = 'api/v2/purchaAuto/updateAuto';
+
+/**
+ * from @zhaojian
+ *
  * 获取还款计划列表
  **/
 export const GETPLANLIST = 'api/v2/Repayment/getPlanList';
@@ -196,6 +230,13 @@ export const GETPLANINFO = 'api/v2/Repayment/getPlanInfo';
  * 新获取还款计划详情
  **/
 export const REPAYMENT_GET_PLAN_INFO = 'api/v5/Repayment/get_plan_info';
+
+/**
+ * from @zhaojian
+ *
+ * 获取采购贷车辆照片分类
+ **/
+export const PURCHAAUTO_GETPURCHAAUTOPICCATE = 'api/v2/purchaAuto/getPurchaAutoPicCate';
 
 /**
  * from @zhaojian
@@ -237,7 +278,7 @@ export const APPLYREPAYMENT = 'api/v1/Repayment/applyRepayment';
  *
  * 单个企业优惠券
  **/
-export const COUPON_LISTBYUID = BASEURL+'v1/user.coupon/listByUid';
+export const COUPON_LISTBYUID = BASEURL + 'v1/user.coupon/listByUid';
 
 /**
  * from @zhaojian
@@ -252,7 +293,6 @@ export const NEWREPAYMENT_APPLY_REPAYMENT = 'api/v5/NewRepayment/apply_repayment
  * 获取优惠券列表
  **/
 export const REPAYMENT_GET_ADJUST_USE = 'api/v5/Repayment/get_adjust_use';
-
 
 
 /**
@@ -322,6 +362,13 @@ export const GET_APPLY_INFO = 'api/v3/account/get_apply_info';
 /**
  * from @lhc
  *
+ * 获取借款进度列表
+ **/
+export const GET_PAYMENT_SCHEDULE_ALL = 'api/v1/account/get_payment_schedule'
+
+/**
+ * from @lhc
+ *
  * 修改借款金额
  **/
 export const SET_APPLY_MNY = 'api/v3/account/set_apply_mny'
@@ -330,7 +377,11 @@ export const SET_APPLY_MNY = 'api/v3/account/set_apply_mny'
  * 获取订单车辆列表
  **/
 export const GET_APPLY_CARLIST = 'api/v2/account/get_apply_carlist';
-
+/**
+ * from @lhc
+ * 删除车辆
+ **/
+export const DELETEAUTO = 'api/v2/purchaAuto/deleteAuto'
 /**
  * from @lhc
  * 获取订单车辆详情
@@ -342,6 +393,7 @@ export const GET_CAR_INFO = 'api/v1/account/get_car_info'
  * 取消借款单车/库容
  **/
 export const CANCEL_LOAN = 'api/v3/account/cancel_loan'
+
 
 /**
  * from @zhaojian
@@ -363,6 +415,12 @@ export const OPT_LOAN_SUBJECT = 'api/v1/user/opt_loan_subject';
  * 单车借款信息
  **/
 export const GET_APPLY_LOAN_DATA = 'api/v3/account/get_apply_loan_data';
+/**
+ * from @lhc
+ *
+ * 采购贷借款车辆列表
+ **/
+export const AUTOLIST = 'api/v2/purchaAuto/autoList'
 
 /**
  * from @huangning
@@ -377,6 +435,32 @@ export const DO_EXTENSION = 'api/v1/account/do_extension';
  * 绑定OBD设备
  **/
 export const BINDOBD = 'api/v1/purchaAuto/bindObd';
+
+/**
+ * 获取微众申请页面数据
+ */
+export const GETAPPLYDATA = "/api/v1/microchinese/get_apply_data";
+
+/**
+ * 获取借据数据列表
+ */
+export const GET_IOU_LIST = "/api/v1/microchinese/get_iou_list";
+
+/**
+ * 确认借据操作
+ */
+export const CONFIRM_APPLY = "/api/v1/microchinese/confirm_apply";
+
+
+/**
+ * 微众额度申请
+ */
+export const APPLY_MNY = "/api/v1/microchinese/apply_mny";
+
+/**
+ * 获取短信验证码
+ */
+export const GET_SMS_VERIFY_CODE = "/api/v1/public/get_sms_verify_code";
 
 /**
  * from @huangning
@@ -426,6 +510,7 @@ export const DO_EXTENSIONPC = 'api/v3/account/extension_contract_pc';
  * 申请展期
  **/
 export const APPLY_EXTENSION_CARLIST = 'api/v1/account/apply_extension_carlist';
+
 
 /**
  * from @zhaojian
@@ -499,6 +584,16 @@ export const AUTH_UPLOAD_FILE = BASEURL + V + "auth/upload";
 export const CONTRACTLIST = 'api/v1/Contract/contractList';
 
 /**
+ * 转债权合同列表
+ */
+export const GET_CTC_CONTRACT_LIST_FOR_APP = 'api/v1/contract/get_ctc_contract_list_for_app';
+
+/**
+ * 获取合同提示信息
+ */
+export const GET_CONTRACT_REMIND = 'api/v1/contract/get_contract_remind';
+
+/**
  * 线下合同列表
  */
 export const CONTRACT_LOAN_LIST = 'api/v1/contract/loan_list';
@@ -512,3 +607,16 @@ export const CHECKOUT_CONTRACT = '/api/v1/Contract/contractDetail';
  * 签署合同
  **/
 export const CONTRACT_SIGN_MINE = 'api/v1/Contract/signContract';
+/**
+ * 获取商户登记人/收车人列表
+ **/
+export const GET_BUSINESS_LIST = 'api/v1/purchaseloanBusiness/getBusinessList';
+/**
+ * 获取采购贷车辆详情
+ **/
+export const PURCHA_AUTO_DETAIL = 'api/v2/purchaAuto/autoDetail';
+/**
+ * 获取车架好是否已存在以及校验规则
+ **/
+export const PURCHA_CHECK_IN = 'api/v2/purchaAuto/checkVin';
+

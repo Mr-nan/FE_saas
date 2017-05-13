@@ -149,10 +149,13 @@ export default class ContractManageScene extends BaseComponent {
                     component: SignContractScene,
                     params: {
                     opt_user_id: rowData.user_id,
+                    opt_merge_id:rowData.merge_id,
+                    companyname:rowData.companyname
                         },
                         })
                     }else{
-                        this.toNextPage({name:'NewSignContractScene',component:NewSignContractScene,params:{opt_user_id: rowData.user_id,}});
+                        this.toNextPage({name:'NewSignContractScene',
+                        component:NewSignContractScene,params:{opt_user_id: rowData.user_id,}});
                     }
                     }else{
                         this.props.showToast('当前企业未完成授信');
