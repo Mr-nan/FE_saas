@@ -101,14 +101,16 @@ export  default class AccountTitle extends PureComponent {
                                 150
                             </Text>
                         </View>
-                        <View style={{flex:1,justifyContent:'center',alignItems: 'center'}}>
+                        <TouchableOpacity onPress={()=>{
+                               this.props.frozen();
+                        }} activeOpacity={0.8} style={{flex:1,justifyContent:'center',alignItems: 'center'}}>
                             <Text style={{color: '#fff',fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}}>
                                 冻结金额(万)
                             </Text>
                             <Text style={{fontWeight: 'bold',color: '#fff',fontSize: Pixel.getFontPixel(32),}}>
                                 13
                             </Text>
-                        </View>
+                        </TouchableOpacity>
                         <View style={{flex:1,justifyContent:'center',alignItems: 'center'}}>
                             <Text style={{color: '#fff',fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}}>
                                 可用余额(万)

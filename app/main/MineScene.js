@@ -23,6 +23,7 @@ import ContractManageScene from '../mine/contractManage/ContractSelectScene';
 import AccountManageScene from '../mine/accountManage/AccountTypeSelectScene'
 import WaitActivationAccountScene from '../mine/accountManage/WaitActivationAccountScene'
 import AccountScene from '../mine/accountManage/AccountScene'
+import BindCardScene from '../mine/accountManage/BindCardScene'
 
 import AdjustManageScene from '../mine/adjustManage/AdjustManageScene'
 import EmployeeManageScene from '../mine/employeeManage/EmployeeManageScene'
@@ -354,6 +355,9 @@ export default class MineSectionListView extends BaseComponent {
 
                 this.navigatorParams.name = 'AccountScene'
                 this.navigatorParams.component = AccountScene
+
+                // this.navigatorParams.name = 'BindCardScene'
+                // this.navigatorParams.component = BindCardScene
                 break;
             case '优惠券管理':
                 this.navigatorParams.name = 'AdjustManageScene'
