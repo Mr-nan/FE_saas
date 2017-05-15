@@ -24,7 +24,7 @@ import  PurchasePickerChildItem from '../../finance/component/PurchasePickerChil
 import ImagePicker from "react-native-image-picker";
 import * as MyUrl from '../../constant/appUrls';
 
-export  default class PurchasePickerItem extends PureComponent {
+export  default class CarUpImageCell extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -35,42 +35,45 @@ export  default class PurchasePickerItem extends PureComponent {
 
     render() {
         let movie = this.props.items;
+        let imageNumber = movie.number;
         let movieItems = [];
-        // if (this.state.childMovie.list.length > 0)
-        // {
-        //     let length = 0;
-        //     if (this.state.childMovie.list.length < 8) {
-        //         length = this.state.childMovie.list.length + 1;
-        //     } else {
-        //         length = this.state.childMovie.list.length;
-        //     }
-        //     for (let i = 0; i < length; i++) {
-        //         movieItems.push(
-        //             <PurchasePickerChildItem
-        //                 fileId={this.state.childMovie.list[i]}
-        //                 imgUrl={this.state.childMovie.list[i]} showOnPress={() => {
-        //             }} deleteOnPress={(index,fileId) => {
-        //                 let news = {...this.state.childMovie};
-        //                 news.list.splice(index, 1);
-        //                 for(let i = 0;i<=this.props.results.length;i++){
-        //                     if(this.props.results[i].file_id==fileId){
-        //                         this.props.results.splice(i,1);
-        //                         break;
-        //                     }
-        //                 }
-        //                 this.setState({childMovie: news});
-        //             }} allLength={this.state.childMovie.list.length} key={i} index={i} mOnPress={(index) => {
-        //                 if (this.state.childMovie.list.length < 8) {
-        //                     this.selectPhotoTapped(movie.code)
-        //                 }
-        //             }}/>)
-        //     }
-        // } else {
+        if (this.state.childMovie.length > 0)
+        {
+            let length = 0;
+            if (this.state.childMovie.length < imageNumber ) {
+                length = this.state.childMovie.length + 1;
+            } else {
+                length = this.state.childMovie.length;
+            }
+            for (let i = 0; i < length; i++) {
+                console.log(this.state.childMovie[i]);
+                console.log(this.state.childMovie[i]);
+
+                movieItems.push(
+                    <PurchasePickerChildItem
+                        fileId={this.state.childMovie[i]}
+                        imgUrl={this.state.childMovie[i]}
+                        showOnPress={() => {}}
+                        deleteOnPress={(index,fileId) => {
+                            let news =  [];
+                            news.push(...this.state.childMovie);
+                            news.splice(index, 1);
+                            this.setState({childMovie: news});
+                        }}
+                        allLength={this.state.childMovie.length} key={i} index={i}
+                        mOnPress={(index) => {
+                            if (this.state.childMovie.length < imageNumber)
+                            {
+                                this.selectPhotoTapped(movie.code)
+                            }
+                        }}/>)
+            }
+        } else {
             movieItems.push(<PurchasePickerChildItem allLength={this.state.childMovie.length} key={0} index={0}
                                                      mOnPress={(index) => {
                                                          this.selectPhotoTapped(movie.code)
                                                      }}/>)
-        // }
+        }
 
         return (
             <View style={styles.parentView}>
@@ -161,26 +164,20 @@ export  default class PurchasePickerItem extends PureComponent {
             (response)=>{
                 this.props.showModal(false);
                 if(response.mycode === 1){
-                    // this.selectSource = {uri: response.mjson.data.url};
-                    console.log(response);
                     this.props.showToast('上传成功')
-                    // console.log(response.mjson.data.url);
-                    let news = {...this.state.childMovie};
-                    let fileid =   response.mjson.data.file_id;
-                    news.list.push({url: response.mjson.data.url,fileId:fileid});
-                    // this.props.results.push({code:this.props.items.code,code_id:this.props.items.id,file_id:response.mjson.data.file_id});
+                    let news =[];
+                    news.push(...this.state.childMovie);
+                    news.push({url: response.mjson.data.url,fileId:response.mjson.data.file_id});
+                    console.log(news);
                     this.setState({
-                        childMovie: news
+                        childMovie:news,
                     });
                 }else {
-                    // this.props.closeLoading();
                     this.props.showToast('上传失败')
                 }
             },(error)=>{
                 this.props.showModal(false);
-                // this.props.closeLoading();
                 this.props.showToast(JSON.stringify(error));
-                // console.log(JSON.stringify(error));
             });
     };
 

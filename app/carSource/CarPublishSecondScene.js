@@ -298,7 +298,6 @@ export default class CarPublishSecondScene extends BaseComponent{
         selectPerson=data;
         titleData1[2][1].value = selectPerson;
         this.updateUI();
-
     }
 
     updateUI=()=>{

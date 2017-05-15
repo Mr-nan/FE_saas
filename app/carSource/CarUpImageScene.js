@@ -24,49 +24,39 @@ const sceneWidth = Dimensions.get('window').width;
 let results = [];
 let titleData=[
     {
+        name: 'left_anterior',
         title:'左前45度',
         subTitle:'至多1张',
         number:1,
+        imgArray:[],
     },{
+        name: 'rear_right',
         title:'右后45度',
         subTitle:'至多1张',
-        number:1,
+        imgArray:[],
     },{
-        title:'左前45度',
+        name: 'dash_board',
+        title:'仪表盘',
         subTitle:'至多1张',
-        number:1,
+        imgArray:[],
     },{
+        name: 'front_trim',
         title:'前内饰',
         subTitle:'至多1张',
         number:1,
+        imgArray:[],
     },{
+        name: 'rear_trim',
         title:'后内饰',
         subTitle:'至多1张',
         number:1,
+        imgArray:[],
     },{
+        name: 'engine',
         title:'发动机',
         subTitle:'至多1张',
         number:1,
-    },{
-        title:'仪表盘',
-        subTitle:'至多1张',
-        number:1,
-    },{
-        title:'登记证',
-        subTitle:'至多1张',
-        number:1,
-    },{
-        title:'合格证',
-        subTitle:'至多1张',
-        number:1,
-    },{
-        title:'车辆一致性证书',
-        subTitle:'至多1张',
-        number:1,
-    },{
-        title:'关单',
-        subTitle:'至多1张',
-        number:1,
+        imgArray:[],
     },
 ];
 
@@ -93,7 +83,8 @@ export default class CarUpImageScene extends BaseComponent{
                 <ListView
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}
-                    renderSeparator={this.renderSeparator}/>
+                    renderSeparator={this.renderSeparator}
+                    renderFooter={this.renderFooter}/>
                 <AllNavigationView title="上传图片" backIconClick={this.backPage}/>
             </View>)
     }
@@ -103,6 +94,19 @@ export default class CarUpImageScene extends BaseComponent{
             </View>
         )
     }
+
+    renderFooter =()=>{
+        return(
+            <View style={styles.footContainer}>
+                <TouchableOpacity onPress={this.footBtnClick}>
+                    <View style={styles.footView}>
+                        <Text style={styles.footText}>申请上架</Text>
+                    </View>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
     renderRow =(data)=>{
         return(
             <CarUpImageCell
@@ -110,7 +114,7 @@ export default class CarUpImageScene extends BaseComponent{
                 showModal={(value)=>{this.props.showModal(value)}}
                 showToast={(value)=>{this.props.showToast(value)}}
                 items={data}
-                childList={[]}
+                childList={data.imgArray}
             />
         )
     }
@@ -126,5 +130,24 @@ const styles = StyleSheet.create({
         backgroundColor: fontAndColor.COLORA3,
         height: Pixel.getPixel(10),
 
+    }, footContainer:{
+        justifyContent:'center',
+        alignItems:'center',
+        marginTop:Pixel.getPixel(20),
+        marginBottom:Pixel.getPixel(20),
+
+    },
+    footView:{
+        backgroundColor:fontAndColor.COLORB0,
+        height:Pixel.getPixel(44),
+        justifyContent:'center',
+        alignItems:'center',
+        width:sceneWidth-Pixel.getPixel(30),
+        borderRadius:Pixel.getPixel(3),
+    },
+    footText:{
+        textAlign:'center',
+        color:'white',
+        fontSize:fontAndColor.BUTTONFONT30
     },
 });
