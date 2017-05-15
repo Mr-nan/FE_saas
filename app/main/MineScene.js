@@ -577,7 +577,7 @@ const styles = StyleSheet.create({
         flex: 1,
         fontSize: Pixel.getFontPixel(fontAndClolr.LITTLEFONT28),
         marginLeft: Pixel.getPixel(20),
-        color: fontAndClolr.COLORA1,
+        color: '#000',
 
     }
 

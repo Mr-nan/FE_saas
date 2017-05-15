@@ -69,7 +69,7 @@ export default class Setting extends BaseComponent {
                     fontSize: FontAndColor.LITTLEFONT,
                     color: FontAndColor.COLORA0
                 }}>{"当前版本" + StorageKeyNames.VERSON_NAME}</Text>
-                <Image source={require("./../../../images/setting/logo_code.jpg")} style={styles.QRCodeStyle}/>
+                <Image source={require("./../../../images/setting/imagedownload.png")} style={styles.QRCodeStyle}/>
                 <Text
                     style={{color: FontAndColor.COLORA0, fontSize: Pixel.getPixel(17), fontWeight: 'bold'}}>扫描二维码</Text>
                 <Text style={{

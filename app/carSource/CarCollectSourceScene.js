@@ -26,10 +26,13 @@ import * as Urls from '../constant/appUrls';
 import CarInfoScene from './CarInfoScene';
 var screenWidth = Dimensions.get('window').width;
 import  LoadMoreFooter from './znComponent/LoadMoreFooter';
+import  AllLoading from '../component/AllLoading';
 let allSouce = [];
+let allid = '';
 export default class CarCollectSourceScene extends BaceComponent {
 
     initFinish = () => {
+        allid = '';
         this.getData();
     };
 
@@ -74,9 +77,9 @@ export default class CarCollectSourceScene extends BaceComponent {
         };
     }
 
-    toEnd =() => {
+    toEnd = () => {
 
-        if(!this.state.isRefreshing && allSouce.length>0 && allPage!=page){
+        if (!this.state.isRefreshing && allSouce.length > 0 && allPage != page) {
 
             page++;
             this.getApplyData();
@@ -84,7 +87,7 @@ export default class CarCollectSourceScene extends BaceComponent {
 
     };
 
-    getApplyData=()=>{
+    getApplyData = () => {
 
         let maps = {
             page: page,
@@ -92,8 +95,7 @@ export default class CarCollectSourceScene extends BaceComponent {
         };
         request(Urls.FAVORITES, 'Post', maps)
             .then((response) => {
-                    if (response.mjson.data.list.length>0)
-                    {
+                    if (response.mjson.data.list.length > 0) {
                         allSouce.push(...response.mjson.data.list);
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
@@ -159,10 +161,17 @@ export default class CarCollectSourceScene extends BaceComponent {
                           dataSource={this.state.carData}
                           renderRow={(rowData) =>
                           <CarCell from="CarCollectSourceScene" items={rowData} mOnPress={(id)=>{
-                               this.toNextPage({name:'CarInfoScene',component:CarInfoScene,params:{carID:id}});
+                              if(rowData.status==3){
+                                    this.props.showToast('该车辆已下架，不可查看');
+                              }else if(rowData.status==4){
+                                    this.props.showToast('该车辆已成交，不可查看');
+                              }else{
+                                  this.toNextPage({name:'CarInfoScene',component:CarInfoScene,params:{carID:id}});
+                              }
                           }}
                           callBack={(id)=>{
-                            this.deleteCliiection(id)
+                              allid = id;
+                            this.refs.allloading.changeShowType(true,'确认不再收藏吗？');
                           }
                           }
                           />
@@ -180,6 +189,9 @@ export default class CarCollectSourceScene extends BaceComponent {
                                     />
                                 }
                 />
+                <AllLoading callEsc={()=>{}} ref="allloading" callBack={()=>{
+                    this.deleteCliiection(allid)
+                }}/>
                 <NavigatorView title='我的收藏' backIconClick={this.backPage}/>
             </View>)
 
