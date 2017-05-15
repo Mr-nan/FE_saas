@@ -171,7 +171,7 @@ export default class CarCollectSourceScene extends BaceComponent {
                           }}
                           callBack={(id)=>{
                               allid = id;
-                            this.refs.allloading.changeShowType(true,'确认不再收藏吗？');
+                            this.refs.allloading.changeShowType(true,'确认不再收藏吗');
                           }
                           }
                           />
