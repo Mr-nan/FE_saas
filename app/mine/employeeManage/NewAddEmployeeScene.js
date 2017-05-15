@@ -26,6 +26,10 @@ import * as Urls from '../../constant/appUrls';
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import AddEmployeeInput from './component/AddEmployeeInput';
+import SelectEmployeeInput from './component/SelectEmployeeInput';
+import SelectTypeScene from './SelectTypeScene';
+import SelectGenderScene from './SelectGenderScene';
+import SelectCompanyScene from './SelectCompanyScene';
 let comps = [];
 export  default class BankCardScene extends BaseComponent {
 
@@ -34,17 +38,15 @@ export  default class BankCardScene extends BaseComponent {
         childItems = [];
         comps = [];
         // 初始状态
-        childItems.push({name:'姓名',value:''});
-        childItems.push({name:'性别',value:''});
-        childItems.push({name:'所属公司',value:[]});
-        childItems.push({name:'角色',value:''});
-        childItems.push({name:'账号',value:''});
-        childItems.push({name:'密码',value:''});
-        childItems.push({name:'确认密码',value:''});
-        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        childItems.push({name: '姓名', value: ''});
+        childItems.push({name: '性别', value: ''});
+        childItems.push({name: '所属公司', value: []});
+        childItems.push({name: '角色', value: ''});
+        childItems.push({name: '账号', value: ''});
+        childItems.push({name: '密码', value: ''});
+        childItems.push({name: '确认密码', value: ''});
         this.state = {
             renderPlaceholderOnly: 'blank',
-            source: ds.cloneWithRows(childItems)
         };
     }
 
@@ -52,7 +54,7 @@ export  default class BankCardScene extends BaseComponent {
         this.getData();
     }
 
-    getData=()=>{
+    getData = () => {
         StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST, (data) => {
             if (data.code == 1 && data.result != null) {
                 comps = JSON.parse(data.result);
@@ -67,30 +69,118 @@ export  default class BankCardScene extends BaseComponent {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return this._renderPlaceholderView();
         }
+        let items = [];
+        for (let i = 0; i < childItems.length; i++) {
+            if (i == 1) {
+                items.push(<SelectEmployeeInput ref='selectsex' key={i+'bo'} items={childItems[i]} toSelect={()=>{
+                    this.toNextPage({name:'SelectTypeScene',component:SelectTypeScene,params:{regShowData:['男','女'],
+                    title:'选择性别',callBack:(name,index)=>{
+                        childItems[i].value = name+','+index;
+                        this.refs.selectsex.setValue(name);
+                    }}})
+                }}/>);
+            } else if (i == 2) {
+
+                items.push(<SelectEmployeeInput ref="company" key={i+'bo'} items={childItems[i]} toSelect={()=>{
+                    this.toNextPage({name:'SelectCompanyScene',component:SelectCompanyScene,params:{
+                        comps:comps,
+                    title:'选择公司',callBack:(selected)=>{
+                        childItems[i].value = selected;
+                        this.refs.company.setValue(selected[0].enterprise_name);
+                    }}})
+                }}/>);
+            } else if (i == 3) {
+                items.push(<SelectEmployeeInput ref='juese' key={i+'bo'} items={childItems[i]} toSelect={()=>{
+                    this.toNextPage({name:'SelectGenderScene',component:SelectGenderScene,params:{
+                    title:'选择角色',callBack:(name,index)=>{
+                        childItems[i].value = name+','+index;
+                        this.refs.juese.setValue(name);
+                    }}})
+                }}/>);
+            } else {
+                items.push(<AddEmployeeInput key={i+'bo'} items={childItems[i]}/>);
+            }
+
+        }
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
-                <ListView
-                    style={{marginTop: Pixel.getTitlePixel(79)}}
-                    dataSource={this.state.source}
-                    renderRow={this._renderRow}
-                />
+                <ScrollView keyboardShouldPersistTaps={'handled'}
+                            style={{marginTop: Pixel.getTitlePixel(79)}}
+                >
+                    {items}
+                </ScrollView>
                 <NavigationView
                     title="添加员工"
                     backIconClick={this.backPage}
+                    renderRihtFootView={this._navigatorRightView}
                 />
             </View>
         );
     }
 
-    _renderRow = (movie, sectionId, rowId) => {
-            return (
-                <AddEmployeeInput/>
-            )
-
-
+    checkEmpty = () => {
+        for (let i = 0; i < childItems.length; i++) {
+            if (i == 2) {
+                if (childItems[i].value.length <= 0) {
+                    this.props.showToast(childItems[i].name + '不能为空');
+                    return;
+                }
+            } else {
+                if (childItems[i].value == '') {
+                    this.props.showToast(childItems[i].name + '不能为空');
+                    return;
+                }
+            }
+        }
+        if (childItems[5].value !== childItems[6].value) {
+            this.props.showToast('两次输入密码不一致');
+            return;
+        }
+        this.addEmployee();
+    }
+    addEmployee = () => {
+        this.props.showModal(true);
+        let company_ids = '';
+        for (let i = 0; i < childItems[2].value.length; i++) {
+            company_ids = childItems[2].value[i].enterprise_uid + ',' + company_ids;
+        }
+        let news = company_ids.substring(0, company_ids.length - 1);
+        let maps = {
+            account: childItems[4].value,
+            company_ids: news,
+            password: childItems[5].value,
+            repassword: childItems[6].value,
+            role_id: childItems[3].value.split(',')[1],
+            sex: childItems[1].value.split(',')[1],
+            username: childItems[0].value
+        };
+        request(Urls.USER_EMPLOYEE_SAVE, 'Post', maps)
+            .then((response) => {
+                    this.props.showModal(false);
+                    this.props.showToast('添加成功');
+                    this.props.callBack();
+                    this.backPage();
+                },
+                (error) => {
+                    this.props.showModal(false);
+                    if (error.mycode == -300 || error.mycode == -500) {
+                        this.props.showToast('添加失败');
+                    } else {
+                        this.props.showToast(error.mjson.msg);
+                    }
+                });
     }
 
-
+    _navigatorRightView = () => {
+        return (
+            <TouchableOpacity activeOpacity={0.8} onPress={() => {
+                this.checkEmpty();
+            }} style={{width:Pixel.getPixel(53),height:Pixel.getPixel(27),backgroundColor: '#fff',
+            justifyContent:'center',alignItems: 'center'}}>
+                <Text style={{fontSize: Pixel.getFontPixel(15),color:fontAndColor.COLORB0}}>完成</Text>
+            </TouchableOpacity>
+        );
+    }
 
     _renderPlaceholderView() {
         return (

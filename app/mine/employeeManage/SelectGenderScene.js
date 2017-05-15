@@ -21,26 +21,43 @@ const Pixel = new PixelUtil();
 import * as fontAndColor from '../../constant/fontAndColor';
 import BaseComponent from '../../component/BaseComponent';
 import NavigationView from '../../component/AllNavigationView';
-import PurchasePickerItem from '../component/PurchasePickerItem';
 import {request} from '../../utils/RequestUtil';
 import * as MyUrl from '../../constant/appUrls';
-export  default class SelectPeopleScene extends BaseComponent {
+export  default class SelectGenderScene extends BaseComponent {
 
     constructor(props) {
         super(props);
         // 初始状态
-        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        // let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             renderPlaceholderOnly: 'blank',
-            source: ds.cloneWithRows(this.props.regShowData)
+            source: []
         };
     }
 
 
     initFinish = () => {
-        this.setState({
-            renderPlaceholderOnly: 'success',
-        });
+        this.getData();
+    }
+    getData=()=>{
+        let maps = {
+
+        };
+        request(MyUrl.USER_ROLE, 'Post', maps)
+            .then((response) => {
+                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                    this.setState({
+                        source: ds.cloneWithRows(response.mjson.data),
+                        renderPlaceholderOnly: 'success'
+                    });
+                },
+                (error) => {
+                    if (error.mycode == '-2100045'||error.mycode == '-1') {
+                        this.setState({renderPlaceholderOnly: 'null'});
+                    } else {
+                        this.setState({renderPlaceholderOnly: 'error'});
+                    }
+                });
     }
 
 
@@ -67,12 +84,12 @@ export  default class SelectPeopleScene extends BaseComponent {
     _renderRow = (movie, sectionId, rowId) => {
         return (
             <TouchableOpacity onPress={()=>{
-                this.props.callBack(movie);
+                this.props.callBack(movie.role_name,movie.role_id);
                 this.backPage();
             }} activeOpacity={0.8} style={{width:width,height:Pixel.getPixel(44),paddingRight:Pixel.getPixel(15),paddingLeft:
             Pixel.getPixel(15),backgroundColor: '#fff',flexDirection: 'row'}}>
                 <View style={{flex:1,justifyContent:'center'}}>
-                    <Text style={{color: '#000',fontSize: Pixel.getFontPixel(14)}}>{movie}</Text>
+                    <Text style={{color: '#000',fontSize: Pixel.getFontPixel(14)}}>{movie.role_name}</Text>
                 </View>
                 <View style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>
                     <Image style={{width:Pixel.getPixel(14),height:Pixel.getPixel(14)}}

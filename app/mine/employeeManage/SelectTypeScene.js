@@ -21,7 +21,6 @@ const Pixel = new PixelUtil();
 import * as fontAndColor from '../../constant/fontAndColor';
 import BaseComponent from '../../component/BaseComponent';
 import NavigationView from '../../component/AllNavigationView';
-import PurchasePickerItem from '../component/PurchasePickerItem';
 import {request} from '../../utils/RequestUtil';
 import * as MyUrl from '../../constant/appUrls';
 export  default class SelectPeopleScene extends BaseComponent {
@@ -67,7 +66,7 @@ export  default class SelectPeopleScene extends BaseComponent {
     _renderRow = (movie, sectionId, rowId) => {
         return (
             <TouchableOpacity onPress={()=>{
-                this.props.callBack(movie);
+                this.props.callBack(movie,rowId+1);
                 this.backPage();
             }} activeOpacity={0.8} style={{width:width,height:Pixel.getPixel(44),paddingRight:Pixel.getPixel(15),paddingLeft:
             Pixel.getPixel(15),backgroundColor: '#fff',flexDirection: 'row'}}>

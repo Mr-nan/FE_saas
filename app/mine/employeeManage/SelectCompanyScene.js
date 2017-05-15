@@ -21,18 +21,20 @@ const Pixel = new PixelUtil();
 import * as fontAndColor from '../../constant/fontAndColor';
 import BaseComponent from '../../component/BaseComponent';
 import NavigationView from '../../component/AllNavigationView';
-import PurchasePickerItem from '../component/PurchasePickerItem';
 import {request} from '../../utils/RequestUtil';
 import * as MyUrl from '../../constant/appUrls';
-export  default class SelectPeopleScene extends BaseComponent {
+import CompanyItem from './component/CompanyItem';
+let selected = [];
+export  default class SelectCompanyScene extends BaseComponent {
 
     constructor(props) {
         super(props);
         // 初始状态
+        selected = [];
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             renderPlaceholderOnly: 'blank',
-            source: ds.cloneWithRows(this.props.regShowData)
+            source: ds.cloneWithRows(this.props.comps)
         };
     }
 
@@ -59,6 +61,7 @@ export  default class SelectPeopleScene extends BaseComponent {
                 <NavigationView
                     title={this.props.title}
                     backIconClick={this.backPage}
+                    renderRihtFootView={this._navigatorRightView}
                 />
             </View>
         );
@@ -66,20 +69,31 @@ export  default class SelectPeopleScene extends BaseComponent {
 
     _renderRow = (movie, sectionId, rowId) => {
         return (
-            <TouchableOpacity onPress={()=>{
-                this.props.callBack(movie);
-                this.backPage();
-            }} activeOpacity={0.8} style={{width:width,height:Pixel.getPixel(44),paddingRight:Pixel.getPixel(15),paddingLeft:
-            Pixel.getPixel(15),backgroundColor: '#fff',flexDirection: 'row'}}>
-                <View style={{flex:1,justifyContent:'center'}}>
-                    <Text style={{color: '#000',fontSize: Pixel.getFontPixel(14)}}>{movie}</Text>
-                </View>
-                <View style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>
-                    <Image style={{width:Pixel.getPixel(14),height:Pixel.getPixel(14)}}
-                           source={require('../../../images/mainImage/celljiantou.png')}/>
-                </View>
-            </TouchableOpacity>
+            <CompanyItem movie={movie} callBack={(value)=>{
+                if(value){
+                    selected.push(movie);
+                }else{
+                    for(let i = 0;i<selected.length;i++){
+                        if(movie.enterprise_uid==selected[i].enterprise_uid){
+                            selected.splice(i,1);
+                            return;
+                        }
+                    }
+                }
+            }}/>
         )
+    }
+
+    _navigatorRightView = () => {
+        return (
+            <TouchableOpacity activeOpacity={0.8} onPress={() => {
+                this.props.callBack(selected);
+                this.backPage();
+            }} style={{width:Pixel.getPixel(53),height:Pixel.getPixel(27),backgroundColor: '#fff',
+            justifyContent:'center',alignItems: 'center'}}>
+                <Text style={{fontSize: Pixel.getFontPixel(15),color:fontAndColor.COLORB0}}>完成</Text>
+            </TouchableOpacity>
+        );
     }
 
     _renderSeparator(sectionId, rowId) {
