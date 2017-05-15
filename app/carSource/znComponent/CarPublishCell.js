@@ -32,7 +32,7 @@ export class CellView extends Component {
                 </View>
                 {
                     cellData.tailView? cellData.tailView():(
-                            <View style={{flexDirection:'row'}}>
+                            <View style={{flexDirection:'row', alignItems:'center'}}>
                                 <Text style={styles.cellValue}>{cellData.value}</Text>
                                 {
                                     cellData.isShowTail &&
@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
         backgroundColor:'white',
         borderBottomWidth:StyleSheet.hairlineWidth,
         borderBottomColor:fontAndColor.COLORA4,
+
     },
     cellType2:{
         flexWrap:'wrap',
@@ -112,6 +113,7 @@ const styles = StyleSheet.create({
         borderBottomColor:fontAndColor.COLORA4,
         paddingVertical:Pixel.getPixel(20),
         justifyContent:'center',
+
     },
     cellTitle:{
         color:fontAndColor.COLORA0,

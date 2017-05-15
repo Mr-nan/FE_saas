@@ -19,7 +19,9 @@ import BaseComponent from '../component/BaseComponent';
 import AllNavigationView from '../component/AllNavigationView';
 import {CellView,CellSelectView} from './znComponent/CarPublishCell';
 import CarSelectRegisterPersonScene from './CarSelectRegisterPersonScene';
+import CarlicenseTagScene from  './carPublish/CarlicenseTagScene';
 import CarUpImageScene   from './CarUpImageScene';
+import CityListScene from  './CityListScene';
 import *as fontAndColor from '../constant/fontAndColor';
 import PixelUtil from '../utils/PixelUtil';
 
@@ -48,12 +50,8 @@ let   titleData1 = [
         {
             title:'车牌号',
             isShowTag:true,
-            isShowTail:false,
-            tailView:()=>{
-                return(
-                    <TextInput style={styles.textInput} placeholder='请输入'/>
-                )
-            }
+            isShowTail:true,
+            value:'选择'
         },
         {
             title:'表显里程',
@@ -142,8 +140,8 @@ let titleData2 = [
         {
             title:'过户次数',
             isShowTag:true,
-            value:'请选择',
-            isShowTail:true,
+            value:'0',
+            isShowTail:false,
         },
         {
             title:'车牌号',
@@ -294,11 +292,7 @@ export default class CarPublishSecondScene extends BaseComponent{
 
     }
 
-    selectPersonClick=(data)=>{
-        selectPerson=data;
-        titleData1[2][1].value = selectPerson;
-        this.updateUI();
-    }
+
 
     updateUI=()=>{
         this.setState({
@@ -311,16 +305,15 @@ export default class CarPublishSecondScene extends BaseComponent{
 
         if(cellTitle=='登记人')
         {
-            let navigatorParams = {
-                name: "CarSelectRegisterPersonScene",
-                component: CarSelectRegisterPersonScene,
-                params: {
-                    selectPersonClick:this.selectPersonClick,
-                    currentPerson:selectPerson,
-                }
-            };
-            this.toNextPage(navigatorParams);
+           this.pushSelectRegisterPersonScene();
 
+        }else if(cellTitle=='车牌号'){
+
+            this.pushCarIicenseTagScene();
+
+        }else if(cellTitle=='车辆所在地'){
+
+            this.pushCityListScene();
         }
     }
 
@@ -334,6 +327,56 @@ export default class CarPublishSecondScene extends BaseComponent{
         };
         this.toNextPage(navigatorParams);
     }
+
+    pushSelectRegisterPersonScene=()=>{
+        let navigatorParams = {
+            name: "CarSelectRegisterPersonScene",
+            component: CarSelectRegisterPersonScene,
+            params: {
+                selectPersonClick:this.selectPersonClick,
+                currentPerson:selectPerson,
+            }
+        };
+        this.toNextPage(navigatorParams);
+    }
+    selectPersonClick=(data)=>{
+        selectPerson=data;
+        titleData1[2][1].value = selectPerson;
+        this.updateUI();
+    }
+
+    pushCarIicenseTagScene=()=>{
+        let navigatorParams = {
+            name: "CarlicenseTagScene",
+            component: CarlicenseTagScene,
+            params: {
+                checkedCarlicenseTagClick:this._checkedCarlicenseTagClick,
+                currentChecked:titleData1[0][2].value,
+            }
+        };
+        this.toNextPage(navigatorParams);
+    }
+
+    _checkedCarlicenseTagClick=(title)=>{
+            titleData1[0][2].value = title;
+            this.updateUI();
+    }
+    pushCityListScene=()=>{
+        let navigatorParams = {
+            name: "CityListScene",
+            component: CityListScene,
+            params: {
+                checkedCityClick:this.checkedCityClick,
+            }
+        };
+        this.toNextPage(navigatorParams);
+    }
+
+    checkedCityClick=(city)=>{
+            titleData1[2][0].value = city.city_name;
+            this.updateUI();
+    }
+
 
 }
 
@@ -369,7 +412,7 @@ const styles = StyleSheet.create({
         borderColor: fontAndColor.COLORA0,
         width:200,
         textAlign:'right',
-        fontSize:fontAndColor.LITTLEFONT28,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
     },
     textInputTitle:{
         color:fontAndColor.COLORA0,
