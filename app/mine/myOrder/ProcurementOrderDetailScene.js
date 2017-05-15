@@ -21,14 +21,27 @@ import NavigatorView from '../../component/AllNavigationView';
 import * as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
 import CheckStand from "../../finance/CheckStand";
+import DepositCountDown from "./component/DepositCountDown";
+import GetCarCountDown from "./component/GetCarCountDown";
+import StepView from "./component/StepView";
 const Pixel = new PixelUtil();
+
+let items = [];
 
 export default class ProcurementOrderDetailScene extends BaseComponent {
 
     constructor(props) {
         super(props);
-        let mList = ['1', '2', '3', '4', '5', '6'];
+        let mList = ['0','1', '2', '3', '4', '5', '6'];
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
+        items = [];
+        items.push({title: '创建订单', nodeState: 1, isLast: false, isFirst: true});
+        items.push({title: '已付订金', nodeState: 2, isLast: false, isFirst: false});
+        items.push({title: '结算尾款', nodeState: 2, isLast: false, isFirst: false});
+        items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
+        items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+
         this.state = {
             source: ds.cloneWithRows(mList)
         }
@@ -38,8 +51,18 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         return (
             <View style={styles.container}>
                 <NavigatorView title='订单详情' backIconClick={this.backPage}/>
+                <View style={styles.tradingCountdown}>
+                    <Text style={{
+                        marginLeft: Pixel.getPixel(15),
+                        fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                        color: fontAndColor.COLORB7
+                    }}>订金支付剩余时间：</Text>
+                    {/*<DepositCountDown />*/}
+                    <GetCarCountDown />
+                </View>
+                <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>
                 <ListView
-                    style={{marginTop: Pixel.getPixel(73)}}
+                    style={{marginTop: Pixel.getPixel(0)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeperator}
@@ -78,7 +101,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
     _renderRow = (rowData, selectionID, rowID) => {
         //item 布局
         if (rowData === '0') {
-
+            return (
+                <View style={styles.itemType0}>
+                    <StepView items={items}/>
+                </View>
+            )
         } else if (rowData === '1') {
             return (
                 <View style={styles.itemType1}>
@@ -301,6 +328,13 @@ const styles = StyleSheet.create({
         height: Pixel.getPixel(80),
         resizeMode: 'stretch'
     },
+    itemType0: {
+        height: Pixel.getPixel(80),
+        backgroundColor: '#ffffff',
+        //flexDirection: 'row',
+        //alignItems: 'center'
+        justifyContent: 'center'
+    },
     itemType1: {
         backgroundColor: '#ffffff',
         flexDirection: 'row'
@@ -393,5 +427,12 @@ const styles = StyleSheet.create({
         borderRadius: Pixel.getPixel(2),
         borderWidth: Pixel.getPixel(1),
         borderColor: fontAndColor.COLORA2
+    },
+    tradingCountdown: {
+        marginTop: Pixel.getPixel(65),
+        flexDirection: 'row',
+        alignItems: 'center',
+        height: Pixel.getPixel(40),
+        backgroundColor: fontAndColor.COLORB6
     }
 });

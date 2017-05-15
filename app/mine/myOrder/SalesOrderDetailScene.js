@@ -24,16 +24,24 @@ import * as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
 import InputAmountScene from "./InputAmountScene";
 import InputVinInfo from "./InputVinInfo";
+import StepView from "./component/StepView";
 const Pixel = new PixelUtil();
 
 const IS_ANDROID = Platform.OS === 'android';
+let items = [];
 
 export default class SalesOrderDetailScene extends BaseComponent {
 
     constructor(props) {
         super(props);
-        let mList = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+        let mList = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
+        items = [];
+        items.push({title: '创建订单', nodeState: 1, isLast: false, isFirst: true});
+        items.push({title: '订金到账', nodeState: 2, isLast: false, isFirst: false});
+        items.push({title: '尾款到账', nodeState: 2, isLast: false, isFirst: false});
+        items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
 
         this.modelData = [];
         this.scanType = [{model_name: '扫描前风挡'}, {model_name: '扫描行驶证'}, {model_name: '手动输入'}];
@@ -113,7 +121,11 @@ export default class SalesOrderDetailScene extends BaseComponent {
     _renderRow = (rowData, selectionID, rowID) => {
         //item 布局
         if (rowData === '0') {
-
+            return (
+                <View style={styles.itemType0}>
+                    <StepView items={items}/>
+                </View>
+            )
         } else if (rowData === '1') {
             return (
                 <View style={styles.itemType1}>
@@ -443,6 +455,13 @@ const styles = StyleSheet.create({
         width: Pixel.getPixel(120),
         height: Pixel.getPixel(80),
         resizeMode: 'stretch'
+    },
+    itemType0: {
+        height: Pixel.getPixel(80),
+        backgroundColor: '#ffffff',
+        //flexDirection: 'row',
+        //alignItems: 'center'
+        justifyContent: 'center'
     },
     itemType1: {
         backgroundColor: '#ffffff',
