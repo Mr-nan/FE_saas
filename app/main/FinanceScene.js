@@ -144,15 +144,15 @@ export default class FinanceSence extends BaseComponet {
             .then((response) => {
                     mnyData = response.mjson.data;
 
-                    let title = '';
+                        let title = '';
+                        if(mnyData.is_microchinese_mny==1){
+                            title='立即激活微众额度';
+                        }else if(mnyData.is_microchinese_mny ==2){
+                            title='待审核';
+                        }else if(mnyData.is_microchinese_mny == 4){
+                            title='审核不通过';
+                        }
 
-                    if(mnyData.is_microchinese_mny==1){
-                        title='立即激活微众额度';
-                    }else if(mnyData.is_microchinese_mny ==2){
-                        title='待审核';
-                    }else if(mnyData.is_microchinese_mny == 4){
-                        title='审核不通过';
-                    }
 
                     that.setState({
                         allData: {
@@ -631,7 +631,7 @@ export default class FinanceSence extends BaseComponet {
                             </View>
                         </View>
                         {
-                            (this.state.mnyData.is_microchinese_mny!==0 && this.state.mnyData.is_microchinese_mny!==3)?
+                            (this.state.mnyData.is_microchinese_mny!==0 && this.state.mnyData.is_microchinese_mny!==3 && this.state.mnyData.is_microchinese_contract!==undefined)?
                                 (<View style={{height:Pixel.getPixel(40), alignItems:'center',justifyContent:'center'}}>
                                     <TouchableOpacity onPress={()=>{
 

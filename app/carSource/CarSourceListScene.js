@@ -193,6 +193,8 @@ export  default  class carSourceListScene extends BaseComponent {
 
     // 下拉刷新数据
     refreshingData = () => {
+        console.log('下拉了');
+
         carData = [];
         this.setState({isRefreshing: true});
         this.loadData();
