@@ -145,14 +145,14 @@ export default class FinanceSence extends BaseComponet {
             .then((response) => {
                     mnyData = response.mjson.data;
 
-                        let title = '';
-                        if(mnyData.is_microchinese_mny==1){
-                            title='立即激活微众额度';
-                        }else if(mnyData.is_microchinese_mny ==2){
-                            title='待审核';
-                        }else if(mnyData.is_microchinese_mny == 4){
-                            title='审核不通过';
-                        }
+                    let title = '';
+                    if (mnyData.is_microchinese_mny == 1) {
+                        title = '立即激活微众额度';
+                    } else if (mnyData.is_microchinese_mny == 2) {
+                        title = '待审核';
+                    } else if (mnyData.is_microchinese_mny == 4) {
+                        title = '审核不通过';
+                    }
 
 
                     that.setState({
@@ -161,9 +161,9 @@ export default class FinanceSence extends BaseComponet {
                             daikuanyue: mnyData.loan_balance_mny / 10000,
                             baozhengjinedu: mnyData.bond_total_mny / 10000,
                             baozhengjinyue: mnyData.bond_mny / 10000,
-                            microchineseTitle:title,
+                            microchineseTitle: title,
                         },
-                        mnyData:mnyData,
+                        mnyData: mnyData,
                     });
                     that.getApplyData();
                 },
@@ -230,9 +230,9 @@ export default class FinanceSence extends BaseComponet {
                 daikuanyue: mnyData.loan_balance_mny / 10000,
                 baozhengjinedu: mnyData.bond_total_mny / 10000,
                 baozhengjinyue: mnyData.bond_mny / 10000,
-                microchineseTitle:'',
+                microchineseTitle: '',
             },
-            mnyData:mnyData,
+            mnyData: mnyData,
             renderPlaceholderOnly: 'blank',
             isRefreshing: false,
             customerName: ''
@@ -285,8 +285,9 @@ export default class FinanceSence extends BaseComponet {
                 <LendSuccessAlert title="提示" subtitle="采购融资功能正在维护中，请您移步BMS系统申请采购融资" ref='cgdModal'
                                   confimClick={() => {
                                   }}/>
-                <LendSuccessAlert ref="showAlert"       title={'审核未通过'} subtitle={this.state.mnyData.microchinese_audit_reason}/>
-                <LendSuccessAlert ref="showTitleAlert"  title={'提示'}      subtitle={'微众额度以车贷可用额度为准'}/>
+                <LendSuccessAlert ref="showAlert" title={'审核未通过'}
+                                  subtitle={this.state.mnyData.microchinese_audit_reason}/>
+                <LendSuccessAlert ref="showTitleAlert" title={'提示'} subtitle={'微众额度以车贷可用额度为准'}/>
             </View>
         )
     }
@@ -502,7 +503,7 @@ export default class FinanceSence extends BaseComponet {
     }
 
 
-    _renderHeader =() => {
+    _renderHeader = () => {
         let tablist;
         tablist = bossFuncArray;
         let items = [];
@@ -576,7 +577,7 @@ export default class FinanceSence extends BaseComponet {
                                         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                                         color: '#fff',
                                         backgroundColor: '#00000000'
-                                    }}>{this.state.mnyData.is_microchinese_mny==3&&'综合'}可用额度(万)</Text>
+                                    }}>{this.state.mnyData.is_microchinese_mny == 3 && '综合'}可用额度(万)</Text>
                                 <Text
                                     style={{
                                         fontSize: Pixel.getFontPixel(28),
@@ -589,19 +590,21 @@ export default class FinanceSence extends BaseComponet {
                                     }}>{this.state.allData.keyongedu}</Text>
                             </View>
                             {
-                               this.state.mnyData.is_microchinese_mny ==5 &&(
+                                this.state.mnyData.is_microchinese_mny == 5 && (
                                     <View style={{flex: 1, alignItems: 'center',}}>
-                                    <TouchableOpacity style={{flexDirection:'row'}} activeOpacity={1} onPress={()=>{this.refs.showTitleAlert.setModelVisible(true)}}>
-                                        <Text
-                                            style={{
+                                        <TouchableOpacity style={{flexDirection:'row'}} activeOpacity={1}
+                                                          onPress={()=>{this.refs.showTitleAlert.setModelVisible(true)}}>
+                                            <Text
+                                                style={{
                                                 fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                                                 color: '#fff',
                                                 backgroundColor: '#00000000'
                                             }}>微众可用额度(万)</Text>
-                                        <Image source={require('../../images/financeImages/titleAlert.png')} style={{marginLeft:5}}/>
-                                    </TouchableOpacity>
-                                    <Text
-                                        style={{
+                                            <Image source={require('../../images/financeImages/titleAlert.png')}
+                                                   style={{marginLeft:5}}/>
+                                        </TouchableOpacity>
+                                        <Text
+                                            style={{
                                             fontSize: Pixel.getFontPixel(28),
                                             color: '#fff',
                                             marginTop: Pixel.getPixel(7),
@@ -609,10 +612,11 @@ export default class FinanceSence extends BaseComponet {
                                             backgroundColor: '#00000000',
                                             flex: 1,
                                             textAlign: 'center'
-                                        }}>{this.state.mnyData.microchinese_mny/10000}</Text>
-                                </View>)
+                                        }}>{this.state.mnyData.microchinese_mny / 10000}</Text>
+                                    </View>)
                             }
-                            <View style={{flex: 1, alignItems: 'center',borderLeftColor:'white',borderLeftWidth:StyleSheet.hairlineWidth}}>
+                            <View
+                                style={{flex: 1, alignItems: 'center',borderLeftColor:'white',borderLeftWidth:StyleSheet.hairlineWidth}}>
                                 <Text
                                     style={{
                                         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
@@ -632,7 +636,7 @@ export default class FinanceSence extends BaseComponet {
                             </View>
                         </View>
                         {
-                            (this.state.allData.microchineseTitle!='')?
+                            (this.state.allData.microchineseTitle != '') ?
                                 (<View style={{height:Pixel.getPixel(40), alignItems:'center',justifyContent:'center'}}>
                                     <TouchableOpacity onPress={()=>{
 
@@ -643,7 +647,9 @@ export default class FinanceSence extends BaseComponet {
                                                 name: "QuotaApplication",
                                                 component: QuotaApplication,
                                                 params: {
-
+                                                    callBack:()=>{
+                                                        this.allRefresh()
+                                                    }
                                                 }
                                             }
                                             this.props.callBack(navigationParams);

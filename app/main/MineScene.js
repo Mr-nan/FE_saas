@@ -36,7 +36,7 @@ import * as StorageKeyNames from "../constant/storageKeyNames";
 import EditEmployeeScene  from '../mine/employeeManage/EditEmployeeScene'
 import ImageSource from '../publish/component/ImageSource';
 
-var Platform = require('Platform');
+let Platform = require('Platform');
 import ImagePicker from "react-native-image-picker";
 
 const cellJianTou = require('../../images/mainImage/celljiantou.png');
