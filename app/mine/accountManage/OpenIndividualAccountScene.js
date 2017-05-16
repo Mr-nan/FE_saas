@@ -91,30 +91,43 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
         );
     }
 
-    checkEmpty=()=>{
-       let name =  this.refs.name.getInputTextValue();
-       let number =  this.refs.number.getInputTextValue();
-       if(name==''){
-           this.props.showToast('请输入真实姓名');
-       }else if(number==''){
-           this.props.showToast('请输入身份证号码');
-       }
-       StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
+    checkEmpty = () => {
+        let name = this.refs.name.getInputTextValue();
+        let number = this.refs.number.getInputTextValue();
+        if (name == '') {
+            this.props.showToast('请输入真实姓名');
+        } else if (number == '') {
+            this.props.showToast('请输入身份证号码');
+        }
+        StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
             if (data.code == 1 && data.result != null) {
-                this.openIndividual(name,number,data.result);
-            }else{
+                this.getBase_Id(name, number, data.result);
+
+            } else {
                 this.props.showToast('用户信息查询失败');
             }
         })
     }
 
-    openIndividual=(name,number,phone)=>{
+    getBase_Id = (name, number, phone) => {
+        StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas=JSON.parse(data.result);
+                this.openIndividual(name,number,phone,datas[0].enterprise_uid);
+            } else {
+                this.props.showToast('用户信息查询失败');
+            }
+        })
+    }
+
+    openIndividual = (name, number, phone,base_id) => {
         // this.props.showModal(true);
         let maps = {
-            cert_no:number,
-            cert_type:'1',
-            cust_name:name,
-            mobile_no:phone,
+            cert_no: number,
+            cert_type: '1',
+            cust_name: name,
+            mobile_no: phone,
+            enter_base_id:base_id
         };
         request(Urls.USER_OPEN_ACCOUNT_PERSONAL, 'Post', maps)
             .then((response) => {
@@ -162,7 +175,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         paddingLeft: Pixel.getPixel(15),
         paddingRight: Pixel.getPixel(15),
-        marginTop:Pixel.getTitlePixel(79)
+        marginTop: Pixel.getTitlePixel(79)
     },
     inputTextStyle: {
         backgroundColor: '#ffffff',
@@ -196,10 +209,10 @@ const styles = StyleSheet.create({
     },
     imagebuttonok: {
         width: width,
-        backgroundColor:fontAndColor.COLORA3,
-        height:Pixel.getPixel(130),
-        paddingLeft:Pixel.getPixel(15),
-        paddingRight:Pixel.getPixel(15),
-        paddingTop:Pixel.getPixel(25)
+        backgroundColor: fontAndColor.COLORA3,
+        height: Pixel.getPixel(130),
+        paddingLeft: Pixel.getPixel(15),
+        paddingRight: Pixel.getPixel(15),
+        paddingTop: Pixel.getPixel(25)
     }
 });

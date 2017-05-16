@@ -38,9 +38,11 @@ export default class QuotaApplication extends BaseComponent {
     constructor(props) {
         super(props);
         imeis = '';
-        NativeModules.VinScan.getIMEI((imei) => {
-            imeis = imei;
-        });
+        if (Platform.OS === 'android') {
+            NativeModules.VinScan.getIMEI((imei) => {
+                imeis = imei;
+            });
+        }
         this.state = {
             renderPlaceholderOnly: 'blank',
             agree: false,
