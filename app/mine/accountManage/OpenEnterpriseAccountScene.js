@@ -58,27 +58,10 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                             import={false}
                             clearValue={true}
                             rightIcon={false}/>
-                        <LoginInputText
-                            ref="zzjgdm"
-                            textPlaceholder={'请输入组织机构代码'}
-                            viewStytle={styles.itemStyel}
-                            inputTextStyle={styles.inputTextStyle}
-                            leftIcon={false}
-                            import={false}
-                            clearValue={true}
-                            rightIcon={false}/>
-                        <LoginInputText
-                            ref="yyzzh"
-                            textPlaceholder={'请输入营业执照号'}
-                            viewStytle={styles.itemStyel}
-                            inputTextStyle={styles.inputTextStyle}
-                            leftIcon={false}
-                            import={false}
-                            clearValue={true}
-                            rightIcon={false}/>
+                       <View></View>
                         <LoginInputText
                             ref="shxydm"
-                            textPlaceholder={'请输入社会信用代码'}
+                            textPlaceholder={'请输入证件号'}
                             viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
                             inputTextStyle={styles.inputTextStyle}
                             leftIcon={false}
