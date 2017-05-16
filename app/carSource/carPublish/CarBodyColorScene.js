@@ -260,7 +260,7 @@ export default class CarBodyColorScene extends  BaseComponent{
     _shellPress = (i) => {
         this.props.checkedCarBodyColorClick({
             title:this.viewShell[i].title,
-            value:i,
+            value:this.viewShell[i].color,
         });
         this.backPage();
     };
