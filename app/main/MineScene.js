@@ -347,14 +347,14 @@ export default class MineSectionListView extends BaseComponent {
     _navigator(rowData) {
         switch (rowData.name) {
             case '账户管理':
-                // this.navigatorParams.name = 'AccountManageScene'
-                // this.navigatorParams.component = AccountManageScene
+                this.navigatorParams.name = 'AccountManageScene'
+                this.navigatorParams.component = AccountManageScene
 
                 // this.navigatorParams.name = 'WaitActivationAccountScene'
                 // this.navigatorParams.component = WaitActivationAccountScene
 
-                this.navigatorParams.name = 'AccountScene'
-                this.navigatorParams.component = AccountScene
+                // this.navigatorParams.name = 'AccountScene'
+                // this.navigatorParams.component = AccountScene
 
                 // this.navigatorParams.name = 'BindCardScene'
                 // this.navigatorParams.component = BindCardScene
