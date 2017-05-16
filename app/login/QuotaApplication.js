@@ -358,6 +358,7 @@ export default class QuotaApplication extends BaseComponent {
                         name: 'RecognizedGains',
                         component: RecognizedGains,
                         params: {loan_code: '1234566'},
+                        ios_idfa:iosIDFA,
                     })
                 }, (error) => {
                     this.props.showModal(false);

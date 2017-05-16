@@ -413,7 +413,7 @@ const styles = StyleSheet.create({
     textInput:{
         height: 40,
         borderColor: fontAndColor.COLORA0,
-        width:80,
+        width:50,
         textAlign:'right',
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
     },

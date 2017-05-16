@@ -31,7 +31,7 @@ export class CellView extends Component {
                     <View >
                     <Text style={styles.cellTitle}>{cellData.title}</Text>
                         {
-                            cellData.subTitle&&<Text style={{fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),color:fontAndColor.COLORA1,marginTop:Pixel.getPixel(5),width:Pixel.getPixel(150)}}>{cellData.subTitle}</Text>
+                            cellData.subTitle&&<Text style={{fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),color:fontAndColor.COLORA1,marginTop:Pixel.getPixel(5),width:Pixel.getPixel(200)}}>{cellData.subTitle}</Text>
                         }
                     </View>
                 </View>
@@ -108,6 +108,7 @@ const styles = StyleSheet.create({
         borderBottomWidth:StyleSheet.hairlineWidth,
         borderBottomColor:fontAndColor.COLORA4,
         paddingVertical:Pixel.getPixel(15),
+        width:sceneWidth,
 
     },
     cellType2:{
