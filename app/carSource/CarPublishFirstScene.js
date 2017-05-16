@@ -21,6 +21,7 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 import BaseComponent from '../component/BaseComponent';
 import AllNavigationView from '../component/AllNavigationView';
 import {CellView,CellSelectView} from './znComponent/CarPublishCell';
+import EnterpriseInfo from '../publish/component/EnterpriseInfo';
 
 import CarPublishSecondScene from './CarPublishSecondScene';
 import *as fontAndColor from '../constant/fontAndColor';
@@ -29,8 +30,10 @@ import CarBrandSelectScene   from './CarBrandSelectScene';
 import CarDischargeScene from  './carPublish/CarDischargeScene';
 import CarBodyColorScene from './carPublish/CarBodyColorScene';
 import CarInwardColorScene from './carPublish/CarInwardColorScene';
+import AutoConfig      from '../publish/AutoConfig';
 
-
+import StorageUtil from "../utils/StorageUtil";
+import * as StorageKeyNames from "../constant/storageKeyNames";
 import * as Net from '../utils/RequestUtil';
 import * as AppUrls from '../constant/appUrls';
 import PixelUtil from '../utils/PixelUtil';
@@ -46,7 +49,22 @@ let   currentCarType ='二手车';
 export default class CarPublishFirstScene extends BaseComponent{
 
     initFinish=()=>{
-
+        StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST,(data)=>{
+            if(data.code == 1 && data.result != ''){
+                let enters = JSON.parse(data.result);
+                if(enters.length === 1){
+                   console.log('商户ID：'+ enters[0].enterprise_uid);
+                }else if(enters.length > 1){
+                    this.enterpriseList = enters;
+                    this.enterpriseModal.refresh(this.enterpriseList);
+                    this.enterpriseModal.openModal();
+                }else{
+                    this._showHint('无法找到所属商户');
+                }
+            }else{
+                this._showHint('无法找到所属商户');
+            }
+        });
     }
     // 构造
       constructor(props) {
@@ -239,6 +257,7 @@ export default class CarPublishFirstScene extends BaseComponent{
               ]
 
           ];
+          this.enterpriseList = [];
           this.scanType = [
               {model_name: '扫描前风挡'},
               {model_name: '扫描行驶证'}
@@ -308,6 +327,9 @@ export default class CarPublishFirstScene extends BaseComponent{
                     onConfirm={this._handleDatePicked}
                     onCancel={this._hideDateTimePicker}
                 />
+                <EnterpriseInfo viewData ={this.enterpriseList}
+                                enterpricePress={this._enterprisePress}
+                                ref={(modal) => {this.enterpriseModal = modal}}/>
             </View>
         )
     }
@@ -338,6 +360,9 @@ export default class CarPublishFirstScene extends BaseComponent{
 
             this._labelPress('register');
 
+        }else if(title == '标准配置'){
+
+            this.pushCarAutoConfigScene();
         }
         else {
             alert(title);
@@ -487,6 +512,12 @@ export default class CarPublishFirstScene extends BaseComponent{
         this.props.showToast(hint);
     };
 
+    // 取商户ID
+    _enterprisePress = (rowID)=>{
+
+        console.log('商户ID'+this.enterpriseList[rowID].enterprise_uid);
+    };
+
     pushCarBrand=()=>{
         let brandParams = {
             name: 'CarBrandSelectScene',
@@ -560,6 +591,20 @@ export default class CarPublishFirstScene extends BaseComponent{
         this.titleData1[0][6].value = carInwardSceneObject.title;
         this.upTitleData();
     }
+
+    pushCarAutoConfigScene=()=>{
+        let navigationParams={
+            name: "AutoConfig",
+            component: AutoConfig,
+            params: {
+
+                modelID:this.modelInfo['model_id'],
+                carConfigurationData:[],
+            }
+        }
+        this.toNextPage(navigationParams);
+    }
+
 
     dateFormat = (date,fmt) => {
         let o = {
