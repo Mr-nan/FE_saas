@@ -106,7 +106,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                     isShowTail:true,
                     tailView:()=>{
                         return(  <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                            <TextInput style={styles.textInput} placeholder='请输入'/>
+                            <TextInput style={styles.textInput} placeholder='请输入' onChangeText={(text)=>{this.carData['dealer_price']=text}}/>
                             <Text style={styles.textInputTitle}>万元</Text>
                         </View>)
                     }
@@ -118,7 +118,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                     isShowTail:true,
                     tailView:()=>{
                         return(  <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                            <TextInput style={styles.textInput} placeholder='请输入'/>
+                            <TextInput style={styles.textInput} placeholder='请输入' onChangeText={(text)=>{this.carData['low_price']=text}}/>
                             <Text style={styles.textInputTitle}>万元</Text>
                         </View>)
                     }
@@ -130,7 +130,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                     isShowTail:true,
                     tailView:()=>{
                         return(  <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                            <TextInput style={styles.textInput} placeholder='请输入'/>
+                            <TextInput style={styles.textInput} placeholder='请输入' onChangeText={(text)=>{this.carData['member_price']=text}}/>
                             <Text style={styles.textInputTitle}>万元</Text>
                         </View>)
                     }
@@ -154,7 +154,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                     isShowTail:false,
                     tailView:()=>{
                         return(
-                            <TextInput style={styles.textInput} placeholder='请填写'/>
+                            <TextInput style={styles.textInput} placeholder='请填写' onChangeText={(text)=>{this.carData['describe']=text}}/>
                         )
                     }
 
@@ -197,8 +197,9 @@ export default class CarPublishSecondScene extends BaseComponent{
                     isShowTag:true,
                     isShowTail:true,
                     tailView:()=>{
-                        return(  <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                            <TextInput style={styles.textInput} placeholder='请输入'/>
+                        return(
+                            <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                            <TextInput style={styles.textInput} placeholder='请输入' onChangeText={(text)=>{this.carData['dealer_price']=text}}/>
                             <Text style={styles.textInputTitle}>万元</Text>
                         </View>)
                     }
@@ -210,7 +211,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                     isShowTail:true,
                     tailView:()=>{
                         return(  <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                            <TextInput style={styles.textInput} placeholder='请输入'/>
+                            <TextInput style={styles.textInput} placeholder='请输入' onChangeText={(text)=>{this.carData['low_price']=text}}/>
                             <Text style={styles.textInputTitle}>万元</Text>
                         </View>)
                     }
@@ -222,7 +223,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                     isShowTail:true,
                     tailView:()=>{
                         return(  <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                            <TextInput style={styles.textInput} placeholder='请输入'/>
+                            <TextInput style={styles.textInput} placeholder='请输入' onChangeText={(text)=>{this.carData['member_price']=text}}/>
                             <Text style={styles.textInputTitle}>万元</Text>
                         </View>)
                     }
@@ -240,7 +241,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                     isShowTail:false,
                     tailView:()=>{
                         return(
-                            <TextInput style={styles.textInput} placeholder='请填写'/>
+                            <TextInput style={styles.textInput} placeholder='请填写' onChangeText={(text)=>{this.carData['describe']=text}}/>
                         )
                     }
                 },
