@@ -352,10 +352,10 @@ export default class MineSectionListView extends BaseComponent {
 
                 // this.navigatorParams.name = 'WaitActivationAccountScene'
                 // this.navigatorParams.component = WaitActivationAccountScene
-
+                //
                 // this.navigatorParams.name = 'AccountScene'
                 // this.navigatorParams.component = AccountScene
-
+                //
                 // this.navigatorParams.name = 'BindCardScene'
                 // this.navigatorParams.component = BindCardScene
                 break;

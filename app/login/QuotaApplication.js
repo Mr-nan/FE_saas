@@ -29,11 +29,16 @@ var imgSrc: '';
 var imgSid: '';
 
 var itemWidth = width;
+let imeis = '';
 
 export default class QuotaApplication extends BaseComponent {
 
     constructor(props) {
         super(props);
+        imeis = '';
+        NativeModules.VinScan.getIMEI((imei)=>{
+            imeis = imei;
+        });
         this.state = {
             renderPlaceholderOnly: true,
             agree: false,
