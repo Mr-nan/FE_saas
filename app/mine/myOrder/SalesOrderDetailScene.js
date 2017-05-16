@@ -25,6 +25,8 @@ import PixelUtil from '../../utils/PixelUtil';
 import InputAmountScene from "./InputAmountScene";
 import InputVinInfo from "./InputVinInfo";
 import StepView from "./component/StepView";
+import ExplainModal from "./component/ExplainModal";
+import MakePhoneModal from "./component/MakePhoneModal";
 const Pixel = new PixelUtil();
 
 const IS_ANDROID = Platform.OS === 'android';
@@ -104,7 +106,12 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeperator}
                     showsVerticalScrollIndicator={false}/>
-
+                <ExplainModal ref='expModal' title='补差额说明' content='为了确保交易金额可支付贷款本息，请您
+                        补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您
+                        补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您
+                        补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您
+                        补足成交价与贷款本息，'/>
+                <MakePhoneModal ref='mkpModal'/>
                 <View style={{flex: 1}}/>
             </View>
         )
@@ -137,7 +144,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     <TouchableOpacity
                         style={{marginRight: Pixel.getPixel(15), alignSelf: 'center'}}
                         onPress={() => {
-                            /*TODO  拨打电话*/
+                            this.refs.mkpModal.changeShowType(true);
                         }}>
                         <Image
                             source={require('../../../images/mainImage/making_call.png')}/>
@@ -195,7 +202,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
             )
         } else if (rowData === '3') {
             return (
-                <View style={styles.itemType4}>
+                <View style={styles.itemType7}>
+
                     <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
                         <Text style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
@@ -206,7 +214,11 @@ export default class SalesOrderDetailScene extends BaseComponent {
                             color: fontAndColor.COLORB2
                         }}>5000元</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={{marginRight: Pixel.getPixel(15), color: fontAndColor.COLORB4}}>补差额说明</Text>
+                        <Text
+                            onPress={() => {
+                                this.refs.expModal.changeShowType(true);
+                            }}
+                            style={{marginRight: Pixel.getPixel(15), color: fontAndColor.COLORB4}}>补差额说明</Text>
                     </View>
                     <View style={styles.separatedLine}/>
                     <View style={{
@@ -229,6 +241,31 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         <Text style={styles.orderInfo}>30日利息</Text>
                         <View style={{flex: 1}}/>
                         <Text style={styles.infoContentRed}>5000元</Text>
+                    </View>
+                    <View style={{
+                        marginTop: Pixel.getPixel(20),
+                        marginRight: Pixel.getPixel(15),
+                        marginLeft: Pixel.getPixel(15),
+                        height: 1,
+                        backgroundColor: fontAndColor.COLORA4
+                    }}/>
+                    <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
+                        <View style={{
+                            marginLeft: Pixel.getPixel(15),
+                            height: Pixel.getPixel(27),
+                            width: Pixel.getPixel(70),
+                            borderRadius: Pixel.getPixel(2),
+                            borderWidth: Pixel.getPixel(1),
+                            borderColor: fontAndColor.COLORB0,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            marginRight: Pixel.getPixel(15)
+                        }}>
+                            <Text style={{
+                                fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                                color: fontAndColor.COLORB0
+                            }}>充值</Text>
+                        </View>
                     </View>
                 </View>
             )
@@ -495,6 +532,10 @@ const styles = StyleSheet.create({
     itemType4: {
         backgroundColor: '#ffffff',
         height: Pixel.getPixel(151)
+    },
+    itemType7: {
+        backgroundColor: '#ffffff'
+        //height: Pixel.getPixel(200)
     },
     infoContent: {
         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)

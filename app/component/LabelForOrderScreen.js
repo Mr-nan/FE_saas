@@ -15,47 +15,43 @@ let Dimensions = require('Dimensions');
 let {width, height, scale} = Dimensions.get('window');
 import  * as FontAndColor from '../constant/fontAndColor';
 export default class LabelForOrderScreen extends PureComponent {
-    static propTypes = {
-        onCancel: PropTypes.func,
-        readOnly: PropTypes.bool,
-        enable: PropTypes.bool,
-        layoutSize: PropTypes.bool,
-    }
-    static defaultProps = {
-        onCancel: () => {
-        },
-        readOnly: false,
-        layoutSize: false
-    }
+    /*    static propTypes = {
+     onCancel: PropTypes.func,
+     readOnly: PropTypes.bool,
+     enable: PropTypes.bool,
+     layoutSize: PropTypes.bool,
+     }
+     static defaultProps = {
+     onCancel: () => {
+     },
+     readOnly: false,
+     layoutSize: false
+     }*/
 
     constructor(props) {
         super(props);
         this.state = {
-            enable: false,
+            enable: this.props.item.isSelected,
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.state = {
-            enable: nextProps.enables,
-        };
-    }
+    /*    componentWillReceiveProps(nextProps) {
+     this.state = {
+     enable: nextProps.enables,
+     };
+     }*/
 
     setPressDown = () => {
         let en = this.state.enable;
-        if (en) {
-            for (let i = 0; i < this.props.value.length; i++) {
-                if (this.props.value[i] == this.props.item.value) {
-                    this.props.value.splice(i, 1);
-                    break;
-                }
-            }
-        } else {
-            this.props.value.push(this.props.item.value);
+        if (!en) {
+            this.props.value = this.props.item.value;
+            this.setState({enable: !en});
         }
-        console.log(this.props.value);
-        this.setState({enable: !en});
-    }
+        this.props.callBack(this.props.index);
+        //this.props.select(this.props.key);
+        console.log(this.props.item.value);
+
+    };
 
     render() {
         return (
@@ -70,6 +66,10 @@ export default class LabelForOrderScreen extends PureComponent {
 
         );
     }
+
+    unSelected = () => {
+        this.setState({enable: false});
+    };
 }
 
 const Styles = {
@@ -90,7 +90,7 @@ const Styles = {
         alignItems: 'center',
         overflow: 'hidden',
         padding: Pixel.getPixel(3),
-        flex:1,
+        flex: 1,
         marginLeft: Pixel.getPixel(5)
     },
     addItem: {

@@ -15,9 +15,15 @@ let Dimensions = require('Dimensions');
 let {width, height, scale} = Dimensions.get('window');
 import  * as FontAndColor from '../constant/fontAndColor';
 import  LabelForOrderScreen from './LabelForOrderScreen';
+
+const child = '';
+let clickitems = '0';
+
 export default class LabelParent extends PureComponent {
     constructor(props) {
         super(props);
+        clickitems= '0';
+        this.refStatus = '';
     }
 
     render() {
@@ -34,8 +40,20 @@ export default class LabelParent extends PureComponent {
                 allSize = 3 * i;
             }
             for (let j = 3 * i - 3; j < allSize; j++) {
-                console.log(items[j].title);
-                childitem.push(<LabelForOrderScreen item={items[j]} value={value} key={j + 'child'}/>)
+                //console.log(items[j].title);
+                childitem.push(<LabelForOrderScreen callBack={(item)=>{
+                    // console.log(items[j].ref);
+                    // this.refs.a10.unSelected();
+                    if (clickitems !== item) {
+                        /*if(clickitems === ''){
+                            clickitems = item;
+                        }else{*/
+                            items[clickitems].ref.unSelected();
+                            clickitems = item;
+                        //}
+                    }
+
+                }} ref={(modal)=>{items[j].ref = modal}} index={j} item={items[j]} value={value} key={j + 'child'} />)
             }
             item.push(<View key={i + 'parent'} style={{
                 width: width,
@@ -61,5 +79,9 @@ export default class LabelParent extends PureComponent {
             </View>
 
         );
+    }
+
+    invertSelection = (ref) => {
+
     }
 }

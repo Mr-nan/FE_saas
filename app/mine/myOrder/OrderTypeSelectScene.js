@@ -21,6 +21,7 @@ const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 import BaseComponent from "../../component/BaseComponent";
 import NavigatorView from '../../component/AllNavigationView';
 import OrderListScene from './OrderListScene';
+import {request} from '../../utils/RequestUtil';
 /*
  * 获取屏幕的宽和高
  **/
@@ -85,21 +86,6 @@ export default class OrderTypeSelectScene extends BaseComponent {
         return (
             <View style={{backgroundColor: 'white'}}>
                 <TouchableOpacity
-                    onPress={() => {
-                        if (rowID == 0) {
-                            this.toNextPage({
-                                name: 'OrderListScene',
-                                component: OrderListScene,
-                                params: {type: 'procurement'}
-                            });
-                        } else {
-                            this.toNextPage({
-                                name: 'OrderListScene',
-                                component: OrderListScene,
-                                params: {type: 'sales'}
-                            });
-                        }
-                    }}
                     activeOpacity={0.9}
                 >
                     <View style={styles.rowView}>
@@ -107,6 +93,35 @@ export default class OrderTypeSelectScene extends BaseComponent {
                             style={{marginLeft: Pixel.getPixel(15)}}
                             source={rowData.orderIcon}/>
                         <Text style={styles.rowLeft}>{rowData.orderType}</Text>
+                    </View>
+                </TouchableOpacity>
+                <View style={{marginLeft: Pixel.getPixel(55), backgroundColor: fontAndColor.COLORA3, height: 1}}/>
+                <TouchableOpacity
+                    onPress={() => {
+                        if (rowID == 0) {
+                            this.toNextPage({
+                                name: 'OrderListScene',
+                                component: OrderListScene,
+                                params: {
+                                    business: 0,
+                                    orderState: 'trading'
+                                }
+                            });
+                        } else {
+                            this.toNextPage({
+                                name: 'OrderListScene',
+                                component: OrderListScene,
+                                params: {
+                                    business: 1,
+                                    orderState: 'trading'
+                                }
+                            });
+                        }
+                    }}
+                    activeOpacity={0.9}
+                >
+                    <View style={styles.rowView}>
+                        <Text style={styles.rowLeftTitle}>交易中</Text>
                         <Image source={cellJianTou} style={styles.image}/>
                     </View>
                 </TouchableOpacity>
@@ -117,13 +132,19 @@ export default class OrderTypeSelectScene extends BaseComponent {
                             this.toNextPage({
                                 name: 'OrderListScene',
                                 component: OrderListScene,
-                                params: {type: 'procurement'}
+                                params: {
+                                    business: 0,
+                                    orderState: 'complete'
+                                }
                             });
                         } else {
                             this.toNextPage({
                                 name: 'OrderListScene',
                                 component: OrderListScene,
-                                params: {type: 'sales'}
+                                params: {
+                                    business: 1,
+                                    orderState: 'complete'
+                                }
                             });
                         }
                     }}
@@ -141,13 +162,19 @@ export default class OrderTypeSelectScene extends BaseComponent {
                             this.toNextPage({
                                 name: 'OrderListScene',
                                 component: OrderListScene,
-                                params: {type: 'procurement'}
+                                params: {
+                                    business: 0,
+                                    orderState: 'close'
+                                }
                             });
                         } else {
                             this.toNextPage({
                                 name: 'OrderListScene',
                                 component: OrderListScene,
-                                params: {type: 'sales'}
+                                params: {
+                                    business: 1,
+                                    orderState: 'close'
+                                }
                             });
                         }
                     }}

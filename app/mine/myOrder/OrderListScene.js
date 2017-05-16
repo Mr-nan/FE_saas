@@ -9,7 +9,9 @@ import {
     Text,
     ListView,
     TouchableOpacity,
-    Image
+    Image,
+    BackAndroid,
+    InteractionManager
 } from  'react-native'
 
 import BaseComponent from "../../component/BaseComponent";
@@ -28,6 +30,7 @@ export default class OrderListScene extends BaseComponent {
     // 构造
     constructor(props) {
         super(props);
+        let business = this.props.business;
         this.state = {
             // ↓ ???
             dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
@@ -39,15 +42,27 @@ export default class OrderListScene extends BaseComponent {
         };
     }
 
+    componentDidMount() {
+        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
+    }
+
     initFinish = () => {
         this.setState({
             dataSource: this.state.dataSource.cloneWithRows(['', '', '']),
             renderPlaceholderOnly: 'success'
         });
-    }
+    };
+
+    loadData = () => {
+
+    };
 
     render() {
-        if (this.props.type === 'procurement') {
+        if (this.props.business === 0) {
             if (this.state.renderPlaceholderOnly !== 'success') {
                 // 加载中....
                 return ( <View style={styles.container}>
@@ -99,19 +114,14 @@ export default class OrderListScene extends BaseComponent {
                             name: 'OrderSearchScene',
                             component: OrderSearchScene,
                             params: {
-/*                                type: this.props.type,
-                                startDate1: this.state.startDate,
-                                endDate1: this.state.endDate,*/
-                                returnConditions: this.returnConditions
                             }
                         });
                     }}
                     activeOpacity={0.9}
                 >
-                    {/*<Text style={{color: 'white'}}>筛选</Text>*/}
                     <Image source={require('../../../images/mainImage/search_order.png')}/>
                 </TouchableOpacity>
-
+                {/*筛选*/}
                 <TouchableOpacity
                     style={{marginLeft: Pixel.getPixel(10)}}
                     onPress={() => {
@@ -119,16 +129,14 @@ export default class OrderListScene extends BaseComponent {
                             name: 'OrderScreeningScene',
                             component: OrderScreeningScene,
                             params: {
-                                type: this.props.type,
-                                startDate1: this.state.startDate,
-                                endDate1: this.state.endDate,
+                                business: this.props.business,
+                                orderState: this.props.orderState,
                                 returnConditions: this.returnConditions
                             }
                         });
                     }}
                     activeOpacity={0.9}
                 >
-                    {/*<Text style={{color: 'white'}}>筛选</Text>*/}
                     <Image source={require('../../../images/mainImage/screening.png')}/>
                 </TouchableOpacity>
             </View>
@@ -140,10 +148,6 @@ export default class OrderListScene extends BaseComponent {
         console.log('daatee endDate===' + endDate);
         this.state.startDate = startDate;
         this.state.endDate = endDate;
-        this.setState({
-            startDate: startDate,
-            endDate: endDate
-        });
     };
 
     _renderSeperator = (sectionID: number, rowID: number, adjacentRowHighlighted: bool) => {
@@ -159,7 +163,7 @@ export default class OrderListScene extends BaseComponent {
         return (
             <TouchableOpacity
                 onPress={() => {
-                    if (this.props.type === 'procurement') {
+                    if (this.props.business === 0) {
                         this.toNextPage({
                             name: 'ProcurementOrderDetailScene',
                             component: ProcurementOrderDetailScene,

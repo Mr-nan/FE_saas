@@ -27,8 +27,8 @@ import SelectDate from './component/SelectDate';
 let order_state = [];
 let pay_type = [];
 let value = {
-    orderState: [],
-    payType: [],
+    orderState: 0,
+    payType: 0,
     startTime: '',
     endTime: ''
 };
@@ -40,24 +40,28 @@ export default class OrderScreeningScene extends BaseComponent {
         this.type = '';
         order_state = [];
         pay_type = [];
+        //orderState: 0 --> 全部
         value = {
-            orderState: [],
-            payType: [],
+            orderState: 0,
+            //payType: 0,
             startTime: '',
             endTime: ''
         };
         let mList = [];
-        if (this.props.type === 'procurement') {
-            mList = ['1', '2', '3'];
-            order_state.push({title: '已拍下', isSelected: false, value: 0});
-            order_state.push({title: '待付订金', isSelected: false, value: 1});
-            order_state.push({title: '待付尾款', isSelected: false, value: 2});
-            order_state.push({title: '待确认发车', isSelected: false, value: 3});
-            order_state.push({title: '待确认收货', isSelected: false, value: 4});
-            order_state.push({title: '已完成', isSelected: false, value: 5});
-            order_state.push({title: '申请取消订单中', isSelected: false, value: 6});
-            order_state.push({title: '处理取消订单中', isSelected: false, value: 7});
-            order_state.push({title: '交易关闭', isSelected: false, value: 8});
+        if (this.props.business === 0) {
+            if (this.props.orderState === 'trading') {
+                mList = ['1', '3'];
+                order_state.push({title: '全部', isSelected: true, value: 0, ref: 'child0'});
+                order_state.push({title: '已拍下', isSelected: false, value: 1, ref: 'child1'});
+                order_state.push({title: '待付订金', isSelected: false, value: 2, ref: 'child2'});
+                order_state.push({title: '待付尾款', isSelected: false, value: 3, ref: 'child3'});
+                order_state.push({title: '待申请发车', isSelected: false, value: 4, ref: 'child4'});
+                order_state.push({title: '待确认收货', isSelected: false, value: 5, ref: 'child5'});
+                order_state.push({title: '申请取消订单中', isSelected: false, value: 6, ref: 'child6'});
+                order_state.push({title: '订单融资处理中', isSelected: false, value: 7, ref: 'child7'});
+            } else {
+                mList = ['3'];
+            }
         } else {
             mList = ['1', '3'];
             order_state.push({title: '待确定成交价', isSelected: false, value: 0});
