@@ -22,13 +22,12 @@ let clickitems = '0';
 export default class LabelParent extends PureComponent {
     constructor(props) {
         super(props);
-        clickitems= '0';
-        this.refStatus = '';
+        clickitems = this.props.parameters;
     }
 
     render() {
         let items = this.props.items;
-        let value = this.props.value;
+        let parameters = this.props.parameters;
         let item = [];
         let line = Math.ceil(items.length / 3);
         for (let i = 1; i <= line; i++) {
@@ -53,7 +52,7 @@ export default class LabelParent extends PureComponent {
                         //}
                     }
 
-                }} ref={(modal)=>{items[j].ref = modal}} index={j} item={items[j]} value={value} key={j + 'child'} />)
+                }} ref={(modal)=>{items[j].ref = modal}} index={j} item={items[j]} parameters={parameters} key={j + 'child'} />)
             }
             item.push(<View key={i + 'parent'} style={{
                 width: width,

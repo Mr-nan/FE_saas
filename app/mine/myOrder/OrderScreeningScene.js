@@ -26,7 +26,7 @@ import SelectDate from './component/SelectDate';
 
 let order_state = [];
 let pay_type = [];
-let value = {
+let parameters = {
     orderState: 0,
     payType: 0,
     startTime: '',
@@ -41,24 +41,32 @@ export default class OrderScreeningScene extends BaseComponent {
         order_state = [];
         pay_type = [];
         //orderState: 0 --> 全部
-        value = {
+        parameters = {
             orderState: 0,
             //payType: 0,
-            startTime: '',
-            endTime: ''
+            startTime: '选择开始时间',
+            endTime: '选择结束时间'
         };
         let mList = [];
         if (this.props.business === 0) {
             if (this.props.orderState === 'trading') {
                 mList = ['1', '3'];
-                order_state.push({title: '全部', isSelected: true, value: 0, ref: 'child0'});
+/*                order_state.push({title: '全部', isSelected: order_state.length === parameters.orderState, value: 0, ref: 'child0'});
                 order_state.push({title: '已拍下', isSelected: false, value: 1, ref: 'child1'});
                 order_state.push({title: '待付订金', isSelected: false, value: 2, ref: 'child2'});
                 order_state.push({title: '待付尾款', isSelected: false, value: 3, ref: 'child3'});
                 order_state.push({title: '待申请发车', isSelected: false, value: 4, ref: 'child4'});
                 order_state.push({title: '待确认收货', isSelected: false, value: 5, ref: 'child5'});
                 order_state.push({title: '申请取消订单中', isSelected: false, value: 6, ref: 'child6'});
-                order_state.push({title: '订单融资处理中', isSelected: false, value: 7, ref: 'child7'});
+                order_state.push({title: '订单融资处理中', isSelected: false, value: 7, ref: 'child7'});*/
+                order_state.push({title: '全部', isSelected: order_state.length === parameters.orderState, value: 0, ref: 'child0'});
+                order_state.push({title: '已拍下', isSelected: order_state.length === parameters.orderState, value: 1, ref: 'child1'});
+                order_state.push({title: '待付订金', isSelected: order_state.length === parameters.orderState, value: 2, ref: 'child2'});
+                order_state.push({title: '待付尾款', isSelected: order_state.length === parameters.orderState, value: 3, ref: 'child3'});
+                order_state.push({title: '待申请发车', isSelected: order_state.length === parameters.orderState, value: 4, ref: 'child4'});
+                order_state.push({title: '待确认收货', isSelected: order_state.length === parameters.orderState, value: 5, ref: 'child5'});
+                order_state.push({title: '申请取消订单中', isSelected: order_state.length === parameters.orderState, value: 6, ref: 'child6'});
+                order_state.push({title: '订单融资处理中', isSelected: order_state.length === parameters.orderState, value: 7, ref: 'child7'});
             } else {
                 mList = ['3'];
             }
@@ -79,10 +87,11 @@ export default class OrderScreeningScene extends BaseComponent {
         pay_type.push({title: '全款', isSelected: false, value: 2});
         this.state = {
             source: ds.cloneWithRows(mList),
-            startDate: '选择开始时间',
-            endDate: '选择结束时间',
-            isDateTimePickerVisible: false,
-            arr1: order_state
+/*            startDate: '选择开始时间',
+            endDate: '选择结束时间',*/
+            parameters: parameters,
+            isDateTimePickerVisible: false
+            //arr1: order_state
         }
 
     }
@@ -132,7 +141,7 @@ export default class OrderScreeningScene extends BaseComponent {
             return (
                 <View style={styles.containerChild}>
                     <Text style={styles.carType}>订单状态</Text>
-                    <LabelParent items={order_state} value={value.orderState}/>
+                    <LabelParent items={order_state} parameters={parameters.orderState}/>
                 </View>
             )
         } else if (movie == 2) {
@@ -141,7 +150,7 @@ export default class OrderScreeningScene extends BaseComponent {
                     backgroundColor: '#ffffff'
                 }}>
                     <Text style={styles.carType}>付款方式</Text>
-                    <LabelParent style={{}} items={pay_type} value={value.payType}/>
+                    <LabelParent style={{}} items={pay_type} parameters={parameters.payType}/>
                 </View>
             )
         } else if (movie == 3) {
