@@ -22,8 +22,9 @@ import * as fontAndColor from '../../constant/fontAndColor';
 import BaseComponent from '../../component/BaseComponent';
 import NavigationView from '../../component/AllNavigationView';
 import LoginInputText from "../../login/component/LoginInputText";
-const childItems = [];
 import {request} from '../../utils/RequestUtil';
+import StorageUtil from "../../utils/StorageUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
 import * as Urls from '../../constant/appUrls';
 export  default class OpenIndividualAccountScene extends BaseComponent {
 
@@ -59,7 +60,7 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
                             clearValue={true}
                             rightIcon={false}/>
                         <LoginInputText
-                            ref="businessName"
+                            ref="number"
                             textPlaceholder={'请输入身份证号码'}
                             viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
                             inputTextStyle={styles.inputTextStyle}
@@ -76,7 +77,7 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
                 </Text>
 
                 <TouchableOpacity onPress={()=>{
-
+                    this.checkEmpty();
                 }} activeOpacity={0.8} style={{backgroundColor:fontAndColor.COLORB0,marginTop:Pixel.getPixel(15),
                 width:width-Pixel.getPixel(30),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),
                 height:Pixel.getPixel(44),justifyContent:'center',alignItems: 'center'}}>
@@ -88,6 +89,48 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
                 />
             </View>
         );
+    }
+
+    checkEmpty=()=>{
+       let name =  this.refs.name.getInputTextValue();
+       let number =  this.refs.number.getInputTextValue();
+       if(name==''){
+           this.props.showToast('请输入真实姓名');
+       }else if(number==''){
+           this.props.showToast('请输入身份证号码');
+       }
+       StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
+            if (data.code == 1 && data.result != null) {
+                this.openIndividual(name,number,data.result);
+            }else{
+                this.props.showToast('用户信息查询失败');
+            }
+        })
+    }
+
+    openIndividual=(name,number,phone)=>{
+        // this.props.showModal(true);
+        let maps = {
+            cert_no:number,
+            cert_type:'1',
+            cust_name:name,
+            mobile_no:phone,
+        };
+        request(Urls.USER_OPEN_ACCOUNT_PERSONAL, 'Post', maps)
+            .then((response) => {
+                    // this.props.showModal(false);
+                    // this.props.showToast('添加成功');
+                    // this.props.callBack();
+                    // this.backPage();
+                },
+                (error) => {
+                    // this.props.showModal(false);
+                    // if (error.mycode == -300 || error.mycode == -500) {
+                    //     this.props.showToast('添加失败');
+                    // } else {
+                    //     this.props.showToast(error.mjson.msg);
+                    // }
+                });
     }
 
     _renderPlaceholderView() {

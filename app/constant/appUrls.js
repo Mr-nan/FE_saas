@@ -220,6 +220,13 @@ export const USER_EMPLOYEE_SAVE = BASEURL+'v1/user.employee/save';
 /**
  * from @zhaojian
  *
+ * 开通个人账户
+ **/
+export const USER_OPEN_ACCOUNT_PERSONAL = BASEURL+'v1/user.open_account/personal';
+
+/**
+ * from @zhaojian
+ *
  * 更新采购贷车辆
  **/
 export const PURCHAAUTO_UPDATEAUTO = 'api/v2/purchaAuto/updateAuto';

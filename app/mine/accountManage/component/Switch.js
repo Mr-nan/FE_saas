@@ -1,7 +1,7 @@
 /**
  * Created by lhc on 2017/2/15.
  */
-import React, {Component,PureComponent} from 'react';
+import React, {Component, PureComponent} from 'react';
 import {
     StyleSheet,
     Text,
@@ -11,7 +11,8 @@ import {
     Dimensions,
     TouchableOpacity,
     ListView,
-    InteractionManager
+    InteractionManager,
+    Animated
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
@@ -22,48 +23,47 @@ export  default class Switch extends PureComponent {
 
     constructor(props) {
         super(props);
-        this.state={
-            isDateTimePickerVisible:false
+        this.state = {
+            isOpen: false,
+            fadeAnim: new Animated.Value(0),
         }
     }
-
-    changeVisible=(value)=>{
-        this.setState({
-            isDateTimePickerVisible:value
-        });
-    }
-
     render() {
-        return(<View style={{width:Pixel.getPixel(50),height:Pixel.getPixel(31)}}></View>);
+        return (<TouchableOpacity onPress={()=>{
+            let value = 0;
+            if(this.state.isOpen){
+                value = 0;
+            }else{
+                value = 1;
+            }
+            this.setState({
+                isOpen:!this.state.isOpen
+            });
+            Animated.timing(          // Uses easing functions
+            this.state.fadeAnim,    // The value to drive
+            {toValue: value},           // Configuration
+        ).start();                // Don't forget start!
+        }} activeOpacity={1} style={{width:Pixel.getPixel(55),height:Pixel.getPixel(31),
+        borderRadius:100,backgroundColor:fontAndColor.COLORA3,justifyContent:'center',
+        }}>
+            <Animated.View style={{opacity: this.state.fadeAnim,backgroundColor:'#4AD762',
+            width:Pixel.getPixel(55),height:Pixel.getPixel(31),
+        borderRadius:100,position: 'absolute',left:0,top: 0
+        }}>
+            </Animated.View>
+            <Animated.View style={{width:Pixel.getPixel(27),height:Pixel.getPixel(27),backgroundColor:'#fff',borderRadius:100,
+            marginLeft:Pixel.getPixel(2),marginRight:Pixel.getPixel(2),
+            transform: [{
+                 translateX: this.state.fadeAnim.interpolate({
+                 inputRange: [0, 1],
+                 outputRange: [0, Pixel.getPixel(24)]  // 0 : 150, 0.5 : 75, 1 : 0
+                }),
+            }],
+            }}></Animated.View>
+        </TouchableOpacity>);
     }
 
-    _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false })
 
-    _handleDatePicked = (date) => {
-        let tempdate=dateFormat(date,'yyyy-MM-dd');
-        // let tempdate=dateFormat(Date.parse(new Date()),'yyyy-MM-dd')
-        // let select = Date.parse(new Date(date));
-        // let mm = Date.parse(new Date());
-        // let aa = Math.ceil((select-mm)/1000/60/60/24);
-        this.props.callBack(tempdate);
-        this._hideDateTimePicker();
-    }
-
-}
-const dateFormat = (date,fmt) => {
-    let o = {
-        "M+": date.getMonth() + 1, //月份
-        "d+": date.getDate(), //日
-        "h+": date.getHours(), //小时
-        "m+": date.getMinutes(), //分
-        "s+": date.getSeconds(), //秒
-        "q+": Math.floor((date.getMonth() + 3) / 3), //季度
-        "S": date.getMilliseconds() //毫秒
-    };
-    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
-    for (let k in o)
-        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-    return fmt;
 }
 const styles = StyleSheet.create({
 

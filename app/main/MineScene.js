@@ -23,6 +23,7 @@ import ContractManageScene from '../mine/contractManage/ContractSelectScene';
 import AccountManageScene from '../mine/accountManage/AccountTypeSelectScene'
 import WaitActivationAccountScene from '../mine/accountManage/WaitActivationAccountScene'
 import AccountScene from '../mine/accountManage/AccountScene'
+import BindCardScene from '../mine/accountManage/BindCardScene'
 
 import AdjustManageScene from '../mine/adjustManage/AdjustManageScene'
 import EmployeeManageScene from '../mine/employeeManage/EmployeeManageScene'
@@ -35,7 +36,7 @@ import * as StorageKeyNames from "../constant/storageKeyNames";
 import EditEmployeeScene  from '../mine/employeeManage/EditEmployeeScene'
 import ImageSource from '../publish/component/ImageSource';
 
-var Platform = require('Platform');
+let Platform = require('Platform');
 import ImagePicker from "react-native-image-picker";
 
 const cellJianTou = require('../../images/mainImage/celljiantou.png');
@@ -346,14 +347,17 @@ export default class MineSectionListView extends BaseComponent {
     _navigator(rowData) {
         switch (rowData.name) {
             case '账户管理':
-                // this.navigatorParams.name = 'AccountManageScene'
-                // this.navigatorParams.component = AccountManageScene
+                this.navigatorParams.name = 'AccountManageScene'
+                this.navigatorParams.component = AccountManageScene
 
                 // this.navigatorParams.name = 'WaitActivationAccountScene'
                 // this.navigatorParams.component = WaitActivationAccountScene
-
-                this.navigatorParams.name = 'AccountScene'
-                this.navigatorParams.component = AccountScene
+                //
+                // this.navigatorParams.name = 'AccountScene'
+                // this.navigatorParams.component = AccountScene
+                //
+                // this.navigatorParams.name = 'BindCardScene'
+                // this.navigatorParams.component = BindCardScene
                 break;
             case '优惠券管理':
                 this.navigatorParams.name = 'AdjustManageScene'

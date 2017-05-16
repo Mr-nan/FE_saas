@@ -20,18 +20,23 @@ const Pixel = new PixelUtil();
 import * as fontAndColor from '../../constant/fontAndColor';
 import BaseComponent from '../../component/BaseComponent';
 import NavigationView from '../../component/AllNavigationView';
+let childItems = [];
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
-import Switch from './component/Switch';
-export  default class AccountSettingScene extends BaseComponent {
+export  default class FrozenScene extends BaseComponent {
 
     constructor(props) {
         super(props);
         // 初始状态
+        childItems = [];
+        childItems.push({title: '信用账户', value: '20万元'});
+        childItems.push({title: '交易待结算账户', value: '15万元'});
+        childItems.push({title: '交易临时账户', value: '25万元'});
+        childItems.push({title: '酬金账户', value: '5万元'});
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             renderPlaceholderOnly: 'blank',
-            source: ds.cloneWithRows(['1','2'])
+            source: ds.cloneWithRows(childItems)
         };
     }
 
@@ -47,21 +52,47 @@ export  default class AccountSettingScene extends BaseComponent {
         }
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
-                <View style={{marginTop:Pixel.getTitlePixel(79),backgroundColor:'#fff',paddingRight: Pixel.getPixel(15),
-                 paddingLeft:Pixel.getPixel(15),height:Pixel.getPixel(44),flexDirection:'row'}}>
-                    <View style={{flex:1,justifyContent:'center'}}>
-                        <Text style={{color:'#000',fontSize: Pixel.getFontPixel(14)}}>开通电子账户</Text>
-                    </View>
-                    <View style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>
-                            <Switch/>
-                    </View>
-                </View>
+                <ListView
+                    style={{marginTop: Pixel.getTitlePixel(79)}}
+                    dataSource={this.state.source}
+                    renderRow={this._renderRow}
+                    renderSeparator={this._renderSeparator}
+                />
                 <NavigationView
-                    title="账户设置"
+                    title="冻结金额"
                     backIconClick={this.backPage}
                 />
             </View>
         );
+    }
+
+    _renderRow = (movie, sectionId, rowId) => {
+        return (
+            <View style={{
+                    flex:1, height: Pixel.getPixel(44),
+                    backgroundColor: '#fff', flexDirection: 'row',alignItems:'center',paddingLeft:Pixel.getPixel(15),
+                    paddingRight:Pixel.getPixel(15)
+                }}>
+                <View style={{flex:1,justifyContent:'center'}}>
+                    <Text style={{color:'#000',fontSize: Pixel.getFontPixel(14)}}>{movie.title}</Text>
+                </View>
+                <View style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>
+                    <Text style={{color:fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(14)}}>{movie.value}</Text>
+                </View>
+            </View>
+        )
+
+    }
+
+    _renderSeparator(sectionId, rowId) {
+
+        return (
+            <View style={styles.Separator} key={sectionId + rowId}>
+                <View style={{flex:1, backgroundColor:fontAndColor.COLORA3}}>
+
+                </View>
+            </View>
+        )
     }
 
     _renderPlaceholderView() {
@@ -69,7 +100,7 @@ export  default class AccountSettingScene extends BaseComponent {
             <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
                 {this.loadView()}
                 <NavigationView
-                    title="账户设置"
+                    title="冻结金额"
                     backIconClick={this.backPage}
                 />
             </View>
@@ -85,8 +116,11 @@ const styles = StyleSheet.create({
         height: 43,
     },
     Separator: {
-        backgroundColor: fontAndColor.COLORA3,
-        height: Pixel.getPixel(10),
+        backgroundColor: '#fff',
+        height: Pixel.getPixel(1),
+        paddingLeft: Pixel.getPixel(15),
+        paddingRight: Pixel.getPixel(15)
+
 
     },
     margin: {

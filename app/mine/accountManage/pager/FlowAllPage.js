@@ -34,6 +34,13 @@ export  default class FlowAllPage extends BaseComponent {
         };
     }
 
+    componentDidMount() {
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
+    }
+
     initFinish = () => {
         this.setState({
             renderPlaceholderOnly: 'success',
