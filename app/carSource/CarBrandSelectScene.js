@@ -46,7 +46,9 @@ let carObject = {
     series_id: '0',
     series_name: '0',
     model_id: '0',
-    model_name: '0'
+    model_name: '0',
+    discharge_standard:'',
+    model_year:'',
 
 };
 
@@ -80,6 +82,8 @@ export default class CarBrandSelectScene extends BaseComponent {
         carObject.series_name = '0';
         carObject.model_id = '0';
         carObject.model_name = '0';
+        carObject.discharge_standard='';
+        carObject.model_year='';
 
 
         let getSectionData = (dataBlob, sectionID) => {
@@ -652,6 +656,8 @@ class CarModelList extends BaseComponent {
 
                 carObject.model_id = rowData.model_id;
                 carObject.model_name = rowData.model_name;
+                carObject.discharge_standard = rowData.discharge_standard;
+                carObject.model_year = rowData.model_year;
                 this.props.checkedCarClick(carObject);
 
             }}>

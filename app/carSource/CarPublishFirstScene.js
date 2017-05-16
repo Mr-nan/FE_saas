@@ -452,6 +452,9 @@ export default class CarPublishFirstScene extends BaseComponent{
             }
         }else if (type==0){
             this.titleData1[0][2].value = this.modelData[index].model_name;
+            this.titleData1[0][4].value = this.modelData[index].model_emission_standard;
+            this.titleData1[1][0].value = this.modelData[index].model_name+'-6-1';
+            this.titleData1[1][1].value = this.modelData[index].model_year+'-6-1';
             this.upTitleData();
         }
 
@@ -465,17 +468,26 @@ export default class CarPublishFirstScene extends BaseComponent{
                 (response) => {
                     this._closeLoading();
                     if (response.mycode === 1) {
+
                         let rd = response.mjson.data;
+
                         if (rd.length === 0) {
+
                             this._showHint('车架号校验失败');
+
                         } else if (rd.length === 1) {
                             this.modelInfo['brand_id'] = rd[0].brand_id;
                             this.modelInfo['model_id'] = rd[0].model_id;
                             this.modelInfo['series_id'] = rd[0].series_id;
                             this.modelInfo['model_year'] = rd[0].model_year;
                             this.modelInfo['model_name'] = rd[0].model_name;
+
                             this.titleData1[0][2].value = rd[0].model_name;
+                            this.titleData1[0][4].value = rd[0].model_emission_standard;
+                            this.titleData1[1][0].value = rd[0].model_year+'-6-1';
+                            this.titleData1[1][1].value = rd[0].model_year+'-6-1';
                             this.upTitleData();
+
                         } else if (rd.length > 1) {
                             this.modelData = response.mjson.data;
                             this.vinModal.refresh(this.modelData);
@@ -536,6 +548,9 @@ export default class CarPublishFirstScene extends BaseComponent{
         this.modelInfo['series_id'] = carObject.series_id;
         this.modelInfo['model_name'] = carObject.model_name;
         this.titleData1[0][2].value = carObject.model_name;
+        this.titleData1[0][4].value = carObject.discharge_standard;
+        this.titleData1[1][0].value = carObject.model_year+'-6-1';
+        this.titleData1[1][1].value = carObject.model_year+'-6-1';
         this.upTitleData();
     }
 
