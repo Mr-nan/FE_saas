@@ -75,7 +75,8 @@ let   titleData1 = [
         isShowTail:true,
     },
         {
-            title:'市场价',
+            title:'分销批发价',
+            subTitle:'针对同行的分销价格，合理定价可以更快售出',
             isShowTag:true,
             isShowTail:true,
             tailView:()=>{
@@ -86,7 +87,8 @@ let   titleData1 = [
             }
         },
         {
-            title:'底价',
+            title:'低价',
+            subTitle:'仅做内部销售参考',
             isShowTag:false,
             isShowTail:true,
             tailView:()=>{
@@ -98,6 +100,7 @@ let   titleData1 = [
         },
         {
             title:'会员价',
+            subTitle:'给本店高级客户的优惠价格，暂不对外展示',
             isShowTag:false,
             isShowTail:true,
             tailView:()=>{
@@ -410,7 +413,7 @@ const styles = StyleSheet.create({
     textInput:{
         height: 40,
         borderColor: fontAndColor.COLORA0,
-        width:200,
+        width:80,
         textAlign:'right',
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
     },

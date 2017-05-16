@@ -45,6 +45,7 @@ import * as Urls from '../constant/appUrls';
 import * as fontAndColor from '../constant/fontAndColor';
 import SelectCompanyScene from '../finance/SelectCompanyScene';
 import AginSelectCompanyScene from '../finance/AginSelectCompanyScene';
+import QuotaApplication from '../login/QuotaApplication';
 import {LendSuccessAlert} from '../finance/lend/component/ModelComponent'
 let loanList = [];
 import CGDLendScenes from '../finance/lend/CGDLendScenes';
@@ -588,7 +589,7 @@ export default class FinanceSence extends BaseComponet {
                                     }}>{this.state.allData.keyongedu}</Text>
                             </View>
                             {
-                               this.state.mnyData.is_microchinese_mny ==3 &&(
+                               this.state.mnyData.is_microchinese_mny ==5 &&(
                                     <View style={{flex: 1, alignItems: 'center',}}>
                                     <TouchableOpacity style={{flexDirection:'row'}} activeOpacity={1} onPress={()=>{this.refs.showTitleAlert.setModelVisible(true)}}>
                                         <Text
@@ -631,7 +632,7 @@ export default class FinanceSence extends BaseComponet {
                             </View>
                         </View>
                         {
-                            (this.state.mnyData.is_microchinese_mny!==0 && this.state.mnyData.is_microchinese_mny!==3 && this.state.mnyData.is_microchinese_contract!==undefined)?
+                            (this.state.allData.microchineseTitle!='')?
                                 (<View style={{height:Pixel.getPixel(40), alignItems:'center',justifyContent:'center'}}>
                                     <TouchableOpacity onPress={()=>{
 
@@ -639,8 +640,8 @@ export default class FinanceSence extends BaseComponet {
                                             this.refs.showAlert.setModelVisible(true)
                                         }else if (this.state.mnyData.is_microchinese_mny == 1){
                                             let navigationParams={
-                                                name: "ReceiptInfoScene",
-                                                component: ReceiptInfoScene,
+                                                name: "QuotaApplication",
+                                                component: QuotaApplication,
                                                 params: {
 
                                                 }

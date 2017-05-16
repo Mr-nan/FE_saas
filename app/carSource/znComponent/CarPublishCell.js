@@ -28,7 +28,12 @@ export class CellView extends Component {
                     {
                         cellData.isShowTag && <Text style={{color:fontAndColor.COLORB2, fontSize:fontAndColor.LITTLEFONT28}}>*</Text>
                     }
+                    <View >
                     <Text style={styles.cellTitle}>{cellData.title}</Text>
+                        {
+                            cellData.subTitle&&<Text style={{fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),color:fontAndColor.COLORA1,marginTop:Pixel.getPixel(5),width:Pixel.getPixel(150)}}>{cellData.subTitle}</Text>
+                        }
+                    </View>
                 </View>
                 {
                     cellData.tailView? cellData.tailView():(
@@ -95,7 +100,6 @@ export class CellSelectView extends Component{
 
 const styles = StyleSheet.create({
     cellType1:{
-        height:Pixel.getPixel(44),
         flexDirection:'row',
         paddingHorizontal:Pixel.getPixel(15),
         alignItems:'center',
@@ -103,6 +107,7 @@ const styles = StyleSheet.create({
         backgroundColor:'white',
         borderBottomWidth:StyleSheet.hairlineWidth,
         borderBottomColor:fontAndColor.COLORA4,
+        paddingVertical:Pixel.getPixel(15),
 
     },
     cellType2:{
