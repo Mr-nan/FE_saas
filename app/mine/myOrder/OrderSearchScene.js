@@ -11,13 +11,17 @@ import {
     ListView,
     TouchableOpacity,
     Image,
-    Dimensions
+    Dimensions, TextInput
 } from  'react-native'
 import BaseComponent from "../../component/BaseComponent";
 import * as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
+import * as AppUrls from "../../constant/appUrls";
+import {request} from "../../utils/RequestUtil";
+import ProcurementOrderDetailScene from "./ProcurementOrderDetailScene";
+import SalesOrderDetailScene from "./SalesOrderDetailScene";
 const Pixel = new PixelUtil();
-const ScreenWidth = Dimensions.get('window').width;
+const {width, height} = Dimensions.get('window');
 
 export default class OrderSearchScene extends BaseComponent {
 
@@ -25,7 +29,6 @@ export default class OrderSearchScene extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-            // ↓ ???
             dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
             renderPlaceholderOnly: 'blank',
             isRefreshing: false
@@ -33,15 +36,56 @@ export default class OrderSearchScene extends BaseComponent {
     }
 
     initFinish = () => {
+        //this.loadData();
         this.setState({
-            dataSource: this.state.dataSource.cloneWithRows(['', '', '']),
             renderPlaceholderOnly: 'success'
         });
     }
 
-    render() {
+    startSearch = () => {
+        this.setState({
+            renderPlaceholderOnly: 'loading'
+        });
+        this.loadData();
+    }
+
+    loadData = () => {
+        let url = AppUrls.ORDER_SEARCH;
+        this.pageNum = 1;
+        request(url, 'post', {
+            business: 0,
+            page: this.pageNum,
+            rows: 10
+            /*start_time: '',
+             end_time: '',
+             is_finance: '',
+             status: ''*/
+        }).then((response) => {
+            this.orderListData = response.mjson.data.list;
+            if (this.orderListData.length) {
+                this.setState({
+                    dataSource: this.state.dataSource.cloneWithRows(this.orderListData),
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'success'
+                });
+            } else {
+                this.setState({
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'null'
+                });
+            }
+
+        }, (error) => {
+            this.setState({
+                isRefreshing: false,
+                renderPlaceholderOnly: 'error'
+            });
+        });
+    };
+
+    _renderPlaceholderView() {
         return (
-            <View style={styles.container}>
+            <View style={{width: width, height: height, backgroundColor: fontAndColor.COLORA3}}>
                 <View style={styles.navigatorView}>
                     <View style={styles.navitgatorContentView}>
                         <TouchableOpacity
@@ -53,10 +97,16 @@ export default class OrderSearchScene extends BaseComponent {
                         <View style={styles.navigatorSousuoView}>
                             <Image style={{marginLeft: Pixel.getPixel(15), marginRight: Pixel.getPixel(10)}}
                                    source={require('../../../images/carSourceImages/sousuoicon.png')}/>
+                            <TextInput defaultValue={''}
+                                       placeholder={"请输入车辆名称"}
+                                       style={styles.inputStyle}
+                                       secureTextEntry={false}
+                                       underlineColorAndroid="transparent"
+                            />
                         </View>
-                        <TouchableOpacity onPress={this.props.ScreeningClick}>
+                        <TouchableOpacity onPress={this.startSearch}>
                             <View style={{
-                                marginLeft: Pixel.getPixel(20),
+                                marginLeft: Pixel.getPixel(10),
                                 width: Pixel.getPixel(50),
                                 height: Pixel.getPixel(40),
                                 justifyContent: 'center',
@@ -70,13 +120,98 @@ export default class OrderSearchScene extends BaseComponent {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <ListView style={{backgroundColor: fontAndColor.COLORA3, marginTop: Pixel.getTitlePixel(14)}}
-                          dataSource={this.state.dataSource}
-                          renderRow={this._renderRow}
-                          enableEmptySections={true}
-                          renderSeparator={this._renderSeperator}/>
+                {this.loadView()}
             </View>
-        )
+        );
+    }
+
+    _navigatorView() {
+        return (
+            <View style={styles.navigatorView}>
+                <View style={styles.navitgatorContentView}>
+                    <TouchableOpacity
+                        style={{justifyContent: 'center'}}
+                        onPress={this.backPage}>
+                        <Image style={styles.backIcon}
+                               source={require('../../../images/mainImage/navigatorBack.png')}/>
+                    </TouchableOpacity>
+                    <View style={styles.navigatorSousuoView}>
+                        <Image style={{marginLeft: Pixel.getPixel(15), marginRight: Pixel.getPixel(10)}}
+                               source={require('../../../images/carSourceImages/sousuoicon.png')}/>
+                        <TextInput defaultValue={''}
+                                   placeholder={"请输入车辆名称"}
+                                   style={styles.inputStyle}
+                                   secureTextEntry={false}
+                                   underlineColorAndroid="transparent"
+                        />
+                    </View>
+                    <TouchableOpacity onPress={this.startSearch}>
+                        <View style={{
+                            marginLeft: Pixel.getPixel(10),
+                            width: Pixel.getPixel(50),
+                            height: Pixel.getPixel(40),
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
+                            <Text style={{
+                                color: 'white',
+                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30)
+                            }}>搜索</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        );
+    }
+
+    render() {
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return this._renderPlaceholderView();
+        } else {
+            return (
+                <View style={styles.container}>
+                    <View style={styles.navigatorView}>
+                        <View style={styles.navitgatorContentView}>
+                            <TouchableOpacity
+                                style={{justifyContent: 'center'}}
+                                onPress={this.backPage}>
+                                <Image style={styles.backIcon}
+                                       source={require('../../../images/mainImage/navigatorBack.png')}/>
+                            </TouchableOpacity>
+                            <View style={styles.navigatorSousuoView}>
+                                <Image style={{marginLeft: Pixel.getPixel(15), marginRight: Pixel.getPixel(10)}}
+                                       source={require('../../../images/carSourceImages/sousuoicon.png')}/>
+                                <TextInput defaultValue={''}
+                                           placeholder={"请输入车辆名称"}
+                                           style={styles.inputStyle}
+                                           secureTextEntry={false}
+                                           underlineColorAndroid="transparent"
+                                />
+                            </View>
+                            <TouchableOpacity onPress={this.startSearch}>
+                                <View style={{
+                                    marginLeft: Pixel.getPixel(10),
+                                    width: Pixel.getPixel(50),
+                                    height: Pixel.getPixel(40),
+                                    justifyContent: 'center',
+                                    alignItems: 'center'
+                                }}>
+                                    <Text style={{
+                                        color: 'white',
+                                        fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30)
+                                    }}>搜索</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <ListView style={{backgroundColor: fontAndColor.COLORA3, marginTop: Pixel.getPixel(14)}}
+                              dataSource={this.state.dataSource}
+                              renderRow={this._renderRow}
+                              enableEmptySections={true}
+                              renderSeparator={this._renderSeperator}/>
+                </View>
+            )
+        }
     }
 
     _renderSeperator = (sectionID: number, rowID: number, adjacentRowHighlighted: bool) => {
@@ -119,7 +254,7 @@ export default class OrderSearchScene extends BaseComponent {
                         <Text style={styles.rowTitleState}>已拍下</Text>
                     </View>
                     <View style={styles.separatedLine}/>
-                    <View style={{flexDirection: 'row', height: Pixel.getPixel(104),alignItems: 'center'}}>
+                    <View style={{flexDirection: 'row', height: Pixel.getPixel(104), alignItems: 'center'}}>
                         <Image style={styles.image}
                                source={{uri: 'http://dycd-static.oss-cn-beijing.aliyuncs.com/Uploads/Oss/201703/13/58c639474ef45.jpg?x-oss-process=image/resize,w_320,h_240'}}/>
                         <View style={{marginLeft: Pixel.getPixel(10)}}>
@@ -274,7 +409,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor: 'white',
         alignItems: 'center',
-        width: ScreenWidth - Pixel.getPixel(100),
+        width: width - Pixel.getPixel(100),
         flexDirection: 'row'
     },
     navigatorText: {
@@ -330,5 +465,12 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
         color: fontAndColor.COLORB2,
         marginRight: Pixel.getPixel(15)
+    },
+    inputStyle: {
+        flex: 1,
+        marginLeft: Pixel.getPixel(5),
+        textAlign: 'left',
+        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+        color: fontAndColor.COLORA2
     }
 });

@@ -27,11 +27,11 @@ import SelectDate from './component/SelectDate';
 let order_state = [];
 let pay_type = [];
 /*let parameters = {
-    orderState: 0,
-    payType: 0,
-    startDate: '',
-    endDate: ''
-};*/
+ orderState: 0,
+ payType: 0,
+ startDate: '',
+ endDate: ''
+ };*/
 
 export default class OrderScreeningScene extends BaseComponent {
 
@@ -48,22 +48,62 @@ export default class OrderScreeningScene extends BaseComponent {
         if (this.props.business === 0) {
             if (this.props.orderStage === 'trading') {
                 mList = ['1', '3'];
-/*                order_state.push({title: '全部', isSelected: order_state.length === parameters.orderState, value: 0, ref: 'child0'});
-                order_state.push({title: '已拍下', isSelected: false, value: 1, ref: 'child1'});
-                order_state.push({title: '待付订金', isSelected: false, value: 2, ref: 'child2'});
-                order_state.push({title: '待付尾款', isSelected: false, value: 3, ref: 'child3'});
-                order_state.push({title: '待申请发车', isSelected: false, value: 4, ref: 'child4'});
-                order_state.push({title: '待确认收货', isSelected: false, value: 5, ref: 'child5'});
-                order_state.push({title: '申请取消订单中', isSelected: false, value: 6, ref: 'child6'});
-                order_state.push({title: '订单融资处理中', isSelected: false, value: 7, ref: 'child7'});*/
-                order_state.push({title: '全部', isSelected: order_state.length === this.orderState, value: 0, ref: 'child0'});
-                order_state.push({title: '已拍下', isSelected: order_state.length === this.orderState, value: 1, ref: 'child1'});
-                order_state.push({title: '待付订金', isSelected: order_state.length === this.orderState, value: 2, ref: 'child2'});
-                order_state.push({title: '待付尾款', isSelected: order_state.length === this.orderState, value: 3, ref: 'child3'});
-                order_state.push({title: '待申请发车', isSelected: order_state.length === this.orderState, value: 4, ref: 'child4'});
-                order_state.push({title: '待确认收货', isSelected: order_state.length === this.orderState, value: 5, ref: 'child5'});
-                order_state.push({title: '申请取消订单中', isSelected: order_state.length === this.orderState, value: 6, ref: 'child6'});
-                order_state.push({title: '订单融资处理中', isSelected: order_state.length === this.orderState, value: 7, ref: 'child7'});
+                /*                order_state.push({title: '全部', isSelected: order_state.length === parameters.orderState, value: 0, ref: 'child0'});
+                 order_state.push({title: '已拍下', isSelected: false, value: 1, ref: 'child1'});
+                 order_state.push({title: '待付订金', isSelected: false, value: 2, ref: 'child2'});
+                 order_state.push({title: '待付尾款', isSelected: false, value: 3, ref: 'child3'});
+                 order_state.push({title: '待申请发车', isSelected: false, value: 4, ref: 'child4'});
+                 order_state.push({title: '待确认收货', isSelected: false, value: 5, ref: 'child5'});
+                 order_state.push({title: '申请取消订单中', isSelected: false, value: 6, ref: 'child6'});
+                 order_state.push({title: '订单融资处理中', isSelected: false, value: 7, ref: 'child7'});*/
+                order_state.push({
+                    title: '全部',
+                    isSelected: order_state.length === this.orderState,
+                    value: 0,
+                    ref: 'child0'
+                });
+                order_state.push({
+                    title: '已拍下',
+                    isSelected: order_state.length === this.orderState,
+                    value: 1,
+                    ref: 'child1'
+                });
+                order_state.push({
+                    title: '待付订金',
+                    isSelected: order_state.length === this.orderState,
+                    value: 2,
+                    ref: 'child2'
+                });
+                order_state.push({
+                    title: '待付尾款',
+                    isSelected: order_state.length === this.orderState,
+                    value: 3,
+                    ref: 'child3'
+                });
+                order_state.push({
+                    title: '待申请发车',
+                    isSelected: order_state.length === this.orderState,
+                    value: 4,
+                    ref: 'child4'
+                });
+                order_state.push({
+                    title: '待确认收货',
+                    isSelected: order_state.length === this.orderState,
+                    value: 5,
+                    ref: 'child5'
+                });
+                order_state.push({
+                    title: '申请取消订单中',
+                    isSelected: order_state.length === this.orderState,
+                    value: 6,
+                    ref: 'child6'
+                });
+                order_state.push({
+                    title: '订单融资处理中',
+                    isSelected: order_state.length === this.orderState,
+                    value: 7,
+                    ref: 'child7'
+                });
             } else {
                 mList = ['3'];
             }
@@ -84,8 +124,8 @@ export default class OrderScreeningScene extends BaseComponent {
         pay_type.push({title: '全款', isSelected: false, value: 2});
         this.state = {
             source: ds.cloneWithRows(mList),
-/*            startDate: '选择开始时间',
-            endDate: '选择结束时间',*/
+            /*            startDate: '选择开始时间',
+             endDate: '选择结束时间',*/
             //parameters: parameters,
             isDateTimePickerVisible: false
             //arr1: order_state
@@ -117,12 +157,21 @@ export default class OrderScreeningScene extends BaseComponent {
     }
 
     confirmClick = () => {
-        //todo 判断开始时间是否小于结束时间
-        //console.log('daatee startDate===' + this.state.startDate);
-        //console.log('daatee endDate===' + this.state.endDate);
-        this.props.returnConditions(this.orderState, this.startDate, this.endDate);
-        this.backPage();
+        if ((this.startDate === '选择开始时间' && this.endDate !== '选择结束时间') ||
+            (this.startDate !== '选择开始时间' && this.endDate === '选择结束时间')) {
+            this.props.showToast('开始时间与结束时间不能单选');
+            return;
+        }
+        if (this.startDate <= this.endDate) {
+            this.props.returnConditions(this.orderState, this.startDate, this.endDate);
+            this.backPage();
+        } else {
+            this.props.showToast('开始时间要小于结束时间');
+        }
+
     }
+
+
 
     _renderSeperator = (sectionID: number, rowID: number, adjacentRowHighlighted: bool) => {
         return (
@@ -151,7 +200,8 @@ export default class OrderScreeningScene extends BaseComponent {
             )
         } else if (movie == 3) {
             return (
-                <SelectDate startDate={this.startDate} endDate={this.endDate} updateStartDate={this.setStartDate} updateEndDate={this.setEndDate}/>
+                <SelectDate startDate={this.startDate} endDate={this.endDate} updateStartDate={this.setStartDate}
+                            updateEndDate={this.setEndDate}/>
             )
         } else {
             return (
@@ -178,7 +228,6 @@ export default class OrderScreeningScene extends BaseComponent {
         this.type = type;
         this.setState({isDateTimePickerVisible: true})
     };
-
 
 
 }

@@ -30,25 +30,48 @@ export default class SelectDate extends BaseComponent {
         this.state = {
             startDate: this.props.startDate,
             endDate: this.props.endDate,
-            isDateTimePickerVisible:false
+            isDateTimePickerVisible: false
         }
     }
 
     render() {
         return (
             <View style={{height: Pixel.getPixel(95), backgroundColor: '#ffffff'}}>
-                <Text style={styles.carType}>创建订单日期</Text>
-                <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(15), alignItems: 'center'}}>
+                <View style={{
+                    flexDirection: 'row',
+                    marginLeft: Pixel.getPixel(15),
+                    marginRight: Pixel.getPixel(25),
+                    marginTop: Pixel.getPixel(17)
+                }}>
+                    <Text style={{fontSize: Pixel.getPixel(fontAndColor.BUTTONFONT30)}}>创建订单日期</Text>
+                    <View style={{flex: 1}}/>
+                    <Text
+                        onPress={() => {
+                            this.setState({
+                                startDate: '选择开始时间',
+                                endDate: '选择结束时间'
+                            });
+                            this.props.updateStartDate('选择开始时间');
+                            this.props.updateEndDate('选择结束时间');
+                        }}
+                        style={{
+                            fontSize: Pixel.getPixel(fontAndColor.BUTTONFONT30),
+                            color: fontAndColor.COLORB0
+                        }}>清除</Text>
+                </View>
+                <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(16), alignItems: 'center'}}>
                     <TouchableOpacity style={styles.dateBox} onPress={() => {
                         this._showDateTimePicker('start')
                     }}>
-                        <Text style={{textAlign: 'center'}}>{this.state.startDate}</Text>
+                        <Text
+                            style={this.state.startDate === '选择开始时间' ? styles.unSelectDate : styles.selectDate}>{this.state.startDate}</Text>
                     </TouchableOpacity>
                     <Text>至</Text>
                     <TouchableOpacity style={styles.dateBox} onPress={() => {
                         this._showDateTimePicker('end')
                     }}>
-                        <Text style={{textAlign: 'center'}}>{this.state.endDate}</Text>
+                        <Text
+                            style={this.state.endDate === '选择结束时间' ? styles.unSelectDate : styles.selectDate}>{this.state.endDate}</Text>
                     </TouchableOpacity>
                 </View>
                 <DateTimePicker
@@ -109,27 +132,10 @@ export default class SelectDate extends BaseComponent {
 }
 
 const styles = StyleSheet.create({
-    labelSelect: {
-        marginTop: Pixel.getPixel(10),
-    },
-    text: {
-        fontSize: Pixel.getPixel(16),
-        color: 'rgb(13, 131, 144)'
-    },
-    container: {
-        flex: 1,
-        backgroundColor: fontAndColor.COLORA3
-    },
     carType: {
         marginLeft: Pixel.getPixel(15),
         fontSize: Pixel.getPixel(fontAndColor.BUTTONFONT30),
         marginTop: Pixel.getPixel(17)
-    },
-    containerChild: {
-        //height: Pixel.getPixel(178),
-        backgroundColor: '#ffffff',
-        //paddingLeft: Pixel.getPixel(12),
-        //marginBottom: Pixel.getPixel(10)
     },
     dateBox: {
         marginLeft: Pixel.getPixel(16),
@@ -140,19 +146,11 @@ const styles = StyleSheet.create({
         height: Pixel.getPixel(32),
         backgroundColor: fontAndColor.COLORA3
     },
-    loginBtnStyle: {
-        height: Pixel.getPixel(44),
-        width: width - Pixel.getPixel(30),
-        backgroundColor: fontAndColor.COLORB0,
-        marginTop: Pixel.getPixel(30),
-        marginBottom: Pixel.getPixel(30),
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: Pixel.getPixel(4),
-        marginLeft: Pixel.getPixel(15)
+    selectDate: {
+        textAlign: 'center'
     },
-    loginButtonTextStyle: {
-        color: fontAndColor.COLORA3,
-        fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT)
+    unSelectDate: {
+        textAlign: 'center',
+        color: fontAndColor.COLORA1
     }
 });

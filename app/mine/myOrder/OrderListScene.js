@@ -65,6 +65,10 @@ export default class OrderListScene extends BaseComponent {
             business: 0,
             page: this.pageNum,
             rows: 10
+            /*start_time: '',
+            end_time: '',
+            is_finance: '',
+            status: ''*/
         }).then((response) => {
             this.orderListData = response.mjson.data.list;
             console.log('订单列表数据 = ', this.orderListData);
