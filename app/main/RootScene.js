@@ -52,7 +52,7 @@ export default class RootScene extends BaseComponent {
                     //     this.navigatorParams.params = {url: response.mjson.data.downloadurl}
                     //     this.toNextPage(this.navigatorParams);
                     // } else {
-                        this.toJump();
+                    this.toJump();
                     // }
                 },
                 (error) => {
@@ -65,7 +65,7 @@ export default class RootScene extends BaseComponent {
         let that = this;
         setTimeout(
             () => {
-                if(!canNext){
+                if (!canNext) {
                     return;
                 }
                 StorageUtil.mGetItem(KeyNames.FIRST_INTO, (res) => {
@@ -119,58 +119,119 @@ export default class RootScene extends BaseComponent {
     }
 
 
-        onPress = () => {
-            if(canNext){
-                let that = this;
-                StorageUtil.mSetItem(KeyNames.NEED_GESTURE, 'true');
-                StorageUtil.mGetItem(KeyNames.FIRST_INTO, (res) => {
-                    if (res.result == null) {
-                        that.navigatorParams.component = WelcomScene;
-                        that.toNextPage(that.navigatorParams);
-                    } else {
+    //     onPress = () => {
+    //         if(canNext){
+    //             let that = this;
+    //             StorageUtil.mSetItem(KeyNames.NEED_GESTURE, 'true');
+    //             StorageUtil.mGetItem(KeyNames.FIRST_INTO, (res) => {
+    //                 if (res.result == null) {
+    //                     that.navigatorParams.component = WelcomScene;
+    //                     that.toNextPage(that.navigatorParams);
+    //                 } else {
+    //
+    //                     StorageUtil.mGetItem(KeyNames.ISLOGIN, (res) => {
+    //                         if (res.result !== StorageUtil.ERRORCODE) {
+    //                             if (res.result == null) {
+    //                                 that.navigatorParams.component = LoginAndRegister;
+    //                                 that.toNextPage(that.navigatorParams);
+    //                             } else {
+    //                                 if (res.result == "true") {
+    //
+    //                                     StorageUtil.mGetItem(KeyNames.USER_INFO, (data) => {
+    //                                         let datas = JSON.parse(data.result);
+    //                                         if (datas.user_level == 2) {
+    //                                             if (datas.enterprise_list == null || datas.enterprise_list.length <= 0) {
+    //                                                 that.navigatorParams.component = LoginAndRegister;
+    //                                                 that.toNextPage(that.navigatorParams);
+    //                                             } else {
+    //                                                 if (datas.enterprise_list[0].role_type == '2') {
+    //                                                     that.navigatorParams.component = LoginGesture;
+    //                                                     that.navigatorParams.params = {from: 'RootScene'}
+    //                                                     that.toNextPage(that.navigatorParams);
+    //                                                 } else {
+    //                                                     that.navigatorParams.component = MainPage;
+    //                                                     that.navigatorParams.params = {}
+    //                                                     that.toNextPage(that.navigatorParams);
+    //                                                 }
+    //                                             }
+    //                                         } else {
+    //                                             that.navigatorParams.component = MainPage;
+    //                                             that.navigatorParams.params = {}
+    //                                             that.toNextPage(that.navigatorParams);
+    //                                         }
+    //                                     });
+    //                                 } else {
+    //                                     that.navigatorParams.component = LoginAndRegister;
+    //                                     that.toNextPage(that.navigatorParams);
+    //                                 }
+    //                             }
+    //                         }
+    //                     });
+    //                 }
+    //             });
+    //             canNext=false;
+    //         }
+    //
+    //     // this.toNextPage(this.mProps)
+    // }
 
-                        StorageUtil.mGetItem(KeyNames.ISLOGIN, (res) => {
-                            if (res.result !== StorageUtil.ERRORCODE) {
-                                if (res.result == null) {
-                                    that.navigatorParams.component = LoginAndRegister;
-                                    that.toNextPage(that.navigatorParams);
-                                } else {
-                                    if (res.result == "true") {
+    onPress = () => {
+        if (canNext) {
+            let that = this;
+            StorageUtil.mSetItem(KeyNames.NEED_GESTURE, 'true');
+            StorageUtil.mGetItem(KeyNames.FIRST_INTO, (res) => {
+                if (res.result == null) {
+                    that.navigatorParams.component = WelcomScene;
+                    that.toNextPage(that.navigatorParams);
+                } else {
 
-                                        StorageUtil.mGetItem(KeyNames.USER_INFO, (data) => {
-                                            let datas = JSON.parse(data.result);
-                                            if (datas.user_level == 2) {
-                                                if (datas.enterprise_list == null || datas.enterprise_list.length <= 0) {
-                                                    that.navigatorParams.component = LoginAndRegister;
-                                                    that.toNextPage(that.navigatorParams);
-                                                } else {
-                                                    if (datas.enterprise_list[0].role_type == '2') {
-                                                        that.navigatorParams.component = LoginGesture;
-                                                        that.navigatorParams.params = {from: 'RootScene'}
-                                                        that.toNextPage(that.navigatorParams);
-                                                    } else {
-                                                        that.navigatorParams.component = MainPage;
-                                                        that.navigatorParams.params = {}
-                                                        that.toNextPage(that.navigatorParams);
-                                                    }
-                                                }
+                    StorageUtil.mGetItem(KeyNames.ISLOGIN, (res) => {
+                        if (res.result !== StorageUtil.ERRORCODE) {
+                            if (res.result == null) {
+                                that.navigatorParams.component = LoginAndRegister;
+                                that.toNextPage(that.navigatorParams);
+                            } else {
+                                if (res.result == "true") {
+
+                                    StorageUtil.mGetItem(KeyNames.USER_INFO, (data) => {
+                                        let datas = JSON.parse(data.result);
+                                        if (datas.user_level == 2) {
+                                            if (datas.enterprise_list == null || datas.enterprise_list.length <= 0) {
+                                                that.navigatorParams.component = LoginAndRegister;
+                                                that.toNextPage(that.navigatorParams);
                                             } else {
-                                                that.navigatorParams.component = MainPage;
-                                                that.navigatorParams.params = {}
+                                                // if (datas.enterprise_list[0].role_type == '2') {
+                                                //     that.navigatorParams.component = LoginGesture;
+                                                //     that.navigatorParams.params = {from: 'RootScene'}
+                                                //     that.toNextPage(that.navigatorParams);
+                                                // } else {
+                                                //     that.navigatorParams.component = MainPage;
+                                                //     that.navigatorParams.params = {}
+                                                //     that.toNextPage(that.navigatorParams);
+                                                // }
+
+
+                                                that.navigatorParams.component = LoginGesture;
+                                                that.navigatorParams.params = {from: 'RootScene'}
                                                 that.toNextPage(that.navigatorParams);
                                             }
-                                        });
-                                    } else {
-                                        that.navigatorParams.component = LoginAndRegister;
-                                        that.toNextPage(that.navigatorParams);
-                                    }
+                                        } else {
+                                            that.navigatorParams.component = MainPage;
+                                            that.navigatorParams.params = {}
+                                            that.toNextPage(that.navigatorParams);
+                                        }
+                                    });
+                                } else {
+                                    that.navigatorParams.component = LoginAndRegister;
+                                    that.toNextPage(that.navigatorParams);
                                 }
                             }
-                        });
-                    }
-                });
-                canNext=false;
-            }
+                        }
+                    });
+                }
+            });
+            canNext = false;
+        }
 
         // this.toNextPage(this.mProps)
     }
