@@ -33,7 +33,9 @@ export default class NoneSineScene extends BaseComponent {
     }
 
     componentWillUnmount() {
-        allSouce = [];
+         page = 1;
+         allPage = 1;
+         allSouce = [];
     }
 
     getData = () => {

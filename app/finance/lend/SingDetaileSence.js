@@ -210,9 +210,9 @@ export  default  class SingDetaileSence extends BaseComponent {
             } else if (stateCode === '2') {
                 tempTitle = ['签署合同', '取消借款']
             }
-            else if (stateCode === '2') {
-                tempTitle = ['已取消借款']
-            }
+            // else if (stateCode === '2') {
+            //     tempTitle = ['已取消借款']
+            // }
             else if (Number.parseInt(stateCode) > 2 && stateCode !== '5') {
                 tempTitle = ['查看合同']
             } else if (stateCode == '5') {
@@ -226,7 +226,6 @@ export  default  class SingDetaileSence extends BaseComponent {
             if(stateCode!=2&& is_microchinese_contract==1){
                 tempTitle = ['签署转债权合同']
             }
-
             return tempTitle;
         }
     }
@@ -245,6 +244,8 @@ export  default  class SingDetaileSence extends BaseComponent {
                 return styles.controlButton
             case '已取消借款':
                 return styles.canceledButton
+            case '签署转债权合同':
+                return styles.controlButton
             default:
                 return styles.cancelButton
 
@@ -515,21 +516,24 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: PAGECOLOR.COLORA2,
         height: adapeSize(44),
-        justifyContent: 'center'
+        justifyContent: 'center',
+        alignItems:'center'
     },
     canceledButton: {
 
         flex: 1,
         height: adapeSize(44),
         backgroundColor: PAGECOLOR.COLORA1,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        alignItems:'center'
 
     },
     controlButton: {
         flex: 1,
         height: adapeSize(44),
         backgroundColor: PAGECOLOR.COLORB0,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        alignItems:'center'
     },
 
     buttontextStyle: {

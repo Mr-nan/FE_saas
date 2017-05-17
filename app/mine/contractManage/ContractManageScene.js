@@ -35,6 +35,8 @@ export default class ContractManageScene extends BaseComponent {
 
     componentWillUnmount() {
         allSouce = [];
+        page = 1;
+        allPage = 1;
     }
 
     getData = () => {
