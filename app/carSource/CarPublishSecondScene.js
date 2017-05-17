@@ -249,7 +249,7 @@ export default class CarPublishSecondScene extends BaseComponent{
 
         ];
         this.state = {
-            titleData:this.props.carType=='二手车'? this.titleData1 :this.titleData2,
+            titleData:this.props.carData.v_type==1? this.titleData1 :this.titleData2,
         };
     }
 
@@ -309,7 +309,7 @@ export default class CarPublishSecondScene extends BaseComponent{
 
     updateUI=()=>{
 
-        if(this.props.carType=='二手车'){
+        if(this.props.carData.v_type=='二手车'){
             this.setState({
                 titleData:this.titleData1,
             });
@@ -339,15 +339,14 @@ export default class CarPublishSecondScene extends BaseComponent{
     }
 
     nextAction=()=>{
-        // let navigatorParams = {
-        //     name: "CarUpImageScene",
-        //     component: CarUpImageScene,
-        //     params: {
-        //
-        //     }
-        // };
-        // this.toNextPage(navigatorParams);
-
+        let navigatorParams = {
+            name: "CarUpImageScene",
+            component: CarUpImageScene,
+            params: {
+                carData:this.carData,
+            }
+        };
+        this.toNextPage(navigatorParams);
         console.log(this.carData);
     }
 

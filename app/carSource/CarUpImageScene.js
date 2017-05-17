@@ -16,49 +16,111 @@ import AllNavigationView from '../component/AllNavigationView';
 import *as fontAndColor from '../constant/fontAndColor';
 import PixelUtil from '../utils/PixelUtil';
 import CarUpImageCell from './znComponent/CarUpImageCell';
-import ImageSource from '../publish/component/NewImageSource';
-
 
 const Pixel = new  PixelUtil();
 const sceneWidth = Dimensions.get('window').width;
 let results = [];
-let titleData=[
+
+let baseTitleData=[
     {
         name: 'left_anterior',
         title:'左前45度',
         subTitle:'至多1张',
         number:1,
         imgArray:[],
+        explain:'1',
     },{
         name: 'rear_right',
         title:'右后45度',
         subTitle:'至多1张',
         imgArray:[],
+        explain:'1',
+
     },{
         name: 'dash_board',
         title:'仪表盘',
         subTitle:'至多1张',
         imgArray:[],
+        explain:'1',
+
     },{
         name: 'front_trim',
         title:'前内饰',
         subTitle:'至多1张',
         number:1,
         imgArray:[],
+        explain:'1',
+
     },{
         name: 'rear_trim',
         title:'后内饰',
         subTitle:'至多1张',
         number:1,
         imgArray:[],
+        explain:'1',
+
     },{
         name: 'engine',
         title:'发动机',
         subTitle:'至多1张',
         number:1,
         imgArray:[],
+        explain:'1',
+
+    },{
+        name: 'vin_no',
+        title:'车架号',
+        subTitle:'至多1张',
+        number:1,
+        imgArray:[],
+        explain:'0',
+    },{
+        name: 'certificate',
+        title:'合格证',
+        subTitle:'至多5张',
+        number:5,
+        imgArray:[],
+        explain:'0',
     },
 ];
+
+let usedCarTitleData=[
+    {
+        name: 'registration_card',
+        title:'登记证',
+        subTitle:'至多5张',
+        number:5,
+        imgArray:[],
+        explain:'1',
+    },
+];
+
+let importCarTitleData = [
+    {
+        name: 'conformance_certificate',
+        title:'车辆一致性证书正反面',
+        subTitle:'至多5张',
+        number:5,
+        imgArray:[],
+        explain:'1',
+    }, {
+        name: 'customs_declaration',
+        title:'关单',
+        subTitle:'至多5张',
+        number:5,
+        imgArray:[],
+        explain:'1',
+    }, {
+        name: 'inspection_report',
+        title:'商检单',
+        subTitle:'至多5张',
+        number:5,
+        imgArray:[],
+        explain:'1',
+    },
+];
+
+
 
 
 export default class CarUpImageScene extends BaseComponent{
@@ -67,13 +129,36 @@ export default class CarUpImageScene extends BaseComponent{
 
     }
 
+    componentWillMount() {
+        results = [];
+    }
+
     // 构造
       constructor(props) {
         super(props);
 
+
+          this.titleData = [];
+          console.log(this.props.carData.v_type);
+          baseTitleData[7].explain =this.props.carData.v_type==2?'1':'0';
+
+          this.titleData.push(...baseTitleData);
+
+          if(this.props.carData.v_type==1){
+
+              this.titleData.push(...usedCarTitleData);
+              console.log('2=====');
+
+          }else if(this.props.carData.v_type==3){
+
+              this.titleData.push(...importCarTitleData);
+              console.log('3=====');
+
+          }
+          
         const dataSource = new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2});
         this.state = {
-            dataSource:dataSource.cloneWithRows(titleData),
+            dataSource:dataSource.cloneWithRows(this.titleData),
         };
       }
 
@@ -117,6 +202,10 @@ export default class CarUpImageScene extends BaseComponent{
                 childList={data.imgArray}
             />
         )
+    }
+
+    footBtnClick=()=>{
+        console.log(results);
     }
 }
 

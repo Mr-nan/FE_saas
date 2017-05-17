@@ -405,7 +405,7 @@ export default class CarPublishFirstScene extends BaseComponent{
 
     cellSelectAction=(selectDict)=>{
 
-        this.carData['v_type']=selectDict.visible;
+        this.carData['v_type']=selectDict.value;
         this.carType=selectDict.title;
         this.upTitleData();
     }
@@ -415,13 +415,11 @@ export default class CarPublishFirstScene extends BaseComponent{
             name: "CarPublishSecondScene",
             component: CarPublishSecondScene,
             params: {
-                carType:this.carType,
                 carData:this.carData,
             }
         }
         this.toNextPage(navigatorParams);
-
-        // console.log(this.carData);
+        console.log(this.carData);
     }
     _onScanPress=()=>{
         this.vinModal.refresh(this.scanType);
