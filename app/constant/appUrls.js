@@ -619,4 +619,7 @@ export const PURCHA_AUTO_DETAIL = 'api/v2/purchaAuto/autoDetail';
  * 获取车架好是否已存在以及校验规则
  **/
 export const PURCHA_CHECK_IN = 'api/v2/purchaAuto/checkVin';
-
+/**
+ * 订单列表
+ */
+export const ORDER_INDEX = 'api/v1/order/index';

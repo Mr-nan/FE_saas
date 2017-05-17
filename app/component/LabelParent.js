@@ -16,18 +16,17 @@ let {width, height, scale} = Dimensions.get('window');
 import  * as FontAndColor from '../constant/fontAndColor';
 import  LabelForOrderScreen from './LabelForOrderScreen';
 
-const child = '';
 let clickitems = '0';
 
 export default class LabelParent extends PureComponent {
     constructor(props) {
         super(props);
-        clickitems = this.props.parameters;
+        clickitems = this.props.orderState;
     }
 
     render() {
         let items = this.props.items;
-        let parameters = this.props.parameters;
+        //let parameters = this.props.parameters.orderState;
         let item = [];
         let line = Math.ceil(items.length / 3);
         for (let i = 1; i <= line; i++) {
@@ -47,12 +46,13 @@ export default class LabelParent extends PureComponent {
                         /*if(clickitems === ''){
                             clickitems = item;
                         }else{*/
-                            items[clickitems].ref.unSelected();
-                            clickitems = item;
+                        this.props.updateState(item);
+                        items[clickitems].ref.unSelected();
+                        clickitems = item;
                         //}
                     }
 
-                }} ref={(modal)=>{items[j].ref = modal}} index={j} item={items[j]} parameters={parameters} key={j + 'child'} />)
+                }} ref={(modal)=>{items[j].ref = modal}} index={j} item={items[j]} key={j + 'child'} />)
             }
             item.push(<View key={i + 'parent'} style={{
                 width: width,

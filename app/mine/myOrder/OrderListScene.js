@@ -30,15 +30,15 @@ export default class OrderListScene extends BaseComponent {
     // 构造
     constructor(props) {
         super(props);
+        this.orderState = 0;
+        this.startDate = '选择开始时间';
+        this.endDate = '选择结束时间';
         let business = this.props.business;
         this.state = {
             // ↓ ???
             dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
             renderPlaceholderOnly: 'blank',
             isRefreshing: false,
-
-            startDate: '',
-            endDate: ''
         };
     }
 
@@ -130,7 +130,10 @@ export default class OrderListScene extends BaseComponent {
                             component: OrderScreeningScene,
                             params: {
                                 business: this.props.business,
-                                orderState: this.props.orderState,
+                                orderStage: this.props.orderStage,
+                                orderState: this.orderState,
+                                startDate: this.startDate,
+                                endDate: this.endDate,
                                 returnConditions: this.returnConditions
                             }
                         });
@@ -143,11 +146,13 @@ export default class OrderListScene extends BaseComponent {
         )
     }
 
-    returnConditions = (startDate, endDate) => {
-        console.log('daatee startDate===' + startDate);
-        console.log('daatee endDate===' + endDate);
-        this.state.startDate = startDate;
-        this.state.endDate = endDate;
+    returnConditions = (newOrderState, newStartDate, newEndDate) => {
+        console.log('newOrderState===' + newOrderState);
+        console.log('newStartDate===' + newStartDate);
+        console.log('newEndDate===' + newEndDate);
+        this.orderState = newOrderState;
+        this.startDate = newStartDate;
+        this.endDate = newEndDate;
     };
 
     _renderSeperator = (sectionID: number, rowID: number, adjacentRowHighlighted: bool) => {

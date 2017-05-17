@@ -28,8 +28,8 @@ export default class SelectDate extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-            startDate:'选择开始时间',
-            endDate:'选择结束时间',
+            startDate: this.props.startDate,
+            endDate: this.props.endDate,
             isDateTimePickerVisible:false
         }
     }
@@ -77,11 +77,13 @@ export default class SelectDate extends BaseComponent {
                 startDate: d,
                 isDateTimePickerVisible: false
             });
+            this.props.updateStartDate(d);
         } else {
             this.setState({
                 endDate: d,
                 isDateTimePickerVisible: false
             });
+            this.props.updateEndDate(d);
         }
 
         //this._hideDateTimePicker();

@@ -26,12 +26,12 @@ import SelectDate from './component/SelectDate';
 
 let order_state = [];
 let pay_type = [];
-let parameters = {
+/*let parameters = {
     orderState: 0,
     payType: 0,
-    startTime: '',
-    endTime: ''
-};
+    startDate: '',
+    endDate: ''
+};*/
 
 export default class OrderScreeningScene extends BaseComponent {
 
@@ -41,15 +41,12 @@ export default class OrderScreeningScene extends BaseComponent {
         order_state = [];
         pay_type = [];
         //orderState: 0 --> 全部
-        parameters = {
-            orderState: 0,
-            //payType: 0,
-            startTime: '选择开始时间',
-            endTime: '选择结束时间'
-        };
+        this.orderState = this.props.orderState;
+        this.startDate = this.props.startDate;
+        this.endDate = this.props.endDate;
         let mList = [];
         if (this.props.business === 0) {
-            if (this.props.orderState === 'trading') {
+            if (this.props.orderStage === 'trading') {
                 mList = ['1', '3'];
 /*                order_state.push({title: '全部', isSelected: order_state.length === parameters.orderState, value: 0, ref: 'child0'});
                 order_state.push({title: '已拍下', isSelected: false, value: 1, ref: 'child1'});
@@ -59,14 +56,14 @@ export default class OrderScreeningScene extends BaseComponent {
                 order_state.push({title: '待确认收货', isSelected: false, value: 5, ref: 'child5'});
                 order_state.push({title: '申请取消订单中', isSelected: false, value: 6, ref: 'child6'});
                 order_state.push({title: '订单融资处理中', isSelected: false, value: 7, ref: 'child7'});*/
-                order_state.push({title: '全部', isSelected: order_state.length === parameters.orderState, value: 0, ref: 'child0'});
-                order_state.push({title: '已拍下', isSelected: order_state.length === parameters.orderState, value: 1, ref: 'child1'});
-                order_state.push({title: '待付订金', isSelected: order_state.length === parameters.orderState, value: 2, ref: 'child2'});
-                order_state.push({title: '待付尾款', isSelected: order_state.length === parameters.orderState, value: 3, ref: 'child3'});
-                order_state.push({title: '待申请发车', isSelected: order_state.length === parameters.orderState, value: 4, ref: 'child4'});
-                order_state.push({title: '待确认收货', isSelected: order_state.length === parameters.orderState, value: 5, ref: 'child5'});
-                order_state.push({title: '申请取消订单中', isSelected: order_state.length === parameters.orderState, value: 6, ref: 'child6'});
-                order_state.push({title: '订单融资处理中', isSelected: order_state.length === parameters.orderState, value: 7, ref: 'child7'});
+                order_state.push({title: '全部', isSelected: order_state.length === this.orderState, value: 0, ref: 'child0'});
+                order_state.push({title: '已拍下', isSelected: order_state.length === this.orderState, value: 1, ref: 'child1'});
+                order_state.push({title: '待付订金', isSelected: order_state.length === this.orderState, value: 2, ref: 'child2'});
+                order_state.push({title: '待付尾款', isSelected: order_state.length === this.orderState, value: 3, ref: 'child3'});
+                order_state.push({title: '待申请发车', isSelected: order_state.length === this.orderState, value: 4, ref: 'child4'});
+                order_state.push({title: '待确认收货', isSelected: order_state.length === this.orderState, value: 5, ref: 'child5'});
+                order_state.push({title: '申请取消订单中', isSelected: order_state.length === this.orderState, value: 6, ref: 'child6'});
+                order_state.push({title: '订单融资处理中', isSelected: order_state.length === this.orderState, value: 7, ref: 'child7'});
             } else {
                 mList = ['3'];
             }
@@ -89,7 +86,7 @@ export default class OrderScreeningScene extends BaseComponent {
             source: ds.cloneWithRows(mList),
 /*            startDate: '选择开始时间',
             endDate: '选择结束时间',*/
-            parameters: parameters,
+            //parameters: parameters,
             isDateTimePickerVisible: false
             //arr1: order_state
         }
@@ -121,10 +118,9 @@ export default class OrderScreeningScene extends BaseComponent {
 
     confirmClick = () => {
         //todo 判断开始时间是否小于结束时间
-
         //console.log('daatee startDate===' + this.state.startDate);
         //console.log('daatee endDate===' + this.state.endDate);
-        this.props.returnConditions(this.state.startDate, this.state.endDate);
+        this.props.returnConditions(this.orderState, this.startDate, this.endDate);
         this.backPage();
     }
 
@@ -141,7 +137,7 @@ export default class OrderScreeningScene extends BaseComponent {
             return (
                 <View style={styles.containerChild}>
                     <Text style={styles.carType}>订单状态</Text>
-                    <LabelParent items={order_state} parameters={parameters.orderState}/>
+                    <LabelParent items={order_state} orderState={this.orderState} updateState={this.setOrderState}/>
                 </View>
             )
         } else if (movie == 2) {
@@ -150,14 +146,12 @@ export default class OrderScreeningScene extends BaseComponent {
                     backgroundColor: '#ffffff'
                 }}>
                     <Text style={styles.carType}>付款方式</Text>
-                    <LabelParent style={{}} items={pay_type} parameters={parameters.payType}/>
+                    <LabelParent style={{}} items={pay_type} orderState={this.orderState}/>
                 </View>
             )
         } else if (movie == 3) {
             return (
-                <SelectDate getStartDate={(time)=>{
-
-                }}/>
+                <SelectDate startDate={this.startDate} endDate={this.endDate} updateStartDate={this.setStartDate} updateEndDate={this.setEndDate}/>
             )
         } else {
             return (
@@ -165,6 +159,19 @@ export default class OrderScreeningScene extends BaseComponent {
             )
         }
 
+    }
+
+    setOrderState = (newOrderState) => {
+        this.orderState = newOrderState;
+        //console.log('setOrderState = ',this.orderState);
+    }
+
+    setStartDate = (newStartDate) => {
+        this.startDate = newStartDate;
+    }
+
+    setEndDate = (newEndDate) => {
+        this.endDate = newEndDate;
     }
 
     _showDateTimePicker = (type) => {

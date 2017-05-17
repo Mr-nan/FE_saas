@@ -104,7 +104,7 @@ export default class OrderTypeSelectScene extends BaseComponent {
                                 component: OrderListScene,
                                 params: {
                                     business: 0,
-                                    orderState: 'trading'
+                                    orderStage: 'trading'
                                 }
                             });
                         } else {
@@ -113,7 +113,7 @@ export default class OrderTypeSelectScene extends BaseComponent {
                                 component: OrderListScene,
                                 params: {
                                     business: 1,
-                                    orderState: 'trading'
+                                    orderStage: 'trading'
                                 }
                             });
                         }
@@ -134,7 +134,7 @@ export default class OrderTypeSelectScene extends BaseComponent {
                                 component: OrderListScene,
                                 params: {
                                     business: 0,
-                                    orderState: 'complete'
+                                    orderStage: 'complete'
                                 }
                             });
                         } else {
@@ -143,7 +143,7 @@ export default class OrderTypeSelectScene extends BaseComponent {
                                 component: OrderListScene,
                                 params: {
                                     business: 1,
-                                    orderState: 'complete'
+                                    orderStage: 'complete'
                                 }
                             });
                         }
@@ -164,7 +164,7 @@ export default class OrderTypeSelectScene extends BaseComponent {
                                 component: OrderListScene,
                                 params: {
                                     business: 0,
-                                    orderState: 'close'
+                                    orderStage: 'close'
                                 }
                             });
                         } else {
@@ -173,7 +173,7 @@ export default class OrderTypeSelectScene extends BaseComponent {
                                 component: OrderListScene,
                                 params: {
                                     business: 1,
-                                    orderState: 'close'
+                                    orderStage: 'close'
                                 }
                             });
                         }

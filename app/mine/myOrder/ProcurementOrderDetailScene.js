@@ -240,6 +240,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                    placeholder={"请输入申请贷款的额度"}
                                    style={styles.inputStyle}
                                    secureTextEntry={false}
+                                   underlineColorAndroid="transparent"
                         />
                         <Text style={{marginRight: Pixel.getPixel(10)}}>元</Text>
                     </View>
