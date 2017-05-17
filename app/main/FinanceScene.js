@@ -285,8 +285,24 @@ export default class FinanceSence extends BaseComponet {
                 <LendSuccessAlert title="提示" subtitle="采购融资功能正在维护中，请您移步BMS系统申请采购融资" ref='cgdModal'
                                   confimClick={() => {
                                   }}/>
-                <LendSuccessAlert ref="showAlert" title={'审核未通过'}
-                                  subtitle={this.state.mnyData.microchinese_audit_reason}/>
+                <LendSuccessAlert ref="showAlert"
+                                  title={'审核未通过'}
+                                  subtitle={this.state.mnyData.microchinese_audit_reason}
+                                  confimClick={()=>{
+                                      let navigationParams={
+                                          name: "QuotaApplication",
+                                          component: QuotaApplication,
+                                          params: {
+                                              callBack:()=>{
+                                                  this.allRefresh()
+                                              }
+                                          }
+                                      }
+                                      this.props.callBack(navigationParams);
+                                  }}
+                                  confimTitle="重新审核"
+
+                />
                 <LendSuccessAlert ref="showTitleAlert" title={'提示'} subtitle={'微众额度以车贷可用额度为准'}/>
             </View>
         )
@@ -600,7 +616,7 @@ export default class FinanceSence extends BaseComponet {
                                         backgroundColor: '#00000000',
                                         flex: 1,
                                         textAlign: 'center'
-                                    }}>{this.state.allData.keyongedu}</Text>
+                                    }}>{this.state.mnyData.is_microchinese_mny==3?(this.state.allData.keyongedu+this.state.mnyData.microchinese_mny/10000):(this.state.allData.keyongedu)}</Text>
                             </View>
                             {
                                 this.state.mnyData.is_microchinese_mny == 3 && (

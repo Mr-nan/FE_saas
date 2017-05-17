@@ -45,7 +45,7 @@ export class LendSuccessAlert extends Component{
     render(){
 
 
-        const {title,subtitle}=this.props;
+        const {title,subtitle,confimTitle}=this.props;
 
         return(
 
@@ -292,7 +292,7 @@ export class ModalAlert extends PureComponent{
     render(){
 
 
-        const {title,subtitle}=this.props;
+        const {title,subtitle,confimTitle}=this.props;
         return(
 
             <Modal animationType='none'
@@ -311,7 +311,9 @@ export class ModalAlert extends PureComponent{
                         <Text style={commentAlertStyle.subtitle}>{subtitle}</Text>
                         <View style={commentAlertStyle.buttonsWarp}>
 
-                            <CommenButton buttonStyle={[commentAlertStyle.buttonstyle,{marginRight:adapeSize(10)}, commentAlertStyle.buttonLeft]} onPress={this.confimClick} title="确定"/>
+                            <CommenButton buttonStyle={[commentAlertStyle.buttonstyle,{marginRight:adapeSize(10)}, commentAlertStyle.buttonLeft]}
+                                          onPress={this.confimClick}
+                                          title={"确定"}/>
                             <CommenButton buttonStyle={[commentAlertStyle.buttonstyle,commentAlertStyle.buttonRight]} onPress={this.cancleClick} title="取消"/>
 
                         </View>

@@ -46,8 +46,6 @@ export  default class CarUpImageCell extends PureComponent {
                 length = this.state.childMovie.length;
             }
             for (let i = 0; i < length; i++) {
-                console.log(this.state.childMovie[i]);
-                console.log(this.state.childMovie[i]);
 
                 movieItems.push(
                     <PurchasePickerChildItem
@@ -58,6 +56,14 @@ export  default class CarUpImageCell extends PureComponent {
                             let news =  [];
                             news.push(...this.state.childMovie);
                             news.splice(index, 1);
+                            for(let i = 0;i<=this.props.results.length;i++)
+                            {
+                                if(this.props.results[i].fileId==fileId)
+                                {
+                                    this.props.results.splice(i,1);
+                                    break;
+                                }
+                            }
                             this.setState({childMovie: news});
                         }}
                         allLength={this.state.childMovie.length} key={i} index={i}
@@ -78,7 +84,7 @@ export  default class CarUpImageCell extends PureComponent {
         return (
             <View style={styles.parentView}>
                 <View style={{width: width, marginTop: Pixel.getPixel(15), flexDirection: 'row'}}>
-                    {movie.explain!='1'?<Text style={{fontSize: fontAndColor.BUTTONFONT30, color: fontAndColor.COLORB2}}>*</Text>:<View/>}
+                    {movie.explain=='1'?<Text style={{fontSize: fontAndColor.BUTTONFONT30, color: fontAndColor.COLORB2}}>*</Text>:<View/>}
                     <Text style={{fontSize: fontAndColor.BUTTONFONT30, color: fontAndColor.COLORA0}}>{movie.title}</Text>
                     <Text style={{fontSize: fontAndColor.BUTTONFONT30, color: fontAndColor.COLORA1}}>({movie.subTitle})</Text>
                 </View>
@@ -168,7 +174,7 @@ export  default class CarUpImageCell extends PureComponent {
                     let news =[];
                     news.push(...this.state.childMovie);
                     news.push({url: response.mjson.data.url,fileId:response.mjson.data.file_id});
-                    console.log(news);
+                    this.props.results.push({url: response.mjson.data.url,fileId:response.mjson.data.file_id,name:this.props.items.name});
                     this.setState({
                         childMovie:news,
                     });

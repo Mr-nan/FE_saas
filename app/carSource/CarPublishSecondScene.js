@@ -38,11 +38,24 @@ export default class CarPublishSecondScene extends BaseComponent{
     constructor(props) {
         super(props);
         // 初始状态
-        this.nature_use ='非运营';
         this.carData = this.props.carData;
-        this.carData['nature_use']=2;
-        this.carData['transfer_times']=0;
-        this.carData['mileage']=0;
+
+        this.nature_use ='非运营';
+
+        if(this.carData.nature_use==1)
+        {
+            this.nature_use ='运营';
+
+        }else if(this.carData.nature_use==3)
+        {
+            this.nature_use ='租赁非运营';
+
+        }else {
+            this.carData['nature_use']=2;
+        }
+
+        this.carData['transfer_times']=this.carData.transfer_times ? String(this.carData.transfer_times):'0';
+        this.carData['mileage']=this.carData.mileage ? String(this.carData.mileage):'0';
 
         this.titleData1 = [
             [
@@ -61,7 +74,6 @@ export default class CarPublishSecondScene extends BaseComponent{
                             <TextInput
                                 style={styles.textInput}
                                 placeholder='请输入'
-                                defaultValue="0"
                                 onChangeText={(text)=>{this.carData['transfer_times'] = text}}
                             />
                         )
@@ -71,7 +83,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                     title:'车牌号',
                     isShowTag:true,
                     isShowTail:true,
-                    value:'选择'
+                    value:this.carData.plate_number?this.carData.transfer_times:'请选择'
                 },
                 {
                     title:'表显里程',
@@ -83,7 +95,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                                 <TextInput
                                     style={styles.textInput}
                                     placeholder='请输入'
-                                    defaultValue="0"
+                                    defaultValue={this.carData.mileage}
                                     onChangeText={(text)=>{this.carData['mileage'] = text}}
                                 />
                                 <Text style={styles.textInputTitle}>万公里</Text>
@@ -105,8 +117,11 @@ export default class CarPublishSecondScene extends BaseComponent{
                     isShowTag:true,
                     isShowTail:true,
                     tailView:()=>{
-                        return(  <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                            <TextInput style={styles.textInput} placeholder='请输入' onChangeText={(text)=>{this.carData['dealer_price']=text}}/>
+                        return(
+                            <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                            <TextInput style={styles.textInput}
+                                       placeholder='请输入'
+                                       onChangeText={(text)=>{this.carData['dealer_price']=text}}/>
                             <Text style={styles.textInputTitle}>万元</Text>
                         </View>)
                     }
@@ -117,8 +132,11 @@ export default class CarPublishSecondScene extends BaseComponent{
                     isShowTag:false,
                     isShowTail:true,
                     tailView:()=>{
-                        return(  <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                            <TextInput style={styles.textInput} placeholder='请输入' onChangeText={(text)=>{this.carData['low_price']=text}}/>
+                        return(
+                            <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                            <TextInput style={styles.textInput}
+                                       placeholder='请输入'
+                                       onChangeText={(text)=>{this.carData['low_price']=text}}/>
                             <Text style={styles.textInputTitle}>万元</Text>
                         </View>)
                     }
@@ -129,8 +147,11 @@ export default class CarPublishSecondScene extends BaseComponent{
                     isShowTag:false,
                     isShowTail:true,
                     tailView:()=>{
-                        return(  <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                            <TextInput style={styles.textInput} placeholder='请输入' onChangeText={(text)=>{this.carData['member_price']=text}}/>
+                        return(
+                            <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                            <TextInput style={styles.textInput}
+                                       placeholder='请输入'
+                                       onChangeText={(text)=>{this.carData['member_price']=text}}/>
                             <Text style={styles.textInputTitle}>万元</Text>
                         </View>)
                     }
@@ -140,7 +161,7 @@ export default class CarPublishSecondScene extends BaseComponent{
             [   {
                 title:'车辆所在地',
                 isShowTag:true,
-                value:'请选择',
+                value:this.carData.city_name ? this.carData.city_name:'请选择',
                 isShowTail:true,
             },{
                 title:'登记人',
@@ -154,7 +175,10 @@ export default class CarPublishSecondScene extends BaseComponent{
                     isShowTail:false,
                     tailView:()=>{
                         return(
-                            <TextInput style={styles.textInput} placeholder='请填写' onChangeText={(text)=>{this.carData['describe']=text}}/>
+                            <TextInput
+                                style={[styles.textInput,{width:Pixel.getPixel(80),height:Pixel.getPixel(50)}]}
+                                placeholder='请填写'
+                                onChangeText={(text)=>{this.carData['describe']=text}}/>
                         )
                     }
 
@@ -199,7 +223,9 @@ export default class CarPublishSecondScene extends BaseComponent{
                     tailView:()=>{
                         return(
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                            <TextInput style={styles.textInput} placeholder='请输入' onChangeText={(text)=>{this.carData['dealer_price']=text}}/>
+                            <TextInput style={styles.textInput}
+                                       placeholder='请输入'
+                                       onChangeText={(text)=>{this.carData['dealer_price']=text}}/>
                             <Text style={styles.textInputTitle}>万元</Text>
                         </View>)
                     }
@@ -232,7 +258,7 @@ export default class CarPublishSecondScene extends BaseComponent{
             [   {
                 title:'车辆所在地',
                 isShowTag:true,
-                value:'请选择',
+                value:this.carData.city_name ? this.carData.city_name:'请选择',
                 isShowTail:true,
             },
                 {
@@ -241,7 +267,10 @@ export default class CarPublishSecondScene extends BaseComponent{
                     isShowTail:false,
                     tailView:()=>{
                         return(
-                            <TextInput style={styles.textInput} placeholder='请填写' onChangeText={(text)=>{this.carData['describe']=text}}/>
+                            <TextInput
+                                style={[styles.textInput,{width:Pixel.getPixel(80),height:Pixel.getPixel(50)}]}
+                                placeholder='请填写'
+                                onChangeText={(text)=>{this.carData['describe']=text}}/>
                         )
                     }
                 },
@@ -249,7 +278,7 @@ export default class CarPublishSecondScene extends BaseComponent{
 
         ];
         this.state = {
-            titleData:this.props.carType=='二手车'? this.titleData1 :this.titleData2,
+            titleData:this.props.carData.v_type==1? this.titleData1 :this.titleData2,
         };
     }
 
@@ -309,7 +338,7 @@ export default class CarPublishSecondScene extends BaseComponent{
 
     updateUI=()=>{
 
-        if(this.props.carType=='二手车'){
+        if(this.props.carData.v_type==1){
             this.setState({
                 titleData:this.titleData1,
             });
@@ -339,15 +368,14 @@ export default class CarPublishSecondScene extends BaseComponent{
     }
 
     nextAction=()=>{
-        // let navigatorParams = {
-        //     name: "CarUpImageScene",
-        //     component: CarUpImageScene,
-        //     params: {
-        //
-        //     }
-        // };
-        // this.toNextPage(navigatorParams);
-
+        let navigatorParams = {
+            name: "CarUpImageScene",
+            component: CarUpImageScene,
+            params: {
+                carData:this.carData,
+            }
+        };
+        this.toNextPage(navigatorParams);
         console.log(this.carData);
     }
 
