@@ -22,6 +22,8 @@ import OrderScreeningScene from "./OrderScreeningScene";
 import OrderSearchScene from "./OrderSearchScene";
 import ProcurementOrderDetailScene from "./ProcurementOrderDetailScene";
 import SalesOrderDetailScene from "./SalesOrderDetailScene";
+import * as AppUrls from "../../constant/appUrls";
+import {request} from "../../utils/RequestUtil";
 
 var Pixel = new PixelUtil();
 
@@ -30,10 +32,12 @@ export default class OrderListScene extends BaseComponent {
     // 构造
     constructor(props) {
         super(props);
+        this.orderListData = [];
+        this.pageNum = 1;
         this.orderState = 0;
         this.startDate = '选择开始时间';
         this.endDate = '选择结束时间';
-        let business = this.props.business;
+        //let business = this.props.business;
         this.state = {
             // ↓ ???
             dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
@@ -51,14 +55,39 @@ export default class OrderListScene extends BaseComponent {
     }
 
     initFinish = () => {
-        this.setState({
-            dataSource: this.state.dataSource.cloneWithRows(['', '', '']),
-            renderPlaceholderOnly: 'success'
-        });
+        this.loadData();
     };
 
     loadData = () => {
+        let url = AppUrls.ORDER_INDEX;
+        this.pageNum = 1;
+        request(url, 'post', {
+            business: 0,
+            page: this.pageNum,
+            rows: 10
+        }).then((response) => {
+            this.orderListData = response.mjson.data.list;
+            console.log('订单列表数据 = ', this.orderListData);
+            if (this.orderListData.length) {
+                this.setState({
+                    dataSource: this.state.dataSource.cloneWithRows(this.orderListData),
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'success'
+                });
+            } else {
+                this.setState({
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'null'
+                });
+            }
 
+        }, (error) => {
+            console.log('请求错误 = ', error);
+            this.setState({
+                isRefreshing: false,
+                renderPlaceholderOnly: 'error'
+            });
+        });
     };
 
     render() {
@@ -113,8 +142,7 @@ export default class OrderListScene extends BaseComponent {
                         this.toNextPage({
                             name: 'OrderSearchScene',
                             component: OrderSearchScene,
-                            params: {
-                            }
+                            params: {}
                         });
                     }}
                     activeOpacity={0.9}
@@ -195,7 +223,7 @@ export default class OrderListScene extends BaseComponent {
                         <Text style={styles.rowTitleState}>已拍下</Text>
                     </View>
                     <View style={styles.separatedLine}/>
-                    <View style={{flexDirection: 'row', height: Pixel.getPixel(104),alignItems: 'center'}}>
+                    <View style={{flexDirection: 'row', height: Pixel.getPixel(104), alignItems: 'center'}}>
                         <Image style={styles.image}
                                source={{uri: 'http://dycd-static.oss-cn-beijing.aliyuncs.com/Uploads/Oss/201703/13/58c639474ef45.jpg?x-oss-process=image/resize,w_320,h_240'}}/>
                         <View style={{marginLeft: Pixel.getPixel(10)}}>

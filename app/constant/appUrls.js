@@ -1,7 +1,7 @@
 /**
  * 开发地址
  */
-// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+ //export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地
@@ -622,4 +622,4 @@ export const PURCHA_CHECK_IN = 'api/v2/purchaAuto/checkVin';
 /**
  * 订单列表
  */
-export const ORDER_INDEX = 'api/v1/order/index';
+export const ORDER_INDEX = BASEURL + V +'order/index';
