@@ -45,7 +45,7 @@ export class LendSuccessAlert extends Component{
     render(){
 
 
-        const {title,subtitle}=this.props;
+        const {title,subtitle,confimTitle}=this.props;
 
         return(
 
@@ -64,7 +64,9 @@ export class LendSuccessAlert extends Component{
                         <Text style={commentAlertStyle.title}>{title}</Text>
                         <Text style={commentAlertStyle.subtitle}>{subtitle}</Text>
                         <View style={commentAlertStyle.successWarp}>
-                            <CommenButton buttonStyle={[commentAlertStyle.successButton,{marginBottom:adapeSize(20)}, commentAlertStyle.buttonLeft]} onPress={this.confimClick} title="好的"/>
+                            <CommenButton buttonStyle={[commentAlertStyle.successButton,{marginBottom:adapeSize(20)}, commentAlertStyle.buttonLeft]}
+                                          textStyle={{color:'white'}}
+                                          onPress={this.confimClick} title={confimTitle?confimTitle:"好的"}/>
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -291,7 +293,7 @@ export class ModalAlert extends PureComponent{
     render(){
 
 
-        const {title,subtitle}=this.props;
+        const {title,subtitle,confimTitle}=this.props;
         return(
 
             <Modal animationType='none'
@@ -310,7 +312,9 @@ export class ModalAlert extends PureComponent{
                         <Text style={commentAlertStyle.subtitle}>{subtitle}</Text>
                         <View style={commentAlertStyle.buttonsWarp}>
 
-                            <CommenButton buttonStyle={[commentAlertStyle.buttonstyle,{marginRight:adapeSize(10)}, commentAlertStyle.buttonLeft]} onPress={this.confimClick} title="确定"/>
+                            <CommenButton buttonStyle={[commentAlertStyle.buttonstyle,{marginRight:adapeSize(10)}, commentAlertStyle.buttonLeft]}
+                                          onPress={this.confimClick}
+                                          title={"确定"}/>
                             <CommenButton buttonStyle={[commentAlertStyle.buttonstyle,commentAlertStyle.buttonRight]} onPress={this.cancleClick} title="取消"/>
 
                         </View>

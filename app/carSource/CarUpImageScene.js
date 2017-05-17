@@ -17,6 +17,9 @@ import *as fontAndColor from '../constant/fontAndColor';
 import PixelUtil from '../utils/PixelUtil';
 import CarUpImageCell from './znComponent/CarUpImageCell';
 
+import * as Net from '../utils/RequestUtil';
+import * as AppUrls from '../constant/appUrls';
+
 const Pixel = new  PixelUtil();
 const sceneWidth = Dimensions.get('window').width;
 let results = [];
@@ -232,8 +235,22 @@ export default class CarUpImageScene extends BaseComponent{
         {
             this.props.showToast('请上传'+errorTitle+'图片');
         }else {
-            console.log('成功');
-            console.log(results);
+
+            this.props.carData['pictures']=results;
+
+            Net.request(AppUrls.CAR_SAVE,'post',this.props.carData).then((response) => {
+
+                console.log(response);
+
+                }, (error) => {
+                    this.props.closeLoading();
+                    if(error.mycode === -300 || error.mycode === -500){
+                        this.props.showToast('网络连接失败');
+                    }else{
+                        this.props.showHint(error.mjson.msg);
+                    }
+                });
+
         }
 
     }
