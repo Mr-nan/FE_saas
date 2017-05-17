@@ -495,6 +495,7 @@ export default class CarPublishFirstScene extends BaseComponent{
             this.carData['init_reg'] = this.modelData[index].model_year+'-6-1';
             this.carData['model_id'] = this.modelData[index].model_id;
             this.carData['emission_standards'] = this.modelData[index].model_emission_standard;
+            this.carData['series_id'] = this.modelData[index].series_id;
 
             this.upTitleData();
         }
@@ -540,6 +541,7 @@ export default class CarPublishFirstScene extends BaseComponent{
 
                             this.carData['model_id'] = rd[0].model_id;
                             this.carData['emission_standards'] = rd[0].model_emission_standard;
+                            this.carData['series_id'] = rd[0].series_id;
 
                             this.carData['vin'] = text;
                             this.upTitleData();
@@ -631,6 +633,7 @@ export default class CarPublishFirstScene extends BaseComponent{
         }
         this.carData['model_id'] = carObject.model_id;
         this.carData['emission_standards'] = carObject.discharge_standard;
+        this.carData['carObject.series_id'] = carObject.series_id;
 
 
         this.upTitleData();
