@@ -135,7 +135,7 @@ export default class QuotaApplication extends BaseComponent {
                         fontSize: Pixel.getPixel(FontAndColor.CONTENTFONT24),
                         paddingTop: Pixel.getPixel(10),
                         paddingBottom: Pixel.getPixel(10),
-                    }}>注意：<Text style={{color: FontAndColor.COLORA1}}>请确保银行预留手机号码准确,短信验证码将发送给您银行银行预留手机号码。</Text></Text>
+                    }}>注意：<Text style={{color: FontAndColor.COLORA1}}>请确保银行预留手机号码准确,短信验证码将发送给您银行预留手机号码。</Text></Text>
                     <View style={styles.inputTextsStyle}>
                         <LoginInputText
                             ref="verifycode"
