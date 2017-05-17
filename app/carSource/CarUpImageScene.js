@@ -155,7 +155,7 @@ export default class CarUpImageScene extends BaseComponent{
               console.log('3=====');
 
           }
-          
+
         const dataSource = new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2});
         this.state = {
             dataSource:dataSource.cloneWithRows(this.titleData),
@@ -205,7 +205,37 @@ export default class CarUpImageScene extends BaseComponent{
     }
 
     footBtnClick=()=>{
-        console.log(results);
+
+        let errorTitle = '';
+        for(let i=0;i<this.titleData.length;i++)
+        {
+            let item = this.titleData[i];
+            if(item.explain=='1')
+            {
+                let isNull = true;
+                for(let j=0;j<results.length;j++)
+                {
+                    if(results[j].name == item.name)
+                    {
+                        isNull = false;
+                    }
+                }
+                if(isNull)
+                {
+                    errorTitle = item.title;
+                    break;
+                }
+            }
+        }
+
+        if(errorTitle!='')
+        {
+            this.props.showToast('请上传'+errorTitle+'图片');
+        }else {
+            console.log('成功');
+            console.log(results);
+        }
+
     }
 }
 
