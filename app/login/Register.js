@@ -7,7 +7,8 @@ import {
     ScrollView,
     TouchableWithoutFeedback,
     InteractionManager,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    TouchableOpacity
 } from "react-native";
 import BaseComponent from "../component/BaseComponent";
 import MyButton from "../component/MyButton";
@@ -22,18 +23,20 @@ import md5 from "react-native-md5";
 import LoginAndRegister from "./LoginAndRegister";
 import * as ImageUpload from "../utils/ImageUpload";
 import ImageSource from "../publish/component/ImageSource";
+import ConfirmButton from './component/ConfirmButton';
+import ElectronicContract from './ElectronicContract';
+let Dimensions = require('Dimensions');
+let {width, height} = Dimensions.get('window');
+let Pixel = new PixelUtil();
 
-var Dimensions = require('Dimensions');
-var {width, height} = Dimensions.get('window');
-var Pixel = new PixelUtil();
-
-var imgSrc: '';
-var imgSid: '';
-var smsCode: '';
-var uid: '';
-var idcardf: '';
-var idcardback: '';
-var businessid: '';
+let imgSrc: '';
+let imgSid: '';
+let smsCode: '';
+let uid: '';
+let idcardf: '';
+let idcardback: '';
+let businessid: '';
+let confirm = false;
 
 var Platform = require('Platform');
 const options = {
@@ -101,7 +104,7 @@ export default class Register extends BaseComponent {
 
                 <NavigationBar
                     leftImageCallBack={this.backPage}
-                    rightTextCallBack={this.register}
+                    rightText={""}
                 />
 
                 <ScrollView keyboardShouldPersistTaps={'handled'}>
@@ -250,36 +253,50 @@ export default class Register extends BaseComponent {
                     </View>
                     <View style={styles.inputTextLine}/>
                     <View style={styles.imageButtonsStyle}>
-                        <Text style={{
+                    <Text style={{
                             flex: 1,
                             color: FontAndColor.COLORA1,
                             fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT)
                         }}>添加营业执照</Text>
-                        <View>
-                            <MyButton buttonType={MyButton.IMAGEBUTTON}
-                                      content={this.state.businessLicense === null ?
+                    <View>
+                        <MyButton buttonType={MyButton.IMAGEBUTTON}
+                                  content={this.state.businessLicense === null ?
                                           require('../../images/login/idcard.png') : this.state.businessLicense
                                       }
-                                      parentStyle={styles.buttonStyle}
-                                      childStyle={styles.imageButtonStyle}
-                                      mOnPress={this.selectPhotoTapped.bind(this, 'businessLicense')}/>
-                            {this.state.businessLicense ?
-                                <MyButton buttonType={MyButton.IMAGEBUTTON}
-                                          content={require('../../images/login/clear.png')}
-                                          parentStyle={{
+                                  parentStyle={styles.buttonStyle}
+                                  childStyle={styles.imageButtonStyle}
+                                  mOnPress={this.selectPhotoTapped.bind(this, 'businessLicense')}/>
+                        {this.state.businessLicense ?
+                            <MyButton buttonType={MyButton.IMAGEBUTTON}
+                                      content={require('../../images/login/clear.png')}
+                                      parentStyle={{
                                               position: 'absolute',
                                               marginTop: Pixel.getPixel(2),
                                               marginLeft: Pixel.getPixel(2),
                                           }}
-                                          childStyle={styles.imageClearButtonStyle}
-                                          mOnPress={() => {
+                                      childStyle={styles.imageClearButtonStyle}
+                                      mOnPress={() => {
                                               this.setState({
                                                   businessLicense: null
                                               });
                                           }}/>
-                                : null}
+                            : null}
 
-                        </View>
+                    </View>
+                </View>
+                    <View style={styles.imagebuttonok}>
+                        <ConfirmButton imageButton={(value)=>{
+                              confirm = value;
+                        }} textButton={()=>{
+                            this.toNextPage({name:ElectronicContract,component:ElectronicContract,params:{}})
+                        }}/>
+                        <TouchableOpacity onPress={()=>{
+                            this.register();
+                        }} activeOpacity={0.8} style={{marginTop:Pixel.getPixel(15),width:width-Pixel.getPixel(30),height:
+                        Pixel.getPixel(44),backgroundColor: FontAndColor.COLORB0,alignItems: 'center',justifyContent:'center'
+                        }}>
+                            <Text style={{color:'#fff',fontSize: Pixel.getPixel(FontAndColor.LITTLEFONT28)}}>提交</Text>
+                        </TouchableOpacity>
                     </View>
                 </ScrollView>
                 {this.loadingView()}
@@ -312,6 +329,8 @@ export default class Register extends BaseComponent {
             this.props.showToast("商家名称不能为空");
         } else if (password !== passwoedAgain) {
             this.props.showToast("两次密码输入不一致");
+        }else if(!confirm){
+            this.props.showToast("请详细阅读并同意《电子账户服务协议》");
         } /*else if (typeof(idcardf) == "undefined" || idcardf == "") {
          this.props.showToast("身份证正面不能为空");
          } else if (typeof(idcardback) == "undefined" || idcardback == "") {
@@ -617,5 +636,13 @@ const styles = StyleSheet.create({
     imageClearButtonStyle: {
         width: Pixel.getPixel(17),
         height: Pixel.getPixel(17),
+    },
+    imagebuttonok: {
+        width: width,
+        backgroundColor:FontAndColor.COLORA3,
+        height:Pixel.getPixel(130),
+        paddingLeft:Pixel.getPixel(15),
+        paddingRight:Pixel.getPixel(15),
+        paddingTop:Pixel.getPixel(25)
     }
 });

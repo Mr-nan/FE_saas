@@ -29,11 +29,12 @@ import VinInfo from './component/VinInfo';
 import * as Net from '../../utils/RequestUtil';
 import * as AppUrls from '../../constant/appUrls';
 import PurchasePickerScene from './PurchasePickerScene';
-
+import SelectPeopleScene from './SelectPeopleScene';
 const selectImg = require('../../../images/financeImages/celljiantou.png');
 const scanImg = require('../../../images/financeImages/scan.png');
 
 const IS_ANDROID = Platform.OS === 'android';
+
 
 export default class CGDAddCarScene extends BaseComponent {
 
@@ -56,10 +57,10 @@ export default class CGDAddCarScene extends BaseComponent {
             bind_type: this.props.isOBD,
             obd_number: '',
             payment_id: '',
-            base_id:'',
-            info_id:'',
-            isCarinvoice:this.props.isCarinvoice,
-            obd_bind_status:'0'
+            base_id: '',
+            info_id: '',
+            isCarinvoice: this.props.isCarinvoice,
+            obd_bind_status: '0'
         };
 
         this.scanType = [
@@ -74,7 +75,7 @@ export default class CGDAddCarScene extends BaseComponent {
             carReceive: '请选择',
             carRegister: '请选择'
         };
-        if(this.props.paymentId){
+        if (this.props.paymentId) {
             this.carData.payment_id = this.props.paymentId;
         }
     }
@@ -122,10 +123,10 @@ export default class CGDAddCarScene extends BaseComponent {
                         });
                     }
 
-                    if(this.props.updateCar && this.props.updateCar === true){
+                    if (this.props.updateCar && this.props.updateCar === true) {
                         let detailParams = {
                             api: AppUrls.PURCHA_AUTO_DETAIL,
-                            info_id:this.props.InfoId
+                            info_id: this.props.InfoId
                         };
                         Net.request(AppUrls.FINANCE, 'post', detailParams).then(
                             (response2) => {
@@ -133,14 +134,14 @@ export default class CGDAddCarScene extends BaseComponent {
                                     this._closeLoading();
                                     let rdb2 = response2.mjson.data.detail;
 
-                                     let dt = this.dateReversal(rdb2.init_reg);
+                                    let dt = this.dateReversal(rdb2.init_reg);
                                     this.carData.sell_city_id = rdb2.city_id;
                                     this.carData.brand_id = rdb2.brand_id;
                                     this.carData.model_id = rdb2.model_id;
                                     this.carData.series_id = rdb2.series_id;
                                     this.carData.frame_number = rdb2.frame_number;
                                     this.carData.car_color = rdb2.car_color;
-                                    this.carData.mileage = rdb2.mileage+ '';
+                                    this.carData.mileage = rdb2.mileage + '';
                                     this.carData.init_reg = dt;
                                     this.carData.rev_user_id = rdb2.rev_user_id;
                                     this.carData.register_user_id = rdb2.register_user_id;
@@ -161,11 +162,11 @@ export default class CGDAddCarScene extends BaseComponent {
                                     });
 
                                     this.vinInput.setNativeProps({
-                                        text: rdb2.frame_number+ ''
+                                        text: rdb2.frame_number + ''
                                     });
 
                                     this.milInput.setNativeProps({
-                                        text: rdb2.mileage+ ''
+                                        text: rdb2.mileage + ''
                                     });
 
                                     this.priceInput.setNativeProps({
@@ -239,7 +240,7 @@ export default class CGDAddCarScene extends BaseComponent {
         this.toNextPage(navigatorParams);
     };
 
-    _checkedCityClick = (cityObj)=>{
+    _checkedCityClick = (cityObj) => {
         this.setState({
             city_name: cityObj.city_name
         });
@@ -301,16 +302,16 @@ export default class CGDAddCarScene extends BaseComponent {
             this.carData.frame_number = text;
             this._showLoading();
             let vinParams;
-            if(this.props.updateCar && this.props.updateCar === true){
+            if (this.props.updateCar && this.props.updateCar === true) {
                 vinParams = {
                     api: AppUrls.PURCHA_CHECK_IN,
-                    frame_number:text,
-                    base_id:this.carData.baseID
+                    frame_number: text,
+                    base_id: this.carData.baseID
                 };
-            }else{
+            } else {
                 vinParams = {
                     api: AppUrls.PURCHA_CHECK_IN,
-                    frame_number:text
+                    frame_number: text
                 };
             }
 
@@ -395,24 +396,13 @@ export default class CGDAddCarScene extends BaseComponent {
     };
 
     _onReceiverPress = () => {
-        Picker.init({
-            pickerData: this.revShowData,
-            pickerConfirmBtnText: '确定',
-            pickerCancelBtnText: '取消',
-            pickerTitleText: '收车人',
-            pickerConfirmBtnColor: [69, 205, 203, 1],
-            pickerCancelBtnColor: [69, 205, 203, 1],
-            pickerTitleColor: [0, 0, 0, 1],
-            pickerBg: [247, 250, 252, 1],
-            pickerToolBarFontSize: 17,
-            pickerFontSize: 19,
-            pickerFontColor: [0, 0, 0, 1],
-            selectedValue: [0],
-            onPickerConfirm: (data) => {
-                if (IS_ANDROID === true) {
+        this.toNextPage({
+            name: 'SelectPeopleScene', component: SelectPeopleScene,
+            params: {
+                regShowData: this.revShowData, title: '收车人', callBack: (data) => {
                     let sel;
                     this.revShowData.map((dt, i) => {
-                        if (dt === data[0]) {
+                        if (dt === data) {
                             sel = i;
                         }
                     });
@@ -420,40 +410,57 @@ export default class CGDAddCarScene extends BaseComponent {
                     this.setState({
                         carReceive: this.revData[sel].name
                     });
-                }else{
-                    this.carData.rev_user_id = this.revData[data].bussiness_id;
-                    this.setState({
-                        carReceive: this.revData[data].name
-                    });
                 }
-            },
-            onPickerCancel: (data) => {
-            },
-            onPickerSelect: (data) => {
             }
         });
-        Picker.show();
+        // Picker.init({
+        //     pickerData: this.revShowData,
+        //     pickerConfirmBtnText: '确定',
+        //     pickerCancelBtnText: '取消',
+        //     pickerTitleText: '收车人',
+        //     pickerConfirmBtnColor: [69, 205, 203, 1],
+        //     pickerCancelBtnColor: [69, 205, 203, 1],
+        //     pickerTitleColor: [0, 0, 0, 1],
+        //     pickerBg: [247, 250, 252, 1],
+        //     pickerToolBarFontSize: 17,
+        //     pickerFontSize: 19,
+        //     pickerFontColor: [0, 0, 0, 1],
+        //     selectedValue: [0],
+        //     onPickerConfirm: (data) => {
+        //         if (IS_ANDROID === true) {
+        //             let sel;
+        //             this.revShowData.map((dt, i) => {
+        //                 if (dt === data[0]) {
+        //                     sel = i;
+        //                 }
+        //             });
+        //             this.carData.rev_user_id = this.revData[sel].bussiness_id;
+        //             this.setState({
+        //                 carReceive: this.revData[sel].name
+        //             });
+        //         }else{
+        //             this.carData.rev_user_id = this.revData[data].bussiness_id;
+        //             this.setState({
+        //                 carReceive: this.revData[data].name
+        //             });
+        //         }
+        //     },
+        //     onPickerCancel: (data) => {
+        //     },
+        //     onPickerSelect: (data) => {
+        //     }
+        // });
+        // Picker.show();
     };
 
     _onRegisterPress = () => {
-        Picker.init({
-            pickerData: this.regShowData,
-            pickerConfirmBtnText: '确定',
-            pickerCancelBtnText: '取消',
-            pickerTitleText: '登记人',
-            pickerConfirmBtnColor: [69, 205, 203, 1],
-            pickerCancelBtnColor: [69, 205, 203, 1],
-            pickerTitleColor: [0, 0, 0, 1],
-            pickerBg: [247, 250, 252, 1],
-            pickerToolBarFontSize: 17,
-            pickerFontSize: 19,
-            pickerFontColor: [0, 0, 0, 1],
-            selectedValue: [0],
-            onPickerConfirm: (data) => {
-                if (IS_ANDROID === true) {
+        this.toNextPage({
+            name: 'SelectPeopleScene', component: SelectPeopleScene,
+            params: {
+                regShowData: this.regShowData, title: '登记人', callBack: (data) => {
                     let sel;
                     this.regShowData.map((dt, i) => {
-                        if (dt === data[0]) {
+                        if (dt === data) {
                             sel = i;
                         }
                     });
@@ -461,20 +468,48 @@ export default class CGDAddCarScene extends BaseComponent {
                     this.setState({
                         carRegister: this.regData[sel].name
                     });
-                }else{
-                    this.carData.register_user_id = this.regData[data].bussiness_id;
-                    this.setState({
-                        carRegister: this.regData[data].name
-                    });
                 }
-
-            },
-            onPickerCancel: (data) => {
-            },
-            onPickerSelect: (data) => {
             }
         });
-        Picker.show();
+        // Picker.init({
+        //     pickerData: this.regShowData,
+        //     pickerConfirmBtnText: '确定',
+        //     pickerCancelBtnText: '取消',
+        //     pickerTitleText: '登记人',
+        //     pickerConfirmBtnColor: [69, 205, 203, 1],
+        //     pickerCancelBtnColor: [69, 205, 203, 1],
+        //     pickerTitleColor: [0, 0, 0, 1],
+        //     pickerBg: [247, 250, 252, 1],
+        //     pickerToolBarFontSize: 17,
+        //     pickerFontSize: 19,
+        //     pickerFontColor: [0, 0, 0, 1],
+        //     selectedValue: [0],
+        //     onPickerConfirm: (data) => {
+        //         if (IS_ANDROID === true) {
+        //             let sel;
+        //             this.regShowData.map((dt, i) => {
+        //                 if (dt === data[0]) {
+        //                     sel = i;
+        //                 }
+        //             });
+        //             this.carData.register_user_id = this.regData[sel].bussiness_id;
+        //             this.setState({
+        //                 carRegister: this.regData[sel].name
+        //             });
+        //         }else{
+        //             this.carData.register_user_id = this.regData[data].bussiness_id;
+        //             this.setState({
+        //                 carRegister: this.regData[data].name
+        //             });
+        //         }
+        //
+        //     },
+        //     onPickerCancel: (data) => {
+        //     },
+        //     onPickerSelect: (data) => {
+        //     }
+        // });
+        // Picker.show();
     };
 
     _onBack = () => {
@@ -521,16 +556,18 @@ export default class CGDAddCarScene extends BaseComponent {
         }
 
         let upd = false;
-        if(this.props.updateCar && this.props.updateCar === true){
+        if (this.props.updateCar && this.props.updateCar === true) {
             upd = true;
         }
 
         let pickerParams = {
             name: 'PurchasePickerScene',
             component: PurchasePickerScene,
-            params: {carData: this.carData,updateCar:upd,backRefresh:()=>{
-                this.props.backRefresh();
-            }}
+            params: {
+                carData: this.carData, updateCar: upd, backRefresh: () => {
+                    this.props.backRefresh();
+                }
+            }
         };
 
 
@@ -543,133 +580,133 @@ export default class CGDAddCarScene extends BaseComponent {
             <View style={styles.container}>
                 <ScrollView>
                     <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={25}>
-                    <AllNavigationView
-                        backIconClick={this._onBack}
-                        title='车辆信息'
-                    />
+                        <AllNavigationView
+                            backIconClick={this._onBack}
+                            title='车辆信息'
+                        />
 
-                    <View style={[styles.itemBackground, styles.alignTop]}>
-                        <Text style={styles.leftFont}>出售城市</Text>
-                        <View style={styles.fillSpace}/>
-                        <TouchableOpacity onPress={this._onCityPress}>
-                            <View style={styles.rightContainer}>
-                                <Text style={styles.selectHintFont}>{this.state.city_name}</Text>
-                                <Image style={styles.selectImage} source={selectImg}/>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
+                        <View style={[styles.itemBackground, styles.alignTop]}>
+                            <Text style={styles.leftFont}>出售城市</Text>
+                            <View style={styles.fillSpace}/>
+                            <TouchableOpacity onPress={this._onCityPress}>
+                                <View style={styles.rightContainer}>
+                                    <Text style={styles.selectHintFont}>{this.state.city_name}</Text>
+                                    <Image style={styles.selectImage} source={selectImg}/>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
 
-                    <View style={styles.splitItem}/>
-                    <View style={styles.itemBackground}>
-                        <Text style={styles.leftFont}>选择车型</Text>
-                        <View style={styles.fillSpace}/>
-                        <TouchableOpacity onPress={this._onModelPress}>
-                            <View style={styles.rightContainer}>
-                                <Text style={styles.selectHintFont}>{this.state.modelName}</Text>
-                                <Image style={styles.selectImage} source={selectImg}/>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
+                        <View style={styles.splitItem}/>
+                        <View style={styles.itemBackground}>
+                            <Text style={styles.leftFont}>选择车型</Text>
+                            <View style={styles.fillSpace}/>
+                            <TouchableOpacity onPress={this._onModelPress}>
+                                <View style={styles.rightContainer}>
+                                    <Text style={styles.selectHintFont}>{this.state.modelName}</Text>
+                                    <Image style={styles.selectImage} source={selectImg}/>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
 
-                    <View style={[styles.itemBackground, styles.alignItem]}>
-                        <Text style={styles.leftFont}>车架号</Text>
-                        <TextInput
-                            ref={(input) => {
+                        <View style={[styles.itemBackground, styles.alignItem]}>
+                            <Text style={styles.leftFont}>车架号</Text>
+                            <TextInput
+                                ref={(input) => {
                                 this.vinInput = input
                             }}
-                            style={[styles.inputHintFont, styles.fillSpace]}
-                            underlineColorAndroid='transparent'
-                            maxLength={17}
-                            onChangeText={this._onVinChange}
-                            placeholder='请输入'
-                            placeholderTextColor={fontAndColor.COLORA1}
-                        />
-                        <TouchableOpacity onPress={this._onScanPress}>
-                            <Image style={styles.scanImage} source={scanImg}/>
-                        </TouchableOpacity>
-                    </View>
+                                style={[styles.inputHintFont, styles.fillSpace]}
+                                underlineColorAndroid='transparent'
+                                maxLength={17}
+                                onChangeText={this._onVinChange}
+                                placeholder='请输入'
+                                placeholderTextColor={fontAndColor.COLORA1}
+                            />
+                            <TouchableOpacity onPress={this._onScanPress}>
+                                <Image style={styles.scanImage} source={scanImg}/>
+                            </TouchableOpacity>
+                        </View>
 
-                    <View style={styles.splitItem}/>
-                    <View style={styles.itemBackground}>
-                        <Text style={styles.leftFont}>外观颜色</Text>
-                        <View style={styles.fillSpace}/>
-                        <TouchableOpacity onPress={this._onColorPress}>
-                            <View style={styles.rightContainer}>
-                                <Text style={styles.selectHintFont}>{this.state.car_color}</Text>
-                                <Image style={styles.selectImage} source={selectImg}/>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
+                        <View style={styles.splitItem}/>
+                        <View style={styles.itemBackground}>
+                            <Text style={styles.leftFont}>外观颜色</Text>
+                            <View style={styles.fillSpace}/>
+                            <TouchableOpacity onPress={this._onColorPress}>
+                                <View style={styles.rightContainer}>
+                                    <Text style={styles.selectHintFont}>{this.state.car_color}</Text>
+                                    <Image style={styles.selectImage} source={selectImg}/>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
 
-                    <View style={styles.splitItem}/>
-                    <View style={styles.itemBackground}>
-                        <Text style={styles.leftFont}>行驶里程</Text>
-                        <TextInput
-                            ref={(input) => {
+                        <View style={styles.splitItem}/>
+                        <View style={styles.itemBackground}>
+                            <Text style={styles.leftFont}>行驶里程</Text>
+                            <TextInput
+                                ref={(input) => {
                                 this.milInput = input
                             }}
-                            style={[styles.inputHintFont, styles.fillSpace]}
-                            underlineColorAndroid='transparent'
-                            keyboardType='numeric'
-                            onChangeText={this._onMileageChange}
-                            placeholder='请输入'
-                            placeholderTextColor={fontAndColor.COLORA1}
-                        />
-                        <Text style={styles.rightHintFont}>万公里</Text>
-                    </View>
+                                style={[styles.inputHintFont, styles.fillSpace]}
+                                underlineColorAndroid='transparent'
+                                keyboardType='numeric'
+                                onChangeText={this._onMileageChange}
+                                placeholder='请输入'
+                                placeholderTextColor={fontAndColor.COLORA1}
+                            />
+                            <Text style={styles.rightHintFont}>万公里</Text>
+                        </View>
 
-                    <View style={styles.splitItem}/>
-                    <View style={styles.itemBackground}>
-                        <Text style={styles.leftFont}>首次上牌时间</Text>
-                        <View style={styles.fillSpace}/>
-                        <TouchableOpacity onPress={this._onDatePress}>
-                            <View style={styles.rightContainer}>
-                                <Text style={styles.selectHintFont}>{this.state.init_reg}</Text>
-                                <Image style={styles.selectImage} source={selectImg}/>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
+                        <View style={styles.splitItem}/>
+                        <View style={styles.itemBackground}>
+                            <Text style={styles.leftFont}>首次上牌时间</Text>
+                            <View style={styles.fillSpace}/>
+                            <TouchableOpacity onPress={this._onDatePress}>
+                                <View style={styles.rightContainer}>
+                                    <Text style={styles.selectHintFont}>{this.state.init_reg}</Text>
+                                    <Image style={styles.selectImage} source={selectImg}/>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
 
-                    <View style={styles.splitItem}/>
-                    <View style={styles.itemBackground}>
-                        <Text style={styles.leftFont}>收车人</Text>
-                        <View style={styles.fillSpace}/>
-                        <TouchableOpacity onPress={this._onReceiverPress}>
-                            <View style={styles.rightContainer}>
-                                <Text style={styles.selectHintFont}>{this.state.carReceive}</Text>
-                                <Image style={styles.selectImage} source={selectImg}/>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
+                        <View style={styles.splitItem}/>
+                        <View style={styles.itemBackground}>
+                            <Text style={styles.leftFont}>收车人</Text>
+                            <View style={styles.fillSpace}/>
+                            <TouchableOpacity onPress={this._onReceiverPress}>
+                                <View style={styles.rightContainer}>
+                                    <Text style={styles.selectHintFont}>{this.state.carReceive}</Text>
+                                    <Image style={styles.selectImage} source={selectImg}/>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
 
-                    <View style={styles.splitItem}/>
-                    <View style={styles.itemBackground}>
-                        <Text style={styles.leftFont}>登记人</Text>
-                        <View style={styles.fillSpace}/>
-                        <TouchableOpacity onPress={this._onRegisterPress}>
-                            <View style={styles.rightContainer}>
-                                <Text style={styles.selectHintFont}>{this.state.carRegister}</Text>
-                                <Image style={styles.selectImage} source={selectImg}/>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
+                        <View style={styles.splitItem}/>
+                        <View style={styles.itemBackground}>
+                            <Text style={styles.leftFont}>登记人</Text>
+                            <View style={styles.fillSpace}/>
+                            <TouchableOpacity onPress={this._onRegisterPress}>
+                                <View style={styles.rightContainer}>
+                                    <Text style={styles.selectHintFont}>{this.state.carRegister}</Text>
+                                    <Image style={styles.selectImage} source={selectImg}/>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
 
 
-                    <View style={[styles.itemBackground, styles.alignItem]}>
-                        <Text style={styles.leftFont}>收购价</Text>
-                        <TextInput
-                            ref={(input) => {
+                        <View style={[styles.itemBackground, styles.alignItem]}>
+                            <Text style={styles.leftFont}>收购价</Text>
+                            <TextInput
+                                ref={(input) => {
                                 this.priceInput = input
                             }}
-                            style={[styles.inputHintFont, styles.fillSpace]}
-                            underlineColorAndroid='transparent'
-                            keyboardType='numeric'
-                            onChangeText={this._onPriceChange}
-                            placeholder='请输入'
-                            placeholderTextColor={fontAndColor.COLORA1}
-                        />
-                        <Text style={styles.rightHintFont}>万元</Text>
-                    </View>
+                                style={[styles.inputHintFont, styles.fillSpace]}
+                                underlineColorAndroid='transparent'
+                                keyboardType='numeric'
+                                onChangeText={this._onPriceChange}
+                                placeholder='请输入'
+                                placeholderTextColor={fontAndColor.COLORA1}
+                            />
+                            <Text style={styles.rightHintFont}>万元</Text>
+                        </View>
                     </KeyboardAvoidingView>
                 </ScrollView>
 
@@ -717,15 +754,15 @@ export default class CGDAddCarScene extends BaseComponent {
         }
     };
 
-    dateReversal=(time)=>{
+    dateReversal = (time) => {
         const date = new Date();
-        date.setTime(time+'000');
+        date.setTime(time + '000');
         let year = date.getFullYear();
-        let month = (date.getMonth()+1) + '';
+        let month = (date.getMonth() + 1) + '';
         let day = date.getDay() + '';
-        if(month.length == 1)month = '0'+month;
-        if(day.length == 1) day = '0'+day;
-        return(year+"-"+month+"-"+day);
+        if (month.length == 1) month = '0' + month;
+        if (day.length == 1) day = '0' + day;
+        return (year + "-" + month + "-" + day);
     };
 }
 

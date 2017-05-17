@@ -206,6 +206,27 @@ export const PURCHAAUTO_ADDAUTO = 'api/v2/purchaAuto/addAuto';
 /**
  * from @zhaojian
  *
+ * 获取角色列表
+ **/
+export const USER_ROLE = BASEURL+'v1/user/role';
+
+/**
+ * from @zhaojian
+ *
+ * 添加||编辑员工
+ **/
+export const USER_EMPLOYEE_SAVE = BASEURL+'v1/user.employee/save';
+
+/**
+ * from @zhaojian
+ *
+ * 开通个人账户
+ **/
+export const USER_OPEN_ACCOUNT_PERSONAL = BASEURL+'v1/user.open_account/personal';
+
+/**
+ * from @zhaojian
+ *
  * 更新采购贷车辆
  **/
 export const PURCHAAUTO_UPDATEAUTO = 'api/v2/purchaAuto/updateAuto';

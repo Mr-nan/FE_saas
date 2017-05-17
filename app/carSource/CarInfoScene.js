@@ -389,7 +389,7 @@ export default class CarInfoScene extends BaseComponent {
                     <ImagePageView
                         dataSource={this.state.imageArray}    //数据源（必须）
                         renderPage={this.renderImagePage}     //page页面渲染方法（必须）
-                        isLoop={false}                        //是否可以循环
+                        isLoop={true}                        //是否可以循环
                         autoPlay={false}                      //是否自动
                         locked={false}                        //为true时禁止滑动翻页
                         renderPageIndicator={(index)=>{

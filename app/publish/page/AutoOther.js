@@ -76,11 +76,11 @@ export default class AutoOther extends Component {
         return (<Image style={[styles.img, {height: height - this.props.barHeight}]} source={background}/>);
     };
 
-    _onBack = () => {
+    _onBack =() => {
         this.props.onBack();
     };
 
-    _renderRihtFootView = () => {
+    _renderRihtFootView =() => {
         return (
             <TouchableOpacity
                 activeOpacity={0.6}
@@ -132,6 +132,7 @@ export default class AutoOther extends Component {
         }
         return (
             <View style={styles.container}>
+
                 <Image style={[styles.img, {height: height - this.props.barHeight}]} source={background}>
                     <ScrollView>
                         <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={75}>
