@@ -30,6 +30,9 @@ const {width, height} = Dimensions.get('window');
 
 export default class CompleteSignScene extends BaseComponent {
     initFinish = () => {
+        page = 1;
+        allPage = 1;
+        allSouce = [];
         this.getData();
     }
 
