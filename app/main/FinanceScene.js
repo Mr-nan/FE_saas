@@ -52,7 +52,8 @@ import {LendSuccessAlert} from '../finance/lend/component/ModelComponent'
 let loanList = [];
 import CGDLendScenes from '../finance/lend/CGDLendScenes';
 import ReceiptInfoScene from '../finance/page/ReceiptInfoScene';
-
+let firstType = '';
+let lastType = '';
 
 export class HomeHeaderItemInfo {
     constructor(ref, key, functionTitle, describeTitle, functionImage) {
@@ -90,6 +91,7 @@ export default class FinanceSence extends BaseComponet {
     initFinish = () => {
 
         this.getMnyData();
+        this.getAccountInfo();
     }
 
 
@@ -193,9 +195,53 @@ export default class FinanceSence extends BaseComponet {
         this.getMnyData();
     }
 
+    getAccountInfo = () => {
+        StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    enter_base_ids: datas.merge_id
+                };
+                request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+                    .then((response) => {
+                            lastType = response.data.status;
+                        },
+                        (error) => {
+
+                        });
+            }
+        });
+    }
+
+    componentDidUpdate() {
+        if(this.state.renderPlaceholderOnly=='success'){
+            if(firstType!=lastType){
+                if(lastType!=3){
+                    StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
+                        if (data.code == 1) {
+                            let datas = JSON.parse(data.result);
+                            let maps = {
+                                enter_base_ids: datas.merge_id
+                            };
+                            request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+                                .then((response) => {
+                                        lastType = response.data.status;
+                                    },
+                                    (error) => {
+
+                                    });
+                        }
+                    });
+                }
+            }
+        }
+    }
+
     // 构造
     constructor(props) {
         super(props);
+        firstType = '';
+        lastType = '';
         this.state = {
             source: [],
             allData: {

@@ -65,7 +65,6 @@ export const CAR_HOME_BRAND = BASEURL + V + 'home/brand';
 export const CAR_HOME_SERIES = BASEURL + V + 'home/series';
 
 
-
 /**
  * 获取车型
  */
@@ -208,21 +207,28 @@ export const PURCHAAUTO_ADDAUTO = 'api/v2/purchaAuto/addAuto';
  *
  * 获取角色列表
  **/
-export const USER_ROLE = BASEURL+'v1/user/role';
+export const USER_ROLE = BASEURL + 'v1/user/role';
 
 /**
  * from @zhaojian
  *
  * 添加||编辑员工
  **/
-export const USER_EMPLOYEE_SAVE = BASEURL+'v1/user.employee/save';
+export const USER_EMPLOYEE_SAVE = BASEURL + 'v1/user.employee/save';
 
 /**
  * from @zhaojian
  *
  * 开通个人账户
  **/
-export const USER_OPEN_ACCOUNT_PERSONAL = BASEURL+'v1/user.open_account/personal';
+export const USER_OPEN_ACCOUNT_PERSONAL = BASEURL + 'v1/user.open_account/personal';
+
+/**
+ * from @zhaojian
+ *
+ * 获取账户信息
+ **/
+export const USER_ACCOUNT_INFO = BASEURL + 'v1/user.account/info';
 
 /**
  * from @zhaojian
