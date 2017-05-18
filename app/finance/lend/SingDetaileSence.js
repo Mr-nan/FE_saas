@@ -205,18 +205,18 @@ export  default  class SingDetaileSence extends BaseComponent {
         if (stateCode !== '' && extendCode !== '') {
 
             let tempTitle = []
-            if (stateCode === '1') {
+            if (stateCode == '1') {
                 tempTitle = ['取消借款']
-            } else if (stateCode === '2') {
+            } else if (stateCode == '2') {
                 tempTitle = ['签署合同', '取消借款']
             }
             // else if (stateCode === '2') {
             //     tempTitle = ['已取消借款']
             // }
-            else if (Number.parseInt(stateCode) > 2 && stateCode !== '5') {
+            else if (Number.parseInt(stateCode) > 2 && stateCode != '5') {
                 tempTitle = ['查看合同']
             } else if (stateCode == '5') {
-                if (Number.parseInt(extendCode) === 1) {
+                if (Number.parseInt(extendCode) == 1) {
                     tempTitle = ['查看合同', '申请展期']
                 } else {
                     tempTitle = ['查看合同']
