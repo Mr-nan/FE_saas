@@ -47,8 +47,8 @@ export  default class PurchasePickerItem extends PureComponent {
             for (let i = 0; i < length; i++) {
                 movieItems.push(
                     <PurchasePickerChildItem
-                        fileId={this.state.childMovie.list[i].fileId}
-                        imgUrl={this.state.childMovie.list[i].url} showOnPress={() => {
+                        fileId={this.state.childMovie.list[i]}
+                        imgUrl={this.state.childMovie.list[i]} showOnPress={() => {
                     }} deleteOnPress={(index,fileId) => {
                         let news = {...this.state.childMovie};
                         news.list.splice(index, 1);

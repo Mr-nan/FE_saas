@@ -20,7 +20,7 @@ import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import * as ImageUpload from '../../utils/ImageUpload';
 import * as fontAndColor from '../../constant/fontAndColor';
-import  PurchasePickerChildItem from '../../finance/component/PurchasePickerChildItem';
+import  CarImagePickerItem from './CarImagePickerItem';
 import ImagePicker from "react-native-image-picker";
 import * as MyUrl from '../../constant/appUrls';
 
@@ -29,7 +29,7 @@ export  default class CarUpImageCell extends PureComponent {
     constructor(props) {
         super(props);
 
-        console.log(this.props.childList);
+        console.log(this.props.childList.length);
         this.state = {
             childMovie: this.props.childList
         };
@@ -50,9 +50,9 @@ export  default class CarUpImageCell extends PureComponent {
             for (let i = 0; i < length; i++) {
 
                 movieItems.push(
-                    <PurchasePickerChildItem
-                        fileId={this.state.childMovie[i].file_id}
-                        imgUrl={this.state.childMovie[i].url}
+                    <CarImagePickerItem
+                        fileId={this.state.childMovie[i]}
+                        imgUrl={this.state.childMovie[i]}
                         showOnPress={() => {}}
                         deleteOnPress={(index,fileId) => {
                             let news =  [];
@@ -78,7 +78,7 @@ export  default class CarUpImageCell extends PureComponent {
                         }}/>)
             }
         } else {
-            movieItems.push(<PurchasePickerChildItem allLength={this.state.childMovie.length} key={0} index={0}
+            movieItems.push(<CarImagePickerItem allLength={this.state.childMovie.length} key={0} index={0}
                                                      mOnPress={(index) => {
                                                          this.selectPhotoTapped(movie.code)
                                                      }}/>)

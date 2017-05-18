@@ -9,6 +9,7 @@ import {
     ListView,
     TouchableOpacity,
     Dimensions,
+    Platform,
 }   from 'react-native';
 
 import BaseComponent from '../component/BaseComponent';
@@ -17,12 +18,14 @@ import *as fontAndColor from '../constant/fontAndColor';
 import PixelUtil from '../utils/PixelUtil';
 import CarUpImageCell from './znComponent/CarUpImageCell';
 import StorageUtil from "../utils/StorageUtil";
+import SuccessModal from '../publish/component/SuccessModal';
 
 import * as Net from '../utils/RequestUtil';
 import * as AppUrls from '../constant/appUrls';
 
 const Pixel = new  PixelUtil();
 const sceneWidth = Dimensions.get('window').width;
+const IS_ANDROID = Platform.OS === 'android';
 
 export default class CarUpImageScene extends BaseComponent{
 
@@ -167,9 +170,14 @@ export default class CarUpImageScene extends BaseComponent{
         };
       }
 
+    componentWillUnmount(){
+        this.timer && clearTimeout(this.timer);
+    }
+
     render(){
         return(
             <View style={styles.rootContainer}>
+                <SuccessModal okClick={this._goToSource} ref={(modal) => {this.successModal = modal}}/>
                 <ListView
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}
@@ -215,8 +223,19 @@ export default class CarUpImageScene extends BaseComponent{
         )
     }
 
+    _goToSource = () => {
+
+       let sourceParams = {
+            name: 'CarMySourceScene',
+            component: CarMySourceScene,
+            params: {}
+        };
+        this.toNextPage(sourceParams);
+    };
+
     footBtnClick=()=>{
 
+        this.props.showModal(true);
         let errorTitle = '';
         for(let i=0;i<this.titleData.length;i++)
         {
@@ -224,9 +243,9 @@ export default class CarUpImageScene extends BaseComponent{
             if(item.explain=='1')
             {
                 let isNull = true;
-                for(let j=0;j<results.length;j++)
+                for(let j=0;j<this.results.length;j++)
                 {
-                    if(results[j].name == item.name)
+                    if(this.results[j].name == item.name)
                     {
                         isNull = false;
                     }
@@ -241,22 +260,41 @@ export default class CarUpImageScene extends BaseComponent{
 
         if(errorTitle!='')
         {
+            this.props.showModal(false);
             this.props.showToast('请上传'+errorTitle+'图片');
+
         }else {
 
-            console.log(this.results);
-            // Net.request(AppUrls.CAR_SAVE,'post',this.carData).then((response) => {
-            //
-            //     console.log(response);
-            //
-            //     }, (error) => {
-            //         this.props.closeLoading();
-            //         if(error.mycode === -300 || error.mycode === -500){
-            //             this.props.showToast('网络连接失败');
-            //         }else{
-            //             this.props.showHint(error.mjson.msg);
-            //         }
-            //     });
+            Net.request(AppUrls.CAR_SAVE,'post',this.carData).then((response) => {
+
+                this.props.showModal(true);
+                if(response.mycode == 1){
+                    if(this.carData.show_shop_id){
+                        StorageUtil.mRemoveItem(String(this.carData.show_shop_id));
+                    }
+                    if(IS_ANDROID === true){
+                        this.successModal.openModal();
+                    }else {
+                        this.timer = setTimeout(
+                            () => { this.successModal.openModal(); },
+                            500
+                        );
+                    }
+                }else {
+                    this.props.showToast('网络连接失败');
+
+                }
+
+                }, (error) => {
+                
+                    this.props.showModal(true);
+                    this.props.closeLoading();
+                    if(error.mycode === -300 || error.mycode === -500){
+                        this.props.showToast('网络连接失败');
+                    }else{
+                        this.props.showToast(error.mjson.msg);
+                    }
+                });
 
         }
 
