@@ -19,8 +19,8 @@ import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
 
 import ContractManageScene from '../mine/contractManage/ContractSelectScene';
-
-import AccountManageScene from '../mine/accountManage/AccountTypeSelectScene'
+import AccountManageScene from '../mine/accountManage/AccountManageScene'
+import AccountTypeSelectScene from '../mine/accountManage/AccountTypeSelectScene'
 import WaitActivationAccountScene from '../mine/accountManage/WaitActivationAccountScene'
 import AccountScene from '../mine/accountManage/AccountScene'
 import BindCardScene from '../mine/accountManage/BindCardScene'
@@ -350,6 +350,9 @@ export default class MineSectionListView extends BaseComponent {
                 this.navigatorParams.name = 'AccountManageScene'
                 this.navigatorParams.component = AccountManageScene
 
+                // this.navigatorParams.name = 'AccountTypeSelectScene'
+                // this.navigatorParams.component = AccountTypeSelectScene
+
                 // this.navigatorParams.name = 'WaitActivationAccountScene'
                 // this.navigatorParams.component = WaitActivationAccountScene
                 //
@@ -409,10 +412,10 @@ export default class MineSectionListView extends BaseComponent {
                     <Image source={rowData.icon} style={styles.rowLeftImage}/>
 
                     <Text style={styles.rowTitle}>{rowData.name}</Text>
-                    {rowData.name=='账户管理'?<Text style={{ marginRight: Pixel.getPixel(15),
-                    backgroundColor: '#00000000',color:fontAndClolr.COLORB2,fontSize:
-                    Pixel.getFontPixel(fontAndClolr.LITTLEFONT28)}}>未开户</Text>:
-                    <View/>}
+                    {/*{rowData.name=='账户管理'?<Text style={{ marginRight: Pixel.getPixel(15),*/}
+                    {/*backgroundColor: '#00000000',color:fontAndClolr.COLORB2,fontSize:*/}
+                    {/*Pixel.getFontPixel(fontAndClolr.LITTLEFONT28)}}>未开户</Text>:*/}
+                    {/*<View/>}*/}
 
 
                     <Image source={cellJianTou} style={styles.rowjiantouImage}/>
