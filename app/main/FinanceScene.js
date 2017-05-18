@@ -51,6 +51,7 @@ import QuotaApplication from '../login/QuotaApplication';
 import {LendSuccessAlert} from '../finance/lend/component/ModelComponent'
 let loanList = [];
 import CGDLendScenes from '../finance/lend/CGDLendScenes';
+import AccountModal from '../component/AccountModal';
 import ReceiptInfoScene from '../finance/page/ReceiptInfoScene';
 let firstType = '';
 let lastType = '';
@@ -214,13 +215,17 @@ export default class FinanceSence extends BaseComponet {
     }
 
     componentDidUpdate() {
-        if(this.state.renderPlaceholderOnly=='success'){
-            if(firstType!=lastType){
-                if(lastType!=3){
+        if (this.state.renderPlaceholderOnly == 'success') {
+            if (firstType != lastType) {
+                if (lastType != 3) {
                     StorageUtil.mGetItem(storageKeyNames.ENTERPRISE_LIST, (data) => {
                         if (data.code == 1) {
                             let datas = JSON.parse(data.result);
-
+                            if (datas[0].role_type == '1') {
+                                this.refs.accountmodal.changeShowType(true, '您还未开通资金账户，为方便您使用金融产品及购物车，' +
+                                    '请尽快开通！', '去开户', '看看再说');
+                                firstType = lastType;
+                            }
                         }
                     });
                 }
@@ -314,6 +319,7 @@ export default class FinanceSence extends BaseComponet {
 
                 />
                 <LendSuccessAlert ref="showTitleAlert" title={'提示'} subtitle={'微众额度以车贷可用额度为准'}/>
+                <AccountModal ref="accountmodal"/>
             </View>
         )
     }
@@ -597,7 +603,7 @@ export default class FinanceSence extends BaseComponet {
                                         backgroundColor: '#00000000',
                                         flex: 1,
                                         textAlign: 'center'
-                                    }}>{this.state.mnyData.is_microchinese_mny==3?(this.state.allData.keyongedu+this.state.mnyData.microchinese_mny/10000):(this.state.allData.keyongedu)}</Text>
+                                    }}>{this.state.mnyData.is_microchinese_mny == 3 ? (this.state.allData.keyongedu + this.state.mnyData.microchinese_mny / 10000) : (this.state.allData.keyongedu)}</Text>
                             </View>
                             {
                                 this.state.mnyData.is_microchinese_mny == 3 && (
