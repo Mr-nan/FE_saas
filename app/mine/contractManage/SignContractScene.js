@@ -28,6 +28,7 @@ import ConvertibleBondNoSignScene from '../contractManage/ConvertibleBondNoSignS
 import ConvertibleBondSignScene from '../contractManage/ConvertibleBondSignScene';
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
+import {LendSuccessAlert} from '../../finance/lend/component/ModelComponent'
 let first = '';
 let last = '';
 export  default class SignContractScene extends BaseComponent {
@@ -80,7 +81,8 @@ export  default class SignContractScene extends BaseComponent {
                 initialPage={0}
                 locked={true}
                 scrollWithoutAnimation={true}
-                renderTabBar={() => <RepaymenyTabBar tabName={["未签署"+first, "单方签署", "已签署", "转债权未签"+last, "转债权已签"]}/>}
+                renderTabBar={() =>
+                <RepaymenyTabBar tabName={["未签署"+first, "单方签署", "已签署", "转债权未签"+last, "转债权已签"]}/>}
             >
                 <NoneSineScene tabLabel="ios-paper"  opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
 
@@ -90,12 +92,19 @@ export  default class SignContractScene extends BaseComponent {
                 <ConvertibleBondNoSignScene tabLabel="ios-chatboxes1" companyname={this.props.companyname} opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
                 <ConvertibleBondSignScene tabLabel="ios-chatboxes2" companyname={this.props.companyname} opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
             </ScrollableTabView>
+            <LendSuccessAlert ref="modelcomponent" title="提示" subtitle="为保证顺利放款，请确保所有合同签署完成！"/>
             <NavigationView
                 title="合同管理"
                 backIconClick={this.backPage}
             />
         </View>
         );
+    }
+
+    componentDidUpdate() {
+        if(this.state.renderPlaceholderOnly=='success'){
+            this.refs.modelcomponent.setModelVisible(true);
+        }
     }
 
     _renderPlaceholderView() {

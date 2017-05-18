@@ -30,11 +30,16 @@ const {width, height} = Dimensions.get('window');
 
 export default class SingleSignManageScene extends BaseComponent {
     initFinish = () => {
+        page = 1;
+        allPage = 1;
+        allSouce = [];
         this.getData();
     }
 
     componentWillUnmount() {
         allSouce = [];
+         page = 1;
+         allPage = 1;
     }
 
     getData = () => {

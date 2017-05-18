@@ -30,11 +30,16 @@ let allPage = 1;
 let allSouce = [];
 export default class ContractManageScene extends BaseComponent {
     initFinish = () => {
+        page = 1;
+        allPage = 1;
+        allSouce = [];
         this.getData();
     }
 
     componentWillUnmount() {
         allSouce = [];
+        page = 1;
+        allPage = 1;
     }
 
     getData = () => {

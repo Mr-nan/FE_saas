@@ -457,7 +457,20 @@ export default class FinanceSence extends BaseComponet {
                         </View>
                         <View
                             style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-end', justifyContent: 'center'}]}>
-                            <MyButton {...this.typeButtonParams}/>
+                            <View style={{
+                                borderWidth: 1,
+                                borderColor: fontAndColor.COLORA4,
+                                borderRadius: 100,
+                                height: Pixel.getPixel(23),
+                                width: Pixel.getPixel(72),
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                                }}>
+                                <Text style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                                    color: fontAndColor.COLORB3,
+                                }}>{movie.status_str}</Text>
+                            </View>
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -652,7 +665,7 @@ export default class FinanceSence extends BaseComponet {
                             </View>
                         </View>
                         {
-                            (this.state.allData.microchineseTitle !=='') ?
+                            (this.state.allData.microchineseTitle !== '') ?
                                 (<View style={{height:Pixel.getPixel(40), alignItems:'center',justifyContent:'center'}}>
                                     <TouchableOpacity onPress={()=>{
 

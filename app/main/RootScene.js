@@ -52,7 +52,7 @@ export default class RootScene extends BaseComponent {
                     //     this.navigatorParams.params = {url: response.mjson.data.downloadurl}
                     //     this.toNextPage(this.navigatorParams);
                     // } else {
-                        this.toJump();
+                    this.toJump();
                     // }
                 },
                 (error) => {
@@ -65,7 +65,7 @@ export default class RootScene extends BaseComponent {
         let that = this;
         setTimeout(
             () => {
-                if(!canNext){
+                if (!canNext) {
                     return;
                 }
                 StorageUtil.mGetItem(KeyNames.FIRST_INTO, (res) => {
@@ -174,6 +174,7 @@ export default class RootScene extends BaseComponent {
 
         // this.toNextPage(this.mProps)
     }
+
 
     toNextPage = (mProps) => {
         const navigator = this.props.navigator;

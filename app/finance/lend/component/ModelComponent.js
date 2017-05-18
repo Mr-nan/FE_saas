@@ -64,9 +64,8 @@ export class LendSuccessAlert extends Component{
                         <Text style={commentAlertStyle.title}>{title}</Text>
                         <Text style={commentAlertStyle.subtitle}>{subtitle}</Text>
                         <View style={commentAlertStyle.successWarp}>
-                            <CommenButton buttonStyle={[commentAlertStyle.successButton,{marginBottom:adapeSize(20)}, commentAlertStyle.buttonLeft]}
-                                          textStyle={{color:'white'}}
-                                          onPress={this.confimClick} title={confimTitle?confimTitle:"好的"}/>
+                            <CommenButton buttonStyle={[commentAlertStyle.successButton,{marginBottom:adapeSize(20)},
+                             commentAlertStyle.buttonLeft]} onPress={this.confimClick} title="好的"/>
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -458,12 +457,15 @@ const commentAlertStyle=StyleSheet.create({
         width:adapeSize(260),
         justifyContent:'flex-start',
         borderRadius:5,
+        paddingRight:adapeSize(15),
+        paddingLeft:adapeSize(15),
     },
 
     title:{
 
         marginTop:adapeSize(25),
         fontSize: fontadapeSize(17),
+        color:'#000'
     },
     subtitle:{
         marginTop:adapeSize(10),
@@ -514,6 +516,7 @@ const commentAlertStyle=StyleSheet.create({
         alignItems:'center',
         justifyContent:'center',
         borderRadius:5,
+
     },
 
 
