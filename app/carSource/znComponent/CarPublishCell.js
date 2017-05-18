@@ -31,7 +31,7 @@ export class CellView extends Component {
                     <View >
                     <Text style={styles.cellTitle}>{cellData.title}</Text>
                         {
-                            cellData.subTitle&&<Text style={{fontSize:Pixel.getFontPixel(fontAndColor.MARKFONT22),color:fontAndColor.COLORA1,marginTop:Pixel.getPixel(5),width:Pixel.getPixel(250)}}>{cellData.subTitle}</Text>
+                            cellData.subTitle&&<Text style={styles.cellSubTitle}>{cellData.subTitle}</Text>
                         }
                     </View>
                 </View>
@@ -56,13 +56,24 @@ export class CellSelectView extends Component{
     constructor(props) {
         super(props);
         // 初始状态
+        console.log('props:'+this.props.currentTitle);
+
         this.state = {
             currentChecked:this.props.currentTitle,
+
         };
+    }
+
+    setCurrentChecked=(text)=>{
+
+        this.setState({
+            currentChecked:text,
+        });
     }
 
     render(){
         const {cellData} =this.props;
+
         return(
             <View style={styles.cellType2}>
                 <View style={{flexDirection:'row'}}>
@@ -79,9 +90,8 @@ export class CellSelectView extends Component{
                                 }} onPress={()=>
                                 {
                                     if(this.state.currentChecked!=data.title){
-                                        this.setState({
-                                            currentChecked:data.title,
-                                        });
+
+                                        this.setCurrentChecked(data.title);
                                         this.props.cellSelectAction({title:data.title,value:data.value})
                                     }
                                 }} activeOpacity={1} key={index}>
@@ -124,6 +134,12 @@ const styles = StyleSheet.create({
     cellTitle:{
         color:fontAndColor.COLORA0,
         fontSize:fontAndColor.LITTLEFONT28,
+    },
+    cellSubTitle:{
+        fontSize:Pixel.getFontPixel(fontAndColor.MARKFONT22),
+        color:fontAndColor.COLORA1,
+        marginTop:Pixel.getPixel(5),
+        width:Pixel.getPixel(250)
     },
     cellValue:{
         color:fontAndColor.COLORA2,
