@@ -217,19 +217,10 @@ export default class FinanceSence extends BaseComponet {
         if(this.state.renderPlaceholderOnly=='success'){
             if(firstType!=lastType){
                 if(lastType!=3){
-                    StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
+                    StorageUtil.mGetItem(storageKeyNames.ENTERPRISE_LIST, (data) => {
                         if (data.code == 1) {
                             let datas = JSON.parse(data.result);
-                            let maps = {
-                                enter_base_ids: datas.merge_id
-                            };
-                            request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
-                                .then((response) => {
-                                        lastType = response.data.status;
-                                    },
-                                    (error) => {
 
-                                    });
                         }
                     });
                 }
