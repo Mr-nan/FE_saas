@@ -82,15 +82,15 @@ export  default class SignContractScene extends BaseComponent {
                 locked={true}
                 scrollWithoutAnimation={true}
                 renderTabBar={() =>
-                <RepaymenyTabBar tabName={["未签署"+first, "单方签署", "已签署"]}/>}
+                <RepaymenyTabBar tabName={["未签署"+first, "单方签署", "已签署", "转债权未签"+last, "转债权已签"]}/>}
             >
                 <NoneSineScene tabLabel="ios-paper"  opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
 
                 <SingleSignManageScene tabLabel="ios-people" opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
 
                 <CompleteSignScene tabLabel="ios-chatboxes" opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
-                {/*<ConvertibleBondNoSignScene tabLabel="ios-chatboxes1" companyname={this.props.companyname} opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>*/}
-                {/*<ConvertibleBondSignScene tabLabel="ios-chatboxes2" companyname={this.props.companyname} opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>*/}
+                <ConvertibleBondNoSignScene tabLabel="ios-chatboxes1" companyname={this.props.companyname} opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
+                <ConvertibleBondSignScene tabLabel="ios-chatboxes2" companyname={this.props.companyname} opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
             </ScrollableTabView>
             <LendSuccessAlert ref="modelcomponent" title="提示" subtitle="为保证顺利放款，请确保所有合同签署完成！"/>
             <NavigationView

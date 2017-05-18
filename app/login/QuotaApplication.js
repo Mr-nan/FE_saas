@@ -50,6 +50,8 @@ export default class QuotaApplication extends BaseComponent {
             idcard: "",
             phone: "",
             agreement: [],
+            bankCard:'',
+            bank_reserve_phone:''
         };
     }
 
@@ -281,8 +283,8 @@ export default class QuotaApplication extends BaseComponent {
 
     componentDidUpdate() {
         if(this.state.renderPlaceholderOnly=='success'){
-            this.refs.bank_phone.setInputTextValue(this.state.phone);
-            this.refs.bank_id.setInputTextValue(this.state.idcard);
+            this.refs.bank_phone.setInputTextValue(this.state.bank_reserve_phone);
+            this.refs.bank_id.setInputTextValue(this.state.bankCard);
         }
     }
 
@@ -298,7 +300,9 @@ export default class QuotaApplication extends BaseComponent {
                     idcard: response.mjson.data.idcard_number,
                     phone: response.mjson.data.phone,
                     agreement: response.mjson.data.agreement,
-                    renderPlaceholderOnly: 'success'
+                    renderPlaceholderOnly: 'success',
+                    bankCard:response.mjson.data.bank_card,
+                    bank_reserve_phone:response.mjson.data.bank_reserve_phone
                 });
                 this.Verifycode();
             }, (error) => {

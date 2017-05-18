@@ -46,8 +46,8 @@ const controlCode = {
     maxLend: '',
     minLend: '',
     changeMoney: '',
-    loan_code:'',
-    is_microchinese_contract:''
+    loan_code: '',
+    is_microchinese_contract: ''
 }
 
 
@@ -92,7 +92,7 @@ export  default  class SingDetaileSence extends BaseComponent {
                     controlCode.lendType = tempjson.type;
                     controlCode.minLend = changeToMillion(tempjson.min_loanmny);
                     controlCode.loan_code = tempjson.loan_code;
-                    controlCode. is_microchinese_contract = tempjson. is_microchinese_contract;
+                    controlCode.is_microchinese_contract = tempjson.is_microchinese_contract;
                     let Maxmum = Number.parseFloat(tempjson.max_loanmny) + Number.parseFloat(tempjson.payment_loanmny)
                     controlCode.maxLend = changeToMillion(Maxmum)
 
@@ -112,12 +112,12 @@ export  default  class SingDetaileSence extends BaseComponent {
 
                     this.setState({
 
-                        renderPlaceholderOnly:STATECODE.loadError
+                        renderPlaceholderOnly: STATECODE.loadError
                     })
-                    if(error.mycode!= -300||error.mycode!= -500){
+                    if (error.mycode != -300 || error.mycode != -500) {
 
                         this.props.showToast('服务器连接有问题')
-                    }else {
+                    } else {
 
                         this.props.showToast(error.mjson.msg);
                     }
@@ -145,12 +145,12 @@ export  default  class SingDetaileSence extends BaseComponent {
 
                     this.setState({
 
-                        renderPlaceholderOnly:STATECODE.loadError
+                        renderPlaceholderOnly: STATECODE.loadError
                     })
-                    if(error.mycode!= -300||error.mycode!= -500){
+                    if (error.mycode != -300 || error.mycode != -500) {
 
                         this.props.showToast('服务器连接有问题')
-                    }else {
+                    } else {
 
                         this.props.showToast(error.mjson.msg);
                     }
@@ -223,7 +223,7 @@ export  default  class SingDetaileSence extends BaseComponent {
                 }
             }
 
-            if(is_microchinese_contract==1){
+            if (is_microchinese_contract == 1) {
                 tempTitle = ['签署转债权合同']
             }
             return tempTitle;
@@ -272,10 +272,10 @@ export  default  class SingDetaileSence extends BaseComponent {
                 },
                 (error) => {
                     this.props.showModal(false);
-                    if(error.mycode!= -300||error.mycode!= -500){
+                    if (error.mycode != -300 || error.mycode != -500) {
 
                         this.props.showToast('服务器连接有问题')
-                    }else {
+                    } else {
 
                         this.props.showToast(error.mjson.msg);
                     }
@@ -289,19 +289,26 @@ export  default  class SingDetaileSence extends BaseComponent {
             this.canleAlert.setModelVisible(true);
         } else if (title === '签署合同') {
             this.toNextPage({
-                name: 'ContractInfoScene', component: ContractInfoScene, params: {loan_code:this.props.loanNumber,showButton:true}
+                name: 'ContractInfoScene',
+                component: ContractInfoScene,
+                params: {loan_code: this.props.loanNumber, showButton: true}
             });
         } else if (title === '查看合同') {
             this.toNextPage({
-                name: 'ContractInfoScene', component: ContractInfoScene, params: {loan_code:this.props.loanNumber,showButton:false}
+                name: 'ContractInfoScene',
+                component: ContractInfoScene,
+                params: {loan_code: this.props.loanNumber, showButton: false}
             });
-        }else if(title ==="申请展期"){
+        } else if (title === "申请展期") {
             this.toNextPage({
                 name: 'CarOverdue', component: CarOverdue, params: {loan_code: controlCode.loan_code}
             });
-        }else if(title ==="签署转债权合同"){
+        } else if (title === "签署转债权合同") {
             this.toNextPage({
-                name: 'RecognizedGains', component: RecognizedGains, params: {loan_code: controlCode.loan_code,isShow:true}
+                name: 'RecognizedGains', component: RecognizedGains, params: {
+                    loan_code: controlCode.loan_code,
+                    loan_number: ''
+                }
             });
         }
 
@@ -325,10 +332,10 @@ export  default  class SingDetaileSence extends BaseComponent {
                     },
                     (error) => {
                         this.props.showModal(false);
-                        if(error.mycode!= -300||error.mycode!= -500){
+                        if (error.mycode != -300 || error.mycode != -500) {
 
                             this.props.showToast(error.mjson.msg);
-                        }else {
+                        } else {
 
                             this.props.showToast('服务器连接有问题')
                         }
@@ -419,7 +426,7 @@ export  default  class SingDetaileSence extends BaseComponent {
                 </View>);
         }
         let tempButtons = [];
-        let tempButtonTitles = this.getControlTitleblob(controlCode.stateCode, controlCode.extendCode,controlCode.is_microchinese_contract);
+        let tempButtonTitles = this.getControlTitleblob(controlCode.stateCode, controlCode.extendCode, controlCode.is_microchinese_contract);
 
         tempButtonTitles.map((item) => {
                 tempButtons.push(<CommenButton buttonStyle={this.getButtonStyleWithTitle(item)}
@@ -517,7 +524,7 @@ const styles = StyleSheet.create({
         backgroundColor: PAGECOLOR.COLORA2,
         height: adapeSize(44),
         justifyContent: 'center',
-        alignItems:'center'
+        alignItems: 'center'
     },
     canceledButton: {
 
@@ -525,7 +532,7 @@ const styles = StyleSheet.create({
         height: adapeSize(44),
         backgroundColor: PAGECOLOR.COLORA1,
         justifyContent: 'center',
-        alignItems:'center'
+        alignItems: 'center'
 
     },
     controlButton: {
@@ -533,7 +540,7 @@ const styles = StyleSheet.create({
         height: adapeSize(44),
         backgroundColor: PAGECOLOR.COLORB0,
         justifyContent: 'center',
-        alignItems:'center'
+        alignItems: 'center'
     },
 
     buttontextStyle: {
