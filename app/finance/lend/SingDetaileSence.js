@@ -187,7 +187,7 @@ export  default  class SingDetaileSence extends BaseComponent {
                         model_name: item.model_name,
                         state: item.status_str,
                         order: item.frame_number,
-                        price: item.lend_mny,//放款额
+                        price: item.loan_mny,//放款额
                         plate_number: item.plate_number,//车牌号
                         loan_number: item.loan_number,
                     }
