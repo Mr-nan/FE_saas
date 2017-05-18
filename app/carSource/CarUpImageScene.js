@@ -19,6 +19,7 @@ import PixelUtil from '../utils/PixelUtil';
 import CarUpImageCell from './znComponent/CarUpImageCell';
 import StorageUtil from "../utils/StorageUtil";
 import SuccessModal from '../publish/component/SuccessModal';
+import CarMySourceScene from './CarMySourceScene';
 
 import * as Net from '../utils/RequestUtil';
 import * as AppUrls from '../constant/appUrls';
@@ -211,7 +212,8 @@ export default class CarUpImageScene extends BaseComponent{
                 results={this.results}
                 retureSaveAction={()=>{
                     this.carData['pictures']=this.results;
-                    if(this.carData.show_shop_id){
+
+                    if(this.carData.show_shop_id && !this.carData.id){
                         StorageUtil.mSetItem(String(this.carData.show_shop_id),JSON.stringify(this.carData));
                     }
                 }}
@@ -267,7 +269,8 @@ export default class CarUpImageScene extends BaseComponent{
 
             Net.request(AppUrls.CAR_SAVE,'post',this.carData).then((response) => {
 
-                this.props.showModal(true);
+                this.props.showModal(false);
+                console.log(response);
                 if(response.mycode == 1){
                     if(this.carData.show_shop_id){
                         StorageUtil.mRemoveItem(String(this.carData.show_shop_id));
@@ -286,8 +289,8 @@ export default class CarUpImageScene extends BaseComponent{
                 }
 
                 }, (error) => {
-                
-                    this.props.showModal(true);
+
+                    this.props.showModal(false);
                     this.props.closeLoading();
                     if(error.mycode === -300 || error.mycode === -500){
                         this.props.showToast('网络连接失败');
