@@ -99,15 +99,18 @@ export default class CarPublishFirstScene extends BaseComponent{
                                              placeholder='输入车架号'
                                              underlineColorAndroid='transparent'
                                              maxLength={17}
+                                             editable={this.props.carID?false:true}
                                              onChangeText={this._onVinChange}
                                              placeholderTextColor={fontAndColor.COLORA4}
                                              ref={(input) => {this.vinInput = input}}
                                              placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
                                   />
-                                  <TouchableOpacity onPress={this._onScanPress} style={{flexDirection:'row', alignItems:'center'}}>
-                                      <Image style={styles.scanImage} source={scanImg}/>
-                                      <Text style={{color:fontAndColor.COLORA2, fontSize:fontAndColor.LITTLEFONT28,marginLeft:Pixel.getPixel(5)}}>扫描</Text>
-                                  </TouchableOpacity>
+                                  {
+                                      !this.props.carID &&(<TouchableOpacity onPress={this._onScanPress} style={{flexDirection:'row', alignItems:'center'}}>
+                                          <Image style={styles.scanImage} source={scanImg}/>
+                                          <Text style={{color:fontAndColor.COLORA2, fontSize:fontAndColor.LITTLEFONT28,marginLeft:Pixel.getPixel(5)}}>扫描</Text>
+                                      </TouchableOpacity>)
+                                  }
                               </View>
                           )
                       }
@@ -183,7 +186,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                       tailView:()=>{
                           return(
                               <TextInput
-                                  style={[styles.textInput,{height:80}]}
+                                  style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(50)}]}
                                   placeholder='请填写'
                                   maxLength={50}
                                   onChangeText={(text)=>{this.carData['modification_instructions']=text}}
@@ -218,15 +221,18 @@ export default class CarPublishFirstScene extends BaseComponent{
                                              placeholder='输入车架号'
                                              underlineColorAndroid='transparent'
                                              maxLength={17}
+                                             editable={this.props.carID?false:true}
                                              onChangeText={this._onVinChange}
                                              placeholderTextColor={fontAndColor.COLORA4}
                                              ref={(input) => {this.vinInput = input}}
                                              placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
                                   />
-                                  <TouchableOpacity onPress={this._onScanPress} style={{flexDirection:'row', alignItems:'center'}}>
-                                      <Image style={styles.scanImage} source={scanImg}/>
-                                      <Text style={{color:fontAndColor.COLORA2, fontSize:fontAndColor.LITTLEFONT28,marginLeft:Pixel.getPixel(5)}}>扫描</Text>
-                                  </TouchableOpacity>
+                                  {
+                                      !this.props.carID &&(<TouchableOpacity onPress={this._onScanPress} style={{flexDirection:'row', alignItems:'center'}}>
+                                          <Image style={styles.scanImage} source={scanImg}/>
+                                          <Text style={{color:fontAndColor.COLORA2, fontSize:fontAndColor.LITTLEFONT28,marginLeft:Pixel.getPixel(5)}}>扫描</Text>
+                                      </TouchableOpacity>)
+                                  }
                               </View>
                           )
                       }
@@ -296,7 +302,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                       tailView:()=>{
                           return(
                               <TextInput
-                                  style={[styles.textInput,{height:80}]}
+                                  style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(50)}]}
                                   placeholder='请填写'
                                   maxLength={50}
                                   onChangeText={(text)=>{
@@ -404,6 +410,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                 this.carData = response.mjson.data;
                 this.carData.manufacture= response.mjson.data.manufacture!=''? this.dateReversal(response.mjson.data.manufacture+'000'):'';
                 this.carData.init_reg=response.mjson.data.init_reg!=''? this.dateReversal(response.mjson.data.init_reg+'000'):'';
+                this.carData.emission_standards = response.mjson.data.emission_standards_en;
                 this.setCarData();
             }else {
 
@@ -540,6 +547,49 @@ export default class CarPublishFirstScene extends BaseComponent{
 
 
     footBtnClick=()=>{
+
+        if(!this.carData.vin){
+            this.props.showToast('请输入正确的车架号');
+            return;
+        }
+
+        if(!this.carData.model_name)
+        {
+            this.props.showToast('选择车型');
+            return;
+        }
+        if(!this.carData.displacement)
+        {
+            this.props.showToast('输入排量');
+            return;
+        }
+        if(!this.carData.emission_standards)
+        {
+            this.props.showToast('选择排放标准');
+            return;
+        }
+        if(!this.carData.car_color)
+        {
+            this.props.showToast('选择车身颜色');
+            return;
+        }
+        if(!this.carData.trim_color)
+        {
+            this.props.showToast('选择内饰颜色');
+            return;
+        }
+        if(!this.carData.manufacture)
+        {
+            this.props.showToast('选择出厂日期');
+            return;
+        }
+        if(!this.carData.init_reg && this.carData.v_type==1)
+        {
+            this.props.showToast('选择出厂日期');
+            return;
+        }
+
+
         let navigatorParams = {
             name: "CarPublishSecondScene",
             component: CarPublishSecondScene,
@@ -931,7 +981,7 @@ const styles = StyleSheet.create({
         borderColor: fontAndColor.COLORA0,
         width:80,
         textAlign:'right',
-        fontSize:fontAndColor.LITTLEFONT28,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
     },
     scanImage: {
         height: Pixel.getPixel(18),
