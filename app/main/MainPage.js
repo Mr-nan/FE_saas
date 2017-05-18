@@ -366,7 +366,7 @@ export default class MainPage extends BaseComponent {
                 let datas = JSON.parse(data.result);
                 if (datas.user_level == 2) {
                     if (datas.enterprise_list[0].role_type == '1' || datas.enterprise_list[0].role_type == '6') {
-                        StorageUtil.mGetItem(storageKeyNames.USER_INFO, (childdata) => {
+                        StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (childdata) => {
                             if (childdata.code == 1) {
                                 let childdatas = JSON.parse(childdata.result);
                                 if (childdatas.is_done_credit == 0) {
@@ -374,8 +374,14 @@ export default class MainPage extends BaseComponent {
                                 } else {
                                     tabArray = bossTabArray;
                                 }
+                                this.setState({
+                                    selectedTab: tabArray[0].ref,
+                                    canShow: true
+                                });
+
                             }
                         });
+                        return;
                     } else if (datas.enterprise_list[0].role_type == '2') {
                         tabArray = financeTabArray
                     } else {

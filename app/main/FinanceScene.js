@@ -29,6 +29,8 @@ import  PixelUtil from '../utils/PixelUtil'
 import KurongDetaileScene from '../finance/lend/KurongDetaileScene';
 import CGDDetailSence from '../finance/lend/CGDDetailSence';
 import SingDetaileSence from '../finance/lend/SingDetaileSence';
+import  StorageUtil from '../utils/StorageUtil';
+import * as storageKeyNames from '../constant/storageKeyNames';
 var Pixel = new PixelUtil();
 /*
  * 获取屏幕的宽和高
@@ -87,52 +89,9 @@ export default class FinanceSence extends BaseComponet {
 
     initFinish = () => {
 
-        this.getData();
+        this.getMnyData();
     }
 
-    getData = () => {
-        loanList = [];
-        let maps = {
-            api: Urls.LOAN_SUBJECT
-        };
-        request(Urls.FINANCE, 'Post', maps, () => {
-            this.props.backToLogin();
-        })
-            .then((response) => {
-                    loanList = response.mjson.data;
-                    if (loanList.length > 1) {
-                        this.setState({renderPlaceholderOnly: 'select'});
-                    } else {
-                        if (loanList[0].is_done_credit == 0) {
-                            this.setState({renderPlaceholderOnly: 'select'});
-                        } else {
-                            this.setState({
-                                customerName: loanList[0].companyname
-                            });
-                            this.setLoan();
-                        }
-                    }
-                },
-                (error) => {
-                    this.setState({renderPlaceholderOnly: 'error'});
-                });
-    }
-
-    setLoan = () => {
-        let maps = {
-            api: Urls.OPT_LOAN_SUBJECT,
-            opt_merge_id: loanList[0].merge_id,
-            opt_user_id: loanList[0].user_id,
-        };
-        request(Urls.FINANCE, 'Post', maps)
-            .then((response) => {
-
-                    this.getMnyData();
-                },
-                (error) => {
-                    this.setState({renderPlaceholderOnly: 'error'});
-                });
-    }
 
     getMnyData = () => {
         let that = this;
@@ -153,8 +112,6 @@ export default class FinanceSence extends BaseComponet {
                     } else if (mnyData.is_microchinese_mny == 4) {
                         title = '审核不通过';
                     }
-
-
                     that.setState({
                         allData: {
                             keyongedu: mnyData.credit_maxloanmny / 10000,
@@ -196,16 +153,32 @@ export default class FinanceSence extends BaseComponet {
             .then((response) => {
                     movies.push(...response.mjson.data.list);
                     allPage = response.mjson.data.page;
-                    this.setState({renderPlaceholderOnly: 'success', source: ds.cloneWithRows(movies)});
-                    this.setState({isRefreshing: false});
+                    StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
+                        if (data.code == 1) {
+                            let datas = JSON.parse(data.result);
+                            this.setState({
+                                renderPlaceholderOnly: 'success',
+                                source: ds.cloneWithRows(movies),
+                                isRefreshing: false,
+                                customerName: datas.companyname
+                            });
+                        }
+                    })
+
                 },
                 (error) => {
                     if (error.mycode == '-2100045') {
-                        this.setState({
-                            isRefreshing: false,
-                            renderPlaceholderOnly: 'success',
-                            source: ds.cloneWithRows(['1'])
-                        });
+                        StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
+                            if (data.code == 1) {
+                                let datas = JSON.parse(data.result);
+                                this.setState({
+                                    isRefreshing: false,
+                                    renderPlaceholderOnly: 'success',
+                                    source: ds.cloneWithRows(['1']),
+                                    customerName: datas.companyname
+                                });
+                            }
+                        })
 
                     } else {
                         this.setState({renderPlaceholderOnly: 'error'});
@@ -536,36 +509,7 @@ export default class FinanceSence extends BaseComponet {
                                 金融 ({this.state.customerName})</Text>
                         </View>
                         <View style={{flex: 1}}>
-                            {loanList.length > 1 ? <TouchableOpacity onPress={() => {
-                                    this.props.callBack({
-                                        name: 'AginSelectCompanyScene',
-                                        component: AginSelectCompanyScene, params: {
-                                            loanList: loanList, callBack: (companyname) => {
-                                                this.setState({
-                                                    customerName: companyname
-                                                });
-                                                this.allRefresh();
-                                            }
-                                        }
-                                    })
-                                }
-                                } activeOpacity={0.8} style={{
-                                    width: Pixel.getPixel(64),
-                                    height: Pixel.getPixel(22),
-                                    borderColor: '#fff',
-                                    borderWidth: 1,
-                                    borderRadius: 3,
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    marginTop: Pixel.getTitlePixel(26)
-                                }}>
-                                    <Text
-                                        style={{
-                                            fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                                            color: '#fff',
-                                            backgroundColor: '#00000000'
-                                        }}>切换公司</Text>
-                                </TouchableOpacity> : <View/>}
+
                         </View>
                     </View>
                     <View>
@@ -636,7 +580,7 @@ export default class FinanceSence extends BaseComponet {
                             </View>
                         </View>
                         {
-                            (this.state.allData.microchineseTitle !=='') ?
+                            (this.state.allData.microchineseTitle !== '') ?
                                 (<View style={{height:Pixel.getPixel(40), alignItems:'center',justifyContent:'center'}}>
                                     <TouchableOpacity onPress={()=>{
 
