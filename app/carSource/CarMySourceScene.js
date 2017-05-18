@@ -28,6 +28,7 @@ import NewCarScene      from '../publish/NewCarScene';
 import * as fontAndColor from '../constant/fontAndColor';
 import * as AppUrls from "../constant/appUrls";
 import  {request}           from '../utils/RequestUtil';
+import CarPublishFirstScene from './CarPublishFirstScene';
 import PixelUtil from '../utils/PixelUtil';
 const Pixel = new PixelUtil();
 
@@ -86,6 +87,16 @@ export default class CarMySourceScene extends BaceComponent {
                 }
             };
             this.toNextPage(navigatorParams);
+            // let navigatorParams = {
+            //
+            //     name: "CarPublishFirstScene",
+            //     component: CarPublishFirstScene,
+            //     params: {
+            //
+            //         carID: carData.id,
+            //     }
+            // };
+            // this.toNextPage(navigatorParams);
         }
     }
 

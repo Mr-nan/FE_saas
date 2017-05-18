@@ -392,9 +392,9 @@ export default class CarPublishSecondScene extends BaseComponent{
     }
 
     saveCarData=()=>{
-        if(this.carData.show_shop_id){
-            StorageUtil.mSetItem(String(this.carData.show_shop_id),JSON.stringify(this.carData));
-        }
+            if (this.carData.show_shop_id && !this.carData.id) {
+                StorageUtil.mSetItem(String(this.carData.show_shop_id), JSON.stringify(this.carData));
+            }
     }
 
 

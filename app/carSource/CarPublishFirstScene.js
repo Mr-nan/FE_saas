@@ -43,31 +43,38 @@ const sceneWidth = Dimensions.get('window').width;
 const scanImg = require('../../images/financeImages/scan.png');
 const IS_ANDROID = Platform.OS === 'android';
 
-
 export default class CarPublishFirstScene extends BaseComponent{
 
     initFinish=()=>{
-        StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST,(data)=>{
-            if(data.code == 1 && data.result != ''){
-                let enters = JSON.parse(data.result);
-                if(enters.length === 1){
 
-                   this.carData['show_shop_id'] = enters[0].enterprise_uid;
-                   this.getLocalityCarData();
+        console.log(this.props.carID);
+        if(this.props.carID!==undefined){
 
-                }else if(enters.length > 1){
+            this.loadCarData();
 
-                    this.enterpriseList = enters;
-                    this.enterpriseModal.refresh(this.enterpriseList);
-                    this.enterpriseModal.openModal();
+        }else {
+            StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST,(data)=>{
+                if(data.code == 1 && data.result != ''){
+                    let enters = JSON.parse(data.result);
+                    if(enters.length === 1){
 
+                        this.carData['show_shop_id'] = enters[0].enterprise_uid;
+                        this.getLocalityCarData();
+
+                    }else if(enters.length > 1){
+
+                        this.enterpriseList = enters;
+                        this.enterpriseModal.refresh(this.enterpriseList);
+                        this.enterpriseModal.openModal();
+
+                    }else{
+                        this._showHint('无法找到所属商户');
+                    }
                 }else{
                     this._showHint('无法找到所属商户');
                 }
-            }else{
-                this._showHint('无法找到所属商户');
-            }
-        });
+            });
+        }
     }
     // 构造
       constructor(props) {
@@ -324,6 +331,7 @@ export default class CarPublishFirstScene extends BaseComponent{
         this.timer && clearTimeout(this.timer);
     }
     render(){
+
         return(
             <View style={styles.rootContainer}>
                 <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={Pixel.getTitlePixel(-64)}>
@@ -386,6 +394,28 @@ export default class CarPublishFirstScene extends BaseComponent{
         )
     }
 
+    loadCarData=()=>{
+
+        Net.request(AppUrls.CAR_DETAIL, 'post', {
+            id: this.props.carID,
+        }).then((response) => {
+
+            if(response.mycode==1){
+                this.carData = response.mjson.data;
+                this.carData.manufacture= response.mjson.data.manufacture!=''? this.dateReversal(response.mjson.data.manufacture+'000'):'';
+                this.carData.init_reg=response.mjson.data.init_reg!=''? this.dateReversal(response.mjson.data.init_reg+'000'):'';
+                this.setCarData();
+            }else {
+
+            }
+
+
+        }, (error) => {
+
+        });
+
+    }
+
     // 获取本地数据
     getLocalityCarData=()=>{
 
@@ -393,64 +423,10 @@ export default class CarPublishFirstScene extends BaseComponent{
         if(this.carData.show_shop_id){
 
             StorageUtil.mGetItem(String(this.carData.show_shop_id),(data) => {
-                console.log(data);
                 if (data.code == 1) {
                     if (data.result) {
-
                         this.carData=JSON.parse(data.result);
-
-                        if(this.carData.v_type!==1){
-                            this.titleData1[0][0].selectDict.current = this.carData.v_type == 2?'新车':'平行进口车';
-                            this.titleData2[0][0].selectDict.current = this.carData.v_type == 2?'新车':'平行进口车';
-                            this.carType=this.titleData1[0][0].selectDict.current;
-                            this.refs.cellSelectView.setCurrentChecked(this.carType);
-
-                        }
-
-                        if(this.carData.vin){
-                            this.vinInput.setNativeProps({
-                                text: this.carData.vin
-                            });
-                        }
-                        this.titleData1[0][2].value = this.carData.model_name?this.carData.model_name:'请选择';
-                        this.titleData2[0][2].value = this.carData.model_name?this.carData.model_name:'请选择';
-
-                        if(this.carData.displacement){
-                            this.displacementInput.setNativeProps({
-                                text: this.carData.displacement
-                            });
-                        }
-
-                        this.titleData1[0][4].value = this.carData.emission_standards?this.carData.emission_standards:'请选择';
-                        this.titleData2[0][4].value = this.carData.emission_standards?this.carData.emission_standards:'请选择';
-
-                        this.titleData1[0][5].value = this.carData.car_color?this.carData.car_color.split("|")[0]:'请选择';
-                        this.titleData2[0][5].value = this.carData.car_color?this.carData.car_color.split("|")[0]:'请选择';
-
-                        this.titleData1[0][6].value = this.carData.trim_color?this.carData.trim_color.split("|")[0]:'请选择';
-                        this.titleData2[0][6].value = this.carData.trim_color?this.carData.trim_color.split("|")[0]:'请选择';
-
-                        this.titleData1[1][0].value = this.carData.manufacture?this.carData.manufacture:'请选择';
-                        this.titleData2[1][0].value = this.carData.manufacture?this.carData.manufacture:'请选择';
-
-                        this.titleData1[1][1].value = this.carData.init_reg?this.carData.init_reg:'请选择';
-
-                        if(this.carData.modification_instructions){
-                            this.instructionsInput.setNativeProps({
-                                text: this.carData.modification_instructions
-                            });
-                        }
-
-                        if(this.carType=='二手车'){
-                            this.setState({
-                                titleData:this.titleData1,
-                            });
-                        }else {
-                            this.setState({
-                                titleData:this.titleData2,
-                            });
-                        }
-
+                        this.setCarData();
                     }
                 }
             })
@@ -460,8 +436,64 @@ export default class CarPublishFirstScene extends BaseComponent{
 
 
     saveCarData=()=>{
-        if(this.carData.show_shop_id){
-            StorageUtil.mSetItem(String(this.carData.show_shop_id),JSON.stringify(this.carData));
+
+            if(this.carData.show_shop_id && !this.carData.id){
+                StorageUtil.mSetItem(String(this.carData.show_shop_id),JSON.stringify(this.carData));
+            }
+
+    }
+
+    setCarData=()=>{
+        if(this.carData.v_type!==1){
+            this.titleData1[0][0].selectDict.current = this.carData.v_type == 2?'新车':'平行进口车';
+            this.titleData2[0][0].selectDict.current = this.carData.v_type == 2?'新车':'平行进口车';
+            this.carType=this.titleData1[0][0].selectDict.current;
+            this.refs.cellSelectView.setCurrentChecked(this.carType);
+
+        }
+
+        if(this.carData.vin){
+            this.vinInput.setNativeProps({
+                text: this.carData.vin
+            });
+        }
+        this.titleData1[0][2].value = this.carData.model_name?this.carData.model_name:'请选择';
+        this.titleData2[0][2].value = this.carData.model_name?this.carData.model_name:'请选择';
+
+        if(this.carData.displacement){
+            this.displacementInput.setNativeProps({
+                text: this.carData.displacement
+            });
+        }
+
+        this.titleData1[0][4].value = this.carData.emission_standards?this.carData.emission_standards:'请选择';
+        this.titleData2[0][4].value = this.carData.emission_standards?this.carData.emission_standards:'请选择';
+
+        this.titleData1[0][5].value = this.carData.car_color?this.carData.car_color.split("|")[0]:'请选择';
+        this.titleData2[0][5].value = this.carData.car_color?this.carData.car_color.split("|")[0]:'请选择';
+
+        this.titleData1[0][6].value = this.carData.trim_color?this.carData.trim_color.split("|")[0]:'请选择';
+        this.titleData2[0][6].value = this.carData.trim_color?this.carData.trim_color.split("|")[0]:'请选择';
+
+        this.titleData1[1][0].value = this.carData.manufacture?this.carData.manufacture:'请选择';
+        this.titleData2[1][0].value = this.carData.manufacture?this.carData.manufacture:'请选择';
+
+        this.titleData1[1][1].value = this.carData.init_reg?this.carData.init_reg:'请选择';
+
+        if(this.carData.modification_instructions){
+            this.instructionsInput.setNativeProps({
+                text: this.carData.modification_instructions
+            });
+        }
+
+        if(this.carType=='二手车'){
+            this.setState({
+                titleData:this.titleData1,
+            });
+        }else {
+            this.setState({
+                titleData:this.titleData2,
+            });
         }
     }
 
@@ -849,6 +881,19 @@ export default class CarPublishFirstScene extends BaseComponent{
         for (let k in o)
             if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
         return fmt;
+    }
+
+    dateReversal=(time)=>{
+
+        const date = new Date();
+        date.setTime(time);
+        return(date.getFullYear()+"-"+(this.PrefixInteger(date.getMonth()+1,2)));
+
+    };
+    PrefixInteger =(num,length)=>{
+
+        return (Array(length).join('0') + num).slice(-length);
+
     }
 
 }

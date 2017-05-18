@@ -489,7 +489,7 @@ export default class CarInfoScene extends BaseComponent {
                                     return (
                                         <CarIconView imageData={data.image} imageHighData={data.imageHigh}
                                                      content={carData.carIconsContentData&&carData.carIconsContentData[index]} title={data.title}
-                                                     key={index}/>
+                                                     key={index+10}/>
                                     )
                                 })
                             }

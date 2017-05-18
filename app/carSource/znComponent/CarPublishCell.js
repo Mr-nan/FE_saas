@@ -56,8 +56,6 @@ export class CellSelectView extends Component{
     constructor(props) {
         super(props);
         // 初始状态
-        console.log('props:'+this.props.currentTitle);
-
         this.state = {
             currentChecked:this.props.currentTitle,
 
