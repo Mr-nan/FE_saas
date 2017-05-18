@@ -279,6 +279,13 @@ export default class QuotaApplication extends BaseComponent {
     }
 
 
+    componentDidUpdate() {
+        if(this.state.renderPlaceholderOnly=='success'){
+            this.refs.bank_phone.setInputTextValue(this.state.phone);
+            this.refs.bank_id.setInputTextValue(this.state.idcard);
+        }
+    }
+
     //获取微众申请页面数据
     getWZInfo = () => {
         let maps = {
