@@ -59,7 +59,7 @@ export  default class PurchasePickerChildItem extends PureComponent {
                     <Image style={{
                         width: childWidth,
                         height: Pixel.getPixel(66) - Pixel.getPixel(7),
-                    }} source={{uri: this.props.imgUrl.url}}/>
+                    }} source={{uri: this.props.imgUrl}}/>
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={0.8}
                                   style={{
@@ -67,7 +67,7 @@ export  default class PurchasePickerChildItem extends PureComponent {
                                       height: Pixel.getPixel(14),
                                       position: 'absolute'
                                   }} onPress={() => {
-                    this.props.deleteOnPress(this.props.index,this.props.fileId.fileId);
+                    this.props.deleteOnPress(this.props.index,this.props.fileId);
                 }}>
                     <Image style={{
                         width: Pixel.getPixel(14),
