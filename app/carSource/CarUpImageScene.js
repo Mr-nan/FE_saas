@@ -153,11 +153,18 @@ export default class CarUpImageScene extends BaseComponent{
           }
 
           if(this.carData.pictures){
-
               this.results.push(...this.carData.pictures);
-
               this.titleData.map((data,index)=>{
                   this.carData.pictures.map((imgData,subIndex)=>{
+                      if(data.name == imgData.name){
+                          data.imgArray.push(imgData);
+                      }
+                  });
+              });
+          }else if(this.carData.imgs){
+              this.results.push(...this.carData.imgs);
+              this.titleData.map((data,index)=>{
+                  this.carData.imgs.map((imgData,subIndex)=>{
                       if(data.name == imgData.name){
                           data.imgArray.push(imgData);
                       }
