@@ -47,10 +47,11 @@ export  default class CarUpImageCell extends PureComponent {
             }
             for (let i = 0; i < length; i++) {
 
+
                 movieItems.push(
                     <PurchasePickerChildItem
-                        fileId={this.state.childMovie[i]}
-                        imgUrl={this.state.childMovie[i]}
+                        fileId={this.state.childMovie[i].file_id}
+                        imgUrl={this.state.childMovie[i].url}
                         showOnPress={() => {}}
                         deleteOnPress={(index,fileId) => {
                             let news =  [];
@@ -58,12 +59,13 @@ export  default class CarUpImageCell extends PureComponent {
                             news.splice(index, 1);
                             for(let i = 0;i<=this.props.results.length;i++)
                             {
-                                if(this.props.results[i].fileId==fileId)
+                                if(this.props.results[i].file_id==fileId)
                                 {
                                     this.props.results.splice(i,1);
                                     break;
                                 }
                             }
+                            this.props.retureSaveAction();
                             this.setState({childMovie: news});
                         }}
                         allLength={this.state.childMovie.length} key={i} index={i}
@@ -173,8 +175,9 @@ export  default class CarUpImageCell extends PureComponent {
                     this.props.showToast('上传成功')
                     let news =[];
                     news.push(...this.state.childMovie);
-                    news.push({url: response.mjson.data.url,fileId:response.mjson.data.file_id});
-                    this.props.results.push({url: response.mjson.data.url,fileId:response.mjson.data.file_id,name:this.props.items.name});
+                    news.push({url: response.mjson.data.url,file_id:response.mjson.data.file_id});
+                    this.props.results.push({url: response.mjson.data.url,file_id:response.mjson.data.file_id,name:this.props.items.name});
+                    this.props.retureSaveAction();
                     this.setState({
                         childMovie:news,
                     });
