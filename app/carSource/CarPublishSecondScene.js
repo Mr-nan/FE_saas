@@ -417,6 +417,38 @@ export default class CarPublishSecondScene extends BaseComponent{
     }
 
     nextAction=()=>{
+
+        if(this.carData.transfer_times==''||!this.carData.transfer_times)
+        {
+            this.props.showToast('请输入过户次数');
+            return;
+        }
+        if(this.carData.plate_number==''||!this.carData.plate_number)
+        {
+            this.props.showToast('请输入正确的车牌号');
+            return;
+        }
+        if(this.carData.mileage==''||!this.carData.mileage)
+        {
+            this.props.showToast('请输入里程');
+            return;
+        }
+        if(this.carData.transfer_times==''||!this.carData.transfer_times)
+        {
+            this.props.showToast('请输入过户次数');
+            return;
+        }
+        if(this.carData.transfer_times==''||!this.carData.transfer_times)
+        {
+            this.props.showToast('请输入过户次数');
+            return;
+        }
+        if(this.carData.transfer_times==''||!this.carData.transfer_times)
+        {
+            this.props.showToast('请输入过户次数');
+            return;
+        }
+
         let navigatorParams = {
             name: "CarUpImageScene",
             component: CarUpImageScene,
