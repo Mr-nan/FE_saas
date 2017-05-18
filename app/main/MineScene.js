@@ -224,20 +224,24 @@ export default class MineSectionListView extends BaseComponent {
                 let user_list = [];
                 let datas = JSON.parse(data.result);
                 if (datas.user_level == 2) {
-                    if (datas.enterprise_list[0].role_type == '1'||datas.enterprise_list[0].role_type == '6') {
+                    if (datas.enterprise_list[0].role_type == '1') {
                         user_list.push(...Car);
-                    } else if (datas.enterprise_list[0].role_type == '2') {
-                        Car[0].cars.splice(1,1);
-                        user_list.push( Car[0],Car[1], Car[3], Car[4]);
+                    } else if(datas.enterprise_list[0].role_type == '6'){
+                        Car[0].splice(0,1);
+                        user_list.push(...Car);
+                    }else if (datas.enterprise_list[0].role_type == '2') {
+                        user_list.push(Car[1], Car[3], Car[4]);
                     } else {
                         user_list.push( Car[2], Car[3], Car[4]);
                     }
                 } else if (datas.user_level == 1) {
-                    if (datas.enterprise_list[0].role_type == '1'||datas.enterprise_list[0].role_type == '6') {
+                    if (datas.enterprise_list[0].role_type == '1') {
                         user_list.push( Car[0], Car[2], Car[3], Car[4]);
-                    } else {
-                        Car[0].cars.splice(1,1);
-                        user_list.push( Car[0],Car[2], Car[3], Car[4]);
+                    } else if(datas.enterprise_list[0].role_type == '6'){
+                        Car[0].splice(0,1);
+                        user_list.push( Car[0], Car[2], Car[3], Car[4]);
+                    }else {
+                        user_list.push(Car[2], Car[3], Car[4]);
 
                     }
                 } else {

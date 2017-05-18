@@ -201,7 +201,8 @@ export default class FinanceSence extends BaseComponet {
             if (data.code == 1) {
                 let datas = JSON.parse(data.result);
                 let maps = {
-                    enter_base_ids: datas.merge_id
+                    enter_base_ids: datas.merge_id,
+                    child_type: '1'
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
@@ -222,8 +223,19 @@ export default class FinanceSence extends BaseComponet {
                         if (data.code == 1) {
                             let datas = JSON.parse(data.result);
                             if (datas[0].role_type == '1') {
-                                this.refs.accountmodal.changeShowType(true, '您还未开通资金账户，为方便您使用金融产品及购物车，' +
-                                    '请尽快开通！', '去开户', '看看再说');
+                                if (lastType == '0') {
+                                    this.refs.accountmodal.changeShowType(true,
+                                        '您还未开通资金账户，为方便您使用金融产品及购物车，' +
+                                        '请尽快开通！', '去开户', '看看再说');
+                                } else if (lastType == '1') {
+                                    this.refs.accountmodal.changeShowType(true,
+                                        '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
+                                        , '去开户', '看看再说');
+                                } else if (lastType == '2') {
+                                    this.refs.accountmodal.changeShowType(true,
+                                        '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
+                                        , '去开户', '看看再说');
+                                }
                                 firstType = lastType;
                             }
                         }
