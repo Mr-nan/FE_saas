@@ -433,19 +433,15 @@ export default class CarPublishSecondScene extends BaseComponent{
             this.props.showToast('请输入里程');
             return;
         }
+
         if(this.carData.transfer_times==''||!this.carData.transfer_times)
         {
-            this.props.showToast('请输入过户次数');
+            this.props.showToast('请输入分销批发价');
             return;
         }
-        if(this.carData.transfer_times==''||!this.carData.transfer_times)
+        if(this.carData.city_id==''||!this.carData.city_id)
         {
-            this.props.showToast('请输入过户次数');
-            return;
-        }
-        if(this.carData.transfer_times==''||!this.carData.transfer_times)
-        {
-            this.props.showToast('请输入过户次数');
+            this.props.showToast('请选择车辆所在地');
             return;
         }
 
