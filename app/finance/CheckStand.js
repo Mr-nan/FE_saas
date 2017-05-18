@@ -22,6 +22,7 @@ import NavigatorView from '../component/AllNavigationView';
 import * as fontAndColor from '../constant/fontAndColor';
 import PixelUtil from '../utils/PixelUtil';
 import MyButton from "../component/MyButton";
+import ExplainModal from "../mine/myOrder/component/ExplainModal";
 const Pixel = new PixelUtil();
 
 export default class CheckStand extends BaseComponent {
@@ -72,7 +73,8 @@ export default class CheckStand extends BaseComponent {
                 <MyButton buttonType={MyButton.TEXTBUTTON}
                           content={'账户支付'}
                           parentStyle={styles.loginBtnStyle}
-                          childStyle={styles.loginButtonTextStyle} />
+                          childStyle={styles.loginButtonTextStyle}
+                          mOnPress={this.goPay}/>
                 <View style={{
                     alignItems: 'center',
                     flexDirection: 'row',
@@ -113,8 +115,15 @@ export default class CheckStand extends BaseComponent {
                     fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                     color: fontAndColor.COLORA1,
                     marginTop: Pixel.getPixel(10)}}>申请订单融资额度请联系客服</Text>
+
+                <ExplainModal ref='expModal' title='提示' buttonStyle={styles.expButton} textStyle={styles.expText}
+                              text='确定' content='您的余额不足请充值'/>
             </View>
         )
+    }
+
+    goPay = () => {
+        this.refs.expModal.changeShowType(true);
     }
 }
 
@@ -173,5 +182,22 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: Pixel.getPixel(4),
         marginLeft: Pixel.getPixel(15)
+    },
+    expButton: {
+        marginBottom: Pixel.getPixel(20),
+        width: Pixel.getPixel(100),
+        height: Pixel.getPixel(32),
+        marginTop: Pixel.getPixel(32),
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 3,
+        borderWidth: 1,
+        backgroundColor: fontAndColor.COLORB0,
+        borderColor: fontAndColor.COLORB0
+    },
+    expText: {
+        fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
+        color: '#ffffff'
     }
 });

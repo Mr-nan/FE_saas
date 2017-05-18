@@ -85,7 +85,7 @@ export default class OrderSearchScene extends BaseComponent {
 
     _renderPlaceholderView() {
         return (
-            <View style={{width: width, height: height, backgroundColor: fontAndColor.COLORA3}}>
+            <View style={styles.container}>
                 <View style={styles.navigatorView}>
                     <View style={styles.navitgatorContentView}>
                         <TouchableOpacity

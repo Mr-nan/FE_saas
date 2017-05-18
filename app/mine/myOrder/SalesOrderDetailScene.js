@@ -14,7 +14,7 @@ import {
     Image,
     Dimensions,
     NativeModules,
-    TextInput
+    BackAndroid
 } from  'react-native'
 
 const {width, height} = Dimensions.get('window');
@@ -27,6 +27,7 @@ import InputVinInfo from "./InputVinInfo";
 import StepView from "./component/StepView";
 import ExplainModal from "./component/ExplainModal";
 import MakePhoneModal from "./component/MakePhoneModal";
+import ChooseModal from "./component/ChooseModal";
 const Pixel = new PixelUtil();
 
 const IS_ANDROID = Platform.OS === 'android';
@@ -51,6 +52,10 @@ export default class SalesOrderDetailScene extends BaseComponent {
         this.state = {
             source: ds.cloneWithRows(mList)
         }
+    }
+
+    componentDidMount() {
+        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
     }
 
     //扫描
@@ -106,7 +111,17 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeperator}
                     showsVerticalScrollIndicator={false}/>
-                <ExplainModal ref='expModal' title='补差额说明' content='为了确保交易金额可支付贷款本息，请您
+                {/*                <ChooseModal ref='expModal' title='补差额说明'
+                 negativeButtonStyle={styles.negativeButtonStyle} negativeTextStyle={styles.negativeTextStyle} negativeText='再想想'
+                 positiveButtonStyle={styles.positiveButtonStyle} positiveTextStyle={styles.positiveTextStyle} positiveText='没问题'
+                 buttonsMargin={Pixel.getPixel(20)}
+                 content='为了确保交易金额可支付贷款本息，请您
+                 补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您
+                 补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您
+                 补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您
+                 补足成交价与贷款本息，'/>*/}
+                <ExplainModal ref='expModal' title='补差额说明' buttonStyle={styles.expButton} textStyle={styles.expText}
+                              text='知道了' content='为了确保交易金额可支付贷款本息，请您
                         补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您
                         补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您
                         补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您
@@ -170,8 +185,10 @@ export default class SalesOrderDetailScene extends BaseComponent {
                             marginLeft: Pixel.getPixel(15),
                             flexDirection: 'row'
                         }}>
-                            {/*TODO 换成图片*/}
-                            <Text style={{fontSize: Pixel.getFontPixel(25), marginTop: Pixel.getPixel(5)}}>￥</Text>
+                            <Image
+                                style={{marginTop: Pixel.getPixel(5), marginBottom: Pixel.getPixel(10)}}
+                                source={require('../../../images/mainImage/rmb.png')}/>
+                            {/*<Text style={{fontSize: Pixel.getFontPixel(25), marginTop: Pixel.getPixel(5)}}>￥</Text>*/}
                             <Text style={{
                                 //height: Pixel.getPixel(38),
                                 marginLeft: Pixel.getPixel(5),
@@ -181,8 +198,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                             }}>18000</Text>
                             <Image
                                 style={{
-                                    marginLeft: Pixel.getPixel(5),
-                                    marginBottom: Pixel.getPixel(5)
+                                    marginTop: Pixel.getPixel(5),
+                                    marginLeft: Pixel.getPixel(5)
                                 }}
                                 source={require('../../../images/mainImage/transaction_price.png')}/>
                         </View>
@@ -302,7 +319,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         <Image style={styles.image}
                                source={{uri: 'http://dycd-static.oss-cn-beijing.aliyuncs.com/Uploads/Oss/201703/13/58c639474ef45.jpg?x-oss-process=image/resize,w_320,h_240'}}/>
                         <View style={{marginLeft: Pixel.getPixel(10)}}>
-                            <Text>[北京]奔驰M级(进口) 2015款 M...</Text>
+                            <Text numberOfLines={1}
+                            style={{backgroundColor: 'blue',marginRight: Pixel.getPixel(55)}}>[北京]奔驰M级(进口) 2015款 Masdadadadadada</Text>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>里程：</Text>
                                 <Text style={styles.carDescribe}>20.59万</Text>
@@ -579,4 +597,48 @@ const styles = StyleSheet.create({
         height: Pixel.getPixel(44),
         backgroundColor: '#ffffff',
     },
+    expButton: {
+        marginBottom: Pixel.getPixel(20),
+        width: width - width / 4 - Pixel.getPixel(40),
+        height: Pixel.getPixel(35),
+        marginTop: Pixel.getPixel(16),
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 3,
+        borderWidth: 1,
+        borderColor: fontAndColor.COLORB0
+    },
+    expText: {
+        fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
+        color: fontAndColor.COLORB0
+    },
+    negativeButtonStyle: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: Pixel.getPixel(100),
+        height: Pixel.getPixel(32),
+        borderRadius: 3,
+        borderWidth: 1,
+        borderColor: fontAndColor.COLORB0
+    },
+    negativeTextStyle: {
+        fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
+        color: fontAndColor.COLORB0
+    },
+    positiveButtonStyle: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: Pixel.getPixel(15),
+        backgroundColor: fontAndColor.COLORB0,
+        width: Pixel.getPixel(100),
+        height: Pixel.getPixel(32),
+        borderRadius: 3,
+        borderWidth: 1,
+        borderColor: fontAndColor.COLORB0
+    },
+    positiveTextStyle: {
+        fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
+        color: '#ffffff'
+    }
 });

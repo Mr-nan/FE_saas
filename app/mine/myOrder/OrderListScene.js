@@ -11,7 +11,7 @@ import {
     TouchableOpacity,
     Image,
     BackAndroid,
-    InteractionManager
+    InteractionManager, RefreshControl
 } from  'react-native'
 
 import BaseComponent from "../../component/BaseComponent";
@@ -24,6 +24,7 @@ import ProcurementOrderDetailScene from "./ProcurementOrderDetailScene";
 import SalesOrderDetailScene from "./SalesOrderDetailScene";
 import * as AppUrls from "../../constant/appUrls";
 import {request} from "../../utils/RequestUtil";
+import LoadMoreFooter from "../../carSource/znComponent/LoadMoreFooter";
 
 var Pixel = new PixelUtil();
 
@@ -49,12 +50,24 @@ export default class OrderListScene extends BaseComponent {
     componentDidMount() {
         BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
         InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: 'loading'});
+            //this.setState({renderPlaceholderOnly: 'loading'});
             this.initFinish();
         });
     }
 
     initFinish = () => {
+        this.setState({
+            dataSource: this.state.dataSource.cloneWithRows(['','','']),
+            renderPlaceholderOnly: 'success'
+        });
+        //TODO 调列表接口
+        //this.loadData();
+    };
+
+    // 下拉刷新数据
+    refreshingData = () => {
+        this.orderListData = [];
+        this.setState({isRefreshing: true});
         this.loadData();
     };
 
@@ -65,10 +78,10 @@ export default class OrderListScene extends BaseComponent {
             business: 0,
             page: this.pageNum,
             rows: 10
-            /*start_time: '',
-            end_time: '',
-            is_finance: '',
-            status: ''*/
+/*            start_time: '',
+             end_time: '',
+             is_finance: '',
+             status: ''*/
         }).then((response) => {
             this.orderListData = response.mjson.data.list;
             console.log('订单列表数据 = ', this.orderListData);
@@ -94,6 +107,20 @@ export default class OrderListScene extends BaseComponent {
         });
     };
 
+    renderListFooter = () => {
+        if (this.state.isRefreshing) {
+            return null;
+        } else {
+            return (<LoadMoreFooter isLoadAll={false} isCarFoot={false}/>)
+        }
+    };
+
+    toEnd = () => {
+        if (this.orderListData.length && !this.state.isRefreshing) {
+            this.loadMoreData();
+        }
+    };
+
     render() {
         if (this.props.business === 0) {
             if (this.state.renderPlaceholderOnly !== 'success') {
@@ -111,7 +138,17 @@ export default class OrderListScene extends BaseComponent {
                               dataSource={this.state.dataSource}
                               renderRow={this._renderRow}
                               enableEmptySections={true}
-                              renderSeparator={this._renderSeperator}/>
+                              renderSeparator={this._renderSeperator}
+                              renderFooter={this.renderListFooter}
+                              onEndReached={this.toEnd}
+                              refreshControl={
+                                  <RefreshControl
+                                      refreshing={this.state.isRefreshing}
+                                      onRefresh={this.refreshingData}
+                                      tintColor={[fontAndColor.COLORB0]}
+                                      colors={[fontAndColor.COLORB0]}
+                                  />
+                              }/>
                 </View>);
             }
         } else {
@@ -130,7 +167,17 @@ export default class OrderListScene extends BaseComponent {
                               dataSource={this.state.dataSource}
                               renderRow={this._renderRow}
                               enableEmptySections={true}
-                              renderSeparator={this._renderSeperator}/>
+                              renderSeparator={this._renderSeperator}
+                              renderFooter={this.renderListFooter}
+                              onEndReached={this.toEnd}
+                              refreshControl={
+                                  <RefreshControl
+                                      refreshing={this.state.isRefreshing}
+                                      onRefresh={this.refreshingData}
+                                      tintColor={[fontAndColor.COLORB0]}
+                                      colors={[fontAndColor.COLORB0]}
+                                  />
+                              }/>
                 </View>);
             }
         }

@@ -58,21 +58,28 @@ export default class MakePhoneModal extends Component {
                         width: Pixel.getPixel(240),
                         height: Pixel.getPixel(160),
                         backgroundColor: '#fff',
-                        paddingLeft: Pixel.getPixel(20),
-                        paddingRight: Pixel.getPixel(20),
+                        /*                        paddingLeft: Pixel.getPixel(20),
+                         paddingRight: Pixel.getPixel(20),*/
                         justifyContent: 'center',
-                        alignItems: 'center'
+                        alignItems: 'center',
+                        borderRadius: Pixel.getPixel(2),
+                        borderWidth: Pixel.getPixel(1),
+                        borderColor: '#ffffff'
                     }}>
-
-                        <View style={styles.buttonCancel}>
-                            <Text style={{color: fontAndColor.COLORA2}}>取消</Text>
-                        </View>
                         <TouchableOpacity
                             onPress={() => {
 
                             }}>
-                            <View style={styles.buttonConfirm}>
-                                <Text style={{color: '#ffffff'}}>确认</Text>
+                            <View style={styles.buttonMerchant}>
+                                <Text style={{color: '#ffffff'}}>联系商家</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => {
+
+                            }}>
+                            <View style={styles.buttonCustomerService}>
+                                <Text style={{color: fontAndColor.COLORB0}}>联系客服</Text>
                             </View>
                         </TouchableOpacity>
 
@@ -83,10 +90,9 @@ export default class MakePhoneModal extends Component {
     }
 }
 const styles = StyleSheet.create({
-    buttonConfirm: {
+    buttonMerchant: {
         alignItems: 'center',
         justifyContent: 'center',
-        marginRight: Pixel.getPixel(15),
         backgroundColor: fontAndColor.COLORB0,
         height: Pixel.getPixel(44),
         width: Pixel.getPixel(200),
@@ -94,14 +100,14 @@ const styles = StyleSheet.create({
         borderWidth: Pixel.getPixel(1),
         borderColor: fontAndColor.COLORB0
     },
-    buttonCancel: {
+    buttonCustomerService: {
         alignItems: 'center',
         justifyContent: 'center',
-        marginRight: Pixel.getPixel(15),
+        marginTop: Pixel.getPixel(15),
         height: Pixel.getPixel(44),
         width: Pixel.getPixel(200),
         borderRadius: Pixel.getPixel(2),
         borderWidth: Pixel.getPixel(1),
-        borderColor: fontAndColor.COLORA2
+        borderColor: fontAndColor.COLORB0
     }
 });

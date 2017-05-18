@@ -32,7 +32,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
 
     constructor(props) {
         super(props);
-        let mList = ['0','1', '2', '3', '4', '5', '6'];
+        let mList = ['0', '1', '2', '3', '4', '5', '6'];
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
         items = [];
@@ -430,7 +430,7 @@ const styles = StyleSheet.create({
         borderColor: fontAndColor.COLORA2
     },
     tradingCountdown: {
-        marginTop: Pixel.getPixel(65),
+        marginTop: Pixel.getTitlePixel(65),
         flexDirection: 'row',
         alignItems: 'center',
         height: Pixel.getPixel(40),

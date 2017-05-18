@@ -16,7 +16,7 @@ import PixelUtil from "../../../utils/PixelUtil";
 let Pixel = new PixelUtil();
 let {width, height} = Dimensions.get('window');
 import  * as fontAndColor from '../../../constant/fontAndColor';
-export default class ExplainModal extends Component {
+export default class ChooseModal extends Component {
 
     constructor(props) {
         super(props);
@@ -76,37 +76,25 @@ export default class ExplainModal extends Component {
                         }}>
                             {this.props.content}
                         </Text>
-                        <TouchableOpacity onPress={() => {
-                            this.setState({
-                                isShow: false
-                            });
-                        }} activeOpacity={0.9} style={this.props.buttonStyle}>
-                            <Text style={this.props.textStyle}>{this.props.text}</Text>
-                        </TouchableOpacity>
+                        <View style={{flexDirection: 'row', marginBottom: Pixel.getPixel(20), marginTop: this.props.buttonsMargin}}>
+                            <TouchableOpacity onPress={() => {
+                                this.setState({
+                                    isShow: false
+                                });
+                            }} activeOpacity={0.9} style={this.props.negativeButtonStyle}>
+                                <Text style={this.props.negativeTextStyle}>{this.props.negativeText}</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => {
+                                this.setState({
+                                    isShow: false
+                                });
+                            }} activeOpacity={0.9} style={this.props.positiveButtonStyle}>
+                                <Text style={this.props.positiveTextStyle}>{this.props.positiveText}</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </TouchableOpacity>
             </Modal>
         );
     }
 }
-
-/*
- style={{
- marginBottom: Pixel.getPixel(20),
- width: width - width / 4 - Pixel.getPixel(40),
- height: Pixel.getPixel(35),
- marginTop: Pixel.getPixel(16),
- flexDirection: 'row',
- justifyContent: 'center',
- alignItems: 'center',
- borderRadius: 3,
- borderWidth: 1,
- borderColor: fontAndColor.COLORB0
- }}
-
-
- {
- fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
- color: fontAndColor.COLORB0
- }
- */
