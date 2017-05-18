@@ -285,11 +285,11 @@ export default class Register extends BaseComponent {
                     </View>
                 </View>
                     <View style={styles.imagebuttonok}>
-                        <ConfirmButton imageButton={(value)=>{
-                              confirm = value;
-                        }} textButton={()=>{
-                            this.toNextPage({name:ElectronicContract,component:ElectronicContract,params:{}})
-                        }}/>
+                        {/*<ConfirmButton imageButton={(value)=>{*/}
+                              {/*confirm = value;*/}
+                        {/*}} textButton={()=>{*/}
+                            {/*this.toNextPage({name:ElectronicContract,component:ElectronicContract,params:{}})*/}
+                        {/*}}/>*/}
                         <TouchableOpacity onPress={()=>{
                             this.register();
                         }} activeOpacity={0.8} style={{marginTop:Pixel.getPixel(15),width:width-Pixel.getPixel(30),height:
