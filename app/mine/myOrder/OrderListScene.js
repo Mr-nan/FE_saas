@@ -11,9 +11,12 @@ import {
     TouchableOpacity,
     Image,
     BackAndroid,
-    InteractionManager, RefreshControl
+    InteractionManager,
+    RefreshControl,
+    Dimensions
 } from  'react-native'
 
+const {width, height} = Dimensions.get('window');
 import BaseComponent from "../../component/BaseComponent";
 import * as fontAndColor from '../../constant/fontAndColor';
 import NavigatorView from '../../component/AllNavigationView';
@@ -277,8 +280,11 @@ export default class OrderListScene extends BaseComponent {
                     <View style={{flexDirection: 'row', height: Pixel.getPixel(104), alignItems: 'center'}}>
                         <Image style={styles.image}
                                source={{uri: 'http://dycd-static.oss-cn-beijing.aliyuncs.com/Uploads/Oss/201703/13/58c639474ef45.jpg?x-oss-process=image/resize,w_320,h_240'}}/>
-                        <View style={{marginLeft: Pixel.getPixel(10)}}>
-                            <Text>[北京]奔驰M级(进口) 2015款 M...</Text>
+                        <View style={{marginLeft: Pixel.getPixel(10),marginRight: Pixel.getPixel(15)}}>
+                            <Text
+                                style={{width: width - Pixel.getPixel(15 + 120 + 10 + 15)}}
+                                numberOfLines={1}
+                            >[北京]奔驰M级(进口) 2015款 MMMMMMMMM</Text>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>里程：</Text>
                                 <Text style={styles.carDescribe}>20.59万</Text>

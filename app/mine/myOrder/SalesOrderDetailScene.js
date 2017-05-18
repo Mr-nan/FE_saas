@@ -28,6 +28,7 @@ import StepView from "./component/StepView";
 import ExplainModal from "./component/ExplainModal";
 import MakePhoneModal from "./component/MakePhoneModal";
 import ChooseModal from "./component/ChooseModal";
+import TransactionPrice from "./component/TransactionPrice";
 const Pixel = new PixelUtil();
 
 const IS_ANDROID = Platform.OS === 'android';
@@ -168,54 +169,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
             )
         } else if (rowData === '2') {
             return (
-                <View style={styles.itemType4}>
-                    <Text style={{marginLeft: Pixel.getPixel(15), marginTop: Pixel.getPixel(12)}}>成交价(元)</Text>
-                    <TouchableOpacity
-                        activeOpacity={0.9}
-                        style={{flex: 1, justifyContent: 'center'}}
-                        onPress={() => {
-                            this.toNextPage({
-                                name: 'InputAmountScene',
-                                component: InputAmountScene,
-                                params: {type: 'sales'}
-                            });
-                        }}>
-                        <View style={{
-                            alignItems: 'center',
-                            marginLeft: Pixel.getPixel(15),
-                            flexDirection: 'row'
-                        }}>
-                            <Image
-                                style={{marginTop: Pixel.getPixel(5), marginBottom: Pixel.getPixel(10)}}
-                                source={require('../../../images/mainImage/rmb.png')}/>
-                            {/*<Text style={{fontSize: Pixel.getFontPixel(25), marginTop: Pixel.getPixel(5)}}>￥</Text>*/}
-                            <Text style={{
-                                //height: Pixel.getPixel(38),
-                                marginLeft: Pixel.getPixel(5),
-                                fontSize: Pixel.getFontPixel(38),
-                                color: fontAndColor.COLORA2,
-                                textAlign: 'center'
-                            }}>18000</Text>
-                            <Image
-                                style={{
-                                    marginTop: Pixel.getPixel(5),
-                                    marginLeft: Pixel.getPixel(5)
-                                }}
-                                source={require('../../../images/mainImage/transaction_price.png')}/>
-                        </View>
-                    </TouchableOpacity>
-                    <View style={styles.separatedLine}/>
-                    <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
-                        <Text style={{
-                            fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT28),
-                            marginLeft: Pixel.getPixel(15),
-                            color: fontAndColor.COLORA1
-                        }}>应付订金：</Text>
-                        <Text style={{
-                            fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT28),
-                        }}>15000元</Text>
-                    </View>
-                </View>
+                <TransactionPrice amount={20000} navigator={this.props.navigator}/>
+
             )
         } else if (rowData === '3') {
             return (

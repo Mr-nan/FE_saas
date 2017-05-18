@@ -25,7 +25,10 @@ export default class InputAmountScene extends BaseComponent {
 
     constructor(props) {
         super(props);
-        this.number = '';
+        this.number = this.props.amount;
+/*        this.state = {
+            number: this.props.amount
+        }*/
     }
 
     render() {
@@ -35,6 +38,7 @@ export default class InputAmountScene extends BaseComponent {
 
                 <View style={styles.inputBar}>
                     <TextInput
+                        defaultValue={this.number+''}
                         underlineColorAndroid='transparent'
                         onChangeText={this.setNumber}
                         keyboardType='numeric'
@@ -53,6 +57,9 @@ export default class InputAmountScene extends BaseComponent {
 
     setNumber = (number) => {
         this.number = number;
+/*        this.setState({
+            number: number,
+        });*/
     }
 
     isNumberByHundred = (number) => {
@@ -69,6 +76,7 @@ export default class InputAmountScene extends BaseComponent {
             <TouchableOpacity
                 onPress={() => {
                     if (this.isNumberByHundred(this.number)) {
+                        this.props.updateAmount(this.number);
                         this.backPage();
                     } else {
                         this.props.showToast("请输入整百金额");
