@@ -66,7 +66,7 @@ export  default class SelectPeopleScene extends BaseComponent {
     _renderRow = (movie, sectionId, rowId) => {
         return (
             <TouchableOpacity onPress={()=>{
-                this.props.callBack(movie,rowId+1);
+                this.props.callBack(movie,parseInt(rowId)+1);
                 this.backPage();
             }} activeOpacity={0.8} style={{width:width,height:Pixel.getPixel(44),paddingRight:Pixel.getPixel(15),paddingLeft:
             Pixel.getPixel(15),backgroundColor: '#fff',flexDirection: 'row'}}>
