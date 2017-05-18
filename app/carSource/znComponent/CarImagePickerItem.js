@@ -1,4 +1,7 @@
 /**
+ * Created by zhengnan on 2017/5/18.
+ */
+/**
  * Created by lhc on 2017/2/15.
  */
 import React, {Component, PureComponent} from 'react';
@@ -17,7 +20,7 @@ const {width, height} = Dimensions.get('window');
 import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 const childWidth = (width - Pixel.getPixel(30)) / 4 - Pixel.getPixel(7);
-export  default class PurchasePickerChildItem extends PureComponent {
+export  default class CarImagePickerItem extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -67,7 +70,7 @@ export  default class PurchasePickerChildItem extends PureComponent {
                                       height: Pixel.getPixel(14),
                                       position: 'absolute'
                                   }} onPress={() => {
-                    this.props.deleteOnPress(this.props.index,this.props.fileId.fileId);
+                    this.props.deleteOnPress(this.props.index,this.props.fileId.file_id);
                 }}>
                     <Image style={{
                         width: Pixel.getPixel(14),
