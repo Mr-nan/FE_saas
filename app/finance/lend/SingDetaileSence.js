@@ -223,7 +223,7 @@ export  default  class SingDetaileSence extends BaseComponent {
                 }
             }
 
-            if(stateCode!=2&& is_microchinese_contract==1){
+            if(is_microchinese_contract==1){
                 tempTitle = ['签署转债权合同']
             }
             return tempTitle;
