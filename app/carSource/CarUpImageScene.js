@@ -10,6 +10,7 @@ import {
     TouchableOpacity,
     Dimensions,
     Platform,
+    Image,
 }   from 'react-native';
 
 import BaseComponent from '../component/BaseComponent';
@@ -190,7 +191,13 @@ export default class CarUpImageScene extends BaseComponent{
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}
                     renderSeparator={this.renderSeparator}
-                    renderFooter={this.renderFooter}/>
+                    renderFooter={this.renderFooter}
+                    renderHeader={()=>{return(
+                        <View style={{width:sceneWidth,paddingVertical:Pixel.getPixel(25),backgroundColor:'white',borderBottomWidth:Pixel.getPixel(10),borderBottomColor:fontAndColor.COLORA3}}>
+                            <Image style={{width:sceneWidth}} resizeMode={'contain'} source={require('../../images/carSourceImages/publishCarperpos3.png')}/>
+                        </View>
+                    )}}
+                />
                 <AllNavigationView title="上传图片" backIconClick={this.backPage}/>
             </View>)
     }
@@ -277,7 +284,7 @@ export default class CarUpImageScene extends BaseComponent{
             Net.request(AppUrls.CAR_SAVE,'post',this.carData).then((response) => {
 
                 this.props.showModal(false);
-                console.log(response);
+
                 if(response.mycode == 1){
                     if(this.carData.show_shop_id){
                         StorageUtil.mRemoveItem(String(this.carData.show_shop_id));
@@ -291,23 +298,33 @@ export default class CarUpImageScene extends BaseComponent{
                         );
                     }
                 }else {
-                    this.props.showToast('网络连接失败');
+                    this.showToast('网络连接失败');
 
                 }
 
                 }, (error) => {
 
                     this.props.showModal(false);
-                    this.props.closeLoading();
+                    console.log(error);
                     if(error.mycode === -300 || error.mycode === -500){
-                        this.props.showToast('网络连接失败');
+                        this.showToast('网络连接失败');
                     }else{
-                        this.props.showToast(error.mjson.msg);
+                        this.showToast(error.mjson.msg);
                     }
                 });
 
         }
+    }
 
+    showToast=(errorMsg)=>{
+        if(IS_ANDROID === true){
+            this.props.showToast(errorMsg);
+        }else {
+            this.timer = setTimeout(
+                () => { this.props.showToast(errorMsg)},
+                500
+            );
+        }
     }
 }
 
