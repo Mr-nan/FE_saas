@@ -12,7 +12,8 @@ import {
     TouchableOpacity,
     ListView,
     InteractionManager,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    Linking
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
@@ -26,6 +27,7 @@ import {request} from '../../utils/RequestUtil';
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import * as Urls from '../../constant/appUrls';
+import AccountWebScene from './AccountWebScene';
 export  default class OpenIndividualAccountScene extends BaseComponent {
 
     constructor(props) {
@@ -145,9 +147,10 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
         request(Urls.USER_OPEN_ACCOUNT_PERSONAL, 'Post', maps)
             .then((response) => {
                     this.props.showModal(false);
-                    this.props.showToast('开户成功');
-                    this.props.callBack();
-                    this.backPage();
+                   this.toNextPage({name:'AccountWebScene',component:AccountWebScene,params:{
+                       title:'个人开户',webUrl:response.mjson.data.auth_url+'?authTokenId='+response.mjson.data.auth_token
+                   }});
+                   //  Linking.openURL(response.mjson.data.auth_url+'?authTokenId='+response.mjson.data.auth_token);
                 },
                 (error) => {
                     this.props.showModal(false);

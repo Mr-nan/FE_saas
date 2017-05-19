@@ -233,6 +233,13 @@ export const USER_OPEN_ACCOUNT_PERSONAL = BASEURL + 'v1/user.open_account/person
 /**
  * from @zhaojian
  *
+ * 开通企业账户
+ **/
+export const USER_OPEN_ACCOUNT_COMPANY = BASEURL + 'v1/user.open_account/company';
+
+/**
+ * from @zhaojian
+ *
  * 获取账户信息
  **/
 export const USER_ACCOUNT_INFO = BASEURL + 'v1/user.account/info';
