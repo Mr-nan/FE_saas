@@ -70,7 +70,8 @@ export  default class AccountTypeSelectScene extends BaseComponent {
             return (
                 <TouchableOpacity
                     onPress={()=> {
-                    this.toNextPage({name:'OpenIndividualAccountScene',component:OpenIndividualAccountScene,params:{}})
+                    this.toNextPage({name:'OpenIndividualAccountScene',component:OpenIndividualAccountScene,params:{callBack:
+                        ()=>{this.props.callBack();}}})
                 }}
                     activeOpacity={0.8}
                     style={{
@@ -98,7 +99,8 @@ export  default class AccountTypeSelectScene extends BaseComponent {
             return (
                 <TouchableOpacity
                     onPress={()=> {
-                        this.toNextPage({name:'OpenEnterpriseAccountScene',component:OpenEnterpriseAccountScene,params:{}})
+                        this.toNextPage({name:'OpenEnterpriseAccountScene',component:OpenEnterpriseAccountScene,params:{callBack:
+                        ()=>{this.props.callBack();}}})
                 }}
                     activeOpacity={0.8}
                     style={{

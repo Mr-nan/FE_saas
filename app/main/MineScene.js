@@ -341,6 +341,13 @@ export default class MineSectionListView extends BaseComponent {
         });
     }
 
+    allRefresh = () => {
+        this.setState({
+            renderPlaceholderOnly: 'loading',
+        });
+        this.getData();
+    }
+
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
@@ -380,20 +387,33 @@ export default class MineSectionListView extends BaseComponent {
         params: {}
     }
 
+    toPage = () => {
+        if (lastType == '0') {
+            this.navigatorParams.name = 'AccountManageScene'
+            this.navigatorParams.component = AccountManageScene
+            this.navigatorParams.params = {
+                callBack: () => {
+                    this.allRefresh();
+                }
+            }
+        } else if (lastType == '1') {
+            this.navigatorParams.name = 'BindCardScene'
+            this.navigatorParams.component = BindCardScene
+        } else if (lastType == '2') {
+            this.navigatorParams.name = 'WaitActivationAccountScene'
+            this.navigatorParams.component = WaitActivationAccountScene
+        } else {
+            this.navigatorParams.name = 'AccountScene'
+            this.navigatorParams.component = AccountScene
+        }
+        this.props.callBack(this.navigatorParams);
+    }
+
     _navigator(rowData) {
         switch (rowData.name) {
             case '账户管理':
-                this.navigatorParams.name = 'AccountManageScene'
-                this.navigatorParams.component = AccountManageScene
-
-                // this.navigatorParams.name = 'WaitActivationAccountScene'
-                // this.navigatorParams.component = WaitActivationAccountScene
-                //
-                // this.navigatorParams.name = 'AccountScene'
-                // this.navigatorParams.component = AccountScene
-                //
-                // this.navigatorParams.name = 'BindCardScene'
-                // this.navigatorParams.component = BindCardScene
+                this.toPage();
+                return
                 break;
             case '优惠券管理':
                 this.navigatorParams.name = 'AdjustManageScene'
@@ -433,12 +453,12 @@ export default class MineSectionListView extends BaseComponent {
     // 每一行中的数据
     _renderRow = (rowData) => {
         let showName = '';
-        if(lastType=='0'){
-            showName='未开户';
-        }else if(lastType=='0'){
-            showName='未绑卡';
-        }else if(lastType=='0'){
-            showName='未激活';
+        if (lastType == '0') {
+            showName = '未开户';
+        } else if (lastType == '1') {
+            showName = '未绑卡';
+        } else if (lastType == '2') {
+            showName = '未激活';
         }
         if (rowData.name == 'blank') {
             return (
@@ -479,20 +499,20 @@ export default class MineSectionListView extends BaseComponent {
                                 if (lastType == '0') {
                                     this.refs.accountmodal.changeShowType(true,
                                         '您还未开通资金账户，为方便您使用金融产品及购物车，' +
-                                        '请尽快开通！', '去开户', '看看再说',()=>{
-
+                                        '请尽快开通！', '去开户', '看看再说', () => {
+                                            this.toPage();
                                         });
                                 } else if (lastType == '1') {
                                     this.refs.accountmodal.changeShowType(true,
                                         '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
-                                        , '去开户', '看看再说',()=>{
-
+                                        , '去开户', '看看再说', () => {
+                                            this.toPage();
                                         });
                                 } else if (lastType == '2') {
                                     this.refs.accountmodal.changeShowType(true,
                                         '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
-                                        , '去开户', '看看再说',()=>{
-
+                                        , '去开户', '看看再说', () => {
+                                            this.toPage();
                                         });
                                 }
                                 firstType = lastType;

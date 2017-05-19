@@ -121,7 +121,7 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
     }
 
     openIndividual = (name, number, phone,base_id) => {
-        // this.props.showModal(true);
+        this.props.showModal(true);
         let maps = {
             cert_no: number,
             cert_type: '1',
@@ -131,18 +131,26 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
         };
         request(Urls.USER_OPEN_ACCOUNT_PERSONAL, 'Post', maps)
             .then((response) => {
-                    // this.props.showModal(false);
-                    // this.props.showToast('添加成功');
-                    // this.props.callBack();
-                    // this.backPage();
+                    this.props.showModal(false);
+                    this.props.showToast('开户成功');
+                    this.props.callBack();
+                    let navigator = this.props.navigator;
+                    if (navigator){
+                        for(let i = 0;i<navigator.getCurrentRoutes().length;i++){
+                            if(navigator.getCurrentRoutes()[i].name=='MainPage'){
+                                navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                                break;
+                            }
+                        }
+                    }
                 },
                 (error) => {
-                    // this.props.showModal(false);
-                    // if (error.mycode == -300 || error.mycode == -500) {
-                    //     this.props.showToast('添加失败');
-                    // } else {
-                    //     this.props.showToast(error.mjson.msg);
-                    // }
+                    this.props.showModal(false);
+                    if (error.mycode == -300 || error.mycode == -500) {
+                        this.props.showToast('开户失败');
+                    } else {
+                        this.props.showToast(error.mjson.msg);
+                    }
                 });
     }
 
