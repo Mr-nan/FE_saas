@@ -128,6 +128,6 @@ const styles = StyleSheet.create({
         alignItems:'center',
         paddingHorizontal:Pixel.getPixel(15),
         borderBottomColor:fontAndColor.COLORA4,
-        borderBottomWidth:StyleSheet.hairlineWidth,
+        borderBottomWidth:Pixel.getPixel(0.5),
     }
 });
