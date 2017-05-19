@@ -530,22 +530,22 @@ export default class CarInfoScene extends BaseComponent {
                         {/*</TouchableOpacity>*/}
                     </View>
                 </ScrollView>
-                <View style={styles.callView} >
-                    <View style={{alignItems:'center',justifyContent:'center', flex:1}}>
-                        <Text style={styles.callText}>车源编号</Text>
-                        <Text style={styles.callText}>{carData.serial_num}</Text>
-                    </View>
-                    <TouchableOpacity onPress={this.callClick}>
-                        <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center', borderLeftWidth: StyleSheet.hairlineWidth,
-                            borderLeftColor:fontAndColor.COLORA4,flex:1,paddingHorizontal:Pixel.getPixel(15)}}>
-                            <Image source={require('../../images/carSourceImages/phone.png')}/>
-                            <Text style={styles.callText}>电话咨询</Text>
+
+                    <View style={styles.footView} >
+                        <View style={styles.carNumberView}>
+                            <Text style={styles.carNumberText}>车源编号</Text>
+                            <Text style={styles.carNumberText}>{carData.serial_num}</Text>
                         </View>
-                    </TouchableOpacity>
-                    <View style={{backgroundColor:fontAndColor.COLORB0, flex:1}}>
-                        <Text style={{color:'white', fontSize:fontAndColor.BUTTONFONT30}}>订购</Text>
+                        <TouchableOpacity onPress={this.callClick}>
+                            <View style={styles.callView}>
+                                <Image source={require('../../images/carSourceImages/phone.png')}/>
+                                <Text style={styles.callText}>电话咨询</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <View style={styles.orderView}>
+                            <Text style={styles.orderText}>订购</Text>
+                        </View>
                     </View>
-                </View>
                 <NavigationView
                     ref="navtigation"
                     wrapStyle={{backgroundColor:'rgba(0,0,0,0)'}}
@@ -958,8 +958,7 @@ const styles = StyleSheet.create({
         marginBottom:Pixel.getPixel(5),
 
     },
-    callView: {
-
+    footView: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
@@ -972,10 +971,43 @@ const styles = StyleSheet.create({
         borderTopColor:fontAndColor.COLORA4,
         borderTopWidth:StyleSheet.hairlineWidth,
     },
+    callView:{
+        flexDirection:'row',
+        justifyContent:'center',
+        alignItems:'center',
+        borderLeftWidth: StyleSheet.hairlineWidth,
+        borderLeftColor:fontAndColor.COLORA4,
+        paddingHorizontal:Pixel.getPixel(15),
+        height: Pixel.getPixel(44),
+        width:ScreenWidth/3
+    },
     callText: {
         color: fontAndColor.COLORB0,
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
     },
+    carNumberView:{
+        alignItems:'center',
+        justifyContent:'center',
+        height:Pixel.getPixel(44),
+        paddingHorizontal:Pixel.getPixel(15),
+        width:ScreenWidth/3
+    },
+    carNumberText:{
+        color: fontAndColor.COLORA0,
+        fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT),
+    },
+    orderView:{
+        backgroundColor:fontAndColor.COLORB0,
+        height: Pixel.getPixel(44),
+        justifyContent:'center',
+        alignItems:'center',
+        width:ScreenWidth/3
+    },
+    orderText:{
+        color:'white',
+        fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30)
+    },
+
     PhotonContaier:{
 
         left:0,
