@@ -96,7 +96,15 @@ export default class CarSelectRegisterPersonScene extends BaseComponent{
 
             if(response.mycode == 1){
 
-                this.setState({renderPlaceholderOnly: 'success'});
+                if(response.mjson.data.length>0){
+                    this.setState({
+                        renderPlaceholderOnly: 'success',
+                        dataSource:this.state.dataSource.cloneWithRows(response.mjson.data)
+                    });
+                }else {
+                    this.setState({renderPlaceholderOnly: 'null'});
+                }
+
 
             }else {
                 this.setState({renderPlaceholderOnly: 'error'});
@@ -117,7 +125,7 @@ export default class CarSelectRegisterPersonScene extends BaseComponent{
                     this.props.selectPersonClick(data);
                     this.backPage()}}>
                 <View style={styles.cellView}>
-                    <Text style={[styles.cellText,data==this.props.currentPerson && {color:fontAndColor.COLORB0}]}>{data}</Text>
+                    <Text style={[styles.cellText,data==this.props.currentPerson && {color:fontAndColor.COLORB0}]}>{data.}</Text>
                 </View>
             </TouchableOpacity>
         )
