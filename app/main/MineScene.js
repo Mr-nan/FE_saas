@@ -167,6 +167,10 @@ export default class MineSectionListView extends BaseComponent {
                         "icon": require('../../images/mainImage/yuangongguanli.png'),
                         "name": "员工管理"
                     },
+                    {
+                        "icon": require('../../images/mainImage/yuangongguanli.png'),
+                        "name": "切换公司"
+                    },
                 ],
                 "title": "section0"
             },
@@ -241,9 +245,11 @@ export default class MineSectionListView extends BaseComponent {
                         Car[0].splice(0, 1);
                         user_list.push(...Car);
                     } else if (datas.enterprise_list[0].role_type == '2') {
-                        user_list.push(Car[1], Car[3], Car[4]);
+                        Car[0].splice(0, 2);
+                        user_list.push(Car[0],Car[1], Car[3], Car[4]);
                     } else {
-                        user_list.push(Car[2], Car[3], Car[4]);
+                        Car[0].splice(0, 2);
+                        user_list.push(Car[0],Car[2], Car[3], Car[4]);
                     }
                 } else if (datas.user_level == 1) {
                     if (datas.enterprise_list[0].role_type == '1') {
@@ -252,7 +258,8 @@ export default class MineSectionListView extends BaseComponent {
                         Car[0].splice(0, 1);
                         user_list.push(Car[0], Car[2], Car[3], Car[4]);
                     } else {
-                        user_list.push(Car[2], Car[3], Car[4]);
+                        Car[0].splice(0, 2);
+                        user_list.push(Car[0],Car[2], Car[3], Car[4]);
 
                     }
                 } else {
