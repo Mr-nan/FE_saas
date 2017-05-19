@@ -25,32 +25,24 @@ import NavigatorView from '../../component/AllNavigationView';
  * 获取屏幕的宽和高
  **/
 const {width, height} = Dimensions.get('window');
-let page = 1;
-let allPage = 1;
 let allSouce = [];
 export default class ContractManageScene extends BaseComponent {
     initFinish = () => {
-        page = 1;
-        allPage = 1;
         allSouce = [];
         this.getData();
     }
 
     componentWillUnmount() {
         allSouce = [];
-        page = 1;
-        allPage = 1;
     }
 
     getData = () => {
         let maps = {
-            page: page,
-            rows: 10,
-            api: Urls.LOAN_SUBJECT,
+            api: Urls.USER_GET_USER_LIST,
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
-                    if (page == 1 && response.mjson.data.length <= 0) {
+                    if (response.mjson.data.length <= 0) {
                         this.setState({renderPlaceholderOnly: 'null'});
                     } else {
                         allSouce.push(...response.mjson.data);
@@ -80,7 +72,6 @@ export default class ContractManageScene extends BaseComponent {
     refreshingData = () => {
         allSouce = [];
         this.setState({isRefreshing: true});
-        page = 1;
         this.getData();
     };
 
@@ -120,10 +111,6 @@ export default class ContractManageScene extends BaseComponent {
                           dataSource={this.state.dataSource}
                           renderRow={this._renderRow}
                           enableEmptySections={true}
-                          renderFooter={
-                              this.renderListFooter
-                          }
-                          onEndReached={this.toEnd}
                           refreshControl={
                               <RefreshControl
                                   refreshing={this.state.isRefreshing}
