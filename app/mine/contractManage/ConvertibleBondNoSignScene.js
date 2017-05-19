@@ -52,11 +52,11 @@ export default class CompleteSignScene extends BaseComponent {
         request(Urls.FINANCE, 'Post', maps)
 
             .then((response) => {
-                    if (page == 1 && response.mjson.data.contract_list.length <= 0) {
+                    if (page == 1 && response.mjson.data.list.length <= 0) {
                         this.setState({renderPlaceholderOnly: 'null'});
                     } else {
                         allPage = response.mjson.data.total / 10;
-                        allSouce.push(...response.mjson.data.contract_list);
+                        allSouce.push(...response.mjson.data.list);
                         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
                             dataSource: ds.cloneWithRows(allSouce),
@@ -66,10 +66,18 @@ export default class CompleteSignScene extends BaseComponent {
                     }
                 },
                 (error) => {
-                    this.setState({
-                        isRefreshing: false,
-                        renderPlaceholderOnly: 'error'
-                    });
+                    if(error.mycode=='-2100045'){
+                        this.setState({
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'null'
+                        });
+                    }else{
+                        this.setState({
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'error'
+                        });
+                    }
+
                     // this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
                 });
     }

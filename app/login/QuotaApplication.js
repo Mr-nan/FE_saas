@@ -185,7 +185,7 @@ export default class QuotaApplication extends BaseComponent {
                               mOnPress={this.getWZMoney}/>
                 </ScrollView>
                 <NavigationView
-                    title="微众额度申请"
+                    title="微单额度申请"
                     backIconClick={this.backPage}
                 />
             </View>
@@ -197,7 +197,7 @@ export default class QuotaApplication extends BaseComponent {
             <View style={{width: width, height: height,backgroundColor:FontAndColor.COLORA3,alignItems: 'center'}}>
                 {this.loadView()}
                 <NavigationView
-                    title="微众额度申请"
+                    title="微单额度申请"
                     backIconClick={this.backPage}
                 />
             </View>
