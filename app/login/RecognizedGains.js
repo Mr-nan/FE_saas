@@ -76,7 +76,7 @@ export default class RecognizedGains extends BaseComponent {
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
-                    renderFooter={this.props.isShow==true?this._renderFooter:<View/>}
+                    renderFooter={this.props.isShow == true ? this._renderFooter : <View/>}
                 />
 
 
@@ -188,8 +188,8 @@ export default class RecognizedGains extends BaseComponent {
     getWZInfo = () => {
         let maps = {
             api: AppUrls.GET_IOU_LIST,
-            loan_code: this.props.loan_code,
-            loan_number:this.props.loan_number
+            loan_code: this.props.loan_code == 'undefined' ? '' : this.props.loan_code,
+            loan_number: this.props.loan_number == 'undefined' ? '' : this.props.loan_number
 
         };
         this.props.showModal(true);
