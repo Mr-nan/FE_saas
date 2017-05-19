@@ -154,18 +154,20 @@ export default class CarUpImageScene extends BaseComponent{
           }
 
           if(this.carData.pictures){
-              this.results.push(...this.carData.pictures);
+              let imgas = JSON.parse(this.carData.pictures)
+              this.results.push(...imgas);
               this.titleData.map((data,index)=>{
-                  this.carData.pictures.map((imgData,subIndex)=>{
+                  imgas.map((imgData,subIndex)=>{
                       if(data.name == imgData.name){
                           data.imgArray.push(imgData);
                       }
                   });
               });
           }else if(this.carData.imgs){
-              this.results.push(...this.carData.imgs);
+              let imgas = JSON.parse(this.carData.imgs)
+              this.results.push(...imgas);
               this.titleData.map((data,index)=>{
-                  this.carData.imgs.map((imgData,subIndex)=>{
+                  imgas.map((imgData,subIndex)=>{
                       if(data.name == imgData.name){
                           data.imgArray.push(imgData);
                       }
@@ -225,7 +227,7 @@ export default class CarUpImageScene extends BaseComponent{
             <CarUpImageCell
                 results={this.results}
                 retureSaveAction={()=>{
-                    this.carData['pictures']=this.results;
+                    this.carData['pictures']=JSON.stringify(this.results);
 
                     if(this.carData.show_shop_id && !this.carData.id){
                         StorageUtil.mSetItem(String(this.carData.show_shop_id),JSON.stringify(this.carData));
@@ -280,6 +282,8 @@ export default class CarUpImageScene extends BaseComponent{
             this.props.showToast('请上传'+errorTitle+'图片');
 
         }else {
+
+            console.log(this.carData.pictures);
 
             Net.request(AppUrls.CAR_SAVE,'post',this.carData).then((response) => {
 

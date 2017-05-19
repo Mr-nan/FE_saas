@@ -42,14 +42,18 @@ export default class CarPublishSecondScene extends BaseComponent{
         this.carData = this.props.carData;
 
         this.nature_use ='非营运';
+        this.carData['nature_use']=2;
 
         if(this.carData.nature_use==1)
         {
             this.nature_use ='营运';
+            this.carData['nature_use']=1;
+
 
         }else if(this.carData.nature_use==3)
         {
             this.nature_use ='租赁非营运';
+            this.carData['nature_use']=3;
 
         }
 
@@ -59,7 +63,7 @@ export default class CarPublishSecondScene extends BaseComponent{
             this.carData['mileage']='0';
         }else {
             this.carData['transfer_times']=this.carData.transfer_times ? String(this.carData.transfer_times):'0';
-            this.carData['mileage']=this.carData.mileage ? String(this.carData.mileage):'0';
+            this.carData['mileage']=this.carData.mileage ? String(this.carData.mileage):'';
         }
 
 
