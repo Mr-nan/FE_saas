@@ -32,7 +32,7 @@ export  default class BindCardScene extends BaseComponent {
         childItems = [];
         childItems.push({title: '绑定银行卡',
             value: require('../../../images/mainImage/bindcard.png'),click:()=>{
-            this.props.showToast('绑卡');
+
             }});
         childItems.push({title: '修改账户信息',
             value: require('../../../images/mainImage/changeaccount.png'),click:()=>{
@@ -43,6 +43,10 @@ export  default class BindCardScene extends BaseComponent {
             renderPlaceholderOnly: 'blank',
             source: ds.cloneWithRows(childItems)
         };
+    }
+
+    getBindCardData =()=>{
+
     }
 
     initFinish = () => {

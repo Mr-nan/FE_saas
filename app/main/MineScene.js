@@ -42,6 +42,7 @@ let Platform = require('Platform');
 import ImagePicker from "react-native-image-picker";
 let firstType = '-1';
 let lastType = '-1';
+
 let componyname = '';
 const cellJianTou = require('../../images/mainImage/celljiantou.png');
 let Car = [
@@ -168,7 +169,7 @@ export default class MineSectionListView extends BaseComponent {
                         "name": "员工管理"
                     },
                     {
-                        "icon": require('../../images/mainImage/yuangongguanli.png'),
+                        "icon": require('../../images/mainImage/switchcompony.png'),
                         "name": "切换公司"
                     },
                 ],
@@ -246,10 +247,10 @@ export default class MineSectionListView extends BaseComponent {
                         user_list.push(...Car);
                     } else if (datas.enterprise_list[0].role_type == '2') {
                         Car[0].splice(0, 2);
-                        user_list.push(Car[0],Car[1], Car[3], Car[4]);
+                        user_list.push(Car[0], Car[1], Car[3], Car[4]);
                     } else {
                         Car[0].splice(0, 2);
-                        user_list.push(Car[0],Car[2], Car[3], Car[4]);
+                        user_list.push(Car[0], Car[2], Car[3], Car[4]);
                     }
                 } else if (datas.user_level == 1) {
                     if (datas.enterprise_list[0].role_type == '1') {
@@ -259,7 +260,7 @@ export default class MineSectionListView extends BaseComponent {
                         user_list.push(Car[0], Car[2], Car[3], Car[4]);
                     } else {
                         Car[0].splice(0, 2);
-                        user_list.push(Car[0],Car[2], Car[3], Car[4]);
+                        user_list.push(Car[0], Car[2], Car[3], Car[4]);
 
                     }
                 } else {
@@ -421,6 +422,10 @@ export default class MineSectionListView extends BaseComponent {
             case '账户管理':
                 this.toPage();
                 return
+                break;
+            case '切换公司':
+                this.props.toSelect();
+                return;
                 break;
             case '优惠券管理':
                 this.navigatorParams.name = 'AdjustManageScene'

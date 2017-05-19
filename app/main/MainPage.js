@@ -33,6 +33,7 @@ import * as fontAndClolr from '../constant/fontAndColor';
 import BaseComponent from '../component/BaseComponent';
 import NonCreditScene from './NonCreditScene';
 import LoginScene from '../login/LoginScene';
+import AllSelectCompanyScene from '../main/AllSelectCompanyScene';
 let tabArray = [];
 
 export class tableItemInfo {
@@ -141,6 +142,14 @@ export default class MainPage extends BaseComponent {
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
+                }} toSelect={()=>{
+                let mProps = {name: 'AllSelectCompanyScene', component: AllSelectCompanyScene, params: {}};
+                const navigator = this.props.navigator;
+                if (navigator) {
+                    navigator.immediatelyResetRouteStack([{
+                        ...mProps
+                    }])
+                }
                 }}/>)
         ];
 
@@ -197,6 +206,14 @@ export default class MainPage extends BaseComponent {
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
+                }} toSelect={()=>{
+                let mProps = {name: 'AllSelectCompanyScene', component: AllSelectCompanyScene, params: {}};
+                const navigator = this.props.navigator;
+                if (navigator) {
+                    navigator.immediatelyResetRouteStack([{
+                        ...mProps
+                    }])
+                }
                 }}/>)
         ];
 
@@ -273,6 +290,14 @@ export default class MainPage extends BaseComponent {
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
+                }} toSelect={()=>{
+                let mProps = {name: 'AllSelectCompanyScene', component: AllSelectCompanyScene, params: {}};
+                const navigator = this.props.navigator;
+                if (navigator) {
+                    navigator.immediatelyResetRouteStack([{
+                        ...mProps
+                    }])
+                }
                 }}/>)
         ];
 
@@ -340,6 +365,14 @@ export default class MainPage extends BaseComponent {
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
+                }} toSelect={()=>{
+                let mProps = {name: 'AllSelectCompanyScene', component: AllSelectCompanyScene, params: {}};
+                const navigator = this.props.navigator;
+                if (navigator) {
+                    navigator.immediatelyResetRouteStack([{
+                        ...mProps
+                    }])
+                }
                 }}/>)
         ];
 
@@ -359,6 +392,14 @@ export default class MainPage extends BaseComponent {
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
+                }} toSelect={()=>{
+                let mProps = {name: 'AllSelectCompanyScene', component: AllSelectCompanyScene, params: {}};
+                const navigator = this.props.navigator;
+                if (navigator) {
+                    navigator.immediatelyResetRouteStack([{
+                        ...mProps
+                    }])
+                }
                 }}/>)
         ];
         StorageUtil.mGetItem(storageKeyNames.USER_INFO, (data) => {
