@@ -168,6 +168,7 @@ export default class RecognizedGains extends BaseComponent {
             loan_code: this.props.loan_code,
             loan_number:loan_number
 
+
         };
         request(AppUrls.FINANCE, 'Post', maps)
             .then((response) => {
