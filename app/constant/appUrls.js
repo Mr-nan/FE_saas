@@ -1,12 +1,12 @@
 /**
  * 开发地址
  */
-export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地
  */
-// export const BASEURL = 'http://api-gateway.test.dycd.com/';
+export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 正式地址
@@ -184,6 +184,13 @@ export const USER_EMPLOYE = BASEURL + V + "user.employe/index";
  * 获取借款主体
  **/
 export const LOAN_SUBJECT = 'api/v1/user/get_loan_subject_list';
+
+/**
+ * from @zhaojian
+ *
+ * 获取企业合同列表
+ **/
+export const USER_GET_USER_LIST = 'api/v1/user/get_user_list';
 
 /**
  * from @zhaojian

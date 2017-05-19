@@ -100,7 +100,8 @@ export  default class SignContractScene extends BaseComponent {
                 <ConvertibleBondSignScene tabLabel="ios-chatboxes2"
                                           companyname={this.props.companyname}
                                           opt_merge_id={this.props.opt_merge_id}
-                                          opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
+                                          opt_user_id= {this.props.opt_user_id}
+                                          navigator={this.props.navigator}/>
             </ScrollableTabView>
             <LendSuccessAlert ref="modelcomponent" title="提示" subtitle="为保证顺利放款，请确保所有合同签署完成！"/>
             <NavigationView
