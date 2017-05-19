@@ -76,7 +76,6 @@ export default class RecognizedGains extends BaseComponent {
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
-                    renderFooter={this.props.isShow==true?this._renderFooter:<View/>}
                 />
 
 
@@ -186,10 +185,14 @@ export default class RecognizedGains extends BaseComponent {
 
     //获取借据数据列表
     getWZInfo = () => {
+        let loan_number = '';
+        if(this.props.loan_number){
+            loan_number = this.props.loan_number;
+        }
         let maps = {
             api: AppUrls.GET_IOU_LIST,
             loan_code: this.props.loan_code,
-            loan_number:this.props.loan_number
+            loan_number:loan_number
 
         };
         this.props.showModal(true);

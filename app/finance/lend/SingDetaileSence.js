@@ -307,7 +307,8 @@ export  default  class SingDetaileSence extends BaseComponent {
             this.toNextPage({
                 name: 'RecognizedGains', component: RecognizedGains, params: {
                     loan_code: controlCode.loan_code,
-                    loan_number: ''
+                    loan_number: '',
+                    isShow:true
                 }
             });
         }
