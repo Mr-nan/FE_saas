@@ -665,12 +665,12 @@ export default class CarPublishFirstScene extends BaseComponent{
 
             this.titleData1[0][2].value = this.modelData[index].model_name;
             this.titleData1[0][4].value = this.modelData[index].model_emission_standard;
-            this.titleData1[1][0].value = this.modelData[index].model_name+'-6-1';
+            this.titleData1[1][0].value = this.modelData[index].model_year+'-6-1';
             this.titleData1[1][1].value = this.modelData[index].model_year+'-6-1';
 
             this.titleData2[0][2].value = this.modelData[index].model_name;
             this.titleData2[0][4].value = this.modelData[index].model_emission_standard;
-            this.titleData2[1][0].value = this.modelData[index].model_name+'-6-1';
+            this.titleData2[1][0].value = this.modelData[index].model_year+'-6-1';
 
             this.carData['manufacture'] = this.modelData[index].model_year+'-6-1';
             this.carData['init_reg'] = this.modelData[index].model_year+'-6-1';
@@ -982,7 +982,7 @@ const styles = StyleSheet.create({
     textInput:{
         height: 20,
         borderColor: fontAndColor.COLORA0,
-        width:80,
+        width:120,
         textAlign:'right',
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
     },

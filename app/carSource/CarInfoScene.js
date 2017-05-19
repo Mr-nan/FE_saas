@@ -530,16 +530,22 @@ export default class CarInfoScene extends BaseComponent {
                         {/*</TouchableOpacity>*/}
                     </View>
                 </ScrollView>
-                <TouchableOpacity style={styles.callView} onPress={this.callClick}>
-                    <View style={{alignItems:'center',justifyContent:'center',width:ScreenWidth*0.5}}>
-                    <Text style={styles.callText}>{'车源编号 '+carData.serial_num}</Text>
+                <View style={styles.callView} >
+                    <View style={{alignItems:'center',justifyContent:'center', flex:1}}>
+                        <Text style={styles.callText}>车源编号</Text>
+                        <Text style={styles.callText}>{carData.serial_num}</Text>
                     </View>
-                    <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center', borderLeftWidth: StyleSheet.hairlineWidth,
-                        borderLeftColor:'white',width:ScreenWidth*0.5}}>
-                    <Image source={require('../../images/carSourceImages/phone.png')}/>
-                    <Text style={styles.callText}>咨询客服</Text>
-                     </View>
-                </TouchableOpacity>
+                    <TouchableOpacity onPress={this.callClick}>
+                        <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center', borderLeftWidth: StyleSheet.hairlineWidth,
+                            borderLeftColor:fontAndColor.COLORA4,flex:1,paddingHorizontal:Pixel.getPixel(15)}}>
+                            <Image source={require('../../images/carSourceImages/phone.png')}/>
+                            <Text style={styles.callText}>电话咨询</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <View style={{backgroundColor:fontAndColor.COLORB0, flex:1}}>
+                        <Text style={{color:'white', fontSize:fontAndColor.BUTTONFONT30}}>订购</Text>
+                    </View>
+                </View>
                 <NavigationView
                     ref="navtigation"
                     wrapStyle={{backgroundColor:'rgba(0,0,0,0)'}}
@@ -955,17 +961,19 @@ const styles = StyleSheet.create({
     callView: {
 
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: fontAndColor.COLORB0,
+        backgroundColor: 'white',
         height: Pixel.getPixel(44),
         position: 'absolute',
         bottom: 0,
         left: 0,
         right: 0,
+        borderTopColor:fontAndColor.COLORA4,
+        borderTopWidth:StyleSheet.hairlineWidth,
     },
     callText: {
-        color: 'white',
+        color: fontAndColor.COLORB0,
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
     },
     PhotonContaier:{

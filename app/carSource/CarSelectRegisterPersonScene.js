@@ -65,7 +65,20 @@ export default class CarSelectRegisterPersonScene extends BaseComponent{
     }
 
     render(){
-        if (this.state.renderPlaceholderOnly !== 'success') {
+
+        if (this.state.renderPlaceholderOnly == 'null') {
+            return (
+                <View style={{flex:1,backgroundColor:'white',marginBottom:Pixel.getPixel(64)}}>
+                    {this.loadView()}
+                    <TouchableOpacity onPress={this.addPersonClick}>
+                        <View style={styles.footView}>
+                            <Image source={require('../../images/carSourceImages/addPerson.png')}/>
+                            <Text style={{color:fontAndColor.COLORB0,fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28) }}>  添加新登记人  </Text>
+                        </View>
+                    </TouchableOpacity>
+                    <AllNavigationView title="选择登记人" backIconClick={this.backPage} />
+                </View>);
+        }else if (this.state.renderPlaceholderOnly !== 'success') {
             return (
                 <View style={{flex:1,backgroundColor:'white'}}>
                     {this.loadView()}
