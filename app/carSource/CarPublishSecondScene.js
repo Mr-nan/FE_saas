@@ -466,8 +466,12 @@ export default class CarPublishSecondScene extends BaseComponent{
             params: {
                 selectPersonClick:this.selectPersonClick,
                 currentPerson:this.titleData1[2][1].value,
+                shopID:this.carData.show_shop_id,
             }
         };
+
+        console.log(this.carData.show_shop_id);
+        console.log(this.carData);
         this.toNextPage(navigatorParams);
     }
     selectPersonClick=(data)=>{
@@ -483,6 +487,7 @@ export default class CarPublishSecondScene extends BaseComponent{
             params: {
                 checkedCarlicenseTagClick:this._checkedCarlicenseTagClick,
                 currentChecked:this.titleData1[0][2].value,
+
             }
         };
         this.toNextPage(navigatorParams);
