@@ -198,7 +198,7 @@ export default class RecognizedGains extends BaseComponent {
         for(let i = 0;i<this.state.iou_list.length;i++){
             loan_number = loan_number+this.state.iou_list[i].loan_number+','
         }
-        let newloan = loan_number.substring(loan_number.length-1,1);
+        let newloan = loan_number.substring(0,loan_number.length-1);
         let maps = {};
         if (Platform.OS === 'android') {
             maps = {
