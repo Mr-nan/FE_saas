@@ -476,7 +476,7 @@ export default class CarPublishSecondScene extends BaseComponent{
     }
     selectPersonClick=(data)=>{
 
-       this.titleData1[2][1].value = data;
+       this.titleData1[2][1].value = data.business_name;
         this.updateUI();
     }
 
