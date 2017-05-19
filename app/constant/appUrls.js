@@ -648,3 +648,7 @@ export const ORDER_INDEX = BASEURL + V +'order/index';
  * 订单搜索
  */
 export const ORDER_SEARCH = BASEURL + V +'order/search';
+/**
+ * 订单详情
+ */
+export const ORDER_DETAIL = BASEURL + V +'order/detail';

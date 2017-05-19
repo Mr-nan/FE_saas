@@ -38,6 +38,7 @@ export default class OrderListScene extends BaseComponent {
         super(props);
         this.orderListData = [];
         this.pageNum = 1;
+        this.allPage = 1;
         this.orderState = 0;
         this.startDate = '选择开始时间';
         this.endDate = '选择结束时间';
@@ -53,18 +54,29 @@ export default class OrderListScene extends BaseComponent {
     componentDidMount() {
         BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
         InteractionManager.runAfterInteractions(() => {
-            //this.setState({renderPlaceholderOnly: 'loading'});
+            this.setState({renderPlaceholderOnly: 'loading'});
             this.initFinish();
         });
     }
 
     initFinish = () => {
-        this.setState({
-            dataSource: this.state.dataSource.cloneWithRows(['','','']),
-            renderPlaceholderOnly: 'success'
-        });
+        /*        this.setState({
+         dataSource: this.state.dataSource.cloneWithRows(['','','']),
+         renderPlaceholderOnly: 'success'
+         });*/
         //TODO 调列表接口
-        //this.loadData();
+        this.loadData();
+    };
+
+    dateReversal = (time) => {
+        const date = new Date();
+        date.setTime(time);
+        return (date.getFullYear() + "-" + (this.PrefixInteger(date.getMonth() + 1, 2)) + "-" +
+        (this.PrefixInteger(date.getDate() + 1, 2)));
+    };
+
+    PrefixInteger = (num, length) => {
+        return (Array(length).join('0') + num).slice(-length);
     };
 
     // 下拉刷新数据
@@ -78,17 +90,14 @@ export default class OrderListScene extends BaseComponent {
         let url = AppUrls.ORDER_INDEX;
         this.pageNum = 1;
         request(url, 'post', {
-            business: 0,
+            business: this.props.business,
             page: this.pageNum,
             rows: 10
-/*            start_time: '',
-             end_time: '',
-             is_finance: '',
-             status: ''*/
         }).then((response) => {
-            this.orderListData = response.mjson.data.list;
-            console.log('订单列表数据 = ', this.orderListData);
-            if (this.orderListData.length) {
+            this.orderListData = response.mjson.data.info_list;
+            this.allPage = response.mjson.data.total / response.mjson.data.rows;
+            //console.log('订单列表数据 = ', this.orderListData);
+            if (response.mjson.data && this.orderListData.length > 0) {
                 this.setState({
                     dataSource: this.state.dataSource.cloneWithRows(this.orderListData),
                     isRefreshing: false,
@@ -102,7 +111,7 @@ export default class OrderListScene extends BaseComponent {
             }
 
         }, (error) => {
-            console.log('请求错误 = ', error);
+            //console.log('请求错误 = ', error);
             this.setState({
                 isRefreshing: false,
                 renderPlaceholderOnly: 'error'
@@ -114,13 +123,13 @@ export default class OrderListScene extends BaseComponent {
         if (this.state.isRefreshing) {
             return null;
         } else {
-            return (<LoadMoreFooter isLoadAll={false} isCarFoot={false}/>)
+            return (<LoadMoreFooter isLoadAll={this.pageNum >= this.allPage} isCarFoot={false}/>)
         }
     };
 
     toEnd = () => {
         if (this.orderListData.length && !this.state.isRefreshing) {
-            this.loadMoreData();
+            //this.loadMoreData();
         }
     };
 
@@ -196,7 +205,7 @@ export default class OrderListScene extends BaseComponent {
                         this.toNextPage({
                             name: 'OrderSearchScene',
                             component: OrderSearchScene,
-                            params: {}
+                            params: {business: this.props.business}
                         });
                     }}
                     activeOpacity={0.9}
@@ -246,6 +255,7 @@ export default class OrderListScene extends BaseComponent {
     }
 
     _renderRow = (rowData, selectionID, rowID) => {
+        let initRegDate = this.dateReversal(rowData.cars[0].car.init_reg + '000');
         //item 布局
         return (
             <TouchableOpacity
@@ -254,25 +264,29 @@ export default class OrderListScene extends BaseComponent {
                         this.toNextPage({
                             name: 'ProcurementOrderDetailScene',
                             component: ProcurementOrderDetailScene,
-                            params: {}
+                            params: {
+                                business: this.props.business
+                            }
                         });
                     } else {
                         this.toNextPage({
                             name: 'SalesOrderDetailScene',
                             component: SalesOrderDetailScene,
-                            params: {}
+                            params: {
+                                business: this.props.business
+                            }
                         });
                     }
                 }}
                 activeOpacity={0.8}>
                 <View style={styles.rowView}>
                     <View style={styles.rowTitleLine}>
-                        <Text style={styles.rowTitleText}>中盛名车行</Text>
+                        <Text style={styles.rowTitleText}>{rowData.seller_company_name}</Text>
                         <Text style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                             color: fontAndColor.COLORA1,
                             marginLeft: Pixel.getPixel(5)
-                        }}>(12332156743)</Text>
+                        }}>({rowData.seller_company_id})</Text>
                         <View style={{flex: 1}}/>
                         <Text style={styles.rowTitleState}>已拍下</Text>
                     </View>
@@ -280,23 +294,23 @@ export default class OrderListScene extends BaseComponent {
                     <View style={{flexDirection: 'row', height: Pixel.getPixel(104), alignItems: 'center'}}>
                         <Image style={styles.image}
                                source={{uri: 'http://dycd-static.oss-cn-beijing.aliyuncs.com/Uploads/Oss/201703/13/58c639474ef45.jpg?x-oss-process=image/resize,w_320,h_240'}}/>
-                        <View style={{marginLeft: Pixel.getPixel(10),marginRight: Pixel.getPixel(15)}}>
+                        <View style={{marginLeft: Pixel.getPixel(10), marginRight: Pixel.getPixel(15)}}>
                             <Text
                                 style={{width: width - Pixel.getPixel(15 + 120 + 10 + 15)}}
                                 numberOfLines={1}
-                            >[北京]奔驰M级(进口) 2015款 MMMMMMMMM</Text>
+                            >{rowData.car_name}</Text>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>里程：</Text>
-                                <Text style={styles.carDescribe}>20.59万</Text>
+                                <Text style={styles.carDescribe}>{rowData.cars[0].car.mileage}万</Text>
                             </View>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>上牌：</Text>
-                                <Text style={styles.carDescribe}>2016-09-09</Text>
+                                <Text style={styles.carDescribe}>{initRegDate}</Text>
                             </View>
-                            <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
+{/*                            <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>标价：</Text>
                                 <Text style={styles.carDescribe}>20.59万</Text>
-                            </View>
+                            </View>*/}
                         </View>
                     </View>
                     <View style={styles.separatedLine}/>

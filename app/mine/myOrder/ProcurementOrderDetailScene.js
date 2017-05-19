@@ -12,7 +12,9 @@ import {
     TouchableOpacity,
     Image,
     Dimensions,
-    TextInput
+    TextInput,
+    BackAndroid,
+    InteractionManager
 } from  'react-native'
 
 const {width, height} = Dimensions.get('window');
@@ -24,6 +26,8 @@ import CheckStand from "../../finance/CheckStand";
 import DepositCountDown from "./component/DepositCountDown";
 import GetCarCountDown from "./component/GetCarCountDown";
 import StepView from "./component/StepView";
+import * as AppUrls from "../../constant/appUrls";
+import {request} from "../../utils/RequestUtil";
 const Pixel = new PixelUtil();
 
 let items = [];
@@ -46,6 +50,53 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             source: ds.cloneWithRows(mList)
         }
     }
+
+    componentDidMount() {
+        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
+    }
+
+    initFinish = () => {
+        /*        this.setState({
+         dataSource: this.state.dataSource.cloneWithRows(['','','']),
+         renderPlaceholderOnly: 'success'
+         });*/
+        //TODO 调详情接口
+        this.loadData();
+    };
+
+    loadData = () => {
+        let url = AppUrls.ORDER_DETAIL;
+        request(url, 'post', {
+            order_no: 10
+        }).then((response) => {
+            this.orderListData = response.mjson.data.info_list;
+            this.allPage = response.mjson.data.total / response.mjson.data.rows;
+            //console.log('订单列表数据 = ', this.orderListData);
+            if (response.mjson.data && this.orderListData.length > 0) {
+                this.setState({
+                    dataSource: this.state.dataSource.cloneWithRows(this.orderListData),
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'success'
+                });
+            } else {
+                this.setState({
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'null'
+                });
+            }
+
+        }, (error) => {
+            //console.log('请求错误 = ', error);
+            this.setState({
+                isRefreshing: false,
+                renderPlaceholderOnly: 'error'
+            });
+        });
+    };
 
     render() {
         return (

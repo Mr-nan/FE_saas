@@ -11,13 +11,14 @@ import {
     ListView,
     TouchableOpacity,
     Image,
-    Dimensions, TextInput
+    Dimensions, TextInput, RefreshControl
 } from  'react-native'
 import BaseComponent from "../../component/BaseComponent";
 import * as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
 import * as AppUrls from "../../constant/appUrls";
 import {request} from "../../utils/RequestUtil";
+import LoadMoreFooter from "../../carSource/znComponent/LoadMoreFooter";
 import ProcurementOrderDetailScene from "./ProcurementOrderDetailScene";
 import SalesOrderDetailScene from "./SalesOrderDetailScene";
 const Pixel = new PixelUtil();
@@ -28,10 +29,14 @@ export default class OrderSearchScene extends BaseComponent {
     // 构造
     constructor(props) {
         super(props);
+        this.pageNum = 1;
+        this.allPage = 1;
         this.state = {
             dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
             renderPlaceholderOnly: 'blank',
-            isRefreshing: false
+            isRefreshing: false,
+            value: '',
+            startSearch: 0
         };
     }
 
@@ -42,27 +47,56 @@ export default class OrderSearchScene extends BaseComponent {
         });
     }
 
-    startSearch = () => {
-        this.setState({
-            renderPlaceholderOnly: 'loading'
-        });
+    dateReversal = (time) => {
+        const date = new Date();
+        date.setTime(time);
+        return (date.getFullYear() + "-" + (this.PrefixInteger(date.getMonth() + 1, 2)) + "-" +
+        (this.PrefixInteger(date.getDate() + 1, 2)));
+    };
+
+    PrefixInteger = (num, length) => {
+        return (Array(length).join('0') + num).slice(-length);
+    };
+
+    // 下拉刷新数据
+    refreshingData = () => {
+        this.orderListData = [];
+        this.setState({isRefreshing: true});
         this.loadData();
-    }
+    };
+
+    startSearch = () => {
+        if (this.state.value === '') {
+            this.props.showToast('车辆名称不能为空');
+        } else {
+            this.setState({
+                startSearch: 1,
+                renderPlaceholderOnly: 'loading'
+            });
+            this.loadData();
+        }
+    };
+
+    renderListFooter = () => {
+        if (this.state.isRefreshing) {
+            return null;
+        } else {
+            return (<LoadMoreFooter isLoadAll={this.pageNum >= this.allPage} isCarFoot={false}/>)
+        }
+    };
 
     loadData = () => {
         let url = AppUrls.ORDER_SEARCH;
         this.pageNum = 1;
         request(url, 'post', {
-            business: 0,
+            business: this.props.business,
             page: this.pageNum,
-            rows: 10
-            /*start_time: '',
-             end_time: '',
-             is_finance: '',
-             status: ''*/
+            rows: 10,
+            car_name: this.state.value
         }).then((response) => {
-            this.orderListData = response.mjson.data.list;
-            if (this.orderListData.length) {
+            this.orderListData = response.mjson.data.info_list;
+            this.allPage = response.mjson.data.total / response.mjson.data.rows;
+            if (response.mjson.data && this.orderListData.length > 0) {
                 this.setState({
                     dataSource: this.state.dataSource.cloneWithRows(this.orderListData),
                     isRefreshing: false,
@@ -97,11 +131,12 @@ export default class OrderSearchScene extends BaseComponent {
                         <View style={styles.navigatorSousuoView}>
                             <Image style={{marginLeft: Pixel.getPixel(15), marginRight: Pixel.getPixel(10)}}
                                    source={require('../../../images/carSourceImages/sousuoicon.png')}/>
-                            <TextInput defaultValue={''}
-                                       placeholder={"请输入车辆名称"}
-                                       style={styles.inputStyle}
-                                       secureTextEntry={false}
-                                       underlineColorAndroid="transparent"
+                            <TextInput
+                                onChangeText={(text) => this.setState({value: text})}
+                                placeholder={"请输入车辆名称"}
+                                style={styles.inputStyle}
+                                secureTextEntry={false}
+                                underlineColorAndroid="transparent"
                             />
                         </View>
                         <TouchableOpacity onPress={this.startSearch}>
@@ -125,44 +160,11 @@ export default class OrderSearchScene extends BaseComponent {
         );
     }
 
-    _navigatorView() {
-        return (
-            <View style={styles.navigatorView}>
-                <View style={styles.navitgatorContentView}>
-                    <TouchableOpacity
-                        style={{justifyContent: 'center'}}
-                        onPress={this.backPage}>
-                        <Image style={styles.backIcon}
-                               source={require('../../../images/mainImage/navigatorBack.png')}/>
-                    </TouchableOpacity>
-                    <View style={styles.navigatorSousuoView}>
-                        <Image style={{marginLeft: Pixel.getPixel(15), marginRight: Pixel.getPixel(10)}}
-                               source={require('../../../images/carSourceImages/sousuoicon.png')}/>
-                        <TextInput defaultValue={''}
-                                   placeholder={"请输入车辆名称"}
-                                   style={styles.inputStyle}
-                                   secureTextEntry={false}
-                                   underlineColorAndroid="transparent"
-                        />
-                    </View>
-                    <TouchableOpacity onPress={this.startSearch}>
-                        <View style={{
-                            marginLeft: Pixel.getPixel(10),
-                            width: Pixel.getPixel(50),
-                            height: Pixel.getPixel(40),
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                        }}>
-                            <Text style={{
-                                color: 'white',
-                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30)
-                            }}>搜索</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        );
-    }
+    toEnd = () => {
+        if (this.orderListData.length && !this.state.isRefreshing) {
+            //this.loadMoreData();
+        }
+    };
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
@@ -181,11 +183,12 @@ export default class OrderSearchScene extends BaseComponent {
                             <View style={styles.navigatorSousuoView}>
                                 <Image style={{marginLeft: Pixel.getPixel(15), marginRight: Pixel.getPixel(10)}}
                                        source={require('../../../images/carSourceImages/sousuoicon.png')}/>
-                                <TextInput defaultValue={''}
-                                           placeholder={"请输入车辆名称"}
-                                           style={styles.inputStyle}
-                                           secureTextEntry={false}
-                                           underlineColorAndroid="transparent"
+                                <TextInput
+                                    onChangeText={(text) => this.setState({value: text})}
+                                    placeholder={"请输入车辆名称"}
+                                    style={styles.inputStyle}
+                                    secureTextEntry={false}
+                                    underlineColorAndroid="transparent"
                                 />
                             </View>
                             <TouchableOpacity onPress={this.startSearch}>
@@ -208,7 +211,17 @@ export default class OrderSearchScene extends BaseComponent {
                               dataSource={this.state.dataSource}
                               renderRow={this._renderRow}
                               enableEmptySections={true}
-                              renderSeparator={this._renderSeperator}/>
+                              renderSeparator={this._renderSeperator}
+                              renderFooter={this.state.startSearch === 0 ? null : this.renderListFooter}
+                              onEndReached={this.state.startSearch === 0 ? null : this.toEnd}
+                              refreshControl={this.state.startSearch === 0 ? null :
+                                  <RefreshControl
+                                      refreshing={this.state.isRefreshing}
+                                      onRefresh={this.refreshingData}
+                                      tintColor={[fontAndColor.COLORB0]}
+                                      colors={[fontAndColor.COLORB0]}
+                                  />
+                              }/>
                 </View>
             )
         }
