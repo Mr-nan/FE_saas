@@ -442,6 +442,10 @@ export default class CarPublishSecondScene extends BaseComponent{
             this.props.showToast('请输入分销批发价');
             return;
         }
+        if(this.carData.v_type == 1 && !this.carData.registrant_id){
+            this.props.showToast('请选择登记人');
+            return;
+        }
         if(this.carData.city_id==''||!this.carData.city_id)
         {
             this.props.showToast('请选择车辆所在地');
@@ -477,6 +481,7 @@ export default class CarPublishSecondScene extends BaseComponent{
     selectPersonClick=(data)=>{
 
        this.titleData1[2][1].value = data.business_name;
+       this.carData['registrant_id'] = data.id;
         this.updateUI();
     }
 
