@@ -22,17 +22,19 @@ export default class AccountModal extends Component {
             isShow: false,
             content: '',
             leftText: '',
-            rightText: ''
+            rightText: '',
+            callBack:()=>{}
 
         };
     }
 
-    changeShowType = (value, content, leftText, rightText) => {
+    changeShowType = (value, content, leftText, rightText,callBack) => {
         this.setState({
             isShow: value,
             content: content,
             leftText: leftText,
-            rightText: rightText
+            rightText: rightText,
+            callBack:callBack
         });
     }
 
@@ -62,7 +64,7 @@ export default class AccountModal extends Component {
                         <View style={{width:width-width/4-Pixel.getPixel(40),height:Pixel.getPixel(35),flexDirection:'row',
                         position: 'absolute',bottom:Pixel.getPixel(20),left: Pixel.getPixel(20)}}>
                             <TouchableOpacity onPress={()=>{
-                                this.props.callBack();
+                                this.state.callBack();
                                  this.setState({
                                     isShow: false
                                     });

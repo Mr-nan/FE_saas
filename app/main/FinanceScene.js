@@ -53,8 +53,8 @@ let loanList = [];
 import CGDLendScenes from '../finance/lend/CGDLendScenes';
 import AccountModal from '../component/AccountModal';
 import ReceiptInfoScene from '../finance/page/ReceiptInfoScene';
-let firstType = '';
-let lastType = '';
+let firstType = '-1';
+let lastType = '-1';
 
 export class HomeHeaderItemInfo {
     constructor(ref, key, functionTitle, describeTitle, functionImage) {
@@ -206,7 +206,7 @@ export default class FinanceSence extends BaseComponet {
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
-                            lastType = response.data.status;
+                            lastType = response.mjson.data.status;
                         },
                         (error) => {
 
@@ -216,25 +216,33 @@ export default class FinanceSence extends BaseComponet {
     }
 
     componentDidUpdate() {
+
         if (this.state.renderPlaceholderOnly == 'success') {
             if (firstType != lastType) {
                 if (lastType != 3) {
                     StorageUtil.mGetItem(storageKeyNames.ENTERPRISE_LIST, (data) => {
                         if (data.code == 1) {
                             let datas = JSON.parse(data.result);
+                            console.log(datas);
                             if (datas[0].role_type == '1') {
                                 if (lastType == '0') {
                                     this.refs.accountmodal.changeShowType(true,
                                         '您还未开通资金账户，为方便您使用金融产品及购物车，' +
-                                        '请尽快开通！', '去开户', '看看再说');
+                                        '请尽快开通！', '去开户', '看看再说',()=>{
+
+                                        });
                                 } else if (lastType == '1') {
                                     this.refs.accountmodal.changeShowType(true,
                                         '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
-                                        , '去开户', '看看再说');
+                                        , '去开户', '看看再说',()=>{
+
+                                        });
                                 } else if (lastType == '2') {
                                     this.refs.accountmodal.changeShowType(true,
                                         '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
-                                        , '去开户', '看看再说');
+                                        , '去开户', '看看再说',()=>{
+
+                                        });
                                 }
                                 firstType = lastType;
                             }
@@ -248,8 +256,8 @@ export default class FinanceSence extends BaseComponet {
     // 构造
     constructor(props) {
         super(props);
-        firstType = '';
-        lastType = '';
+        firstType = '-1';
+        lastType = '-1';
         this.state = {
             source: [],
             allData: {

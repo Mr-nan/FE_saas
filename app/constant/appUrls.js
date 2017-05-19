@@ -177,6 +177,13 @@ export const LOAN_SUBJECT = 'api/v1/user/get_loan_subject_list';
 /**
  * from @zhaojian
  *
+ * 获取企业合同列表
+ **/
+export const USER_GET_USER_LIST = 'api/v1/user/get_user_list';
+
+/**
+ * from @zhaojian
+ *
  * 获取更新信息
  **/
 export const APP_UPDATE = BASEURL + 'v1/system/index';
