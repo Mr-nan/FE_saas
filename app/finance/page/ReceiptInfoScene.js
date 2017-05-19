@@ -81,10 +81,26 @@ export default  class  ReceiptInfoScene extends BaseComponent{
 
     render(){
         return(<View style={styles.rootContainer}>
-            <ListView dataSource={this.state.dataSource} renderSectionHeader={this.renderSectionHeader}
-                      renderRow={this.renderRow}/>
+            <ListView dataSource={this.state.dataSource}
+                      renderSectionHeader={this.renderSectionHeader}
+                      renderRow={this.renderRow}
+                      renderSeparator={this._renderSeparator}
+
+
+            />
             <AllNavigationView title="借据信息" backIconClick={this.backPage}/>
         </View>)
+    }
+
+    _renderSeparator(sectionId, rowId) {
+
+        return (
+            <View style={styles.Separator} key={rowId + '123'}>
+                <View style={{flex:1, backgroundColor:fontAndColor.COLORA3}}>
+
+                </View>
+            </View>
+        )
     }
 
 
@@ -126,8 +142,14 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         justifyContent:'space-between',
         alignItems:'center',
-        paddingHorizontal:Pixel.getPixel(15),
-        borderBottomColor:fontAndColor.COLORA4,
-        borderBottomWidth:Pixel.getPixel(0.5),
+        paddingHorizontal:Pixel.getPixel(15)
+    },
+    Separator: {
+        backgroundColor: '#fff',
+        height: Pixel.getPixel(1),
+        paddingLeft: Pixel.getPixel(15),
+        paddingRight: Pixel.getPixel(15)
+
+
     }
 });

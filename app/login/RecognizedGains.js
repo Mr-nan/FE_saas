@@ -9,7 +9,8 @@ import {
     InteractionManager,
     ScrollView,
     Image,
-    ListView
+    ListView,
+    NativeModules
 } from "react-native";
 import BaseComponent from "../component/BaseComponent";
 import NavigationBar from "../component/NavigationBar";
@@ -31,7 +32,7 @@ var imgSid: '';
 var itemWidth = width;
 import ContractInfoScene from './ContractInfoScene';
 import ReceiptInfoScene  from '../finance/page/ReceiptInfoScene';
-
+let imeis = '';
 export default class RecognizedGains extends BaseComponent {
 
     constructor(props) {
@@ -41,6 +42,12 @@ export default class RecognizedGains extends BaseComponent {
             source: [],
             agreement:[]
         };
+        imeis = '';
+        if (Platform.OS === 'android') {
+            NativeModules.VinScan.getIMEI((imei) => {
+                imeis = imei;
+            });
+        }
     }
 
     initFinish = () => {
