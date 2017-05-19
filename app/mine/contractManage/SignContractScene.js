@@ -84,7 +84,7 @@ export  default class SignContractScene extends BaseComponent {
                 locked={true}
                 scrollWithoutAnimation={true}
                 renderTabBar={() =>
-                <RepaymenyTabBar tabName={["未签署"+first, "单方签署", "已签署", "转债权未签"+last, "转债权已签"]}/>}
+                <RepaymenyTabBar tabName={["未签署"+first, "单方签署", "已签署", "微单合同未确认"+last, "微单合同已确认"]}/>}
             >
                 <NoneSineScene tabLabel="ios-paper"  opt_user_id= {this.props.opt_user_id} navigator={this.props.navigator}/>
 

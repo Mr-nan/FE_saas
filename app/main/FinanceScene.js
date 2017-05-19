@@ -147,7 +147,7 @@ export default class FinanceSence extends BaseComponet {
 
                     let title = '';
                     if (mnyData.is_microchinese_mny == 1 || mnyData.is_microchinese_mny == 5) {
-                        title = '立即激活微众额度';
+                        title = '立即激活微单额度';
                     } else if (mnyData.is_microchinese_mny == 2) {
                         title = '待审核';
                     } else if (mnyData.is_microchinese_mny == 4) {
@@ -303,7 +303,7 @@ export default class FinanceSence extends BaseComponet {
                                   confimTitle="重新审核"
 
                 />
-                <LendSuccessAlert ref="showTitleAlert" title={'提示'} subtitle={'微众额度以车贷可用额度为准'}/>
+                <LendSuccessAlert ref="showTitleAlert" title={'提示'} subtitle={'微单可用额度以车贷可用额度为准'}/>
             </View>
         )
     }
@@ -628,7 +628,7 @@ export default class FinanceSence extends BaseComponet {
                                                 fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                                                 color: '#fff',
                                                 backgroundColor: '#00000000'
-                                            }}>微众可用额度(万)</Text>
+                                            }}>微单可用额度(万)</Text>
                                             <Image source={require('../../images/financeImages/titleAlert.png')}
                                                    style={{marginLeft:5}}/>
                                         </TouchableOpacity>
