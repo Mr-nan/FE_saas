@@ -305,7 +305,6 @@ export default class CarUpImageScene extends BaseComponent{
                 }, (error) => {
 
                     this.props.showModal(false);
-                    console.log(error);
                     if(error.mycode === -300 || error.mycode === -500){
                         this.showToast('网络连接失败');
                     }else{
