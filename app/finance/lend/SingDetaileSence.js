@@ -308,7 +308,13 @@ export  default  class SingDetaileSence extends BaseComponent {
                 name: 'RecognizedGains', component: RecognizedGains, params: {
                     loan_code: controlCode.loan_code,
                     loan_number: '',
-                    isShow:true
+                    isShow:true,
+                    callBack:()=>{
+                        this.setState({
+                            renderPlaceholderOnly:'loading'
+                        });
+                        this.getLendinfo();
+                    }
                 }
             });
         }
