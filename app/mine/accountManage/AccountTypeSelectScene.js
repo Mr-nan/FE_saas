@@ -20,10 +20,6 @@ const Pixel = new PixelUtil();
 import * as fontAndColor from '../../constant/fontAndColor';
 import BaseComponent from '../../component/BaseComponent';
 import NavigationView from '../../component/AllNavigationView';
-const childItems = [];
-import {request} from '../../utils/RequestUtil';
-import * as Urls from '../../constant/appUrls';
-import AccountInfoScene from './AccountInfoScene';
 import OpenIndividualAccountScene from './OpenIndividualAccountScene';
 import OpenEnterpriseAccountScene from './OpenEnterpriseAccountScene';
 export  default class AccountTypeSelectScene extends BaseComponent {

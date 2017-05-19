@@ -42,6 +42,18 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
         });
     }
 
+    backPage = () => {
+        let navigator = this.props.navigator;
+        if (navigator){
+            for(let i = 0;i<navigator.getCurrentRoutes().length;i++){
+                if(navigator.getCurrentRoutes()[i].name=='MainPage'){
+                    navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                    break;
+                }
+            }
+        }
+    }
+
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return this._renderPlaceholderView();
@@ -129,20 +141,13 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
             mobile_no: phone,
             enter_base_id:base_id
         };
+
         request(Urls.USER_OPEN_ACCOUNT_PERSONAL, 'Post', maps)
             .then((response) => {
                     this.props.showModal(false);
                     this.props.showToast('开户成功');
                     this.props.callBack();
-                    let navigator = this.props.navigator;
-                    if (navigator){
-                        for(let i = 0;i<navigator.getCurrentRoutes().length;i++){
-                            if(navigator.getCurrentRoutes()[i].name=='MainPage'){
-                                navigator.popToRoute(navigator.getCurrentRoutes()[i]);
-                                break;
-                            }
-                        }
-                    }
+                    this.backPage();
                 },
                 (error) => {
                     this.props.showModal(false);
