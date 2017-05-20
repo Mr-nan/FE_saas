@@ -616,7 +616,8 @@ export default class FinanceSence extends BaseComponet {
                                         backgroundColor: '#00000000',
                                         flex: 1,
                                         textAlign: 'center'
-                                    }}>{this.state.mnyData.is_microchinese_mny==3?(this.state.allData.keyongedu+this.state.mnyData.microchinese_mny/10000):(this.state.allData.keyongedu)}</Text>
+                                    }}>
+                                    {this.state.allData.keyongedu}</Text>
                             </View>
                             {
                                 this.state.mnyData.is_microchinese_mny == 3 && (
