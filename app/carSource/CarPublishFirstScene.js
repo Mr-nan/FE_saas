@@ -47,7 +47,6 @@ export default class CarPublishFirstScene extends BaseComponent{
 
     initFinish=()=>{
 
-        console.log(this.props.carID);
         if(this.props.carID!==undefined){
 
             this.loadCarData();
@@ -58,6 +57,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                     let enters = JSON.parse(data.result);
                     if(enters.length === 1){
 
+                        console.log(enters[0].enterprise_uid);
                         this.carData['show_shop_id'] = enters[0].enterprise_uid;
                         this.getLocalityCarData();
 
