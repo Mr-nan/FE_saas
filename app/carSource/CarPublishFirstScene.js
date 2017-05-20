@@ -95,7 +95,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                       tailView:()=>{
                           return(
                               <View style={{flexDirection:'row', alignItems:'center'}}>
-                                  <TextInput style={[styles.textInput,{width:Pixel.getPixel(150)}]}
+                                  <TextInput style={styles.textInput}
                                              placeholder='输入车架号'
                                              underlineColorAndroid='transparent'
                                              maxLength={17}
@@ -217,7 +217,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                       tailView:()=>{
                           return(
                               <View style={{flexDirection:'row', alignItems:'center'}}>
-                                  <TextInput style={[styles.textInput,{width:Pixel.getPixel(150)}]}
+                                  <TextInput style={styles.textInput}
                                              placeholder='输入车架号'
                                              underlineColorAndroid='transparent'
                                              maxLength={17}
@@ -982,7 +982,7 @@ const styles = StyleSheet.create({
     textInput:{
         height: 20,
         borderColor: fontAndColor.COLORA0,
-        width:120,
+        width:160,
         textAlign:'right',
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
     },

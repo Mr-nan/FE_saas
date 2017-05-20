@@ -64,8 +64,6 @@ export const CAR_HOME_BRAND = BASEURL + V + 'home/brand';
  */
 export const CAR_HOME_SERIES = BASEURL + V + 'home/series';
 
-
-
 /**
  * 获取车型
  */
@@ -97,6 +95,11 @@ export const CAR_DETAIL = BASEURL + V + 'car/detail';
  * 获取车辆配置信息
  */
 export const CAR_CONFIGURATION = BASEURL + V + 'car/modelsConfig';
+
+/**
+ * 获取车辆保养
+ */
+export const CAR_GET_ERPORT = BASEURL + V + 'che/report';
 
 /**
  * 获取客服电话号码
