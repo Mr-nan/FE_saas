@@ -35,9 +35,14 @@ import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
 import EditEmployeeScene  from '../mine/employeeManage/EditEmployeeScene'
 import ImageSource from '../publish/component/ImageSource';
+<<<<<<< HEAD
 import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
 import AccountModal from '../component/AccountModal';
+=======
+import OrderTypeSelectScene from  '../mine/myOrder/OrderTypeSelectScene';
+
+>>>>>>> 945599bda099e1b42ba3d351a06f631781bc15dc
 let Platform = require('Platform');
 import ImagePicker from "react-native-image-picker";
 let firstType = '-1';
@@ -77,6 +82,10 @@ let Car = [
             {
                 "icon": require('../../images/mainImage/myCarSource.png'),
                 "name": "我的车源"
+            },
+            {
+                "icon": require('../../images/mainImage/my_order.png'),
+                "name": "我的订单"
             },
             {
                 "icon": require('../../images/mainImage/shoucangjilu.png'),
@@ -193,6 +202,10 @@ export default class MineSectionListView extends BaseComponent {
                     {
                         "icon": require('../../images/mainImage/myCarSource.png'),
                         "name": "我的车源"
+                    },
+                    {
+                        "icon": require('../../images/mainImage/my_order.png'),
+                        "name": "我的订单"
                     },
                     {
                         "icon": require('../../images/mainImage/shoucangjilu.png'),
@@ -445,6 +458,11 @@ export default class MineSectionListView extends BaseComponent {
             case '我的车源':
                 this.navigatorParams.name = 'MycarScene'
                 this.navigatorParams.component = MycarScene
+                break;
+                break;
+            case '我的订单':
+                this.navigatorParams.name = 'OrderTypeSelectScene'
+                this.navigatorParams.component = OrderTypeSelectScene
                 break;
             case '收藏记录':
                 this.navigatorParams.name = 'CarCollectSourceScene'
