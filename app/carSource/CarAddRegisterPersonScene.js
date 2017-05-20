@@ -74,6 +74,8 @@ export default class CarAddRegisterPersonScene extends BaseComponent{
                         <View>
                             <TextInput style={styles.textInput}
                                        placeholder='请输入'
+                                       maxLength={11}
+                                       keyboardType={'phone-pad'}
                                        onChangeText={(text)=>{
                                            this.personData['phoneNumber'] = text;
                                        }}
@@ -91,6 +93,8 @@ export default class CarAddRegisterPersonScene extends BaseComponent{
                             <TextInput
                                 style={styles.textInput}
                                 placeholder='请输入'
+                                maxLength={18}
+                                keyboardType={'numbers-and-punctuation'}
                                 onChangeText={(text)=>{
                                     this.personData['cardid'] = text;
                                 }}
@@ -108,6 +112,7 @@ export default class CarAddRegisterPersonScene extends BaseComponent{
                         <TextInput
                             style={styles.textInput}
                             placeholder='请输入'
+                            keyboardType={'number-pad'}
                             onChangeText={(text)=>{
                                 this.personData['cooperation_year'] = text;
                             }}
@@ -154,11 +159,7 @@ export default class CarAddRegisterPersonScene extends BaseComponent{
                                         {
                                             data.map((rowData,subIndex)=>{
                                                 return(
-                                                    <TouchableOpacity key={subIndex}
-                                                                      activeOpacity={1}
-                                                                      onPress={()=>this.cellCilck(rowData.title)}>
-                                                        <CellView cellData={rowData}/>
-                                                    </TouchableOpacity>
+                                                    <CellView cellData={rowData} key={subIndex}/>
                                                 )
                                             })
                                         }
@@ -187,13 +188,25 @@ export default class CarAddRegisterPersonScene extends BaseComponent{
         if(!this.personData.business_name||this.personData.business_name==''){
             this.showToast('请输入姓名');
             return;
-        }if(!this.personData.phoneNumber||this.personData.phoneNumber==''){
+        }
+        if(!this.personData.phoneNumber||this.personData.phoneNumber==''){
             this.showToast('请输入手机号');
             return;
-        }if(!this.personData.cardid||this.personData.cardid==''){
+        }
+        if(this.personData.phoneNumber.length!=11){
+            this.showToast('请输入正确的手机号');
+            return;
+        }
+        if(!this.personData.cardid||this.personData.cardid==''){
             this.showToast('请输入身份证号码');
             return;
-        }if(!this.personData.cooperation_year||this.personData.cooperation_year==''){
+        }
+        if(!this.isCardNo(this.personData.cardid))
+        {
+            this.showToast('请输入正确的身份证号码');
+            return;
+        }
+        if(!this.personData.cooperation_year||this.personData.cooperation_year==''){
             this.showToast('请输入合作年限');
             return;
         }if(!this.personData.position||this.personData.position==''){
@@ -237,6 +250,17 @@ export default class CarAddRegisterPersonScene extends BaseComponent{
             );
         }
     }
+
+    isCardNo=(card)=> {
+        // 身份证号码为15位或者18位，15位时全为数字，18位前17位为数字，最后一位是校验位，可能为数字或字符X
+        var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+        if(reg.test(card) === false)
+        {
+            return  false;
+        }else {
+            return true;
+        }
+    }
 }
 
 
@@ -267,7 +291,7 @@ const styles = StyleSheet.create({
         fontSize:fontAndColor.BUTTONFONT30
     },
     textInput:{
-        height: 30,
+        height: 20,
         borderColor: fontAndColor.COLORA0,
         width:200,
         textAlign:'right',
