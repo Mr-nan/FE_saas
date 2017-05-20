@@ -340,7 +340,7 @@ export default class MineSectionListView extends BaseComponent {
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
                             // lastType = response.mjson.data.status;
-                            lastType = '1';
+                            lastType = '2';
                             this.changeData();
                         },
                         (error) => {
@@ -504,7 +504,7 @@ export default class MineSectionListView extends BaseComponent {
     componentDidUpdate() {
         if (this.state.renderPlaceholderOnly == 'success') {
             if (firstType != lastType) {
-                if (lastType != 3) {
+                if (lastType != '3') {
                     StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST, (data) => {
                         if (data.code == 1) {
                             let datas = JSON.parse(data.result);
