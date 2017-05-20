@@ -29,6 +29,7 @@ import BankCardScene from './BankCardScene';
 import AccountFlowScene from './AccountFlowScene';
 import AccountSettingScene from './AccountSettingScene';
 import FrozenScene from './FrozenScene';
+import TransferScene from './TransferScene';
 export  default class AccountScene extends BaseComponent {
 
     constructor(props) {
@@ -117,6 +118,7 @@ export  default class AccountScene extends BaseComponent {
                           accountSetting={()=>{this.toNextPage({name:'AccountSettingScene',component:AccountSettingScene,params:{}})}}
                           moreFlow={()=>{this.toNextPage({name:'AccountFlowScene',component:AccountFlowScene,params:{}})}}
                           frozen={()=>{this.toNextPage({name:'FrozenScene',component:FrozenScene,params:{}})}}
+                          transfer={()=>{this.toNextPage({name:'TransferScene',component:TransferScene,params:{}})}}
 
 
             />
