@@ -1,12 +1,12 @@
 /**
  * 开发地址
  */
-export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+//export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地
  */
-// export const BASEURL = 'http://api-gateway.test.dycd.com/';
+ export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 正式地址
@@ -64,6 +64,7 @@ export const CAR_HOME_BRAND = BASEURL + V + 'home/brand';
  */
 export const CAR_HOME_SERIES = BASEURL + V + 'home/series';
 
+
 /**
  * 获取车型
  */
@@ -95,11 +96,6 @@ export const CAR_DETAIL = BASEURL + V + 'car/detail';
  * 获取车辆配置信息
  */
 export const CAR_CONFIGURATION = BASEURL + V + 'car/modelsConfig';
-
-/**
- * 获取车辆保养
- */
-export const CAR_GET_ERPORT = BASEURL + V + 'che/report';
 
 /**
  * 获取客服电话号码
@@ -228,21 +224,42 @@ export const PURCHAAUTO_ADDAUTO = 'api/v2/purchaAuto/addAuto';
  *
  * 获取角色列表
  **/
-export const USER_ROLE = BASEURL+'v1/user/role';
+export const USER_ROLE = BASEURL + 'v1/user/role';
 
 /**
  * from @zhaojian
  *
  * 添加||编辑员工
  **/
-export const USER_EMPLOYEE_SAVE = BASEURL+'v1/user.employee/save';
+export const USER_EMPLOYEE_SAVE = BASEURL + 'v1/user.employee/save';
 
 /**
  * from @zhaojian
  *
  * 开通个人账户
  **/
-export const USER_OPEN_ACCOUNT_PERSONAL = BASEURL+'v1/user.open_account/personal';
+export const USER_OPEN_ACCOUNT_PERSONAL = BASEURL + 'v1/user.open_account/personal';
+
+/**
+ * from @zhaojian
+ *
+ * 绑定银行卡
+ **/
+export const USER_BANK_BIND = BASEURL + 'v1/user.bank/bind';
+
+/**
+ * from @zhaojian
+ *
+ * 开通企业账户
+ **/
+export const USER_OPEN_ACCOUNT_COMPANY = BASEURL + 'v1/user.open_account/company';
+
+/**
+ * from @zhaojian
+ *
+ * 获取账户信息
+ **/
+export const USER_ACCOUNT_INFO = BASEURL + 'v1/user.account/info';
 
 /**
  * from @zhaojian
@@ -660,4 +677,15 @@ export const PURCHA_AUTO_DETAIL = 'api/v2/purchaAuto/autoDetail';
  * 获取车架好是否已存在以及校验规则
  **/
 export const PURCHA_CHECK_IN = 'api/v2/purchaAuto/checkVin';
-
+/**
+ * 订单列表
+ */
+export const ORDER_INDEX = BASEURL + V +'order/index';
+/**
+ * 订单搜索
+ */
+export const ORDER_SEARCH = BASEURL + V +'order/search';
+/**
+ * 订单详情
+ */
+export const ORDER_DETAIL = BASEURL + V +'order/detail';
