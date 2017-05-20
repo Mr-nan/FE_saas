@@ -154,7 +154,7 @@ export default class CarUpImageScene extends BaseComponent{
           }
 
           if(this.carData.pictures){
-              let imgas = JSON.parse(this.carData.pictures)
+              let imgas = JSON.parse(this.carData.pictures);
               this.results.push(...imgas);
               this.titleData.map((data,index)=>{
                   imgas.map((imgData,subIndex)=>{
@@ -164,10 +164,9 @@ export default class CarUpImageScene extends BaseComponent{
                   });
               });
           }else if(this.carData.imgs){
-              let imgas = JSON.parse(this.carData.imgs)
-              this.results.push(...imgas);
+              this.results.push(...this.carData.imgs);
               this.titleData.map((data,index)=>{
-                  imgas.map((imgData,subIndex)=>{
+                  this.carData.imgs.map((imgData,subIndex)=>{
                       if(data.name == imgData.name){
                           data.imgArray.push(imgData);
                       }
