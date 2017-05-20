@@ -28,6 +28,7 @@ import NewCarScene      from '../publish/NewCarScene';
 import * as fontAndColor from '../constant/fontAndColor';
 import * as AppUrls from "../constant/appUrls";
 import  {request}           from '../utils/RequestUtil';
+import CarPublishFirstScene from './CarPublishFirstScene';
 import PixelUtil from '../utils/PixelUtil';
 const Pixel = new PixelUtil();
 
@@ -75,14 +76,24 @@ export default class CarMySourceScene extends BaceComponent {
 
         } else if (typeStr == '编辑') {
 
+            // let navigatorParams = {
+            //
+            //     name: "EditCarScene",
+            //     component: EditCarScene,
+            //     params: {
+            //
+            //         fromNew: false,
+            //         carId: carData.id,
+            //     }
+            // };
+            // this.toNextPage(navigatorParams);
             let navigatorParams = {
 
-                name: "EditCarScene",
-                component: EditCarScene,
+                name: "CarPublishFirstScene",
+                component: CarPublishFirstScene,
                 params: {
 
-                    fromNew: false,
-                    carId: carData.id,
+                    carID: carData.id,
                 }
             };
             this.toNextPage(navigatorParams);
@@ -174,7 +185,7 @@ export default class CarMySourceScene extends BaceComponent {
                     <MyCarSourceAuditView  ref="auditView"  carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper3"/>
 
                 </ScrollableTabView>
-                <NavigatorView title='我的车源' backIconClick={this.backPage}
+                <NavigatorView title='我的车源' backIconClick={this.backToTop}
                                renderRihtFootView={this.renderRightFootView}/>
             </View>)
 

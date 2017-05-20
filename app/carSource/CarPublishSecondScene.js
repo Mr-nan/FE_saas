@@ -42,14 +42,18 @@ export default class CarPublishSecondScene extends BaseComponent{
         this.carData = this.props.carData;
 
         this.nature_use ='非营运';
+        this.carData['nature_use']=2;
 
         if(this.carData.nature_use==1)
         {
             this.nature_use ='营运';
+            this.carData['nature_use']=1;
+
 
         }else if(this.carData.nature_use==3)
         {
             this.nature_use ='租赁非营运';
+            this.carData['nature_use']=3;
 
         }
 
@@ -59,7 +63,7 @@ export default class CarPublishSecondScene extends BaseComponent{
             this.carData['mileage']='0';
         }else {
             this.carData['transfer_times']=this.carData.transfer_times ? String(this.carData.transfer_times):'0';
-            this.carData['mileage']=this.carData.mileage ? String(this.carData.mileage):'0';
+            this.carData['mileage']=this.carData.mileage ? String(this.carData.mileage):'';
         }
 
 
@@ -193,6 +197,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                             <TextInput
                                 style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(100),height:Pixel.getPixel(50)}]}
                                 placeholder='请填写'
+                                maxLength={50}
                                 defaultValue={this.carData.describe?this.carData.describe:''}
                                 onEndEditing={()=>{this.saveCarData();}}
                                 onChangeText={(text)=>{this.carData['describe']=text}}/>
@@ -242,7 +247,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                             <TextInput style={styles.textInput}
                                        placeholder='请输入'
-                                       defaultValue={this.carData.dealer_price?this.carData.dealer_price:''}
+                                       defaultValue={this.carData.dealer_price?this.carMoneyChange(this.carData.dealer_price):''}
                                        onChangeText={(text)=>{this.carData['dealer_price']=text}}
                                        onEndEditing={()=>{this.saveCarData();}}
                             />
@@ -261,7 +266,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                             <TextInput style={styles.textInput}
                                        placeholder='请输入'
-                                       defaultValue={this.carData.low_price?this.carData.low_price:''}
+                                       defaultValue={this.carData.low_price?this.carMoneyChange(this.carData.low_price):''}
                                        onChangeText={(text)=>{this.carData['low_price']=text}}
                                        onEndEditing={()=>{this.saveCarData();}}
                             />
@@ -280,7 +285,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                             <TextInput
                                 style={styles.textInput}
                                 placeholder='请输入'
-                                defaultValue={this.carData.member_price?this.carData.member_price:''}
+                                defaultValue={this.carData.member_price?this.carMoneyChange(this.carData.member_price):''}
                                 onChangeText={(text)=>{this.carData['member_price']=text}}
                                 onEndEditing={()=>{this.saveCarData();}}
                             />
@@ -305,7 +310,8 @@ export default class CarPublishSecondScene extends BaseComponent{
                             <TextInput
                                 style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(100),height:Pixel.getPixel(50)}]}
                                 placeholder='请填写'
-                                defaultValue={this.carData.describe?this.carData.describe:''}
+                                maxLength={50}
+                                defaultValue={this.carData.describe?this.carMoneyChange(this.carData.describe):''}
                                 onEndEditing={()=>{this.saveCarData();}}
                                 onChangeText={(text)=>{this.carData['describe']=text}}/>
                         )
@@ -324,6 +330,9 @@ export default class CarPublishSecondScene extends BaseComponent{
             <View style={styles.rootContainer}>
                 <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={Pixel.getTitlePixel(-64)}>
                     <ScrollView style={{width:sceneWidth,height:Dimensions.get('window').height - Pixel.getTitlePixel(64)}}>
+                        <View style={{width:sceneWidth,paddingVertical:Pixel.getPixel(25),backgroundColor:'white'}}>
+                            <Image style={{width:sceneWidth}} resizeMode={'contain'} source={require('../../images/carSourceImages/publishCarperpos2.png')}/>
+                        </View>
                         {
                             this.state.titleData.map((data,index)=>{
                                 return(
@@ -392,9 +401,9 @@ export default class CarPublishSecondScene extends BaseComponent{
     }
 
     saveCarData=()=>{
-        if(this.carData.show_shop_id){
-            StorageUtil.mSetItem(String(this.carData.show_shop_id),JSON.stringify(this.carData));
-        }
+            if (this.carData.show_shop_id && !this.carData.id) {
+                StorageUtil.mSetItem(String(this.carData.show_shop_id), JSON.stringify(this.carData));
+            }
     }
 
 
@@ -415,6 +424,38 @@ export default class CarPublishSecondScene extends BaseComponent{
     }
 
     nextAction=()=>{
+
+        if(this.carData.transfer_times==''||!this.carData.transfer_times)
+        {
+            this.props.showToast('请输入过户次数');
+            return;
+        }
+        if(this.carData.plate_number==''||!this.carData.plate_number)
+        {
+            this.props.showToast('请输入正确的车牌号');
+            return;
+        }
+        if(this.carData.mileage==''||!this.carData.mileage)
+        {
+            this.props.showToast('请输入里程');
+            return;
+        }
+
+        if(this.carData.transfer_times==''||!this.carData.transfer_times)
+        {
+            this.props.showToast('请输入分销批发价');
+            return;
+        }
+        if(this.carData.v_type == 1 && !this.carData.registrant_id){
+            this.props.showToast('请选择登记人');
+            return;
+        }
+        if(this.carData.city_id==''||!this.carData.city_id)
+        {
+            this.props.showToast('请选择车辆所在地');
+            return;
+        }
+
         let navigatorParams = {
             name: "CarUpImageScene",
             component: CarUpImageScene,
@@ -433,13 +474,18 @@ export default class CarPublishSecondScene extends BaseComponent{
             params: {
                 selectPersonClick:this.selectPersonClick,
                 currentPerson:this.titleData1[2][1].value,
+                shopID:this.carData.show_shop_id,
             }
         };
+
+        console.log(this.carData.show_shop_id);
+        console.log(this.carData);
         this.toNextPage(navigatorParams);
     }
     selectPersonClick=(data)=>{
 
-       this.titleData1[2][1].value = data;
+       this.titleData1[2][1].value = data.business_name;
+       this.carData['registrant_id'] = data.id;
         this.updateUI();
     }
 
@@ -450,6 +496,7 @@ export default class CarPublishSecondScene extends BaseComponent{
             params: {
                 checkedCarlicenseTagClick:this._checkedCarlicenseTagClick,
                 currentChecked:this.titleData1[0][2].value,
+
             }
         };
         this.toNextPage(navigatorParams);
@@ -478,6 +525,32 @@ export default class CarPublishSecondScene extends BaseComponent{
            this.carData['city_name'] = city.city_name;
            this.carData['city_id'] = city.city_id;
             this.updateUI();
+    }
+
+    carMoneyChange=(carMoney)=>{
+
+        let newCarMoney = parseFloat(carMoney);
+        let carMoneyStr = newCarMoney.toFixed(2);
+        let moneyArray = carMoneyStr.split(".");
+
+        // console.log(carMoney+'/'+newCarMoney +'/' + carMoneyStr +'/' +moneyArray);
+
+        if(moneyArray.length>1)
+        {
+            if(moneyArray[1]>0){
+
+                return moneyArray[0]+'.'+moneyArray[1];
+
+            }else {
+
+                return moneyArray[0];
+            }
+
+        }else {
+            return carMoneyStr;
+        }
+
+
     }
 
 

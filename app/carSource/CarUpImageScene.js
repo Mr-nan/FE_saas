@@ -10,6 +10,7 @@ import {
     TouchableOpacity,
     Dimensions,
     Platform,
+    Image,
 }   from 'react-native';
 
 import BaseComponent from '../component/BaseComponent';
@@ -19,6 +20,7 @@ import PixelUtil from '../utils/PixelUtil';
 import CarUpImageCell from './znComponent/CarUpImageCell';
 import StorageUtil from "../utils/StorageUtil";
 import SuccessModal from '../publish/component/SuccessModal';
+import CarMySourceScene from './CarMySourceScene';
 
 import * as Net from '../utils/RequestUtil';
 import * as AppUrls from '../constant/appUrls';
@@ -152,11 +154,20 @@ export default class CarUpImageScene extends BaseComponent{
           }
 
           if(this.carData.pictures){
-
-              this.results.push(...this.carData.pictures);
-
+              let imgas = JSON.parse(this.carData.pictures)
+              this.results.push(...imgas);
               this.titleData.map((data,index)=>{
-                  this.carData.pictures.map((imgData,subIndex)=>{
+                  imgas.map((imgData,subIndex)=>{
+                      if(data.name == imgData.name){
+                          data.imgArray.push(imgData);
+                      }
+                  });
+              });
+          }else if(this.carData.imgs){
+              let imgas = JSON.parse(this.carData.imgs)
+              this.results.push(...imgas);
+              this.titleData.map((data,index)=>{
+                  imgas.map((imgData,subIndex)=>{
                       if(data.name == imgData.name){
                           data.imgArray.push(imgData);
                       }
@@ -182,7 +193,13 @@ export default class CarUpImageScene extends BaseComponent{
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}
                     renderSeparator={this.renderSeparator}
-                    renderFooter={this.renderFooter}/>
+                    renderFooter={this.renderFooter}
+                    renderHeader={()=>{return(
+                        <View style={{width:sceneWidth,paddingVertical:Pixel.getPixel(25),backgroundColor:'white',borderBottomWidth:Pixel.getPixel(10),borderBottomColor:fontAndColor.COLORA3}}>
+                            <Image style={{width:sceneWidth}} resizeMode={'contain'} source={require('../../images/carSourceImages/publishCarperpos3.png')}/>
+                        </View>
+                    )}}
+                />
                 <AllNavigationView title="上传图片" backIconClick={this.backPage}/>
             </View>)
     }
@@ -210,8 +227,9 @@ export default class CarUpImageScene extends BaseComponent{
             <CarUpImageCell
                 results={this.results}
                 retureSaveAction={()=>{
-                    this.carData['pictures']=this.results;
-                    if(this.carData.show_shop_id){
+                    this.carData['pictures']=JSON.stringify(this.results);
+
+                    if(this.carData.show_shop_id && !this.carData.id){
                         StorageUtil.mSetItem(String(this.carData.show_shop_id),JSON.stringify(this.carData));
                     }
                 }}
@@ -265,9 +283,12 @@ export default class CarUpImageScene extends BaseComponent{
 
         }else {
 
+            console.log(this.carData.pictures);
+
             Net.request(AppUrls.CAR_SAVE,'post',this.carData).then((response) => {
 
-                this.props.showModal(true);
+                this.props.showModal(false);
+
                 if(response.mycode == 1){
                     if(this.carData.show_shop_id){
                         StorageUtil.mRemoveItem(String(this.carData.show_shop_id));
@@ -281,23 +302,32 @@ export default class CarUpImageScene extends BaseComponent{
                         );
                     }
                 }else {
-                    this.props.showToast('网络连接失败');
+                    this.showToast('网络连接失败');
 
                 }
 
                 }, (error) => {
-                
-                    this.props.showModal(true);
-                    this.props.closeLoading();
+
+                    this.props.showModal(false);
                     if(error.mycode === -300 || error.mycode === -500){
-                        this.props.showToast('网络连接失败');
+                        this.showToast('网络连接失败');
                     }else{
-                        this.props.showToast(error.mjson.msg);
+                        this.showToast(error.mjson.msg);
                     }
                 });
 
         }
+    }
 
+    showToast=(errorMsg)=>{
+        if(IS_ANDROID === true){
+            this.props.showToast(errorMsg);
+        }else {
+            this.timer = setTimeout(
+                () => { this.props.showToast(errorMsg)},
+                500
+            );
+        }
     }
 }
 

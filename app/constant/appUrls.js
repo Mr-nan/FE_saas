@@ -118,6 +118,16 @@ export const CAR_STATUS = BASEURL + V + 'car/status';
 export const CAR_PERLIST = BASEURL + V + 'car/preList';
 
 /**
+ * 获取登记人信息
+ */
+export const GET_REGISTRANT = BASEURL + V + 'car.borrower/getRegistrants';
+
+/**
+ * 添加登记人信息
+ */
+export const ADD_REGISTRANT = BASEURL + V + 'car.borrower/addRegistrant';
+
+/**
  * 根据VIN获取车辆详情
  */
 export const VININFO = BASEURL + V + 'car/vininfo';

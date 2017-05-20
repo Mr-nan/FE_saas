@@ -489,7 +489,7 @@ export default class CarInfoScene extends BaseComponent {
                                     return (
                                         <CarIconView imageData={data.image} imageHighData={data.imageHigh}
                                                      content={carData.carIconsContentData&&carData.carIconsContentData[index]} title={data.title}
-                                                     key={index}/>
+                                                     key={index+10}/>
                                     )
                                 })
                             }
@@ -530,16 +530,22 @@ export default class CarInfoScene extends BaseComponent {
                         {/*</TouchableOpacity>*/}
                     </View>
                 </ScrollView>
-                <TouchableOpacity style={styles.callView} onPress={this.callClick}>
-                    <View style={{alignItems:'center',justifyContent:'center',width:ScreenWidth*0.5}}>
-                    <Text style={styles.callText}>{'车源编号 '+carData.serial_num}</Text>
+
+                    <View style={styles.footView} >
+                        <View style={styles.carNumberView}>
+                            <Text style={styles.carNumberText}>车源编号</Text>
+                            <Text style={styles.carNumberText}>{carData.serial_num}</Text>
+                        </View>
+                        <TouchableOpacity onPress={this.callClick}>
+                            <View style={styles.callView}>
+                                <Image source={require('../../images/carSourceImages/phone.png')}/>
+                                <Text style={styles.callText}>电话咨询</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <View style={styles.orderView}>
+                            <Text style={styles.orderText}>订购</Text>
+                        </View>
                     </View>
-                    <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center', borderLeftWidth: StyleSheet.hairlineWidth,
-                        borderLeftColor:'white',width:ScreenWidth*0.5}}>
-                    <Image source={require('../../images/carSourceImages/phone.png')}/>
-                    <Text style={styles.callText}>咨询客服</Text>
-                     </View>
-                </TouchableOpacity>
                 <NavigationView
                     ref="navtigation"
                     wrapStyle={{backgroundColor:'rgba(0,0,0,0)'}}
@@ -952,22 +958,56 @@ const styles = StyleSheet.create({
         marginBottom:Pixel.getPixel(5),
 
     },
-    callView: {
-
+    footView: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: fontAndColor.COLORB0,
+        backgroundColor: 'white',
         height: Pixel.getPixel(44),
         position: 'absolute',
         bottom: 0,
         left: 0,
         right: 0,
+        borderTopColor:fontAndColor.COLORA4,
+        borderTopWidth:StyleSheet.hairlineWidth,
+    },
+    callView:{
+        flexDirection:'row',
+        justifyContent:'center',
+        alignItems:'center',
+        borderLeftWidth: StyleSheet.hairlineWidth,
+        borderLeftColor:fontAndColor.COLORA4,
+        paddingHorizontal:Pixel.getPixel(15),
+        height: Pixel.getPixel(44),
+        width:ScreenWidth/3
     },
     callText: {
-        color: 'white',
+        color: fontAndColor.COLORB0,
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
     },
+    carNumberView:{
+        alignItems:'center',
+        justifyContent:'center',
+        height:Pixel.getPixel(44),
+        paddingHorizontal:Pixel.getPixel(15),
+        width:ScreenWidth/3
+    },
+    carNumberText:{
+        color: fontAndColor.COLORA0,
+        fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT),
+    },
+    orderView:{
+        backgroundColor:fontAndColor.COLORB0,
+        height: Pixel.getPixel(44),
+        justifyContent:'center',
+        alignItems:'center',
+        width:ScreenWidth/3
+    },
+    orderText:{
+        color:'white',
+        fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30)
+    },
+
     PhotonContaier:{
 
         left:0,
