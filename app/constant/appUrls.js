@@ -233,6 +233,13 @@ export const USER_OPEN_ACCOUNT_PERSONAL = BASEURL + 'v1/user.open_account/person
 /**
  * from @zhaojian
  *
+ * 绑定银行卡
+ **/
+export const USER_BANK_BIND = BASEURL + 'v1/user.bank/bind';
+
+/**
+ * from @zhaojian
+ *
  * 开通企业账户
  **/
 export const USER_OPEN_ACCOUNT_COMPANY = BASEURL + 'v1/user.open_account/company';

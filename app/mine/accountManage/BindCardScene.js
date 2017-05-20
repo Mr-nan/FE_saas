@@ -23,7 +23,10 @@ import NavigationView from '../../component/AllNavigationView';
 let childItems = [];
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
+import StorageUtil from "../../utils/StorageUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
 import OpenIndividualAccountScene from './OpenIndividualAccountScene';
+import AccountWebScene from './AccountWebScene';
 export  default class BindCardScene extends BaseComponent {
 
     constructor(props) {
@@ -32,7 +35,7 @@ export  default class BindCardScene extends BaseComponent {
         childItems = [];
         childItems.push({title: '绑定银行卡',
             value: require('../../../images/mainImage/bindcard.png'),click:()=>{
-
+                this.getBindCardData();
             }});
         childItems.push({title: '修改账户信息',
             value: require('../../../images/mainImage/changeaccount.png'),click:()=>{
@@ -46,7 +49,35 @@ export  default class BindCardScene extends BaseComponent {
     }
 
     getBindCardData =()=>{
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas=JSON.parse(data.result);
+                let maps = {
+                    enter_base_id:datas.merge_id,
+                    user_type:'2'
+                };
 
+                request(Urls.USER_BANK_BIND, 'Post', maps)
+                    .then((response) => {
+                            this.props.showModal(false);
+                            this.toNextPage({name:'AccountWebScene',component:AccountWebScene,params:{
+                                title:'绑定银行卡',webUrl:response.mjson.data.auth_url+'?authTokenId='+response.mjson.data.auth_token
+                            }});
+                        },
+                        (error) => {
+                            this.props.showModal(false);
+                            if (error.mycode == -300 || error.mycode == -500) {
+                                this.props.showToast('获取账户信息失败');
+                            } else {
+                                this.props.showToast(error.mjson.msg);
+                            }
+                        });
+            } else {
+                this.props.showToast('用户信息查询失败');
+            }
+        })
+        this.props.showModal(true);
     }
 
     initFinish = () => {

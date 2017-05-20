@@ -124,10 +124,10 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
     }
 
     getBase_Id = (name, number, phone) => {
-        StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST, (data) => {
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas=JSON.parse(data.result);
-                this.openIndividual(name,number,phone,datas[0].enterprise_uid);
+                this.openIndividual(name,number,phone,datas.merge_id);
             } else {
                 this.props.showToast('用户信息查询失败');
             }

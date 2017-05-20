@@ -192,11 +192,11 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
             this.props.showToast('请输入经办人手机号');
             return;
         }else{
-            StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST, (data) => {
+            StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
                 if (data.code == 1 && data.result != null) {
                     let datas=JSON.parse(data.result);
                     this.sendData(cert_no,cert_type,cust_name,legal_cert_no,legal_real_name,
-                        org_agent_name,org_agent_cert_no,org_agent_mobile,datas[0].enterprise_uid);
+                        org_agent_name,org_agent_cert_no,org_agent_mobile,datas.merge_id);
                 } else {
                     this.props.showToast('用户信息查询失败');
                 }
