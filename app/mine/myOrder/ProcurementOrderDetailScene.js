@@ -108,7 +108,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 0:
                 this.listViewStyle = Pixel.getPixel(0);
                 return (
-                    <View>
+                    <View style={{marginTop: Pixel.getTitlePixel(65)}}>
                         <View style={styles.tradingCountdown}>
                             <Text style={{
                                 marginLeft: Pixel.getPixel(15),
@@ -124,7 +124,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 1:
                 this.listViewStyle = Pixel.getPixel(0);
                 return (
-                    <View>
+                    <View style={{marginTop: Pixel.getTitlePixel(65)}}>
                         <View style={styles.tradingCountdown}>
                             <Text style={{
                                 marginLeft: Pixel.getPixel(15),
@@ -241,7 +241,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         }, (error) => {
             //console.log('请求错误 = ', error);
             // todo test
-            this.orderState = 1;
+            this.orderState = 0;
             this.initListData(this.orderState);
             this.setState({
                 // todo test
@@ -610,7 +610,6 @@ const styles = StyleSheet.create({
         borderColor: fontAndColor.COLORA2
     },
     tradingCountdown: {
-        marginTop: Pixel.getTitlePixel(65),
         flexDirection: 'row',
         alignItems: 'center',
         height: Pixel.getPixel(40),
