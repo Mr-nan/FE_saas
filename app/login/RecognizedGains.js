@@ -109,7 +109,7 @@ export default class RecognizedGains extends BaseComponent {
                     fontSize: Pixel.getPixel(FontAndColor.CONTENTFONT24),
                     paddingTop: Pixel.getPixel(10),
                     paddingBottom: Pixel.getPixel(10),
-                }}>注意：<Text style={{color: FontAndColor.COLORA1}}>
+                }}><Text style={{color: FontAndColor.COLORA1}}>
                     如上借据内车辆使用车贷微单额度，需要点击确认后完成最终放款</Text></Text>
                 <View style={{width:width,height:Pixel.getPixel(60)}}>
 
