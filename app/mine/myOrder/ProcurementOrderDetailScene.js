@@ -30,24 +30,25 @@ import * as AppUrls from "../../constant/appUrls";
 import {request} from "../../utils/RequestUtil";
 const Pixel = new PixelUtil();
 
-let items = [];
-
 export default class ProcurementOrderDetailScene extends BaseComponent {
 
     constructor(props) {
         super(props);
-        let mList = ['0', '1', '2', '3', '4', '5', '6'];
+        //let mList = ['0', '1', '2', '3', '4', '5', '6'];
+
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-
-        items = [];
-        items.push({title: '创建订单', nodeState: 1, isLast: false, isFirst: true});
-        items.push({title: '已付订金', nodeState: 2, isLast: false, isFirst: false});
-        items.push({title: '结算尾款', nodeState: 2, isLast: false, isFirst: false});
-        items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
-        items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
-
+        this.items = [];
+        this.mList = [];
+        this.listViewStyle = Pixel.getPixel(0);
+        this.orderDetail = '';
+        this.orderState = -1;
+        /*        this.items.push({title: '创建订单', nodeState: 1, isLast: false, isFirst: true});
+         this.items.push({title: '已付订金', nodeState: 2, isLast: false, isFirst: false});
+         this.items.push({title: '结算尾款', nodeState: 2, isLast: false, isFirst: false});
+         this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
+         this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});*/
         this.state = {
-            source: ds.cloneWithRows(mList)
+            dataSource: ds
         }
     }
 
@@ -64,21 +65,169 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
          dataSource: this.state.dataSource.cloneWithRows(['','','']),
          renderPlaceholderOnly: 'success'
          });*/
-        //TODO 调详情接口
         this.loadData();
+    };
+
+    initListData = (orderState) => {
+        switch (orderState) {
+            case 0: //创建订单
+                this.mList = [];
+                this.mList = ['0', '1', '3', '4', '6'];
+                this.items.push({title: '创建订单', nodeState: 1, isLast: false, isFirst: true});
+                this.items.push({title: '已付订金', nodeState: 2, isLast: false, isFirst: false});
+                this.items.push({title: '结算尾款', nodeState: 2, isLast: false, isFirst: false});
+                //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
+                this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                break;
+            case 1: //待付订金
+                this.mList = [];
+                this.mList = ['0', '1', '2', '3', '4', '6'];
+                this.items.push({title: '创建订单', nodeState: 1, isLast: false, isFirst: true});
+                this.items.push({title: '已付订金', nodeState: 2, isLast: false, isFirst: false});
+                this.items.push({title: '结算尾款', nodeState: 2, isLast: false, isFirst: false});
+                //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
+                this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                break;
+            case 2: //已付订金(待付尾款)
+                this.mList = [];
+                this.mList = ['0', '1', '3', '4', '6'];
+                this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
+                this.items.push({title: '已付订金', nodeState: 1, isLast: false, isFirst: false});
+                this.items.push({title: '结算尾款', nodeState: 2, isLast: false, isFirst: false});
+                //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
+                this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                break;
+            default:
+                break;
+        }
+    };
+
+    initDetailPageTop = (orderState) => {
+        // TODO 根据订单状态初始化详情页悬浮头、悬浮底
+        switch (orderState) {
+            case 0:
+                this.listViewStyle = Pixel.getPixel(0);
+                return (
+                    <View>
+                        <View style={styles.tradingCountdown}>
+                            <Text style={{
+                                marginLeft: Pixel.getPixel(15),
+                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                color: fontAndColor.COLORB7
+                            }}>订金支付剩余时间：</Text>
+                            <DepositCountDown />
+                        </View>
+                        <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>
+                    </View>
+                )
+                break;
+            case 1:
+                this.listViewStyle = Pixel.getPixel(0);
+                return (
+                    <View>
+                        <View style={styles.tradingCountdown}>
+                            <Text style={{
+                                marginLeft: Pixel.getPixel(15),
+                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                color: fontAndColor.COLORB7
+                            }}>订金支付剩余时间：</Text>
+                            <DepositCountDown />
+                        </View>
+                        <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>
+                    </View>
+                )
+                break;
+            case 2:
+                this.listViewStyle = Pixel.getTitlePixel(65);
+                return null;
+                break;
+            default:
+                return null;
+                break;
+        }
+    };
+
+    initDetailPageBottom = (orderState) => {
+        switch (orderState) {
+            case 0:
+                return (
+                    <View style={styles.bottomBar}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.toNextPage({
+                                    name: 'CheckStand',
+                                    component: CheckStand,
+                                    params: {}
+                                });
+                            }}>
+                            <View style={styles.buttonCancel}>
+                                <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                )
+                break;
+            case 1:
+                return (
+                    <View style={styles.bottomBar}>
+                        <View style={styles.buttonCancel}>
+                            <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                        </View>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.toNextPage({
+                                    name: 'CheckStand',
+                                    component: CheckStand,
+                                    params: {}
+                                });
+                            }}>
+                            <View style={styles.buttonConfirm}>
+                                <Text style={{color: '#ffffff'}}>支付</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                )
+                break;
+            case 2:
+                return (
+                    <View style={styles.bottomBar}>
+                        <View style={styles.buttonCancel}>
+                            <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                        </View>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.toNextPage({
+                                    name: 'CheckStand',
+                                    component: CheckStand,
+                                    params: {}
+                                });
+                            }}>
+                            <View style={styles.buttonConfirm}>
+                                <Text style={{color: '#ffffff'}}>支付</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                )
+                break;
+            default:
+                return null;
+                break;
+        }
     };
 
     loadData = () => {
         let url = AppUrls.ORDER_DETAIL;
         request(url, 'post', {
-            order_no: 10
+            order_no: '20170511'
         }).then((response) => {
-            this.orderListData = response.mjson.data.info_list;
-            this.allPage = response.mjson.data.total / response.mjson.data.rows;
+            this.orderDetail = response.mjson.data;
+            this.orderState = response.mjson.data.status;
+            //this.orderState = this.orderDetail.status;
             //console.log('订单列表数据 = ', this.orderListData);
             if (response.mjson.data && this.orderListData.length > 0) {
+                this.initListData(orderState);
                 this.setState({
-                    dataSource: this.state.dataSource.cloneWithRows(this.orderListData),
+                    dataSource: this.state.dataSource.cloneWithRows(this.mList),
                     isRefreshing: false,
                     renderPlaceholderOnly: 'success'
                 });
@@ -91,7 +240,12 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
 
         }, (error) => {
             //console.log('请求错误 = ', error);
+            // todo test
+            this.orderState = 1;
+            this.initListData(this.orderState);
             this.setState({
+                // todo test
+                dataSource: this.state.dataSource.cloneWithRows(this.mList),
                 isRefreshing: false,
                 renderPlaceholderOnly: 'error'
             });
@@ -102,41 +256,16 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         return (
             <View style={styles.container}>
                 <NavigatorView title='订单详情' backIconClick={this.backPage}/>
-                <View style={styles.tradingCountdown}>
-                    <Text style={{
-                        marginLeft: Pixel.getPixel(15),
-                        fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-                        color: fontAndColor.COLORB7
-                    }}>订金支付剩余时间：</Text>
-                    {/*<DepositCountDown />*/}
-                    <GetCarCountDown />
-                </View>
-                <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>
+                {this.initDetailPageTop(this.orderState)}
                 <ListView
-                    style={{marginTop: Pixel.getPixel(0)}}
-                    dataSource={this.state.source}
+                    style={{marginTop: this.listViewStyle}}
+                    dataSource={this.state.dataSource}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeperator}
                     showsVerticalScrollIndicator={false}/>
 
                 <View style={{flex: 1}}/>
-                <View style={styles.bottomBar}>
-                    <View style={styles.buttonCancel}>
-                        <Text style={{color: fontAndColor.COLORA2}}>取消</Text>
-                    </View>
-                    <TouchableOpacity
-                        onPress={() => {
-                            this.toNextPage({
-                                name: 'CheckStand',
-                                component: CheckStand,
-                                params: {}
-                            });
-                        }}>
-                        <View style={styles.buttonConfirm}>
-                            <Text style={{color: '#ffffff'}}>确认</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
+                {this.initDetailPageBottom(this.orderState)}
             </View>
         )
     }
@@ -154,7 +283,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         if (rowData === '0') {
             return (
                 <View style={styles.itemType0}>
-                    <StepView items={items}/>
+                    <StepView items={this.items}/>
                 </View>
             )
         } else if (rowData === '1') {
@@ -217,10 +346,10 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 <Text style={styles.carDescribeTitle}>上牌：</Text>
                                 <Text style={styles.carDescribe}>2016-09-09</Text>
                             </View>
-                            <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
+{/*                            <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>标价：</Text>
                                 <Text style={styles.carDescribe}>20.59万</Text>
-                            </View>
+                            </View>*/}
                         </View>
                     </View>
                 </View>

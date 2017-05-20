@@ -236,6 +236,7 @@ export default class OrderSearchScene extends BaseComponent {
     }
 
     _renderRow = (rowData, selectionID, rowID) => {
+        let initRegDate = this.dateReversal(rowData.cars[0].car.init_reg + '000');
         //item 布局
         return (
             <TouchableOpacity
@@ -257,12 +258,12 @@ export default class OrderSearchScene extends BaseComponent {
                 activeOpacity={0.8}>
                 <View style={styles.rowView}>
                     <View style={styles.rowTitleLine}>
-                        <Text style={styles.rowTitleText}>中盛名车行</Text>
+                        <Text style={styles.rowTitleText}>{rowData.seller_company_name}</Text>
                         <Text style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                             color: fontAndColor.COLORA1,
                             marginLeft: Pixel.getPixel(5)
-                        }}>(12332156743)</Text>
+                        }}>({rowData.seller_company_id})</Text>
                         <View style={{flex: 1}}/>
                         <Text style={styles.rowTitleState}>已拍下</Text>
                     </View>
@@ -271,19 +272,19 @@ export default class OrderSearchScene extends BaseComponent {
                         <Image style={styles.image}
                                source={{uri: 'http://dycd-static.oss-cn-beijing.aliyuncs.com/Uploads/Oss/201703/13/58c639474ef45.jpg?x-oss-process=image/resize,w_320,h_240'}}/>
                         <View style={{marginLeft: Pixel.getPixel(10)}}>
-                            <Text>[北京]奔驰M级(进口) 2015款 M...</Text>
+                            <Text>{rowData.car_name}</Text>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>里程：</Text>
-                                <Text style={styles.carDescribe}>20.59万</Text>
+                                <Text style={styles.carDescribe}>{rowData.cars[0].car.mileage}万</Text>
                             </View>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>上牌：</Text>
-                                <Text style={styles.carDescribe}>2016-09-09</Text>
+                                <Text style={styles.carDescribe}>{initRegDate}</Text>
                             </View>
-                            <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
+{/*                            <View style={{flexDirection: 'row', marginTop: Pixel.dgetPixel(5), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>标价：</Text>
                                 <Text style={styles.carDescribe}>20.59万</Text>
-                            </View>
+                            </View>*/}
                         </View>
                     </View>
                     <View style={styles.separatedLine}/>
