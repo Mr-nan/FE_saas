@@ -86,6 +86,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                                 placeholder='请输入'
                                 defaultValue={this.carData.transfer_times}
                                 onEndEditing={()=>{this.saveCarData();}}
+                                keyboardType={'number-pad'}
                                 onChangeText={(text)=>{this.carData['transfer_times'] = text}}
                             />
                         )
@@ -108,6 +109,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                                     style={styles.textInput}
                                     placeholder='请输入'
                                     defaultValue={this.carData.mileage}
+                                    keyboardType={'number-pad'}
                                     onEndEditing={()=>{this.saveCarData();}}
                                     onChangeText={(text)=>{this.carData['mileage'] = text}}
                                 />
@@ -134,7 +136,8 @@ export default class CarPublishSecondScene extends BaseComponent{
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                             <TextInput style={styles.textInput}
                                        placeholder='请输入'
-                                       defaultValue={this.carData.dealer_price?this.carData.dealer_price:''}
+                                       keyboardType={'numeric'}
+                                       defaultValue={this.carData.dealer_price?this.carMoneyChange(this.carData.dealer_price):''}
                                        onEndEditing={()=>{this.saveCarData();}}
                                        onChangeText={(text)=>{this.carData['dealer_price']=text}}/>
                             <Text style={styles.textInputTitle}>万元</Text>
@@ -151,7 +154,8 @@ export default class CarPublishSecondScene extends BaseComponent{
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                             <TextInput style={styles.textInput}
                                        placeholder='请输入'
-                                       defaultValue={this.carData.low_price?this.carData.low_price:''}
+                                       keyboardType={'numeric'}
+                                       defaultValue={this.carData.low_price?this.carMoneyChange(this.carData.low_price):''}
                                        onEndEditing={()=>{this.saveCarData();}}
                                        onChangeText={(text)=>{this.carData['low_price']=text}}/>
                             <Text style={styles.textInputTitle}>万元</Text>
@@ -168,7 +172,8 @@ export default class CarPublishSecondScene extends BaseComponent{
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                             <TextInput style={styles.textInput}
                                        placeholder='请输入'
-                                       defaultValue={this.carData.member_price?this.carData.member_price:''}
+                                       keyboardType={'numeric'}
+                                       defaultValue={this.carData.member_price?this.carMoneyChange(this.carData.member_price):''}
                                        onEndEditing={()=>{this.saveCarData();}}
                                        onChangeText={(text)=>{this.carData['member_price']=text}}/>
                             <Text style={styles.textInputTitle}>万元</Text>
@@ -247,6 +252,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                             <TextInput style={styles.textInput}
                                        placeholder='请输入'
+                                       keyboardType={'numeric'}
                                        defaultValue={this.carData.dealer_price?this.carMoneyChange(this.carData.dealer_price):''}
                                        onChangeText={(text)=>{this.carData['dealer_price']=text}}
                                        onEndEditing={()=>{this.saveCarData();}}
@@ -266,6 +272,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                             <TextInput style={styles.textInput}
                                        placeholder='请输入'
+                                       keyboardType={'numeric'}
                                        defaultValue={this.carData.low_price?this.carMoneyChange(this.carData.low_price):''}
                                        onChangeText={(text)=>{this.carData['low_price']=text}}
                                        onEndEditing={()=>{this.saveCarData();}}
@@ -285,6 +292,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                             <TextInput
                                 style={styles.textInput}
                                 placeholder='请输入'
+                                keyboardType={'numeric'}
                                 defaultValue={this.carData.member_price?this.carMoneyChange(this.carData.member_price):''}
                                 onChangeText={(text)=>{this.carData['member_price']=text}}
                                 onEndEditing={()=>{this.saveCarData();}}

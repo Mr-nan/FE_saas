@@ -1,12 +1,12 @@
 /**
  * 开发地址
  */
-// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+//export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地
  */
-export const BASEURL = 'http://api-gateway.test.dycd.com/';
+ export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 正式地址
@@ -677,4 +677,15 @@ export const PURCHA_AUTO_DETAIL = 'api/v2/purchaAuto/autoDetail';
  * 获取车架好是否已存在以及校验规则
  **/
 export const PURCHA_CHECK_IN = 'api/v2/purchaAuto/checkVin';
-
+/**
+ * 订单列表
+ */
+export const ORDER_INDEX = BASEURL + V +'order/index';
+/**
+ * 订单搜索
+ */
+export const ORDER_SEARCH = BASEURL + V +'order/search';
+/**
+ * 订单详情
+ */
+export const ORDER_DETAIL = BASEURL + V +'order/detail';

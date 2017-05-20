@@ -38,9 +38,11 @@ import ImageSource from '../publish/component/ImageSource';
 import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
 import AccountModal from '../component/AccountModal';
+import OrderTypeSelectScene from  '../mine/myOrder/OrderTypeSelectScene';
+
 let Platform = require('Platform');
 import ImagePicker from "react-native-image-picker";
-let firstType = '-1';
+ let firstType = '-1';
 let lastType = '-1';
 
 let componyname = '';
@@ -77,6 +79,10 @@ let Car = [
             {
                 "icon": require('../../images/mainImage/myCarSource.png'),
                 "name": "我的车源"
+            },
+            {
+                "icon": require('../../images/mainImage/my_order.png'),
+                "name": "我的订单"
             },
             {
                 "icon": require('../../images/mainImage/shoucangjilu.png'),
@@ -193,6 +199,10 @@ export default class MineScene extends BaseComponent {
                     {
                         "icon": require('../../images/mainImage/myCarSource.png'),
                         "name": "我的车源"
+                    },
+                    {
+                        "icon": require('../../images/mainImage/my_order.png'),
+                        "name": "我的订单"
                     },
                     {
                         "icon": require('../../images/mainImage/shoucangjilu.png'),
@@ -445,6 +455,11 @@ export default class MineScene extends BaseComponent {
             case '我的车源':
                 this.navigatorParams.name = 'MycarScene'
                 this.navigatorParams.component = MycarScene
+                break;
+                break;
+            case '我的订单':
+                this.navigatorParams.name = 'OrderTypeSelectScene'
+                this.navigatorParams.component = OrderTypeSelectScene
                 break;
             case '收藏记录':
                 this.navigatorParams.name = 'CarCollectSourceScene'

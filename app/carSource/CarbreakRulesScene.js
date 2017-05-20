@@ -1,5 +1,5 @@
 /**
- * Created by zhengnan on 2017/4/21.
+ * Created by zhengnan on 2017/5/20.
  */
 
 import React,{Component} from 'react';
@@ -8,6 +8,9 @@ import {
     View,
     Text,
     ListView,
+    Image,
+    Dimensions,
+
 } from 'react-native';
 
 import BaseComponent from '../component/BaseComponent';
@@ -16,7 +19,9 @@ import *as fontAndColor from '../constant/fontAndColor';
 import *as appUrls from '../constant/appUrls';
 import *as RequestUtil from '../utils/RequestUtil';
 import PixelUtil from '../utils/PixelUtil';
+
 const Pixel = new PixelUtil();
+var ScreenWidth = Dimensions.get('window').width;
 
 const data=[
     {
@@ -42,44 +47,39 @@ const data=[
     },
 ];
 
-export  default class CarUpkeepScene extends  BaseComponent{
+export  default class CarbreakRulesScene extends  BaseComponent{
 
     // 构造
-      constructor(props) {
+    constructor(props) {
         super(props);
         // 初始状态
 
-          let ds = new ListView.DataSource({rowHasChanged:(r1,r2) => r1!==r2});
+        let ds = new ListView.DataSource({rowHasChanged:(r1,r2) => r1!==r2});
 
         this.state = {
 
             dataSource:ds,
             renderPlaceholderOnly: 'blank',
         }
-      }
+    }
     initFinish = () => {
 
-          this.loadData();
+        this.loadData();
     }
     render(){
         if (this.state.renderPlaceholderOnly !== 'success') {
             return (
                 <View style={{flex:1,backgroundColor:'white'}}>
                     {this.loadView()}
-                    <NavigationView title="维修保养记录" backIconClick={()=>{this.backPage();}}/>
+                    <NavigationView title="违章记录" backIconClick={()=>{this.backPage();}}/>
                 </View>);
         }
         return(
             <View style={styles.rootContainer}>
                 <ListView
                     dataSource={this.state.dataSource}
-                    renderHeader={()=>
-                        <View style={styles.headView}>
-                            <Text style={styles.headViewText}>特别提示：<Text style={{fontWeight: 'normal'}}>若车辆在非4S店制造商授权店的维修保养信息可能被采集和收录，仅供参考，请结合实车看眼结果和试乘试驾体验，做出准确的交易决策。</Text></Text>
-                    </View>
-                    }
                     renderRow={this.renderRow}/>
-                <NavigationView title="维修保养记录" backIconClick={()=>{this.backPage();}}/>
+                <NavigationView title="违章记录" backIconClick={()=>{this.backPage();}}/>
             </View>
         )
     }
@@ -88,8 +88,9 @@ export  default class CarUpkeepScene extends  BaseComponent{
         return(
             <View style={styles.cellView}>
                 <View style={styles.cellTitleView}>
-                    <Text style={styles.cellTitleViewTitle}>{rowData.date+' | '+rowData.mile + '公里'}</Text>
-                    <Text style={styles.cellTitleViewValue}>{rowData.type}</Text>
+                    <View>
+                        <Text></Text>
+                    </View>
                 </View>
                 <Text style={styles.cellContent}>{rowData.detail}</Text>
             </View>
@@ -141,11 +142,9 @@ const styles = StyleSheet.create({
     },
     cellView:{
         paddingHorizontal:Pixel.getPixel(15),
-        borderBottomColor:fontAndColor.COLORA4,
-        borderBottomWidth:StyleSheet.hairlineWidth,
         marginTop:Pixel.getPixel(15),
         backgroundColor:'white',
-        height:Pixel.getPixel(100),
+        width:ScreenWidth,
     },
     cellTitleView:{
         borderBottomWidth:StyleSheet.hairlineWidth,
@@ -154,6 +153,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
         justifyContent:'space-between',
         paddingVertical:Pixel.getPixel(10),
+        height:Pixel.getPixel(65),
 
     },
     cellTitleViewTitle:{

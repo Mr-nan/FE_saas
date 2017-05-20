@@ -47,14 +47,13 @@ export default class CarCell extends Component {
                 </View>
 
                 <View style={[styles.textContainer]}>
-
                     <View style={{backgroundColor:'white'}}>
                         <Text style={styles.mainText}>{(carCellData.city_name!=""?('['+carCellData.city_name+']'):"")+(carCellData.model_name)}</Text>
-
+                        <View style={{backgroundColor:'white'}}>
+                            <Text style={styles.subTitleText}>{this.dateReversal(carCellData.manufacture+'000')+'/'+carCellData.mileage+'万公里'}</Text>
+                        </View>
                     </View>
-                    <View style={{backgroundColor:'white'}}>
-                        <Text style={styles.subTitleText}>{this.dateReversal(carCellData.manufacture+'000')+'/'+carCellData.mileage+'万公里'}</Text>
-                    </View>
+                    <Text style={styles.carPriceText}>{carCellData.dealer_price>0?(this.carMoneyChange(carCellData.dealer_price) +'万'):''}</Text>
 
                 </View>
                 {
@@ -67,6 +66,32 @@ export default class CarCell extends Component {
             </TouchableOpacity>
 
         )
+    }
+
+    carMoneyChange=(carMoney)=>{
+
+        let newCarMoney = parseFloat(carMoney);
+        let carMoneyStr = newCarMoney.toFixed(2);
+        let moneyArray = carMoneyStr.split(".");
+
+        // console.log(carMoney+'/'+newCarMoney +'/' + carMoneyStr +'/' +moneyArray);
+
+        if(moneyArray.length>1)
+        {
+            if(moneyArray[1]>0){
+
+                return moneyArray[0]+'.'+moneyArray[1];
+
+            }else {
+
+                return moneyArray[0];
+            }
+
+        }else {
+            return carMoneyStr;
+        }
+
+
     }
 
 }
@@ -126,6 +151,7 @@ const styles = StyleSheet.create({
         color:fontAndColor.COLORA1,
         fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT),
         backgroundColor:'white',
+        marginTop:Pixel.getPixel(5),
 
     },
     cellFoot:{
@@ -148,6 +174,13 @@ const styles = StyleSheet.create({
         color:fontAndColor.COLORA2,
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT) ,
     },
+
+    carPriceText:{
+        color:fontAndColor.COLORB2,
+        fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+        fontWeight:'bold',
+
+    }
 
 
 });
