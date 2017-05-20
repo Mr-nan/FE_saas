@@ -154,11 +154,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
                             onPress={() => {
-                                this.toNextPage({
-                                    name: 'CheckStand',
-                                    component: CheckStand,
-                                    params: {}
-                                });
+                                this.props.showModal(true);
+                                this.loadData();
                             }}>
                             <View style={styles.buttonCancel}>
                                 <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
@@ -220,6 +217,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         request(url, 'post', {
             order_no: '20170511'
         }).then((response) => {
+            this.props.showModal(false);
             this.orderDetail = response.mjson.data;
             this.orderState = response.mjson.data.status;
             //this.orderState = this.orderDetail.status;
@@ -239,6 +237,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             }
 
         }, (error) => {
+            this.props.showModal(false);
             //console.log('请求错误 = ', error);
             // todo test
             this.orderState = 0;
