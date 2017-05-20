@@ -133,7 +133,7 @@ const options = {
 }
 import BaseComponent from '../component/BaseComponent';
 
-export default class MineSectionListView extends BaseComponent {
+export default class MineScene extends BaseComponent {
 
 
     handleBack = () => {
