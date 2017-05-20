@@ -234,13 +234,13 @@ export default class FinanceSence extends BaseComponet {
                                 } else if (lastType == '1') {
                                     this.refs.accountmodal.changeShowType(true,
                                         '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
-                                        , '去开户', '看看再说',()=>{
+                                        , '去绑卡', '看看再说',()=>{
 
                                         });
                                 } else if (lastType == '2') {
                                     this.refs.accountmodal.changeShowType(true,
                                         '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
-                                        , '去开户', '看看再说',()=>{
+                                        , '去激活', '看看再说',()=>{
 
                                         });
                                 }
