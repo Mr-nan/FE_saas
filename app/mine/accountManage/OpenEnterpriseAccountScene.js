@@ -25,6 +25,8 @@ import LoginInputText from "../../login/component/LoginInputText";
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 import SelectNumberType from './component/SelectNumberType';
+import StorageUtil from "../../utils/StorageUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
 import SelectTypeScene from './SelectTypeScene';
 export  default class OpenEnterpriseAccountScene extends BaseComponent {
 
@@ -161,7 +163,7 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
         let cert_type = this.refs.cert_type.getNumber();
         let cust_name = this.refs.cust_name.getInputTextValue();
         let legal_cert_no = this.refs.legal_cert_no.getInputTextValue();
-        let legal_real_name = this.refs.legal_cert_type.getInputTextValue();
+        let legal_real_name = this.refs.legal_real_name.getInputTextValue();
         let org_agent_name = this.refs.org_agent_name.getInputTextValue();
         let org_agent_cert_no = this.refs.org_agent_cert_no.getInputTextValue();
         let org_agent_mobile = this.refs.org_agent_mobile.getInputTextValue();
@@ -190,8 +192,47 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
             this.props.showToast('请输入经办人手机号');
             return;
         }else{
-
+            StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+                if (data.code == 1 && data.result != null) {
+                    let datas=JSON.parse(data.result);
+                    this.sendData(cert_no,cert_type,cust_name,legal_cert_no,legal_real_name,
+                        org_agent_name,org_agent_cert_no,org_agent_mobile,datas.merge_id);
+                } else {
+                    this.props.showToast('用户信息查询失败');
+                }
+            })
         }
+    }
+
+    sendData=(cert_no,cert_type,cust_name,legal_cert_no,legal_real_name,org_agent_name,org_agent_cert_no,org_agent_mobile,
+              enter_base_id)=>{
+        this.props.showModal(true);
+        let maps = {
+            cert_no:cert_no,
+            cert_type:cert_type,
+            cust_name:cust_name,
+            legal_cert_no:legal_cert_no,
+            org_agent_name:org_agent_name,
+            legal_real_name:legal_real_name,
+            org_agent_cert_no:org_agent_cert_no,
+            org_agent_mobile:org_agent_mobile,
+            enter_base_id:enter_base_id,
+        };
+        request(Urls.USER_OPEN_ACCOUNT_COMPANY, 'Post', maps)
+            .then((response) => {
+                    this.props.showModal(false);
+                    this.toNextPage({name:'AccountWebScene',component:AccountWebScene,params:{
+                        title:'企业开户',webUrl:response.mjson.data.auth_url+'?authTokenId='+response.mjson.data.auth_token
+                    }});
+                },
+                (error) => {
+                    this.props.showModal(false);
+                    if (error.mycode == -300 || error.mycode == -500) {
+                        this.props.showToast('开户失败');
+                    } else {
+                        this.props.showToast(error.mjson.msg);
+                    }
+                });
     }
 
     _renderPlaceholderView() {

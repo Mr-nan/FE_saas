@@ -20,10 +20,6 @@ const Pixel = new PixelUtil();
 import * as fontAndColor from '../../constant/fontAndColor';
 import BaseComponent from '../../component/BaseComponent';
 import NavigationView from '../../component/AllNavigationView';
-const childItems = [];
-import {request} from '../../utils/RequestUtil';
-import * as Urls from '../../constant/appUrls';
-import AccountInfoScene from './AccountInfoScene';
 import OpenIndividualAccountScene from './OpenIndividualAccountScene';
 import OpenEnterpriseAccountScene from './OpenEnterpriseAccountScene';
 export  default class AccountTypeSelectScene extends BaseComponent {
@@ -70,7 +66,8 @@ export  default class AccountTypeSelectScene extends BaseComponent {
             return (
                 <TouchableOpacity
                     onPress={()=> {
-                    this.toNextPage({name:'OpenIndividualAccountScene',component:OpenIndividualAccountScene,params:{}})
+                    this.toNextPage({name:'OpenIndividualAccountScene',component:OpenIndividualAccountScene,params:{callBack:
+                        ()=>{this.props.callBack();}}})
                 }}
                     activeOpacity={0.8}
                     style={{
@@ -98,7 +95,8 @@ export  default class AccountTypeSelectScene extends BaseComponent {
             return (
                 <TouchableOpacity
                     onPress={()=> {
-                        this.toNextPage({name:'OpenEnterpriseAccountScene',component:OpenEnterpriseAccountScene,params:{}})
+                        this.toNextPage({name:'OpenEnterpriseAccountScene',component:OpenEnterpriseAccountScene,params:{callBack:
+                        ()=>{this.props.callBack();}}})
                 }}
                     activeOpacity={0.8}
                     style={{

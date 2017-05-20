@@ -19,8 +19,8 @@ import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
 
 import ContractManageScene from '../mine/contractManage/ContractSelectScene';
-import AccountManageScene from '../mine/accountManage/AccountManageScene'
-import AccountTypeSelectScene from '../mine/accountManage/AccountTypeSelectScene'
+
+import AccountManageScene from '../mine/accountManage/AccountTypeSelectScene'
 import WaitActivationAccountScene from '../mine/accountManage/WaitActivationAccountScene'
 import AccountScene from '../mine/accountManage/AccountScene'
 import BindCardScene from '../mine/accountManage/BindCardScene'
@@ -35,10 +35,20 @@ import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
 import EditEmployeeScene  from '../mine/employeeManage/EditEmployeeScene'
 import ImageSource from '../publish/component/ImageSource';
+<<<<<<< HEAD
+import {request} from '../utils/RequestUtil';
+import * as Urls from '../constant/appUrls';
+import AccountModal from '../component/AccountModal';
+=======
+import OrderTypeSelectScene from  '../mine/myOrder/OrderTypeSelectScene';
 
+>>>>>>> 945599bda099e1b42ba3d351a06f631781bc15dc
 let Platform = require('Platform');
 import ImagePicker from "react-native-image-picker";
+let firstType = '-1';
+let lastType = '-1';
 
+let componyname = '';
 const cellJianTou = require('../../images/mainImage/celljiantou.png');
 let Car = [
     {
@@ -72,6 +82,10 @@ let Car = [
             {
                 "icon": require('../../images/mainImage/myCarSource.png'),
                 "name": "我的车源"
+            },
+            {
+                "icon": require('../../images/mainImage/my_order.png'),
+                "name": "我的订单"
             },
             {
                 "icon": require('../../images/mainImage/shoucangjilu.png'),
@@ -149,7 +163,10 @@ export default class MineSectionListView extends BaseComponent {
         super(props);
         // 初始状态
         //    拿到所有的json数据
-         Car = [
+        firstType = '-1';
+        lastType = '-1';
+        componyname = '';
+        Car = [
             {
                 "cars": [
                     {
@@ -159,6 +176,10 @@ export default class MineSectionListView extends BaseComponent {
                     {
                         "icon": require('../../images/mainImage/yuangongguanli.png'),
                         "name": "员工管理"
+                    },
+                    {
+                        "icon": require('../../images/mainImage/switchcompony.png'),
+                        "name": "切换公司"
                     },
                 ],
                 "title": "section0"
@@ -181,6 +202,10 @@ export default class MineSectionListView extends BaseComponent {
                     {
                         "icon": require('../../images/mainImage/myCarSource.png'),
                         "name": "我的车源"
+                    },
+                    {
+                        "icon": require('../../images/mainImage/my_order.png'),
+                        "name": "我的订单"
                     },
                     {
                         "icon": require('../../images/mainImage/shoucangjilu.png'),
@@ -219,32 +244,43 @@ export default class MineSectionListView extends BaseComponent {
     }
 
     initFinish = () => {
+        this.getData();
+    }
+
+    changeData = () => {
         StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
             if (data.code == 1) {
                 let user_list = [];
                 let datas = JSON.parse(data.result);
                 if (datas.user_level == 2) {
-                    if (datas.enterprise_list[0].role_type == '1'||datas.enterprise_list[0].role_type == '6') {
+                    if (datas.enterprise_list[0].role_type == '1') {
+                        user_list.push(...Car);
+                    } else if (datas.enterprise_list[0].role_type == '6') {
+                        Car[0].splice(0, 1);
                         user_list.push(...Car);
                     } else if (datas.enterprise_list[0].role_type == '2') {
-                        Car[0].cars.splice(1,1);
-                        user_list.push( Car[0],Car[1], Car[3], Car[4]);
+                        Car[0].splice(0, 2);
+                        user_list.push(Car[0], Car[1], Car[3], Car[4]);
                     } else {
-                        user_list.push( Car[2], Car[3], Car[4]);
+                        Car[0].splice(0, 2);
+                        user_list.push(Car[0], Car[2], Car[3], Car[4]);
                     }
                 } else if (datas.user_level == 1) {
-                    if (datas.enterprise_list[0].role_type == '1'||datas.enterprise_list[0].role_type == '6') {
-                        user_list.push( Car[0], Car[2], Car[3], Car[4]);
+                    if (datas.enterprise_list[0].role_type == '1') {
+                        user_list.push(Car[0], Car[2], Car[3], Car[4]);
+                    } else if (datas.enterprise_list[0].role_type == '6') {
+                        Car[0].splice(0, 1);
+                        user_list.push(Car[0], Car[2], Car[3], Car[4]);
                     } else {
-                        Car[0].cars.splice(1,1);
-                        user_list.push( Car[0],Car[2], Car[3], Car[4]);
+                        Car[0].splice(0, 2);
+                        user_list.push(Car[0], Car[2], Car[3], Car[4]);
 
                     }
                 } else {
-                    if(datas.audit_status=='2'){
-                        user_list.push( Car[2], Car[3], Car[4]);
-                    }else{
-                        user_list.push( Car[3], Car[4]);
+                    if (datas.audit_status == '2') {
+                        user_list.push(Car[2], Car[3], Car[4]);
+                    } else {
+                        user_list.push(Car[3], Car[4]);
                     }
 
                 }
@@ -305,6 +341,35 @@ export default class MineSectionListView extends BaseComponent {
         });
     }
 
+    getData = () => {
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1) {
+                let datas = JSON.parse(data.result);
+                componyname = datas.companyname;
+                let maps = {
+                    enter_base_ids: datas.merge_id,
+                    child_type: '1'
+                };
+                request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+                    .then((response) => {
+                            // lastType = response.mjson.data.status;
+                            lastType = '2';
+                            this.changeData();
+                        },
+                        (error) => {
+                            this.changeData();
+                        });
+            }
+        });
+    }
+
+    allRefresh = () => {
+        this.setState({
+            renderPlaceholderOnly: 'loading',
+        });
+        this.getData();
+    }
+
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
@@ -332,7 +397,7 @@ export default class MineSectionListView extends BaseComponent {
                     renderSectionHeader={this._renderSectionHeader}
                     renderHeader={this._renderHeader}
                 />
-
+                <AccountModal ref="accountmodal"/>
             </View>
         )
     }
@@ -344,23 +409,37 @@ export default class MineSectionListView extends BaseComponent {
         params: {}
     }
 
+    toPage = () => {
+        if (lastType == '0') {
+            this.navigatorParams.name = 'AccountManageScene'
+            this.navigatorParams.component = AccountManageScene
+            this.navigatorParams.params = {
+                callBack: () => {
+                    this.allRefresh();
+                }
+            }
+        } else if (lastType == '1') {
+            this.navigatorParams.name = 'BindCardScene'
+            this.navigatorParams.component = BindCardScene
+        } else if (lastType == '2') {
+            this.navigatorParams.name = 'WaitActivationAccountScene'
+            this.navigatorParams.component = WaitActivationAccountScene
+        } else {
+            this.navigatorParams.name = 'AccountScene'
+            this.navigatorParams.component = AccountScene
+        }
+        this.props.callBack(this.navigatorParams);
+    }
+
     _navigator(rowData) {
         switch (rowData.name) {
             case '账户管理':
-                this.navigatorParams.name = 'AccountManageScene'
-                this.navigatorParams.component = AccountManageScene
-
-                // this.navigatorParams.name = 'AccountTypeSelectScene'
-                // this.navigatorParams.component = AccountTypeSelectScene
-
-                // this.navigatorParams.name = 'WaitActivationAccountScene'
-                // this.navigatorParams.component = WaitActivationAccountScene
-                //
-                // this.navigatorParams.name = 'AccountScene'
-                // this.navigatorParams.component = AccountScene
-                //
-                // this.navigatorParams.name = 'BindCardScene'
-                // this.navigatorParams.component = BindCardScene
+                this.toPage();
+                return
+                break;
+            case '切换公司':
+                this.props.toSelect();
+                return;
                 break;
             case '优惠券管理':
                 this.navigatorParams.name = 'AdjustManageScene'
@@ -379,6 +458,11 @@ export default class MineSectionListView extends BaseComponent {
             case '我的车源':
                 this.navigatorParams.name = 'MycarScene'
                 this.navigatorParams.component = MycarScene
+                break;
+                break;
+            case '我的订单':
+                this.navigatorParams.name = 'OrderTypeSelectScene'
+                this.navigatorParams.component = OrderTypeSelectScene
                 break;
             case '收藏记录':
                 this.navigatorParams.name = 'CarCollectSourceScene'
@@ -399,6 +483,14 @@ export default class MineSectionListView extends BaseComponent {
 
     // 每一行中的数据
     _renderRow = (rowData) => {
+        let showName = '';
+        if (lastType == '0') {
+            showName = '未开户';
+        } else if (lastType == '1') {
+            showName = '未绑卡';
+        } else if (lastType == '2') {
+            showName = '未激活';
+        }
         if (rowData.name == 'blank') {
             return (
                 <View style={{width: width, height: Pixel.getPixel(2), backgroundColor: fontAndClolr.COLORA3}}></View>
@@ -412,10 +504,10 @@ export default class MineSectionListView extends BaseComponent {
                     <Image source={rowData.icon} style={styles.rowLeftImage}/>
 
                     <Text style={styles.rowTitle}>{rowData.name}</Text>
-                    {/*{rowData.name=='账户管理'?<Text style={{ marginRight: Pixel.getPixel(15),*/}
-                    {/*backgroundColor: '#00000000',color:fontAndClolr.COLORB2,fontSize:*/}
-                    {/*Pixel.getFontPixel(fontAndClolr.LITTLEFONT28)}}>未开户</Text>:*/}
-                    {/*<View/>}*/}
+                    {rowData.name == '账户管理' ? <Text style={{ marginRight: Pixel.getPixel(15),
+                    backgroundColor: '#00000000',color:fontAndClolr.COLORB2,fontSize:
+                    Pixel.getFontPixel(fontAndClolr.LITTLEFONT28)}}>{showName}</Text> :
+                        <View/>}
 
 
                     <Image source={cellJianTou} style={styles.rowjiantouImage}/>
@@ -426,6 +518,43 @@ export default class MineSectionListView extends BaseComponent {
         }
 
     }
+
+    componentDidUpdate() {
+        if (this.state.renderPlaceholderOnly == 'success') {
+            if (firstType != lastType) {
+                if (lastType != '3') {
+                    StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST, (data) => {
+                        if (data.code == 1) {
+                            let datas = JSON.parse(data.result);
+                            if (datas[0].role_type == '1') {
+                                if (lastType == '0') {
+                                    this.refs.accountmodal.changeShowType(true,
+                                        '您还未开通资金账户，为方便您使用金融产品及购物车，' +
+                                        '请尽快开通！', '去开户', '看看再说', () => {
+                                            this.toPage();
+                                        });
+                                } else if (lastType == '1') {
+                                    this.refs.accountmodal.changeShowType(true,
+                                        '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
+                                        , '去绑卡', '看看再说', () => {
+                                            this.toPage();
+                                        });
+                                } else if (lastType == '2') {
+                                    this.refs.accountmodal.changeShowType(true,
+                                        '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
+                                        , '去激活', '看看再说', () => {
+                                            this.toPage();
+                                        });
+                                }
+                                firstType = lastType;
+                            }
+                        }
+                    });
+                }
+            }
+        }
+    }
+
 
     // 每一组对应的数据
     _renderSectionHeader(sectionData, sectionId) {
@@ -438,7 +567,7 @@ export default class MineSectionListView extends BaseComponent {
     _renderHeader = () => {
         return (
             <View style={styles.headerViewStyle}>
-                <TouchableOpacity style={[styles.headerImageStyle]} onPress={() => this.selectPhotoTapped()}>
+                <TouchableOpacity style={[styles.headerImageStyle]}>
                     <Image
                         source={this.state.headUrl == '' ? require('../../images/mainImage/whiteHead.png') : this.state.headUrl}
                         style={{
@@ -451,7 +580,7 @@ export default class MineSectionListView extends BaseComponent {
                     {this.state.name}
                 </Text>
                 <Text style={styles.headerPhoneStyle}>
-                    {this.state.phone}
+                    {componyname}
                 </Text>
             </View>
         )
