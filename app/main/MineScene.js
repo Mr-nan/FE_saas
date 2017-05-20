@@ -35,14 +35,11 @@ import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
 import EditEmployeeScene  from '../mine/employeeManage/EditEmployeeScene'
 import ImageSource from '../publish/component/ImageSource';
-<<<<<<< HEAD
 import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
 import AccountModal from '../component/AccountModal';
-=======
 import OrderTypeSelectScene from  '../mine/myOrder/OrderTypeSelectScene';
 
->>>>>>> 945599bda099e1b42ba3d351a06f631781bc15dc
 let Platform = require('Platform');
 import ImagePicker from "react-native-image-picker";
 let firstType = '-1';
