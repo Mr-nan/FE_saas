@@ -42,7 +42,7 @@ import OrderTypeSelectScene from  '../mine/myOrder/OrderTypeSelectScene';
 
 let Platform = require('Platform');
 import ImagePicker from "react-native-image-picker";
-let firstType = '-1';
+ let firstType = '-1';
 let lastType = '-1';
 
 let componyname = '';
