@@ -22,6 +22,8 @@ import Gallery from 'react-native-gallery';
 import {CarDeploySwitchoverButton,CarConfigurationView}   from './znComponent/CarInfoAllComponent';
 import CarZoomImageScene from './CarZoomImagScene';
 import CarUpkeepScene from './CarUpkeepScene';
+import CarbreakRulesScene from  './CarbreakRulesScene';
+import CarReferencePriceScene from  './CarReferencePriceScene';
 import AutoConfig      from '../publish/AutoConfig';
 import *as weChat from 'react-native-wechat';
 import PixelUtil from '../utils/PixelUtil';
@@ -198,7 +200,9 @@ export default class CarInfoScene extends BaseComponent {
                                 <View style={styles.titleFootView}>
                                     {
                                         carData.dealer_price>0&& (
-                                            <TouchableOpacity style={{flexDirection:'row', alignItems:'center'}} activeOpacity={1}>
+                                            <TouchableOpacity style={{flexDirection:'row', alignItems:'center'}}
+                                                              activeOpacity={1}
+                                                              onPress={()=>{this.pushCarReferencePriceScene(carData)}}>
                                                 <Text style={styles.priceText}>{this.carMoneyChange(carData.dealer_price) +'万'}</Text>
                                                 <Image style={{marginLeft:Pixel.getPixel(10)}} source={require('../../images/carSourceImages/carPriceIcon.png')}/>
                                                 <Text style={[styles.priceText,{marginLeft:Pixel.getPixel(5), fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}]}>查看参考价</Text>
@@ -320,13 +324,20 @@ export default class CarInfoScene extends BaseComponent {
                                 </View>
                                 <Image source={require('../../images/mainImage/celljiantou.png')}/>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.carInfoBtn} onPress={this.pushCarConfigScene}>
-                                <View style={{flexDirection:'row',alignItems:'center'}}>
-                                    <Image source={require('../../images/carSourceImages/carBreakIcon.png')}/>
-                                    <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),marginLeft:Pixel.getPixel(10)}}>违章记录</Text>
-                                </View>
-                                <Image source={require('../../images/mainImage/celljiantou.png')}/>
-                            </TouchableOpacity>
+                            {
+                                (carData.vin!='' && carData.city_id!='' && carData.engine_number!='' && carData.plate_number!='')&&(
+                                    <TouchableOpacity style={styles.carInfoBtn}
+                                                      onPress={()=>{
+                                                          this.pushCarbreakRulesScene(carData)
+                                                      }}>
+                                        <View style={{flexDirection:'row',alignItems:'center'}}>
+                                            <Image source={require('../../images/carSourceImages/carBreakIcon.png')}/>
+                                            <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),marginLeft:Pixel.getPixel(10)}}>违章记录</Text>
+                                        </View>
+                                        <Image source={require('../../images/mainImage/celljiantou.png')}/>
+                                    </TouchableOpacity>
+                                )
+                            }
                         </View>
                         {/*<TouchableOpacity onPress={()=>{this.pushCarUpkeepScene(carData.vin)}} activeOpacity={1}>*/}
                             {/*<Image style={{marginTop:10,width:ScreenWidth}} source={require('../../images/carSourceImages/carUpkeepButton.png')} resizeMode='stretch'/>*/}
@@ -461,6 +472,30 @@ export default class CarInfoScene extends BaseComponent {
             params: {
                     vin:vin
             }
+        }
+        this.toNextPage(navigationParams);
+    };
+
+    // 车辆违章记录
+    pushCarbreakRulesScene=(carData)=>{
+        let navigationParams={
+            name: "CarbreakRulesScene",
+            component: CarbreakRulesScene,
+            params: {
+                carData:carData
+             }
+        }
+        this.toNextPage(navigationParams);
+    };
+
+    // 车辆参考价
+    pushCarReferencePriceScene=(carData)=>{
+        let navigationParams={
+            name: "CarReferencePriceScene",
+            component: CarReferencePriceScene,
+            params: {
+                carData:carData
+             }
         }
         this.toNextPage(navigationParams);
     };
