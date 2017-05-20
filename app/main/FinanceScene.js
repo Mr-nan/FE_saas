@@ -303,7 +303,7 @@ export default class FinanceSence extends BaseComponet {
                                   confimTitle="重新审核"
 
                 />
-                <LendSuccessAlert ref="showTitleAlert" title={'提示'} subtitle={'微单可用额度以车贷可用额度为准'}/>
+                <LendSuccessAlert ref="showTitleAlert" title={'提示'} subtitle={'微单可用额度只适用于单车产品'}/>
             </View>
         )
     }
