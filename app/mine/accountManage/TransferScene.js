@@ -21,9 +21,11 @@ const Pixel = new PixelUtil();
 import * as fontAndColor from '../../constant/fontAndColor';
 import BaseComponent from '../../component/BaseComponent';
 import NavigationView from '../../component/AllNavigationView';
-import WithdrawalsInput from './component/WithdrawalsInput';
+import WithdrawalsInput from './component/TransferInput';
 import WithdrawalsDialog from './component/WithdrawalsDialog';
 import LoginInputText from "../../login/component/LoginInputText";
+import AccountInput from './component/AccountInput';
+
 export  default class TransferScene extends BaseComponent {
 
     constructor(props) {
@@ -47,23 +49,7 @@ export  default class TransferScene extends BaseComponent {
         }
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
-                <View style={{backgroundColor: '#fff',width:width,height:Pixel.getPixel(44),justifyContent:'center',
-                marginTop:Pixel.getTitlePixel(79)}}>
-                    <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={5}>
-                        <View style={styles.inputTextsStyle}>
-                            <LoginInputText
-                                ref="cust_name"
-                                textPlaceholder={'转账账号'}
-                                viewStytle={styles.itemStyel}
-                                inputTextStyle={styles.inputTextStyle}
-                                leftIcon={false}
-                                import={false}
-                                clearValue={true}
-                                rightIcon={false}/>
-                            <View style={{width:width,height:Pixel.getPixel(44),backgroundColor: '#fff'}}></View>
-                        </View>
-                    </KeyboardAvoidingView>
-                </View>
+                <AccountInput/>
                 <View style={{backgroundColor: '#fff',width:width,height:Pixel.getPixel(146),justifyContent:'center',
                 marginTop:Pixel.getPixel(10),paddingLeft: Pixel.getPixel(15),paddingRight:Pixel.getPixel(15)}}>
                     <View style={{flex:1,justifyContent:'center'}}>
@@ -71,7 +57,8 @@ export  default class TransferScene extends BaseComponent {
                             转账金额(元)</Text>
                     </View>
                     <WithdrawalsInput/>
-                    <View style={{backgroundColor: fontAndColor.COLORA3,width:width-Pixel.getPixel(30),height:Pixel.getPixel(1)}}></View>
+                    <View
+                        style={{backgroundColor: fontAndColor.COLORA3,width:width-Pixel.getPixel(30),height:Pixel.getPixel(1)}}></View>
                     <View style={{flex:1,flexDirection: 'row',alignItems: 'center'}}>
                         <Text style={{fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),color: fontAndColor.COLORA1}}>
                             可转账金额：</Text>
@@ -85,7 +72,7 @@ export  default class TransferScene extends BaseComponent {
                 borderRadius: Pixel.getPixel(4),backgroundColor: fontAndColor.COLORB0,width:width-Pixel.getPixel(30),
                 height:Pixel.getPixel(44),justifyContent:'center',alignItems: 'center'}}>
                     <Text style={{fontSize: Pixel.getPixel(15),color: '#fff'}}>
-                        提现</Text>
+                        转账</Text>
                 </TouchableOpacity>
                 <WithdrawalsDialog ref="withdrawalsdialog" callBack={()=>{
                         this.props.callBack();
@@ -135,5 +122,5 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         paddingLeft: Pixel.getPixel(15),
         paddingRight: Pixel.getPixel(15),
-    },itemStyel: {},
+    }, itemStyel: {},
 })
