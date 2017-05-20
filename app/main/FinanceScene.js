@@ -303,7 +303,7 @@ export default class FinanceSence extends BaseComponet {
                                   confimTitle="重新审核"
 
                 />
-                <LendSuccessAlert ref="showTitleAlert" title={'提示'} subtitle={'微单可用额度以车贷可用额度为准'}/>
+                <LendSuccessAlert ref="showTitleAlert" title={'提示'} subtitle={'微单可用额度只适用于单车产品'}/>
             </View>
         )
     }
@@ -616,7 +616,8 @@ export default class FinanceSence extends BaseComponet {
                                         backgroundColor: '#00000000',
                                         flex: 1,
                                         textAlign: 'center'
-                                    }}>{this.state.mnyData.is_microchinese_mny==3?(this.state.allData.keyongedu+this.state.mnyData.microchinese_mny/10000):(this.state.allData.keyongedu)}</Text>
+                                    }}>
+                                    {this.state.allData.keyongedu}</Text>
                             </View>
                             {
                                 this.state.mnyData.is_microchinese_mny == 3 && (
