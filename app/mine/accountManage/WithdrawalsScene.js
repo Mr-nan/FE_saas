@@ -62,7 +62,7 @@ export  default class WithdrawalsScene extends BaseComponent {
                         <Text style={{fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),color: fontAndColor.COLORA1}}>
                             可提现金额：</Text>
                         <Text style={{fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),color: '#000'}}>
-                            6.25万</Text>
+                            {this.props.money}</Text>
                     </View>
                 </View>
                 <TouchableOpacity onPress={()=>{

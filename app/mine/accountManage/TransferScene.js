@@ -63,7 +63,7 @@ export  default class TransferScene extends BaseComponent {
                         <Text style={{fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),color: fontAndColor.COLORA1}}>
                             可转账金额：</Text>
                         <Text style={{fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),color: '#000'}}>
-                            6.25万</Text>
+                            {this.props.money}</Text>
                     </View>
                 </View>
                 <TouchableOpacity onPress={()=>{

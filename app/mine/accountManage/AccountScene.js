@@ -30,22 +30,67 @@ import AccountFlowScene from './AccountFlowScene';
 import AccountSettingScene from './AccountSettingScene';
 import FrozenScene from './FrozenScene';
 import TransferScene from './TransferScene';
+import StorageUtil from "../../utils/StorageUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
 export  default class AccountScene extends BaseComponent {
 
     constructor(props) {
         super(props);
         // 初始状态
-        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             renderPlaceholderOnly: 'blank',
-            source: ds.cloneWithRows(['1', '2', '3', '4'])
+            source: [],
+            info:{}
         };
     }
 
     initFinish = () => {
+        // this.getData()
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.setState({
-            renderPlaceholderOnly: 'success'
+            renderPlaceholderOnly:'success',
+            source:ds.cloneWithRows([1,2,3,4,5,6,7])
         });
+    }
+
+    allRefresh = () => {
+        this.setState({
+            renderPlaceholderOnly:'loading'
+        });
+        this.getData()
+    }
+
+    getData=()=>{
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas=JSON.parse(data.result);
+                let maps = {
+                    enter_base_ids:datas.merge_id,
+                    child_type:'1'
+                };
+                request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+                    .then((response) => {
+                            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                            this.setState({
+                                renderPlaceholderOnly: 'success',
+                                source:ds.cloneWithRows(response.mjson.data.payLogs),
+                                info:response.mjson.data.info,
+
+                            });
+                        },
+                        (error) => {
+                            this.props.showToast('用户信息查询失败');
+                            this.setState({
+                                renderPlaceholderOnly: 'error'
+                            });
+                        });
+            } else {
+                this.props.showToast('用户信息查询失败');
+                this.setState({
+                    renderPlaceholderOnly: 'error'
+                });
+            }
+        })
     }
 
 
@@ -68,7 +113,7 @@ export  default class AccountScene extends BaseComponent {
                     <TouchableOpacity onPress={()=>{
                         this.toNextPage({name:'WithdrawalsScene',component:WithdrawalsScene,params:{callBack:()=>{
 
-                        }}})
+                        } ,money:this.state.info.balance}})
                     }} activeOpacity={0.8} style={{flex:1,justifyContent:'center',alignItems: 'center',backgroundColor:'#fff'}}>
                         <Text style={{color: fontAndColor.COLORB0,fontSize: Pixel.getFontPixel(15)}}>提现</Text>
                     </TouchableOpacity>
@@ -110,19 +155,54 @@ export  default class AccountScene extends BaseComponent {
     }
     _renderHeader = () => {
         return (
-            <AccountTitle bankCard={()=>{this.toNextPage({name:'BankCardScene',component:BankCardScene,params:{}})}}
+            <AccountTitle info={this.state.info}
+                          bankCard={()=>{this.toNextPage({name:'BankCardScene',component:BankCardScene,params:{}})}}
                           flow={()=>{this.toNextPage({name:'AccountFlowScene',component:AccountFlowScene,params:{}})}}
-                          changePwd={()=>{}}
-                          resetPwd={()=>{}}
-                          changePhone={()=>{}}
+                          changePwd={()=>{
+                              let maps={
+                                  user_type:this.state.info.account_open_type
+                              }
+                              this.getWebUrl(Urls.USER_ACCOUNT_EDITPAYPWD,maps,'修改交易密码');
+                          }}
+                          resetPwd={()=>{
+                              let maps={
+                                  user_type:this.state.info.account_open_type
+                              }
+                              this.getWebUrl(Urls.USER_ACCOUNT_RESETPAYPWD,maps,'重置交易密码');
+                          }}
+                          changePhone={()=>{
+                              let maps={
+                                  user_type:this.state.info.account_open_type
+                              }
+                              this.getWebUrl(Urls.USER_ACCOUNT_RESETPAYPWD,maps,'修改手机号');
+                          }}
                           accountSetting={()=>{this.toNextPage({name:'AccountSettingScene',component:AccountSettingScene,params:{}})}}
                           moreFlow={()=>{this.toNextPage({name:'AccountFlowScene',component:AccountFlowScene,params:{}})}}
                           frozen={()=>{this.toNextPage({name:'FrozenScene',component:FrozenScene,params:{}})}}
-                          transfer={()=>{this.toNextPage({name:'TransferScene',component:TransferScene,params:{}})}}
+                          transfer={()=>{this.toNextPage({name:'TransferScene',component:TransferScene,params:{money:this.state.info.balance}})}}
 
 
             />
         )
+    }
+
+    getWebUrl=(url,maps,title)=>{
+        this.props.showModal(true);
+        request(url, 'Post', maps)
+            .then((response) => {
+                    this.props.showModal(false);
+                    this.toNextPage({name:'AccountWebScene',component:AccountWebScene,params:{
+                        title:title,webUrl:response.mjson.data.auth_url+'?authTokenId='+response.mjson.data.auth_token
+                    }});
+                },
+                (error) => {
+                    this.props.showModal(false);
+                    if (error.mycode == -300 || error.mycode == -500) {
+                        this.props.showToast('网络连接失败');
+                    } else {
+                        this.props.showToast(error.mjson.msg);
+                    }
+                });
     }
 
     _renderSeparator(sectionId, rowId) {

@@ -20,20 +20,63 @@ const Pixel = new PixelUtil();
 import * as fontAndColor from '../../constant/fontAndColor';
 import BaseComponent from '../../component/BaseComponent';
 import NavigationView from '../../component/AllNavigationView';
-export  default class AccountScene extends BaseComponent {
+import StorageUtil from "../../utils/StorageUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
+import {request} from '../../utils/RequestUtil';
+import * as Urls from '../../constant/appUrls';
+export  default class RechargeScene extends BaseComponent {
 
     constructor(props) {
         super(props);
         // 初始状态
         this.state = {
             renderPlaceholderOnly: 'blank',
+            name:'',
+            cardNumber:''
         };
     }
 
     initFinish = () => {
+        this.getData()
+    }
+    allRefresh = () => {
         this.setState({
-            renderPlaceholderOnly: 'success'
+            renderPlaceholderOnly:'loading'
         });
+        this.getData()
+    }
+
+    getData=()=>{
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas=JSON.parse(data.result);
+                let maps = {
+                    enter_base_ids:datas.merge_id,
+                    child_type:'1'
+                };
+
+                request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+                    .then((response) => {
+                            this.setState({
+                                renderPlaceholderOnly: 'success',
+                                name:response.mjson.data.child_account_name	,
+                                cardNumber:response.mjson.data.bank_card_no
+                            });
+                        },
+                        (error) => {
+                            this.props.showToast('用户信息查询失败');
+                            this.setState({
+                                renderPlaceholderOnly: 'error'
+                            });
+
+                        });
+            } else {
+                this.props.showToast('用户信息查询失败');
+                this.setState({
+                    renderPlaceholderOnly: 'error'
+                });
+            }
+        })
     }
 
 
@@ -70,9 +113,9 @@ export  default class AccountScene extends BaseComponent {
                     Pixel.getPixel(15)}}>
                         <Text style={{color: '#000',fontSize: Pixel.getPixel(14)}}>转账时填写的信息如下：</Text>
                         <Text style={{fontWeight: 'bold',color: '#000',fontSize: Pixel.getPixel(14),marginTop:Pixel.getPixel(7)}}>
-                            收款人姓名：汪洋</Text>
+                            收款人姓名：{this.state.name}</Text>
                         <Text style={{fontWeight: 'bold',color: '#000',fontSize: Pixel.getPixel(14),marginTop:Pixel.getPixel(5)}}>
-                            收款账号：4436745003680888</Text>
+                            收款账号：{this.state.cardNumber}</Text>
                         <Text style={{fontWeight: 'bold',color: '#000',fontSize: Pixel.getPixel(14),marginTop:Pixel.getPixel(5)}}>
                             收款银行：恒丰银行</Text>
                     </View>

@@ -243,6 +243,20 @@ export const USER_OPEN_ACCOUNT_PERSONAL = BASEURL + 'v1/user.open_account/person
 /**
  * from @zhaojian
  *
+ * 修改交易密码
+ **/
+export const USER_ACCOUNT_EDITPAYPWD = BASEURL + 'v1/user.account/editPayPwd';
+
+/**
+ * from @zhaojian
+ *
+ * 重置交易密码
+ **/
+export const USER_ACCOUNT_RESETPAYPWD = BASEURL + 'v1/user.account/resetPayPwd';
+
+/**
+ * from @zhaojian
+ *
  * 绑定银行卡
  **/
 export const USER_BANK_BIND = BASEURL + 'v1/user.bank/bind';

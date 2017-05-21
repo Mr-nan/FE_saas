@@ -90,7 +90,7 @@ export  default class AccountTitle extends PureComponent {
                 justifyContent:'center'}}>
                         <Text style={{marginLeft:Pixel.getPixel(20),color: '#fff',
                      fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>
-                            账户号码：4367450036808888
+                            账户号码：{this.props.info.bank_card_no}
                         </Text>
                     </View>
                     <View style={{width:width,height:Pixel.getPixel(105),flexDirection:'row'}}>
@@ -99,7 +99,7 @@ export  default class AccountTitle extends PureComponent {
                                 账户总额(万)
                             </Text>
                             <Text style={{fontWeight: 'bold',color: '#fff',fontSize: Pixel.getFontPixel(32),}}>
-                                150
+                                {parseFloat(this.props.info.frozen_balance)+parseFloat(this.props.info.balance)}
                             </Text>
                         </View>
                         <TouchableOpacity onPress={()=>{
@@ -109,7 +109,7 @@ export  default class AccountTitle extends PureComponent {
                                 冻结金额(万)
                             </Text>
                             <Text style={{fontWeight: 'bold',color: '#fff',fontSize: Pixel.getFontPixel(32),}}>
-                                13
+                                {this.props.info.frozen_balance}
                             </Text>
                         </TouchableOpacity>
                         <View style={{flex:1,justifyContent:'center',alignItems: 'center'}}>
@@ -117,7 +117,7 @@ export  default class AccountTitle extends PureComponent {
                                 可用余额(万)
                             </Text>
                             <Text style={{fontWeight: 'bold',color: '#fff',fontSize: Pixel.getFontPixel(32),}}>
-                                25
+                                {this.props.info.balance}
                             </Text>
                         </View>
                     </View>
