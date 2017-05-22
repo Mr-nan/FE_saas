@@ -33,6 +33,12 @@ export  default class FlowWithdrawalsPage extends BaseComponent {
             time:''
         };
     }
+    componentDidMount() {
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
+    }
 
     initFinish = () => {
         this.setState({

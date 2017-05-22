@@ -6,7 +6,7 @@
 /**
  * 测试地
  */
-export const BASEURL = 'http://api-gateway.test.dycd.com/';
+// export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 正式地址
@@ -64,8 +64,6 @@ export const CAR_HOME_BRAND = BASEURL + V + 'home/brand';
  */
 export const CAR_HOME_SERIES = BASEURL + V + 'home/series';
 
-
-
 /**
  * 获取车型
  */
@@ -99,6 +97,21 @@ export const CAR_DETAIL = BASEURL + V + 'car/detail';
 export const CAR_CONFIGURATION = BASEURL + V + 'car/modelsConfig';
 
 /**
+ * 获取车辆保养
+ */
+export const CAR_GET_ERPORT = BASEURL + V + 'che/report';
+
+/**
+ * 获取车辆违章记录
+ */
+export const CAR_GET_ILLEGAL = BASEURL + V + 'che/illegal';
+
+/**
+ * 获取车辆参考价
+ */
+export const CAR_GET_REFERENCEPRICE = BASEURL + V + 'che/referencePrice';
+
+/**
  * 获取客服电话号码
  */
 export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/getCustomService';
@@ -117,6 +130,16 @@ export const CAR_STATUS = BASEURL + V + 'car/status';
  * 获取我的车源-未审核
  */
 export const CAR_PERLIST = BASEURL + V + 'car/preList';
+
+/**
+ * 获取登记人信息
+ */
+export const GET_REGISTRANT = BASEURL + V + 'car.borrower/getRegistrants';
+
+/**
+ * 添加登记人信息
+ */
+export const ADD_REGISTRANT = BASEURL + V + 'car.borrower/addRegistrant';
 
 /**
  * 根据VIN获取车辆详情
@@ -178,6 +201,13 @@ export const LOAN_SUBJECT = 'api/v1/user/get_loan_subject_list';
 /**
  * from @zhaojian
  *
+ * 获取企业合同列表
+ **/
+export const USER_GET_USER_LIST = 'api/v1/user/get_user_list';
+
+/**
+ * from @zhaojian
+ *
  * 获取更新信息
  **/
 export const APP_UPDATE = BASEURL + 'v1/system/index';
@@ -202,6 +232,27 @@ export const GETHISTORICALLIST = 'api/v1/Repayment/getHistoricalList';
  * 添加采购贷车辆
  **/
 export const PURCHAAUTO_ADDAUTO = 'api/v2/purchaAuto/addAuto';
+
+/**
+ * from @zhaojian
+ *
+ * 获取角色列表
+ **/
+export const USER_ROLE = BASEURL+'v1/user/role';
+
+/**
+ * from @zhaojian
+ *
+ * 添加||编辑员工
+ **/
+export const USER_EMPLOYEE_SAVE = BASEURL+'v1/user.employee/save';
+
+/**
+ * from @zhaojian
+ *
+ * 开通个人账户
+ **/
+export const USER_OPEN_ACCOUNT_PERSONAL = BASEURL+'v1/user.open_account/personal';
 
 /**
  * from @zhaojian

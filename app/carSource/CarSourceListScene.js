@@ -37,7 +37,7 @@ import  {request}           from '../utils/RequestUtil';
 import PixelUtil            from '../utils/PixelUtil';
 import * as storageKeyNames from '../constant/storageKeyNames';
 import StorageUtil from '../utils/StorageUtil';
-import CarPublishScene from './CarPublishScene';
+import CarPublishFirstScene from './CarPublishFirstScene';
 
 let Pixel = new PixelUtil();
 let carFilterData = require('./carData/carFilterData.json');
@@ -193,6 +193,8 @@ export  default  class carSourceListScene extends BaseComponent {
 
     // 下拉刷新数据
     refreshingData = () => {
+        console.log('下拉了');
+
         carData = [];
         this.setState({isRefreshing: true});
         this.loadData();
@@ -346,9 +348,10 @@ export  default  class carSourceListScene extends BaseComponent {
         //     }
         // };
         // this.props.callBack(navigatorParams);
+
         let navigatorParams = {
-            name: "CarPublishScene",
-            component: CarPublishScene,
+            name: "CarPublishFirstScene",
+            component: CarPublishFirstScene,
             params: {
             }
         };

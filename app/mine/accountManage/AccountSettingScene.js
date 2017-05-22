@@ -22,6 +22,7 @@ import BaseComponent from '../../component/BaseComponent';
 import NavigationView from '../../component/AllNavigationView';
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
+import Switch from './component/Switch';
 export  default class AccountSettingScene extends BaseComponent {
 
     constructor(props) {
@@ -52,7 +53,7 @@ export  default class AccountSettingScene extends BaseComponent {
                         <Text style={{color:'#000',fontSize: Pixel.getFontPixel(14)}}>开通电子账户</Text>
                     </View>
                     <View style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>
-
+                            <Switch/>
                     </View>
                 </View>
                 <NavigationView

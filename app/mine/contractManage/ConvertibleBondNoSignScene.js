@@ -47,30 +47,37 @@ export default class CompleteSignScene extends BaseComponent {
             api: Urls.GET_CTC_CONTRACT_LIST_FOR_APP,
             opt_user_id: this.props.opt_user_id,
             sign_status: '1',
+            opt_merge_id:this.props.opt_merge_id
         };
         request(Urls.FINANCE, 'Post', maps)
 
             .then((response) => {
-                    if (page == 1 && response.mjson.data.contract_list.length <= 0) {
+                    if (page == 1 && response.mjson.data.list.length <= 0) {
                         this.setState({renderPlaceholderOnly: 'null'});
                     } else {
                         allPage = response.mjson.data.total / 10;
-                        allSouce.push(...response.mjson.data.contract_list);
+                        allSouce.push(...response.mjson.data.list);
                         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
-                            dataSource: ds.cloneWithRows([1, 2, 3, 4, 5, 6]),
+                            dataSource: ds.cloneWithRows(allSouce),
                             isRefreshing: false,
                             renderPlaceholderOnly: 'success'
                         });
                     }
                 },
                 (error) => {
-                    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    this.setState({
-                        dataSource: ds.cloneWithRows(['1', '2', '3']),
-                        isRefreshing: false,
-                        renderPlaceholderOnly: 'success'
-                    });
+                    if(error.mycode=='-2100045'){
+                        this.setState({
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'null'
+                        });
+                    }else{
+                        this.setState({
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'error'
+                        });
+                    }
+
                     // this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
                 });
     }

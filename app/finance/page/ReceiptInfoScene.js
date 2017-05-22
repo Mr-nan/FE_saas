@@ -18,12 +18,7 @@ import PixelUtil from  '../../utils/PixelUtil';
 let  Pixel = new PixelUtil();
 
 
-let datatArray=[
-     [{title:'借款人',value:'纠结伦'}
-        ,{title:'身份证号',value:'4501238488288288182'}
-    ,{title:'手机号码',value:'18690722773'}
-    ,{title:'借款金额',value:'100万'}],
-    [{title:'车架号',value:'SB-110-120-NB222222'}]];
+
 
 export default  class  ReceiptInfoScene extends BaseComponent{
 
@@ -34,7 +29,20 @@ export default  class  ReceiptInfoScene extends BaseComponent{
     // 构造
       constructor(props) {
         super(props);
-        // 初始状态
+
+        let data = this.props.data;
+          this.datatArray=[
+              [{title:'借款人',value:data.username}
+                  ,{title:'身份证号',value:data.idcard_number}
+                  ,{title:'手机号码',value:data.phone}
+                  ,{title:'借款金额',value:data.money_str}
+                  ,{title:'起息日(以实际放款日为准)',value:data.start_time}
+                  ,{title:'到期日',value:data.end_time}
+                  ,{title:'还款方式',value:data.repayment_type}
+                  ,{title:'收款银行卡号',value:data.bank_name+"  "+data.bank_card}
+                  ],
+              [{title:'车架号',value:data.vin}]];
+
           let getSectionData = (dataBlob, sectionID) => {
               return dataBlob[sectionID];
           };
@@ -52,10 +60,10 @@ export default  class  ReceiptInfoScene extends BaseComponent{
           });
 
           var dataBlob = {}, sectionIDs = [], rowIDs = [],cars = [];
-          for (var i = 0; i < datatArray.length; i++) {
+          for (var i = 0; i < this.datatArray.length; i++) {
               sectionIDs.push(i);
               dataBlob[i] = '';
-              cars = datatArray[i];
+              cars = this.datatArray[i];
               rowIDs[i] = [];
               for (var j = 0; j < cars.length; j++) {
                   rowIDs[i].push(j);
@@ -70,33 +78,29 @@ export default  class  ReceiptInfoScene extends BaseComponent{
           };
       }
 
-    setListData = (array)=> {
-
-        console.log(array);
-        var dataBlob = {}, sectionIDs = [], rowIDs = [],cars = [];
-        for (var i = 0; i < array.length; i++) {
-            sectionIDs.push(i);
-            cars = array[i];
-            rowIDs[i] = [];
-            for (var j = 0; j < cars.length; j++) {
-                rowIDs[i].push(j);
-                dataBlob[i + ':' + j] = cars[j];
-            }
-            this.setState({
-                dataSource: this.state.dataSource.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
-            });
-
-        }
-    }
-
-
 
     render(){
         return(<View style={styles.rootContainer}>
-            <ListView dataSource={this.state.dataSource} renderSectionHeader={this.renderSectionHeader}
-                      renderRow={this.renderRow}/>
+            <ListView dataSource={this.state.dataSource}
+                      renderSectionHeader={this.renderSectionHeader}
+                      renderRow={this.renderRow}
+                      renderSeparator={this._renderSeparator}
+
+
+            />
             <AllNavigationView title="借据信息" backIconClick={this.backPage}/>
         </View>)
+    }
+
+    _renderSeparator(sectionId, rowId) {
+
+        return (
+            <View style={styles.Separator} key={rowId + '123'}>
+                <View style={{flex:1, backgroundColor:fontAndColor.COLORA3}}>
+
+                </View>
+            </View>
+        )
     }
 
 
@@ -138,8 +142,14 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         justifyContent:'space-between',
         alignItems:'center',
-        paddingHorizontal:Pixel.getPixel(15),
-        borderBottomColor:fontAndColor.COLORA4,
-        borderBottomWidth:StyleSheet.hairlineWidth,
+        paddingHorizontal:Pixel.getPixel(15)
+    },
+    Separator: {
+        backgroundColor: '#fff',
+        height: Pixel.getPixel(1),
+        paddingLeft: Pixel.getPixel(15),
+        paddingRight: Pixel.getPixel(15)
+
+
     }
 });

@@ -28,6 +28,7 @@ import WithdrawalsScene from './WithdrawalsScene';
 import BankCardScene from './BankCardScene';
 import AccountFlowScene from './AccountFlowScene';
 import AccountSettingScene from './AccountSettingScene';
+import FrozenScene from './FrozenScene';
 export  default class AccountScene extends BaseComponent {
 
     constructor(props) {
@@ -109,11 +110,16 @@ export  default class AccountScene extends BaseComponent {
     _renderHeader = () => {
         return (
             <AccountTitle bankCard={()=>{this.toNextPage({name:'BankCardScene',component:BankCardScene,params:{}})}}
-                          flow={()=>{this.toNextPage({name:'AccountFlowScene',component:AccountFlowScene,params:{}})}} changePwd={()=>{}}
+                          flow={()=>{this.toNextPage({name:'AccountFlowScene',component:AccountFlowScene,params:{}})}}
+                          changePwd={()=>{}}
                           resetPwd={()=>{}}
                           changePhone={()=>{}}
                           accountSetting={()=>{this.toNextPage({name:'AccountSettingScene',component:AccountSettingScene,params:{}})}}
-                          moreFlow={()=>{}}/>
+                          moreFlow={()=>{this.toNextPage({name:'AccountFlowScene',component:AccountFlowScene,params:{}})}}
+                          frozen={()=>{this.toNextPage({name:'FrozenScene',component:FrozenScene,params:{}})}}
+
+
+            />
         )
     }
 

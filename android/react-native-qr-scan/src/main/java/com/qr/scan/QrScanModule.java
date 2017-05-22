@@ -69,4 +69,6 @@ public class QrScanModule extends ReactContextBaseJavaModule implements Activity
             mVLPromise = null;
         }
     }
+
+
 }
