@@ -28,6 +28,8 @@ import GetCarCountDown from "./component/GetCarCountDown";
 import StepView from "./component/StepView";
 import * as AppUrls from "../../constant/appUrls";
 import {request} from "../../utils/RequestUtil";
+import ExplainModal from "./component/ExplainModal";
+import ContactLayout from "./component/ContactLayout";
 const Pixel = new PixelUtil();
 
 export default class ProcurementOrderDetailScene extends BaseComponent {
@@ -97,6 +99,24 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
                 this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
                 break;
+            case 3: // 待申请发车(结清尾款)
+                this.mList = [];
+                this.mList = ['0', '1', '2', '3', '4', '6'];
+                this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
+                this.items.push({title: '已付订金', nodeState: 0, isLast: false, isFirst: false});
+                this.items.push({title: '结算尾款', nodeState: 1, isLast: false, isFirst: false});
+                //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
+                this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                break;
+            case 4: // 待申请发车(结清尾款)
+                this.mList = [];
+                this.mList = ['0', '1', '3', '4', '6'];
+                this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
+                this.items.push({title: '已付订金', nodeState: 0, isLast: false, isFirst: false});
+                this.items.push({title: '结算尾款', nodeState: 0, isLast: false, isFirst: false});
+                //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
+                this.items.push({title: '完成交易', nodeState: 1, isLast: true, isFirst: false});
+                break;
             default:
                 break;
         }
@@ -138,6 +158,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 )
                 break;
             case 2:
+            case 3:
+            case 4:
                 this.listViewStyle = Pixel.getTitlePixel(65);
                 return null;
                 break;
@@ -206,6 +228,58 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     </View>
                 )
                 break;
+            case 3:
+                return (
+                    <View style={styles.bottomBar}>
+                        <View style={styles.buttonCancel}>
+                            <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                        </View>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.toNextPage({
+                                    name: 'CheckStand',
+                                    component: CheckStand,
+                                    params: {}
+                                });
+                            }}>
+                            <View style={styles.buttonConfirm}>
+                                <Text style={{color: '#ffffff'}}>确认验收</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                )
+                break;
+            case 4:
+                return null;
+                break;
+            case 5:
+                return (
+                    <View style={styles.bottomBar}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.props.showModal(true);
+                                this.loadData();
+                            }}>
+                            <View style={[styles.buttonCancel, {width: Pixel.getPixel(137)}]}>
+                                <Text style={{color: fontAndColor.COLORA2}}>撤回取消订单申请</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                );
+                break;
+            case 6:
+                return (
+                    <View style={[styles.bottomBar, {justifyContent: 'center'}]}>
+                        <Text style={{
+                            textAlign: 'center',
+                            fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                            color: fontAndColor.COLORB0
+                        }}>
+                            交易关闭
+                        </Text>
+                    </View>
+                );
+                break;
             default:
                 return null;
                 break;
@@ -215,7 +289,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
     loadData = () => {
         let url = AppUrls.ORDER_DETAIL;
         request(url, 'post', {
-            order_no: '20170511'
+            order_id: '5'
         }).then((response) => {
             this.props.showModal(false);
             this.orderDetail = response.mjson.data;
@@ -240,7 +314,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             this.props.showModal(false);
             //console.log('请求错误 = ', error);
             // todo test
-            this.orderState = 0;
+            this.orderState = 1;
             this.initListData(this.orderState);
             this.setState({
                 // todo test
@@ -264,7 +338,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     showsVerticalScrollIndicator={false}/>
 
                 <View style={{flex: 1}}/>
-                {this.initDetailPageBottom(this.orderState)}
+                {this.initDetailPageBottom(5)}
+                {/*<ExplainModal ref='expModal' title='订金说明' buttonStyle={styles.expButton} textStyle={styles.expText}
+                 text='知道了' content='交付订金后卖家会为您保留车源，且卖家不可提现，如果交易最终未完成，您可以和卖家协商'/>*/}
             </View>
         )
     }
@@ -287,21 +363,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             )
         } else if (rowData === '1') {
             return (
-                <View style={styles.itemType1}>
-                    <View style={{width: Pixel.getPixel(310)}}>
-                        <Text style={styles.itemType1Ttile}>已拍下</Text>
-                        <Text style={styles.itemType1Content}>请尽快和卖家协商价格,待卖家通知后支付订金待卖家通知后支付订金</Text>
-                    </View>
-                    <View style={{flex: 1}}/>
-                    <TouchableOpacity
-                        style={{marginRight: Pixel.getPixel(15), alignSelf: 'center'}}
-                        onPress={() => {
-                            /*TODO  拨打电话*/
-                        }}>
-                        <Image
-                            source={require('../../../images/mainImage/making_call.png')}/>
-                    </TouchableOpacity>
-                </View>
+                <ContactLayout layoutTitle='已拍下121'  setPrompt={true}
+                               promptTitle="订金说明" promptContent="1u还ID1好好诶可2还可可和"
+                               MerchantNum="13401091924" CustomerServiceNum="13040911924"/>
             )
         } else if (rowData === '2') {
             return (
@@ -345,10 +409,10 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 <Text style={styles.carDescribeTitle}>上牌：</Text>
                                 <Text style={styles.carDescribe}>2016-09-09</Text>
                             </View>
-{/*                            <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
-                                <Text style={styles.carDescribeTitle}>标价：</Text>
-                                <Text style={styles.carDescribe}>20.59万</Text>
-                            </View>*/}
+                            {/*                            <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
+                             <Text style={styles.carDescribeTitle}>标价：</Text>
+                             <Text style={styles.carDescribe}>20.59万</Text>
+                             </View>*/}
                         </View>
                     </View>
                 </View>
@@ -520,10 +584,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     itemType1Ttile: {
-        marginLeft: Pixel.getPixel(15),
         fontSize: Pixel.getFontPixel(fontAndColor.TITLEFONT40),
-        color: fontAndColor.COLORB2,
-        marginTop: Pixel.getPixel(21)
+        color: fontAndColor.COLORB2
     },
     itemType1Content: {
         marginLeft: Pixel.getPixel(15),
@@ -613,5 +675,21 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: Pixel.getPixel(40),
         backgroundColor: fontAndColor.COLORB6
+    },
+    expButton: {
+        marginBottom: Pixel.getPixel(20),
+        width: width - width / 4 - Pixel.getPixel(40),
+        height: Pixel.getPixel(35),
+        marginTop: Pixel.getPixel(16),
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 3,
+        borderWidth: 1,
+        borderColor: fontAndColor.COLORB0
+    },
+    expText: {
+        fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
+        color: fontAndColor.COLORB0
     }
 });

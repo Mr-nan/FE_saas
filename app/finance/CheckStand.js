@@ -23,6 +23,9 @@ import * as fontAndColor from '../constant/fontAndColor';
 import PixelUtil from '../utils/PixelUtil';
 import MyButton from "../component/MyButton";
 import ExplainModal from "../mine/myOrder/component/ExplainModal";
+import * as AppUrls from "../constant/appUrls";
+import {request} from "../utils/RequestUtil";
+import AccountScene from "../mine/accountManage/RechargeScene";
 const Pixel = new PixelUtil();
 
 export default class CheckStand extends BaseComponent {
@@ -70,21 +73,30 @@ export default class CheckStand extends BaseComponent {
                         <Text style={styles.title}>账户可用金额：</Text>
                         <Text style={styles.content}>150000元</Text>
                         <View style={{flex: 1}}/>
-                        <View style={{
-                            height: Pixel.getPixel(27),
-                            width: Pixel.getPixel(70),
-                            borderRadius: Pixel.getPixel(2),
-                            borderWidth: Pixel.getPixel(1),
-                            borderColor: fontAndColor.COLORB0,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            marginRight: Pixel.getPixel(15)
-                        }}>
-                            <Text style={{
-                                fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                                color: fontAndColor.COLORB0
-                            }}>充值</Text>
-                        </View>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.toNextPage({
+                                    name: 'AccountScene',
+                                    component: AccountScene,
+                                    params: {}
+                                });
+                            }}>
+                            <View style={{
+                                height: Pixel.getPixel(27),
+                                width: Pixel.getPixel(70),
+                                borderRadius: Pixel.getPixel(2),
+                                borderWidth: Pixel.getPixel(1),
+                                borderColor: fontAndColor.COLORB0,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                marginRight: Pixel.getPixel(15)
+                            }}>
+                                <Text style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                                    color: fontAndColor.COLORB0
+                                }}>充值</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
                 </View>
                 <MyButton buttonType={MyButton.TEXTBUTTON}
@@ -92,49 +104,49 @@ export default class CheckStand extends BaseComponent {
                           parentStyle={styles.loginBtnStyle}
                           childStyle={styles.loginButtonTextStyle}
                           mOnPress={this.goPay}/>
-                <View style={{
-                    alignItems: 'center',
-                    flexDirection: 'row',
-                    //marginTop: Pixel.getPixel(35)
-                }}>
-                    <View style={{
-                        marginRight: Pixel.getPixel(15),
-                        marginLeft: Pixel.getPixel(15),
-                        backgroundColor: fontAndColor.COLORA1,
-                        height: 1,
-                        flex: 1
-                    }}/>
-                    <Text style={{
-                        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                        color: fontAndColor.COLORA1
-                    }}>可选融资方案</Text>
-                    <View style={{
-                        marginRight: Pixel.getPixel(15),
-                        marginLeft: Pixel.getPixel(15),
-                        backgroundColor: fontAndColor.COLORA1,
-                        height: 1,
-                        flex: 1
-                    }}/>
-                </View>
-                <MyButton buttonType={MyButton.TEXTBUTTON}
-                          content={'订单融资'}
-                          parentStyle={styles.loginBtnStyle1}
-                          childStyle={styles.loginButtonTextStyle}/>
-                <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(21), marginLeft: Pixel.getPixel(15)}}>
-                    <Text style={{
-                        fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-                        color: fontAndColor.COLORA1
-                    }}>授信可用额度：</Text>
-                    <Text style={{
-                        fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30)
-                    }}>200万</Text>
-                </View>
-                <Text style={{
-                    marginLeft: Pixel.getPixel(15),
-                    fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-                    color: fontAndColor.COLORA1,
-                    marginTop: Pixel.getPixel(10)
-                }}>申请订单融资额度请联系客服</Text>
+                {/*               <View style={{
+                 alignItems: 'center',
+                 flexDirection: 'row',
+                 //marginTop: Pixel.getPixel(35)
+                 }}>
+                 <View style={{
+                 marginRight: Pixel.getPixel(15),
+                 marginLeft: Pixel.getPixel(15),
+                 backgroundColor: fontAndColor.COLORA1,
+                 height: 1,
+                 flex: 1
+                 }}/>
+                 <Text style={{
+                 fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                 color: fontAndColor.COLORA1
+                 }}>可选融资方案</Text>
+                 <View style={{
+                 marginRight: Pixel.getPixel(15),
+                 marginLeft: Pixel.getPixel(15),
+                 backgroundColor: fontAndColor.COLORA1,
+                 height: 1,
+                 flex: 1
+                 }}/>
+                 </View>*/}
+                {/* <MyButton buttonType={MyButton.TEXTBUTTON}
+                 content={'订单融资'}
+                 parentStyle={styles.loginBtnStyle1}
+                 childStyle={styles.loginButtonTextStyle}/>
+                 <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(21), marginLeft: Pixel.getPixel(15)}}>
+                 <Text style={{
+                 fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                 color: fontAndColor.COLORA1
+                 }}>授信可用额度：</Text>
+                 <Text style={{
+                 fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30)
+                 }}>200万</Text>
+                 </View>
+                 <Text style={{
+                 marginLeft: Pixel.getPixel(15),
+                 fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                 color: fontAndColor.COLORA1,
+                 marginTop: Pixel.getPixel(10)
+                 }}>申请订单融资额度请联系客服</Text>*/}
 
                 <ExplainModal ref='expModal' title='提示' buttonStyle={styles.expButton} textStyle={styles.expText}
                               text='确定' content='您的余额不足请充值'/>
@@ -143,7 +155,18 @@ export default class CheckStand extends BaseComponent {
     }
 
     goPay = () => {
-        this.refs.expModal.changeShowType(true);
+        //this.refs.expModal.changeShowType(true);
+        this.props.showModal(true);
+        let url = AppUrls.ORDER_PAY_DEPOSIT;
+        request(url, 'post', {
+            order_no: '20170511'
+        }).then((response) => {  // 支付成功
+            this.props.showModal(false);
+            this.props.showToast('支付成功');
+        }, (error) => {          // 支付失败
+            this.props.showModal(false);
+            this.props.showToast(error.message);
+        });
     }
 }
 

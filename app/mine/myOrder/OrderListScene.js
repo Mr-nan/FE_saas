@@ -54,17 +54,17 @@ export default class OrderListScene extends BaseComponent {
     componentDidMount() {
         BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
         InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: 'loading'});
+            //this.setState({renderPlaceholderOnly: 'loading'});
             this.initFinish();
         });
     }
 
     initFinish = () => {
-        /*        this.setState({
-         dataSource: this.state.dataSource.cloneWithRows(['','','']),
-         renderPlaceholderOnly: 'success'
-         });*/
-        this.loadData();
+        this.setState({
+            dataSource: this.state.dataSource.cloneWithRows(['', '', '']),
+            renderPlaceholderOnly: 'success'
+        });
+        //this.loadData();
     };
 
     dateReversal = (time) => {
@@ -255,8 +255,8 @@ export default class OrderListScene extends BaseComponent {
 
     _renderRow = (rowData, selectionID, rowID) => {
         //console.log('_renderRow===' + rowData.cars[0].car.imgs[0].icon_url);
-        let initRegDate = this.dateReversal(rowData.cars[0].car.init_reg + '000');
-        let imageUrl = rowData.cars[0].car.imgs;
+        //let initRegDate = this.dateReversal(rowData.cars[0].car.init_reg + '000');
+        //let imageUrl = rowData.cars[0].car.imgs;
         //console.log('_renderRow===' + imageUrl)
         //item 布局
         return (
@@ -283,19 +283,19 @@ export default class OrderListScene extends BaseComponent {
                 activeOpacity={0.8}>
                 <View style={styles.rowView}>
                     <View style={styles.rowTitleLine}>
-                        <Text style={styles.rowTitleText}>{rowData.seller_company_name}</Text>
+                        <Text style={styles.rowTitleText}>测试11231</Text>
                         <Text style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                             color: fontAndColor.COLORA1,
                             marginLeft: Pixel.getPixel(5)
-                        }}>({rowData.seller_company_id})</Text>
+                        }}>(12121131414211)</Text>
                         <View style={{flex: 1}}/>
                         <Text style={styles.rowTitleState}>已拍下</Text>
                     </View>
                     <View style={styles.separatedLine}/>
                     <View style={{flexDirection: 'row', height: Pixel.getPixel(104), alignItems: 'center'}}>
                         <Image style={styles.image}
-                               source={imageUrl.length ? {uri: rowData.cars[0].car.imgs[0].icon_url} : require('../../../images/carSourceImages/car_null_img.png')}/>
+                               source={require('../../../images/carSourceImages/car_null_img.png')}/>
                         <View style={{marginLeft: Pixel.getPixel(10), marginRight: Pixel.getPixel(15)}}>
                             <Text
                                 style={{width: width - Pixel.getPixel(15 + 120 + 10 + 15)}}
@@ -303,11 +303,11 @@ export default class OrderListScene extends BaseComponent {
                             >{rowData.car_name}</Text>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>里程：</Text>
-                                <Text style={styles.carDescribe}>{rowData.cars[0].car.mileage}万</Text>
+                                <Text style={styles.carDescribe}>12314万</Text>
                             </View>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>上牌：</Text>
-                                <Text style={styles.carDescribe}>{initRegDate}</Text>
+                                <Text style={styles.carDescribe}>2020-12-11</Text>
                             </View>
                             {/*                            <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
                              <Text style={styles.carDescribeTitle}>标价：</Text>

@@ -6,9 +6,8 @@ import {
     Dimensions,
     StyleSheet,
     View,
-    StatusBar,
     Modal,
-    Image,
+    Linking,
     Text,
     TouchableOpacity
 } from 'react-native';
@@ -32,6 +31,9 @@ export default class MakePhoneModal extends Component {
         });
     }
 
+    callClick = (phoneNumer) => {
+        Linking.openURL('tel:' + phoneNumer);
+    };
 
     render() {
         return (
@@ -68,7 +70,7 @@ export default class MakePhoneModal extends Component {
                     }}>
                         <TouchableOpacity
                             onPress={() => {
-
+                                this.callClick(this.props.MerchantNum);
                             }}>
                             <View style={styles.buttonMerchant}>
                                 <Text style={{color: '#ffffff'}}>联系商家</Text>
@@ -76,7 +78,7 @@ export default class MakePhoneModal extends Component {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
-
+                                this.callClick(this.props.CustomerServiceNum);
                             }}>
                             <View style={styles.buttonCustomerService}>
                                 <Text style={{color: fontAndColor.COLORB0}}>联系客服</Text>

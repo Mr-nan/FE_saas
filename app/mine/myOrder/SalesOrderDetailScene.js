@@ -14,7 +14,8 @@ import {
     Image,
     Dimensions,
     NativeModules,
-    BackAndroid
+    BackAndroid,
+    InteractionManager
 } from  'react-native'
 
 const {width, height} = Dimensions.get('window');
@@ -29,6 +30,8 @@ import ExplainModal from "./component/ExplainModal";
 import MakePhoneModal from "./component/MakePhoneModal";
 import ChooseModal from "./component/ChooseModal";
 import TransactionPrice from "./component/TransactionPrice";
+import {request} from "../../utils/RequestUtil";
+import * as AppUrls from "../../constant/appUrls";
 const Pixel = new PixelUtil();
 
 const IS_ANDROID = Platform.OS === 'android';
@@ -38,26 +41,119 @@ export default class SalesOrderDetailScene extends BaseComponent {
 
     constructor(props) {
         super(props);
-        let mList = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
-        items = [];
-        items.push({title: '创建订单', nodeState: 1, isLast: false, isFirst: true});
-        items.push({title: '订金到账', nodeState: 2, isLast: false, isFirst: false});
-        items.push({title: '尾款到账', nodeState: 2, isLast: false, isFirst: false});
-        items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.items = [];
+        this.mList = [];
+        this.listViewStyle = Pixel.getPixel(0);
+        this.orderDetail = '';
+        this.orderState = -1;
 
         this.modelData = [];
         this.scanType = [{model_name: '扫描前风挡'}, {model_name: '扫描行驶证'}, {model_name: '手动输入'}];
 
         this.state = {
-            source: ds.cloneWithRows(mList)
+            dataSource: ds
         }
     }
 
     componentDidMount() {
         BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
     }
+
+    initFinish = () => {
+        /*        this.setState({
+         dataSource: this.state.dataSource.cloneWithRows(['','','']),
+         renderPlaceholderOnly: 'success'
+         });*/
+        this.loadData();
+    };
+
+    loadData = () => {
+        let url = AppUrls.ORDER_DETAIL;
+        request(url, 'post', {
+            order_no: '20170511'
+        }).then((response) => {
+            this.props.showModal(false);
+            this.orderDetail = response.mjson.data;
+            this.orderState = response.mjson.data.status;
+            //this.orderState = this.orderDetail.status;
+            //console.log('订单列表数据 = ', this.orderListData);
+            if (response.mjson.data && this.orderListData.length > 0) {
+                this.initListData(orderState);
+                this.setState({
+                    dataSource: this.state.dataSource.cloneWithRows(this.mList),
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'success'
+                });
+            } else {
+                this.setState({
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'null'
+                });
+            }
+
+        }, (error) => {
+            this.props.showModal(false);
+            //console.log('请求错误 = ', error);
+            // todo test
+            this.orderState = 1;
+            this.initListData(this.orderState);
+            this.setState({
+                // todo test
+                dataSource: this.state.dataSource.cloneWithRows(this.mList),
+                isRefreshing: false,
+                renderPlaceholderOnly: 'error'
+            });
+        });
+    };
+
+    initListData = (orderState) => {
+        switch (orderState) {
+            case 0: //创建订单
+                this.mList = [];
+                this.mList = ['0', '1', '3', '4', '6'];
+                this.items.push({title: '创建订单', nodeState: 1, isLast: false, isFirst: true});
+                this.items.push({title: '订金到账', nodeState: 2, isLast: false, isFirst: false});
+                this.items.push({title: '尾款到账', nodeState: 2, isLast: false, isFirst: false});
+                //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
+                this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                break;
+            case 1: // 订金到账
+                this.mList = [];
+                this.mList = ['0', '1', '3', '4', '6'];
+                this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
+                this.items.push({title: '订金到账', nodeState: 1, isLast: false, isFirst: false});
+                this.items.push({title: '尾款到账', nodeState: 2, isLast: false, isFirst: false});
+                //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
+                this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                break;
+            case 2: // 尾款到账
+                this.mList = [];
+                this.mList = ['0', '1', '3', '4', '6'];
+                this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
+                this.items.push({title: '订金到账', nodeState: 0, isLast: false, isFirst: false});
+                this.items.push({title: '尾款到账', nodeState: 1, isLast: false, isFirst: false});
+                //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
+                this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                break;
+            case 3: // 完成交易
+                this.mList = [];
+                this.mList = ['0', '1', '3', '4', '6'];
+                this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
+                this.items.push({title: '订金到账', nodeState: 0, isLast: false, isFirst: false});
+                this.items.push({title: '尾款到账', nodeState: 0, isLast: false, isFirst: false});
+                //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
+                this.items.push({title: '完成交易', nodeState: 1, isLast: true, isFirst: false});
+                break;
+            default:
+                break;
+        }
+    };
 
     //扫描
     _scanPress = () => {
@@ -108,7 +204,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 <NavigatorView title='订单详情' backIconClick={this.backPage}/>
                 <ListView
                     style={{marginTop: Pixel.getPixel(73)}}
-                    dataSource={this.state.source}
+                    dataSource={this.state.dataSource}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeperator}
                     showsVerticalScrollIndicator={false}/>
@@ -146,7 +242,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
         if (rowData === '0') {
             return (
                 <View style={styles.itemType0}>
-                    <StepView items={items}/>
+                    <StepView items={this.items}/>
                 </View>
             )
         } else if (rowData === '1') {
