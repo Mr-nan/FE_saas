@@ -165,6 +165,8 @@ export default class CarUpImageScene extends BaseComponent{
               });
           }else if(this.carData.imgs){
               this.results.push(...this.carData.imgs);
+              this.carData['pictures']=JSON.stringify(this.results);
+
               this.titleData.map((data,index)=>{
                   this.carData.imgs.map((imgData,subIndex)=>{
                       if(data.name == imgData.name){

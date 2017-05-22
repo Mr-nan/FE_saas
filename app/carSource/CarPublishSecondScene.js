@@ -25,6 +25,7 @@ import CityListScene from  './CityListScene';
 import *as fontAndColor from '../constant/fontAndColor';
 import PixelUtil from '../utils/PixelUtil';
 import StorageUtil from "../utils/StorageUtil";
+import CarReferencePriceScene from './CarReferencePriceScene';
 
 const Pixel = new  PixelUtil();
 const sceneWidth = Dimensions.get('window').width;
@@ -57,7 +58,7 @@ export default class CarPublishSecondScene extends BaseComponent{
 
         }
 
-        if(this.carData.v_type==2){
+        if(this.carData.v_type!==1){
             this.carData['nature_use']=2;
             this.carData['transfer_times']='0';
             this.carData['mileage']='0';
@@ -222,12 +223,12 @@ export default class CarPublishSecondScene extends BaseComponent{
                     value:'0',
                     isShowTail:false,
                 },
-                {
-                    title:'车牌号',
-                    isShowTag:true,
-                    isShowTail:true,
-                    value:this.carData.plate_number?this.carData.plate_number:'请选择'
-                },
+                // {
+                //     title:'车牌号',
+                //     isShowTag:true,
+                //     isShowTail:true,
+                //     value:this.carData.plate_number?this.carData.plate_number:'请选择'
+                // },
                 {
                     title:'表显里程',
                     isShowTag:true,
@@ -236,12 +237,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                 },
 
             ],
-            [   {
-                title:'参考价',
-                isShowTag:false,
-                value:'查看',
-                isShowTail:true,
-            },
+            [
                 {
                     title:'分销批发价',
                     subTitle:'针对同行的分销价格，合理定价可以更快售出',
@@ -419,13 +415,17 @@ export default class CarPublishSecondScene extends BaseComponent{
 
         if(cellTitle=='登记人')
         {
-           this.pushSelectRegisterPersonScene();
+            this.pushSelectRegisterPersonScene();
 
         }else if(cellTitle=='车牌号'){
 
             this.pushCarIicenseTagScene();
 
-        }else if(cellTitle=='车辆所在地'){
+        }else if(cellTitle=='参考价'){
+
+            this.pushCarReferencePriceScene();
+        }
+        else if(cellTitle=='车辆所在地'){
 
             this.pushCityListScene();
         }
@@ -438,7 +438,7 @@ export default class CarPublishSecondScene extends BaseComponent{
             this.props.showToast('请输入过户次数');
             return;
         }
-        if(this.carData.plate_number==''||!this.carData.plate_number)
+        if((this.carData.plate_number==''||!this.carData.plate_number)&&this.carData.v_type==1)
         {
             this.props.showToast('请输入正确的车牌号');
             return;
@@ -510,13 +510,39 @@ export default class CarPublishSecondScene extends BaseComponent{
         this.toNextPage(navigatorParams);
     }
 
+    // 车辆参考价
+    pushCarReferencePriceScene=()=>{
+
+        if(!this.carData.city_id || this.carData.city_id==''){
+
+            this.props.showToast('请先选择车辆所在地');
+            return;
+        }
+        if(this.carData.mileage==''||!this.carData.mileage)
+        {
+            this.props.showToast('请输入里程');
+            return;
+        }
+
+        let navigationParams={
+            name: "CarReferencePriceScene",
+            component: CarReferencePriceScene,
+            params: {
+                carData:this.carData
+            }
+        }
+        this.toNextPage(navigationParams);
+    };
+
     _checkedCarlicenseTagClick=(title)=>{
            this.titleData1[0][2].value = title;
            this.titleData2[0][1].value = title;
            this.carData['plate_number'] = title;
             this.updateUI();
     }
+
     pushCityListScene=()=>{
+
         let navigatorParams = {
             name: "CityListScene",
             component: CityListScene,
