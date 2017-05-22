@@ -30,7 +30,6 @@ export  default class AccountSettingScene extends BaseComponent {
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             renderPlaceholderOnly: 'blank',
-            source: ds.cloneWithRows(['1','2'])
         };
     }
 
@@ -46,8 +45,9 @@ export  default class AccountSettingScene extends BaseComponent {
         }
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
-                <View style={{marginTop:Pixel.getTitlePixel(79),backgroundColor:'#fff',paddingRight: Pixel.getPixel(15),
-                 paddingLeft:Pixel.getPixel(15),height:Pixel.getPixel(44)}}>
+                <View style={{marginTop:Pixel.getTitlePixel(79),backgroundColor:'#fff'
+                ,paddingRight: Pixel.getPixel(15),
+                 paddingLeft:Pixel.getPixel(15),height:Pixel.getPixel(44),flexDirection: 'row'}}>
                     <View style={{flex:1,justifyContent:'center'}}>
                         <Text style={{color:'#000',fontSize: Pixel.getFontPixel(14)}}>开通电子账户</Text>
                     </View>
