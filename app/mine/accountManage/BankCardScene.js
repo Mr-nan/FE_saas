@@ -68,7 +68,7 @@ export  default class BankCardScene extends BaseComponent {
                     ,width:width-Pixel.getPixel(30),borderWidth: 1,borderColor: fontAndColor.COLORA4,
                     borderRadius:Pixel.getPixel(6),paddingRight:Pixel.getPixel(15),paddingLeft:Pixel.getPixel(15)
                 }}>
-                    <View style={{flex:1,justifyContent:'center'}}>
+                    <View style={{flex:2,justifyContent:'center'}}>
                         <Text style={{fontSize: Pixel.getFontPixel(17),color:'#000'}}>银行卡号</Text>
                         <Text style={{fontSize: Pixel.getFontPixel(15),color:fontAndColor.COLORA1,marginTop:Pixel.getPixel(5)}}>
                             6227 **** **** *** 6275

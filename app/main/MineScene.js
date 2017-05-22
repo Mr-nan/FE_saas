@@ -425,18 +425,18 @@ export default class MineScene extends BaseComponent {
     }
 
     toPage = () => {
-        this.props.showModal(true);
-        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-            if (data.code == 1) {
-                let datas = JSON.parse(data.result);
-                let maps = {
-                    enter_base_ids: datas.merge_id,
-                    child_type: '1'
-                };
-                request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
-                    .then((response) => {
-                            this.props.showToast('用户信息查询失败');
-                            lastType = response.mjson.data.status;
+        // this.props.showModal(true);
+        // StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+        //     if (data.code == 1) {
+        //         let datas = JSON.parse(data.result);
+        //         let maps = {
+        //             enter_base_ids: datas.merge_id,
+        //             child_type: '1'
+        //         };
+        //         request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+        //             .then((response) => {
+        //                     this.props.showToast('用户信息查询失败');
+        //                     lastType = response.mjson.data.status;
                             if (lastType == '0') {
                                 this.navigatorParams.name = 'AccountManageScene'
                                 this.navigatorParams.component = AccountManageScene
@@ -466,17 +466,17 @@ export default class MineScene extends BaseComponent {
                                 }
                             }
                             this.props.callBack(this.navigatorParams);
-
-                        },
-                        (error) => {
-                            this.props.showModal(false);
-                            this.props.showToast('用户信息查询失败');
-                        });
-            }else{
-                this.props.showModal(false);
-                this.props.showToast('用户信息查询失败');
-            }
-        });
+        //
+        //                 },
+        //                 (error) => {
+        //                     this.props.showModal(false);
+        //                     this.props.showToast('用户信息查询失败');
+        //                 });
+        //     }else{
+        //         this.props.showModal(false);
+        //         this.props.showToast('用户信息查询失败');
+        //     }
+        // });
     }
 
     _navigator(rowData) {

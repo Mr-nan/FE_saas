@@ -86,13 +86,15 @@ export  default class RechargeScene extends BaseComponent {
         }
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
-                <View style={{width:width,height:Pixel.getPixel(329),backgroundColor: '#fff',
+                <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
+
+                    <View style={{width:width,height:Pixel.getPixel(329),backgroundColor: '#fff',
                 paddingLeft: Pixel.getPixel(15),paddingRight: Pixel.getPixel(15),marginTop:Pixel.getTitlePixel(79)}}>
                         <View style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(144),flexDirection: 'row',
                       }}>
                             <View style={{flex:1,paddingTop: Pixel.getPixel(35),alignItems: 'center'}}>
                                 <Image style={{width:Pixel.getPixel(61),height:Pixel.getPixel(61)}}
-                                source={require('../../../images/mainImage/guitai.png')}></Image>
+                                       source={require('../../../images/mainImage/guitai.png')}></Image>
                                 <Text style={{color: '#000',fontSize: Pixel.getPixel(14),marginTop:Pixel.getPixel(5)}}>柜台办理</Text>
                             </View>
                             <View style={{flex:1,paddingTop: Pixel.getPixel(35),alignItems: 'center'}}>
@@ -106,18 +108,19 @@ export  default class RechargeScene extends BaseComponent {
                                 <Text style={{color: '#000',fontSize: Pixel.getPixel(14),marginTop:Pixel.getPixel(5)}}>手机银行</Text>
                             </View>
                         </View>
-                    <Text style={{color: fontAndColor.COLORA1,fontSize: Pixel.getPixel(14)}}>
-                        您可以使用您的银行卡，通过线下转账（柜台、网银、手机银行）的方式将资金充值到您的恒丰银行账户下。</Text>
-                    <View style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(120),marginTop:Pixel.getPixel(15),
+                        <Text style={{color: fontAndColor.COLORA1,fontSize: Pixel.getPixel(14)}}>
+                            您可以使用您的银行卡，通过线下转账（柜台、网银、手机银行）的方式将资金充值到您的恒丰银行账户下。</Text>
+                        <View style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(120),marginTop:Pixel.getPixel(15),
                     borderRadius: Pixel.getPixel(4),backgroundColor:fontAndColor.COLORA3,justifyContent:'center',paddingLeft:
                     Pixel.getPixel(15)}}>
-                        <Text style={{color: '#000',fontSize: Pixel.getPixel(14)}}>转账时填写的信息如下：</Text>
-                        <Text style={{fontWeight: 'bold',color: '#000',fontSize: Pixel.getPixel(14),marginTop:Pixel.getPixel(7)}}>
-                            收款人姓名：{this.state.name}</Text>
-                        <Text style={{fontWeight: 'bold',color: '#000',fontSize: Pixel.getPixel(14),marginTop:Pixel.getPixel(5)}}>
-                            收款账号：{this.state.cardNumber}</Text>
-                        <Text style={{fontWeight: 'bold',color: '#000',fontSize: Pixel.getPixel(14),marginTop:Pixel.getPixel(5)}}>
-                            收款银行：恒丰银行</Text>
+                            <Text style={{color: '#000',fontSize: Pixel.getPixel(14)}}>转账时填写的信息如下：</Text>
+                            <Text style={{fontWeight: 'bold',color: '#000',fontSize: Pixel.getPixel(14),marginTop:Pixel.getPixel(7)}}>
+                                收款人姓名：{this.state.name}</Text>
+                            <Text style={{fontWeight: 'bold',color: '#000',fontSize: Pixel.getPixel(14),marginTop:Pixel.getPixel(5)}}>
+                                收款账号：{this.state.cardNumber}</Text>
+                            <Text style={{fontWeight: 'bold',color: '#000',fontSize: Pixel.getPixel(14),marginTop:Pixel.getPixel(5)}}>
+                                收款银行：恒丰银行</Text>
+                        </View>
                     </View>
                 </View>
                 <NavigationView

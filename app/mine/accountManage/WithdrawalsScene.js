@@ -45,34 +45,38 @@ export  default class WithdrawalsScene extends BaseComponent {
         }
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
-                <View style={{backgroundColor: '#fff',width:width,height:Pixel.getPixel(44),justifyContent:'center',
-                marginTop:Pixel.getTitlePixel(79)}}>
-                    <Text style={{fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),color: '#000',
-                    marginLeft:Pixel.getPixel(15)}}>银行卡号：6227 **** **** 588</Text>
-                </View>
-                <View style={{backgroundColor: '#fff',width:width,height:Pixel.getPixel(146),justifyContent:'center',
+                <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
+                    <View style={{backgroundColor: '#fff',width:width,
+                height:Pixel.getPixel(44),justifyContent:'center',
+                marginTop:Pixel.getTitlePixel(79),paddingLeft:Pixel.getPixel(15),
+                paddingRight:Pixel.getPixel(15)}}>
+                        <Text style={{fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),color: '#000'}}>
+                            银行卡号：6227 **** **** 588</Text>
+                    </View>
+                    <View style={{backgroundColor: '#fff',width:width,height:Pixel.getPixel(146),justifyContent:'center',
                 marginTop:Pixel.getPixel(10),paddingLeft: Pixel.getPixel(15),paddingRight:Pixel.getPixel(15)}}>
-                    <View style={{flex:1,justifyContent:'center'}}>
-                        <Text style={{fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),color: '#000'}}>
-                            提取金额(元)</Text>
+                        <View style={{flex:1,justifyContent:'center'}}>
+                            <Text style={{fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),color: '#000'}}>
+                                提取金额(元)</Text>
+                        </View>
+                        <WithdrawalsInput/>
+                        <View style={{backgroundColor: fontAndColor.COLORA3,width:width-Pixel.getPixel(30),height:Pixel.getPixel(1)}}></View>
+                        <View style={{flex:1,flexDirection: 'row',alignItems: 'center'}}>
+                            <Text style={{fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),color: fontAndColor.COLORA1}}>
+                                可提现金额：</Text>
+                            <Text style={{fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),color: '#000'}}>
+                                {this.props.money}</Text>
+                        </View>
                     </View>
-                    <WithdrawalsInput/>
-                    <View style={{backgroundColor: fontAndColor.COLORA3,width:width-Pixel.getPixel(30),height:Pixel.getPixel(1)}}></View>
-                    <View style={{flex:1,flexDirection: 'row',alignItems: 'center'}}>
-                        <Text style={{fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),color: fontAndColor.COLORA1}}>
-                            可提现金额：</Text>
-                        <Text style={{fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),color: '#000'}}>
-                            {this.props.money}</Text>
-                    </View>
-                </View>
-                <TouchableOpacity onPress={()=>{
+                    <TouchableOpacity onPress={()=>{
                     this.refs.withdrawalsdialog.changeShowType(true,'','3');
                 }} activeOpacity={0.8} style={{marginTop:Pixel.getPixel(28),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),
                 borderRadius: Pixel.getPixel(4),backgroundColor: fontAndColor.COLORB0,width:width-Pixel.getPixel(30),
                 height:Pixel.getPixel(44),justifyContent:'center',alignItems: 'center'}}>
-                    <Text style={{fontSize: Pixel.getPixel(15),color: '#fff'}}>
-                        提现</Text>
-                </TouchableOpacity>
+                        <Text style={{fontSize: Pixel.getPixel(15),color: '#fff'}}>
+                            提现</Text>
+                    </TouchableOpacity>
+                </View>
                 <WithdrawalsDialog ref="withdrawalsdialog" callBack={()=>{
                         this.props.callBack();
                         this.backPage();

@@ -53,6 +53,9 @@ let loanList = [];
 import CGDLendScenes from '../finance/lend/CGDLendScenes';
 import AccountModal from '../component/AccountModal';
 import ReceiptInfoScene from '../finance/page/ReceiptInfoScene';
+import AccountTypeSelectScene from '../mine/accountManage/AccountTypeSelectScene'
+import WaitActivationAccountScene from '../mine/accountManage/WaitActivationAccountScene'
+import BindCardScene from '../mine/accountManage/BindCardScene'
 let firstType = '-1';
 let lastType = '-1';
 
@@ -215,6 +218,16 @@ export default class FinanceSence extends BaseComponet {
         });
     }
 
+    toPage=()=>{
+        if (lastType == '0') {
+           this.props.callBack({name:'AccountTypeSelectScene',component:AccountTypeSelectScene,params:{}});
+        } else if (lastType == '1') {
+            this.props.callBack({name:'BindCardScene',component:BindCardScene,params:{}});
+        } else if (lastType == '2') {
+            this.props.callBack({name:'WaitActivationAccountScene',component:WaitActivationAccountScene,params:{}});
+        }
+    }
+
     componentDidUpdate() {
 
         if (this.state.renderPlaceholderOnly == 'success') {
@@ -239,19 +252,19 @@ export default class FinanceSence extends BaseComponet {
                                                         this.refs.accountmodal.changeShowType(true,
                                                             '您还未开通资金账户，为方便您使用金融产品及购物车，' +
                                                             '请尽快开通！', '去开户', '看看再说',()=>{
-
+                                                                this.toPage();
                                                             });
                                                     } else if (lastType == '1') {
                                                         this.refs.accountmodal.changeShowType(true,
                                                             '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
                                                             , '去绑卡', '看看再说',()=>{
-
+                                                                this.toPage();
                                                             });
                                                     } else if (lastType == '2') {
                                                         this.refs.accountmodal.changeShowType(true,
                                                             '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
                                                             , '去激活', '看看再说',()=>{
-
+                                                                this.toPage();
                                                             });
                                                     }
                                                     firstType = lastType;
