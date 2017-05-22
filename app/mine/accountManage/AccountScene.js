@@ -45,12 +45,12 @@ export  default class AccountScene extends BaseComponent {
     }
 
     initFinish = () => {
-        // this.getData()
-        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.setState({
-            renderPlaceholderOnly:'success',
-            source:ds.cloneWithRows([1,2,3,4,5,6,7])
-        });
+        this.getData()
+        // let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        // this.setState({
+        //     renderPlaceholderOnly:'success',
+        //     source:ds.cloneWithRows([1,2,3,4,5,6,7])
+        // });
     }
 
     allRefresh = () => {
