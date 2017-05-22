@@ -38,7 +38,7 @@ export default class MyCarCell extends Component {
         switch(type) {
             case 1:
                 if(review_status==2){
-                    return(require('../../../images/carSourceImages/auditDefeat.png')); // 审核中
+                    return(require('../../../images/carSourceImages/auditDefeat.png')); // 审核不过
                     break;
 
                 }else {
