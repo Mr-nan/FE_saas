@@ -353,8 +353,8 @@ export default class MineScene extends BaseComponent {
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
-                            // lastType = response.mjson.data.status;
-                            lastType = '3';
+                            lastType = response.mjson.data.status;
+                            // lastType = '3';、
                             this.changeData();
                         },
                         (error) => {
