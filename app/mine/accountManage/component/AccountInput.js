@@ -26,13 +26,34 @@ export  default class AccountInput extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            value: ''
+            value: '',
+            name:'',
+            id:''
         };
     }
 
     getTextValue=()=>{
         return this.state.value;
     }
+
+    getAllValue=()=>{
+        return {value:this.state.value,name:this.state.name,id:this.state.id}
+    }
+
+    setTextValue=(value,id)=>{
+      this.setState({
+          name:value,
+          id:id
+      });
+    }
+
+    clearValue=()=>{
+        this.setState({
+            name:'',
+            id:'',
+        });
+    }
+
 
 
     render() {
@@ -66,7 +87,7 @@ export  default class AccountInput extends PureComponent {
                     </View>
                     <View style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>
                         <Text style={{color: '#000',fontSize: Pixel.getFontPixel(14)}}>
-                            张*
+                            {this.state.name}
                         </Text>
                     </View>
                 </View>

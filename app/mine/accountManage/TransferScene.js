@@ -25,6 +25,11 @@ import WithdrawalsInput from './component/TransferInput';
 import WithdrawalsDialog from './component/WithdrawalsDialog';
 import LoginInputText from "../../login/component/LoginInputText";
 import AccountInput from './component/AccountInput';
+import StorageUtil from "../../utils/StorageUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
+import {request} from '../../utils/RequestUtil';
+import * as Urls from '../../constant/appUrls';
+import AccountWebScene from './AccountWebScene';
 
 export  default class TransferScene extends BaseComponent {
 
@@ -49,14 +54,16 @@ export  default class TransferScene extends BaseComponent {
         }
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
-                <AccountInput/>
+                <AccountInput ref="accountinput" callBack={()=>{
+                    this.getCardData();
+                }}/>
                 <View style={{backgroundColor: '#fff',width:width,height:Pixel.getPixel(146),justifyContent:'center',
                 marginTop:Pixel.getPixel(10),paddingLeft: Pixel.getPixel(15),paddingRight:Pixel.getPixel(15)}}>
                     <View style={{flex:1,justifyContent:'center'}}>
                         <Text style={{fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),color: '#000'}}>
                             转账金额(元)</Text>
                     </View>
-                    <WithdrawalsInput/>
+                    <WithdrawalsInput ref="withdrawalsinput"/>
                     <View
                         style={{backgroundColor: fontAndColor.COLORA3,width:width-Pixel.getPixel(30),height:Pixel.getPixel(1)}}></View>
                     <View style={{flex:1,flexDirection: 'row',alignItems: 'center'}}>
@@ -67,7 +74,7 @@ export  default class TransferScene extends BaseComponent {
                     </View>
                 </View>
                 <TouchableOpacity onPress={()=>{
-                    this.refs.withdrawalsdialog.changeShowType(true,'','3');
+                    this.checkEmpty();
                 }} activeOpacity={0.8} style={{marginTop:Pixel.getPixel(28),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),
                 borderRadius: Pixel.getPixel(4),backgroundColor: fontAndColor.COLORB0,width:width-Pixel.getPixel(30),
                 height:Pixel.getPixel(44),justifyContent:'center',alignItems: 'center'}}>
@@ -84,6 +91,75 @@ export  default class TransferScene extends BaseComponent {
                 />
             </View>
         );
+    }
+
+    checkEmpty = () => {
+        let allValue = this.refs.accountinput.getAllValue();
+        if (allValue.value.length < 26 || allValue.id == '') {
+            this.props.showToast('请输入正确账号')
+            return;
+        }
+        let money = this.refs.withdrawalsinput.getTextValue();
+        if (money == '') {
+            this.props.showToast('请输入转账金额')
+            return;
+        }
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    amount:money,
+                    enter_base_id:datas.merge_id,
+                    rcv_base_id:allValue.id,
+                    reback_url:'http://www.baidu.com'
+                };
+
+                request(Urls.USER_ACCOUNT_TRANSFER, 'Post', maps)
+                    .then((response) => {
+                            this.props.showModal(false);
+                            this.toNextPage({name:'AccountWebScene',component:AccountWebScene,params:{
+                                title:'转账',webUrl:response.mjson.data.auth_url+'?authTokenId='+response.mjson.data.auth_token
+                            }});
+                        },
+                        (error) => {
+                            this.props.showModal(false);
+                            if (error.mycode == -300 || error.mycode == -500) {
+                                this.props.showToast('转账失败');
+                            } else {
+                                this.props.showToast(error.mjson.msg);
+                            }
+                        });
+            }else{
+                this.props.showModal(false);
+                this.props.showToast('用户信息查询失败');
+            }
+        });
+
+    }
+
+    getCardData = () => {
+        this.props.showModal(true);
+        let cardNumber = this.refs.accountinput.getTextValue();
+        let maps = {
+            bank_card_no: cardNumber
+        };
+
+        request(Urls.USER_ACCOUNT_COMPANYINFO, 'Post', maps)
+            .then((response) => {
+                    this.props.showModal(false);
+                    this.refs.accountinput.setTextValue(response.mjson.data.bank_card_name,
+                        response.mjson.data.account_id);
+                },
+                (error) => {
+                    this.props.showModal(false);
+                    this.refs.accountinput.clearValue();
+                    if (error.mycode == -300 || error.mycode == -500) {
+                        this.props.showToast('获取账户信息失败');
+                    } else {
+                        this.props.showToast(error.mjson.msg);
+                    }
+                });
     }
 
     _renderPlaceholderView() {

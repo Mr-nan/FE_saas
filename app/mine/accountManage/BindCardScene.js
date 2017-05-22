@@ -61,6 +61,7 @@ export  default class BindCardScene extends BaseComponent {
 
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
+                            this.props.showModal(false);
                         if(clickType==1){
                             this.bindCard(datas.merge_id,response.mjson.data.account_open_type)
                         }else{
@@ -80,6 +81,7 @@ export  default class BindCardScene extends BaseComponent {
                             }
                         });
             } else {
+                this.props.showModal(false);
                 this.props.showToast('用户信息查询失败');
             }
         })

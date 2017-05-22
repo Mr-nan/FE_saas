@@ -6,7 +6,7 @@
 /**
  * 测试地
  */
- export const BASEURL = 'http://api-gateway.test.dycd.com/';
+export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 正式地址
@@ -274,6 +274,41 @@ export const USER_OPEN_ACCOUNT_COMPANY = BASEURL + 'v1/user.open_account/company
  * 获取账户信息
  **/
 export const USER_ACCOUNT_INFO = BASEURL + 'v1/user.account/info';
+
+/**
+ * from @zhaojian
+ *
+ * 解绑银行卡
+ **/
+export const USER_BANK_UNBIND = BASEURL + 'v1/user.bank/unBind';
+
+/**
+ * from @zhaojian
+ *
+ * 提现接口
+ **/
+export const USER_ACCOUNT_WITHDRAW = BASEURL + 'v1/user.account/withdraw';
+
+/**
+ * from @zhaojian
+ *
+ * 获取绑定银行卡信息
+ **/
+export const USER_BANK_QUERY = BASEURL + 'v1/user.bank/query';
+
+/**
+ * from @zhaojian
+ *
+ * 根据卡号获取虚拟账号信息
+ **/
+export const USER_ACCOUNT_COMPANYINFO = BASEURL + 'v1/user.account/companyInfo';
+
+/**
+ * from @zhaojian
+ *
+ * 用户发起转账
+ **/
+export const USER_ACCOUNT_TRANSFER = BASEURL + 'v1/user.account/transfer';
 
 /**
  * from @zhaojian
@@ -694,12 +729,12 @@ export const PURCHA_CHECK_IN = 'api/v2/purchaAuto/checkVin';
 /**
  * 订单列表
  */
-export const ORDER_INDEX = BASEURL + V +'order/index';
+export const ORDER_INDEX = BASEURL + V + 'order/index';
 /**
  * 订单搜索
  */
-export const ORDER_SEARCH = BASEURL + V +'order/search';
+export const ORDER_SEARCH = BASEURL + V + 'order/search';
 /**
  * 订单详情
  */
-export const ORDER_DETAIL = BASEURL + V +'order/detail';
+export const ORDER_DETAIL = BASEURL + V + 'order/detail';
