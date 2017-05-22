@@ -225,26 +225,43 @@ export default class FinanceSence extends BaseComponet {
                             let datas = JSON.parse(data.result);
                             console.log(datas);
                             if (datas[0].role_type == '1') {
-                                if (lastType == '0') {
-                                    this.refs.accountmodal.changeShowType(true,
-                                        '您还未开通资金账户，为方便您使用金融产品及购物车，' +
-                                        '请尽快开通！', '去开户', '看看再说',()=>{
+                                StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (datac) => {
+                                    if (datac.code == 1) {
+                                        let datasc = JSON.parse(datac.result);
+                                        let maps = {
+                                            enter_base_ids: datasc.merge_id,
+                                            child_type: '1'
+                                        };
+                                        request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+                                            .then((response) => {
+                                                    lastType = response.mjson.data.status;
+                                                    if (lastType == '0') {
+                                                        this.refs.accountmodal.changeShowType(true,
+                                                            '您还未开通资金账户，为方便您使用金融产品及购物车，' +
+                                                            '请尽快开通！', '去开户', '看看再说',()=>{
 
-                                        });
-                                } else if (lastType == '1') {
-                                    this.refs.accountmodal.changeShowType(true,
-                                        '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
-                                        , '去绑卡', '看看再说',()=>{
+                                                            });
+                                                    } else if (lastType == '1') {
+                                                        this.refs.accountmodal.changeShowType(true,
+                                                            '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
+                                                            , '去绑卡', '看看再说',()=>{
 
-                                        });
-                                } else if (lastType == '2') {
-                                    this.refs.accountmodal.changeShowType(true,
-                                        '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
-                                        , '去激活', '看看再说',()=>{
+                                                            });
+                                                    } else if (lastType == '2') {
+                                                        this.refs.accountmodal.changeShowType(true,
+                                                            '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
+                                                            , '去激活', '看看再说',()=>{
 
-                                        });
-                                }
-                                firstType = lastType;
+                                                            });
+                                                    }
+                                                    firstType = lastType;
+                                                },
+                                                (error) => {
+
+                                                });
+                                    }
+                                });
+
                             }
                         }
                     });
@@ -275,10 +292,13 @@ export default class FinanceSence extends BaseComponet {
     }
 
     refreshingData = () => {
+        firstType = '-1';
+        lastType = '-1';
         movies = [];
         this.setState({isRefreshing: true});
         page = 1;
         this.getMnyData();
+        this.getAccountInfo();
     };
 
     render() {

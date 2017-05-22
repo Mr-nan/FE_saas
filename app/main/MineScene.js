@@ -10,7 +10,8 @@ import  {
     TouchableOpacity,
     NativeModules,
     BackAndroid,
-    InteractionManager
+    InteractionManager,
+    RefreshControl
 } from  'react-native'
 
 import * as fontAndClolr from '../constant/fontAndColor';
@@ -42,7 +43,7 @@ import AccountModal from '../component/AccountModal';
 
 let Platform = require('Platform');
 import ImagePicker from "react-native-image-picker";
- let firstType = '-1';
+let firstType = '-1';
 let lastType = '-1';
 
 let componyname = '';
@@ -236,7 +237,8 @@ export default class MineScene extends BaseComponent {
             },
         ]
         this.state = {
-            renderPlaceholderOnly: 'blank'
+            renderPlaceholderOnly: 'blank',
+            isRefreshing: false
         };
     }
 
@@ -328,11 +330,13 @@ export default class MineScene extends BaseComponent {
                     name: datas.real_name,
                     phone: datas.phone,
                     headUrl: datas.head_portrait_url,
-                    renderPlaceholderOnly: 'success'
+                    renderPlaceholderOnly: 'success',
+                    isRefreshing: false
                 });
             } else {
                 this.setState({
-                    renderPlaceholderOnly: 'error'
+                    renderPlaceholderOnly: 'error',
+                    isRefreshing: false
                 });
             }
         });
@@ -361,12 +365,18 @@ export default class MineScene extends BaseComponent {
     }
 
     allRefresh = () => {
+        firstType = '-1';
+        lastType = '-1';
         this.setState({
             renderPlaceholderOnly: 'loading',
         });
         this.getData();
     }
 
+    refreshingData = () => {
+        this.setState({isRefreshing: true});
+        this.getData();
+    };
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
@@ -393,6 +403,14 @@ export default class MineScene extends BaseComponent {
                     renderRow={this._renderRow}
                     renderSectionHeader={this._renderSectionHeader}
                     renderHeader={this._renderHeader}
+                    refreshControl={
+                                    <RefreshControl
+                                        refreshing={this.state.isRefreshing}
+                                        onRefresh={this.refreshingData}
+                                        tintColor={[fontAndClolr.COLORB0]}
+                                        colors={[fontAndClolr.COLORB0]}
+                                    />
+                                }
                 />
                 <AccountModal ref="accountmodal"/>
             </View>
@@ -407,25 +425,58 @@ export default class MineScene extends BaseComponent {
     }
 
     toPage = () => {
-        if (lastType == '0') {
-            this.navigatorParams.name = 'AccountManageScene'
-            this.navigatorParams.component = AccountManageScene
-            this.navigatorParams.params = {
-                callBack: () => {
-                    this.allRefresh();
-                }
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    enter_base_ids: datas.merge_id,
+                    child_type: '1'
+                };
+                request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+                    .then((response) => {
+                            this.props.showToast('用户信息查询失败');
+                            lastType = response.mjson.data.status;
+                            if (lastType == '0') {
+                                this.navigatorParams.name = 'AccountManageScene'
+                                this.navigatorParams.component = AccountManageScene
+                                this.navigatorParams.params = {
+                                    callBack: () => {
+                                        this.allRefresh();
+                                    }
+                                }
+                            } else if (lastType == '1') {
+                                this.navigatorParams.name = 'BindCardScene'
+                                this.navigatorParams.component = BindCardScene
+                                this.navigatorParams.params = {
+                                    callBack: () => {
+                                        this.allRefresh();
+                                    }
+                                }
+                            } else if (lastType == '2') {
+                                this.navigatorParams.name = 'WaitActivationAccountScene'
+                                this.navigatorParams.component = WaitActivationAccountScene
+                            } else {
+                                this.navigatorParams.name = 'AccountScene'
+                                this.navigatorParams.component = AccountScene
+                                this.navigatorParams.params = {
+                                    callBack: () => {
+                                        this.allRefresh();
+                                    }
+                                }
+                            }
+                            this.props.callBack(this.navigatorParams);
+
+                        },
+                        (error) => {
+                            this.props.showModal(false);
+                            this.props.showToast('用户信息查询失败');
+                        });
+            }else{
+                this.props.showModal(false);
+                this.props.showToast('用户信息查询失败');
             }
-        } else if (lastType == '1') {
-            this.navigatorParams.name = 'BindCardScene'
-            this.navigatorParams.component = BindCardScene
-        } else if (lastType == '2') {
-            this.navigatorParams.name = 'WaitActivationAccountScene'
-            this.navigatorParams.component = WaitActivationAccountScene
-        } else {
-            this.navigatorParams.name = 'AccountScene'
-            this.navigatorParams.component = AccountScene
-        }
-        this.props.callBack(this.navigatorParams);
+        });
     }
 
     _navigator(rowData) {
@@ -524,26 +575,42 @@ export default class MineScene extends BaseComponent {
                         if (data.code == 1) {
                             let datas = JSON.parse(data.result);
                             if (datas[0].role_type == '1') {
-                                if (lastType == '0') {
-                                    this.refs.accountmodal.changeShowType(true,
-                                        '您还未开通资金账户，为方便您使用金融产品及购物车，' +
-                                        '请尽快开通！', '去开户', '看看再说', () => {
-                                            this.toPage();
-                                        });
-                                } else if (lastType == '1') {
-                                    this.refs.accountmodal.changeShowType(true,
-                                        '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
-                                        , '去绑卡', '看看再说', () => {
-                                            this.toPage();
-                                        });
-                                } else if (lastType == '2') {
-                                    this.refs.accountmodal.changeShowType(true,
-                                        '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
-                                        , '去激活', '看看再说', () => {
-                                            this.toPage();
-                                        });
-                                }
-                                firstType = lastType;
+                                StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (datac) => {
+                                    if (datac.code == 1) {
+                                        let datasc = JSON.parse(datac.result);
+                                        let maps = {
+                                            enter_base_ids: datasc.merge_id,
+                                            child_type: '1'
+                                        };
+                                        request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+                                            .then((response) => {
+                                                    lastType = response.mjson.data.status;
+                                                    if (lastType == '0') {
+                                                        this.refs.accountmodal.changeShowType(true,
+                                                            '您还未开通资金账户，为方便您使用金融产品及购物车，' +
+                                                            '请尽快开通！', '去开户', '看看再说', () => {
+                                                                this.toPage();
+                                                            });
+                                                    } else if (lastType == '1') {
+                                                        this.refs.accountmodal.changeShowType(true,
+                                                            '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
+                                                            , '去绑卡', '看看再说', () => {
+                                                                this.toPage();
+                                                            });
+                                                    } else if (lastType == '2') {
+                                                        this.refs.accountmodal.changeShowType(true,
+                                                            '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
+                                                            , '去激活', '看看再说', () => {
+                                                                this.toPage();
+                                                            });
+                                                    }
+                                                    firstType = lastType;
+                                                },
+                                                (error) => {
+
+                                                });
+                                    }
+                                });
                             }
                         }
                     });
