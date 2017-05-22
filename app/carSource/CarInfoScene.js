@@ -361,13 +361,13 @@ export default class CarInfoScene extends BaseComponent {
                                 <Text style={styles.callText}>电话咨询</Text>
                             </View>
                         </TouchableOpacity>
-                        {
-                            carData.show_order!==2 && (
-                                <TouchableOpacity style={styles.orderView} onPress={()=>{this.orderClick(carData)}}>
-                                    <Text style={styles.orderText}>订购</Text>
-                                </TouchableOpacity>
-                            )
-                        }
+                        {/*{*/}
+                            {/*carData.show_order!==2 && (*/}
+                                {/*<TouchableOpacity style={styles.orderView} onPress={()=>{this.orderClick(carData)}}>*/}
+                                    {/*<Text style={styles.orderText}>订购</Text>*/}
+                                {/*</TouchableOpacity>*/}
+                            {/*)*/}
+                        {/*}*/}
 
                     </View>
                 <NavigationView
@@ -1103,7 +1103,7 @@ const styles = StyleSheet.create({
         borderLeftColor:fontAndColor.COLORA4,
         paddingHorizontal:Pixel.getPixel(15),
         height: Pixel.getPixel(44),
-        width:ScreenWidth/3,
+        width:ScreenWidth/2,
     },
 
     callText: {
@@ -1115,7 +1115,7 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         height:Pixel.getPixel(44),
         paddingHorizontal:Pixel.getPixel(15),
-        width:ScreenWidth/3
+        width:ScreenWidth/2
     },
     carNumberText:{
         color: fontAndColor.COLORA0,
