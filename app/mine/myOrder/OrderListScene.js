@@ -54,17 +54,17 @@ export default class OrderListScene extends BaseComponent {
     componentDidMount() {
         BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
         InteractionManager.runAfterInteractions(() => {
-            //this.setState({renderPlaceholderOnly: 'loading'});
+            this.setState({renderPlaceholderOnly: 'loading'});
             this.initFinish();
         });
     }
 
     initFinish = () => {
-        this.setState({
+/*        this.setState({
             dataSource: this.state.dataSource.cloneWithRows(['', '', '']),
             renderPlaceholderOnly: 'success'
-        });
-        //this.loadData();
+        });*/
+        this.loadData();
     };
 
     dateReversal = (time) => {
@@ -91,7 +91,8 @@ export default class OrderListScene extends BaseComponent {
         request(url, 'post', {
             business: this.props.business,
             page: this.pageNum,
-            rows: 10
+            rows: 10,
+            list_state: this.props.listState
         }).then((response) => {
             this.orderListData = response.mjson.data.info_list;
             this.allPage = response.mjson.data.total / response.mjson.data.rows;
@@ -283,12 +284,12 @@ export default class OrderListScene extends BaseComponent {
                 activeOpacity={0.8}>
                 <View style={styles.rowView}>
                     <View style={styles.rowTitleLine}>
-                        <Text style={styles.rowTitleText}>测试11231</Text>
+                        <Text style={styles.rowTitleText}>{rowData.seller_name}</Text>
                         <Text style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                             color: fontAndColor.COLORA1,
                             marginLeft: Pixel.getPixel(5)
-                        }}>(12121131414211)</Text>
+                        }}>订单号:({rowData.order_no})</Text>
                         <View style={{flex: 1}}/>
                         <Text style={styles.rowTitleState}>已拍下</Text>
                     </View>
