@@ -27,6 +27,7 @@ export class LendSuccessAlert extends Component{
 
     state={
         show:false,
+        subtitle:''
     }
     setModelVisible=(value)=>{
 
@@ -34,6 +35,15 @@ export class LendSuccessAlert extends Component{
             show:value
         })
     }
+
+    setModelVisibleAndSubTitle=(value,subTitle)=>{
+
+        this.setState({
+            show:value,
+            subtitle:subTitle,
+        })
+    }
+
     confimClick=()=>{
 
         const {confimClick}=this.props;
@@ -62,7 +72,7 @@ export class LendSuccessAlert extends Component{
                 }}>
                     <View style={commentAlertStyle.container}>
                         <Text style={commentAlertStyle.title}>{title}</Text>
-                        <Text style={commentAlertStyle.subtitle}>{subtitle}</Text>
+                        <Text style={commentAlertStyle.subtitle}>{this.state.subtitle!=''?this.state.subtitle:subtitle}</Text>
                         <View style={commentAlertStyle.successWarp}>
                             <CommenButton buttonStyle={[commentAlertStyle.successButton,{marginBottom:adapeSize(20)},
                              commentAlertStyle.buttonLeft]} onPress={this.confimClick} title="好的"/>

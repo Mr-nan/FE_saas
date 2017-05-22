@@ -176,7 +176,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                   title:'标准配置',
                   isShowTag:false,
                   value:'查看',
-                  isShowTail:false,
+                  isShowTail:true,
               },
                   {
                       title:'配置改装说明',
@@ -294,7 +294,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                       title:'标准配置',
                       isShowTag:false,
                       value:'查看',
-                      isShowTail:false,
+                      isShowTail:true,
                   },
                   {
                       title:'配置改装说明',
@@ -459,7 +459,6 @@ export default class CarPublishFirstScene extends BaseComponent{
             this.titleData2[0][0].selectDict.current = this.carData.v_type == 2?'新车':'平行进口车';
             this.carType=this.titleData1[0][0].selectDict.current;
             this.refs.cellSelectView.setCurrentChecked(this.carType);
-
         }
 
         if(this.carData.vin){
@@ -592,6 +591,9 @@ export default class CarPublishFirstScene extends BaseComponent{
             return;
         }
 
+        if(this.carData.v_type!==1){
+            this.carData.init_reg = '';
+        }
 
         let navigatorParams = {
             name: "CarPublishSecondScene",

@@ -37,7 +37,7 @@ import  {request}           from '../utils/RequestUtil';
 import PixelUtil            from '../utils/PixelUtil';
 import * as storageKeyNames from '../constant/storageKeyNames';
 import StorageUtil from '../utils/StorageUtil';
-import CarPublishFirstScene from './CarPublishFirstScene';
+
 
 let Pixel = new PixelUtil();
 let carFilterData = require('./carData/carFilterData.json');
@@ -334,28 +334,21 @@ export  default  class carSourceListScene extends BaseComponent {
 
     presCarTypeScene = () => {
 
-        // let navigatorParams = {
-        //     name: "CarBrandSelectScene",
-        //     component: CarBrandSelectScene,
-        //     params: {
-        //         checkedCarType: this.state.checkedCarType,
-        //         checkedCarClick: this.checkedCarClick,
-        //         status: 1,
-        //         isHeadInteraction: true,
-        //         unlimitedAction:this.carTypeClick,
-        //         // isCheckedCarModel:true,
-        //
-        //     }
-        // };
-        // this.props.callBack(navigatorParams);
-
         let navigatorParams = {
-            name: "CarPublishFirstScene",
-            component: CarPublishFirstScene,
+            name: "CarBrandSelectScene",
+            component: CarBrandSelectScene,
             params: {
+                checkedCarType: this.state.checkedCarType,
+                checkedCarClick: this.checkedCarClick,
+                status: 1,
+                isHeadInteraction: true,
+                unlimitedAction:this.carTypeClick,
+                // isCheckedCarModel:true,
+
             }
         };
         this.props.callBack(navigatorParams);
+
 
     }
 

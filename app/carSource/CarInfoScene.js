@@ -173,7 +173,7 @@ export default class CarInfoScene extends BaseComponent {
                     <ImagePageView
                         dataSource={this.state.imageArray}    //数据源（必须）
                         renderPage={this.renderImagePage}     //page页面渲染方法（必须）
-                        isLoop={true}                        //是否可以循环
+                        isLoop={this.state.carData.imgs.length>1?true:false}                        //是否可以循环
                         autoPlay={false}                      //是否自动
                         locked={false}                        //为true时禁止滑动翻页
                         renderPageIndicator={(index)=>{
@@ -237,7 +237,7 @@ export default class CarInfoScene extends BaseComponent {
                                                         return (
                                                             <View
                                                                 style={[styles.carParameterItem, {backgroundColor: carParameterViewColor[index % 3]}]}
-                                                                key={index}>
+                                                                key={'labels'+index}>
                                                                 <Text style={[styles.carParameterText, {color: carParameterTextColor[index % 3]}]}> {data.name} </Text>
                                                             </View>)
                                                     })
@@ -282,7 +282,7 @@ export default class CarInfoScene extends BaseComponent {
                                     return (
                                         <CarIconView imageData={data.image} imageHighData={data.imageHigh}
                                                      content={carData.carIconsContentData&&carData.carIconsContentData[index]} title={data.title}
-                                                     key={index+10}/>
+                                                     key={'carIconsData'+index}/>
                                     )
                                 })
                             }
@@ -593,7 +593,8 @@ export default class CarInfoScene extends BaseComponent {
     renderImagePage=(data,pageID)=>{
 
         return(
-            <TouchableOpacity onPress={()=>{this.showPhotoView()}} activeOpacity={1}>
+
+            <TouchableOpacity onPress={()=>{this.showPhotoView()}} activeOpacity={1} key={'image'+pageID}>
                 <Image source={typeof data.url =='undefined'?data.require:{uri:data.url+'?x-oss-process=image/resize,w_'+Math.ceil(ScreenWidth)+',h_'+555}} style={styles.carImage}/>
             </TouchableOpacity>
 

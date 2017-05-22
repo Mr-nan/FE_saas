@@ -44,16 +44,16 @@ export  default class CarReferencePriceScene extends  BaseComponent{
     }
     initFinish = () => {
 
-        // this.loadData();
+        this.loadData();
     }
     render(){
-        // if (this.state.renderPlaceholderOnly !== 'success') {
-        //     return (
-        //         <View style={{flex:1,backgroundColor:'white'}}>
-        //             {this.loadView()}
-        //             <NavigationView title="参考价格" backIconClick={()=>{this.backPage();}}/>
-        //         </View>);
-        // }
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return (
+                <View style={{flex:1,backgroundColor:'white'}}>
+                    {this.loadView()}
+                    <NavigationView title="参考价格" backIconClick={()=>{this.backPage();}}/>
+                </View>);
+        }
         return(
             <View style={styles.rootContainer}>
                 <ScrollView>
@@ -61,13 +61,13 @@ export  default class CarReferencePriceScene extends  BaseComponent{
                         <View style={{width:ScreenWidth,paddingVertical:Pixel.getPixel(10),borderBottomColor:fontAndColor.COLORA4,borderBottomWidth:StyleSheet.hairlineWidth}}>
                             <Image source={require('../../images/carSourceImages/logo1.png')}/>
                         </View>
-                        <PriceCell data={this.state.data[0]} myKey="a"/>
+                        <PriceCell data={this.state.data[0]} myKey="logo1"/>
                     </View>
                     <View style={styles.cellView}>
                         <View style={{width:ScreenWidth,paddingVertical:Pixel.getPixel(10),borderBottomColor:fontAndColor.COLORA4,borderBottomWidth:StyleSheet.hairlineWidth}}>
                             <Image source={require('../../images/carSourceImages/logo2.png')}/>
                         </View>
-                        <PriceCell data={this.state.data[1]} myKey="s"/>
+                        <PriceCell data={this.state.data[1]} myKey="logo2"/>
                     </View>
                 </ScrollView>
                 <NavigationView title="参考价格" backIconClick={()=>{this.backPage();}}/>

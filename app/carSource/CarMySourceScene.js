@@ -29,10 +29,10 @@ import * as fontAndColor from '../constant/fontAndColor';
 import * as AppUrls from "../constant/appUrls";
 import  {request}           from '../utils/RequestUtil';
 import CarPublishFirstScene from './CarPublishFirstScene';
+import {LendSuccessAlert} from '../finance/lend/component/ModelComponent'
+
 import PixelUtil from '../utils/PixelUtil';
 const Pixel = new PixelUtil();
-
-var screenWidth = Dimensions.get('window').width;
 
 
 let carUpperFrameData = [];
@@ -97,6 +97,10 @@ export default class CarMySourceScene extends BaceComponent {
                 }
             };
             this.toNextPage(navigatorParams);
+
+        }else if(typeStr == '查看退回原因'){
+
+            this.refs.showTitleAlert.setModelVisibleAndSubTitle(true,carData.audit_message);
         }
     }
 
@@ -184,8 +188,8 @@ export default class CarMySourceScene extends BaceComponent {
                     <MyCarSourceUpperFrameView ref="upperFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper1"/>
                     <MyCarSourceDropFrameView  ref="dropFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper2"/>
                     <MyCarSourceAuditView  ref="auditView"  carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper3"/>
-
                 </ScrollableTabView>
+                <LendSuccessAlert ref="showTitleAlert" title={'提示'} subtitle={''}/>
                 <NavigatorView title='我的车源' backIconClick={this.backToTop}
                                renderRihtFootView={this.renderRightFootView}/>
             </View>)

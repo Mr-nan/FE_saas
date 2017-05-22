@@ -33,12 +33,18 @@ export default class MyCarCell extends Component {
     };
 
 
-    getImage=(type)=>{
+    getImage=(type,review_status)=>{
 
         switch(type) {
             case 1:
-                return(require('../../../images/carSourceImages/audit.png')); // 审核中
-                break;
+                if(review_status==2){
+                    return(require('../../../images/carSourceImages/auditDefeat.png')); // 审核中
+                    break;
+
+                }else {
+                    return(require('../../../images/carSourceImages/audit.png')); // 审核中
+                    break;
+                }
             case 3:
                 return(require('../../../images/carSourceImages/soldOut.png')); // 已下架
                 break;
@@ -62,6 +68,7 @@ export default class MyCarCell extends Component {
 
         const {carCellData} = this.props;
         const  carType = carCellData.status;
+        const review_status = carCellData.review_status;
         return(
             <TouchableOpacity onPress={()=>{this.cellClick(carCellData)}}>
                 <View style={[styles.container,styles.lineBottom]} >
@@ -79,32 +86,44 @@ export default class MyCarCell extends Component {
                             <Text style={styles.carPriceText}>{carCellData.dealer_price>0?(this.carMoneyChange(carCellData.dealer_price) +'万'):''}</Text>
 
                         </View>
-                            <Image style={styles.tailImage} source={this.getImage(carType)}/>
+                            <Image style={styles.tailImage} source={this.getImage(carType,review_status)}/>
                     </View>
-                    <View style={styles.cellFootView}>
-                        <TouchableOpacity onPress={()=>{this.footButtonClick('编辑',this.props.type,carCellData)}}>
-                            <View style={styles.cellFoot}>
-                                <Text style={styles.cellFootText}>{'  编辑  '}</Text>
-                            </View>
-                        </TouchableOpacity>
+                        <View style={styles.cellFootView}>
                         {
-                            carType==2 &&
-                            <TouchableOpacity onPress={()=>{this.footButtonClick('下架',this.props.type,carCellData)}}>
-                                <View style={styles.cellFoot}>
-                                    <Text style={styles.cellFootText}>{'  下架  '}</Text>
-                                </View>
-                            </TouchableOpacity>
-                        }
-                        {
-                            (carType==1||carType==3 ) &&
-                            <TouchableOpacity onPress={()=>{this.footButtonClick('上架',this.props.type,carCellData)}}>
-                                <View style={styles.cellFoot}>
-                                    <Text style={styles.cellFootText}> 上架 </Text>
-                                </View>
-                            </TouchableOpacity>
+                            (carCellData.in_valid_order && carCellData.in_valid_order==1)?(null): <View style={{flexDirection:'row'}}>
+                                    {
+                                        (carType==1&&carCellData.review_status==2) &&
+                                        <TouchableOpacity onPress={()=>{this.footButtonClick('查看退回原因',this.props.type,carCellData)}}>
+                                            <View style={[styles.cellFoot,{borderColor:fontAndColor.COLORB4}]}>
+                                                <Text style={[styles.cellFootText,{color:fontAndColor.COLORB4}]}> 查看退回原因 </Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    }
+                                    <TouchableOpacity onPress={()=>{this.footButtonClick('编辑',this.props.type,carCellData)}}>
+                                        <View style={styles.cellFoot}>
+                                            <Text style={styles.cellFootText}>  编辑  </Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    {
+                                        carType==2 &&
+                                        <TouchableOpacity onPress={()=>{this.footButtonClick('下架',this.props.type,carCellData)}}>
+                                            <View style={styles.cellFoot}>
+                                                <Text style={styles.cellFootText}>  下架  </Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    }
+                                    {
+                                        ((carType==1&&carCellData.review_status==1)||carType==3 ) &&
+                                        <TouchableOpacity onPress={()=>{this.footButtonClick('上架',this.props.type,carCellData)}}>
+                                            <View style={styles.cellFoot}>
+                                                <Text style={styles.cellFootText}> 申请上架 </Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    }
 
-                        }
-                    </View>
+                                </View>
+                         }
+                        </View>
                 </View>
             </TouchableOpacity>
         )
