@@ -25,6 +25,11 @@ const Pixel = new PixelUtil();
 var ScreenWidth = Dimensions.get('window').width;
 
 
+const data = [
+    [{'title':'商家收购价',value:'10'},{'title':'个人交易价',value:'11'},{'title':'商家零售价',value:'13'}],
+    [{'title':'商家收购价',value:'10'},{'title':'拍卖价',value:'11'},{'title':'商家零售价',value:'13.5'}],
+]
+
 export  default class CarReferencePriceScene extends  BaseComponent{
 
     // 构造
@@ -33,30 +38,36 @@ export  default class CarReferencePriceScene extends  BaseComponent{
         // 初始状态
 
         this.state = {
-            data:[],
+            data:data,
             renderPlaceholderOnly: 'blank',
         }
     }
     initFinish = () => {
 
-        this.loadData();
+        // this.loadData();
     }
     render(){
-        if (this.state.renderPlaceholderOnly !== 'success') {
-            return (
-                <View style={{flex:1,backgroundColor:'white'}}>
-                    {this.loadView()}
-                    <NavigationView title="参考价格" backIconClick={()=>{this.backPage();}}/>
-                </View>);
-        }
+        // if (this.state.renderPlaceholderOnly !== 'success') {
+        //     return (
+        //         <View style={{flex:1,backgroundColor:'white'}}>
+        //             {this.loadView()}
+        //             <NavigationView title="参考价格" backIconClick={()=>{this.backPage();}}/>
+        //         </View>);
+        // }
         return(
             <View style={styles.rootContainer}>
                 <ScrollView>
                     <View style={styles.cellView}>
                         <View style={{width:ScreenWidth,paddingVertical:Pixel.getPixel(10),borderBottomColor:fontAndColor.COLORA4,borderBottomWidth:StyleSheet.hairlineWidth}}>
-                            <Image style={{width:40,height:100}}/>
+                            <Image source={require('../../images/carSourceImages/logo1.png')}/>
                         </View>
-                        <PriceCell data={this.state.data}/>
+                        <PriceCell data={this.state.data[0]} myKey="a"/>
+                    </View>
+                    <View style={styles.cellView}>
+                        <View style={{width:ScreenWidth,paddingVertical:Pixel.getPixel(10),borderBottomColor:fontAndColor.COLORA4,borderBottomWidth:StyleSheet.hairlineWidth}}>
+                            <Image source={require('../../images/carSourceImages/logo2.png')}/>
+                        </View>
+                        <PriceCell data={this.state.data[1]} myKey="s"/>
                     </View>
                 </ScrollView>
                 <NavigationView title="参考价格" backIconClick={()=>{this.backPage();}}/>
@@ -113,13 +124,13 @@ export  default class CarReferencePriceScene extends  BaseComponent{
 class PriceCell extends Component{
     render(){
         return(
-            <View style={{marginTop:Pixel.getPixel(12),marginBottom:Pixel.getPixel(28),width:ScreenWidth}}>
+            <View style={{marginTop:Pixel.getPixel(12),marginBottom:Pixel.getPixel(28)}}>
                 {
                   this.props.data.map((data,index)=>{
                       return(
-                          <View style={styles.cellContent} key={index}>
-                              <Text style={styles.cellText}>{data.title}</Text>
-                              <Text style={styles.cellValue}>{data.value}</Text>
+                          <View style={styles.cellContentView} key={this.props.myKey+index}>
+                              <Text style={styles.cellTitle}>{data.title}</Text>
+                              <Text style={styles.cellValue}>{data.value} 万元</Text>
                           </View>
                       )
                   })
@@ -162,7 +173,6 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         alignItems:'center',
         justifyContent:'space-between',
-        width:ScreenWidth,
         backgroundColor:'white',
         marginTop:Pixel.getPixel(16),
     },
