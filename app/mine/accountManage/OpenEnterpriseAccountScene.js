@@ -63,10 +63,11 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                                 clearValue={true}
                                 rightIcon={false}/>
                             <SelectNumberType ref="cert_type" callBack={()=>{
-                            this.toNextPage({name:'SelectTypeScene',component:SelectTypeScene,params:{regShowData:['营业执照号'
+                            this.toNextPage({name:'SelectTypeScene',component:SelectTypeScene,
+                            params:{regShowData:['营业执照号'
                             ,'社会信用代码'],callBack:(name,value)=>{
                                 this.refs.cert_type.setValue(name,value);
-                            }}});
+                            },title:'选择证件类型'}});
                        }}/>
                             <LoginInputText
                                 ref="cert_no"
@@ -217,12 +218,16 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
             org_agent_cert_no:org_agent_cert_no,
             org_agent_mobile:org_agent_mobile,
             enter_base_id:enter_base_id,
+            reback_url:'http://www.qiyekaihu.com'
         };
         request(Urls.USER_OPEN_ACCOUNT_COMPANY, 'Post', maps)
             .then((response) => {
                     this.props.showModal(false);
                     this.toNextPage({name:'AccountWebScene',component:AccountWebScene,params:{
-                        title:'企业开户',webUrl:response.mjson.data.auth_url+'?authTokenId='+response.mjson.data.auth_token
+                        title:'企业开户',webUrl:response.mjson.data.auth_url+
+                        '?authTokenId='+response.mjson.data.auth_token,callBack:()=>{
+                            this.props.callBack();
+                        },backUrl:'http://www.qiyekaihu.com'
                     }});
                 },
                 (error) => {

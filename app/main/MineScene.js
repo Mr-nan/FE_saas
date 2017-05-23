@@ -435,7 +435,7 @@ export default class MineScene extends BaseComponent {
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
-                            this.props.showToast('用户信息查询失败');
+                            this.props.showModal(false);
                             lastType = response.mjson.data.status;
                             if (lastType == '0') {
                                 this.navigatorParams.name = 'AccountManageScene'
@@ -465,6 +465,8 @@ export default class MineScene extends BaseComponent {
                                     }
                                 }
                             }
+                            this.refs.accountmodal.changeShowType(false);
+                            firstType = lastType;
                             this.props.callBack(this.navigatorParams);
 
                         },

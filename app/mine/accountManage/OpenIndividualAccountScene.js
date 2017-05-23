@@ -141,14 +141,18 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
             cert_type: '1',
             cust_name: name,
             mobile_no: phone,
-            enter_base_id:base_id
+            enter_base_id:base_id,
+            reback_url:'http://www.gerenkaihu.com'
         };
 
         request(Urls.USER_OPEN_ACCOUNT_PERSONAL, 'Post', maps)
             .then((response) => {
                     this.props.showModal(false);
                    this.toNextPage({name:'AccountWebScene',component:AccountWebScene,params:{
-                       title:'个人开户',webUrl:response.mjson.data.auth_url+'?authTokenId='+response.mjson.data.auth_token
+                       title:'个人开户',webUrl:response.mjson.data.auth_url+
+                       '?authTokenId='+response.mjson.data.auth_token,callBack:()=>{
+                           this.props.callBack();
+                       },backUrl:'http://www.gerenkaihu.com'
                    }});
                    //  Linking.openURL(response.mjson.data.auth_url+'?authTokenId='+response.mjson.data.auth_token);
                 },

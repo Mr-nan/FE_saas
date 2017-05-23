@@ -139,15 +139,15 @@ export  default class AccountScene extends BaseComponent {
             paddingRight:Pixel.getPixel(15),paddingLeft:Pixel.getPixel(15)}}>
                 <View style={{flex:1,justifyContent:'center'}}>
                     <Text style={{color: '#000',fontSize: Pixel.getPixel(14)}}>
-                        充值
+                        {movie.operate_name}
                     </Text>
                     <Text style={{color: fontAndColor.COLORA1,fontSize: Pixel.getPixel(12)}}>
-                        2017-04-26 13:00
+                        {movie.create_time}
                     </Text>
                 </View>
                 <View style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>
                     <Text style={{color: '#000',fontSize: Pixel.getPixel(20)}}>
-                        13万
+                        {movie.amount}
                     </Text>
                 </View>
             </View>
