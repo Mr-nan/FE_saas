@@ -51,12 +51,12 @@ export  default class FlowRechargePage extends BaseComponent {
             if (data.code == 1 && data.result != null) {
                 let datas=JSON.parse(data.result);
                 let maps = {
-                    enter_base_ids:datas.merge_id,
+                    enter_base_ids:datas.company_base_id,
                     child_type:'1'
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
-                            this.getFlowData(datas.merge_id,response.mjson.data.account_open_type);
+                            this.getFlowData(datas.company_base_id,response.mjson.data.account_open_type);
                         },
                         (error) => {
                             this.setState({

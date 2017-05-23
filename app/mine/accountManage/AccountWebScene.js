@@ -22,6 +22,7 @@ const Pixel = new PixelUtil();
 import NavigationView from '../../component/AllNavigationView';
 import * as fontAndColor from '../../constant/fontAndColor';
 import BaseComponent from '../../component/BaseComponent';
+import MainPage from '../../main/MainPage';
 let oldUrl = '';
 export  default class AccountWebScene extends BaseComponent {
 
@@ -87,7 +88,15 @@ export  default class AccountWebScene extends BaseComponent {
         oldUrl=navState.url;
         if(oldUrl==this.props.backUrl){
             this.props.callBack();
-            this.backPage();
+            const navigator = this.props.navigator;
+            if (navigator){
+                for(let i = 0;i<navigator.getCurrentRoutes().length;i++){
+                    if(navigator.getCurrentRoutes()[i].name=='MainPage'){
+                        navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                        break;
+                    }
+                }
+            }
         }
     }
 

@@ -348,7 +348,7 @@ export default class MineScene extends BaseComponent {
                 let datas = JSON.parse(data.result);
                 componyname = datas.companyname;
                 let maps = {
-                    enter_base_ids: datas.merge_id,
+                    enter_base_ids: datas.company_base_id,
                     child_type: '1'
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
@@ -430,7 +430,7 @@ export default class MineScene extends BaseComponent {
             if (data.code == 1) {
                 let datas = JSON.parse(data.result);
                 let maps = {
-                    enter_base_ids: datas.merge_id,
+                    enter_base_ids: datas.company_base_id,
                     child_type: '1'
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
@@ -581,7 +581,7 @@ export default class MineScene extends BaseComponent {
                                     if (datac.code == 1) {
                                         let datasc = JSON.parse(datac.result);
                                         let maps = {
-                                            enter_base_ids: datasc.merge_id,
+                                            enter_base_ids: datasc.company_base_id,
                                             child_type: '1'
                                         };
                                         request(Urls.USER_ACCOUNT_INFO, 'Post', maps)

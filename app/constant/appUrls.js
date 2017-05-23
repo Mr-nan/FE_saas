@@ -275,6 +275,13 @@ export const USER_ACCOUNT_RESETPAYPWD = BASEURL + 'v1/user.account/resetPayPwd';
 /**
  * from @zhaojian
  *
+ * 修改绑定银行卡手机号
+ **/
+export const USER_BANK_EDITPHONE = BASEURL + 'v1/user.bank/editPhone';
+
+/**
+ * from @zhaojian
+ *
  * 绑定银行卡
  **/
 export const USER_BANK_BIND = BASEURL + 'v1/user.bank/bind';

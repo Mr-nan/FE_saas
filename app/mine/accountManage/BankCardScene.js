@@ -53,12 +53,12 @@ export  default class BankCardScene extends BaseComponent {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
                 let maps = {
-                    enter_base_ids: datas.merge_id,
+                    enter_base_ids: datas.company_base_id,
                     child_type: '1'
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
-                            this.getBankData(datas.merge_id,response.mjson.data.account_open_type);
+                            this.getBankData(datas.company_base_id,response.mjson.data.account_open_type);
                         },
                         (error) => {
                             this.setState({
@@ -143,7 +143,7 @@ export  default class BankCardScene extends BaseComponent {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
                 let maps = {
-                    enter_base_ids: datas.merge_id,
+                    enter_base_ids: datas.company_base_id,
                     child_type: '1'
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
@@ -168,13 +168,16 @@ export  default class BankCardScene extends BaseComponent {
     unBind=(type)=>{
         let maps = {
             enter_base_ids: type,
-            reback_url:'http://www.baidu.com'
+            reback_url:'http://www.jiebang.com'
         };
         request(Urls.USER_BANK_UNBIND, 'Post', maps)
             .then((response) => {
                     this.props.showModal(false);
                     this.toNextPage({name:'AccountWebScene',component:AccountWebScene,params:{
-                        title:'解绑银行卡',webUrl:response.mjson.data.auth_url+'?authTokenId='+response.mjson.data.auth_token
+                        title:'解绑银行卡',webUrl:response.mjson.data.auth_url+
+                        '?authTokenId='+response.mjson.data.auth_token,callBack:()=>{
+                            this.props.callBack();
+                        },backUrl:'http://www.jiebang.com'
                     }});
                 },
                 (error) => {

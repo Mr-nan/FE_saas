@@ -110,16 +110,19 @@ export  default class TransferScene extends BaseComponent {
                 let datas = JSON.parse(data.result);
                 let maps = {
                     amount:money,
-                    enter_base_id:datas.merge_id,
+                    enter_base_id:datas.company_base_id,
                     rcv_base_id:allValue.id,
-                    reback_url:'http://www.baidu.com'
+                    reback_url:'http://www.zhuanzhang.com'
                 };
 
                 request(Urls.USER_ACCOUNT_TRANSFER, 'Post', maps)
                     .then((response) => {
                             this.props.showModal(false);
                             this.toNextPage({name:'AccountWebScene',component:AccountWebScene,params:{
-                                title:'转账',webUrl:response.mjson.data.auth_url+'?authTokenId='+response.mjson.data.auth_token
+                                title:'转账',webUrl:response.mjson.data.auth_url+
+                                '?authTokenId='+response.mjson.data.auth_token,callBack:()=>{
+                                    this.props.callBack();
+                                },backUrl:'http://www.zhuanzhang.com'
                             }});
                         },
                         (error) => {

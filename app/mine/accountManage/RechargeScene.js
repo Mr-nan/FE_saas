@@ -51,7 +51,7 @@ export  default class RechargeScene extends BaseComponent {
             if (data.code == 1 && data.result != null) {
                 let datas=JSON.parse(data.result);
                 let maps = {
-                    enter_base_ids:datas.merge_id,
+                    enter_base_ids:datas.company_base_id,
                     child_type:'1'
                 };
 

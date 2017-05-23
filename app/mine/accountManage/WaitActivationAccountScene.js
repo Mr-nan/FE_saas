@@ -47,7 +47,7 @@ export  default class WaitActivationAccountScene extends BaseComponent {
             if (data.code == 1) {
                 let datas = JSON.parse(data.result);
                 let maps = {
-                    enter_base_ids: datas.merge_id,
+                    enter_base_ids: datas.company_base_id,
                     child_type: '1'
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)

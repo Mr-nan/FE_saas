@@ -197,7 +197,7 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                 if (data.code == 1 && data.result != null) {
                     let datas=JSON.parse(data.result);
                     this.sendData(cert_no,cert_type,cust_name,legal_cert_no,legal_real_name,
-                        org_agent_name,org_agent_cert_no,org_agent_mobile,datas.merge_id);
+                        org_agent_name,org_agent_cert_no,org_agent_mobile,datas.company_base_id);
                 } else {
                     this.props.showToast('用户信息查询失败');
                 }

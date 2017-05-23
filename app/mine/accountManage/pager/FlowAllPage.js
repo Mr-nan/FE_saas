@@ -52,12 +52,12 @@ export  default class FlowAllPage extends BaseComponent {
             if (data.code == 1 && data.result != null) {
                 let datas=JSON.parse(data.result);
                 let maps = {
-                    enter_base_ids:datas.merge_id,
+                    enter_base_ids:datas.company_base_id,
                     child_type:'1'
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
-                            this.getFlowData(datas.merge_id,response.mjson.data.account_open_type);
+                            this.getFlowData(datas.company_base_id,response.mjson.data.account_open_type);
                         },
                         (error) => {
                             this.setState({
@@ -138,12 +138,12 @@ export  default class FlowAllPage extends BaseComponent {
                     paddingRight:Pixel.getPixel(15)
                 }}>
                     <View style={{flex:1,justifyContent:'center'}}>
-                        <Text style={{color: '#000',fontSize: Pixel.getFontPixel(14)}}>{movie.operate_name}</Text>
+                        <Text style={{color: '#000',fontSize: Pixel.getFontPixel(14)}}>全部</Text>
                         <Text style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(12)}}>
-                            {movie.create_time}</Text>
+                            {this.state.time} 13:00</Text>
                     </View>
                     <View style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>
-                        <Text style={{color: '#000',fontSize: Pixel.getFontPixel(20)}}>{movie.amount}</Text>
+                        <Text style={{color: '#000',fontSize: Pixel.getFontPixel(20)}}>13万</Text>
                     </View>
                 </View>
             )
