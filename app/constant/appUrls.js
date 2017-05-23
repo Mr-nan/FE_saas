@@ -1,7 +1,7 @@
 /**
  * 开发地址
  */
-// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+//export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地
@@ -275,6 +275,13 @@ export const USER_ACCOUNT_RESETPAYPWD = BASEURL + 'v1/user.account/resetPayPwd';
 /**
  * from @zhaojian
  *
+ * 修改绑定银行卡手机号
+ **/
+export const USER_BANK_EDITPHONE = BASEURL + 'v1/user.bank/editPhone';
+
+/**
+ * from @zhaojian
+ *
  * 绑定银行卡
  **/
 export const USER_BANK_BIND = BASEURL + 'v1/user.bank/bind';
@@ -292,6 +299,13 @@ export const USER_OPEN_ACCOUNT_COMPANY = BASEURL + 'v1/user.open_account/company
  * 获取账户信息
  **/
 export const USER_ACCOUNT_INFO = BASEURL + 'v1/user.account/info';
+
+/**
+ * from @zhaojian
+ *
+ * 获取交易流水
+ **/
+export const USER_ACCOUNT_PAYLOG = BASEURL + 'v1/user.account/payLog';
 
 /**
  * from @zhaojian

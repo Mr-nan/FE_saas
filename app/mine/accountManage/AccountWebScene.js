@@ -22,6 +22,7 @@ const Pixel = new PixelUtil();
 import NavigationView from '../../component/AllNavigationView';
 import * as fontAndColor from '../../constant/fontAndColor';
 import BaseComponent from '../../component/BaseComponent';
+import MainPage from '../../main/MainPage';
 let oldUrl = '';
 export  default class AccountWebScene extends BaseComponent {
 
@@ -59,39 +60,53 @@ export  default class AccountWebScene extends BaseComponent {
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
                 <WebView
                     ref="www"
-                    style={{width:width,height:height,backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(64)}}
+                    style={{width:width,height:height,
+                    backgroundColor:fontAndColor.COLORA3}}
                     source={{uri:this.props.webUrl,method: 'GET'}}
                     javaScriptEnabled={true}
                     domStorageEnabled={true}
                     scalesPageToFit={false}
                     onNavigationStateChange={this.onNavigationStateChange.bind(this)}
                 />
-                <NavigationView
-                    title={this.props.title}
-                    backIconClick={()=>{
-                        if(oldUrl==this.props.webUrl){
-                                this.backPage();
-                        }else{
-                            this.refs.www.goBack();
-                        }
+                {/*<NavigationView*/}
+                    {/*title={this.props.title}*/}
+                    {/*backIconClick={()=>{*/}
+                        {/*if(oldUrl==this.props.webUrl){*/}
+                                {/*this.backPage();*/}
+                        {/*}else{*/}
+                            {/*this.refs.www.goBack();*/}
+                        {/*}*/}
 
-                    }}
-                />
+                    {/*}}*/}
+                {/*/>*/}
             </View>
         );
     }
 
     onNavigationStateChange=(navState)=> {
+        console.log('123---------'+navState.url);
         oldUrl=navState.url;
+        if(oldUrl==this.props.backUrl){
+            this.props.callBack();
+            const navigator = this.props.navigator;
+            if (navigator){
+                for(let i = 0;i<navigator.getCurrentRoutes().length;i++){
+                    if(navigator.getCurrentRoutes()[i].name=='MainPage'){
+                        navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     _renderPlaceholderView() {
         return (
             <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
-                <NavigationView
-                    title={this.props.title}
-                    backIconClick={this.backPage}
-                />
+                {/*<NavigationView*/}
+                    {/*title={this.props.title}*/}
+                    {/*backIconClick={this.backPage}*/}
+                {/*/>*/}
             </View>
         );
     }

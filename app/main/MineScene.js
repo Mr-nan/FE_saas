@@ -348,7 +348,7 @@ export default class MineScene extends BaseComponent {
                 let datas = JSON.parse(data.result);
                 componyname = datas.companyname;
                 let maps = {
-                    enter_base_ids: datas.merge_id,
+                    enter_base_ids: datas.company_base_id,
                     child_type: '1'
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
@@ -430,12 +430,12 @@ export default class MineScene extends BaseComponent {
             if (data.code == 1) {
                 let datas = JSON.parse(data.result);
                 let maps = {
-                    enter_base_ids: datas.merge_id,
+                    enter_base_ids: datas.company_base_id,
                     child_type: '1'
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
-                            this.props.showToast('用户信息查询失败');
+                            this.props.showModal(false);
                             lastType = response.mjson.data.status;
                             if (lastType == '0') {
                                 this.navigatorParams.name = 'AccountManageScene'
@@ -465,6 +465,8 @@ export default class MineScene extends BaseComponent {
                                     }
                                 }
                             }
+                            this.refs.accountmodal.changeShowType(false);
+                            firstType = lastType;
                             this.props.callBack(this.navigatorParams);
 
                         },
@@ -579,7 +581,7 @@ export default class MineScene extends BaseComponent {
                                     if (datac.code == 1) {
                                         let datasc = JSON.parse(datac.result);
                                         let maps = {
-                                            enter_base_ids: datasc.merge_id,
+                                            enter_base_ids: datasc.company_base_id,
                                             child_type: '1'
                                         };
                                         request(Urls.USER_ACCOUNT_INFO, 'Post', maps)

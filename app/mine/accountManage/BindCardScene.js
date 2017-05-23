@@ -55,7 +55,7 @@ export  default class BindCardScene extends BaseComponent {
             if (data.code == 1 && data.result != null) {
                 let datas=JSON.parse(data.result);
                 let maps = {
-                    enter_base_ids:datas.merge_id,
+                    enter_base_ids:datas.company_base_id,
                     child_type:'1'
                 };
 
@@ -63,7 +63,7 @@ export  default class BindCardScene extends BaseComponent {
                     .then((response) => {
                             this.props.showModal(false);
                         if(clickType==1){
-                            this.bindCard(datas.merge_id,response.mjson.data.account_open_type)
+                            this.bindCard(datas.company_base_id,response.mjson.data.account_open_type)
                         }else{
                             if(response.mjson.data.account_open_type=='1'){
                                 this.toNextPage({name:'OpenEnterpriseAccountScene',component:OpenEnterpriseAccountScene,params:{}});
@@ -90,14 +90,19 @@ export  default class BindCardScene extends BaseComponent {
     bindCard=(enter_base_id,user_type)=>{
         let maps = {
             enter_base_id:enter_base_id,
-            user_type:user_type
+            user_type:user_type,
+            reback_url:'http://www.bangka.com'
         };
 
         request(Urls.USER_BANK_BIND, 'Post', maps)
             .then((response) => {
                     this.props.showModal(false);
                     this.toNextPage({name:'AccountWebScene',component:AccountWebScene,params:{
-                        title:'绑定银行卡',webUrl:response.mjson.data.auth_url+'?authTokenId='+response.mjson.data.auth_token
+                        title:'绑定银行卡',webUrl:response.mjson.data.auth_url+
+                        '?authTokenId='+response.mjson.data.auth_token,callBack:()=>{
+                            this.props.callBack();
+                        },backUrl:'http://www.bangka.com'
+
                     }});
                 },
                 (error) => {

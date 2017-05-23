@@ -204,7 +204,7 @@ export default class FinanceSence extends BaseComponet {
             if (data.code == 1) {
                 let datas = JSON.parse(data.result);
                 let maps = {
-                    enter_base_ids: datas.merge_id,
+                    enter_base_ids: datas.company_base_id,
                     child_type: '1'
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
@@ -242,7 +242,7 @@ export default class FinanceSence extends BaseComponet {
                                     if (datac.code == 1) {
                                         let datasc = JSON.parse(datac.result);
                                         let maps = {
-                                            enter_base_ids: datasc.merge_id,
+                                            enter_base_ids: datasc.company_base_id,
                                             child_type: '1'
                                         };
                                         request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
@@ -656,9 +656,7 @@ export default class FinanceSence extends BaseComponet {
                                         backgroundColor: '#00000000',
                                         flex: 1,
                                         textAlign: 'center'
-
-                                    }}>
-                                    {this.state.allData.keyongedu}</Text>
+                                    }}>{this.state.allData.keyongedu}</Text>
                             </View>
                             {
                                 this.state.mnyData.is_microchinese_mny == 3 && (
