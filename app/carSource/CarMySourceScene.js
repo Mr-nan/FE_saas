@@ -12,7 +12,8 @@ import {
     ListView,
     ScrollView,
     RefreshControl,
-    InteractionManager
+    InteractionManager,
+    Image,
 } from 'react-native';
 
 import BaceComponent from '../component/BaseComponent';
@@ -205,14 +206,14 @@ class MyCarSourceUpperFrameView extends BaceComponent {
         super(props);
         // 初始状态
 
+        this.isCarLong = false;
         const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id != r2.id});
         this.state = {
-
+            isCarLong :false,
             carData:carData,
             isRefreshing: true,
             renderPlaceholderOnly: 'blank',
             carUpperFrameStatus: carUpperFrameStatus,
-
         };
     }
 
@@ -242,6 +243,7 @@ class MyCarSourceUpperFrameView extends BaceComponent {
         carUpperFramePage = 1;
         request(url, 'post', {
             car_status: '1',
+            isCarLong :false,
             page: carUpperFramePage,
             row: 10,
 
@@ -342,29 +344,67 @@ class MyCarSourceUpperFrameView extends BaceComponent {
             <View style={styles.viewContainer}>
                 {
                     this.state.carData &&
-                    <ListView style={styles.listView}
-                                dataSource={this.state.carData}
-                                ref={'carListView'}
-                                initialListSize={10}
-                                onEndReachedThreshold={1}
-                                stickyHeaderIndices={[]}//仅ios
-                                enableEmptySections={true}
-                                scrollRenderAheadDistance={10}
-                                pageSize={10}
-                                renderFooter={this.renderListFooter}
-                                onEndReached={this.toEnd}
-                              renderRow={(rowData) =><MyCarCell carCellData={rowData} cellClick={this.props.carCellClick} footButtonClick={this.props.footButtonClick} type={1}/>}
-                                refreshControl={
-                                    <RefreshControl
-                                        refreshing={this.state.isRefreshing}
-                                        onRefresh={this.refreshingData}
-                                        tintColor={[fontAndColor.COLORB0]}
-                                        colors={[fontAndColor.COLORB0]}
-                                    />}
+                    <ListView
+                        style={styles.listView}
+                        dataSource={this.state.carData}
+                        ref={'carListView'}
+                        initialListSize={10}
+                        onEndReachedThreshold={1}
+                        stickyHeaderIndices={[]}//仅ios
+                        enableEmptySections={true}
+                        scrollRenderAheadDistance={10}
+                        pageSize={10}
+                        renderFooter={this.renderListFooter}
+                        onEndReached={this.toEnd}
+                        renderHeader={this.renderHeader}
+                        renderRow={this.renderRow}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.state.isRefreshing}
+                                onRefresh={this.refreshingData}
+                                tintColor={[fontAndColor.COLORB0]}
+                                colors={[fontAndColor.COLORB0]}/>}
                     />
                 }
             </View>
         )
+    }
+
+    renderRow =(rowData)=>{
+
+        if(!this.isCarLong && rowData.long_aging == 1){
+            this.isCarLong = true;
+            this.setState({
+                isCarLong:true
+            });
+        }
+        return(
+            <MyCarCell carCellData={rowData} cellClick={this.props.carCellClick} footButtonClick={this.props.footButtonClick} type={1}/>
+        )
+    }
+
+    renderHeader =()=> {
+
+        if(!this.state.isCarLong){
+            return(null);
+        }
+       return(
+           <View style={{paddingHorizontal:Pixel.getPixel(15),alignItems:'center',flex:1,height:Pixel.getPixel(35),backgroundColor:fontAndColor.COLORB6,
+           flexDirection:'row',justifyContent:'space-between',marginBottom:Pixel.getPixel(10)
+       }}>
+           <View style={{flexDirection:'row'}}>
+               <Image source={require('../../images/carSourceImages/pointIcon.png')}/>
+               <Text style={{color:fontAndColor.COLORB2, fontSize:fontAndColor.LITTLEFONT28,marginLeft:Pixel.getPixel(5)}}>已经出售的长库龄车请尽快操作下架</Text>
+           </View>
+            <TouchableOpacity onPress={()=>{
+                this.isCarLong = false;
+                this.setState({
+                    isCarLong:false
+                });
+            }}>
+                <Image source={require('../../images/carSourceImages/closeBtn.png')}/>
+            </TouchableOpacity>
+       </View>)
     }
 
 }

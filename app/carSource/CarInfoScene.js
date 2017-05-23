@@ -22,9 +22,10 @@ import Gallery from 'react-native-gallery';
 import {CarDeploySwitchoverButton,CarConfigurationView}   from './znComponent/CarInfoAllComponent';
 import CarZoomImageScene from './CarZoomImagScene';
 import CarUpkeepScene from './CarUpkeepScene';
+import AutoConfig from  '../publish/AutoConfig';
 import CarbreakRulesScene from  './CarbreakRulesScene';
 import CarReferencePriceScene from  './CarReferencePriceScene';
-import AutoConfig      from '../publish/AutoConfig';
+import CarPriceAnalysisView from './znComponent/CarPriceAnalysisView';
 import *as weChat from 'react-native-wechat';
 import PixelUtil from '../utils/PixelUtil';
 const Pixel = new PixelUtil();
@@ -99,6 +100,7 @@ export default class CarInfoScene extends BaseComponent {
         this.state = {
             imageArray:  new ImagePageView.DataSource({pageHasChanged: (r1, r2) => r1 !== r2}),
             renderPlaceholderOnly: 'blank',
+            residualsData:[],
             carData:{imgs:[]},
             currentImageIndex:1,
             switchoverCarInfo:0,
@@ -120,6 +122,7 @@ export default class CarInfoScene extends BaseComponent {
         }).then((response) => {
 
             let carData = response.mjson.data;
+            this.loadCarResidualsData(carData);
             carData.carIconsContentData=[
                 carData.manufacture!=''? this.dateReversal(carData.manufacture+'000'):'',
                 carData.init_reg!=''? this.dateReversal(carData.init_reg+'000'):'',
@@ -142,6 +145,28 @@ export default class CarInfoScene extends BaseComponent {
 
         }, (error) => {
             this.setState({renderPlaceholderOnly: 'error'});
+        });
+    }
+
+    loadCarResidualsData=(carData)=>{
+
+        request(AppUrls.CAR_GET_RESIDUALS, 'post', {
+            id: this.props.carID,
+            mile:carData.mileage,
+            modelId:carData.model_id,
+            regDate:this.dateReversal(carData.init_reg+'000'),
+            zone:carData.city_id,
+
+        }).then((response) => {
+
+            console.log(response);
+            if(response.mycode==1){
+                this.setState({
+                    residualsData:response.mjson.data,
+                })
+            }
+        }, (error) => {
+           console.log(error);
         });
     }
 
@@ -348,8 +373,11 @@ export default class CarInfoScene extends BaseComponent {
                             {/*<Image style={{marginTop:10,width:ScreenWidth}} source={require('../../images/carSourceImages/carUpkeepButton.png')} resizeMode='stretch'/>*/}
                         {/*</TouchableOpacity>*/}
                     </View>
-                </ScrollView>
+                    {
+                        this.state.residualsData.length>0 &&( <CarPriceAnalysisView data ={this.state.residualsData}/>)
+                    }
 
+                </ScrollView>
                     <View style={styles.footView} >
                         <View style={[styles.carNumberView,carData.show_order==2 && {width:ScreenWidth/2}]}>
                             <Text style={styles.carNumberText}>车源编号</Text>
@@ -357,7 +385,7 @@ export default class CarInfoScene extends BaseComponent {
                         </View>
                         <TouchableOpacity onPress={this.callClick}>
                             <View style={[styles.callView,carData.show_order==2 && {width:ScreenWidth/2}]}>
-                                <Image source={require('../../images/carSourceImages/phone.png')}/>
+                                <Image source={require('../../images/carSourceImages/phoneIcon.png')}/>
                                 <Text style={styles.callText}>电话咨询</Text>
                             </View>
                         </TouchableOpacity>
@@ -368,7 +396,6 @@ export default class CarInfoScene extends BaseComponent {
                                 {/*</TouchableOpacity>*/}
                             {/*)*/}
                         {/*}*/}
-
                     </View>
                 <NavigationView
                     ref="navtigation"
@@ -862,7 +889,7 @@ class CallView extends Component {
                               this.state.callData.phone &&(
                                   <TouchableOpacity onPress={()=>{this.callAction(this.state.callData.phone)}}>
                                       <View style={styles.callModelItem}>
-                                          <Image source={require('../../images/carSourceImages/phone.png')}/>
+                                          <Image source={require('../../images/carSourceImages/phoneIcon.png')}/>
                                           <Text style={styles.callText}>咨询第1车贷客服</Text>
                                       </View>
                                   </TouchableOpacity>
@@ -872,7 +899,7 @@ class CallView extends Component {
                               this.state.callData.shopsNumber && (
                                   <TouchableOpacity onPress={()=>{this.callAction(this.state.callData.shopsNumber)}}>
                                       <View style={[styles.callModelItem,{marginTop:Pixel.getPixel(20)}]}>
-                                          <Image source={require('../../images/carSourceImages/phone.png')}/>
+                                          <Image source={require('../../images/carSourceImages/phoneIcon.png')}/>
                                           <Text style={styles.callText}>咨询商家</Text>
                                       </View>
                                   </TouchableOpacity>
@@ -1109,6 +1136,7 @@ const styles = StyleSheet.create({
     callText: {
         color: fontAndColor.COLORB0,
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
+        marginLeft:Pixel.getPixel(5)
     },
     carNumberView:{
         alignItems:'center',
