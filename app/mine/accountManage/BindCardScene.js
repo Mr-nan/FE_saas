@@ -90,14 +90,19 @@ export  default class BindCardScene extends BaseComponent {
     bindCard=(enter_base_id,user_type)=>{
         let maps = {
             enter_base_id:enter_base_id,
-            user_type:user_type
+            user_type:user_type,
+            reback_url:'http://www.bangka.com'
         };
 
         request(Urls.USER_BANK_BIND, 'Post', maps)
             .then((response) => {
                     this.props.showModal(false);
                     this.toNextPage({name:'AccountWebScene',component:AccountWebScene,params:{
-                        title:'绑定银行卡',webUrl:response.mjson.data.auth_url+'?authTokenId='+response.mjson.data.auth_token
+                        title:'绑定银行卡',webUrl:response.mjson.data.auth_url+
+                        '?authTokenId='+response.mjson.data.auth_token,callBack:()=>{
+                            this.props.callBack();
+                        },backUrl:'http://www.bangka.com'
+
                     }});
                 },
                 (error) => {

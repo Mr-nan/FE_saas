@@ -278,6 +278,13 @@ export const USER_ACCOUNT_INFO = BASEURL + 'v1/user.account/info';
 /**
  * from @zhaojian
  *
+ * 获取交易流水
+ **/
+export const USER_ACCOUNT_PAYLOG = BASEURL + 'v1/user.account/payLog';
+
+/**
+ * from @zhaojian
+ *
  * 解绑银行卡
  **/
 export const USER_BANK_UNBIND = BASEURL + 'v1/user.bank/unBind';

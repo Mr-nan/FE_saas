@@ -40,7 +40,7 @@ export  default class AccountScene extends BaseComponent {
         this.state = {
             renderPlaceholderOnly: 'blank',
             source: [],
-            info:{}
+            info: {}
         };
     }
 
@@ -55,28 +55,38 @@ export  default class AccountScene extends BaseComponent {
 
     allRefresh = () => {
         this.setState({
-            renderPlaceholderOnly:'loading'
+            renderPlaceholderOnly: 'loading'
         });
         this.getData()
     }
 
-    getData=()=>{
+    getData = () => {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
-                let datas=JSON.parse(data.result);
+                let datas = JSON.parse(data.result);
                 let maps = {
-                    enter_base_ids:datas.merge_id,
-                    child_type:'1'
+                    enter_base_ids: datas.merge_id,
+                    child_type: '1'
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
-                            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                            this.setState({
-                                renderPlaceholderOnly: 'success',
-                                source:ds.cloneWithRows(response.mjson.data.payLogs),
-                                info:response.mjson.data.info,
+                            if (response.mjson.data.payLogs == null || response.mjson.data.payLogs.length <= 0) {
+                                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                                this.setState({
+                                    renderPlaceholderOnly: 'success',
+                                    source: ds.cloneWithRows([1]),
+                                    info: response.mjson.data.info,
 
-                            });
+                                });
+                            } else {
+                                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                                this.setState({
+                                    renderPlaceholderOnly: 'success',
+                                    source: ds.cloneWithRows(response.mjson.data.payLogs),
+                                    info: response.mjson.data.info,
+
+                                });
+                            }
                         },
                         (error) => {
                             this.props.showToast('用户信息查询失败');
@@ -114,14 +124,16 @@ export  default class AccountScene extends BaseComponent {
                         this.toNextPage({name:'WithdrawalsScene',component:WithdrawalsScene,params:{callBack:()=>{
 
                         } ,money:this.state.info.balance}})
-                    }} activeOpacity={0.8} style={{flex:1,justifyContent:'center',alignItems: 'center',backgroundColor:'#fff'}}>
+                    }} activeOpacity={0.8}
+                                      style={{flex:1,justifyContent:'center',alignItems: 'center',backgroundColor:'#fff'}}>
                         <Text style={{color: fontAndColor.COLORB0,fontSize: Pixel.getFontPixel(15)}}>提现</Text>
                     </TouchableOpacity>
                     <View style={{width:1,justifyContent:'center',
                     alignItems: 'center',height:Pixel.getPixel(44)}}></View>
                     <TouchableOpacity onPress={()=>{
                         this.toNextPage({name:'RechargeScene',component:RechargeScene,params:{}})
-                    }} activeOpacity={0.8} style={{flex:1,justifyContent:'center',alignItems: 'center',backgroundColor:'#fff'}}>
+                    }} activeOpacity={0.8}
+                                      style={{flex:1,justifyContent:'center',alignItems: 'center',backgroundColor:'#fff'}}>
                         <Text style={{color: fontAndColor.COLORB0,fontSize: Pixel.getFontPixel(15)}}>充值</Text>
                     </TouchableOpacity>
                 </View>
@@ -134,24 +146,28 @@ export  default class AccountScene extends BaseComponent {
     }
 
     _renderRow = (movie, sectionId, rowId) => {
-        return (
-            <View style={{width:width,height:Pixel.getPixel(72),backgroundColor: '#fff',flexDirection: 'row',
+        if (movie == '1') {
+            return (<View></View>);
+        } else {
+            return (
+                <View style={{width:width,height:Pixel.getPixel(72),backgroundColor: '#fff',flexDirection: 'row',
             paddingRight:Pixel.getPixel(15),paddingLeft:Pixel.getPixel(15)}}>
-                <View style={{flex:1,justifyContent:'center'}}>
-                    <Text style={{color: '#000',fontSize: Pixel.getPixel(14)}}>
-                        {movie.operate_name}
-                    </Text>
-                    <Text style={{color: fontAndColor.COLORA1,fontSize: Pixel.getPixel(12)}}>
-                        {movie.create_time}
-                    </Text>
+                    <View style={{flex:1,justifyContent:'center'}}>
+                        <Text style={{color: '#000',fontSize: Pixel.getPixel(14)}}>
+                            {movie.operate_name}
+                        </Text>
+                        <Text style={{color: fontAndColor.COLORA1,fontSize: Pixel.getPixel(12)}}>
+                            {movie.create_time}
+                        </Text>
+                    </View>
+                    <View style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>
+                        <Text style={{color: '#000',fontSize: Pixel.getPixel(20)}}>
+                            {movie.amount}
+                        </Text>
+                    </View>
                 </View>
-                <View style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>
-                    <Text style={{color: '#000',fontSize: Pixel.getPixel(20)}}>
-                        {movie.amount}
-                    </Text>
-                </View>
-            </View>
-        )
+            )
+        }
     }
     _renderHeader = () => {
         return (
@@ -188,14 +204,17 @@ export  default class AccountScene extends BaseComponent {
         )
     }
 
-    getWebUrl=(url,maps,title)=>{
+    getWebUrl = (url, maps, title) => {
         this.props.showModal(true);
         request(url, 'Post', maps)
             .then((response) => {
                     this.props.showModal(false);
-                    this.toNextPage({name:'AccountWebScene',component:AccountWebScene,params:{
-                        title:title,webUrl:response.mjson.data.auth_url+'?authTokenId='+response.mjson.data.auth_token
-                    }});
+                    this.toNextPage({
+                        name: 'AccountWebScene', component: AccountWebScene, params: {
+                            title: title,
+                            webUrl: response.mjson.data.auth_url + '?authTokenId=' + response.mjson.data.auth_token
+                        }
+                    });
                 },
                 (error) => {
                     this.props.showModal(false);
