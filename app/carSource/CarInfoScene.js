@@ -22,6 +22,7 @@ import Gallery from 'react-native-gallery';
 import {CarDeploySwitchoverButton,CarConfigurationView}   from './znComponent/CarInfoAllComponent';
 import CarZoomImageScene from './CarZoomImagScene';
 import CarUpkeepScene from './CarUpkeepScene';
+import AutoConfig from  '../publish/AutoConfig';
 import CarbreakRulesScene from  './CarbreakRulesScene';
 import CarReferencePriceScene from  './CarReferencePriceScene';
 import CarPriceAnalysisView from './znComponent/CarPriceAnalysisView';

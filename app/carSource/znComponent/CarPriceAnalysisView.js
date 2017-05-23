@@ -108,7 +108,7 @@ const styles=StyleSheet.create({
     },
     columnarView:{
         width:Pixel.getPixel(44),
-        backgroundColor:fontAndColor.COLORB5,
+        backgroundColor:fontAndColor.COLORB7,
         borderLeftWidth:Pixel.getPixel(1),
         borderLeftColor:fontAndColor.COLORB0,
         borderRightWidth:Pixel.getPixel(1),

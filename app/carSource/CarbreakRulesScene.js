@@ -95,7 +95,7 @@ export  default class CarbreakRulesScene extends  BaseComponent{
 
         },(error)=>{
             this.setState({
-                renderPlaceholderOnly: 'error',
+                renderPlaceholderOnly: 'null',
             });
         });
     }

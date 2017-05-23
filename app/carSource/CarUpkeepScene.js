@@ -116,7 +116,7 @@ export  default class CarUpkeepScene extends  BaseComponent{
 
         },(error)=>{
             this.setState({
-                renderPlaceholderOnly: 'error',
+                renderPlaceholderOnly: 'null',
             });
         });
     }
