@@ -125,7 +125,7 @@ class CarbreakRulesCell extends Component{
                       </View>
                       <View style={{flexDirection:'row', alignItems:'center'}}>
                           <Text style={{color:fontAndColor.COLORA2, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>展开</Text>
-                          <Image style={{width:20,height:20,backgroundColor:fontAndColor.COLORA4,marginLeft:Pixel.getPixel(5)}}/>
+                          <Image style={{marginLeft:Pixel.getPixel(5)}} source={this.state.isUnfold?require('../../images/carSourceImages/unfold_is.png'):require('../../images/carSourceImages/unfold_no.png')}/>
                       </View>
                   </TouchableOpacity>
                   {

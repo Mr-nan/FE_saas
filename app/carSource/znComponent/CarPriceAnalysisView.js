@@ -7,7 +7,8 @@ import {
     StyleSheet,
     View,
     Text,
-    Dimensions
+    Dimensions,
+    ScrollView,
 } from 'react-native';
 
 import *as fontAndColor from '../../constant/fontAndColor';
@@ -50,11 +51,11 @@ export default class CarPriceAnalysisView extends Component{
                             })
                         }
                     </View>
-                    <View style={{flexDirection:'row',alignItems:'flex-end',justifyContent: 'space-between',marginTop:Pixel.getPixel(6),paddingHorizontal:Pixel.getPixel(5),}}>
+                    <View style={styles.dateView}>
                         {
                             this.data.map((data,index)=>{
                                 return(
-                                    <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),textAlign:'center',width:Pixel.getPixel(50)}} key={index}>{data.trend_date}</Text>
+                                    <Text style={styles.dateText} key={index}>{data.trend_date}</Text>
                                 )
                             })
                         }
@@ -70,7 +71,7 @@ class ColumnarView extends  Component{
     render(){
         return(
             <View>
-                <Text style={{textAlign:'center',color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),height:Pixel.getPixel(20)}}>{this.props.title}</Text>
+                <Text style={styles.priceText}>{this.props.title}</Text>
                 <View style={[styles.columnarView,{height:Pixel.getPixel(this.props.height)-Pixel.getPixel(20),width:Pixel.getPixel(this.props.width)}]} />
             </View>
         )
@@ -108,13 +109,33 @@ const styles=StyleSheet.create({
     },
     columnarView:{
         width:Pixel.getPixel(44),
-        backgroundColor:fontAndColor.COLORB7,
-        borderLeftWidth:Pixel.getPixel(1),
-        borderLeftColor:fontAndColor.COLORB0,
-        borderRightWidth:Pixel.getPixel(1),
-        borderRightColor:fontAndColor.COLORB0,
-        borderTopWidth:Pixel.getPixel(1),
-        borderTopColor:fontAndColor.COLORB0,
+        backgroundColor:fontAndColor.COLORB0,
+        // borderLeftWidth:Pixel.getPixel(1),
+        // borderLeftColor:fontAndColor.COLORB0,
+        // borderRightWidth:Pixel.getPixel(1),
+        // borderRightColor:fontAndColor.COLORB0,
+        // borderTopWidth:Pixel.getPixel(1),
+        // borderTopColor:fontAndColor.COLORB0,
+    },
+    priceText:{
+        textAlign:'center',
+        color:fontAndColor.COLORA0,
+        fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+        height:Pixel.getPixel(20)
+    },
+    dateView:{
+        flexDirection:'row',
+        alignItems:'flex-end',
+        justifyContent: 'space-between',
+        marginTop:Pixel.getPixel(6),
+        paddingHorizontal:Pixel.getPixel(5),
+    },
+    dateText:{
+        color:fontAndColor.COLORA1,
+        fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+        textAlign:'center',
+        width:Pixel.getPixel(50),
+        backgroundColor:'white'
     }
 
 });
