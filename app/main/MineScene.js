@@ -253,6 +253,9 @@ export default class MineScene extends BaseComponent {
                 let datas = JSON.parse(data.result);
                 if (datas.user_level == 2) {
                     if (datas.enterprise_list[0].role_type == '1') {
+                        if(lastType=='error'){
+                            Car[0].splice(0, 1);
+                        }
                         user_list.push(...Car);
                     } else if (datas.enterprise_list[0].role_type == '6') {
                         Car[0].splice(0, 1);
@@ -266,6 +269,9 @@ export default class MineScene extends BaseComponent {
                     }
                 } else if (datas.user_level == 1) {
                     if (datas.enterprise_list[0].role_type == '1') {
+                        if(lastType=='error'){
+                            Car[0].splice(0, 1);
+                        }
                         user_list.push(Car[0], Car[2], Car[3], Car[4]);
                     } else if (datas.enterprise_list[0].role_type == '6') {
                         Car[0].splice(0, 1);
@@ -353,7 +359,11 @@ export default class MineScene extends BaseComponent {
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
-                            lastType = response.mjson.data.status;
+                            if(response.mjson.data==null||response.mjson.data.length<=0){
+                                lastType = response.mjson.data.status;
+                            }else{
+                                lastType = 'error';
+                            }
                             // lastType = '3';、
                             this.changeData();
                         },
