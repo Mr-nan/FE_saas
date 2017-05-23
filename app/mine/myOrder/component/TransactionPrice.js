@@ -44,7 +44,9 @@ export default class TransactionPrice extends BaseComponent {
                             component: InputAmountScene,
                             params: {
                                 amount: this.state.amount,
-                                updateAmount: this.updateAmount
+                                updateAmount: this.updateAmount,
+                                carId: this.props.carId,
+                                orderId: this.props.orderId,
                             }
                         });
                     }}>

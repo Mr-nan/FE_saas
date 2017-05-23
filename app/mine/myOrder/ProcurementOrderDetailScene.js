@@ -67,6 +67,17 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         this.loadData();
     };
 
+    dateReversal = (time) => {
+        const date = new Date();
+        date.setTime(time);
+        return (date.getFullYear() + "-" + (this.PrefixInteger(date.getMonth() + 1, 2)) + "-" +
+        (this.PrefixInteger(date.getDate() + 1, 2)));
+    };
+
+    PrefixInteger = (num, length) => {
+        return (Array(length).join('0') + num).slice(-length);
+    };
+
     initListData = (orderState, merchantNum, customerServiceNum) => {
         switch (orderState) {
             case 0: //创建订单
@@ -439,7 +450,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
     loadData = () => {
         let url = AppUrls.ORDER_DETAIL;
         request(url, 'post', {
-            order_id: '5'
+            order_id: '12'
         }).then((response) => {
             this.props.showModal(false);
             this.orderDetail = response.mjson.data;
@@ -532,6 +543,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 </View>
             )
         } else if (rowData === '3') {
+            let initRegDate = this.dateReversal(this.orderDetail.orders_item_data[0].car_data.init_reg + '000');
+            let imageUrl = this.orderDetail.orders_item_data[0].car_data.imgs;
             return (
                 <View style={styles.itemType3}>
                     <View style={{
@@ -542,25 +555,25 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         alignItems: 'center'
                     }}>
                         <Text style={styles.orderInfo}>订单号:</Text>
-                        <Text style={styles.orderInfo}>12312332133</Text>
+                        <Text style={styles.orderInfo}>{this.orderDetail.order_no}</Text>
                         <View style={{flex: 1}}/>
                         <Text style={styles.orderInfo}>订单日期:</Text>
-                        <Text style={styles.orderInfo}>2019/09/09</Text>
+                        <Text style={styles.orderInfo}>{this.orderDetail.created_time}</Text>
                     </View>
                     <View style={styles.separatedLine}/>
                     <View style={{flexDirection: 'row', height: Pixel.getPixel(105), alignItems: 'center'}}>
                         <Image style={styles.image}
-                               source={{uri: 'http://dycd-static.oss-cn-beijing.aliyuncs.com/Uploads/Oss/201703/13/58c639474ef45.jpg?x-oss-process=image/resize,w_320,h_240'}}/>
+                               source={imageUrl.length ? {uri: imageUrl[0].icon_url} : require('../../../images/carSourceImages/car_null_img.png')}/>
                         <View style={{marginLeft: Pixel.getPixel(10)}}>
                             <Text style={{width: width - Pixel.getPixel(15 + 120 + 10 + 15)}}
-                                  numberOfLines={1}>[北京]奔驰M级(进口) 2015款 M...</Text>
+                                  numberOfLines={1}>{this.orderDetail.orders_item_data[0].car_name}</Text>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>里程：</Text>
-                                <Text style={styles.carDescribe}>20.59万</Text>
+                                <Text style={styles.carDescribe}>{this.orderDetail.orders_item_data[0].car_data.mileage}</Text>
                             </View>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>上牌：</Text>
-                                <Text style={styles.carDescribe}>2016-09-09</Text>
+                                <Text style={styles.carDescribe}>{initRegDate}</Text>
                             </View>
                             {/*                            <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
                              <Text style={styles.carDescribeTitle}>标价：</Text>
@@ -676,17 +689,17 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     }}>
                         <Text style={styles.orderInfo}>姓名</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>异议</Text>
+                        <Text style={styles.infoContent}>{this.orderDetail.seller_name}</Text>
                     </View>
                     <View style={styles.infoItem}>
                         <Text style={styles.orderInfo}>联系方式</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>123456664444</Text>
+                        <Text style={styles.infoContent}>{this.orderDetail.seller_phone}</Text>
                     </View>
                     <View style={styles.infoItem}>
                         <Text style={styles.orderInfo}>企业名称</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>终生二手车经销给你公司</Text>
+                        <Text style={styles.infoContent}>{this.orderDetail.seller_company_name}</Text>
                     </View>
                 </View>
             )

@@ -83,7 +83,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
     loadData = () => {
         let url = AppUrls.ORDER_DETAIL;
         request(url, 'post', {
-            order_id: '5'
+            order_id: '12'
         }).then((response) => {
             this.props.showModal(false);
             this.orderDetail = response.mjson.data;
@@ -490,7 +490,14 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeperator}
                     showsVerticalScrollIndicator={false}/>
+                <ExplainModal ref='expModal' title='补差额说明' buttonStyle={styles.expButton} textStyle={styles.expText}
+                              text='知道了' content='为了确保交易金额可支付贷款本息，请您
+                        补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您
+                        补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您
+                        补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您
+                        补足成交价与贷款本息，'/>
                 <View style={{flex: 1}}/>
+                {console.log('this.bottomState===' + this.bottomState)}
                 {this.initDetailPageBottom(this.bottomState)}
             </View>
         )
@@ -525,7 +532,9 @@ export default class SalesOrderDetailScene extends BaseComponent {
             )
         } else if (rowData === '2') {
             return (
-                <TransactionPrice amount={20000} navigator={this.props.navigator}/>
+                <TransactionPrice amount={20000} navigator={this.props.navigator}
+                                  carId={this.orderDetail.orders_item_data[0].car_id}
+                                  orderId={this.orderDetail.id}/>
 
             )
         } else if (rowData === '3') {
@@ -959,5 +968,32 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         height: Pixel.getPixel(50),
         flexDirection: 'row'
+    },
+    tradingCountdown: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        height: Pixel.getPixel(40),
+        backgroundColor: fontAndColor.COLORB6
+    },
+    buttonCancel: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: Pixel.getPixel(15),
+        height: Pixel.getPixel(32),
+        width: Pixel.getPixel(100),
+        borderRadius: Pixel.getPixel(2),
+        borderWidth: Pixel.getPixel(1),
+        borderColor: fontAndColor.COLORA2
+    },
+    buttonConfirm: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: Pixel.getPixel(15),
+        backgroundColor: fontAndColor.COLORB0,
+        height: Pixel.getPixel(32),
+        width: Pixel.getPixel(100),
+        borderRadius: Pixel.getPixel(2),
+        borderWidth: Pixel.getPixel(1),
+        borderColor: fontAndColor.COLORB0
     }
 });

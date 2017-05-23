@@ -656,3 +656,11 @@ export const ORDER_DETAIL = BASEURL + V +'order/detail';
  * 订金支付
  */
 export const ORDER_PAY_DEPOSIT = BASEURL + V +'order/payDeposit';
+/**
+ *  车辆成交价提交
+ */
+export const ORDER_SAVE_PRICE = BASEURL + V +'order/savePrice';
+/**
+ *  卖家&买家取消订单
+ */
+export const ORDER_CANCEL = BASEURL + V +'order/cancel';

@@ -19,6 +19,9 @@ import BaseComponent from "../../component/BaseComponent";
 import NavigatorView from '../../component/AllNavigationView';
 import * as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
+import * as AppUrls from "../../constant/appUrls";
+import {request} from "../../utils/RequestUtil";
+import ShowToast from "../../component/toast/ShowToast";
 const Pixel = new PixelUtil();
 
 export default class InputAmountScene extends BaseComponent {
@@ -76,8 +79,8 @@ export default class InputAmountScene extends BaseComponent {
             <TouchableOpacity
                 onPress={() => {
                     if (this.isNumberByHundred(this.number)) {
-                        this.props.updateAmount(this.number);
-                        this.backPage();
+                        this.props.showModal(true);
+                        this.savePrice(this.number);
                     } else {
                         this.props.showToast("请输入整百金额");
                     }
@@ -87,6 +90,23 @@ export default class InputAmountScene extends BaseComponent {
                 <Text style={{color: '#ffffff'}}>完成</Text>
             </TouchableOpacity>
         )
+    }
+
+    savePrice = (price) => {
+        let url = AppUrls.ORDER_SAVE_PRICE;
+        request(url, 'post', {
+            car_id: this.props.carId,
+            order_id: this.props.orderId,
+            pricing_amount: price
+        }).then((response) => {
+            this.props.showModal(false);
+            this.props.updateAmount(this.number);
+            this.backPage();
+        }, (error) => {
+            //this.props.showModal(false);
+            //console.log("成交价提交失败");
+            this.props.showToast('成交价提交失败');
+        });
     }
 }
 

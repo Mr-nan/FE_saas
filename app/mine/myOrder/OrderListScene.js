@@ -238,9 +238,9 @@ export default class OrderListScene extends BaseComponent {
     }
 
     returnConditions = (newOrderState, newStartDate, newEndDate) => {
-        console.log('newOrderState===' + newOrderState);
+        /*console.log('newOrderState===' + newOrderState);
         console.log('newStartDate===' + newStartDate);
-        console.log('newEndDate===' + newEndDate);
+        console.log('newEndDate===' + newEndDate);*/
         this.orderState = newOrderState;
         this.startDate = newStartDate;
         this.endDate = newEndDate;
@@ -255,11 +255,8 @@ export default class OrderListScene extends BaseComponent {
     }
 
     _renderRow = (rowData, selectionID, rowID) => {
-        //console.log('_renderRow===' + rowData.cars[0].car.imgs[0].icon_url);
-        //let initRegDate = this.dateReversal(rowData.cars[0].car.init_reg + '000');
-        //let imageUrl = rowData.cars[0].car.imgs;
-        //console.log('_renderRow===' + imageUrl)
-        //item 布局
+        let initRegDate = this.dateReversal(rowData.cars[0].car.init_reg + '000');
+        let imageUrl = rowData.cars[0].car.imgs;
         return (
             <TouchableOpacity
                 onPress={() => {
@@ -296,7 +293,7 @@ export default class OrderListScene extends BaseComponent {
                     <View style={styles.separatedLine}/>
                     <View style={{flexDirection: 'row', height: Pixel.getPixel(104), alignItems: 'center'}}>
                         <Image style={styles.image}
-                               source={require('../../../images/carSourceImages/car_null_img.png')}/>
+                               source={imageUrl.length ? {uri: rowData.cars[0].car.imgs[0].icon_url} : require('../../../images/carSourceImages/car_null_img.png')}/>
                         <View style={{marginLeft: Pixel.getPixel(10), marginRight: Pixel.getPixel(15)}}>
                             <Text
                                 style={{width: width - Pixel.getPixel(15 + 120 + 10 + 15)}}
@@ -304,11 +301,11 @@ export default class OrderListScene extends BaseComponent {
                             >{rowData.car_name}</Text>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>里程：</Text>
-                                <Text style={styles.carDescribe}>12314万</Text>
+                                <Text style={styles.carDescribe}>{rowData.cars[0].car.mileage}</Text>
                             </View>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>上牌：</Text>
-                                <Text style={styles.carDescribe}>2020-12-11</Text>
+                                <Text style={styles.carDescribe}>{initRegDate}</Text>
                             </View>
                             {/*                            <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
                              <Text style={styles.carDescribeTitle}>标价：</Text>
@@ -331,7 +328,7 @@ export default class OrderListScene extends BaseComponent {
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color: fontAndColor.COLORA0,
                             fontWeight: 'bold'
-                        }}>13.90万</Text>
+                        }}>{rowData.transaction_price}</Text>
                         <Text style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                             color: fontAndColor.COLORA1,
@@ -341,7 +338,7 @@ export default class OrderListScene extends BaseComponent {
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color: fontAndColor.COLORA0,
                             fontWeight: 'bold'
-                        }}>1.50万</Text>
+                        }}>{rowData.deposit_amount}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
