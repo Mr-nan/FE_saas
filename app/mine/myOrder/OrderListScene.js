@@ -134,7 +134,7 @@ export default class OrderListScene extends BaseComponent {
     };
 
     render() {
-        if (this.props.business === 0) {
+        if (this.props.business === 1) {
             if (this.state.renderPlaceholderOnly !== 'success') {
                 // 加载中....
                 return ( <View style={styles.container}>
@@ -263,7 +263,7 @@ export default class OrderListScene extends BaseComponent {
         return (
             <TouchableOpacity
                 onPress={() => {
-                    if (this.props.business === 0) {
+                    if (this.props.business === 1) {
                         this.toNextPage({
                             name: 'ProcurementOrderDetailScene',
                             component: ProcurementOrderDetailScene,
