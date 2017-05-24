@@ -166,7 +166,6 @@ export default class CarInfoScene extends BaseComponent {
                 })
             }
         }, (error) => {
-           console.log(error);
         });
     }
 
@@ -454,7 +453,6 @@ export default class CarInfoScene extends BaseComponent {
                 this.props.showToast(response.mjson.msg);
             }
         }, (error) => {
-            this.props.showModal(false);
             this.props.showToast(error.msg);
         });
 

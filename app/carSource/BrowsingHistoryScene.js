@@ -135,12 +135,10 @@ export default class BrowsingHistoryScene extends BaceComponent {
         request(Urls.USER_HISTORY_DELETE, 'Post', maps)
             .then((response) => {
                     allSouce = [];
-                    this.props.showModal(false);
                     this.props.showToast('删除成功');
                     this.getData();
                 },
                 (error) => {
-                    this.props.showModal(false);
                     this.props.showToast('删除失败');
                 });
     }
@@ -151,13 +149,11 @@ export default class BrowsingHistoryScene extends BaceComponent {
         request(Urls.USER_HISTORY_DELETE, 'Post', maps)
             .then((response) => {
                     allSouce = [];
-                    this.props.showModal(false);
                     this.props.showToast('删除成功');
                     page = 1;
                     this.getData();
                 },
                 (error) => {
-                    this.props.showModal(false);
                     this.props.showToast('删除失败');
                 });
     }

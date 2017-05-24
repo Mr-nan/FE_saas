@@ -154,7 +154,6 @@ export  default class TransferScene extends BaseComponent {
                         response.mjson.data.account_id);
                 },
                 (error) => {
-                    this.props.showModal(false);
                     this.refs.accountinput.clearValue();
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast('获取账户信息失败');

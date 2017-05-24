@@ -239,7 +239,6 @@ export  default class AccountScene extends BaseComponent {
                     });
                 },
                 (error) => {
-                    this.props.showModal(false);
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast('网络连接失败');
                     } else {

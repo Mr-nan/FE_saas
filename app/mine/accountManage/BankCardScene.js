@@ -152,7 +152,6 @@ export  default class BankCardScene extends BaseComponent {
                             this.unBind(response.mjson.data.account_open_type)
                         },
                         (error) => {
-                            this.props.showModal(false);
                             if (error.mycode == -300 || error.mycode == -500) {
                                 this.props.showToast('获取账户信息失败');
                             } else {
@@ -182,7 +181,6 @@ export  default class BankCardScene extends BaseComponent {
                     }});
                 },
                 (error) => {
-                    this.props.showModal(false);
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast('解绑失败');
                     } else {

@@ -481,11 +481,9 @@ export default class MineScene extends BaseComponent {
 
                         },
                         (error) => {
-                            this.props.showModal(false);
                             this.props.showToast('用户信息查询失败');
                         });
             }else{
-                this.props.showModal(false);
                 this.props.showToast('用户信息查询失败');
             }
         });

@@ -93,7 +93,6 @@ export  default class AllSelectCompanyScene extends BaseComponent {
                         this.loginPage({name:'MainPage',component:MainPage,params:{}});
                     },
                     (error) => {
-                        this.props.showModal(false);
                         if (error.mycode == -300 || error.mycode == -500) {
                             this.props.showToast('网络连接失败');
                         } else {

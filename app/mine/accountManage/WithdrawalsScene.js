@@ -168,7 +168,6 @@ export  default class WithdrawalsScene extends BaseComponent {
                     }});
                 },
                 (error) => {
-                    this.props.showModal(false);
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast('提现失败');
                     } else {
