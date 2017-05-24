@@ -126,6 +126,7 @@ export default class CarInwardColorScene extends  BaseComponent{
                             renderItem={this._renderShell}
                             data={this.state.carShell}
                             itemsPerRow={4}
+
                         />
                     </View>
                 </Image>

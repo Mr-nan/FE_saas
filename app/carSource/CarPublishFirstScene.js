@@ -102,6 +102,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                                              editable={this.props.carID?false:true}
                                              onChangeText={this._onVinChange}
                                              placeholderTextColor={fontAndColor.COLORA4}
+                                             clearTextOnFocus={true}
                                              ref={(input) => {this.vinInput = input}}
                                              keyboardType={'ascii-capable'}
                                              placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
@@ -226,6 +227,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                                              onChangeText={this._onVinChange}
                                              placeholderTextColor={fontAndColor.COLORA4}
                                              keyboardType={'ascii-capable'}
+                                             clearTextOnFocus={true}
                                              ref={(input) => {this.vinInput = input}}
                                              placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
                                   />
@@ -697,6 +699,8 @@ export default class CarPublishFirstScene extends BaseComponent{
     _onVinChange = (text) => {
         if (text.length === 17) {
             this._showLoading();
+            this.vinInput.blur();
+
             Net.request(AppUrls.VININFO, 'post',{vin:text}).then(
                 (response) => {
                     this._closeLoading();
@@ -709,6 +713,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                             this.vinInput.setNativeProps({
                                 text: '车架号校验失败'
                             });
+
 
                         } else if (rd.length === 1) {
                             this.modelInfo['brand_id'] = rd[0].brand_id;
