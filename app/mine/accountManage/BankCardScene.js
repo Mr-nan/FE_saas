@@ -25,6 +25,7 @@ import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
+import * as webBackUrl from "../../constant/webBackUrl";
 import AccountWebScene from './AccountWebScene';
 export  default class BankCardScene extends BaseComponent {
 
@@ -127,7 +128,7 @@ export  default class BankCardScene extends BaseComponent {
                     </Text>
                 </View>
                 <TouchableOpacity onPress={()=>{
-                        this.getData();
+                        this.getNoBankData();
                     }} activeOpacity={0.8} style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>
                     <Text style={{fontSize: Pixel.getFontPixel(15),color:fontAndColor.COLORA2}}>解除绑定</Text>
                 </TouchableOpacity>
@@ -168,7 +169,7 @@ export  default class BankCardScene extends BaseComponent {
     unBind=(type)=>{
         let maps = {
             enter_base_ids: type,
-            reback_url:'http://www.jiebang.com'
+            reback_url:webBackUrl.UNBINDCARD
         };
         request(Urls.USER_BANK_UNBIND, 'Post', maps)
             .then((response) => {
@@ -177,7 +178,7 @@ export  default class BankCardScene extends BaseComponent {
                         title:'解绑银行卡',webUrl:response.mjson.data.auth_url+
                         '?authTokenId='+response.mjson.data.auth_token,callBack:()=>{
                             this.props.callBack();
-                        },backUrl:'http://www.jiebang.com'
+                        },backUrl:webBackUrl.UNBINDCARD
                     }});
                 },
                 (error) => {

@@ -32,6 +32,7 @@ import FrozenScene from './FrozenScene';
 import TransferScene from './TransferScene';
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
+import * as webBackUrl from "../../constant/webBackUrl";
 export  default class AccountScene extends BaseComponent {
 
     constructor(props) {
@@ -123,7 +124,7 @@ export  default class AccountScene extends BaseComponent {
                     <TouchableOpacity onPress={()=>{
                         this.toNextPage({name:'WithdrawalsScene',
                         component:WithdrawalsScene,params:{callBack:()=>{
-                            this.props.callBack();
+                            this.allRefresh()
                         } ,money:this.state.info.balance}})
                     }} activeOpacity={0.8}
                                       style={{flex:1,justifyContent:'center',alignItems: 'center',backgroundColor:'#fff'}}>
@@ -180,26 +181,26 @@ export  default class AccountScene extends BaseComponent {
                           changePwd={()=>{
                               let maps={
                                   user_type:this.state.info.account_open_type,
-                                  reback_url:'http://www.xiugaijiaoyimima.com'
+                                  reback_url:webBackUrl.CHANGEPWD
                               }
                               this.getWebUrl(Urls.USER_ACCOUNT_EDITPAYPWD,maps,'修改交易密码',
-                              'http://www.xiugaijiaoyimima.com');
+                              webBackUrl.CHANGEPWD);
                           }}
                           resetPwd={()=>{
                               let maps={
                                   user_type:this.state.info.account_open_type,
-                                  reback_url:'http://www.chongzhijiaoyimima.com'
+                                  reback_url:webBackUrl.RESETPWD
                               }
                               this.getWebUrl(Urls.USER_ACCOUNT_RESETPAYPWD,maps,'重置交易密码',
-                              'http://www.chongzhijiaoyimima.com');
+                              webBackUrl.RESETPWD);
                           }}
                           changePhone={()=>{
                               let maps={
                                   user_type:this.state.info.account_open_type,
-                                  reback_url:'http://www.xiugaishoujihao.com'
+                                  reback_url:webBackUrl.CHANGEPHONE
                               }
                               this.getWebUrl(Urls.USER_BANK_EDITPHONE,maps,'修改手机号',
-                              'http://www.xiugaishoujihao.com');
+                              webBackUrl.CHANGEPHONE);
                           }}
                           accountSetting={()=>{this.toNextPage({name:'AccountSettingScene',
                           component:AccountSettingScene,params:{}})}}
@@ -227,7 +228,12 @@ export  default class AccountScene extends BaseComponent {
                             webUrl: response.mjson.data.auth_url +
                             '?authTokenId=' + response.mjson.data.auth_token,
                             callBack:()=>{
-                                this.props.callBack();
+                                if(backUrl==webBackUrl.UNBINDCARD){
+                                    this.allRefresh()
+                                }else{
+                                    this.props.callBack();
+                                }
+
                             },backUrl:backUrl
                         }
                     });

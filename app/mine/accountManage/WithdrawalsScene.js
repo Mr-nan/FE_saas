@@ -26,6 +26,7 @@ import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
+import * as webBackUrl from "../../constant/webBackUrl";
 export  default class WithdrawalsScene extends BaseComponent {
 
     constructor(props) {
@@ -153,7 +154,7 @@ export  default class WithdrawalsScene extends BaseComponent {
             amount: money,
             enter_base_id: this.state.id,
             oper_flag:'1',
-            reback_url:'http://www.tixian.com',
+            reback_url:webBackUrl.WITHDRAWALS,
             user_type:this.state.type,
         };
         request(Urls.USER_ACCOUNT_WITHDRAW, 'Post', maps)
@@ -163,7 +164,7 @@ export  default class WithdrawalsScene extends BaseComponent {
                         title:'提现',webUrl:response.mjson.data.auth_url+
                         '?authTokenId='+response.mjson.data.auth_token,callBack:()=>{
                             this.props.callBack();
-                        },backUrl:'http://www.tixian.com'
+                        },backUrl:webBackUrl.WITHDRAWALS
                     }});
                 },
                 (error) => {

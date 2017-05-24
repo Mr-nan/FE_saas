@@ -98,8 +98,6 @@ export const CAR_DETAIL = BASEURL + V + 'car/detail';
 export const CAR_CONFIGURATION = BASEURL + V + 'car/modelsConfig';
 
 /**
-<<<<<<< HEAD
-=======
  * 获取车辆保养
  */
 export const CAR_GET_ERPORT = BASEURL + V + 'che/report';
@@ -115,7 +113,6 @@ export const CAR_GET_ILLEGAL = BASEURL + V + 'che/illegal';
 export const CAR_GET_REFERENCEPRICE = BASEURL + V + 'che/referencePrice';
 
 /**
->>>>>>> develop
  * 获取客服电话号码
  */
 export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/getCustomService';
