@@ -31,7 +31,6 @@ import * as AppUrls from "../constant/appUrls";
 import  {request}           from '../utils/RequestUtil';
 import CarPublishFirstScene from './CarPublishFirstScene';
 import {LendSuccessAlert} from '../finance/lend/component/ModelComponent'
-
 import PixelUtil from '../utils/PixelUtil';
 const Pixel = new PixelUtil();
 
@@ -151,13 +150,23 @@ export default class CarMySourceScene extends BaceComponent {
 
     pushNewCarScene = () => {
 
+        // let navigatorParams = {
+        //
+        //     name: "NewCarScene",
+        //     component: NewCarScene,
+        //     params: {
+        //
+        //         fromNew: false,
+        //     }
+        // };
+        // this.toNextPage(navigatorParams);
+
         let navigatorParams = {
 
-            name: "NewCarScene",
-            component: NewCarScene,
+            name: "CarPublishFirstScene",
+            component: CarPublishFirstScene,
             params: {
-
-                fromNew: false,
+                
             }
         };
         this.toNextPage(navigatorParams);
