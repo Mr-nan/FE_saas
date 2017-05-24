@@ -11,7 +11,8 @@ import {
     Text,
     Image,
     TextInput,
-    Platform
+    Platform,
+    Dimensions
 } from 'react-native';
 
 import BaseComponent from '../../component/BaseComponent';
@@ -21,6 +22,7 @@ import PlateModal from '../../publish/component/PlateModal';
 import PixelUtil from  '../../utils/PixelUtil';
 let Pixel = new  PixelUtil();
 
+const sceneWidth = Dimensions.get('window').width;
 const background = require('../../../images/publish/background.png');
 const preBg = require('../../../images/publish/car-plate-pre.png');
 const proBg = require('../../../images/publish/car-plate.png');
@@ -55,7 +57,7 @@ export default class CarDischargeScene extends  BaseComponent{
     render(){
         return(
             <View style={styles.rootContainer}>
-                <Image style={{flex:1,alignItems:'center'}} source={background}>
+                <Image  style={{width:sceneWidth, alignItems:'center',paddingTop:Pixel.getPixel(20)}} source={background}>
                     <PlateModal onClose={this._onClose} ref={(modal) => {this.plateModal = modal}}/>
                     <View style={styles.plateContainer}>
                         <TouchableOpacity

@@ -105,7 +105,7 @@ export default class CarSelectRegisterPersonScene extends BaseComponent{
 
         this.setState({renderPlaceholderOnly: 'loading'});
 
-        RequestUtil.request(appUrls.GET_REGISTRANT,'post',{'merge_id':this.props.shopID}).then((response) => {
+        RequestUtil.request(appUrls.GET_REGISTRANT,'post',{'company_base_id':this.props.shopID}).then((response) => {
 
             if(response.mycode == 1){
 
