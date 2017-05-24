@@ -620,7 +620,7 @@ export default class FinanceSence extends BaseComponet {
                                     {this.state.allData.keyongedu}</Text>
                             </View>
                             {
-                                this.state.mnyData.is_microchinese_mny == 3 && (
+                                (this.state.mnyData.is_microchinese_mny == 3||this.state.mnyData.is_microchinese_mny==5) && (
                                     <View style={{flex: 1, alignItems: 'center',}}>
                                         <TouchableOpacity style={{flexDirection:'row'}} activeOpacity={1}
                                                           onPress={()=>{this.refs.showTitleAlert.setModelVisible(true)}}>
@@ -642,7 +642,7 @@ export default class FinanceSence extends BaseComponet {
                                             backgroundColor: '#00000000',
                                             flex: 1,
                                             textAlign: 'center'
-                                        }}>{this.state.mnyData.microchinese_mny / 10000}</Text>
+                                        }}>{this.state.mnyData.is_microchinese_mny==5?0:this.state.mnyData.microchinese_mny / 10000}</Text>
                                     </View>)
                             }
                             <View
