@@ -27,6 +27,7 @@ import * as Urls from '../../constant/appUrls';
 import SelectNumberType from './component/SelectNumberType';
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
+import * as webBackUrl from "../../constant/webBackUrl";
 import SelectTypeScene from './SelectTypeScene';
 export  default class OpenEnterpriseAccountScene extends BaseComponent {
 
@@ -218,7 +219,8 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
             org_agent_cert_no:org_agent_cert_no,
             org_agent_mobile:org_agent_mobile,
             enter_base_id:enter_base_id,
-            reback_url:'http://www.qiyekaihu.com'
+            reback_url:webBackUrl.OPENENTERPRISEACCOUNT,
+            legal_cert_type:'1'
         };
         request(Urls.USER_OPEN_ACCOUNT_COMPANY, 'Post', maps)
             .then((response) => {
@@ -227,11 +229,10 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                         title:'企业开户',webUrl:response.mjson.data.auth_url+
                         '?authTokenId='+response.mjson.data.auth_token,callBack:()=>{
                             this.props.callBack();
-                        },backUrl:'http://www.qiyekaihu.com'
+                        },backUrl:webBackUrl.OPENENTERPRISEACCOUNT
                     }});
                 },
                 (error) => {
-                    this.props.showModal(false);
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast('开户失败');
                     } else {

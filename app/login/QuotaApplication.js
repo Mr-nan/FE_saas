@@ -365,7 +365,6 @@ export default class QuotaApplication extends BaseComponent {
                     this.props.callBack();
                     this.backPage();
                 }, (error) => {
-                    this.props.showModal(false);
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast("申请失败");
                     } else {

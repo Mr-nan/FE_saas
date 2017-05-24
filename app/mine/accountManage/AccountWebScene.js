@@ -23,6 +23,7 @@ import NavigationView from '../../component/AllNavigationView';
 import * as fontAndColor from '../../constant/fontAndColor';
 import BaseComponent from '../../component/BaseComponent';
 import MainPage from '../../main/MainPage';
+import * as webBackUrl from '../../constant/webBackUrl';
 let oldUrl = '';
 export  default class AccountWebScene extends BaseComponent {
 
@@ -88,12 +89,18 @@ export  default class AccountWebScene extends BaseComponent {
         oldUrl=navState.url;
         if(oldUrl==this.props.backUrl){
             this.props.callBack();
-            const navigator = this.props.navigator;
-            if (navigator){
-                for(let i = 0;i<navigator.getCurrentRoutes().length;i++){
-                    if(navigator.getCurrentRoutes()[i].name=='MainPage'){
-                        navigator.popToRoute(navigator.getCurrentRoutes()[i]);
-                        break;
+            if(oldUrl==webBackUrl.OPENINDIVIDUALACCOUNT||
+            oldUrl==webBackUrl.OPENENTERPRISEACCOUNT||oldUrl==webBackUrl.BINDCARD||
+            oldUrl==webBackUrl.UNBINDCARD){
+                this.backPage();
+            }else{
+                const navigator = this.props.navigator;
+                if (navigator){
+                    for(let i = 0;i<navigator.getCurrentRoutes().length;i++){
+                        if(navigator.getCurrentRoutes()[i].name=='MainPage'){
+                            navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                            break;
+                        }
                     }
                 }
             }

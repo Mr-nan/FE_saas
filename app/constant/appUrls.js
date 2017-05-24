@@ -98,7 +98,6 @@ export const CAR_DETAIL = BASEURL + V + 'car/detail';
 export const CAR_CONFIGURATION = BASEURL + V + 'car/modelsConfig';
 
 /**
-
  * 获取车辆保养
  */
 export const CAR_GET_ERPORT = BASEURL + V + 'che/report';

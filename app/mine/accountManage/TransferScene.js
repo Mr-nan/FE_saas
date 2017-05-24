@@ -27,6 +27,7 @@ import LoginInputText from "../../login/component/LoginInputText";
 import AccountInput from './component/AccountInput';
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
+import * as webBackUrl from "../../constant/webBackUrl";
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 import AccountWebScene from './AccountWebScene';
@@ -112,7 +113,7 @@ export  default class TransferScene extends BaseComponent {
                     amount:money,
                     enter_base_id:datas.company_base_id,
                     rcv_base_id:allValue.id,
-                    reback_url:'http://www.zhuanzhang.com'
+                    reback_url:webBackUrl.TRANSFER
                 };
 
                 request(Urls.USER_ACCOUNT_TRANSFER, 'Post', maps)
@@ -122,11 +123,10 @@ export  default class TransferScene extends BaseComponent {
                                 title:'转账',webUrl:response.mjson.data.auth_url+
                                 '?authTokenId='+response.mjson.data.auth_token,callBack:()=>{
                                     this.props.callBack();
-                                },backUrl:'http://www.zhuanzhang.com'
+                                },backUrl:webBackUrl.TRANSFER
                             }});
                         },
                         (error) => {
-                            this.props.showModal(false);
                             if (error.mycode == -300 || error.mycode == -500) {
                                 this.props.showToast('转账失败');
                             } else {
@@ -134,7 +134,6 @@ export  default class TransferScene extends BaseComponent {
                             }
                         });
             }else{
-                this.props.showModal(false);
                 this.props.showToast('用户信息查询失败');
             }
         });
