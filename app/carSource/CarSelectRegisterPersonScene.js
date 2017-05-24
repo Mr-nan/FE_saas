@@ -147,7 +147,7 @@ export default class CarSelectRegisterPersonScene extends BaseComponent{
     addPersonClick=()=>{
         let navigatorParams = {
             name: "CarAddRegisterPersonScene",
-            component: CarAddRegisterPersonScene,
+            component:CarAddRegisterPersonScene,
             params: {
                 shopID:this.props.shopID,
                 upDataAction:this.loadData,

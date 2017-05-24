@@ -146,7 +146,7 @@ export default class FinanceSence extends BaseComponet {
                     mnyData = response.mjson.data;
 
                     let title = '';
-                    if (mnyData.is_microchinese_mny == 1 || mnyData.is_microchinese_mny == 5) {
+                    if (mnyData.is_microchinese_mny == 1) {
                         title = '立即激活微单额度';
                     } else if (mnyData.is_microchinese_mny == 2) {
                         title = '待审核';
