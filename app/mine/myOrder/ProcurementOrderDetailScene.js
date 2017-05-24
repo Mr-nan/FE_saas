@@ -55,17 +55,17 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
     componentDidMount() {
         BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
         InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: 'loading'});
+            //this.setState({renderPlaceholderOnly: 'loading'});
             this.initFinish();
         });
     }
 
     initFinish = () => {
-        /*        this.setState({
-         dataSource: this.state.dataSource.cloneWithRows(['', '', '']),
-         renderPlaceholderOnly: 'success'
-         });*/
-        this.loadData();
+        this.setState({
+            dataSource: this.state.dataSource.cloneWithRows(['', '', '']),
+            renderPlaceholderOnly: 'success'
+        });
+        //this.loadData();
     };
 
     dateReversal = (time) => {
@@ -504,7 +504,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             this.orderDetail = response.mjson.data;
             let status = response.mjson.data.status;
             let cancelStatus = response.mjson.data.cancel_status;
-            this.stateMapping(status, cancelStatus);
+            //this.stateMapping(status, cancelStatus);
+            this.stateMapping(0, 0);
             if (this.orderDetail) {
                 this.initListData(this.orderState);
                 this.setState({
@@ -591,9 +592,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 </View>
             )
         } else if (rowData === '3') {
-            let initRegDate = this.dateReversal(this.orderDetail.orders_item_data[0].car_data.init_reg + '000');
-            let imageUrl = this.orderDetail.orders_item_data[0].car_data.imgs;
-            return (
+            //let initRegDate = this.dateReversal(this.orderDetail.orders_item_data[0].car_data.init_reg + '000');
+            //let imageUrl = this.orderDetail.orders_item_data[0].car_data.imgs;
+/*            return (
                 <View style={styles.itemType3}>
                     <View style={{
                         flexDirection: 'row',
@@ -623,10 +624,47 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 <Text style={styles.carDescribeTitle}>上牌：</Text>
                                 <Text style={styles.carDescribe}>{initRegDate}</Text>
                             </View>
-                            {/*                            <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
+                            {/!*                            <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
                              <Text style={styles.carDescribeTitle}>标价：</Text>
                              <Text style={styles.carDescribe}>20.59万</Text>
-                             </View>*/}
+                             </View>*!/}
+                        </View>
+                    </View>
+                </View>
+            )*/
+            return (
+                <View style={styles.itemType3}>
+                    <View style={{
+                        flexDirection: 'row',
+                        height: Pixel.getPixel(40),
+                        marginLeft: Pixel.getPixel(15),
+                        marginRight: Pixel.getPixel(15),
+                        alignItems: 'center'
+                    }}>
+                        <Text style={styles.orderInfo}>订单号:</Text>
+                        <Text style={styles.orderInfo}>12312332133</Text>
+                        <View style={{flex: 1}}/>
+                        <Text style={styles.orderInfo}>订单日期:</Text>
+                        <Text style={styles.orderInfo}>2019/09/09</Text>
+                    </View>
+                    <View style={styles.separatedLine}/>
+                    <View style={{flexDirection: 'row', height: Pixel.getPixel(105), alignItems: 'center'}}>
+                        <Image style={styles.image}
+                               source={{uri: 'http://dycd-static.oss-cn-beijing.aliyuncs.com/Uploads/Oss/201703/13/58c639474ef45.jpg?x-oss-process=image/resize,w_320,h_240'}}/>
+                        <View style={{marginLeft: Pixel.getPixel(10)}}>
+                            <Text>[北京]奔驰M级(进口) 2015款 M...</Text>
+                            <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
+                                <Text style={styles.carDescribeTitle}>里程：</Text>
+                                <Text style={styles.carDescribe}>20.59万</Text>
+                            </View>
+                            <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
+                                <Text style={styles.carDescribeTitle}>上牌：</Text>
+                                <Text style={styles.carDescribe}>2016-09-09</Text>
+                            </View>
+                            <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
+                                <Text style={styles.carDescribeTitle}>标价：</Text>
+                                <Text style={styles.carDescribe}>20.59万</Text>
+                            </View>
                         </View>
                     </View>
                 </View>

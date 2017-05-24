@@ -44,7 +44,6 @@ export default class OrderListScene extends BaseComponent {
         this.endDate = '选择结束时间';
         //let business = this.props.business;
         this.state = {
-            // ↓ ???
             dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
             renderPlaceholderOnly: 'blank',
             isRefreshing: false,
@@ -94,10 +93,10 @@ export default class OrderListScene extends BaseComponent {
             rows: 10,
             list_state: this.props.listState
         }).then((response) => {
-            this.orderListData = response.mjson.data.info_list;
+            this.orderListData = response.mjson.data.items;
             this.allPage = response.mjson.data.total / response.mjson.data.rows;
-            //console.log('订单列表数据 = ', this.orderListData);
-            if (response.mjson.data && this.orderListData.length > 0) {
+            //console.log('订单列表数据 = ', this.orderListData[0].car);
+            if (this.orderListData) {
                 this.setState({
                     dataSource: this.state.dataSource.cloneWithRows(this.orderListData),
                     isRefreshing: false,
@@ -221,7 +220,7 @@ export default class OrderListScene extends BaseComponent {
                             component: OrderScreeningScene,
                             params: {
                                 business: this.props.business,
-                                orderStage: this.props.orderStage,
+                                orderStage: this.props.listState,
                                 orderState: this.orderState,
                                 startDate: this.startDate,
                                 endDate: this.endDate,
@@ -255,8 +254,8 @@ export default class OrderListScene extends BaseComponent {
     }
 
     _renderRow = (rowData, selectionID, rowID) => {
-        let initRegDate = this.dateReversal(rowData.cars[0].car.init_reg + '000');
-        let imageUrl = rowData.cars[0].car.imgs;
+        let initRegDate = rowData.car.length ? this.dateReversal(rowData.car[0].init_reg + '000') : 'asdada';
+        let imageUrl = rowData.car.length ? rowData.car[0].thumbs : '111';
         return (
             <TouchableOpacity
                 onPress={() => {
@@ -281,27 +280,27 @@ export default class OrderListScene extends BaseComponent {
                 activeOpacity={0.8}>
                 <View style={styles.rowView}>
                     <View style={styles.rowTitleLine}>
-                        <Text style={styles.rowTitleText}>{rowData.seller_name}</Text>
+                        <Text style={styles.rowTitleText}>{rowData.order.company}</Text>
                         <Text style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                             color: fontAndColor.COLORA1,
                             marginLeft: Pixel.getPixel(5)
-                        }}>订单号:({rowData.order_no})</Text>
+                        }}>订单号:({rowData.order.order_no})</Text>
                         <View style={{flex: 1}}/>
                         <Text style={styles.rowTitleState}>已拍下</Text>
                     </View>
                     <View style={styles.separatedLine}/>
                     <View style={{flexDirection: 'row', height: Pixel.getPixel(104), alignItems: 'center'}}>
                         <Image style={styles.image}
-                               source={imageUrl.length ? {uri: rowData.cars[0].car.imgs[0].icon_url} : require('../../../images/carSourceImages/car_null_img.png')}/>
+                               source={imageUrl.length ? {uri: imageUrl[0].icon_url} : require('../../../images/carSourceImages/car_null_img.png')}/>
                         <View style={{marginLeft: Pixel.getPixel(10), marginRight: Pixel.getPixel(15)}}>
                             <Text
                                 style={{width: width - Pixel.getPixel(15 + 120 + 10 + 15)}}
                                 numberOfLines={1}
-                            >{rowData.car_name}</Text>
+                            >{rowData.car.length ? rowData.car[0].title : '未公开'}</Text>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>里程：</Text>
-                                <Text style={styles.carDescribe}>{rowData.cars[0].car.mileage}</Text>
+                                <Text style={styles.carDescribe}>{rowData.car.length ? rowData.car[0].mileage : '未公开'}</Text>
                             </View>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>上牌：</Text>
@@ -328,7 +327,7 @@ export default class OrderListScene extends BaseComponent {
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color: fontAndColor.COLORA0,
                             fontWeight: 'bold'
-                        }}>{rowData.transaction_price}</Text>
+                        }}>{rowData.car.length ? rowData.car[0].transaction_price : '0'}</Text>
                         <Text style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                             color: fontAndColor.COLORA1,
@@ -338,7 +337,7 @@ export default class OrderListScene extends BaseComponent {
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color: fontAndColor.COLORA0,
                             fontWeight: 'bold'
-                        }}>{rowData.deposit_amount}</Text>
+                        }}>{rowData.order.deposit_amount}</Text>
                     </View>
                 </View>
             </TouchableOpacity>

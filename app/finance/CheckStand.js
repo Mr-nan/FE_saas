@@ -157,14 +157,12 @@ export default class CheckStand extends BaseComponent {
     goPay = () => {
         //this.refs.expModal.changeShowType(true);
         this.props.showModal(true);
-        let url = AppUrls.ORDER_PAY_DEPOSIT;
+        let url = AppUrls.ORDER_PAY;
         request(url, 'post', {
             order_no: '20170511'
         }).then((response) => {  // 支付成功
-            this.props.showModal(false);
             this.props.showToast('支付成功');
         }, (error) => {          // 支付失败
-            this.props.showModal(false);
             this.props.showToast(error.message);
         });
     }

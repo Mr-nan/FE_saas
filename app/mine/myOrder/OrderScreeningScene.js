@@ -45,8 +45,8 @@ export default class OrderScreeningScene extends BaseComponent {
         this.startDate = this.props.startDate;
         this.endDate = this.props.endDate;
         let mList = [];
-        if (this.props.business === 0) {
-            if (this.props.orderStage === 'trading') {
+        if (this.props.business === 1) {
+            if (this.props.orderStage === 1) {
                 mList = ['1', '3'];
                 /*                order_state.push({title: '全部', isSelected: order_state.length === parameters.orderState, value: 0, ref: 'child0'});
                  order_state.push({title: '已拍下', isSelected: false, value: 1, ref: 'child1'});
@@ -112,9 +112,7 @@ export default class OrderScreeningScene extends BaseComponent {
             order_state.push({title: '全部', isSelected: false, value: 0});
             order_state.push({title: '待确认成交价', isSelected: false, value: 1});
             order_state.push({title: '查看到账', isSelected: false, value: 2});
-            order_state.push({title: '申请取消订单中', isSelected: false, value: 3});
-            order_state.push({title: '处理取消订单中', isSelected: false, value: 4});
-            order_state.push({title: '交易关闭', isSelected: false, value: 5});
+            order_state.push({title: '处理申请取消订单中', isSelected: false, value: 3});
         }
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 

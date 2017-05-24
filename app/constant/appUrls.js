@@ -653,9 +653,9 @@ export const ORDER_SEARCH = BASEURL + V +'order/search';
  */
 export const ORDER_DETAIL = BASEURL + V +'order/detail';
 /**
- * 订金支付
+ * 订金、尾款支付
  */
-export const ORDER_PAY_DEPOSIT = BASEURL + V +'order/payDeposit';
+export const ORDER_PAY = BASEURL + V +'order/pay';
 /**
  *  车辆成交价提交
  */

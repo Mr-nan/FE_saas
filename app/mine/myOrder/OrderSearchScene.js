@@ -135,8 +135,8 @@ export default class OrderSearchScene extends BaseComponent {
                                 onChangeText={(text) => this.setState({value: text})}
                                 placeholder={"请输入车辆名称"}
                                 style={styles.inputStyle}
-                                secureTextEntry={false}
                                 underlineColorAndroid="transparent"
+
                             />
                         </View>
                         <TouchableOpacity onPress={this.startSearch}>
@@ -187,7 +187,6 @@ export default class OrderSearchScene extends BaseComponent {
                                     onChangeText={(text) => this.setState({value: text})}
                                     placeholder={"请输入车辆名称"}
                                     style={styles.inputStyle}
-                                    secureTextEntry={false}
                                     underlineColorAndroid="transparent"
                                 />
                             </View>
@@ -281,10 +280,10 @@ export default class OrderSearchScene extends BaseComponent {
                                 <Text style={styles.carDescribeTitle}>上牌：</Text>
                                 <Text style={styles.carDescribe}>{initRegDate}</Text>
                             </View>
-{/*                            <View style={{flexDirection: 'row', marginTop: Pixel.dgetPixel(5), alignItems: 'center'}}>
-                                <Text style={styles.carDescribeTitle}>标价：</Text>
-                                <Text style={styles.carDescribe}>20.59万</Text>
-                            </View>*/}
+                            {/*                            <View style={{flexDirection: 'row', marginTop: Pixel.dgetPixel(5), alignItems: 'center'}}>
+                             <Text style={styles.carDescribeTitle}>标价：</Text>
+                             <Text style={styles.carDescribe}>20.59万</Text>
+                             </View>*/}
                         </View>
                     </View>
                     <View style={styles.separatedLine}/>
@@ -357,16 +356,13 @@ const styles = StyleSheet.create({
     checkedItemText: {
         color: fontAndColor.COLORA0,
         fontSize: fontAndColor.CONTENTFONT,
-
     },
     checkedDeleteImg: {
-
         width: Pixel.getPixel(10),
         height: Pixel.getPixel(10),
         marginLeft: Pixel.getPixel(5),
     },
     checkedDelectView: {
-
         height: Pixel.getPixel(20),
         width: Pixel.getPixel(50),
         borderRadius: 4,
@@ -377,51 +373,38 @@ const styles = StyleSheet.create({
         marginBottom: Pixel.getPixel(10),
         marginLeft: Pixel.getPixel(15),
         marginTop: Pixel.getPixel(10),
-
-
     },
     checkedDelectText: {
         color: fontAndColor.COLORA2,
         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT),
-
     },
-
     carCell: {
         height: Pixel.getPixel(110),
     },
-
-
     navigatorView: {
-
         top: 0,
         height: Pixel.getTitlePixel(64),
         backgroundColor: fontAndColor.COLORB0,
-        flexDirection: 'row',
-
+        flexDirection: 'row'
     },
     navitgatorContentView: {
-
         flex: 1,
         flexDirection: 'row',
         marginTop: Pixel.getTitlePixel(20),
         height: Pixel.getPixel(44),
         alignItems: 'center',
         justifyContent: 'center',
-
+        backgroundColor: fontAndColor.COLORB0
     },
-
     navigatorLoactionView: {
-
         flexDirection: 'row',
         width: Pixel.getPixel(85),
-        alignItems: 'center',
-
-
+        alignItems: 'center'
     },
     navigatorSousuoView: {
-        height: Pixel.getPixel(25),
+        height: Pixel.getPixel(27),
         borderRadius: 5,
-        backgroundColor: 'white',
+        backgroundColor: '#FFFFFF',
         alignItems: 'center',
         width: width - Pixel.getPixel(100),
         flexDirection: 'row'
@@ -482,9 +465,11 @@ const styles = StyleSheet.create({
     },
     inputStyle: {
         flex: 1,
+        //backgroundColor: 'transparent',
         marginLeft: Pixel.getPixel(5),
         textAlign: 'left',
         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-        color: fontAndColor.COLORA2
+        color: fontAndColor.COLORA2,
+        padding: 0
     }
 });
