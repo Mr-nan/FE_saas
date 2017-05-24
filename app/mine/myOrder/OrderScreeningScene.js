@@ -109,9 +109,9 @@ export default class OrderScreeningScene extends BaseComponent {
             }
         } else {
             mList = ['1', '3'];
-            order_state.push({title: '待确定成交价', isSelected: false, value: 0});
-            order_state.push({title: '查看到账', isSelected: false, value: 1});
-            order_state.push({title: '已完成', isSelected: false, value: 2});
+            order_state.push({title: '全部', isSelected: false, value: 0});
+            order_state.push({title: '待确认成交价', isSelected: false, value: 1});
+            order_state.push({title: '查看到账', isSelected: false, value: 2});
             order_state.push({title: '申请取消订单中', isSelected: false, value: 3});
             order_state.push({title: '处理取消订单中', isSelected: false, value: 4});
             order_state.push({title: '交易关闭', isSelected: false, value: 5});

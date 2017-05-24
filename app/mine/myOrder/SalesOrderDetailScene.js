@@ -254,21 +254,30 @@ export default class SalesOrderDetailScene extends BaseComponent {
             case 0:
                 return (
                     <View style={styles.bottomBar}>
-                        <View style={styles.buttonCancel}>
-                            <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
-                        </View>
                         <TouchableOpacity
                             onPress={() => {
-                                this.toNextPage({
-                                    name: 'CheckStand',
-                                    component: CheckStand,
-                                    params: {}
-                                });
+                                this.refs.chooseModal.changeShowType(true);
+                            }}>
+                            <View style={styles.buttonCancel}>
+                                <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => {
+
                             }}>
                             <View style={styles.buttonConfirm}>
                                 <Text style={{color: '#ffffff'}}>确认</Text>
                             </View>
                         </TouchableOpacity>
+                        <ChooseModal ref='chooseModal' title='提示'
+                                     negativeButtonStyle={styles.negativeButtonStyle}
+                                     negativeTextStyle={styles.negativeTextStyle} negativeText='取消'
+                                     positiveButtonStyle={styles.positiveButtonStyle}
+                                     positiveTextStyle={styles.positiveTextStyle} positiveText='确定'
+                                     buttonsMargin={Pixel.getPixel(20)}
+                                     positiveOperation={this.cancelOrder}
+                                     content='确定后取消订单。如买家有已支付款项将退款，如您有补差价款可提现。'/>
                     </View>
                 )
                 break;
@@ -277,8 +286,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
                             onPress={() => {
-                                this.props.showModal(true);
-                                this.loadData();
+
                             }}>
                             <View style={styles.buttonCancel}>
                                 <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
@@ -333,12 +341,19 @@ export default class SalesOrderDetailScene extends BaseComponent {
                             买家申请取消订单，如买家已支付款项选择同意后将退回
                         </Text>
                         <View style={styles.bottomBar}>
-                            <View style={styles.buttonCancel}>
-                                <Text style={{color: fontAndColor.COLORA2}}>不同意</Text>
-                            </View>
                             <TouchableOpacity
                                 onPress={() => {
-
+                                    this.props.showModal(true);
+                                    this.orderCancelHandler('2');
+                                }}>
+                                <View style={styles.buttonCancel}>
+                                    <Text style={{color: fontAndColor.COLORA2}}>不同意</Text>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    this.props.showModal(true);
+                                    this.orderCancelHandler('1');
                                 }}>
                                 <View style={styles.buttonConfirm}>
                                     <Text style={{color: '#ffffff'}}>同意</Text>
@@ -436,6 +451,21 @@ export default class SalesOrderDetailScene extends BaseComponent {
         }
     };
 
+    orderCancelHandler = (result) => {
+        let url = AppUrls.ORDER_CANCEL_HANDLER;
+        request(url, 'post', {
+            order_id: this.orderDetail.id,
+            result: result
+        }).then((response) => {
+            //this.props.showModal(false);
+            this.loadData();
+        }, (error) => {
+            //this.props.showModal(false);
+            //console.log("成交价提交失败");
+            this.props.showToast('处理取消订单申请失败');
+        });
+    };
+
     //扫描
     _scanPress = () => {
         this.vinModal.refresh(this.scanType);
@@ -475,6 +505,21 @@ export default class SalesOrderDetailScene extends BaseComponent {
             }
         }
     };
+
+    cancelOrder = () => {
+        this.props.showModal(true);
+        let url = AppUrls.ORDER_CANCEL;
+        request(url, 'post', {
+            order_id: this.orderDetail.id
+        }).then((response) => {
+            //this.props.showModal(false);
+            this.loadData();
+        }, (error) => {
+            //this.props.showModal(false);
+            //console.log("成交价提交失败");
+            this.props.showToast('取消订单申请失败');
+        });
+    }
 
     render() {
         return (

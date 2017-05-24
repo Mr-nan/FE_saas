@@ -88,6 +88,7 @@ export default class ChooseModal extends Component {
                                 this.setState({
                                     isShow: false
                                 });
+                                this.props.positiveOperation();
                             }} activeOpacity={0.9} style={this.props.positiveButtonStyle}>
                                 <Text style={this.props.positiveTextStyle}>{this.props.positiveText}</Text>
                             </TouchableOpacity>

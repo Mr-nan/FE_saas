@@ -664,3 +664,15 @@ export const ORDER_SAVE_PRICE = BASEURL + V +'order/savePrice';
  *  卖家&买家取消订单
  */
 export const ORDER_CANCEL = BASEURL + V +'order/cancel';
+/**
+ *  确认收车
+ */
+export const ORDER_CONFIRM_CAR = BASEURL + V +'order/confirmCar';
+/**
+ *  买家撤销取消订单
+ */
+export const ORDER_REVERT = BASEURL + V +'order/revert';
+/**
+ *  卖家处理取消订单
+ */
+export const ORDER_CANCEL_HANDLER = BASEURL + V +'order/cancelHandler';

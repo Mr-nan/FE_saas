@@ -30,6 +30,7 @@ import * as AppUrls from "../../constant/appUrls";
 import {request} from "../../utils/RequestUtil";
 import ExplainModal from "./component/ExplainModal";
 import ContactLayout from "./component/ContactLayout";
+import ChooseModal from "./component/ChooseModal";
 const Pixel = new PixelUtil();
 
 export default class ProcurementOrderDetailScene extends BaseComponent {
@@ -223,6 +224,49 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         }
     };
 
+    cancelOrder = () => {
+        this.props.showModal(true);
+        let url = AppUrls.ORDER_CANCEL;
+        request(url, 'post', {
+            order_id: this.orderDetail.id
+        }).then((response) => {
+            //this.props.showModal(false);
+            this.loadData();
+        }, (error) => {
+            //this.props.showModal(false);
+            //console.log("成交价提交失败");
+            this.props.showToast('取消订单申请失败');
+        });
+    };
+
+    confirmCar = () => {
+        let url = AppUrls.ORDER_CONFIRM_CAR;
+        request(url, 'post', {
+            order_id: this.orderDetail.id
+        }).then((response) => {
+            //this.props.showModal(false);
+            this.loadData();
+        }, (error) => {
+            //this.props.showModal(false);
+            //console.log("成交价提交失败");
+            this.props.showToast('确认验收失败');
+        });
+    };
+
+    revertOrder = () => {
+        let url = AppUrls.ORDER_REVERT;
+        request(url, 'post', {
+            order_id: this.orderDetail.id
+        }).then((response) => {
+            //this.props.showModal(false);
+            this.loadData();
+        }, (error) => {
+            //this.props.showModal(false);
+            //console.log("成交价提交失败");
+            this.props.showToast('恢复订单失败');
+        });
+    };
+
     initDetailPageBottom = (orderState) => {
         switch (orderState) {
             case 0:
@@ -230,13 +274,20 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
                             onPress={() => {
-                                this.props.showModal(true);
-                                this.loadData();
+                                this.refs.chooseModal.changeShowType(true);
                             }}>
                             <View style={styles.buttonCancel}>
                                 <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
                             </View>
                         </TouchableOpacity>
+                        <ChooseModal ref='chooseModal' title='提示'
+                                     negativeButtonStyle={styles.negativeButtonStyle}
+                                     negativeTextStyle={styles.negativeTextStyle} negativeText='取消'
+                                     positiveButtonStyle={styles.positiveButtonStyle}
+                                     positiveTextStyle={styles.positiveTextStyle} positiveText='确定'
+                                     buttonsMargin={Pixel.getPixel(20)}
+                                     positiveOperation={this.cancelOrder}
+                                     content='卖家将在您发起取消申请24小时内回复，如已支付订金将与卖家协商退款。'/>
                     </View>
                 )
                 break;
@@ -266,11 +317,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
                             onPress={() => {
-                                this.toNextPage({
-                                    name: 'CheckStand',
-                                    component: CheckStand,
-                                    params: {}
-                                });
+                                this.props.showModal(true);
+                                this.confirmCar();
                             }}>
                             <View style={styles.buttonConfirm}>
                                 <Text style={{color: '#ffffff'}}>确认验收</Text>
@@ -285,7 +333,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         <TouchableOpacity
                             onPress={() => {
                                 this.props.showModal(true);
-                                this.loadData();
+                                this.revertOrder();
                             }}>
                             <View style={[styles.buttonCancel, {width: Pixel.getPixel(137)}]}>
                                 <Text style={{color: fontAndColor.COLORA2}}>撤回取消订单申请</Text>
@@ -857,5 +905,33 @@ const styles = StyleSheet.create({
     expText: {
         fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
         color: fontAndColor.COLORB0
+    },
+    positiveTextStyle: {
+        fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
+        color: '#ffffff'
+    },
+    positiveButtonStyle: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: Pixel.getPixel(15),
+        backgroundColor: fontAndColor.COLORB0,
+        width: Pixel.getPixel(100),
+        height: Pixel.getPixel(32),
+        borderRadius: 3,
+        borderWidth: 1,
+        borderColor: fontAndColor.COLORB0
+    },
+    negativeTextStyle: {
+        fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
+        color: fontAndColor.COLORB0
+    },
+    negativeButtonStyle: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: Pixel.getPixel(100),
+        height: Pixel.getPixel(32),
+        borderRadius: 3,
+        borderWidth: 1,
+        borderColor: fontAndColor.COLORB0
     }
 });
