@@ -105,9 +105,9 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                         </View>
                     </KeyboardAvoidingView>
                     <View style={styles.inputTextLine}/>
+                    <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={5}>
+                        <View style={styles.inputStyle}>
 
-                    <View style={styles.inputStyle}>
-                        <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={5}>
                             <LoginInputText
                                 ref="org_agent_name"
                                 textPlaceholder={'请输入经办人姓名'}
@@ -135,9 +135,9 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                                 import={false}
                                 clearValue={true}
                                 rightIcon={false}/>
-                        </KeyboardAvoidingView>
-                    </View>
 
+                        </View>
+                    </KeyboardAvoidingView>
 
                     <Text style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                 marginTop:Pixel.getPixel(20),marginLeft:Pixel.getPixel(15)}}>
@@ -169,36 +169,36 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
         let org_agent_name = this.refs.org_agent_name.getInputTextValue();
         let org_agent_cert_no = this.refs.org_agent_cert_no.getInputTextValue();
         let org_agent_mobile = this.refs.org_agent_mobile.getInputTextValue();
-        if(cert_no==''){
+        if (cert_no == '') {
             this.props.showToast('请输入企业证件号');
             return;
-        }else if(cert_type==''){
+        } else if (cert_type == '') {
             this.props.showToast('请选择企业证件类型');
             return;
-        }else if(cust_name==''){
+        } else if (cust_name == '') {
             this.props.showToast('请输入企业名称');
             return;
-        }else if(legal_cert_no==''){
+        } else if (legal_cert_no == '') {
             this.props.showToast('请输入法人证件号');
             return;
-        }else if(legal_real_name==''){
+        } else if (legal_real_name == '') {
             this.props.showToast('请输入法人姓名');
             return;
-        }else if(org_agent_name==''){
+        } else if (org_agent_name == '') {
             this.props.showToast('请输入经办人姓名');
             return;
-        }else if(org_agent_cert_no==''){
+        } else if (org_agent_cert_no == '') {
             this.props.showToast('请输入经办人证件号');
             return;
-        }else if(org_agent_mobile==''){
+        } else if (org_agent_mobile == '') {
             this.props.showToast('请输入经办人手机号');
             return;
-        }else{
+        } else {
             StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
                 if (data.code == 1 && data.result != null) {
-                    let datas=JSON.parse(data.result);
-                    this.sendData(cert_no,cert_type,cust_name,legal_cert_no,legal_real_name,
-                        org_agent_name,org_agent_cert_no,org_agent_mobile,datas.company_base_id);
+                    let datas = JSON.parse(data.result);
+                    this.sendData(cert_no, cert_type, cust_name, legal_cert_no, legal_real_name,
+                        org_agent_name, org_agent_cert_no, org_agent_mobile, datas.company_base_id);
                 } else {
                     this.props.showToast('用户信息查询失败');
                 }
@@ -206,33 +206,36 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
         }
     }
 
-    sendData=(cert_no,cert_type,cust_name,legal_cert_no,legal_real_name,org_agent_name,org_agent_cert_no,org_agent_mobile,
-              enter_base_id)=>{
+    sendData = (cert_no, cert_type, cust_name, legal_cert_no, legal_real_name, org_agent_name, org_agent_cert_no, org_agent_mobile,
+                enter_base_id) => {
         this.props.showModal(true);
         let maps = {
-            cert_no:cert_no,
-            cert_type:cert_type,
-            cust_name:cust_name,
-            legal_cert_no:legal_cert_no,
-            org_agent_name:org_agent_name,
-            legal_real_name:legal_real_name,
-            org_agent_cert_no:org_agent_cert_no,
-            org_agent_mobile:org_agent_mobile,
-            enter_base_id:enter_base_id,
-            reback_url:webBackUrl.OPENENTERPRISEACCOUNT,
-            legal_cert_type:'1'
+            cert_no: cert_no,
+            cert_type: cert_type,
+            cust_name: cust_name,
+            legal_cert_no: legal_cert_no,
+            org_agent_name: org_agent_name,
+            legal_real_name: legal_real_name,
+            org_agent_cert_no: org_agent_cert_no,
+            org_agent_mobile: org_agent_mobile,
+            enter_base_id: enter_base_id,
+            reback_url: webBackUrl.OPENENTERPRISEACCOUNT,
+
         };
         request(Urls.USER_OPEN_ACCOUNT_COMPANY, 'Post', maps)
             .then((response) => {
                     this.props.showModal(false);
-                    this.toNextPage({name:'AccountWebScene',component:AccountWebScene,params:{
-                        title:'企业开户',webUrl:response.mjson.data.auth_url+
-                        '?authTokenId='+response.mjson.data.auth_token,callBack:()=>{
-                            this.props.callBack();
-                        },backUrl:webBackUrl.OPENENTERPRISEACCOUNT
-                    }});
+                    this.toNextPage({
+                        name: 'AccountWebScene', component: AccountWebScene, params: {
+                            title: '企业开户', webUrl: response.mjson.data.auth_url +
+                            '?authTokenId=' + response.mjson.data.auth_token, callBack: () => {
+                                this.props.callBack();
+                            }, backUrl: webBackUrl.OPENENTERPRISEACCOUNT
+                        }
+                    });
                 },
                 (error) => {
+                    this.props.showModal(false);
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast('开户失败');
                     } else {
