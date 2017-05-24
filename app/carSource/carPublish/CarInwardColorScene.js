@@ -9,6 +9,7 @@ import {
     TouchableOpacity,
     Text,
     Image,
+    Dimensions,
 } from 'react-native';
 
 import BaseComponent from '../../component/BaseComponent';
@@ -17,6 +18,7 @@ import *as fontAndColor from  '../../constant/fontAndColor';
 import Grid from '../../publish/component/Grid';
 import PixelUtil from  '../../utils/PixelUtil';
 let Pixel = new  PixelUtil();
+const sceneWidth = Dimensions.get('window').width;
 
 const background = require('../../../images/publish/background.png');
 const grayColor = require('../../../images/publish/gray-color.png');
@@ -116,8 +118,8 @@ export default class CarInwardColorScene extends  BaseComponent{
     render(){
         return(
             <View style={styles.rootContainer}>
-                <Image style={{flex:1}} source={background}>
-                    <View style={{marginHorizontal:Pixel.getPixel(15), flex:1}}>
+                <Image  style={{width:sceneWidth,paddingHorizontal:Pixel.getPixel(43),paddingTop:Pixel.getPixel(20)}} source={background}>
+                    <View style={{flex:1}}>
                         <Grid
                             ref = {(grid)=>{this.interiorGrid = grid}}
                             style={styles.girdContainer}

@@ -91,7 +91,7 @@ export  default class CarUpkeepScene extends  BaseComponent{
                     <Text style={styles.cellTitleViewTitle}>{rowData.date+' | '+rowData.mile + '公里'}</Text>
                     <Text style={styles.cellTitleViewValue}>{rowData.type}</Text>
                 </View>
-                <Text style={styles.cellContent}>{rowData.detail}</Text>
+                <Text style={styles.cellContent}>{rowData.detail+rowData.other}</Text>
             </View>
         )
     }
@@ -100,10 +100,10 @@ export  default class CarUpkeepScene extends  BaseComponent{
         RequestUtil.request(appUrls.CAR_GET_ERPORT,'post',{'vin':this.props.vin}).then((response)=>{
 
             console.log(response);
-            if(response.mjson.data.lengte>0){
+            if(response.mjson.data.result.length>0){
 
                 this.setState({
-                    dataSource:this.state.dataSource(response.mjson.data),
+                    dataSource:this.state.dataSource.cloneWithRows(response.mjson.data.result),
                     renderPlaceholderOnly: 'success',
 
                 });
