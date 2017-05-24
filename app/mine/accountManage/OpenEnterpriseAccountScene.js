@@ -80,9 +80,9 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                                 clearValue={true}
                                 rightIcon={false}/>
                         </View>
-                    </KeyboardAvoidingView>
+
                     <View style={styles.inputTextLine}/>
-                    <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={5}>
+
                         <View style={styles.inputStyle}>
                             <LoginInputText
                                 ref="legal_real_name"
@@ -103,11 +103,10 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                                 clearValue={true}
                                 rightIcon={false}/>
                         </View>
-                    </KeyboardAvoidingView>
-                    <View style={styles.inputTextLine}/>
-                    <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={5}>
-                        <View style={styles.inputStyle}>
 
+                    <View style={styles.inputTextLine}/>
+
+                        <View style={styles.inputStyle}>
                             <LoginInputText
                                 ref="org_agent_name"
                                 textPlaceholder={'请输入经办人姓名'}
@@ -137,7 +136,7 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                                 rightIcon={false}/>
 
                         </View>
-                    </KeyboardAvoidingView>
+
 
                     <Text style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                 marginTop:Pixel.getPixel(20),marginLeft:Pixel.getPixel(15)}}>
@@ -155,6 +154,7 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                         title="开通企业账户"
                         backIconClick={this.backPage}
                     />
+                    </KeyboardAvoidingView>
                 </ScrollView>
             </View>
         );
@@ -220,6 +220,7 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
             org_agent_mobile: org_agent_mobile,
             enter_base_id: enter_base_id,
             reback_url: webBackUrl.OPENENTERPRISEACCOUNT,
+            legal_cert_type:'1'
 
         };
         request(Urls.USER_OPEN_ACCOUNT_COMPANY, 'Post', maps)
