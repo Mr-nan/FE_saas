@@ -29,6 +29,7 @@ import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import * as webBackUrl from "../../constant/webBackUrl";
 import SelectTypeScene from './SelectTypeScene';
+import AccountWebScene from './AccountWebScene';
 export  default class OpenEnterpriseAccountScene extends BaseComponent {
 
     constructor(props) {
@@ -193,7 +194,10 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
         } else if (org_agent_mobile == '') {
             this.props.showToast('请输入经办人手机号');
             return;
-        } else {
+        } else if(legal_cert_no.length>18){
+            this.props.showToast('请输入正确证件号码');
+            return;
+        }else {
             StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
                 if (data.code == 1 && data.result != null) {
                     let datas = JSON.parse(data.result);
