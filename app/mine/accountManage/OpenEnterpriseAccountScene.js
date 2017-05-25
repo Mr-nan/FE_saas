@@ -52,7 +52,7 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
         }
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
-                <ScrollView keyboardShouldPersistTaps={'handled'}>
+                <ScrollView keyboardShouldPersistTaps={'handled'} style={{marginTop: Pixel.getTitlePixel(79)}}>
                     <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={5}>
                         <View style={styles.inputTextsStyle}>
                             <LoginInputText
@@ -276,7 +276,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         paddingLeft: Pixel.getPixel(15),
         paddingRight: Pixel.getPixel(15),
-        marginTop: Pixel.getTitlePixel(79)
     },
     inputTextStyle: {
         backgroundColor: '#ffffff',
