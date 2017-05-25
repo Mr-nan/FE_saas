@@ -92,8 +92,6 @@ export  default class AccountWebScene extends BaseComponent {
             if(oldUrl==webBackUrl.OPENINDIVIDUALACCOUNT||
             oldUrl==webBackUrl.OPENENTERPRISEACCOUNT||oldUrl==webBackUrl.BINDCARD||
             oldUrl==webBackUrl.UNBINDCARD){
-                this.backPage();
-            }else{
                 const navigator = this.props.navigator;
                 if (navigator){
                     for(let i = 0;i<navigator.getCurrentRoutes().length;i++){
@@ -103,6 +101,8 @@ export  default class AccountWebScene extends BaseComponent {
                         }
                     }
                 }
+            }else{
+                this.backPage();
             }
         }
     }

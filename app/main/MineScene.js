@@ -164,78 +164,6 @@ export default class MineScene extends BaseComponent {
         firstType = '-1';
         lastType = '-1';
         componyname = '';
-        Car = [
-            {
-                "cars": [
-                    {
-                        "icon": require('../../images/mainImage/zhanghuguanli.png'),
-                        "name": "账户管理"
-                    },
-                    {
-                        "icon": require('../../images/mainImage/yuangongguanli.png'),
-                        "name": "员工管理"
-                    },
-                    {
-                        "icon": require('../../images/mainImage/switchcompony.png'),
-                        "name": "切换公司"
-                    },
-                ],
-                "title": "section0"
-            },
-            {
-                "cars": [
-                    {
-                        "icon": require('../../images/mainImage/youhuiquanguanli.png'),
-                        "name": "优惠券管理"
-                    },
-                    {
-                        "icon": require('../../images/mainImage/hetongguanli.png'),
-                        "name": "合同管理"
-                    },
-                ],
-                "title": "section1"
-            },
-            {
-                "cars": [
-                    {
-                        "icon": require('../../images/mainImage/myCarSource.png'),
-                        "name": "我的车源"
-                    },
-                    {
-                        "icon": require('../../images/mainImage/my_order.png'),
-                        "name": "我的订单"
-                    },
-                    {
-                        "icon": require('../../images/mainImage/shoucangjilu.png'),
-                        "name": "收藏记录"
-                    },
-                    {
-                        "icon": require('../../images/mainImage/liulanlishi.png'),
-                        "name": "浏览历史"
-                    },
-
-                ],
-                "title": "section2"
-            },
-            {
-                "cars": [
-                    {
-                        "icon": require('../../images/mainImage/shezhi.png'),
-                        "name": "设置"
-                    },
-                ],
-                "title": "section3"
-            },
-            {
-                "cars": [
-                    {
-                        "icon": require('../../images/mainImage/shezhi.png'),
-                        "name": "blank"
-                    },
-                ],
-                "title": "section3"
-            },
-        ]
         this.state = {
             renderPlaceholderOnly: 'blank',
             isRefreshing: false
@@ -349,6 +277,78 @@ export default class MineScene extends BaseComponent {
     }
 
     getData = () => {
+        Car = [
+            {
+                "cars": [
+                    {
+                        "icon": require('../../images/mainImage/zhanghuguanli.png'),
+                        "name": "账户管理"
+                    },
+                    {
+                        "icon": require('../../images/mainImage/yuangongguanli.png'),
+                        "name": "员工管理"
+                    },
+                    {
+                        "icon": require('../../images/mainImage/switchcompony.png'),
+                        "name": "切换公司"
+                    },
+                ],
+                "title": "section0"
+            },
+            {
+                "cars": [
+                    {
+                        "icon": require('../../images/mainImage/youhuiquanguanli.png'),
+                        "name": "优惠券管理"
+                    },
+                    {
+                        "icon": require('../../images/mainImage/hetongguanli.png'),
+                        "name": "合同管理"
+                    },
+                ],
+                "title": "section1"
+            },
+            {
+                "cars": [
+                    {
+                        "icon": require('../../images/mainImage/myCarSource.png'),
+                        "name": "我的车源"
+                    },
+                    {
+                        "icon": require('../../images/mainImage/my_order.png'),
+                        "name": "我的订单"
+                    },
+                    {
+                        "icon": require('../../images/mainImage/shoucangjilu.png'),
+                        "name": "收藏记录"
+                    },
+                    {
+                        "icon": require('../../images/mainImage/liulanlishi.png'),
+                        "name": "浏览历史"
+                    },
+
+                ],
+                "title": "section2"
+            },
+            {
+                "cars": [
+                    {
+                        "icon": require('../../images/mainImage/shezhi.png'),
+                        "name": "设置"
+                    },
+                ],
+                "title": "section3"
+            },
+            {
+                "cars": [
+                    {
+                        "icon": require('../../images/mainImage/shezhi.png'),
+                        "name": "blank"
+                    },
+                ],
+                "title": "section3"
+            },
+        ]
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1) {
                 let datas = JSON.parse(data.result);
@@ -359,7 +359,7 @@ export default class MineScene extends BaseComponent {
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
-                            if(response.mjson.data==null){
+                            if(response.mjson.data==null||response.mjson.data.length<=0){
                                 lastType = 'error';
                             }else{
                                 lastType = response.mjson.data.status;
