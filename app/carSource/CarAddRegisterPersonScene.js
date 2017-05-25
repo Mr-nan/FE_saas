@@ -77,7 +77,7 @@ export default class CarAddRegisterPersonScene extends BaseComponent{
                                        maxLength={11}
                                        keyboardType={'phone-pad'}
                                        onChangeText={(text)=>{
-                                           this.personData['phoneNumber'] = text;
+                                           this.personData['phone'] = text;
                                        }}
                             />
                         </View>
@@ -189,11 +189,11 @@ export default class CarAddRegisterPersonScene extends BaseComponent{
             this.showToast('请输入姓名');
             return;
         }
-        if(!this.personData.phoneNumber||this.personData.phoneNumber==''){
+        if(!this.personData.phone||this.personData.phone==''){
             this.showToast('请输入手机号');
             return;
         }
-        if(this.personData.phoneNumber.length!=11){
+        if(this.personData.phone.length!=11){
             this.showToast('请输入正确的手机号');
             return;
         }
@@ -215,7 +215,7 @@ export default class CarAddRegisterPersonScene extends BaseComponent{
         }
 
         this.props.showModal(true);
-        this.personData['merge_id'] = this.props.shopID;
+        this.personData['company_base_id'] = this.props.shopID;
         Net.request(AppUrls.ADD_REGISTRANT,'post',this.personData).then((response) => {
 
             this.props.showModal(false);
