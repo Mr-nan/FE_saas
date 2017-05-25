@@ -16,7 +16,8 @@ import  PixelUtil from '../../utils/PixelUtil'
 var Pixel = new PixelUtil();
 import {request} from '../../utils/RequestUtil';
 import SeeEmployeeInfoScene from '../employeeManage/SeeEmployeeInfoScene';
-import AddEmployeeScene from '../employeeManage/AddEmployeeScene';
+// import AddEmployeeScene from '../employeeManage/AddEmployeeScene';
+import AddEmployeeScene from '../employeeManage/NewAddEmployeeScene';
 import EditEmployeeScene from '../employeeManage/EditEmployeeScene';
 
 import BaseComponent from "../../component/BaseComponent";

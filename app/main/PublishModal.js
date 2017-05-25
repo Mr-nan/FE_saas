@@ -21,6 +21,7 @@ import * as fontAndColor from '../constant/fontAndColor';
 import  PixelUtil from '../utils/PixelUtil';
 import BaseComponent from '../component/BaseComponent';
 import NewCarScene from '../publish/NewCarScene';
+import CarPublishFirstScene from '../carSource/CarPublishFirstScene';
 
 const  publishReceive = require('../../images/mainImage/publishReceive.png');
 const publishNew = require('../../images/mainImage/publishNew.png');
@@ -85,6 +86,15 @@ export default class PublishModal extends BaseComponent {
     _newPress = ()=>{
         this._closePress();
         this.props.callBack(this.newCarParams);
+
+        // let navigatorParams = {
+        //     name: "CarPublishFirstScene",
+        //     component: CarPublishFirstScene,
+        //     params: {
+        //     }
+        // };
+        // this.props.callBack(navigatorParams);
+
     };
 
     render() {

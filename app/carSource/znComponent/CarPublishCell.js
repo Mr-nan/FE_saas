@@ -28,11 +28,16 @@ export class CellView extends Component {
                     {
                         cellData.isShowTag && <Text style={{color:fontAndColor.COLORB2, fontSize:fontAndColor.LITTLEFONT28}}>*</Text>
                     }
+                    <View >
                     <Text style={styles.cellTitle}>{cellData.title}</Text>
+                        {
+                            cellData.subTitle&&<Text style={styles.cellSubTitle}>{cellData.subTitle}</Text>
+                        }
+                    </View>
                 </View>
                 {
                     cellData.tailView? cellData.tailView():(
-                            <View style={{flexDirection:'row'}}>
+                            <View style={{flexDirection:'row', alignItems:'center'}}>
                                 <Text style={styles.cellValue}>{cellData.value}</Text>
                                 {
                                     cellData.isShowTail &&
@@ -53,11 +58,20 @@ export class CellSelectView extends Component{
         // 初始状态
         this.state = {
             currentChecked:this.props.currentTitle,
+
         };
+    }
+
+    setCurrentChecked=(text)=>{
+
+        this.setState({
+            currentChecked:text,
+        });
     }
 
     render(){
         const {cellData} =this.props;
+
         return(
             <View style={styles.cellType2}>
                 <View style={{flexDirection:'row'}}>
@@ -66,22 +80,20 @@ export class CellSelectView extends Component{
                     }
                     <Text style={styles.cellTitle}>{cellData.title}</Text>
                 </View>
-                <View style={{flexDirection:'row'}}>
+                <View style={{flexDirection:'row',width:Pixel.getPixel(350),height:Pixel.getPixel(40),alignItems:'center',marginTop:Pixel.getPixel(10)}}>
                     {
                         cellData.selectDict.data.map((data,index)=>{
                             return (
-                                <TouchableOpacity style={{height:Pixel.getPixel(20), marginTop:Pixel.getPixel(10),marginBottom:Pixel.getPixel(5),
-                                }} onPress={()=>
+                                <TouchableOpacity onPress={()=>
                                 {
                                     if(this.state.currentChecked!=data.title){
-                                        this.setState({
-                                            currentChecked:data.title,
-                                        });
+
+                                        this.setCurrentChecked(data.title);
                                         this.props.cellSelectAction({title:data.title,value:data.value})
                                     }
                                 }} activeOpacity={1} key={index}>
                                     <View style={[styles.checkedItemView,(this.state.currentChecked==data.title?{borderColor:fontAndColor.COLORB0}:{borderColor:fontAndColor.COLORA2})]}>
-                                        <Text style={[styles.checkedItemText,(this.state.currentChecked==data.title?{color:fontAndColor.COLORB0}:{color:fontAndColor.COLORA2})] }> {data.title} </Text>
+                                        <Text style={[styles.checkedItemText,(this.state.currentChecked==data.title?{color:fontAndColor.COLORB0}:{color:fontAndColor.COLORA2})] }>{data.title}</Text>
                                     </View>
                                 </TouchableOpacity>
                             )
@@ -95,7 +107,6 @@ export class CellSelectView extends Component{
 
 const styles = StyleSheet.create({
     cellType1:{
-        height:Pixel.getPixel(44),
         flexDirection:'row',
         paddingHorizontal:Pixel.getPixel(15),
         alignItems:'center',
@@ -103,6 +114,9 @@ const styles = StyleSheet.create({
         backgroundColor:'white',
         borderBottomWidth:StyleSheet.hairlineWidth,
         borderBottomColor:fontAndColor.COLORA4,
+        paddingVertical:Pixel.getPixel(15),
+        width:sceneWidth,
+
     },
     cellType2:{
         flexWrap:'wrap',
@@ -112,10 +126,19 @@ const styles = StyleSheet.create({
         borderBottomColor:fontAndColor.COLORA4,
         paddingVertical:Pixel.getPixel(20),
         justifyContent:'center',
+        width:sceneWidth,
+        flexDirection:'column',
+
     },
     cellTitle:{
         color:fontAndColor.COLORA0,
         fontSize:fontAndColor.LITTLEFONT28,
+    },
+    cellSubTitle:{
+        fontSize:Pixel.getFontPixel(fontAndColor.MARKFONT22),
+        color:fontAndColor.COLORA1,
+        marginTop:Pixel.getPixel(5),
+        width:Pixel.getPixel(250)
     },
     cellValue:{
         color:fontAndColor.COLORA2,

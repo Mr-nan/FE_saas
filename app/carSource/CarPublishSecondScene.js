@@ -19,212 +19,17 @@ import BaseComponent from '../component/BaseComponent';
 import AllNavigationView from '../component/AllNavigationView';
 import {CellView,CellSelectView} from './znComponent/CarPublishCell';
 import CarSelectRegisterPersonScene from './CarSelectRegisterPersonScene';
+import CarlicenseTagScene from  './carPublish/CarlicenseTagScene';
 import CarUpImageScene   from './CarUpImageScene';
+import CityListScene from  './CityListScene';
 import *as fontAndColor from '../constant/fontAndColor';
 import PixelUtil from '../utils/PixelUtil';
+import StorageUtil from "../utils/StorageUtil";
+import CarReferencePriceScene from './CarReferencePriceScene';
 
 const Pixel = new  PixelUtil();
 const sceneWidth = Dimensions.get('window').width;
-let   currentCarType ='非运营';
-let   selectPerson = '请选择';
-let   titleData1 = [
-    [
-        {
-            title:'使用性质',
-            isShowTag:false,
-            isShowTail:true,
-            selectDict:{current:currentCarType,data:[{title:'营运',value:1},{title:'非运营',value:2}]},
-        },
-        {
-            title:'过户次数',
-            isShowTag:true,
-            isShowTail:true,
-            tailView:()=>{
-                return(
-                    <TextInput style={styles.textInput} placeholder='请输入'/>
-                )
-            }
-        },
-        {
-            title:'车牌号',
-            isShowTag:true,
-            isShowTail:false,
-            tailView:()=>{
-                return(
-                    <TextInput style={styles.textInput} placeholder='请输入'/>
-                )
-            }
-        },
-        {
-            title:'表显里程',
-            isShowTag:true,
-            isShowTail:true,
-            tailView:()=>{
-                return(
-                    <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                        <TextInput style={styles.textInput} placeholder='请输入'/>
-                        <Text style={styles.textInputTitle}>万公里</Text>
-                    </View>
-                )
-            }
-        },
 
-    ],
-    [   {
-        title:'参考价',
-        isShowTag:false,
-        value:'查看',
-        isShowTail:true,
-    },
-        {
-            title:'市场价',
-            isShowTag:true,
-            isShowTail:true,
-            tailView:()=>{
-              return(  <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                    <TextInput style={styles.textInput} placeholder='请输入'/>
-                    <Text style={styles.textInputTitle}>万元</Text>
-                </View>)
-            }
-        },
-        {
-            title:'底价',
-            isShowTag:false,
-            isShowTail:true,
-            tailView:()=>{
-              return(  <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                    <TextInput style={styles.textInput} placeholder='请输入'/>
-                    <Text style={styles.textInputTitle}>万元</Text>
-                </View>)
-            }
-        },
-        {
-            title:'会员价',
-            isShowTag:false,
-            isShowTail:true,
-            tailView:()=>{
-              return(  <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                    <TextInput style={styles.textInput} placeholder='请输入'/>
-                    <Text style={styles.textInputTitle}>万元</Text>
-                </View>)
-            }
-        },
-
-    ],
-    [   {
-        title:'车辆所在地',
-        isShowTag:true,
-        value:'请选择',
-        isShowTail:true,
-    },{
-        title:'登记人',
-        isShowTag:true,
-        value:selectPerson,
-        isShowTail:true,
-    },
-        {
-            title:'车况描述',
-            isShowTag:false,
-            isShowTail:false,
-            tailView:()=>{
-                return(
-                    <TextInput style={styles.textInput} placeholder='请填写'/>
-                )
-            }
-
-        },
-    ]
-
-];
-
-let titleData2 = [
-    [
-        {
-            title:'过户次数',
-            isShowTag:true,
-            value:'请选择',
-            isShowTail:true,
-        },
-        {
-            title:'车牌号',
-            isShowTag:true,
-            isShowTail:false,
-            tailView:()=>{
-                return(
-                    <TextInput style={styles.textInput} placeholder='请输入'/>
-                )
-            }
-        },
-        {
-            title:'表显里程',
-            isShowTag:true,
-            isShowTail:true,
-            tailView:()=>{
-                return(
-                    <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                        <TextInput style={styles.textInput} placeholder='请输入'/>
-                        <Text style={styles.textInputTitle}>万公里</Text>
-                    </View>
-                )
-            }
-        },
-
-    ],
-    [   {
-        title:'参考价',
-        isShowTag:false,
-        value:'查看',
-        isShowTail:true,
-    },
-        {
-            title:'市场价',
-            isShowTag:true,
-            tailView:()=>{
-                return(  <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                    <TextInput style={styles.textInput} placeholder='请输入'/>
-                    <Text style={styles.textInputTitle}>万元</Text>
-                </View>)
-            }
-        }, {
-        title:'底价',
-        isShowTag:false,
-        tailView:()=>{
-            return(  <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                <TextInput style={styles.textInput} placeholder='请输入'/>
-                <Text style={styles.textInputTitle}>万元</Text>
-            </View>)
-        }
-    }, {
-        title:'会员价',
-        isShowTag:false,
-        tailView:()=>{
-            return(  <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                <TextInput style={styles.textInput} placeholder='请输入'/>
-                <Text style={styles.textInputTitle}>万元</Text>
-            </View>)
-        }
-    },
-
-    ],
-    [   {
-        title:'车辆所在地',
-        isShowTag:true,
-        value:'请选择',
-        isShowTail:true,
-    },
-        {
-            title:'车况描述',
-            isShowTag:false,
-            isShowTail:false,
-            tailView:()=>{
-                return(
-                    <TextInput style={styles.textInput} placeholder='请填写'/>
-                )
-            }
-        },
-    ]
-
-];
 
 export default class CarPublishSecondScene extends BaseComponent{
 
@@ -235,9 +40,292 @@ export default class CarPublishSecondScene extends BaseComponent{
     constructor(props) {
         super(props);
         // 初始状态
+        this.carData = this.props.carData;
 
+        this.nature_use ='非营运';
+        this.carData['nature_use']=2;
+
+        if(this.carData.nature_use==1)
+        {
+            this.nature_use ='营运';
+            this.carData['nature_use']=1;
+
+
+        }else if(this.carData.nature_use==3)
+        {
+            this.nature_use ='租赁非营运';
+            this.carData['nature_use']=3;
+
+        }
+
+        if(this.carData.v_type!==1){
+            this.carData['nature_use']=2;
+            this.carData['transfer_times']='0';
+            this.carData['mileage']='0';
+        }else {
+            this.carData['transfer_times']=this.carData.transfer_times ? String(this.carData.transfer_times):'0';
+            this.carData['mileage']=this.carData.mileage ? String(this.carData.mileage):'';
+        }
+
+
+        this.titleData1 = [
+            [
+                {
+                    title:'使用性质',
+                    isShowTag:false,
+                    isShowTail:true,
+                    selectDict:{current:this.nature_use,data:[{title:'营运',value:1},{title:'非营运',value:2},{title:'租赁非营运',value:3}]},
+                },
+                {
+                    title:'过户次数',
+                    isShowTag:true,
+                    isShowTail:true,
+                    tailView:()=>{
+                        return(
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder='请输入'
+                                defaultValue={this.carData.transfer_times}
+                                onEndEditing={()=>{this.saveCarData();}}
+                                keyboardType={'number-pad'}
+                                onChangeText={(text)=>{this.carData['transfer_times'] = text}}
+                            />
+                        )
+                    }
+                },
+                {
+                    title:'车牌号',
+                    isShowTag:true,
+                    isShowTail:true,
+                    value:this.carData.plate_number?this.carData.plate_number:'请选择'
+                },
+                {
+                    title:'表显里程',
+                    isShowTag:true,
+                    isShowTail:true,
+                    tailView:()=>{
+                        return(
+                            <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                                <TextInput
+                                    style={styles.textInput}
+                                    placeholder='请输入'
+                                    defaultValue={this.carData.mileage}
+                                    keyboardType={'number-pad'}
+                                    onEndEditing={()=>{this.saveCarData();}}
+                                    onChangeText={(text)=>{this.carData['mileage'] = text}}
+                                />
+                                <Text style={styles.textInputTitle}>万公里</Text>
+                            </View>
+                        )
+                    }
+                },
+
+            ],
+            [   {
+                title:'参考价',
+                isShowTag:false,
+                value:'查看',
+                isShowTail:true,
+            },
+                {
+                    title:'分销批发价',
+                    subTitle:'针对同行的分销价格，合理定价可以更快售出',
+                    isShowTag:true,
+                    isShowTail:true,
+                    tailView:()=>{
+                        return(
+                            <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                            <TextInput style={styles.textInput}
+                                       placeholder='请输入'
+                                       keyboardType={'numeric'}
+                                       defaultValue={this.carData.dealer_price?this.carMoneyChange(this.carData.dealer_price):''}
+                                       onEndEditing={()=>{this.saveCarData();}}
+                                       onChangeText={(text)=>{this.carData['dealer_price']=text}}/>
+                            <Text style={styles.textInputTitle}>万元</Text>
+                        </View>)
+                    }
+                },
+                {
+                    title:'低价',
+                    subTitle:'仅做内部销售参考',
+                    isShowTag:false,
+                    isShowTail:true,
+                    tailView:()=>{
+                        return(
+                            <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                            <TextInput style={styles.textInput}
+                                       placeholder='请输入'
+                                       keyboardType={'numeric'}
+                                       defaultValue={this.carData.low_price?this.carMoneyChange(this.carData.low_price):''}
+                                       onEndEditing={()=>{this.saveCarData();}}
+                                       onChangeText={(text)=>{this.carData['low_price']=text}}/>
+                            <Text style={styles.textInputTitle}>万元</Text>
+                        </View>)
+                    }
+                },
+                {
+                    title:'会员价',
+                    subTitle:'给本店高级客户的优惠价格，暂不对外展示',
+                    isShowTag:false,
+                    isShowTail:true,
+                    tailView:()=>{
+                        return(
+                            <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                            <TextInput style={styles.textInput}
+                                       placeholder='请输入'
+                                       keyboardType={'numeric'}
+                                       defaultValue={this.carData.member_price?this.carMoneyChange(this.carData.member_price):''}
+                                       onEndEditing={()=>{this.saveCarData();}}
+                                       onChangeText={(text)=>{this.carData['member_price']=text}}/>
+                            <Text style={styles.textInputTitle}>万元</Text>
+                        </View>)
+                    }
+                },
+
+            ],
+            [   {
+                title:'车辆所在地',
+                isShowTag:true,
+                value:this.carData.city_name ? this.carData.city_name:'请选择',
+                isShowTail:true,
+            },{
+                title:'登记人',
+                isShowTag:true,
+                value:'请选择',
+                isShowTail:true,
+            },
+                {
+                    title:'车况描述',
+                    isShowTag:false,
+                    isShowTail:false,
+                    tailView:()=>{
+                        return(
+                            <TextInput
+                                style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(100),height:Pixel.getPixel(50)}]}
+                                placeholder='请填写'
+                                maxLength={50}
+                                defaultValue={this.carData.describe?this.carData.describe:''}
+                                onEndEditing={()=>{this.saveCarData();}}
+                                onChangeText={(text)=>{this.carData['describe']=text}}/>
+                        )
+                    }
+
+                },
+            ]
+
+        ];
+
+        this.titleData2 = [
+            [
+                {
+                    title:'过户次数',
+                    isShowTag:true,
+                    value:'0',
+                    isShowTail:false,
+                },
+                // {
+                //     title:'车牌号',
+                //     isShowTag:true,
+                //     isShowTail:true,
+                //     value:this.carData.plate_number?this.carData.plate_number:'请选择'
+                // },
+                {
+                    title:'表显里程',
+                    isShowTag:true,
+                    isShowTail:false,
+                    value:'0 万公里',
+                },
+
+            ],
+            [
+                {
+                    title:'分销批发价',
+                    subTitle:'针对同行的分销价格，合理定价可以更快售出',
+                    isShowTag:true,
+                    isShowTail:true,
+                    tailView:()=>{
+                        return(
+                            <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                            <TextInput style={styles.textInput}
+                                       placeholder='请输入'
+                                       keyboardType={'numeric'}
+                                       defaultValue={this.carData.dealer_price?this.carMoneyChange(this.carData.dealer_price):''}
+                                       onChangeText={(text)=>{this.carData['dealer_price']=text}}
+                                       onEndEditing={()=>{this.saveCarData();}}
+                            />
+
+                            <Text style={styles.textInputTitle}>万元</Text>
+                        </View>)
+                    }
+                },
+                {
+                    title:'低价',
+                    subTitle:'仅做内部销售参考',
+                    isShowTag:false,
+                    isShowTail:true,
+                    tailView:()=>{
+                        return(
+                            <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                            <TextInput style={styles.textInput}
+                                       placeholder='请输入'
+                                       keyboardType={'numeric'}
+                                       defaultValue={this.carData.low_price?this.carMoneyChange(this.carData.low_price):''}
+                                       onChangeText={(text)=>{this.carData['low_price']=text}}
+                                       onEndEditing={()=>{this.saveCarData();}}
+                            />
+                            <Text style={styles.textInputTitle}>万元</Text>
+                        </View>)
+                    }
+                },
+                {
+                    title:'会员价',
+                    subTitle:'给本店高级客户的优惠价格，暂不对外展示',
+                    isShowTag:false,
+                    isShowTail:true,
+                    tailView:()=>{
+                        return(
+                            <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder='请输入'
+                                keyboardType={'numeric'}
+                                defaultValue={this.carData.member_price?this.carMoneyChange(this.carData.member_price):''}
+                                onChangeText={(text)=>{this.carData['member_price']=text}}
+                                onEndEditing={()=>{this.saveCarData();}}
+                            />
+
+                                <Text style={styles.textInputTitle}>万元</Text>
+                        </View>)
+                    }
+                },
+            ],
+            [   {
+                title:'车辆所在地',
+                isShowTag:true,
+                value:this.carData.city_name ? this.carData.city_name:'请选择',
+                isShowTail:true,
+            },
+                {
+                    title:'车况描述',
+                    isShowTag:false,
+                    isShowTail:false,
+                    tailView:()=>{
+                        return(
+                            <TextInput
+                                style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(100),height:Pixel.getPixel(50)}]}
+                                placeholder='请填写'
+                                maxLength={50}
+                                defaultValue={this.carData.describe?this.carMoneyChange(this.carData.describe):''}
+                                onEndEditing={()=>{this.saveCarData();}}
+                                onChangeText={(text)=>{this.carData['describe']=text}}/>
+                        )
+                    }
+                },
+            ]
+
+        ];
         this.state = {
-            titleData:this.props.carType=='二手车'? titleData1 :titleData2,
+            titleData:this.props.carData.v_type==1? this.titleData1 :this.titleData2,
         };
     }
 
@@ -246,6 +334,9 @@ export default class CarPublishSecondScene extends BaseComponent{
             <View style={styles.rootContainer}>
                 <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={Pixel.getTitlePixel(-64)}>
                     <ScrollView style={{width:sceneWidth,height:Dimensions.get('window').height - Pixel.getTitlePixel(64)}}>
+                        <View style={{width:sceneWidth,paddingVertical:Pixel.getPixel(25),backgroundColor:'white'}}>
+                            <Image style={{width:sceneWidth}} resizeMode={'contain'} source={require('../../images/carSourceImages/publishCarperpos2.png')}/>
+                        </View>
                         {
                             this.state.titleData.map((data,index)=>{
                                 return(
@@ -291,20 +382,32 @@ export default class CarPublishSecondScene extends BaseComponent{
     }
 
     cellSelectAction=(selectDict)=>{
+       this.carData['nature_use'] = selectDict.value;
+       this.titleData1[0][0].selectDict.current = selectDict.value;
+       this.saveCarData();
 
     }
 
-    selectPersonClick=(data)=>{
-        selectPerson=data;
-        titleData1[2][1].value = selectPerson;
-        this.updateUI();
-
-    }
 
     updateUI=()=>{
-        this.setState({
-            titleData:titleData1,
-        });
+
+        if(this.props.carData.v_type==1){
+            this.setState({
+                titleData:this.titleData1,
+            });
+        }else {
+            this.setState({
+                titleData:this.titleData2,
+            });
+        }
+        this.saveCarData();
+
+    }
+
+    saveCarData=()=>{
+            if (this.carData.show_shop_id && !this.carData.id) {
+                StorageUtil.mSetItem(String(this.carData.show_shop_id), JSON.stringify(this.carData));
+            }
     }
 
 
@@ -312,29 +415,178 @@ export default class CarPublishSecondScene extends BaseComponent{
 
         if(cellTitle=='登记人')
         {
-            let navigatorParams = {
-                name: "CarSelectRegisterPersonScene",
-                component: CarSelectRegisterPersonScene,
-                params: {
-                    selectPersonClick:this.selectPersonClick,
-                    currentPerson:selectPerson,
-                }
-            };
-            this.toNextPage(navigatorParams);
+            this.pushSelectRegisterPersonScene();
 
+        }else if(cellTitle=='车牌号'){
+
+            this.pushCarIicenseTagScene();
+
+        }else if(cellTitle=='参考价'){
+
+            this.pushCarReferencePriceScene();
+        }
+        else if(cellTitle=='车辆所在地'){
+
+            this.pushCityListScene();
         }
     }
 
     nextAction=()=>{
+
+        if(this.carData.transfer_times==''||!this.carData.transfer_times)
+        {
+            this.props.showToast('请输入过户次数');
+            return;
+        }
+        if((this.carData.plate_number==''||!this.carData.plate_number)&&this.carData.v_type==1)
+        {
+            this.props.showToast('请输入正确的车牌号');
+            return;
+        }
+        if(this.carData.mileage==''||!this.carData.mileage)
+        {
+            this.props.showToast('请输入里程');
+            return;
+        }
+
+        if(this.carData.transfer_times==''||!this.carData.transfer_times)
+        {
+            this.props.showToast('请输入分销批发价');
+            return;
+        }
+        if(this.carData.v_type == 1 && !this.carData.registrant_id){
+            this.props.showToast('请选择登记人');
+            return;
+        }
+        if(this.carData.city_id==''||!this.carData.city_id)
+        {
+            this.props.showToast('请选择车辆所在地');
+            return;
+        }
+
         let navigatorParams = {
             name: "CarUpImageScene",
             component: CarUpImageScene,
             params: {
+                carData:this.carData,
+            }
+        };
+        this.toNextPage(navigatorParams);
+        console.log(this.carData);
+    }
+
+    pushSelectRegisterPersonScene=()=>{
+        let navigatorParams = {
+            name: "CarSelectRegisterPersonScene",
+            component: CarSelectRegisterPersonScene,
+            params: {
+                selectPersonClick:this.selectPersonClick,
+                currentPerson:this.titleData1[2][1].value,
+                shopID:this.carData.show_shop_id,
+            }
+        };
+
+        console.log(this.carData.show_shop_id);
+        console.log(this.carData);
+        this.toNextPage(navigatorParams);
+    }
+    selectPersonClick=(data)=>{
+
+       this.titleData1[2][1].value = data.business_name;
+       this.carData['registrant_id'] = data.id;
+        this.updateUI();
+    }
+
+    pushCarIicenseTagScene=()=>{
+        let navigatorParams = {
+            name: "CarlicenseTagScene",
+            component: CarlicenseTagScene,
+            params: {
+                checkedCarlicenseTagClick:this._checkedCarlicenseTagClick,
+                currentChecked:this.titleData1[0][2].value,
 
             }
         };
         this.toNextPage(navigatorParams);
     }
+
+    // 车辆参考价
+    pushCarReferencePriceScene=()=>{
+
+        if(!this.carData.city_id || this.carData.city_id==''){
+
+            this.props.showToast('请先选择车辆所在地');
+            return;
+        }
+        if(this.carData.mileage==''||!this.carData.mileage)
+        {
+            this.props.showToast('请输入里程');
+            return;
+        }
+
+        let navigationParams={
+            name: "CarReferencePriceScene",
+            component: CarReferencePriceScene,
+            params: {
+                carData:this.carData
+            }
+        }
+        this.toNextPage(navigationParams);
+    };
+
+    _checkedCarlicenseTagClick=(title)=>{
+           this.titleData1[0][2].value = title;
+           this.titleData2[0][1].value = title;
+           this.carData['plate_number'] = title;
+            this.updateUI();
+    }
+
+    pushCityListScene=()=>{
+
+        let navigatorParams = {
+            name: "CityListScene",
+            component: CityListScene,
+            params: {
+                checkedCityClick:this.checkedCityClick,
+            }
+        };
+        this.toNextPage(navigatorParams);
+    }
+
+    checkedCityClick=(city)=>{
+           this.titleData1[2][0].value = city.city_name;
+           this.titleData2[2][0].value = city.city_name;
+           this.carData['city_name'] = city.city_name;
+           this.carData['city_id'] = city.city_id;
+            this.updateUI();
+    }
+
+    carMoneyChange=(carMoney)=>{
+
+        let newCarMoney = parseFloat(carMoney);
+        let carMoneyStr = newCarMoney.toFixed(2);
+        let moneyArray = carMoneyStr.split(".");
+
+        // console.log(carMoney+'/'+newCarMoney +'/' + carMoneyStr +'/' +moneyArray);
+
+        if(moneyArray.length>1)
+        {
+            if(moneyArray[1]>0){
+
+                return moneyArray[0]+'.'+moneyArray[1];
+
+            }else {
+
+                return moneyArray[0];
+            }
+
+        }else {
+            return carMoneyStr;
+        }
+
+
+    }
+
 
 }
 
@@ -366,11 +618,12 @@ const styles = StyleSheet.create({
         fontSize:fontAndColor.BUTTONFONT30
     },
     textInput:{
-        height: 40,
+        height: 20,
         borderColor: fontAndColor.COLORA0,
-        width:200,
+        width:50,
         textAlign:'right',
-        fontSize:fontAndColor.LITTLEFONT28,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+
     },
     textInputTitle:{
         color:fontAndColor.COLORA0,

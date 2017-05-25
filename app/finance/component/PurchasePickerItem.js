@@ -33,6 +33,7 @@ export  default class PurchasePickerItem extends PureComponent {
     }
 
     render() {
+        console.log(this.state.childMovie);
         let movie = this.props.items;
         let movieItems = [];
         if (this.state.childMovie.list.length > 0)
@@ -172,7 +173,7 @@ export  default class PurchasePickerItem extends PureComponent {
                 this.props.showModal(false);
                 if(response.mycode === 1){
                     // this.selectSource = {uri: response.mjson.data.url};
-                    console.log(response);
+                    // console.log(response);
                     this.props.showToast('上传成功')
                     // console.log(response.mjson.data.url);
                     let news = {...this.state.childMovie};

@@ -8,7 +8,8 @@ import {
     TouchableWithoutFeedback,
     InteractionManager,
     ScrollView,
-    Image
+    Image,
+    NativeModules
 } from "react-native";
 import BaseComponent from "../component/BaseComponent";
 import NavigationBar from "../component/NavigationBar";
@@ -19,7 +20,8 @@ import {request} from "../utils/RequestUtil";
 import * as AppUrls from "../constant/appUrls";
 import MyButton from "../component/MyButton";
 import RecognizedGains from './RecognizedGains';
-
+import NavigationView from '../component/AllNavigationView';
+import ContractInfoScene from './ContractInfoScene';
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
@@ -29,57 +31,49 @@ var imgSrc: '';
 var imgSid: '';
 
 var itemWidth = width;
+let imeis = '';
 
 export default class QuotaApplication extends BaseComponent {
 
     constructor(props) {
         super(props);
+        imeis = '';
+        if (Platform.OS === 'android') {
+            NativeModules.VinScan.getIMEI((imei) => {
+                imeis = imei;
+            });
+        }
         this.state = {
-            renderPlaceholderOnly: true,
+            renderPlaceholderOnly: 'blank',
             agree: false,
             name: "",
             idcard: "",
             phone: "",
-            agreement: "",
+            agreement: [],
+            bankCard: '',
+            bank_reserve_phone: ''
         };
     }
 
     initFinish = () => {
-        InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: false});
-            this.Verifycode();
-            this.getWZInfo();
-        });
+        this.getWZInfo();
     }
 
     render() {
-        if (this.state.renderPlaceholderOnly) {
-            return ( <TouchableWithoutFeedback onPress={() => {
-                this.setState({
-                    show: false,
-                });
-            }}>
-                <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
-                    <NavigationBar
-                        leftImageShow={false}
-                        leftTextShow={true}
-                        leftText={""}
-                        centerText={"微众额度申请"}
-                        rightText={""}
-                    />
-                </View>
-            </TouchableWithoutFeedback>);
+        if (this.state.renderPlaceholderOnly != 'success') {
+            return this._renderPlaceholderView();
+        }
+        let childitems = [];
+        for (let i = 0; i < this.state.agreement.length; i++) {
+            childitems.push(<Text onPress={()=>{
+                this.toNextPage({name:'ContractInfoScene',component:ContractInfoScene,params:{title:this.state.agreement[i].name,
+                webUrl:this.state.agreement[i].url}});
+            }} key={i+'a'} style={{color:FontAndColor.COLORA2,fontSize: Pixel.getFontPixel(12)}}>
+                《{this.state.agreement[i].name}》 </Text>);
         }
         return (
             <View style={styles.containerStyle}>
-                <NavigationBar
-                    leftImageShow={true}
-                    leftTextShow={false}
-                    centerText={"微众额度申请"}
-                    rightText={"  "}
-                    leftImageCallBack={this.backPage}
-                />
-                <ScrollView>
+                <ScrollView style={{marginTop:Pixel.getTitlePixel(79)}}>
                     <View style={styles.inputTextLine}/>
                     <View style={styles.inputTextsStyle}>
                         <View style={{
@@ -143,7 +137,7 @@ export default class QuotaApplication extends BaseComponent {
                         fontSize: Pixel.getPixel(FontAndColor.CONTENTFONT24),
                         paddingTop: Pixel.getPixel(10),
                         paddingBottom: Pixel.getPixel(10),
-                    }}>注意：<Text style={{color: FontAndColor.COLORA1}}>请确保银行预留手机号码准确,短信验证码将发送给您银行银行预留手机号码。</Text></Text>
+                    }}>注意：<Text style={{color: FontAndColor.COLORA1}}>请确保银行预留手机号码准确,短信验证码将发送给您银行预留手机号码。</Text></Text>
                     <View style={styles.inputTextsStyle}>
                         <LoginInputText
                             ref="verifycode"
@@ -166,63 +160,46 @@ export default class QuotaApplication extends BaseComponent {
                             keyboardType={'phone-pad'}
                             leftIcon={false}/>
                     </View>
+                    <View style={{width:width,height:Pixel.getPixel(60)}}>
 
-                    <TouchableWithoutFeedback onPress={() => {
-                        if (this.state.agree) {
+                        <Text
+                            style={{lineHeight: 25,paddingRight:Pixel.getPixel(15),paddingLeft:Pixel.getPixel(15),paddingTop:Pixel.getPixel(7)}}>
+                            <Text style={{color:FontAndColor.COLORA1,fontSize: Pixel.getFontPixel(12)}}>
+                                {'         我已详细阅读并同意'}</Text>
+                            {childitems}
+                        </Text>
+                        <TouchableOpacity style={{width:Pixel.getPixel(23),height:Pixel.getPixel(23),position: 'absolute',top: Pixel.getPixel(12),
+                                    left:Pixel.getPixel(15),justifyContent:'center'}} onPress={()=>{
                             this.setState({
-                                agree: false,
+                                agree:!this.state.agree
                             });
-                        } else {
-                            this.setState({
-                                agree: true,
-                            });
-                        }
-                    }}>
-                        <View style={{
-                            width: width,
-                            paddingTop: Pixel.getPixel(15),
-                            paddingBottom: Pixel.getPixel(15),
-                            paddingLeft: Pixel.getPixel(15),
-                            paddingRight: Pixel.getPixel(15),
-                        }}>
-                            <Text style={{
-                                fontSize: Pixel.getFontPixel(12),
-                                color: FontAndColor.COLORA2,
-                            }}>
-                                <Image style={{
-                                    width: Pixel.getPixel(1),
-                                    height: Pixel.getPixel(75),
-                                }}
-                                       source={require('./../../images/publish/car-plate.png')}/>
-                                我已详细阅读并同意《信息使用授权书》 《微众银行个人电子账户服务协议》 《征信授权书》
-                            </Text>
-                            {this.state.agree == true ?
-                                <Image style={{
-                                    position: 'absolute',
-                                    width: Pixel.getPixel(17),
-                                    height: Pixel.getPixel(17),
-                                    marginTop: Pixel.getPixel(14),
-                                    marginLeft: Pixel.getPixel(20)
-                                }}
-                                       source={require('./../../images/login/amou_choose.png')}/> :
-                                <Image style={{
-                                    position: 'absolute',
-                                    width: Pixel.getPixel(17),
-                                    height: Pixel.getPixel(17),
-                                    marginTop: Pixel.getPixel(14),
-                                    marginLeft: Pixel.getPixel(20)
-                                }}
-                                       source={require('./../../images/login/amou_unchoose.png')}/>}
-
-                        </View>
-                    </TouchableWithoutFeedback>
-
+                        }} activeOpacity={0.8}>
+                            <Image style={{width:Pixel.getPixel(16),height:Pixel.getPixel(16)}}
+                                   source={this.state.agree?require('../../images/login/amou_choose.png'):require('../../images/login/amou_unchoose.png')}/>
+                        </TouchableOpacity>
+                    </View>
                     <MyButton buttonType={MyButton.TEXTBUTTON}
                               content={'确认申请'}
                               parentStyle={styles.loginBtnStyle}
                               childStyle={styles.loginButtonTextStyle}
                               mOnPress={this.getWZMoney}/>
                 </ScrollView>
+                <NavigationView
+                    title="微单额度申请"
+                    backIconClick={this.backPage}
+                />
+            </View>
+        );
+    }
+
+    _renderPlaceholderView() {
+        return (
+            <View style={{width: width, height: height,backgroundColor:FontAndColor.COLORA3,alignItems: 'center'}}>
+                {this.loadView()}
+                <NavigationView
+                    title="微单额度申请"
+                    backIconClick={this.backPage}
+                />
             </View>
         );
     }
@@ -304,23 +281,38 @@ export default class QuotaApplication extends BaseComponent {
     }
 
 
+    componentDidUpdate() {
+        if (this.state.renderPlaceholderOnly == 'success') {
+            if (this.refs.bank_phone.getInputTextValue() == '') {
+                this.refs.bank_phone.setInputTextValue(this.state.bank_reserve_phone);
+            }
+            if (this.refs.bank_id.getInputTextValue() == '') {
+                this.refs.bank_id.setInputTextValue(this.state.bankCard);
+            }
+        }
+    }
+
     //获取微众申请页面数据
     getWZInfo = () => {
         let maps = {
             api: AppUrls.GETAPPLYDATA,
         };
-        this.props.showModal(true);
         request(AppUrls.FINANCE, 'Post', maps)
             .then((response) => {
-                this.props.showModal(false);
                 this.setState({
                     name: response.mjson.data.username,
                     idcard: response.mjson.data.idcard_number,
                     phone: response.mjson.data.phone,
                     agreement: response.mjson.data.agreement,
+                    renderPlaceholderOnly: 'success',
+                    bankCard: response.mjson.data.bank_card,
+                    bank_reserve_phone: response.mjson.data.bank_reserve_phone
                 });
+                this.Verifycode();
             }, (error) => {
-                this.props.showModal(false);
+                this.setState({
+                    renderPlaceholderOnly: 'error'
+                });
                 if (error.mycode == -300 || error.mycode == -500) {
                     this.props.showToast("获取失败");
                 } else {
@@ -343,33 +335,47 @@ export default class QuotaApplication extends BaseComponent {
         } else if (!this.state.agree) {
             this.props.showToast("请选择相关协议");
         } else {
-            let maps = {
-                api: AppUrls.APPLY_MNY,
-                bank_reserve_phone: bank_phone,
-                bank_card: bank_id,
-                phone_code: smsCode,
-                contract_base: this.state.agreement,
-            };
+            let maps = {};
+            if (Platform.OS === 'android') {
+                maps = {
+                    api: AppUrls.APPLY_MNY,
+                    bank_reserve_phone: bank_phone,
+                    bank_card: bank_id,
+                    phone_code: smsCode,
+                    contract_base: JSON.stringify(this.state.agreement),
+                    android_imei: imeis,
+                    useragent: 'android'
+                };
+            } else {
+                maps = {
+                    api: AppUrls.APPLY_MNY,
+                    bank_reserve_phone: bank_phone,
+                    bank_card: bank_id,
+                    phone_code: smsCode,
+                    contract_base: JSON.stringify(this.state.agreement),
+                    ios_idfa: iosIDFA,
+                    useragent: 'ios'
+                };
+            }
             this.props.showModal(true);
             request(AppUrls.FINANCE, 'Post', maps)
                 .then((response) => {
                     this.props.showModal(false);
-                    this.toNextPage({
-                        name: 'RecognizedGains',
-                        component: RecognizedGains,
-                        params: {loan_code: '1234566'},
-                    })
+                    this.props.showToast("申请成功");
+                    this.props.callBack();
+                    this.backPage();
                 }, (error) => {
                     this.props.showModal(false);
                     if (error.mycode == -300 || error.mycode == -500) {
-                        this.props.showToast("获取失败");
+                        this.props.showToast("申请失败");
                     } else {
                         this.props.showToast(error.mjson.msg + "");
-                        this.toNextPage({
-                            name: 'RecognizedGains',
-                            component: RecognizedGains,
-                            params: {loan_code: '1234566'},
-                        })
+                        // this.backPage()
+                        // this.toNextPage({
+                        //     name: 'RecognizedGains',
+                        //     component: RecognizedGains,
+                        //     params: {loan_code: '1234566'},
+                        // })
                     }
                 });
         }

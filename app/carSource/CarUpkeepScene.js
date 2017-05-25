@@ -13,6 +13,8 @@ import {
 import BaseComponent from '../component/BaseComponent';
 import NavigationView from '../component/AllNavigationView';
 import *as fontAndColor from '../constant/fontAndColor';
+import *as appUrls from '../constant/appUrls';
+import *as RequestUtil from '../utils/RequestUtil';
 import PixelUtil from '../utils/PixelUtil';
 const Pixel = new PixelUtil();
 
@@ -51,13 +53,22 @@ export  default class CarUpkeepScene extends  BaseComponent{
 
         this.state = {
 
-            dataSource:ds.cloneWithRows(data)
+            dataSource:ds,
+            renderPlaceholderOnly: 'blank',
         }
       }
     initFinish = () => {
 
+          this.loadData();
     }
     render(){
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return (
+                <View style={{flex:1,backgroundColor:'white'}}>
+                    {this.loadView()}
+                    <NavigationView title="维修保养记录" backIconClick={()=>{this.backPage();}}/>
+                </View>);
+        }
         return(
             <View style={styles.rootContainer}>
                 <ListView
@@ -77,12 +88,37 @@ export  default class CarUpkeepScene extends  BaseComponent{
         return(
             <View style={styles.cellView}>
                 <View style={styles.cellTitleView}>
-                    <Text style={styles.cellTitleViewTitle}>{rowData.title}</Text>
+                    <Text style={styles.cellTitleViewTitle}>{rowData.date+' | '+rowData.mile + '公里'}</Text>
                     <Text style={styles.cellTitleViewValue}>{rowData.type}</Text>
                 </View>
-                <Text style={styles.cellContent}>{rowData.content}</Text>
+                <Text style={styles.cellContent}>{rowData.detail+rowData.other}</Text>
             </View>
         )
+    }
+
+    loadData=()=>{
+        RequestUtil.request(appUrls.CAR_GET_ERPORT,'post',{'vin':this.props.vin}).then((response)=>{
+
+            console.log(response);
+            if(response.mjson.data.result.length>0){
+
+                this.setState({
+                    dataSource:this.state.dataSource.cloneWithRows(response.mjson.data.result),
+                    renderPlaceholderOnly: 'success',
+
+                });
+
+            }else {
+                this.setState({
+                    renderPlaceholderOnly: 'null',
+                });
+            }
+
+        },(error)=>{
+            this.setState({
+                renderPlaceholderOnly: 'null',
+            });
+        });
     }
 
 }
