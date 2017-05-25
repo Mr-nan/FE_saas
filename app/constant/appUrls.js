@@ -116,15 +116,15 @@ export const CAR_GET_REFERENCEPRICE = BASEURL + V + 'che/referencePrice';
  */
 export const CAR_GET_RESIDUALS = BASEURL + V + 'che/residuals';
 
-// /**
-//  * 获取客服电话号码
-//  */
-// export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/getCustomService';
-
 /**
  * 获取客服电话号码
  */
-export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/companyPhone';
+export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/getCustomService';
+
+// /**
+//  * 获取客服电话号码
+//  */
+// export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/companyPhone';
 
 /**
  * 获取我的车源-已上架/下架
