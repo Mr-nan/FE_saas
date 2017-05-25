@@ -62,24 +62,25 @@ export default class CarInfoScene extends BaseComponent {
     }
 
     pushCitySceneAction=()=>{
-        let navigatorParams = {
-            name: "CityListScene",
-            component: CityListScene,
-            params: {
-                checkedCityClick:this.checkedCityClick,
-                unlimitedAction:this.cityUnlimitedAction,
-            }
-        }
-        this.toNextPage(navigatorParams);
         // let navigatorParams = {
-        //     name: "ProvinceListScene",
-        //     component: ProvinceListScene,
+        //     name: "CityListScene",
+        //     component: CityListScene,
         //     params: {
-        //             checkedCityClick:this.checkedCityClick,
-        //             unlimitedAction:this.cityUnlimitedAction,
+        //         checkedCityClick:this.checkedCityClick,
+        //         unlimitedAction:this.cityUnlimitedAction,
         //     }
         // }
         // this.toNextPage(navigatorParams);
+        let navigatorParams = {
+            name: "ProvinceListScene",
+            component: ProvinceListScene,
+            params: {
+                    checkedCityClick:this.checkedCityClick,
+                    unlimitedAction:this.cityUnlimitedAction,
+                    isSelectProvince:true
+            }
+        }
+        this.toNextPage(navigatorParams);
     };
 
     pushCarBrandSceneAction=()=>{
