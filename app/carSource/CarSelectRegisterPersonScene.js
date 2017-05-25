@@ -68,9 +68,9 @@ export default class CarSelectRegisterPersonScene extends BaseComponent{
 
         if (this.state.renderPlaceholderOnly == 'null') {
             return (
-                <View style={{flex:1,backgroundColor:'white',marginBottom:Pixel.getPixel(64)}}>
+                <View style={{width:sceneWidth,backgroundColor:'white',marginBottom:Pixel.getPixel(64)}}>
                     {this.loadView()}
-                    <TouchableOpacity onPress={this.addPersonClick}>
+                    <TouchableOpacity onPress={()=>{this.addPersonClick()}}>
                         <View style={styles.footView}>
                             <Image source={require('../../images/carSourceImages/addPerson.png')}/>
                             <Text style={{color:fontAndColor.COLORB0,fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28) }}>  添加新登记人  </Text>
@@ -90,13 +90,13 @@ export default class CarSelectRegisterPersonScene extends BaseComponent{
                 <ListView style={{marginBottom:Pixel.getPixel(64)}}
                           dataSource={this.state.dataSource}
                           renderRow={this.renderRow}/>
-                <AllNavigationView title="选择登记人" backIconClick={this.backPage} />
-                <TouchableOpacity onPress={this.addPersonClick}>
+                <TouchableOpacity onPress={()=>{this.addPersonClick()}}>
                     <View style={styles.footView}>
                         <Image source={require('../../images/carSourceImages/addPerson.png')}/>
                         <Text style={{color:fontAndColor.COLORB0,fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28) }}>  添加新登记人  </Text>
                     </View>
                 </TouchableOpacity>
+                <AllNavigationView title="选择登记人" backIconClick={this.backPage} />
             </View>
         )
     }
@@ -145,9 +145,11 @@ export default class CarSelectRegisterPersonScene extends BaseComponent{
     }
 
     addPersonClick=()=>{
+
+        console.log('222');
         let navigatorParams = {
             name: "CarAddRegisterPersonScene",
-            component: CarAddRegisterPersonScene,
+            component:CarAddRegisterPersonScene,
             params: {
                 shopID:this.props.shopID,
                 upDataAction:this.loadData,
