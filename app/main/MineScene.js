@@ -349,10 +349,34 @@ export default class MineScene extends BaseComponent {
                 "title": "section3"
             },
         ]
+        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+            if (data.code == 1) {
+                let datas = JSON.parse(data.result);
+                if(datas.user_level=='0'){
+                    this.noCompany();
+                }else{
+                    this.toCompany();
+                }
+            }
+        });
+
+    }
+
+    noCompany=()=>{
+        lastType = 'error';
+        this.changeData();
+    }
+
+    toCompany=()=>{
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1) {
                 let datas = JSON.parse(data.result);
-                componyname = datas.companyname;
+                componyname  = '';
+                if (datas.companyname == null || datas.companyname == '') {
+                    componyname = datas.name;
+                } else {
+                    componyname = datas.name + '(' + datas.companyname + ')';
+                }
                 let maps = {
                     enter_base_ids: datas.company_base_id,
                     child_type: '1'
@@ -373,7 +397,6 @@ export default class MineScene extends BaseComponent {
             }
         });
     }
-
     allRefresh = () => {
         firstType = '-1';
         lastType = '-1';
@@ -581,10 +604,10 @@ export default class MineScene extends BaseComponent {
         if (this.state.renderPlaceholderOnly == 'success') {
             if (firstType != lastType) {
                 if (lastType != '3') {
-                    StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST, (data) => {
+                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
                         if (data.code == 1) {
                             let datas = JSON.parse(data.result);
-                            if (datas[0].role_type == '1') {
+                            if (datas.user_level>0&&datas.enterprise_list[0].role_type == '1') {
                                 StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (datac) => {
                                     if (datac.code == 1) {
                                         let datasc = JSON.parse(datac.result);
