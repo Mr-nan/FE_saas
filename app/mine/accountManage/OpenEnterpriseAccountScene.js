@@ -53,7 +53,7 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
                 <ScrollView keyboardShouldPersistTaps={'handled'}>
-
+                    <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={5}>
                         <View style={styles.inputTextsStyle}>
                             <LoginInputText
                                 ref="cust_name"
@@ -83,7 +83,6 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                         </View>
 
                     <View style={styles.inputTextLine}/>
-                    <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={5}>
                         <View style={styles.inputStyle}>
                             <LoginInputText
                                 ref="legal_real_name"
