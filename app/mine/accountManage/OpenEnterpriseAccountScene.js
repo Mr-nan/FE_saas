@@ -150,12 +150,13 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                 height:Pixel.getPixel(44),justifyContent:'center',alignItems: 'center'}}>
                         <Text style={{color:'#fff',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28)}}>确认开通</Text>
                     </TouchableOpacity>
-                    <NavigationView
-                        title="开通企业账户"
-                        backIconClick={this.backPage}
-                    />
+
 
                 </ScrollView>
+                <NavigationView
+                    title="开通企业账户"
+                    backIconClick={this.backPage}
+                />
             </View>
         );
     }
