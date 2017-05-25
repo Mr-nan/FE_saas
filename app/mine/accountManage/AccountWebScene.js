@@ -87,11 +87,11 @@ export  default class AccountWebScene extends BaseComponent {
     onNavigationStateChange=(navState)=> {
         console.log('123---------'+navState.url);
         oldUrl=navState.url;
-        if(oldUrl=='http://'+this.props.backUrl){
+        if(oldUrl=='http://'+this.props.backUrl+'/'){
             this.props.callBack();
-            if(oldUrl=='http://'+webBackUrl.OPENINDIVIDUALACCOUNT||
-            oldUrl=='http://'+webBackUrl.OPENENTERPRISEACCOUNT||oldUrl=='http://'+webBackUrl.BINDCARD||
-            oldUrl=='http://'+webBackUrl.UNBINDCARD){
+            if(oldUrl=='http://'+webBackUrl.OPENINDIVIDUALACCOUNT+'/'||
+            oldUrl=='http://'+webBackUrl.OPENENTERPRISEACCOUNT+'/'||oldUrl=='http://'+webBackUrl.BINDCARD+'/'||
+            oldUrl=='http://'+webBackUrl.UNBINDCARD+'/'){
                 const navigator = this.props.navigator;
                 if (navigator){
                     for(let i = 0;i<navigator.getCurrentRoutes().length;i++){

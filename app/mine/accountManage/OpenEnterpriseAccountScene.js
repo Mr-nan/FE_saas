@@ -53,7 +53,7 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
                 <ScrollView keyboardShouldPersistTaps={'handled'}>
-                    <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={5}>
+
                         <View style={styles.inputTextsStyle}>
                             <LoginInputText
                                 ref="cust_name"
@@ -83,7 +83,7 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                         </View>
 
                     <View style={styles.inputTextLine}/>
-
+                    <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={5}>
                         <View style={styles.inputStyle}>
                             <LoginInputText
                                 ref="legal_real_name"
@@ -137,7 +137,7 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                                 rightIcon={false}/>
 
                         </View>
-
+                    </KeyboardAvoidingView>
 
                     <Text style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                 marginTop:Pixel.getPixel(20),marginLeft:Pixel.getPixel(15)}}>
@@ -155,7 +155,7 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                         title="开通企业账户"
                         backIconClick={this.backPage}
                     />
-                    </KeyboardAvoidingView>
+
                 </ScrollView>
             </View>
         );
