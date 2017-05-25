@@ -558,6 +558,7 @@ export default class CarPublishSecondScene extends BaseComponent{
            this.titleData2[2][0].value = city.city_name;
            this.carData['city_name'] = city.city_name;
            this.carData['city_id'] = city.city_id;
+           this.carData['provice_id'] = city.provice_id;
             this.updateUI();
     }
 

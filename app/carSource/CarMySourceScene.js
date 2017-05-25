@@ -151,13 +151,22 @@ export default class CarMySourceScene extends BaceComponent {
 
     pushNewCarScene = () => {
 
+        // let navigatorParams = {
+        //
+        //     name: "NewCarScene",
+        //     component: NewCarScene,
+        //     params: {
+        //
+        //         fromNew: false,
+        //     }
+        // };
+        // this.toNextPage(navigatorParams);
         let navigatorParams = {
 
-            name: "NewCarScene",
-            component: NewCarScene,
+            name: "CarPublishFirstScene",
+            component: CarPublishFirstScene,
             params: {
 
-                fromNew: false,
             }
         };
         this.toNextPage(navigatorParams);

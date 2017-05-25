@@ -68,21 +68,21 @@ export default class CarSelectRegisterPersonScene extends BaseComponent{
 
         if (this.state.renderPlaceholderOnly == 'null') {
             return (
-                <View style={{width:sceneWidth,backgroundColor:'white',marginBottom:Pixel.getPixel(64)}}>
+                <View style={{flex:1}}>
                     {this.loadView()}
-                    <TouchableOpacity onPress={()=>{this.addPersonClick()}}>
-                        <View style={styles.footView}>
-                            <Image source={require('../../images/carSourceImages/addPerson.png')}/>
-                            <Text style={{color:fontAndColor.COLORB0,fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28) }}>  添加新登记人  </Text>
-                        </View>
-                    </TouchableOpacity>
-                    <AllNavigationView title="选择登记人" backIconClick={this.backPage} />
+                    {/*<TouchableOpacity onPress={()=>{this.addPersonClick()}}>*/}
+                        {/*<View style={styles.footView}>*/}
+                            {/*<Image source={require('../../images/carSourceImages/addPerson.png')}/>*/}
+                            {/*<Text style={{color:fontAndColor.COLORB0,fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28) }}>  添加新登记人  </Text>*/}
+                        {/*</View>*/}
+                    {/*</TouchableOpacity>*/}
+                    <AllNavigationView title="选择登记人" backIconClick={this.backPage} renderRihtFootView={this.renderRightFootView}/>
                 </View>);
         }else if (this.state.renderPlaceholderOnly !== 'success') {
             return (
                 <View style={{flex:1,backgroundColor:'white'}}>
                     {this.loadView()}
-                    <AllNavigationView title="选择登记人" backIconClick={this.backPage} />
+                    <AllNavigationView title="选择登记人" backIconClick={this.backPage} renderRihtFootView={this.renderRightFootView}/>
                 </View>);
         }
         return(
@@ -90,13 +90,13 @@ export default class CarSelectRegisterPersonScene extends BaseComponent{
                 <ListView style={{marginBottom:Pixel.getPixel(64)}}
                           dataSource={this.state.dataSource}
                           renderRow={this.renderRow}/>
-                <TouchableOpacity onPress={()=>{this.addPersonClick()}}>
-                    <View style={styles.footView}>
-                        <Image source={require('../../images/carSourceImages/addPerson.png')}/>
-                        <Text style={{color:fontAndColor.COLORB0,fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28) }}>  添加新登记人  </Text>
-                    </View>
-                </TouchableOpacity>
-                <AllNavigationView title="选择登记人" backIconClick={this.backPage} />
+                {/*<TouchableOpacity onPress={()=>{this.addPersonClick()}}>*/}
+                    {/*<View style={styles.footView}>*/}
+                        {/*<Image source={require('../../images/carSourceImages/addPerson.png')}/>*/}
+                        {/*<Text style={{color:fontAndColor.COLORB0,fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28) }}>  添加新登记人  </Text>*/}
+                    {/*</View>*/}
+                {/*</TouchableOpacity>*/}
+                <AllNavigationView title="选择登记人" backIconClick={this.backPage} renderRihtFootView={this.renderRightFootView}/>
             </View>
         )
     }
@@ -146,7 +146,6 @@ export default class CarSelectRegisterPersonScene extends BaseComponent{
 
     addPersonClick=()=>{
 
-        console.log('222');
         let navigatorParams = {
             name: "CarAddRegisterPersonScene",
             component:CarAddRegisterPersonScene,
@@ -156,6 +155,21 @@ export default class CarSelectRegisterPersonScene extends BaseComponent{
             }
         };
         this.toNextPage(navigatorParams);
+    }
+
+    renderRightFootView = () => {
+
+        return (
+            <TouchableOpacity onPress={this.addPersonClick}>
+                <View style={{paddingVertical:3, paddingHorizontal:5,backgroundColor:'transparent',borderWidth:StyleSheet.hairlineWidth,borderColor:'white',borderRadius:3}}>
+                    <Text style={{
+                        color: 'white',
+                        fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                        textAlign: 'center',
+                        backgroundColor: 'transparent',}}>  添加  </Text>
+                </View>
+            </TouchableOpacity>
+        )
     }
 
 
