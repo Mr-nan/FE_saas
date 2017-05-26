@@ -119,7 +119,6 @@ const styles = StyleSheet.create({
 
     },
     cellType2:{
-        flexWrap:'wrap',
         paddingHorizontal:Pixel.getPixel(15),
         backgroundColor:'white',
         borderBottomWidth:StyleSheet.hairlineWidth,
@@ -128,6 +127,7 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         width:sceneWidth,
         flexDirection:'column',
+        height:Pixel.getPixel(90)
 
     },
     cellTitle:{
