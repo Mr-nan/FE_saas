@@ -141,6 +141,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                               <TextInput
                                   style={styles.textInput}
                                   placeholder='请输入'
+                                  underlineColorAndroid='transparent'
                                   onChangeText={(text)=>{this.carData['displacement']=text}}
                                   onEndEditing={()=>{this.saveCarData();}}
                                   placeholderTextColor={fontAndColor.COLORA4}
@@ -200,6 +201,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                                   style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(50)}]}
                                   placeholder='请填写'
                                   maxLength={50}
+                                  underlineColorAndroid='transparent'
                                   onChangeText={(text)=>{this.carData['modification_instructions']=text}}
                                   onEndEditing={()=>{this.saveCarData();}}
                                   ref={(input) => {this.instructionsInput = input}}
@@ -268,6 +270,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                                       this.carData['displacement']=text}
                                   }
                                   ref={(input) => {this.displacementInput = input}}
+                                  underlineColorAndroid='transparent'
                                   onEndEditing={()=>{this.saveCarData();}}
                                   placeholderTextColor={fontAndColor.COLORA4}
                                   placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
@@ -317,6 +320,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                                   style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(50)}]}
                                   placeholder='请填写'
                                   maxLength={50}
+                                  underlineColorAndroid='transparent'
                                   onChangeText={(text)=>{
                                       this.carData['modification_instructions']=text}
                                   }
@@ -1015,7 +1019,9 @@ const styles = StyleSheet.create({
         width:Pixel.getPixel(160),
         textAlign:'right',
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-        backgroundColor:'yellow'
+        backgroundColor:'yellow',
+        paddingTop:0,
+        paddingBottom:0,
     },
     scanImage: {
         height: Pixel.getPixel(18),

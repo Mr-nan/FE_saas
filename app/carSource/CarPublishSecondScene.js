@@ -84,6 +84,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                         return(
                             <TextInput
                                 style={styles.textInput}
+                                underlineColorAndroid='transparent'
                                 placeholder='请输入'
                                 maxLength={2}
                                 defaultValue={this.carData.transfer_times}
@@ -111,6 +112,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                                     style={styles.textInput}
                                     placeholder='请输入'
                                     maxLength={3}
+                                    underlineColorAndroid='transparent'
                                     defaultValue={this.carData.mileage}
                                     keyboardType={'number-pad'}
                                     onEndEditing={()=>{this.saveCarData();}}
@@ -142,6 +144,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                                        placeholder='请输入'
                                        keyboardType={'numeric'}
                                        maxLength={6}
+                                       underlineColorAndroid='transparent'
                                        defaultValue={this.carData.dealer_price?this.carMoneyChange(this.carData.dealer_price):''}
                                        onEndEditing={()=>{this.saveCarData();}}
                                        onChangeText={(text)=>{
@@ -168,6 +171,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                                        placeholder='请输入'
                                        keyboardType={'numeric'}
                                        maxLength={6}
+                                       underlineColorAndroid='transparent'
                                        ref={(ref)=>{this.lowPriceInput = ref}}
                                        defaultValue={this.carData.low_price?this.carMoneyChange(this.carData.low_price):''}
                                        onEndEditing={()=>{this.saveCarData();}}
@@ -194,6 +198,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                                        placeholder='请输入'
                                        keyboardType={'numeric'}
                                        maxLength={6}
+                                       underlineColorAndroid='transparent'
                                        ref={(ref)=>{this.memberPrice = ref}}
                                        defaultValue={this.carData.member_price?this.carMoneyChange(this.carData.member_price):''}
                                        onEndEditing={()=>{this.saveCarData();}}
@@ -231,6 +236,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                                 style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(100),height:Pixel.getPixel(50)}]}
                                 placeholder='请填写'
                                 maxLength={50}
+                                underlineColorAndroid='transparent'
                                 defaultValue={this.carData.describe?this.carData.describe:''}
                                 onEndEditing={()=>{this.saveCarData();}}
                                 onChangeText={(text)=>{this.carData['describe']=text}}/>
@@ -278,6 +284,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                                            placeholder='请输入'
                                            keyboardType={'numeric'}
                                            maxLength={6}
+                                           underlineColorAndroid='transparent'
                                            defaultValue={this.carData.dealer_price?this.carMoneyChange(this.carData.dealer_price):''}
                                            onEndEditing={()=>{this.saveCarData();}}
                                            onChangeText={(text)=>{
