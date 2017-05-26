@@ -33,6 +33,7 @@ import TransferScene from './TransferScene';
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import * as webBackUrl from "../../constant/webBackUrl";
+import AccountWebScene from './AccountWebScene';
 export  default class AccountScene extends BaseComponent {
 
     constructor(props) {
@@ -41,7 +42,8 @@ export  default class AccountScene extends BaseComponent {
         this.state = {
             renderPlaceholderOnly: 'blank',
             source: [],
-            info: {}
+            info: {},
+            enter_id:''
         };
     }
 
@@ -101,6 +103,7 @@ export  default class AccountScene extends BaseComponent {
                             renderPlaceholderOnly: 'success',
                             source: ds.cloneWithRows([1]),
                             info: response.mjson.data.info,
+                            enter_id:id
 
                         });
                     } else {
@@ -109,7 +112,7 @@ export  default class AccountScene extends BaseComponent {
                             renderPlaceholderOnly: 'success',
                             source: ds.cloneWithRows(response.mjson.data.payLogs),
                             info: response.mjson.data.info,
-
+                            enter_id:id
                         });
                     }
                 },
@@ -198,7 +201,8 @@ export  default class AccountScene extends BaseComponent {
                           changePwd={()=>{
                               let maps={
                                   user_type:this.state.info.account_open_type,
-                                  reback_url:webBackUrl.CHANGEPWD
+                                  reback_url:webBackUrl.CHANGEPWD,
+                                  enter_base_id:this.state.enter_id
                               }
                               this.getWebUrl(Urls.USER_ACCOUNT_EDITPAYPWD,maps,'修改交易密码',
                               webBackUrl.CHANGEPWD);
@@ -206,7 +210,8 @@ export  default class AccountScene extends BaseComponent {
                           resetPwd={()=>{
                               let maps={
                                   user_type:this.state.info.account_open_type,
-                                  reback_url:webBackUrl.RESETPWD
+                                  reback_url:webBackUrl.RESETPWD,
+                                  enter_base_id:this.state.enter_id
                               }
                               this.getWebUrl(Urls.USER_ACCOUNT_RESETPAYPWD,maps,'重置交易密码',
                               webBackUrl.RESETPWD);
@@ -214,7 +219,8 @@ export  default class AccountScene extends BaseComponent {
                           changePhone={()=>{
                               let maps={
                                   user_type:this.state.info.account_open_type,
-                                  reback_url:webBackUrl.CHANGEPHONE
+                                  reback_url:webBackUrl.CHANGEPHONE,
+                                  enter_base_id:this.state.enter_id
                               }
                               this.getWebUrl(Urls.USER_BANK_EDITPHONE,maps,'修改手机号',
                               webBackUrl.CHANGEPHONE);
