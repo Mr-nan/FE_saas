@@ -382,7 +382,7 @@ export default class CarInfoScene extends BaseComponent {
                             <Text style={styles.carNumberText}>车源编号</Text>
                             <Text style={styles.carNumberText}>{carData.serial_num}</Text>
                         </View>
-                        <TouchableOpacity onPress={this.callClick}>
+                        <TouchableOpacity onPress={()=>{this.callClick(carData.show_shop_id)}}>
                             <View style={[styles.callView,carData.show_order==2 && {width:ScreenWidth/2}]}>
                                 <Image source={require('../../images/carSourceImages/phoneIcon.png')}/>
                                 <Text style={styles.callText}>电话咨询</Text>
@@ -438,10 +438,10 @@ export default class CarInfoScene extends BaseComponent {
     }
 
     // 拨打电话
-    callClick =() => {
+    callClick =(show_shop_id) => {
 
         // this.props.showModal(true);
-        request(AppUrls.CAR_CUSTOMER_PHONE_NUMBER,'post',{}).then((response) => {
+        request(AppUrls.CAR_CUSTOMER_PHONE_NUMBER,'post',{'enterprise_uid':show_shop_id}).then((response) => {
             // this.props.showModal(false);
             if(response.mjson.code==1)
             {
@@ -884,7 +884,7 @@ class CallView extends Component {
                   <TouchableOpacity style={[styles.sharedContaier,{alignItems:'center',justifyContent:'center'}]} onPress={()=>{this.isVisible(false,this.state.callData)}}>
                       <View style={styles.callModelView}>
                           {
-                              this.state.callData.phone &&(
+                              this.state.callData.phone!=='' &&(
                                   <TouchableOpacity onPress={()=>{this.callAction(this.state.callData.phone)}}>
                                       <View style={styles.callModelItem}>
                                           <Image source={require('../../images/carSourceImages/phoneIcon.png')}/>
@@ -894,7 +894,7 @@ class CallView extends Component {
                               )
                           }
                           {
-                              this.state.callData.shopsNumber && (
+                              this.state.callData.shopsNumber!=='' && (
                                   <TouchableOpacity onPress={()=>{this.callAction(this.state.callData.shopsNumber)}}>
                                       <View style={[styles.callModelItem,{marginTop:Pixel.getPixel(20)}]}>
                                           <Image source={require('../../images/carSourceImages/phoneIcon.png')}/>

@@ -85,6 +85,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                             <TextInput
                                 style={styles.textInput}
                                 placeholder='请输入'
+                                maxLength={2}
                                 defaultValue={this.carData.transfer_times}
                                 onEndEditing={()=>{this.saveCarData();}}
                                 keyboardType={'number-pad'}
@@ -109,6 +110,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                                 <TextInput
                                     style={styles.textInput}
                                     placeholder='请输入'
+                                    maxLength={3}
                                     defaultValue={this.carData.mileage}
                                     keyboardType={'number-pad'}
                                     onEndEditing={()=>{this.saveCarData();}}
@@ -136,11 +138,20 @@ export default class CarPublishSecondScene extends BaseComponent{
                         return(
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                             <TextInput style={styles.textInput}
+                                       ref={(ref)=>{this.dealerPriceInput = ref}}
                                        placeholder='请输入'
                                        keyboardType={'numeric'}
+                                       maxLength={6}
                                        defaultValue={this.carData.dealer_price?this.carMoneyChange(this.carData.dealer_price):''}
                                        onEndEditing={()=>{this.saveCarData();}}
-                                       onChangeText={(text)=>{this.carData['dealer_price']=text}}/>
+                                       onChangeText={(text)=>{
+
+                                           let moneyStr = this.chkPrice(text);
+                                           this.carData['dealer_price']= moneyStr;
+                                           this.dealerPriceInput.setNativeProps({
+                                               text: moneyStr,
+                                           });
+                                       }}/>
                             <Text style={styles.textInputTitle}>万元</Text>
                         </View>)
                     }
@@ -156,9 +167,17 @@ export default class CarPublishSecondScene extends BaseComponent{
                             <TextInput style={styles.textInput}
                                        placeholder='请输入'
                                        keyboardType={'numeric'}
+                                       maxLength={6}
+                                       ref={(ref)=>{this.lowPriceInput = ref}}
                                        defaultValue={this.carData.low_price?this.carMoneyChange(this.carData.low_price):''}
                                        onEndEditing={()=>{this.saveCarData();}}
-                                       onChangeText={(text)=>{this.carData['low_price']=text}}/>
+                                       onChangeText={(text)=>{
+                                           let moneyStr = this.chkPrice(text);
+                                           this.carData['low_price']= moneyStr;
+                                           this.lowPriceInput.setNativeProps({
+                                               text: moneyStr,
+                                           });
+                                       }}/>
                             <Text style={styles.textInputTitle}>万元</Text>
                         </View>)
                     }
@@ -174,9 +193,17 @@ export default class CarPublishSecondScene extends BaseComponent{
                             <TextInput style={styles.textInput}
                                        placeholder='请输入'
                                        keyboardType={'numeric'}
+                                       maxLength={6}
+                                       ref={(ref)=>{this.memberPrice = ref}}
                                        defaultValue={this.carData.member_price?this.carMoneyChange(this.carData.member_price):''}
                                        onEndEditing={()=>{this.saveCarData();}}
-                                       onChangeText={(text)=>{this.carData['member_price']=text}}/>
+                                       onChangeText={(text)=>{
+                                           let moneyStr = this.chkPrice(text);
+                                           this.carData['member_price']= moneyStr;
+                                           this.memberPrice.setNativeProps({
+                                               text: moneyStr,
+                                           });
+                                       }}/>
                             <Text style={styles.textInputTitle}>万元</Text>
                         </View>)
                     }
@@ -191,7 +218,7 @@ export default class CarPublishSecondScene extends BaseComponent{
             },{
                 title:'登记人',
                 isShowTag:true,
-                value:'请选择',
+                value:this.carData.registrant_name ? this.carData.registrant_name:'请选择',
                 isShowTail:true,
             },
                 {
@@ -246,16 +273,23 @@ export default class CarPublishSecondScene extends BaseComponent{
                     tailView:()=>{
                         return(
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                            <TextInput style={styles.textInput}
-                                       placeholder='请输入'
-                                       keyboardType={'numeric'}
-                                       defaultValue={this.carData.dealer_price?this.carMoneyChange(this.carData.dealer_price):''}
-                                       onChangeText={(text)=>{this.carData['dealer_price']=text}}
-                                       onEndEditing={()=>{this.saveCarData();}}
-                            />
+                                <TextInput style={styles.textInput}
+                                           ref={(ref)=>{this.dealerPriceInput = ref}}
+                                           placeholder='请输入'
+                                           keyboardType={'numeric'}
+                                           maxLength={6}
+                                           defaultValue={this.carData.dealer_price?this.carMoneyChange(this.carData.dealer_price):''}
+                                           onEndEditing={()=>{this.saveCarData();}}
+                                           onChangeText={(text)=>{
 
-                            <Text style={styles.textInputTitle}>万元</Text>
-                        </View>)
+                                               let moneyStr = this.chkPrice(text);
+                                               this.carData['dealer_price']= moneyStr;
+                                               this.dealerPriceInput.setNativeProps({
+                                                   text: moneyStr,
+                                               });
+                                           }}/>
+                                <Text style={styles.textInputTitle}>万元</Text>
+                            </View>)
                     }
                 },
                 {
@@ -266,15 +300,22 @@ export default class CarPublishSecondScene extends BaseComponent{
                     tailView:()=>{
                         return(
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                            <TextInput style={styles.textInput}
-                                       placeholder='请输入'
-                                       keyboardType={'numeric'}
-                                       defaultValue={this.carData.low_price?this.carMoneyChange(this.carData.low_price):''}
-                                       onChangeText={(text)=>{this.carData['low_price']=text}}
-                                       onEndEditing={()=>{this.saveCarData();}}
-                            />
-                            <Text style={styles.textInputTitle}>万元</Text>
-                        </View>)
+                                <TextInput style={styles.textInput}
+                                           placeholder='请输入'
+                                           keyboardType={'numeric'}
+                                           maxLength={6}
+                                           ref={(ref)=>{this.lowPriceInput = ref}}
+                                           defaultValue={this.carData.low_price?this.carMoneyChange(this.carData.low_price):''}
+                                           onEndEditing={()=>{this.saveCarData();}}
+                                           onChangeText={(text)=>{
+                                               let moneyStr = this.chkPrice(text);
+                                               this.carData['low_price']= moneyStr;
+                                               this.lowPriceInput.setNativeProps({
+                                                   text: moneyStr,
+                                               });
+                                           }}/>
+                                <Text style={styles.textInputTitle}>万元</Text>
+                            </View>)
                     }
                 },
                 {
@@ -285,17 +326,22 @@ export default class CarPublishSecondScene extends BaseComponent{
                     tailView:()=>{
                         return(
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                            <TextInput
-                                style={styles.textInput}
-                                placeholder='请输入'
-                                keyboardType={'numeric'}
-                                defaultValue={this.carData.member_price?this.carMoneyChange(this.carData.member_price):''}
-                                onChangeText={(text)=>{this.carData['member_price']=text}}
-                                onEndEditing={()=>{this.saveCarData();}}
-                            />
-
+                                <TextInput style={styles.textInput}
+                                           placeholder='请输入'
+                                           keyboardType={'numeric'}
+                                           maxLength={6}
+                                           ref={(ref)=>{this.memberPrice = ref}}
+                                           defaultValue={this.carData.member_price?this.carMoneyChange(this.carData.member_price):''}
+                                           onEndEditing={()=>{this.saveCarData();}}
+                                           onChangeText={(text)=>{
+                                               let moneyStr = this.chkPrice(text);
+                                               this.carData['member_price']= moneyStr;
+                                               this.memberPrice.setNativeProps({
+                                                   text: moneyStr,
+                                               });
+                                           }}/>
                                 <Text style={styles.textInputTitle}>万元</Text>
-                        </View>)
+                            </View>)
                     }
                 },
             ],
@@ -332,8 +378,8 @@ export default class CarPublishSecondScene extends BaseComponent{
     render(){
         return(
             <View style={styles.rootContainer}>
-                <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={Pixel.getTitlePixel(-64)}>
-                    <ScrollView style={{width:sceneWidth,height:Dimensions.get('window').height - Pixel.getTitlePixel(64)}}>
+                <KeyboardAvoidingView behavior='position'>
+                    <ScrollView>
                         <View style={{width:sceneWidth,paddingVertical:Pixel.getPixel(25),backgroundColor:'white'}}>
                             <Image style={{width:sceneWidth}} resizeMode={'contain'} source={require('../../images/carSourceImages/publishCarperpos2.png')}/>
                         </View>
@@ -410,7 +456,6 @@ export default class CarPublishSecondScene extends BaseComponent{
             }
     }
 
-
     cellCilck=(cellTitle)=>{
 
         if(cellTitle=='登记人')
@@ -449,7 +494,7 @@ export default class CarPublishSecondScene extends BaseComponent{
             return;
         }
 
-        if(this.carData.transfer_times==''||!this.carData.transfer_times)
+        if(this.carData.dealer_price==''||!this.carData.dealer_price)
         {
             this.props.showToast('请输入分销批发价');
             return;
@@ -494,6 +539,7 @@ export default class CarPublishSecondScene extends BaseComponent{
 
        this.titleData1[2][1].value = data.business_name;
        this.carData['registrant_id'] = data.id;
+       this.carData['registrant_name'] = data.business_name;
        this.carData['registrant_actual'] = data.is_control;
         this.updateUI();
     }
@@ -585,10 +631,18 @@ export default class CarPublishSecondScene extends BaseComponent{
         }else {
             return carMoneyStr;
         }
-
-
     }
 
+    chkPrice=(obj)=> {
+        obj = obj.replace(/[^\d.]/g, "");
+        //必须保证第一位为数字而不是.
+        obj = obj.replace(/^\./g, "");
+        //保证只有出现一个.而没有多个.
+        obj = obj.replace(/\.{2,}/g, ".");
+        //保证.只出现一次，而不能出现两次以上
+        obj = obj.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+        return obj;
+    }
 
 }
 
@@ -620,9 +674,9 @@ const styles = StyleSheet.create({
         fontSize:fontAndColor.BUTTONFONT30
     },
     textInput:{
-        height: 20,
+        height: Pixel.getPixel(20),
         borderColor: fontAndColor.COLORA0,
-        width:50,
+        width:Pixel.getPixel(50),
         textAlign:'right',
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
 

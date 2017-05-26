@@ -75,7 +75,7 @@ export default class CarSelectRegisterPersonScene extends BaseComponent{
         }
         return(
             <View style={styles.rootContainer}>
-                <ListView style={{marginBottom:Pixel.getPixel(64)}}
+                <ListView style={{flex:1}}
                           dataSource={this.state.dataSource}
                           renderRow={this.renderRow}
                           renderFooter={this.renderFooter}/>

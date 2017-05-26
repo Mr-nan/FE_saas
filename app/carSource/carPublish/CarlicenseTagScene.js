@@ -72,22 +72,23 @@ export default class CarDischargeScene extends  BaseComponent{
                         <Image style={styles.proContainer} source={proBg}>
                             <TextInput ref={(input)=>{this.firstInput = input}}
                                        style={IS_ANDROID ? styles.fontAndroidBold: styles.fontIOSBold} underlineColorAndroid='transparent'
-                                       defaultValue={this.initValue[1]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,1)}/>
+                                       defaultValue={this.initValue[1]} maxLength={1} keyboardType={'number-pad'}
+                                       onChangeText={(text)=>this._onPlateChange(text,1)}/>
                             <TextInput ref={(input)=>{this.secondInput = input}}
                                        style={IS_ANDROID ? styles.fontAndroidBold: styles.fontIOSBold} underlineColorAndroid='transparent'
-                                       defaultValue={this.initValue[2]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,2)}/>
+                                       defaultValue={this.initValue[2]} maxLength={1} keyboardType={'number-pad'} onChangeText={(text)=>this._onPlateChange(text,2)}/>
                             <TextInput ref={(input)=>{this.threeInput = input}}
                                        style={IS_ANDROID ? styles.fontAndroidBold: styles.fontIOSBold} underlineColorAndroid='transparent'
-                                       defaultValue={this.initValue[3]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,3)}/>
+                                       defaultValue={this.initValue[3]} maxLength={1} keyboardType={'number-pad'} onChangeText={(text)=>this._onPlateChange(text,3)}/>
                             <TextInput ref={(input)=>{this.fourInput = input}}
                                        style={IS_ANDROID ? styles.fontAndroidBold: styles.fontIOSBold} underlineColorAndroid='transparent'
-                                       defaultValue={this.initValue[4]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,4)}/>
+                                       defaultValue={this.initValue[4]} maxLength={1} keyboardType={'number-pad'} onChangeText={(text)=>this._onPlateChange(text,4)}/>
                             <TextInput ref={(input)=>{this.fiveInput = input}}
                                        style={IS_ANDROID ? styles.fontAndroidBold: styles.fontIOSBold} underlineColorAndroid='transparent'
-                                       defaultValue={this.initValue[5]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,5)}/>
+                                       defaultValue={this.initValue[5]} maxLength={1} keyboardType={'number-pad'} onChangeText={(text)=>this._onPlateChange(text,5)}/>
                             <TextInput ref={(input)=>{this.sixInput = input}}
                                        style={IS_ANDROID ? styles.fontAndroidBold: styles.fontIOSBold} underlineColorAndroid='transparent'
-                                       defaultValue={this.initValue[6]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,6)}/>
+                                       defaultValue={this.initValue[6]} maxLength={1} keyboardType={'number-pad'} onChangeText={(text)=>this._onPlateChange(text,6)}/>
                         </Image>
                     </View>
                 </Image>

@@ -78,8 +78,15 @@ export default class CarPublishFirstScene extends BaseComponent{
     // 构造
       constructor(props) {
         super(props);
-
           this.carType ='二手车';
+          this.enterpriseList = [];
+          this.scanType = [
+              {model_name: '扫描前风挡'},
+              {model_name: '扫描行驶证'}
+          ];
+          this.modelData = [];
+          this.modelInfo = {};
+          this.carData={'v_type':1};
           this.titleData1=[
               [
                   {
@@ -100,8 +107,11 @@ export default class CarPublishFirstScene extends BaseComponent{
                                              maxLength={17}
                                              editable={this.props.carID?false:true}
                                              onChangeText={this._onVinChange}
-                                             placeholderTextColor={fontAndColor.COLORA4}
+                                             onFocus={()=>{
+                                                this.carData.vin ='';
+                                             }}
                                              clearTextOnFocus={true}
+                                             placeholderTextColor={fontAndColor.COLORA4}
                                              ref={(input) => {this.vinInput = input}}
                                              keyboardType={'ascii-capable'}
                                              placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
@@ -226,7 +236,6 @@ export default class CarPublishFirstScene extends BaseComponent{
                                              onChangeText={this._onVinChange}
                                              placeholderTextColor={fontAndColor.COLORA4}
                                              keyboardType={'ascii-capable'}
-                                             clearTextOnFocus={true}
                                              ref={(input) => {this.vinInput = input}}
                                              placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
                                   />
@@ -322,14 +331,7 @@ export default class CarPublishFirstScene extends BaseComponent{
               ]
 
           ];
-          this.enterpriseList = [];
-          this.scanType = [
-              {model_name: '扫描前风挡'},
-              {model_name: '扫描行驶证'}
-          ];
-          this.modelData = [];
-          this.modelInfo = {};
-          this.carData={'v_type':1};
+
           this.state = {
               titleData:this.titleData1,
               isDateTimePickerVisible:false,
@@ -343,8 +345,8 @@ export default class CarPublishFirstScene extends BaseComponent{
 
         return(
             <View style={styles.rootContainer}>
-                <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={Pixel.getTitlePixel(-64)}>
-                    <ScrollView style={{width:sceneWidth,height:Dimensions.get('window').height -Pixel.getTitlePixel(64)}}>
+                <KeyboardAvoidingView behavior='position'>
+                    <ScrollView>
                         <View style={{width:sceneWidth,paddingVertical:Pixel.getPixel(25),backgroundColor:'white'}}>
                         <Image style={{width:sceneWidth}} resizeMode={'contain'} source={require('../../images/carSourceImages/publishCarperpos1.png')}/>
                         </View>
@@ -556,7 +558,7 @@ export default class CarPublishFirstScene extends BaseComponent{
 
     footBtnClick=()=>{
 
-        if(!this.carData.vin){
+        if(!this.carData.vin||this.carData.vin==''){
             this.props.showToast('请输入正确的车架号');
             return;
         }
@@ -566,7 +568,7 @@ export default class CarPublishFirstScene extends BaseComponent{
             this.props.showToast('选择车型');
             return;
         }
-        if(!this.carData.displacement)
+        if(!this.carData.displacement||this.carData.displacement=='')
         {
             this.props.showToast('输入排量');
             return;
@@ -591,10 +593,23 @@ export default class CarPublishFirstScene extends BaseComponent{
             this.props.showToast('选择出厂日期');
             return;
         }
-        if(!this.carData.init_reg && this.carData.v_type==1)
-        {
-            this.props.showToast('选择出厂日期');
-            return;
+
+        if(this.carData.v_type==1){
+
+            if(!this.carData.init_reg)
+            {
+                this.props.showToast('选择初登日期');
+                return;
+            }
+
+            let manufactureData = new  Date(this.carData.manufacture);
+            let initReg = new  Date(this.carData.init_reg);
+            if(manufactureData.getTime() > initReg.getTime())
+            {
+                this.props.showToast('初登日期不等大于出厂日期');
+                return;
+            }
+
         }
 
         if(this.carData.v_type!==1){
@@ -700,10 +715,11 @@ export default class CarPublishFirstScene extends BaseComponent{
     };
     //车架号改变
     _onVinChange = (text) => {
+
+
         if (text.length === 17) {
             this._showLoading();
             this.vinInput.blur();
-
             Net.request(AppUrls.VININFO, 'post',{vin:text}).then(
                 (response) => {
                     this._closeLoading();
@@ -954,7 +970,7 @@ export default class CarPublishFirstScene extends BaseComponent{
 
         const date = new Date();
         date.setTime(time);
-        return(date.getFullYear()+"-"+(this.PrefixInteger(date.getMonth()+1,2)));
+        return(date.getFullYear()+"-"+(this.PrefixInteger(date.getMonth()+1,2)))+"-"+(this.PrefixInteger(date.getDay()+1,2));
 
     };
     PrefixInteger =(num,length)=>{
@@ -994,11 +1010,12 @@ const styles = StyleSheet.create({
         fontSize:fontAndColor.BUTTONFONT30
     },
     textInput:{
-        height: 20,
+        height: Pixel.getPixel(30),
         borderColor: fontAndColor.COLORA0,
-        width:160,
+        width:Pixel.getPixel(160),
         textAlign:'right',
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+        backgroundColor:'yellow'
     },
     scanImage: {
         height: Pixel.getPixel(18),
