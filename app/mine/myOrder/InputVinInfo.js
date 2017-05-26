@@ -30,7 +30,7 @@ export default class InputVinInfo extends Component {
         };
     }
 
-    _hiedModal = () => {
+    _hideModal = () => {
         this.setState({
             modalVisible: false
         });
@@ -57,14 +57,14 @@ export default class InputVinInfo extends Component {
                 visible={this.state.modalVisible}
                 onRequestClose={() => {
                 }}>
-                <View style={styles.container}>
+                <TouchableOpacity style={styles.container} onPress={this._hideModal}>
                     <View>
                         <ListView
                             dataSource={this.state.dataSource}
                             renderRow={this._renderRow}
                         />
                     </View>
-                </View>
+                </TouchableOpacity>
             </Modal>
         );
     }
@@ -79,7 +79,7 @@ export default class InputVinInfo extends Component {
                     activeOpacity={0.8}
                     key={rowID}
                     onPress={() => {
-                        this.props.vinPress(this.mType, rowID); this._hiedModal()
+                        this.props.vinPress(this.mType, rowID); this._hideModal
                     }}>
                     <View style={styles.rowStyle}>
                         <Text style={styles.fontMain}>{rowData.model_name}</Text>
@@ -97,7 +97,7 @@ export default class InputVinInfo extends Component {
                             name: 'InputVinInfoScene',
                             component: InputVinInfoScene,
                             params: {}
-                        }); this._hiedModal()
+                        }); this._hideModal()
                     }}>
                     <View style={styles.rowStyle}>
                         <Text style={styles.fontMain}>{rowData.model_name}</Text>

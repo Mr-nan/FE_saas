@@ -676,3 +676,7 @@ export const ORDER_REVERT = BASEURL + V +'order/revert';
  *  卖家处理取消订单
  */
 export const ORDER_CANCEL_HANDLER = BASEURL + V +'order/cancelHandler';
+/**
+ *  车辆定价检查
+ */
+export const ORDER_CHECK_PRICE = BASEURL + V +'order/checkPrice';

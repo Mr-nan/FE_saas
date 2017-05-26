@@ -47,6 +47,7 @@ export default class TransactionPrice extends BaseComponent {
                                 updateAmount: this.updateAmount,
                                 carId: this.props.carId,
                                 orderId: this.props.orderId,
+                                isShowFinance: this.props.isShowFinance
                             }
                         });
                     }}>
@@ -90,6 +91,7 @@ export default class TransactionPrice extends BaseComponent {
     }
 
     updateAmount = (newAmount) => {
+        this.props.updateCarAmount(newAmount);
         this.setState({
             amount: newAmount,
             deposit: newAmount / 10

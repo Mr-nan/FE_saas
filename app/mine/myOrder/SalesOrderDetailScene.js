@@ -15,7 +15,8 @@ import {
     Dimensions,
     NativeModules,
     BackAndroid,
-    InteractionManager
+    InteractionManager,
+    TextInput
 } from  'react-native'
 
 const {width, height} = Dimensions.get('window');
@@ -36,10 +37,10 @@ import ContactLayout from "./component/ContactLayout";
 import GetCarCountDown from "./component/GetCarCountDown";
 import DepositCountDown from "./component/DepositCountDown";
 import CheckStand from "../../finance/CheckStand";
+import * as Net from '../../utils/RequestUtil';
 const Pixel = new PixelUtil();
 
 const IS_ANDROID = Platform.OS === 'android';
-let items = [];
 
 export default class SalesOrderDetailScene extends BaseComponent {
 
@@ -55,9 +56,15 @@ export default class SalesOrderDetailScene extends BaseComponent {
         this.topState = -1;
         this.bottomState = -1;
         this.contactData = {};
+        this.carAmount = 156000;
+        this.financeInfo = {};
 
         this.modelData = [];
-        this.scanType = [{model_name: '扫描前风挡'}, {model_name: '扫描行驶证'}, {model_name: '手动输入'}];
+        this.modelInfo = {};
+        this.carData = {'v_type': 1};
+
+        this.modelData = [];
+        this.scanType = [{model_name: '扫描前风挡'}, {model_name: '扫描行驶证'}];
 
         this.state = {
             dataSource: ds
@@ -79,6 +86,45 @@ export default class SalesOrderDetailScene extends BaseComponent {
          });*/
         this.loadData();
     };
+
+    updateCarAmount = (newAmount) => {
+        this.props.showModal(true);
+        this.carAmount = newAmount;
+    };
+
+    isShowFinance = (financeInfo) => {
+        if (true) {
+            this.financeInfo = financeInfo;
+            this.mList = [];
+            this.mList = ['0', '1', '2', '3', '4', '5', '6', '7', '9'];
+            this.setState({
+                dataSource: this.state.dataSource.cloneWithRows(this.mList),
+                isRefreshing: false,
+                renderPlaceholderOnly: 'success'
+            });
+        }
+        this.props.showModal(false);
+    };
+
+    savePrice = (price) => {
+        let url = AppUrls.ORDER_SAVE_PRICE;
+        request(url, 'post', {
+            car_id: this.orderDetail.orders_item_data[0].car_id,
+            order_id: this.orderDetail.id,
+            pricing_amount: price
+        }).then((response) => {
+            if (response.mjson.data.length) {
+                this.props.showModal(false);
+                this.loadData();
+            } else {
+                this.props.showToast(response.mjson.msg);
+            }
+        }, (error) => {
+            //this.props.showModal(false);
+            //console.log("成交价提交失败");
+            this.props.showToast('成交价提交失败');
+        });
+    }
 
     loadData = () => {
         let url = AppUrls.ORDER_DETAIL;
@@ -264,7 +310,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
-
+                                this.props.showModal(true);
+                                this.savePrice(this.carAmount);
                             }}>
                             <View style={styles.buttonConfirm}>
                                 <Text style={{color: '#ffffff'}}>确认</Text>
@@ -373,7 +420,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
         switch (orderState) {
             case 0:  //未定价
                 this.mList = [];
-                this.mList = ['0', '1', '2', '3', '4', '5', '6', '7', '9'];
+                this.mList = ['0', '1', '2', '4', '5', '6', '7', '9'];
                 this.contactData = {
                     layoutTitle: '确认成交价',
                     layoutContent: '确认成交价，待买家付定金，确认后价格不可修改。',
@@ -506,6 +553,63 @@ export default class SalesOrderDetailScene extends BaseComponent {
         }
     };
 
+    _onVinChange = (text) => {
+        if (text.length === 17) {
+            this.props.showModal(true);
+            Net.request(AppUrls.VININFO, 'post', {vin: text}).then(
+                (response) => {
+                    this.props.showModal(false);
+                    if (response.mycode === 1) {
+                        let rd = response.mjson.data;
+                        if (rd.length === 0) {
+                            this.props.showToast('车架号校验失败');
+                        } else if (rd.length === 1) {
+                            this.modelInfo['brand_id'] = rd[0].brand_id;
+                            this.modelInfo['model_id'] = rd[0].model_id;
+                            this.modelInfo['series_id'] = rd[0].series_id;
+                            this.modelInfo['model_year'] = rd[0].model_year;
+                            this.modelInfo['model_name'] = rd[0].model_name;
+
+                            this.titleData1[0][2].value = rd[0].model_name;
+                            this.titleData1[0][4].value = rd[0].model_emission_standard;
+                            this.titleData1[1][0].value = rd[0].model_year + '-6-1';
+                            this.titleData1[1][1].value = rd[0].model_year + '-6-1';
+
+                            this.titleData2[0][2].value = rd[0].model_name;
+                            this.titleData2[0][4].value = rd[0].model_emission_standard;
+                            this.titleData2[1][0].value = rd[0].model_year + '-6-1';
+
+                            this.carData['manufacture'] = rd[0].model_year + '-6-1';
+                            if (this.carType == '二手车') {
+                                this.carData['init_reg'] = rd[0].model_year + '-6-1';
+                            }
+
+                            this.carData['model_id'] = rd[0].model_id;
+                            this.carData['emission_standards'] = rd[0].model_emission_standard;
+                            this.carData['series_id'] = rd[0].series_id;
+
+                            this.carData['vin'] = text;
+                            this.upTitleData();
+
+                        } else if (rd.length > 1) {
+
+                            this.carData['vin'] = text;
+                            this.modelData = response.mjson.data;
+                            this.vinModal.refresh(this.modelData);
+                            this.vinModal.openModal(0);
+                        }
+                    } else {
+                        this.props.showToast('车架号校验失败');
+                    }
+                },
+                (error) => {
+                    //this.props.showModal(false);
+                    this.props.showToast('车架号校验失败');
+                }
+            );
+        }
+    };
+
     cancelOrder = () => {
         this.props.showModal(true);
         let url = AppUrls.ORDER_CANCEL;
@@ -542,7 +646,6 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您
                         补足成交价与贷款本息，'/>
                 <View style={{flex: 1}}/>
-                {console.log('this.bottomState===' + this.bottomState)}
                 {this.initDetailPageBottom(this.bottomState)}
             </View>
         )
@@ -577,7 +680,9 @@ export default class SalesOrderDetailScene extends BaseComponent {
             )
         } else if (rowData === '2') {
             return (
-                <TransactionPrice amount={20000} navigator={this.props.navigator}
+                <TransactionPrice amount={this.carAmount} navigator={this.props.navigator}
+                                  updateCarAmount={this.updateCarAmount}
+                                  isShowFinance={this.isShowFinance}
                                   carId={this.orderDetail.orders_item_data[0].car_id}
                                   orderId={this.orderDetail.id}/>
 
@@ -712,6 +817,21 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         color: fontAndColor.COLORB2
                     }}>*</Text>
                     <Text>车架号</Text>
+                    <TextInput style={{
+                        marginLeft: Pixel.getPixel(10),
+                        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                        padding: 0,
+                        width:Pixel.getPixel(180)
+                    }}
+                               placeholder='输入车架号'
+                               underlineColorAndroid='transparent'
+                               maxLength={17}
+                               onChangeText={this._onVinChange}
+                               placeholderTextColor={fontAndColor.COLORA4}
+                               ref={(input) => {
+                                   this.vinInput = input
+                               }}
+                               placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}/>
                     <View style={{flex: 1}}/>
                     <TouchableOpacity
                         activeOpacity={0.6}
@@ -719,10 +839,10 @@ export default class SalesOrderDetailScene extends BaseComponent {
                             this._scanPress()
                         }}>
                         <View style={{flexDirection: 'row'}}>
-                            <Text style={{color: fontAndColor.COLORA2}}>扫描</Text>
+                            {/*<Text style={{color: fontAndColor.COLORA2}}>扫描</Text>*/}
                             <Image
-                                style={styles.backIcon}
-                                source={require('../../../images/mainImage/celljiantou.png')}/>
+                                style={{marginRight: Pixel.getPixel(15)}}
+                                source={require('../../../images/mainImage/scanning.png')}/>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -962,6 +1082,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         height: Pixel.getPixel(44),
         backgroundColor: '#ffffff',
+        justifyContent: 'center'
     },
     expButton: {
         marginBottom: Pixel.getPixel(20),

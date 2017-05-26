@@ -29,9 +29,6 @@ export default class InputAmountScene extends BaseComponent {
     constructor(props) {
         super(props);
         this.number = this.props.amount;
-/*        this.state = {
-            number: this.props.amount
-        }*/
     }
 
     render() {
@@ -79,8 +76,11 @@ export default class InputAmountScene extends BaseComponent {
             <TouchableOpacity
                 onPress={() => {
                     if (this.isNumberByHundred(this.number)) {
-                        this.props.showModal(true);
-                        this.savePrice(this.number);
+                        //this.props.showModal(true);
+                        //this.checkPrice(this.number);
+                        this.props.updateAmount(this.number);
+                        this.checkPrice(this.number);
+                        this.backPage();
                     } else {
                         this.props.showToast("请输入整百金额");
                     }
@@ -92,20 +92,20 @@ export default class InputAmountScene extends BaseComponent {
         )
     }
 
-    savePrice = (price) => {
-        let url = AppUrls.ORDER_SAVE_PRICE;
+    checkPrice = (price) => {
+        let url = AppUrls.ORDER_CHECK_PRICE;
         request(url, 'post', {
             car_id: this.props.carId,
             order_id: this.props.orderId,
             pricing_amount: price
         }).then((response) => {
             this.props.showModal(false);
-            this.props.updateAmount(this.number);
-            this.backPage();
+            //let isShowFin = response.mjson.data.response.is_show_finance;
+            this.props.isShowFinance(response.mjson.data.response);
         }, (error) => {
             //this.props.showModal(false);
             //console.log("成交价提交失败");
-            this.props.showToast('成交价提交失败');
+            this.props.showToast('车辆定价检查失败');
         });
     }
 }

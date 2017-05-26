@@ -254,8 +254,8 @@ export default class OrderListScene extends BaseComponent {
     }
 
     _renderRow = (rowData, selectionID, rowID) => {
-        let initRegDate = rowData.car.length ? this.dateReversal(rowData.car[0].init_reg + '000') : 'asdada';
-        let imageUrl = rowData.car.length ? rowData.car[0].thumbs : '111';
+        let initRegDate = rowData.car.length ? this.dateReversal(rowData.car[0].init_reg + '000') : '未公开';
+        let imageUrl = rowData.car.length ? rowData.car[0].thumbs : [];
         return (
             <TouchableOpacity
                 onPress={() => {
