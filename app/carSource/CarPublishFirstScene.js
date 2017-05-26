@@ -57,7 +57,6 @@ export default class CarPublishFirstScene extends BaseComponent{
                     let enters = JSON.parse(data.result);
                     if(enters.length === 1){
 
-                        console.log(enters[0].enterprise_uid);
                         this.carData['show_shop_id'] = enters[0].enterprise_uid;
                         this.getLocalityCarData();
 
@@ -409,9 +408,13 @@ export default class CarPublishFirstScene extends BaseComponent{
 
     loadCarData=()=>{
 
+        this.props.showModal(true);
+
         Net.request(AppUrls.CAR_DETAIL, 'post', {
             id: this.props.carID,
         }).then((response) => {
+
+            this.props.showModal(false);
 
             if(response.mycode==1){
                 this.carData = response.mjson.data;
@@ -419,13 +422,12 @@ export default class CarPublishFirstScene extends BaseComponent{
                 this.carData.init_reg=response.mjson.data.init_reg!=''? this.dateReversal(response.mjson.data.init_reg+'000'):'';
                 this.carData.emission_standards = response.mjson.data.emission_standards_en;
                 this.setCarData();
-            }else {
-
             }
 
 
         }, (error) => {
-
+            this.props.showModal(false);
+            this.props.showToast(error.msg);
         });
 
     }
@@ -684,6 +686,7 @@ export default class CarPublishFirstScene extends BaseComponent{
             this.carData['emission_standards'] = this.modelData[index].model_emission_standard;
             this.carData['series_id'] = this.modelData[index].series_id;
             this.carData['model_name'] = this.modelData[index].model_name;
+            this.carData['brand_id'] = this.modelData[index].brand_id;
 
             if(this.modelData[index].model_liter){
                 this.carData['displacement']=this.modelData[index].model_liter;
@@ -741,6 +744,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                             this.carData['emission_standards'] = rd[0].model_emission_standard;
                             this.carData['series_id'] = rd[0].series_id;
                             this.carData['model_name'] = rd[0].model_name;
+                            this.carData['brand_id'] = rd[0].brand_id;
                             if(rd[0].model_liter){
                                 this.carData['displacement']=rd[0].model_liter;
                                 this.displacementInput.setNativeProps({
@@ -823,10 +827,6 @@ export default class CarPublishFirstScene extends BaseComponent{
     }
     _checkedCarClick=(carObject)=>{
 
-        this.modelInfo['brand_id'] = carObject.brand_id;
-        this.modelInfo['model_id'] = carObject.model_id;
-        this.modelInfo['series_id'] = carObject.series_id;
-        this.modelInfo['model_name'] = carObject.model_name;
 
         if(carObject.liter){
             this.carData['displacement']=carObject.liter;
@@ -851,9 +851,9 @@ export default class CarPublishFirstScene extends BaseComponent{
         }
         this.carData['model_id'] = carObject.model_id;
         this.carData['emission_standards'] = carObject.discharge_standard;
-        this.carData['carObject.series_id'] = carObject.series_id;
+        this.carData['series_id'] = carObject.series_id;
         this.carData['model_name'] = carObject.model_name;
-
+        this.carData['brand_id']=carObject.brand_id;
 
 
         this.upTitleData();
@@ -926,7 +926,7 @@ export default class CarPublishFirstScene extends BaseComponent{
             component: AutoConfig,
             params: {
 
-                modelID:this.modelInfo['model_id'],
+                modelID:this.carData.model_id,
                 carConfigurationData:[],
             }
         }

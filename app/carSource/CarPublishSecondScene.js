@@ -494,6 +494,7 @@ export default class CarPublishSecondScene extends BaseComponent{
 
        this.titleData1[2][1].value = data.business_name;
        this.carData['registrant_id'] = data.id;
+       this.carData['registrant_actual'] = data.is_control;
         this.updateUI();
     }
 

@@ -66,37 +66,20 @@ export default class CarSelectRegisterPersonScene extends BaseComponent{
 
     render(){
 
-        if (this.state.renderPlaceholderOnly == 'null') {
-            return (
-                <View style={{flex:1}}>
-                    {this.loadView()}
-                    {/*<TouchableOpacity onPress={()=>{this.addPersonClick()}}>*/}
-                        {/*<View style={styles.footView}>*/}
-                            {/*<Image source={require('../../images/carSourceImages/addPerson.png')}/>*/}
-                            {/*<Text style={{color:fontAndColor.COLORB0,fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28) }}>  添加新登记人  </Text>*/}
-                        {/*</View>*/}
-                    {/*</TouchableOpacity>*/}
-                    <AllNavigationView title="选择登记人" backIconClick={this.backPage} renderRihtFootView={this.renderRightFootView}/>
-                </View>);
-        }else if (this.state.renderPlaceholderOnly !== 'success') {
+        if (this.state.renderPlaceholderOnly !== 'success') {
             return (
                 <View style={{flex:1,backgroundColor:'white'}}>
                     {this.loadView()}
-                    <AllNavigationView title="选择登记人" backIconClick={this.backPage} renderRihtFootView={this.renderRightFootView}/>
+                    <AllNavigationView title="选择登记人" backIconClick={this.backPage}/>
                 </View>);
         }
         return(
             <View style={styles.rootContainer}>
                 <ListView style={{marginBottom:Pixel.getPixel(64)}}
                           dataSource={this.state.dataSource}
-                          renderRow={this.renderRow}/>
-                {/*<TouchableOpacity onPress={()=>{this.addPersonClick()}}>*/}
-                    {/*<View style={styles.footView}>*/}
-                        {/*<Image source={require('../../images/carSourceImages/addPerson.png')}/>*/}
-                        {/*<Text style={{color:fontAndColor.COLORB0,fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28) }}>  添加新登记人  </Text>*/}
-                    {/*</View>*/}
-                {/*</TouchableOpacity>*/}
-                <AllNavigationView title="选择登记人" backIconClick={this.backPage} renderRihtFootView={this.renderRightFootView}/>
+                          renderRow={this.renderRow}
+                          renderFooter={this.renderFooter}/>
+                <AllNavigationView title="选择登记人" backIconClick={this.backPage}/>
             </View>
         )
     }
@@ -109,15 +92,10 @@ export default class CarSelectRegisterPersonScene extends BaseComponent{
 
             if(response.mycode == 1){
 
-                if(response.mjson.data.length>0){
                     this.setState({
                         renderPlaceholderOnly: 'success',
                         dataSource:this.state.dataSource.cloneWithRows(response.mjson.data)
                     });
-                }else {
-                    this.setState({renderPlaceholderOnly: 'null'});
-                }
-
 
             }else {
                 this.setState({renderPlaceholderOnly: 'error'});
@@ -138,12 +116,26 @@ export default class CarSelectRegisterPersonScene extends BaseComponent{
                     this.props.selectPersonClick(data);
                     this.backPage()}}>
                 <View style={styles.cellView}>
-                    <Text style={[styles.cellText,data==this.props.currentPerson && {color:fontAndColor.COLORB0}]}>{data.business_name+"  "+data.cardid}</Text>
+                    <Text style={[styles.cellText,data.business_name==this.props.currentPerson && {color:fontAndColor.COLORB0}]}>{data.business_name+"  "+data.phone}</Text>
                 </View>
             </TouchableOpacity>
         )
     }
 
+    renderFooter =()=> {
+        return(
+            <View style={{flex:1,marginTop:Pixel.getPixel(50),justifyContent:'center',alignItems:'center'}}>
+
+            <TouchableOpacity onPress={()=>{this.addPersonClick()}}>
+                <View style={styles.footView}>
+                    <Image source={require('../../images/carSourceImages/addPerson.png')}/>
+                    <Text style={{color:fontAndColor.COLORB0,fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28) }}>  添加新登记人  </Text>
+                </View>
+            </TouchableOpacity>
+            </View>
+
+        )
+    }
     addPersonClick=()=>{
 
         let navigatorParams = {
@@ -200,10 +192,6 @@ const styles = StyleSheet.create({
         borderWidth:Pixel.getPixel(1),
         borderColor:fontAndColor.COLORB0,
         borderRadius:3,
-        left:Pixel.getPixel(15),
-        right:Pixel.getPixel(15),
-        bottom:Pixel.getPixel(20),
-        position:'absolute',
         flexDirection:'row',
         justifyContent:'center',
         alignItems:'center',

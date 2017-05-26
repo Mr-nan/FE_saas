@@ -137,6 +137,7 @@ export default class CarUpImageScene extends BaseComponent{
               },
           ];
 
+
           this.titleData = [];
           this.results = [];
           this.carData = this.props.carData;
@@ -147,11 +148,23 @@ export default class CarUpImageScene extends BaseComponent{
 
               this.titleData.push(...this.usedCarTitleData);
 
+              if(this.carData.registrant_actual == 0){
+                  this.titleData.push({
+                      name: 'ownership_sale',
+                      title:'权属声明/买卖协议',
+                      subTitle:'至多5张',
+                      number:5,
+                      imgArray:[],
+                      explain:'1',
+                  })
+              }
+
           }else if(this.carData.v_type==3){
 
               this.titleData.push(...this.importCarTitleData);
-
           }
+
+
 
           if(this.carData.pictures){
               let imgas = JSON.parse(this.carData.pictures);
