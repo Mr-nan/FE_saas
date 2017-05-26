@@ -589,7 +589,7 @@ export default class CarPublishFirstScene extends BaseComponent{
         }
         if(!this.carData.init_reg && this.carData.v_type==1)
         {
-            this.props.showToast('选择出厂日期');
+            this.props.showToast('选择初登日期');
             return;
         }
 
