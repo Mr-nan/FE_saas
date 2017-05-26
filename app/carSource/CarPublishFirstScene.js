@@ -350,8 +350,8 @@ export default class CarPublishFirstScene extends BaseComponent{
         return(
             <View style={styles.rootContainer}>
                 <KeyboardAvoidingView behavior='position'>
-                    <ScrollView>
-                        <View style={{width:sceneWidth,paddingVertical:Pixel.getPixel(25),backgroundColor:'white'}}>
+                    <ScrollView keyboardShouldPersistTaps={'handled'} >
+                        <View style={{width:sceneWidth,paddingVertical:Pixel.getPixel(25),backgroundColor:'white',marginTop:Pixel.getTitlePixel(64)}}>
                         <Image style={{width:sceneWidth}} resizeMode={'contain'} source={require('../../images/carSourceImages/publishCarperpos1.png')}/>
                         </View>
                         {
@@ -393,9 +393,9 @@ export default class CarPublishFirstScene extends BaseComponent{
                                 </View>
                             </TouchableOpacity>
                         </View>
+                            <AllNavigationView title="车辆基本信息" backIconClick={this.backPage}/>
                     </ScrollView>
                 </KeyboardAvoidingView>
-                <AllNavigationView title="车辆基本信息" backIconClick={this.backPage}/>
                 <VinInfo viewData={this.scanType} vinPress={this._vinPress} ref={(modal) => {this.vinModal = modal}}/>
                 <DateTimePicker
                     titleIOS="请选择日期"
@@ -610,7 +610,7 @@ export default class CarPublishFirstScene extends BaseComponent{
             let initReg = new  Date(this.carData.init_reg);
             if(manufactureData.getTime() > initReg.getTime())
             {
-                this.props.showToast('初登日期不等大于出厂日期');
+                this.props.showToast('初登日期不能大于出厂日期');
                 return;
             }
 
@@ -991,13 +991,11 @@ const styles = StyleSheet.create({
     rootContainer:{
         flex:1,
         backgroundColor:fontAndColor.COLORA3,
-        paddingTop:Pixel.getTitlePixel(64),
     },
     footContainer:{
         justifyContent:'center',
         alignItems:'center',
         marginTop:Pixel.getPixel(20),
-        marginBottom:Pixel.getPixel(20),
 
     },
     footView:{
@@ -1007,6 +1005,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
         width:sceneWidth-Pixel.getPixel(30),
         borderRadius:Pixel.getPixel(3),
+        marginBottom:Pixel.getPixel(20),
     },
     footText:{
         textAlign:'center',
@@ -1019,9 +1018,9 @@ const styles = StyleSheet.create({
         width:Pixel.getPixel(160),
         textAlign:'right',
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-        backgroundColor:'yellow',
         paddingTop:0,
         paddingBottom:0,
+        backgroundColor:'white'
     },
     scanImage: {
         height: Pixel.getPixel(18),

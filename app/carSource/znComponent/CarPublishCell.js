@@ -80,7 +80,7 @@ export class CellSelectView extends Component{
                     }
                     <Text style={styles.cellTitle}>{cellData.title}</Text>
                 </View>
-                <View style={{flexDirection:'row',width:Pixel.getPixel(350),height:Pixel.getPixel(40),alignItems:'center',marginTop:Pixel.getPixel(10)}}>
+                <View style={{flexDirection:'row',width:Pixel.getPixel(290),height:Pixel.getPixel(40),alignItems:'center',marginTop:Pixel.getPixel(10),backgroundColor:'white'}}>
                     {
                         cellData.selectDict.data.map((data,index)=>{
                             return (
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
         justifyContent:'center',
         borderRadius:3,
-        width:Pixel.getPixel(100),
+        width:Pixel.getPixel(85),
         height:Pixel.getPixel(32),
     },
     checkedItemText:{

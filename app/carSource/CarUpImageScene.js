@@ -325,9 +325,11 @@ export default class CarUpImageScene extends BaseComponent{
                 }, (error) => {
 
                     this.props.showModal(false);
+
                     if(error.mycode === -300 || error.mycode === -500){
                         this.showToast('网络连接失败');
-                    }else if(response.mycode == 600010){
+
+                    }else if(error.mycode == 600010){
                         if(this.carData.show_shop_id){
                             StorageUtil.mRemoveItem(String(this.carData.show_shop_id));
                         }
@@ -335,7 +337,7 @@ export default class CarUpImageScene extends BaseComponent{
                             this.successModal.openModal();
                         }else {
                             this.timer = setTimeout(
-                                () => { this.successModal.openModal(); },
+                                () => { this.successModal.openModal();},
                                 500
                             );
                         }
