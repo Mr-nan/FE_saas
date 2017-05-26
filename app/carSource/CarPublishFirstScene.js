@@ -973,6 +973,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
         marginTop:Pixel.getPixel(20),
         marginBottom:Pixel.getPixel(20),
+        
 
     },
     footView:{
