@@ -41,6 +41,13 @@ export  default class AllSelectCompanyScene extends BaseComponent {
         this.getData()
     }
 
+    allRefresh = () => {
+        this.setState({
+            renderPlaceholderOnly:'loading'
+        });
+        this.getData();
+    }
+
     getData = () => {
         let maps = {
             api: Urls.LOAN_SUBJECT

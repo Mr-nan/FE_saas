@@ -310,6 +310,13 @@ export const USER_ACCOUNT_INFO = BASEURL + 'v1/user.account/info';
 /**
  * from @zhaojian
  *
+ * 获取账户管理首页
+ **/
+export const USER_ACCOUNT_INDEX = BASEURL + 'v1/user.account/index';
+
+/**
+ * from @zhaojian
+ *
  * 获取交易流水
  **/
 export const USER_ACCOUNT_PAYLOG = BASEURL + 'v1/user.account/payLog';

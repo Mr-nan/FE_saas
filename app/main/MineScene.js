@@ -607,6 +607,7 @@ export default class MineScene extends BaseComponent {
                     StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
                         if (data.code == 1) {
                             let datas = JSON.parse(data.result);
+                            console.log(datas);
                             if (datas.user_level>0&&datas.enterprise_list[0].role_type == '1') {
                                 StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (datac) => {
                                     if (datac.code == 1) {
@@ -618,6 +619,7 @@ export default class MineScene extends BaseComponent {
                                         request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                                             .then((response) => {
                                                     lastType = response.mjson.data.status;
+                                                    console.log('========'+lastType);
                                                     if (lastType == '0') {
                                                         this.refs.accountmodal.changeShowType(true,
                                                             '您还未开通资金账户，为方便您使用金融产品及购物车，' +

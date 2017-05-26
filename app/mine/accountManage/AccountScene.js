@@ -71,23 +71,7 @@ export  default class AccountScene extends BaseComponent {
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
-                            if (response.mjson.data.payLogs == null || response.mjson.data.payLogs.length <= 0) {
-                                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                                this.setState({
-                                    renderPlaceholderOnly: 'success',
-                                    source: ds.cloneWithRows([1]),
-                                    info: response.mjson.data.info,
-
-                                });
-                            } else {
-                                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                                this.setState({
-                                    renderPlaceholderOnly: 'success',
-                                    source: ds.cloneWithRows(response.mjson.data.payLogs),
-                                    info: response.mjson.data.info,
-
-                                });
-                            }
+                           this.getAccountData(datas.company_base_id,response.mjson.data.account_open_type)
                         },
                         (error) => {
                             this.props.showToast('用户信息查询失败');
@@ -102,6 +86,39 @@ export  default class AccountScene extends BaseComponent {
                 });
             }
         })
+    }
+
+    getAccountData=(id,type)=>{
+        let maps = {
+            enter_base_id:id,
+            user_type: type
+        };
+        request(Urls.USER_ACCOUNT_INDEX, 'Post', maps)
+            .then((response) => {
+                    if (response.mjson.data.payLogs == null || response.mjson.data.payLogs.length <= 0) {
+                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                        this.setState({
+                            renderPlaceholderOnly: 'success',
+                            source: ds.cloneWithRows([1]),
+                            info: response.mjson.data.info,
+
+                        });
+                    } else {
+                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                        this.setState({
+                            renderPlaceholderOnly: 'success',
+                            source: ds.cloneWithRows(response.mjson.data.payLogs),
+                            info: response.mjson.data.info,
+
+                        });
+                    }
+                },
+                (error) => {
+                    this.props.showToast('用户信息查询失败');
+                    this.setState({
+                        renderPlaceholderOnly: 'error'
+                    });
+                });
     }
 
 
@@ -239,6 +256,7 @@ export  default class AccountScene extends BaseComponent {
                     });
                 },
                 (error) => {
+                    this.props.showModal(false);
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast('网络连接失败');
                     } else {
