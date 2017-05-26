@@ -73,7 +73,7 @@ export default class AllLoading extends Component {
                                     });
                               }} activeOpacity={0.9} style={{flex:1,marginLeft:Pixel.getPixel(10),backgroundColor:'#05c5c2',borderRadius:3,
                              justifyContent:'center',alignItems:'center'}}>
-                                <Text style={{fontSize:Pixel.getPixel(14),color:'#fff'}}>确认使用</Text>
+                                <Text style={{fontSize:Pixel.getPixel(14),color:'#fff'}}>确认</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

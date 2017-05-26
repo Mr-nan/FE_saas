@@ -347,7 +347,8 @@ export  default  class carSourceListScene extends BaseComponent {
         //
         //     }
         // };
-        this.props.callBack(navigatorParams);
+        // this.props.callBack(navigatorParams);
+
         let navigatorParams = {
             name: "CarPublishFirstScene",
             component: CarPublishFirstScene,

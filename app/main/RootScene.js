@@ -26,7 +26,7 @@ import  UpLoadScene from './UpLoadScene';
 import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
 import codePush from 'react-native-code-push'
-const versionCode = 2;
+const versionCode = 9.0;
 let canNext = true;
 
 export default class RootScene extends BaseComponent {
@@ -52,7 +52,7 @@ export default class RootScene extends BaseComponent {
                     //     this.navigatorParams.params = {url: response.mjson.data.downloadurl}
                     //     this.toNextPage(this.navigatorParams);
                     // } else {
-                        this.toJump();
+                    this.toJump();
                     // }
                 },
                 (error) => {
@@ -65,7 +65,7 @@ export default class RootScene extends BaseComponent {
         let that = this;
         setTimeout(
             () => {
-                if(!canNext){
+                if (!canNext) {
                     return;
                 }
                 StorageUtil.mGetItem(KeyNames.FIRST_INTO, (res) => {
@@ -73,7 +73,6 @@ export default class RootScene extends BaseComponent {
                         that.navigatorParams.component = WelcomScene;
                         that.toNextPage(that.navigatorParams);
                     } else {
-
                         StorageUtil.mGetItem(KeyNames.ISLOGIN, (res) => {
                             if (res.result !== StorageUtil.ERRORCODE) {
                                 if (res.result == null) {
@@ -89,15 +88,18 @@ export default class RootScene extends BaseComponent {
                                                     that.navigatorParams.component = LoginAndRegister;
                                                     that.toNextPage(that.navigatorParams);
                                                 } else {
-                                                    if (datas.enterprise_list[0].role_type == '2') {
-                                                        that.navigatorParams.component = LoginGesture;
-                                                        that.navigatorParams.params = {from: 'RootScene'}
-                                                        that.toNextPage(that.navigatorParams);
-                                                    } else {
-                                                        that.navigatorParams.component = MainPage;
-                                                        that.navigatorParams.params = {}
-                                                        that.toNextPage(that.navigatorParams);
-                                                    }
+                                                    that.navigatorParams.component = LoginGesture;
+                                                    that.navigatorParams.params = {from: 'RootScene'}
+                                                    that.toNextPage(that.navigatorParams);
+                                                }
+                                            } else if (datas.user_level == 1) {
+                                                if (datas.enterprise_list == null || datas.enterprise_list.length <= 0) {
+                                                    that.navigatorParams.component = LoginAndRegister;
+                                                    that.toNextPage(that.navigatorParams);
+                                                } else {
+                                                    that.navigatorParams.component = LoginGesture;
+                                                    that.navigatorParams.params = {from: 'RootScene'}
+                                                    that.toNextPage(that.navigatorParams);
                                                 }
                                             } else {
                                                 that.navigatorParams.component = MainPage;
@@ -118,8 +120,65 @@ export default class RootScene extends BaseComponent {
         );
     }
 
+
+    //     onPress = () => {
+    //         if(canNext){
+    //             let that = this;
+    //             StorageUtil.mSetItem(KeyNames.NEED_GESTURE, 'true');
+    //             StorageUtil.mGetItem(KeyNames.FIRST_INTO, (res) => {
+    //                 if (res.result == null) {
+    //                     that.navigatorParams.component = WelcomScene;
+    //                     that.toNextPage(that.navigatorParams);
+    //                 } else {
+    //
+    //                     StorageUtil.mGetItem(KeyNames.ISLOGIN, (res) => {
+    //                         if (res.result !== StorageUtil.ERRORCODE) {
+    //                             if (res.result == null) {
+    //                                 that.navigatorParams.component = LoginAndRegister;
+    //                                 that.toNextPage(that.navigatorParams);
+    //                             } else {
+    //                                 if (res.result == "true") {
+    //
+    //                                     StorageUtil.mGetItem(KeyNames.USER_INFO, (data) => {
+    //                                         let datas = JSON.parse(data.result);
+    //                                         if (datas.user_level == 2) {
+    //                                             if (datas.enterprise_list == null || datas.enterprise_list.length <= 0) {
+    //                                                 that.navigatorParams.component = LoginAndRegister;
+    //                                                 that.toNextPage(that.navigatorParams);
+    //                                             } else {
+    //                                                 if (datas.enterprise_list[0].role_type == '2') {
+    //                                                     that.navigatorParams.component = LoginGesture;
+    //                                                     that.navigatorParams.params = {from: 'RootScene'}
+    //                                                     that.toNextPage(that.navigatorParams);
+    //                                                 } else {
+    //                                                     that.navigatorParams.component = MainPage;
+    //                                                     that.navigatorParams.params = {}
+    //                                                     that.toNextPage(that.navigatorParams);
+    //                                                 }
+    //                                             }
+    //                                         } else {
+    //                                             that.navigatorParams.component = MainPage;
+    //                                             that.navigatorParams.params = {}
+    //                                             that.toNextPage(that.navigatorParams);
+    //                                         }
+    //                                     });
+    //                                 } else {
+    //                                     that.navigatorParams.component = LoginAndRegister;
+    //                                     that.toNextPage(that.navigatorParams);
+    //                                 }
+    //                             }
+    //                         }
+    //                     });
+    //                 }
+    //             });
+    //             canNext=false;
+    //         }
+    //
+    //     // this.toNextPage(this.mProps)
+    // }
+
     onPress = () => {
-        if(canNext){
+        if (canNext) {
             let that = this;
             StorageUtil.mSetItem(KeyNames.NEED_GESTURE, 'true');
             StorageUtil.mGetItem(KeyNames.FIRST_INTO, (res) => {
@@ -127,7 +186,6 @@ export default class RootScene extends BaseComponent {
                     that.navigatorParams.component = WelcomScene;
                     that.toNextPage(that.navigatorParams);
                 } else {
-
                     StorageUtil.mGetItem(KeyNames.ISLOGIN, (res) => {
                         if (res.result !== StorageUtil.ERRORCODE) {
                             if (res.result == null) {
@@ -143,15 +201,18 @@ export default class RootScene extends BaseComponent {
                                                 that.navigatorParams.component = LoginAndRegister;
                                                 that.toNextPage(that.navigatorParams);
                                             } else {
-                                                if (datas.enterprise_list[0].role_type == '2') {
-                                                    that.navigatorParams.component = LoginGesture;
-                                                    that.navigatorParams.params = {from: 'RootScene'}
-                                                    that.toNextPage(that.navigatorParams);
-                                                } else {
-                                                    that.navigatorParams.component = MainPage;
-                                                    that.navigatorParams.params = {}
-                                                    that.toNextPage(that.navigatorParams);
-                                                }
+                                                that.navigatorParams.component = LoginGesture;
+                                                that.navigatorParams.params = {from: 'RootScene'}
+                                                that.toNextPage(that.navigatorParams);
+                                            }
+                                        } else if (datas.user_level == 1) {
+                                            if (datas.enterprise_list == null || datas.enterprise_list.length <= 0) {
+                                                that.navigatorParams.component = LoginAndRegister;
+                                                that.toNextPage(that.navigatorParams);
+                                            } else {
+                                                that.navigatorParams.component = LoginGesture;
+                                                that.navigatorParams.params = {from: 'RootScene'}
+                                                that.toNextPage(that.navigatorParams);
                                             }
                                         } else {
                                             that.navigatorParams.component = MainPage;
@@ -168,7 +229,7 @@ export default class RootScene extends BaseComponent {
                     });
                 }
             });
-            canNext=false;
+            canNext = false;
         }
 
         // this.toNextPage(this.mProps)
@@ -199,13 +260,14 @@ export default class RootScene extends BaseComponent {
 
     render() {
         return (
-            <View style={{backgroundColor: '#00000000',alignItems:'flex-end'}}>
+            <Image style={{backgroundColor: '#00000000',alignItems:'flex-end',resizeMode:'contain',flex:1,width:width}}
+                   source={require('../../images/splash.png')}>
                 <TouchableOpacity onPress={()=>{this.onPress()}} activeOpacity={0.8} style={{width:Pixel.getPixel(30),height:Pixel.getPixel(30),borderRadius: 1000,justifyContent:'center',
                 alignItems: 'center',backgroundColor: 'rgba(0,0,0,0.2)',marginRight: Pixel.getPixel(15),
                 marginTop:Pixel.getTitlePixel(35)}}>
                     <Text style={{color:'#fff',fontSize:Pixel.getFontPixel(12)}}>取消</Text>
                 </TouchableOpacity>
-            </View>
+            </Image>
         );
     }
 }

@@ -12,7 +12,8 @@ import {
     TouchableOpacity,
     ListView,
     InteractionManager,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    Linking
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
@@ -26,6 +27,7 @@ import {request} from '../../utils/RequestUtil';
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import * as Urls from '../../constant/appUrls';
+import AccountWebScene from './AccountWebScene';
 export  default class OpenIndividualAccountScene extends BaseComponent {
 
     constructor(props) {
@@ -40,6 +42,18 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
         this.setState({
             renderPlaceholderOnly: 'success',
         });
+    }
+
+    backPage = () => {
+        let navigator = this.props.navigator;
+        if (navigator){
+            for(let i = 0;i<navigator.getCurrentRoutes().length;i++){
+                if(navigator.getCurrentRoutes()[i].name=='MainPage'){
+                    navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                    break;
+                }
+            }
+        }
     }
 
     render() {
@@ -110,10 +124,10 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
     }
 
     getBase_Id = (name, number, phone) => {
-        StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST, (data) => {
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas=JSON.parse(data.result);
-                this.openIndividual(name,number,phone,datas[0].enterprise_uid);
+                this.openIndividual(name,number,phone,datas.merge_id);
             } else {
                 this.props.showToast('用户信息查询失败');
             }
@@ -121,7 +135,7 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
     }
 
     openIndividual = (name, number, phone,base_id) => {
-        // this.props.showModal(true);
+        this.props.showModal(true);
         let maps = {
             cert_no: number,
             cert_type: '1',
@@ -129,20 +143,22 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
             mobile_no: phone,
             enter_base_id:base_id
         };
+
         request(Urls.USER_OPEN_ACCOUNT_PERSONAL, 'Post', maps)
             .then((response) => {
-                    // this.props.showModal(false);
-                    // this.props.showToast('添加成功');
-                    // this.props.callBack();
-                    // this.backPage();
+                    this.props.showModal(false);
+                   this.toNextPage({name:'AccountWebScene',component:AccountWebScene,params:{
+                       title:'个人开户',webUrl:response.mjson.data.auth_url+'?authTokenId='+response.mjson.data.auth_token
+                   }});
+                   //  Linking.openURL(response.mjson.data.auth_url+'?authTokenId='+response.mjson.data.auth_token);
                 },
                 (error) => {
-                    // this.props.showModal(false);
-                    // if (error.mycode == -300 || error.mycode == -500) {
-                    //     this.props.showToast('添加失败');
-                    // } else {
-                    //     this.props.showToast(error.mjson.msg);
-                    // }
+                    this.props.showModal(false);
+                    if (error.mycode == -300 || error.mycode == -500) {
+                        this.props.showToast('开户失败');
+                    } else {
+                        this.props.showToast(error.mjson.msg);
+                    }
                 });
     }
 

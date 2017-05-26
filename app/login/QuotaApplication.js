@@ -50,6 +50,8 @@ export default class QuotaApplication extends BaseComponent {
             idcard: "",
             phone: "",
             agreement: [],
+            bankCard: '',
+            bank_reserve_phone: ''
         };
     }
 
@@ -135,7 +137,7 @@ export default class QuotaApplication extends BaseComponent {
                         fontSize: Pixel.getPixel(FontAndColor.CONTENTFONT24),
                         paddingTop: Pixel.getPixel(10),
                         paddingBottom: Pixel.getPixel(10),
-                    }}>注意：<Text style={{color: FontAndColor.COLORA1}}>请确保银行预留手机号码准确,短信验证码将发送给您银行银行预留手机号码。</Text></Text>
+                    }}>注意：<Text style={{color: FontAndColor.COLORA1}}>请确保银行预留手机号码准确,短信验证码将发送给您银行预留手机号码。</Text></Text>
                     <View style={styles.inputTextsStyle}>
                         <LoginInputText
                             ref="verifycode"
@@ -183,7 +185,7 @@ export default class QuotaApplication extends BaseComponent {
                               mOnPress={this.getWZMoney}/>
                 </ScrollView>
                 <NavigationView
-                    title="微众额度申请"
+                    title="微单额度申请"
                     backIconClick={this.backPage}
                 />
             </View>
@@ -195,7 +197,7 @@ export default class QuotaApplication extends BaseComponent {
             <View style={{width: width, height: height,backgroundColor:FontAndColor.COLORA3,alignItems: 'center'}}>
                 {this.loadView()}
                 <NavigationView
-                    title="微众额度申请"
+                    title="微单额度申请"
                     backIconClick={this.backPage}
                 />
             </View>
@@ -279,6 +281,17 @@ export default class QuotaApplication extends BaseComponent {
     }
 
 
+    componentDidUpdate() {
+        if (this.state.renderPlaceholderOnly == 'success') {
+            if (this.refs.bank_phone.getInputTextValue() == '') {
+                this.refs.bank_phone.setInputTextValue(this.state.bank_reserve_phone);
+            }
+            if (this.refs.bank_id.getInputTextValue() == '') {
+                this.refs.bank_id.setInputTextValue(this.state.bankCard);
+            }
+        }
+    }
+
     //获取微众申请页面数据
     getWZInfo = () => {
         let maps = {
@@ -291,7 +304,9 @@ export default class QuotaApplication extends BaseComponent {
                     idcard: response.mjson.data.idcard_number,
                     phone: response.mjson.data.phone,
                     agreement: response.mjson.data.agreement,
-                    renderPlaceholderOnly: 'success'
+                    renderPlaceholderOnly: 'success',
+                    bankCard: response.mjson.data.bank_card,
+                    bank_reserve_phone: response.mjson.data.bank_reserve_phone
                 });
                 this.Verifycode();
             }, (error) => {

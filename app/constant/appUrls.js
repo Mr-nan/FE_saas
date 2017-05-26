@@ -1,12 +1,12 @@
 /**
  * 开发地址
  */
-export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+//export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地
  */
-//export const BASEURL = 'http://api-gateway.test.dycd.com/';
+ export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 正式地址
@@ -65,7 +65,6 @@ export const CAR_HOME_BRAND = BASEURL + V + 'home/brand';
 export const CAR_HOME_SERIES = BASEURL + V + 'home/series';
 
 
-
 /**
  * 获取车型
  */
@@ -117,6 +116,16 @@ export const CAR_STATUS = BASEURL + V + 'car/status';
  * 获取我的车源-未审核
  */
 export const CAR_PERLIST = BASEURL + V + 'car/preList';
+
+/**
+ * 获取登记人信息
+ */
+export const GET_REGISTRANT = BASEURL + V + 'car.borrower/getRegistrants';
+
+/**
+ * 添加登记人信息
+ */
+export const ADD_REGISTRANT = BASEURL + V + 'car.borrower/addRegistrant';
 
 /**
  * 根据VIN获取车辆详情
@@ -178,6 +187,13 @@ export const LOAN_SUBJECT = 'api/v1/user/get_loan_subject_list';
 /**
  * from @zhaojian
  *
+ * 获取企业合同列表
+ **/
+export const USER_GET_USER_LIST = 'api/v1/user/get_user_list';
+
+/**
+ * from @zhaojian
+ *
  * 获取更新信息
  **/
 export const APP_UPDATE = BASEURL + 'v1/system/index';
@@ -208,21 +224,42 @@ export const PURCHAAUTO_ADDAUTO = 'api/v2/purchaAuto/addAuto';
  *
  * 获取角色列表
  **/
-export const USER_ROLE = BASEURL+'v1/user/role';
+export const USER_ROLE = BASEURL + 'v1/user/role';
 
 /**
  * from @zhaojian
  *
  * 添加||编辑员工
  **/
-export const USER_EMPLOYEE_SAVE = BASEURL+'v1/user.employee/save';
+export const USER_EMPLOYEE_SAVE = BASEURL + 'v1/user.employee/save';
 
 /**
  * from @zhaojian
  *
  * 开通个人账户
  **/
-export const USER_OPEN_ACCOUNT_PERSONAL = BASEURL+'v1/user.open_account/personal';
+export const USER_OPEN_ACCOUNT_PERSONAL = BASEURL + 'v1/user.open_account/personal';
+
+/**
+ * from @zhaojian
+ *
+ * 绑定银行卡
+ **/
+export const USER_BANK_BIND = BASEURL + 'v1/user.bank/bind';
+
+/**
+ * from @zhaojian
+ *
+ * 开通企业账户
+ **/
+export const USER_OPEN_ACCOUNT_COMPANY = BASEURL + 'v1/user.open_account/company';
+
+/**
+ * from @zhaojian
+ *
+ * 获取账户信息
+ **/
+export const USER_ACCOUNT_INFO = BASEURL + 'v1/user.account/info';
 
 /**
  * from @zhaojian

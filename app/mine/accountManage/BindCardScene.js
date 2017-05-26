@@ -23,7 +23,11 @@ import NavigationView from '../../component/AllNavigationView';
 let childItems = [];
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
+import StorageUtil from "../../utils/StorageUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
 import OpenIndividualAccountScene from './OpenIndividualAccountScene';
+import OpenEnterpriseAccountScene from './OpenEnterpriseAccountScene';
+import AccountWebScene from './AccountWebScene';
 export  default class BindCardScene extends BaseComponent {
 
     constructor(props) {
@@ -32,17 +36,76 @@ export  default class BindCardScene extends BaseComponent {
         childItems = [];
         childItems.push({title: '绑定银行卡',
             value: require('../../../images/mainImage/bindcard.png'),click:()=>{
-            this.props.showToast('绑卡');
+                this.getAccountData(1);
             }});
         childItems.push({title: '修改账户信息',
             value: require('../../../images/mainImage/changeaccount.png'),click:()=>{
-                this.toNextPage({name:'OpenIndividualAccountScene',component:OpenIndividualAccountScene,params:{}})
+                this.getAccountData(2);
             }});
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             renderPlaceholderOnly: 'blank',
             source: ds.cloneWithRows(childItems)
         };
+    }
+
+    getAccountData =(clickType)=>{
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas=JSON.parse(data.result);
+                let maps = {
+                    enter_base_ids:datas.merge_id,
+                    child_type:'1'
+                };
+
+                request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+                    .then((response) => {
+                        if(clickType==1){
+                            this.bindCard(datas.merge_id,response.mjson.data.account_open_type)
+                        }else{
+                            if(response.mjson.data.account_open_type=='1'){
+                                this.toNextPage({name:'OpenEnterpriseAccountScene',component:OpenEnterpriseAccountScene,params:{}});
+                            }else{
+                                this.toNextPage({name:'OpenIndividualAccountScene',component:OpenIndividualAccountScene,params:{}});
+                            }
+                        }
+                        },
+                        (error) => {
+                            this.props.showModal(false);
+                            if (error.mycode == -300 || error.mycode == -500) {
+                                this.props.showToast('获取账户信息失败');
+                            } else {
+                                this.props.showToast(error.mjson.msg);
+                            }
+                        });
+            } else {
+                this.props.showToast('用户信息查询失败');
+            }
+        })
+    }
+
+    bindCard=(enter_base_id,user_type)=>{
+        let maps = {
+            enter_base_id:enter_base_id,
+            user_type:user_type
+        };
+
+        request(Urls.USER_BANK_BIND, 'Post', maps)
+            .then((response) => {
+                    this.props.showModal(false);
+                    this.toNextPage({name:'AccountWebScene',component:AccountWebScene,params:{
+                        title:'绑定银行卡',webUrl:response.mjson.data.auth_url+'?authTokenId='+response.mjson.data.auth_token
+                    }});
+                },
+                (error) => {
+                    this.props.showModal(false);
+                    if (error.mycode == -300 || error.mycode == -500) {
+                        this.props.showToast('获取账户信息失败');
+                    } else {
+                        this.props.showToast(error.mjson.msg);
+                    }
+                });
     }
 
     initFinish = () => {

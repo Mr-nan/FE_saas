@@ -24,6 +24,8 @@ import NavigationView from '../../component/AllNavigationView';
 import LoginInputText from "../../login/component/LoginInputText";
 const childItems = [];
 import {request} from '../../utils/RequestUtil';
+import StorageUtil from "../../utils/StorageUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
 import * as Urls from '../../constant/appUrls';
 export  default class WaitActivationAccountScene extends BaseComponent {
 
@@ -32,12 +34,35 @@ export  default class WaitActivationAccountScene extends BaseComponent {
         // 初始状态
         this.state = {
             renderPlaceholderOnly: 'blank',
+            cardNumber:''
         };
     }
 
     initFinish = () => {
-        this.setState({
-            renderPlaceholderOnly: 'success',
+        this.getData();
+    }
+
+    getData = () => {
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    enter_base_ids: datas.merge_id,
+                    child_type: '1'
+                };
+                request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+                    .then((response) => {
+                        this.setState({
+                            renderPlaceholderOnly:'success',
+                            cardNumber:response.mjson.data.bank_card_no
+                        });
+                        },
+                        (error) => {
+                            this.setState({
+                                renderPlaceholderOnly: 'error'
+                            });
+                        });
+            }
         });
     }
 
@@ -52,20 +77,23 @@ export  default class WaitActivationAccountScene extends BaseComponent {
                     <View style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(44),justifyContent:'center',
                     }}>
                         <Text style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28)}}>
-                            账户号码：43753098044859890
+                            账户号码：{this.state.cardNumber}
                         </Text>
                     </View>
                     <View style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(1),justifyContent:'center',
                     alignItems: 'center',backgroundColor: fontAndColor.COLORA3}}></View>
                     <View style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(102),justifyContent:'center',
                     }}>
-                        <Text style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(7)}}>
+                        <Text
+                            style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(7)}}>
                             您的企业账户已经绑定，请进行激活，激活方式如下：
                         </Text>
-                        <Text style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(7)}}>
+                        <Text
+                            style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(7)}}>
                             1.用您的企业绑定账户向先进账户转账0.1元
                         </Text>
-                        <Text style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(7)}}>
+                        <Text
+                            style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(7)}}>
                             2.恒丰银行对转账金额进行确认，确认无误账户激活
                         </Text>
                     </View>

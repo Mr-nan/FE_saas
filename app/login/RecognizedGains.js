@@ -9,7 +9,8 @@ import {
     InteractionManager,
     ScrollView,
     Image,
-    ListView
+    ListView,
+    NativeModules
 } from "react-native";
 import BaseComponent from "../component/BaseComponent";
 import NavigationBar from "../component/NavigationBar";
@@ -29,15 +30,24 @@ var imgSrc: '';
 var imgSid: '';
 
 var itemWidth = width;
-
+import ContractInfoScene from './ContractInfoScene';
+import ReceiptInfoScene  from '../finance/page/ReceiptInfoScene';
+let imeis = '';
 export default class RecognizedGains extends BaseComponent {
 
     constructor(props) {
         super(props);
         this.state = {
-            renderPlaceholderOnly: true,
+            renderPlaceholderOnly: 'blank',
             source: [],
+            agreement:[]
         };
+        imeis = '';
+        if (Platform.OS === 'android') {
+            NativeModules.VinScan.getIMEI((imei) => {
+                imeis = imei;
+            });
+        }
     }
 
     initFinish = () => {
@@ -45,13 +55,10 @@ export default class RecognizedGains extends BaseComponent {
     }
 
     render() {
-        if (this.state.renderPlaceholderOnly) {
-            return ( <TouchableWithoutFeedback onPress={() => {
-                this.setState({
-                    show: false,
-                });
-            }}>
+        if (this.state.renderPlaceholderOnly!='success') {
+            return (
                 <View style={{flex: 1, backgroundColor: FontAndColor.COLORA3}}>
+
                     <NavigationBar
                         leftImageShow={false}
                         leftTextShow={true}
@@ -59,8 +66,9 @@ export default class RecognizedGains extends BaseComponent {
                         centerText={"确认收据"}
                         rightText={""}
                     />
+                    {this.loadView()}
                 </View>
-            </TouchableWithoutFeedback>);
+            );
         }
         return (
             <View style={styles.containerStyle}>
@@ -71,20 +79,27 @@ export default class RecognizedGains extends BaseComponent {
                     rightText={"  "}
                     leftImageCallBack={this.backPage}
                 />
-
                 <ListView
+                    style={{marginTop:Pixel.getPixel(15)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
-                    renderFooter={this.props.isShow==true?this._renderFooter:<View/>}
+                    renderFooter={this.props.isShow?this._renderFooter:()=>{return <View/>}}
                 />
-
-
             </View>
         );
     }
 
     _renderFooter = () => {
+        let childitems = [];
+        for (let i = 0; i < this.state.agreement.length; i++) {
+            childitems.push(<Text onPress={()=>{
+                this.toNextPage({name:'ContractInfoScene',component:ContractInfoScene,params:
+                {title:this.state.agreement[i].name,
+                webUrl:this.state.agreement[i].url}});
+            }} key={i+'a'} style={{color:FontAndColor.COLORA2,fontSize: Pixel.getFontPixel(12)}}>
+                《{this.state.agreement[i].name}》 </Text>);
+        }
         return (
             <View>
                 <Text style={{
@@ -94,58 +109,26 @@ export default class RecognizedGains extends BaseComponent {
                     fontSize: Pixel.getPixel(FontAndColor.CONTENTFONT24),
                     paddingTop: Pixel.getPixel(10),
                     paddingBottom: Pixel.getPixel(10),
-                }}>注意：<Text style={{color: FontAndColor.COLORA1}}>请确保银行预留手机号码准确,短信验证码将发送给您银行银行预留手机号码。</Text></Text>
+                }}><Text style={{color: FontAndColor.COLORA1}}>
+                    如上借据内车辆使用车贷微单额度，需要点击确认后完成最终放款</Text></Text>
+                <View style={{width:width,height:Pixel.getPixel(60)}}>
 
-                <TouchableWithoutFeedback onPress={() => {
-                    if (this.state.agree) {
-                        this.setState({
-                            agree: false,
-                        });
-                    } else {
-                        this.setState({
-                            agree: true,
-                        });
-                    }
-                }}>
-                    <View style={{
-                        width: width,
-                        paddingTop: Pixel.getPixel(15),
-                        paddingBottom: Pixel.getPixel(15),
-                        paddingLeft: Pixel.getPixel(15),
-                        paddingRight: Pixel.getPixel(15),
-                    }}>
-                        <Text style={{
-                            fontSize: Pixel.getFontPixel(12),
-                            color: FontAndColor.COLORA2,
-                        }}>
-                            <Image style={{
-                                width: Pixel.getPixel(1),
-                                height: Pixel.getPixel(75),
-                            }}
-                                   source={require('./../../images/publish/car-plate.png')}/>
-                            我已详细阅读并同意《信息使用授权书》 《微众银行个人电子账户服务协议》 《征信授权书》
-                        </Text>
-                        {this.state.agree == true ?
-                            <Image style={{
-                                position: 'absolute',
-                                width: Pixel.getPixel(17),
-                                height: Pixel.getPixel(17),
-                                marginTop: Pixel.getPixel(14),
-                                marginLeft: Pixel.getPixel(20)
-                            }}
-                                   source={require('./../../images/login/amou_choose.png')}/> :
-                            <Image style={{
-                                position: 'absolute',
-                                width: Pixel.getPixel(17),
-                                height: Pixel.getPixel(17),
-                                marginTop: Pixel.getPixel(14),
-                                marginLeft: Pixel.getPixel(20)
-                            }}
-                                   source={require('./../../images/login/amou_unchoose.png')}/>}
-
-                    </View>
-                </TouchableWithoutFeedback>
-
+                    <Text
+                        style={{lineHeight: 25,paddingRight:Pixel.getPixel(15),paddingLeft:Pixel.getPixel(15),paddingTop:Pixel.getPixel(7)}}>
+                        <Text style={{color:FontAndColor.COLORA1,fontSize: Pixel.getFontPixel(12)}}>
+                            {'         我已详细阅读并同意'}</Text>
+                        {childitems}
+                    </Text>
+                    <TouchableOpacity style={{width:Pixel.getPixel(23),height:Pixel.getPixel(23),position: 'absolute',top: Pixel.getPixel(12),
+                                    left:Pixel.getPixel(15),justifyContent:'center'}} onPress={()=>{
+                            this.setState({
+                                agree:!this.state.agree
+                            });
+                        }} activeOpacity={0.8}>
+                        <Image style={{width:Pixel.getPixel(16),height:Pixel.getPixel(16)}}
+                               source={this.state.agree?require('../../images/login/amou_choose.png'):require('../../images/login/amou_unchoose.png')}/>
+                    </TouchableOpacity>
+                </View>
                 <MyButton buttonType={MyButton.TEXTBUTTON}
                           content={'确认申请'}
                           parentStyle={styles.loginBtnStyle}
@@ -154,7 +137,7 @@ export default class RecognizedGains extends BaseComponent {
                               if (this.state.agree) {
                                   this.submitWZInfo();
                               } else {
-                                  this.props.showToast("请选择服务协议");
+                                  this.props.showToast("请确认服务协议");
                               }
                           }}/>
             </View>
@@ -172,10 +155,7 @@ export default class RecognizedGains extends BaseComponent {
     }
 
     finshPage = (data) => {
-        if (this.props.callBack) {
-            this.props.callBack(data.name);
-        }
-        this.backPage();
+        this.toNextPage({name:'ReceiptInfoScene',component:ReceiptInfoScene,params:{data:data}});
     }
 
     _renderSeparator(sectionId, rowId) {
@@ -186,36 +166,59 @@ export default class RecognizedGains extends BaseComponent {
 
     //获取借据数据列表
     getWZInfo = () => {
+        let loan_number = '';
+        if(this.props.loan_number){
+            loan_number = this.props.loan_number;
+        }
         let maps = {
             api: AppUrls.GET_IOU_LIST,
             loan_code: this.props.loan_code,
-            loan_number:this.props.loan_number
+            loan_number:loan_number
+
 
         };
-        this.props.showModal(true);
         request(AppUrls.FINANCE, 'Post', maps)
             .then((response) => {
-                this.props.showModal(false);
                 this.setState({
                     source: ds.cloneWithRows(response.mjson.data.iou_list),
-                    renderPlaceholderOnly: false
+                    renderPlaceholderOnly: 'success',
+                    agreement:response.mjson.data.contract,
+                    iou_list:response.mjson.data.iou_list
                 });
             }, (error) => {
-                this.props.showModal(false);
-                if (error.mycode == -300 || error.mycode == -500) {
-                    this.props.showToast("获取失败");
-                } else {
-                    this.props.showToast(error.mjson.msg + "");
-                }
+                this.setState({
+                    renderPlaceholderOnly: 'error'
+                });
             });
     }
 
     //确认借据操作
     submitWZInfo = () => {
-        let maps = {
-            api: AppUrls.CONFIRM_APPLY,
-            loan_code: this.props.loan_code,
-        };
+        let loan_number = '';
+        for(let i = 0;i<this.state.iou_list.length;i++){
+            loan_number = loan_number+this.state.iou_list[i].loan_number+','
+        }
+        let newloan = loan_number.substring(0,loan_number.length-1);
+        let maps = {};
+        if (Platform.OS === 'android') {
+            maps = {
+                api: AppUrls.CONFIRM_APPLY,
+                contract_base: JSON.stringify(this.state.agreement),
+                android_imei: imeis,
+                useragent: 'android',
+                loan_code:this.props.loan_code,
+                loan_number:newloan
+            };
+        } else {
+            maps = {
+                api: AppUrls.CONFIRM_APPLY,
+                contract_base: JSON.stringify(this.state.agreement),
+                ios_idfa: iosIDFA,
+                useragent: 'ios',
+                loan_code:this.props.loan_code,
+                loan_number:newloan
+            };
+        }
         this.props.showModal(true);
         request(AppUrls.FINANCE, 'Post', maps)
             .then((response) => {
@@ -264,7 +267,7 @@ const styles = StyleSheet.create({
         height: Pixel.getPixel(44),
         width: itemWidth - Pixel.getPixel(30),
         backgroundColor: FontAndColor.COLORB0,
-        marginTop: Pixel.getPixel(30),
+        marginTop: Pixel.getPixel(15),
         marginBottom: Pixel.getPixel(15),
         justifyContent: 'center',
         alignItems: 'center',

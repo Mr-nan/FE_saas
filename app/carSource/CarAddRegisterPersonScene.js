@@ -12,79 +12,23 @@ import {
     Dimensions,
     TextInput,
     KeyboardAvoidingView,
-    ScrollView
+    ScrollView,
+    Platform
 }   from 'react-native';
 
 import BaseComponent from '../component/BaseComponent';
 import AllNavigationView from '../component/AllNavigationView';
 import {CellView,CellSelectView} from './znComponent/CarPublishCell';
-import CarSelectRegisterPersonScene from './CarSelectRegisterPersonScene';
 import *as fontAndColor from '../constant/fontAndColor';
 import PixelUtil from '../utils/PixelUtil';
 
+import *as AppUrls from '../constant/appUrls';
+import * as Net from '../utils/RequestUtil';
+
 const Pixel = new  PixelUtil();
 const sceneWidth = Dimensions.get('window').width;
+const IS_ANDROID = Platform.OS === 'android';
 
-let   titleData = [
-    [
-        {
-            title:'姓名',
-            isShowTag:true,
-            isShowTail:true,
-            tailView:()=>{
-                return(
-                    <View>
-                    <TextInput style={styles.textInput} placeholder='请输入'/>
-                    </View>
-                )
-            }
-        },{
-            title:'手机号',
-            isShowTag:true,
-            isShowTail:true,
-            tailView:()=>{
-                return(
-                    <View>
-                    <TextInput style={styles.textInput} placeholder='请输入'/>
-                    </View>
-                )
-            }
-        },{
-            title:'身份证号码',
-            isShowTag:true,
-            isShowTail:true,
-            tailView:()=>{
-                return(
-                    <View>
-                    <TextInput style={styles.textInput} placeholder='请输入'/>
-                    </View>
-                )
-            }
-        },{
-            title:'与本公司合作年限',
-            isShowTag:true,
-            isShowTail:true,
-            tailView:()=>{
-            return(  <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                <TextInput style={styles.textInput} placeholder='请输入'/>
-                <Text style={styles.textInputTitle}>年</Text>
-            </View>)
-        }
-        },{
-            title:'职位',
-            isShowTag:true,
-            isShowTail:true,
-            tailView:()=>{
-                return(
-                    <View>
-                    <TextInput style={styles.textInput} placeholder='请输入'/>
-                    </View>
-                )
-            }
-        },
-    ]
-
-];
 
 
 export default class CarAddRegisterPersonScene extends BaseComponent{
@@ -92,13 +36,114 @@ export default class CarAddRegisterPersonScene extends BaseComponent{
     initFinish=()=>{
 
     }
+
+    componentWillUnmount(){
+        this.timer && clearTimeout(this.timer);
+    }
+
     // 构造
     constructor(props) {
         super(props);
         // 初始状态
+        this.personData={};
+        this.titleData = [
+            [
+                {
+                    title:'姓名',
+                    isShowTag:true,
+                    isShowTail:true,
+                    tailView:()=>{
+                        return(
+                            <View>
+                                <TextInput
+                                    style={styles.textInput}
+                                    placeholder='请输入'
+                                    onChangeText={(text)=>{
+                                        this.personData['business_name'] = text;
+                                    }}
+                                />
+                            </View>
+                        )
+                    }
+                },{
+                title:'手机号',
+                isShowTag:true,
+                isShowTail:true,
+                tailView:()=>{
+                    return(
+                        <View>
+                            <TextInput style={styles.textInput}
+                                       placeholder='请输入'
+                                       maxLength={11}
+                                       keyboardType={'phone-pad'}
+                                       onChangeText={(text)=>{
+                                           this.personData['phoneNumber'] = text;
+                                       }}
+                            />
+                        </View>
+                    )
+                }
+            },{
+                title:'身份证号码',
+                isShowTag:true,
+                isShowTail:true,
+                tailView:()=>{
+                    return(
+                        <View>
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder='请输入'
+                                maxLength={18}
+                                keyboardType={'numbers-and-punctuation'}
+                                onChangeText={(text)=>{
+                                    this.personData['cardid'] = text;
+                                }}
+                            />
+                        </View>
+                    )
+                }
+            },{
+                title:'与本公司合作年限',
+                isShowTag:true,
+                isShowTail:true,
+                tailView:()=>{
+                    return(
+                        <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                        <TextInput
+                            style={styles.textInput}
+                            placeholder='请输入'
+                            keyboardType={'number-pad'}
+                            onChangeText={(text)=>{
+                                this.personData['cooperation_year'] = text;
+                            }}
+                        />
+                        <Text style={styles.textInputTitle}>年</Text>
+                    </View>)
+                }
+            },{
+                title:'职位',
+                isShowTag:true,
+                isShowTail:true,
+                tailView:()=>{
+                    return(
+                        <View>
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder='请输入'
+                                onChangeText={(text)=>{
+                                    this.personData['position'] = text;
+                                }}
+                            />
+                        </View>
+                    )
+                }
+            },
+            ]
+
+        ];
 
         this.state = {
-            titleData:titleData,
+            titleData:this.titleData,
         };
     }
 
@@ -114,11 +159,7 @@ export default class CarAddRegisterPersonScene extends BaseComponent{
                                         {
                                             data.map((rowData,subIndex)=>{
                                                 return(
-                                                    <TouchableOpacity key={subIndex}
-                                                                      activeOpacity={1}
-                                                                      onPress={()=>this.cellCilck(rowData.title)}>
-                                                        <CellView cellData={rowData}/>
-                                                    </TouchableOpacity>
+                                                    <CellView cellData={rowData} key={subIndex}/>
                                                 )
                                             })
                                         }
@@ -128,7 +169,7 @@ export default class CarAddRegisterPersonScene extends BaseComponent{
                         }
                         <View style={styles.footContainer}>
                             <Text style={{marginLeft:Pixel.getFontPixel(15),color:fontAndColor.COLORA1, fontSize:fontAndColor.LITTLEFONT28,marginBottom:Pixel.getPixel(17)}}>请确保您的企业信息填写正确</Text>
-                            <TouchableOpacity >
+                            <TouchableOpacity onPress={this.addPersonAction}>
                                 <View style={styles.footView}>
                                     <Text style={styles.footText}>提交</Text>
                                 </View>
@@ -136,13 +177,90 @@ export default class CarAddRegisterPersonScene extends BaseComponent{
                         </View>
                     </ScrollView>
                 </KeyboardAvoidingView>
-                <AllNavigationView title="车辆基本信息" backIconClick={this.backPage}/>
+                <AllNavigationView title="添加登记人" backIconClick={this.backPage}/>
             </View>
         )
     }
 
 
+    addPersonAction=()=>{
 
+        if(!this.personData.business_name||this.personData.business_name==''){
+            this.showToast('请输入姓名');
+            return;
+        }
+        if(!this.personData.phoneNumber||this.personData.phoneNumber==''){
+            this.showToast('请输入手机号');
+            return;
+        }
+        if(this.personData.phoneNumber.length!=11){
+            this.showToast('请输入正确的手机号');
+            return;
+        }
+        if(!this.personData.cardid||this.personData.cardid==''){
+            this.showToast('请输入身份证号码');
+            return;
+        }
+        if(!this.isCardNo(this.personData.cardid))
+        {
+            this.showToast('请输入正确的身份证号码');
+            return;
+        }
+        if(!this.personData.cooperation_year||this.personData.cooperation_year==''){
+            this.showToast('请输入合作年限');
+            return;
+        }if(!this.personData.position||this.personData.position==''){
+            this.showToast('请输入职位');
+            return;
+        }
+
+        this.props.showModal(true);
+        this.personData['merge_id'] = this.props.shopID;
+        Net.request(AppUrls.ADD_REGISTRANT,'post',this.personData).then((response) => {
+
+            this.props.showModal(false);
+            console.log(response);
+            if(response.mycode==1){
+                this.props.upDataAction();
+                this.backPage();
+            }else {
+                this.showToast(response.mjson.msg);
+            }
+
+        }, (error) => {
+
+            this.props.showModal(false);
+            console.log(error);
+
+            if(error.mycode === -300 || error.mycode === -500){
+                this.showToast('网络连接失败');
+            }else{
+                this.showToast(error.mjson.msg);
+            }
+        });
+    }
+
+    showToast=(errorMsg)=>{
+        if(IS_ANDROID === true){
+            this.props.showToast(errorMsg);
+        }else {
+            this.timer = setTimeout(
+                () => { this.props.showToast(errorMsg)},
+                500
+            );
+        }
+    }
+
+    isCardNo=(card)=> {
+        // 身份证号码为15位或者18位，15位时全为数字，18位前17位为数字，最后一位是校验位，可能为数字或字符X
+        var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+        if(reg.test(card) === false)
+        {
+            return  false;
+        }else {
+            return true;
+        }
+    }
 }
 
 
@@ -173,7 +291,7 @@ const styles = StyleSheet.create({
         fontSize:fontAndColor.BUTTONFONT30
     },
     textInput:{
-        height: 40,
+        height: 20,
         borderColor: fontAndColor.COLORA0,
         width:200,
         textAlign:'right',
