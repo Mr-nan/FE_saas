@@ -53,11 +53,15 @@ export default class CarPublishFirstScene extends BaseComponent{
 
         }else {
             StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST,(data)=>{
+                console.log(data);
                 if(data.code == 1 && data.result != ''){
                     let enters = JSON.parse(data.result);
                     if(enters.length === 1){
 
                         this.carData['show_shop_id'] = enters[0].enterprise_uid;
+                        this.carData['city_id'] = enters[0].city_id;
+                        this.carData['prov_id'] = enters[0].prov_id;
+                        this.carData['city_name'] = enters[0].city_name;
                         this.getLocalityCarData();
 
                     }else if(enters.length > 1){
@@ -844,6 +848,9 @@ export default class CarPublishFirstScene extends BaseComponent{
     _enterprisePress = (rowID)=>{
 
         this.carData['show_shop_id'] = this.enterpriseList[rowID].enterprise_uid;
+        this.carData['city_id'] = this.enterpriseList[rowID].city_id;
+        this.carData['prov_id'] = this.enterpriseList[rowID].prov_id;
+        this.carData['city_name'] = this.enterpriseList[rowID].city_name;
         this.getLocalityCarData();
 
     };

@@ -175,7 +175,7 @@ export  default  class carSourceListScene extends BaseComponent {
             if(data.code == 1){
                 if(data.result == 'true'){
                     isCheckRecommend = false
-                    APIParameter.type = 0;
+                    APIParameter.type = 4;
                     this.loadData();
                     return;
                 }
@@ -490,7 +490,7 @@ export  default  class carSourceListScene extends BaseComponent {
 
 
         } else {
-            APIParameter.type = 0;
+            APIParameter.type = 4;
             this.filterData();
         }
 
@@ -760,8 +760,7 @@ export  default  class carSourceListScene extends BaseComponent {
                 && APIParameter.city_id == 0
                 && APIParameter.order_type == 0
                 && APIParameter.coty == 0
-                && APIParameter.mileage == 0 && APIParameter.type == 0) {
-
+                && APIParameter.mileage == 0 && APIParameter.type == 4) {
                 isCarFoot = false;
 
             };

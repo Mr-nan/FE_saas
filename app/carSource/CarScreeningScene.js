@@ -113,6 +113,8 @@ export default class CarInfoScene extends BaseComponent {
     }
 
     checkedCityClick=(cityType)=>{
+
+        console.log(cityType);
         this.refs.cityView.setContent(cityType.city_name);
         this.props.screeningObject.checkedCity.title = cityType.city_name;
         this.props.screeningObject.checkedCity.city_id = cityType.city_id;
@@ -120,6 +122,7 @@ export default class CarInfoScene extends BaseComponent {
     }
 
     checkedCarClick=(carObject)=>{
+
         let title = carObject.series_id == 0 ? carObject.brand_name : carObject.series_name;
         this.refs.carView.setContent(title);
         this.props.screeningObject.checkedCarType.title = title;
