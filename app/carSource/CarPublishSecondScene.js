@@ -498,6 +498,11 @@ export default class CarPublishSecondScene extends BaseComponent{
             this.props.showToast('请输入正确的车牌号');
             return;
         }
+        if(this.carData.v_type==1 && !this.isCarlicenseTag(this.carData.plate_number)){
+            this.props.showToast('请输入正确的车牌号');
+            return;
+        }
+
         if(this.carData.mileage==''||!this.carData.mileage)
         {
             this.props.showToast('请输入里程');
@@ -660,6 +665,15 @@ export default class CarPublishSecondScene extends BaseComponent{
         //保证.只出现一次，而不能出现两次以上
         obj = obj.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
         return obj;
+    }
+
+    isCarlicenseTag=(carNumber)=>{
+
+        if(!(/^(?=.*\d)/.test(carNumber))){
+            return false;
+        }else {
+            return true
+        }
     }
 
 }
