@@ -76,27 +76,27 @@ export default class CarMySourceScene extends BaceComponent {
 
         } else if (typeStr == '编辑') {
 
-            // let navigatorParams = {
-            //
-            //     name: "EditCarScene",
-            //     component: EditCarScene,
-            //     params: {
-            //
-            //         fromNew: false,
-            //         carId: carData.id,
-            //     }
-            // };
-            // this.toNextPage(navigatorParams);
             let navigatorParams = {
 
-                name: "CarPublishFirstScene",
-                component: CarPublishFirstScene,
+                name: "EditCarScene",
+                component: EditCarScene,
                 params: {
 
-                    carID: carData.id,
+                    fromNew: false,
+                    carId: carData.id,
                 }
             };
             this.toNextPage(navigatorParams);
+            // let navigatorParams = {
+            //
+            //     name: "CarPublishFirstScene",
+            //     component: CarPublishFirstScene,
+            //     params: {
+            //
+            //         carID: carData.id,
+            //     }
+            // };
+            // this.toNextPage(navigatorParams);
 
         }else if(typeStr == '查看退回原因'){
 
