@@ -48,7 +48,7 @@ export default class CompleteSignScene extends BaseComponent {
             rows: 10,
             api : Urls.CONTRACTLIST,
             opt_user_id: this.props.opt_user_id,
-            sign_status: '3',
+            sign_status: '1',
         };        request(Urls.FINANCE, 'Post', maps)
 
             .then((response) => {

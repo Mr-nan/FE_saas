@@ -157,7 +157,7 @@ export  default class TransferScene extends BaseComponent {
             .then((response) => {
                     this.props.showModal(false);
                     this.refs.accountinput.setTextValue(response.mjson.data.bank_card_name,
-                        response.mjson.data.ebs_serial_no);
+                        response.mjson.data.enter_base_id);
                 },
                 (error) => {
                     this.refs.accountinput.clearValue();
