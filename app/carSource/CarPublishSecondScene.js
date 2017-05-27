@@ -160,7 +160,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                     }
                 },
                 {
-                    title:'低价',
+                    title:'底价',
                     subTitle:'仅做内部销售参考',
                     isShowTag:false,
                     isShowTail:true,
@@ -655,6 +655,8 @@ export default class CarPublishSecondScene extends BaseComponent{
         obj = obj.replace(/^\./g, "");
         //保证只有出现一个.而没有多个.
         obj = obj.replace(/\.{2,}/g, ".");
+
+        // obj = obj.replace(/^(([1-9]+)|([0-9]+\.[0-9]{1,2}))$/g, "");
         //保证.只出现一次，而不能出现两次以上
         obj = obj.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
         return obj;
