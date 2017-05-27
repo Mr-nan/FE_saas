@@ -9,9 +9,9 @@ import {
     StyleSheet,
     View,
     Text,
-    ListView,
+    BackAndroid,
     TouchableOpacity,
-    Image,
+    InteractionManager,
     Dimensions,
     TextInput
 } from 'react-native'
@@ -26,9 +26,72 @@ import ExplainModal from "../mine/myOrder/component/ExplainModal";
 import * as AppUrls from "../constant/appUrls";
 import {request} from "../utils/RequestUtil";
 import AccountScene from "../mine/accountManage/RechargeScene";
+import StorageUtil from "../utils/StorageUtil";
+import * as StorageKeyNames from "../constant/storageKeyNames";
 const Pixel = new PixelUtil();
 
 export default class CheckStand extends BaseComponent {
+
+    constructor(props) {
+        super(props);
+        this.accountInfo = '';
+        this.state = {
+            renderPlaceholderOnly: 'blank',
+            isRefreshing: false
+        }
+    }
+
+    componentDidMount() {
+        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
+    }
+
+    initFinish = () => {
+        /*        this.setState({
+         dataSource: this.state.dataSource.cloneWithRows(['', '', '']),
+         renderPlaceholderOnly: 'success'
+         });*/
+        this.loadData();
+    };
+
+    loadData = () => {
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    enter_base_ids: datas.company_base_id,
+                };
+                let url = AppUrls.USER_ACCOUNT_INFO;
+                request(url, 'post', maps).then((response) => {
+                    this.props.showModal(false);
+                    this.accountInfo = response.mjson.data;
+                    if (this.accountInfo) {
+                        this.setState({
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'success'
+                        });
+                    } else {
+                        this.setState({
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'null'
+                        });
+                    }
+                }, (error) => {
+                    this.props.showModal(false);
+                    this.setState({
+                        isRefreshing: false,
+                        renderPlaceholderOnly: 'error'
+                    });
+                });
+            } else {
+                this.props.showToast('用户信息查询失败');
+            }
+        });
+
+    };
 
     render() {
         return (
@@ -66,12 +129,12 @@ export default class CheckStand extends BaseComponent {
                     <View style={styles.separatedLine}/>
                     <View style={styles.accountBar}>
                         <Text style={styles.title}>账户：</Text>
-                        <Text style={styles.content}>123131313131</Text>
+                        <Text style={styles.content}>{this.accountInfo.account_id}</Text>
                     </View>
                     <View style={styles.separatedLine}/>
                     <View style={styles.accountBar}>
                         <Text style={styles.title}>账户可用金额：</Text>
-                        <Text style={styles.content}>150000元</Text>
+                        <Text style={styles.content}>{this.accountInfo.balance}元</Text>
                         <View style={{flex: 1}}/>
                         <TouchableOpacity
                             onPress={() => {
@@ -147,7 +210,6 @@ export default class CheckStand extends BaseComponent {
                  color: fontAndColor.COLORA1,
                  marginTop: Pixel.getPixel(10)
                  }}>申请订单融资额度请联系客服</Text>*/}
-
                 <ExplainModal ref='expModal' title='提示' buttonStyle={styles.expButton} textStyle={styles.expText}
                               text='确定' content='您的余额不足请充值'/>
             </View>

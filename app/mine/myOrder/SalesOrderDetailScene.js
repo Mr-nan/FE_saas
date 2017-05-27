@@ -657,6 +657,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         dataSource={this.state.dataSource}
                         renderRow={this._renderRow}
                         renderSeparator={this._renderSeperator}
+                        removeClippedSubviews={false}
                         showsVerticalScrollIndicator={false}/>
                     <ExplainModal ref='expModal' title='补差额说明' buttonStyle={styles.expButton} textStyle={styles.expText}
                                   text='知道了' content='为了确保交易金额可支付贷款本息，请您

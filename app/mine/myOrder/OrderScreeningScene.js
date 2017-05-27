@@ -140,6 +140,7 @@ export default class OrderScreeningScene extends BaseComponent {
                     style={{marginTop: Pixel.getPixel(73)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
+                    removeClippedSubviews={false}
                     renderSeparator={this._renderSeperator}
                     showsVerticalScrollIndicator={false}/>
 

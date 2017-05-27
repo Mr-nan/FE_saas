@@ -524,12 +524,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
 
         }, (error) => {
             this.props.showModal(false);
-            /*            this.stateMapping(2, 0);
-             this.initListData(this.orderState);*/
+            this.stateMapping(2, 0);
             this.setState({
                 //dataSource: this.state.dataSource.cloneWithRows(this.mList),
                 isRefreshing: false,
-                renderPlaceholderOnly: 'error'
+                renderPlaceholderOnly: 'success'
             });
         });
     };
@@ -550,6 +549,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         dataSource={this.state.dataSource}
                         renderRow={this._renderRow}
                         renderSeparator={this._renderSeperator}
+                        removeClippedSubviews={false}
                         showsVerticalScrollIndicator={false}/>
 
                     <View style={{flex: 1}}/>

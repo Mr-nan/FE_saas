@@ -181,6 +181,7 @@ export default class OrderListScene extends BaseComponent {
                               renderSeparator={this._renderSeperator}
                               renderFooter={this.renderListFooter}
                               onEndReached={this.toEnd}
+                              removeClippedSubviews={false}
                               refreshControl={
                                   <RefreshControl
                                       refreshing={this.state.isRefreshing}
