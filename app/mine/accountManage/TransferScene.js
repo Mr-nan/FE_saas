@@ -100,6 +100,10 @@ export  default class TransferScene extends BaseComponent {
             this.props.showToast('请输入正确账号')
             return;
         }
+        if(allValue.name==''){
+            this.props.showToast('请输入正确账号')
+            return;
+        }
         let money = this.refs.withdrawalsinput.getTextValue();
         if (money == '') {
             this.props.showToast('请输入转账金额')

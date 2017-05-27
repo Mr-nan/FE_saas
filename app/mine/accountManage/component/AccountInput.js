@@ -100,9 +100,12 @@ export  default class AccountInput extends PureComponent {
             this.setState({
                 value: text
             });
-            if(text.length>=26){
-                this.props.callBack();
-            }
+    }
+
+    componentDidUpdate() {
+        if(this.state.value.length>=26){
+            this.props.callBack();
+        }
     }
 
 }
