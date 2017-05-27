@@ -618,6 +618,7 @@ export default class CarPublishFirstScene extends BaseComponent{
 
         if(this.carData.v_type!==1){
             this.carData.init_reg = '';
+            this.titleData1[1][1].value = '请选择';
         }
 
         let navigatorParams = {
@@ -700,12 +701,20 @@ export default class CarPublishFirstScene extends BaseComponent{
             this.titleData2[1][0].value = this.modelData[index].model_year+'-6-1';
 
             this.carData['manufacture'] = this.modelData[index].model_year+'-6-1';
-            this.carData['init_reg'] = this.modelData[index].model_year+'-6-1';
             this.carData['model_id'] = this.modelData[index].model_id;
             this.carData['emission_standards'] = this.modelData[index].model_emission_standard;
             this.carData['series_id'] = this.modelData[index].series_id;
             this.carData['model_name'] = this.modelData[index].model_name;
             this.carData['brand_id'] = this.modelData[index].brand_id;
+
+            if(this.carType=='二手车')
+            {
+                this.carData['init_reg'] = this.modelData[index].model_year+'-6-1';
+
+            }else {
+                this.carData['init_reg'] = '';
+                this.titleData1[1][1].value = '请选择';
+            }
 
             if(this.modelData[index].model_liter){
                 this.carData['displacement']=this.modelData[index].model_liter;
@@ -758,6 +767,11 @@ export default class CarPublishFirstScene extends BaseComponent{
                             if(this.carType=='二手车')
                             {
                                 this.carData['init_reg'] = rd[0].model_year+'-6-1';
+
+                            }else {
+                                this.carData['init_reg'] = '';
+                                this.titleData1[1][1].value = '请选择';
+
                             }
 
                             this.carData['model_id'] = rd[0].model_id;
@@ -868,6 +882,10 @@ export default class CarPublishFirstScene extends BaseComponent{
         if(this.carType =='二手车')
         {
             this.carData['init_reg'] = carObject.model_year+'-6-1';
+        }else {
+            this.carData['init_reg'] = '';
+            this.titleData1[1][1].value = '请选择';
+
         }
         this.carData['model_id'] = carObject.model_id;
         this.carData['emission_standards'] = carObject.discharge_standard;
