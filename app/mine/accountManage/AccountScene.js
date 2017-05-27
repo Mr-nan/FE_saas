@@ -132,6 +132,7 @@ export  default class AccountScene extends BaseComponent {
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
                 <ListView
+                    removeClippedSubviews={false}
                     style={{marginTop: Pixel.getTitlePixel(64),marginBottom:Pixel.getPixel(45)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}

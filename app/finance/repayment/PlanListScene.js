@@ -95,6 +95,7 @@ export  default class PlanListScene extends BaseComponent {
                     renderRihtFootView={this._navigatorRightView}
                 />
                 <ListView
+                    removeClippedSubviews={false}
                     style={{marginTop: Pixel.getTitlePixel(79)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}

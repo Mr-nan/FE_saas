@@ -54,6 +54,7 @@ export  default class CarbreakRulesScene extends  BaseComponent{
         return(
             <View style={styles.rootContainer}>
                 <ListView
+                    removeClippedSubviews={false}
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}/>
                 <NavigationView title="违章记录" backIconClick={()=>{this.backPage();}}/>

@@ -78,6 +78,7 @@ export default class InventoryRepaymentInfoScene extends BaseComponent {
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
                 <InventoryRepaymentInfoTop itemData={movies}/>
                 <ListView
+                    removeClippedSubviews={false}
                     style={{marginTop: Pixel.getPixel(10)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}

@@ -68,6 +68,7 @@ export  default class CarOverdue extends BaseComponent {
                     leftImageCallBack={this.backPage}/>
 
                 <ListView
+                    removeClippedSubviews={false}
                     style={{flex: 1}}
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}

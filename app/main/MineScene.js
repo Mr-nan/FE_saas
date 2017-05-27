@@ -431,6 +431,7 @@ export default class MineScene extends BaseComponent {
                                  this.imageSource = modal
                              }}/>
                 <ListView
+                    removeClippedSubviews={false}
                     contentContainerStyle={styles.listStyle}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}

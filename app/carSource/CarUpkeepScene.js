@@ -72,6 +72,7 @@ export  default class CarUpkeepScene extends  BaseComponent{
         return(
             <View style={styles.rootContainer}>
                 <ListView
+                    removeClippedSubviews={false}
                     dataSource={this.state.dataSource}
                     renderHeader={()=>
                         <View style={styles.headView}>

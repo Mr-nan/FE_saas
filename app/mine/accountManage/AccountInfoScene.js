@@ -119,6 +119,7 @@ export default class AccountInfoScene extends BaseComponent {
                 />
 
                 <ListView
+                    removeClippedSubviews={false}
                     contentContainerStyle={styles.listStyle}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}

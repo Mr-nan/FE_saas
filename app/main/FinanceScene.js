@@ -109,7 +109,6 @@ export default class FinanceSence extends BaseComponet {
         })
             .then((response) => {
                     mnyData = response.mjson.data;
-
                     let title = '';
                     if (mnyData.is_microchinese_mny == 1 || mnyData.is_microchinese_mny == 5) {
                         title = '立即激活微众额度';
@@ -333,6 +332,7 @@ export default class FinanceSence extends BaseComponet {
         return (
             <View style={cellSheet.container}>
                 <ListView
+                    removeClippedSubviews={false}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}

@@ -124,6 +124,7 @@ export  default class PlanInfoScene extends BaseComponent {
                     backIconClick={this.backPage}
                 />
                 <ListView
+                    removeClippedSubviews={false}
                     style={{marginTop: Pixel.getTitlePixel(64)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}

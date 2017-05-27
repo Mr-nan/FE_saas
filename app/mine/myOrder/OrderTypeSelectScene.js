@@ -64,6 +64,7 @@ export default class OrderTypeSelectScene extends BaseComponent {
                 <NavigatorView title='我的订单' backIconClick={this.backPage}/>
                 <ListView style={{backgroundColor: fontAndColor.COLORA3, marginTop: Pixel.getTitlePixel(74)}}
                           dataSource={this.state.dataSource}
+                          removeClippedSubviews={false}
                           renderRow={this._renderRow}
                           enableEmptySections={true}
                           renderSeparator={this._renderSeperator}
