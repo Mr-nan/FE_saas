@@ -48,7 +48,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         this.bottomState = -1;
         this.contactData = {};
         this.state = {
-            dataSource: ds
+            dataSource: ds,
+            renderPlaceholderOnly: 'blank',
+            isRefreshing: false
         }
     }
 
@@ -505,7 +507,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             let status = response.mjson.data.status;
             let cancelStatus = response.mjson.data.cancel_status;
             //this.stateMapping(status, cancelStatus);
-            this.stateMapping(0, 0);
+            this.stateMapping(status, cancelStatus);
             if (this.orderDetail) {
                 this.initListData(this.orderState);
                 this.setState({
@@ -533,23 +535,28 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
     };
 
     render() {
-        return (
-            <View style={styles.container}>
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return ( <View style={styles.container}>
+                {this.loadView()}
                 <NavigatorView title='订单详情' backIconClick={this.backPage}/>
-                {this.initDetailPageTop(this.topState)}
-                <ListView
-                    style={{marginTop: this.listViewStyle}}
-                    dataSource={this.state.dataSource}
-                    renderRow={this._renderRow}
-                    renderSeparator={this._renderSeperator}
-                    showsVerticalScrollIndicator={false}/>
+            </View>);
+        } else {
+            return (
+                <View style={styles.container}>
+                    <NavigatorView title='订单详情' backIconClick={this.backPage}/>
+                    {this.initDetailPageTop(this.topState)}
+                    <ListView
+                        style={{marginTop: this.listViewStyle}}
+                        dataSource={this.state.dataSource}
+                        renderRow={this._renderRow}
+                        renderSeparator={this._renderSeperator}
+                        showsVerticalScrollIndicator={false}/>
 
-                <View style={{flex: 1}}/>
-                {this.initDetailPageBottom(this.bottomState)}
-                {/*<ExplainModal ref='expModal' title='订金说明' buttonStyle={styles.expButton} textStyle={styles.expText}
-                 text='知道了' content='交付订金后卖家会为您保留车源，且卖家不可提现，如果交易最终未完成，您可以和卖家协商'/>*/}
-            </View>
-        )
+                    <View style={{flex: 1}}/>
+                    {this.initDetailPageBottom(this.bottomState)}
+                </View>
+            )
+        }
     }
 
     _renderSeperator = (sectionID: number, rowID: number, adjacentRowHighlighted: bool) => {

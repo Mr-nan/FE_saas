@@ -67,7 +67,9 @@ export default class SalesOrderDetailScene extends BaseComponent {
         this.scanType = [{model_name: '扫描前风挡'}, {model_name: '扫描行驶证'}];
 
         this.state = {
-            dataSource: ds
+            dataSource: ds,
+            renderPlaceholderOnly: 'blank',
+            isRefreshing: false
         }
     }
 
@@ -623,32 +625,50 @@ export default class SalesOrderDetailScene extends BaseComponent {
             //console.log("成交价提交失败");
             this.props.showToast('取消订单申请失败');
         });
-    }
+    };
+
+    dateReversal = (time) => {
+        const date = new Date();
+        date.setTime(time);
+        return (date.getFullYear() + "-" + (this.PrefixInteger(date.getMonth() + 1, 2)) + "-" +
+        (this.PrefixInteger(date.getDate() + 1, 2)));
+    };
+
+    PrefixInteger = (num, length) => {
+        return (Array(length).join('0') + num).slice(-length);
+    };
 
     render() {
-        return (
-            <View style={styles.container}>
-                <InputVinInfo viewData={this.modelData} vinPress={this._vinPress} ref={(modal) => {
-                    this.vinModal = modal
-                }} navigator={this.props.navigator}/>
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return ( <View style={styles.container}>
+                {this.loadView()}
                 <NavigatorView title='订单详情' backIconClick={this.backPage}/>
-                {this.initDetailPageTop(this.topState)}
-                <ListView
-                    style={{marginTop: Pixel.getPixel(73)}}
-                    dataSource={this.state.dataSource}
-                    renderRow={this._renderRow}
-                    renderSeparator={this._renderSeperator}
-                    showsVerticalScrollIndicator={false}/>
-                <ExplainModal ref='expModal' title='补差额说明' buttonStyle={styles.expButton} textStyle={styles.expText}
-                              text='知道了' content='为了确保交易金额可支付贷款本息，请您
+            </View>);
+        } else {
+            return (
+                <View style={styles.container}>
+                    <InputVinInfo viewData={this.modelData} vinPress={this._vinPress} ref={(modal) => {
+                        this.vinModal = modal
+                    }} navigator={this.props.navigator}/>
+                    <NavigatorView title='订单详情' backIconClick={this.backPage}/>
+                    {this.initDetailPageTop(this.topState)}
+                    <ListView
+                        style={{marginTop: Pixel.getPixel(73)}}
+                        dataSource={this.state.dataSource}
+                        renderRow={this._renderRow}
+                        renderSeparator={this._renderSeperator}
+                        showsVerticalScrollIndicator={false}/>
+                    <ExplainModal ref='expModal' title='补差额说明' buttonStyle={styles.expButton} textStyle={styles.expText}
+                                  text='知道了' content='为了确保交易金额可支付贷款本息，请您
                         补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您
                         补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您
                         补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您
                         补足成交价与贷款本息，'/>
-                <View style={{flex: 1}}/>
-                {this.initDetailPageBottom(this.bottomState)}
-            </View>
-        )
+                    <View style={{flex: 1}}/>
+                    {this.initDetailPageBottom(this.bottomState)}
+                </View>
+            )
+        }
     }
 
     _renderSeperator = (sectionID: number, rowID: number, adjacentRowHighlighted: bool) => {
@@ -763,12 +783,22 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         style={{marginLeft: Pixel.getPixel(15)}}
                         source={require('../../../images/mainImage/agreed_sign.png')}/>
                     <Text style={{color: fontAndColor.COLORA1, marginLeft: Pixel.getPixel(5)}}>我已同意签署</Text>
-                    <Text style={{color: fontAndColor.COLORA2}}>《买卖协议》</Text>
+                    <Text
+                        onPress={() => {
+
+                        }}
+                        style={{color: fontAndColor.COLORA2}}>《买卖协议》</Text>
                     <Text style={{color: fontAndColor.COLORA1}}>和</Text>
-                    <Text style={{color: fontAndColor.COLORA2}}>《授权声明》</Text>
+                    <Text
+                        onPress={() => {
+
+                        }}
+                        tyle={{color: fontAndColor.COLORA2}}>《授权声明》</Text>
                 </View>
             )
         } else if (rowData === '5') {
+            let initRegDate = this.orderDetail.orders_item_data.length ? this.dateReversal(this.orderDetail.orders_item_data[0].car_data.init_reg + '000') : '未公开';
+            //let imageUrl = rowData.car.length ? rowData.car[0].thumbs : [];
             return (
                 <View style={styles.itemType3}>
                     <View style={{
@@ -779,10 +809,10 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         alignItems: 'center'
                     }}>
                         <Text style={styles.orderInfo}>订单号:</Text>
-                        <Text style={styles.orderInfo}>12312332133</Text>
+                        <Text style={styles.orderInfo}>{this.orderDetail.order_no}</Text>
                         <View style={{flex: 1}}/>
                         <Text style={styles.orderInfo}>订单日期:</Text>
-                        <Text style={styles.orderInfo}>2019/09/09</Text>
+                        <Text style={styles.orderInfo}>{this.orderDetail.created_time}</Text>
                     </View>
                     <View style={styles.separatedLine}/>
                     <View style={{flexDirection: 'row', height: Pixel.getPixel(105), alignItems: 'center'}}>
@@ -790,19 +820,14 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                source={{uri: 'http://dycd-static.oss-cn-beijing.aliyuncs.com/Uploads/Oss/201703/13/58c639474ef45.jpg?x-oss-process=image/resize,w_320,h_240'}}/>
                         <View style={{marginLeft: Pixel.getPixel(10)}}>
                             <Text style={{width: width - Pixel.getPixel(15 + 120 + 10 + 15)}}
-                                  numberOfLines={1}>[北京]奔驰M级(进口) 2015款
-                                Masdadadadadada</Text>
+                                  numberOfLines={1}>{this.orderDetail.orders_item_data[0].model_name}</Text>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>里程：</Text>
-                                <Text style={styles.carDescribe}>20.59万</Text>
+                                <Text style={styles.carDescribe}>{this.orderDetail.orders_item_data[0].car_data.mileage}万</Text>
                             </View>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>上牌：</Text>
-                                <Text style={styles.carDescribe}>2016-09-09</Text>
-                            </View>
-                            <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
-                                <Text style={styles.carDescribeTitle}>标价：</Text>
-                                <Text style={styles.carDescribe}>20.59万</Text>
+                                <Text style={styles.carDescribe}>{initRegDate}</Text>
                             </View>
                         </View>
                     </View>
@@ -948,17 +973,17 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     }}>
                         <Text style={styles.orderInfo}>姓名</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>异议</Text>
+                        <Text style={styles.infoContent}>{this.orderDetail.buyer_name}</Text>
                     </View>
                     <View style={styles.infoItem}>
                         <Text style={styles.orderInfo}>联系方式</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>123456664444</Text>
+                        <Text style={styles.infoContent}>{this.orderDetail.buyer_phone}</Text>
                     </View>
                     <View style={styles.infoItem}>
                         <Text style={styles.orderInfo}>企业名称</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>终生二手车经销给你公司</Text>
+                        <Text style={styles.infoContent}>{this.orderDetail.buyer_company_name}</Text>
                     </View>
                 </View>
             )

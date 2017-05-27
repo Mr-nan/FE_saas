@@ -59,10 +59,10 @@ export default class OrderListScene extends BaseComponent {
     }
 
     initFinish = () => {
-/*        this.setState({
-            dataSource: this.state.dataSource.cloneWithRows(['', '', '']),
-            renderPlaceholderOnly: 'success'
-        });*/
+        /*        this.setState({
+         dataSource: this.state.dataSource.cloneWithRows(['', '', '']),
+         renderPlaceholderOnly: 'success'
+         });*/
         this.loadData();
     };
 
@@ -238,8 +238,8 @@ export default class OrderListScene extends BaseComponent {
 
     returnConditions = (newOrderState, newStartDate, newEndDate) => {
         /*console.log('newOrderState===' + newOrderState);
-        console.log('newStartDate===' + newStartDate);
-        console.log('newEndDate===' + newEndDate);*/
+         console.log('newStartDate===' + newStartDate);
+         console.log('newEndDate===' + newEndDate);*/
         this.orderState = newOrderState;
         this.startDate = newStartDate;
         this.endDate = newEndDate;
@@ -287,7 +287,7 @@ export default class OrderListScene extends BaseComponent {
                             marginLeft: Pixel.getPixel(5)
                         }}>订单号:({rowData.order.order_no})</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.rowTitleState}>已拍下</Text>
+                        <Text style={styles.rowTitleState}>{rowData.order.status}</Text>
                     </View>
                     <View style={styles.separatedLine}/>
                     <View style={{flexDirection: 'row', height: Pixel.getPixel(104), alignItems: 'center'}}>
