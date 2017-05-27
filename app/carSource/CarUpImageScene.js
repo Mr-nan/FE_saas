@@ -260,7 +260,9 @@ export default class CarUpImageScene extends BaseComponent{
        let sourceParams = {
             name: 'CarMySourceScene',
             component: CarMySourceScene,
-            params: {}
+            params: {
+                page:2,
+            }
         };
         this.toNextPage(sourceParams);
     };
@@ -303,7 +305,7 @@ export default class CarUpImageScene extends BaseComponent{
 
                 this.props.showModal(false);
 
-                if(response.mycode == 1){
+                if(response.mycode == 1 || response.mycode == 600010){
                     if(this.carData.show_shop_id){
                         StorageUtil.mRemoveItem(String(this.carData.show_shop_id));
                     }
@@ -323,9 +325,24 @@ export default class CarUpImageScene extends BaseComponent{
                 }, (error) => {
 
                     this.props.showModal(false);
+
                     if(error.mycode === -300 || error.mycode === -500){
                         this.showToast('网络连接失败');
-                    }else{
+
+                    }else if(error.mycode == 600010){
+                        if(this.carData.show_shop_id){
+                            StorageUtil.mRemoveItem(String(this.carData.show_shop_id));
+                        }
+                        if(IS_ANDROID === true){
+                            this.successModal.openModal();
+                        }else {
+                            this.timer = setTimeout(
+                                () => { this.successModal.openModal();},
+                                500
+                            );
+                        }
+                    }
+                    else{
                         this.showToast(error.mjson.msg);
                     }
                 });

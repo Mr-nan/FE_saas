@@ -192,7 +192,7 @@ export default class CarMySourceScene extends BaceComponent {
             <View style={styles.rootContainer}>
                 <ScrollableTabView
                     style={styles.ScrollableTabView}
-                    initialPage={0}
+                    initialPage={this.props.page?this.props.page:0}
                     locked={true}
                     renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["已上架", "已下架", "未审核"]}/>}>
                     <MyCarSourceUpperFrameView ref="upperFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper1"/>
@@ -656,23 +656,15 @@ class MyCarSourceAuditView extends BaceComponent {
 
             carAuditData = response.mjson.data.list;
             carAuditStatus = response.mjson.data.status;
-            if (carAuditData.length) {
-                this.setState({
-                    carData: this.state.carData.cloneWithRows(carAuditData),
-                    isRefreshing: false,
-                    renderPlaceholderOnly: 'success',
-                    carAuditStatus: carAuditStatus,
 
-                });
+            this.setState({
+                carData: this.state.carData.cloneWithRows(carAuditData),
+                isRefreshing: false,
+                renderPlaceholderOnly: 'success',
+                carAuditStatus: carAuditStatus,
 
-            } else {
+            });
 
-                this.setState({
-                    isRefreshing: false,
-                    renderPlaceholderOnly: 'null',
-                    carAuditStatus: carAuditStatus,
-                });
-            }
 
         }, (error) => {
 
@@ -741,6 +733,18 @@ class MyCarSourceAuditView extends BaceComponent {
         }
     }
 
+    renderHeader =()=> {
+        return(
+            <View style={{paddingHorizontal:Pixel.getPixel(15),alignItems:'center',flex:1,height:Pixel.getPixel(35),backgroundColor:fontAndColor.COLORB6,
+                flexDirection:'row',justifyContent:'space-between',marginBottom:Pixel.getPixel(10)
+            }}>
+                <View style={{flexDirection:'row', alignItems:'center'}}>
+                    <Image source={require('../../images/carSourceImages/pointIcon.png')}/>
+                    <Text style={{color:fontAndColor.COLORB2, fontSize:fontAndColor.LITTLEFONT28,marginLeft:Pixel.getPixel(5)}}>与其他商户重复的车源需待管理员核实后显示</Text>
+                </View>
+            </View>)
+    }
+
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return (
@@ -762,6 +766,7 @@ class MyCarSourceAuditView extends BaceComponent {
                                 enableEmptySections={true}
                                 scrollRenderAheadDistance={10}
                                 pageSize={10}
+                                renderHeader={this.renderHeader}
                                 renderFooter={this.renderListFooter}
                                 onEndReached={this.toEnd}
                                 renderRow={(rowData) =><MyCarCell carCellData={rowData} cellClick={this.props.carCellClick} footButtonClick={this.props.footButtonClick} type={3}/>}
