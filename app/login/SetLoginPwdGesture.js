@@ -18,6 +18,7 @@ import NavigationBar from "../component/NavigationBar";
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
 import MainPage from "../main/MainPage";
+import AllSelectCompanyScene from "../main/AllSelectCompanyScene";
 var Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;
@@ -181,9 +182,17 @@ export default class SetLoginPwdGesture extends BaseComponent {
                     }
                 })
                 if (this.props.from == 'login') {
-                    this.loginPage(this.loginSuccess)
                     StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
                     StorageUtil.mSetItem(StorageKeyNames.NEED_GESTURE, 'false');
+                    StorageUtil.mGetItem(StorageKeyNames.USER_LEVEL, (data) => {
+                        if (data.code == 1) {
+                            if (data.result == '2' || data.result == '1') {
+                                this.loginPage({name: 'AllSelectCompanyScene', component: AllSelectCompanyScene});
+                            } else {
+                                this.loginPage({name: 'MainPage', component: MainPage});
+                            }
+                        }
+                    })
                 } else {
                     this.props.showToast("设置成功");
                     this.backPage();

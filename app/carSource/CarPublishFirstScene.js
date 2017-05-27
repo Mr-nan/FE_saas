@@ -53,12 +53,15 @@ export default class CarPublishFirstScene extends BaseComponent{
 
         }else {
             StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST,(data)=>{
+                console.log(data);
                 if(data.code == 1 && data.result != ''){
                     let enters = JSON.parse(data.result);
                     if(enters.length === 1){
 
-                        console.log(enters[0].enterprise_uid);
                         this.carData['show_shop_id'] = enters[0].enterprise_uid;
+                        this.carData['city_id'] = enters[0].city_id;
+                        this.carData['prov_id'] = enters[0].prov_id;
+                        this.carData['city_name'] = enters[0].city_name;
                         this.getLocalityCarData();
 
                     }else if(enters.length > 1){
@@ -79,8 +82,15 @@ export default class CarPublishFirstScene extends BaseComponent{
     // 构造
       constructor(props) {
         super(props);
-
           this.carType ='二手车';
+          this.enterpriseList = [];
+          this.scanType = [
+              {model_name: '扫描前风挡'},
+              {model_name: '扫描行驶证'}
+          ];
+          this.modelData = [];
+          this.modelInfo = {};
+          this.carData={'v_type':1};
           this.titleData1=[
               [
                   {
@@ -101,8 +111,13 @@ export default class CarPublishFirstScene extends BaseComponent{
                                              maxLength={17}
                                              editable={this.props.carID?false:true}
                                              onChangeText={this._onVinChange}
+                                             onFocus={()=>{
+                                                this.carData.vin ='';
+                                             }}
+                                             clearTextOnFocus={true}
                                              placeholderTextColor={fontAndColor.COLORA4}
                                              ref={(input) => {this.vinInput = input}}
+                                             keyboardType={'ascii-capable'}
                                              placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
                                   />
                                   {
@@ -130,6 +145,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                               <TextInput
                                   style={styles.textInput}
                                   placeholder='请输入'
+                                  underlineColorAndroid='transparent'
                                   onChangeText={(text)=>{this.carData['displacement']=text}}
                                   onEndEditing={()=>{this.saveCarData();}}
                                   placeholderTextColor={fontAndColor.COLORA4}
@@ -176,7 +192,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                   title:'标准配置',
                   isShowTag:false,
                   value:'查看',
-                  isShowTail:false,
+                  isShowTail:true,
               },
                   {
                       title:'配置改装说明',
@@ -189,6 +205,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                                   style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(50)}]}
                                   placeholder='请填写'
                                   maxLength={50}
+                                  underlineColorAndroid='transparent'
                                   onChangeText={(text)=>{this.carData['modification_instructions']=text}}
                                   onEndEditing={()=>{this.saveCarData();}}
                                   ref={(input) => {this.instructionsInput = input}}
@@ -224,6 +241,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                                              editable={this.props.carID?false:true}
                                              onChangeText={this._onVinChange}
                                              placeholderTextColor={fontAndColor.COLORA4}
+                                             keyboardType={'ascii-capable'}
                                              ref={(input) => {this.vinInput = input}}
                                              placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
                                   />
@@ -256,6 +274,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                                       this.carData['displacement']=text}
                                   }
                                   ref={(input) => {this.displacementInput = input}}
+                                  underlineColorAndroid='transparent'
                                   onEndEditing={()=>{this.saveCarData();}}
                                   placeholderTextColor={fontAndColor.COLORA4}
                                   placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
@@ -294,7 +313,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                       title:'标准配置',
                       isShowTag:false,
                       value:'查看',
-                      isShowTail:false,
+                      isShowTail:true,
                   },
                   {
                       title:'配置改装说明',
@@ -305,6 +324,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                                   style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(50)}]}
                                   placeholder='请填写'
                                   maxLength={50}
+                                  underlineColorAndroid='transparent'
                                   onChangeText={(text)=>{
                                       this.carData['modification_instructions']=text}
                                   }
@@ -319,14 +339,7 @@ export default class CarPublishFirstScene extends BaseComponent{
               ]
 
           ];
-          this.enterpriseList = [];
-          this.scanType = [
-              {model_name: '扫描前风挡'},
-              {model_name: '扫描行驶证'}
-          ];
-          this.modelData = [];
-          this.modelInfo = {};
-          this.carData={'v_type':1};
+
           this.state = {
               titleData:this.titleData1,
               isDateTimePickerVisible:false,
@@ -340,9 +353,9 @@ export default class CarPublishFirstScene extends BaseComponent{
 
         return(
             <View style={styles.rootContainer}>
-                <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={Pixel.getTitlePixel(-64)}>
-                    <ScrollView style={{width:sceneWidth,height:Dimensions.get('window').height -Pixel.getTitlePixel(64)}}>
-                        <View style={{width:sceneWidth,paddingVertical:Pixel.getPixel(25),backgroundColor:'white'}}>
+                <KeyboardAvoidingView behavior='position'>
+                    <ScrollView keyboardShouldPersistTaps={'handled'} >
+                        <View style={{width:sceneWidth,paddingVertical:Pixel.getPixel(25),backgroundColor:'white',marginTop:Pixel.getTitlePixel(64)}}>
                         <Image style={{width:sceneWidth}} resizeMode={'contain'} source={require('../../images/carSourceImages/publishCarperpos1.png')}/>
                         </View>
                         {
@@ -384,9 +397,9 @@ export default class CarPublishFirstScene extends BaseComponent{
                                 </View>
                             </TouchableOpacity>
                         </View>
+                            <AllNavigationView title="车辆基本信息" backIconClick={this.backPage}/>
                     </ScrollView>
                 </KeyboardAvoidingView>
-                <AllNavigationView title="车辆基本信息" backIconClick={this.backPage}/>
                 <VinInfo viewData={this.scanType} vinPress={this._vinPress} ref={(modal) => {this.vinModal = modal}}/>
                 <DateTimePicker
                     titleIOS="请选择日期"
@@ -405,9 +418,13 @@ export default class CarPublishFirstScene extends BaseComponent{
 
     loadCarData=()=>{
 
+        this.props.showModal(true);
+
         Net.request(AppUrls.CAR_DETAIL, 'post', {
             id: this.props.carID,
         }).then((response) => {
+
+            this.props.showModal(false);
 
             if(response.mycode==1){
                 this.carData = response.mjson.data;
@@ -415,13 +432,12 @@ export default class CarPublishFirstScene extends BaseComponent{
                 this.carData.init_reg=response.mjson.data.init_reg!=''? this.dateReversal(response.mjson.data.init_reg+'000'):'';
                 this.carData.emission_standards = response.mjson.data.emission_standards_en;
                 this.setCarData();
-            }else {
-
             }
 
 
         }, (error) => {
-
+            this.props.showModal(false);
+            this.props.showToast(error.msg);
         });
 
     }
@@ -459,7 +475,6 @@ export default class CarPublishFirstScene extends BaseComponent{
             this.titleData2[0][0].selectDict.current = this.carData.v_type == 2?'新车':'平行进口车';
             this.carType=this.titleData1[0][0].selectDict.current;
             this.refs.cellSelectView.setCurrentChecked(this.carType);
-
         }
 
         if(this.carData.vin){
@@ -551,7 +566,7 @@ export default class CarPublishFirstScene extends BaseComponent{
 
     footBtnClick=()=>{
 
-        if(!this.carData.vin){
+        if(!this.carData.vin||this.carData.vin==''){
             this.props.showToast('请输入正确的车架号');
             return;
         }
@@ -561,7 +576,7 @@ export default class CarPublishFirstScene extends BaseComponent{
             this.props.showToast('选择车型');
             return;
         }
-        if(!this.carData.displacement)
+        if(!this.carData.displacement||this.carData.displacement=='')
         {
             this.props.showToast('输入排量');
             return;
@@ -586,12 +601,29 @@ export default class CarPublishFirstScene extends BaseComponent{
             this.props.showToast('选择出厂日期');
             return;
         }
-        if(!this.carData.init_reg && this.carData.v_type==1)
-        {
-            this.props.showToast('选择出厂日期');
-            return;
+
+        if(this.carData.v_type==1){
+
+            if(!this.carData.init_reg)
+            {
+                this.props.showToast('选择初登日期');
+                return;
+            }
+
+            let manufactureData = new  Date(this.carData.manufacture);
+            let initReg = new  Date(this.carData.init_reg);
+            if(manufactureData.getTime() > initReg.getTime())
+            {
+                this.props.showToast('初登日期不能大于出厂日期');
+                return;
+            }
+
         }
 
+        if(this.carData.v_type!==1){
+            this.carData.init_reg = '';
+            this.titleData1[1][1].value = '请选择';
+        }
 
         let navigatorParams = {
             name: "CarPublishSecondScene",
@@ -673,11 +705,20 @@ export default class CarPublishFirstScene extends BaseComponent{
             this.titleData2[1][0].value = this.modelData[index].model_year+'-6-1';
 
             this.carData['manufacture'] = this.modelData[index].model_year+'-6-1';
-            this.carData['init_reg'] = this.modelData[index].model_year+'-6-1';
             this.carData['model_id'] = this.modelData[index].model_id;
             this.carData['emission_standards'] = this.modelData[index].model_emission_standard;
             this.carData['series_id'] = this.modelData[index].series_id;
             this.carData['model_name'] = this.modelData[index].model_name;
+            this.carData['brand_id'] = this.modelData[index].brand_id;
+
+            if(this.carType=='二手车')
+            {
+                this.carData['init_reg'] = this.modelData[index].model_year+'-6-1';
+
+            }else {
+                this.carData['init_reg'] = '';
+                this.titleData1[1][1].value = '请选择';
+            }
 
             if(this.modelData[index].model_liter){
                 this.carData['displacement']=this.modelData[index].model_liter;
@@ -691,9 +732,11 @@ export default class CarPublishFirstScene extends BaseComponent{
     };
     //车架号改变
     _onVinChange = (text) => {
-        if (text.length === 17) {
 
+
+        if (text.length === 17) {
             this._showLoading();
+            this.vinInput.blur();
             Net.request(AppUrls.VININFO, 'post',{vin:text}).then(
                 (response) => {
                     this._closeLoading();
@@ -703,7 +746,10 @@ export default class CarPublishFirstScene extends BaseComponent{
 
                         if (rd.length === 0) {
 
-                            this._showHint('车架号校验失败');
+                            this.vinInput.setNativeProps({
+                                text: '车架号校验失败'
+                            });
+
 
                         } else if (rd.length === 1) {
                             this.modelInfo['brand_id'] = rd[0].brand_id;
@@ -725,12 +771,18 @@ export default class CarPublishFirstScene extends BaseComponent{
                             if(this.carType=='二手车')
                             {
                                 this.carData['init_reg'] = rd[0].model_year+'-6-1';
+
+                            }else {
+                                this.carData['init_reg'] = '';
+                                this.titleData1[1][1].value = '请选择';
+
                             }
 
                             this.carData['model_id'] = rd[0].model_id;
                             this.carData['emission_standards'] = rd[0].model_emission_standard;
                             this.carData['series_id'] = rd[0].series_id;
                             this.carData['model_name'] = rd[0].model_name;
+                            this.carData['brand_id'] = rd[0].brand_id;
                             if(rd[0].model_liter){
                                 this.carData['displacement']=rd[0].model_liter;
                                 this.displacementInput.setNativeProps({
@@ -749,12 +801,16 @@ export default class CarPublishFirstScene extends BaseComponent{
                             this.vinModal.openModal(0);
                         }
                     } else {
-                        this._showHint('车架号校验失败');
+                        this.vinInput.setNativeProps({
+                            text: '车架号校验失败'
+                        });
                     }
                 },
                 (error) => {
                     this._closeLoading();
-                    this._showHint('车架号校验失败');
+                    this.vinInput.setNativeProps({
+                        text: '车架号校验失败'
+                    });
                 }
             );
         }
@@ -792,6 +848,9 @@ export default class CarPublishFirstScene extends BaseComponent{
     _enterprisePress = (rowID)=>{
 
         this.carData['show_shop_id'] = this.enterpriseList[rowID].enterprise_uid;
+        this.carData['city_id'] = this.enterpriseList[rowID].city_id;
+        this.carData['prov_id'] = this.enterpriseList[rowID].prov_id;
+        this.carData['city_name'] = this.enterpriseList[rowID].city_name;
         this.getLocalityCarData();
 
     };
@@ -809,10 +868,6 @@ export default class CarPublishFirstScene extends BaseComponent{
     }
     _checkedCarClick=(carObject)=>{
 
-        this.modelInfo['brand_id'] = carObject.brand_id;
-        this.modelInfo['model_id'] = carObject.model_id;
-        this.modelInfo['series_id'] = carObject.series_id;
-        this.modelInfo['model_name'] = carObject.model_name;
 
         if(carObject.liter){
             this.carData['displacement']=carObject.liter;
@@ -834,12 +889,16 @@ export default class CarPublishFirstScene extends BaseComponent{
         if(this.carType =='二手车')
         {
             this.carData['init_reg'] = carObject.model_year+'-6-1';
+        }else {
+            this.carData['init_reg'] = '';
+            this.titleData1[1][1].value = '请选择';
+
         }
         this.carData['model_id'] = carObject.model_id;
         this.carData['emission_standards'] = carObject.discharge_standard;
-        this.carData['carObject.series_id'] = carObject.series_id;
+        this.carData['series_id'] = carObject.series_id;
         this.carData['model_name'] = carObject.model_name;
-
+        this.carData['brand_id']=carObject.brand_id;
 
 
         this.upTitleData();
@@ -912,7 +971,7 @@ export default class CarPublishFirstScene extends BaseComponent{
             component: AutoConfig,
             params: {
 
-                modelID:this.modelInfo['model_id'],
+                modelID:this.carData.model_id,
                 carConfigurationData:[],
             }
         }
@@ -940,7 +999,7 @@ export default class CarPublishFirstScene extends BaseComponent{
 
         const date = new Date();
         date.setTime(time);
-        return(date.getFullYear()+"-"+(this.PrefixInteger(date.getMonth()+1,2)));
+        return(date.getFullYear()+"-"+(this.PrefixInteger(date.getMonth()+1,2)))+"-"+(this.PrefixInteger(date.getDay()+1,2));
 
     };
     PrefixInteger =(num,length)=>{
@@ -957,13 +1016,11 @@ const styles = StyleSheet.create({
     rootContainer:{
         flex:1,
         backgroundColor:fontAndColor.COLORA3,
-        paddingTop:Pixel.getTitlePixel(64),
     },
     footContainer:{
         justifyContent:'center',
         alignItems:'center',
         marginTop:Pixel.getPixel(20),
-        marginBottom:Pixel.getPixel(20),
 
     },
     footView:{
@@ -973,6 +1030,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
         width:sceneWidth-Pixel.getPixel(30),
         borderRadius:Pixel.getPixel(3),
+        marginBottom:Pixel.getPixel(20),
     },
     footText:{
         textAlign:'center',
@@ -980,11 +1038,14 @@ const styles = StyleSheet.create({
         fontSize:fontAndColor.BUTTONFONT30
     },
     textInput:{
-        height: 20,
+        height: Pixel.getPixel(30),
         borderColor: fontAndColor.COLORA0,
-        width:160,
+        width:Pixel.getPixel(160),
         textAlign:'right',
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+        paddingTop:0,
+        paddingBottom:0,
+        backgroundColor:'white'
     },
     scanImage: {
         height: Pixel.getPixel(18),

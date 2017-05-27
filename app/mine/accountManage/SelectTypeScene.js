@@ -43,6 +43,7 @@ export  default class SelectTypeScene extends BaseComponent {
     }
 
 
+
     render() {
         if (this.state.renderPlaceholderOnly != 'success') {
             return this._renderPlaceholderView();

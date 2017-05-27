@@ -21,6 +21,8 @@ import * as fontAndColor from '../../../constant/fontAndColor';
 import {request} from '../../../utils/RequestUtil';
 import * as Urls from '../../../constant/appUrls';
 import BaseComponent from '../../../component/BaseComponent';
+import StorageUtil from "../../../utils/StorageUtil";
+import * as StorageKeyNames from "../../../constant/storageKeyNames";
 export  default class FlowRechargePage extends BaseComponent {
 
     constructor(props) {
@@ -41,17 +43,74 @@ export  default class FlowRechargePage extends BaseComponent {
     }
 
     initFinish = () => {
-        this.setState({
-            renderPlaceholderOnly: 'success',
-        });
+        this.getData();
+    }
+
+    getData=()=>{
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas=JSON.parse(data.result);
+                let maps = {
+                    enter_base_ids:datas.company_base_id,
+                    child_type:'1'
+                };
+                request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+                    .then((response) => {
+                            this.getFlowData(datas.company_base_id,response.mjson.data.account_open_type);
+                        },
+                        (error) => {
+                            this.setState({
+                                renderPlaceholderOnly: 'error',
+                            });
+                        });
+            } else {
+                this.setState({
+                    renderPlaceholderOnly: 'error',
+                });
+            }
+        })
+    }
+
+    getFlowData=(id,type)=>{
+        let maps = {
+            create_time:this.state.time,
+            enter_base_id:id,
+            transfer_type:'1',
+            user_type:type
+        };
+        request(Urls.USER_ACCOUNT_PAYLOG, 'Post', maps)
+            .then((response) => {
+                    if(response.mjson.data.data==null||response.mjson.data.data.length<=0){
+                        this.setState({
+                            renderPlaceholderOnly: 'null',
+                        });
+                    }else{
+                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                        this.setState({
+                            renderPlaceholderOnly: 'success',
+                            source:ds.cloneWithRows(response.mjson.data.data)
+                        });
+                    }
+                },
+                (error) => {
+                    if(error.mycode=='-2100045'){
+                        this.setState({
+                            renderPlaceholderOnly: 'null',
+                        });
+                    }else{
+                        this.setState({
+                            renderPlaceholderOnly: 'error',
+                        });
+                    }
+                });
     }
 
     changeTime=(time)=>{
-        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.setState({
             time:time,
-            source: ds.cloneWithRows(['1','2','3','4','5']),
+            renderPlaceholderOnly:'loading'
         });
+        this.getData();
     }
 
     render() {
@@ -78,12 +137,12 @@ export  default class FlowRechargePage extends BaseComponent {
                     paddingRight:Pixel.getPixel(15)
                 }}>
                     <View style={{flex:1,justifyContent:'center'}}>
-                        <Text style={{color: '#000',fontSize: Pixel.getFontPixel(14)}}>充值</Text>
+                        <Text style={{color: '#000',fontSize: Pixel.getFontPixel(14)}}>{movie.operate_name}</Text>
                         <Text style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(12)}}>
-                            {this.state.time} 13:00</Text>
+                            {movie.create_time}</Text>
                     </View>
                     <View style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>
-                        <Text style={{color: '#000',fontSize: Pixel.getFontPixel(20)}}>13万</Text>
+                        <Text style={{color: '#000',fontSize: Pixel.getFontPixel(20)}}>{movie.amount}</Text>
                     </View>
                 </View>
             )

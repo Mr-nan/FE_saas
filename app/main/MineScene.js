@@ -10,7 +10,8 @@ import  {
     TouchableOpacity,
     NativeModules,
     BackAndroid,
-    InteractionManager
+    InteractionManager,
+    RefreshControl
 } from  'react-native'
 
 import * as fontAndClolr from '../constant/fontAndColor';
@@ -38,11 +39,11 @@ import ImageSource from '../publish/component/ImageSource';
 import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
 import AccountModal from '../component/AccountModal';
-import OrderTypeSelectScene from  '../mine/myOrder/OrderTypeSelectScene';
+// import OrderTypeSelectScene from  '../mine/myOrder/OrderTypeSelectScene';
 
 let Platform = require('Platform');
 import ImagePicker from "react-native-image-picker";
- let firstType = '-1';
+let firstType = '-1';
 let lastType = '-1';
 
 let componyname = '';
@@ -139,7 +140,7 @@ const options = {
 }
 import BaseComponent from '../component/BaseComponent';
 
-export default class MineSectionListView extends BaseComponent {
+export default class MineScene extends BaseComponent {
 
 
     handleBack = () => {
@@ -163,6 +164,119 @@ export default class MineSectionListView extends BaseComponent {
         firstType = '-1';
         lastType = '-1';
         componyname = '';
+        this.state = {
+            renderPlaceholderOnly: 'blank',
+            isRefreshing: false
+        };
+    }
+
+    initFinish = () => {
+        this.getData();
+    }
+
+    changeData = () => {
+        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+            if (data.code == 1) {
+                let user_list = [];
+                let datas = JSON.parse(data.result);
+                if (datas.user_level == 2) {
+                    if (datas.enterprise_list[0].role_type == '1') {
+                        if(lastType=='error'){
+                            Car[0].cars.splice(0, 1);
+                        }
+                        user_list.push(...Car);
+                    } else if (datas.enterprise_list[0].role_type == '6') {
+                        Car[0].cars.splice(0, 1);
+                        user_list.push(...Car);
+                    } else if (datas.enterprise_list[0].role_type == '2') {
+                        Car[0].cars.splice(0, 2);
+                        user_list.push(Car[0], Car[1], Car[3], Car[4]);
+                    } else {
+                        Car[0].cars.splice(0, 2);
+                        user_list.push(Car[0], Car[2], Car[3], Car[4]);
+                    }
+                } else if (datas.user_level == 1) {
+                    if (datas.enterprise_list[0].role_type == '1') {
+                        if(lastType=='error'){
+                            Car[0].cars.splice(0, 1);
+                        }
+                        user_list.push(Car[0], Car[2], Car[3], Car[4]);
+                    } else if (datas.enterprise_list[0].role_type == '6') {
+                        Car[0].cars.splice(0, 1);
+                        user_list.push(Car[0], Car[2], Car[3], Car[4]);
+                    } else {
+                        Car[0].cars.splice(0, 2);
+                        user_list.push(Car[0], Car[2], Car[3], Car[4]);
+
+                    }
+                } else {
+                    if (datas.audit_status == '2') {
+                        user_list.push(Car[2], Car[3], Car[4]);
+                    } else {
+                        user_list.push(Car[3], Car[4]);
+                    }
+
+                }
+                let jsonData = user_list;
+
+                //    定义变量
+                let dataBlob = {},
+                    sectionIDs = [],
+                    rowIDs = [];
+                for (let i = 0; i < jsonData.length; i++) {
+                    //    1.拿到所有的sectionId
+                    sectionIDs.push(i);
+
+                    //    2.把组中的内容放入dataBlob内容中
+                    dataBlob[i] = jsonData[i].title;
+
+                    //    3.设置改组中每条数据的结构
+                    rowIDs[i] = [];
+
+                    //    4.取出改组中所有的数据
+                    let cars = jsonData[i].cars;
+
+                    //    5.便利cars,设置每组的列表数据
+                    for (let j = 0; j < cars.length; j++) {
+                        //    改组中的每条对应的rowId
+                        rowIDs[i].push(j);
+
+                        // 把每一行中的内容放入dataBlob对象中
+                        dataBlob[i + ':' + j] = cars[j];
+                    }
+                }
+                let getSectionData = (dataBlob, sectionID) => {
+                    return dataBlob[sectionID];
+                };
+
+                let getRowData = (dataBlob, sectionID, rowID) => {
+                    return dataBlob[sectionID + ":" + rowID];
+                };
+                let ds = new ListView.DataSource({
+                        getSectionData: getSectionData,
+                        getRowData: getRowData,
+                        rowHasChanged: (r1, r2) => r1 !== r2,
+                        sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
+                    }
+                );
+                this.setState({
+                    source: ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
+                    name: datas.real_name,
+                    phone: datas.phone,
+                    headUrl: datas.head_portrait_url,
+                    renderPlaceholderOnly: 'success',
+                    isRefreshing: false
+                });
+            } else {
+                this.setState({
+                    renderPlaceholderOnly: 'error',
+                    isRefreshing: false
+                });
+            }
+        });
+    }
+
+    getData = () => {
         Car = [
             {
                 "cars": [
@@ -235,122 +349,46 @@ export default class MineSectionListView extends BaseComponent {
                 "title": "section3"
             },
         ]
-        this.state = {
-            renderPlaceholderOnly: 'blank'
-        };
-    }
-
-    initFinish = () => {
-        this.getData();
-    }
-
-    changeData = () => {
         StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
             if (data.code == 1) {
-                let user_list = [];
                 let datas = JSON.parse(data.result);
-                if (datas.user_level == 2) {
-                    if (datas.enterprise_list[0].role_type == '1') {
-                        user_list.push(...Car);
-                    } else if (datas.enterprise_list[0].role_type == '6') {
-                        Car[0].splice(0, 1);
-                        user_list.push(...Car);
-                    } else if (datas.enterprise_list[0].role_type == '2') {
-                        Car[0].splice(0, 2);
-                        user_list.push(Car[0], Car[1], Car[3], Car[4]);
-                    } else {
-                        Car[0].splice(0, 2);
-                        user_list.push(Car[0], Car[2], Car[3], Car[4]);
-                    }
-                } else if (datas.user_level == 1) {
-                    if (datas.enterprise_list[0].role_type == '1') {
-                        user_list.push(Car[0], Car[2], Car[3], Car[4]);
-                    } else if (datas.enterprise_list[0].role_type == '6') {
-                        Car[0].splice(0, 1);
-                        user_list.push(Car[0], Car[2], Car[3], Car[4]);
-                    } else {
-                        Car[0].splice(0, 2);
-                        user_list.push(Car[0], Car[2], Car[3], Car[4]);
-
-                    }
-                } else {
-                    if (datas.audit_status == '2') {
-                        user_list.push(Car[2], Car[3], Car[4]);
-                    } else {
-                        user_list.push(Car[3], Car[4]);
-                    }
-
+                if(datas.user_level=='0'){
+                    this.noCompany();
+                }else{
+                    this.toCompany();
                 }
-                let jsonData = user_list;
-
-                //    定义变量
-                let dataBlob = {},
-                    sectionIDs = [],
-                    rowIDs = [];
-                for (let i = 0; i < jsonData.length; i++) {
-                    //    1.拿到所有的sectionId
-                    sectionIDs.push(i);
-
-                    //    2.把组中的内容放入dataBlob内容中
-                    dataBlob[i] = jsonData[i].title;
-
-                    //    3.设置改组中每条数据的结构
-                    rowIDs[i] = [];
-
-                    //    4.取出改组中所有的数据
-                    let cars = jsonData[i].cars;
-
-                    //    5.便利cars,设置每组的列表数据
-                    for (let j = 0; j < cars.length; j++) {
-                        //    改组中的每条对应的rowId
-                        rowIDs[i].push(j);
-
-                        // 把每一行中的内容放入dataBlob对象中
-                        dataBlob[i + ':' + j] = cars[j];
-                    }
-                }
-                let getSectionData = (dataBlob, sectionID) => {
-                    return dataBlob[sectionID];
-                };
-
-                let getRowData = (dataBlob, sectionID, rowID) => {
-                    return dataBlob[sectionID + ":" + rowID];
-                };
-                let ds = new ListView.DataSource({
-                        getSectionData: getSectionData,
-                        getRowData: getRowData,
-                        rowHasChanged: (r1, r2) => r1 !== r2,
-                        sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
-                    }
-                );
-                this.setState({
-                    source: ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
-                    name: datas.real_name,
-                    phone: datas.phone,
-                    headUrl: datas.head_portrait_url,
-                    renderPlaceholderOnly: 'success'
-                });
-            } else {
-                this.setState({
-                    renderPlaceholderOnly: 'error'
-                });
             }
         });
+
     }
 
-    getData = () => {
+    noCompany=()=>{
+        lastType = 'error';
+        this.changeData();
+    }
+
+    toCompany=()=>{
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1) {
                 let datas = JSON.parse(data.result);
-                componyname = datas.companyname;
+                componyname  = '';
+                if (datas.companyname == null || datas.companyname == '') {
+                    componyname = datas.name;
+                } else {
+                    componyname = datas.name + '(' + datas.companyname + ')';
+                }
                 let maps = {
-                    enter_base_ids: datas.merge_id,
+                    enter_base_ids: datas.company_base_id,
                     child_type: '1'
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
-                            // lastType = response.mjson.data.status;
-                            lastType = '2';
+                            if(response.mjson.data==null||response.mjson.data.length<=0){
+                                lastType = 'error';
+                            }else{
+                                lastType = response.mjson.data.status;
+                            }
+                            // lastType = '3';、
                             this.changeData();
                         },
                         (error) => {
@@ -359,14 +397,19 @@ export default class MineSectionListView extends BaseComponent {
             }
         });
     }
-
     allRefresh = () => {
+        firstType = '-1';
+        lastType = '-1';
         this.setState({
             renderPlaceholderOnly: 'loading',
         });
         this.getData();
     }
 
+    refreshingData = () => {
+        this.setState({isRefreshing: true});
+        this.getData();
+    };
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
@@ -393,6 +436,14 @@ export default class MineSectionListView extends BaseComponent {
                     renderRow={this._renderRow}
                     renderSectionHeader={this._renderSectionHeader}
                     renderHeader={this._renderHeader}
+                    refreshControl={
+                                    <RefreshControl
+                                        refreshing={this.state.isRefreshing}
+                                        onRefresh={this.refreshingData}
+                                        tintColor={[fontAndClolr.COLORB0]}
+                                        colors={[fontAndClolr.COLORB0]}
+                                    />
+                                }
                 />
                 <AccountModal ref="accountmodal"/>
             </View>
@@ -407,25 +458,58 @@ export default class MineSectionListView extends BaseComponent {
     }
 
     toPage = () => {
-        if (lastType == '0') {
-            this.navigatorParams.name = 'AccountManageScene'
-            this.navigatorParams.component = AccountManageScene
-            this.navigatorParams.params = {
-                callBack: () => {
-                    this.allRefresh();
-                }
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    enter_base_ids: datas.company_base_id,
+                    child_type: '1'
+                };
+                request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+                    .then((response) => {
+                            this.props.showModal(false);
+                            lastType = response.mjson.data.status;
+                            if (lastType == '0') {
+                                this.navigatorParams.name = 'AccountManageScene'
+                                this.navigatorParams.component = AccountManageScene
+                                this.navigatorParams.params = {
+                                    callBack: () => {
+                                        this.allRefresh();
+                                    }
+                                }
+                            } else if (lastType == '1') {
+                                this.navigatorParams.name = 'BindCardScene'
+                                this.navigatorParams.component = BindCardScene
+                                this.navigatorParams.params = {
+                                    callBack: () => {
+                                        this.allRefresh();
+                                    }
+                                }
+                            } else if (lastType == '2') {
+                                this.navigatorParams.name = 'WaitActivationAccountScene'
+                                this.navigatorParams.component = WaitActivationAccountScene
+                            } else {
+                                this.navigatorParams.name = 'AccountScene'
+                                this.navigatorParams.component = AccountScene
+                                this.navigatorParams.params = {
+                                    callBack: () => {
+                                        this.allRefresh();
+                                    }
+                                }
+                            }
+                            this.refs.accountmodal.changeShowType(false);
+                            firstType = lastType;
+                            this.props.callBack(this.navigatorParams);
+
+                        },
+                        (error) => {
+                            this.props.showToast('用户信息查询失败');
+                        });
+            }else{
+                this.props.showToast('用户信息查询失败');
             }
-        } else if (lastType == '1') {
-            this.navigatorParams.name = 'BindCardScene'
-            this.navigatorParams.component = BindCardScene
-        } else if (lastType == '2') {
-            this.navigatorParams.name = 'WaitActivationAccountScene'
-            this.navigatorParams.component = WaitActivationAccountScene
-        } else {
-            this.navigatorParams.name = 'AccountScene'
-            this.navigatorParams.component = AccountScene
-        }
-        this.props.callBack(this.navigatorParams);
+        });
     }
 
     _navigator(rowData) {
@@ -458,8 +542,8 @@ export default class MineSectionListView extends BaseComponent {
                 break;
                 break;
             case '我的订单':
-                this.navigatorParams.name = 'OrderTypeSelectScene'
-                this.navigatorParams.component = OrderTypeSelectScene
+                // this.navigatorParams.name = 'OrderTypeSelectScene'
+                // this.navigatorParams.component = OrderTypeSelectScene
                 break;
             case '收藏记录':
                 this.navigatorParams.name = 'CarCollectSourceScene'
@@ -520,30 +604,48 @@ export default class MineSectionListView extends BaseComponent {
         if (this.state.renderPlaceholderOnly == 'success') {
             if (firstType != lastType) {
                 if (lastType != '3') {
-                    StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST, (data) => {
+                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
                         if (data.code == 1) {
                             let datas = JSON.parse(data.result);
-                            if (datas[0].role_type == '1') {
-                                if (lastType == '0') {
-                                    this.refs.accountmodal.changeShowType(true,
-                                        '您还未开通资金账户，为方便您使用金融产品及购物车，' +
-                                        '请尽快开通！', '去开户', '看看再说', () => {
-                                            this.toPage();
-                                        });
-                                } else if (lastType == '1') {
-                                    this.refs.accountmodal.changeShowType(true,
-                                        '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
-                                        , '去绑卡', '看看再说', () => {
-                                            this.toPage();
-                                        });
-                                } else if (lastType == '2') {
-                                    this.refs.accountmodal.changeShowType(true,
-                                        '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
-                                        , '去激活', '看看再说', () => {
-                                            this.toPage();
-                                        });
-                                }
-                                firstType = lastType;
+                            console.log(datas);
+                            if (datas.user_level>0&&datas.enterprise_list[0].role_type == '1') {
+                                StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (datac) => {
+                                    if (datac.code == 1) {
+                                        let datasc = JSON.parse(datac.result);
+                                        let maps = {
+                                            enter_base_ids: datasc.company_base_id,
+                                            child_type: '1'
+                                        };
+                                        request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+                                            .then((response) => {
+                                                    lastType = response.mjson.data.status;
+                                                    console.log('========'+lastType);
+                                                    if (lastType == '0') {
+                                                        this.refs.accountmodal.changeShowType(true,
+                                                            '您还未开通资金账户，为方便您使用金融产品及购物车，' +
+                                                            '请尽快开通！', '去开户', '看看再说', () => {
+                                                                this.toPage();
+                                                            });
+                                                    } else if (lastType == '1') {
+                                                        this.refs.accountmodal.changeShowType(true,
+                                                            '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
+                                                            , '去绑卡', '看看再说', () => {
+                                                                this.toPage();
+                                                            });
+                                                    } else if (lastType == '2') {
+                                                        this.refs.accountmodal.changeShowType(true,
+                                                            '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
+                                                            , '去激活', '看看再说', () => {
+                                                                this.toPage();
+                                                            });
+                                                    }
+                                                    firstType = lastType;
+                                                },
+                                                (error) => {
+
+                                                });
+                                    }
+                                });
                             }
                         }
                     });

@@ -1541,7 +1541,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODEPUSH_KEY = "u-g9jQM8O_YFz8GHZ91v_EAAGn5QVJvFYEdiG";
+				CODEPUSH_KEY = "voPp1QfMb5X-Jc9l0kA9EYKzMaQgVJvFYEdiG";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Shanghai FengZhiXing Automobile Finance Information Service Co., Ltd.";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1898,7 +1898,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODEPUSH_KEY = "u-g9jQM8O_YFz8GHZ91v_EAAGn5QVJvFYEdiG";
+				CODEPUSH_KEY = "voPp1QfMb5X-Jc9l0kA9EYKzMaQgVJvFYEdiG";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Shanghai FengZhiXing Automobile Finance Information Service Co., Ltd.";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;

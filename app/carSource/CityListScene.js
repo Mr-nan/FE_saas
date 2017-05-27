@@ -186,7 +186,7 @@ export default class CityListScene extends BaseComponent {
         return (
             <TouchableOpacity onPress={() => {
 
-                this._checkedCityClick({city_id:rowData.city_id,city_name:rowData.city_name,provice_id:0});
+                this._checkedCityClick({city_id:rowData.city_id,city_name:rowData.city_name,provice_id:rowData.prov_id});
                 {/*this.loadCarSeriesData(rowData.city_id,rowData.city_name)*/}
 
             }}>

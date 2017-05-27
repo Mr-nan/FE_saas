@@ -80,12 +80,11 @@ export class CellSelectView extends Component{
                     }
                     <Text style={styles.cellTitle}>{cellData.title}</Text>
                 </View>
-                <View style={{flexDirection:'row'}}>
+                <View style={{flexDirection:'row',width:Pixel.getPixel(290),height:Pixel.getPixel(40),alignItems:'center',marginTop:Pixel.getPixel(10),backgroundColor:'white'}}>
                     {
                         cellData.selectDict.data.map((data,index)=>{
                             return (
-                                <TouchableOpacity style={{height:Pixel.getPixel(20), marginTop:Pixel.getPixel(10),marginBottom:Pixel.getPixel(5),
-                                }} onPress={()=>
+                                <TouchableOpacity onPress={()=>
                                 {
                                     if(this.state.currentChecked!=data.title){
 
@@ -94,7 +93,7 @@ export class CellSelectView extends Component{
                                     }
                                 }} activeOpacity={1} key={index}>
                                     <View style={[styles.checkedItemView,(this.state.currentChecked==data.title?{borderColor:fontAndColor.COLORB0}:{borderColor:fontAndColor.COLORA2})]}>
-                                        <Text style={[styles.checkedItemText,(this.state.currentChecked==data.title?{color:fontAndColor.COLORB0}:{color:fontAndColor.COLORA2})] }> {data.title} </Text>
+                                        <Text style={[styles.checkedItemText,(this.state.currentChecked==data.title?{color:fontAndColor.COLORB0}:{color:fontAndColor.COLORA2})] }>{data.title}</Text>
                                     </View>
                                 </TouchableOpacity>
                             )
@@ -120,13 +119,15 @@ const styles = StyleSheet.create({
 
     },
     cellType2:{
-        flexWrap:'wrap',
         paddingHorizontal:Pixel.getPixel(15),
         backgroundColor:'white',
         borderBottomWidth:StyleSheet.hairlineWidth,
         borderBottomColor:fontAndColor.COLORA4,
         paddingVertical:Pixel.getPixel(20),
         justifyContent:'center',
+        width:sceneWidth,
+        flexDirection:'column',
+        height:Pixel.getPixel(90)
 
     },
     cellTitle:{
@@ -153,7 +154,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
         justifyContent:'center',
         borderRadius:3,
-        width:Pixel.getPixel(100),
+        width:Pixel.getPixel(85),
         height:Pixel.getPixel(32),
     },
     checkedItemText:{

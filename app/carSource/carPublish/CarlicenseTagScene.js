@@ -11,7 +11,8 @@ import {
     Text,
     Image,
     TextInput,
-    Platform
+    Platform,
+    Dimensions
 } from 'react-native';
 
 import BaseComponent from '../../component/BaseComponent';
@@ -21,6 +22,7 @@ import PlateModal from '../../publish/component/PlateModal';
 import PixelUtil from  '../../utils/PixelUtil';
 let Pixel = new  PixelUtil();
 
+const sceneWidth = Dimensions.get('window').width;
 const background = require('../../../images/publish/background.png');
 const preBg = require('../../../images/publish/car-plate-pre.png');
 const proBg = require('../../../images/publish/car-plate.png');
@@ -55,7 +57,7 @@ export default class CarDischargeScene extends  BaseComponent{
     render(){
         return(
             <View style={styles.rootContainer}>
-                <Image style={{flex:1,alignItems:'center'}} source={background}>
+                <Image  style={{width:sceneWidth, alignItems:'center',paddingTop:Pixel.getPixel(20)}} source={background}>
                     <PlateModal onClose={this._onClose} ref={(modal) => {this.plateModal = modal}}/>
                     <View style={styles.plateContainer}>
                         <TouchableOpacity
@@ -70,28 +72,81 @@ export default class CarDischargeScene extends  BaseComponent{
                         <Image style={styles.proContainer} source={proBg}>
                             <TextInput ref={(input)=>{this.firstInput = input}}
                                        style={IS_ANDROID ? styles.fontAndroidBold: styles.fontIOSBold} underlineColorAndroid='transparent'
-                                       defaultValue={this.initValue[1]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,1)}/>
+                                       defaultValue={this.initValue[1]} maxLength={1}
+                                       onChangeText={(text)=>
+                                       {
+                                           let number = this.chkNumber(text);
+                                           this.firstInput.setNativeProps({
+                                               text: number,
+                                           });
+                                           this._onPlateChange(number,1)
+                                       }
+                                       }/>
                             <TextInput ref={(input)=>{this.secondInput = input}}
                                        style={IS_ANDROID ? styles.fontAndroidBold: styles.fontIOSBold} underlineColorAndroid='transparent'
-                                       defaultValue={this.initValue[2]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,2)}/>
+                                       defaultValue={this.initValue[2]} maxLength={1}
+                                       onChangeText={(text)=>
+                                       {
+                                           let number = this.chkNumber(text);
+                                           this.secondInput.setNativeProps({
+                                               text: number,
+                                           });
+                                           this._onPlateChange(number,2)
+                                       }}/>
                             <TextInput ref={(input)=>{this.threeInput = input}}
                                        style={IS_ANDROID ? styles.fontAndroidBold: styles.fontIOSBold} underlineColorAndroid='transparent'
-                                       defaultValue={this.initValue[3]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,3)}/>
+                                       defaultValue={this.initValue[3]} maxLength={1}
+                                       onChangeText={(text)=>
+                                       {
+                                           let number = this.chkNumber(text);
+                                           this.threeInput.setNativeProps({
+                                               text: number,
+                                           });
+                                           this._onPlateChange(number,3)
+                                       }}/>
                             <TextInput ref={(input)=>{this.fourInput = input}}
                                        style={IS_ANDROID ? styles.fontAndroidBold: styles.fontIOSBold} underlineColorAndroid='transparent'
-                                       defaultValue={this.initValue[4]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,4)}/>
+                                       defaultValue={this.initValue[4]} maxLength={1}
+                                       onChangeText={(text)=>
+                                       {
+                                           let number = this.chkNumber(text);
+                                           this.fourInput.setNativeProps({
+                                               text: number,
+                                           });
+                                           this._onPlateChange(number,4)
+                                       }}/>
                             <TextInput ref={(input)=>{this.fiveInput = input}}
                                        style={IS_ANDROID ? styles.fontAndroidBold: styles.fontIOSBold} underlineColorAndroid='transparent'
-                                       defaultValue={this.initValue[5]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,5)}/>
+                                       defaultValue={this.initValue[5]} maxLength={1}
+                                       onChangeText={(text)=>
+                                       {
+                                           let number = this.chkNumber(text);
+                                           this.fiveInput.setNativeProps({
+                                               text: number,
+                                           });
+                                           this._onPlateChange(number,5)
+                                       }}/>
                             <TextInput ref={(input)=>{this.sixInput = input}}
                                        style={IS_ANDROID ? styles.fontAndroidBold: styles.fontIOSBold} underlineColorAndroid='transparent'
-                                       defaultValue={this.initValue[6]} maxLength={1} onChangeText={(text)=>this._onPlateChange(text,6)}/>
+                                       defaultValue={this.initValue[6]} maxLength={1}
+                                       onChangeText={(text)=>
+                                       {
+                                           let number = this.chkNumber(text);
+                                           this.sixInput.setNativeProps({
+                                               text: number,
+                                           });
+                                           this._onPlateChange(number,6)
+                                       }}/>
                         </Image>
                     </View>
                 </Image>
                 <AllNavigationView title="车牌号" backIconClick={this.backAction} />
             </View>
         )
+    }
+
+    chkNumber=(obj)=> {
+        return obj.replace(/[^\w\/]/ig,'');
     }
 
     _openModal = ()=>{

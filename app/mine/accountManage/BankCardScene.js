@@ -23,23 +23,75 @@ import NavigationView from '../../component/AllNavigationView';
 const childItems = [];
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
-import AccountInfoScene from './AccountInfoScene';
+import StorageUtil from "../../utils/StorageUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
+import * as webBackUrl from "../../constant/webBackUrl";
+import AccountWebScene from './AccountWebScene';
 export  default class BankCardScene extends BaseComponent {
 
     constructor(props) {
         super(props);
         // 初始状态
-        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             renderPlaceholderOnly: 'blank',
-            source: ds.cloneWithRows(['1'])
+            source: []
         };
     }
 
     initFinish = () => {
+        this.getData();
+    }
+
+    allRefresh = () => {
         this.setState({
-            renderPlaceholderOnly: 'success',
+            renderPlaceholderOnly: 'loading',
         });
+        this.getData();
+    }
+
+    getData = () => {
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    enter_base_ids: datas.company_base_id,
+                    child_type: '1'
+                };
+                request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+                    .then((response) => {
+                            this.getBankData(datas.company_base_id,response.mjson.data.account_open_type);
+                        },
+                        (error) => {
+                            this.setState({
+                                renderPlaceholderOnly: 'error',
+                            });
+                        });
+            } else {
+                this.setState({
+                    renderPlaceholderOnly: 'error',
+                });
+            }
+        })
+    }
+
+    getBankData=(id,type)=>{
+        let maps = {
+            enter_base_id: id,
+            user_type: type
+        };
+        request(Urls.USER_BANK_QUERY, 'Post', maps)
+            .then((response) => {
+                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                    this.setState({
+                        renderPlaceholderOnly: 'success',
+                        source:ds.cloneWithRows(response.mjson.data.bank_card_no)
+                    });
+                },
+                (error) => {
+                    this.setState({
+                        renderPlaceholderOnly: 'error',
+                    });
+                });
     }
 
     render() {
@@ -62,29 +114,81 @@ export  default class BankCardScene extends BaseComponent {
     }
 
     _renderRow = (movie, sectionId, rowId) => {
-            return (
-                <View
-                    style={{ height: Pixel.getPixel(100),backgroundColor: '#fff', flexDirection: 'row'
+        return (
+            <View
+                style={{ height: Pixel.getPixel(100),backgroundColor: '#fff', flexDirection: 'row'
                     ,width:width-Pixel.getPixel(30),borderWidth: 1,borderColor: fontAndColor.COLORA4,
                     borderRadius:Pixel.getPixel(6),paddingRight:Pixel.getPixel(15),paddingLeft:Pixel.getPixel(15)
                 }}>
-                    <View style={{flex:1,justifyContent:'center'}}>
-                        <Text style={{fontSize: Pixel.getFontPixel(17),color:'#000'}}>银行卡号</Text>
-                        <Text style={{fontSize: Pixel.getFontPixel(15),color:fontAndColor.COLORA1,marginTop:Pixel.getPixel(5)}}>
-                            6227 **** **** *** 6275
-                        </Text>
-                    </View>
-                    <TouchableOpacity onPress={()=>{
-                        this.props.showToast('解绑')
-                    }} activeOpacity={0.8} style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>
-                        <Text style={{fontSize: Pixel.getFontPixel(15),color:fontAndColor.COLORA2}}>解除绑定</Text>
-                    </TouchableOpacity>
+                <View style={{flex:2,justifyContent:'center'}}>
+                    <Text style={{fontSize: Pixel.getFontPixel(17),color:'#000'}}>银行卡号</Text>
+                    <Text
+                        style={{fontSize: Pixel.getFontPixel(15),color:fontAndColor.COLORA1,marginTop:Pixel.getPixel(5)}}>
+                        {movie}
+                    </Text>
                 </View>
-            )
+                <TouchableOpacity onPress={()=>{
+                        this.getNoBankData();
+                    }} activeOpacity={0.8} style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>
+                    <Text style={{fontSize: Pixel.getFontPixel(15),color:fontAndColor.COLORA2}}>解除绑定</Text>
+                </TouchableOpacity>
+            </View>
+        )
 
 
     }
 
+    getNoBankData=()=>{
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    enter_base_ids: datas.company_base_id,
+                    child_type: '1'
+                };
+                request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+                    .then((response) => {
+                            this.unBind(datas.company_base_id,response.mjson.data.account_open_type)
+                        },
+                        (error) => {
+                            if (error.mycode == -300 || error.mycode == -500) {
+                                this.props.showToast('获取账户信息失败');
+                            } else {
+                                this.props.showToast(error.mjson.msg);
+                            }
+                        });
+            } else {
+                this.props.showModal(false);
+                this.props.showToast('获取账户信息失败');
+            }
+        })
+    }
+
+    unBind=(id,type)=>{
+        let maps = {
+            enter_base_id: id,
+            reback_url:webBackUrl.UNBINDCARD,
+            user_type:type
+        };
+        request(Urls.USER_BANK_UNBIND, 'Post', maps)
+            .then((response) => {
+                    this.props.showModal(false);
+                    this.toNextPage({name:'AccountWebScene',component:AccountWebScene,params:{
+                        title:'解绑银行卡',webUrl:response.mjson.data.auth_url+
+                        '?authTokenId='+response.mjson.data.auth_token,callBack:()=>{
+                            this.props.callBack();
+                        },backUrl:webBackUrl.UNBINDCARD
+                    }});
+                },
+                (error) => {
+                    if (error.mycode == -300 || error.mycode == -500) {
+                        this.props.showToast('解绑失败');
+                    } else {
+                        this.props.showToast(error.mjson.msg);
+                    }
+                });
+    }
 
 
     _renderPlaceholderView() {

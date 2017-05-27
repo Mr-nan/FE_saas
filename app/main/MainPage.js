@@ -410,6 +410,7 @@ export default class MainPage extends BaseComponent {
                         StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (childdata) => {
                             if (childdata.code == 1) {
                                 let childdatas = JSON.parse(childdata.result);
+                                console.log(childdatas);
                                 if (childdatas.is_done_credit == 0) {
                                     tabArray = formalUserTabArray;
                                 } else {

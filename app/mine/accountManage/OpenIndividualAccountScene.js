@@ -26,6 +26,7 @@ import LoginInputText from "../../login/component/LoginInputText";
 import {request} from '../../utils/RequestUtil';
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
+import * as webBackUrl from "../../constant/webBackUrl";
 import * as Urls from '../../constant/appUrls';
 import AccountWebScene from './AccountWebScene';
 export  default class OpenIndividualAccountScene extends BaseComponent {
@@ -127,7 +128,7 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas=JSON.parse(data.result);
-                this.openIndividual(name,number,phone,datas.merge_id);
+                this.openIndividual(name,number,phone,datas.company_base_id);
             } else {
                 this.props.showToast('用户信息查询失败');
             }
@@ -141,19 +142,22 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
             cert_type: '1',
             cust_name: name,
             mobile_no: phone,
-            enter_base_id:base_id
+            enter_base_id:base_id,
+            reback_url:webBackUrl.OPENINDIVIDUALACCOUNT
         };
 
         request(Urls.USER_OPEN_ACCOUNT_PERSONAL, 'Post', maps)
             .then((response) => {
                     this.props.showModal(false);
                    this.toNextPage({name:'AccountWebScene',component:AccountWebScene,params:{
-                       title:'个人开户',webUrl:response.mjson.data.auth_url+'?authTokenId='+response.mjson.data.auth_token
+                       title:'个人开户',webUrl:response.mjson.data.auth_url+
+                       '?authTokenId='+response.mjson.data.auth_token,callBack:()=>{
+                           this.props.callBack();
+                       },backUrl:webBackUrl.OPENINDIVIDUALACCOUNT
                    }});
                    //  Linking.openURL(response.mjson.data.auth_url+'?authTokenId='+response.mjson.data.auth_token);
                 },
                 (error) => {
-                    this.props.showModal(false);
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast('开户失败');
                     } else {

@@ -33,12 +33,13 @@ export  default class AccountTitle extends PureComponent {
     constructor(props) {
         super(props);
         list = [];
+        list.push(new listValue('转账',require('../../../../images/mainImage/Transfer.png'),this.props.transfer));
         list.push(new listValue('银行卡',require('../../../../images/mainImage/bankCard.png'),this.props.bankCard));
         list.push(new listValue('账户流水',require('../../../../images/mainImage/flow.png'),this.props.flow));
         list.push(new listValue('修改交易密码',require('../../../../images/mainImage/changePwd.png'),this.props.changePwd));
         list.push(new listValue('重置交易密码',require('../../../../images/mainImage/resetPwd.png'),this.props.resetPwd));
         list.push(new listValue('修改手机号码',require('../../../../images/mainImage/changePhone.png'),this.props.changePhone));
-        list.push(new listValue('账户设置',require('../../../../images/mainImage/accountSetting.png'),this.props.accountSetting));
+        // list.push(new listValue('账户设置',require('../../../../images/mainImage/accountSetting.png'),this.props.accountSetting));
     }
 
 
@@ -89,7 +90,7 @@ export  default class AccountTitle extends PureComponent {
                 justifyContent:'center'}}>
                         <Text style={{marginLeft:Pixel.getPixel(20),color: '#fff',
                      fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>
-                            账户号码：4367450036808888
+                            账户号码：{this.props.info.bank_card_no}
                         </Text>
                     </View>
                     <View style={{width:width,height:Pixel.getPixel(105),flexDirection:'row'}}>
@@ -98,7 +99,7 @@ export  default class AccountTitle extends PureComponent {
                                 账户总额(万)
                             </Text>
                             <Text style={{fontWeight: 'bold',color: '#fff',fontSize: Pixel.getFontPixel(32),}}>
-                                150
+                                {parseFloat(this.props.info.frozen_balance)+parseFloat(this.props.info.balance)}
                             </Text>
                         </View>
                         <TouchableOpacity onPress={()=>{
@@ -108,7 +109,7 @@ export  default class AccountTitle extends PureComponent {
                                 冻结金额(万)
                             </Text>
                             <Text style={{fontWeight: 'bold',color: '#fff',fontSize: Pixel.getFontPixel(32),}}>
-                                13
+                                {this.props.info.frozen_balance}
                             </Text>
                         </TouchableOpacity>
                         <View style={{flex:1,justifyContent:'center',alignItems: 'center'}}>
@@ -116,12 +117,12 @@ export  default class AccountTitle extends PureComponent {
                                 可用余额(万)
                             </Text>
                             <Text style={{fontWeight: 'bold',color: '#fff',fontSize: Pixel.getFontPixel(32),}}>
-                                25
+                                {this.props.info.balance}
                             </Text>
                         </View>
                     </View>
                 </View>
-                <View style={{width:width,height:Pixel.getPixel(324),backgroundColor:fontAndColor.COLORA3}}>
+                <View style={{width:width,height:Pixel.getPixel(330),backgroundColor:fontAndColor.COLORA3}}>
                     {itemList}
                 </View>
             </View>
