@@ -734,7 +734,7 @@ export const AUTH_UPLOAD_FILE = BASEURL + V + "auth/upload";
 /**
  * 合同列表
  */
-export const CONTRACTLIST = 'api/v1/Contract/contractList';
+export const CONTRACTLIST = 'api/v1/Contract/contract_list';
 
 /**
  * 转债权合同列表
