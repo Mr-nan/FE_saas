@@ -87,6 +87,7 @@ export default class CarMySourceScene extends BaceComponent {
                 }
             };
             this.toNextPage(navigatorParams);
+
             // let navigatorParams = {
             //
             //     name: "CarPublishFirstScene",
