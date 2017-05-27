@@ -94,6 +94,8 @@ export  default class TransferScene extends BaseComponent {
         );
     }
 
+
+
     checkEmpty = () => {
         let allValue = this.refs.accountinput.getAllValue();
         if (allValue.value.length < 26 || allValue.id == '') {
@@ -155,7 +157,7 @@ export  default class TransferScene extends BaseComponent {
             .then((response) => {
                     this.props.showModal(false);
                     this.refs.accountinput.setTextValue(response.mjson.data.bank_card_name,
-                        response.mjson.data.account_id);
+                        response.mjson.data.ebs_serial_no);
                 },
                 (error) => {
                     this.refs.accountinput.clearValue();

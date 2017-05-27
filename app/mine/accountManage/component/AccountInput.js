@@ -72,6 +72,7 @@ export  default class AccountInput extends PureComponent {
                          paddingBottom: Pixel.getPixel(5)}}
                                    returnKeyType={"search"}
                                    maxLength={26}
+                                   keyboardType={'number-pad'}
                                    placeholder={'请输入转账账号'}
                                    underlineColorAndroid={"#00000000"}
                                    value={this.state.value}

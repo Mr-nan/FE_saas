@@ -27,6 +27,7 @@ import * as Urls from '../../constant/appUrls';
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import * as webBackUrl from "../../constant/webBackUrl";
+import AccountWebScene from './AccountWebScene';
 export  default class WithdrawalsScene extends BaseComponent {
 
     constructor(props) {
@@ -41,9 +42,7 @@ export  default class WithdrawalsScene extends BaseComponent {
     }
 
     initFinish = () => {
-        this.setState({
-            renderPlaceholderOnly: 'success'
-        });
+     this.getData();
     }
 
     getData=()=>{
@@ -123,7 +122,7 @@ export  default class WithdrawalsScene extends BaseComponent {
                         </View>
                     </View>
                     <TouchableOpacity onPress={()=>{
-                    this.refs.withdrawalsdialog.changeShowType(true,'','3');
+                        this.withdrawals();
                 }} activeOpacity={0.8} style={{marginTop:Pixel.getPixel(28),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),
                 borderRadius: Pixel.getPixel(4),backgroundColor: fontAndColor.COLORB0,width:width-Pixel.getPixel(30),
                 height:Pixel.getPixel(44),justifyContent:'center',alignItems: 'center'}}>
@@ -131,10 +130,6 @@ export  default class WithdrawalsScene extends BaseComponent {
                             提现</Text>
                     </TouchableOpacity>
                 </View>
-                <WithdrawalsDialog ref="withdrawalsdialog" callBack={()=>{
-                        this.props.callBack();
-                        this.backPage();
-                }}/>
                 <NavigationView
                     title="提现"
                     backIconClick={this.backPage}

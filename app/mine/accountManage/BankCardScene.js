@@ -149,7 +149,7 @@ export  default class BankCardScene extends BaseComponent {
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
-                            this.unBind(response.mjson.data.account_open_type)
+                            this.unBind(datas.company_base_id,response.mjson.data.account_open_type)
                         },
                         (error) => {
                             if (error.mycode == -300 || error.mycode == -500) {
@@ -165,10 +165,11 @@ export  default class BankCardScene extends BaseComponent {
         })
     }
 
-    unBind=(type)=>{
+    unBind=(id,type)=>{
         let maps = {
-            enter_base_ids: type,
-            reback_url:webBackUrl.UNBINDCARD
+            enter_base_id: id,
+            reback_url:webBackUrl.UNBINDCARD,
+            user_type:type
         };
         request(Urls.USER_BANK_UNBIND, 'Post', maps)
             .then((response) => {

@@ -41,6 +41,7 @@ export  default class TransferInput extends PureComponent {
                 <TextInput style={{fontSize: Pixel.getFontPixel(38),color: '#000',fontWeight: 'bold',width:width}}
                            returnKeyType={"search"}
                            placeholder={'转账金额'}
+                           keyboardType={'numeric'}
                            underlineColorAndroid={"#00000000"}
                            value={this.state.value}
                            onChangeText={this.goSearch}/>
@@ -49,9 +50,21 @@ export  default class TransferInput extends PureComponent {
         );
     }
 
+    chkPrice=(obj)=> {
+        obj = obj.replace(/[^\d.]/g, "");
+        //必须保证第一位为数字而不是.
+        obj = obj.replace(/^\./g, "");
+        //保证只有出现一个.而没有多个.
+        obj = obj.replace(/\.{2,}/g, ".");
+        //保证.只出现一次，而不能出现两次以上
+        obj = obj.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+        return obj;
+    }
+
     goSearch = (text) => {
+        let test = this.chkPrice(text)
             this.setState({
-                value: text
+                value: test
             });
     }
 
