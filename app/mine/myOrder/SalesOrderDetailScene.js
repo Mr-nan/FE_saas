@@ -657,11 +657,10 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         dataSource={this.state.dataSource}
                         renderRow={this._renderRow}
                         renderSeparator={this._renderSeperator}
-                        removeClippedSubviews={false}
                         showsVerticalScrollIndicator={false}/>
                     <ExplainModal ref='expModal' title='补差额说明' buttonStyle={styles.expButton} textStyle={styles.expText}
                                   text='知道了' content='为了确保交易金额可支付贷款本息，请您
-                        补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您
+                                  补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您
                         补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您
                         补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您
                         补足成交价与贷款本息，'/>
@@ -847,7 +846,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         marginLeft: Pixel.getPixel(10),
                         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                         padding: 0,
-                        width:Pixel.getPixel(180)
+                        width: Pixel.getPixel(180)
                     }}
                                placeholder='输入车架号'
                                underlineColorAndroid='transparent'

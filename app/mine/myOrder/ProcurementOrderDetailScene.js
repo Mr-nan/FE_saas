@@ -549,7 +549,6 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         dataSource={this.state.dataSource}
                         renderRow={this._renderRow}
                         renderSeparator={this._renderSeperator}
-                        removeClippedSubviews={false}
                         showsVerticalScrollIndicator={false}/>
 
                     <View style={{flex: 1}}/>
