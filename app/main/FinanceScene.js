@@ -31,7 +31,7 @@ import CGDDetailSence from '../finance/lend/CGDDetailSence';
 import SingDetaileSence from '../finance/lend/SingDetaileSence';
 import  StorageUtil from '../utils/StorageUtil';
 import * as storageKeyNames from '../constant/storageKeyNames';
-var Pixel = new PixelUtil();
+let Pixel = new PixelUtil();
 /*
  * 获取屏幕的宽和高
  **/
@@ -198,9 +198,11 @@ export default class FinanceSence extends BaseComponet {
     }
 
     allRefresh = () => {
+        firstType = '-1';
+        lastType = '-1';
         movies = [];
-        this.setState({renderPlaceholderOnly: 'loading'});
         page = 1;
+        this.setState({renderPlaceholderOnly: 'loading'});
         this.getMnyData();
     }
 
@@ -223,13 +225,17 @@ export default class FinanceSence extends BaseComponet {
         });
     }
 
-    toPage=()=>{
+    toPage = () => {
         if (lastType == '0') {
-           this.props.callBack({name:'AccountTypeSelectScene',component:AccountTypeSelectScene,params:{}});
+            this.props.callBack({name: 'AccountTypeSelectScene', component: AccountTypeSelectScene, params: {}});
         } else if (lastType == '1') {
-            this.props.callBack({name:'BindCardScene',component:BindCardScene,params:{}});
+            this.props.callBack({name: 'BindCardScene', component: BindCardScene, params: {}});
         } else if (lastType == '2') {
-            this.props.callBack({name:'WaitActivationAccountScene',component:WaitActivationAccountScene,params:{}});
+            this.props.callBack({
+                name: 'WaitActivationAccountScene',
+                component: WaitActivationAccountScene,
+                params: {}
+            });
         }
     }
 
@@ -256,19 +262,19 @@ export default class FinanceSence extends BaseComponet {
                                                     if (lastType == '0') {
                                                         this.refs.accountmodal.changeShowType(true,
                                                             '您还未开通资金账户，为方便您使用金融产品及购物车，' +
-                                                            '请尽快开通！', '去开户', '看看再说',()=>{
+                                                            '请尽快开通！', '去开户', '看看再说', () => {
                                                                 this.toPage();
                                                             });
                                                     } else if (lastType == '1') {
                                                         this.refs.accountmodal.changeShowType(true,
                                                             '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
-                                                            , '去绑卡', '看看再说',()=>{
+                                                            , '去绑卡', '看看再说', () => {
                                                                 this.toPage();
                                                             });
                                                     } else if (lastType == '2') {
                                                         this.refs.accountmodal.changeShowType(true,
                                                             '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
-                                                            , '去激活', '看看再说',()=>{
+                                                            , '去激活', '看看再说', () => {
                                                                 this.toPage();
                                                             });
                                                     }
@@ -293,6 +299,8 @@ export default class FinanceSence extends BaseComponet {
         super(props);
         firstType = '-1';
         lastType = '-1';
+        movies = [];
+        page = 1;
         this.state = {
             source: [],
             allData: {
@@ -313,25 +321,13 @@ export default class FinanceSence extends BaseComponet {
         firstType = '-1';
         lastType = '-1';
         movies = [];
-        this.setState({isRefreshing: true});
         page = 1;
+        this.setState({isRefreshing: true});
         this.getMnyData();
         this.getAccountInfo();
     };
 
     render() {
-        if (this.state.renderPlaceholderOnly === 'select') {
-            return (<SelectCompanyScene showModal={(value) => {
-                this.props.showModal(value);
-            }} showToast={(content) => {
-                this.props.showToast(content)
-            }} loanList={loanList} callBack={(companyname) => {
-                this.setState({
-                    customerName: companyname
-                });
-                this.allRefresh();
-            }}/>);
-        }
         if (this.state.renderPlaceholderOnly !== 'success') {
             return this._renderPlaceholderView();
         }
