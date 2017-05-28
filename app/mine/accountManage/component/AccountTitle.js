@@ -84,8 +84,8 @@ export  default class AccountTitle extends PureComponent {
             </TouchableOpacity>
         </View>);
         return (
-            <View style={{width:width,height:Pixel.getPixel(470),backgroundColor:fontAndColor.COLORA3}}>
-                <View style={{width:width,height:Pixel.getPixel(140),backgroundColor:fontAndColor.COLORB0}}>
+            <View style={{width:width,height:Pixel.getPixel(540),backgroundColor:fontAndColor.COLORA3}}>
+                <View style={{width:width,height:Pixel.getPixel(211),backgroundColor:fontAndColor.COLORB0}}>
                     <View style={{width:width,height:Pixel.getPixel(35),backgroundColor:'rgba(105,105,105,0.1)',
                 justifyContent:'center'}}>
                         <Text style={{marginLeft:Pixel.getPixel(20),color: '#fff',
@@ -93,32 +93,29 @@ export  default class AccountTitle extends PureComponent {
                             账户号码：{this.props.info.bank_card_no}
                         </Text>
                     </View>
-                    <View style={{width:width,height:Pixel.getPixel(105),flexDirection:'row'}}>
-                        <View style={{flex:1,justifyContent:'center',alignItems: 'center'}}>
-                            <Text style={{color: '#fff',fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}}>
-                                账户总额(万)
-                            </Text>
-                            <Text style={{fontWeight: 'bold',color: '#fff',fontSize: Pixel.getFontPixel(32),}}>
-                                {parseFloat(this.props.info.frozen_balance)+parseFloat(this.props.info.balance)}
-                            </Text>
+                    <View style={{width:width,height:Pixel.getPixel(175)}}>
+                        <View style={{width:width,height:Pixel.getPixel(115),justifyContent:'center',alignItems:'center'}}>
+                                <Text style={{fontSize: Pixel.getFontPixel(14),color:'#fff'}}>账户总额(元)</Text>
+                            <Text style={{fontSize: Pixel.getFontPixel(18),color:'#fff',
+                            fontWeight: 'bold',marginTop:Pixel.getPixel(5)}}>{parseFloat(this.props.info.balance)+
+                            parseFloat(this.props.info.frozen_balance)}</Text>
                         </View>
-                        <TouchableOpacity onPress={()=>{
-                               this.props.frozen();
-                        }} activeOpacity={0.8} style={{flex:1,justifyContent:'center',alignItems: 'center'}}>
-                            <Text style={{color: '#fff',fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}}>
-                                冻结金额(万)
-                            </Text>
-                            <Text style={{fontWeight: 'bold',color: '#fff',fontSize: Pixel.getFontPixel(32),}}>
-                                {this.props.info.frozen_balance}
-                            </Text>
-                        </TouchableOpacity>
-                        <View style={{flex:1,justifyContent:'center',alignItems: 'center'}}>
-                            <Text style={{color: '#fff',fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}}>
-                                可用余额(万)
-                            </Text>
-                            <Text style={{fontWeight: 'bold',color: '#fff',fontSize: Pixel.getFontPixel(32),}}>
-                                {this.props.info.balance}
-                            </Text>
+                        <View style={{width:width,height:Pixel.getPixel(60),
+                        backgroundColor:'rgba(1,54,188,0.1)',flexDirection: 'row'}}>
+                            <View style={{flex:1,justifyContent:'center',paddingLeft:Pixel.getPixel(15)}}>
+                                <Text style={{fontSize: Pixel.getFontPixel(14),color:'#fff'}}>
+                                    可用余额(元)</Text>
+                                <Text style={{fontSize: Pixel.getFontPixel(18),color:'#fff',
+                                marginTop:Pixel.getPixel(2)}}>
+                                    {parseFloat(this.props.info.balance)}</Text>
+                            </View>
+                            <View style={{flex:1,justifyContent:'center',paddingLeft:Pixel.getPixel(30)}}>
+                                <Text style={{fontSize: Pixel.getFontPixel(14),color:'#fff'}}>
+                                    冻结金额(元)</Text>
+                                <Text style={{fontSize: Pixel.getFontPixel(18),
+                                color:'#fff',marginTop:Pixel.getPixel(2)}}>
+                                    {parseFloat(this.props.info.frozen_balance)}</Text>
+                            </View>
                         </View>
                     </View>
                 </View>

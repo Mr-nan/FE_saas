@@ -161,11 +161,17 @@ export default class FinanceSence extends BaseComponet {
                     StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
                         if (data.code == 1) {
                             let datas = JSON.parse(data.result);
+                            let names = '';
+                            if (datas.companyname == null || datas.companyname == '') {
+                                names = datas.name;
+                            } else {
+                                names = datas.companyname;
+                            }
                             this.setState({
                                 renderPlaceholderOnly: 'success',
                                 source: ds.cloneWithRows(movies),
                                 isRefreshing: false,
-                                customerName: datas.companyname
+                                customerName: names
                             });
                         }
                     })
