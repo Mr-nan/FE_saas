@@ -54,7 +54,6 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
         }
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
-
                     <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={this.state.topSize} >
                         <View style={styles.inputTextsStyle}>
                             <LoginInputText
