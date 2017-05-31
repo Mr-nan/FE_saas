@@ -142,6 +142,7 @@ export default class LoginInputText extends Component {
                         maxLength={this.props.maxLength}
                         secureTextEntry={this.props.secureTextEntry}
                         value={this.state.values}
+                        onFocus={this.props.foucsChange?this.props.foucsChange:()=>{}}
                         editable={this.props.editable}
                         onChangeText={(text) => {
                             this.setState({

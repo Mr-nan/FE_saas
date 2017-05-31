@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
         fontSize:Pixel.getFontPixel(fontAndColor.MARKFONT22),
         color:fontAndColor.COLORA1,
         marginTop:Pixel.getPixel(5),
-        backgroundColor:'red',
+        // backgroundColor:'red',
     },
     cellValue:{
         color:fontAndColor.COLORA2,

@@ -524,7 +524,10 @@ export default class CarInfoScene extends BaseComponent {
             name: "CarReferencePriceScene",
             component: CarReferencePriceScene,
             params: {
-                carData:carData
+                city_id:carData.city_id,
+                mileage:carData.mileage,
+                model_id:carData.model_id,
+                init_reg:this.dateReversal(carData.init_reg+'000'),
              }
         }
         this.toNextPage(navigationParams);
