@@ -265,6 +265,7 @@ export default class FinanceSence extends BaseComponet {
         return (
             <View style={cellSheet.container}>
                 <ListView
+                    removeClippedSubviews={false}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
