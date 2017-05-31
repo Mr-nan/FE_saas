@@ -639,16 +639,12 @@ class MyCarSourceAuditView extends BaceComponent {
     }
     loadData = () => {
 
-        // let url = AppUrls.CAR_USER_CAR;
-
-        // request(url, 'post', {
-        //     car_status: '2',
-        //     page: carDropFramePage,
-        //     row: 10,
-
-        let url = AppUrls.CAR_PERLIST;
+        let url = AppUrls.CAR_USER_CAR;
+        // let url = AppUrls.CAR_PERLIST;
         carAuditPage = 1;
         request(url, 'post', {
+
+            car_status: '3',
             page: carAuditPage,
             row: 10,
 
@@ -683,7 +679,7 @@ class MyCarSourceAuditView extends BaceComponent {
         // let url = AppUrls.CAR_USER_CAR;
         carAuditPage += 1;
         request(url, 'post', {
-            // car_status: '3',
+            car_status: '3',
             page: carAuditPage,
             row: 10,
 

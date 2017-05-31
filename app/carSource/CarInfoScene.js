@@ -28,6 +28,9 @@ import CarReferencePriceScene from  './CarReferencePriceScene';
 import CarPriceAnalysisView from './znComponent/CarPriceAnalysisView';
 import *as weChat from 'react-native-wechat';
 import PixelUtil from '../utils/PixelUtil';
+import StorageUtil from "../utils/StorageUtil";
+import * as StorageKeyNames from "../constant/storageKeyNames";
+
 const Pixel = new PixelUtil();
 
 import {request} from "../utils/RequestUtil";
@@ -346,36 +349,35 @@ export default class CarInfoScene extends BaseComponent {
                                 </View>
                                 <Image source={require('../../images/mainImage/celljiantou.png')}/>
                             </TouchableOpacity>
-                            {/*<TouchableOpacity style={styles.carInfoBtn} onPress={()=>{this.pushCarUpkeepScene(carData.vin)}}>*/}
-                                {/*<View style={{flexDirection:'row',alignItems:'center'}}>*/}
-                                    {/*<Image source={require('../../images/carSourceImages/carUpkeepIcon.png')}/>*/}
-                                    {/*<Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),marginLeft:Pixel.getPixel(10)}}>维修保养记录</Text>*/}
-                                {/*</View>*/}
-                                {/*<Image source={require('../../images/mainImage/celljiantou.png')}/>*/}
-                            {/*</TouchableOpacity>*/}
-                            {/*{*/}
-                                {/*(carData.vin!='' && carData.city_id!='' && carData.engine_number!='' && carData.plate_number!='')&&(*/}
-                                    {/*<TouchableOpacity style={styles.carInfoBtn}*/}
-                                                      {/*onPress={()=>{*/}
-                                                          {/*this.pushCarbreakRulesScene(carData)*/}
-                                                      {/*}}>*/}
-                                        {/*<View style={{flexDirection:'row',alignItems:'center'}}>*/}
-                                            {/*<Image source={require('../../images/carSourceImages/carBreakIcon.png')}/>*/}
-                                            {/*<Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),marginLeft:Pixel.getPixel(10)}}>违章记录</Text>*/}
-                                        {/*</View>*/}
-                                        {/*<Image source={require('../../images/mainImage/celljiantou.png')}/>*/}
-                                    {/*</TouchableOpacity>*/}
-                                {/*)*/}
-                            {/*}*/}
+                            <TouchableOpacity style={styles.carInfoBtn} onPress={()=>{this.pushCarUpkeepScene(carData.vin)}}>
+                                <View style={{flexDirection:'row',alignItems:'center'}}>
+                                    <Image source={require('../../images/carSourceImages/carUpkeepIcon.png')}/>
+                                    <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),marginLeft:Pixel.getPixel(10)}}>维修保养记录</Text>
+                                </View>
+                                <Image source={require('../../images/mainImage/celljiantou.png')}/>
+                            </TouchableOpacity>
+                            {
+                                (carData.vin!='' && carData.city_id!='' && carData.engine_number!='' && carData.plate_number!='')&&(
+                                    <TouchableOpacity style={styles.carInfoBtn}
+                                                      onPress={()=>{
+                                                          this.pushCarbreakRulesScene(carData)
+                                                      }}>
+                                        <View style={{flexDirection:'row',alignItems:'center'}}>
+                                            <Image source={require('../../images/carSourceImages/carBreakIcon.png')}/>
+                                            <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),marginLeft:Pixel.getPixel(10)}}>违章记录</Text>
+                                        </View>
+                                        <Image source={require('../../images/mainImage/celljiantou.png')}/>
+                                    </TouchableOpacity>
+                                )
+                            }
                         </View>
                         {/*<TouchableOpacity onPress={()=>{this.pushCarUpkeepScene(carData.vin)}} activeOpacity={1}>*/}
                             {/*<Image style={{marginTop:10,width:ScreenWidth}} source={require('../../images/carSourceImages/carUpkeepButton.png')} resizeMode='stretch'/>*/}
                         {/*</TouchableOpacity>*/}
                     </View>
-                    {/*{*/}
-                        {/*this.state.residualsData.length>0 &&( <CarPriceAnalysisView data ={this.state.residualsData}/>)*/}
-                    {/*}*/}
-
+                    {
+                        this.state.residualsData.length>0 &&( <CarPriceAnalysisView data ={this.state.residualsData}/>)
+                    }
                 </ScrollView>
                     <View style={styles.footView} >
                         <View style={[styles.carNumberView,carData.show_order==2 && {width:ScreenWidth/2}]}>
@@ -388,13 +390,13 @@ export default class CarInfoScene extends BaseComponent {
                                 <Text style={styles.callText}>电话咨询</Text>
                             </View>
                         </TouchableOpacity>
-                        {/*{*/}
-                            {/*carData.show_order!==2 && (*/}
-                                {/*<TouchableOpacity style={styles.orderView} onPress={()=>{this.orderClick(carData)}}>*/}
-                                    {/*<Text style={styles.orderText}>订购</Text>*/}
-                                {/*</TouchableOpacity>*/}
-                            {/*)*/}
-                        {/*}*/}
+                        {
+                            carData.show_order!==2 && (
+                                <TouchableOpacity style={styles.orderView} onPress={()=>{this.orderClick(carData)}}>
+                                    <Text style={styles.orderText}>订购</Text>
+                                </TouchableOpacity>
+                            )
+                        }
                     </View>
                 <NavigationView
                     ref="navtigation"
@@ -432,8 +434,34 @@ export default class CarInfoScene extends BaseComponent {
 
     // 下订单
     orderClick=(carData)=>{
+
         if(carData.show_order==1){
             this.props.showToast('该车已被下单');
+
+        }else {
+            StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+                if(data.code == 1 && data.result != '')
+                {
+                    this.props.showModal(true);
+                    let enters = JSON.parse(data.result);
+                    request(AppUrls.CAR_ORDER_SAVE,'post',{'car_ids':carData.id,
+                    'user_company_id':enters.company_base_id}).then((response) => {
+                        this.props.showModal(false);
+
+                    }, (error) => {
+                        console.log(error);
+
+                        this.props.showModal(false);
+                        this.props.showToast(error.mjson.msg);
+                    });
+
+                }else{
+                    this._showHint('无法找到所属商户');
+                }
+
+            });
+
+
         }
     }
 
@@ -1131,7 +1159,7 @@ const styles = StyleSheet.create({
         borderLeftColor:fontAndColor.COLORA4,
         paddingHorizontal:Pixel.getPixel(15),
         height: Pixel.getPixel(44),
-        width:ScreenWidth/2,
+        width:ScreenWidth/3,
     },
 
     callText: {
@@ -1144,7 +1172,7 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         height:Pixel.getPixel(44),
         paddingHorizontal:Pixel.getPixel(15),
-        width:ScreenWidth/2
+        width:ScreenWidth/3
     },
     carNumberText:{
         color: fontAndColor.COLORA0,
