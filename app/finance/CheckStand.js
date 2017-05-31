@@ -130,7 +130,7 @@ export default class CheckStand extends BaseComponent {
                                 marginTop: Pixel.getPixel(6),
                                 //fontWeight: 'bold',
                                 fontSize: Pixel.getFontPixel(38)
-                            }}>13000元</Text>
+                            }}>{this.props.payAmount}元</Text>
                         </View>
                         <View style={styles.separatedLine}/>
                         <View style={styles.accountBar}>

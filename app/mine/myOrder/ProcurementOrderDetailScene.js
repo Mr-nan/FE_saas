@@ -63,10 +63,10 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
     }
 
     initFinish = () => {
-/*        this.setState({
-            dataSource: this.state.dataSource.cloneWithRows(['', '', '']),
-            renderPlaceholderOnly: 'success'
-        });*/
+        /*        this.setState({
+         dataSource: this.state.dataSource.cloneWithRows(['', '', '']),
+         renderPlaceholderOnly: 'success'
+         });*/
         this.loadData();
     };
 
@@ -304,7 +304,10 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 this.toNextPage({
                                     name: 'CheckStand',
                                     component: CheckStand,
-                                    params: {}
+                                    params: {
+                                        payAmount: this.orderDetail.deposit_amount + this.orderDetail.balance_amount
+
+                                    }
                                 });
                             }}>
                             <View style={styles.buttonConfirm}>
@@ -500,7 +503,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
     loadData = () => {
         let url = AppUrls.ORDER_DETAIL;
         request(url, 'post', {
-            order_id: '12'
+            order_id: this.props.orderId,
+            type: 2
         }).then((response) => {
             this.props.showModal(false);
             this.orderDetail = response.mjson.data;
@@ -527,7 +531,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             this.setState({
                 //dataSource: this.state.dataSource.cloneWithRows(this.mList),
                 isRefreshing: false,
-                renderPlaceholderOnly: 'success'
+                renderPlaceholderOnly: 'error'
             });
         });
     };
@@ -623,7 +627,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                   numberOfLines={1}>{this.orderDetail.orders_item_data[0].car_name}</Text>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>里程：</Text>
-                                <Text style={styles.carDescribe}>{this.orderDetail.orders_item_data[0].car_data.mileage}</Text>
+                                <Text
+                                    style={styles.carDescribe}>{this.orderDetail.orders_item_data[0].car_data.mileage}</Text>
                             </View>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>上牌：</Text>
@@ -650,19 +655,20 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         marginTop: Pixel.getPixel(20),
                         marginRight: Pixel.getPixel(15)
                     }}>
-                        <Text style={styles.orderInfo}>支付定金</Text>
+                        <Text style={styles.orderInfo}>支付订金</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>15000元</Text>
+                        <Text style={styles.infoContent}>{this.orderDetail.deposit_amount}元</Text>
                     </View>
                     <View style={styles.infoItem}>
                         <Text style={styles.orderInfo}>支付尾款</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>115000元</Text>
+                        <Text style={styles.infoContent}>{this.orderDetail.balance_amount}元</Text>
                     </View>
                     <View style={styles.infoItem}>
                         <Text style={styles.orderInfo}>支付总计</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>125000元</Text>
+                        <Text
+                            style={styles.infoContent}>{this.orderDetail.deposit_amount + this.orderDetail.balance_amount}元</Text>
                     </View>
                 </View>
             )
