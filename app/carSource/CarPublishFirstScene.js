@@ -11,10 +11,12 @@ import {
     TouchableOpacity,
     Dimensions,
     TextInput,
-    KeyboardAvoidingView,
+    Keyboard,
     ScrollView,
     Platform,
-    NativeModules
+    NativeModules,
+    DeviceEventEmitter
+
 }   from 'react-native';
 
 import DateTimePicker from 'react-native-modal-datetime-picker';
@@ -38,12 +40,16 @@ import * as Net from '../utils/RequestUtil';
 import * as AppUrls from '../constant/appUrls';
 import PixelUtil from '../utils/PixelUtil';
 
+
 const Pixel = new  PixelUtil();
 const sceneWidth = Dimensions.get('window').width;
+const sceneHeight = Dimensions.get('window').height;
 const scanImg = require('../../images/financeImages/scan.png');
 const IS_ANDROID = Platform.OS === 'android';
 
 export default class CarPublishFirstScene extends BaseComponent{
+
+
 
     initFinish=()=>{
 
@@ -52,31 +58,46 @@ export default class CarPublishFirstScene extends BaseComponent{
             this.loadCarData();
 
         }else {
-            StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST,(data)=>{
-                console.log(data);
-                if(data.code == 1 && data.result != ''){
+            StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+                if(data.code == 1 && data.result != '')
+                {
                     let enters = JSON.parse(data.result);
-                    if(enters.length === 1){
+                    this.carData['show_shop_id'] = enters.company_base_id;
+                    this.carData['city_id'] = enters.city_id;
+                    this.carData['provice_id'] = enters.prov_id;
+                    this.carData['city_name'] = enters.city_name;
+                    this.getLocalityCarData();
 
-                        this.carData['show_shop_id'] = enters[0].enterprise_uid;
-                        this.carData['city_id'] = enters[0].city_id;
-                        this.carData['prov_id'] = enters[0].prov_id;
-                        this.carData['city_name'] = enters[0].city_name;
-                        this.getLocalityCarData();
-
-                    }else if(enters.length > 1){
-
-                        this.enterpriseList = enters;
-                        this.enterpriseModal.refresh(this.enterpriseList);
-                        this.enterpriseModal.openModal();
-
-                    }else{
-                        this._showHint('无法找到所属商户');
-                    }
                 }else{
                     this._showHint('无法找到所属商户');
                 }
+
             });
+
+            // StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST,(data)=>{
+            //     if(data.code == 1 && data.result != ''){
+            //         let enters = JSON.parse(data.result);
+            //         if(enters.length === 1){
+            //
+            //             this.carData['show_shop_id'] = enters[0].enterprise_uid;
+            //             this.carData['city_id'] = enters[0].city_id;
+            //             this.carData['provice_id'] = enters[0].prov_id;
+            //             this.carData['city_name'] = enters[0].city_name;
+            //             this.getLocalityCarData();
+            //
+            //         }else if(enters.length > 1){
+            //
+            //             this.enterpriseList = enters;
+            //             this.enterpriseModal.refresh(this.enterpriseList);
+            //             this.enterpriseModal.openModal();
+            //
+            //         }else{
+            //             this._showHint('无法找到所属商户');
+            //         }
+            //     }else{
+            //         this._showHint('无法找到所属商户');
+            //     }
+            // });
         }
     }
     // 构造
@@ -106,6 +127,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                           return(
                               <View style={{flexDirection:'row', alignItems:'center'}}>
                                   <TextInput style={styles.textInput}
+                                             ref={(input) => {this.vinInput = input}}
                                              placeholder='输入车架号'
                                              underlineColorAndroid='transparent'
                                              maxLength={17}
@@ -113,10 +135,10 @@ export default class CarPublishFirstScene extends BaseComponent{
                                              onChangeText={this._onVinChange}
                                              onFocus={()=>{
                                                 this.carData.vin ='';
+                                                this.setCurrentPy(this.vinInput);
                                              }}
                                              clearTextOnFocus={true}
                                              placeholderTextColor={fontAndColor.COLORA4}
-                                             ref={(input) => {this.vinInput = input}}
                                              keyboardType={'ascii-capable'}
                                              placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
                                   />
@@ -143,13 +165,16 @@ export default class CarPublishFirstScene extends BaseComponent{
                       tailView:()=>{
                           return(
                               <TextInput
+                                  ref={(input) => {this.displacementInput = input}}
                                   style={styles.textInput}
                                   placeholder='请输入'
                                   underlineColorAndroid='transparent'
                                   onChangeText={(text)=>{this.carData['displacement']=text}}
                                   onEndEditing={()=>{this.saveCarData();}}
+                                  onFocus={()=>{
+                                      this.setCurrentPy(this.displacementInput);
+                                  }}
                                   placeholderTextColor={fontAndColor.COLORA4}
-                                  ref={(input) => {this.displacementInput = input}}
                                   placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
                               />
                           )
@@ -209,6 +234,9 @@ export default class CarPublishFirstScene extends BaseComponent{
                                   onChangeText={(text)=>{this.carData['modification_instructions']=text}}
                                   onEndEditing={()=>{this.saveCarData();}}
                                   ref={(input) => {this.instructionsInput = input}}
+                                  onFocus={()=>{
+                                      this.setCurrentPy(this.instructionsInput);
+                                  }}
                                   placeholderTextColor={fontAndColor.COLORA4}
                                   placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
                               />
@@ -235,14 +263,19 @@ export default class CarPublishFirstScene extends BaseComponent{
                           return(
                               <View style={{flexDirection:'row', alignItems:'center'}}>
                                   <TextInput style={styles.textInput}
+                                             ref={(input) => {this.vinInput = input}}
                                              placeholder='输入车架号'
                                              underlineColorAndroid='transparent'
                                              maxLength={17}
                                              editable={this.props.carID?false:true}
                                              onChangeText={this._onVinChange}
+                                             onFocus={()=>{
+                                                 this.carData.vin ='';
+                                                 this.setCurrentPy(this.vinInput);
+                                             }}
+                                             clearTextOnFocus={true}
                                              placeholderTextColor={fontAndColor.COLORA4}
                                              keyboardType={'ascii-capable'}
-                                             ref={(input) => {this.vinInput = input}}
                                              placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
                                   />
                                   {
@@ -276,6 +309,9 @@ export default class CarPublishFirstScene extends BaseComponent{
                                   ref={(input) => {this.displacementInput = input}}
                                   underlineColorAndroid='transparent'
                                   onEndEditing={()=>{this.saveCarData();}}
+                                  onFocus={()=>{
+                                      this.setCurrentPy(this.displacementInput);
+                                  }}
                                   placeholderTextColor={fontAndColor.COLORA4}
                                   placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
                               />
@@ -322,6 +358,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                           return(
                               <TextInput
                                   style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(50)}]}
+                                  ref={(input) => {this.instructionsInput = input}}
                                   placeholder='请填写'
                                   maxLength={50}
                                   underlineColorAndroid='transparent'
@@ -329,7 +366,9 @@ export default class CarPublishFirstScene extends BaseComponent{
                                       this.carData['modification_instructions']=text}
                                   }
                                   onEndEditing={()=>{this.saveCarData();}}
-                                  ref={(input) => {this.instructionsInput = input}}
+                                  onFocus={()=>{
+                                      this.setCurrentPy(this.instructionsInput);
+                                  }}
                                   placeholderTextColor={fontAndColor.COLORA4}
                                   placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
                               />
@@ -346,17 +385,46 @@ export default class CarPublishFirstScene extends BaseComponent{
           };
       }
 
+    componentWillMount() {
+
+        // Keyboard events监听
+        Keyboard.addListener('keyboardWillShow', this.updateKeyboardSpace);
+    }
+
+    componentWillUnMount() {
+        Keyboard.removeAllListeners('keyboardWillShow');
+    }
+    setCurrentPy =(ref)=>{
+
+        ref.measure((ox, oy, width, height, px, py)=>{
+
+            let currentPy = py + height;
+            console.log(currentPy,sceneHeight);
+            if(sceneHeight - currentPy < this.keyboardSpace)
+            {
+                this.scrollView.scrollTo({x: 0, y:this.keyboardSpace + (sceneHeight- currentPy+Pixel.getPixel(50)), animated: true});
+            }
+
+        });
+    }
     componentWillUnmount() {
         this.timer && clearTimeout(this.timer);
     }
+
+    updateKeyboardSpace =(frames)=>{
+
+        this.keyboardSpace = frames.endCoordinates.height//获取键盘高度
+
+    }
+
+
     render(){
 
         return(
             <View style={styles.rootContainer}>
-                <KeyboardAvoidingView behavior='position'>
-                    <ScrollView keyboardShouldPersistTaps={'handled'} >
-                        <View style={{width:sceneWidth,paddingVertical:Pixel.getPixel(25),backgroundColor:'white',marginTop:Pixel.getTitlePixel(64)}}>
-                        <Image style={{width:sceneWidth}} resizeMode={'contain'} source={require('../../images/carSourceImages/publishCarperpos1.png')}/>
+                    <ScrollView  ref={(ref)=>{this.scrollView = ref}} keyboardDismissMode={'on-drag'}>
+                        <View style={{width:sceneWidth,paddingVertical:Pixel.getPixel(25),backgroundColor:'white'}}>
+                            <Image style={{width:sceneWidth}} resizeMode={'contain'} source={require('../../images/carSourceImages/publishCarperpos1.png')}/>
                         </View>
                         {
                             this.state.titleData.map((data,index)=>{
@@ -397,9 +465,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                                 </View>
                             </TouchableOpacity>
                         </View>
-                            <AllNavigationView title="车辆基本信息" backIconClick={this.backPage}/>
                     </ScrollView>
-                </KeyboardAvoidingView>
                 <VinInfo viewData={this.scanType} vinPress={this._vinPress} ref={(modal) => {this.vinModal = modal}}/>
                 <DateTimePicker
                     titleIOS="请选择日期"
@@ -412,6 +478,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                 <EnterpriseInfo viewData ={this.enterpriseList}
                                 enterpricePress={this._enterprisePress}
                                 ref={(modal) => {this.enterpriseModal = modal}}/>
+                <AllNavigationView title="车辆基本信息" backIconClick={this.backPage}/>
             </View>
         )
     }
@@ -445,9 +512,7 @@ export default class CarPublishFirstScene extends BaseComponent{
     // 获取本地数据
     getLocalityCarData=()=>{
 
-
         if(this.carData.show_shop_id){
-
             StorageUtil.mGetItem(String(this.carData.show_shop_id),(data) => {
                 if (data.code == 1) {
                     if (data.result) {
@@ -1016,6 +1081,7 @@ const styles = StyleSheet.create({
     rootContainer:{
         flex:1,
         backgroundColor:fontAndColor.COLORA3,
+        paddingTop:Pixel.getTitlePixel(64)
     },
     footContainer:{
         justifyContent:'center',
