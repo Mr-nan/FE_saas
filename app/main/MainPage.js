@@ -409,7 +409,7 @@ export default class MainPage extends BaseComponent {
                 require('../../images/mainImage/homeUnSelect.png'),
                 <HomeSence backToLogin={()=>{
                      this.backToLogin({name:'LoginScene',component:LoginScene});
-                }}  showModal={(value)=>{
+                }} showModal={(value)=>{
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} openModal={()=>{
                      this.publishModal.openModal();
@@ -421,8 +421,8 @@ export default class MainPage extends BaseComponent {
                         this.setState({selectedTab: ref})
                         StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND,'true');
                     }else{
-                        if(ref==='financePage'){
-                             StorageUtil.mGetItem(storageKeyNames.NEED_GESTURE,(datas)=>{
+                     if(ref==='financePage'){
+                      StorageUtil.mGetItem(storageKeyNames.NEED_GESTURE,(datas)=>{
                        if(datas.code==1){
                              if(datas.result=='true'){
                              this.toNextPage({name:'LoginGesture',component:LoginGesture,params:{
@@ -446,7 +446,7 @@ export default class MainPage extends BaseComponent {
             new tableItemInfo('carpage', 'page12', '车源', require('../../images/mainImage/carSelect.png'), require('../../images/mainImage/carUnSelect.png'),
                 <CarSourceSence backToLogin={()=>{
                      this.backToLogin({name:'LoginScene',component:LoginScene});
-                }}  showModal={(value)=>{
+                }} showModal={(value)=>{
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
@@ -454,7 +454,7 @@ export default class MainPage extends BaseComponent {
             new tableItemInfo('sendpage', 'page13', '发布', require('../../images/mainImage/publishSelect.png'), require('../../images/mainImage/publishUnSelect.png'),
                 <PublishModal backToLogin={()=>{
                      this.backToLogin({name:'LoginScene',component:LoginScene});
-                }}  showModal={(value)=>{
+                }} showModal={(value)=>{
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
@@ -462,7 +462,7 @@ export default class MainPage extends BaseComponent {
             new tableItemInfo('mypage', 'page14', '我的', require('../../images/mainImage/mineSelect.png'), require('../../images/mainImage/mineUnSelect.png'),
                 <MineSence backToLogin={()=>{
                      this.backToLogin({name:'LoginScene',component:LoginScene});
-                }}  showModal={(value)=>{
+                }} showModal={(value)=>{
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
@@ -473,7 +473,7 @@ export default class MainPage extends BaseComponent {
             new tableItemInfo('firstpage', 'page11', '首页', require('../../images/mainImage/homeSelect.png'), require('../../images/mainImage/homeUnSelect.png'),
                 <HomeSence backToLogin={()=>{
                      this.backToLogin({name:'LoginScene',component:LoginScene});
-                }}  showModal={(value)=>{
+                }} showModal={(value)=>{
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} openModal={()=>{
                      this.publishModal.openModal();
@@ -510,7 +510,7 @@ export default class MainPage extends BaseComponent {
             new tableItemInfo('carpage', 'page12', '车源', require('../../images/mainImage/carSelect.png'), require('../../images/mainImage/carUnSelect.png'),
                 <CarSourceSence backToLogin={()=>{
                      this.backToLogin({name:'LoginScene',component:LoginScene});
-                }}  showModal={(value)=>{
+                }} showModal={(value)=>{
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
@@ -518,7 +518,7 @@ export default class MainPage extends BaseComponent {
             new tableItemInfo('mypage', 'page14', '我的', require('../../images/mainImage/mineSelect.png'), require('../../images/mainImage/mineUnSelect.png'),
                 <MineSence backToLogin={()=>{
                      this.backToLogin({name:'LoginScene',component:LoginScene});
-                }}  showModal={(value)=>{
+                }} showModal={(value)=>{
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
@@ -529,7 +529,7 @@ export default class MainPage extends BaseComponent {
             new tableItemInfo('firstpage', 'page1', '首页', require('../../images/mainImage/homeSelect.png'), require('../../images/mainImage/homeUnSelect.png'),
                 <HomeSence backToLogin={()=>{
                      this.backToLogin({name:'LoginScene',component:LoginScene});
-                }}  showModal={(value)=>{
+                }} showModal={(value)=>{
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} openModal={()=>{
                      this.publishModal.openModal();
@@ -569,7 +569,7 @@ export default class MainPage extends BaseComponent {
             new tableItemInfo('carpage', 'page2', '车源', require('../../images/mainImage/carSelect.png'), require('../../images/mainImage/carUnSelect.png'),
                 <CarSourceSence backToLogin={()=>{
                      this.backToLogin({name:'LoginScene',component:LoginScene});
-                }}  showModal={(value)=>{
+                }} showModal={(value)=>{
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
 
@@ -578,7 +578,7 @@ export default class MainPage extends BaseComponent {
             new tableItemInfo('sendpage', 'page3', '发布', require('../../images/mainImage/sendButton.png'), require('../../images/mainImage/sendButton.png'),
                 <PublishModal backToLogin={()=>{
                      this.backToLogin({name:'LoginScene',component:LoginScene});
-                }}  showModal={(value)=>{
+                }} showModal={(value)=>{
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
@@ -586,7 +586,7 @@ export default class MainPage extends BaseComponent {
             new tableItemInfo('financePage', 'page4', '金融', require('../../images/mainImage/moneySelect.png'), require('../../images/mainImage/moneyUnSelect.png'),
                 <FinanceSence backToLogin={()=>{
                      this.backToLogin({name:'LoginScene',component:LoginScene});
-                }}  showModal={(value)=>{
+                }} showModal={(value)=>{
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params) => {
                     this.toNextPage(params);
@@ -594,7 +594,7 @@ export default class MainPage extends BaseComponent {
             new tableItemInfo('mypage', 'page5', '我的', require('../../images/mainImage/mineSelect.png'), require('../../images/mainImage/mineUnSelect.png'),
                 <MineSence backToLogin={()=>{
                      this.backToLogin({name:'LoginScene',component:LoginScene});
-                }}  showModal={(value)=>{
+                }} showModal={(value)=>{
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
@@ -605,7 +605,7 @@ export default class MainPage extends BaseComponent {
             new tableItemInfo('firstpage', 'page1', '首页', require('../../images/mainImage/homeSelect.png'), require('../../images/mainImage/homeUnSelect.png'),
                 <HomeSence backToLogin={()=>{
                      this.backToLogin({name:'LoginScene',component:LoginScene});
-                }}  showModal={(value)=>{
+                }} showModal={(value)=>{
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} openModal={()=>{
                      this.publishModal.openModal();
@@ -642,7 +642,7 @@ export default class MainPage extends BaseComponent {
             new tableItemInfo('carpage', 'page2', '车源', require('../../images/mainImage/carSelect.png'), require('../../images/mainImage/carUnSelect.png'),
                 <CarSourceSence backToLogin={()=>{
                      this.backToLogin({name:'LoginScene',component:LoginScene});
-                }}  showModal={(value)=>{
+                }} showModal={(value)=>{
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
 
@@ -651,7 +651,7 @@ export default class MainPage extends BaseComponent {
             new tableItemInfo('sendpage', 'page3', '发布', require('../../images/mainImage/sendButton.png'), require('../../images/mainImage/sendButton.png'),
                 <PublishModal backToLogin={()=>{
                      this.backToLogin({name:'LoginScene',component:LoginScene});
-                }}  showModal={(value)=>{
+                }} showModal={(value)=>{
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
@@ -661,7 +661,7 @@ export default class MainPage extends BaseComponent {
             new tableItemInfo('mypage', 'page5', '我的', require('../../images/mainImage/mineSelect.png'), require('../../images/mainImage/mineUnSelect.png'),
                 <MineSence backToLogin={()=>{
                      this.backToLogin({name:'LoginScene',component:LoginScene});
-                }}  showModal={(value)=>{
+                }} showModal={(value)=>{
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
@@ -672,7 +672,7 @@ export default class MainPage extends BaseComponent {
             new tableItemInfo('financePage', 'page24', '金融', require('../../images/mainImage/moneySelect.png'), require('../../images/mainImage/moneyUnSelect.png'),
                 <FinanceSence backToLogin={()=>{
                      this.backToLogin({name:'LoginScene',component:LoginScene});
-                }}  showModal={(value)=>{
+                }} showModal={(value)=>{
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params) => {
                     this.toNextPage(params);
@@ -680,7 +680,7 @@ export default class MainPage extends BaseComponent {
             new tableItemInfo('mypage', 'page25', '我的', require('../../images/mainImage/mineSelect.png'), require('../../images/mainImage/mineUnSelect.png'),
                 <MineSence backToLogin={()=>{
                      this.backToLogin({name:'LoginScene',component:LoginScene});
-                }}  showModal={(value)=>{
+                }} showModal={(value)=>{
                     this.props.showModal(value);
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
@@ -702,7 +702,7 @@ export default class MainPage extends BaseComponent {
             if (data.code == 1) {
                 let datas = JSON.parse(data.result);
                 if (datas.user_level == 2) {
-                    if (datas.enterprise_list[0].role_type == '1'||datas.enterprise_list[0].role_type == '6') {
+                    if (datas.enterprise_list[0].role_type == '1' || datas.enterprise_list[0].role_type == '6') {
                         tabArray = bossTabArray;
                     } else if (datas.enterprise_list[0].role_type == '2') {
                         tabArray = financeTabArray
@@ -712,9 +712,9 @@ export default class MainPage extends BaseComponent {
                 } else if (datas.user_level == 1) {
                     tabArray = formalUserTabArray
                 } else {
-                    if(datas.audit_status=='2'){
+                    if (datas.audit_status == '2') {
                         tabArray = formalUserTabArray
-                    }else{
+                    } else {
                         tabArray = touristTabArray
                     }
                 }
@@ -725,9 +725,6 @@ export default class MainPage extends BaseComponent {
             }
         });
     }
-
-
-
 
 
     render() {

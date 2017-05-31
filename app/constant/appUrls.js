@@ -380,6 +380,13 @@ export const GET_CONTRACT_DATA = 'api/v1/account/get_contract_data';
 /**
  * from @zhaojian
  *
+ * 获取借款单合同数据
+ **/
+export const CONTRACTBYLIST = 'api/V1/Contract/contractbylist';
+
+/**
+ * from @zhaojian
+ *
  * 线下库容获取合同数据
  **/
 export const CONTRACT_LOAN_CONTRACT_LIST = 'api/v1/contract/loan_contract_list';

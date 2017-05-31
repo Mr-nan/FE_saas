@@ -224,7 +224,7 @@ export  default  class SingDetaileSence extends BaseComponent {
             }
 
             if (is_microchinese_contract == 1) {
-                tempTitle = ['签署转债权合同']
+                tempTitle = ['签署微单合同']
             }
             return tempTitle;
         }
@@ -244,7 +244,7 @@ export  default  class SingDetaileSence extends BaseComponent {
                 return styles.controlButton
             case '已取消借款':
                 return styles.canceledButton
-            case '签署转债权合同':
+            case '签署微单合同':
                 return styles.controlButton
             default:
                 return styles.cancelButton
@@ -303,7 +303,7 @@ export  default  class SingDetaileSence extends BaseComponent {
             this.toNextPage({
                 name: 'CarOverdue', component: CarOverdue, params: {loan_code: controlCode.loan_code}
             });
-        } else if (title === "签署转债权合同") {
+        } else if (title === "签署微单合同") {
             this.toNextPage({
                 name: 'RecognizedGains', component: RecognizedGains, params: {
                     loan_code: controlCode.loan_code,
