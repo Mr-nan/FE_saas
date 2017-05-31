@@ -228,7 +228,7 @@ export default class CheckStand extends BaseComponent {
         this.props.showModal(true);
         let url = AppUrls.ORDER_PAY;
         request(url, 'post', {
-            order_id: '12',
+            order_id: this.props.orderId,
             type: 1,
             reback_url: 'www.pay.com'
         }).then((response) => {  // 支付成功

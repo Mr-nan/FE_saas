@@ -305,8 +305,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                     name: 'CheckStand',
                                     component: CheckStand,
                                     params: {
-                                        payAmount: this.orderDetail.deposit_amount + this.orderDetail.balance_amount
-
+                                        payAmount: this.orderDetail.deposit_amount + this.orderDetail.balance_amount,
+                                        orderId: this.props.orderId
                                     }
                                 });
                             }}>
