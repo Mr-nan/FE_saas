@@ -58,7 +58,7 @@ export  default class CarReferencePriceScene extends  BaseComponent{
             <View style={styles.rootContainer}>
                 <ScrollView>
                     <View style={styles.cellView}>
-                        <View style={{width:ScreenWidth,paddingVertical:Pixel.getPixel(10),borderBottomColor:fontAndColor.COLORA4,borderBottomWidth:StyleSheet.hairlineWidth}}>
+                        <View style={{paddingVertical:Pixel.getPixel(10),borderBottomColor:fontAndColor.COLORA4,borderBottomWidth:StyleSheet.hairlineWidth}}>
                             <Image source={require('../../images/carSourceImages/logo1.png')}/>
                         </View>
                         <PriceCell data={this.state.data[0].data} myKey="logo1"/>

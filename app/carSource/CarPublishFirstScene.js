@@ -103,6 +103,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                                              onChangeText={this._onVinChange}
                                              placeholderTextColor={fontAndColor.COLORA4}
                                              ref={(input) => {this.vinInput = input}}
+                                             keyboardType={'ascii-capable'}
                                              placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
                                   />
                                   {
@@ -224,6 +225,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                                              editable={this.props.carID?false:true}
                                              onChangeText={this._onVinChange}
                                              placeholderTextColor={fontAndColor.COLORA4}
+                                             keyboardType={'ascii-capable'}
                                              ref={(input) => {this.vinInput = input}}
                                              placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
                                   />
@@ -587,7 +589,7 @@ export default class CarPublishFirstScene extends BaseComponent{
         }
         if(!this.carData.init_reg && this.carData.v_type==1)
         {
-            this.props.showToast('选择出厂日期');
+            this.props.showToast('选择初登日期');
             return;
         }
 
@@ -694,7 +696,6 @@ export default class CarPublishFirstScene extends BaseComponent{
     //车架号改变
     _onVinChange = (text) => {
         if (text.length === 17) {
-
             this._showLoading();
             Net.request(AppUrls.VININFO, 'post',{vin:text}).then(
                 (response) => {
@@ -705,7 +706,9 @@ export default class CarPublishFirstScene extends BaseComponent{
 
                         if (rd.length === 0) {
 
-                            this._showHint('车架号校验失败');
+                            this.vinInput.setNativeProps({
+                                text: '车架号校验失败'
+                            });
 
                         } else if (rd.length === 1) {
                             this.modelInfo['brand_id'] = rd[0].brand_id;
@@ -751,12 +754,16 @@ export default class CarPublishFirstScene extends BaseComponent{
                             this.vinModal.openModal(0);
                         }
                     } else {
-                        this._showHint('车架号校验失败');
+                        this.vinInput.setNativeProps({
+                            text: '车架号校验失败'
+                        });
                     }
                 },
                 (error) => {
                     this._closeLoading();
-                    this._showHint('车架号校验失败');
+                    this.vinInput.setNativeProps({
+                        text: '车架号校验失败'
+                    });
                 }
             );
         }
@@ -966,6 +973,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
         marginTop:Pixel.getPixel(20),
         marginBottom:Pixel.getPixel(20),
+        
 
     },
     footView:{

@@ -284,8 +284,6 @@ export default class CarUpImageScene extends BaseComponent{
 
         }else {
 
-            console.log(this.carData.pictures);
-
             Net.request(AppUrls.CAR_SAVE,'post',this.carData).then((response) => {
 
                 this.props.showModal(false);
