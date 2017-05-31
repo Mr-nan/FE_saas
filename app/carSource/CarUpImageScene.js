@@ -204,6 +204,7 @@ export default class CarUpImageScene extends BaseComponent{
             <View style={styles.rootContainer}>
                 <SuccessModal okClick={this._goToSource} ref={(modal) => {this.successModal = modal}}/>
                 <ListView
+                    removeClippedSubviews={false}
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}
                     renderSeparator={this.renderSeparator}

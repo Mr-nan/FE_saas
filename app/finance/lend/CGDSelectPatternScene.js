@@ -106,6 +106,7 @@ export  default  class CGDSelectPatternScene extends BaseComponent {
             <View style={styles.rootContainer}>
                 <ListView style={{marginBottom:Pixel.getPixel(44)}}
                     dataSource={this.state.dataSource}
+                    removeClippedSubviews={false}
                     renderRow={this.renderRow}
                     renderHeader={this.renderHeadView}
                 />

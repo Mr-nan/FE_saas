@@ -545,12 +545,12 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     <NavigatorView title='订单详情' backIconClick={this.backPage}/>
                     {this.initDetailPageTop(this.topState)}
                     <ListView
+                        removeClippedSubviews={false}
                         style={{marginTop: this.listViewStyle}}
                         dataSource={this.state.dataSource}
                         renderRow={this._renderRow}
                         renderSeparator={this._renderSeperator}
                         showsVerticalScrollIndicator={false}/>
-
                     <View style={{flex: 1}}/>
                     {this.initDetailPageBottom(this.bottomState)}
                 </View>

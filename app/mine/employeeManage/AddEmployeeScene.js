@@ -246,6 +246,7 @@ export default class AddEmployeeScene extends BaseComponent {
                 />
 
                     <ListView
+                        removeClippedSubviews={false}
                         style={styles.listStyle}
                         dataSource={this.state.source}
                         renderRow={this._renderRow}

@@ -98,6 +98,7 @@ export default class Grid extends Component {
         return (
             <View style={styles.container}>
                 <ListView
+                    removeClippedSubviews={false}
                     style={styles.list}
                     dataSource={this.state.dataSource}
                     renderRow={this._renderRow}

@@ -653,6 +653,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     <NavigatorView title='订单详情' backIconClick={this.backPage}/>
                     {this.initDetailPageTop(this.topState)}
                     <ListView
+                        removeClippedSubviews={false}
                         style={{marginTop: Pixel.getPixel(73)}}
                         dataSource={this.state.dataSource}
                         renderRow={this._renderRow}

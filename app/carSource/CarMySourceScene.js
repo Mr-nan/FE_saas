@@ -354,6 +354,7 @@ class MyCarSourceUpperFrameView extends BaceComponent {
                 {
                     this.state.carData &&
                     <ListView
+                        removeClippedSubviews={false}
                         style={styles.listView}
                         dataSource={this.state.carData}
                         ref={'carListView'}
@@ -571,6 +572,7 @@ class MyCarSourceDropFrameView extends BaceComponent {
                                 dataSource={this.state.carData}
                                 ref={'carListView'}
                                 initialListSize={10}
+                              removeClippedSubviews={false}
                                 onEndReachedThreshold={1}
                                 stickyHeaderIndices={[]}//仅ios
                                 enableEmptySections={true}

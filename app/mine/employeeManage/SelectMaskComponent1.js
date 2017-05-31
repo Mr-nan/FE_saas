@@ -97,6 +97,7 @@ export default class SelectMaskComponent extends Component {
                     <View>
 
                         <ListView
+                            removeClippedSubviews={false}
                             dataSource={this.state.dataSource}
                             renderRow={this._renderRow}
                         />

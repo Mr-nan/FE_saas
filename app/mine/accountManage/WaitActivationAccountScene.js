@@ -91,7 +91,7 @@ export  default class WaitActivationAccountScene extends BaseComponent {
                             </Text>
                             <Text
                                 style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(7)}}>
-                                1.用您的企业绑定账户向先进账户转账0.1元
+                                1.用您的企业绑定账户向现金账户转账0.1元
                             </Text>
                             <Text
                                 style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(7)}}>

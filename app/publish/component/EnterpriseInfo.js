@@ -56,6 +56,7 @@ export default class EnterpriseInfo extends Component{
                 <View style={styles.container}>
                     <View>
                         <ListView
+                            removeClippedSubviews={false}
                             dataSource={this.state.dataSource}
                             renderRow={this._renderRow}
                         />

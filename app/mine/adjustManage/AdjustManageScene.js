@@ -115,6 +115,7 @@ export default class AdjustManageScene extends BaseComponent {
                           dataSource={this.state.dataSource}
                           renderRow={this._renderRow}
                           enableEmptySections = {true}
+                          removeClippedSubviews={false}
                           renderFooter={
                               this.renderListFooter
                           }

@@ -60,6 +60,7 @@ export default class InputVinInfo extends Component {
                 <TouchableOpacity style={styles.container} onPress={this._hideModal}>
                     <View>
                         <ListView
+                            removeClippedSubviews={false}
                             dataSource={this.state.dataSource}
                             renderRow={this._renderRow}
                         />

@@ -132,6 +132,7 @@ export default class SeeEmployeeInfoScene extends BaseComponent {
                     backIconClick={this.backPage}
                 />
                 <ListView
+                    removeClippedSubviews={false}
                     style={styles.listStyle}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}

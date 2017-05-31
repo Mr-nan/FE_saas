@@ -253,6 +253,7 @@ export class ModalList extends PureComponent{
                     <View style={listStyle.container}>
 
                         <ListView
+                            removeClippedSubviews={false}
                             dataSource={this.state.dataSource}
                             renderRow={this.renderRow}
                         />

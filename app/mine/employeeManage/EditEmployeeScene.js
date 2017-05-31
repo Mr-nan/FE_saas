@@ -268,6 +268,7 @@ export default class EditEmployeeScene extends BaseComponent {
                 { /**      界面listview          */}
                 <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={5}>
                     <ListView
+                        removeClippedSubviews={false}
                         style={styles.listStyle}
                         dataSource={this.state.source}
                         renderRow={this._renderRow}

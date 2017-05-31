@@ -69,6 +69,7 @@ export default class NewSelectLoanNumber extends Component {
                     this.state.topOrBottom=='top'?{justifyContent:'flex-start'}:{justifyContent:'flex-end'}]}>
                         <View>
                             <ListView
+                                removeClippedSubviews={false}
                                 dataSource={this.state.dataSource}
                                 renderRow={this._renderRow}
                             />

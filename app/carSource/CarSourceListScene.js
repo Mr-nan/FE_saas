@@ -815,6 +815,7 @@ export  default  class carSourceListScene extends BaseComponent {
                 {
                     this.state.dataSource && (
                         <ListView
+                            removeClippedSubviews={false}
                             dataSource={this.state.dataSource}
                             initialListSize={10}
                             onEndReachedThreshold={1}

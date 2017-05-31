@@ -367,6 +367,7 @@ export default class OBDDevice extends BaseComponent {
                     {
                         this.state.source ?
                             <ListView
+                                removeClippedSubviews={false}
                                 dataSource={this.state.source}
                                 renderRow={this._renderRow}
                                 renderSeparator={this._renderSeparator}/>

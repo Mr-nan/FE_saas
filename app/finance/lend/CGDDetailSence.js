@@ -343,6 +343,7 @@ export default class OrderCarDetailScene extends BaseComponent {
 
             <View style={styles.container}>
                 <ListView
+                    removeClippedSubviews={false}
                     style={commnetStyle.ListWarp}
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}

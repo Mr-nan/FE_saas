@@ -147,6 +147,7 @@ export default class OrderListScene extends BaseComponent {
                                    renderRihtFootView={this.renderRihtFootView}/>
                     <ListView style={{backgroundColor: fontAndColor.COLORA3, marginTop: Pixel.getTitlePixel(84)}}
                               dataSource={this.state.dataSource}
+                              removeClippedSubviews={false}
                               renderRow={this._renderRow}
                               enableEmptySections={true}
                               renderSeparator={this._renderSeperator}
@@ -177,6 +178,7 @@ export default class OrderListScene extends BaseComponent {
                     <ListView style={{backgroundColor: fontAndColor.COLORA3, marginTop: Pixel.getTitlePixel(84)}}
                               dataSource={this.state.dataSource}
                               renderRow={this._renderRow}
+                              removeClippedSubviews={false}
                               enableEmptySections={true}
                               renderSeparator={this._renderSeperator}
                               renderFooter={this.renderListFooter}
