@@ -506,7 +506,6 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             this.orderDetail = response.mjson.data;
             let status = response.mjson.data.status;
             let cancelStatus = response.mjson.data.cancel_status;
-            //this.stateMapping(status, cancelStatus);
             this.stateMapping(status, cancelStatus);
             if (this.orderDetail) {
                 this.initListData(this.orderState);
@@ -524,7 +523,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
 
         }, (error) => {
             this.props.showModal(false);
-            this.stateMapping(2, 0);
+            //this.stateMapping(2, 0);
             this.setState({
                 //dataSource: this.state.dataSource.cloneWithRows(this.mList),
                 isRefreshing: false,
