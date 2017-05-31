@@ -774,7 +774,7 @@ const styles = StyleSheet.create({
     textInput:{
         height: Pixel.getPixel(30),
         borderColor: fontAndColor.COLORA0,
-        width:Pixel.getPixel(50),
+        width:Pixel.getPixel(80),
         textAlign:'right',
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
         paddingTop:0,
