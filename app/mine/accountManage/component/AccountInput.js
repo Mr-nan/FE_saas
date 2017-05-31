@@ -21,10 +21,12 @@ import PixelUtil from '../../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import * as fontAndColor from '../../../constant/fontAndColor';
 let onePT = 1 / PixelRatio.get(); //一个像素
+let oldText = '';
 export  default class AccountInput extends PureComponent {
 
     constructor(props) {
         super(props);
+        oldText = '';
         this.state = {
             value: '',
             name:'',
@@ -105,7 +107,12 @@ export  default class AccountInput extends PureComponent {
 
     componentDidUpdate() {
         if(this.state.value.length>=26){
-            this.props.callBack();
+            if(oldText==this.state.value){
+
+            }else{
+                this.props.callBack();
+            }
+            oldText = this.state.value;
         }
     }
 
