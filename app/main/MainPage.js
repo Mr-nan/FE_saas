@@ -97,8 +97,8 @@ export default class MainPage extends BaseComponent {
                         this.setState({selectedTab: ref})
                         StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND,'true');
                     }else{
-                        if(ref==='financePage'){
-                             StorageUtil.mGetItem(storageKeyNames.NEED_GESTURE,(datas)=>{
+                     if(ref==='financePage'){
+                      StorageUtil.mGetItem(storageKeyNames.NEED_GESTURE,(datas)=>{
                        if(datas.code==1){
                              if(datas.result=='true'){
                              this.toNextPage({name:'LoginGesture',component:LoginGesture,params:{

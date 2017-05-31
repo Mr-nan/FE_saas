@@ -46,7 +46,7 @@ export default class CompleteSignScene extends BaseComponent {
             rows: 10,
             api: Urls.GET_CTC_CONTRACT_LIST_FOR_APP,
             opt_user_id: this.props.opt_user_id,
-            sign_status: '3',
+            sign_status: '3,4',
             opt_merge_id:this.props.opt_merge_id
         };
         request(Urls.FINANCE, 'Post', maps)

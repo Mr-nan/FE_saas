@@ -110,8 +110,8 @@ export default class FinanceSence extends BaseComponet {
             .then((response) => {
                     mnyData = response.mjson.data;
                     let title = '';
-                    if (mnyData.is_microchinese_mny == 1 || mnyData.is_microchinese_mny == 5) {
-                        title = '立即激活微众额度';
+                    if (mnyData.is_microchinese_mny == 1) {
+                        title = '立即激活微单额度';
                     } else if (mnyData.is_microchinese_mny == 2) {
                         title = '待审核';
                     } else if (mnyData.is_microchinese_mny == 4) {
@@ -661,7 +661,7 @@ export default class FinanceSence extends BaseComponet {
                                     }}>{this.state.allData.keyongedu}</Text>
                             </View>
                             {
-                                this.state.mnyData.is_microchinese_mny == 3 && (
+                                (this.state.mnyData.is_microchinese_mny == 3||this.state.mnyData.is_microchinese_mny==5) && (
                                     <View style={{flex: 1, alignItems: 'center',}}>
                                         <TouchableOpacity style={{flexDirection:'row'}} activeOpacity={1}
                                                           onPress={()=>{this.refs.showTitleAlert.setModelVisible(true)}}>
@@ -683,7 +683,7 @@ export default class FinanceSence extends BaseComponet {
                                             backgroundColor: '#00000000',
                                             flex: 1,
                                             textAlign: 'center'
-                                        }}>{this.state.mnyData.microchinese_mny / 10000}</Text>
+                                        }}>{this.state.mnyData.is_microchinese_mny==5?0:this.state.mnyData.microchinese_mny / 10000}</Text>
                                     </View>)
                             }
                             <View
@@ -727,11 +727,13 @@ export default class FinanceSence extends BaseComponet {
                                         }
 
                                     }} activeOpacity={1}>
-                                        <View style={{height:Pixel.getPixel(20),borderRadius:Pixel.getPixel(10),borderColor:'white',borderWidth:Pixel.getPixel(1),alignItems:'center',justifyContent:'center',overflow:'hidden',
+                                        <View style={{height:Pixel.getPixel(24),borderRadius:Pixel.getPixel(12),
+                                        borderColor:'white',borderWidth:Pixel.getPixel(1),alignItems:'center',
+                                        justifyContent:'center',overflow:'hidden',
                                             paddingHorizontal:Pixel.getPixel(20),
                                         }}>
-                                            <Text style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                                                backgroundColor:'#00000000'}}>  {this.state.allData.microchineseTitle}  </Text>
+                                            <Text style={{color:'white', fontSize:Pixel.getFontPixel(14),
+                                                backgroundColor:'#00000000',fontWeight: 'bold',}}>  {this.state.allData.microchineseTitle}  </Text>
                                         </View>
                                     </TouchableOpacity>
                                 </View>) : (null)
