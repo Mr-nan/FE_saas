@@ -687,11 +687,13 @@ export default class FinanceSence extends BaseComponet {
                                         }
 
                                     }} activeOpacity={1}>
-                                        <View style={{height:Pixel.getPixel(20),borderRadius:Pixel.getPixel(10),borderColor:'white',borderWidth:Pixel.getPixel(1),alignItems:'center',justifyContent:'center',overflow:'hidden',
+                                        <View style={{height:Pixel.getPixel(24),borderRadius:Pixel.getPixel(12),
+                                        borderColor:'white',borderWidth:Pixel.getPixel(1),alignItems:'center',
+                                        justifyContent:'center',overflow:'hidden',
                                             paddingHorizontal:Pixel.getPixel(20),
                                         }}>
-                                            <Text style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                                                backgroundColor:'#00000000'}}>  {this.state.allData.microchineseTitle}  </Text>
+                                            <Text style={{color:'white', fontSize:Pixel.getFontPixel(14),
+                                                backgroundColor:'#00000000',fontWeight: 'bold',}}>  {this.state.allData.microchineseTitle}  </Text>
                                         </View>
                                     </TouchableOpacity>
                                 </View>) : (null)
