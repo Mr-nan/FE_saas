@@ -87,6 +87,7 @@ export default class ColorChoose extends BaseComponent {
                         onEndReachedThreshold={1}
                         scrollRenderAheadDistance={1}
                         pageSize={3}
+                        removeClippedSubviews={false}
                         contentContainerStyle={styles.listStyle}
                         dataSource={this.state.source}
                         style={{paddingLeft: 10, paddingRight: 10}}

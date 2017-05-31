@@ -163,6 +163,7 @@ export class CarConfigurationView extends BaseComponent{
         return(
         <View style={{flex:1}}>
             <ListView
+                removeClippedSubviews={false}
                 dataSource={this.state.dataSource}
                 renderHeader={()=>{return(
                     <View style={{paddingHorizontal:Pixel.getPixel(15),paddingVertical:Pixel.getPixel(10),backgroundColor:'white'}}>

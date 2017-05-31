@@ -210,6 +210,7 @@ export default class OrderSearchScene extends BaseComponent {
                     <ListView style={{backgroundColor: fontAndColor.COLORA3, marginTop: Pixel.getPixel(14)}}
                               dataSource={this.state.dataSource}
                               renderRow={this._renderRow}
+                              removeClippedSubviews={false}
                               enableEmptySections={true}
                               renderSeparator={this._renderSeperator}
                               renderFooter={this.state.startSearch === 0 ? null : this.renderListFooter}

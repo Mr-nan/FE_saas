@@ -196,6 +196,7 @@ export default class OrderCarDetailScene extends BaseComponent{
         return(
             <View style={styles.container}>
             <ListView
+                removeClippedSubviews={false}
                 style={{marginTop:64}}
                 dataSource={this.state.dataSource}
                 renderRow={this.renderRow}

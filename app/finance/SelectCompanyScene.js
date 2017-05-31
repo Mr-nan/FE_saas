@@ -51,6 +51,7 @@ export  default class SelectCompanyScene extends Component {
                     title="切换公司"
                 />
                 <ListView
+                    removeClippedSubviews={false}
                     style={{marginTop: Pixel.getTitlePixel(79)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}

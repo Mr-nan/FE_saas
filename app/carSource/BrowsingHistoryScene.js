@@ -171,6 +171,7 @@ export default class BrowsingHistoryScene extends BaceComponent {
                 <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(64)}}
                           dataSource={this.state.carData}
                           showsVerticalScrollIndicator={false}
+                          removeClippedSubviews={false}
                           renderRow={(rowData) =>
                           <CarCell from="BrowsingHistoryScene" items={rowData} mOnPress={(id)=>{
                                if(rowData.status==3){

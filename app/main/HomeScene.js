@@ -189,6 +189,7 @@ export default class HomeScene extends BaseComponet {
             <View style={cellSheet.container}>
 
                 <ListView
+                    removeClippedSubviews={false}
                     initialListSize={6}
                     stickyHeaderIndices={[]}
                     onEndReachedThreshold={1}

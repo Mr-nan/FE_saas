@@ -101,6 +101,7 @@ export  default class BankCardScene extends BaseComponent {
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
                 <ListView
+                    removeClippedSubviews={false}
                     style={{marginTop: Pixel.getTitlePixel(79),marginRight:Pixel.getPixel(15),marginLeft:Pixel.getPixel(15)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}

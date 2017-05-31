@@ -259,6 +259,7 @@ export default class CityListScene extends BaseComponent {
                     this.state.dataSource && (
                         <ListView ref="listView"
                                   style={{flex: 1}}
+                                  removeClippedSubviews={false}
                                   dataSource={this.state.dataSource}
                                   renderRow={this.renderRow}
                                   renderSectionHeader={this.renderSectionHeader}

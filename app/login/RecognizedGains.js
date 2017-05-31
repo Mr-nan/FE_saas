@@ -83,6 +83,7 @@ export default class RecognizedGains extends BaseComponent {
                     style={{marginTop:Pixel.getPixel(15)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
+                    removeClippedSubviews={false}
                     renderSeparator={this._renderSeparator}
                     renderFooter={this.props.isShow?this._renderFooter:()=>{return <View/>}}
                 />

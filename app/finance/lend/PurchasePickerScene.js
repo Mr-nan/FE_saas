@@ -102,6 +102,7 @@ export  default class PurchasePickerScene extends BaseComponent {
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
                 <ListView
+                    removeClippedSubviews={false}
                     style={{marginTop: Pixel.getTitlePixel(79)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}

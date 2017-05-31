@@ -107,6 +107,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 }} navigator={this.props.navigator}/>
                 <NavigatorView title='订单详情' backIconClick={this.backPage}/>
                 <ListView
+                    removeClippedSubviews={false}
                     style={{marginTop: Pixel.getPixel(73)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
@@ -122,11 +123,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                  补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您
                  补足成交价与贷款本息，'/>*/}
                 <ExplainModal ref='expModal' title='补差额说明' buttonStyle={styles.expButton} textStyle={styles.expText}
-                              text='知道了' content='为了确保交易金额可支付贷款本息，请您
-                        补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您
-                        补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您
-                        补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您
-                        补足成交价与贷款本息，'/>
+                              text='知道了'
+                              content='为了确保交易金额可支付贷款本息，请您补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您补足成交价与贷款本息，'/>
                 <MakePhoneModal ref='mkpModal'/>
                 <View style={{flex: 1}}/>
             </View>
@@ -275,7 +273,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                source={{uri: 'http://dycd-static.oss-cn-beijing.aliyuncs.com/Uploads/Oss/201703/13/58c639474ef45.jpg?x-oss-process=image/resize,w_320,h_240'}}/>
                         <View style={{marginLeft: Pixel.getPixel(10)}}>
                             <Text numberOfLines={1}
-                            style={{backgroundColor: 'blue',marginRight: Pixel.getPixel(55)}}>[北京]奔驰M级(进口) 2015款 Masdadadadadada</Text>
+                                  style={{backgroundColor: 'blue',marginRight: Pixel.getPixel(55)}}>[北京]奔驰M级(进口) 2015款 Masdadadadadada</Text>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>里程：</Text>
                                 <Text style={styles.carDescribe}>20.59万</Text>
