@@ -49,6 +49,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         this.topState = -1;
         this.bottomState = -1;
         this.contactData = {};
+        this.leftTime = 0;
         this.state = {
             dataSource: ds,
             renderPlaceholderOnly: 'blank',
@@ -88,10 +89,12 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
      * @param createdTime  订单创建时间
      */
     getLeftTime = (createdTime) => {
-        let currentTime = new Date().getMilliseconds();
+        let currentTime = new Date().getTime();
         let oldTime = new Date(createdTime).getTime();
-        console.log('当前时间:::', currentTime);
-        console.log('创建时间:::', oldTime);
+        //console.log('当前时间:::', currentTime);
+        //console.log('创建时间:::', oldTime);
+        //this.formatLongToTimeStr(currentTime - oldTime);
+        return currentTime - oldTime;
     };
 
     /**
@@ -204,8 +207,13 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 marginLeft: Pixel.getPixel(15),
                                 fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                                 color: fontAndColor.COLORB7
-                            }}>订金支付剩余时间：</Text>
-                            <DepositCountDown minute={} hour={} />
+                            }}>订金支付剩余时间:</Text>
+                            <DepositCountDown leftTime={this.leftTime}/>
+                            <Text style={{
+                                marginLeft: Pixel.getPixel(15),
+                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                color: fontAndColor.COLORB7
+                            }}>超时未付订单自动取消</Text>
                         </View>
                         <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>
                     </View>
@@ -568,7 +576,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             let cancelStatus = response.mjson.data.cancel_status;
             this.stateMapping(status, cancelStatus);
             //TODO TEST
-
+            this.leftTime = this.getLeftTime(this.orderDetail.created_time);
             if (this.orderDetail) {
                 this.initListData(this.orderState);
                 this.setState({
