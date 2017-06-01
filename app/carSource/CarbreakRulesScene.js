@@ -88,10 +88,10 @@ export  default class CarbreakRulesScene extends  BaseComponent{
         }).then((response)=>{
 
             console.log(response);
-            if(response.mjson.data.lengte>0){
+            if(response.mjson.data.length>0){
 
                 this.setState({
-                    dataSource:this.state.dataSource(response.mjson.data),
+                    dataSource:this.state.dataSource.cloneWithRows(response.mjson.data),
                     renderPlaceholderOnly: 'success',
 
                 });

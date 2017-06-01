@@ -44,9 +44,9 @@ export  default class AccountWebScene extends BaseComponent {
     }
 
     handleBack = () => {
-        if(oldUrl==this.props.webUrl){
+        if (oldUrl == this.props.webUrl) {
             this.backPage();
-        }else{
+        } else {
             this.refs.www.goBack();
         }
         return true;
@@ -62,46 +62,83 @@ export  default class AccountWebScene extends BaseComponent {
                 <WebView
                     ref="www"
                     style={{width:width,height:height,
-                    backgroundColor:fontAndColor.COLORA3}}
+                    backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(20)}}
                     source={{uri:this.props.webUrl,method: 'GET'}}
                     javaScriptEnabled={true}
                     domStorageEnabled={true}
                     scalesPageToFit={false}
                     onNavigationStateChange={this.onNavigationStateChange.bind(this)}
                 />
-                {/*<NavigationView*/}
-                    {/*title={this.props.title}*/}
-                    {/*backIconClick={()=>{*/}
-                        {/*if(oldUrl==this.props.webUrl){*/}
-                                {/*this.backPage();*/}
-                        {/*}else{*/}
-                            {/*this.refs.www.goBack();*/}
-                        {/*}*/}
-
-                    {/*}}*/}
-                {/*/>*/}
+                <NavigationView
+                    title={this.props.title}
+                    backIconClick={()=>{
+                        if(oldUrl==this.props.webUrl){
+                           this.backPage();
+                        }else{
+                           this.props.callBack();
+                           if(this.props.backUrl==webBackUrl.OPENINDIVIDUALACCOUNT||
+                                this.props.backUrl==webBackUrl.OPENENTERPRISEACCOUNT||
+                                this.props.backUrl==webBackUrl.BINDCARD||
+                                this.props.backUrl==webBackUrl.UNBINDCARD){
+                                const navigator = this.props.navigator;
+                                if (navigator){
+                                    for(let i = 0;i<navigator.getCurrentRoutes().length;i++){
+                                        if(navigator.getCurrentRoutes()[i].name=='MainPage'){
+                                            navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                                            break;
+                                        }
+                                    }
+                                }
+                           }else if(this.props.backUrl == webBackUrl.TRANSFER ||
+                                      this.props.backUrl ==  webBackUrl.WITHDRAWALS ){
+                                      const navigator = this.props.navigator;
+                                      if (navigator) {
+                                           for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
+                                                  if (navigator.getCurrentRoutes()[i].name == 'AccountScene') {
+                                                      navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                                                       break;
+                                                  }
+                                             }
+                                      }
+                           }else{
+                                this.backPage();
+                           }
+                        }
+                    }}
+                />
             </View>
         );
     }
 
-    onNavigationStateChange=(navState)=> {
-        console.log('123---------'+navState.url);
-        oldUrl=navState.url;
-        if(oldUrl=='http://'+this.props.backUrl+'/'){
+    onNavigationStateChange = (navState) => {
+        console.log('123---------' + navState.url);
+        oldUrl = navState.url;
+        if (oldUrl == 'http://' + this.props.backUrl + '/') {
             this.props.callBack();
-            if(oldUrl=='http://'+webBackUrl.OPENINDIVIDUALACCOUNT+'/'||
-            oldUrl=='http://'+webBackUrl.OPENENTERPRISEACCOUNT+'/'||oldUrl=='http://'+webBackUrl.BINDCARD+'/'||
-            oldUrl=='http://'+webBackUrl.UNBINDCARD+'/'){
+            if (oldUrl == 'http://' + webBackUrl.OPENINDIVIDUALACCOUNT + '/' ||
+                oldUrl == 'http://' + webBackUrl.OPENENTERPRISEACCOUNT + '/' || oldUrl == 'http://' + webBackUrl.BINDCARD + '/' ||
+                oldUrl == 'http://' + webBackUrl.UNBINDCARD + '/') {
                 const navigator = this.props.navigator;
-                if (navigator){
-                    for(let i = 0;i<navigator.getCurrentRoutes().length;i++){
-                        if(navigator.getCurrentRoutes()[i].name=='MainPage'){
+                if (navigator) {
+                    for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
+                        if (navigator.getCurrentRoutes()[i].name == 'MainPage') {
                             navigator.popToRoute(navigator.getCurrentRoutes()[i]);
                             break;
                         }
                     }
                 }
-            }else{
+            } else if (oldUrl == 'http://' + webBackUrl.TRANSFER + '/' ||
+                oldUrl == 'http://' + webBackUrl.WITHDRAWALS + '/') {
+                const navigator = this.props.navigator;
+                if (navigator) {
+                    for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
+                        if (navigator.getCurrentRoutes()[i].name == 'AccountScene') {
+                            navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                            break;
+                        }
+                    }
+                }
+            } else {
                 this.backPage();
             }
         }
@@ -110,10 +147,10 @@ export  default class AccountWebScene extends BaseComponent {
     _renderPlaceholderView() {
         return (
             <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
-                {/*<NavigationView*/}
-                    {/*title={this.props.title}*/}
-                    {/*backIconClick={this.backPage}*/}
-                {/*/>*/}
+                <NavigationView
+                    title={this.props.title}
+                    backIconClick={this.backPage}
+                />
             </View>
         );
     }
