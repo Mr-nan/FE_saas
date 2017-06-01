@@ -26,7 +26,7 @@ import  UpLoadScene from './UpLoadScene';
 import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
 import codePush from 'react-native-code-push'
-const versionCode = 10.0;
+const versionCode = 11.0;
 let canNext = true;
 
 export default class RootScene extends BaseComponent {
@@ -52,7 +52,7 @@ export default class RootScene extends BaseComponent {
                         this.navigatorParams.params = {url: response.mjson.data.downloadurl}
                         this.toNextPage(this.navigatorParams);
                     } else {
-                    this.toJump();
+                        this.toJump();
                     }
                 },
                 (error) => {
