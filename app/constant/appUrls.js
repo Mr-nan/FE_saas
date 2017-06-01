@@ -652,6 +652,11 @@ export const AUTH_UPLOAD_FILE = BASEURL + V + "auth/upload";
 export const CONTRACTLIST = 'api/v1/Contract/contractList';
 
 /**
+ * 元通合同列表
+ */
+export const CONTRACT_CONTRACT_LIST = 'api/v1/Contract/contract_list';
+
+/**
  * 转债权合同列表
  */
 export const GET_CTC_CONTRACT_LIST_FOR_APP = 'api/v1/contract/get_ctc_contract_list_for_app';
