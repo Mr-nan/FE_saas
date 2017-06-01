@@ -345,7 +345,7 @@ export default class OrderListScene extends BaseComponent {
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>里程：</Text>
                                 <Text
-                                    style={styles.carDescribe}>{rowData.car.length ? rowData.car[0].mileage : '未公开'}</Text>
+                                    style={styles.carDescribe}>{rowData.car.length ? rowData.car[0].mileage + '万' : '未公开'}</Text>
                             </View>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>上牌：</Text>

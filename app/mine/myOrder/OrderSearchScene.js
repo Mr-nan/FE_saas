@@ -94,9 +94,9 @@ export default class OrderSearchScene extends BaseComponent {
             rows: 10,
             car_name: this.state.value
         }).then((response) => {
-            this.orderListData = response.mjson.data.info_list;
+            this.orderListData = response.mjson.data.items;
             this.allPage = response.mjson.data.total / response.mjson.data.rows;
-            if (response.mjson.data && this.orderListData.length > 0) {
+            if (this.orderListData) {
                 this.setState({
                     dataSource: this.state.dataSource.cloneWithRows(this.orderListData),
                     isRefreshing: false,
@@ -236,7 +236,8 @@ export default class OrderSearchScene extends BaseComponent {
     }
 
     _renderRow = (rowData, selectionID, rowID) => {
-        let initRegDate = this.dateReversal(rowData.cars[0].car.init_reg + '000');
+        let initRegDate = rowData.car.length ? this.dateReversal(rowData.car[0].init_reg + '000') : '未公开';
+        let imageUrl = rowData.car.length ? rowData.car[0].thumbs : [];
         //item 布局
         return (
             <TouchableOpacity
@@ -258,24 +259,27 @@ export default class OrderSearchScene extends BaseComponent {
                 activeOpacity={0.8}>
                 <View style={styles.rowView}>
                     <View style={styles.rowTitleLine}>
-                        <Text style={styles.rowTitleText}>{rowData.seller_company_name}</Text>
+                        <Text style={styles.rowTitleText}>{rowData.order.company}</Text>
                         <Text style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                             color: fontAndColor.COLORA1,
                             marginLeft: Pixel.getPixel(5)
-                        }}>({rowData.seller_company_id})</Text>
+                        }}>订单号:({rowData.order.order_no})</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.rowTitleState}>已拍下</Text>
+                        <Text style={styles.rowTitleState}>{rowData.order.status}</Text>
                     </View>
                     <View style={styles.separatedLine}/>
                     <View style={{flexDirection: 'row', height: Pixel.getPixel(104), alignItems: 'center'}}>
                         <Image style={styles.image}
-                               source={{uri: 'http://dycd-static.oss-cn-beijing.aliyuncs.com/Uploads/Oss/201703/13/58c639474ef45.jpg?x-oss-process=image/resize,w_320,h_240'}}/>
+                               source={imageUrl.length ? {uri: imageUrl[0].icon_url} : require('../../../images/carSourceImages/car_null_img.png')}/>
                         <View style={{marginLeft: Pixel.getPixel(10)}}>
-                            <Text>{rowData.car_name}</Text>
+                            <Text
+                                style={{width: width - Pixel.getPixel(15 + 120 + 10 + 15)}}
+                                numberOfLines={1}
+                            >{rowData.car.length ? rowData.car[0].title : '未公开'}</Text>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>里程：</Text>
-                                <Text style={styles.carDescribe}>{rowData.cars[0].car.mileage}万</Text>
+                                <Text style={styles.carDescribe}>{rowData.car.length ? rowData.car[0].mileage + '万' : '未公开'}</Text>
                             </View>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>上牌：</Text>
@@ -302,7 +306,7 @@ export default class OrderSearchScene extends BaseComponent {
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color: fontAndColor.COLORA0,
                             fontWeight: 'bold'
-                        }}>13.90万</Text>
+                        }}>{rowData.car.length ? rowData.car[0].transaction_price : '0'}</Text>
                         <Text style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                             color: fontAndColor.COLORA1,
@@ -312,7 +316,7 @@ export default class OrderSearchScene extends BaseComponent {
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color: fontAndColor.COLORA0,
                             fontWeight: 'bold'
-                        }}>1.50万</Text>
+                        }}>{rowData.order.deposit_amount}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
