@@ -47,7 +47,7 @@ export default class NoneSineScene extends BaseComponent {
             rows: 10,
             api : Urls.CONTRACT_CONTRACT_LIST,
             opt_user_id: this.props.opt_user_id,
-            sign_status: '1',
+            sign_status: '0',
         };
         request(Urls.FINANCE, 'Post', maps)
 
