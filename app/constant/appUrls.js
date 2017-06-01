@@ -416,6 +416,13 @@ export const REPAYMENT_GETADJUSTINFO = 'api/v2/Repayment/getAdjustInfo';
 /**
  * from @zhaojian
  *
+ * 元通查看合同
+ **/
+export const CONTRACT_CONTRACTDETAIL = 'api/v1/Contract/contractDetail';
+
+/**
+ * from @zhaojian
+ *
  * 获取借款首页数据
  **/
 export const GET_MNY = 'api/v3/account/get_mny';
