@@ -84,6 +84,15 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
     };
 
     /**
+     * 获取订单剩余时间
+     * @param createdTime  订单创建时间
+     */
+    getLeftTime = (createdTime) => {
+        let currentTime = new Date().getMilliseconds();
+        let oldTime = new Date(createdTime).getTime();
+    };
+
+    /**
      * 判断订单详情页显示内容
      * @param orderState   订单状态
      * @param merchantNum   商家电话
@@ -194,7 +203,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                                 color: fontAndColor.COLORB7
                             }}>订金支付剩余时间：</Text>
-                            <DepositCountDown />
+                            <DepositCountDown minute={} hour={} />
                         </View>
                         <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>
                     </View>
@@ -342,7 +351,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                     name: 'CheckStand',
                                     component: CheckStand,
                                     params: {
-                                        payAmount: this.orderDetail.deposit_amount + this.orderDetail.balance_amount,
+                                        payAmount: this.orderDetail.deposit_amount,
                                         orderId: this.props.orderId
                                     }
                                 });
@@ -446,7 +455,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 1:
                 if (cancelStatus === 0) {
                     this.orderState = 0;
-                    this.topState = -1;
+                    this.topState = 0;
                     this.bottomState = 0;
                 } else if (cancelStatus === 1) {
                     this.orderState = 0;
@@ -914,7 +923,9 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         backgroundColor: '#ffffff',
         height: Pixel.getPixel(50),
-        flexDirection: 'row'
+        flexDirection: 'row',
+        borderTopWidth: 1,
+        borderTopColor: fontAndColor.COLORA4
     },
     buttonConfirm: {
         alignItems: 'center',

@@ -21,13 +21,13 @@ export default class DepositCountDown extends Component {
         this.state = {
             countDown: false,
             //value: '获取验证码',
-            minute: 0,
-            second: 5
+            hour: this.props.hour,
+            minute: this.props.minute
         };
         //this.countTime = TIME;
         this.timer = null;
-        this.value1 = this.state.minute;
-        this.value2 = this.state.second;
+        this.value1 = this.state.hour;
+        this.value2 = this.state.minute;
     }
 
 /*    static propTypes = {
@@ -48,9 +48,9 @@ export default class DepositCountDown extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.textStyle}>{this.state.minute}</Text>
+                <Text style={styles.textStyle}>{this.state.hour}</Text>
                 <Text style={styles.textStyle}>:</Text>
-                <Text style={styles.textStyle}>{this.state.second}</Text>
+                <Text style={styles.textStyle}>{this.state.minute}</Text>
             </View>
         );
     }

@@ -1159,7 +1159,9 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         backgroundColor: '#ffffff',
         height: Pixel.getPixel(50),
-        flexDirection: 'row'
+        flexDirection: 'row',
+        borderTopWidth: 1,
+        borderTopColor: fontAndColor.COLORA4
     },
     tradingCountdown: {
         flexDirection: 'row',

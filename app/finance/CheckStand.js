@@ -231,7 +231,7 @@ export default class CheckStand extends BaseComponent {
                 let maps = {
                     company_id: datas.company_base_id,
                     order_id: this.props.orderId,
-                    type: 1,
+                    type: 2,
                     reback_url: webBackUrl.PAY
                 };
                 let url = AppUrls.ORDER_PAY;

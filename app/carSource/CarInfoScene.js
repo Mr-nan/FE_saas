@@ -445,13 +445,12 @@ export default class CarInfoScene extends BaseComponent {
                     this.props.showModal(true);
                     let enters = JSON.parse(data.result);
                     request(AppUrls.CAR_ORDER_SAVE,'post',{'car_ids':carData.id,
-                    'user_company_id':enters.company_base_id}).then((response) => {
-                        this.props.showModal(false);
+                    'company_id':enters.company_base_id}).then((response) => {
+                        this.props.showToast(response.mjson.msg);
 
                     }, (error) => {
                         console.log(error);
-
-                        this.props.showModal(false);
+                        //this.props.showModal(false);
                         this.props.showToast(error.mjson.msg);
                     });
 
