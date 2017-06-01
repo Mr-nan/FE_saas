@@ -28,6 +28,9 @@ import CarReferencePriceScene from  './CarReferencePriceScene';
 import CarPriceAnalysisView from './znComponent/CarPriceAnalysisView';
 import *as weChat from 'react-native-wechat';
 import PixelUtil from '../utils/PixelUtil';
+import StorageUtil from "../utils/StorageUtil";
+import * as StorageKeyNames from "../constant/storageKeyNames";
+
 const Pixel = new PixelUtil();
 
 import {request} from "../utils/RequestUtil";
@@ -226,15 +229,15 @@ export default class CarInfoScene extends BaseComponent {
                                         carData.dealer_price>0&& (
                                             <View style={{flexDirection:'row', alignItems:'center'}}>
                                                 <Text style={styles.priceText}>{this.carMoneyChange(carData.dealer_price) +'万'}</Text>
-                                                {
-                                                    (carData.city_id!='0'&&carData.model_id!='0'&&carData.city_id!=''&&carData.model_id!='') &&
-                                                    <TouchableOpacity style={{flexDirection:'row', alignItems:'center'}}
-                                                                      activeOpacity={1}
-                                                                      onPress={()=>{this.pushCarReferencePriceScene(carData)}}>
-                                                        <Image style={{marginLeft:Pixel.getPixel(10)}} source={require('../../images/carSourceImages/carPriceIcon.png')}/>
-                                                        <Text style={[styles.priceText,{marginLeft:Pixel.getPixel(5), fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}]}>查看参考价</Text>
-                                                    </TouchableOpacity>
-                                                }
+                                                {/*{*/}
+                                                    {/*(carData.city_id!='0'&&carData.model_id!='0'&&carData.city_id!=''&&carData.model_id!='') &&*/}
+                                                    {/*<TouchableOpacity style={{flexDirection:'row', alignItems:'center'}}*/}
+                                                                      {/*activeOpacity={1}*/}
+                                                                      {/*onPress={()=>{this.pushCarReferencePriceScene(carData)}}>*/}
+                                                        {/*<Image style={{marginLeft:Pixel.getPixel(10)}} source={require('../../images/carSourceImages/carPriceIcon.png')}/>*/}
+                                                        {/*<Text style={[styles.priceText,{marginLeft:Pixel.getPixel(5), fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}]}>查看参考价</Text>*/}
+                                                    {/*</TouchableOpacity>*/}
+                                                {/*}*/}
                                             </View>
                                         )
                                     }
@@ -375,7 +378,6 @@ export default class CarInfoScene extends BaseComponent {
                     {
                         this.state.residualsData.length>0 &&( <CarPriceAnalysisView data ={this.state.residualsData}/>)
                     }
-
                 </ScrollView>
                     <View style={styles.footView} >
                         <View style={[styles.carNumberView,carData.show_order==2 && {width:ScreenWidth/2}]}>
@@ -388,13 +390,13 @@ export default class CarInfoScene extends BaseComponent {
                                 <Text style={styles.callText}>电话咨询</Text>
                             </View>
                         </TouchableOpacity>
-                        {/*{*/}
-                            {/*carData.show_order!==2 && (*/}
-                                {/*<TouchableOpacity style={styles.orderView} onPress={()=>{this.orderClick(carData)}}>*/}
-                                    {/*<Text style={styles.orderText}>订购</Text>*/}
-                                {/*</TouchableOpacity>*/}
-                            {/*)*/}
-                        {/*}*/}
+                        {
+                            carData.show_order!==2 && (
+                                <TouchableOpacity style={styles.orderView} onPress={()=>{this.orderClick(carData)}}>
+                                    <Text style={styles.orderText}>订购</Text>
+                                </TouchableOpacity>
+                            )
+                        }
                     </View>
                 <NavigationView
                     ref="navtigation"
@@ -432,8 +434,34 @@ export default class CarInfoScene extends BaseComponent {
 
     // 下订单
     orderClick=(carData)=>{
+
         if(carData.show_order==1){
             this.props.showToast('该车已被下单');
+
+        }else {
+            StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+                if(data.code == 1 && data.result != '')
+                {
+                    this.props.showModal(true);
+                    let enters = JSON.parse(data.result);
+                    request(AppUrls.CAR_ORDER_SAVE,'post',{'car_ids':carData.id,
+                    'user_company_id':enters.company_base_id}).then((response) => {
+                        this.props.showModal(false);
+
+                    }, (error) => {
+                        console.log(error);
+
+                        this.props.showModal(false);
+                        this.props.showToast(error.mjson.msg);
+                    });
+
+                }else{
+                    this._showHint('无法找到所属商户');
+                }
+
+            });
+
+
         }
     }
 
@@ -524,7 +552,10 @@ export default class CarInfoScene extends BaseComponent {
             name: "CarReferencePriceScene",
             component: CarReferencePriceScene,
             params: {
-                carData:carData
+                city_id:carData.city_id,
+                mileage:carData.mileage,
+                model_id:carData.model_id,
+                init_reg:this.dateReversal(carData.init_reg+'000'),
              }
         }
         this.toNextPage(navigationParams);
@@ -1128,7 +1159,7 @@ const styles = StyleSheet.create({
         borderLeftColor:fontAndColor.COLORA4,
         paddingHorizontal:Pixel.getPixel(15),
         height: Pixel.getPixel(44),
-        width:ScreenWidth/2,
+        width:ScreenWidth/3,
     },
 
     callText: {
@@ -1141,7 +1172,7 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         height:Pixel.getPixel(44),
         paddingHorizontal:Pixel.getPixel(15),
-        width:ScreenWidth/2
+        width:ScreenWidth/3
     },
     carNumberText:{
         color: fontAndColor.COLORA0,

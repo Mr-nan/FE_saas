@@ -96,8 +96,8 @@ android {
         applicationId "com.fe_sass"
         minSdkVersion 19
         targetSdkVersion 22
-        versionCode 9
-        versionName "2.6.0"
+        versionCode 10
+        versionName "2.7.0"
         ndk {
             abiFilters "armeabi","armeabi-v8a"
         }

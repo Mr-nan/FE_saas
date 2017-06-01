@@ -659,7 +659,11 @@ export default class CarPublishSecondScene extends BaseComponent{
             name: "CarReferencePriceScene",
             component: CarReferencePriceScene,
             params: {
-                carData:this.carData
+                city_id:this.carData.city_id,
+                mileage:this.carData.mileage,
+                model_id:this.carData.model_id,
+                init_reg:this.carData.init_reg,
+
             }
         }
         this.toNextPage(navigationParams);
@@ -774,11 +778,13 @@ const styles = StyleSheet.create({
     textInput:{
         height: Pixel.getPixel(30),
         borderColor: fontAndColor.COLORA0,
-        width:Pixel.getPixel(50),
+        width:Pixel.getPixel(80),
         textAlign:'right',
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
         paddingTop:0,
         paddingBottom:0,
+        paddingLeft:0,
+        paddingRight:0,
 
     },
     textInputTitle:{

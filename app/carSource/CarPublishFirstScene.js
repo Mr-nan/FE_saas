@@ -123,6 +123,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                   {
                       title:'车架号',
                       isShowTag:true,
+                      subTitle:"",
                       tailView:()=>{
                           return(
                               <View style={{flexDirection:'row', alignItems:'center'}}>
@@ -134,10 +135,8 @@ export default class CarPublishFirstScene extends BaseComponent{
                                              editable={this.props.carID?false:true}
                                              onChangeText={this._onVinChange}
                                              onFocus={()=>{
-                                                this.carData.vin ='';
                                                 this.setCurrentPy(this.vinInput);
                                              }}
-                                             clearTextOnFocus={true}
                                              placeholderTextColor={fontAndColor.COLORA4}
                                              keyboardType={'ascii-capable'}
                                              placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
@@ -258,6 +257,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                   },
                   {
                       title:'车架号',
+                      subTitle:"",
                       isShowTag:true,
                       tailView:()=>{
                           return(
@@ -270,10 +270,8 @@ export default class CarPublishFirstScene extends BaseComponent{
                                              editable={this.props.carID?false:true}
                                              onChangeText={this._onVinChange}
                                              onFocus={()=>{
-                                                 this.carData.vin ='';
                                                  this.setCurrentPy(this.vinInput);
                                              }}
-                                             clearTextOnFocus={true}
                                              placeholderTextColor={fontAndColor.COLORA4}
                                              keyboardType={'ascii-capable'}
                                              placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
@@ -811,9 +809,10 @@ export default class CarPublishFirstScene extends BaseComponent{
 
                         if (rd.length === 0) {
 
-                            this.vinInput.setNativeProps({
-                                text: '车架号校验失败'
-                            });
+                            this.carData['vin'] = '';
+                            this.titleData1[0][1].subTitle='校验失败';
+                            this.titleData2[0][1].subTitle='校验失败';
+                            this.upTitleData();
 
 
                         } else if (rd.length === 1) {
@@ -822,6 +821,9 @@ export default class CarPublishFirstScene extends BaseComponent{
                             this.modelInfo['series_id'] = rd[0].series_id;
                             this.modelInfo['model_year'] = rd[0].model_year;
                             this.modelInfo['model_name'] = rd[0].model_name;
+
+                            this.titleData1[0][1].subTitle='';
+                            this.titleData2[0][1].subTitle='';
 
                             this.titleData1[0][2].value = rd[0].model_name;
                             this.titleData1[0][4].value = rd[0].model_emission_standard;
@@ -865,17 +867,18 @@ export default class CarPublishFirstScene extends BaseComponent{
                             this.vinModal.refresh(this.modelData);
                             this.vinModal.openModal(0);
                         }
+
                     } else {
-                        this.vinInput.setNativeProps({
-                            text: '车架号校验失败'
-                        });
+                        this.titleData1[0][1].subTitle='校验失败';
+                        this.titleData2[0][1].subTitle='校验失败';
+                        this.upTitleData();
                     }
                 },
                 (error) => {
                     this._closeLoading();
-                    this.vinInput.setNativeProps({
-                        text: '车架号校验失败'
-                    });
+                    this.titleData1[0][1].subTitle='校验失败';
+                    this.titleData2[0][1].subTitle='校验失败';
+                    this.upTitleData();
                 }
             );
         }
@@ -940,7 +943,8 @@ export default class CarPublishFirstScene extends BaseComponent{
                 text:carObject.liter
             });
         }
-
+        this.titleData1[0][1].subTitle='';
+        this.titleData2[0][1].subTitle='';
         this.titleData1[0][2].value = carObject.model_name;
         this.titleData1[0][4].value = carObject.discharge_standard;
         this.titleData1[1][0].value = carObject.model_year+'-6-1';

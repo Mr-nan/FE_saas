@@ -39,6 +39,7 @@ import WebScene from './WebScene';
 import  CarMySourceScene from '../carSource/CarMySourceScene';
 import  NewRepaymentInfoScene from '../finance/repayment/NewRepaymentInfoScene';
 import AllLoading from '../component/AllLoading';
+import QuotaApplication from '../login/QuotaApplication';
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 let allList = [];
 export class HomeHeaderItemInfo {
@@ -281,8 +282,12 @@ export default class HomeScene extends BaseComponet {
             <View>
                 <View style={{flexDirection: 'row'}}>
                     <ViewPagers callBack={(urls)=> {
-                        this.props.callBack({name: 'WebScene', component: WebScene, params: {webUrl: urls}});
-                    }} items={this.state.allData}/>
+                        this.props.callBack(
+                            {name: 'WebScene', component: WebScene, params: {webUrl: urls}}
+                            );
+                    }} items={this.state.allData} toNext={()=>{
+                         this.props.jumpScene('financePage','');
+                    }}/>
                     <TouchableOpacity onPress={()=> {
                         this.props.jumpScene('carpage', 'true');
                     }} activeOpacity={0.8} style={{

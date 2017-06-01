@@ -117,15 +117,20 @@ export const CAR_GET_REFERENCEPRICE = BASEURL + V + 'che/referencePrice';
  */
 export const CAR_GET_RESIDUALS = BASEURL + V + 'che/residuals';
 
-// /**
-//  * 获取客服电话号码
-//  */
-// export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/getCustomService';
+/**
+ * 车辆下订单
+ */
+export const CAR_ORDER_SAVE = BASEURL + V + 'order/save';
 
 /**
  * 获取客服电话号码
  */
-export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/companyPhone';
+export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/getCustomService';
+
+// /**
+//  * 获取客服电话号码
+//  */
+// export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/companyPhone';
 
 /**
  * 获取我的车源-已上架/下架
@@ -468,6 +473,13 @@ export const REPAYMENT_GETONLINEINFO = 'api/v2/Repayment/getOnlineInfo';
  * 获取合同数据
  **/
 export const GET_CONTRACT_DATA = 'api/v1/account/get_contract_data';
+
+/**
+ * from @zhaojian
+ *
+ * 获取借款单合同数据
+ **/
+export const CONTRACTBYLIST = 'api/V1/Contract/contractbylist';
 
 /**
  * from @zhaojian

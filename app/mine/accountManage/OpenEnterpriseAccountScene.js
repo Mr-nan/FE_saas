@@ -37,6 +37,7 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
         // 初始状态
         this.state = {
             renderPlaceholderOnly: 'blank',
+            topSize:-179
         };
     }
 
@@ -47,13 +48,13 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
     }
 
     render() {
+
         if (this.state.renderPlaceholderOnly !== 'success') {
             return this._renderPlaceholderView();
         }
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
-                <ScrollView keyboardShouldPersistTaps={'handled'} style={{marginTop: Pixel.getTitlePixel(79)}}>
-                    <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={5}>
+                    <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={this.state.topSize} >
                         <View style={styles.inputTextsStyle}>
                             <LoginInputText
                                 ref="cust_name"
@@ -61,6 +62,13 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                                 viewStytle={styles.itemStyel}
                                 inputTextStyle={styles.inputTextStyle}
                                 leftIcon={false}
+                                foucsChange={()=>{
+                                    if(this.state.topSize==5){
+                                        this.setState({
+                                            topSize:-179
+                                        });
+                                    }
+                                }}
                                 import={false}
                                 clearValue={true}
                                 rightIcon={false}/>
@@ -77,6 +85,13 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                                 viewStytle={[styles.itemStyel, {borderBottomWidth: 0}]}
                                 inputTextStyle={styles.inputTextStyle}
                                 leftIcon={false}
+                                foucsChange={()=>{
+                                    if(this.state.topSize==5){
+                                        this.setState({
+                                            topSize:-179
+                                        });
+                                    }
+                                }}
                                 import={false}
                                 clearValue={true}
                                 rightIcon={false}/>
@@ -91,6 +106,13 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                                 inputTextStyle={styles.inputTextStyle}
                                 leftIcon={false}
                                 import={false}
+                                foucsChange={()=>{
+                                    if(this.state.topSize==5){
+                                        this.setState({
+                                            topSize:-179
+                                        });
+                                    }
+                                }}
                                 clearValue={true}
                                 rightIcon={false}/>
                             <LoginInputText
@@ -100,6 +122,13 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                                 inputTextStyle={styles.inputTextStyle}
                                 leftIcon={false}
                                 import={false}
+                                foucsChange={()=>{
+                                    if(this.state.topSize==-179){
+                                        this.setState({
+                                            topSize:5
+                                        });
+                                    }
+                                }}
                                 clearValue={true}
                                 rightIcon={false}/>
                         </View>
@@ -114,6 +143,13 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                                 inputTextStyle={styles.inputTextStyle}
                                 leftIcon={false}
                                 import={false}
+                                foucsChange={()=>{
+                                    if(this.state.topSize==-179){
+                                        this.setState({
+                                            topSize:5
+                                        });
+                                    }
+                                }}
                                 clearValue={true}
                                 rightIcon={false}/>
                             <LoginInputText
@@ -123,6 +159,13 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                                 inputTextStyle={styles.inputTextStyle}
                                 leftIcon={false}
                                 import={false}
+                                foucsChange={()=>{
+                                    if(this.state.topSize==-179){
+                                        this.setState({
+                                            topSize:5
+                                        });
+                                    }
+                                }}
                                 clearValue={true}
                                 rightIcon={false}/>
                             <LoginInputText
@@ -132,27 +175,34 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                                 inputTextStyle={styles.inputTextStyle}
                                 leftIcon={false}
                                 import={false}
+                                foucsChange={()=>{
+                                    if(this.state.topSize==-179){
+                                        this.setState({
+                                            topSize:5
+                                        });
+                                    }
+                                }}
                                 clearValue={true}
                                 rightIcon={false}/>
 
                         </View>
+                        <Text style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                            marginTop:Pixel.getPixel(20),marginLeft:Pixel.getPixel(15)}}>
+                            请确认您的企业信息填写准确
+                        </Text>
+
+                        <TouchableOpacity onPress={()=>{
+                            this.checkEmpty();
+                        }} activeOpacity={0.8} style={{backgroundColor:fontAndColor.COLORB0,marginTop:Pixel.getPixel(15),
+                            width:width-Pixel.getPixel(30),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),
+                            height:Pixel.getPixel(44),justifyContent:'center',alignItems: 'center'}}>
+                            <Text style={{color:'#fff',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28)}}>确认开通</Text>
+                        </TouchableOpacity>
                     </KeyboardAvoidingView>
 
-                    <Text style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                marginTop:Pixel.getPixel(20),marginLeft:Pixel.getPixel(15)}}>
-                        请确认您的企业信息填写准确
-                    </Text>
-
-                    <TouchableOpacity onPress={()=>{
-                        this.checkEmpty();
-                }} activeOpacity={0.8} style={{backgroundColor:fontAndColor.COLORB0,marginTop:Pixel.getPixel(15),
-                width:width-Pixel.getPixel(30),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),
-                height:Pixel.getPixel(44),justifyContent:'center',alignItems: 'center'}}>
-                        <Text style={{color:'#fff',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28)}}>确认开通</Text>
-                    </TouchableOpacity>
 
 
-                </ScrollView>
+
                 <NavigationView
                     title="开通企业账户"
                     backIconClick={this.backPage}
@@ -277,6 +327,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         paddingLeft: Pixel.getPixel(15),
         paddingRight: Pixel.getPixel(15),
+        marginTop:Pixel.getTitlePixel(79)
     },
     inputTextStyle: {
         backgroundColor: '#ffffff',
