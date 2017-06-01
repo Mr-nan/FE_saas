@@ -568,7 +568,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             let cancelStatus = response.mjson.data.cancel_status;
             this.stateMapping(status, cancelStatus);
             //TODO TEST
-            
+
             if (this.orderDetail) {
                 this.initListData(this.orderState);
                 this.setState({
