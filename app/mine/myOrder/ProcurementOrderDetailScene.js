@@ -90,6 +90,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
     getLeftTime = (createdTime) => {
         let currentTime = new Date().getMilliseconds();
         let oldTime = new Date(createdTime).getTime();
+        console.log('当前时间:::', currentTime);
+        console.log('创建时间:::', oldTime);
     };
 
     /**
@@ -565,6 +567,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             let status = response.mjson.data.status;
             let cancelStatus = response.mjson.data.cancel_status;
             this.stateMapping(status, cancelStatus);
+            //TODO TEST
+            
             if (this.orderDetail) {
                 this.initListData(this.orderState);
                 this.setState({
