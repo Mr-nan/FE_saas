@@ -126,7 +126,6 @@ export default class CarSelectRegisterPersonScene extends BaseComponent{
     renderFooter =()=> {
         return(
             <View style={{flex:1,marginTop:Pixel.getPixel(50),justifyContent:'center',alignItems:'center',marginBottom:Pixel.getPixel(10)}}>
-
             <TouchableOpacity onPress={()=>{this.addPersonClick()}}>
                 <View style={styles.footView}>
                     <Image source={require('../../images/carSourceImages/addPerson.png')}/>

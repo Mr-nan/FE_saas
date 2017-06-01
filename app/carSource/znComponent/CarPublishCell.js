@@ -10,6 +10,8 @@ import {
     Image,
     TouchableOpacity,
     Dimensions,
+    TextInput,
+
 } from 'react-native';
 
 import *as fontAndColor from '../../constant/fontAndColor';

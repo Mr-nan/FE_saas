@@ -55,7 +55,7 @@ export default class CarAddRegisterPersonScene extends BaseComponent{
                     tailView:()=>{
                         return(
                             <View>
-                                <TextInpu
+                                <TextInput
                                     style={styles.textInput}
                                     underlineColorAndroid='transparent'
                                     placeholder='请输入'
@@ -224,7 +224,6 @@ export default class CarAddRegisterPersonScene extends BaseComponent{
         Net.request(AppUrls.ADD_REGISTRANT,'post',this.personData).then((response) => {
 
             this.props.showModal(false);
-            console.log(response);
             if(response.mycode==1){
                 this.props.upDataAction();
                 this.backPage();

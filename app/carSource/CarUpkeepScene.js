@@ -175,7 +175,8 @@ const styles = StyleSheet.create({
         borderBottomWidth:StyleSheet.hairlineWidth,
         marginTop:Pixel.getPixel(15),
         backgroundColor:'white',
-        height:Pixel.getPixel(100),
+        flexWrap: 'wrap',
+
     },
     cellTitleView:{
         borderBottomWidth:StyleSheet.hairlineWidth,
@@ -196,7 +197,9 @@ const styles = StyleSheet.create({
     },
     cellContent:{
         marginTop:Pixel.getPixel(10),
+        marginBottom:Pixel.getPixel(10),
         color:fontAndColor.COLORA0,
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+        backgroundColor:'white'
     },
 });
