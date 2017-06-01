@@ -40,6 +40,7 @@ export default class OrderListScene extends BaseComponent {
         this.pageNum = 1;
         this.allPage = 1;
         this.orderState = 0;
+        this.status = 'all';
         this.startDate = '选择开始时间';
         this.endDate = '选择结束时间';
         //let business = this.props.business;
@@ -91,8 +92,12 @@ export default class OrderListScene extends BaseComponent {
             business: this.props.business,
             page: this.pageNum,
             rows: 10,
-            list_state: this.props.listState
+            list_state: this.props.listState,
+            status: this.status,
+            start_time: this.startDate,
+            end_time: this.endDate
         }).then((response) => {
+            this.props.showModal(false);
             this.orderListData = response.mjson.data.items;
             this.allPage = response.mjson.data.total / response.mjson.data.rows;
             //console.log('订单列表数据 = ', this.orderListData[0].car);
@@ -110,6 +115,7 @@ export default class OrderListScene extends BaseComponent {
             }
 
         }, (error) => {
+            this.props.showModal(false);
             //console.log('请求错误 = ', error);
             this.setState({
                 isRefreshing: false,
@@ -139,7 +145,10 @@ export default class OrderListScene extends BaseComponent {
             business: this.props.business,
             page: this.pageNum,
             rows: 10,
-            list_state: this.props.listState
+            list_state: this.props.listState,
+            status: this.status,
+            start_time: this.startDate,
+            end_time: this.endDate
         }).then((response) => {
             let data = response.mjson.data.items;
             for (let i = 0; i < data.length; i++) {
@@ -251,6 +260,7 @@ export default class OrderListScene extends BaseComponent {
                                 orderState: this.orderState,
                                 startDate: this.startDate,
                                 endDate: this.endDate,
+                                status: this.status,
                                 returnConditions: this.returnConditions
                             }
                         });
@@ -263,13 +273,18 @@ export default class OrderListScene extends BaseComponent {
         )
     }
 
-    returnConditions = (newOrderState, newStartDate, newEndDate) => {
-        /*console.log('newOrderState===' + newOrderState);
-         console.log('newStartDate===' + newStartDate);
-         console.log('newEndDate===' + newEndDate);*/
+    returnConditions = (newOrderState, newStartDate, newEndDate, newStatus) => {
+        if (this.orderState === newOrderState &&
+            this.startDate === newStartDate &&
+            this.endDate === newEndDate) {
+            return;
+        }
+        this.props.showModal(true);
         this.orderState = newOrderState;
         this.startDate = newStartDate;
         this.endDate = newEndDate;
+        this.status = newStatus;
+        this.loadData();
     };
 
     _renderSeperator = (sectionID: number, rowID: number, adjacentRowHighlighted: bool) => {
@@ -301,7 +316,7 @@ export default class OrderListScene extends BaseComponent {
                             component: SalesOrderDetailScene,
                             params: {
                                 business: this.props.business,
-                                orderId: rowData.id
+                                orderId: rowData.order.id
                             }
                         });
                     }

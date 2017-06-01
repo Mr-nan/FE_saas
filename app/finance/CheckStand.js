@@ -80,7 +80,7 @@ export default class CheckStand extends BaseComponent {
                         });
                     }
                 }, (error) => {
-                    this.props.showModal(false);
+                    this.props.showToast('用户信息查询失败');
                     this.setState({
                         isRefreshing: false,
                         renderPlaceholderOnly: 'error'
@@ -90,7 +90,6 @@ export default class CheckStand extends BaseComponent {
                 this.props.showToast('用户信息查询失败');
             }
         });
-
     };
 
     render() {

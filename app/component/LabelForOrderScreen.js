@@ -48,10 +48,9 @@ export default class LabelForOrderScreen extends PureComponent {
             this.props.value = this.props.item.value;
             this.setState({enable: !en});
         }
-        this.props.callBack(this.props.index);
+        this.props.callBack(this.props.index, this.props.item.value);
         //this.props.select(this.props.key);
         //console.log(this.props.item.value);
-
     };
 
     render() {

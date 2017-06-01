@@ -812,3 +812,7 @@ export const ORDER_CANCEL_HANDLER = BASEURL + V +'order/cancelHandler';
  *  车辆定价检查
  */
 export const ORDER_CHECK_PRICE = BASEURL + V +'order/checkPrice';
+/**
+ *  获取筛选订单状态
+ */
+export const ORDER_FIELD_DICT = BASEURL + V +'order/fieldDict';

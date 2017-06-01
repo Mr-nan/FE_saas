@@ -10,7 +10,8 @@ import {
     Dimensions,
     ListView,
     Text,
-    TouchableOpacity
+    BackAndroid,
+    InteractionManager
 } from "react-native";
 
 const {width, height} = Dimensions.get('window');
@@ -19,6 +20,8 @@ import NavigatorView from '../../component/AllNavigationView';
 import * as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
 import MyButton from "../../component/MyButton";
+import {request} from "../../utils/RequestUtil";
+import * as AppUrls from "../../constant/appUrls";
 const Pixel = new PixelUtil();
 const arrow = require('../../../images/publish/date-select.png');
 import LabelParent from '../../component/LabelParent';
@@ -26,12 +29,6 @@ import SelectDate from './component/SelectDate';
 
 let order_state = [];
 let pay_type = [];
-/*let parameters = {
- orderState: 0,
- payType: 0,
- startDate: '',
- endDate: ''
- };*/
 
 export default class OrderScreeningScene extends BaseComponent {
 
@@ -44,115 +41,119 @@ export default class OrderScreeningScene extends BaseComponent {
         this.orderState = this.props.orderState;
         this.startDate = this.props.startDate;
         this.endDate = this.props.endDate;
-        let mList = [];
+        this.status = this.props.status;
+        this.mList = [];
         if (this.props.business === 1) {
             if (this.props.orderStage === 1) {
-                mList = ['1', '3'];
-                /*                order_state.push({title: '全部', isSelected: order_state.length === parameters.orderState, value: 0, ref: 'child0'});
-                 order_state.push({title: '已拍下', isSelected: false, value: 1, ref: 'child1'});
-                 order_state.push({title: '待付订金', isSelected: false, value: 2, ref: 'child2'});
-                 order_state.push({title: '待付尾款', isSelected: false, value: 3, ref: 'child3'});
-                 order_state.push({title: '待申请发车', isSelected: false, value: 4, ref: 'child4'});
-                 order_state.push({title: '待确认收货', isSelected: false, value: 5, ref: 'child5'});
-                 order_state.push({title: '申请取消订单中', isSelected: false, value: 6, ref: 'child6'});
-                 order_state.push({title: '订单融资处理中', isSelected: false, value: 7, ref: 'child7'});*/
-                order_state.push({
-                    title: '全部',
-                    isSelected: order_state.length === this.orderState,
-                    value: 0,
-                    ref: 'child0'
-                });
-                order_state.push({
-                    title: '已拍下',
-                    isSelected: order_state.length === this.orderState,
-                    value: 1,
-                    ref: 'child1'
-                });
-                order_state.push({
-                    title: '待付订金',
-                    isSelected: order_state.length === this.orderState,
-                    value: 2,
-                    ref: 'child2'
-                });
-                order_state.push({
-                    title: '待付尾款',
-                    isSelected: order_state.length === this.orderState,
-                    value: 3,
-                    ref: 'child3'
-                });
-                order_state.push({
-                    title: '待申请发车',
-                    isSelected: order_state.length === this.orderState,
-                    value: 4,
-                    ref: 'child4'
-                });
-                order_state.push({
-                    title: '待确认收货',
-                    isSelected: order_state.length === this.orderState,
-                    value: 5,
-                    ref: 'child5'
-                });
-                order_state.push({
-                    title: '申请取消订单中',
-                    isSelected: order_state.length === this.orderState,
-                    value: 6,
-                    ref: 'child6'
-                });
-                order_state.push({
-                    title: '订单融资处理中',
-                    isSelected: order_state.length === this.orderState,
-                    value: 7,
-                    ref: 'child7'
-                });
+                this.mList = ['1', '3'];
             } else {
-                mList = ['3'];
+                this.mList = ['3'];
             }
         } else {
-            mList = ['1', '3'];
-            order_state.push({title: '全部', isSelected: false, value: 0});
-            order_state.push({title: '待确认成交价', isSelected: false, value: 1});
-            order_state.push({title: '查看到账', isSelected: false, value: 2});
-            order_state.push({title: '处理申请取消订单中', isSelected: false, value: 3});
+            this.mList = ['1', '3'];
         }
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-
 
         pay_type.push({title: '全部', isSelected: false, value: 0});
         pay_type.push({title: '订单融资', isSelected: false, value: 1});
         pay_type.push({title: '全款', isSelected: false, value: 2});
         this.state = {
-            source: ds.cloneWithRows(mList),
-            /*            startDate: '选择开始时间',
-             endDate: '选择结束时间',*/
-            //parameters: parameters,
-            isDateTimePickerVisible: false
-            //arr1: order_state
+            //source: ds.cloneWithRows(mList),
+            source: ds,
+            isDateTimePickerVisible: false,
+            isRefreshing: false,
+            renderPlaceholderOnly: 'blank'
         }
 
     }
 
+    componentDidMount() {
+        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
+    }
+
+    initFinish = () => {
+        this.loadData();
+    };
+
+    loadData = () => {
+        let url = AppUrls.ORDER_FIELD_DICT;
+        request(url, 'post', {
+            type: 'orderList'
+        }).then((response) => {
+            if (this.props.business === 1) {
+                let dict = response.mjson.data.orderList[0];
+                for (var key in dict) {
+                    order_state.push({
+                        title: dict[key],
+                        isSelected: order_state.length === this.orderState,
+                        value: key,
+                        ref: 'child' + key
+                    });
+                }
+                this.setState({
+                    source: this.state.source.cloneWithRows(this.mList),
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'success'
+                });
+            } else {
+                let dict = response.mjson.data.orderList[1];
+                for (var key in dict) {
+                    order_state.push({
+                        title: dict[key],
+                        isSelected: order_state.length === this.orderState,
+                        value: key,
+                        ref: 'child' + key
+                    });
+                }
+                this.setState({
+                    source: this.state.source.cloneWithRows(this.mList),
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'success'
+                });
+            }
+        }, (error) => {
+            //console.log('请求错误 = ', error);
+            this.setState({
+                isRefreshing: false,
+                renderPlaceholderOnly: 'error'
+            });
+        });
+    };
+
     render() {
-        return (
-            <View style={styles.container}>
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            // 加载中....
+            return ( <View style={styles.container}>
+                {this.loadView()}
                 <NavigatorView title='筛选' backIconClick={this.backPage}/>
+            </View>);
+        } else {
+            return (
+                <View style={styles.container}>
+                    <NavigatorView title='筛选' backIconClick={this.backPage}/>
 
-                <ListView
-                    style={{marginTop: Pixel.getPixel(73)}}
-                    dataSource={this.state.source}
-                    renderRow={this._renderRow}
-                    removeClippedSubviews={false}
-                    renderSeparator={this._renderSeperator}
-                    showsVerticalScrollIndicator={false}/>
+                    <ListView
+                        style={{marginTop: Pixel.getPixel(73)}}
+                        dataSource={this.state.source}
+                        renderRow={this._renderRow}
+                        removeClippedSubviews={false}
+                        renderSeparator={this._renderSeperator}
+                        showsVerticalScrollIndicator={false}/>
 
-                <View style={{flex: 1}}/>
-                <MyButton buttonType={MyButton.TEXTBUTTON}
-                          content={'确定'}
-                          parentStyle={styles.loginBtnStyle}
-                          childStyle={styles.loginButtonTextStyle}
-                          mOnPress={this.confirmClick}/>
+                    <View style={{flex: 1}}/>
+                    <MyButton buttonType={MyButton.TEXTBUTTON}
+                              content={'确定'}
+                              parentStyle={styles.loginBtnStyle}
+                              childStyle={styles.loginButtonTextStyle}
+                              mOnPress={this.confirmClick}/>
 
-            </View>
-        )
+                </View>
+            )
+        }
     }
 
     confirmClick = () => {
@@ -162,7 +163,7 @@ export default class OrderScreeningScene extends BaseComponent {
             return;
         }
         if (this.startDate <= this.endDate) {
-            this.props.returnConditions(this.orderState, this.startDate, this.endDate);
+            this.props.returnConditions(this.orderState, this.startDate, this.endDate, this.status);
             this.backPage();
         } else {
             this.props.showToast('开始时间要小于结束时间');
@@ -185,7 +186,8 @@ export default class OrderScreeningScene extends BaseComponent {
             return (
                 <View style={styles.containerChild}>
                     <Text style={styles.carType}>订单状态</Text>
-                    <LabelParent items={order_state} orderState={this.orderState} updateState={this.setOrderState}/>
+                    <LabelParent items={order_state} orderState={this.orderState} updateState={this.setOrderState}
+                                 updateStatus={this.setOrderStatus}/>
                 </View>
             )
         } else if (movie == 2) {
@@ -213,6 +215,11 @@ export default class OrderScreeningScene extends BaseComponent {
     setOrderState = (newOrderState) => {
         this.orderState = newOrderState;
         //console.log('setOrderState = ',this.orderState);
+    }
+
+    setOrderStatus = (newStatus) => {
+        this.status = newStatus;
+        //console.log('status = ',this.status);
     }
 
     setStartDate = (newStartDate) => {
