@@ -279,22 +279,22 @@ export default class EditCarScene extends BaseComponent {
                                     }
                                 },
                                 (error) => {
-                                    this.props.closeLoading();
+                                    this._closeLoading();
                                     if(error.mycode === -300 || error.mycode === -500){
                                         if(IS_ANDROID === true){
-                                            this.props.showHint('网络请求失败');
+                                            this._showHint('网络请求失败');
                                         }else {
                                             this.timer = setTimeout(
-                                                () => { this.props.showHint('网络请求失败'); },
+                                                () => { this._showHint('网络请求失败'); },
                                                 500
                                             );
                                         }
                                     }else{
                                         if(IS_ANDROID === true){
-                                            this.props.showHint(error.mjson.msg);
+                                            this._showHint(error.mjson.msg);
                                         }else {
                                             this.timer = setTimeout(
-                                                () => { this.props.showHint(error.mjson.msg); },
+                                                () => { this._showHint(error.mjson.msg); },
                                                 500
                                             );
                                         }
