@@ -15,7 +15,8 @@ import {
     ScrollView,
     Platform,
     NativeModules,
-    DeviceEventEmitter
+    DeviceEventEmitter,
+    KeyboardAvoidingView,
 
 }   from 'react-native';
 
@@ -135,7 +136,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                                              editable={this.props.carID?false:true}
                                              onChangeText={this._onVinChange}
                                              onFocus={()=>{
-                                                this.setCurrentPy(this.vinInput);
+                                                this.setCurrentPy('vinInput');
                                              }}
                                              placeholderTextColor={fontAndColor.COLORA4}
                                              keyboardType={'ascii-capable'}
@@ -171,7 +172,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                                   onChangeText={(text)=>{this.carData['displacement']=text}}
                                   onEndEditing={()=>{this.saveCarData();}}
                                   onFocus={()=>{
-                                      this.setCurrentPy(this.displacementInput);
+                                      this.setCurrentPy('displacementInput');
                                   }}
                                   placeholderTextColor={fontAndColor.COLORA4}
                                   placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
@@ -234,7 +235,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                                   onEndEditing={()=>{this.saveCarData();}}
                                   ref={(input) => {this.instructionsInput = input}}
                                   onFocus={()=>{
-                                      this.setCurrentPy(this.instructionsInput);
+                                      this.setCurrentPy('instructionsInput');
                                   }}
                                   placeholderTextColor={fontAndColor.COLORA4}
                                   placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
@@ -270,7 +271,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                                              editable={this.props.carID?false:true}
                                              onChangeText={this._onVinChange}
                                              onFocus={()=>{
-                                                 this.setCurrentPy(this.vinInput);
+                                                 this.setCurrentPy('vinInput');
                                              }}
                                              placeholderTextColor={fontAndColor.COLORA4}
                                              keyboardType={'ascii-capable'}
@@ -308,7 +309,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                                   underlineColorAndroid='transparent'
                                   onEndEditing={()=>{this.saveCarData();}}
                                   onFocus={()=>{
-                                      this.setCurrentPy(this.displacementInput);
+                                      this.setCurrentPy('displacementInput');
                                   }}
                                   placeholderTextColor={fontAndColor.COLORA4}
                                   placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
@@ -365,7 +366,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                                   }
                                   onEndEditing={()=>{this.saveCarData();}}
                                   onFocus={()=>{
-                                      this.setCurrentPy(this.instructionsInput);
+                                      this.setCurrentPy('instructionsInput');
                                   }}
                                   placeholderTextColor={fontAndColor.COLORA4}
                                   placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
@@ -383,27 +384,29 @@ export default class CarPublishFirstScene extends BaseComponent{
           };
       }
 
-    componentWillMount() {
-
-        // Keyboard events监听
-        Keyboard.addListener('keyboardWillShow', this.updateKeyboardSpace);
-    }
-
-    componentWillUnMount() {
-        Keyboard.removeAllListeners('keyboardWillShow');
-    }
+    // componentWillMount() {
+    //
+    //     // Keyboard events监听
+    //     Keyboard.addListener('keyboardWillShow', this.updateKeyboardSpace);
+    // }
+    //
+    // componentWillUnMount() {
+    //     Keyboard.removeAllListeners('keyboardWillShow');
+    // }
     setCurrentPy =(ref)=>{
 
-        ref.measure((ox, oy, width, height, px, py)=>{
+        console.log(ref);
 
-            let currentPy = py + height;
-            console.log(currentPy,sceneHeight);
-            if(sceneHeight - currentPy < this.keyboardSpace)
-            {
-                this.scrollView.scrollTo({x: 0, y:this.keyboardSpace + (sceneHeight- currentPy+Pixel.getPixel(50)), animated: true});
-            }
-
-        });
+        // ref.measure((ox, oy, width, height, px, py)=>{
+        //
+        //     let currentPy = py + height;
+        //     console.log(currentPy,sceneHeight);
+        //     if(sceneHeight - currentPy < this.keyboardSpace)
+        //     {
+        //         this.scrollView.scrollTo({x: 0, y:this.keyboardSpace + (sceneHeight- currentPy+Pixel.getPixel(50)), animated: true});
+        //     }
+        //
+        // });
     }
     componentWillUnmount() {
         this.timer && clearTimeout(this.timer);
@@ -420,6 +423,7 @@ export default class CarPublishFirstScene extends BaseComponent{
 
         return(
             <View style={styles.rootContainer}>
+                <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={-Pixel.getPixel(100)}>
                     <ScrollView  ref={(ref)=>{this.scrollView = ref}} keyboardDismissMode={'on-drag'}>
                         <View style={{width:sceneWidth,paddingVertical:Pixel.getPixel(25),backgroundColor:'white'}}>
                             <Image style={{width:sceneWidth}} resizeMode={'contain'} source={require('../../images/carSourceImages/publishCarperpos1.png')}/>
@@ -464,6 +468,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                             </TouchableOpacity>
                         </View>
                     </ScrollView>
+                </KeyboardAvoidingView>
                 <VinInfo viewData={this.scanType} vinPress={this._vinPress} ref={(modal) => {this.vinModal = modal}}/>
                 <DateTimePicker
                     titleIOS="请选择日期"
@@ -1115,6 +1120,8 @@ const styles = StyleSheet.create({
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
         paddingTop:0,
         paddingBottom:0,
+        paddingLeft:0,
+        paddingRight:0,
         backgroundColor:'white'
     },
     scanImage: {

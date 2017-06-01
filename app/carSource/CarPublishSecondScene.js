@@ -14,6 +14,7 @@ import {
     Keyboard,
     ScrollView,
     DeviceEventEmitter,
+    KeyboardAvoidingView
 }   from 'react-native';
 
 import BaseComponent from '../component/BaseComponent';
@@ -44,20 +45,15 @@ export default class CarPublishSecondScene extends BaseComponent{
         // 初始状态
         this.carData = this.props.carData;
 
-        this.nature_use ='非营运';
-        this.carData['nature_use']=2;
+
 
         if(this.carData.nature_use==1)
         {
             this.nature_use ='营运';
             this.carData['nature_use']=1;
-
-
-        }else if(this.carData.nature_use==3)
-        {
-            this.nature_use ='租赁非营运';
-            this.carData['nature_use']=3;
-
+        }else {
+            this.nature_use ='非营运';
+            this.carData['nature_use']=2;
         }
 
         if(this.carData.v_type!==1){
@@ -76,7 +72,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                     title:'使用性质',
                     isShowTag:false,
                     isShowTail:true,
-                    selectDict:{current:this.nature_use,data:[{title:'营运',value:1},{title:'非营运',value:2},{title:'租赁非营运',value:3}]},
+                    selectDict:{current:this.nature_use,data:[{title:'营运',value:1},{title:'非营运',value:2}]},
                 },
                 {
                     title:'过户次数',
@@ -421,39 +417,40 @@ export default class CarPublishSecondScene extends BaseComponent{
         };
     }
 
-    componentWillMount() {
-
-        // Keyboard events监听
-        Keyboard.addListener('keyboardWillShow', this.updateKeyboardSpace);
-    }
-
-    componentWillUnMount() {
-
-        Keyboard.removeAllListeners('keyboardWillShow');
-    }
-    updateKeyboardSpace =(frames)=>{
-
-        this.keyboardSpace = frames.endCoordinates.height;//获取键盘高度
-
-    }
+    // componentWillMount() {
+    //
+    //     // Keyboard events监听
+    //     Keyboard.addListener('keyboardWillShow', this.updateKeyboardSpace);
+    // }
+    //
+    // componentWillUnMount() {
+    //
+    //     Keyboard.removeAllListeners('keyboardWillShow');
+    // }
+    // updateKeyboardSpace =(frames)=>{
+    //
+    //     this.keyboardSpace = frames.endCoordinates.height;//获取键盘高度
+    //
+    // }
     setCurrentPy =(ref)=>{
 
-        ref.measure((ox, oy, width, height, px, py)=>{
-            let currentPy = py + height;
-            console.log(currentPy,sceneHeight);
-            if(sceneHeight - currentPy < this.keyboardSpace)
-            {
-                this.scrollView.scrollTo({x: 0, y:this.keyboardSpace + (sceneHeight- currentPy+Pixel.getPixel(50)), animated: true});
-            }
-
-        });
+        // ref.measure((ox, oy, width, height, px, py)=>{
+        //     let currentPy = py + height;
+        //     console.log(currentPy,sceneHeight);
+        //     if(sceneHeight - currentPy < this.keyboardSpace)
+        //     {
+        //         this.scrollView.scrollTo({x: 0, y:this.keyboardSpace + (sceneHeight- currentPy+Pixel.getPixel(50)), animated: true});
+        //     }
+        //
+        // });
     }
 
 
     render(){
         return(
             <View style={styles.rootContainer}>
-                    <ScrollView ref={(ref)=>{this.scrollView = ref}} keyboardDismissMode={'on-drag'}>
+                <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={-Pixel.getPixel(100)}>
+                <ScrollView ref={(ref)=>{this.scrollView = ref}} keyboardDismissMode={'on-drag'}>
                         <View style={{width:sceneWidth,paddingVertical:Pixel.getPixel(25),backgroundColor:'white'}}>
                             <Image style={{width:sceneWidth}} resizeMode={'contain'} source={require('../../images/carSourceImages/publishCarperpos2.png')}/>
                         </View>
@@ -495,6 +492,7 @@ export default class CarPublishSecondScene extends BaseComponent{
                             </TouchableOpacity>
                         </View>
                     </ScrollView>
+                </KeyboardAvoidingView>
                 <AllNavigationView title="车辆基本信息" backIconClick={this.backPage}/>
             </View>
         )

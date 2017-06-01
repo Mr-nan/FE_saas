@@ -55,8 +55,9 @@ export default class CarAddRegisterPersonScene extends BaseComponent{
                     tailView:()=>{
                         return(
                             <View>
-                                <TextInput
+                                <TextInpu
                                     style={styles.textInput}
+                                    underlineColorAndroid='transparent'
                                     placeholder='请输入'
                                     onChangeText={(text)=>{
                                         this.personData['business_name'] = this.trimString(text);
@@ -73,6 +74,7 @@ export default class CarAddRegisterPersonScene extends BaseComponent{
                     return(
                         <View>
                             <TextInput style={styles.textInput}
+                                       underlineColorAndroid='transparent'
                                        placeholder='请输入'
                                        maxLength={11}
                                        keyboardType={'phone-pad'}
@@ -92,6 +94,7 @@ export default class CarAddRegisterPersonScene extends BaseComponent{
                         <View>
                             <TextInput
                                 style={styles.textInput}
+                                underlineColorAndroid='transparent'
                                 placeholder='请输入'
                                 maxLength={18}
                                 keyboardType={'numbers-and-punctuation'}
@@ -111,6 +114,7 @@ export default class CarAddRegisterPersonScene extends BaseComponent{
                         <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                         <TextInput
                             style={styles.textInput}
+                            underlineColorAndroid='transparent'
                             placeholder='请输入'
                             keyboardType={'number-pad'}
                             onChangeText={(text)=>{
@@ -129,6 +133,7 @@ export default class CarAddRegisterPersonScene extends BaseComponent{
                         <View>
                             <TextInput
                                 style={styles.textInput}
+                                underlineColorAndroid='transparent'
                                 placeholder='请输入'
                                 onChangeText={(text)=>{
                                     this.personData['position'] = this.trimString(text);
@@ -326,11 +331,15 @@ const styles = StyleSheet.create({
         fontSize:fontAndColor.BUTTONFONT30
     },
     textInput:{
-        height: Pixel.getPixel(20),
+        height: Pixel.getPixel(30),
         borderColor: fontAndColor.COLORA0,
         width:Pixel.getPixel(160),
         textAlign:'right',
         fontSize:fontAndColor.LITTLEFONT28,
+        paddingTop:0,
+        paddingBottom:0,
+        paddingLeft:0,
+        paddingRight:0,
     },
     textInputTitle:{
         color:fontAndColor.COLORA0,
