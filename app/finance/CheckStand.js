@@ -103,7 +103,7 @@ export default class CheckStand extends BaseComponent {
             return (
                 <View style={styles.container}>
                     <NavigatorView title='收银台' backIconClick={this.backPage}/>
-                    <View style={styles.tradingCountdown}>
+{/*                    <View style={styles.tradingCountdown}>
                         <Text style={{marginRight: Pixel.getPixel(15), marginLeft: Pixel.getPixel(15)}}>
                             <Text style={{
                                 marginLeft: Pixel.getPixel(15),
@@ -119,8 +119,8 @@ export default class CheckStand extends BaseComponent {
                             }}>您申请的订单融资贷款已到账，请向卖家支付，支付后卖家可提现到账资金。</Text>
                         </Text>
                     </View>
-                    <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>
-                    <View style={{backgroundColor: 'white'}}>
+                    <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>*/}
+                    <View style={{backgroundColor: 'white', marginTop: Pixel.getTitlePixel(65)}}>
                         <View style={styles.needPayBar}>
                             <Text style={{
                                 fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
