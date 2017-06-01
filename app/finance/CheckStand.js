@@ -28,6 +28,7 @@ import {request} from "../utils/RequestUtil";
 import AccountScene from "../mine/accountManage/RechargeScene";
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
+import * as webBackUrl from "../constant/webBackUrl";
 const Pixel = new PixelUtil();
 
 export default class CheckStand extends BaseComponent {
@@ -223,17 +224,26 @@ export default class CheckStand extends BaseComponent {
     }
 
     goPay = () => {
-        //this.refs.expModal.changeShowType(true);
         this.props.showModal(true);
-        let url = AppUrls.ORDER_PAY;
-        request(url, 'post', {
-            order_id: this.props.orderId,
-            type: 1,
-            reback_url: 'www.pay.com'
-        }).then((response) => {  // 支付成功
-            this.props.showToast('支付成功');
-        }, (error) => {          // 支付失败
-            this.props.showToast(error.message);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.props.orderId,
+                    type: 1,
+                    reback_url: webBackUrl.PAY
+                };
+                let url = AppUrls.ORDER_PAY;
+                request(url, 'post', maps).then((response) => {
+                    //this.loadData();
+                    this.props.showToast('支付成功');
+                }, (error) => {
+                    this.props.showToast(error.message);
+                });
+            } else {
+                this.props.showToast('账户支付失败');
+            }
         });
     }
 }
