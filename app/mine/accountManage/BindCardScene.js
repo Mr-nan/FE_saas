@@ -74,13 +74,13 @@ export  default class BindCardScene extends BaseComponent {
                                     this.toNextPage({
                                         name: 'OpenEnterpriseAccountScene',
                                         component: OpenEnterpriseAccountScene,
-                                        params: {}
+                                        params: {isChange:'true'}
                                     });
                                 } else {
                                     this.toNextPage({
                                         name: 'OpenIndividualAccountScene',
                                         component: OpenIndividualAccountScene,
-                                        params: {}
+                                        params: {isChange:'true'}
                                     });
                                 }
                             }

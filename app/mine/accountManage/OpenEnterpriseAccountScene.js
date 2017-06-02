@@ -251,8 +251,13 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
             StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
                 if (data.code == 1 && data.result != null) {
                     let datas = JSON.parse(data.result);
-                    this.sendData(cert_no, cert_type, cust_name, legal_cert_no, legal_real_name,
-                        org_agent_name, org_agent_cert_no, org_agent_mobile, datas.company_base_id);
+                    if (this.props.isChange=='true'){
+                        this.getAccountData(cert_no, cert_type, cust_name, legal_cert_no, legal_real_name,
+                            org_agent_name, org_agent_cert_no, org_agent_mobile, datas.company_base_id);
+                    }else{
+                        this.sendData(cert_no, cert_type, cust_name, legal_cert_no, legal_real_name,
+                            org_agent_name, org_agent_cert_no, org_agent_mobile, datas.company_base_id);
+                    }
                 } else {
                     this.props.showToast('用户信息查询失败');
                 }
@@ -292,6 +297,62 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                 (error) => {
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast('开户失败');
+                    } else {
+                        this.props.showToast(error.mjson.msg);
+                    }
+                });
+    }
+
+    getAccountData = (cert_no, cert_type, cust_name, legal_cert_no, legal_real_name, org_agent_name, org_agent_cert_no, org_agent_mobile,
+                  enter_base_id) => {
+        this.props.showModal(true);
+        let maps = {
+            enter_base_ids: enter_base_id,
+            child_type: '1'
+        };
+        request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+            .then((response) => {
+                    this.changeData(cert_no, cert_type, cust_name, legal_cert_no, legal_real_name,
+                        org_agent_name, org_agent_cert_no, org_agent_mobile, enter_base_id,
+                        response.mjson.data.bank_card_no);
+                },
+                (error) => {
+                    this.props.showToast('用户信息查询失败');
+                });
+    }
+
+    changeData = (cert_no, cert_type, cust_name, legal_cert_no, legal_real_name, org_agent_name, org_agent_cert_no, org_agent_mobile,
+                enter_base_id,bank_card_no) => {
+        let maps = {
+            cert_no: cert_no,
+            cert_type: cert_type,
+            cust_name: cust_name,
+            legal_cert_no: legal_cert_no,
+            agent_name: org_agent_name,
+            legal_real_name: legal_real_name,
+            agent_cert_no: org_agent_cert_no,
+            agent_mobile_no: org_agent_mobile,
+            enter_base_id: enter_base_id,
+            reback_url: webBackUrl.OPENENTERPRISEACCOUNT,
+            legal_cert_type:'1',
+            agent_cert_type:'1',
+            sub_acct_no:bank_card_no
+        };
+        request(Urls.USER_ACCOUNT_SAVECOMPANY, 'Post', maps)
+            .then((response) => {
+                    this.props.showModal(false);
+                    this.toNextPage({
+                        name: 'AccountWebScene', component: AccountWebScene, params: {
+                            title: '企业账户修改', webUrl: response.mjson.data.auth_url +
+                            '?authTokenId=' + response.mjson.data.auth_token, callBack: () => {
+                                this.props.callBack();
+                            }, backUrl: webBackUrl.OPENENTERPRISEACCOUNT
+                        }
+                    });
+                },
+                (error) => {
+                    if (error.mycode == -300 || error.mycode == -500) {
+                        this.props.showToast('修改失败');
                     } else {
                         this.props.showToast(error.mjson.msg);
                     }
