@@ -118,10 +118,27 @@ export default class CarInfoScene extends BaseComponent {
 
     loadData=()=> {
 
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if(data.code == 1 && data.result != '')
+            {
+                let enters = JSON.parse(data.result);
+                this.loadCarData(enters.company_base_id+',');
+
+            }else{
+                this.loadCarData(null);
+            }
+
+        });
+
+
+
+    }
+
+    loadCarData=(show_shop_id)=>{
         let url = AppUrls.CAR_DETAIL;
         request(url, 'post', {
             id: this.props.carID,
-
+            shop_ids:show_shop_id,
         }).then((response) => {
 
             let carData = response.mjson.data;
