@@ -131,7 +131,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
     loadData = () => {
         let url = AppUrls.ORDER_DETAIL;
         request(url, 'post', {
-            order_id: '12'
+            order_id: this.props.orderId,
+            type: 2
         }).then((response) => {
             this.props.showModal(false);
             this.orderDetail = response.mjson.data;
