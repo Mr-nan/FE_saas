@@ -798,8 +798,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 </View>
             )
         } else if (rowData === '5') {
-            let initRegDate = this.orderDetail.orders_item_data.length ? this.dateReversal(this.orderDetail.orders_item_data[0].car_data.init_reg + '000') : '未公开';
-            //let imageUrl = rowData.car.length ? rowData.car[0].thumbs : [];
+            let initRegDate = this.dateReversal(this.orderDetail.orders_item_data[0].car_data.init_reg + '000');
+            let imageUrl = this.orderDetail.orders_item_data[0].car_data.imgs;
             return (
                 <View style={styles.itemType3}>
                     <View style={{
@@ -818,7 +818,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     <View style={styles.separatedLine}/>
                     <View style={{flexDirection: 'row', height: Pixel.getPixel(105), alignItems: 'center'}}>
                         <Image style={styles.image}
-                               source={{uri: 'http://dycd-static.oss-cn-beijing.aliyuncs.com/Uploads/Oss/201703/13/58c639474ef45.jpg?x-oss-process=image/resize,w_320,h_240'}}/>
+                               source={imageUrl.length ? {uri: imageUrl[0].icon_url} : require('../../../images/carSourceImages/car_null_img.png')}/>
                         <View style={{marginLeft: Pixel.getPixel(10)}}>
                             <Text style={{width: width - Pixel.getPixel(15 + 120 + 10 + 15)}}
                                   numberOfLines={1}>{this.orderDetail.orders_item_data[0].model_name}</Text>

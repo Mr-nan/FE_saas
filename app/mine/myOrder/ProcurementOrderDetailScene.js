@@ -267,7 +267,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 let datas = JSON.parse(data.result);
                 let maps = {
                     company_id: datas.company_base_id,
-                    order_id: this.orderDetail.id
+                    order_id: this.orderDetail.id,
+                    type: 1
                 };
                 let url = AppUrls.ORDER_CANCEL;
                 request(url, 'post', maps).then((response) => {
@@ -302,16 +303,22 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
      * 撤销取消订单请求
      */
     revertOrder = () => {
-        let url = AppUrls.ORDER_REVERT;
-        request(url, 'post', {
-            order_id: this.orderDetail.id
-        }).then((response) => {
-            //this.props.showModal(false);
-            this.loadData();
-        }, (error) => {
-            //this.props.showModal(false);
-            //console.log("成交价提交失败");
-            this.props.showToast('恢复订单失败');
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.orderDetail.id
+                };
+                let url = AppUrls.ORDER_REVERT;
+                request(url, 'post', maps).then((response) => {
+                    this.loadData();
+                }, (error) => {
+                    this.props.showToast('恢复订单失败');
+                });
+            } else {
+                this.props.showToast('恢复订单失败');
+            }
         });
     };
 
@@ -575,7 +582,6 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             let status = response.mjson.data.status;
             let cancelStatus = response.mjson.data.cancel_status;
             this.stateMapping(status, cancelStatus);
-            //TODO TEST
             this.leftTime = this.getLeftTime(this.orderDetail.created_time);
             if (this.orderDetail) {
                 this.initListData(this.orderState);
