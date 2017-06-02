@@ -28,6 +28,8 @@ import SalesOrderDetailScene from "./SalesOrderDetailScene";
 import * as AppUrls from "../../constant/appUrls";
 import {request} from "../../utils/RequestUtil";
 import LoadMoreFooter from "../../carSource/znComponent/LoadMoreFooter";
+import StorageUtil from "../../utils/StorageUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
 
 var Pixel = new PixelUtil();
 
@@ -61,7 +63,7 @@ export default class OrderListScene extends BaseComponent {
 
     initFinish = () => {
         /*        this.setState({
-         dataSource: this.state.dataSource.cloneWithRows(['', '', '']),
+         dataSource: this.state.dataSource.cloneWitatahRows(['', '', '']),
          renderPlaceholderOnly: 'success'
          });*/
         this.loadData();
@@ -86,41 +88,54 @@ export default class OrderListScene extends BaseComponent {
     };
 
     loadData = () => {
-        let url = AppUrls.ORDER_INDEX;
-        this.pageNum = 1;
-        request(url, 'post', {
-            business: this.props.business,
-            page: this.pageNum,
-            rows: 10,
-            list_state: this.props.listState,
-            status: this.status,
-            start_time: this.startDate,
-            end_time: this.endDate
-        }).then((response) => {
-            this.props.showModal(false);
-            this.orderListData = response.mjson.data.items;
-            this.allPage = response.mjson.data.total / response.mjson.data.rows;
-            //console.log('订单列表数据 = ', this.orderListData[0].car);
-            if (this.orderListData) {
-                this.setState({
-                    dataSource: this.state.dataSource.cloneWithRows(this.orderListData),
-                    isRefreshing: false,
-                    renderPlaceholderOnly: 'success'
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    business: this.props.business,
+                    page: this.pageNum,
+                    rows: 10,
+                    list_state: this.props.listState,
+                    status: this.status,
+                    start_time: this.startDate,
+                    end_time: this.endDate
+                };
+                let url = AppUrls.ORDER_INDEX;
+                this.pageNum = 1;
+                request(url, 'post', maps).then((response) => {
+                    this.props.showModal(false);
+                    this.orderListData = response.mjson.data.items;
+                    this.allPage = response.mjson.data.total / response.mjson.data.rows;
+                    //console.log('订单列表数据 = ', this.orderListData[0].car);
+                    if (this.orderListData) {
+                        this.setState({
+                            dataSource: this.state.dataSource.cloneWithRows(this.orderListData),
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'success'
+                        });
+                    } else {
+                        this.setState({
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'null'
+                        });
+                    }
+                }, (error) => {
+                    this.props.showModal(false);
+                    //console.log('请求错误 = ', error);
+                    this.setState({
+                        isRefreshing: false,
+                        renderPlaceholderOnly: 'error'
+                    });
                 });
             } else {
+                this.props.showModal(false);
+                //console.log('请求错误 = ', error);
                 this.setState({
                     isRefreshing: false,
-                    renderPlaceholderOnly: 'null'
+                    renderPlaceholderOnly: 'error'
                 });
             }
-
-        }, (error) => {
-            this.props.showModal(false);
-            //console.log('请求错误 = ', error);
-            this.setState({
-                isRefreshing: false,
-                renderPlaceholderOnly: 'error'
-            });
         });
     };
 
@@ -139,32 +154,44 @@ export default class OrderListScene extends BaseComponent {
     };
 
     loadMoreData = () => {
-        let url = AppUrls.ORDER_INDEX;
-        this.pageNum += 1;
-        request(url, 'post', {
-            business: this.props.business,
-            page: this.pageNum,
-            rows: 10,
-            list_state: this.props.listState,
-            status: this.status,
-            start_time: this.startDate,
-            end_time: this.endDate
-        }).then((response) => {
-            let data = response.mjson.data.items;
-            for (let i = 0; i < data.length; i++) {
-                this.orderListData.push(data[i]);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    business: this.props.business,
+                    page: this.pageNum,
+                    rows: 10,
+                    list_state: this.props.listState,
+                    status: this.status,
+                    start_time: this.startDate,
+                    end_time: this.endDate
+                };
+                let url = AppUrls.ORDER_INDEX;
+                this.pageNum += 1;
+                request(url, 'post', maps).then((response) => {
+                    let data = response.mjson.data.items;
+                    for (let i = 0; i < data.length; i++) {
+                        this.orderListData.push(data[i]);
+                    }
+                    this.setState({
+                        isRefreshing: false,
+                        dataSource: this.state.dataSource.cloneWithRows(this.orderListData)
+                    });
+                }, (error) => {
+                    this.setState({
+                        isRefreshing: false,
+                        renderPlaceholderOnly: 'error'
+                    });
+                });
+            } else {
+                this.setState({
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'error'
+                });
             }
-            this.setState({
-                isRefreshing: false,
-                dataSource: this.state.dataSource.cloneWithRows(this.orderListData)
-            });
-        }, (error) => {
-            this.setState({
-                isRefreshing: false,
-                renderPlaceholderOnly: 'error'
-            });
         });
-    }
+    };
 
     render() {
         if (this.props.business === 1) {
