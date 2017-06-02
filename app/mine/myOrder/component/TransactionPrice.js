@@ -26,8 +26,8 @@ export default class TransactionPrice extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-            amount: this.props.amount,
-            deposit: this.props.amount / 10
+            amount: this.props.amount * 10000,
+            deposit: (this.props.amount * 10000) / 10
         }
     }
 

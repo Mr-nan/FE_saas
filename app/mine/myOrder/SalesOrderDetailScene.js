@@ -56,7 +56,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
         this.topState = -1;
         this.bottomState = -1;
         this.contactData = {};
-        this.carAmount = 156000;
+        this.carAmount = 0;
         this.financeInfo = {};
 
         this.modelData = [];
@@ -141,6 +141,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
             this.stateMapping(status, cancelStatus);
             if (this.orderDetail) {
                 this.initListData(this.orderState);
+                this.carAmount = this.orderDetail.marked_amount;
                 this.setState({
                     dataSource: this.state.dataSource.cloneWithRows(this.mList),
                     isRefreshing: false,
