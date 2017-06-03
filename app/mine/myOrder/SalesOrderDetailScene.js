@@ -216,7 +216,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
             case 4:
                 if (cancelStatus === 0) {
                     this.orderState = 1;
-                    this.topState = 0;
+                    this.topState = -1;
                     this.bottomState = 1;
                 } else if (cancelStatus === 1) {
                     this.orderState = 1;
@@ -922,17 +922,17 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         marginTop: Pixel.getPixel(20),
                         marginRight: Pixel.getPixel(15)
                     }}>
-                        <Text style={styles.orderInfo}>支付订金</Text>
+                        <Text style={styles.orderInfo}>到账订金</Text>
                         <View style={{flex: 1}}/>
                         <Text style={styles.infoContent}>{this.orderDetail.deposit_amount}元</Text>
                     </View>
                     <View style={styles.infoItem}>
-                        <Text style={styles.orderInfo}>支付尾款</Text>
+                        <Text style={styles.orderInfo}>到账尾款</Text>
                         <View style={{flex: 1}}/>
                         <Text style={styles.infoContent}>{this.orderDetail.balance_amount}元</Text>
                     </View>
                     <View style={styles.infoItem}>
-                        <Text style={styles.orderInfo}>支付总计</Text>
+                        <Text style={styles.orderInfo}>到账总计</Text>
                         <View style={{flex: 1}}/>
                         <Text
                             style={styles.infoContent}>{this.orderDetail.deposit_amount + this.orderDetail.balance_amount}元</Text>
