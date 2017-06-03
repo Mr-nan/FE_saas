@@ -22,6 +22,8 @@ import PixelUtil from '../../utils/PixelUtil';
 import * as AppUrls from "../../constant/appUrls";
 import {request} from "../../utils/RequestUtil";
 import ShowToast from "../../component/toast/ShowToast";
+import StorageUtil from "../../utils/StorageUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
 const Pixel = new PixelUtil();
 
 export default class InputAmountScene extends BaseComponent {
@@ -93,19 +95,26 @@ export default class InputAmountScene extends BaseComponent {
     }
 
     checkPrice = (price) => {
-        let url = AppUrls.ORDER_CHECK_PRICE;
-        request(url, 'post', {
-            car_id: this.props.carId,
-            order_id: this.props.orderId,
-            pricing_amount: price
-        }).then((response) => {
-            this.props.showModal(false);
-            //let isShowFin = response.mjson.data.response.is_show_finance;
-            this.props.isShowFinance(response.mjson.data.response);
-        }, (error) => {
-            //this.props.showModal(false);
-            //console.log("成交价提交失败");
-            this.props.showToast('车辆定价检查失败');
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    car_id: this.props.carId,
+                    order_id: this.props.orderId,
+                    pricing_amount: price
+                };
+                let url = AppUrls.ORDER_CHECK_PRICE;
+                request(url, 'post', maps).then((response) => {
+                    this.props.showModal(false);
+                    //let isShowFin = response.mjson.data.response.is_show_finance;
+                    this.props.isShowFinance(response.mjson.data.response);
+                }, (error) => {
+                    this.props.showToast('车辆定价检查失败');
+                });
+            } else {
+                this.props.showToast('车辆定价检查失败');
+            }
         });
     }
 }

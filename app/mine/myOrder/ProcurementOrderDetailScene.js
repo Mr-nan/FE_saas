@@ -369,7 +369,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                     component: CheckStand,
                                     params: {
                                         payAmount: this.orderDetail.deposit_amount,
-                                        orderId: this.props.orderId
+                                        orderId: this.props.orderId,
+                                        payType: this.orderState
                                     }
                                 });
                             }}>
@@ -457,6 +458,20 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     </View>
                 );
                 break;
+            case 7:
+                return (
+                    <View style={styles.bottomBar}>
+                        <TouchableOpacity
+                            onPress={() => {
+
+                            }}>
+                            <View style={styles.buttonCancel}>
+                                <Text style={{color: fontAndColor.COLORA2}}>款项支付中</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                )
+                break;
             default:
                 return null;
                 break;
@@ -468,8 +483,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
      */
     stateMapping = (status, cancelStatus) => {
         switch (status) {
-            case 0:  // 已拍下，价格未定
-            case 1:
+            case 0:  // 已拍下，价格未定  0=>'创建订单'
+            case 1:  //  1=>'订单定价中'
                 if (cancelStatus === 0) {
                     this.orderState = 0;
                     this.topState = 0;
@@ -488,12 +503,17 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     this.bottomState = 4;
                 }
                 break;
-            case 2: // 待付订金
-            case 3:
+            case 2: // 待付订金  2=>'订单定价完成'
+            case 3: // 3=>'订金支付中'
+            case 4:  // 4=>'订金支付失败'
                 if (cancelStatus === 0) {
                     this.orderState = 1;
                     this.topState = 0;
-                    this.bottomState = 1;
+                    if (status === 3) {
+                        this.bottomState = 7;
+                    } else {
+                        this.bottomState = 1;
+                    }
                 } else if (cancelStatus === 1) {
                     this.orderState = 1;
                     this.topState = -1;
@@ -509,12 +529,17 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 }
 
                 break;
-            case 4:  // 待付尾款
-            case 5:
+            case 5:  // 待付尾款  5=>'订金支付完成'
+            case 6:  // 6=>'尾款支付中'
+            case 7:  // 7=>'尾款支付失败'
                 if (cancelStatus === 0) {
                     this.orderState = 2;
                     this.topState = -1;
-                    this.bottomState = 1;
+                    if (status === 6) {
+                        this.bottomState = 7;
+                    } else {
+                        this.bottomState = 1;
+                    }
                 } else if (cancelStatus === 1) {
                     this.orderState = 2;
                     this.topState = -1;
@@ -529,8 +554,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     this.bottomState = 5;
                 }
                 break;
-            case 6: // 全款付清
-            case 7:
+            case 8: // 全款付清  8=>'尾款支付完成'
+            case 9: // 9=>'确认验收中'
+            case 10: // 10=>'确认验收失败'
                 if (cancelStatus === 0) {
                     this.orderState = 3;
                     this.topState = -1;
@@ -549,7 +575,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     this.bottomState = 5;
                 }
                 break;
-            case 8:  // 订单完成
+            case 11:  // 订单完成 11=>'确认验收完成'
                 if (cancelStatus === 0) {
                     this.orderState = 4;
                     this.topState = -1;
@@ -675,6 +701,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         } else if (rowData === '3') {
             let initRegDate = this.dateReversal(this.orderDetail.orders_item_data[0].car_data.init_reg + '000');
             let imageUrl = this.orderDetail.orders_item_data[0].car_data.imgs;
+/*            let imageUrl = [];
+            let initRegDate = this.dateReversal('1496462' + '000');*/
             return (
                 <View style={styles.itemType3}>
                     <View style={{

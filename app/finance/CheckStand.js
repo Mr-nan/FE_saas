@@ -29,6 +29,7 @@ import AccountScene from "../mine/accountManage/RechargeScene";
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
 import * as webBackUrl from "../constant/webBackUrl";
+import AccountWebScene from "../mine/accountManage/AccountWebScene";
 const Pixel = new PixelUtil();
 
 export default class CheckStand extends BaseComponent {
@@ -103,23 +104,23 @@ export default class CheckStand extends BaseComponent {
             return (
                 <View style={styles.container}>
                     <NavigatorView title='收银台' backIconClick={this.backPage}/>
-{/*                    <View style={styles.tradingCountdown}>
-                        <Text style={{marginRight: Pixel.getPixel(15), marginLeft: Pixel.getPixel(15)}}>
-                            <Text style={{
-                                marginLeft: Pixel.getPixel(15),
-                                fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                                color: fontAndColor.COLORB2,
-                                fontWeight: 'bold'
-                            }}>重要提示：</Text>
-                            <Text style={{
-                                lineHeight: Pixel.getPixel(20),
-                                marginLeft: Pixel.getPixel(15),
-                                fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                                color: fontAndColor.COLORB2
-                            }}>您申请的订单融资贷款已到账，请向卖家支付，支付后卖家可提现到账资金。</Text>
-                        </Text>
-                    </View>
-                    <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>*/}
+                    {/*                    <View style={styles.tradingCountdown}>
+                     <Text style={{marginRight: Pixel.getPixel(15), marginLeft: Pixel.getPixel(15)}}>
+                     <Text style={{
+                     marginLeft: Pixel.getPixel(15),
+                     fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                     color: fontAndColor.COLORB2,
+                     fontWeight: 'bold'
+                     }}>重要提示：</Text>
+                     <Text style={{
+                     lineHeight: Pixel.getPixel(20),
+                     marginLeft: Pixel.getPixel(15),
+                     fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                     color: fontAndColor.COLORB2
+                     }}>您申请的订单融资贷款已到账，请向卖家支付，支付后卖家可提现到账资金。</Text>
+                     </Text>
+                     </View>
+                     <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>*/}
                     <View style={{backgroundColor: 'white', marginTop: Pixel.getTitlePixel(65)}}>
                         <View style={styles.needPayBar}>
                             <Text style={{
@@ -231,15 +232,25 @@ export default class CheckStand extends BaseComponent {
                 let maps = {
                     company_id: datas.company_base_id,
                     order_id: this.props.orderId,
-                    type: 2,
+                    type: this.props.payType,
                     reback_url: webBackUrl.PAY
                 };
                 let url = AppUrls.ORDER_PAY;
                 request(url, 'post', maps).then((response) => {
                     //this.loadData();
-                    this.props.showToast('支付成功');
+                    //this.props.showToast('支付成功');
+                    this.toNextPage({
+                        name: 'AccountWebScene',
+                        component: AccountWebScene,
+                        params: {
+                            title: '支付',
+                            webUrl: response.mjson.data.auth_url + '?authTokenId=' + response.mjson.data.auth_token,
+                            callBack: () => {this.props.callBack();},// 这个callBack就是点击webview容器页面的返回按钮后"收银台"执行的动作
+                            backUrl: webBackUrl.UNBINDCARD
+                        }
+                    });
                 }, (error) => {
-                    this.props.showToast(error.message);
+                    this.props.showToast('账户支付失败');
                 });
             } else {
                 this.props.showToast('账户支付失败');

@@ -447,10 +447,10 @@ export default class CarInfoScene extends BaseComponent {
     // 下订单
     orderClick=(carData)=>{
 
-        if(carData.show_order==1){
+/*        if(carData.show_order==1){
             this.props.showToast('该车已被下单');
 
-        }else {
+        }else {*/
             StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
                 if(data.code == 1 && data.result != '')
                 {
@@ -473,7 +473,7 @@ export default class CarInfoScene extends BaseComponent {
             });
 
 
-        }
+        //}
     }
 
     // 拨打电话
