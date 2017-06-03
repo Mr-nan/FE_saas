@@ -580,16 +580,16 @@ export default class CarPublishSecondScene extends BaseComponent{
             this.props.showToast('分销批发价不能等于0');
             return;
         }
-
-        if(this.carData.v_type == 1 && !this.carData.registrant_id){
-            this.props.showToast('请选择登记人');
-            return;
-        }
-        if(this.carData.city_id==''||!this.carData.city_id)
+        if(this.carData.city_id=='')
         {
             this.props.showToast('请选择车辆所在地');
             return;
         }
+        if(this.carData.v_type == 1 && !this.carData.registrant_id){
+            this.props.showToast('请选择登记人');
+            return;
+        }
+
 
         let navigatorParams = {
             name: "CarUpImageScene",
@@ -619,7 +619,7 @@ export default class CarPublishSecondScene extends BaseComponent{
     }
     selectPersonClick=(data)=>{
 
-       this.titleData1[2][1].value = data.business_name;
+        this.titleData1[2][1].value = data.business_name;
        this.carData['registrant_id'] = data.id;
        this.carData['registrant_name'] = data.business_name;
        this.carData['registrant_actual'] = data.is_control;
@@ -687,6 +687,8 @@ export default class CarPublishSecondScene extends BaseComponent{
     }
 
     checkedCityClick=(city)=>{
+
+        console.log(city);
            this.titleData1[2][0].value = city.city_name;
            this.titleData2[2][0].value = city.city_name;
            this.carData['city_name'] = city.city_name;

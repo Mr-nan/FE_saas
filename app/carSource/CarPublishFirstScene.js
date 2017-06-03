@@ -412,11 +412,11 @@ export default class CarPublishFirstScene extends BaseComponent{
         this.timer && clearTimeout(this.timer);
     }
 
-    updateKeyboardSpace =(frames)=>{
-
-        this.keyboardSpace = frames.endCoordinates.height//获取键盘高度
-
-    }
+    // updateKeyboardSpace =(frames)=>{
+    //
+    //     this.keyboardSpace = frames.endCoordinates.height//获取键盘高度
+    //
+    // }
 
 
     render(){
