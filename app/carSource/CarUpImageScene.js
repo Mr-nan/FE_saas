@@ -91,14 +91,7 @@ export default class CarUpImageScene extends BaseComponent{
                   number:1,
                   imgArray:[],
                   explain:'0',
-              },{
-                  name: 'certificate',
-                  title:'合格证',
-                  subTitle:'至多5张',
-                  number:5,
-                  imgArray:[],
-                  explain:'0',
-              },
+              }
           ];
 
           this.usedCarTitleData=[
@@ -141,13 +134,11 @@ export default class CarUpImageScene extends BaseComponent{
           this.titleData = [];
           this.results = [];
           this.carData = this.props.carData;
-          this.baseTitleData[7].explain =this.carData.v_type==2?'1':'0';
           this.titleData.push(...this.baseTitleData);
 
           if(this.carData.v_type==1){
 
               this.titleData.push(...this.usedCarTitleData);
-
               if(this.carData.registrant_actual == 0){
                   this.titleData.push({
                       name: 'ownership_sale',
@@ -159,7 +150,18 @@ export default class CarUpImageScene extends BaseComponent{
                   })
               }
 
-          }else if(this.carData.v_type==3){
+          }else if(this.carData.v_type==2){
+
+              this.titleData.push({
+                  name: 'certificate',
+                  title:'合格证',
+                  subTitle:'至多5张',
+                  number:5,
+                  imgArray:[],
+                  explain:'0',
+              });
+
+          } else if(this.carData.v_type==3){
 
               this.titleData.push(...this.importCarTitleData);
           }
