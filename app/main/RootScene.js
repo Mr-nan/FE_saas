@@ -26,7 +26,7 @@ import  UpLoadScene from './UpLoadScene';
 import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
 import codePush from 'react-native-code-push'
-const versionCode = 11.0;
+const versionCode = 2.0;
 let canNext = true;
 
 export default class RootScene extends BaseComponent {

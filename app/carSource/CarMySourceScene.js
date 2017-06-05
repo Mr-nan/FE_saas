@@ -200,7 +200,7 @@ export default class CarMySourceScene extends BaceComponent {
                     <MyCarSourceDropFrameView  ref="dropFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper2"/>
                     <MyCarSourceAuditView  ref="auditView"  carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper3"/>
                 </ScrollableTabView>
-                <LendSuccessAlert ref="showTitleAlert" title={'提示'} subtitle={''}/>
+                <LendSuccessAlert ref="showTitleAlert" title={'退回原因'} subtitle={''} confimTitle="关闭"/>
                 <NavigatorView title='我的车源' backIconClick={this.backToTop}
                                renderRihtFootView={this.renderRightFootView}/>
             </View>)
