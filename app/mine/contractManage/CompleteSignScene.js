@@ -46,9 +46,9 @@ export default class CompleteSignScene extends BaseComponent {
         let maps = {
             page: page,
             rows: 10,
-            api : Urls.CONTRACTLIST,
+            api : Urls.CONTRACT_CONTRACT_LIST,
             opt_user_id: this.props.opt_user_id,
-            sign_status: '3',
+            sign_status: '1',
         };        request(Urls.FINANCE, 'Post', maps)
 
             .then((response) => {
