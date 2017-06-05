@@ -106,6 +106,7 @@ export  default class ContractSignScene extends BaseComponent {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return this._renderPlaceholderView();
         }
+        let nowdate = Date.parse(new Date());
         if(this.state.webUrl==''){
             return (
                 <View style={{flex:1,backgroundColor: fontAndColor.COLORA3}}>
@@ -146,7 +147,7 @@ export  default class ContractSignScene extends BaseComponent {
                         <WebView
                             ref="www"
                             style={{flex:1}}
-                            source={{uri:this.state.webUrl,method: 'GET'}}
+                            source={{uri:this.state.webUrl+'?'+nowdate,method: 'GET'}}
                             javaScriptEnabled={true}
                             domStorageEnabled={true}
                             scalesPageToFit={false}
@@ -167,14 +168,14 @@ export  default class ContractSignScene extends BaseComponent {
     }
 
     _renderPage = (data) => {
-
+        let nowdate = Date.parse(new Date());
         return (
             <Image onLoadEnd={()=>{
                 this.props.showModal(false);
             }} onLoadStart={()=>{
                 this.props.showModal(true);
             }} style={{flex:1}}
-                   source={{uri: data}}
+                   source={{uri: data+'?'+nowdate}}
             />
         );
 
