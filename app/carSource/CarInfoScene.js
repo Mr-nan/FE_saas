@@ -233,15 +233,15 @@ export default class CarInfoScene extends BaseComponent {
                                         carData.dealer_price>0&& (
                                             <View style={{flexDirection:'row', alignItems:'center'}}>
                                                 <Text style={styles.priceText}>{this.carMoneyChange(carData.dealer_price) +'万'}</Text>
-                                                {/*{*/}
-                                                    {/*(carData.city_id!='0'&&carData.model_id!='0'&&carData.city_id!=''&&carData.model_id!='') &&*/}
-                                                    {/*<TouchableOpacity style={{flexDirection:'row', alignItems:'center'}}*/}
-                                                                      {/*activeOpacity={1}*/}
-                                                                      {/*onPress={()=>{this.pushCarReferencePriceScene(carData)}}>*/}
-                                                        {/*<Image style={{marginLeft:Pixel.getPixel(10)}} source={require('../../images/carSourceImages/carPriceIcon.png')}/>*/}
-                                                        {/*<Text style={[styles.priceText,{marginLeft:Pixel.getPixel(5), fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}]}>查看参考价</Text>*/}
-                                                    {/*</TouchableOpacity>*/}
-                                                {/*}*/}
+                                                {
+                                                    (carData.city_id!='0'&&carData.model_id!='0'&&carData.city_id!=''&&carData.model_id!='') &&
+                                                    <TouchableOpacity style={{flexDirection:'row', alignItems:'center'}}
+                                                                      activeOpacity={1}
+                                                                      onPress={()=>{this.pushCarReferencePriceScene(carData)}}>
+                                                        <Image style={{marginLeft:Pixel.getPixel(10)}} source={require('../../images/carSourceImages/carPriceIcon.png')}/>
+                                                        <Text style={[styles.priceText,{marginLeft:Pixel.getPixel(5), fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}]}>查看参考价</Text>
+                                                    </TouchableOpacity>
+                                                }
                                             </View>
                                         )
                                     }
