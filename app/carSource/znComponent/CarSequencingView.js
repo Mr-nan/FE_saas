@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
         height: Pixel.getPixel(30),
         right: Pixel.getPixel(20),
         borderRadius: 15,
-        backgroundColor: 'rgba(0, 0, 0,0.7)',
+        backgroundColor: fontAndColor.COLORB1,
         justifyContent: 'center',
         alignItems: 'center',
         bottom: Pixel.getPixel(25),

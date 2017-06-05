@@ -1,5 +1,5 @@
-export const VERSON_NAME = "2.4.1"; // 版本名
-export const VERSON_CODE = "6"; // 版本号
+export const VERSON_NAME = "2.8.0"; // 版本名
+export const VERSON_CODE = "11"; // 版本号
 export const ISLOGIN = "islogin";//标识用户是否登录
 export const CAR_SEARCH = "car_search";
 export const CITY_SEARCH = "city_search";

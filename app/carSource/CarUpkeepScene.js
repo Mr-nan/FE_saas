@@ -8,11 +8,14 @@ import {
     View,
     Text,
     ListView,
+    Image,
 } from 'react-native';
 
 import BaseComponent from '../component/BaseComponent';
 import NavigationView from '../component/AllNavigationView';
 import *as fontAndColor from '../constant/fontAndColor';
+import *as appUrls from '../constant/appUrls';
+import *as RequestUtil from '../utils/RequestUtil';
 import PixelUtil from '../utils/PixelUtil';
 const Pixel = new PixelUtil();
 
@@ -51,16 +54,34 @@ export  default class CarUpkeepScene extends  BaseComponent{
 
         this.state = {
 
-            dataSource:ds.cloneWithRows(data)
+            dataSource:ds,
+            renderPlaceholderOnly: 'blank',
         }
       }
     initFinish = () => {
 
+          this.loadData();
     }
     render(){
+        if(this.state.renderPlaceholderOnly=='null'){
+            return(
+                <View style={{flex:1,backgroundColor:'white'}}>
+                    {this.nullDataView()}
+                    <NavigationView title="维修保养记录" backIconClick={()=>{this.backPage();}}/>
+                </View>
+            )
+        }
+        else if (this.state.renderPlaceholderOnly !== 'success') {
+            return (
+                <View style={{flex:1,backgroundColor:'white'}}>
+                    {this.loadView()}
+                    <NavigationView title="维修保养记录" backIconClick={()=>{this.backPage();}}/>
+                </View>);
+        }
         return(
             <View style={styles.rootContainer}>
                 <ListView
+                    removeClippedSubviews={false}
                     dataSource={this.state.dataSource}
                     renderHeader={()=>
                         <View style={styles.headView}>
@@ -77,10 +98,55 @@ export  default class CarUpkeepScene extends  BaseComponent{
         return(
             <View style={styles.cellView}>
                 <View style={styles.cellTitleView}>
-                    <Text style={styles.cellTitleViewTitle}>{rowData.title}</Text>
+                    <Text style={styles.cellTitleViewTitle}>{rowData.date+' | '+rowData.mile + '公里'}</Text>
                     <Text style={styles.cellTitleViewValue}>{rowData.type}</Text>
                 </View>
-                <Text style={styles.cellContent}>{rowData.content}</Text>
+                <Text style={styles.cellContent}>{rowData.detail+rowData.other}</Text>
+            </View>
+        )
+    }
+
+    loadData=()=>{
+        RequestUtil.request(appUrls.CAR_GET_ERPORT,'post',{'vin':this.props.vin}).then((response)=>{
+
+            if(response.mjson.data.result.length>0){
+
+                this.setState({
+                    dataSource:this.state.dataSource.cloneWithRows(response.mjson.data.result),
+                    renderPlaceholderOnly: 'success',
+
+                });
+
+            }else {
+                this.setState({
+                    renderPlaceholderOnly: 'null',
+                });
+            }
+
+        },(error)=>{
+            this.setState({
+                renderPlaceholderOnly: 'null',
+            });
+        });
+    }
+
+    nullDataView=()=>{
+        return(
+            <View style={{flex: 1, alignItems: 'center',justifyContent:'center'}}>
+                <Image
+                    style={{
+                        width: Pixel.getPixel(121),
+                        height: Pixel.getPixel(163),
+
+                    }}
+                    source={require('../../images/noData.png')}/>
+                <Text
+                    style={{
+                        color: fontAndColor.COLORA0, fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                        marginTop: Pixel.getPixel(27)
+                    }}>
+                   抱歉，暂未查到相关数据！
+                </Text>
             </View>
         )
     }
@@ -109,7 +175,8 @@ const styles = StyleSheet.create({
         borderBottomWidth:StyleSheet.hairlineWidth,
         marginTop:Pixel.getPixel(15),
         backgroundColor:'white',
-        height:Pixel.getPixel(100),
+        flexWrap: 'wrap',
+
     },
     cellTitleView:{
         borderBottomWidth:StyleSheet.hairlineWidth,
@@ -130,7 +197,9 @@ const styles = StyleSheet.create({
     },
     cellContent:{
         marginTop:Pixel.getPixel(10),
+        marginBottom:Pixel.getPixel(10),
         color:fontAndColor.COLORA0,
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+        backgroundColor:'white'
     },
 });

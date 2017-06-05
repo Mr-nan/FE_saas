@@ -30,20 +30,25 @@ const {width, height} = Dimensions.get('window');
 
 export default class CompleteSignScene extends BaseComponent {
     initFinish = () => {
+        page = 1;
+        allPage = 1;
+        allSouce = [];
         this.getData();
     }
 
     componentWillUnmount() {
         allSouce = [];
+        page = 1;
+        allPage = 1;
     }
 
     getData = () => {
         let maps = {
             page: page,
             rows: 10,
-            api : Urls.CONTRACTLIST,
+            api : Urls.CONTRACT_CONTRACT_LIST,
             opt_user_id: this.props.opt_user_id,
-            sign_status: '3',
+            sign_status: '1',
         };        request(Urls.FINANCE, 'Post', maps)
 
             .then((response) => {

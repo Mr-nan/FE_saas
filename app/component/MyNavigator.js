@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 var Platform = require('Platform');
 import RootScene from '../main/RootScene';
-
+import {setAll} from '../constant/AllBackLogin';
 export default class MyNavigator extends Component {
     render() {
         return (
@@ -27,6 +27,7 @@ export default class MyNavigator extends Component {
                 renderScene={(route, navigator) => {
                     let Component = route.component;
                     if (route.component) {
+                         setAll(navigator);
                         return <Component {...route.params} navigator={navigator} showToast={(content)=>{
                             this.props.showToast(content);
                         }} showModal={(value)=>{

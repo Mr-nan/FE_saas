@@ -22,6 +22,8 @@ let mnyData = {};
 let movies = [];
 let page = 1;
 let allPage = 0;
+
+
 import  HomeHeaderItem from './component/HomeHeaderItem';
 import  PixelUtil from '../utils/PixelUtil'
 import KurongDetaileScene from '../finance/lend/KurongDetaileScene';
@@ -43,9 +45,12 @@ import * as Urls from '../constant/appUrls';
 import * as fontAndColor from '../constant/fontAndColor';
 import SelectCompanyScene from '../finance/SelectCompanyScene';
 import AginSelectCompanyScene from '../finance/AginSelectCompanyScene';
+import QuotaApplication from '../login/QuotaApplication';
 import {LendSuccessAlert} from '../finance/lend/component/ModelComponent'
 let loanList = [];
 import CGDLendScenes from '../finance/lend/CGDLendScenes';
+import ReceiptInfoScene from '../finance/page/ReceiptInfoScene';
+
 
 
 import DDApplyLendScene from '../finance/lend/DDApplyLendScene';//////////////////////////////////////////////////////////////
@@ -144,13 +149,26 @@ export default class FinanceSence extends BaseComponet {
         })
             .then((response) => {
                     mnyData = response.mjson.data;
+
+                    let title = '';
+                    if (mnyData.is_microchinese_mny == 1) {
+                        title = '立即激活微单额度';
+                    } else if (mnyData.is_microchinese_mny == 2) {
+                        title = '待审核';
+                    } else if (mnyData.is_microchinese_mny == 4) {
+                        title = '审核不通过';
+                    }
+
+
                     that.setState({
                         allData: {
                             keyongedu: mnyData.credit_maxloanmny / 10000,
                             daikuanyue: mnyData.loan_balance_mny / 10000,
                             baozhengjinedu: mnyData.bond_total_mny / 10000,
                             baozhengjinyue: mnyData.bond_mny / 10000,
-                        }
+                            microchineseTitle: title,
+                        },
+                        mnyData: mnyData,
                     });
                     that.getApplyData();
                 },
@@ -217,7 +235,9 @@ export default class FinanceSence extends BaseComponet {
                 daikuanyue: mnyData.loan_balance_mny / 10000,
                 baozhengjinedu: mnyData.bond_total_mny / 10000,
                 baozhengjinyue: mnyData.bond_mny / 10000,
+                microchineseTitle: '',
             },
+            mnyData: mnyData,
             renderPlaceholderOnly: 'blank',
             isRefreshing: false,
             customerName: ''
@@ -250,6 +270,7 @@ export default class FinanceSence extends BaseComponet {
         return (
             <View style={cellSheet.container}>
                 <ListView
+                    removeClippedSubviews={false}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
@@ -270,6 +291,25 @@ export default class FinanceSence extends BaseComponet {
                 <LendSuccessAlert title="提示" subtitle="采购融资功能正在维护中，请您移步BMS系统申请采购融资" ref='cgdModal'
                                   confimClick={() => {
                                   }}/>
+                <LendSuccessAlert ref="showAlert"
+                                  title={'审核未通过'}
+                                  subtitle={this.state.mnyData.microchinese_audit_reason}
+                                  confimClick={()=>{
+                                      let navigationParams={
+                                          name: "QuotaApplication",
+                                          component: QuotaApplication,
+                                          params: {
+                                              callBack:()=>{
+                                                  this.allRefresh()
+                                              }
+                                          }
+                                      }
+                                      this.props.callBack(navigationParams);
+                                  }}
+                                  confimTitle="重新审核"
+
+                />
+                <LendSuccessAlert ref="showTitleAlert" title={'提示'} subtitle={'微单可用额度只适用于单车产品'}/>
             </View>
         )
     }
@@ -423,7 +463,20 @@ export default class FinanceSence extends BaseComponet {
                         </View>
                         <View
                             style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-end', justifyContent: 'center'}]}>
-                            <MyButton {...this.typeButtonParams}/>
+                            <View style={{
+                                borderWidth: 1,
+                                borderColor: fontAndColor.COLORA4,
+                                borderRadius: 100,
+                                height: Pixel.getPixel(23),
+                                width: Pixel.getPixel(72),
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                                }}>
+                                <Text style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                                    color: fontAndColor.COLORB3,
+                                }}>{movie.status_str}</Text>
+                            </View>
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -509,7 +562,7 @@ export default class FinanceSence extends BaseComponet {
             <View>
                 <Image style={[cellSheet.titleStyle]}
                        source={require('../../images/financeImages/dinancebg.png')}>
-                    <View style={{width: width, height: Pixel.getTitlePixel(105), flexDirection: 'row'}}>
+                    <View style={{width: width, flexDirection: 'row',}}>
                         <View style={{flex: 1}}></View>
                         <View style={{flex: 3, alignItems: 'center'}}>
                             <Text numberOfLines={1}
@@ -552,51 +605,112 @@ export default class FinanceSence extends BaseComponet {
                                 </TouchableOpacity> : <View/>}
                         </View>
                     </View>
-                    <View
-                        style={{width: width, height: Pixel.getBottomPixel(85), flexDirection: 'row'}}>
-                        <View style={{flex: 1, alignItems: 'center'}}>
-                            <Text
-                                style={{
-                                    fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                                    color: '#fff',
-                                    backgroundColor: '#00000000'
-                                }}>可用额度(万)</Text>
-                            <Text
-                                style={{
-                                    fontSize: Pixel.getFontPixel(32),
-                                    color: '#fff',
-                                    marginTop: Pixel.getPixel(7),
-                                    fontWeight: 'bold',
-                                    backgroundColor: '#00000000',
-                                    flex: 1,
-                                    width: width / 2,
-                                    textAlign: 'center'
-                                }}>{this.state.allData.keyongedu}</Text>
+                    <View>
+                        <View
+                            style={{width: width, height: Pixel.getBottomPixel(65), flexDirection: 'row',marginTop:Pixel.getPixel(30),justifyContent:'space-between'}}>
+                            <View style={{flex: 1, alignItems: 'center',}}>
+                                <Text
+                                    style={{
+                                        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                        color: '#fff',
+                                        backgroundColor: '#00000000'
+                                    }}>{this.state.mnyData.is_microchinese_mny == 3 && '综合'}可用额度(万)</Text>
+                                <Text
+                                    style={{
+                                        fontSize: Pixel.getFontPixel(28),
+                                        color: '#fff',
+                                        marginTop: Pixel.getPixel(7),
+                                        fontWeight: 'bold',
+                                        backgroundColor: '#00000000',
+                                        flex: 1,
+                                        textAlign: 'center'
+                                    }}>
+                                    {this.state.allData.keyongedu}</Text>
+                            </View>
+                            {
+                                (this.state.mnyData.is_microchinese_mny == 3||this.state.mnyData.is_microchinese_mny==5) && (
+                                    <View style={{flex: 1, alignItems: 'center',}}>
+                                        <TouchableOpacity style={{flexDirection:'row'}} activeOpacity={1}
+                                                          onPress={()=>{this.refs.showTitleAlert.setModelVisible(true)}}>
+                                            <Text
+                                                style={{
+                                                fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                                color: '#fff',
+                                                backgroundColor: '#00000000'
+                                            }}>微单可用额度(万)</Text>
+                                            <Image source={require('../../images/financeImages/titleAlert.png')}
+                                                   style={{marginLeft:5}}/>
+                                        </TouchableOpacity>
+                                        <Text
+                                            style={{
+                                            fontSize: Pixel.getFontPixel(28),
+                                            color: '#fff',
+                                            marginTop: Pixel.getPixel(7),
+                                            fontWeight: 'bold',
+                                            backgroundColor: '#00000000',
+                                            flex: 1,
+                                            textAlign: 'center'
+                                        }}>{this.state.mnyData.is_microchinese_mny==5?0:this.state.mnyData.microchinese_mny / 10000}</Text>
+                                    </View>)
+                            }
+                            <View
+                                style={{flex: 1, alignItems: 'center',borderLeftColor:'white',borderLeftWidth:StyleSheet.hairlineWidth}}>
+                                <Text
+                                    style={{
+                                        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                        color: '#fff',
+                                        backgroundColor: '#00000000'
+                                    }}>贷款余额(万)</Text>
+                                <Text
+                                    style={{
+                                        fontSize: Pixel.getFontPixel(28),
+                                        color: '#fff',
+                                        marginTop: Pixel.getPixel(7),
+                                        fontWeight: 'bold',
+                                        backgroundColor: '#00000000',
+                                        flex: 1,
+                                        textAlign: 'center'
+                                    }}>{this.state.allData.daikuanyue}</Text>
+                            </View>
                         </View>
-                        <View style={{flex: 1, alignItems: 'center'}}>
-                            <Text
-                                style={{
-                                    fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                                    color: '#fff',
-                                    backgroundColor: '#00000000'
-                                }}>贷款余额(万)</Text>
-                            <Text
-                                style={{
-                                    fontSize: Pixel.getFontPixel(32),
-                                    color: '#fff',
-                                    marginTop: Pixel.getPixel(7),
-                                    fontWeight: 'bold',
-                                    backgroundColor: '#00000000',
-                                    flex: 1,
-                                    width: width / 2,
-                                    textAlign: 'center'
-                                }}>{this.state.allData.daikuanyue}</Text>
-                        </View>
+                        {
+                            (this.state.allData.microchineseTitle !== '') ?
+                                (<View style={{height:Pixel.getPixel(40), alignItems:'center',justifyContent:'center'}}>
+                                    <TouchableOpacity onPress={()=>{
+
+                                        if(this.state.mnyData.is_microchinese_mny==4){
+                                            this.refs.showAlert.setModelVisible(true)
+                                        }else if (this.state.mnyData.is_microchinese_mny == 1){
+                                            let navigationParams={
+                                                name: "QuotaApplication",
+                                                component: QuotaApplication,
+                                                params: {
+                                                    callBack:()=>{
+                                                        this.allRefresh()
+                                                    }
+                                                }
+                                            }
+                                            this.props.callBack(navigationParams);
+                                        }
+
+                                    }} activeOpacity={1}>
+                                        <View style={{height:Pixel.getPixel(24),borderRadius:Pixel.getPixel(12),
+                                        borderColor:'white',borderWidth:Pixel.getPixel(1),alignItems:'center',
+                                        justifyContent:'center',overflow:'hidden',
+                                            paddingHorizontal:Pixel.getPixel(20),
+                                        }}>
+                                            <Text style={{color:'white', fontSize:Pixel.getFontPixel(14),
+                                                backgroundColor:'#00000000',fontWeight: 'bold',}}>  {this.state.allData.microchineseTitle}  </Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>) : (null)
+                        }
                     </View>
                     <View
                         style={{
                             width: width, height: Pixel.getPixel(40), backgroundColor: 'rgba(56,199,232,0.35)',
-                            paddingRight: Pixel.getPixel(15), paddingLeft: Pixel.getPixel(15), flexDirection: 'row'
+                            paddingRight: Pixel.getPixel(15), paddingLeft: Pixel.getPixel(15), flexDirection: 'row',
+                            bottom:0,position: 'absolute',
                         }}>
                         <View
                             style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start'}}>
@@ -634,7 +748,6 @@ export default class FinanceSence extends BaseComponet {
                 <View style={cellSheet.header}>
                     {items}
                 </View>
-
             </View>
 
         )

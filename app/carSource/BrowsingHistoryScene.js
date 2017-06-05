@@ -25,6 +25,7 @@ import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
 import CarInfoScene from './CarInfoScene';
 var screenWidth = Dimensions.get('window').width;
+import  AllLoading from '../component/AllLoading';
 import  LoadMoreFooter from '../carSource/znComponent/LoadMoreFooter';
 let allSouce = [];
 export default class BrowsingHistoryScene extends BaceComponent {
@@ -134,12 +135,10 @@ export default class BrowsingHistoryScene extends BaceComponent {
         request(Urls.USER_HISTORY_DELETE, 'Post', maps)
             .then((response) => {
                     allSouce = [];
-                    this.props.showModal(false);
                     this.props.showToast('删除成功');
                     this.getData();
                 },
                 (error) => {
-                    this.props.showModal(false);
                     this.props.showToast('删除失败');
                 });
     }
@@ -150,13 +149,11 @@ export default class BrowsingHistoryScene extends BaceComponent {
         request(Urls.USER_HISTORY_DELETE, 'Post', maps)
             .then((response) => {
                     allSouce = [];
-                    this.props.showModal(false);
                     this.props.showToast('删除成功');
                     page = 1;
                     this.getData();
                 },
                 (error) => {
-                    this.props.showModal(false);
                     this.props.showToast('删除失败');
                 });
     }
@@ -173,9 +170,17 @@ export default class BrowsingHistoryScene extends BaceComponent {
             <View style={styles.rootContainer}>
                 <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(64)}}
                           dataSource={this.state.carData}
+                          showsVerticalScrollIndicator={false}
+                          removeClippedSubviews={false}
                           renderRow={(rowData) =>
                           <CarCell from="BrowsingHistoryScene" items={rowData} mOnPress={(id)=>{
-                               this.toNextPage({name:'CarInfoScene',component:CarInfoScene,params:{carID:id}});
+                               if(rowData.status==3){
+                                    this.props.showToast('该车辆已下架，不可查看');
+                              }else if(rowData.status==4){
+                                    this.props.showToast('该车辆已成交，不可查看');
+                              }else{
+                                  this.toNextPage({name:'CarInfoScene',component:CarInfoScene,params:{carID:id}});
+                              }
                           }}
                           callBack={(id)=>{
                             this.deleteCliiection(id)
@@ -196,6 +201,9 @@ export default class BrowsingHistoryScene extends BaceComponent {
                                     />
                                 }
                 />
+                <AllLoading callEsc={()=>{}} ref="allloading" callBack={()=>{
+                        this.deleteAllCliiection();
+                }}/>
                 <NavigatorView title='浏览历史' backIconClick={this.backPage}
                                renderRihtFootView={this._navigatorRightView}/>
             </View>)
@@ -205,7 +213,7 @@ export default class BrowsingHistoryScene extends BaceComponent {
     _navigatorRightView = () => {
         return (
             <TouchableOpacity  activeOpacity={0.8} onPress={()=>{
-            this.deleteAllCliiection();
+            this.refs.allloading.changeShowType(true,'确认清空吗？');
         }}>
                 <View style={{paddingVertical:3, paddingHorizontal:5,backgroundColor:'transparent',borderWidth:StyleSheet.hairlineWidth,borderColor:'white',borderRadius:3}}>
                 <Text style={{

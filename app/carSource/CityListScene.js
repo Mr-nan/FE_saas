@@ -186,7 +186,7 @@ export default class CityListScene extends BaseComponent {
         return (
             <TouchableOpacity onPress={() => {
 
-                this._checkedCityClick({city_id:rowData.city_id,city_name:rowData.city_name});
+                this._checkedCityClick({city_id:rowData.city_id,city_name:rowData.city_name,provice_id:rowData.prov_id});
                 {/*this.loadCarSeriesData(rowData.city_id,rowData.city_name)*/}
 
             }}>
@@ -259,6 +259,7 @@ export default class CityListScene extends BaseComponent {
                     this.state.dataSource && (
                         <ListView ref="listView"
                                   style={{flex: 1}}
+                                  removeClippedSubviews={false}
                                   dataSource={this.state.dataSource}
                                   renderRow={this.renderRow}
                                   renderSectionHeader={this.renderSectionHeader}
@@ -293,74 +294,6 @@ export default class CityListScene extends BaseComponent {
             </View>
         )
     }
-}
-
-class CarSubBrand extends Component {
-
-
-    constructor(props) {
-        super(props);
-
-        const {data} = this.props;
-        const carSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id });
-        this.state = {
-            dataSource: carSource.ListViewDataSource.cloneWithRows(data),
-            valueRight:new Animated.Value(0),
-        };
-    }
-
-    // 每一行中的数据
-    renderRow = (rowData, sectionID, rowID) => {
-        return (
-
-            <TouchableOpacity onPress={() => {
-
-                this.props.checkedCarClick(rowData.name);
-
-            }}>
-                <View style={styles.rowCell}>
-                    <Text
-                        style={[styles.rowCellText, this.props.checkedCarType == rowData.name && {color: fontAnColor.COLORB0}]}>{rowData.name}</Text>
-                </View>
-            </TouchableOpacity>
-        )
-    };
-
-
-    componentDidMount() {
-
-        this.state.valueRight.setValue(ScreenWidth);
-        Animated.spring(
-            this.state.valueRight,
-            {
-                toValue:ScreenWidth*0.5,
-                friction:5,
-            }
-        ).start();
-
-    }
-
-
-    render() {
-
-        return (
-            <Animated.View style={[styles.carSubBrandView,{left:this.state.valueRight}]}>
-                <View style={styles.carSubBrandHeadView}>
-                    <Image style={styles.rowCellImag}/>
-                    <Text style={styles.rowCellText}>{this.props.title}</Text>
-                </View>
-                <ListView
-                    style={{flex: 1}}
-                    dataSource={this.state.dataSource}
-                    renderRow={this.renderRow}
-                    renderSectionHeader={this.renderSectionHeader}
-                    contentContainerStyle={styles.listStyle}
-                />
-            </Animated.View>
-        )
-
-    }
-
 }
 
 class ZNListIndexView extends Component{

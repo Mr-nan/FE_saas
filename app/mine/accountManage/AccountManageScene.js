@@ -24,7 +24,7 @@ const childItems = [];
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
 import AccountInfoScene from './AccountInfoScene';
-export  default class SelectCompanyScene extends BaseComponent {
+export  default class AccountManageScene extends BaseComponent {
 
     constructor(props) {
         super(props);

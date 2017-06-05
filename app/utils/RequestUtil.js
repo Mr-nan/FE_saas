@@ -1,8 +1,14 @@
 import StorageUtil from "./StorageUtil";
 var Platform = require('Platform');
 import * as StorageKeyNames from "../constant/storageKeyNames";
+import {all} from '../constant/AllBackLogin';
+import LoginScene from '../login/LoginScene';
 const request = (url, method, params,backToLogin) => {
-
+    let loginSuccess = {
+        name: 'LoginScene',
+        component: LoginScene,
+        params: {}
+    }
     let isOk;
     let body = '';
     for (let key of Object.keys(params)) {
@@ -54,8 +60,12 @@ const request = (url, method, params,backToLogin) => {
                         if (responseData.code == 1) {
                             resolve({mjson: responseData, mycode: 1});
                         } else {
-                            if(responseData.code==7040011){
-                                backToLogin();
+                            if(responseData.code==7040011||responseData.code==7040020){
+                                if (all) {
+                                    all.immediatelyResetRouteStack([{
+                                       ...loginSuccess
+                                    }])
+                                }
                             }else{
                                 reject({mycode: responseData.code, mjson: responseData});
                             }

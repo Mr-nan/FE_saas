@@ -187,8 +187,9 @@ class Label extends Component {
     render() {
         const {readOnly, onCancel, isBigSize} = this.props;
         return (
-            <View>
-                <TouchableOpacity onPress={() => {
+            <TouchableOpacity
+                style={[Styles.selectedItem, this.state.enable && Styles.disableColor, !isBigSize && Styles.layoutSize]}
+                onPress={() => {
                     if (!readOnly) {
                         onCancel();
                     } else {
@@ -196,26 +197,29 @@ class Label extends Component {
                         onCancel();
                     }
                 }}>
-                    <View
-                        style={[Styles.selectedItem, this.state.enable && Styles.disableColor, !isBigSize && Styles.layoutSize]}>
-                        <Text
-                            style={[Styles.labelText, this.state.enable && Styles.disableText]}>{this.props.children}</Text>
+                <Text
+                    style={[Styles.labelText, this.state.enable && Styles.disableText]}>{this.props.children}</Text>
 
-                        {!readOnly && <TouchableOpacity
-                            style={Styles.closeContainer}
-                            underlayColor="transparent"
-                            activeOpacity={0.5}>
-                            <View>
-                                <Image
-                                    style={Styles.closeIcon}
-                                    source={require('../../../images/deleteIcon2x.png')}
-                                    resizeMode="cover"/>
-                            </View>
-                        </TouchableOpacity>}
+                {!readOnly && <TouchableOpacity
+                    style={Styles.closeContainer}
+                    underlayColor="transparent"
+                    activeOpacity={0.5} onPress={() => {
+                    if (!readOnly) {
+                        onCancel();
+                    } else {
+                        this.setPressDown()
+                        onCancel();
+                    }
+                }}>
+                    <View>
+                        <Image
+                            style={Styles.closeIcon}
+                            source={require('../../../images/deleteIcon2x.png')}
+                            resizeMode="cover"/>
                     </View>
-                </TouchableOpacity>
+                </TouchableOpacity>}
+            </TouchableOpacity>
 
-            </View>
         );
     }
 }

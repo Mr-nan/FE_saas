@@ -12,7 +12,8 @@ import {
     ListView,
     ScrollView,
     RefreshControl,
-    InteractionManager
+    InteractionManager,
+    Image,
 } from 'react-native';
 
 import BaceComponent from '../component/BaseComponent';
@@ -28,10 +29,10 @@ import NewCarScene      from '../publish/NewCarScene';
 import * as fontAndColor from '../constant/fontAndColor';
 import * as AppUrls from "../constant/appUrls";
 import  {request}           from '../utils/RequestUtil';
+import CarPublishFirstScene from './CarPublishFirstScene';
+import {LendSuccessAlert} from '../finance/lend/component/ModelComponent'
 import PixelUtil from '../utils/PixelUtil';
 const Pixel = new PixelUtil();
-
-var screenWidth = Dimensions.get('window').width;
 
 
 let carUpperFrameData = [];
@@ -75,17 +76,32 @@ export default class CarMySourceScene extends BaceComponent {
 
         } else if (typeStr == '编辑') {
 
+            // let navigatorParams = {
+            //
+            //     name: "EditCarScene",
+            //     component: EditCarScene,
+            //     params: {
+            //
+            //         fromNew: false,
+            //         carId: carData.id,
+            //     }
+            // };
+            // this.toNextPage(navigatorParams);
+
             let navigatorParams = {
 
-                name: "EditCarScene",
-                component: EditCarScene,
+                name: "CarPublishFirstScene",
+                component: CarPublishFirstScene,
                 params: {
 
-                    fromNew: false,
-                    carId: carData.id,
+                    carID: carData.id,
                 }
             };
             this.toNextPage(navigatorParams);
+
+        }else if(typeStr == '查看退回原因'){
+
+            this.refs.showTitleAlert.setModelVisibleAndSubTitle(true,carData.audit_message);
         }
     }
 
@@ -115,6 +131,7 @@ export default class CarMySourceScene extends BaceComponent {
                 if(groupStr==3){
 
                     this.refs.auditView.refreshingData();
+                    this.refs.upperFrameView.refreshingData();
 
                 }else if(groupStr == 2){
 
@@ -134,16 +151,26 @@ export default class CarMySourceScene extends BaceComponent {
 
     pushNewCarScene = () => {
 
+        // let navigatorParams = {
+        //
+        //     name: "NewCarScene",
+        //     component: NewCarScene,
+        //     params: {
+        //
+        //         fromNew: false,
+        //     }
+        // };
+        // this.toNextPage(navigatorParams);
         let navigatorParams = {
 
-            name: "NewCarScene",
-            component: NewCarScene,
+            name: "CarPublishFirstScene",
+            component: CarPublishFirstScene,
             params: {
 
-                fromNew: false,
             }
         };
         this.toNextPage(navigatorParams);
+
     }
 
     renderRightFootView = () => {
@@ -166,15 +193,15 @@ export default class CarMySourceScene extends BaceComponent {
             <View style={styles.rootContainer}>
                 <ScrollableTabView
                     style={styles.ScrollableTabView}
-                    initialPage={0}
+                    initialPage={this.props.page?this.props.page:0}
                     locked={true}
                     renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["已上架", "已下架", "未审核"]}/>}>
                     <MyCarSourceUpperFrameView ref="upperFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper1"/>
                     <MyCarSourceDropFrameView  ref="dropFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper2"/>
                     <MyCarSourceAuditView  ref="auditView"  carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper3"/>
-
                 </ScrollableTabView>
-                <NavigatorView title='我的车源' backIconClick={this.backPage}
+                <LendSuccessAlert ref="showTitleAlert" title={'提示'} subtitle={''}/>
+                <NavigatorView title='我的车源' backIconClick={this.backToTop}
                                renderRihtFootView={this.renderRightFootView}/>
             </View>)
 
@@ -189,14 +216,14 @@ class MyCarSourceUpperFrameView extends BaceComponent {
         super(props);
         // 初始状态
 
+        this.isCarLong = false;
         const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id != r2.id});
         this.state = {
-
+            isCarLong :false,
             carData:carData,
             isRefreshing: true,
             renderPlaceholderOnly: 'blank',
             carUpperFrameStatus: carUpperFrameStatus,
-
         };
     }
 
@@ -226,6 +253,7 @@ class MyCarSourceUpperFrameView extends BaceComponent {
         carUpperFramePage = 1;
         request(url, 'post', {
             car_status: '1',
+            isCarLong :false,
             page: carUpperFramePage,
             row: 10,
 
@@ -326,29 +354,68 @@ class MyCarSourceUpperFrameView extends BaceComponent {
             <View style={styles.viewContainer}>
                 {
                     this.state.carData &&
-                    <ListView style={styles.listView}
-                                dataSource={this.state.carData}
-                                ref={'carListView'}
-                                initialListSize={10}
-                                onEndReachedThreshold={1}
-                                stickyHeaderIndices={[]}//仅ios
-                                enableEmptySections={true}
-                                scrollRenderAheadDistance={10}
-                                pageSize={10}
-                                renderFooter={this.renderListFooter}
-                                onEndReached={this.toEnd}
-                              renderRow={(rowData) =><MyCarCell carCellData={rowData} cellClick={this.props.carCellClick} footButtonClick={this.props.footButtonClick} type={1}/>}
-                                refreshControl={
-                                    <RefreshControl
-                                        refreshing={this.state.isRefreshing}
-                                        onRefresh={this.refreshingData}
-                                        tintColor={[fontAndColor.COLORB0]}
-                                        colors={[fontAndColor.COLORB0]}
-                                    />}
+                    <ListView
+                        removeClippedSubviews={false}
+                        style={styles.listView}
+                        dataSource={this.state.carData}
+                        ref={'carListView'}
+                        initialListSize={10}
+                        onEndReachedThreshold={1}
+                        stickyHeaderIndices={[]}//仅ios
+                        enableEmptySections={true}
+                        scrollRenderAheadDistance={10}
+                        pageSize={10}
+                        renderFooter={this.renderListFooter}
+                        onEndReached={this.toEnd}
+                        renderHeader={this.renderHeader}
+                        renderRow={this.renderRow}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.state.isRefreshing}
+                                onRefresh={this.refreshingData}
+                                tintColor={[fontAndColor.COLORB0]}
+                                colors={[fontAndColor.COLORB0]}/>}
                     />
                 }
             </View>
         )
+    }
+
+    renderRow =(rowData)=>{
+
+        if(!this.isCarLong && rowData.long_aging == 1){
+            this.isCarLong = true;
+            this.setState({
+                isCarLong:true
+            });
+        }
+        return(
+            <MyCarCell carCellData={rowData} cellClick={this.props.carCellClick} footButtonClick={this.props.footButtonClick} type={1}/>
+        )
+    }
+
+    renderHeader =()=> {
+
+        if(!this.state.isCarLong){
+            return(null);
+        }
+       return(
+           <View style={{paddingHorizontal:Pixel.getPixel(15),alignItems:'center',flex:1,height:Pixel.getPixel(35),backgroundColor:fontAndColor.COLORB6,
+           flexDirection:'row',justifyContent:'space-between',marginBottom:Pixel.getPixel(10)
+       }}>
+           <View style={{flexDirection:'row'}}>
+               <Image source={require('../../images/carSourceImages/pointIcon.png')}/>
+               <Text style={{color:fontAndColor.COLORB2, fontSize:fontAndColor.LITTLEFONT28,marginLeft:Pixel.getPixel(5)}}>已经出售的长库龄车请尽快操作下架</Text>
+           </View>
+            <TouchableOpacity onPress={()=>{
+                this.isCarLong = false;
+                this.setState({
+                    isCarLong:false
+                });
+            }}>
+                <Image source={require('../../images/carSourceImages/closeBtn.png')}/>
+            </TouchableOpacity>
+       </View>)
     }
 
 }
@@ -506,6 +573,7 @@ class MyCarSourceDropFrameView extends BaceComponent {
                                 dataSource={this.state.carData}
                                 ref={'carListView'}
                                 initialListSize={10}
+                              removeClippedSubviews={false}
                                 onEndReachedThreshold={1}
                                 stickyHeaderIndices={[]}//仅ios
                                 enableEmptySections={true}
@@ -571,9 +639,12 @@ class MyCarSourceAuditView extends BaceComponent {
     }
     loadData = () => {
 
-        let url = AppUrls.CAR_PERLIST;
+        let url = AppUrls.CAR_USER_CAR;
+        // let url = AppUrls.CAR_PERLIST;
         carAuditPage = 1;
         request(url, 'post', {
+
+            car_status: '3',
             page: carAuditPage,
             row: 10,
 
@@ -581,23 +652,15 @@ class MyCarSourceAuditView extends BaceComponent {
 
             carAuditData = response.mjson.data.list;
             carAuditStatus = response.mjson.data.status;
-            if (carAuditData.length) {
-                this.setState({
-                    carData: this.state.carData.cloneWithRows(carAuditData),
-                    isRefreshing: false,
-                    renderPlaceholderOnly: 'success',
-                    carAuditStatus: carAuditStatus,
 
-                });
+            this.setState({
+                carData: this.state.carData.cloneWithRows(carAuditData),
+                isRefreshing: false,
+                renderPlaceholderOnly: 'success',
+                carAuditStatus: carAuditStatus,
 
-            } else {
+            });
 
-                this.setState({
-                    isRefreshing: false,
-                    renderPlaceholderOnly: 'null',
-                    carAuditStatus: carAuditStatus,
-                });
-            }
 
         }, (error) => {
 
@@ -613,8 +676,10 @@ class MyCarSourceAuditView extends BaceComponent {
     loadMoreData = () => {
 
         let url = AppUrls.CAR_PERLIST;
+        // let url = AppUrls.CAR_USER_CAR;
         carAuditPage += 1;
         request(url, 'post', {
+            car_status: '3',
             page: carAuditPage,
             row: 10,
 
@@ -663,6 +728,18 @@ class MyCarSourceAuditView extends BaceComponent {
         }
     }
 
+    renderHeader =()=> {
+        return(
+            <View style={{paddingHorizontal:Pixel.getPixel(15),alignItems:'center',flex:1,height:Pixel.getPixel(35),backgroundColor:fontAndColor.COLORB6,
+                flexDirection:'row',justifyContent:'space-between',marginBottom:Pixel.getPixel(10)
+            }}>
+                <View style={{flexDirection:'row', alignItems:'center'}}>
+                    <Image source={require('../../images/carSourceImages/pointIcon.png')}/>
+                    <Text style={{color:fontAndColor.COLORB2, fontSize:fontAndColor.LITTLEFONT28,marginLeft:Pixel.getPixel(5)}}>与其他商户重复的车源需待管理员核实后显示</Text>
+                </View>
+            </View>)
+    }
+
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return (
@@ -684,6 +761,7 @@ class MyCarSourceAuditView extends BaceComponent {
                                 enableEmptySections={true}
                                 scrollRenderAheadDistance={10}
                                 pageSize={10}
+                                renderHeader={this.renderHeader}
                                 renderFooter={this.renderListFooter}
                                 onEndReached={this.toEnd}
                                 renderRow={(rowData) =><MyCarCell carCellData={rowData} cellClick={this.props.carCellClick} footButtonClick={this.props.footButtonClick} type={3}/>}

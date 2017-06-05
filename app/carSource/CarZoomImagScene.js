@@ -25,6 +25,9 @@ const Pixel = new PixelUtil();
 export default class BrowseImageView extends BaseComponent{
 
     render(){
+
+        console.log(this.props.index);
+        console.log(this.props.images);
         return(
                 <ImageViewer imageUrls={this.props.images}
                              loadingRender={this.renderLoading}

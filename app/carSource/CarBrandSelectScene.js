@@ -46,7 +46,10 @@ let carObject = {
     series_id: '0',
     series_name: '0',
     model_id: '0',
-    model_name: '0'
+    model_name: '0',
+    discharge_standard:'',
+    model_year:'',
+    liter:''
 
 };
 
@@ -80,6 +83,9 @@ export default class CarBrandSelectScene extends BaseComponent {
         carObject.series_name = '0';
         carObject.model_id = '0';
         carObject.model_name = '0';
+        carObject.discharge_standard='';
+        carObject.model_year='';
+        carObject.liter='';
 
 
         let getSectionData = (dataBlob, sectionID) => {
@@ -343,6 +349,7 @@ export default class CarBrandSelectScene extends BaseComponent {
                 {
                     this.state.dataSource && (
                         <ListView ref="listView"
+                                  removeClippedSubviews={false}
                                   style={[{flex:1}, (this.props.status==0 || this.state.footprintData.length==0) && {marginTop: Pixel.getTitlePixel(64)}]}
                                   dataSource={this.state.dataSource}
                                   renderRow={this.renderRow}
@@ -574,6 +581,7 @@ class CarSeriesList extends BaseComponent {
                 {
                     this.state.dataSource &&
                     <ListView ref="subListView"
+                              removeClippedSubviews={false}
                               style={{flex: 1}}
                               dataSource={this.state.dataSource}
                               renderRow={this.renderRow}
@@ -652,6 +660,12 @@ class CarModelList extends BaseComponent {
 
                 carObject.model_id = rowData.model_id;
                 carObject.model_name = rowData.model_name;
+                carObject.discharge_standard = rowData.discharge_standard;
+                carObject.model_year = rowData.model_year;
+                if(rowData.liter)
+                {
+                    carObject.liter = rowData.liter;
+                }
                 this.props.checkedCarClick(carObject);
 
             }}>
@@ -681,6 +695,7 @@ class CarModelList extends BaseComponent {
                 {
                     this.state.modelsData &&
                     <ListView ref="subListView"
+                              removeClippedSubviews={false}
                               style={{flex: 1}}
                               dataSource={this.state.modelsData}
                               renderRow={this.renderRow}

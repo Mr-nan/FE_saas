@@ -79,6 +79,7 @@ export  default class ContractInfoScene extends BaseComponent {
 
 
     render() {
+
         if (this.state.renderPlaceholderOnly !== 'success') {
             return this._renderPlaceholderView();
         }

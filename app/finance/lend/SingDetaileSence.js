@@ -46,8 +46,8 @@ const controlCode = {
     maxLend: '',
     minLend: '',
     changeMoney: '',
-    loan_code:'',
-    is_microchinese_contract:''
+    loan_code: '',
+    is_microchinese_contract: ''
 }
 
 
@@ -92,7 +92,7 @@ export  default  class SingDetaileSence extends BaseComponent {
                     controlCode.lendType = tempjson.type;
                     controlCode.minLend = changeToMillion(tempjson.min_loanmny);
                     controlCode.loan_code = tempjson.loan_code;
-                    controlCode. is_microchinese_contract = tempjson. is_microchinese_contract;
+                    controlCode.is_microchinese_contract = tempjson.is_microchinese_contract;
                     let Maxmum = Number.parseFloat(tempjson.max_loanmny) + Number.parseFloat(tempjson.payment_loanmny)
                     controlCode.maxLend = changeToMillion(Maxmum)
 
@@ -112,12 +112,12 @@ export  default  class SingDetaileSence extends BaseComponent {
 
                     this.setState({
 
-                        renderPlaceholderOnly:STATECODE.loadError
+                        renderPlaceholderOnly: STATECODE.loadError
                     })
-                    if(error.mycode!= -300||error.mycode!= -500){
+                    if (error.mycode != -300 || error.mycode != -500) {
 
                         this.props.showToast('服务器连接有问题')
-                    }else {
+                    } else {
 
                         this.props.showToast(error.mjson.msg);
                     }
@@ -145,12 +145,12 @@ export  default  class SingDetaileSence extends BaseComponent {
 
                     this.setState({
 
-                        renderPlaceholderOnly:STATECODE.loadError
+                        renderPlaceholderOnly: STATECODE.loadError
                     })
-                    if(error.mycode!= -300||error.mycode!= -500){
+                    if (error.mycode != -300 || error.mycode != -500) {
 
                         this.props.showToast('服务器连接有问题')
-                    }else {
+                    } else {
 
                         this.props.showToast(error.mjson.msg);
                     }
@@ -187,7 +187,7 @@ export  default  class SingDetaileSence extends BaseComponent {
                         model_name: item.model_name,
                         state: item.status_str,
                         order: item.frame_number,
-                        price: item.lend_mny,//放款额
+                        price: item.loan_mny,//放款额
                         plate_number: item.plate_number,//车牌号
                         loan_number: item.loan_number,
                     }
@@ -205,28 +205,27 @@ export  default  class SingDetaileSence extends BaseComponent {
         if (stateCode !== '' && extendCode !== '') {
 
             let tempTitle = []
-            if (stateCode === '1') {
+            if (stateCode == '1') {
                 tempTitle = ['取消借款']
-            } else if (stateCode === '2') {
+            } else if (stateCode == '2') {
                 tempTitle = ['签署合同', '取消借款']
             }
-            else if (stateCode === '2') {
-                tempTitle = ['已取消借款']
-            }
-            else if (Number.parseInt(stateCode) > 2 && stateCode !== '5') {
+            // else if (stateCode === '2') {
+            //     tempTitle = ['已取消借款']
+            // }
+            else if (Number.parseInt(stateCode) > 2 && stateCode != '5') {
                 tempTitle = ['查看合同']
             } else if (stateCode == '5') {
-                if (Number.parseInt(extendCode) === 1) {
+                if (Number.parseInt(extendCode) == 1) {
                     tempTitle = ['查看合同', '申请展期']
                 } else {
                     tempTitle = ['查看合同']
                 }
             }
 
-            if(stateCode!=2&& is_microchinese_contract==1){
-                tempTitle = ['签署转债权合同']
+            if (is_microchinese_contract == 1) {
+                tempTitle = ['签署微单合同']
             }
-
             return tempTitle;
         }
     }
@@ -245,6 +244,8 @@ export  default  class SingDetaileSence extends BaseComponent {
                 return styles.controlButton
             case '已取消借款':
                 return styles.canceledButton
+            case '签署微单合同':
+                return styles.controlButton
             default:
                 return styles.cancelButton
 
@@ -271,10 +272,10 @@ export  default  class SingDetaileSence extends BaseComponent {
                 },
                 (error) => {
                     this.props.showModal(false);
-                    if(error.mycode!= -300||error.mycode!= -500){
+                    if (error.mycode != -300 || error.mycode != -500) {
 
                         this.props.showToast('服务器连接有问题')
-                    }else {
+                    } else {
 
                         this.props.showToast(error.mjson.msg);
                     }
@@ -288,19 +289,33 @@ export  default  class SingDetaileSence extends BaseComponent {
             this.canleAlert.setModelVisible(true);
         } else if (title === '签署合同') {
             this.toNextPage({
-                name: 'ContractInfoScene', component: ContractInfoScene, params: {loan_code:this.props.loanNumber,showButton:true}
+                name: 'ContractInfoScene',
+                component: ContractInfoScene,
+                params: {loan_code: this.props.loanNumber, showButton: true}
             });
         } else if (title === '查看合同') {
             this.toNextPage({
-                name: 'ContractInfoScene', component: ContractInfoScene, params: {loan_code:this.props.loanNumber,showButton:false}
+                name: 'ContractInfoScene',
+                component: ContractInfoScene,
+                params: {loan_code: this.props.loanNumber, showButton: false}
             });
-        }else if(title ==="申请展期"){
+        } else if (title === "申请展期") {
             this.toNextPage({
                 name: 'CarOverdue', component: CarOverdue, params: {loan_code: controlCode.loan_code}
             });
-        }else if(title ==="签署转债权合同"){
+        } else if (title === "签署微单合同") {
             this.toNextPage({
-                name: 'RecognizedGains', component: RecognizedGains, params: {loan_code: controlCode.loan_code,isShow:true}
+                name: 'RecognizedGains', component: RecognizedGains, params: {
+                    loan_code: controlCode.loan_code,
+                    loan_number: '',
+                    isShow:true,
+                    callBack:()=>{
+                        this.setState({
+                            renderPlaceholderOnly:'loading'
+                        });
+                        this.getLendinfo();
+                    }
+                }
             });
         }
 
@@ -324,10 +339,10 @@ export  default  class SingDetaileSence extends BaseComponent {
                     },
                     (error) => {
                         this.props.showModal(false);
-                        if(error.mycode!= -300||error.mycode!= -500){
+                        if (error.mycode != -300 || error.mycode != -500) {
 
                             this.props.showToast(error.mjson.msg);
-                        }else {
+                        } else {
 
                             this.props.showToast('服务器连接有问题')
                         }
@@ -418,7 +433,7 @@ export  default  class SingDetaileSence extends BaseComponent {
                 </View>);
         }
         let tempButtons = [];
-        let tempButtonTitles = this.getControlTitleblob(controlCode.stateCode, controlCode.extendCode,controlCode.is_microchinese_contract);
+        let tempButtonTitles = this.getControlTitleblob(controlCode.stateCode, controlCode.extendCode, controlCode.is_microchinese_contract);
 
         tempButtonTitles.map((item) => {
                 tempButtons.push(<CommenButton buttonStyle={this.getButtonStyleWithTitle(item)}
@@ -515,21 +530,24 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: PAGECOLOR.COLORA2,
         height: adapeSize(44),
-        justifyContent: 'center'
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     canceledButton: {
 
         flex: 1,
         height: adapeSize(44),
         backgroundColor: PAGECOLOR.COLORA1,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        alignItems: 'center'
 
     },
     controlButton: {
         flex: 1,
         height: adapeSize(44),
         backgroundColor: PAGECOLOR.COLORB0,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        alignItems: 'center'
     },
 
     buttontextStyle: {

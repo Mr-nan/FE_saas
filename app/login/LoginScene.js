@@ -64,6 +64,7 @@ export default class LoginScene extends BaseComponent {
         BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: 'loading'});
+            this.props.showModal(false);
             this.initFinish();
         });
     }

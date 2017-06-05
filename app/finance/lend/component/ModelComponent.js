@@ -27,6 +27,7 @@ export class LendSuccessAlert extends Component{
 
     state={
         show:false,
+        subtitle:''
     }
     setModelVisible=(value)=>{
 
@@ -34,6 +35,15 @@ export class LendSuccessAlert extends Component{
             show:value
         })
     }
+
+    setModelVisibleAndSubTitle=(value,subTitle)=>{
+
+        this.setState({
+            show:value,
+            subtitle:subTitle,
+        })
+    }
+
     confimClick=()=>{
 
         const {confimClick}=this.props;
@@ -45,7 +55,7 @@ export class LendSuccessAlert extends Component{
     render(){
 
 
-        const {title,subtitle}=this.props;
+        const {title,subtitle,confimTitle}=this.props;
 
         return(
 
@@ -62,9 +72,10 @@ export class LendSuccessAlert extends Component{
                 }}>
                     <View style={commentAlertStyle.container}>
                         <Text style={commentAlertStyle.title}>{title}</Text>
-                        <Text style={commentAlertStyle.subtitle}>{subtitle}</Text>
+                        <Text style={commentAlertStyle.subtitle}>{this.state.subtitle!=''?this.state.subtitle:subtitle}</Text>
                         <View style={commentAlertStyle.successWarp}>
-                            <CommenButton buttonStyle={[commentAlertStyle.successButton,{marginBottom:adapeSize(20)}, commentAlertStyle.buttonLeft]} onPress={this.confimClick} title="好的"/>
+                            <CommenButton buttonStyle={[commentAlertStyle.successButton,{marginBottom:adapeSize(20)},
+                             commentAlertStyle.buttonLeft]} onPress={this.confimClick} title="好的"/>
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -291,7 +302,7 @@ export class ModalAlert extends PureComponent{
     render(){
 
 
-        const {title,subtitle}=this.props;
+        const {title,subtitle,confimTitle}=this.props;
         return(
 
             <Modal animationType='none'
@@ -310,7 +321,9 @@ export class ModalAlert extends PureComponent{
                         <Text style={commentAlertStyle.subtitle}>{subtitle}</Text>
                         <View style={commentAlertStyle.buttonsWarp}>
 
-                            <CommenButton buttonStyle={[commentAlertStyle.buttonstyle,{marginRight:adapeSize(10)}, commentAlertStyle.buttonLeft]} onPress={this.confimClick} title="确定"/>
+                            <CommenButton buttonStyle={[commentAlertStyle.buttonstyle,{marginRight:adapeSize(10)}, commentAlertStyle.buttonLeft]}
+                                          onPress={this.confimClick}
+                                          title={"确定"}/>
                             <CommenButton buttonStyle={[commentAlertStyle.buttonstyle,commentAlertStyle.buttonRight]} onPress={this.cancleClick} title="取消"/>
 
                         </View>
@@ -454,12 +467,15 @@ const commentAlertStyle=StyleSheet.create({
         width:adapeSize(260),
         justifyContent:'flex-start',
         borderRadius:5,
+        paddingRight:adapeSize(15),
+        paddingLeft:adapeSize(15),
     },
 
     title:{
 
         marginTop:adapeSize(25),
         fontSize: fontadapeSize(17),
+        color:'#000'
     },
     subtitle:{
         marginTop:adapeSize(10),
@@ -510,6 +526,7 @@ const commentAlertStyle=StyleSheet.create({
         alignItems:'center',
         justifyContent:'center',
         borderRadius:5,
+
     },
 
 
