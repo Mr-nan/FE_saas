@@ -52,22 +52,22 @@ export  default class ContractSignScene extends BaseComponent {
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
-                    if (response.mjson.data.contract_file_path == '') {
+                    // if (response.mjson.data.contract_file_path == '') {
                         imageItems = [];
                         RJson = response.mjson;
-                        imageItems.push(...response.mjson.data.image_paths);
+                        imageItems.push(...response.mjson.data.contract_image_path);
                         this.sign_part = RJson.data.sign_part;
                         let ds = new ViewPager.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
                             dataSource: ds.cloneWithPages(imageItems),
                             renderPlaceholderOnly: 'success',
                         });
-                    } else {
-                        this.setState({
-                            webUrl:response.mjson.data.contract_file_path,
-                            renderPlaceholderOnly: 'success',
-                        });
-                    }
+                    // } else {
+                    //     this.setState({
+                    //         webUrl:response.mjson.data.contract_file_path,
+                    //         renderPlaceholderOnly: 'success',
+                    //     });
+                    // }
                 },
                 (error) => {
                     if (error.mjson.code == '5020002') {
@@ -108,10 +108,6 @@ export  default class ContractSignScene extends BaseComponent {
         }
             return (
                 <View style={{flex:1,backgroundColor: fontAndColor.COLORA3}}>
-                    <NavigationView
-                        title="合同"
-                        backIconClick={this.backPage}
-                    />
                     <View style={{marginTop:Pixel.getTitlePixel(64),flex:1}}>
                         <ViewPager
                             dataSource={this.state.dataSource}    //数据源（必须）
@@ -132,6 +128,10 @@ export  default class ContractSignScene extends BaseComponent {
                         color:'#fff'}}>签署合同</Text>
                             </TouchableOpacity> : <View/>}
                     </View>
+                    <NavigationView
+                        title="合同"
+                        backIconClick={this.backPage}
+                    />
                 </View>
             );
     }
