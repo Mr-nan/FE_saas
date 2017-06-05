@@ -11,7 +11,8 @@ import {
     Dimensions,
     TouchableOpacity,
     InteractionManager,
-    Modal
+    Modal,
+    WebView
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
@@ -33,8 +34,8 @@ export  default class ContractSignScene extends BaseComponent {
 
     constructor(props, context) {
         super(props, context);
-        this.state = {renderPlaceholderOnly: 'blank', dataSource: [], freshButton: true};
-        this.sign_part='';
+        this.state = {renderPlaceholderOnly: 'blank', dataSource: [], freshButton: true, webUrl: ''};
+        this.sign_part = '';
     }
 
 
@@ -44,28 +45,34 @@ export  default class ContractSignScene extends BaseComponent {
 
     getData = () => {
         let maps = {
-            api: Urls.CHECKOUT_CONTRACT,
+            api: Urls.CONTRACT_CONTRACTDETAIL,
             contract_id: this.props.contract_id,    //合同ID
-            contract_log_id: this.props.contract_log_id,	//合同日志ID
             product_type_code: this.props.product_type_code,	//产品类型编码
 
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
-                    imageItems = [];
-                    RJson = response.mjson;
-                    imageItems.push(...response.mjson.data.image_paths);
-                    this.sign_part=RJson.data.sign_part;
-                    let ds = new ViewPager.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    this.setState({
-                        dataSource: ds.cloneWithPages(imageItems),
-                        renderPlaceholderOnly: 'success',
-                    });
+                    if (response.mjson.data.contract_file_path == '') {
+                        imageItems = [];
+                        RJson = response.mjson;
+                        imageItems.push(...response.mjson.data.image_paths);
+                        this.sign_part = RJson.data.sign_part;
+                        let ds = new ViewPager.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                        this.setState({
+                            dataSource: ds.cloneWithPages(imageItems),
+                            renderPlaceholderOnly: 'success',
+                        });
+                    } else {
+                        this.setState({
+                            webUrl:response.mjson.data.contract_file_path,
+                            renderPlaceholderOnly: 'success',
+                        });
+                    }
                 },
                 (error) => {
-                    if(error.mjson.code=='5020002'){
+                    if (error.mjson.code == '5020002') {
                         this.setState({renderPlaceholderOnly: 'null'});
-                    }else{
+                    } else {
 
                         this.setState({renderPlaceholderOnly: 'error'});
                     }
@@ -77,9 +84,8 @@ export  default class ContractSignScene extends BaseComponent {
         let maps = {
             api: Urls.CONTRACT_SIGN_MINE,
             contract_id: this.props.contract_id,    //合同ID
-            contract_log_id: this.props.contract_log_id,
-            sign_part: this.sign_part,
-            opt_user_id:this.props.opt_user_id
+            opt_user_id: this.props.opt_user_id,
+            signator_id: this.props.user_id
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
@@ -100,46 +106,45 @@ export  default class ContractSignScene extends BaseComponent {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return this._renderPlaceholderView();
         }
-        return (
-            <View style={{flex:1,backgroundColor: fontAndColor.COLORA3}}>
-                <NavigationView
-                    title="合同"
-                    backIconClick={this.backPage}
-                />
-                <View style={{marginTop:Pixel.getTitlePixel(64),flex:1}}>
-                    <ViewPager
-                        dataSource={this.state.dataSource}    //数据源（必须）
-                        renderPage={this._renderPage}         //page页面渲染方法（必须）
-                        isLoop={false}                        //是否可以循环
-                        autoPlay={false}                      //是否自动
-                        initialPage={0}       //指定初始页面的index
-                        locked={false}                        //为true时禁止滑动翻页
-                        renderPageIndicator={this._renderPageIndicator}
+            return (
+                <View style={{flex:1,backgroundColor: fontAndColor.COLORA3}}>
+                    <NavigationView
+                        title="合同"
+                        backIconClick={this.backPage}
                     />
-                </View>
-                <View style={{width:width,height:Pixel.getPixel(44),flexDirection: 'row'}}>
-                    {this.props.showButton == true && this.state.freshButton ? <TouchableOpacity onPress={()=>{
+                    <View style={{marginTop:Pixel.getTitlePixel(64),flex:1}}>
+                        <ViewPager
+                            dataSource={this.state.dataSource}    //数据源（必须）
+                            renderPage={this._renderPage}         //page页面渲染方法（必须）
+                            isLoop={false}                        //是否可以循环
+                            autoPlay={false}                      //是否自动
+                            initialPage={0}       //指定初始页面的index
+                            locked={false}                        //为true时禁止滑动翻页
+                            renderPageIndicator={this._renderPageIndicator}
+                        />
+                    </View>
+                    <View style={{width:width,height:Pixel.getPixel(44),flexDirection: 'row'}}>
+                        {this.props.showButton == true && this.state.freshButton ? <TouchableOpacity onPress={()=>{
                        this.contractSign();
                     }} activeOpacity={0.8} style={{flex:1,backgroundColor:fontAndColor.COLORB0,justifyContent:'center'
                     ,alignItems:'center'}}>
-                            <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                                <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                         color:'#fff'}}>签署合同</Text>
-                        </TouchableOpacity> : <View/>}
+                            </TouchableOpacity> : <View/>}
+                    </View>
                 </View>
-            </View>
-        );
-
+            );
     }
 
     _renderPage = (data) => {
-
+        let nowdate = Date.parse(new Date());
         return (
             <Image onLoadEnd={()=>{
                 this.props.showModal(false);
             }} onLoadStart={()=>{
                 this.props.showModal(true);
             }} style={{flex:1}}
-                   source={{uri: data}}
+                   source={{uri: data+'?'+nowdate}}
             />
         );
 
