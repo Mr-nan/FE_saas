@@ -128,7 +128,11 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas=JSON.parse(data.result);
-                this.openIndividual(name,number,phone,datas.company_base_id);
+                if(this.props.isChange=='true'){
+                    this.getAccountData(name,number,phone,datas.company_base_id);
+                }else{
+                    this.openIndividual(name,number,phone,datas.company_base_id);
+                }
             } else {
                 this.props.showToast('用户信息查询失败');
             }
@@ -160,6 +164,48 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
                 (error) => {
                     if (error.mycode == -300 || error.mycode == -500) {
                         this.props.showToast('开户失败');
+                    } else {
+                        this.props.showToast(error.mjson.msg);
+                    }
+                });
+    }
+
+    getAccountData=(name, number, phone,base_id)=>{
+        this.props.showModal(true);
+        let maps = {
+            enter_base_ids: base_id,
+            child_type: '1'
+        };
+        request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+            .then((response) => {
+                    this.changeIndividual(name, number, phone,base_id,response.mjson.data.bank_card_no)
+                },
+                (error) => {
+                    this.props.showToast('用户信息查询失败');
+                });
+    }
+    changeIndividual = (name, number, phone,base_id,sub_acct_no) => {
+        this.props.showModal(true);
+        let maps = {
+            cert_no: number,
+            cert_type: '1',
+            cust_name: name,
+            mobile_no: phone,
+            enter_base_id:base_id,
+            reback_url:webBackUrl.OPENINDIVIDUALACCOUNT,
+            sub_acct_no:sub_acct_no
+        };
+
+        request(Urls.USER_ACCOUNT_SAVEPERSONAL, 'Post', maps)
+            .then((response) => {
+                    this.props.showToast('修改成功');
+                    this.props.callBack();
+                    this.backPage();
+                    //  Linking.openURL(response.mjson.data.auth_url+'?authTokenId='+response.mjson.data.auth_token);
+                },
+                (error) => {
+                    if (error.mycode == -300 || error.mycode == -500) {
+                        this.props.showToast('修改失败');
                     } else {
                         this.props.showToast(error.mjson.msg);
                     }
