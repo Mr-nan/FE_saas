@@ -106,8 +106,6 @@ export  default class ContractSignScene extends BaseComponent {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return this._renderPlaceholderView();
         }
-        let nowdate = Date.parse(new Date());
-        if(this.state.webUrl==''){
             return (
                 <View style={{flex:1,backgroundColor: fontAndColor.COLORA3}}>
                     <NavigationView
@@ -136,35 +134,6 @@ export  default class ContractSignScene extends BaseComponent {
                     </View>
                 </View>
             );
-        }else{
-            return (
-                <View style={{flex:1,backgroundColor: fontAndColor.COLORA3}}>
-                    <NavigationView
-                        title="合同"
-                        backIconClick={this.backPage}
-                    />
-                    <View style={{marginTop:Pixel.getTitlePixel(64),flex:1}}>
-                        <WebView
-                            ref="www"
-                            style={{flex:1}}
-                            source={{uri:this.state.webUrl+'?'+nowdate,method: 'GET'}}
-                            javaScriptEnabled={true}
-                            domStorageEnabled={true}
-                            scalesPageToFit={false}
-                        />
-                    </View>
-                    <View style={{width:width,height:Pixel.getPixel(44),flexDirection: 'row'}}>
-                        {this.props.showButton == true && this.state.freshButton ? <TouchableOpacity onPress={()=>{
-                       this.contractSign();
-                    }} activeOpacity={0.8} style={{flex:1,backgroundColor:fontAndColor.COLORB0,justifyContent:'center'
-                    ,alignItems:'center'}}>
-                                <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                        color:'#fff'}}>签署合同</Text>
-                            </TouchableOpacity> : <View/>}
-                    </View>
-                </View>
-            );
-        }
     }
 
     _renderPage = (data) => {
