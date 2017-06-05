@@ -517,6 +517,7 @@ export default class CarInfoScene extends BaseComponent {
             return;
         }
 
+        console.log(this.state.carData.imgs);
 
         let navigatorParams = {
             name: "CarZoomImageScene",
