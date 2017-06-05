@@ -61,11 +61,12 @@ export default class OBDDevice extends BaseComponent {
             }}>
                 <View style={styles.container}>
                     <NavigationBar
-                        leftImageShow={false}
-                        leftTextShow={true}
+                        leftImageShow={true}
+                        leftTextShow={false}
                         leftText={""}
                         centerText={"OBD设备"}
-                        rightText={"安装说明"}/>
+                        rightText={"安装说明"}
+                        leftImageCallBack={this.backPage}/>
 
                     <View style={{
                         width: width,
@@ -364,14 +365,14 @@ export default class OBDDevice extends BaseComponent {
                     flex: 1,
                     marginTop: Pixel.getPixel(15)
                 }}>
-                    {
-                        this.state.source ?
-                            <ListView
-                                dataSource={this.state.source}
-                                renderRow={this._renderRow}
-                                renderSeparator={this._renderSeparator}/>
-                            : null
-                    }
+                        {
+                            this.state.source ?
+                                <ListView
+                                    dataSource={this.state.source}
+                                    renderRow={this._renderRow}
+                                    renderSeparator={this._renderSeparator}/>
+                                : null
+                        }
 
                 </View>
                 <MyButton buttonType={MyButton.TEXTBUTTON}
@@ -421,15 +422,20 @@ export default class OBDDevice extends BaseComponent {
                         this.props.showModal(false);
                         this.props.showToast("OBD绑定成功");
                         this.props.backRefresh();
-                        const navigator = this.props.navigator;
-                        if (navigator) {
-                            for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
-                                if (navigator.getCurrentRoutes()[i].name == 'CGDLendScenes') {
-                                    navigator.popToRoute(navigator.getCurrentRoutes()[i]);
-                                    break;
+                        if(this.props.fromScene=='DDApplyLendScene'){
+                            this.backPage();
+                        }else{
+                            const navigator = this.props.navigator;
+                            if (navigator) {
+                                for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
+                                    if (navigator.getCurrentRoutes()[i].name == 'CGDLendScenes') {
+                                        navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                                        break;
+                                    }
                                 }
                             }
                         }
+
                     }, (error) => {
                         this.props.showModal(false);
                         if (error.mycode == -300 || error.mycode == -500) {

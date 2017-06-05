@@ -47,6 +47,11 @@ import {LendSuccessAlert} from '../finance/lend/component/ModelComponent'
 let loanList = [];
 import CGDLendScenes from '../finance/lend/CGDLendScenes';
 
+
+import DDApplyLendScene from '../finance/lend/DDApplyLendScene';//////////////////////////////////////////////////////////////
+import DDCarInfoScene from '../finance/lend/DDCarInfoScene';//////////////////////////////////////////////////////////////
+import OBDDevice from '../finance/lend/OBDDevice';//////////////////////////////////////////////////////////////
+
 export class HomeHeaderItemInfo {
     constructor(ref, key, functionTitle, describeTitle, functionImage) {
 
@@ -470,7 +475,9 @@ export default class FinanceSence extends BaseComponet {
             this.props.callBack(this.navigatorParams);
         } else {
             this.navigatorParams.name = "RepaymentScene";
-            this.navigatorParams.component = RepaymentScene;
+            // this.navigatorParams.component = RepaymentScene;///////////////////////////////////////////////////////////
+            this.navigatorParams.component = DDApplyLendScene;///////////////////////////////////////////////////////////
+
             this.navigatorParams.params = {
                 customerName: this.state.customerName,
 
