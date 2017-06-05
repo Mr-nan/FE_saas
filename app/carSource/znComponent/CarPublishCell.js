@@ -10,6 +10,8 @@ import {
     Image,
     TouchableOpacity,
     Dimensions,
+    TextInput,
+
 } from 'react-native';
 
 import *as fontAndColor from '../../constant/fontAndColor';
@@ -31,7 +33,7 @@ export class CellView extends Component {
                     <View >
                     <Text style={styles.cellTitle}>{cellData.title}</Text>
                         {
-                            cellData.subTitle&&<Text style={styles.cellSubTitle}>{cellData.subTitle}</Text>
+                           cellData.subTitle? (<Text style={styles.cellSubTitle}>{cellData.subTitle}</Text>):(null)
                         }
                     </View>
                 </View>
@@ -80,7 +82,7 @@ export class CellSelectView extends Component{
                     }
                     <Text style={styles.cellTitle}>{cellData.title}</Text>
                 </View>
-                <View style={{flexDirection:'row',width:Pixel.getPixel(350),height:Pixel.getPixel(40),alignItems:'center',marginTop:Pixel.getPixel(10)}}>
+                <View style={{flexDirection:'row',width:Pixel.getPixel(290),height:Pixel.getPixel(40),alignItems:'center',marginTop:Pixel.getPixel(10),backgroundColor:'white'}}>
                     {
                         cellData.selectDict.data.map((data,index)=>{
                             return (
@@ -119,7 +121,6 @@ const styles = StyleSheet.create({
 
     },
     cellType2:{
-        flexWrap:'wrap',
         paddingHorizontal:Pixel.getPixel(15),
         backgroundColor:'white',
         borderBottomWidth:StyleSheet.hairlineWidth,
@@ -128,6 +129,7 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         width:sceneWidth,
         flexDirection:'column',
+        height:Pixel.getPixel(90)
 
     },
     cellTitle:{
@@ -138,7 +140,7 @@ const styles = StyleSheet.create({
         fontSize:Pixel.getFontPixel(fontAndColor.MARKFONT22),
         color:fontAndColor.COLORA1,
         marginTop:Pixel.getPixel(5),
-        width:Pixel.getPixel(250)
+        // backgroundColor:'red',
     },
     cellValue:{
         color:fontAndColor.COLORA2,
@@ -154,7 +156,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
         justifyContent:'center',
         borderRadius:3,
-        width:Pixel.getPixel(100),
+        width:Pixel.getPixel(85),
         height:Pixel.getPixel(32),
     },
     checkedItemText:{

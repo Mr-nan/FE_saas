@@ -76,28 +76,28 @@ export default class CarMySourceScene extends BaceComponent {
 
         } else if (typeStr == '编辑') {
 
-            let navigatorParams = {
-
-                name: "EditCarScene",
-                component: EditCarScene,
-                params: {
-
-                    fromNew: false,
-                    carId: carData.id,
-                }
-            };
-            this.toNextPage(navigatorParams);
-
             // let navigatorParams = {
             //
-            //     name: "CarPublishFirstScene",
-            //     component: CarPublishFirstScene,
+            //     name: "EditCarScene",
+            //     component: EditCarScene,
             //     params: {
             //
-            //         carID: carData.id,
+            //         fromNew: false,
+            //         carId: carData.id,
             //     }
             // };
             // this.toNextPage(navigatorParams);
+
+            let navigatorParams = {
+
+                name: "CarPublishFirstScene",
+                component: CarPublishFirstScene,
+                params: {
+
+                    carID: carData.id,
+                }
+            };
+            this.toNextPage(navigatorParams);
 
         }else if(typeStr == '查看退回原因'){
 
@@ -151,26 +151,26 @@ export default class CarMySourceScene extends BaceComponent {
 
     pushNewCarScene = () => {
 
+        // let navigatorParams = {
+        //
+        //     name: "NewCarScene",
+        //     component: NewCarScene,
+        //     params: {
+        //
+        //         fromNew: false,
+        //     }
+        // };
+        // this.toNextPage(navigatorParams);
         let navigatorParams = {
 
-            name: "NewCarScene",
-            component: NewCarScene,
+            name: "CarPublishFirstScene",
+            component: CarPublishFirstScene,
             params: {
 
-                fromNew: false,
             }
         };
         this.toNextPage(navigatorParams);
 
-        // let navigatorParams = {
-        //
-        //     name: "CarPublishFirstScene",
-        //     component: CarPublishFirstScene,
-        //     params: {
-        //
-        //     }
-        // };
-        // this.toNextPage(navigatorParams);
     }
 
     renderRightFootView = () => {
@@ -193,7 +193,7 @@ export default class CarMySourceScene extends BaceComponent {
             <View style={styles.rootContainer}>
                 <ScrollableTabView
                     style={styles.ScrollableTabView}
-                    initialPage={0}
+                    initialPage={this.props.page?this.props.page:0}
                     locked={true}
                     renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["已上架", "已下架", "未审核"]}/>}>
                     <MyCarSourceUpperFrameView ref="upperFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper1"/>
@@ -355,6 +355,7 @@ class MyCarSourceUpperFrameView extends BaceComponent {
                 {
                     this.state.carData &&
                     <ListView
+                        removeClippedSubviews={false}
                         style={styles.listView}
                         dataSource={this.state.carData}
                         ref={'carListView'}
@@ -572,6 +573,7 @@ class MyCarSourceDropFrameView extends BaceComponent {
                                 dataSource={this.state.carData}
                                 ref={'carListView'}
                                 initialListSize={10}
+                              removeClippedSubviews={false}
                                 onEndReachedThreshold={1}
                                 stickyHeaderIndices={[]}//仅ios
                                 enableEmptySections={true}
@@ -637,16 +639,12 @@ class MyCarSourceAuditView extends BaceComponent {
     }
     loadData = () => {
 
-        // let url = AppUrls.CAR_USER_CAR;
-
-        // request(url, 'post', {
-        //     car_status: '2',
-        //     page: carDropFramePage,
-        //     row: 10,
-
-        let url = AppUrls.CAR_PERLIST;
+        let url = AppUrls.CAR_USER_CAR;
+        // let url = AppUrls.CAR_PERLIST;
         carAuditPage = 1;
         request(url, 'post', {
+
+            car_status: '3',
             page: carAuditPage,
             row: 10,
 
@@ -654,23 +652,15 @@ class MyCarSourceAuditView extends BaceComponent {
 
             carAuditData = response.mjson.data.list;
             carAuditStatus = response.mjson.data.status;
-            if (carAuditData.length) {
-                this.setState({
-                    carData: this.state.carData.cloneWithRows(carAuditData),
-                    isRefreshing: false,
-                    renderPlaceholderOnly: 'success',
-                    carAuditStatus: carAuditStatus,
 
-                });
+            this.setState({
+                carData: this.state.carData.cloneWithRows(carAuditData),
+                isRefreshing: false,
+                renderPlaceholderOnly: 'success',
+                carAuditStatus: carAuditStatus,
 
-            } else {
+            });
 
-                this.setState({
-                    isRefreshing: false,
-                    renderPlaceholderOnly: 'null',
-                    carAuditStatus: carAuditStatus,
-                });
-            }
 
         }, (error) => {
 
@@ -689,7 +679,7 @@ class MyCarSourceAuditView extends BaceComponent {
         // let url = AppUrls.CAR_USER_CAR;
         carAuditPage += 1;
         request(url, 'post', {
-            // car_status: '3',
+            car_status: '3',
             page: carAuditPage,
             row: 10,
 
@@ -738,6 +728,18 @@ class MyCarSourceAuditView extends BaceComponent {
         }
     }
 
+    renderHeader =()=> {
+        return(
+            <View style={{paddingHorizontal:Pixel.getPixel(15),alignItems:'center',flex:1,height:Pixel.getPixel(35),backgroundColor:fontAndColor.COLORB6,
+                flexDirection:'row',justifyContent:'space-between',marginBottom:Pixel.getPixel(10)
+            }}>
+                <View style={{flexDirection:'row', alignItems:'center'}}>
+                    <Image source={require('../../images/carSourceImages/pointIcon.png')}/>
+                    <Text style={{color:fontAndColor.COLORB2, fontSize:fontAndColor.LITTLEFONT28,marginLeft:Pixel.getPixel(5)}}>与其他商户重复的车源需待管理员核实后显示</Text>
+                </View>
+            </View>)
+    }
+
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return (
@@ -759,6 +761,7 @@ class MyCarSourceAuditView extends BaceComponent {
                                 enableEmptySections={true}
                                 scrollRenderAheadDistance={10}
                                 pageSize={10}
+                                renderHeader={this.renderHeader}
                                 renderFooter={this.renderListFooter}
                                 onEndReached={this.toEnd}
                                 renderRow={(rowData) =><MyCarCell carCellData={rowData} cellClick={this.props.carCellClick} footButtonClick={this.props.footButtonClick} type={3}/>}

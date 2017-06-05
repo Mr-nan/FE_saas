@@ -29,7 +29,6 @@ export  default class CarUpImageCell extends PureComponent {
     constructor(props) {
         super(props);
 
-        console.log(this.props.childList.length);
         this.state = {
             childMovie: this.props.childList
         };

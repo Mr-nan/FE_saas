@@ -18,6 +18,7 @@ import *as fontAndColor from '../constant/fontAndColor';
 import ImagePageView from 'react-native-viewpager';
 import BaseComponent from '../component/BaseComponent';
 import NavigationView from '../component/CarNavigationView';
+import AllNavigationView from '../component/AllNavigationView';
 import Gallery from 'react-native-gallery';
 import {CarDeploySwitchoverButton,CarConfigurationView}   from './znComponent/CarInfoAllComponent';
 import CarZoomImageScene from './CarZoomImagScene';
@@ -28,6 +29,9 @@ import CarReferencePriceScene from  './CarReferencePriceScene';
 import CarPriceAnalysisView from './znComponent/CarPriceAnalysisView';
 import *as weChat from 'react-native-wechat';
 import PixelUtil from '../utils/PixelUtil';
+import StorageUtil from "../utils/StorageUtil";
+import * as StorageKeyNames from "../constant/storageKeyNames";
+
 const Pixel = new PixelUtil();
 
 import {request} from "../utils/RequestUtil";
@@ -115,10 +119,14 @@ export default class CarInfoScene extends BaseComponent {
 
     loadData=()=> {
 
+        this.loadCarData();
+
+    }
+
+    loadCarData=()=>{
         let url = AppUrls.CAR_DETAIL;
         request(url, 'post', {
             id: this.props.carID,
-
         }).then((response) => {
 
             let carData = response.mjson.data;
@@ -131,7 +139,7 @@ export default class CarInfoScene extends BaseComponent {
                 carData.nature_str,
                 carData.car_color.split("|")[0]+'/'+carData.trim_color.split("|")[0],
             ];
-
+            carData.show_order = 2;
             if(carData.imgs.length<=0){
 
                 carData.imgs=[ {require:require('../../images/carSourceImages/car_info_null.png')}];
@@ -166,7 +174,6 @@ export default class CarInfoScene extends BaseComponent {
                 })
             }
         }, (error) => {
-           console.log(error);
         });
     }
 
@@ -177,10 +184,8 @@ export default class CarInfoScene extends BaseComponent {
             return (
                 <View style={{flex: 1, backgroundColor: 'white'}}>
                     {this.loadView()}
-                    <NavigationView
-                        ref="navtigation"
+                    <AllNavigationView
                         title="车源详情"
-                        wrapStyle={{backgroundColor:'rgba(0,0,0,0)'}}
                         backIconClick={this.backIconClick}
                     />
             </View>);
@@ -347,55 +352,54 @@ export default class CarInfoScene extends BaseComponent {
                                 </View>
                                 <Image source={require('../../images/mainImage/celljiantou.png')}/>
                             </TouchableOpacity>
-                            {/*<TouchableOpacity style={styles.carInfoBtn} onPress={()=>{this.pushCarUpkeepScene(carData.vin)}}>*/}
-                                {/*<View style={{flexDirection:'row',alignItems:'center'}}>*/}
-                                    {/*<Image source={require('../../images/carSourceImages/carUpkeepIcon.png')}/>*/}
-                                    {/*<Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),marginLeft:Pixel.getPixel(10)}}>维修保养记录</Text>*/}
-                                {/*</View>*/}
-                                {/*<Image source={require('../../images/mainImage/celljiantou.png')}/>*/}
-                            {/*</TouchableOpacity>*/}
-                            {/*{*/}
-                                {/*(carData.vin!='' && carData.city_id!='' && carData.engine_number!='' && carData.plate_number!='')&&(*/}
-                                    {/*<TouchableOpacity style={styles.carInfoBtn}*/}
-                                                      {/*onPress={()=>{*/}
-                                                          {/*this.pushCarbreakRulesScene(carData)*/}
-                                                      {/*}}>*/}
-                                        {/*<View style={{flexDirection:'row',alignItems:'center'}}>*/}
-                                            {/*<Image source={require('../../images/carSourceImages/carBreakIcon.png')}/>*/}
-                                            {/*<Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),marginLeft:Pixel.getPixel(10)}}>违章记录</Text>*/}
-                                        {/*</View>*/}
-                                        {/*<Image source={require('../../images/mainImage/celljiantou.png')}/>*/}
-                                    {/*</TouchableOpacity>*/}
-                                {/*)*/}
-                            {/*}*/}
+                            <TouchableOpacity style={styles.carInfoBtn} onPress={()=>{this.pushCarUpkeepScene(carData.vin)}}>
+                                <View style={{flexDirection:'row',alignItems:'center'}}>
+                                    <Image source={require('../../images/carSourceImages/carUpkeepIcon.png')}/>
+                                    <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),marginLeft:Pixel.getPixel(10)}}>维修保养记录</Text>
+                                </View>
+                                <Image source={require('../../images/mainImage/celljiantou.png')}/>
+                            </TouchableOpacity>
+                            {
+                                (carData.vin!='' && carData.city_id!='' && carData.engine_number!='' && carData.plate_number!='')&&(
+                                    <TouchableOpacity style={styles.carInfoBtn}
+                                                      onPress={()=>{
+                                                          this.pushCarbreakRulesScene(carData)
+                                                      }}>
+                                        <View style={{flexDirection:'row',alignItems:'center'}}>
+                                            <Image source={require('../../images/carSourceImages/carBreakIcon.png')}/>
+                                            <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),marginLeft:Pixel.getPixel(10)}}>违章记录</Text>
+                                        </View>
+                                        <Image source={require('../../images/mainImage/celljiantou.png')}/>
+                                    </TouchableOpacity>
+                                )
+                            }
                         </View>
                         {/*<TouchableOpacity onPress={()=>{this.pushCarUpkeepScene(carData.vin)}} activeOpacity={1}>*/}
                             {/*<Image style={{marginTop:10,width:ScreenWidth}} source={require('../../images/carSourceImages/carUpkeepButton.png')} resizeMode='stretch'/>*/}
                         {/*</TouchableOpacity>*/}
                     </View>
-                    {/*{*/}
-                        {/*this.state.residualsData.length>0 &&( <CarPriceAnalysisView data ={this.state.residualsData}/>)*/}
-                    {/*}*/}
-
+                    {
+                        this.state.residualsData.length>0 &&( <CarPriceAnalysisView data ={this.state.residualsData}/>)
+                    }
                 </ScrollView>
                     <View style={styles.footView} >
                         <View style={[styles.carNumberView,carData.show_order==2 && {width:ScreenWidth/2}]}>
                             <Text style={styles.carNumberText}>车源编号</Text>
                             <Text style={styles.carNumberText}>{carData.serial_num}</Text>
                         </View>
-                        <TouchableOpacity onPress={this.callClick}>
+                        <TouchableOpacity onPress={()=>{this.callClick(carData.show_shop_id)}}>
                             <View style={[styles.callView,carData.show_order==2 && {width:ScreenWidth/2}]}>
                                 <Image source={require('../../images/carSourceImages/phoneIcon.png')}/>
                                 <Text style={styles.callText}>电话咨询</Text>
                             </View>
                         </TouchableOpacity>
-                        {/*{*/}
-                            {/*carData.show_order!==2 && (*/}
-                                {/*<TouchableOpacity style={styles.orderView} onPress={()=>{this.orderClick(carData)}}>*/}
-                                    {/*<Text style={styles.orderText}>订购</Text>*/}
-                                {/*</TouchableOpacity>*/}
-                            {/*)*/}
-                        {/*}*/}
+                        {
+                            carData.show_order!==2 && (
+                                <TouchableOpacity style={styles.orderView} onPress={()=>{this.orderClick(carData)}}>
+                                    <Text style={styles.orderText}>订购</Text>
+                                </TouchableOpacity>
+                            )
+                        }
                     </View>
                 <NavigationView
                     ref="navtigation"
@@ -433,16 +437,42 @@ export default class CarInfoScene extends BaseComponent {
 
     // 下订单
     orderClick=(carData)=>{
+
         if(carData.show_order==1){
             this.props.showToast('该车已被下单');
+
+        }else {
+            StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+                if(data.code == 1 && data.result != '')
+                {
+                    this.props.showModal(true);
+                    let enters = JSON.parse(data.result);
+                    request(AppUrls.CAR_ORDER_SAVE,'post',{'car_ids':carData.id,
+                    'user_company_id':enters.company_base_id}).then((response) => {
+                        this.props.showModal(false);
+
+                    }, (error) => {
+                        console.log(error);
+
+                        this.props.showModal(false);
+                        this.props.showToast(error.mjson.msg);
+                    });
+
+                }else{
+                    this._showHint('无法找到所属商户');
+                }
+
+            });
+
+
         }
     }
 
     // 拨打电话
-    callClick =() => {
+    callClick =(show_shop_id) => {
 
         // this.props.showModal(true);
-        request(AppUrls.CAR_CUSTOMER_PHONE_NUMBER,'post',{}).then((response) => {
+        request(AppUrls.CAR_CUSTOMER_PHONE_NUMBER,'post',{'enterprise_uid':show_shop_id}).then((response) => {
             // this.props.showModal(false);
             if(response.mjson.code==1)
             {
@@ -454,7 +484,6 @@ export default class CarInfoScene extends BaseComponent {
                 this.props.showToast(response.mjson.msg);
             }
         }, (error) => {
-            this.props.showModal(false);
             this.props.showToast(error.msg);
         });
 
@@ -475,6 +504,7 @@ export default class CarInfoScene extends BaseComponent {
             return;
         }
 
+        console.log(this.state.carData.imgs);
 
         let navigatorParams = {
             name: "CarZoomImageScene",
@@ -526,7 +556,10 @@ export default class CarInfoScene extends BaseComponent {
             name: "CarReferencePriceScene",
             component: CarReferencePriceScene,
             params: {
-                carData:carData
+                city_id:carData.city_id,
+                mileage:carData.mileage,
+                model_id:carData.model_id,
+                init_reg:this.dateReversal(carData.init_reg+'000'),
              }
         }
         this.toNextPage(navigationParams);
@@ -886,7 +919,7 @@ class CallView extends Component {
                   <TouchableOpacity style={[styles.sharedContaier,{alignItems:'center',justifyContent:'center'}]} onPress={()=>{this.isVisible(false,this.state.callData)}}>
                       <View style={styles.callModelView}>
                           {
-                              this.state.callData.phone &&(
+                              this.state.callData.phone!=='' &&(
                                   <TouchableOpacity onPress={()=>{this.callAction(this.state.callData.phone)}}>
                                       <View style={styles.callModelItem}>
                                           <Image source={require('../../images/carSourceImages/phoneIcon.png')}/>
@@ -896,7 +929,7 @@ class CallView extends Component {
                               )
                           }
                           {
-                              this.state.callData.shopsNumber && (
+                              this.state.callData.shopsNumber!=='' && (
                                   <TouchableOpacity onPress={()=>{this.callAction(this.state.callData.shopsNumber)}}>
                                       <View style={[styles.callModelItem,{marginTop:Pixel.getPixel(20)}]}>
                                           <Image source={require('../../images/carSourceImages/phoneIcon.png')}/>
@@ -1130,7 +1163,7 @@ const styles = StyleSheet.create({
         borderLeftColor:fontAndColor.COLORA4,
         paddingHorizontal:Pixel.getPixel(15),
         height: Pixel.getPixel(44),
-        width:ScreenWidth/2,
+        width:ScreenWidth/3,
     },
 
     callText: {
@@ -1143,7 +1176,7 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         height:Pixel.getPixel(44),
         paddingHorizontal:Pixel.getPixel(15),
-        width:ScreenWidth/2
+        width:ScreenWidth/3
     },
     carNumberText:{
         color: fontAndColor.COLORA0,

@@ -137,6 +137,7 @@ export default class CarUpImageScene extends BaseComponent{
               },
           ];
 
+
           this.titleData = [];
           this.results = [];
           this.carData = this.props.carData;
@@ -147,11 +148,23 @@ export default class CarUpImageScene extends BaseComponent{
 
               this.titleData.push(...this.usedCarTitleData);
 
+              if(this.carData.registrant_actual == 0){
+                  this.titleData.push({
+                      name: 'ownership_sale',
+                      title:'权属声明/买卖协议',
+                      subTitle:'至多5张',
+                      number:5,
+                      imgArray:[],
+                      explain:'1',
+                  })
+              }
+
           }else if(this.carData.v_type==3){
 
               this.titleData.push(...this.importCarTitleData);
-
           }
+
+
 
           if(this.carData.pictures){
               let imgas = JSON.parse(this.carData.pictures);
@@ -191,6 +204,7 @@ export default class CarUpImageScene extends BaseComponent{
             <View style={styles.rootContainer}>
                 <SuccessModal okClick={this._goToSource} ref={(modal) => {this.successModal = modal}}/>
                 <ListView
+                    removeClippedSubviews={false}
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}
                     renderSeparator={this.renderSeparator}
@@ -247,7 +261,9 @@ export default class CarUpImageScene extends BaseComponent{
        let sourceParams = {
             name: 'CarMySourceScene',
             component: CarMySourceScene,
-            params: {}
+            params: {
+                page:2,
+            }
         };
         this.toNextPage(sourceParams);
     };
@@ -288,7 +304,7 @@ export default class CarUpImageScene extends BaseComponent{
 
                 this.props.showModal(false);
 
-                if(response.mycode == 1){
+                if(response.mycode == 1 || response.mycode == 600010){
                     if(this.carData.show_shop_id){
                         StorageUtil.mRemoveItem(String(this.carData.show_shop_id));
                     }
@@ -308,9 +324,24 @@ export default class CarUpImageScene extends BaseComponent{
                 }, (error) => {
 
                     this.props.showModal(false);
+
                     if(error.mycode === -300 || error.mycode === -500){
                         this.showToast('网络连接失败');
-                    }else{
+
+                    }else if(error.mycode == 600010){
+                        if(this.carData.show_shop_id){
+                            StorageUtil.mRemoveItem(String(this.carData.show_shop_id));
+                        }
+                        if(IS_ANDROID === true){
+                            this.successModal.openModal();
+                        }else {
+                            this.timer = setTimeout(
+                                () => { this.successModal.openModal();},
+                                500
+                            );
+                        }
+                    }
+                    else{
                         this.showToast(error.mjson.msg);
                     }
                 });

@@ -8,6 +8,7 @@ import {
     View,
     Text,
     ListView,
+    Image,
 } from 'react-native';
 
 import BaseComponent from '../component/BaseComponent';
@@ -62,7 +63,15 @@ export  default class CarUpkeepScene extends  BaseComponent{
           this.loadData();
     }
     render(){
-        if (this.state.renderPlaceholderOnly !== 'success') {
+        if(this.state.renderPlaceholderOnly=='null'){
+            return(
+                <View style={{flex:1,backgroundColor:'white'}}>
+                    {this.nullDataView()}
+                    <NavigationView title="维修保养记录" backIconClick={()=>{this.backPage();}}/>
+                </View>
+            )
+        }
+        else if (this.state.renderPlaceholderOnly !== 'success') {
             return (
                 <View style={{flex:1,backgroundColor:'white'}}>
                     {this.loadView()}
@@ -72,6 +81,7 @@ export  default class CarUpkeepScene extends  BaseComponent{
         return(
             <View style={styles.rootContainer}>
                 <ListView
+                    removeClippedSubviews={false}
                     dataSource={this.state.dataSource}
                     renderHeader={()=>
                         <View style={styles.headView}>
@@ -99,7 +109,6 @@ export  default class CarUpkeepScene extends  BaseComponent{
     loadData=()=>{
         RequestUtil.request(appUrls.CAR_GET_ERPORT,'post',{'vin':this.props.vin}).then((response)=>{
 
-            console.log(response);
             if(response.mjson.data.result.length>0){
 
                 this.setState({
@@ -119,6 +128,27 @@ export  default class CarUpkeepScene extends  BaseComponent{
                 renderPlaceholderOnly: 'null',
             });
         });
+    }
+
+    nullDataView=()=>{
+        return(
+            <View style={{flex: 1, alignItems: 'center',justifyContent:'center'}}>
+                <Image
+                    style={{
+                        width: Pixel.getPixel(121),
+                        height: Pixel.getPixel(163),
+
+                    }}
+                    source={require('../../images/noData.png')}/>
+                <Text
+                    style={{
+                        color: fontAndColor.COLORA0, fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                        marginTop: Pixel.getPixel(27)
+                    }}>
+                   抱歉，暂未查到相关数据！
+                </Text>
+            </View>
+        )
     }
 
 }
@@ -145,7 +175,8 @@ const styles = StyleSheet.create({
         borderBottomWidth:StyleSheet.hairlineWidth,
         marginTop:Pixel.getPixel(15),
         backgroundColor:'white',
-        height:Pixel.getPixel(100),
+        flexWrap: 'wrap',
+
     },
     cellTitleView:{
         borderBottomWidth:StyleSheet.hairlineWidth,
@@ -166,7 +197,9 @@ const styles = StyleSheet.create({
     },
     cellContent:{
         marginTop:Pixel.getPixel(10),
+        marginBottom:Pixel.getPixel(10),
         color:fontAndColor.COLORA0,
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+        backgroundColor:'white'
     },
 });

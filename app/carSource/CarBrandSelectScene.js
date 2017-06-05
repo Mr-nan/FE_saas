@@ -349,6 +349,7 @@ export default class CarBrandSelectScene extends BaseComponent {
                 {
                     this.state.dataSource && (
                         <ListView ref="listView"
+                                  removeClippedSubviews={false}
                                   style={[{flex:1}, (this.props.status==0 || this.state.footprintData.length==0) && {marginTop: Pixel.getTitlePixel(64)}]}
                                   dataSource={this.state.dataSource}
                                   renderRow={this.renderRow}
@@ -580,6 +581,7 @@ class CarSeriesList extends BaseComponent {
                 {
                     this.state.dataSource &&
                     <ListView ref="subListView"
+                              removeClippedSubviews={false}
                               style={{flex: 1}}
                               dataSource={this.state.dataSource}
                               renderRow={this.renderRow}
@@ -693,6 +695,7 @@ class CarModelList extends BaseComponent {
                 {
                     this.state.modelsData &&
                     <ListView ref="subListView"
+                              removeClippedSubviews={false}
                               style={{flex: 1}}
                               dataSource={this.state.modelsData}
                               renderRow={this.renderRow}

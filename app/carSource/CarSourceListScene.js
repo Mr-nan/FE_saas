@@ -761,7 +761,6 @@ export  default  class carSourceListScene extends BaseComponent {
                 && APIParameter.order_type == 0
                 && APIParameter.coty == 0
                 && APIParameter.mileage == 0 && APIParameter.type == 0) {
-
                 isCarFoot = false;
 
             };
@@ -816,6 +815,7 @@ export  default  class carSourceListScene extends BaseComponent {
                 {
                     this.state.dataSource && (
                         <ListView
+                            removeClippedSubviews={false}
                             dataSource={this.state.dataSource}
                             initialListSize={10}
                             onEndReachedThreshold={1}

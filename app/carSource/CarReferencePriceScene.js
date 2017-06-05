@@ -76,12 +76,11 @@ export  default class CarReferencePriceScene extends  BaseComponent{
     }
 
     loadData=()=>{
-        let carData = this.props.carData;
         RequestUtil.request(appUrls.CAR_GET_REFERENCEPRICE,'post',{
-                'city_id':carData.city_id,
-                'mile':carData.mileage,
-                'model_id':carData.model_id,
-                'reg_date':this.dateReversal(carData.init_reg+'000')
+                'city_id':this.props.city_id,
+                'mile':this.props.mileage,
+                'model_id':this.props.model_id,
+                'reg_date':this.props.init_reg
         }).then((response)=>{
 
             console.log(response);

@@ -135,12 +135,10 @@ export default class BrowsingHistoryScene extends BaceComponent {
         request(Urls.USER_HISTORY_DELETE, 'Post', maps)
             .then((response) => {
                     allSouce = [];
-                    this.props.showModal(false);
                     this.props.showToast('删除成功');
                     this.getData();
                 },
                 (error) => {
-                    this.props.showModal(false);
                     this.props.showToast('删除失败');
                 });
     }
@@ -151,13 +149,11 @@ export default class BrowsingHistoryScene extends BaceComponent {
         request(Urls.USER_HISTORY_DELETE, 'Post', maps)
             .then((response) => {
                     allSouce = [];
-                    this.props.showModal(false);
                     this.props.showToast('删除成功');
                     page = 1;
                     this.getData();
                 },
                 (error) => {
-                    this.props.showModal(false);
                     this.props.showToast('删除失败');
                 });
     }
@@ -175,6 +171,7 @@ export default class BrowsingHistoryScene extends BaceComponent {
                 <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(64)}}
                           dataSource={this.state.carData}
                           showsVerticalScrollIndicator={false}
+                          removeClippedSubviews={false}
                           renderRow={(rowData) =>
                           <CarCell from="BrowsingHistoryScene" items={rowData} mOnPress={(id)=>{
                                if(rowData.status==3){
