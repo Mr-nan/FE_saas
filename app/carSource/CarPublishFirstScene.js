@@ -765,14 +765,14 @@ export default class CarPublishFirstScene extends BaseComponent{
 
             this.titleData1[0][2].value = this.modelData[index].model_name;
             this.titleData1[0][4].value = this.modelData[index].model_emission_standard;
-            this.titleData1[1][0].value = this.modelData[index].model_year+'-6-1';
-            this.titleData1[1][1].value = this.modelData[index].model_year+'-6-1';
+            this.titleData1[1][0].value = this.modelData[index].model_year+'-06-01';
+            this.titleData1[1][1].value = this.modelData[index].model_year+'-06-01';
 
             this.titleData2[0][2].value = this.modelData[index].model_name;
             this.titleData2[0][4].value = this.modelData[index].model_emission_standard;
-            this.titleData2[1][0].value = this.modelData[index].model_year+'-6-1';
+            this.titleData2[1][0].value = this.modelData[index].model_year+'-06-01';
 
-            this.carData['manufacture'] = this.modelData[index].model_year+'-6-1';
+            this.carData['manufacture'] = this.modelData[index].model_year+'-06-01';
             this.carData['model_id'] = this.modelData[index].model_id;
             this.carData['emission_standards'] = this.modelData[index].model_emission_standard;
             this.carData['series_id'] = this.modelData[index].series_id;
@@ -781,7 +781,7 @@ export default class CarPublishFirstScene extends BaseComponent{
 
             if(this.carType=='二手车')
             {
-                this.carData['init_reg'] = this.modelData[index].model_year+'-6-1';
+                this.carData['init_reg'] = this.modelData[index].model_year+'-06-01';
 
             }else {
                 this.carData['init_reg'] = '';
@@ -832,17 +832,17 @@ export default class CarPublishFirstScene extends BaseComponent{
 
                             this.titleData1[0][2].value = rd[0].model_name;
                             this.titleData1[0][4].value = rd[0].model_emission_standard;
-                            this.titleData1[1][0].value = rd[0].model_year+'-6-1';
-                            this.titleData1[1][1].value = rd[0].model_year+'-6-1';
+                            this.titleData1[1][0].value = rd[0].model_year+'-06-01';
+                            this.titleData1[1][1].value = rd[0].model_year+'-06-01';
 
                             this.titleData2[0][2].value = rd[0].model_name;
                             this.titleData2[0][4].value = rd[0].model_emission_standard;
-                            this.titleData2[1][0].value = rd[0].model_year+'-6-1';
+                            this.titleData2[1][0].value = rd[0].model_year+'-06-01';
 
-                            this.carData['manufacture'] = rd[0].model_year+'-6-1';
+                            this.carData['manufacture'] = rd[0].model_year+'-06-01';
                             if(this.carType=='二手车')
                             {
-                                this.carData['init_reg'] = rd[0].model_year+'-6-1';
+                                this.carData['init_reg'] = rd[0].model_year+'-06-01';
 
                             }else {
                                 this.carData['init_reg'] = '';
@@ -952,17 +952,17 @@ export default class CarPublishFirstScene extends BaseComponent{
         this.titleData2[0][1].subTitle='';
         this.titleData1[0][2].value = carObject.model_name;
         this.titleData1[0][4].value = carObject.discharge_standard;
-        this.titleData1[1][0].value = carObject.model_year+'-6-1';
-        this.titleData1[1][1].value = carObject.model_year+'-6-1';
+        this.titleData1[1][0].value = carObject.model_year+'-06-01';
+        this.titleData1[1][1].value = carObject.model_year+'-06-01';
 
         this.titleData2[0][2].value = carObject.model_name;
         this.titleData2[0][4].value = carObject.discharge_standard;
-        this.titleData2[1][0].value = carObject.model_year+'-6-1';
+        this.titleData2[1][0].value = carObject.model_year+'-06-01';
 
-        this.carData['manufacture'] = carObject.model_year+'-6-1';
+        this.carData['manufacture'] = carObject.model_year+'-06-01';
         if(this.carType =='二手车')
         {
-            this.carData['init_reg'] = carObject.model_year+'-6-1';
+            this.carData['init_reg'] = carObject.model_year+'-06-01';
         }else {
             this.carData['init_reg'] = '';
             this.titleData1[1][1].value = '请选择';
