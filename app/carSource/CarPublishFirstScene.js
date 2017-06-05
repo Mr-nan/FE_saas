@@ -491,6 +491,7 @@ export default class CarPublishFirstScene extends BaseComponent{
 
         Net.request(AppUrls.CAR_DETAIL, 'post', {
             id: this.props.carID,
+            imgType:0,
         }).then((response) => {
 
             this.props.showModal(false);

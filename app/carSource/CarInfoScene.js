@@ -127,6 +127,7 @@ export default class CarInfoScene extends BaseComponent {
         let url = AppUrls.CAR_DETAIL;
         request(url, 'post', {
             id: this.props.carID,
+            imgType:1,
         }).then((response) => {
 
             let carData = response.mjson.data;
