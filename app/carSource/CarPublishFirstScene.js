@@ -497,7 +497,7 @@ export default class CarPublishFirstScene extends BaseComponent{
 
             if(response.mycode==1){
                 this.carData = response.mjson.data;
-                this.carData.manufacture= response.mjson.data.manufacture!=''? this.dateReversal(response.mjson.data.manufacture+'000'):'';
+                this.carData.manufacture= response.mjson.data.manufacture!=''?  this.dateReversal(response.mjson.data.manufacture+'000'):'';
                 this.carData.init_reg=response.mjson.data.init_reg!=''? this.dateReversal(response.mjson.data.init_reg+'000'):'';
                 this.carData.emission_standards = response.mjson.data.emission_standards_en;
                 this.setCarData();
@@ -681,7 +681,7 @@ export default class CarPublishFirstScene extends BaseComponent{
             let initReg = new  Date(this.carData.init_reg);
             if(manufactureData.getTime() > initReg.getTime())
             {
-                this.props.showToast('初登日期不能大于出厂日期');
+                this.props.showToast('初登日期不得早于出厂日期');
                 return;
             }
 
@@ -1072,7 +1072,7 @@ export default class CarPublishFirstScene extends BaseComponent{
 
         const date = new Date();
         date.setTime(time);
-        return(date.getFullYear()+"-"+(this.PrefixInteger(date.getMonth()+1,2)))+"-"+(this.PrefixInteger(date.getDay()+1,2));
+        return(date.getFullYear()+"-"+(this.PrefixInteger(date.getMonth()+1,2)))+"-"+(this.PrefixInteger(date.getDate(),2));
 
     };
     PrefixInteger =(num,length)=>{
