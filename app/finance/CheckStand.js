@@ -37,6 +37,7 @@ export default class CheckStand extends BaseComponent {
     constructor(props) {
         super(props);
         this.accountInfo = '';
+        this.transSerialNo = '';
         this.state = {
             renderPlaceholderOnly: 'blank',
             isRefreshing: false
@@ -224,8 +225,32 @@ export default class CheckStand extends BaseComponent {
         }
     }
 
-    goPay = () => {
+    checkPay = () => {
         this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.props.orderId,
+                    type: this.props.payType,
+                    trans_serial_no: this.transSerialNo
+                };
+                let url = AppUrls.ORDER_CHECK_PAY;
+                request(url, 'post', maps).then((response) => {
+                    //this.loadData();
+                    this.props.showToast('支付成功');
+                }, (error) => {
+                    this.props.showToast('账户支付检查失败');
+                });
+            } else {
+                this.props.showToast('账户支付检查失败');
+            }
+        });
+    };
+
+    goPay = () => {
+        //this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
@@ -239,14 +264,17 @@ export default class CheckStand extends BaseComponent {
                 request(url, 'post', maps).then((response) => {
                     //this.loadData();
                     //this.props.showToast('支付成功');
+                    this.transSerialNo = response.mjson.data.trans_serial_no;
                     this.toNextPage({
                         name: 'AccountWebScene',
                         component: AccountWebScene,
                         params: {
                             title: '支付',
                             webUrl: response.mjson.data.auth_url + '?authTokenId=' + response.mjson.data.auth_token,
-                            callBack: () => {this.props.callBack();},// 这个callBack就是点击webview容器页面的返回按钮后"收银台"执行的动作
-                            backUrl: webBackUrl.UNBINDCARD
+                            callBack: () => {
+                                this.checkPay();
+                            },// 这个callBack就是点击webview容器页面的返回按钮后"收银台"执行的动作
+                            backUrl: webBackUrl.PAY
                         }
                     });
                 }, (error) => {

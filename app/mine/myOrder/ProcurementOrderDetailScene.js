@@ -116,7 +116,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 };
                 this.items.push({title: '创建订单', nodeState: 1, isLast: false, isFirst: true});
                 this.items.push({title: '已付订金', nodeState: 2, isLast: false, isFirst: false});
-                this.items.push({title: '结算尾款', nodeState: 2, isLast: false, isFirst: false});
+                this.items.push({title: '结清尾款', nodeState: 2, isLast: false, isFirst: false});
                 //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
                 this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
                 break;
@@ -134,7 +134,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 };
                 this.items.push({title: '创建订单', nodeState: 1, isLast: false, isFirst: true});
                 this.items.push({title: '已付订金', nodeState: 2, isLast: false, isFirst: false});
-                this.items.push({title: '结算尾款', nodeState: 2, isLast: false, isFirst: false});
+                this.items.push({title: '结清尾款', nodeState: 2, isLast: false, isFirst: false});
                 //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
                 this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
                 break;
@@ -150,7 +150,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 };
                 this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
                 this.items.push({title: '已付订金', nodeState: 1, isLast: false, isFirst: false});
-                this.items.push({title: '结算尾款', nodeState: 2, isLast: false, isFirst: false});
+                this.items.push({title: '结清尾款', nodeState: 2, isLast: false, isFirst: false});
                 //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
                 this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
                 break;
@@ -166,7 +166,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 };
                 this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
                 this.items.push({title: '已付订金', nodeState: 0, isLast: false, isFirst: false});
-                this.items.push({title: '结算尾款', nodeState: 1, isLast: false, isFirst: false});
+                this.items.push({title: '结清尾款', nodeState: 1, isLast: false, isFirst: false});
                 //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
                 this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
                 break;
@@ -182,7 +182,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 };
                 this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
                 this.items.push({title: '已付订金', nodeState: 0, isLast: false, isFirst: false});
-                this.items.push({title: '结算尾款', nodeState: 0, isLast: false, isFirst: false});
+                this.items.push({title: '结清尾款', nodeState: 0, isLast: false, isFirst: false});
                 //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
                 this.items.push({title: '完成交易', nodeState: 1, isLast: true, isFirst: false});
                 break;
@@ -286,16 +286,22 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
      * 确认收车请求
      */
     confirmCar = () => {
-        let url = AppUrls.ORDER_CONFIRM_CAR;
-        request(url, 'post', {
-            order_id: this.orderDetail.id
-        }).then((response) => {
-            //this.props.showModal(false);
-            this.loadData();
-        }, (error) => {
-            //this.props.showModal(false);
-            //console.log("成交价提交失败");
-            this.props.showToast('确认验收失败');
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.orderDetail.id
+                };
+                let url = AppUrls.ORDER_CONFIRM_CAR;
+                request(url, 'post', maps).then((response) => {
+                    this.loadData();
+                }, (error) => {
+                    this.props.showToast('确认验收失败');
+                });
+            } else {
+                this.props.showToast('确认验收失败');
+            }
         });
     };
 
@@ -368,7 +374,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                     name: 'CheckStand',
                                     component: CheckStand,
                                     params: {
-                                        payAmount: this.orderDetail.deposit_amount,
+                                        payAmount: this.orderState === 1 ? this.orderDetail.deposit_amount : this.orderDetail.balance_amount,
                                         orderId: this.props.orderId,
                                         payType: this.orderState
                                     }
@@ -510,7 +516,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     this.orderState = 1;
                     this.topState = 0;
                     if (status === 3) {
-                        this.bottomState = 7;
+                        this.bottomState = 1;
                     } else {
                         this.bottomState = 1;
                     }
@@ -536,7 +542,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     this.orderState = 2;
                     this.topState = -1;
                     if (status === 6) {
-                        this.bottomState = 7;
+                        this.bottomState = 1;
                     } else {
                         this.bottomState = 1;
                     }

@@ -44,13 +44,17 @@ export default class OrderScreeningScene extends BaseComponent {
         this.status = this.props.status;
         this.mList = [];
         if (this.props.business === 1) {
-            if (this.props.orderStage === 1) {
-                this.mList = ['1', '3'];
-            } else {
+            if (this.props.status === 'finish' || this.props.status === 'closed') {
                 this.mList = ['3'];
+            } else {
+                this.mList = ['1', '3'];
             }
         } else {
-            this.mList = ['1', '3'];
+            if (this.props.status === 'finish' || this.props.status === 'closed') {
+                this.mList = ['3'];
+            } else {
+                this.mList = ['1', '3'];
+            }
         }
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 

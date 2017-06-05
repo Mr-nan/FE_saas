@@ -42,7 +42,7 @@ export default class OrderListScene extends BaseComponent {
         this.pageNum = 1;
         this.allPage = 1;
         this.orderState = 0;
-        this.status = 'all';
+        this.status = this.props.status;
         this.startDate = '选择开始时间';
         this.endDate = '选择结束时间';
         //let business = this.props.business;
@@ -96,10 +96,10 @@ export default class OrderListScene extends BaseComponent {
                     business: this.props.business,
                     page: this.pageNum,
                     rows: 10,
-                    list_state: this.props.listState,
+                    //list_state: this.props.listState,
                     status: this.status,
-                    start_time: this.startDate,
-                    end_time: this.endDate
+                    start_time: this.startDate === '选择开始时间' ? '' : this.startDate,
+                    end_time: this.endDate === '选择结束时间' ? '' : this.endDate
                 };
                 let url = AppUrls.ORDER_INDEX;
                 this.pageNum = 1;
@@ -162,10 +162,10 @@ export default class OrderListScene extends BaseComponent {
                     business: this.props.business,
                     page: this.pageNum,
                     rows: 10,
-                    list_state: this.props.listState,
+                    //list_state: this.props.listState,
                     status: this.status,
-                    start_time: this.startDate,
-                    end_time: this.endDate
+                    start_time: this.startDate === '选择开始时间' ? '' : this.startDate,
+                    end_time: this.endDate === '选择结束时间' ? '' : this.endDate
                 };
                 let url = AppUrls.ORDER_INDEX;
                 this.pageNum += 1;
@@ -283,7 +283,7 @@ export default class OrderListScene extends BaseComponent {
                             component: OrderScreeningScene,
                             params: {
                                 business: this.props.business,
-                                orderStage: this.props.listState,
+                                //orderStage: this.props.listState,
                                 orderState: this.orderState,
                                 startDate: this.startDate,
                                 endDate: this.endDate,

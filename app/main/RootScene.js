@@ -36,7 +36,7 @@ export default class RootScene extends BaseComponent {
         BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: 'loading'});
-            this.initFinish();
+            //this.initFinish();
         });
     }
 

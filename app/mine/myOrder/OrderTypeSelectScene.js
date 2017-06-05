@@ -104,7 +104,7 @@ export default class OrderTypeSelectScene extends BaseComponent {
                                 component: OrderListScene,
                                 params: {
                                     business: 1,
-                                    listState: 1
+                                    status: 'in_the_deal'
                                 }
                             });
                         } else {
@@ -113,7 +113,7 @@ export default class OrderTypeSelectScene extends BaseComponent {
                                 component: OrderListScene,
                                 params: {
                                     business: 2,
-                                    listState: 1
+                                    status: 'in_the_deal'
                                 }
                             });
                         }
@@ -134,7 +134,7 @@ export default class OrderTypeSelectScene extends BaseComponent {
                                 component: OrderListScene,
                                 params: {
                                     business: 1,
-                                    listState: 2
+                                    status: 'finish'
                                 }
                             });
                         } else {
@@ -143,7 +143,7 @@ export default class OrderTypeSelectScene extends BaseComponent {
                                 component: OrderListScene,
                                 params: {
                                     business: 2,
-                                    listState: 2
+                                    status: 'finish'
                                 }
                             });
                         }
@@ -164,7 +164,7 @@ export default class OrderTypeSelectScene extends BaseComponent {
                                 component: OrderListScene,
                                 params: {
                                     business: 1,
-                                    listState: 3
+                                    status: 'closed'
                                 }
                             });
                         } else {
@@ -173,7 +173,7 @@ export default class OrderTypeSelectScene extends BaseComponent {
                                 component: OrderListScene,
                                 params: {
                                     business: 2,
-                                    listState: 3
+                                    status: 'closed'
                                 }
                             });
                         }

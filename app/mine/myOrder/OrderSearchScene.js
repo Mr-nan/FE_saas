@@ -21,6 +21,8 @@ import {request} from "../../utils/RequestUtil";
 import LoadMoreFooter from "../../carSource/znComponent/LoadMoreFooter";
 import ProcurementOrderDetailScene from "./ProcurementOrderDetailScene";
 import SalesOrderDetailScene from "./SalesOrderDetailScene";
+import StorageUtil from "../../utils/StorageUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
 const Pixel = new PixelUtil();
 const {width, height} = Dimensions.get('window');
 
@@ -86,34 +88,45 @@ export default class OrderSearchScene extends BaseComponent {
     };
 
     loadData = () => {
-        let url = AppUrls.ORDER_SEARCH;
-        this.pageNum = 1;
-        request(url, 'post', {
-            business: this.props.business,
-            page: this.pageNum,
-            rows: 10,
-            car_name: this.state.value
-        }).then((response) => {
-            this.orderListData = response.mjson.data.items;
-            this.allPage = response.mjson.data.total / response.mjson.data.rows;
-            if (this.orderListData) {
-                this.setState({
-                    dataSource: this.state.dataSource.cloneWithRows(this.orderListData),
-                    isRefreshing: false,
-                    renderPlaceholderOnly: 'success'
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                this.pageNum = 1;
+                let maps = {
+                    company_id: datas.company_base_id,
+                    business: this.props.business,
+                    page: this.pageNum,
+                    rows: 10,
+                    car_name: this.state.value
+                };
+                let url = AppUrls.ORDER_SEARCH;
+                request(url, 'post', maps).then((response) => {
+                    this.orderListData = response.mjson.data.items;
+                    this.allPage = response.mjson.data.total / response.mjson.data.rows;
+                    if (this.orderListData) {
+                        this.setState({
+                            dataSource: this.state.dataSource.cloneWithRows(this.orderListData),
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'success'
+                        });
+                    } else {
+                        this.setState({
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'null'
+                        });
+                    }
+                }, (error) => {
+                    this.setState({
+                        isRefreshing: false,
+                        renderPlaceholderOnly: 'error'
+                    });
                 });
             } else {
                 this.setState({
                     isRefreshing: false,
-                    renderPlaceholderOnly: 'null'
+                    renderPlaceholderOnly: 'error'
                 });
             }
-
-        }, (error) => {
-            this.setState({
-                isRefreshing: false,
-                renderPlaceholderOnly: 'error'
-            });
         });
     };
 
@@ -246,13 +259,17 @@ export default class OrderSearchScene extends BaseComponent {
                         this.toNextPage({
                             name: 'ProcurementOrderDetailScene',
                             component: ProcurementOrderDetailScene,
-                            params: {}
+                            params: {
+                                orderId: rowData.order.id
+                            }
                         });
                     } else {
                         this.toNextPage({
                             name: 'SalesOrderDetailScene',
                             component: SalesOrderDetailScene,
-                            params: {}
+                            params: {
+                                orderId: rowData.order.id
+                            }
                         });
                     }
                 }}
