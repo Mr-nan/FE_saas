@@ -97,7 +97,8 @@ export  default class AccountScene extends BaseComponent {
     getAccountData=(id,type)=>{
         let maps = {
             enter_base_id:id,
-            user_type: type
+            user_type: type,
+            transfer_type:'0,3,4,104'
         };
         request(Urls.USER_ACCOUNT_INDEX, 'Post', maps)
             .then((response) => {

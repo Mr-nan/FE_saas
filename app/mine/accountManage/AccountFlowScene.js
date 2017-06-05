@@ -61,12 +61,12 @@ export  default class AccountFlowScene extends BaseComponent {
                             index = obj.i;
                         }
                     }
-                    renderTabBar={() => <RepaymenyTabBar tabName={["全部", "充值",'提现']}/>}
+                    renderTabBar={() => <RepaymenyTabBar tabName={["全部", "充值",'提现','转账']}/>}
                 >
                     <FlowAllPage ref="flowallpage" tabLabel="ios-paper1"/>
                     <FlowRechargePage ref="flowrechargepage" tabLabel="ios-paper2"/>
                     <FlowWithdrawalsPage ref="flowwithdrawalspage" tabLabel="ios-paper3"/>
-                    {/*<FlowTransactionPage ref="flowtransactionpage" tabLabel="ios-paper4"/>*/}
+                    <FlowTransactionPage ref="flowtransactionpage" tabLabel="ios-paper4"/>
 
                 </ScrollableTabView>
                 <SelectDate ref="selectdate" callBack={(time)=>{
@@ -78,9 +78,9 @@ export  default class AccountFlowScene extends BaseComponent {
                        }else if(index==2){
                             this.refs.flowwithdrawalspage.changeTime(time);
                        }
-                       {/*else if(index==3){*/}
-                            {/*this.refs.flowtransactionpage.changeTime(time);*/}
-                       {/*}*/}
+                       else if(index==3){
+                            this.refs.flowtransactionpage.changeTime(time);
+                       }
                 }}/>
                 <NavigationView
                     title="账户流水"

@@ -74,7 +74,7 @@ export  default class FlowWithdrawalsPage extends BaseComponent {
         let maps = {
             create_time:this.state.time,
             enter_base_id:id,
-            transfer_type:'1',
+            transfer_type:'4',
             user_type:type
         };
         request(Urls.USER_ACCOUNT_PAYLOG, 'Post', maps)

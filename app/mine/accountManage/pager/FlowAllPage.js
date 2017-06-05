@@ -53,7 +53,8 @@ export  default class FlowAllPage extends BaseComponent {
                 let datas=JSON.parse(data.result);
                 let maps = {
                     enter_base_ids:datas.company_base_id,
-                    child_type:'1'
+                    child_type:'1',
+
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
@@ -76,7 +77,7 @@ export  default class FlowAllPage extends BaseComponent {
         let maps = {
             create_time:this.state.time,
             enter_base_id:id,
-            transfer_type:'',
+            transfer_type:'0,3,4,104',
             user_type:type
         };
         request(Urls.USER_ACCOUNT_PAYLOG, 'Post', maps)
