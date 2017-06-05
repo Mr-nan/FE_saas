@@ -198,13 +198,9 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
 
         request(Urls.USER_ACCOUNT_SAVEPERSONAL, 'Post', maps)
             .then((response) => {
-                    this.props.showModal(false);
-                    this.toNextPage({name:'AccountWebScene',component:AccountWebScene,params:{
-                        title:'个人账户修改',webUrl:response.mjson.data.auth_url+
-                        '?authTokenId='+response.mjson.data.auth_token,callBack:()=>{
-                            this.props.callBack();
-                        },backUrl:webBackUrl.OPENINDIVIDUALACCOUNT
-                    }});
+                    this.props.showToast('修改成功');
+                    this.props.callBack();
+                    this.backPage();
                     //  Linking.openURL(response.mjson.data.auth_url+'?authTokenId='+response.mjson.data.auth_token);
                 },
                 (error) => {

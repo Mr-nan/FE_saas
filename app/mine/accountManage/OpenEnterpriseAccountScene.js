@@ -340,15 +340,9 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
         };
         request(Urls.USER_ACCOUNT_SAVECOMPANY, 'Post', maps)
             .then((response) => {
-                    this.props.showModal(false);
-                    this.toNextPage({
-                        name: 'AccountWebScene', component: AccountWebScene, params: {
-                            title: '企业账户修改', webUrl: response.mjson.data.auth_url +
-                            '?authTokenId=' + response.mjson.data.auth_token, callBack: () => {
-                                this.props.callBack();
-                            }, backUrl: webBackUrl.OPENENTERPRISEACCOUNT
-                        }
-                    });
+                    this.props.showToast('修改成功');
+                    this.props.callBack();
+                    this.backPage();
                 },
                 (error) => {
                     if (error.mycode == -300 || error.mycode == -500) {
