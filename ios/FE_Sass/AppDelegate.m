@@ -13,6 +13,7 @@
 #import "RCTLinkingManager.h"
 #import <React/RCTBundleURLProvider.h>
 #import <AdSupport/AdSupport.h>
+#import "sys/utsname.h"
 
 @implementation AppDelegate
 
@@ -32,7 +33,9 @@
   NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
   NSString  *idfaStr = [[ASIdentifierManager sharedManager]advertisingIdentifier].UUIDString;
   NSString* phoneVersion = [[UIDevice currentDevice] systemVersion];
-  NSString* phoneModel = [[UIDevice currentDevice] model];
+  struct utsname systemInfo;
+  uname(&systemInfo);
+  NSString* phoneModel = [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];;
   NSString *appVersion = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
 
   
