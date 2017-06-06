@@ -108,7 +108,7 @@ public class VinScanModule extends ReactContextBaseJavaModule implements Activit
         String versionName = "";
         try {
             PackageManager packageManager = context.getPackageManager();
-            PackageInfo packageInfo = packageManager.getPackageInfo("cn.testgethandsetinfo", 0);
+            PackageInfo packageInfo = packageManager.getPackageInfo("com.fe_sass", 0);
             versionName = packageInfo.versionName;
             if (TextUtils.isEmpty(versionName)) {
                 return "";
