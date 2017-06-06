@@ -49,7 +49,8 @@ let carObject = {
     model_name: '0',
     discharge_standard:'',
     model_year:'',
-    liter:''
+    liter:'',
+    config_value:''
 
 };
 
@@ -86,6 +87,7 @@ export default class CarBrandSelectScene extends BaseComponent {
         carObject.discharge_standard='';
         carObject.model_year='';
         carObject.liter='';
+        carObject.config_value='';
 
 
         let getSectionData = (dataBlob, sectionID) => {
@@ -662,6 +664,8 @@ class CarModelList extends BaseComponent {
                 carObject.model_name = rowData.model_name;
                 carObject.discharge_standard = rowData.discharge_standard;
                 carObject.model_year = rowData.model_year;
+                carObject.config_value = rowData.config_value;
+
                 if(rowData.liter)
                 {
                     carObject.liter = rowData.liter;

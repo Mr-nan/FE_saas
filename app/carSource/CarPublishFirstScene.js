@@ -635,6 +635,8 @@ export default class CarPublishFirstScene extends BaseComponent{
 
     footBtnClick=()=>{
 
+        console.log(this.carData);
+
         if(!this.carData.vin||this.carData.vin==''){
             this.props.showToast('请输入正确的车架号');
             return;
@@ -702,7 +704,6 @@ export default class CarPublishFirstScene extends BaseComponent{
             }
         }
         this.toNextPage(navigatorParams);
-        console.log(this.carData);
 
     }
     _onScanPress=()=>{
