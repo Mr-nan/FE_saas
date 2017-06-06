@@ -76,28 +76,28 @@ export default class CarMySourceScene extends BaceComponent {
 
         } else if (typeStr == '编辑') {
 
-            // let navigatorParams = {
-            //
-            //     name: "EditCarScene",
-            //     component: EditCarScene,
-            //     params: {
-            //
-            //         fromNew: false,
-            //         carId: carData.id,
-            //     }
-            // };
-            // this.toNextPage(navigatorParams);
-
             let navigatorParams = {
 
-                name: "CarPublishFirstScene",
-                component: CarPublishFirstScene,
+                name: "EditCarScene",
+                component: EditCarScene,
                 params: {
 
-                    carID: carData.id,
+                    fromNew: false,
+                    carId: carData.id,
                 }
             };
             this.toNextPage(navigatorParams);
+
+            // let navigatorParams = {
+            //
+            //     name: "CarPublishFirstScene",
+            //     component: CarPublishFirstScene,
+            //     params: {
+            //
+            //         carID: carData.id,
+            //     }
+            // };
+            // this.toNextPage(navigatorParams);
 
         }else if(typeStr == '查看退回原因'){
 
@@ -151,25 +151,25 @@ export default class CarMySourceScene extends BaceComponent {
 
     pushNewCarScene = () => {
 
-        // let navigatorParams = {
-        //
-        //     name: "NewCarScene",
-        //     component: NewCarScene,
-        //     params: {
-        //
-        //         fromNew: false,
-        //     }
-        // };
-        // this.toNextPage(navigatorParams);
         let navigatorParams = {
 
-            name: "CarPublishFirstScene",
-            component: CarPublishFirstScene,
+            name: "NewCarScene",
+            component: NewCarScene,
             params: {
 
+                fromNew: false,
             }
         };
         this.toNextPage(navigatorParams);
+        // let navigatorParams = {
+        //
+        //     name: "CarPublishFirstScene",
+        //     component: CarPublishFirstScene,
+        //     params: {
+        //
+        //     }
+        // };
+        // this.toNextPage(navigatorParams);
 
     }
 
@@ -639,12 +639,12 @@ class MyCarSourceAuditView extends BaceComponent {
     }
     loadData = () => {
 
-        let url = AppUrls.CAR_USER_CAR;
-        // let url = AppUrls.CAR_PERLIST;
+        // let url = AppUrls.CAR_USER_CAR;
+        let url = AppUrls.CAR_PERLIST;
         carAuditPage = 1;
         request(url, 'post', {
 
-            car_status: '3',
+            // car_status: '3',
             page: carAuditPage,
             row: 10,
 
@@ -653,13 +653,30 @@ class MyCarSourceAuditView extends BaceComponent {
             carAuditData = response.mjson.data.list;
             carAuditStatus = response.mjson.data.status;
 
-            this.setState({
-                carData: this.state.carData.cloneWithRows(carAuditData),
-                isRefreshing: false,
-                renderPlaceholderOnly: 'success',
-                carAuditStatus: carAuditStatus,
+            // this.setState({
+            //     carData: this.state.carData.cloneWithRows(carAuditData),
+            //     isRefreshing: false,
+            //     renderPlaceholderOnly: 'success',
+            //     carAuditStatus: carAuditStatus,
+            //
+            // });
 
-            });
+            if (carAuditData.length) {
+                this.setState({
+                    carData: this.state.carData.cloneWithRows(carAuditData),
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'success',
+                    carAuditStatus: carAuditStatus,
+                });
+
+            } else {
+                this.setState({
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'null',
+                    carAuditStatus: carAuditStatus,
+                });
+            }
+
 
 
         }, (error) => {
@@ -675,11 +692,11 @@ class MyCarSourceAuditView extends BaceComponent {
 
     loadMoreData = () => {
 
-        let url = AppUrls.CAR_PERLIST;
         // let url = AppUrls.CAR_USER_CAR;
+        let url = AppUrls.CAR_PERLIST;
         carAuditPage += 1;
         request(url, 'post', {
-            car_status: '3',
+            // car_status: '3',
             page: carAuditPage,
             row: 10,
 
@@ -761,7 +778,6 @@ class MyCarSourceAuditView extends BaceComponent {
                                 enableEmptySections={true}
                                 scrollRenderAheadDistance={10}
                                 pageSize={10}
-                                renderHeader={this.renderHeader}
                                 renderFooter={this.renderListFooter}
                                 onEndReached={this.toEnd}
                                 renderRow={(rowData) =><MyCarCell carCellData={rowData} cellClick={this.props.carCellClick} footButtonClick={this.props.footButtonClick} type={3}/>}
