@@ -40,12 +40,13 @@ export default class root extends Component {
         global.phoneModel = this.props.phoneModel;
         global.appVersion = this.props.appVersion;
 
-        console.log(this.props.phoneVersion);
-        console.log(this.props.phoneModel);
-        console.log(this.props.appVersion);
     }
 
     showToast = (content) => {
+        this.refs.toast.changeType(ShowToast.TOAST, content);
+    }
+
+    test = (content) => {
         this.refs.toast.changeType(ShowToast.TOAST, content);
     }
 
