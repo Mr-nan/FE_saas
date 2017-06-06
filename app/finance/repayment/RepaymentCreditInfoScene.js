@@ -125,12 +125,10 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
             };
             request(Urls.FINANCE, 'Post', maps)
                 .then((response) => {
-                        this.props.showModal(false);
                         this.props.showToast('申请成功');
                         this.allRefresh();
                     },
                     (error) => {
-                        this.props.showModal(false);
                         if (error.mycode == -300 || error.mycode == -500) {
                             this.props.showToast('申请失败');
                         } else {
