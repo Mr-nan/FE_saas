@@ -11,6 +11,9 @@ import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.text.TextUtils;
 
 /**
  * Created by Administrator on 2017/3/2.
@@ -101,4 +104,19 @@ public class VinScanModule extends ReactContextBaseJavaModule implements Activit
                 ",appVersion="+getAppVersionName(mContext);
         callback.invoke(verison);
     }
+    private String getAppVersionName(Context context) {
+        String versionName = "";
+        try {
+            PackageManager packageManager = context.getPackageManager();
+            PackageInfo packageInfo = packageManager.getPackageInfo("cn.testgethandsetinfo", 0);
+            versionName = packageInfo.versionName;
+            if (TextUtils.isEmpty(versionName)) {
+                return "";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return versionName;
+    }
+
 }
