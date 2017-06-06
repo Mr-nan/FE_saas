@@ -696,14 +696,14 @@ export default class CarPublishFirstScene extends BaseComponent{
             this.titleData1[1][1].value = '请选择';
         }
 
-        // let navigatorParams = {
-        //     name: "CarPublishSecondScene",
-        //     component: CarPublishSecondScene,
-        //     params: {
-        //         carData:this.carData,
-        //     }
-        // }
-        // this.toNextPage(navigatorParams);
+        let navigatorParams = {
+            name: "CarPublishSecondScene",
+            component: CarPublishSecondScene,
+            params: {
+                carData:this.carData,
+            }
+        }
+        this.toNextPage(navigatorParams);
 
     }
     _onScanPress=()=>{
