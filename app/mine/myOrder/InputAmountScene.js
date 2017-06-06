@@ -108,7 +108,8 @@ export default class InputAmountScene extends BaseComponent {
                 request(url, 'post', maps).then((response) => {
                     this.props.showModal(false);
                     //let isShowFin = response.mjson.data.response.is_show_finance;
-                    this.props.isShowFinance(response.mjson.data.response);
+                    //console.log('isShowFinance', response.mjson.data.response);
+                    this.props.isShowFinance(response.mjson.data);
                 }, (error) => {
                     this.props.showToast('车辆定价检查失败');
                 });

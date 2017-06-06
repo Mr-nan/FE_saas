@@ -240,6 +240,7 @@ export default class CheckStand extends BaseComponent {
                 request(url, 'post', maps).then((response) => {
                     //this.loadData();
                     this.props.showToast('支付成功');
+                    this.props.callBack();
                 }, (error) => {
                     this.props.showToast('账户支付检查失败');
                 });

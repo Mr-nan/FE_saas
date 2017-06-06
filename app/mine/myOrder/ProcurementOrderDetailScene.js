@@ -14,7 +14,8 @@ import {
     Dimensions,
     TextInput,
     BackAndroid,
-    InteractionManager
+    InteractionManager,
+    RefreshControl
 } from  'react-native'
 
 const {width, height} = Dimensions.get('window');
@@ -328,6 +329,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         });
     };
 
+    payCallBack = () => {
+        this.props.showModal(true);
+        this.loadData();
+    };
+
     /**
      * 根据订单状态初始化详情页悬浮底
      * @param orderState 页面悬浮底状态
@@ -376,7 +382,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                     params: {
                                         payAmount: this.orderState === 1 ? this.orderDetail.deposit_amount : this.orderDetail.balance_amount,
                                         orderId: this.props.orderId,
-                                        payType: this.orderState
+                                        payType: this.orderState,
+                                        callBack: this.payCallBack
                                     }
                                 });
                             }}>
@@ -400,13 +407,22 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
                             onPress={() => {
-                                this.props.showModal(true);
-                                this.confirmCar();
+                                this.refs.attentionModal.changeShowType(true);
+                                //this.props.showModal(true);
+                                //this.confirmCar();
                             }}>
                             <View style={styles.buttonConfirm}>
                                 <Text style={{color: '#ffffff'}}>确认验收</Text>
                             </View>
                         </TouchableOpacity>
+                        <ChooseModal ref='attentionModal' title='注意'
+                                     negativeButtonStyle={styles.negativeButtonStyle}
+                                     negativeTextStyle={styles.negativeTextStyle} negativeText='取消'
+                                     positiveButtonStyle={styles.positiveButtonStyle}
+                                     positiveTextStyle={styles.positiveTextStyle} positiveText='确定'
+                                     buttonsMargin={Pixel.getPixel(20)}
+                                     positiveOperation={this.confirmCar}
+                                     content='确定后卖家可提现全款'/>
                     </View>
                 )
                 break;
@@ -640,6 +656,13 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         });
     };
 
+    // 下拉刷新数据
+    refreshingData = () => {
+        //this.orderListData = [];
+        this.setState({isRefreshing: true});
+        this.loadData();
+    };
+
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return ( <View style={styles.container}>
@@ -657,7 +680,15 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         dataSource={this.state.dataSource}
                         renderRow={this._renderRow}
                         renderSeparator={this._renderSeperator}
-                        showsVerticalScrollIndicator={false}/>
+                        showsVerticalScrollIndicator={false}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.state.isRefreshing}
+                                onRefresh={this.refreshingData}
+                                tintColor={[fontAndColor.COLORB0]}
+                                colors={[fontAndColor.COLORB0]}
+                            />
+                        }/>
                     <View style={{flex: 1}}/>
                     {this.initDetailPageBottom(this.bottomState)}
                 </View>

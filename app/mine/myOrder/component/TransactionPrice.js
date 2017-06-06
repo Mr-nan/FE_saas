@@ -31,6 +31,10 @@ export default class TransactionPrice extends BaseComponent {
         }
     }
 
+/*    isShowFinance = (financeInfo) => {
+        this.props.isShowFinance(financeInfo);
+    };*/
+
     render() {
         return (
             <View style={styles.itemType4}>

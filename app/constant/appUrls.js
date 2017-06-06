@@ -832,3 +832,11 @@ export const ORDER_FIELD_DICT = BASEURL + V +'order/fieldDict';
  *  支付状态
  */
 export const ORDER_CHECK_PAY = BASEURL + V +'order/checkPay';
+/**
+ *  卖家同意取消订单
+ */
+export const ORDER_ALLOW_CANCEL = BASEURL + V +'order/allowCancel';
+/**
+ *  卖家不同意取消订单
+ */
+export const ORDER_DENY_CANCEL = BASEURL + V +'order/denyCancel';

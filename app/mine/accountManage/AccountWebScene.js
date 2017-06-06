@@ -100,7 +100,10 @@ export  default class AccountWebScene extends BaseComponent {
                                                   }
                                              }
                                       }
-                           }else{
+                           } else if (this.props.backUrl == webBackUrl.PAY) {
+                               this.props.callBack();
+                               this.backPage();
+                           } else{
                                 this.backPage();
                            }
                         }
