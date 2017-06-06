@@ -94,4 +94,11 @@ public class VinScanModule extends ReactContextBaseJavaModule implements Activit
         String imei = mTm.getDeviceId();
         callback.invoke(imei);
     }
+    @ReactMethod
+    public void getPhoneVersion(Callback callback){
+        String verison = "phoneVersion=" +android.os.Build.VERSION.RELEASE  +
+                ",phoneModel=" + android.os.Build.MODEL+
+                ",appVersion="+getAppVersionName(mContext);
+        callback.invoke(verison);
+    }
 }

@@ -36,7 +36,9 @@ export default class root extends Component {
     componentDidMount() {
         weChat.registerApp('wx6211535f6243c779');
         global.iosIDFA = this.props.IDFA;
-
+        global.phoneVersion = this.props.phoneVersion;
+        global.phoneModel = this.props.phoneModel;
+        global.appVersion = this.props.appVersion;
     }
 
     showToast = (content) => {

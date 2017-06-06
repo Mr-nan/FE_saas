@@ -42,6 +42,7 @@ var imgSid: '';
 var smsCode: '';
 var userNames = [];
 var Platform = require('Platform');
+let androidPhoneVersion = '';
 export default class LoginScene extends BaseComponent {
 
     constructor(props) {
@@ -61,6 +62,11 @@ export default class LoginScene extends BaseComponent {
     }
 
     componentDidMount() {
+        if (Platform.OS === 'android') {
+            NativeModules.VinScan.getPhoneVersion((verison) => {
+                androidPhoneVersion = verison;
+            });
+        }
         BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: 'loading'});
@@ -361,17 +367,23 @@ export default class LoginScene extends BaseComponent {
             this.props.showToast("短信验证码不能为空");
         } else {
             let device_code = '';
+            let device_type = '';
             if (Platform.OS === 'android') {
                 device_code = 'dycd_platform_android';
+                device_type = androidPhoneVersion;
             } else {
                 device_code = 'dycd_platform_ios';
+                device_type = 'phoneVersion='+phoneVersion+',phoneModel='
+                    +phoneModel+',appVersion='+appVersion;
             }
+            console.log(device_type);
             let maps = {
                 device_code: device_code,
                 code: smsCode,
                 login_type: "2",
                 phone: userName,
                 pwd: md5.hex_md5(passWord),
+                device_type:device_type
             };
             // this.props.showModal(true);
             this.setState({
