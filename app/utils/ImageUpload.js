@@ -1,7 +1,7 @@
 import StorageUtil from "./StorageUtil";
 var Platform = require('Platform');
 import * as StorageKeyNames from "../constant/storageKeyNames";
-const cdrequest = (url, method, params) => {
+const request = (url, method, params) => {
 
     let isOk;
     let body = '';

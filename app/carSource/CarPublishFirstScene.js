@@ -627,6 +627,7 @@ export default class CarPublishFirstScene extends BaseComponent{
     cellSelectAction=(selectDict)=>{
 
         this.carData['v_type']=selectDict.value;
+        this.carData['v_type_str'] = selectDict.title;
         this.carType=selectDict.title;
         this.upTitleData();
     }
@@ -993,7 +994,6 @@ export default class CarPublishFirstScene extends BaseComponent{
     _checkedCarDischargeClick=(dischargeObject)=>{
         this.titleData1[0][4].value = dischargeObject.title;
         this.titleData2[0][4].value = dischargeObject.title;
-
         this.carData['emission_standards'] = dischargeObject.title;
         this.upTitleData();
     }

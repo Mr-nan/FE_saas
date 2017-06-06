@@ -930,7 +930,7 @@ class CallView extends Component {
                               )
                           }
                           {
-                              this.state.callData.shopsNumber!=='' && (
+                              this.state.callData.shopsNumber!=="" && (
                                   <TouchableOpacity onPress={()=>{this.callAction(this.state.callData.shopsNumber)}}>
                                       <View style={[styles.callModelItem,{marginTop:Pixel.getPixel(20)}]}>
                                           <Image source={require('../../images/carSourceImages/phoneIcon.png')}/>

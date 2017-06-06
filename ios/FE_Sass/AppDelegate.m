@@ -29,11 +29,19 @@
 
     jsCodeLocation = [CodePush bundleURL];
 #endif
+  NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
   NSString  *idfaStr = [[ASIdentifierManager sharedManager]advertisingIdentifier].UUIDString;
+  NSString* phoneVersion = [[UIDevice currentDevice] systemVersion];
+  NSString* phoneModel = [[UIDevice currentDevice] model];
+  NSString *appVersion = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+
   
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"FE_Sass"
-                                               initialProperties:@{@"IDFA":idfaStr}
+                                               initialProperties:@{@"IDFA":idfaStr,
+                                                                   @"phoneVersion":phoneVersion,
+                                                                   @"phoneModel":phoneModel,
+                                                                   @"appVersion":appVersion}
                                                    launchOptions:launchOptions];
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
 
