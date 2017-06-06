@@ -518,11 +518,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 0;
                     this.topState = -1;
-                    this.bottomState = 4;
+                    this.bottomState = 6;
                 } else if (cancelStatus === 3) {
                     this.orderState = 0;
                     this.topState = -1;
-                    this.bottomState = 4;
+                    this.bottomState = 5;
                 }
                 break;
             case 2: // 待付订金  2=>'订单定价完成'
@@ -543,11 +543,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 1;
                     this.topState = -1;
-                    this.bottomState = 4;
+                    this.bottomState = 6;
                 } else if (cancelStatus === 3) {
                     this.orderState = 1;
                     this.topState = -1;
-                    this.bottomState = 4;
+                    this.bottomState = 5;
                 }
 
                 break;
@@ -743,17 +743,12 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             return (
                 <View style={styles.itemType3}>
                     <View style={{
-                        flexDirection: 'row',
                         height: Pixel.getPixel(40),
                         marginLeft: Pixel.getPixel(15),
-                        marginRight: Pixel.getPixel(15),
-                        alignItems: 'center'
+                        justifyContent: 'center'
                     }}>
-                        <Text style={styles.orderInfo}>订单号:</Text>
-                        <Text style={styles.orderInfo}>{this.orderDetail.order_no}</Text>
-                        <View style={{flex: 1}}/>
-                        <Text style={styles.orderInfo}>订单日期:</Text>
-                        <Text style={styles.orderInfo}>{this.orderDetail.created_time}</Text>
+                        <Text style={styles.orderInfo}>订单号:{this.orderDetail.order_no}</Text>
+                        <Text style={styles.orderInfo}>订单日期:{this.orderDetail.created_time}</Text>
                     </View>
                     <View style={styles.separatedLine}/>
                     <View style={{flexDirection: 'row', height: Pixel.getPixel(105), alignItems: 'center'}}>

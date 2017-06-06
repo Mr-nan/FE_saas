@@ -351,12 +351,21 @@ export default class OrderListScene extends BaseComponent {
                 activeOpacity={0.8}>
                 <View style={styles.rowView}>
                     <View style={styles.rowTitleLine}>
-                        <Text style={styles.rowTitleText}>{rowData.order.company}</Text>
-                        <Text style={{
-                            fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                            color: fontAndColor.COLORA1,
-                            marginLeft: Pixel.getPixel(5)
-                        }}>订单号:({rowData.order.order_no})</Text>
+                        <View>
+                            <Text
+                                includeFontPadding={false}
+                                style={{
+                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                color: fontAndColor.COLORA0
+                            }}>{rowData.order.company}</Text>
+                            <Text
+                                includeFontPadding={false}
+                                style={{
+                                marginTop: Pixel.getPixel(3),
+                                fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                color: fontAndColor.COLORA1
+                            }}>订单号:({rowData.order.order_no})</Text>
+                        </View>
                         <View style={{flex: 1}}/>
                         <Text style={styles.rowTitleState}>{rowData.order.status}</Text>
                     </View>
@@ -436,10 +445,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         //marginTop: Pixel.getPixel(15),
         marginLeft: Pixel.getPixel(15)
-    },
-    rowTitleText: {
-        fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-        color: fontAndColor.COLORA0,
     },
     rowTitleState: {
         alignItems: 'flex-end',

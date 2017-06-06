@@ -126,12 +126,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 };
                 let url = AppUrls.ORDER_SAVE_PRICE;
                 request(url, 'post', maps).then((response) => {
-                    if (response.mjson.data.length) {
-                        //this.props.showModal(false);
-                        this.loadData();
-                    } else {
-                        this.props.showToast(response.mjson.msg);
-                    }
+                    this.loadData();
                 }, (error) => {
                     this.props.showToast('成交价提交失败');
                 });
@@ -340,8 +335,13 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
-                                this.props.showModal(true);
-                                this.savePrice(this.carAmount);
+                                //TODO 此处取的字段有问题
+                                if (this.orderDetail.car_finance_data === 0) {
+                                    this.props.showModal(true);
+                                    this.savePrice(this.carAmount);
+                                } else {
+                                    this.refs.chooseModal1.changeShowType(true);
+                                }
                             }}>
                             <View style={styles.buttonConfirm}>
                                 <Text style={{color: '#ffffff'}}>确认</Text>
@@ -355,6 +355,14 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                      buttonsMargin={Pixel.getPixel(20)}
                                      positiveOperation={this.cancelOrder}
                                      content='确定后取消订单。如买家有已支付款项将退款，如您有补差价款可提现。'/>
+                        <ChooseModal ref='chooseModal1' title='提示'
+                                     negativeButtonStyle={styles.negativeButtonStyle}
+                                     negativeTextStyle={styles.negativeTextStyle} negativeText='再想想'
+                                     positiveButtonStyle={styles.positiveButtonStyle}
+                                     positiveTextStyle={styles.positiveTextStyle} positiveText='没问题'
+                                     buttonsMargin={Pixel.getPixel(20)}
+                                     positiveOperation={this.savePrice(this.carAmount)}
+                                     content='此车是库存融资质押车辆，请在买家支付订金后操作车辆出库。'/>
                     </View>
                 )
                 break;
@@ -694,18 +702,28 @@ export default class SalesOrderDetailScene extends BaseComponent {
         }
     };
 
+    /**
+     * 取消订单请求
+     */
     cancelOrder = () => {
         this.props.showModal(true);
-        let url = AppUrls.ORDER_CANCEL;
-        request(url, 'post', {
-            order_id: this.orderDetail.id
-        }).then((response) => {
-            //this.props.showModal(false);
-            this.loadData();
-        }, (error) => {
-            //this.props.showModal(false);
-            //console.log("成交价提交失败");
-            this.props.showToast('取消订单申请失败');
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.orderDetail.id,
+                    type: 2
+                };
+                let url = AppUrls.ORDER_CANCEL;
+                request(url, 'post', maps).then((response) => {
+                    this.loadData();
+                }, (error) => {
+                    this.props.showToast('取消订单失败');
+                });
+            } else {
+                this.props.showToast('取消订单失败');
+            }
         });
     };
 
@@ -835,17 +853,20 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     }}>
                         <Text style={styles.orderInfo}>贷款本金</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContentRed}>{this.financeInfo ? this.financeInfo.seller_finance_amount : 0}元</Text>
+                        <Text
+                            style={styles.infoContentRed}>{this.financeInfo ? this.financeInfo.seller_finance_amount : 0}元</Text>
                     </View>
                     <View style={styles.infoItem}>
                         <Text style={styles.orderInfo}>贷款利息</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContentRed}>{this.financeInfo ? this.financeInfo.interest_amount : 0}元</Text>
+                        <Text
+                            style={styles.infoContentRed}>{this.financeInfo ? this.financeInfo.interest_amount : 0}元</Text>
                     </View>
                     <View style={styles.infoItem}>
                         <Text style={styles.orderInfo}>30日利息</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContentRed}>{this.financeInfo ? this.financeInfo.days_interest_amount : 0}元</Text>
+                        <Text
+                            style={styles.infoContentRed}>{this.financeInfo ? this.financeInfo.days_interest_amount : 0}元</Text>
                     </View>
                     <View style={{
                         marginTop: Pixel.getPixel(20),
@@ -900,17 +921,12 @@ export default class SalesOrderDetailScene extends BaseComponent {
             return (
                 <View style={styles.itemType3}>
                     <View style={{
-                        flexDirection: 'row',
                         height: Pixel.getPixel(40),
                         marginLeft: Pixel.getPixel(15),
-                        marginRight: Pixel.getPixel(15),
-                        alignItems: 'center'
+                        justifyContent: 'center'
                     }}>
-                        <Text style={styles.orderInfo}>订单号:</Text>
-                        <Text style={styles.orderInfo}>{this.orderDetail.order_no}</Text>
-                        <View style={{flex: 1}}/>
-                        <Text style={styles.orderInfo}>订单日期:</Text>
-                        <Text style={styles.orderInfo}>{this.orderDetail.created_time}</Text>
+                        <Text style={styles.orderInfo}>订单号:{this.orderDetail.order_no}</Text>
+                        <Text style={styles.orderInfo}>订单日期:{this.orderDetail.created_time}</Text>
                     </View>
                     <View style={styles.separatedLine}/>
                     <View style={{flexDirection: 'row', height: Pixel.getPixel(105), alignItems: 'center'}}>
