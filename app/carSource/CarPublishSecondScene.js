@@ -569,6 +569,11 @@ export default class CarPublishSecondScene extends BaseComponent{
             this.props.showToast('请输入里程');
             return;
         }
+        if(parseFloat(this.carData.mileage)<=0 && this.carData.v_type == 1)
+        {
+            this.props.showToast('里程不能等于0');
+            return;
+        }
 
         if(this.carData.dealer_price==''||!this.carData.dealer_price)
         {
