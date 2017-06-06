@@ -49,7 +49,4 @@ export default class root extends Component {
     showModal = (value) => {
         this.refs.toast.showModal(value);
     }
-    showToast = (test) => {
-        this.refs.toast.changeType(ShowToast.TOAST, content);
-    }
 }
