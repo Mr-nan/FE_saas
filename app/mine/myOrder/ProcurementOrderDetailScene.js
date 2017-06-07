@@ -283,6 +283,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         });
     };
 
+
+
     /**
      * 确认收车请求
      */
