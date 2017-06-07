@@ -8,7 +8,8 @@ import {
     Image,
     BackAndroid,
     InteractionManager,
-    Text
+    Text,
+    AppState
 } from 'react-native';
 
 import BaseComponent from '../component/BaseComponent';
@@ -33,6 +34,10 @@ export default class RootScene extends BaseComponent {
 
     componentDidMount() {
         codePush.sync();
+        AppState.addEventListener("change", (newState) => {
+            newState === "active" && codePush.sync();
+            console.log('123');
+        });
         BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: 'loading'});

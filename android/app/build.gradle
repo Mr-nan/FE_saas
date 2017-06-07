@@ -115,11 +115,11 @@ android {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.release
-            buildConfigField "String", "CODEPUSH_KEY", '"SmjkaVnMj5aa_qPk1L1k8mnP1d58VJvFYEdiG"'
+            buildConfigField "String", "CODEPUSH_KEY", '"rofF7zy9tDPXr2bc4C65cm8ukdHYe1b7b22b-ea3f-4c77-abcc-72586c814b3c"'
         }
 
         releaseStaging {
-            buildConfigField "String", "CODEPUSH_KEY", '"SmjkaVnMj5aa_qPk1L1k8mnP1d58VJvFYEdiG"'
+            buildConfigField "String", "CODEPUSH_KEY", '"rofF7zy9tDPXr2bc4C65cm8ukdHYe1b7b22b-ea3f-4c77-abcc-72586c814b3c"'
         }
 
     }

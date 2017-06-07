@@ -13,14 +13,10 @@ import {
 
 import MyNavigator  from './component/MyNavigator';
 import ShowToast from "./component/toast/ShowToast";
-import CodePush from 'react-native-code-push';
-import *as weChat from 'react-native-wechat';
+import codePush from 'react-native-code-push'
+import * as weChat from 'react-native-wechat';
 
 export default class root extends Component {
-
-    // componentWillMount() {
-    //     CodePush.sync();
-    // }
 
     render() {
         return (
