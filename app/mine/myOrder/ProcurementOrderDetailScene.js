@@ -213,7 +213,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 marginLeft: Pixel.getPixel(15),
                                 fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                                 color: fontAndColor.COLORB7
-                            }}>订金支付剩余时间:</Text>
+                            }}>订金支付剩余时间</Text>
                             <DepositCountDown leftTime={this.leftTime}/>
                             <Text style={{
                                 marginLeft: Pixel.getPixel(15),
