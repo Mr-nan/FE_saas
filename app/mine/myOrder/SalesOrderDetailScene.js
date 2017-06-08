@@ -143,39 +143,48 @@ export default class SalesOrderDetailScene extends BaseComponent {
     };
 
     loadData = () => {
-        let url = AppUrls.ORDER_DETAIL;
-        request(url, 'post', {
-            order_id: this.props.orderId,
-            type: 2
-        }).then((response) => {
-            this.props.showModal(false);
-            this.orderDetail = response.mjson.data;
-            let status = response.mjson.data.status;
-            let cancelStatus = response.mjson.data.cancel_status;
-            this.stateMapping(status, cancelStatus);
-            this.leftTime = this.getLeftTime(this.orderDetail.cancel_time);
-            if (this.orderDetail) {
-                //this.carAmount = this.orderDetail.marked_amount * 10000;
-                this.carVin = this.orderDetail.orders_item_data[0].car_vin;
-                this.initListData(this.orderState);
-                this.setState({
-                    dataSource: this.state.dataSource.cloneWithRows(this.mList),
-                    isRefreshing: false,
-                    renderPlaceholderOnly: 'success'
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.props.orderId,
+                    type: 2,
+                    sort: 2
+                };
+                let url = AppUrls.ORDER_DETAIL;
+                request(url, 'post', maps).then((response) => {
+                    this.props.showModal(false);
+                    this.orderDetail = response.mjson.data;
+                    let status = response.mjson.data.status;
+                    let cancelStatus = response.mjson.data.cancel_status;
+                    this.stateMapping(status, cancelStatus);
+                    this.leftTime = this.getLeftTime(this.orderDetail.cancel_time);
+                    if (this.orderDetail) {
+                        //this.carAmount = this.orderDetail.marked_amount * 10000;
+                        this.carVin = this.orderDetail.orders_item_data[0].car_vin;
+                        this.initListData(this.orderState);
+                        this.setState({
+                            dataSource: this.state.dataSource.cloneWithRows(this.mList),
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'success'
+                        });
+                    } else {
+                        this.setState({
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'null'
+                        });
+                    }
+                }, (error) => {
+                    this.props.showToast('获取订单详情失败');
+                    this.setState({
+                        isRefreshing: false,
+                        renderPlaceholderOnly: 'error'
+                    });
                 });
             } else {
-                this.setState({
-                    isRefreshing: false,
-                    renderPlaceholderOnly: 'null'
-                });
+                this.props.showToast('获取订单详情失败');
             }
-
-        }, (error) => {
-            this.props.showModal(false);
-            this.setState({
-                isRefreshing: false,
-                renderPlaceholderOnly: 'error'
-            });
         });
     };
 

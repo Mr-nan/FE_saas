@@ -492,7 +492,7 @@ export default class CarInfoScene extends BaseComponent {
                         'company_id': enters.company_base_id
                     }).then((response) => {
                         //this.props.showToast(response.mjson.msg);
-                        if (response.mjson.msg === 'ok') {  // 下单成功
+                        if (response.mjson.msg === 'ok' && response.mjson.code === 1) {  // 下单成功
                             this.toNextPage({
                                 name: 'ProcurementOrderDetailScene',
                                 component: ProcurementOrderDetailScene,
