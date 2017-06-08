@@ -46,23 +46,23 @@ export default class RootScene extends BaseComponent {
     }
 
     initFinish = () => {
-        let maps = {
-            type: '6',
-            api: 'api/v1/App/Update'
-        };
-        request(Urls.APP_UPDATE, 'Post', maps)
-            .then((response) => {
-                    if (response.mjson.data.versioncode != versionCode) {
-                        this.navigatorParams.component = UpLoadScene;
-                        this.navigatorParams.params = {url: response.mjson.data.downloadurl}
-                        this.toNextPage(this.navigatorParams);
-                    } else {
-                        this.toJump();
-                    }
-                },
-                (error) => {
-                    this.toJump();
-                });
+        // let maps = {
+        //     type: '6',
+        //     api: 'api/v1/App/Update'
+        // };
+        // request(Urls.APP_UPDATE, 'Post', maps)
+        //     .then((response) => {
+        //             if (response.mjson.data.versioncode != versionCode) {
+        //                 this.navigatorParams.component = UpLoadScene;
+        //                 this.navigatorParams.params = {url: response.mjson.data.downloadurl}
+        //                 this.toNextPage(this.navigatorParams);
+        //             } else {
+        //                 this.toJump();
+        //             }
+        //         },
+        //         (error) => {
+        //             this.toJump();
+        //         });
     }
 
     toJump = () => {

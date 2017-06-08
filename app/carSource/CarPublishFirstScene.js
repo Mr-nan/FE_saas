@@ -59,45 +59,45 @@ export default class CarPublishFirstScene extends BaseComponent{
             this.loadCarData();
 
         }else {
-            StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-                if(data.code == 1 && data.result != '')
-                {
-                    let enters = JSON.parse(data.result);
-                    this.carData['show_shop_id'] = enters.company_base_id;
-                    this.carData['city_id'] = enters.city_id;
-                    this.carData['provice_id'] = enters.prov_id;
-                    this.carData['city_name'] = enters.city_name;
-                    this.getLocalityCarData();
-
-                }else{
-                    this._showHint('无法找到所属商户');
-                }
-            });
-
-            // StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST,(data)=>{
-            //     if(data.code == 1 && data.result != ''){
+            // StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            //     if(data.code == 1 && data.result != '')
+            //     {
             //         let enters = JSON.parse(data.result);
-            //         if(enters.length === 1){
+            //         this.carData['show_shop_id'] = enters.company_base_id;
+            //         this.carData['city_id'] = enters.city_id;
+            //         this.carData['provice_id'] = enters.prov_id;
+            //         this.carData['city_name'] = enters.city_name;
+            //         this.getLocalityCarData();
             //
-            //             this.carData['show_shop_id'] = enters[0].enterprise_uid;
-            //             this.carData['city_id'] = enters[0].city_id;
-            //             this.carData['provice_id'] = enters[0].prov_id;
-            //             this.carData['city_name'] = enters[0].city_name;
-            //             this.getLocalityCarData();
-            //
-            //         }else if(enters.length > 1){
-            //
-            //             this.enterpriseList = enters;
-            //             this.enterpriseModal.refresh(this.enterpriseList);
-            //             this.enterpriseModal.openModal();
-            //
-            //         }else{
-            //             this._showHint('无法找到所属商户');
-            //         }
             //     }else{
             //         this._showHint('无法找到所属商户');
             //     }
             // });
+
+            StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST,(data)=>{
+                if(data.code == 1 && data.result != ''){
+                    let enters = JSON.parse(data.result);
+                    if(enters.length === 1){
+
+                        this.carData['show_shop_id'] = enters[0].enterprise_uid;
+                        this.carData['city_id'] = enters[0].city_id;
+                        this.carData['provice_id'] = enters[0].prov_id;
+                        this.carData['city_name'] = enters[0].city_name;
+                        this.getLocalityCarData();
+
+                    }else if(enters.length > 1){
+
+                        this.enterpriseList = enters;
+                        this.enterpriseModal.refresh(this.enterpriseList);
+                        this.enterpriseModal.openModal();
+
+                    }else{
+                        this._showHint('无法找到所属商户');
+                    }
+                }else{
+                    this._showHint('无法找到所属商户');
+                }
+            });
         }
     }
     // 构造
