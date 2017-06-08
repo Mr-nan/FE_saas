@@ -145,7 +145,7 @@ export  default class FlowAllPage extends BaseComponent {
                             {movie.create_time}</Text>
                     </View>
                     <View style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>
-                        <Text style={{color: '#000',fontSize: Pixel.getFontPixel(20)}}>13万</Text>
+                        <Text style={{color: '#000',fontSize: Pixel.getFontPixel(20)}}>{movie.amount}</Text>
                     </View>
                 </View>
             )

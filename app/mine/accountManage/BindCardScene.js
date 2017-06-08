@@ -76,7 +76,7 @@ export  default class BindCardScene extends BaseComponent {
                                         component: OpenEnterpriseAccountScene,
                                         params: {isChange:'true',callBack:()=>{
                                             this.props.callBack();
-                                        }}
+                                        },title:'修改企业账户',buttonText:'确认修改'}
                                     });
                                 } else {
                                     this.toNextPage({
@@ -84,7 +84,7 @@ export  default class BindCardScene extends BaseComponent {
                                         component: OpenIndividualAccountScene,
                                         params: {isChange:'true',callBack:()=>{
                                             this.props.callBack();
-                                        }}
+                                        },title:'修改个人账户',buttonText:'确认修改'}
                                     });
                                 }
                             }

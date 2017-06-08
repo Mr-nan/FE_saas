@@ -68,7 +68,7 @@ export  default class AccountTypeSelectScene extends BaseComponent {
                 <TouchableOpacity
                     onPress={()=> {
                     this.toNextPage({name:'OpenIndividualAccountScene',component:OpenIndividualAccountScene,params:{callBack:
-                        ()=>{this.props.callBack();}}})
+                        ()=>{this.props.callBack();},title:'开通个人账户',buttonText:'确认开通'}})
                 }}
                     activeOpacity={0.8}
                     style={{
@@ -96,8 +96,9 @@ export  default class AccountTypeSelectScene extends BaseComponent {
             return (
                 <TouchableOpacity
                     onPress={()=> {
-                        this.toNextPage({name:'OpenEnterpriseAccountScene',component:OpenEnterpriseAccountScene,params:{callBack:
-                        ()=>{this.props.callBack();}}})
+                        this.toNextPage({name:'OpenEnterpriseAccountScene',
+                        component:OpenEnterpriseAccountScene,params:{callBack:
+                        ()=>{this.props.callBack();},title:'开通企业账户',buttonText:'确认开通'}})
                 }}
                     activeOpacity={0.8}
                     style={{

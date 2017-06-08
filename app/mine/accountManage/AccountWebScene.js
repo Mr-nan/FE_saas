@@ -62,7 +62,7 @@ export  default class AccountWebScene extends BaseComponent {
                 <WebView
                     ref="www"
                     style={{width:width,height:height,
-                    backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(20)}}
+                    backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(64)}}
                     source={{uri:this.props.webUrl,method: 'GET'}}
                     javaScriptEnabled={true}
                     domStorageEnabled={true}

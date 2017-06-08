@@ -96,10 +96,10 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
                 }} activeOpacity={0.8} style={{backgroundColor:fontAndColor.COLORB0,marginTop:Pixel.getPixel(15),
                 width:width-Pixel.getPixel(30),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),
                 height:Pixel.getPixel(44),justifyContent:'center',alignItems: 'center'}}>
-                    <Text style={{color:'#fff',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28)}}>确认开通</Text>
+                    <Text style={{color:'#fff',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28)}}>{this.props.buttonText}</Text>
                 </TouchableOpacity>
                 <NavigationView
-                    title="开通个人账户"
+                    title={this.props.title}
                     backIconClick={this.backPage}
                 />
             </View>
@@ -217,7 +217,7 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
             <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
                 {this.loadView()}
                 <NavigationView
-                    title="开通个人账户"
+                    title={this.props.title}
                     backIconClick={this.backPage}
                 />
             </View>
