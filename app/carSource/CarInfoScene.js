@@ -18,6 +18,7 @@ import *as fontAndColor from '../constant/fontAndColor';
 import ImagePageView from 'react-native-viewpager';
 import BaseComponent from '../component/BaseComponent';
 import NavigationView from '../component/CarNavigationView';
+import AllNavigationView from '../component/AllNavigationView';
 import Gallery from 'react-native-gallery';
 import {CarDeploySwitchoverButton, CarConfigurationView}   from './znComponent/CarInfoAllComponent';
 import CarZoomImageScene from './CarZoomImagScene';
@@ -197,10 +198,8 @@ export default class CarInfoScene extends BaseComponent {
             return (
                 <View style={{flex: 1, backgroundColor: 'white'}}>
                     {this.loadView()}
-                    <NavigationView
-                        ref="navtigation"
+                    <AllNavigationView
                         title="车源详情"
-                        wrapStyle={{backgroundColor: 'rgba(0,0,0,0)'}}
                         backIconClick={this.backIconClick}
                     />
                 </View>);
@@ -551,6 +550,7 @@ export default class CarInfoScene extends BaseComponent {
             return;
         }
 
+        console.log(this.state.carData.imgs);
 
         let navigatorParams = {
             name: "CarZoomImageScene",

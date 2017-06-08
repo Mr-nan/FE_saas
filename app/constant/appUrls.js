@@ -25,7 +25,7 @@ export const V = "v1/";
 
 /**
  * 版本号2
- */
+ *
 export const V2 = "v2/";
 
 /**
@@ -273,6 +273,13 @@ export const USER_OPEN_ACCOUNT_PERSONAL = BASEURL + 'v1/user.open_account/person
 /**
  * from @zhaojian
  *
+ * 修改个人账户
+ **/
+export const USER_ACCOUNT_SAVEPERSONAL = BASEURL + 'v1/user.account/savePersonal';
+
+/**
+ * from @zhaojian
+ *
  * 修改交易密码
  **/
 export const USER_ACCOUNT_EDITPAYPWD = BASEURL + 'v1/user.account/editPayPwd';
@@ -304,6 +311,13 @@ export const USER_BANK_BIND = BASEURL + 'v1/user.bank/bind';
  * 开通企业账户
  **/
 export const USER_OPEN_ACCOUNT_COMPANY = BASEURL + 'v1/user.open_account/company';
+
+/**
+ * from @zhaojian
+ *
+ * 修改企业账户
+ **/
+export const USER_ACCOUNT_SAVECOMPANY = BASEURL + 'v1/user.account/saveCompany';
 
 /**
  * from @zhaojian

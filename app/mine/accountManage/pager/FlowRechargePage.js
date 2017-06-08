@@ -28,10 +28,9 @@ export  default class FlowRechargePage extends BaseComponent {
     constructor(props) {
         super(props);
         // 初始状态
-        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             renderPlaceholderOnly: 'blank',
-            source: ds.cloneWithRows(['1','2','3','4','5']),
+            source: [],
             time:''
         };
     }
@@ -75,12 +74,12 @@ export  default class FlowRechargePage extends BaseComponent {
         let maps = {
             create_time:this.state.time,
             enter_base_id:id,
-            transfer_type:'1',
+            transfer_type:'3',
             user_type:type
         };
         request(Urls.USER_ACCOUNT_PAYLOG, 'Post', maps)
             .then((response) => {
-                    if(response.mjson.data.data==null||response.mjson.data.data.length<=0){
+                    if(response.mjson.data==null||response.mjson.data.length<=0){
                         this.setState({
                             renderPlaceholderOnly: 'null',
                         });
@@ -88,7 +87,7 @@ export  default class FlowRechargePage extends BaseComponent {
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
                             renderPlaceholderOnly: 'success',
-                            source:ds.cloneWithRows(response.mjson.data.data)
+                            source:ds.cloneWithRows(response.mjson.data)
                         });
                     }
                 },

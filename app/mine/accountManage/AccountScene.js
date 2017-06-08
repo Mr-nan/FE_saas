@@ -11,7 +11,8 @@ import {
     Dimensions,
     TouchableOpacity,
     ListView,
-    InteractionManager
+    InteractionManager,
+    RefreshControl
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
@@ -43,7 +44,8 @@ export  default class AccountScene extends BaseComponent {
             renderPlaceholderOnly: 'blank',
             source: [],
             info: {},
-            enter_id:''
+            enter_id:'',
+            isRefreshing:false
         };
     }
 
@@ -78,13 +80,15 @@ export  default class AccountScene extends BaseComponent {
                         (error) => {
                             this.props.showToast('用户信息查询失败');
                             this.setState({
-                                renderPlaceholderOnly: 'error'
+                                renderPlaceholderOnly: 'error',
+                                isRefreshing:false
                             });
                         });
             } else {
                 this.props.showToast('用户信息查询失败');
                 this.setState({
-                    renderPlaceholderOnly: 'error'
+                    renderPlaceholderOnly: 'error',
+                    isRefreshing:false
                 });
             }
         })
@@ -93,7 +97,8 @@ export  default class AccountScene extends BaseComponent {
     getAccountData=(id,type)=>{
         let maps = {
             enter_base_id:id,
-            user_type: type
+            user_type: type,
+            transfer_type:'0,3,4,104'
         };
         request(Urls.USER_ACCOUNT_INDEX, 'Post', maps)
             .then((response) => {
@@ -103,7 +108,8 @@ export  default class AccountScene extends BaseComponent {
                             renderPlaceholderOnly: 'success',
                             source: ds.cloneWithRows([1]),
                             info: response.mjson.data.info,
-                            enter_id:id
+                            enter_id:id,
+                            isRefreshing:false
 
                         });
                     } else {
@@ -112,14 +118,16 @@ export  default class AccountScene extends BaseComponent {
                             renderPlaceholderOnly: 'success',
                             source: ds.cloneWithRows(response.mjson.data.payLogs),
                             info: response.mjson.data.info,
-                            enter_id:id
+                            enter_id:id,
+                            isRefreshing:false
                         });
                     }
                 },
                 (error) => {
                     this.props.showToast('用户信息查询失败');
                     this.setState({
-                        renderPlaceholderOnly: 'error'
+                        renderPlaceholderOnly: 'error',
+                        isRefreshing:false
                     });
                 });
     }
@@ -139,6 +147,14 @@ export  default class AccountScene extends BaseComponent {
                     renderHeader={this._renderHeader}
                     renderSeparator={this._renderSeparator}
                     showsVerticalScrollIndicator={false}
+                    refreshControl={
+                                    <RefreshControl
+                                        refreshing={this.state.isRefreshing}
+                                        onRefresh={this.refreshingData}
+                                        tintColor={[fontAndColor.COLORB0]}
+                                        colors={[fontAndColor.COLORB0]}
+                                    />
+                                }
                 />
                 <View style={{width:width,height:Pixel.getPixel(44),backgroundColor: fontAndColor.COLORA3,
                 flexDirection:'row',position: 'absolute',bottom: 0}}>
@@ -167,6 +183,11 @@ export  default class AccountScene extends BaseComponent {
             </View>
         );
     }
+
+    refreshingData = () => {
+        this.setState({isRefreshing: true});
+        this.getData();
+    };
 
     _renderRow = (movie, sectionId, rowId) => {
         if (movie == '1') {
@@ -234,7 +255,8 @@ export  default class AccountScene extends BaseComponent {
                               {/*this.toNextPage({name:'FrozenScene',component:FrozenScene,params:{}})*/}
                           }}
                           transfer={()=>{this.toNextPage({name:'TransferScene',
-                          component:TransferScene,params:{money:this.state.info.balance,callBack:()=>{this.props.callBack()}}})}}
+                          component:TransferScene,params:{money:this.state.info.balance,callBack:()=>{
+                              this.allRefresh()}}})}}
 
 
             />
@@ -252,12 +274,7 @@ export  default class AccountScene extends BaseComponent {
                             webUrl: response.mjson.data.auth_url +
                             '?authTokenId=' + response.mjson.data.auth_token,
                             callBack:()=>{
-                                if(backUrl==webBackUrl.UNBINDCARD){
                                     this.allRefresh()
-                                }else{
-                                    this.props.callBack();
-                                }
-
                             },backUrl:backUrl
                         }
                     });

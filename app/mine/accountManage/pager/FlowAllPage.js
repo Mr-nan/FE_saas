@@ -53,7 +53,8 @@ export  default class FlowAllPage extends BaseComponent {
                 let datas=JSON.parse(data.result);
                 let maps = {
                     enter_base_ids:datas.company_base_id,
-                    child_type:'1'
+                    child_type:'1',
+
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
@@ -76,12 +77,12 @@ export  default class FlowAllPage extends BaseComponent {
         let maps = {
             create_time:this.state.time,
             enter_base_id:id,
-            transfer_type:'',
+            transfer_type:'0,3,4,104',
             user_type:type
         };
         request(Urls.USER_ACCOUNT_PAYLOG, 'Post', maps)
             .then((response) => {
-                    if(response.mjson.data.data==null||response.mjson.data.data.length<=0){
+                    if(response.mjson.data==null||response.mjson.data.length<=0){
                         this.setState({
                             renderPlaceholderOnly: 'null',
                         });
@@ -89,7 +90,7 @@ export  default class FlowAllPage extends BaseComponent {
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
                             renderPlaceholderOnly: 'success',
-                            source:ds.cloneWithRows(response.mjson.data.data)
+                            source:ds.cloneWithRows(response.mjson.data)
                         });
                     }
                 },
@@ -139,9 +140,9 @@ export  default class FlowAllPage extends BaseComponent {
                     paddingRight:Pixel.getPixel(15)
                 }}>
                     <View style={{flex:1,justifyContent:'center'}}>
-                        <Text style={{color: '#000',fontSize: Pixel.getFontPixel(14)}}>全部</Text>
+                        <Text style={{color: '#000',fontSize: Pixel.getFontPixel(14)}}>{movie.operate_name}</Text>
                         <Text style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(12)}}>
-                            {this.state.time} 13:00</Text>
+                            {movie.create_time}</Text>
                     </View>
                     <View style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>
                         <Text style={{color: '#000',fontSize: Pixel.getFontPixel(20)}}>13万</Text>
