@@ -109,10 +109,12 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
     checkEmpty = () => {
         let name = this.refs.name.getInputTextValue();
         let number = this.refs.number.getInputTextValue();
-        if (name == '') {
+        if (name == ''||name==null) {
             this.props.showToast('请输入真实姓名');
-        } else if (number == '') {
+            return;
+        } else if (number == ''||number==null) {
             this.props.showToast('请输入身份证号码');
+            return;
         }
         StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
             if (data.code == 1 && data.result != null) {

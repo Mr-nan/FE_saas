@@ -67,6 +67,12 @@ export  default class AccountWebScene extends BaseComponent {
                     javaScriptEnabled={true}
                     domStorageEnabled={true}
                     scalesPageToFit={false}
+                    onLoadStart={()=>{
+                        console.log('123123');
+                    }}
+                    onLoadEnd={()=>{
+                        console.log('321321');
+                    }}
                     onNavigationStateChange={this.onNavigationStateChange.bind(this)}
                 />
                 <NavigationView
