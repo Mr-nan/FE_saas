@@ -41,7 +41,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
     constructor(props) {
         super(props);
 
-        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        //let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.items = [];
         this.mList = [];
         this.listViewStyle = Pixel.getPixel(0);
@@ -52,7 +52,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         this.contactData = {};
         this.leftTime = 0;
         this.state = {
-            dataSource: ds,
+            dataSource: [],
             renderPlaceholderOnly: 'blank',
             isRefreshing: false
         }
@@ -646,8 +646,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     this.leftTime = this.getLeftTime(this.orderDetail.created_time);
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
                         this.initListData(this.orderState);
+                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
-                            dataSource: this.state.dataSource.cloneWithRows(this.mList),
+                            dataSource: ds.cloneWithRows(this.mList),
                             isRefreshing: false,
                             renderPlaceholderOnly: 'success'
                         });

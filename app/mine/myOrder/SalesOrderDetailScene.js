@@ -50,7 +50,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
     constructor(props) {
         super(props);
 
-        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        //let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.items = [];
         this.mList = [];
         this.listViewStyle = Pixel.getPixel(0);
@@ -72,7 +72,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
         this.scanType = [{model_name: '扫描前风挡'}, {model_name: '扫描行驶证'}];
 
         this.state = {
-            dataSource: ds,
+            dataSource: [],
             renderPlaceholderOnly: 'blank',
             isRefreshing: false
         }
@@ -104,8 +104,10 @@ export default class SalesOrderDetailScene extends BaseComponent {
             this.financeInfo = financeInfo;
             this.mList = [];
             this.mList = ['0', '1', '2', '3', '4', '5', '6', '7', '9'];
+            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             this.setState({
-                dataSource: this.state.dataSource.cloneWithRows(this.mList),
+                dataSource: ds.cloneWithRows(this.mList),
+                //dataSource: this.state.dataSource.cloneWithRows(this.mList),
                 isRefreshing: false,
                 renderPlaceholderOnly: 'success'
             });
@@ -164,8 +166,9 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         //this.carAmount = this.orderDetail.marked_amount * 10000;
                         this.carVin = this.orderDetail.orders_item_data[0].car_vin;
                         this.initListData(this.orderState);
+                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
-                            dataSource: this.state.dataSource.cloneWithRows(this.mList),
+                            dataSource: ds.cloneWithRows(this.mList),
                             isRefreshing: false,
                             renderPlaceholderOnly: 'success'
                         });
