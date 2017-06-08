@@ -108,6 +108,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         switch (orderState) {
             case 0: //创建订单
                 this.mList = [];
+                this.contactData = {};
                 this.mList = ['0', '1', '3', '4', '6'];
                 this.contactData = {
                     layoutTitle: '已拍下',
@@ -123,6 +124,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 break;
             case 1: // 待付订金
                 this.mList = [];
+                this.contactData = {};
                 this.mList = ['0', '1', '2', '3', '4', '6'];
                 this.contactData = {
                     layoutTitle: '付订金',
@@ -141,6 +143,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 break;
             case 2: // 已付订金(待付尾款)
                 this.mList = [];
+                this.contactData = {};
                 this.mList = ['0', '1', '3', '4', '6'];
                 this.contactData = {
                     layoutTitle: '付尾款',
@@ -157,6 +160,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 break;
             case 3: // 全款付清
                 this.mList = [];
+                this.contactData = {};
                 this.mList = ['0', '1', '2', '3', '4', '6'];
                 this.contactData = {
                     layoutTitle: '全款已付清',
@@ -173,6 +177,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 break;
             case 4: // 已完成
                 this.mList = [];
+                this.contactData = {};
                 this.mList = ['0', '1', '3', '4', '6'];
                 this.contactData = {
                     layoutTitle: '已完成',
@@ -639,7 +644,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     let cancelStatus = response.mjson.data.cancel_status;
                     this.stateMapping(status, cancelStatus);
                     this.leftTime = this.getLeftTime(this.orderDetail.created_time);
-                    if (this.orderDetail) {
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
                         this.initListData(this.orderState);
                         this.setState({
                             dataSource: this.state.dataSource.cloneWithRows(this.mList),
@@ -647,6 +652,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             renderPlaceholderOnly: 'success'
                         });
                     } else {
+                        this.props.showToast(response.mjson.msg);
                         this.setState({
                             isRefreshing: false,
                             renderPlaceholderOnly: 'null'

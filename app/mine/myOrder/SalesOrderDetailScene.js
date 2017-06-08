@@ -160,7 +160,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     let cancelStatus = response.mjson.data.cancel_status;
                     this.stateMapping(status, cancelStatus);
                     this.leftTime = this.getLeftTime(this.orderDetail.cancel_time);
-                    if (this.orderDetail) {
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
                         //this.carAmount = this.orderDetail.marked_amount * 10000;
                         this.carVin = this.orderDetail.orders_item_data[0].car_vin;
                         this.initListData(this.orderState);
@@ -170,6 +170,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                             renderPlaceholderOnly: 'success'
                         });
                     } else {
+                        this.props.showToast(response.mjson.msg);
                         this.setState({
                             isRefreshing: false,
                             renderPlaceholderOnly: 'null'
@@ -239,7 +240,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
             case 7:
                 if (cancelStatus === 0) {
                     this.orderState = 2;
-                    this.topState = 0;
+                    this.topState = -1;
                     this.bottomState = 1;
                 } else if (cancelStatus === 1) {
                     this.orderState = 2;
@@ -345,7 +346,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         <TouchableOpacity
                             onPress={() => {
                                 //TODO 此处取的字段有问题
-                                if (this.orderDetail.car_finance_data === 0) {
+                                if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_status === 0) {
                                     this.props.showModal(true);
                                     this.savePrice(this.carAmount);
                                 } else {
@@ -477,6 +478,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
         switch (orderState) {
             case 0:  //未定价
                 this.mList = [];
+                this.contactData = {};
                 if (this.carVin.length === 17) {
                     this.mList = ['0', '1', '2', '4', '5', '7', '9'];
                 } else {
@@ -496,6 +498,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 break;
             case 1:  //已定价
                 this.mList = [];
+                this.contactData = {};
                 this.mList = ['0', '1', '5', '7', '9'];
                 this.contactData = {
                     layoutTitle: '查看到账',
@@ -511,6 +514,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 break;
             case 2:  //订金到账
                 this.mList = [];
+                this.contactData = {};
                 this.mList = ['0', '1', '5', '7', '9'];
                 this.contactData = {
                     layoutTitle: '查看到账',
@@ -526,6 +530,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 break;
             case 3:  // 结清尾款
                 this.mList = [];
+                this.contactData = {};
                 this.mList = ['0', '1', '5', '7', '9'];
                 this.contactData = {
                     layoutTitle: '查看到账',
@@ -541,7 +546,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 break;
             case 4: // 完成交易
                 this.mList = [];
-                this.mList = ['0', '1', '3', '4', '6'];
+                this.contactData = {};
+                this.mList = ['0', '1', '5', '7', '9'];
                 this.contactData = {
                     layoutTitle: '已完成',
                     layoutContent: '车款可提现。',
