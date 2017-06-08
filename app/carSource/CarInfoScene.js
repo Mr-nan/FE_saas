@@ -119,15 +119,28 @@ export default class CarInfoScene extends BaseComponent {
 
     loadData=()=> {
 
-        this.loadCarData();
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+
+            if(data.code == 1 && data.result != '')
+            {
+                let enters = JSON.parse(data.result);
+                this.loadCarData(enters.company_base_id);
+
+            }else{
+                this.loadCarData('0');
+            }
+
+        });
+
+
 
     }
 
-    loadCarData=()=>{
+    loadCarData=(show_shop_id)=>{
         let url = AppUrls.CAR_DETAIL;
         request(url, 'post', {
             id: this.props.carID,
-            imgType:1,
+            shop_ids:show_shop_id,
         }).then((response) => {
 
             let carData = response.mjson.data;
@@ -140,7 +153,7 @@ export default class CarInfoScene extends BaseComponent {
                 carData.nature_str,
                 carData.car_color.split("|")[0]+'/'+carData.trim_color.split("|")[0],
             ];
-            carData.show_order = 2;
+
             if(carData.imgs.length<=0){
 
                 carData.imgs=[ {require:require('../../images/carSourceImages/car_info_null.png')}];
@@ -156,6 +169,7 @@ export default class CarInfoScene extends BaseComponent {
             this.setState({renderPlaceholderOnly: 'error'});
         });
     }
+
 
     loadCarResidualsData=(carData)=>{
 
