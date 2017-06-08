@@ -345,12 +345,11 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
-                                //TODO 此处取的字段有问题
                                 if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_status === 0) {
                                     this.props.showModal(true);
                                     this.savePrice(this.carAmount);
                                 } else {
-                                    this.refs.chooseModal1.changeShowType(true);
+                                    this.refs.chooseModal.changeShowType(true);
                                 }
                             }}>
                             <View style={styles.buttonConfirm}>
@@ -365,14 +364,14 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                      buttonsMargin={Pixel.getPixel(20)}
                                      positiveOperation={this.cancelOrder}
                                      content='确定后取消订单。如买家有已支付款项将退款，如您有补差价款可提现。'/>
-                        <ChooseModal ref='chooseModal1' title='提示'
+                        {/*<ChooseModal ref='chooseModal1' title='提示'
                                      negativeButtonStyle={styles.negativeButtonStyle}
                                      negativeTextStyle={styles.negativeTextStyle} negativeText='再想想'
                                      positiveButtonStyle={styles.positiveButtonStyle}
                                      positiveTextStyle={styles.positiveTextStyle} positiveText='没问题'
                                      buttonsMargin={Pixel.getPixel(20)}
                                      positiveOperation={this.savePrice(this.carAmount)}
-                                     content='此车是库存融资质押车辆，请在买家支付订金后操作车辆出库。'/>
+                                     content='此车是库存融资质押车辆，请在买家支付订金后操作车辆出库。'/>*/}
                     </View>
                 )
                 break;
