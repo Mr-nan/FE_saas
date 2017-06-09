@@ -36,7 +36,6 @@ export default class RootScene extends BaseComponent {
         codePush.sync();
         AppState.addEventListener("change", (newState) => {
             newState === "active" && codePush.sync();
-            console.log('123');
         });
         BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
         InteractionManager.runAfterInteractions(() => {
@@ -52,13 +51,13 @@ export default class RootScene extends BaseComponent {
         };
         request(Urls.APP_UPDATE, 'Post', maps)
             .then((response) => {
-                    // if (response.mjson.data.versioncode != versionCode) {
-                    //     this.navigatorParams.component = UpLoadScene;
-                    //     this.navigatorParams.params = {url: response.mjson.data.downloadurl}
-                    //     this.toNextPage(this.navigatorParams);
-                    // } else {
+                    if (response.mjson.data.versioncode != versionCode) {
+                        this.navigatorParams.component = UpLoadScene;
+                        this.navigatorParams.params = {url: response.mjson.data.downloadurl}
+                        this.toNextPage(this.navigatorParams);
+                    } else {
                         this.toJump();
-                     // }
+                     }
                 },
                 (error) => {
                     this.toJump();

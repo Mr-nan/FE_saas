@@ -119,4 +119,6 @@ public class VinScanModule extends ReactContextBaseJavaModule implements Activit
         return versionName;
     }
 
+
+
 }
