@@ -38,7 +38,7 @@ export  default class AccountTitle extends PureComponent {
         list.push(new listValue('账户流水',require('../../../../images/mainImage/flow.png'),this.props.flow));
         list.push(new listValue('修改交易密码',require('../../../../images/mainImage/changePwd.png'),this.props.changePwd));
         list.push(new listValue('重置交易密码',require('../../../../images/mainImage/resetPwd.png'),this.props.resetPwd));
-        list.push(new listValue('修改手机号码',require('../../../../images/mainImage/changePhone.png'),this.props.changePhone));
+        list.push(new listValue('修改银行预留手机号码',require('../../../../images/mainImage/changePhone.png'),this.props.changePhone));
         // list.push(new listValue('账户设置',require('../../../../images/mainImage/accountSetting.png'),this.props.accountSetting));
     }
 
