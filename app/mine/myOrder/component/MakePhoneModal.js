@@ -22,12 +22,14 @@ export default class MakePhoneModal extends Component {
         // 初始状态
         this.state = {
             isShow: false,
+            callData: {}
         };
     }
 
-    changeShowType = (value) => {
+    changeShowType = (value, callData) => {
         this.setState({
-            isShow: value
+            isShow: value,
+            callData: callData
         });
     }
 
@@ -70,7 +72,7 @@ export default class MakePhoneModal extends Component {
                     }}>
                         <TouchableOpacity
                             onPress={() => {
-                                this.callClick(this.props.MerchantNum);
+                                this.callClick(this.state.callData.shopsNumber);
                             }}>
                             <View style={styles.buttonMerchant}>
                                 <Text style={{color: '#ffffff'}}>联系商家</Text>
@@ -78,7 +80,7 @@ export default class MakePhoneModal extends Component {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
-                                this.callClick(this.props.CustomerServiceNum);
+                                this.callClick(this.state.callData.phone);
                             }}>
                             <View style={styles.buttonCustomerService}>
                                 <Text style={{color: fontAndColor.COLORB0}}>联系客服</Text>

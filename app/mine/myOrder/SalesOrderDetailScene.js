@@ -128,7 +128,11 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 };
                 let url = AppUrls.ORDER_SAVE_PRICE;
                 request(url, 'post', maps).then((response) => {
-                    this.loadData();
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.loadData();
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
                 }, (error) => {
                     this.props.showToast('成交价提交失败');
                 });
@@ -163,7 +167,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     this.stateMapping(status, cancelStatus);
                     this.leftTime = this.getLeftTime(this.orderDetail.cancel_time);
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
-                        //this.carAmount = this.orderDetail.marked_amount * 10000;
+                        this.carAmount = 0;
                         this.carVin = this.orderDetail.orders_item_data[0].car_vin;
                         this.initListData(this.orderState);
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -348,11 +352,15 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
-                                if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_status === 0) {
-                                    this.props.showModal(true);
-                                    this.savePrice(this.carAmount);
+                                if (this.carAmount === 0) {
+                                    this.props.showToast('请您先定价');
                                 } else {
-                                    this.refs.chooseModal.changeShowType(true);
+                                    if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_status === 0) {
+                                        this.props.showModal(true);
+                                        this.savePrice(this.carAmount);
+                                    } else {
+                                        this.refs.chooseModal.changeShowType(true);
+                                    }
                                 }
                             }}>
                             <View style={styles.buttonConfirm}>
@@ -368,13 +376,13 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                      positiveOperation={this.cancelOrder}
                                      content='确定后取消订单。如买家有已支付款项将退款，如您有补差价款可提现。'/>
                         {/*<ChooseModal ref='chooseModal1' title='提示'
-                                     negativeButtonStyle={styles.negativeButtonStyle}
-                                     negativeTextStyle={styles.negativeTextStyle} negativeText='再想想'
-                                     positiveButtonStyle={styles.positiveButtonStyle}
-                                     positiveTextStyle={styles.positiveTextStyle} positiveText='没问题'
-                                     buttonsMargin={Pixel.getPixel(20)}
-                                     positiveOperation={this.savePrice(this.carAmount)}
-                                     content='此车是库存融资质押车辆，请在买家支付订金后操作车辆出库。'/>*/}
+                         negativeButtonStyle={styles.negativeButtonStyle}
+                         negativeTextStyle={styles.negativeTextStyle} negativeText='再想想'
+                         positiveButtonStyle={styles.positiveButtonStyle}
+                         positiveTextStyle={styles.positiveTextStyle} positiveText='没问题'
+                         buttonsMargin={Pixel.getPixel(20)}
+                         positiveOperation={this.savePrice(this.carAmount)}
+                         content='此车是库存融资质押车辆，请在买家支付订金后操作车辆出库。'/>*/}
                     </View>
                 )
                 break;
@@ -758,8 +766,19 @@ export default class SalesOrderDetailScene extends BaseComponent {
     // 下拉刷新数据
     refreshingData = () => {
         //this.orderListData = [];
+        this.carAmount = 0;
         this.setState({isRefreshing: true});
         this.loadData();
+    };
+
+    refundJudgment = (amount) => {
+        if (amount > 0) {
+            return amount + '元(补偿)';
+        } else if (amount < 0) {
+            return amount + '元(退还)';
+        } else {
+            return amount;
+        }
     };
 
     render() {
@@ -832,7 +851,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     CustomerServiceNum={this.contactData.customerServiceNum ? this.contactData.customerServiceNum : ''}/>
             )
         } else if (rowData === '2') {
-            this.carAmount = this.orderDetail.orders_item_data[0].transaction_price;
+            //this.carAmount = this.orderDetail.orders_item_data[0].transaction_price;
+            //console.log('this.carAmount', this.carAmount);
             return (
                 <TransactionPrice amount={this.carAmount} navigator={this.props.navigator}
                                   updateCarAmount={this.updateCarAmount}
@@ -893,22 +913,31 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         backgroundColor: fontAndColor.COLORA4
                     }}/>
                     <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
-                        <View style={{
-                            marginLeft: Pixel.getPixel(15),
-                            height: Pixel.getPixel(27),
-                            width: Pixel.getPixel(70),
-                            borderRadius: Pixel.getPixel(2),
-                            borderWidth: Pixel.getPixel(1),
-                            borderColor: fontAndColor.COLORB0,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            marginRight: Pixel.getPixel(15)
-                        }}>
-                            <Text style={{
-                                fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                                color: fontAndColor.COLORB0
-                            }}>充值</Text>
-                        </View>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.toNextPage({
+                                    name: 'AccountScene',
+                                    component: AccountScene,
+                                    params: {}
+                                });
+                            }}>
+                            <View style={{
+                                marginLeft: Pixel.getPixel(15),
+                                height: Pixel.getPixel(27),
+                                width: Pixel.getPixel(70),
+                                borderRadius: Pixel.getPixel(2),
+                                borderWidth: Pixel.getPixel(1),
+                                borderColor: fontAndColor.COLORB0,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                marginRight: Pixel.getPixel(15)
+                            }}>
+                                <Text style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                                    color: fontAndColor.COLORB0
+                                }}>充值</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
                 </View>
             )
@@ -1004,6 +1033,19 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 </View>
             )
         } else if (rowData === '7') {
+            let done_deposit_amount = 0;
+            let done_balance_amount = 0;
+            let done_total_amount = this.orderDetail.done_deposit_amount + this.orderDetail.done_balance_amount + '元';
+            if (this.refundJudgment(this.orderDetail.done_back_deposit_amount) === 0) {
+                done_deposit_amount = this.orderDetail.done_deposit_amount + '元';
+            } else {
+                done_deposit_amount = this.orderDetail.done_back_deposit_amount;
+            }
+            if (this.refundJudgment(this.orderDetail.done_back_balance_amount) === 0) {
+                done_balance_amount = this.orderDetail.done_balance_amount + '元';
+            } else {
+                done_balance_amount = this.orderDetail.done_back_balance_amount;
+            }
             return (
                 <View style={styles.itemType4}>
                     <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
@@ -1022,18 +1064,18 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     }}>
                         <Text style={styles.orderInfo}>到账订金</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>{this.orderDetail.deposit_amount}元</Text>
+                        <Text style={styles.infoContent}>{done_deposit_amount}</Text>
                     </View>
                     <View style={styles.infoItem}>
                         <Text style={styles.orderInfo}>到账尾款</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>{this.orderDetail.balance_amount}元</Text>
+                        <Text style={styles.infoContent}>{done_balance_amount}</Text>
                     </View>
                     <View style={styles.infoItem}>
                         <Text style={styles.orderInfo}>到账总计</Text>
                         <View style={{flex: 1}}/>
                         <Text
-                            style={styles.infoContent}>{this.orderDetail.deposit_amount + this.orderDetail.balance_amount}元</Text>
+                            style={styles.infoContent}>{done_total_amount}</Text>
                     </View>
                 </View>
             )

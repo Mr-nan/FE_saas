@@ -11,7 +11,10 @@ import {
     ListView,
     TouchableOpacity,
     Image,
-    Dimensions, TextInput, RefreshControl
+    Dimensions,
+    TextInput,
+    RefreshControl,
+    Keyboard
 } from  'react-native'
 import BaseComponent from "../../component/BaseComponent";
 import * as fontAndColor from '../../constant/fontAndColor';
@@ -42,6 +45,24 @@ export default class OrderSearchScene extends BaseComponent {
         };
     }
 
+    componentWillMount () {
+        this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
+        this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+    }
+
+    componentWillUnmount () {
+        this.keyboardDidShowListener.remove();
+        this.keyboardDidHideListener.remove();
+    }
+
+    _keyboardDidShow () {
+        //alert('Keyboard Shown');
+    }
+
+    _keyboardDidHide () {
+        //alert('Keyboard Hidden');
+    }
+
     initFinish = () => {
         //this.loadData();
         this.setState({
@@ -68,6 +89,7 @@ export default class OrderSearchScene extends BaseComponent {
     };
 
     startSearch = () => {
+        Keyboard.dismiss();
         if (this.state.value === '') {
             this.props.showToast('车辆名称不能为空');
         } else {
