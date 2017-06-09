@@ -10,6 +10,7 @@ import {
     InteractionManager,
     Dimensions,
     Modal,
+    NativeModules
 
 
 } from 'react-native';
@@ -31,7 +32,7 @@ import *as weChat from 'react-native-wechat';
 import PixelUtil from '../utils/PixelUtil';
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
-
+let Platform = require('Platform');
 const Pixel = new PixelUtil();
 
 import {request} from "../utils/RequestUtil";
@@ -925,16 +926,16 @@ class CallView extends Component {
                                   </TouchableOpacity>
                               )
                           }
-                          {/*{*/}
-                              {/*this.state.callData.shopsNumber!=="" && (*/}
-                                  {/*<TouchableOpacity onPress={()=>{this.callAction(this.state.callData.shopsNumber)}}>*/}
-                                      {/*<View style={[styles.callModelItem,{marginTop:Pixel.getPixel(20)}]}>*/}
-                                          {/*<Image source={require('../../images/carSourceImages/phoneIcon.png')}/>*/}
-                                          {/*<Text style={styles.callText}>咨询商家</Text>*/}
-                                      {/*</View>*/}
-                                  {/*</TouchableOpacity>*/}
-                              {/*)*/}
-                          {/*}*/}
+                          {
+                              this.state.callData.shopsNumber!=="" && (
+                                  <TouchableOpacity onPress={()=>{this.callAction(this.state.callData.shopsNumber)}}>
+                                      <View style={[styles.callModelItem,{marginTop:Pixel.getPixel(20)}]}>
+                                          <Image source={require('../../images/carSourceImages/phoneIcon.png')}/>
+                                          <Text style={styles.callText}>咨询商家</Text>
+                                      </View>
+                                  </TouchableOpacity>
+                              )
+                          }
                       </View>
                   </TouchableOpacity>
               </Modal>
@@ -943,7 +944,12 @@ class CallView extends Component {
 
       callAction=(number)=>{
           this.isVisible(false,this.state.callData);
-           Linking.openURL('tel:'+number);
+          if (Platform.OS === 'android') {
+              NativeModules.VinScan.callPhone(number);
+          } else {
+              Linking.openURL('tel:'+number);
+          }
+
       }
 }
 

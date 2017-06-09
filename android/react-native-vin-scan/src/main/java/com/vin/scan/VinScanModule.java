@@ -14,6 +14,7 @@ import com.facebook.react.bridge.ReactMethod;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.text.TextUtils;
+import android.net.Uri;
 
 /**
  * Created by Administrator on 2017/3/2.
@@ -119,6 +120,13 @@ public class VinScanModule extends ReactContextBaseJavaModule implements Activit
         return versionName;
     }
 
-
+    @ReactMethod
+    public void callPhone(String tel){
+        tel = tel.replace(",", ",,");
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.fromParts("tel", tel, null));//拼一个电话的Uri，拨打分机号 关键代码
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mContext.startActivity(intent);
+    }
 
 }
