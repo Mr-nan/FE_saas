@@ -373,11 +373,7 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		7AF474FC8B6C4EC78759A9DA /* libCodePush.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libCodePush.a; sourceTree = "<group>"; };
 		7D4BDE291ECAD84A002DD5E1 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
-<<<<<<< HEAD
 		7D5D8AFE1EE1563200892F2E /* 4D39F52BD46AC7CD8470.lic */ = {isa = PBXFileReference; lastKnownFileType = file; path = 4D39F52BD46AC7CD8470.lic; sourceTree = "<group>"; };
-=======
-		7D5D8B671EE5565900892F2E /* 4D39F52BD46AC7CD8470.lic */ = {isa = PBXFileReference; lastKnownFileType = file; path = 4D39F52BD46AC7CD8470.lic; sourceTree = "<group>"; };
->>>>>>> develop
 		7D769E2B1E602A630039526C /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		7D769E2D1E602A800039526C /* libc++abi.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++abi.tbd"; path = "usr/lib/libc++abi.tbd"; sourceTree = SDKROOT; };
 		7DB2CBB11E779CB400DE146C /* libbz2.1.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.1.0.tbd; path = usr/lib/libbz2.1.0.tbd; sourceTree = SDKROOT; };
@@ -668,11 +664,7 @@
 		7DB2CBB31E779DDF00DE146C /* OCRSCancer */ = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
 				7D5D8AFE1EE1563200892F2E /* 4D39F52BD46AC7CD8470.lic */,
-=======
-				7D5D8B671EE5565900892F2E /* 4D39F52BD46AC7CD8470.lic */,
->>>>>>> develop
 				7DB2CBB51E779DDF00DE146C /* libSVehicleLicense.a */,
 				7DB2CBB61E779DDF00DE146C /* libvinTyper.a */,
 				7DB2CBB71E779DDF00DE146C /* Resources */,
@@ -1275,11 +1267,7 @@
 				7DB2CBD61E779DDF00DE146C /* change_btn@3x.png in Resources */,
 				124A591D1E9CAC8F007C1C15 /* xiangjianniu.png in Resources */,
 				7DB2CBDD1E779DDF00DE146C /* take_pic_btn@2x.png in Resources */,
-<<<<<<< HEAD
 				7D5D8AFF1EE1563200892F2E /* 4D39F52BD46AC7CD8470.lic in Resources */,
-=======
-				7D5D8B681EE5565900892F2E /* 4D39F52BD46AC7CD8470.lic in Resources */,
->>>>>>> develop
 				7DB2CBDB1E779DDF00DE146C /* scan_line@2x.png in Resources */,
 				7DB2CBDA1E779DDF00DE146C /* flash_on@3x.png in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
