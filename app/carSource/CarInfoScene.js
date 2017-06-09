@@ -32,6 +32,10 @@ import *as weChat from 'react-native-wechat';
 import PixelUtil from '../utils/PixelUtil';
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
+import AccountModal from '../component/AccountModal'
+import AccountManageScene from '../mine/accountManage/AccountTypeSelectScene'
+import BindCardScene from '../mine/accountManage/BindCardScene'
+import WaitActivationAccountScene from '../mine/accountManage/WaitActivationAccountScene'
 let Platform = require('Platform');
 const Pixel = new PixelUtil();
 
@@ -425,6 +429,7 @@ export default class CarInfoScene extends BaseComponent {
                 <PhotoView ref="photoView"/>
                 <SharedView ref="sharedView" carData={this.state.carData}/>
                 <CallView ref={(ref)=>{this.CallView = ref}} />
+                <AccountModal ref="accountmodal"/>
             </View>
 
         )
@@ -457,29 +462,68 @@ export default class CarInfoScene extends BaseComponent {
 
         }else {
             StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-                if(data.code == 1 && data.result != '')
-                {
-                    this.props.showModal(true);
-                    let enters = JSON.parse(data.result);
-                    request(AppUrls.CAR_ORDER_SAVE,'post',{'car_ids':carData.id,
-                    'user_company_id':enters.company_base_id}).then((response) => {
-                        this.props.showModal(false);
+                if (data.code == 1) {
+                    let datas = JSON.parse(data.result);
+                    let maps = {
+                        enter_base_ids: datas.company_base_id,
+                        child_type: '1'
+                    };
+                    request(AppUrls.USER_ACCOUNT_INFO, 'Post', maps)
+                        .then((response) => {
+                                this.props.showModal(false);
+                                lastType = response.mjson.data.status;
+                                let navigatorParams={
+                                    name:'',
+                                    component:'',
+                                    params:{}
+                                };
 
-                    }, (error) => {
-                        console.log(error);
+                                if (lastType == '0') {
 
-                        this.props.showModal(false);
-                        this.props.showToast(error.mjson.msg);
-                    });
+                                    navigatorParams.name = 'AccountManageScene';
+                                    navigatorParams.component = AccountManageScene;
 
+                                } else if (lastType == '1') {
+                                    navigatorParams.name = 'BindCardScene';
+                                    navigatorParams.component = BindCardScene;
+
+                                } else if (lastType == '2') {
+                                    navigatorParams.name = 'WaitActivationAccountScene';
+                                    navigatorParams.component = WaitActivationAccountScene;
+
+                                } else {
+                                    this.carOrder(datas.company_base_id,carData);
+                                    return;
+                                }
+                                this.refs.accountmodal.changeShowType(true,
+                                    '您还未开通资金账户，为方便您使用金融产品及购物车，' +
+                                    '请尽快开通！', '去开户', '看看再说', () => {
+                                        this.toNextPage(navigatorParams);
+                                    });
+
+                            },
+                            (error) => {
+                                this.props.showToast('用户信息查询失败');
+                            });
                 }else{
-                    this._showHint('无法找到所属商户');
+                    this.props.showToast('用户信息查询失败');
                 }
-
             });
-
-
         }
+    }
+
+    // 车辆订购
+    carOrder=(company_base_id,carData)=>{
+        this.props.showModal(true);
+        request(AppUrls.CAR_ORDER_SAVE,'post',{
+            'car_ids':carData.id,
+            'company_id':company_base_id
+        }).then((response) => {
+            this.props.showModal(false);
+        }, (error) => {
+            this.props.showModal(false);
+            this.props.showToast(error.mjson.msg);
+        });
     }
 
     // 拨打电话
