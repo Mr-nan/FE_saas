@@ -28,7 +28,7 @@ import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import * as webBackUrl from "../../constant/webBackUrl";
 import AccountWebScene from './AccountWebScene';
-export  default class WithdrawalsScene extends BaseComponent {
+export  default class WithdrawalsAboutScene extends BaseComponent {
 
     constructor(props) {
         super(props);
