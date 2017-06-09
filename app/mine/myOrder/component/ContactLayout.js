@@ -15,6 +15,8 @@ import PixelUtil from "../../../utils/PixelUtil";
 import * as fontAndColor from "../../../constant/fontAndColor";
 import ExplainModal from "./ExplainModal";
 import MakePhoneModal from "./MakePhoneModal";
+import {request} from "../../../utils/RequestUtil";
+import * as AppUrls from "../../../constant/appUrls";
 const {width, height} = Dimensions.get('window');
 const Pixel = new PixelUtil();
 
@@ -22,7 +24,24 @@ export default class ContactLayout extends Component {
 
     constructor(props) {
         super(props);
+        this.showShopId = this.props.showShopId;
     }
+
+    callClick = (show_shop_id) => {
+        // this.props.showModal(true);
+        request(AppUrls.CAR_CUSTOMER_PHONE_NUMBER, 'post', {'enterprise_uid': show_shop_id}).then((response) => {
+            // this.props.showModal(false);
+            if (response.mjson.code === 1) {
+                // Linking.openURL('tel:'+response.mjson.data.phone);
+                this.refs.mkcModal.changeShowType(true, response.mjson.data);
+            } else {
+                this.props.showToast(response.mjson.msg);
+            }
+        }, (error) => {
+            this.props.showToast(error.msg);
+        });
+
+    };
 
     render() {
         return (
@@ -56,7 +75,7 @@ export default class ContactLayout extends Component {
                 <TouchableOpacity
                     style={{marginRight: Pixel.getPixel(15), alignSelf: 'center'}}
                     onPress={() => {
-                        this.refs.mkpModal.changeShowType(true);
+                        this.callClick(this.showShopId);
                     }}>
                     <Image
                         source={require('../../../../images/mainImage/making_call.png')}/>
@@ -65,8 +84,7 @@ export default class ContactLayout extends Component {
                 <ExplainModal ref='expModal' title={this.props.promptTitle} buttonStyle={styles.expButton}
                               textStyle={styles.expText}
                               text='知道了' content={this.props.promptContent}/>
-                <MakePhoneModal ref='mkpModal' MerchantNum={this.props.MerchantNum}
-                                CustomerServiceNum={this.props.CustomerServiceNum}/>
+                <MakePhoneModal ref='mkcModal'/>
             </View>
         )
     }

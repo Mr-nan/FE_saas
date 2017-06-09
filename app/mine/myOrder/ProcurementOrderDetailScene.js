@@ -736,8 +736,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     setPrompt={this.contactData.setPrompt ? this.contactData.setPrompt : false}
                     promptTitle={this.contactData.promptTitle ? this.contactData.promptTitle : ''}
                     promptContent={this.contactData.promptContent ? this.contactData.promptContent : ''}
-                    MerchantNum={this.contactData.merchantNum ? this.contactData.merchantNum : ''}
-                    CustomerServiceNum={this.contactData.customerServiceNum ? this.contactData.customerServiceNum : ''}/>
+                    showShopId={this.orderDetail.orders_item_data[0].car_data.show_shop_id}/>
             )
         } else if (rowData === '2') {
             return (

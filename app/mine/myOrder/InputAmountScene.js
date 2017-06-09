@@ -40,18 +40,28 @@ export default class InputAmountScene extends BaseComponent {
 
                 <View style={styles.inputBar}>
                     <TextInput
-                        defaultValue={this.number+''}
+                        ref='amountInput'
+                        defaultValue={this.number + ''}
                         underlineColorAndroid='transparent'
                         onChangeText={this.setNumber}
                         keyboardType='numeric'
+                        clearButtonMode="always"
                         style={{
                             flex: 1,
                             marginLeft: Pixel.getPixel(15),
+                            marginRight: Pixel.getPixel(10),
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)
                         }} placeholder='请输入金额'/>
-                    <Image
-                        style={{marginRight: Pixel.getPixel(15)}}
-                        source={require('../../../images/login/clear.png')}/>
+                    {/*<TouchableOpacity
+                        onPress={() => {
+                            //this.setNumber('');
+
+                        }}>
+                        <Image
+
+                            style={{marginRight: Pixel.getPixel(15)}}
+                            source={require('../../../images/login/clear.png')}/>
+                    </TouchableOpacity>*/}
                 </View>
             </View>
         )
@@ -59,9 +69,9 @@ export default class InputAmountScene extends BaseComponent {
 
     setNumber = (number) => {
         this.number = number;
-/*        this.setState({
-            number: number,
-        });*/
+        /*        this.setState({
+         number: number,
+         });*/
     }
 
     isNumberByHundred = (number) => {
