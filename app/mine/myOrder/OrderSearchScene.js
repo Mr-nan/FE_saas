@@ -21,6 +21,8 @@ import {request} from "../../utils/RequestUtil";
 import LoadMoreFooter from "../../carSource/znComponent/LoadMoreFooter";
 import ProcurementOrderDetailScene from "./ProcurementOrderDetailScene";
 import SalesOrderDetailScene from "./SalesOrderDetailScene";
+import StorageUtil from "../../utils/StorageUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
 const Pixel = new PixelUtil();
 const {width, height} = Dimensions.get('window');
 
@@ -86,34 +88,45 @@ export default class OrderSearchScene extends BaseComponent {
     };
 
     loadData = () => {
-        let url = AppUrls.ORDER_SEARCH;
-        this.pageNum = 1;
-        request(url, 'post', {
-            business: this.props.business,
-            page: this.pageNum,
-            rows: 10,
-            car_name: this.state.value
-        }).then((response) => {
-            this.orderListData = response.mjson.data.info_list;
-            this.allPage = response.mjson.data.total / response.mjson.data.rows;
-            if (response.mjson.data && this.orderListData.length > 0) {
-                this.setState({
-                    dataSource: this.state.dataSource.cloneWithRows(this.orderListData),
-                    isRefreshing: false,
-                    renderPlaceholderOnly: 'success'
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                this.pageNum = 1;
+                let maps = {
+                    company_id: datas.company_base_id,
+                    business: this.props.business,
+                    page: this.pageNum,
+                    rows: 10,
+                    car_name: this.state.value
+                };
+                let url = AppUrls.ORDER_SEARCH;
+                request(url, 'post', maps).then((response) => {
+                    this.orderListData = response.mjson.data.items;
+                    this.allPage = response.mjson.data.total / response.mjson.data.rows;
+                    if (this.orderListData) {
+                        this.setState({
+                            dataSource: this.state.dataSource.cloneWithRows(this.orderListData),
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'success'
+                        });
+                    } else {
+                        this.setState({
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'null'
+                        });
+                    }
+                }, (error) => {
+                    this.setState({
+                        isRefreshing: false,
+                        renderPlaceholderOnly: 'error'
+                    });
                 });
             } else {
                 this.setState({
                     isRefreshing: false,
-                    renderPlaceholderOnly: 'null'
+                    renderPlaceholderOnly: 'error'
                 });
             }
-
-        }, (error) => {
-            this.setState({
-                isRefreshing: false,
-                renderPlaceholderOnly: 'error'
-            });
         });
     };
 
@@ -135,8 +148,8 @@ export default class OrderSearchScene extends BaseComponent {
                                 onChangeText={(text) => this.setState({value: text})}
                                 placeholder={"请输入车辆名称"}
                                 style={styles.inputStyle}
-                                secureTextEntry={false}
                                 underlineColorAndroid="transparent"
+
                             />
                         </View>
                         <TouchableOpacity onPress={this.startSearch}>
@@ -187,7 +200,6 @@ export default class OrderSearchScene extends BaseComponent {
                                     onChangeText={(text) => this.setState({value: text})}
                                     placeholder={"请输入车辆名称"}
                                     style={styles.inputStyle}
-                                    secureTextEntry={false}
                                     underlineColorAndroid="transparent"
                                 />
                             </View>
@@ -237,7 +249,8 @@ export default class OrderSearchScene extends BaseComponent {
     }
 
     _renderRow = (rowData, selectionID, rowID) => {
-        let initRegDate = this.dateReversal(rowData.cars[0].car.init_reg + '000');
+        let initRegDate = rowData.car.length ? this.dateReversal(rowData.car[0].init_reg + '000') : '未公开';
+        let imageUrl = rowData.car.length ? rowData.car[0].thumbs : [];
         //item 布局
         return (
             <TouchableOpacity
@@ -246,46 +259,53 @@ export default class OrderSearchScene extends BaseComponent {
                         this.toNextPage({
                             name: 'ProcurementOrderDetailScene',
                             component: ProcurementOrderDetailScene,
-                            params: {}
+                            params: {
+                                orderId: rowData.order.id
+                            }
                         });
                     } else {
                         this.toNextPage({
                             name: 'SalesOrderDetailScene',
                             component: SalesOrderDetailScene,
-                            params: {}
+                            params: {
+                                orderId: rowData.order.id
+                            }
                         });
                     }
                 }}
                 activeOpacity={0.8}>
                 <View style={styles.rowView}>
                     <View style={styles.rowTitleLine}>
-                        <Text style={styles.rowTitleText}>{rowData.seller_company_name}</Text>
+                        <Text style={styles.rowTitleText}>{rowData.order.company}</Text>
                         <Text style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                             color: fontAndColor.COLORA1,
                             marginLeft: Pixel.getPixel(5)
-                        }}>({rowData.seller_company_id})</Text>
+                        }}>订单号:({rowData.order.order_no})</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.rowTitleState}>已拍下</Text>
+                        <Text style={styles.rowTitleState}>{rowData.order.status}</Text>
                     </View>
                     <View style={styles.separatedLine}/>
                     <View style={{flexDirection: 'row', height: Pixel.getPixel(104), alignItems: 'center'}}>
                         <Image style={styles.image}
-                               source={{uri: 'http://dycd-static.oss-cn-beijing.aliyuncs.com/Uploads/Oss/201703/13/58c639474ef45.jpg?x-oss-process=image/resize,w_320,h_240'}}/>
+                               source={imageUrl.length ? {uri: imageUrl[0].icon_url} : require('../../../images/carSourceImages/car_null_img.png')}/>
                         <View style={{marginLeft: Pixel.getPixel(10)}}>
-                            <Text>{rowData.car_name}</Text>
+                            <Text
+                                style={{width: width - Pixel.getPixel(15 + 120 + 10 + 15)}}
+                                numberOfLines={1}
+                            >{rowData.car.length ? rowData.car[0].title : '未公开'}</Text>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>里程：</Text>
-                                <Text style={styles.carDescribe}>{rowData.cars[0].car.mileage}万</Text>
+                                <Text style={styles.carDescribe}>{rowData.car.length ? rowData.car[0].mileage + '万' : '未公开'}</Text>
                             </View>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>上牌：</Text>
                                 <Text style={styles.carDescribe}>{initRegDate}</Text>
                             </View>
-{/*                            <View style={{flexDirection: 'row', marginTop: Pixel.dgetPixel(5), alignItems: 'center'}}>
-                                <Text style={styles.carDescribeTitle}>标价：</Text>
-                                <Text style={styles.carDescribe}>20.59万</Text>
-                            </View>*/}
+                            {/*                            <View style={{flexDirection: 'row', marginTop: Pixel.dgetPixel(5), alignItems: 'center'}}>
+                             <Text style={styles.carDescribeTitle}>标价：</Text>
+                             <Text style={styles.carDescribe}>20.59万</Text>
+                             </View>*/}
                         </View>
                     </View>
                     <View style={styles.separatedLine}/>
@@ -303,7 +323,7 @@ export default class OrderSearchScene extends BaseComponent {
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color: fontAndColor.COLORA0,
                             fontWeight: 'bold'
-                        }}>13.90万</Text>
+                        }}>{rowData.car.length ? rowData.car[0].transaction_price : '0'}</Text>
                         <Text style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                             color: fontAndColor.COLORA1,
@@ -313,7 +333,7 @@ export default class OrderSearchScene extends BaseComponent {
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color: fontAndColor.COLORA0,
                             fontWeight: 'bold'
-                        }}>1.50万</Text>
+                        }}>{rowData.order.deposit_amount}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -358,16 +378,13 @@ const styles = StyleSheet.create({
     checkedItemText: {
         color: fontAndColor.COLORA0,
         fontSize: fontAndColor.CONTENTFONT,
-
     },
     checkedDeleteImg: {
-
         width: Pixel.getPixel(10),
         height: Pixel.getPixel(10),
         marginLeft: Pixel.getPixel(5),
     },
     checkedDelectView: {
-
         height: Pixel.getPixel(20),
         width: Pixel.getPixel(50),
         borderRadius: 4,
@@ -378,51 +395,38 @@ const styles = StyleSheet.create({
         marginBottom: Pixel.getPixel(10),
         marginLeft: Pixel.getPixel(15),
         marginTop: Pixel.getPixel(10),
-
-
     },
     checkedDelectText: {
         color: fontAndColor.COLORA2,
         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT),
-
     },
-
     carCell: {
         height: Pixel.getPixel(110),
     },
-
-
     navigatorView: {
-
         top: 0,
         height: Pixel.getTitlePixel(64),
         backgroundColor: fontAndColor.COLORB0,
-        flexDirection: 'row',
-
+        flexDirection: 'row'
     },
     navitgatorContentView: {
-
         flex: 1,
         flexDirection: 'row',
         marginTop: Pixel.getTitlePixel(20),
         height: Pixel.getPixel(44),
         alignItems: 'center',
         justifyContent: 'center',
-
+        backgroundColor: fontAndColor.COLORB0
     },
-
     navigatorLoactionView: {
-
         flexDirection: 'row',
         width: Pixel.getPixel(85),
-        alignItems: 'center',
-
-
+        alignItems: 'center'
     },
     navigatorSousuoView: {
-        height: Pixel.getPixel(25),
+        height: Pixel.getPixel(27),
         borderRadius: 5,
-        backgroundColor: 'white',
+        backgroundColor: '#FFFFFF',
         alignItems: 'center',
         width: width - Pixel.getPixel(100),
         flexDirection: 'row'
@@ -483,9 +487,11 @@ const styles = StyleSheet.create({
     },
     inputStyle: {
         flex: 1,
+        //backgroundColor: 'transparent',
         marginLeft: Pixel.getPixel(5),
         textAlign: 'left',
         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-        color: fontAndColor.COLORA2
+        color: fontAndColor.COLORA2,
+        padding: 0
     }
 });

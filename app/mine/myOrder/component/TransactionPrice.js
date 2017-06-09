@@ -31,6 +31,10 @@ export default class TransactionPrice extends BaseComponent {
         }
     }
 
+/*    isShowFinance = (financeInfo) => {
+        this.props.isShowFinance(financeInfo);
+    };*/
+
     render() {
         return (
             <View style={styles.itemType4}>
@@ -44,7 +48,10 @@ export default class TransactionPrice extends BaseComponent {
                             component: InputAmountScene,
                             params: {
                                 amount: this.state.amount,
-                                updateAmount: this.updateAmount
+                                updateAmount: this.updateAmount,
+                                carId: this.props.carId,
+                                orderId: this.props.orderId,
+                                isShowFinance: this.props.isShowFinance
                             }
                         });
                     }}>
@@ -88,6 +95,7 @@ export default class TransactionPrice extends BaseComponent {
     }
 
     updateAmount = (newAmount) => {
+        this.props.updateCarAmount(newAmount);
         this.setState({
             amount: newAmount,
             deposit: newAmount / 10

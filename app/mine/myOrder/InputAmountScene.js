@@ -19,6 +19,11 @@ import BaseComponent from "../../component/BaseComponent";
 import NavigatorView from '../../component/AllNavigationView';
 import * as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
+import * as AppUrls from "../../constant/appUrls";
+import {request} from "../../utils/RequestUtil";
+import ShowToast from "../../component/toast/ShowToast";
+import StorageUtil from "../../utils/StorageUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
 const Pixel = new PixelUtil();
 
 export default class InputAmountScene extends BaseComponent {
@@ -26,9 +31,6 @@ export default class InputAmountScene extends BaseComponent {
     constructor(props) {
         super(props);
         this.number = this.props.amount;
-/*        this.state = {
-            number: this.props.amount
-        }*/
     }
 
     render() {
@@ -76,7 +78,10 @@ export default class InputAmountScene extends BaseComponent {
             <TouchableOpacity
                 onPress={() => {
                     if (this.isNumberByHundred(this.number)) {
+                        //this.props.showModal(true);
+                        //this.checkPrice(this.number);
                         this.props.updateAmount(this.number);
+                        this.checkPrice(this.number);
                         this.backPage();
                     } else {
                         this.props.showToast("请输入整百金额");
@@ -87,6 +92,31 @@ export default class InputAmountScene extends BaseComponent {
                 <Text style={{color: '#ffffff'}}>完成</Text>
             </TouchableOpacity>
         )
+    }
+
+    checkPrice = (price) => {
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    car_id: this.props.carId,
+                    order_id: this.props.orderId,
+                    pricing_amount: price
+                };
+                let url = AppUrls.ORDER_CHECK_PRICE;
+                request(url, 'post', maps).then((response) => {
+                    this.props.showModal(false);
+                    //let isShowFin = response.mjson.data.response.is_show_finance;
+                    //console.log('isShowFinance', response.mjson.data.response);
+                    this.props.isShowFinance(response.mjson.data);
+                }, (error) => {
+                    this.props.showToast('车辆定价检查失败');
+                });
+            } else {
+                this.props.showToast('车辆定价检查失败');
+            }
+        });
     }
 }
 

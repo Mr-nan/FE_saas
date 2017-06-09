@@ -18,16 +18,15 @@ export default class DepositCountDown extends Component {
     constructor(props) {
         super(props);
         //初始化方法
+        let leftTime = this.props.leftTime;
         this.state = {
             countDown: false,
-            //value: '获取验证码',
-            minute: 0,
-            second: 5
+            hour: 23 - this.formatLongToTimeStr(leftTime).hour,
+            minute: 59 - this.formatLongToTimeStr(leftTime).minute
         };
-        //this.countTime = TIME;
         this.timer = null;
-        this.value1 = this.state.minute;
-        this.value2 = this.state.second;
+        this.value1 = this.state.hour;
+        this.value2 = this.state.minute;
     }
 
 /*    static propTypes = {
@@ -38,8 +37,22 @@ export default class DepositCountDown extends Component {
         callBackSms: PropTypes.func,//发送短语验证码
     }*/
 
-    initFinish = () => {
-    }
+    formatLongToTimeStr = (timeStamp) => {
+        let hour = 0;
+        let minute = 0;
+        let second = 0;
+        second = timeStamp / 1000;
+        if (second > 60) {
+            minute = second / 60;
+            second = second % 60;
+        }
+        if (minute > 60) {
+            hour = minute / 60;
+            minute = minute % 60;
+        }
+        //console.log('间隔时间:::', parseInt(hour) + ":" + parseInt(minute)  + ":"  + parseInt(second));
+        return {hour: parseInt(hour), minute: parseInt(minute)};
+    };
 
     componentDidMount() {
         this.StartCountDown();
@@ -48,9 +61,8 @@ export default class DepositCountDown extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.textStyle}>{this.state.minute}</Text>
-                <Text style={styles.textStyle}>:</Text>
-                <Text style={styles.textStyle}>{this.state.second}</Text>
+                <Text style={styles.textStyle}>{this.state.hour}时{this.state.minute}分</Text>
+                {/*<Text style={styles.textStyle}>:</Text>*/}
             </View>
         );
     }
@@ -66,14 +78,14 @@ export default class DepositCountDown extends Component {
                         this.endCountDown();
                     } else {
                         this.setState({
-                            second: this.value2,
-                            minute: this.value1
+                            minute: this.value2,
+                            hour: this.value1
                         });
                     }
                 } else {
                     this.value2 = --this.value2;
                     this.setState({
-                        second: this.value2
+                        minute: this.value2
                     });
                 }
             }, 60000)
