@@ -36,6 +36,7 @@ import AccountModal from '../component/AccountModal'
 import AccountManageScene from '../mine/accountManage/AccountTypeSelectScene'
 import BindCardScene from '../mine/accountManage/BindCardScene'
 import WaitActivationAccountScene from '../mine/accountManage/WaitActivationAccountScene'
+import ProcurementOrderDetailScene from "../mine/myOrder/ProcurementOrderDetailScene";
 let Platform = require('Platform');
 const Pixel = new PixelUtil();
 
@@ -468,6 +469,7 @@ export default class CarInfoScene extends BaseComponent {
                         enter_base_ids: datas.company_base_id,
                         child_type: '1'
                     };
+                    this.props.showModal(true);
                     request(AppUrls.USER_ACCOUNT_INFO, 'Post', maps)
                         .then((response) => {
                                 this.props.showModal(false);
@@ -495,6 +497,7 @@ export default class CarInfoScene extends BaseComponent {
                                     this.carOrder(datas.company_base_id,carData);
                                     return;
                                 }
+                                this.props.showModal(false);
                                 this.refs.accountmodal.changeShowType(true,
                                     '您还未开通资金账户，为方便您使用金融产品及购物车，' +
                                     '请尽快开通！', '去开户', '看看再说', () => {
@@ -503,6 +506,7 @@ export default class CarInfoScene extends BaseComponent {
 
                             },
                             (error) => {
+                                this.props.showModal(false);
                                 this.props.showToast('用户信息查询失败');
                             });
                 }else{
@@ -514,12 +518,25 @@ export default class CarInfoScene extends BaseComponent {
 
     // 车辆订购
     carOrder=(company_base_id,carData)=>{
-        this.props.showModal(true);
+
         request(AppUrls.CAR_ORDER_SAVE,'post',{
             'car_ids':carData.id,
             'company_id':company_base_id
         }).then((response) => {
             this.props.showModal(false);
+            if (response.mjson.msg === 'ok' && response.mjson.code === 1) {  // 下单成功
+                this.toNextPage({
+                    name: 'ProcurementOrderDetailScene',
+                    component: ProcurementOrderDetailScene,
+                    params: {
+                        business: 1,
+                        orderId: response.mjson.data.order_id
+                    }
+                });
+            } else {
+                this.props.showToast(response.mjson.msg);
+            }
+
         }, (error) => {
             this.props.showModal(false);
             this.props.showToast(error.mjson.msg);
