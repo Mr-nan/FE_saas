@@ -42,6 +42,7 @@ export  default class WebScene extends BaseComponent {
     }
 
     handleBack = () => {
+        this.props.showModal(false);
         if(oldUrl==this.props.webUrl){
             this.backPage();
         }else{
@@ -64,17 +65,23 @@ export  default class WebScene extends BaseComponent {
                     javaScriptEnabled={true}
                     domStorageEnabled={true}
                     scalesPageToFit={false}
+                    onLoadStart={()=>{
+                        this.props.showModal(true);
+                    }}
+                    onLoadEnd={()=>{
+                         this.props.showModal(false);
+                    }}
                     onNavigationStateChange={this.onNavigationStateChange.bind(this)}
                 />
                 <NavigationView
                     title="公告"
                     backIconClick={()=>{
+                         this.props.showModal(false);
                         if(oldUrl==this.props.webUrl){
                                 this.backPage();
                         }else{
                             this.refs.www.goBack();
                         }
-
                     }}
                 />
             </View>
@@ -90,7 +97,10 @@ export  default class WebScene extends BaseComponent {
             <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
                 <NavigationView
                     title="公告"
-                    backIconClick={this.backPage}
+                    backIconClick={()=>{
+                         this.props.showModal(false);
+                        this.backPage();
+                    }}
                 />
             </View>
         );

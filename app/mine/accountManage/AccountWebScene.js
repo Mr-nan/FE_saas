@@ -44,6 +44,7 @@ export  default class AccountWebScene extends BaseComponent {
     }
 
     handleBack = () => {
+        this.props.showModal(false);
         if (oldUrl == this.props.webUrl) {
             this.backPage();
         } else {
@@ -68,16 +69,17 @@ export  default class AccountWebScene extends BaseComponent {
                     domStorageEnabled={true}
                     scalesPageToFit={false}
                     onLoadStart={()=>{
-                        console.log('123123');
+                        this.props.showModal(true);
                     }}
                     onLoadEnd={()=>{
-                        console.log('321321');
+                         this.props.showModal(false);
                     }}
                     onNavigationStateChange={this.onNavigationStateChange.bind(this)}
                 />
                 <NavigationView
                     title={this.props.title}
                     backIconClick={()=>{
+                         this.props.showModal(false);
                         if(oldUrl==this.props.webUrl){
                            this.backPage();
                         }else{
@@ -120,6 +122,7 @@ export  default class AccountWebScene extends BaseComponent {
         console.log('123---------' + navState.url);
         oldUrl = navState.url;
         if (oldUrl == 'http://' + this.props.backUrl + '/') {
+            this.props.showModal(false);
             this.props.callBack();
             if (oldUrl == 'http://' + webBackUrl.OPENINDIVIDUALACCOUNT + '/' ||
                 oldUrl == 'http://' + webBackUrl.OPENENTERPRISEACCOUNT + '/' || oldUrl == 'http://' + webBackUrl.BINDCARD + '/' ||
