@@ -6,12 +6,12 @@
 /**
  * 测试地
  */
-// export const BASEURL = 'http://api-gateway.test.dycd.com/';
+export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 正式地址
  */
-export const BASEURL = 'https://gatewayapi.dycd.com/';
+// export const BASEURL = 'https://gatewayapi.dycd.com/';
 
 /**
  * 预发布地址
@@ -122,10 +122,6 @@ export const CAR_GET_RESIDUALS = BASEURL + V + 'che/residuals';
  */
 export const CAR_ORDER_SAVE = BASEURL + V + 'order/save';
 
-/**
- * 获取客服电话号码
- */
-export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/getCustomService';
 
 // /**
 //  * 获取客服电话号码
@@ -133,7 +129,7 @@ export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/getCustomService'
 // export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/getCustomService';
 
 /**
- * 获取客服电话号码
+ * 获取客服电话号码-商户号码
  */
 export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/companyPhone';
 
