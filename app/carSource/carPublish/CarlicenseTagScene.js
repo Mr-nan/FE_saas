@@ -146,6 +146,7 @@ export default class CarDischargeScene extends  BaseComponent{
     }
 
     chkNumber=(obj)=> {
+        obj = obj.toUpperCase();
         return obj.replace(/[^\w\/]/ig,'');
     }
 

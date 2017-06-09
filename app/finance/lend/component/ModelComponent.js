@@ -75,7 +75,7 @@ export class LendSuccessAlert extends Component{
                         <Text style={commentAlertStyle.subtitle}>{this.state.subtitle!=''?this.state.subtitle:subtitle}</Text>
                         <View style={commentAlertStyle.successWarp}>
                             <CommenButton buttonStyle={[commentAlertStyle.successButton,{marginBottom:adapeSize(20)},
-                             commentAlertStyle.buttonLeft]} onPress={this.confimClick} title="好的"/>
+                             commentAlertStyle.buttonLeft]} onPress={this.confimClick} title={confimTitle?confimTitle:"好的"}/>
                         </View>
                     </View>
                 </TouchableOpacity>

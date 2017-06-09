@@ -45,7 +45,7 @@ export default class NoneSineScene extends BaseComponent {
         let maps = {
             page: page,
             rows: 10,
-            api : Urls.CONTRACTLIST,
+            api : Urls.CONTRACT_CONTRACT_LIST,
             opt_user_id: this.props.opt_user_id,
             sign_status: '0',
         };
@@ -160,6 +160,7 @@ export default class NoneSineScene extends BaseComponent {
                                 product_type_code: rowData.product_type_code,	//产品类型编码
                                 opt_user_id:this.props.opt_user_id,
                                 showButton: true,
+                                user_id:rowData.user_id,
                                 callBack: () => {
                                     allSouce = [];
                                     this.setState({renderPlaceholderOnly: 'loading'});

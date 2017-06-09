@@ -32,18 +32,18 @@ export default class CarDischargeScene extends  BaseComponent{
     constructor(props) {
         super(props);
         this.viewData = [
-            {title: '国Ⅱ', selected: false,index:0},
-            {title: '欧Ⅳ', selected: false,index:1},
-            {title: '国Ⅲ', selected: false,index:2},
-            {title: '欧Ⅴ', selected: false,index:3},
-            {title: '国Ⅳ', selected: false,index:4},
-            {title: '欧Ⅵ', selected: false,index:5},
-            {title: '国Ⅴ', selected: false,index:6},
-            {title: '欧Ⅲ', selected: false,index:7},
-            {title: '京Ⅴ', selected: false,index:8},
-            {title: '欧Ⅱ', selected: false,index:9},
-            {title: 'OBD', selected: false,index:10},
-            {title: '欧Ⅰ', selected: false,index:11},
+            {title: '国Ⅱ', selected: false,index:0,value:'naitonal_ii'},
+            {title: '欧Ⅳ', selected: false,index:1,value:'european_iv'},
+            {title: '国Ⅲ', selected: false,index:2,value:'naitonal_iii'},
+            {title: '欧Ⅴ', selected: false,index:3,value:'european_v'},
+            {title: '国Ⅳ', selected: false,index:4,value:'naitonal_iv'},
+            {title: '欧Ⅵ', selected: false,index:5,value:'european_vi'},
+            {title: '国Ⅴ', selected: false,index:6,value:'naitonal_v'},
+            {title: '欧Ⅲ', selected: false,index:7,value:'european_iii'},
+            {title: '京Ⅴ', selected: false,index:8,value:'beijing_v'},
+            {title: '欧Ⅱ', selected: false,index:9,value:'european_ii'},
+            {title: 'OBD', selected: false,index:10,value:'obd'},
+            {title: '欧Ⅰ', selected: false,index:11,value:'european_i'},
         ];
 
         this.viewData.map((data,index)=>{
@@ -120,7 +120,7 @@ export default class CarDischargeScene extends  BaseComponent{
 
         this.props.checkedCarDischargeClick({
             title:this.viewData[i].title,
-            value:i,
+            value:this.viewData[i].value,
         });
         this.backPage();
 

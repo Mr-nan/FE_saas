@@ -11,6 +11,10 @@ import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.text.TextUtils;
+import android.net.Uri;
 
 /**
  * Created by Administrator on 2017/3/2.
@@ -94,4 +98,35 @@ public class VinScanModule extends ReactContextBaseJavaModule implements Activit
         String imei = mTm.getDeviceId();
         callback.invoke(imei);
     }
+    @ReactMethod
+    public void getPhoneVersion(Callback callback){
+        String verison = "phoneVersion=" +android.os.Build.VERSION.RELEASE  +
+                ",phoneModel=" + android.os.Build.MODEL+
+                ",appVersion="+getAppVersionName(mContext);
+        callback.invoke(verison);
+    }
+    private String getAppVersionName(Context context) {
+        String versionName = "";
+        try {
+            PackageManager packageManager = context.getPackageManager();
+            PackageInfo packageInfo = packageManager.getPackageInfo("com.fe_sass", 0);
+            versionName = packageInfo.versionName;
+            if (TextUtils.isEmpty(versionName)) {
+                return "";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return versionName;
+    }
+
+    @ReactMethod
+    public void callPhone(String tel){
+        tel = tel.replace(",", ",,");
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.fromParts("tel", tel, null));//拼一个电话的Uri，拨打分机号 关键代码
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mContext.startActivity(intent);
+    }
+
 }

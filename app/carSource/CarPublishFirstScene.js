@@ -59,46 +59,45 @@ export default class CarPublishFirstScene extends BaseComponent{
             this.loadCarData();
 
         }else {
-            StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-                if(data.code == 1 && data.result != '')
-                {
-                    let enters = JSON.parse(data.result);
-                    this.carData['show_shop_id'] = enters.company_base_id;
-                    this.carData['city_id'] = enters.city_id;
-                    this.carData['provice_id'] = enters.prov_id;
-                    this.carData['city_name'] = enters.city_name;
-                    this.getLocalityCarData();
-
-                }else{
-                    this._showHint('无法找到所属商户');
-                }
-
-            });
-
-            // StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST,(data)=>{
-            //     if(data.code == 1 && data.result != ''){
+            // StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            //     if(data.code == 1 && data.result != '')
+            //     {
             //         let enters = JSON.parse(data.result);
-            //         if(enters.length === 1){
+            //         this.carData['show_shop_id'] = enters.company_base_id;
+            //         this.carData['city_id'] = enters.city_id;
+            //         this.carData['provice_id'] = enters.prov_id;
+            //         this.carData['city_name'] = enters.city_name;
+            //         this.getLocalityCarData();
             //
-            //             this.carData['show_shop_id'] = enters[0].enterprise_uid;
-            //             this.carData['city_id'] = enters[0].city_id;
-            //             this.carData['provice_id'] = enters[0].prov_id;
-            //             this.carData['city_name'] = enters[0].city_name;
-            //             this.getLocalityCarData();
-            //
-            //         }else if(enters.length > 1){
-            //
-            //             this.enterpriseList = enters;
-            //             this.enterpriseModal.refresh(this.enterpriseList);
-            //             this.enterpriseModal.openModal();
-            //
-            //         }else{
-            //             this._showHint('无法找到所属商户');
-            //         }
             //     }else{
             //         this._showHint('无法找到所属商户');
             //     }
             // });
+
+            StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST,(data)=>{
+                if(data.code == 1 && data.result != ''){
+                    let enters = JSON.parse(data.result);
+                    if(enters.length === 1){
+
+                        this.carData['show_shop_id'] = enters[0].enterprise_uid;
+                        this.carData['city_id'] = enters[0].city_id;
+                        this.carData['provice_id'] = enters[0].prov_id;
+                        this.carData['city_name'] = enters[0].city_name;
+                        this.getLocalityCarData();
+
+                    }else if(enters.length > 1){
+
+                        this.enterpriseList = enters;
+                        this.enterpriseModal.refresh(this.enterpriseList);
+                        this.enterpriseModal.openModal();
+
+                    }else{
+                        this._showHint('无法找到所属商户');
+                    }
+                }else{
+                    this._showHint('无法找到所属商户');
+                }
+            });
         }
     }
     // 构造
@@ -492,13 +491,14 @@ export default class CarPublishFirstScene extends BaseComponent{
 
         Net.request(AppUrls.CAR_DETAIL, 'post', {
             id: this.props.carID,
+            imgType:0,
         }).then((response) => {
 
             this.props.showModal(false);
 
             if(response.mycode==1){
                 this.carData = response.mjson.data;
-                this.carData.manufacture= response.mjson.data.manufacture!=''? this.dateReversal(response.mjson.data.manufacture+'000'):'';
+                this.carData.manufacture= response.mjson.data.manufacture!=''?  this.dateReversal(response.mjson.data.manufacture+'000'):'';
                 this.carData.init_reg=response.mjson.data.init_reg!=''? this.dateReversal(response.mjson.data.init_reg+'000'):'';
                 this.carData.emission_standards = response.mjson.data.emission_standards_en;
                 this.setCarData();
@@ -627,12 +627,15 @@ export default class CarPublishFirstScene extends BaseComponent{
     cellSelectAction=(selectDict)=>{
 
         this.carData['v_type']=selectDict.value;
+        this.carData['v_type_str'] = selectDict.title;
         this.carType=selectDict.title;
         this.upTitleData();
     }
 
 
     footBtnClick=()=>{
+
+        console.log(this.carData);
 
         if(!this.carData.vin||this.carData.vin==''){
             this.props.showToast('请输入正确的车架号');
@@ -682,7 +685,7 @@ export default class CarPublishFirstScene extends BaseComponent{
             let initReg = new  Date(this.carData.init_reg);
             if(manufactureData.getTime() > initReg.getTime())
             {
-                this.props.showToast('初登日期不能大于出厂日期');
+                this.props.showToast('初登日期不得早于出厂日期');
                 return;
             }
 
@@ -701,7 +704,6 @@ export default class CarPublishFirstScene extends BaseComponent{
             }
         }
         this.toNextPage(navigatorParams);
-        console.log(this.carData);
 
     }
     _onScanPress=()=>{
@@ -765,14 +767,14 @@ export default class CarPublishFirstScene extends BaseComponent{
 
             this.titleData1[0][2].value = this.modelData[index].model_name;
             this.titleData1[0][4].value = this.modelData[index].model_emission_standard;
-            this.titleData1[1][0].value = this.modelData[index].model_year+'-6-1';
-            this.titleData1[1][1].value = this.modelData[index].model_year+'-6-1';
+            this.titleData1[1][0].value = this.modelData[index].model_year+'-06-01';
+            this.titleData1[1][1].value = this.modelData[index].model_year+'-06-01';
 
             this.titleData2[0][2].value = this.modelData[index].model_name;
             this.titleData2[0][4].value = this.modelData[index].model_emission_standard;
-            this.titleData2[1][0].value = this.modelData[index].model_year+'-6-1';
+            this.titleData2[1][0].value = this.modelData[index].model_year+'-06-01';
 
-            this.carData['manufacture'] = this.modelData[index].model_year+'-6-1';
+            this.carData['manufacture'] = this.modelData[index].model_year+'-06-01';
             this.carData['model_id'] = this.modelData[index].model_id;
             this.carData['emission_standards'] = this.modelData[index].model_emission_standard;
             this.carData['series_id'] = this.modelData[index].series_id;
@@ -781,7 +783,7 @@ export default class CarPublishFirstScene extends BaseComponent{
 
             if(this.carType=='二手车')
             {
-                this.carData['init_reg'] = this.modelData[index].model_year+'-6-1';
+                this.carData['init_reg'] = this.modelData[index].model_year+'-06-01';
 
             }else {
                 this.carData['init_reg'] = '';
@@ -832,17 +834,17 @@ export default class CarPublishFirstScene extends BaseComponent{
 
                             this.titleData1[0][2].value = rd[0].model_name;
                             this.titleData1[0][4].value = rd[0].model_emission_standard;
-                            this.titleData1[1][0].value = rd[0].model_year+'-6-1';
-                            this.titleData1[1][1].value = rd[0].model_year+'-6-1';
+                            this.titleData1[1][0].value = rd[0].model_year+'-06-01';
+                            this.titleData1[1][1].value = rd[0].model_year+'-06-01';
 
                             this.titleData2[0][2].value = rd[0].model_name;
                             this.titleData2[0][4].value = rd[0].model_emission_standard;
-                            this.titleData2[1][0].value = rd[0].model_year+'-6-1';
+                            this.titleData2[1][0].value = rd[0].model_year+'-06-01';
 
-                            this.carData['manufacture'] = rd[0].model_year+'-6-1';
+                            this.carData['manufacture'] = rd[0].model_year+'-06-01';
                             if(this.carType=='二手车')
                             {
-                                this.carData['init_reg'] = rd[0].model_year+'-6-1';
+                                this.carData['init_reg'] = rd[0].model_year+'-06-01';
 
                             }else {
                                 this.carData['init_reg'] = '';
@@ -952,17 +954,17 @@ export default class CarPublishFirstScene extends BaseComponent{
         this.titleData2[0][1].subTitle='';
         this.titleData1[0][2].value = carObject.model_name;
         this.titleData1[0][4].value = carObject.discharge_standard;
-        this.titleData1[1][0].value = carObject.model_year+'-6-1';
-        this.titleData1[1][1].value = carObject.model_year+'-6-1';
+        this.titleData1[1][0].value = carObject.model_year+'-06-01';
+        this.titleData1[1][1].value = carObject.model_year+'-06-01';
 
         this.titleData2[0][2].value = carObject.model_name;
         this.titleData2[0][4].value = carObject.discharge_standard;
-        this.titleData2[1][0].value = carObject.model_year+'-6-1';
+        this.titleData2[1][0].value = carObject.model_year+'-06-01';
 
-        this.carData['manufacture'] = carObject.model_year+'-6-1';
+        this.carData['manufacture'] = carObject.model_year+'-06-01';
         if(this.carType =='二手车')
         {
-            this.carData['init_reg'] = carObject.model_year+'-6-1';
+            this.carData['init_reg'] = carObject.model_year+'-06-01';
         }else {
             this.carData['init_reg'] = '';
             this.titleData1[1][1].value = '请选择';
@@ -993,7 +995,6 @@ export default class CarPublishFirstScene extends BaseComponent{
     _checkedCarDischargeClick=(dischargeObject)=>{
         this.titleData1[0][4].value = dischargeObject.title;
         this.titleData2[0][4].value = dischargeObject.title;
-
         this.carData['emission_standards'] = dischargeObject.title;
         this.upTitleData();
     }
@@ -1073,7 +1074,7 @@ export default class CarPublishFirstScene extends BaseComponent{
 
         const date = new Date();
         date.setTime(time);
-        return(date.getFullYear()+"-"+(this.PrefixInteger(date.getMonth()+1,2)))+"-"+(this.PrefixInteger(date.getDay()+1,2));
+        return(date.getFullYear()+"-"+(this.PrefixInteger(date.getMonth()+1,2)))+"-"+(this.PrefixInteger(date.getDate(),2));
 
     };
     PrefixInteger =(num,length)=>{

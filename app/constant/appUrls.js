@@ -6,12 +6,12 @@
 /**
  * 测试地
  */
-export const BASEURL = 'http://api-gateway.test.dycd.com/';
+// export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 正式地址
  */
-// export const BASEURL = 'https://gatewayapi.dycd.com/';
+export const BASEURL = 'https://gatewayapi.dycd.com/';
 
 /**
  * 预发布地址
@@ -130,7 +130,12 @@ export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/getCustomService'
 // /**
 //  * 获取客服电话号码
 //  */
-// export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/companyPhone';
+// export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/getCustomService';
+
+/**
+ * 获取客服电话号码
+ */
+export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/companyPhone';
 
 /**
  * 获取我的车源-已上架/下架
@@ -527,6 +532,13 @@ export const REPAYMENT_GETADJUSTINFO = 'api/v2/Repayment/getAdjustInfo';
 /**
  * from @zhaojian
  *
+ * 元通查看合同
+ **/
+export const CONTRACT_CONTRACTDETAIL = 'api/v1/Contract/contractDetail';
+
+/**
+ * from @zhaojian
+ *
  * 获取借款首页数据
  **/
 export const GET_MNY = 'api/v3/account/get_mny';
@@ -761,6 +773,11 @@ export const AUTH_UPLOAD_FILE = BASEURL + V + "auth/upload";
  * 合同列表
  */
 export const CONTRACTLIST = 'api/v1/Contract/contract_list';
+
+/**
+ * 元通合同列表
+ */
+export const CONTRACT_CONTRACT_LIST = 'api/v1/Contract/contract_list';
 
 /**
  * 转债权合同列表
