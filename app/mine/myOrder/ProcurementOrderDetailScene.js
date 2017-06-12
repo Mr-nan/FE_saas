@@ -216,7 +216,6 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             }}>订金支付剩余时间</Text>
                             <DepositCountDown leftTime={this.leftTime}/>
                             <Text style={{
-                                marginLeft: Pixel.getPixel(15),
                                 fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                                 color: fontAndColor.COLORB7
                             }}>超时未付订单自动取消</Text>
@@ -815,7 +814,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         <Text style={styles.orderInfo}>支付总计</Text>
                         <View style={{flex: 1}}/>
                         <Text
-                            style={styles.infoContent}>{this.orderDetail.deposit_amount + this.orderDetail.balance_amount}元</Text>
+                            style={styles.infoContent}>{this.orderDetail.transaction_amount}元</Text>
                     </View>
                 </View>
             )

@@ -21,8 +21,8 @@ export default class DepositCountDown extends Component {
         let leftTime = this.props.leftTime;
         this.state = {
             countDown: false,
-            hour: 23 - this.formatLongToTimeStr(leftTime).hour,
-            minute: 59 - this.formatLongToTimeStr(leftTime).minute
+            hour: leftTime > 0 ? 23 - this.formatLongToTimeStr(leftTime).hour : 0,
+            minute: leftTime > 0 ? 59 - this.formatLongToTimeStr(leftTime).minute : 0
         };
         this.timer = null;
         this.value1 = this.state.hour;
@@ -55,7 +55,9 @@ export default class DepositCountDown extends Component {
     };
 
     componentDidMount() {
-        this.StartCountDown();
+        if (this.props.leftTime > 0) {
+            this.StartCountDown();
+        }
     }
 
     render() {
