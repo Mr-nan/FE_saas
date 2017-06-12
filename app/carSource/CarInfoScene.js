@@ -469,44 +469,48 @@ export default class CarInfoScene extends BaseComponent {
                         enter_base_ids: datas.company_base_id,
                         child_type: '1'
                     };
-                    this.props.showModal(true);
                     request(AppUrls.USER_ACCOUNT_INFO, 'Post', maps)
                         .then((response) => {
-                                this.props.showModal(false);
                                 lastType = response.mjson.data.status;
                                 let navigatorParams={
                                     name:'',
                                     component:'',
                                     params:{}
                                 };
-
                                 if (lastType == '0') {
 
                                     navigatorParams.name = 'AccountManageScene';
                                     navigatorParams.component = AccountManageScene;
+                                    this.refs.accountmodal.changeShowType(true,
+                                        '您还未开通资金账户，为方便您使用金融产品及购物车，' +
+                                        '请尽快开通！', '去开户', '看看再说', () => {
+                                            this.toNextPage(navigatorParams);
+                                        });
 
                                 } else if (lastType == '1') {
                                     navigatorParams.name = 'BindCardScene';
                                     navigatorParams.component = BindCardScene;
+                                    this.refs.accountmodal.changeShowType(true,
+                                        '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
+                                        , '去绑卡', '看看再说', () => {
+                                            this.toNextPage(navigatorParams);
+                                        });
 
                                 } else if (lastType == '2') {
                                     navigatorParams.name = 'WaitActivationAccountScene';
                                     navigatorParams.component = WaitActivationAccountScene;
+                                    this.refs.accountmodal.changeShowType(true,
+                                        '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
+                                        , '去激活', '看看再说', () => {
+                                            this.toNextPage(navigatorParams);
+                                        });
 
                                 } else {
                                     this.carOrder(datas.company_base_id,carData);
-                                    return;
                                 }
-                                this.props.showModal(false);
-                                this.refs.accountmodal.changeShowType(true,
-                                    '您还未开通资金账户，为方便您使用金融产品及购物车，' +
-                                    '请尽快开通！', '去开户', '看看再说', () => {
-                                        this.toNextPage(navigatorParams);
-                                    });
 
                             },
                             (error) => {
-                                this.props.showModal(false);
                                 this.props.showToast('用户信息查询失败');
                             });
                 }else{
@@ -518,7 +522,7 @@ export default class CarInfoScene extends BaseComponent {
 
     // 车辆订购
     carOrder=(company_base_id,carData)=>{
-
+        this.props.showModal(true);
         request(AppUrls.CAR_ORDER_SAVE,'post',{
             'car_ids':carData.id,
             'company_id':company_base_id

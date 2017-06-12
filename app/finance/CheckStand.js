@@ -265,19 +265,23 @@ export default class CheckStand extends BaseComponent {
                 request(url, 'post', maps).then((response) => {
                     //this.loadData();
                     //this.props.showToast('支付成功');
-                    this.transSerialNo = response.mjson.data.trans_serial_no;
-                    this.toNextPage({
-                        name: 'AccountWebScene',
-                        component: AccountWebScene,
-                        params: {
-                            title: '支付',
-                            webUrl: response.mjson.data.auth_url + '?authTokenId=' + response.mjson.data.auth_token,
-                            callBack: () => {
-                                this.checkPay();
-                            },// 这个callBack就是点击webview容器页面的返回按钮后"收银台"执行的动作
-                            backUrl: webBackUrl.PAY
-                        }
-                    });
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.transSerialNo = response.mjson.data.trans_serial_no;
+                        this.toNextPage({
+                            name: 'AccountWebScene',
+                            component: AccountWebScene,
+                            params: {
+                                title: '支付',
+                                webUrl: response.mjson.data.auth_url + '?authTokenId=' + response.mjson.data.auth_token,
+                                callBack: () => {
+                                    this.checkPay();
+                                },// 这个callBack就是点击webview容器页面的返回按钮后"收银台"执行的动作
+                                backUrl: webBackUrl.PAY
+                            }
+                        });
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
                 }, (error) => {
                     this.props.showToast('账户支付失败');
                 });
