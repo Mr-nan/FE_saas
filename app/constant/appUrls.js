@@ -128,7 +128,7 @@ export const CAR_ORDER_SAVE = BASEURL + V + 'order/save';
 // export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/getCustomService';
 
 /**
- * 获取客服电话号码
+ * 获取客服电话号码-商户号码
  */
 export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/companyPhone';
 
