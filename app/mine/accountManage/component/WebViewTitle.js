@@ -30,7 +30,41 @@ export  default class WebViewTitle extends PureComponent {
         }
     }
 
+    /**
+     * from @zhaojian
+     *
+     * 首次加载进度条
+     **/
+    firstProgress = () => {
+        this.setState({
+            height: Pixel.getPixel(4),
+        });
+        Animated.timing(          // Uses easing functions
+            this.state.fadeAnim,    // The value to drive
+            {toValue: width - width / 4, duration: 2000},           // Configuration
+        ).start();                // Don't forget start!
+    }
 
+
+
+    /**
+     * from @zhaojian
+     *
+     * 二次加载进度条
+     **/
+    lastProgress = () => {
+        Animated.timing(          // Uses easing functions
+            this.state.fadeAnim,    // The value to drive
+            {
+                toValue: width
+            },           // Configuration
+        ).start(() => {
+            this.setState({
+                height: 0,
+                fadeAnim: new Animated.Value(0),
+            });
+        });                // Don't forget start!
+    }
 
 
     render() {
