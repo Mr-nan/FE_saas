@@ -25,6 +25,7 @@ import BaseComponent from '../../component/BaseComponent';
 import MainPage from '../../main/MainPage';
 import * as webBackUrl from '../../constant/webBackUrl';
 let oldUrl = '';
+import WebViewTitle from './component/WebViewTitle';
 export  default class AccountWebScene extends BaseComponent {
 
     constructor(props) {
@@ -60,19 +61,21 @@ export  default class AccountWebScene extends BaseComponent {
         }
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
+               <WebViewTitle ref="webviewtitle"/>
                 <WebView
                     ref="www"
                     style={{width:width,height:height,
-                    backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(64)}}
+                    backgroundColor:fontAndColor.COLORA3}}
                     source={{uri:this.props.webUrl,method: 'GET'}}
                     javaScriptEnabled={true}
                     domStorageEnabled={true}
                     scalesPageToFit={false}
                     onLoadStart={()=>{
-                        this.props.showModal(true);
+                        this.refs.webviewtitle.onPress();
+                        {/*this.props.showModal(true);*/}
                     }}
                     onLoadEnd={()=>{
-                         this.props.showModal(false);
+                         {/*this.props.showModal(false);*/}
                     }}
                     onNavigationStateChange={this.onNavigationStateChange.bind(this)}
                 />
