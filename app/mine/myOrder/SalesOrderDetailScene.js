@@ -160,13 +160,13 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 };
                 let url = AppUrls.ORDER_DETAIL;
                 request(url, 'post', maps).then((response) => {
-                    this.props.showModal(false);
                     this.orderDetail = response.mjson.data;
                     let status = response.mjson.data.status;
                     let cancelStatus = response.mjson.data.cancel_status;
                     this.stateMapping(status, cancelStatus);
                     this.leftTime = this.getLeftTime(this.orderDetail.cancel_time);
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.props.showModal(false);
                         this.carAmount = 0;
                         this.carVin = this.orderDetail.orders_item_data[0].car_vin;
                         this.initListData(this.orderState);
