@@ -32,7 +32,7 @@ export  default class AccountWebScene extends BaseComponent {
         super(props);
         // 初始状态
         this.state = {
-            renderPlaceholderOnly: true,
+            renderPlaceholderOnly: 'blank',
         };
     }
 
@@ -40,7 +40,7 @@ export  default class AccountWebScene extends BaseComponent {
         oldUrl = this.props.webUrl;
         BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
         InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: false});
+            this.setState({renderPlaceholderOnly: 'success'});
         });
     }
 
@@ -56,7 +56,7 @@ export  default class AccountWebScene extends BaseComponent {
 
 
     render() {
-        if (this.state.renderPlaceholderOnly) {
+        if (this.state.renderPlaceholderOnly!=='success') {
             return this._renderPlaceholderView();
         }
         return (
@@ -71,11 +71,14 @@ export  default class AccountWebScene extends BaseComponent {
                     domStorageEnabled={true}
                     scalesPageToFit={false}
                     onLoadStart={()=>{
-                        this.refs.webviewtitle.onPress();
-                        {/*this.props.showModal(true);*/}
+                        this.refs.webviewtitle.firstProgress();
+
                     }}
                     onLoadEnd={()=>{
-                         {/*this.props.showModal(false);*/}
+                        this.refs.webviewtitle.lastProgress();
+                    }}
+                    onError={()=>{
+                        this.setState({renderPlaceholderOnly: 'error'});
                     }}
                     onNavigationStateChange={this.onNavigationStateChange.bind(this)}
                 />
@@ -159,6 +162,7 @@ export  default class AccountWebScene extends BaseComponent {
     _renderPlaceholderView() {
         return (
             <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
+                {this.loadView()}
                 <NavigationView
                     title={this.props.title}
                     backIconClick={this.backPage}

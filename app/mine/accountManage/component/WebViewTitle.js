@@ -26,22 +26,15 @@ export  default class WebViewTitle extends PureComponent {
         this.state = {
             isOpen: false,
             fadeAnim: new Animated.Value(0),
+            height: Pixel.getPixel(4)
         }
     }
-    /**
-     * from @zhaojian
-     *
-     * 添加采购贷车辆
-     **/
-    onPress = () => {
-        Animated.timing(          // Uses easing functions
-            this.state.fadeAnim,    // The value to drive
-            {toValue: width-width/4},           // Configuration
-        ).start(3000);                // Don't forget start!
-    }
+
+
+
 
     render() {
-        return (<Animated.View style={{width:this.state.fadeAnim,height:Pixel.getPixel(4),
+        return (<Animated.View style={{width:this.state.fadeAnim,height:this.state.height,
         backgroundColor:'#1cef53',marginTop:Pixel.getTitlePixel(64)
         }}>
 
