@@ -75,7 +75,8 @@ export  default class AccountScene extends BaseComponent {
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
-                           this.getAccountData(datas.company_base_id,response.mjson.data.account_open_type)
+                           this.getAccountData(datas.company_base_id,
+                               response.mjson.data.account_open_type)
                         },
                         (error) => {
                             this.props.showToast('用户信息查询失败');
@@ -102,6 +103,10 @@ export  default class AccountScene extends BaseComponent {
         };
         request(Urls.USER_ACCOUNT_INDEX, 'Post', maps)
             .then((response) => {
+                if(response.mjson.data.info.status!='3'){
+                    this.props.callBack();
+                    this.backPage();
+                }else{
                     if (response.mjson.data.payLogs == null || response.mjson.data.payLogs.length <= 0) {
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
@@ -122,6 +127,8 @@ export  default class AccountScene extends BaseComponent {
                             isRefreshing:false
                         });
                     }
+                }
+
                 },
                 (error) => {
                     this.props.showToast('用户信息查询失败');

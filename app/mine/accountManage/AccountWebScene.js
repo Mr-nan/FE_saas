@@ -69,6 +69,7 @@ export  default class AccountWebScene extends BaseComponent {
                     source={{uri:this.props.webUrl,method: 'GET'}}
                     javaScriptEnabled={true}
                     domStorageEnabled={true}
+                    automaticallyAdjustContentInsets={false}
                     scalesPageToFit={false}
                     onLoadStart={()=>{
                         this.refs.webviewtitle.firstProgress();

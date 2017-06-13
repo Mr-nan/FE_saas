@@ -66,7 +66,6 @@ export  default class WebViewTitle extends PureComponent {
         });                // Don't forget start!
     }
 
-
     render() {
         return (<Animated.View style={{width:this.state.fadeAnim,height:this.state.height,
         backgroundColor:'#1cef53',marginTop:Pixel.getTitlePixel(64)

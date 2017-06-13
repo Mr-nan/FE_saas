@@ -227,14 +227,15 @@ export default class FinanceSence extends BaseComponet {
 
     toPage = () => {
         if (lastType == '0') {
-            this.props.callBack({name: 'AccountTypeSelectScene', component: AccountTypeSelectScene, params: {}});
+            this.props.callBack({name: 'AccountTypeSelectScene',
+                component: AccountTypeSelectScene, params: {callBack:()=>{}}});
         } else if (lastType == '1') {
-            this.props.callBack({name: 'BindCardScene', component: BindCardScene, params: {}});
+            this.props.callBack({name: 'BindCardScene', component: BindCardScene, params: {callBack:()=>{}}});
         } else if (lastType == '2') {
             this.props.callBack({
                 name: 'WaitActivationAccountScene',
                 component: WaitActivationAccountScene,
-                params: {}
+                params: {callBack:()=>{}}
             });
         }
     }
