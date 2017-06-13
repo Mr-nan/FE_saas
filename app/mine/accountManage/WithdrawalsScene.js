@@ -28,6 +28,7 @@ import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import * as webBackUrl from "../../constant/webBackUrl";
 import AccountWebScene from './AccountWebScene';
+import WithdrawalsAboutScene from './WithdrawalsAboutScene';
 export  default class WithdrawalsScene extends BaseComponent {
 
     constructor(props) {
@@ -130,7 +131,9 @@ export  default class WithdrawalsScene extends BaseComponent {
                             提现</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>{
+                        this.toNextPage({name:'WithdrawalsAboutScene',component:WithdrawalsAboutScene,params:{
 
+                        }})
                     }} activeOpacity={0.8} style={{marginTop:Pixel.getPixel(15),width:width,alignItems:'center'}}>
                         <Text style={{fontSize: Pixel.getPixel(14),color: fontAndColor.COLORB4}}>
                             银行受理及到账时间 ></Text>

@@ -25,13 +25,14 @@ import BaseComponent from '../../component/BaseComponent';
 import MainPage from '../../main/MainPage';
 import * as webBackUrl from '../../constant/webBackUrl';
 let oldUrl = '';
+import WebViewTitle from './component/WebViewTitle';
 export  default class AccountWebScene extends BaseComponent {
 
     constructor(props) {
         super(props);
         // 初始状态
         this.state = {
-            renderPlaceholderOnly: true,
+            renderPlaceholderOnly: 'blank',
         };
     }
 
@@ -39,7 +40,7 @@ export  default class AccountWebScene extends BaseComponent {
         oldUrl = this.props.webUrl;
         BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
         InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: false});
+            this.setState({renderPlaceholderOnly: 'success'});
         });
     }
 
@@ -55,24 +56,29 @@ export  default class AccountWebScene extends BaseComponent {
 
 
     render() {
-        if (this.state.renderPlaceholderOnly) {
+        if (this.state.renderPlaceholderOnly!=='success') {
             return this._renderPlaceholderView();
         }
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
+               <WebViewTitle ref="webviewtitle"/>
                 <WebView
                     ref="www"
                     style={{width:width,height:height,
-                    backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(64)}}
+                    backgroundColor:fontAndColor.COLORA3}}
                     source={{uri:this.props.webUrl,method: 'GET'}}
                     javaScriptEnabled={true}
                     domStorageEnabled={true}
                     scalesPageToFit={false}
                     onLoadStart={()=>{
-                        this.props.showModal(true);
+                        this.refs.webviewtitle.firstProgress();
+
                     }}
                     onLoadEnd={()=>{
-                         this.props.showModal(false);
+                        this.refs.webviewtitle.lastProgress();
+                    }}
+                    onError={()=>{
+                        this.setState({renderPlaceholderOnly: 'error'});
                     }}
                     onNavigationStateChange={this.onNavigationStateChange.bind(this)}
                 />
@@ -162,6 +168,7 @@ export  default class AccountWebScene extends BaseComponent {
     _renderPlaceholderView() {
         return (
             <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
+                {this.loadView()}
                 <NavigationView
                     title={this.props.title}
                     backIconClick={this.backPage}

@@ -23,6 +23,7 @@ import NavigationView from '../component/AllNavigationView';
 import * as fontAndColor from '../constant/fontAndColor';
 import BaseComponent from '../component/BaseComponent';
 let oldUrl = '';
+import WebViewTitle from '../mine/accountManage/component/WebViewTitle';
 export  default class WebScene extends BaseComponent {
 
     constructor(props) {
@@ -58,18 +59,20 @@ export  default class WebScene extends BaseComponent {
         }
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
+                <WebViewTitle ref="webviewtitle"/>
                 <WebView
                     ref="www"
-                    style={{width:width,height:height,backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(64)}}
+                    style={{width:width,height:height,backgroundColor:
+                    fontAndColor.COLORA3}}
                     source={{uri:this.props.webUrl,method: 'GET'}}
                     javaScriptEnabled={true}
                     domStorageEnabled={true}
                     scalesPageToFit={false}
                     onLoadStart={()=>{
-                        this.props.showModal(true);
+                        this.refs.webviewtitle.firstProgress();
                     }}
                     onLoadEnd={()=>{
-                         this.props.showModal(false);
+                         this.refs.webviewtitle.lastProgress();
                     }}
                     onNavigationStateChange={this.onNavigationStateChange.bind(this)}
                 />
