@@ -51,8 +51,8 @@ export  default class WebViewTitle extends PureComponent {
      * from @zhaojian
      *
      * 二次加载进度条
-     **/123
-    lastProgress = (aa) => {
+     **/
+    lastProgress = () => {
         Animated.timing(          // Uses easing functions
             this.state.fadeAnim,    // The value to drive
             {
@@ -65,7 +65,6 @@ export  default class WebViewTitle extends PureComponent {
             });
         });                // Don't forget start!
     }
-
 
     render() {
         return (<Animated.View style={{width:this.state.fadeAnim,height:this.state.height,
