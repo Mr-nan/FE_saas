@@ -160,7 +160,7 @@ export default class NoneSineScene extends BaseComponent {
                                 product_type_code: rowData.product_type_code,	//产品类型编码
                                 opt_user_id:this.props.opt_user_id,
                                 showButton: true,
-                                user_id:rowData.user_id,
+                                user_id:rowData.signator_id,
                                 callBack: () => {
                                     allSouce = [];
                                     this.setState({renderPlaceholderOnly: 'loading'});
