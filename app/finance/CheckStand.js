@@ -137,7 +137,7 @@ export default class CheckStand extends BaseComponent {
                         <View style={styles.separatedLine}/>
                         <View style={styles.accountBar}>
                             <Text style={styles.title}>账户：</Text>
-                            <Text style={styles.content}>{this.accountInfo.account_id}</Text>
+                            <Text style={styles.content}>{this.accountInfo.bank_card_no}</Text>
                         </View>
                         <View style={styles.separatedLine}/>
                         <View style={styles.accountBar}>

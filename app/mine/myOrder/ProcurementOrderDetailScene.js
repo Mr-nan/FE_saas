@@ -108,6 +108,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         switch (orderState) {
             case 0: //创建订单
                 this.mList = [];
+                this.items = [];
                 this.contactData = {};
                 this.mList = ['0', '1', '3', '4', '6'];
                 this.contactData = {
@@ -124,6 +125,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 break;
             case 1: // 待付订金
                 this.mList = [];
+                this.items = [];
                 this.contactData = {};
                 this.mList = ['0', '1', '2', '3', '4', '6'];
                 this.contactData = {
@@ -143,6 +145,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 break;
             case 2: // 已付订金(待付尾款)
                 this.mList = [];
+                this.items = [];
                 this.contactData = {};
                 this.mList = ['0', '1', '3', '4', '6'];
                 this.contactData = {
@@ -160,6 +163,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 break;
             case 3: // 全款付清
                 this.mList = [];
+                this.items = [];
                 this.contactData = {};
                 this.mList = ['0', '1', '2', '3', '4', '6'];
                 this.contactData = {
@@ -177,6 +181,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 break;
             case 4: // 已完成
                 this.mList = [];
+                this.items = [];
                 this.contactData = {};
                 this.mList = ['0', '1', '3', '4', '6'];
                 this.contactData = {
@@ -637,13 +642,13 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 };
                 let url = AppUrls.ORDER_DETAIL;
                 request(url, 'post', maps).then((response) => {
-                    this.props.showModal(false);
-                    this.orderDetail = response.mjson.data;
-                    let status = response.mjson.data.status;
-                    let cancelStatus = response.mjson.data.cancel_status;
-                    this.stateMapping(status, cancelStatus);
-                    this.leftTime = this.getLeftTime(this.orderDetail.created_time);
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.props.showModal(false);
+                        this.orderDetail = response.mjson.data;
+                        let status = response.mjson.data.status;
+                        let cancelStatus = response.mjson.data.cancel_status;
+                        this.stateMapping(status, cancelStatus);
+                        this.leftTime = this.getLeftTime(this.orderDetail.created_time);
                         this.initListData(this.orderState);
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
@@ -750,7 +755,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 </View>
             )
         } else if (rowData === '3') {
-            let initRegDate = this.dateReversal(this.orderDetail.orders_item_data[0].car_data.init_reg + '000');
+            let initReg = this.orderDetail.orders_item_data[0].car_data.init_reg;
+            let mileage = this.orderDetail.orders_item_data[0].car_data.mileage;
+            let initRegDate = initReg === 0 ? '暂无' : this.dateReversal(initReg + '000');
             let imageUrl = this.orderDetail.orders_item_data[0].car_data.imgs;
 /*            let imageUrl = [];
             let initRegDate = this.dateReversal('1496462' + '000');*/
@@ -774,7 +781,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>里程：</Text>
                                 <Text
-                                    style={styles.carDescribe}>{this.orderDetail.orders_item_data[0].car_data.mileage}</Text>
+                                    style={styles.carDescribe}>{mileage}</Text>
                             </View>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>上牌：</Text>

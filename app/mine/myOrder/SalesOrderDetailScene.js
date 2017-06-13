@@ -160,19 +160,20 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 };
                 let url = AppUrls.ORDER_DETAIL;
                 request(url, 'post', maps).then((response) => {
-                    this.orderDetail = response.mjson.data;
-                    let status = response.mjson.data.status;
-                    let cancelStatus = response.mjson.data.cancel_status;
-                    this.stateMapping(status, cancelStatus);
-                    this.leftTime = this.getLeftTime(this.orderDetail.cancel_time);
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
                         this.props.showModal(false);
+                        this.orderDetail = response.mjson.data;
+                        let status = response.mjson.data.status;
+                        let cancelStatus = response.mjson.data.cancel_status;
+                        this.stateMapping(status, cancelStatus);
+                        this.leftTime = this.getLeftTime(this.orderDetail.cancel_time);
                         this.carAmount = 0;
                         this.carVin = this.orderDetail.orders_item_data[0].car_vin;
                         this.initListData(this.orderState);
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                        let newArray = new Array(...this.mList);
                         this.setState({
-                            dataSource: ds.cloneWithRows(this.mList),
+                            dataSource: ds.cloneWithRows(newArray),
                             isRefreshing: false,
                             renderPlaceholderOnly: 'success'
                         });
@@ -321,7 +322,6 @@ export default class SalesOrderDetailScene extends BaseComponent {
                             }}>处理申请剩余时间：</Text>
                             <DepositCountDown leftTime={this.leftTime}/>
                             <Text style={{
-                                marginLeft: Pixel.getPixel(15),
                                 fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                                 color: fontAndColor.COLORB7
                             }}>超时未处理默认为不同意，订单自动取消</Text>
@@ -488,6 +488,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
         switch (orderState) {
             case 0:  //未定价
                 this.mList = [];
+                this.items = [];
                 this.contactData = {};
                 if (this.carVin.length === 17) {
                     this.mList = ['0', '1', '2', '4', '5', '7', '9'];
@@ -508,6 +509,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 break;
             case 1:  //已定价
                 this.mList = [];
+                this.items = [];
                 this.contactData = {};
                 this.mList = ['0', '1', '5', '7', '9'];
                 this.contactData = {
@@ -524,6 +526,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 break;
             case 2:  //订金到账
                 this.mList = [];
+                this.items = [];
                 this.contactData = {};
                 this.mList = ['0', '1', '5', '7', '9'];
                 this.contactData = {
@@ -540,6 +543,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 break;
             case 3:  // 结清尾款
                 this.mList = [];
+                this.items = [];
                 this.contactData = {};
                 this.mList = ['0', '1', '5', '7', '9'];
                 this.contactData = {
@@ -556,6 +560,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 break;
             case 4: // 完成交易
                 this.mList = [];
+                this.items = [];
                 this.contactData = {};
                 this.mList = ['0', '1', '5', '7', '9'];
                 this.contactData = {
