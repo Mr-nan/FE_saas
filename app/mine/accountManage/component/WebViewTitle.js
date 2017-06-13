@@ -50,9 +50,9 @@ export  default class WebViewTitle extends PureComponent {
     /**
      * from @zhaojian
      *
-     * 二次加载进度条
+     * 二次加载进度条123
      **/
-    lastProgress = () => {
+    lastProgress = (aa) => {
         Animated.timing(          // Uses easing functions
             this.state.fadeAnim,    // The value to drive
             {
