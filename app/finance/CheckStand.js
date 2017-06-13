@@ -251,7 +251,7 @@ export default class CheckStand extends BaseComponent {
     };
 
     goPay = () => {
-        //this.props.showModal(true);
+        this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
@@ -266,6 +266,7 @@ export default class CheckStand extends BaseComponent {
                     //this.loadData();
                     //this.props.showToast('支付成功');
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.props.showModal(false);
                         this.transSerialNo = response.mjson.data.trans_serial_no;
                         this.toNextPage({
                             name: 'AccountWebScene',
