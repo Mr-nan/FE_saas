@@ -70,22 +70,26 @@ export default class MakePhoneModal extends Component {
                         borderWidth: Pixel.getPixel(1),
                         borderColor: '#ffffff'
                     }}>
-                        <TouchableOpacity
-                            onPress={() => {
-                                this.callClick(this.state.callData.shopsNumber);
-                            }}>
-                            <View style={styles.buttonMerchant}>
-                                <Text style={{color: '#ffffff'}}>联系商家</Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => {
-                                this.callClick(this.state.callData.phone);
-                            }}>
-                            <View style={styles.buttonCustomerService}>
-                                <Text style={{color: fontAndColor.COLORB0}}>联系客服</Text>
-                            </View>
-                        </TouchableOpacity>
+                        {
+                            this.state.callData.shopsNumber !== '' && (<TouchableOpacity
+                                onPress={() => {
+                                    this.callClick(this.state.callData.shopsNumber);
+                                }}>
+                                <View style={styles.buttonMerchant}>
+                                    <Text style={{color: '#ffffff'}}>联系商家</Text>
+                                </View>
+                            </TouchableOpacity>)
+                        }
+                        {
+                            this.state.callData.phone !== '' && (<TouchableOpacity
+                                onPress={() => {
+                                    this.callClick(this.state.callData.phone);
+                                }}>
+                                <View style={styles.buttonCustomerService}>
+                                    <Text style={{color: fontAndColor.COLORB0}}>联系客服</Text>
+                                </View>
+                            </TouchableOpacity>)
+                        }
 
                     </View>
                 </TouchableOpacity>

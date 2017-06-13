@@ -214,16 +214,17 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 return (
                     <View style={{marginTop: Pixel.getTitlePixel(65)}}>
                         <View style={styles.tradingCountdown}>
-                            <Text style={{
-                                marginLeft: Pixel.getPixel(15),
-                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-                                color: fontAndColor.COLORB7
-                            }}>订金支付剩余时间</Text>
-                            <DepositCountDown leftTime={this.leftTime}/>
-                            <Text style={{
-                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-                                color: fontAndColor.COLORB7
-                            }}>超时未付订单自动取消</Text>
+                            <Text>
+                                <Text style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                    color: fontAndColor.COLORB7
+                                }}>订金支付剩余时间</Text>
+                                <DepositCountDown leftTime={this.leftTime}/>
+                                <Text style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                    color: fontAndColor.COLORB7
+                                }}>超时未付订单自动取消</Text>
+                            </Text>
                         </View>
                         <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>
                     </View>
@@ -295,7 +296,6 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             }
         });
     };
-
 
 
     /**
@@ -772,7 +772,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             let initRegDate = initReg === 0 ? '暂无' : this.dateReversal(initReg + '000');
             let imageUrl = this.orderDetail.orders_item_data[0].car_data.imgs;
             /*let imageUrl = [];
-            let initRegDate = this.dateReversal('1496462' + '000');*/
+             let initRegDate = this.dateReversal('1496462' + '000');*/
             return (
                 <View style={styles.itemType3}>
                     <View style={{
@@ -1062,7 +1062,10 @@ const styles = StyleSheet.create({
     tradingCountdown: {
         flexDirection: 'row',
         alignItems: 'center',
-        height: Pixel.getPixel(40),
+        paddingLeft: Pixel.getPixel(15),
+        paddingRight: Pixel.getPixel(15),
+        paddingTop: Pixel.getPixel(10),
+        paddingBottom: Pixel.getPixel(10),
         backgroundColor: fontAndColor.COLORB6
     },
     expButton: {

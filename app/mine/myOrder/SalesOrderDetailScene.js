@@ -112,6 +112,15 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 isRefreshing: false,
                 renderPlaceholderOnly: 'success'
             });
+        } else {
+            this.mList = [];
+            this.mList = ['0', '1', '2', '4', '5', '7', '9'];
+            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+            this.setState({
+                dataSource: ds.cloneWithRows(this.mList),
+                isRefreshing: false,
+                renderPlaceholderOnly: 'success'
+            });
         }
         this.props.showModal(false);
     };
@@ -316,16 +325,18 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 return (
                     <View style={{marginTop: Pixel.getTitlePixel(65)}}>
                         <View style={styles.tradingCountdown}>
-                            <Text style={{
-                                marginLeft: Pixel.getPixel(15),
-                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-                                color: fontAndColor.COLORB7
-                            }}>处理申请剩余时间：</Text>
-                            <DepositCountDown leftTime={this.leftTime}/>
-                            <Text style={{
-                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-                                color: fontAndColor.COLORB7
-                            }}>超时未处理默认为不同意，订单自动取消</Text>
+                            <Text>
+                                <Text style={{
+                                    marginLeft: Pixel.getPixel(15),
+                                    fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                    color: fontAndColor.COLORB7
+                                }}>处理申请剩余时间</Text>
+                                <DepositCountDown leftTime={this.leftTime}/>
+                                <Text style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                    color: fontAndColor.COLORB7
+                                }}>超时未处理默认为不同意，订单自动取消</Text>
+                            </Text>
                         </View>
                         <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>
                     </View>
@@ -865,8 +876,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     setPrompt={this.contactData.setPrompt ? this.contactData.setPrompt : false}
                     promptTitle={this.contactData.promptTitle ? this.contactData.promptTitle : ''}
                     promptContent={this.contactData.promptContent ? this.contactData.promptContent : ''}
-                    MerchantNum={this.contactData.merchantNum ? this.contactData.merchantNum : ''}
-                    CustomerServiceNum={this.contactData.customerServiceNum ? this.contactData.customerServiceNum : ''}/>
+                    showShopId={this.orderDetail.orders_item_data[0].car_data.show_shop_id}/>
             )
         } else if (rowData === '2') {
             //this.carAmount = this.orderDetail.orders_item_data[0].transaction_price;
@@ -983,7 +993,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
             let initRegDate = this.dateReversal(this.orderDetail.orders_item_data[0].car_data.init_reg + '000');
             let imageUrl = this.orderDetail.orders_item_data[0].car_data.imgs;
             /*let imageUrl = [];
-            let initRegDate = this.dateReversal('1496462' + '000');*/
+             let initRegDate = this.dateReversal('1496462' + '000');*/
             return (
                 <View style={styles.itemType3}>
                     <View style={{
@@ -1359,7 +1369,11 @@ const styles = StyleSheet.create({
     tradingCountdown: {
         flexDirection: 'row',
         alignItems: 'center',
-        height: Pixel.getPixel(40),
+        paddingLeft: Pixel.getPixel(15),
+        paddingRight: Pixel.getPixel(15),
+        paddingTop: Pixel.getPixel(10),
+        paddingBottom: Pixel.getPixel(10),
+        //height: Pixel.getPixel(40),
         backgroundColor: fontAndColor.COLORB6
     },
     buttonCancel: {
