@@ -116,10 +116,12 @@ export default class InputAmountScene extends BaseComponent {
                 };
                 let url = AppUrls.ORDER_CHECK_PRICE;
                 request(url, 'post', maps).then((response) => {
-                    this.props.showModal(false);
-                    //let isShowFin = response.mjson.data.response.is_show_finance;
-                    //console.log('isShowFinance', response.mjson.data.response);
-                    this.props.isShowFinance(response.mjson.data);
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.props.showModal(false);
+                        this.props.isShowFinance(response.mjson.data);
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
                 }, (error) => {
                     this.props.showToast('车辆定价检查失败');
                 });

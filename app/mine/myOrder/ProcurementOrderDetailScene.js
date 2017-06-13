@@ -282,7 +282,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 };
                 let url = AppUrls.ORDER_CANCEL;
                 request(url, 'post', maps).then((response) => {
-                    this.loadData();
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.loadData();
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
                 }, (error) => {
                     this.props.showToast('取消订单申请失败');
                 });
@@ -307,7 +311,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 };
                 let url = AppUrls.ORDER_CONFIRM_CAR;
                 request(url, 'post', maps).then((response) => {
-                    this.loadData();
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.loadData();
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
                 }, (error) => {
                     this.props.showToast('确认验收失败');
                 });
@@ -330,7 +338,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 };
                 let url = AppUrls.ORDER_REVERT;
                 request(url, 'post', maps).then((response) => {
-                    this.loadData();
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.loadData();
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
                 }, (error) => {
                     this.props.showToast('恢复订单失败');
                 });
@@ -759,7 +771,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             let mileage = this.orderDetail.orders_item_data[0].car_data.mileage;
             let initRegDate = initReg === 0 ? '暂无' : this.dateReversal(initReg + '000');
             let imageUrl = this.orderDetail.orders_item_data[0].car_data.imgs;
-/*            let imageUrl = [];
+            /*let imageUrl = [];
             let initRegDate = this.dateReversal('1496462' + '000');*/
             return (
                 <View style={styles.itemType3}>
@@ -781,7 +793,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>里程：</Text>
                                 <Text
-                                    style={styles.carDescribe}>{mileage}</Text>
+                                    style={styles.carDescribe}>{mileage}万</Text>
                             </View>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>上牌：</Text>

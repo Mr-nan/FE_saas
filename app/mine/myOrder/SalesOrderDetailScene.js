@@ -41,6 +41,7 @@ import CheckStand from "../../finance/CheckStand";
 import * as Net from '../../utils/RequestUtil';
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
+import AccountScene from "../accountManage/AccountScene";
 const Pixel = new PixelUtil();
 
 const IS_ANDROID = Platform.OS === 'android';
@@ -103,7 +104,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
         if (financeInfo.is_show_finance == 1) {
             this.financeInfo = financeInfo;
             this.mList = [];
-            this.mList = ['0', '1', '2', '3', '4', '5', '6', '7', '9'];
+            this.mList = ['0', '1', '2', '3', '4', '5', '7', '9'];
             let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             this.setState({
                 dataSource: ds.cloneWithRows(this.mList),
@@ -605,7 +606,11 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 };
                 let url = AppUrls.ORDER_ALLOW_CANCEL;
                 request(url, 'post', maps).then((response) => {
-                    this.loadData();
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.loadData();
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
                 }, (error) => {
                     this.props.showToast('处理取消订单申请失败');
                 });
@@ -625,7 +630,11 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 };
                 let url = AppUrls.ORDER_DENY_CANCEL;
                 request(url, 'post', maps).then((response) => {
-                    this.loadData();
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.loadData();
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
                 }, (error) => {
                     this.props.showToast('处理取消订单申请失败');
                 });
@@ -747,7 +756,11 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 };
                 let url = AppUrls.ORDER_CANCEL;
                 request(url, 'post', maps).then((response) => {
-                    this.loadData();
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.loadData();
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
                 }, (error) => {
                     this.props.showToast('取消订单失败');
                 });
@@ -969,6 +982,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
         } else if (rowData === '5') {
             let initRegDate = this.dateReversal(this.orderDetail.orders_item_data[0].car_data.init_reg + '000');
             let imageUrl = this.orderDetail.orders_item_data[0].car_data.imgs;
+            /*let imageUrl = [];
+            let initRegDate = this.dateReversal('1496462' + '000');*/
             return (
                 <View style={styles.itemType3}>
                     <View style={{
