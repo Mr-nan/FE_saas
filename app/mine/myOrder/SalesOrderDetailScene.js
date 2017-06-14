@@ -1066,6 +1066,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                underlineColorAndroid='transparent'
                                maxLength={17}
                                onChangeText={this._onVinChange}
+                               keyboardType={'ascii-capable'}
                                placeholderTextColor={fontAndColor.COLORA4}
                                ref={(input) => {
                                    this.carVin = input
