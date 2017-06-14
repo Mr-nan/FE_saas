@@ -111,6 +111,7 @@ export default class CGDaddCarScenes extends BaseComponent{
         return (
            <View style={{flex:1,backgroundColor:PAGECOLOR.COLORA3}}>
             <ListView
+                removeClippedSubviews={false}
                 style={{marginTop:64}}
                 dataSource={this.state.dataSource}
                 renderRow={this.renderRow }

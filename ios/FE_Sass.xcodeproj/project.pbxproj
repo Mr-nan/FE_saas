@@ -373,7 +373,7 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		7AF474FC8B6C4EC78759A9DA /* libCodePush.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libCodePush.a; sourceTree = "<group>"; };
 		7D4BDE291ECAD84A002DD5E1 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
-		7D5D8B671EE5565900892F2E /* 4D39F52BD46AC7CD8470.lic */ = {isa = PBXFileReference; lastKnownFileType = file; path = 4D39F52BD46AC7CD8470.lic; sourceTree = "<group>"; };
+		7D5D8AFE1EE1563200892F2E /* 4D39F52BD46AC7CD8470.lic */ = {isa = PBXFileReference; lastKnownFileType = file; path = 4D39F52BD46AC7CD8470.lic; sourceTree = "<group>"; };
 		7D769E2B1E602A630039526C /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		7D769E2D1E602A800039526C /* libc++abi.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++abi.tbd"; path = "usr/lib/libc++abi.tbd"; sourceTree = SDKROOT; };
 		7DB2CBB11E779CB400DE146C /* libbz2.1.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.1.0.tbd; path = usr/lib/libbz2.1.0.tbd; sourceTree = SDKROOT; };
@@ -664,7 +664,7 @@
 		7DB2CBB31E779DDF00DE146C /* OCRSCancer */ = {
 			isa = PBXGroup;
 			children = (
-				7D5D8B671EE5565900892F2E /* 4D39F52BD46AC7CD8470.lic */,
+				7D5D8AFE1EE1563200892F2E /* 4D39F52BD46AC7CD8470.lic */,
 				7DB2CBB51E779DDF00DE146C /* libSVehicleLicense.a */,
 				7DB2CBB61E779DDF00DE146C /* libvinTyper.a */,
 				7DB2CBB71E779DDF00DE146C /* Resources */,
@@ -1856,7 +1856,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODEPUSH_KEY = "";
+				CODEPUSH_KEY = "4Wr88ywryi8HoitS9eM4T_LMBKUNe1b7b22b-ea3f-4c77-abcc-72586c814b3c";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Shanghai FengZhiXing Automobile Finance Information Service Co., Ltd.";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;

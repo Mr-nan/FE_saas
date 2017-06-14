@@ -111,6 +111,7 @@ export default class ContractManageScene extends BaseComponent {
                           dataSource={this.state.dataSource}
                           renderRow={this._renderRow}
                           enableEmptySections={true}
+                          removeClippedSubviews={false}
                           refreshControl={
                               <RefreshControl
                                   refreshing={this.state.isRefreshing}

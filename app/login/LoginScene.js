@@ -395,10 +395,9 @@ export default class LoginScene extends BaseComponent {
                     this.setState({
                         loading: false,
                     });
-                    if (response.mycode == "1") {
-                        if (response.mjson.data.user_level == 2) {
+                        if (response.mjson.data.user_level == 2||response.mjson.data.user_level == 1) {
                             if (response.mjson.data.enterprise_list == [] || response.mjson.data.enterprise_list == "") {
-                                this.props.showToast("无授信企业");
+                                this.props.showToast("您的账号未绑定企业");
                             } else {
                                 // 保存用户登录状态
                                 StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '2');
@@ -439,19 +438,19 @@ export default class LoginScene extends BaseComponent {
                                 StorageUtil.mGetItem(response.mjson.data.phone + "", (data) => {
                                     if (data.code == 1) {
                                         if (data.result != null) {
-                                            if (response.mjson.data.user_level == 2) {
-                                                if (response.mjson.data.enterprise_list[0].role_type == '2') {
+                                            // if (response.mjson.data.user_level == 2) {
+                                            //     if (response.mjson.data.enterprise_list[0].role_type == '2') {
                                                     this.loginPage({
                                                         name: 'LoginGesture',
                                                         component: LoginGesture,
                                                         params: {from: 'RootScene'}
                                                     })
-                                                } else {
-                                                    this.loginPage(this.loginSuccess)
-                                                }
-                                            } else {
-                                                this.loginPage(this.loginSuccess)
-                                            }
+                                            //     } else {
+                                            //         this.loginPage(this.loginSuccess)
+                                            //     }
+                                            // } else {
+                                            //     this.loginPage(this.loginSuccess)
+                                            // }
                                             StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
                                         } else {
                                             this.loginPage(this.setLoginGesture)
@@ -499,19 +498,19 @@ export default class LoginScene extends BaseComponent {
                             StorageUtil.mGetItem(response.mjson.data.phone + "", (data) => {
                                 if (data.code == 1) {
                                     if (data.result != null) {
-                                        if (response.mjson.data.user_level == 2) {
-                                            if (response.mjson.data.enterprise_list[0].role_type == '2') {
+                                        // if (response.mjson.data.user_level == 2) {
+                                        //     if (response.mjson.data.enterprise_list[0].role_type == '2') {
                                                 this.loginPage({
                                                     name: 'LoginGesture',
                                                     component: LoginGesture,
                                                     params: {from: 'RootScene'}
                                                 })
-                                            } else {
-                                                this.loginPage(this.loginSuccess)
-                                            }
-                                        } else {
-                                            this.loginPage(this.loginSuccess)
-                                        }
+                                        //     } else {
+                                        //         this.loginPage(this.loginSuccess)
+                                        //     }
+                                        // } else {
+                                        //     this.loginPage(this.loginSuccess)
+                                        // }
                                         StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
                                     } else {
                                         this.loginPage(this.setLoginGesture)
@@ -519,9 +518,6 @@ export default class LoginScene extends BaseComponent {
                                 }
                             })
                         }
-                    } else {
-                        this.props.showToast(response.mjson.msg + "");
-                    }
                 }, (error) => {
                     // this.props.showModal(false);
                     this.setState({

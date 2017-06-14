@@ -129,6 +129,7 @@ export default class CompleteSignScene extends BaseComponent {
             return (
                 <View style={styles.container}>
                     <ListView
+                        removeClippedSubviews={false}
                         style={styles.listStyle}
                         dataSource={this.state.dataSource}
                         renderRow={this._renderRow}

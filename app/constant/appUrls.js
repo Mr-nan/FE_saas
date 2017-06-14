@@ -25,7 +25,7 @@ export const V = "v1/";
 
 /**
  * 版本号2
- */
+ *
 export const V2 = "v2/";
 
 /**
@@ -63,6 +63,7 @@ export const CAR_HOME_BRAND = BASEURL + V + 'home/brand';
  * 获取车系
  */
 export const CAR_HOME_SERIES = BASEURL + V + 'home/series';
+
 
 /**
  * 获取车型
@@ -116,13 +117,18 @@ export const CAR_GET_REFERENCEPRICE = BASEURL + V + 'che/referencePrice';
  */
 export const CAR_GET_RESIDUALS = BASEURL + V + 'che/residuals';
 
+/**
+ * 车辆下订单
+ */
+export const CAR_ORDER_SAVE = BASEURL + V + 'order/save';
+
 // /**
 //  * 获取客服电话号码
 //  */
 // export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/getCustomService';
 
 /**
- * 获取客服电话号码
+ * 获取客服电话号码-商户号码
  */
 export const CAR_CUSTOMER_PHONE_NUMBER = BASEURL + V + '/index/companyPhone';
 
@@ -248,21 +254,126 @@ export const PURCHAAUTO_ADDAUTO = 'api/v2/purchaAuto/addAuto';
  *
  * 获取角色列表
  **/
-export const USER_ROLE = BASEURL+'v1/user/role';
+export const USER_ROLE = BASEURL + 'v1/user/role';
 
 /**
  * from @zhaojian
  *
  * 添加||编辑员工
  **/
-export const USER_EMPLOYEE_SAVE = BASEURL+'v1/user.employee/save';
+export const USER_EMPLOYEE_SAVE = BASEURL + 'v1/user.employee/save';
 
 /**
  * from @zhaojian
  *
  * 开通个人账户
  **/
-export const USER_OPEN_ACCOUNT_PERSONAL = BASEURL+'v1/user.open_account/personal';
+export const USER_OPEN_ACCOUNT_PERSONAL = BASEURL + 'v1/user.open_account/personal';
+
+/**
+ * from @zhaojian
+ *
+ * 修改个人账户
+ **/
+export const USER_ACCOUNT_SAVEPERSONAL = BASEURL + 'v1/user.account/savePersonal';
+
+/**
+ * from @zhaojian
+ *
+ * 修改交易密码
+ **/
+export const USER_ACCOUNT_EDITPAYPWD = BASEURL + 'v1/user.account/editPayPwd';
+
+/**
+ * from @zhaojian
+ *
+ * 重置交易密码
+ **/
+export const USER_ACCOUNT_RESETPAYPWD = BASEURL + 'v1/user.account/resetPayPwd';
+
+/**
+ * from @zhaojian
+ *
+ * 修改绑定银行卡手机号
+ **/
+export const USER_BANK_EDITPHONE = BASEURL + 'v1/user.bank/editPhone';
+
+/**
+ * from @zhaojian
+ *
+ * 绑定银行卡
+ **/
+export const USER_BANK_BIND = BASEURL + 'v1/user.bank/bind';
+
+/**
+ * from @zhaojian
+ *
+ * 开通企业账户
+ **/
+export const USER_OPEN_ACCOUNT_COMPANY = BASEURL + 'v1/user.open_account/company';
+
+/**
+ * from @zhaojian
+ *
+ * 修改企业账户
+ **/
+export const USER_ACCOUNT_SAVECOMPANY = BASEURL + 'v1/user.account/saveCompany';
+
+/**
+ * from @zhaojian
+ *
+ * 获取账户信息
+ **/
+export const USER_ACCOUNT_INFO = BASEURL + 'v1/user.account/info';
+
+/**
+ * from @zhaojian
+ *
+ * 获取账户管理首页
+ **/
+export const USER_ACCOUNT_INDEX = BASEURL + 'v1/user.account/index';
+
+/**
+ * from @zhaojian
+ *
+ * 获取交易流水
+ **/
+export const USER_ACCOUNT_PAYLOG = BASEURL + 'v1/user.account/payLog';
+
+/**
+ * from @zhaojian
+ *
+ * 解绑银行卡
+ **/
+export const USER_BANK_UNBIND = BASEURL + 'v1/user.bank/unBind';
+
+/**
+ * from @zhaojian
+ *
+ * 提现接口
+ **/
+export const USER_ACCOUNT_WITHDRAW = BASEURL + 'v1/user.account/withdraw';
+
+/**
+ * from @zhaojian
+ *
+ * 获取绑定银行卡信息
+ **/
+export const USER_BANK_QUERY = BASEURL + 'v1/user.bank/query';
+
+/**
+ * from @zhaojian
+ *
+ * 根据卡号获取虚拟账号信息
+ **/
+export const USER_ACCOUNT_COMPANYINFO = BASEURL + 'v1/user.account/companyInfo';
+
+/**
+ * from @zhaojian
+ *
+ * 用户发起转账
+ **/
+export const USER_ACCOUNT_TRANSFER = BASEURL + 'v1/user.account/transfer';
 
 /**
  * from @zhaojian
@@ -656,7 +767,7 @@ export const AUTH_UPLOAD_FILE = BASEURL + V + "auth/upload";
 /**
  * 合同列表
  */
-export const CONTRACTLIST = 'api/v1/Contract/contractList';
+export const CONTRACTLIST = 'api/v1/Contract/contract_list';
 
 /**
  * 元通合同列表
@@ -699,4 +810,15 @@ export const PURCHA_AUTO_DETAIL = 'api/v2/purchaAuto/autoDetail';
  * 获取车架好是否已存在以及校验规则
  **/
 export const PURCHA_CHECK_IN = 'api/v2/purchaAuto/checkVin';
-
+/**
+ * 订单列表
+ */
+export const ORDER_INDEX = BASEURL + V + 'order/index';
+/**
+ * 订单搜索
+ */
+export const ORDER_SEARCH = BASEURL + V + 'order/search';
+/**
+ * 订单详情
+ */
+export const ORDER_DETAIL = BASEURL + V + 'order/detail';

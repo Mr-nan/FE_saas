@@ -119,10 +119,28 @@ export default class CarInfoScene extends BaseComponent {
 
     loadData=()=> {
 
-        let url = AppUrls.CAR_DETAIL;
-        request(url, 'post', {
+
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if(data.code == 1 && data.result != '')
+            {
+                let enters = JSON.parse(data.result);
+                this.loadCarData(enters.company_base_id);
+
+            }else{
+                this.loadCarData('');
+            }
+        });
+
+
+
+    }
+
+    loadCarData=(show_shop_id)=>{
+
+        request(AppUrls.CAR_DETAIL, 'post', {
             id: this.props.carID,
             imgType:1,
+            shop_ids:show_shop_id,
         }).then((response) => {
 
             let carData = response.mjson.data;
@@ -135,7 +153,6 @@ export default class CarInfoScene extends BaseComponent {
                 carData.nature_str,
                 carData.car_color.split("|")[0]+'/'+carData.trim_color.split("|")[0],
             ];
-            carData.show_order = 2;
             if(carData.imgs.length<=0){
 
                 carData.imgs=[ {require:require('../../images/carSourceImages/car_info_null.png')}];
@@ -150,7 +167,6 @@ export default class CarInfoScene extends BaseComponent {
         }, (error) => {
             this.setState({renderPlaceholderOnly: 'error'});
         });
-
     }
 
 
@@ -501,8 +517,6 @@ export default class CarInfoScene extends BaseComponent {
             this.props.showToast('没有车辆图片');
             return;
         }
-
-        console.log(this.state.carData.imgs);
 
         let navigatorParams = {
             name: "CarZoomImageScene",

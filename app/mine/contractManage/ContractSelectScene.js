@@ -55,6 +55,7 @@ export default class AdjustManageScene extends BaseComponent {
                 <ListView style={{backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(74)}}
                           dataSource={this.state.dataSource}
                           renderRow={this._renderRow}
+                          removeClippedSubviews={false}
                           enableEmptySections = {true}
                 />
 

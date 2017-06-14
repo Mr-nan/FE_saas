@@ -96,6 +96,7 @@ export default class PlanInfoPage extends BaseComponent {
         return (
             <View style={styles.container}>
                 <ListView
+                    removeClippedSubviews={false}
                     contentContainerStyle={styles.listStyle}
                     dataSource={this.state.dataSource}
                     renderRow={this._renderRow}

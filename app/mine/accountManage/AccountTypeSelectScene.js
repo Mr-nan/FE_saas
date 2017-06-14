@@ -20,10 +20,6 @@ const Pixel = new PixelUtil();
 import * as fontAndColor from '../../constant/fontAndColor';
 import BaseComponent from '../../component/BaseComponent';
 import NavigationView from '../../component/AllNavigationView';
-const childItems = [];
-import {request} from '../../utils/RequestUtil';
-import * as Urls from '../../constant/appUrls';
-import AccountInfoScene from './AccountInfoScene';
 import OpenIndividualAccountScene from './OpenIndividualAccountScene';
 import OpenEnterpriseAccountScene from './OpenEnterpriseAccountScene';
 export  default class AccountTypeSelectScene extends BaseComponent {
@@ -51,6 +47,7 @@ export  default class AccountTypeSelectScene extends BaseComponent {
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
                 <ListView
+                    removeClippedSubviews={false}
                     style={{marginTop: Pixel.getTitlePixel(79)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
@@ -70,7 +67,8 @@ export  default class AccountTypeSelectScene extends BaseComponent {
             return (
                 <TouchableOpacity
                     onPress={()=> {
-                    this.toNextPage({name:'OpenIndividualAccountScene',component:OpenIndividualAccountScene,params:{}})
+                    this.toNextPage({name:'OpenIndividualAccountScene',component:OpenIndividualAccountScene,params:{callBack:
+                        ()=>{this.props.callBack();},title:'开通个人账户',buttonText:'确认开通'}})
                 }}
                     activeOpacity={0.8}
                     style={{
@@ -98,7 +96,9 @@ export  default class AccountTypeSelectScene extends BaseComponent {
             return (
                 <TouchableOpacity
                     onPress={()=> {
-                        this.toNextPage({name:'OpenEnterpriseAccountScene',component:OpenEnterpriseAccountScene,params:{}})
+                        this.toNextPage({name:'OpenEnterpriseAccountScene',
+                        component:OpenEnterpriseAccountScene,params:{callBack:
+                        ()=>{this.props.callBack();},title:'开通企业账户',buttonText:'确认开通'}})
                 }}
                     activeOpacity={0.8}
                     style={{

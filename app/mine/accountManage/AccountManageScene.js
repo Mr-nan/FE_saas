@@ -68,6 +68,7 @@ export  default class AccountManageScene extends BaseComponent {
                     backIconClick={this.backPage}
                 />
                 <ListView
+                    removeClippedSubviews={false}
                     style={{marginTop: Pixel.getTitlePixel(79)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}

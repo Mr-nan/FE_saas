@@ -19,6 +19,7 @@ import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
 import LoginScene from "./LoginScene";
 import MainPage from "../main/MainPage";
+import AllSelectCompanyScene from "../main/AllSelectCompanyScene";
 
 let Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
@@ -165,12 +166,15 @@ export default class GesturePassword extends BaseComponent {
                 message: '验证成功',
             });
             StorageUtil.mSetItem(StorageKeyNames.NEED_GESTURE, 'false');
-            if (this.props.from == 'RootScene') {
-                this.loginPage({name: 'MainPage', component: MainPage});
-            } else {
-                this.props.callBack();
-                this.backPage();
-            }
+                StorageUtil.mGetItem(StorageKeyNames.USER_LEVEL, (data) => {
+                    if (data.code == 1) {
+                        if (data.result == '2' || data.result == '1') {
+                            this.loginPage({name: 'AllSelectCompanyScene', component: AllSelectCompanyScene});
+                        } else {
+                            this.loginPage({name: 'MainPage', component: MainPage});
+                        }
+                    }
+                })
         } else {
             this.setState({
                 status: 'wrong',

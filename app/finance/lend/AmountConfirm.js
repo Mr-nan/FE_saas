@@ -97,6 +97,7 @@ export default class AmountConfirm extends BaseComponent {
                 }}>融资车辆</Text>
 
                 <ListView
+                    removeClippedSubviews={false}
                     stickyHeaderIndices={[]}
                     onEndReachedThreshold={1}
                     scrollRenderAheadDistance={1}

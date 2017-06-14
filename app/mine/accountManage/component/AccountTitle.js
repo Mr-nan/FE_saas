@@ -33,12 +33,13 @@ export  default class AccountTitle extends PureComponent {
     constructor(props) {
         super(props);
         list = [];
+        list.push(new listValue('转账',require('../../../../images/mainImage/Transfer.png'),this.props.transfer));
         list.push(new listValue('银行卡',require('../../../../images/mainImage/bankCard.png'),this.props.bankCard));
         list.push(new listValue('账户流水',require('../../../../images/mainImage/flow.png'),this.props.flow));
         list.push(new listValue('修改交易密码',require('../../../../images/mainImage/changePwd.png'),this.props.changePwd));
         list.push(new listValue('重置交易密码',require('../../../../images/mainImage/resetPwd.png'),this.props.resetPwd));
-        list.push(new listValue('修改手机号码',require('../../../../images/mainImage/changePhone.png'),this.props.changePhone));
-        list.push(new listValue('账户设置',require('../../../../images/mainImage/accountSetting.png'),this.props.accountSetting));
+        list.push(new listValue('修改银行预留手机号码',require('../../../../images/mainImage/changePhone.png'),this.props.changePhone));
+        // list.push(new listValue('账户设置',require('../../../../images/mainImage/accountSetting.png'),this.props.accountSetting));
     }
 
 
@@ -83,45 +84,42 @@ export  default class AccountTitle extends PureComponent {
             </TouchableOpacity>
         </View>);
         return (
-            <View style={{width:width,height:Pixel.getPixel(470),backgroundColor:fontAndColor.COLORA3}}>
-                <View style={{width:width,height:Pixel.getPixel(140),backgroundColor:fontAndColor.COLORB0}}>
+            <View style={{width:width,height:Pixel.getPixel(540),backgroundColor:fontAndColor.COLORA3}}>
+                <View style={{width:width,height:Pixel.getPixel(211),backgroundColor:fontAndColor.COLORB0}}>
                     <View style={{width:width,height:Pixel.getPixel(35),backgroundColor:'rgba(105,105,105,0.1)',
                 justifyContent:'center'}}>
                         <Text style={{marginLeft:Pixel.getPixel(20),color: '#fff',
                      fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>
-                            账户号码：4367450036808888
+                            账户号码：{this.props.info.bank_card_no}
                         </Text>
                     </View>
-                    <View style={{width:width,height:Pixel.getPixel(105),flexDirection:'row'}}>
-                        <View style={{flex:1,justifyContent:'center',alignItems: 'center'}}>
-                            <Text style={{color: '#fff',fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}}>
-                                账户总额(万)
-                            </Text>
-                            <Text style={{fontWeight: 'bold',color: '#fff',fontSize: Pixel.getFontPixel(32),}}>
-                                150
-                            </Text>
+                    <View style={{width:width,height:Pixel.getPixel(175)}}>
+                        <View style={{width:width,height:Pixel.getPixel(115),justifyContent:'center',alignItems:'center'}}>
+                                <Text style={{fontSize: Pixel.getFontPixel(14),color:'#fff'}}>账户总额(元)</Text>
+                            <Text style={{fontSize: Pixel.getFontPixel(18),color:'#fff',
+                            fontWeight: 'bold',marginTop:Pixel.getPixel(5)}}>{parseFloat(this.props.info.balance)+
+                            parseFloat(this.props.info.frozen_balance)}</Text>
                         </View>
-                        <TouchableOpacity onPress={()=>{
-                               this.props.frozen();
-                        }} activeOpacity={0.8} style={{flex:1,justifyContent:'center',alignItems: 'center'}}>
-                            <Text style={{color: '#fff',fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}}>
-                                冻结金额(万)
-                            </Text>
-                            <Text style={{fontWeight: 'bold',color: '#fff',fontSize: Pixel.getFontPixel(32),}}>
-                                13
-                            </Text>
-                        </TouchableOpacity>
-                        <View style={{flex:1,justifyContent:'center',alignItems: 'center'}}>
-                            <Text style={{color: '#fff',fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}}>
-                                可用余额(万)
-                            </Text>
-                            <Text style={{fontWeight: 'bold',color: '#fff',fontSize: Pixel.getFontPixel(32),}}>
-                                25
-                            </Text>
+                        <View style={{width:width,height:Pixel.getPixel(60),
+                        backgroundColor:'rgba(1,54,188,0.1)',flexDirection: 'row'}}>
+                            <View style={{flex:1,justifyContent:'center',paddingLeft:Pixel.getPixel(15)}}>
+                                <Text style={{fontSize: Pixel.getFontPixel(14),color:'#fff'}}>
+                                    可用余额(元)</Text>
+                                <Text style={{fontSize: Pixel.getFontPixel(18),color:'#fff',
+                                marginTop:Pixel.getPixel(2)}}>
+                                    {parseFloat(this.props.info.balance)}</Text>
+                            </View>
+                            <View style={{flex:1,justifyContent:'center',paddingLeft:Pixel.getPixel(30)}}>
+                                <Text style={{fontSize: Pixel.getFontPixel(14),color:'#fff'}}>
+                                    冻结金额(元)</Text>
+                                <Text style={{fontSize: Pixel.getFontPixel(18),
+                                color:'#fff',marginTop:Pixel.getPixel(2)}}>
+                                    {parseFloat(this.props.info.frozen_balance)}</Text>
+                            </View>
                         </View>
                     </View>
                 </View>
-                <View style={{width:width,height:Pixel.getPixel(324),backgroundColor:fontAndColor.COLORA3}}>
+                <View style={{width:width,height:Pixel.getPixel(330),backgroundColor:fontAndColor.COLORA3}}>
                     {itemList}
                 </View>
             </View>

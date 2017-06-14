@@ -18,7 +18,7 @@ import MyButton from "../../component/MyButton";
 var Pixel = new PixelUtil();
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
-var onePT = 1 / PixelRatio.get(); //一个像素
+let onePT = 1 / PixelRatio.get(); //一个像素
 
 export default class LoginInputText extends Component {
 
@@ -142,6 +142,7 @@ export default class LoginInputText extends Component {
                         maxLength={this.props.maxLength}
                         secureTextEntry={this.props.secureTextEntry}
                         value={this.state.values}
+                        onFocus={this.props.foucsChange?this.props.foucsChange:()=>{}}
                         editable={this.props.editable}
                         onChangeText={(text) => {
                             this.setState({

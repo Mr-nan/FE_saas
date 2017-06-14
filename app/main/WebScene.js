@@ -23,6 +23,7 @@ import NavigationView from '../component/AllNavigationView';
 import * as fontAndColor from '../constant/fontAndColor';
 import BaseComponent from '../component/BaseComponent';
 let oldUrl = '';
+import WebViewTitle from '../mine/accountManage/component/WebViewTitle';
 export  default class WebScene extends BaseComponent {
 
     constructor(props) {
@@ -42,6 +43,7 @@ export  default class WebScene extends BaseComponent {
     }
 
     handleBack = () => {
+        this.props.showModal(false);
         if(oldUrl==this.props.webUrl){
             this.backPage();
         }else{
@@ -57,24 +59,32 @@ export  default class WebScene extends BaseComponent {
         }
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
+                <WebViewTitle ref="webviewtitle"/>
                 <WebView
                     ref="www"
-                    style={{width:width,height:height,backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getTitlePixel(64)}}
+                    style={{width:width,height:height,backgroundColor:
+                    fontAndColor.COLORA3}}
                     source={{uri:this.props.webUrl,method: 'GET'}}
                     javaScriptEnabled={true}
                     domStorageEnabled={true}
                     scalesPageToFit={false}
+                    onLoadStart={()=>{
+                        this.refs.webviewtitle.firstProgress();
+                    }}
+                    onLoadEnd={()=>{
+                         this.refs.webviewtitle.lastProgress();
+                    }}
                     onNavigationStateChange={this.onNavigationStateChange.bind(this)}
                 />
                 <NavigationView
                     title="公告"
                     backIconClick={()=>{
+                         this.props.showModal(false);
                         if(oldUrl==this.props.webUrl){
                                 this.backPage();
                         }else{
                             this.refs.www.goBack();
                         }
-
                     }}
                 />
             </View>
@@ -90,7 +100,10 @@ export  default class WebScene extends BaseComponent {
             <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
                 <NavigationView
                     title="公告"
-                    backIconClick={this.backPage}
+                    backIconClick={()=>{
+                         this.props.showModal(false);
+                        this.backPage();
+                    }}
                 />
             </View>
         );

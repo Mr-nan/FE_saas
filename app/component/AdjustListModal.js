@@ -63,6 +63,7 @@ export default class AdjustModal extends Component {
                             </View>
                         </View>
                         {this.state.isShow?<ListView
+                                removeClippedSubviews={false}
                                 dataSource={this.state.source}
                                 renderRow={this._renderRow}
                                 renderSeparator={this._renderSeparator}
