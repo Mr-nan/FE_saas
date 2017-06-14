@@ -424,7 +424,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
                             onPress={() => {
-                                this.refs.chooseModal.changeShowType(true);
+                                this.refs.chooseModal.changeShowState(true);
                             }}>
                             <View style={styles.buttonCancel}>
                                 <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
@@ -679,7 +679,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
     };
 
     //扫描
-    _scanPress = () => {
+    _onScanPress=()=>{
         this.vinModal.refresh(this.scanType);
         this.vinModal.openModal(1);
     };
@@ -1075,9 +1075,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     <View style={{flex: 1}}/>
                     <TouchableOpacity
                         activeOpacity={0.6}
-                        onPress={() => {
-                            this._scanPress()
-                        }}>
+                        onPress={this._onScanPress}>
                         <View style={{flexDirection: 'row'}}>
                             {/*<Text style={{color: fontAndColor.COLORA2}}>扫描</Text>*/}
                             <Image

@@ -40,6 +40,12 @@ export default class ChooseModal extends Component {
         });
     };
 
+    changeShowState = (value) => {
+        this.setState({
+            isShow: value
+        });
+    };
+
     render() {
         return (
             <Modal
