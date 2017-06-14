@@ -101,13 +101,13 @@ export default class SalesOrderDetailScene extends BaseComponent {
     };
 
     isShowFinance = (financeInfo) => {
-        if (financeInfo.is_show_finance == 1) {
+        if (financeInfo.is_show_finance === 1) {
             this.financeInfo = financeInfo;
             this.mList = [];
             if (this.carVin.length === 17) {
-                this.mList = ['0', '1', '2', '4', '5', '7', '9'];
+                this.mList = ['0', '1', '2', '3', '4', '5', '7', '9'];
             } else {
-                this.mList = ['0', '1', '2', '4', '5', '6', '7', '9'];
+                this.mList = ['0', '1', '2', '3', '4', '5', '6', '7', '9'];
             }
             let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             this.setState({
@@ -1068,7 +1068,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                onChangeText={this._onVinChange}
                                placeholderTextColor={fontAndColor.COLORA4}
                                ref={(input) => {
-                                   this.vinInput = input
+                                   this.carVin = input
                                }}
                                placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}/>
                     <View style={{flex: 1}}/>
