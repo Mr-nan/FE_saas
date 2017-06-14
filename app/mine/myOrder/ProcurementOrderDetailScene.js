@@ -289,7 +289,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.props.showToast(response.mjson.msg);
                     }
                 }, (error) => {
-                    this.props.showToast('取消订单申请失败');
+                    //this.props.showToast('取消订单申请失败');
+                    this.props.showToast(error.mjson.msg);
                 });
             } else {
                 this.props.showToast('取消订单申请失败');
@@ -317,7 +318,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.props.showToast(response.mjson.msg);
                     }
                 }, (error) => {
-                    this.props.showToast('确认验收失败');
+                    //this.props.showToast('确认验收失败');
+                    this.props.showToast(error.mjson.msg);
                 });
             } else {
                 this.props.showToast('确认验收失败');
@@ -344,7 +346,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.props.showToast(response.mjson.msg);
                     }
                 }, (error) => {
-                    this.props.showToast('恢复订单失败');
+                    //this.props.showToast('恢复订单失败');
+                    this.props.showToast(error.mjson.msg);
                 });
             } else {
                 this.props.showToast('恢复订单失败');
@@ -676,7 +679,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         });
                     }
                 }, (error) => {
-                    this.props.showToast('获取订单详情失败');
+                    //this.props.showToast('获取订单详情失败');
+                    this.props.showToast(error.mjson.msg);
                     this.setState({
                         isRefreshing: false,
                         renderPlaceholderOnly: 'error'

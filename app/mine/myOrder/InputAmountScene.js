@@ -123,7 +123,8 @@ export default class InputAmountScene extends BaseComponent {
                         this.props.showToast(response.mjson.msg);
                     }
                 }, (error) => {
-                    this.props.showToast('车辆定价检查失败');
+                    //this.props.showToast('车辆定价检查失败');
+                    this.props.showToast(error.mjson.msg);
                 });
             } else {
                 this.props.showToast('车辆定价检查失败');

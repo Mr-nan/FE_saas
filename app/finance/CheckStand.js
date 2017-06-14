@@ -246,7 +246,8 @@ export default class CheckStand extends BaseComponent {
                         this.props.showToast(response.mjson.msg);
                     }
                 }, (error) => {
-                    this.props.showToast('账户支付检查失败');
+                    //this.props.showToast('账户支付检查失败');
+                    this.props.showToast(error.mjson.msg);
                 });
             } else {
                 this.props.showToast('账户支付检查失败');
@@ -286,7 +287,8 @@ export default class CheckStand extends BaseComponent {
                         this.props.showToast(response.mjson.msg);
                     }
                 }, (error) => {
-                    this.props.showToast('账户支付失败');
+                    //this.props.showToast('账户支付失败');
+                    this.props.showToast(error.mjson.msg);
                 });
             } else {
                 this.props.showToast('账户支付失败');

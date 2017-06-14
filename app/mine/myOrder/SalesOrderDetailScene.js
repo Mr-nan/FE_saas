@@ -41,7 +41,7 @@ import CheckStand from "../../finance/CheckStand";
 import * as Net from '../../utils/RequestUtil';
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
-import AccountScene from "../accountManage/AccountScene";
+import AccountScene from "../accountManage/RechargeScene";
 const Pixel = new PixelUtil();
 
 const IS_ANDROID = Platform.OS === 'android';
@@ -104,7 +104,11 @@ export default class SalesOrderDetailScene extends BaseComponent {
         if (financeInfo.is_show_finance == 1) {
             this.financeInfo = financeInfo;
             this.mList = [];
-            this.mList = ['0', '1', '2', '3', '4', '5', '7', '9'];
+            if (this.carVin.length === 17) {
+                this.mList = ['0', '1', '2', '4', '5', '7', '9'];
+            } else {
+                this.mList = ['0', '1', '2', '4', '5', '6', '7', '9'];
+            }
             let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             this.setState({
                 dataSource: ds.cloneWithRows(this.mList),
@@ -114,7 +118,11 @@ export default class SalesOrderDetailScene extends BaseComponent {
             });
         } else {
             this.mList = [];
-            this.mList = ['0', '1', '2', '4', '5', '7', '9'];
+            if (this.carVin.length === 17) {
+                this.mList = ['0', '1', '2', '4', '5', '7', '9'];
+            } else {
+                this.mList = ['0', '1', '2', '4', '5', '6', '7', '9'];
+            }
             let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             this.setState({
                 dataSource: ds.cloneWithRows(this.mList),
@@ -125,7 +133,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
         this.props.showModal(false);
     };
 
-    savePrice = (price) => {
+    savePrice = () => {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
@@ -133,7 +141,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     company_id: datas.company_base_id,
                     car_id: this.orderDetail.orders_item_data[0].car_id,
                     order_id: this.orderDetail.id,
-                    pricing_amount: price,
+                    pricing_amount: this.carAmount,
                     car_vin: this.carVin
                 };
                 let url = AppUrls.ORDER_SAVE_PRICE;
@@ -144,7 +152,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         this.props.showToast(response.mjson.msg);
                     }
                 }, (error) => {
-                    this.props.showToast('成交价提交失败');
+                    this.props.showToast(error.mjson.msg);
                 });
             } else {
                 this.props.showToast('成交价提交失败');
@@ -181,9 +189,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         this.carVin = this.orderDetail.orders_item_data[0].car_vin;
                         this.initListData(this.orderState);
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                        let newArray = new Array(...this.mList);
                         this.setState({
-                            dataSource: ds.cloneWithRows(newArray),
+                            dataSource: ds.cloneWithRows(this.mList),
                             isRefreshing: false,
                             renderPlaceholderOnly: 'success'
                         });
@@ -195,7 +202,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         });
                     }
                 }, (error) => {
-                    this.props.showToast('获取订单详情失败');
+                    //this.props.showToast('获取订单详情失败');
+                    this.props.showToast(error.mjson.msg);
                     this.setState({
                         isRefreshing: false,
                         renderPlaceholderOnly: 'error'
@@ -349,14 +357,23 @@ export default class SalesOrderDetailScene extends BaseComponent {
         }
     };
 
+
     initDetailPageBottom = (orderState) => {
         switch (orderState) {
             case 0:
+                let negativeText = '';
+                let positiveText = '';
+                let content = '';
+                let positiveOperation = '';
                 return (
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
                             onPress={() => {
-                                this.refs.chooseModal.changeShowType(true);
+                                negativeText = '取消';
+                                positiveText = '确定';
+                                content = '确定后取消订单。如买家有已支付款项将退款，如您有补差价款可提现。';
+                                positiveOperation = this.cancelOrder;
+                                this.refs.chooseModal.changeShowType(true, negativeText, positiveText, content, positiveOperation);
                             }}>
                             <View style={styles.buttonCancel}>
                                 <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
@@ -364,14 +381,18 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
+                                negativeText = '再想想';
+                                positiveText = '没问题';
+                                content = '此车是库存融资质押车辆，请在买家支付订金后操作车辆出库。';
+                                positiveOperation = this.savePrice;
                                 if (this.carAmount === 0) {
                                     this.props.showToast('请您先定价');
                                 } else {
                                     if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_status === 0) {
                                         this.props.showModal(true);
-                                        this.savePrice(this.carAmount);
+                                        this.savePrice();
                                     } else {
-                                        this.refs.chooseModal.changeShowType(true);
+                                        this.refs.chooseModal.changeShowType(true, negativeText, positiveText, content, positiveOperation);
                                     }
                                 }
                             }}>
@@ -381,12 +402,12 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         </TouchableOpacity>
                         <ChooseModal ref='chooseModal' title='提示'
                                      negativeButtonStyle={styles.negativeButtonStyle}
-                                     negativeTextStyle={styles.negativeTextStyle} negativeText='取消'
+                                     negativeTextStyle={styles.negativeTextStyle} negativeText={negativeText}
                                      positiveButtonStyle={styles.positiveButtonStyle}
-                                     positiveTextStyle={styles.positiveTextStyle} positiveText='确定'
+                                     positiveTextStyle={styles.positiveTextStyle} positiveText={positiveText}
                                      buttonsMargin={Pixel.getPixel(20)}
-                                     positiveOperation={this.cancelOrder}
-                                     content='确定后取消订单。如买家有已支付款项将退款，如您有补差价款可提现。'/>
+                                     positiveOperation={positiveOperation}
+                                     content={content}/>
                         {/*<ChooseModal ref='chooseModal1' title='提示'
                          negativeButtonStyle={styles.negativeButtonStyle}
                          negativeTextStyle={styles.negativeTextStyle} negativeText='再想想'
@@ -623,7 +644,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         this.props.showToast(response.mjson.msg);
                     }
                 }, (error) => {
-                    this.props.showToast('处理取消订单申请失败');
+                    //this.props.showToast('处理取消订单申请失败');
+                    this.props.showToast(error.mjson.msg);
                 });
             } else {
                 this.props.showToast('处理取消订单申请失败');
@@ -647,7 +669,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         this.props.showToast(response.mjson.msg);
                     }
                 }, (error) => {
-                    this.props.showToast('处理取消订单申请失败');
+                    //this.props.showToast('处理取消订单申请失败');
+                    this.props.showToast(error.mjson.msg);
                 });
             } else {
                 this.props.showToast('处理取消订单申请失败');
@@ -773,7 +796,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         this.props.showToast(response.mjson.msg);
                     }
                 }, (error) => {
-                    this.props.showToast('取消订单失败');
+                    //this.props.showToast('取消订单失败');
+                    this.props.showToast(error.mjson.msg);
                 });
             } else {
                 this.props.showToast('取消订单失败');
