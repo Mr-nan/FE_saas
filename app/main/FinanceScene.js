@@ -224,18 +224,35 @@ export default class FinanceSence extends BaseComponet {
             }
         });
     }
-
+    /**
+     * from @zhaojian
+     *
+     * 判定账户开户绑卡激活跳转
+     **/
     toPage = () => {
         if (lastType == '0') {
-            this.props.callBack({name: 'AccountTypeSelectScene',
-                component: AccountTypeSelectScene, params: {callBack:()=>{}}});
+            this.props.callBack({
+                name: 'AccountTypeSelectScene',
+                component: AccountTypeSelectScene, params: {
+                    callBack: () => {
+                    }
+                }
+            });
         } else if (lastType == '1') {
-            this.props.callBack({name: 'BindCardScene', component: BindCardScene, params: {callBack:()=>{}}});
+            this.props.callBack({
+                name: 'BindCardScene', component: BindCardScene, params: {
+                    callBack: () => {
+                    }
+                }
+            });
         } else if (lastType == '2') {
             this.props.callBack({
                 name: 'WaitActivationAccountScene',
                 component: WaitActivationAccountScene,
-                params: {callBack:()=>{}}
+                params: {
+                    callBack: () => {
+                    }
+                }
             });
         }
     }
@@ -574,24 +591,33 @@ export default class FinanceSence extends BaseComponet {
         component: LendMoneySence,
         params: {}
     }
-
+    /**
+     * from @zhaojian
+     *
+     * 跳转借款或还款
+     **/
     homeItemOnPress = (title) => {
         if (title === '借款') {
-            this.navigatorParams.name = 'LendMoneySence';
-            this.navigatorParams.component = LendMoneySence;
-            this.navigatorParams.params = {
-                credit_status: mnyData.credit_status,
-                inventory_financing_status: mnyData.inventory_financing_status,
-                purchase_archives_after_status: mnyData.purchase_archives_after_status,
-                purchase_archives_first_status: mnyData.purchase_archives_first_status,
-                purchase_status: mnyData.purchase_status,
-                customerName: this.state.customerName,
-                backRefresh: () => {
-                    this.allRefresh()
+            try {
+                this.navigatorParams.name = 'LendMoneySence';
+                this.navigatorParams.component = LendMoneySence;
+                this.navigatorParams.params = {
+                    credit_status: mnyData.credit_status,
+                    inventory_financing_status: mnyData.inventory_financing_status,
+                    purchase_archives_after_status: mnyData.purchase_archives_after_status,
+                    purchase_archives_first_status: mnyData.purchase_archives_first_status,
+                    purchase_status: mnyData.purchase_status,
+                    customerName: this.state.customerName,
+                    backRefresh: () => {
+                        this.allRefresh()
+                    }
                 }
+                ;
+                this.props.callBack(this.navigatorParams);
+            } catch (error) {
+                this.props.showToast('数据错误');
             }
-            ;
-            this.props.callBack(this.navigatorParams);
+
         } else {
             this.navigatorParams.name = "RepaymentScene";
             this.navigatorParams.component = RepaymentScene;
@@ -662,7 +688,7 @@ export default class FinanceSence extends BaseComponet {
                                     }}>{this.state.allData.keyongedu}</Text>
                             </View>
                             {
-                                (this.state.mnyData.is_microchinese_mny == 3||this.state.mnyData.is_microchinese_mny==5) && (
+                                (this.state.mnyData.is_microchinese_mny == 3 || this.state.mnyData.is_microchinese_mny == 5) && (
                                     <View style={{flex: 1, alignItems: 'center',}}>
                                         <TouchableOpacity style={{flexDirection:'row'}} activeOpacity={1}
                                                           onPress={()=>{this.refs.showTitleAlert.setModelVisible(true)}}>
@@ -684,7 +710,7 @@ export default class FinanceSence extends BaseComponet {
                                             backgroundColor: '#00000000',
                                             flex: 1,
                                             textAlign: 'center'
-                                        }}>{this.state.mnyData.is_microchinese_mny==5?0:this.state.mnyData.microchinese_mny / 10000}</Text>
+                                        }}>{this.state.mnyData.is_microchinese_mny == 5 ? 0 : this.state.mnyData.microchinese_mny / 10000}</Text>
                                     </View>)
                             }
                             <View

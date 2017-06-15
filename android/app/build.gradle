@@ -96,8 +96,8 @@ android {
         applicationId "com.fe_sass"
         minSdkVersion 19
         targetSdkVersion 22
-        versionCode 13
-        versionName "3.0.0"
+        versionCode 14
+        versionName "3.1.0"
         ndk {
             abiFilters "armeabi","armeabi-v8a"
         }
@@ -115,11 +115,11 @@ android {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.release
-            buildConfigField "String", "CODEPUSH_KEY", '"rofF7zy9tDPXr2bc4C65cm8ukdHYe1b7b22b-ea3f-4c77-abcc-72586c814b3c"'
+            buildConfigField "String", "CODEPUSH_KEY", '"fSQnzvsEP5qb9jD_tr4k2QC9pKlie1b7b22b-ea3f-4c77-abcc-72586c814b3c"'
         }
 
         releaseStaging {
-            buildConfigField "String", "CODEPUSH_KEY", '"rofF7zy9tDPXr2bc4C65cm8ukdHYe1b7b22b-ea3f-4c77-abcc-72586c814b3c"'
+            buildConfigField "String", "CODEPUSH_KEY", '"fSQnzvsEP5qb9jD_tr4k2QC9pKlie1b7b22b-ea3f-4c77-abcc-72586c814b3c"'
         }
 
     }
