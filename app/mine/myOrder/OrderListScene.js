@@ -323,7 +323,11 @@ export default class OrderListScene extends BaseComponent {
     }
 
     _renderRow = (rowData, selectionID, rowID) => {
-        let initRegDate = rowData.car.length ? this.dateReversal(rowData.car[0].init_reg + '000') : '未公开';
+        //let initRegDate = rowData.car.length ? this.dateReversal(rowData.car[0].init_reg + '000') : '未公开';
+        //let imageUrl = rowData.car.length ? rowData.car[0].thumbs : [];
+        let initReg = rowData.car[0].init_reg;
+        let mileage = rowData.car[0].mileage;
+        let initRegDate = initReg === 0 ? '暂无' : this.dateReversal(initReg + '000');
         let imageUrl = rowData.car.length ? rowData.car[0].thumbs : [];
         return (
             <TouchableOpacity
@@ -389,7 +393,7 @@ export default class OrderListScene extends BaseComponent {
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>里程：</Text>
                                 <Text
-                                    style={styles.carDescribe}>{rowData.car.length ? rowData.car[0].mileage + '万' : '未公开'}</Text>
+                                    style={styles.carDescribe}>{rowData.car.length ? mileage + '万' : '未公开'}</Text>
                             </View>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>上牌：</Text>
