@@ -102,34 +102,36 @@ export default class SalesOrderDetailScene extends BaseComponent {
     };
 
     isShowFinance = (financeInfo) => {
-        if (financeInfo.is_show_finance === 1) {
-            this.financeInfo = financeInfo;
-            this.mList = [];
-            if (this.orderDetail.orders_item_data[0].car_vin.length === 17) {
-                this.mList = ['0', '1', '2', '3', '4', '5', '7', '9'];
+        if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_type === 2) {
+            if (financeInfo.is_show_finance === 1) {
+                this.financeInfo = financeInfo;
+                this.mList = [];
+                if (this.orderDetail.orders_item_data[0].car_vin.length === 17) {
+                    this.mList = ['0', '1', '2', '3', '4', '5', '7', '9'];
+                } else {
+                    this.mList = ['0', '1', '2', '3', '4', '5', '6', '7', '9'];
+                }
+                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                this.setState({
+                    dataSource: ds.cloneWithRows(this.mList),
+                    //dataSource: this.state.dataSource.cloneWithRows(this.mList),
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'success'
+                });
             } else {
-                this.mList = ['0', '1', '2', '3', '4', '5', '6', '7', '9'];
+                this.mList = [];
+                if (this.orderDetail.orders_item_data[0].car_vin.length === 17) {
+                    this.mList = ['0', '1', '2', '4', '5', '7', '9'];
+                } else {
+                    this.mList = ['0', '1', '2', '4', '5', '6', '7', '9'];
+                }
+                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                this.setState({
+                    dataSource: ds.cloneWithRows(this.mList),
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'success'
+                });
             }
-            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-            this.setState({
-                dataSource: ds.cloneWithRows(this.mList),
-                //dataSource: this.state.dataSource.cloneWithRows(this.mList),
-                isRefreshing: false,
-                renderPlaceholderOnly: 'success'
-            });
-        } else {
-            this.mList = [];
-            if (this.orderDetail.orders_item_data[0].car_vin.length === 17) {
-                this.mList = ['0', '1', '2', '4', '5', '7', '9'];
-            } else {
-                this.mList = ['0', '1', '2', '4', '5', '6', '7', '9'];
-            }
-            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-            this.setState({
-                dataSource: ds.cloneWithRows(this.mList),
-                isRefreshing: false,
-                renderPlaceholderOnly: 'success'
-            });
         }
         this.props.showModal(false);
     };
@@ -391,11 +393,11 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                 if (this.carAmount === 0) {
                                     this.props.showToast('请您先定价');
                                 } else {
-                                    if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_status === 0) {
+                                    if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_type === 1) {
+                                        this.refs.chooseModal.changeShowType(true, negativeText, positiveText, content, positiveOperation);
+                                    } else {
                                         this.props.showModal(true);
                                         this.savePrice();
-                                    } else {
-                                        this.refs.chooseModal.changeShowType(true, negativeText, positiveText, content, positiveOperation);
                                     }
                                 }
                             }}>
