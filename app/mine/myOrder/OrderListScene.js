@@ -329,23 +329,31 @@ export default class OrderListScene extends BaseComponent {
             <TouchableOpacity
                 onPress={() => {
                     if (this.props.business === 1) {
-                        this.toNextPage({
-                            name: 'ProcurementOrderDetailScene',
-                            component: ProcurementOrderDetailScene,
-                            params: {
-                                business: this.props.business,
-                                orderId: rowData.order.id
-                            }
-                        });
+                        if (rowData.order.power === 1) {
+                            this.toNextPage({
+                                name: 'ProcurementOrderDetailScene',
+                                component: ProcurementOrderDetailScene,
+                                params: {
+                                    business: this.props.business,
+                                    orderId: rowData.order.id
+                                }
+                            });
+                        } else {
+                            this.props.showToast('您没有权限操作此订单');
+                        }
                     } else {
-                        this.toNextPage({
-                            name: 'SalesOrderDetailScene',
-                            component: SalesOrderDetailScene,
-                            params: {
-                                business: this.props.business,
-                                orderId: rowData.order.id
-                            }
-                        });
+                        if (rowData.order.power === 1) {
+                            this.toNextPage({
+                                name: 'SalesOrderDetailScene',
+                                component: SalesOrderDetailScene,
+                                params: {
+                                    business: this.props.business,
+                                    orderId: rowData.order.id
+                                }
+                            });
+                        } else {
+                            this.props.showToast('您没有权限操作此订单');
+                        }
                     }
                 }}
                 activeOpacity={0.8}>

@@ -45,21 +45,21 @@ export default class OrderSearchScene extends BaseComponent {
         };
     }
 
-    componentWillMount () {
+    componentWillMount() {
         this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
         this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
     }
 
-    componentWillUnmount () {
+    componentWillUnmount() {
         this.keyboardDidShowListener.remove();
         this.keyboardDidHideListener.remove();
     }
 
-    _keyboardDidShow () {
+    _keyboardDidShow() {
         //alert('Keyboard Shown');
     }
 
-    _keyboardDidHide () {
+    _keyboardDidHide() {
         //alert('Keyboard Hidden');
     }
 
@@ -277,22 +277,30 @@ export default class OrderSearchScene extends BaseComponent {
         return (
             <TouchableOpacity
                 onPress={() => {
-                    if (this.props.type === 'procurement') {
-                        this.toNextPage({
-                            name: 'ProcurementOrderDetailScene',
-                            component: ProcurementOrderDetailScene,
-                            params: {
-                                orderId: rowData.order.id
-                            }
-                        });
+                    if (this.props.business === 1) {
+                        if (rowData.order.power === 1) {
+                            this.toNextPage({
+                                name: 'ProcurementOrderDetailScene',
+                                component: ProcurementOrderDetailScene,
+                                params: {
+                                    orderId: rowData.order.id
+                                }
+                            });
+                        } else {
+                            this.props.showToast('您没有权限操作此订单');
+                        }
                     } else {
-                        this.toNextPage({
-                            name: 'SalesOrderDetailScene',
-                            component: SalesOrderDetailScene,
-                            params: {
-                                orderId: rowData.order.id
-                            }
-                        });
+                        if (rowData.order.power === 1) {
+                            this.toNextPage({
+                                name: 'SalesOrderDetailScene',
+                                component: SalesOrderDetailScene,
+                                params: {
+                                    orderId: rowData.order.id
+                                }
+                            });
+                        } else {
+                            this.props.showToast('您没有权限操作此订单');
+                        }
                     }
                 }}
                 activeOpacity={0.8}>
@@ -318,7 +326,8 @@ export default class OrderSearchScene extends BaseComponent {
                             >{rowData.car.length ? rowData.car[0].title : '未公开'}</Text>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>里程：</Text>
-                                <Text style={styles.carDescribe}>{rowData.car.length ? rowData.car[0].mileage + '万' : '未公开'}</Text>
+                                <Text
+                                    style={styles.carDescribe}>{rowData.car.length ? rowData.car[0].mileage + '万' : '未公开'}</Text>
                             </View>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>上牌：</Text>

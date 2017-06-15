@@ -289,7 +289,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
             case 10:
                 if (cancelStatus === 0) {
                     this.orderState = 3;
-                    this.topState = 0;
+                    this.topState = -1;
                     this.bottomState = -1;
                 } else if (cancelStatus === 1) {
                     this.orderState = 3;
