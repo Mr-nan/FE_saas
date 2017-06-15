@@ -662,8 +662,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.orderDetail = response.mjson.data;
                         let status = response.mjson.data.status;
                         let cancelStatus = response.mjson.data.cancel_status;
-                        this.stateMapping(status, cancelStatus);
                         this.leftTime = this.getLeftTime(this.orderDetail.created_time);
+                        this.stateMapping(status, cancelStatus);
                         this.initListData(this.orderState);
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
@@ -803,6 +803,10 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 <Text style={styles.carDescribeTitle}>上牌：</Text>
                                 <Text style={styles.carDescribe}>{initRegDate}</Text>
                             </View>
+                            {this.orderState !== 0 ? <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
+                                <Text style={styles.carDescribeTitle}>成交价：</Text>
+                                <Text style={styles.carDescribe}>{this.orderDetail.transaction_amount}元</Text>
+                            </View> : null}
                         </View>
                     </View>
                 </View>
@@ -826,18 +830,18 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     }}>
                         <Text style={styles.orderInfo}>支付订金</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>{this.orderDetail.deposit_amount}元</Text>
+                        <Text style={styles.infoContent}>{this.orderDetail.done_deposit_amount}元</Text>
                     </View>
                     <View style={styles.infoItem}>
                         <Text style={styles.orderInfo}>支付尾款</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>{this.orderDetail.balance_amount}元</Text>
+                        <Text style={styles.infoContent}>{this.orderDetail.done_balance_amount}元</Text>
                     </View>
                     <View style={styles.infoItem}>
                         <Text style={styles.orderInfo}>支付总计</Text>
                         <View style={{flex: 1}}/>
                         <Text
-                            style={styles.infoContent}>{this.orderDetail.transaction_amount}元</Text>
+                            style={styles.infoContent}>{this.orderDetail.done_total_amount}元</Text>
                     </View>
                 </View>
             )
