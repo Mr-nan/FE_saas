@@ -544,11 +544,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 0;
                     this.topState = -1;
-                    this.bottomState = 6;
+                    this.bottomState = 4;
                 } else if (cancelStatus === 3) {
                     this.orderState = 0;
                     this.topState = -1;
-                    this.bottomState = 5;
+                    this.bottomState = 4;
                 }
                 break;
             case 2: // 待付订金  2=>'订单定价完成'
@@ -569,11 +569,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 1;
                     this.topState = -1;
-                    this.bottomState = 6;
+                    this.bottomState = 4;
                 } else if (cancelStatus === 3) {
                     this.orderState = 1;
                     this.topState = -1;
-                    this.bottomState = 5;
+                    this.bottomState = 4;
                 }
 
                 break;
@@ -595,11 +595,19 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 2;
                     this.topState = -1;
-                    this.bottomState = 6;
+                    if (this.orderDetail.cancel_is_agree == 0) {
+                        this.bottomState = 6;
+                    } else {
+                        this.bottomState = 5;
+                    }
                 } else if (cancelStatus === 3) {
                     this.orderState = 2;
                     this.topState = -1;
-                    this.bottomState = 5;
+                    if (this.orderDetail.cancel_is_agree == 0) {
+                        this.bottomState = 6;
+                    } else {
+                        this.bottomState = 5;
+                    }
                 }
                 break;
             case 8: // 全款付清  8=>'尾款支付完成'
@@ -616,11 +624,19 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 3;
                     this.topState = -1;
-                    this.bottomState = 6;
+                    if (this.orderDetail.cancel_is_agree == 0) {
+                        this.bottomState = 6;
+                    } else {
+                        this.bottomState = 5;
+                    }
                 } else if (cancelStatus === 3) {
                     this.orderState = 3;
                     this.topState = -1;
-                    this.bottomState = 5;
+                    if (this.orderDetail.cancel_is_agree == 0) {
+                        this.bottomState = 6;
+                    } else {
+                        this.bottomState = 5;
+                    }
                 }
                 break;
             case 11:  // 订单完成 11=>'确认验收完成'
@@ -635,11 +651,19 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 4;
                     this.topState = -1;
-                    this.bottomState = 6;
+                    if (this.orderDetail.cancel_is_agree == 0) {
+                        this.bottomState = 6;
+                    } else {
+                        this.bottomState = 5;
+                    }
                 } else if (cancelStatus === 3) {
                     this.orderState = 4;
                     this.topState = -1;
-                    this.bottomState = 5;
+                    if (this.orderDetail.cancel_is_agree == 0) {
+                        this.bottomState = 6;
+                    } else {
+                        this.bottomState = 5;
+                    }
                 }
                 break;
         }
@@ -663,6 +687,14 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         let status = response.mjson.data.status;
                         let cancelStatus = response.mjson.data.cancel_status;
                         this.leftTime = this.getLeftTime(this.orderDetail.created_time);
+                        if (cancelStatus == 2 || cancelStatus == 3) {
+                            if (this.orderDetail.order_flows.length > 0) {
+                                let cancel = this.orderDetail.order_flows;
+                                for (let state in cancel) {
+                                    status = cancel[state];
+                                }
+                            }
+                        }
                         this.stateMapping(status, cancelStatus);
                         this.initListData(this.orderState);
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
