@@ -920,11 +920,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         <View style={{flex: 1}}/>
                         <Text style={styles.infoContent}>{this.orderDetail.seller_name}</Text>
                     </View>
-                    <View style={styles.infoItem}>
+                    {/*<View style={styles.infoItem}>
                         <Text style={styles.orderInfo}>联系方式</Text>
                         <View style={{flex: 1}}/>
                         <Text style={styles.infoContent}>{this.orderDetail.seller_phone}</Text>
-                    </View>
+                    </View>*/}
                     <View style={styles.infoItem}>
                         <Text style={styles.orderInfo}>企业名称</Text>
                         <View style={{flex: 1}}/>

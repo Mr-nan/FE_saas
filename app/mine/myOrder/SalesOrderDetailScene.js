@@ -64,6 +64,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
         this.carAmount = 0;
         this.carVin = '';
         this.leftTime = 0;
+        this.closeOrder = 0;
         this.financeInfo = {};
 
         this.modelData = [];
@@ -171,6 +172,12 @@ export default class SalesOrderDetailScene extends BaseComponent {
         return currentTime - oldTime;
     };
 
+    getCloseOrderTime = (pricingTime) => {
+        let currentTime = new Date().getTime();
+        let oldTime = new Date(pricingTime).getTime();
+        return currentTime - oldTime;
+    };
+
     loadData = () => {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
@@ -189,6 +196,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         let status = response.mjson.data.status;
                         let cancelStatus = response.mjson.data.cancel_status;
                         this.leftTime = this.getLeftTime(this.orderDetail.cancel_time);
+                        this.closeOrder = this.getCloseOrderTime(this.orderDetail.pricing_time);
                         this.carAmount = 0;
                         //this.carVin = this.orderDetail.orders_item_data[0].car_vin;
                         this.stateMapping(status, cancelStatus);
@@ -250,7 +258,12 @@ export default class SalesOrderDetailScene extends BaseComponent {
             case 4:
                 if (cancelStatus === 0) {
                     this.orderState = 1;
-                    this.topState = -1;
+                    if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_type === 2 &&
+                        this.orderDetail.orders_item_data[0].car_finance_data.pledge_status === 1) {
+                        this.topState = 1;
+                    } else {
+                        this.topState = -1;
+                    }
                     this.bottomState = 1;
                 } else if (cancelStatus === 1) {
                     this.orderState = 1;
@@ -271,7 +284,13 @@ export default class SalesOrderDetailScene extends BaseComponent {
             case 7:
                 if (cancelStatus === 0) {
                     this.orderState = 2;
-                    this.topState = -1;
+                    if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_type === 2 &&
+                        this.orderDetail.orders_item_data[0].car_finance_data.pledge_status === 1) {
+                        this.topState = 1;
+                    } else {
+                        //this.topState = 1;
+                        this.topState = -1;
+                    }
                     this.bottomState = 1;
                 } else if (cancelStatus === 1) {
                     this.orderState = 2;
@@ -292,7 +311,12 @@ export default class SalesOrderDetailScene extends BaseComponent {
             case 10:
                 if (cancelStatus === 0) {
                     this.orderState = 3;
-                    this.topState = -1;
+                    if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_type === 2 &&
+                        this.orderDetail.orders_item_data[0].car_finance_data.pledge_status === 1) {
+                        this.topState = 1;
+                    } else {
+                        this.topState = -1;
+                    }
                     this.bottomState = -1;
                 } else if (cancelStatus === 1) {
                     this.orderState = 3;
@@ -349,6 +373,28 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                     fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                                     color: fontAndColor.COLORB7
                                 }}>超时未处理默认为不同意，订单自动取消</Text>
+                            </Text>
+                        </View>
+                        <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>
+                    </View>
+                )
+                break;
+            case 1:
+                this.listViewStyle = Pixel.getPixel(0);
+                return (
+                    <View style={{marginTop: Pixel.getTitlePixel(65)}}>
+                        <View style={styles.tradingCountdown}>
+                            <Text>
+                                <Text style={{
+                                    marginLeft: Pixel.getPixel(15),
+                                    fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                    color: fontAndColor.COLORB7
+                                }}>完成交易剩余时间</Text>
+                                <GetCarCountDown leftTime={this.closeOrder}/>
+                                <Text style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                    color: fontAndColor.COLORB7
+                                }}>超时订单将关闭。</Text>
                             </Text>
                         </View>
                         <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>
@@ -1183,11 +1229,11 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         <View style={{flex: 1}}/>
                         <Text style={styles.infoContent}>{this.orderDetail.buyer_name}</Text>
                     </View>
-                    <View style={styles.infoItem}>
+                    {/*<View style={styles.infoItem}>
                         <Text style={styles.orderInfo}>联系方式</Text>
                         <View style={{flex: 1}}/>
                         <Text style={styles.infoContent}>{this.orderDetail.buyer_phone}</Text>
-                    </View>
+                    </View>*/}
                     <View style={styles.infoItem}>
                         <Text style={styles.orderInfo}>企业名称</Text>
                         <View style={{flex: 1}}/>
