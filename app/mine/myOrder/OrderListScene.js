@@ -47,7 +47,7 @@ export default class OrderListScene extends BaseComponent {
         this.endDate = '选择结束时间';
         //let business = this.props.business;
         this.state = {
-            dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
+            dataSource: [],
             renderPlaceholderOnly: 'blank',
             isRefreshing: false,
         };
@@ -94,7 +94,7 @@ export default class OrderListScene extends BaseComponent {
                 let maps = {
                     company_id: datas.company_base_id,
                     business: this.props.business,
-                    page: this.pageNum,
+                    page: 1,
                     rows: 10,
                     //list_state: this.props.listState,
                     status: this.status,
@@ -109,8 +109,9 @@ export default class OrderListScene extends BaseComponent {
                     this.allPage = response.mjson.data.total / response.mjson.data.rows;
                     //console.log('订单列表数据 = ', this.orderListData[0].car);
                     if (this.orderListData) {
+                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
-                            dataSource: this.state.dataSource.cloneWithRows(this.orderListData),
+                            dataSource: ds.cloneWithRows(this.orderListData),
                             isRefreshing: false,
                             renderPlaceholderOnly: 'success'
                         });
@@ -157,6 +158,7 @@ export default class OrderListScene extends BaseComponent {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
+                this.pageNum += 1;
                 let maps = {
                     company_id: datas.company_base_id,
                     business: this.props.business,
@@ -168,15 +170,15 @@ export default class OrderListScene extends BaseComponent {
                     end_time: this.endDate === '选择结束时间' ? '' : this.endDate
                 };
                 let url = AppUrls.ORDER_INDEX;
-                this.pageNum += 1;
                 request(url, 'post', maps).then((response) => {
                     let data = response.mjson.data.items;
                     for (let i = 0; i < data.length; i++) {
                         this.orderListData.push(data[i]);
                     }
+                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                     this.setState({
                         isRefreshing: false,
-                        dataSource: this.state.dataSource.cloneWithRows(this.orderListData)
+                        dataSource: ds.cloneWithRows(this.orderListData)
                     });
                 }, (error) => {
                     this.setState({
