@@ -169,12 +169,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
     getLeftTime = (cancelTime) => {
         let currentTime = new Date().getTime();
         let oldTime = new Date(cancelTime).getTime();
-        return currentTime - oldTime;
-    };
-
-    getCloseOrderTime = (pricingTime) => {
-        let currentTime = new Date().getTime();
-        let oldTime = new Date(pricingTime).getTime();
+        //console.log('时间啊是啊=====' + (currentTime - oldTime));
         return currentTime - oldTime;
     };
 
@@ -196,7 +191,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         let status = response.mjson.data.status;
                         let cancelStatus = response.mjson.data.cancel_status;
                         this.leftTime = this.getLeftTime(this.orderDetail.cancel_time);
-                        this.closeOrder = this.getCloseOrderTime(this.orderDetail.pricing_time);
+                        this.closeOrder = this.getLeftTime(this.orderDetail.pricing_time);
                         this.carAmount = 0;
                         //this.carVin = this.orderDetail.orders_item_data[0].car_vin;
                         this.stateMapping(status, cancelStatus);
@@ -288,7 +283,6 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         this.orderDetail.orders_item_data[0].car_finance_data.pledge_status === 1) {
                         this.topState = 1;
                     } else {
-                        //this.topState = 1;
                         this.topState = -1;
                     }
                     this.bottomState = 1;

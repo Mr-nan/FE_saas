@@ -22,9 +22,9 @@ export default class GetCarCountDown extends Component {
         this.state = {
             countDown: false,
             //value: '获取验证码',
-            day: leftTime > 0 ? 29 - this.formatLongToTimeStr(leftTime).day : 0,
-            hour: leftTime > 0 ? 23 - this.formatLongToTimeStr(leftTime).hour : 0,
-            minute: leftTime > 0 ? 59 - this.formatLongToTimeStr(leftTime).minute : 0
+            day: this.formatLongToTimeStr(leftTime).day,
+            hour: this.formatLongToTimeStr(leftTime).hour,
+            minute: this.formatLongToTimeStr(leftTime).minute
         };
         //this.countTime = TIME;
         this.timer = null;
@@ -34,11 +34,15 @@ export default class GetCarCountDown extends Component {
     }
 
     formatLongToTimeStr = (timeStamp) => {
+        let left = 86400000 * 30 - timeStamp;
+        if (left <= 0) {
+            return {day: 0, hour: 0, minute: 0};
+        }
         let day = 0;
         let hour = 0;
         let minute = 0;
         let second = 0;
-        second = timeStamp / 1000;
+        second = left / 1000;
         if (second > 60) {
             minute = second / 60;
             second = second % 60;
@@ -49,7 +53,7 @@ export default class GetCarCountDown extends Component {
         }
         if (hour > 24) {
             day = hour / 24;
-            hour = hour % 60;
+            hour = hour % 24;
         }
         return {day: parseInt(day), hour: parseInt(hour), minute: parseInt(minute)};
     };
@@ -58,7 +62,9 @@ export default class GetCarCountDown extends Component {
     }
 
     componentDidMount() {
-        this.StartCountDown();
+        if (86400000 * 30 - this.props.leftTime > 0) {
+            this.StartCountDown();
+        }
     }
 
     render() {
@@ -87,18 +93,18 @@ export default class GetCarCountDown extends Component {
             this.timer = setInterval(() => {
                 if (this.value3 === 0) {
                     if (this.value2 === 0) {
-                        this.value1 = --this.value1;
                         if (this.value1 <= 0) {
                             this.endCountDown();
-                        } else {
-                            this.value2 = --this.value2;
-                            this.value3 = 59;
-                            this.setState({
-                                minute: this.value3,
-                                hour: this.value2,
-                                day: this.value1,
-                            });
+                            return;
                         }
+                        this.value1 = --this.value1;
+                        this.value2 = 59;
+                        this.value3 = 59;
+                        this.setState({
+                            minute: this.value3,
+                            hour: this.value2,
+                            day: this.value1,
+                        });
                     } else {
                         this.value2 = --this.value2;
                         this.value3 = 59;
@@ -113,7 +119,7 @@ export default class GetCarCountDown extends Component {
                         minute: this.value3
                     });
                 }
-            }, 1000)
+            }, 60000)
         }
     }
 
