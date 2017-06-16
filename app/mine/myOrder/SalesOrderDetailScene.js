@@ -1204,7 +1204,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
             )
         } else if (rowData === '9') {
             return (
-                <View style={styles.itemType4}>
+                <View style={styles.itemType9}>
                     <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
                         <Text style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
@@ -1309,6 +1309,10 @@ const styles = StyleSheet.create({
     itemType4: {
         backgroundColor: '#ffffff',
         height: Pixel.getPixel(151)
+    },
+    itemType9: {
+        backgroundColor: '#ffffff',
+        height: Pixel.getPixel(121)
     },
     itemType7: {
         backgroundColor: '#ffffff'

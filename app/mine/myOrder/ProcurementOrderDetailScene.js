@@ -901,7 +901,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             )
         } else if (rowData === '6') {
             return (
-                <View style={styles.itemType4}>
+                <View style={styles.itemType6}>
                     <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
                         <Text style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
@@ -1004,6 +1004,10 @@ const styles = StyleSheet.create({
     itemType4: {
         backgroundColor: '#ffffff',
         height: Pixel.getPixel(151)
+    },
+    itemType6: {
+        backgroundColor: '#ffffff',
+        height: Pixel.getPixel(121)
     },
     infoContent: {
         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)
