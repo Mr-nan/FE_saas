@@ -15,7 +15,8 @@ import {
     WebView,
     BackAndroid,
     NativeModules,
-    Linking
+    Linking,
+    Platform
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
@@ -44,7 +45,13 @@ export  default class WebScene extends BaseComponent {
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: false});
         });
-        Linking.openURL(this.props.url);
+        if (Platform.OS === 'android') {
+            Linking.openURL(this.props.url);
+        } else {
+            NativeModules.SystomTools.openAppaleShop();
+        }
+
+
     }
 
 
@@ -59,7 +66,11 @@ export  default class WebScene extends BaseComponent {
                 <View style={{flex:1,justifyContent:'center',
                 alignItems:'center'}}>
                     <TouchableOpacity onPress={()=>{
-                        Linking.openURL(this.props.url);
+                        if(Platform.OS === 'android'){
+                            Linking.openURL(this.props.url);
+                        }else{
+                            NativeModules.SystomTools.openAppaleShop();
+                        }
                     }} activeOpacity={0.9} style={{
                         width:width/2,height:Pixel.getPixel(50),
                         backgroundColor:fontAndColor.COLORB0,

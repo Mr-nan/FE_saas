@@ -604,7 +604,7 @@ export default class CarPublishSecondScene extends BaseComponent{
             }
         };
         this.toNextPage(navigatorParams);
-        console.log(this.carData);
+        //console.log(this.carData);
     }
 
     pushSelectRegisterPersonScene=()=>{
@@ -618,8 +618,8 @@ export default class CarPublishSecondScene extends BaseComponent{
             }
         };
 
-        console.log(this.carData.show_shop_id);
-        console.log(this.carData);
+       // console.log(this.carData.show_shop_id);
+        //console.log(this.carData);
         this.toNextPage(navigatorParams);
     }
     selectPersonClick=(data)=>{
@@ -693,7 +693,7 @@ export default class CarPublishSecondScene extends BaseComponent{
 
     checkedCityClick=(city)=>{
 
-        console.log(city);
+        //console.log(city);
            this.titleData1[2][0].value = city.city_name;
            this.titleData2[2][0].value = city.city_name;
            this.carData['city_name'] = city.city_name;

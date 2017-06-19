@@ -47,7 +47,7 @@ export default class OrderListScene extends BaseComponent {
         this.endDate = '选择结束时间';
         //let business = this.props.business;
         this.state = {
-            dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
+            dataSource: [],
             renderPlaceholderOnly: 'blank',
             isRefreshing: false,
         };
@@ -94,7 +94,7 @@ export default class OrderListScene extends BaseComponent {
                 let maps = {
                     company_id: datas.company_base_id,
                     business: this.props.business,
-                    page: this.pageNum,
+                    page: 1,
                     rows: 10,
                     //list_state: this.props.listState,
                     status: this.status,
@@ -109,8 +109,9 @@ export default class OrderListScene extends BaseComponent {
                     this.allPage = response.mjson.data.total / response.mjson.data.rows;
                     //console.log('订单列表数据 = ', this.orderListData[0].car);
                     if (this.orderListData) {
+                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
-                            dataSource: this.state.dataSource.cloneWithRows(this.orderListData),
+                            dataSource: ds.cloneWithRows(this.orderListData),
                             isRefreshing: false,
                             renderPlaceholderOnly: 'success'
                         });
@@ -157,6 +158,7 @@ export default class OrderListScene extends BaseComponent {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
+                this.pageNum += 1;
                 let maps = {
                     company_id: datas.company_base_id,
                     business: this.props.business,
@@ -168,15 +170,15 @@ export default class OrderListScene extends BaseComponent {
                     end_time: this.endDate === '选择结束时间' ? '' : this.endDate
                 };
                 let url = AppUrls.ORDER_INDEX;
-                this.pageNum += 1;
                 request(url, 'post', maps).then((response) => {
                     let data = response.mjson.data.items;
                     for (let i = 0; i < data.length; i++) {
                         this.orderListData.push(data[i]);
                     }
+                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                     this.setState({
                         isRefreshing: false,
-                        dataSource: this.state.dataSource.cloneWithRows(this.orderListData)
+                        dataSource: ds.cloneWithRows(this.orderListData)
                     });
                 }, (error) => {
                     this.setState({
@@ -323,29 +325,41 @@ export default class OrderListScene extends BaseComponent {
     }
 
     _renderRow = (rowData, selectionID, rowID) => {
-        let initRegDate = rowData.car.length ? this.dateReversal(rowData.car[0].init_reg + '000') : '未公开';
+        //let initRegDate = rowData.car.length ? this.dateReversal(rowData.car[0].init_reg + '000') : '未公开';
+        //let imageUrl = rowData.car.length ? rowData.car[0].thumbs : [];
+        let initReg = rowData.car[0].init_reg;
+        let mileage = rowData.car[0].mileage;
+        let initRegDate = initReg === 0 ? '暂无' : this.dateReversal(initReg + '000');
         let imageUrl = rowData.car.length ? rowData.car[0].thumbs : [];
         return (
             <TouchableOpacity
                 onPress={() => {
                     if (this.props.business === 1) {
-                        this.toNextPage({
-                            name: 'ProcurementOrderDetailScene',
-                            component: ProcurementOrderDetailScene,
-                            params: {
-                                business: this.props.business,
-                                orderId: rowData.order.id
-                            }
-                        });
+                        if (rowData.order.power === 1) {
+                            this.toNextPage({
+                                name: 'ProcurementOrderDetailScene',
+                                component: ProcurementOrderDetailScene,
+                                params: {
+                                    business: this.props.business,
+                                    orderId: rowData.order.id
+                                }
+                            });
+                        } else {
+                            this.props.showToast('您没有权限操作此订单');
+                        }
                     } else {
-                        this.toNextPage({
-                            name: 'SalesOrderDetailScene',
-                            component: SalesOrderDetailScene,
-                            params: {
-                                business: this.props.business,
-                                orderId: rowData.order.id
-                            }
-                        });
+                        if (rowData.order.power === 1) {
+                            this.toNextPage({
+                                name: 'SalesOrderDetailScene',
+                                component: SalesOrderDetailScene,
+                                params: {
+                                    business: this.props.business,
+                                    orderId: rowData.order.id
+                                }
+                            });
+                        } else {
+                            this.props.showToast('您没有权限操作此订单');
+                        }
                     }
                 }}
                 activeOpacity={0.8}>
@@ -381,7 +395,7 @@ export default class OrderListScene extends BaseComponent {
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>里程：</Text>
                                 <Text
-                                    style={styles.carDescribe}>{rowData.car.length ? rowData.car[0].mileage + '万' : '未公开'}</Text>
+                                    style={styles.carDescribe}>{rowData.car.length ? mileage + '万' : '未公开'}</Text>
                             </View>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>上牌：</Text>
@@ -397,12 +411,12 @@ export default class OrderListScene extends BaseComponent {
                     <View style={{
                         height: Pixel.getPixel(40),
                         flexDirection: 'row',
-                        alignItems: 'center'
+                        alignItems: 'center',
+                        justifyContent: 'flex-end'
                     }}>
                         <Text style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                            color: fontAndColor.COLORA1,
-                            marginLeft: Pixel.getPixel(145)
+                            color: fontAndColor.COLORA1
                         }}>成交价：</Text>
                         <Text style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
@@ -417,7 +431,8 @@ export default class OrderListScene extends BaseComponent {
                         <Text style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color: fontAndColor.COLORA0,
-                            fontWeight: 'bold'
+                            fontWeight: 'bold',
+                            marginRight: Pixel.getPixel(15)
                         }}>{rowData.order.deposit_amount}</Text>
                     </View>
                 </View>

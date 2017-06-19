@@ -137,7 +137,7 @@ export default class CheckStand extends BaseComponent {
                         <View style={styles.separatedLine}/>
                         <View style={styles.accountBar}>
                             <Text style={styles.title}>账户：</Text>
-                            <Text style={styles.content}>{this.accountInfo.account_id}</Text>
+                            <Text style={styles.content}>{this.accountInfo.bank_card_no}</Text>
                         </View>
                         <View style={styles.separatedLine}/>
                         <View style={styles.accountBar}>
@@ -238,11 +238,16 @@ export default class CheckStand extends BaseComponent {
                 };
                 let url = AppUrls.ORDER_CHECK_PAY;
                 request(url, 'post', maps).then((response) => {
-                    //this.loadData();
-                    this.props.showToast('支付成功');
-                    this.props.callBack();
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.props.showToast('支付成功');
+                        this.props.callBack();
+                        this.backPage();
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
                 }, (error) => {
-                    this.props.showToast('账户支付检查失败');
+                    //this.props.showToast('账户支付检查失败');
+                    this.props.showToast(error.mjson.msg);
                 });
             } else {
                 this.props.showToast('账户支付检查失败');
@@ -251,7 +256,7 @@ export default class CheckStand extends BaseComponent {
     };
 
     goPay = () => {
-        //this.props.showModal(true);
+        this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
@@ -266,6 +271,7 @@ export default class CheckStand extends BaseComponent {
                     //this.loadData();
                     //this.props.showToast('支付成功');
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.props.showModal(false);
                         this.transSerialNo = response.mjson.data.trans_serial_no;
                         this.toNextPage({
                             name: 'AccountWebScene',
@@ -273,9 +279,7 @@ export default class CheckStand extends BaseComponent {
                             params: {
                                 title: '支付',
                                 webUrl: response.mjson.data.auth_url + '?authTokenId=' + response.mjson.data.auth_token,
-                                callBack: () => {
-                                    this.checkPay();
-                                },// 这个callBack就是点击webview容器页面的返回按钮后"收银台"执行的动作
+                                callBack: this.checkPay,// 这个callBack就是点击webview容器页面的返回按钮后"收银台"执行的动作
                                 backUrl: webBackUrl.PAY
                             }
                         });
@@ -283,7 +287,8 @@ export default class CheckStand extends BaseComponent {
                         this.props.showToast(response.mjson.msg);
                     }
                 }, (error) => {
-                    this.props.showToast('账户支付失败');
+                    //this.props.showToast('账户支付失败');
+                    this.props.showToast(error.mjson.msg);
                 });
             } else {
                 this.props.showToast('账户支付失败');

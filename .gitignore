@@ -54,3 +54,4 @@ fastlane/screenshots
 /android/build
 /android/app/build
 /build
+diff_list

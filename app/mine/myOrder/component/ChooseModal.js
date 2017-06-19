@@ -23,15 +23,28 @@ export default class ChooseModal extends Component {
         // 初始状态
         this.state = {
             isShow: false,
+            negativeText: this.props.negativeText,
+            positiveText: this.props.positiveText,
+            content: this.props.content,
+            positiveOperation: this.props.positiveOperation
         };
     }
 
-    changeShowType = (value) => {
+    changeShowType = (value, negativeText, positiveText, content, positiveOperation) => {
+        this.setState({
+            isShow: value,
+            negativeText: negativeText,
+            positiveText: positiveText,
+            content: content,
+            positiveOperation: positiveOperation
+        });
+    };
+
+    changeShowState = (value) => {
         this.setState({
             isShow: value
         });
-    }
-
+    };
 
     render() {
         return (
@@ -74,7 +87,7 @@ export default class ChooseModal extends Component {
                             textAlign: 'center', fontSize: Pixel.getPixel(14),
                             marginTop: Pixel.getPixel(11), color: '#000'
                         }}>
-                            {this.props.content}
+                            {this.state.content}
                         </Text>
                         <View style={{flexDirection: 'row', marginBottom: Pixel.getPixel(20), marginTop: this.props.buttonsMargin}}>
                             <TouchableOpacity onPress={() => {
@@ -82,15 +95,15 @@ export default class ChooseModal extends Component {
                                     isShow: false
                                 });
                             }} activeOpacity={0.9} style={this.props.negativeButtonStyle}>
-                                <Text style={this.props.negativeTextStyle}>{this.props.negativeText}</Text>
+                                <Text style={this.props.negativeTextStyle}>{this.state.negativeText}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => {
+                                this.state.positiveOperation();
                                 this.setState({
                                     isShow: false
                                 });
-                                this.props.positiveOperation();
                             }} activeOpacity={0.9} style={this.props.positiveButtonStyle}>
-                                <Text style={this.props.positiveTextStyle}>{this.props.positiveText}</Text>
+                                <Text style={this.props.positiveTextStyle}>{this.state.positiveText}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

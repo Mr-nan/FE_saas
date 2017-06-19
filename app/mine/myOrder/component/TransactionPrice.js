@@ -36,6 +36,12 @@ export default class TransactionPrice extends BaseComponent {
         this.props.isShowFinance(financeInfo);
     };*/
 
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({amount:nextProps.amount,deposit: nextProps.amount / 10});
+
+    }
+
     render() {
         return (
             <View style={styles.itemType4}>
@@ -94,6 +100,7 @@ export default class TransactionPrice extends BaseComponent {
             </View>
         )
     }
+
 
     updateAmount = (newAmount) => {
         this.props.updateCarAmount(newAmount);

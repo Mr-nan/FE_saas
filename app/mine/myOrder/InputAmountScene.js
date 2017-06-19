@@ -76,7 +76,7 @@ export default class InputAmountScene extends BaseComponent {
 
     isNumberByHundred = (number) => {
         let re = /^[0-9]*[0-9]$/i;
-        if (re.test(number) && number % 100 === 0) {
+        if (re.test(number) && number % 100 === 0 && number !== 0) {
             return true;
         } else {
             return false;
@@ -93,6 +93,8 @@ export default class InputAmountScene extends BaseComponent {
                         this.props.updateAmount(this.number);
                         this.checkPrice(this.number);
                         this.backPage();
+                    } else if (this.number === 0) {
+                        this.props.showToast("金额不能为零");
                     } else {
                         this.props.showToast("请输入整百金额");
                     }
@@ -116,12 +118,15 @@ export default class InputAmountScene extends BaseComponent {
                 };
                 let url = AppUrls.ORDER_CHECK_PRICE;
                 request(url, 'post', maps).then((response) => {
-                    this.props.showModal(false);
-                    //let isShowFin = response.mjson.data.response.is_show_finance;
-                    //console.log('isShowFinance', response.mjson.data.response);
-                    this.props.isShowFinance(response.mjson.data);
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.props.showModal(false);
+                        this.props.isShowFinance(response.mjson.data);
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
                 }, (error) => {
-                    this.props.showToast('车辆定价检查失败');
+                    //this.props.showToast('车辆定价检查失败');
+                    this.props.showToast(error.mjson.msg);
                 });
             } else {
                 this.props.showToast('车辆定价检查失败');

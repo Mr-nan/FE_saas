@@ -285,14 +285,14 @@ export default class Register extends BaseComponent {
                     </View>
                 </View>
                     <View style={styles.imagebuttonok}>
-                        <ConfirmButton imageButton={(value)=>{
-                              confirm = value;
-                        }} textButton={()=>{
-                            this.toNextPage({name:ElectronicContract,component:ElectronicContract,params:{}})
-                        }}/>
+                        {/*<ConfirmButton imageButton={(value)=>{*/}
+                              {/*confirm = value;*/}
+                        {/*}} textButton={()=>{*/}
+                            {/*this.toNextPage({name:ElectronicContract,component:ElectronicContract,params:{}})*/}
+                        {/*}}/>*/}
                         <TouchableOpacity onPress={()=>{
                             this.register();
-                        }} activeOpacity={0.8} style={{marginTop:Pixel.getPixel(15),width:width-Pixel.getPixel(30),height:
+                        }} activeOpacity={0.8} style={{marginTop:Pixel.getPixel(7),width:width-Pixel.getPixel(30),height:
                         Pixel.getPixel(44),backgroundColor: FontAndColor.COLORB0,alignItems: 'center',justifyContent:'center'
                         }}>
                             <Text style={{color:'#fff',fontSize: Pixel.getPixel(FontAndColor.LITTLEFONT28)}}>提交</Text>
@@ -329,9 +329,10 @@ export default class Register extends BaseComponent {
             this.props.showToast("商家名称不能为空");
         } else if (password !== passwoedAgain) {
             this.props.showToast("两次密码输入不一致");
-        }else if(!confirm){
-            this.props.showToast("请详细阅读并同意《电子账户服务协议》");
-        } /*else if (typeof(idcardf) == "undefined" || idcardf == "") {
+        }
+        //else if(!confirm){
+        //    this.props.showToast("请详细阅读并同意《电子账户服务协议》");
+        /*} else if (typeof(idcardf) == "undefined" || idcardf == "") {
          this.props.showToast("身份证正面不能为空");
          } else if (typeof(idcardback) == "undefined" || idcardback == "") {
          this.props.showToast("身份证反面不能为空");

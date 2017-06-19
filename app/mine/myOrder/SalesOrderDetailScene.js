@@ -41,6 +41,8 @@ import CheckStand from "../../finance/CheckStand";
 import * as Net from '../../utils/RequestUtil';
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
+import AccountScene from "../accountManage/RechargeScene";
+import VinInfo from '../../publish/component/VinInfo';
 const Pixel = new PixelUtil();
 
 const IS_ANDROID = Platform.OS === 'android';
@@ -62,6 +64,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
         this.carAmount = 0;
         this.carVin = '';
         this.leftTime = 0;
+        this.closeOrder = 0;
         this.financeInfo = {};
 
         this.modelData = [];
@@ -100,31 +103,52 @@ export default class SalesOrderDetailScene extends BaseComponent {
     };
 
     isShowFinance = (financeInfo) => {
-        if (financeInfo.is_show_finance == 1) {
-            this.financeInfo = financeInfo;
-            this.mList = [];
-            this.mList = ['0', '1', '2', '3', '4', '5', '6', '7', '9'];
-            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-            this.setState({
-                dataSource: ds.cloneWithRows(this.mList),
-                //dataSource: this.state.dataSource.cloneWithRows(this.mList),
-                isRefreshing: false,
-                renderPlaceholderOnly: 'success'
-            });
+        if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_type == 2 &&
+            this.orderDetail.orders_item_data[0].car_finance_data.pledge_status == 1) {
+            if (financeInfo.is_show_finance == 1) {
+                this.financeInfo = financeInfo;
+                this.mList = [];
+                if (this.orderDetail.orders_item_data[0].car_vin.length === 17) {
+                    this.mList = ['0', '1', '2', '3', '4', '5', '7', '9'];
+                } else {
+                    this.mList = ['0', '1', '2', '3', '4', '5', '6', '7', '9'];
+                }
+                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                this.setState({
+                    dataSource: ds.cloneWithRows(this.mList),
+                    //dataSource: this.state.dataSource.cloneWithRows(this.mList),
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'success'
+                });
+            } else {
+                this.mList = [];
+                if (this.orderDetail.orders_item_data[0].car_vin.length === 17) {
+                    this.mList = ['0', '1', '2', '4', '5', '7', '9'];
+                } else {
+                    this.mList = ['0', '1', '2', '4', '5', '6', '7', '9'];
+                }
+                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                this.setState({
+                    dataSource: ds.cloneWithRows(this.mList),
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'success'
+                });
+            }
         }
         this.props.showModal(false);
     };
 
-    savePrice = (price) => {
+    savePrice = () => {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
+                //console.log('this.vinInput.value======',this.carVin);
                 let maps = {
                     company_id: datas.company_base_id,
                     car_id: this.orderDetail.orders_item_data[0].car_id,
                     order_id: this.orderDetail.id,
-                    pricing_amount: price,
-                    car_vin: this.carVin
+                    pricing_amount: this.carAmount,
+                    car_vin: this.carVin.length !== 17 ? this.orderDetail.orders_item_data[0].car_vin : this.carVin
                 };
                 let url = AppUrls.ORDER_SAVE_PRICE;
                 request(url, 'post', maps).then((response) => {
@@ -134,7 +158,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         this.props.showToast(response.mjson.msg);
                     }
                 }, (error) => {
-                    this.props.showToast('成交价提交失败');
+                    this.props.showToast(error.mjson.msg);
                 });
             } else {
                 this.props.showToast('成交价提交失败');
@@ -145,6 +169,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
     getLeftTime = (cancelTime) => {
         let currentTime = new Date().getTime();
         let oldTime = new Date(cancelTime).getTime();
+        //console.log('时间啊是啊=====' + (currentTime - oldTime));
         return currentTime - oldTime;
     };
 
@@ -160,15 +185,36 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 };
                 let url = AppUrls.ORDER_DETAIL;
                 request(url, 'post', maps).then((response) => {
-                    this.props.showModal(false);
-                    this.orderDetail = response.mjson.data;
-                    let status = response.mjson.data.status;
-                    let cancelStatus = response.mjson.data.cancel_status;
-                    this.stateMapping(status, cancelStatus);
-                    this.leftTime = this.getLeftTime(this.orderDetail.cancel_time);
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.props.showModal(false);
+                        this.orderDetail = response.mjson.data;
+                        let status = response.mjson.data.status;
+                        let cancelStatus = response.mjson.data.cancel_status;
+                        this.leftTime = this.getLeftTime(this.orderDetail.cancel_time);
+                        this.closeOrder = this.getLeftTime(this.orderDetail.pricing_time);
                         this.carAmount = 0;
-                        this.carVin = this.orderDetail.orders_item_data[0].car_vin;
+                        //this.carVin = this.orderDetail.orders_item_data[0].car_vin;
+                        // todo test 判断订单处于取消状态 获取取消时订单状态，如已付款判断是否同意退款
+                        if (cancelStatus == 2 || cancelStatus == 3) {
+                            if (this.orderDetail.order_flows.length > 0) {
+                                let cancel = this.orderDetail.order_flows;
+                                for (let state in cancel) {
+                                    status = cancel[state];
+                                }
+                            }
+                            //console.log('this.orderDetail.order_flows == ' + this.orderState);
+                            /*if (this.orderState == 0 || this.orderState == 1 || this.orderState == 2 ||
+                                this.orderState == 3 || this.orderState == 4) {
+                                this.bottomState = 2;
+                            } else {
+                                if (this.orderDetail.cancel_is_agree == 0) {
+                                    this.bottomState = 4;
+                                } else {
+                                    this.bottomState = 3;
+                                }
+                            }*/
+                        }
+                        this.stateMapping(status, cancelStatus);
                         this.initListData(this.orderState);
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
@@ -184,7 +230,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         });
                     }
                 }, (error) => {
-                    this.props.showToast('获取订单详情失败');
+                    //this.props.showToast('获取订单详情失败');
+                    this.props.showToast(error.mjson.msg);
                     this.setState({
                         isRefreshing: false,
                         renderPlaceholderOnly: 'error'
@@ -214,11 +261,11 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 0;
                     this.topState = -1;
-                    this.bottomState = 4;
+                    this.bottomState = 2;
                 } else if (cancelStatus === 3) {
                     this.orderState = 0;
                     this.topState = -1;
-                    this.bottomState = 3;
+                    this.bottomState = 2;
                 }
                 break;
             case 2:  // 已拍下，价格已定
@@ -226,7 +273,12 @@ export default class SalesOrderDetailScene extends BaseComponent {
             case 4:
                 if (cancelStatus === 0) {
                     this.orderState = 1;
-                    this.topState = -1;
+                    if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_type == 2 &&
+                        this.orderDetail.orders_item_data[0].car_finance_data.pledge_status == 1) {
+                        this.topState = 1;
+                    } else {
+                        this.topState = -1;
+                    }
                     this.bottomState = 1;
                 } else if (cancelStatus === 1) {
                     this.orderState = 1;
@@ -235,11 +287,11 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 1;
                     this.topState = -1;
-                    this.bottomState = 4;
+                    this.bottomState = 2;
                 } else if (cancelStatus === 3) {
                     this.orderState = 1;
                     this.topState = -1;
-                    this.bottomState = 3;
+                    this.bottomState = 2;
                 }
                 break;
             case 5:  // 订金到账
@@ -247,7 +299,12 @@ export default class SalesOrderDetailScene extends BaseComponent {
             case 7:
                 if (cancelStatus === 0) {
                     this.orderState = 2;
-                    this.topState = -1;
+                    if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_type == 2 &&
+                        this.orderDetail.orders_item_data[0].car_finance_data.pledge_status == 1) {
+                        this.topState = 1;
+                    } else {
+                        this.topState = -1;
+                    }
                     this.bottomState = 1;
                 } else if (cancelStatus === 1) {
                     this.orderState = 2;
@@ -256,11 +313,19 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 2;
                     this.topState = -1;
-                    this.bottomState = 4;
+                    if (this.orderDetail.cancel_is_agree == 0) {
+                        this.bottomState = 4;
+                    } else {
+                        this.bottomState = 3;
+                    }
                 } else if (cancelStatus === 3) {
                     this.orderState = 2;
                     this.topState = -1;
-                    this.bottomState = 3;
+                    if (this.orderDetail.cancel_is_agree == 0) {
+                        this.bottomState = 4;
+                    } else {
+                        this.bottomState = 3;
+                    }
                 }
                 break;
             case 8: // 结清尾款
@@ -268,7 +333,12 @@ export default class SalesOrderDetailScene extends BaseComponent {
             case 10:
                 if (cancelStatus === 0) {
                     this.orderState = 3;
-                    this.topState = 0;
+                    if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_type == 2 &&
+                        this.orderDetail.orders_item_data[0].car_finance_data.pledge_status == 1) {
+                        this.topState = 1;
+                    } else {
+                        this.topState = -1;
+                    }
                     this.bottomState = -1;
                 } else if (cancelStatus === 1) {
                     this.orderState = 3;
@@ -277,11 +347,19 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 3;
                     this.topState = -1;
-                    this.bottomState = 4;
+                    if (this.orderDetail.cancel_is_agree == 0) {
+                        this.bottomState = 4;
+                    } else {
+                        this.bottomState = 3;
+                    }
                 } else if (cancelStatus === 3) {
                     this.orderState = 3;
                     this.topState = -1;
-                    this.bottomState = 3;
+                    if (this.orderDetail.cancel_is_agree == 0) {
+                        this.bottomState = 4;
+                    } else {
+                        this.bottomState = 3;
+                    }
                 }
                 break;
             case 11:  // 订单完成
@@ -296,11 +374,19 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 4;
                     this.topState = -1;
-                    this.bottomState = 4;
+                    if (this.orderDetail.cancel_is_agree == 0) {
+                        this.bottomState = 4;
+                    } else {
+                        this.bottomState = 3;
+                    }
                 } else if (cancelStatus === 3) {
                     this.orderState = 4;
                     this.topState = -1;
-                    this.bottomState = 3;
+                    if (this.orderDetail.cancel_is_agree == 0) {
+                        this.bottomState = 4;
+                    } else {
+                        this.bottomState = 3;
+                    }
                 }
                 break;
         }
@@ -314,17 +400,40 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 return (
                     <View style={{marginTop: Pixel.getTitlePixel(65)}}>
                         <View style={styles.tradingCountdown}>
-                            <Text style={{
-                                marginLeft: Pixel.getPixel(15),
-                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-                                color: fontAndColor.COLORB7
-                            }}>处理申请剩余时间：</Text>
-                            <DepositCountDown leftTime={this.leftTime}/>
-                            <Text style={{
-                                marginLeft: Pixel.getPixel(15),
-                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-                                color: fontAndColor.COLORB7
-                            }}>超时未处理默认为不同意，订单自动取消</Text>
+                            <Text>
+                                <Text style={{
+                                    marginLeft: Pixel.getPixel(15),
+                                    fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                    color: fontAndColor.COLORB7
+                                }}>处理申请剩余时间</Text>
+                                <DepositCountDown leftTime={this.leftTime}/>
+                                <Text style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                    color: fontAndColor.COLORB7
+                                }}>超时未处理默认为不同意，订单自动取消</Text>
+                            </Text>
+                        </View>
+                        <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>
+                    </View>
+                )
+                break;
+            case 1:
+                this.listViewStyle = Pixel.getPixel(0);
+                return (
+                    <View style={{marginTop: Pixel.getTitlePixel(65)}}>
+                        <View style={styles.tradingCountdown}>
+                            <Text>
+                                <Text style={{
+                                    marginLeft: Pixel.getPixel(15),
+                                    fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                    color: fontAndColor.COLORB7
+                                }}>完成交易剩余时间</Text>
+                                <GetCarCountDown leftTime={this.closeOrder}/>
+                                <Text style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                    color: fontAndColor.COLORB7
+                                }}>超时订单将关闭。</Text>
+                            </Text>
                         </View>
                         <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>
                     </View>
@@ -337,14 +446,23 @@ export default class SalesOrderDetailScene extends BaseComponent {
         }
     };
 
+
     initDetailPageBottom = (orderState) => {
         switch (orderState) {
             case 0:
+                let negativeText = '';
+                let positiveText = '';
+                let content = '';
+                let positiveOperation = '';
                 return (
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
                             onPress={() => {
-                                this.refs.chooseModal.changeShowType(true);
+                                negativeText = '取消';
+                                positiveText = '确定';
+                                content = '确定后取消订单。如买家有已支付款项将退款，如您有补差价款可提现。';
+                                positiveOperation = this.cancelOrder;
+                                this.refs.chooseModal.changeShowType(true, negativeText, positiveText, content, positiveOperation);
                             }}>
                             <View style={styles.buttonCancel}>
                                 <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
@@ -352,14 +470,20 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
+                                //console.log('韩梦测试测试测试====',this.carVin);
+                                negativeText = '再想想';
+                                positiveText = '没问题';
+                                content = '此车是库存融资质押车辆，请在买家支付订金后操作车辆出库。';
+                                positiveOperation = this.savePrice;
                                 if (this.carAmount === 0) {
                                     this.props.showToast('请您先定价');
                                 } else {
-                                    if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_status === 0) {
-                                        this.props.showModal(true);
-                                        this.savePrice(this.carAmount);
+                                    if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_type == 1 &&
+                                        this.orderDetail.orders_item_data[0].car_finance_data.pledge_status == 1) {
+                                        this.refs.chooseModal.changeShowType(true, negativeText, positiveText, content, positiveOperation);
                                     } else {
-                                        this.refs.chooseModal.changeShowType(true);
+                                        this.props.showModal(true);
+                                        this.savePrice();
                                     }
                                 }
                             }}>
@@ -369,12 +493,12 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         </TouchableOpacity>
                         <ChooseModal ref='chooseModal' title='提示'
                                      negativeButtonStyle={styles.negativeButtonStyle}
-                                     negativeTextStyle={styles.negativeTextStyle} negativeText='取消'
+                                     negativeTextStyle={styles.negativeTextStyle} negativeText={negativeText}
                                      positiveButtonStyle={styles.positiveButtonStyle}
-                                     positiveTextStyle={styles.positiveTextStyle} positiveText='确定'
+                                     positiveTextStyle={styles.positiveTextStyle} positiveText={positiveText}
                                      buttonsMargin={Pixel.getPixel(20)}
-                                     positiveOperation={this.cancelOrder}
-                                     content='确定后取消订单。如买家有已支付款项将退款，如您有补差价款可提现。'/>
+                                     positiveOperation={positiveOperation}
+                                     content={content}/>
                         {/*<ChooseModal ref='chooseModal1' title='提示'
                          negativeButtonStyle={styles.negativeButtonStyle}
                          negativeTextStyle={styles.negativeTextStyle} negativeText='再想想'
@@ -391,7 +515,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
                             onPress={() => {
-                                this.refs.chooseModal.changeShowType(true);
+                                this.refs.chooseModal.changeShowState(true);
                             }}>
                             <View style={styles.buttonCancel}>
                                 <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
@@ -488,8 +612,9 @@ export default class SalesOrderDetailScene extends BaseComponent {
         switch (orderState) {
             case 0:  //未定价
                 this.mList = [];
+                this.items = [];
                 this.contactData = {};
-                if (this.carVin.length === 17) {
+                if (this.orderDetail.orders_item_data[0].car_vin.length === 17) {
                     this.mList = ['0', '1', '2', '4', '5', '7', '9'];
                 } else {
                     this.mList = ['0', '1', '2', '4', '5', '6', '7', '9'];
@@ -508,6 +633,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 break;
             case 1:  //已定价
                 this.mList = [];
+                this.items = [];
                 this.contactData = {};
                 this.mList = ['0', '1', '5', '7', '9'];
                 this.contactData = {
@@ -524,6 +650,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 break;
             case 2:  //订金到账
                 this.mList = [];
+                this.items = [];
                 this.contactData = {};
                 this.mList = ['0', '1', '5', '7', '9'];
                 this.contactData = {
@@ -540,6 +667,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 break;
             case 3:  // 结清尾款
                 this.mList = [];
+                this.items = [];
                 this.contactData = {};
                 this.mList = ['0', '1', '5', '7', '9'];
                 this.contactData = {
@@ -556,6 +684,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 break;
             case 4: // 完成交易
                 this.mList = [];
+                this.items = [];
                 this.contactData = {};
                 this.mList = ['0', '1', '5', '7', '9'];
                 this.contactData = {
@@ -600,9 +729,14 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 };
                 let url = AppUrls.ORDER_ALLOW_CANCEL;
                 request(url, 'post', maps).then((response) => {
-                    this.loadData();
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.loadData();
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
                 }, (error) => {
-                    this.props.showToast('处理取消订单申请失败');
+                    //this.props.showToast('处理取消订单申请失败');
+                    this.props.showToast(error.mjson.msg);
                 });
             } else {
                 this.props.showToast('处理取消订单申请失败');
@@ -620,9 +754,14 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 };
                 let url = AppUrls.ORDER_DENY_CANCEL;
                 request(url, 'post', maps).then((response) => {
-                    this.loadData();
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.loadData();
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
                 }, (error) => {
-                    this.props.showToast('处理取消订单申请失败');
+                    //this.props.showToast('处理取消订单申请失败');
+                    this.props.showToast(error.mjson.msg);
                 });
             } else {
                 this.props.showToast('处理取消订单申请失败');
@@ -631,7 +770,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
     };
 
     //扫描
-    _scanPress = () => {
+    _onScanPress = () => {
         this.vinModal.refresh(this.scanType);
         this.vinModal.openModal(1);
     };
@@ -673,6 +812,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
     _onVinChange = (text) => {
         if (text.length === 17) {
             this.props.showModal(true);
+            this.carVin = text;
+            this.vinInput.blur();
             Net.request(AppUrls.VININFO, 'post', {vin: text}).then(
                 (response) => {
                     this.props.showModal(false);
@@ -680,40 +821,6 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         let rd = response.mjson.data;
                         if (rd.length === 0) {
                             this.props.showToast('车架号校验失败');
-                        } else if (rd.length === 1) {
-                            this.modelInfo['brand_id'] = rd[0].brand_id;
-                            this.modelInfo['model_id'] = rd[0].model_id;
-                            this.modelInfo['series_id'] = rd[0].series_id;
-                            this.modelInfo['model_year'] = rd[0].model_year;
-                            this.modelInfo['model_name'] = rd[0].model_name;
-
-                            this.titleData1[0][2].value = rd[0].model_name;
-                            this.titleData1[0][4].value = rd[0].model_emission_standard;
-                            this.titleData1[1][0].value = rd[0].model_year + '-6-1';
-                            this.titleData1[1][1].value = rd[0].model_year + '-6-1';
-
-                            this.titleData2[0][2].value = rd[0].model_name;
-                            this.titleData2[0][4].value = rd[0].model_emission_standard;
-                            this.titleData2[1][0].value = rd[0].model_year + '-6-1';
-
-                            this.carData['manufacture'] = rd[0].model_year + '-6-1';
-                            if (this.carType == '二手车') {
-                                this.carData['init_reg'] = rd[0].model_year + '-6-1';
-                            }
-
-                            this.carData['model_id'] = rd[0].model_id;
-                            this.carData['emission_standards'] = rd[0].model_emission_standard;
-                            this.carData['series_id'] = rd[0].series_id;
-
-                            this.carData['vin'] = text;
-                            this.upTitleData();
-
-                        } else if (rd.length > 1) {
-
-                            this.carData['vin'] = text;
-                            this.modelData = response.mjson.data;
-                            this.vinModal.refresh(this.modelData);
-                            this.vinModal.openModal(0);
                         }
                     } else {
                         this.props.showToast('车架号校验失败');
@@ -742,9 +849,14 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 };
                 let url = AppUrls.ORDER_CANCEL;
                 request(url, 'post', maps).then((response) => {
-                    this.loadData();
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.loadData();
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
                 }, (error) => {
-                    this.props.showToast('取消订单失败');
+                    //this.props.showToast('取消订单失败');
+                    this.props.showToast(error.mjson.msg);
                 });
             } else {
                 this.props.showToast('取消订单失败');
@@ -790,9 +902,9 @@ export default class SalesOrderDetailScene extends BaseComponent {
         } else {
             return (
                 <View style={styles.container}>
-                    <InputVinInfo viewData={this.modelData} vinPress={this._vinPress} ref={(modal) => {
+                    <VinInfo viewData={this.scanType} vinPress={this._vinPress} ref={(modal) => {
                         this.vinModal = modal
-                    }} navigator={this.props.navigator}/>
+                    }}/>
                     <NavigatorView title='订单详情' backIconClick={this.backPage}/>
                     {this.initDetailPageTop(this.topState)}
                     <ListView
@@ -811,11 +923,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                             />
                         }/>
                     <ExplainModal ref='expModal' title='补差额说明' buttonStyle={styles.expButton} textStyle={styles.expText}
-                                  text='知道了' content='为了确保交易金额可支付贷款本息，请您
-                                  补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您
-                        补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您
-                        补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您
-                        补足成交价与贷款本息，'/>
+                                  text='知道了' content='为了确保交易金额可支付贷款本息，请您补足成交价与贷款本息，及额外30日利息（是交易持续时期可能产生的利息，根据实际日期付息）的差额。如未能在30日内完成交易，则自动关闭交易，并退还双方已支付的款项。'/>
                     <View style={{flex: 1}}/>
                     {this.initDetailPageBottom(this.bottomState)}
                 </View>
@@ -847,8 +955,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     setPrompt={this.contactData.setPrompt ? this.contactData.setPrompt : false}
                     promptTitle={this.contactData.promptTitle ? this.contactData.promptTitle : ''}
                     promptContent={this.contactData.promptContent ? this.contactData.promptContent : ''}
-                    MerchantNum={this.contactData.merchantNum ? this.contactData.merchantNum : ''}
-                    CustomerServiceNum={this.contactData.customerServiceNum ? this.contactData.customerServiceNum : ''}/>
+                    showShopId={this.orderDetail.orders_item_data[0].car_data.show_shop_id}/>
             )
         } else if (rowData === '2') {
             //this.carAmount = this.orderDetail.orders_item_data[0].transaction_price;
@@ -962,7 +1069,11 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 </View>
             )
         } else if (rowData === '5') {
-            let initRegDate = this.dateReversal(this.orderDetail.orders_item_data[0].car_data.init_reg + '000');
+            //let initRegDate = this.dateReversal(this.orderDetail.orders_item_data[0].car_data.init_reg + '000');
+            //let imageUrl = this.orderDetail.orders_item_data[0].car_data.imgs;
+            let initReg = this.orderDetail.orders_item_data[0].car_data.init_reg;
+            let mileage = this.orderDetail.orders_item_data[0].car_data.mileage;
+            let initRegDate = initReg === 0 ? '暂无' : this.dateReversal(initReg + '000');
             let imageUrl = this.orderDetail.orders_item_data[0].car_data.imgs;
             return (
                 <View style={styles.itemType3}>
@@ -983,12 +1094,16 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                   numberOfLines={1}>{this.orderDetail.orders_item_data[0].model_name}</Text>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>里程：</Text>
-                                <Text style={styles.carDescribe}>{this.orderDetail.orders_item_data[0].car_data.mileage}万</Text>
+                                <Text style={styles.carDescribe}>{mileage}万</Text>
                             </View>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>上牌：</Text>
                                 <Text style={styles.carDescribe}>{initRegDate}</Text>
                             </View>
+                            {this.orderState !== 0 ? <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
+                                <Text style={styles.carDescribeTitle}>成交价：</Text>
+                                <Text style={styles.carDescribe}>{this.orderDetail.transaction_amount}元</Text>
+                            </View> : null}
                         </View>
                     </View>
                 </View>
@@ -1012,6 +1127,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                underlineColorAndroid='transparent'
                                maxLength={17}
                                onChangeText={this._onVinChange}
+                               keyboardType={'ascii-capable'}
                                placeholderTextColor={fontAndColor.COLORA4}
                                ref={(input) => {
                                    this.vinInput = input
@@ -1020,9 +1136,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     <View style={{flex: 1}}/>
                     <TouchableOpacity
                         activeOpacity={0.6}
-                        onPress={() => {
-                            this._scanPress()
-                        }}>
+                        onPress={this._onScanPress}>
                         <View style={{flexDirection: 'row'}}>
                             {/*<Text style={{color: fontAndColor.COLORA2}}>扫描</Text>*/}
                             <Image
@@ -1064,18 +1178,18 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     }}>
                         <Text style={styles.orderInfo}>到账订金</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>{done_deposit_amount}</Text>
+                        <Text style={styles.infoContent}>{this.orderDetail.done_deposit_amount}元</Text>
                     </View>
                     <View style={styles.infoItem}>
                         <Text style={styles.orderInfo}>到账尾款</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>{done_balance_amount}</Text>
+                        <Text style={styles.infoContent}>{this.orderDetail.done_balance_amount}元</Text>
                     </View>
                     <View style={styles.infoItem}>
                         <Text style={styles.orderInfo}>到账总计</Text>
                         <View style={{flex: 1}}/>
                         <Text
-                            style={styles.infoContent}>{done_total_amount}</Text>
+                            style={styles.infoContent}>{this.orderDetail.done_total_amount}元</Text>
                     </View>
                 </View>
             )
@@ -1130,7 +1244,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
             )
         } else if (rowData === '9') {
             return (
-                <View style={styles.itemType4}>
+                <View style={styles.itemType9}>
                     <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
                         <Text style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
@@ -1149,11 +1263,11 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         <View style={{flex: 1}}/>
                         <Text style={styles.infoContent}>{this.orderDetail.buyer_name}</Text>
                     </View>
-                    <View style={styles.infoItem}>
+                    {/*<View style={styles.infoItem}>
                         <Text style={styles.orderInfo}>联系方式</Text>
                         <View style={{flex: 1}}/>
                         <Text style={styles.infoContent}>{this.orderDetail.buyer_phone}</Text>
-                    </View>
+                    </View>*/}
                     <View style={styles.infoItem}>
                         <Text style={styles.orderInfo}>企业名称</Text>
                         <View style={{flex: 1}}/>
@@ -1235,6 +1349,10 @@ const styles = StyleSheet.create({
     itemType4: {
         backgroundColor: '#ffffff',
         height: Pixel.getPixel(151)
+    },
+    itemType9: {
+        backgroundColor: '#ffffff',
+        height: Pixel.getPixel(121)
     },
     itemType7: {
         backgroundColor: '#ffffff'
@@ -1339,7 +1457,11 @@ const styles = StyleSheet.create({
     tradingCountdown: {
         flexDirection: 'row',
         alignItems: 'center',
-        height: Pixel.getPixel(40),
+        paddingLeft: Pixel.getPixel(15),
+        paddingRight: Pixel.getPixel(15),
+        paddingTop: Pixel.getPixel(10),
+        paddingBottom: Pixel.getPixel(10),
+        //height: Pixel.getPixel(40),
         backgroundColor: fontAndColor.COLORB6
     },
     buttonCancel: {
