@@ -142,13 +142,15 @@ export default class SalesOrderDetailScene extends BaseComponent {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
-                //console.log('this.vinInput.value======',this.carVin);
+                //console.log('this.vinInput.value======',this.vinInput.value);
                 let maps = {
                     company_id: datas.company_base_id,
                     car_id: this.orderDetail.orders_item_data[0].car_id,
                     order_id: this.orderDetail.id,
                     pricing_amount: this.carAmount,
-                    car_vin: this.carVin.length !== 17 ? this.orderDetail.orders_item_data[0].car_vin : this.carVin
+                    //car_vin: this.carVin.length !== 17 ? this.orderDetail.orders_item_data[0].car_vin : this.carVin
+                    car_vin: this.orderDetail.orders_item_data[0].car_vin.length === 17 ?
+                        this.orderDetail.orders_item_data[0].car_vin : this.carVin
                 };
                 let url = AppUrls.ORDER_SAVE_PRICE;
                 request(url, 'post', maps).then((response) => {
@@ -801,9 +803,9 @@ export default class SalesOrderDetailScene extends BaseComponent {
     };
 
     _onVinChange = (text) => {
+        this.carVin = text;
         if (text.length === 17) {
             this.props.showModal(true);
-            this.carVin = text;
             this.vinInput.blur();
             Net.request(AppUrls.VININFO, 'post', {vin: text}).then(
                 (response) => {

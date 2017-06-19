@@ -271,7 +271,9 @@ export default class OrderSearchScene extends BaseComponent {
     }
 
     _renderRow = (rowData, selectionID, rowID) => {
-        let initRegDate = rowData.car.length ? this.dateReversal(rowData.car[0].init_reg + '000') : '未公开';
+        let initReg = rowData.car[0].init_reg;
+        let mileage = rowData.car[0].mileage;
+        let initRegDate = initReg === 0 ? '暂无' : this.dateReversal(initReg + '000');
         let imageUrl = rowData.car.length ? rowData.car[0].thumbs : [];
         //item 布局
         return (
@@ -306,12 +308,21 @@ export default class OrderSearchScene extends BaseComponent {
                 activeOpacity={0.8}>
                 <View style={styles.rowView}>
                     <View style={styles.rowTitleLine}>
-                        <Text style={styles.rowTitleText}>{rowData.order.company}</Text>
-                        <Text style={{
-                            fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                            color: fontAndColor.COLORA1,
-                            marginLeft: Pixel.getPixel(5)
-                        }}>订单号:({rowData.order.order_no})</Text>
+                        <View>
+                            <Text
+                                includeFontPadding={false}
+                                style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                    color: fontAndColor.COLORA0
+                                }}>{rowData.order.company}</Text>
+                            <Text
+                                includeFontPadding={false}
+                                style={{
+                                    marginTop: Pixel.getPixel(3),
+                                    fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                    color: fontAndColor.COLORA1
+                                }}>订单号:({rowData.order.order_no})</Text>
+                        </View>
                         <View style={{flex: 1}}/>
                         <Text style={styles.rowTitleState}>{rowData.order.status}</Text>
                     </View>
@@ -327,7 +338,7 @@ export default class OrderSearchScene extends BaseComponent {
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>里程：</Text>
                                 <Text
-                                    style={styles.carDescribe}>{rowData.car.length ? rowData.car[0].mileage + '万' : '未公开'}</Text>
+                                    style={styles.carDescribe}>{rowData.car.length ? mileage + '万' : '未公开'}</Text>
                             </View>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>上牌：</Text>
