@@ -718,9 +718,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 for (let state in cancel) {
                                     status = cancel[state];
                                 }
+                            } else {
+                                status = 0;
                             }
-                        } else {
-                            status = 0;
                         }
                         this.stateMapping(status, cancelStatus);
                         this.initListData(this.orderState);
@@ -825,11 +825,15 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         source={require('../../../images/mainImage/agreed_sign.png')}/>
                     <Text style={{color: fontAndColor.COLORA1, marginLeft: Pixel.getPixel(5)}}>我已同意签署</Text>
                     <Text
-                        onPress={() => {this.getTypeContractInfo(1)}}
+                        onPress={() => {
+                            this.getTypeContractInfo(1)
+                        }}
                         style={{color: fontAndColor.COLORA2}}>《买卖协议》</Text>
                     <Text style={{color: fontAndColor.COLORA1}}>和</Text>
                     <Text
-                        onPress={() => {this.getTypeContractInfo(2)}}
+                        onPress={() => {
+                            this.getTypeContractInfo(2)
+                        }}
                         style={{color: fontAndColor.COLORA2}}>《授权声明》</Text>
                 </View>
             )
