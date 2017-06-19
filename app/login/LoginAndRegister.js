@@ -31,7 +31,11 @@ export default class LoginAndRegister extends BaseComponent {
             renderPlaceholderOnly: true,
         }
     }
-
+    /**
+     * from @zhaojian
+     *
+     * 返回到手机桌面
+     **/
     handleBack = () => {
         NativeModules.VinScan.goBack();
         return true;

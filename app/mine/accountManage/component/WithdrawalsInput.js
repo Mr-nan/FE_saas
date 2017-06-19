@@ -42,6 +42,7 @@ export  default class WithdrawalsInput extends PureComponent {
                            returnKeyType={"search"}
                            placeholder={'提现金额'}
                            keyboardType={'numeric'}
+                           maxLength={11}
                            underlineColorAndroid={"#00000000"}
                            value={this.state.value}
                            onChangeText={this.goSearch}/>

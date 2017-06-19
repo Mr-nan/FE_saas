@@ -168,11 +168,7 @@ export default class GesturePassword extends BaseComponent {
             StorageUtil.mSetItem(StorageKeyNames.NEED_GESTURE, 'false');
                 StorageUtil.mGetItem(StorageKeyNames.USER_LEVEL, (data) => {
                     if (data.code == 1) {
-                        if (data.result == '2' || data.result == '1') {
-                            this.loginPage({name: 'AllSelectCompanyScene', component: AllSelectCompanyScene});
-                        } else {
-                            this.loginPage({name: 'MainPage', component: MainPage});
-                        }
+                         this.loginPage({name: 'AllSelectCompanyScene', component: AllSelectCompanyScene});
                     }
                 })
         } else {

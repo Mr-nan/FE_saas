@@ -97,8 +97,9 @@ export  default class AccountTitle extends PureComponent {
                         <View style={{width:width,height:Pixel.getPixel(115),justifyContent:'center',alignItems:'center'}}>
                                 <Text style={{fontSize: Pixel.getFontPixel(14),color:'#fff'}}>账户总额(元)</Text>
                             <Text style={{fontSize: Pixel.getFontPixel(18),color:'#fff',
-                            fontWeight: 'bold',marginTop:Pixel.getPixel(5)}}>{parseFloat(this.props.info.balance)+
-                            parseFloat(this.props.info.frozen_balance)}</Text>
+                            fontWeight: 'bold',marginTop:Pixel.getPixel(5)}}>
+                                {(parseFloat(this.props.info.balance)+
+                            parseFloat(this.props.info.frozen_balance)).toString().match(/^\d+(?:\.\d{0,2})?/)}</Text>
                         </View>
                         <View style={{width:width,height:Pixel.getPixel(60),
                         backgroundColor:'rgba(1,54,188,0.1)',flexDirection: 'row'}}>

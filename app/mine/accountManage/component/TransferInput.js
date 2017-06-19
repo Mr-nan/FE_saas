@@ -41,6 +41,7 @@ export  default class TransferInput extends PureComponent {
                 <TextInput style={{fontSize: Pixel.getFontPixel(38),color: '#000',fontWeight: 'bold',width:width}}
                            returnKeyType={"search"}
                            placeholder={'转账金额'}
+                           maxLength={11}
                            keyboardType={'numeric'}
                            underlineColorAndroid={"#00000000"}
                            value={this.state.value}
