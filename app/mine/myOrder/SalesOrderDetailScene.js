@@ -194,25 +194,16 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         this.closeOrder = this.getLeftTime(this.orderDetail.pricing_time);
                         this.carAmount = 0;
                         //this.carVin = this.orderDetail.orders_item_data[0].car_vin;
-                        // todo test 判断订单处于取消状态 获取取消时订单状态，如已付款判断是否同意退款
+                        //  判断订单处于取消状态 获取取消时订单状态，如已付款判断是否同意退款
                         if (cancelStatus == 2 || cancelStatus == 3) {
                             if (this.orderDetail.order_flows.length > 0) {
                                 let cancel = this.orderDetail.order_flows;
                                 for (let state in cancel) {
                                     status = cancel[state];
                                 }
-                            }
-                            //console.log('this.orderDetail.order_flows == ' + this.orderState);
-                            /*if (this.orderState == 0 || this.orderState == 1 || this.orderState == 2 ||
-                                this.orderState == 3 || this.orderState == 4) {
-                                this.bottomState = 2;
                             } else {
-                                if (this.orderDetail.cancel_is_agree == 0) {
-                                    this.bottomState = 4;
-                                } else {
-                                    this.bottomState = 3;
-                                }
-                            }*/
+                                status = 0;
+                            }
                         }
                         this.stateMapping(status, cancelStatus);
                         this.initListData(this.orderState);

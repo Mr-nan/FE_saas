@@ -719,6 +719,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                     status = cancel[state];
                                 }
                             }
+                        } else {
+                            status = 0;
                         }
                         this.stateMapping(status, cancelStatus);
                         this.initListData(this.orderState);
