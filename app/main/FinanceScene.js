@@ -597,36 +597,41 @@ export default class FinanceSence extends BaseComponet {
      * 跳转借款或还款
      **/
     homeItemOnPress = (title) => {
-        if (title === '借款') {
-            try {
-                this.navigatorParams.name = 'LendMoneySence';
-                this.navigatorParams.component = LendMoneySence;
-                this.navigatorParams.params = {
-                    credit_status: mnyData.credit_status,
-                    inventory_financing_status: mnyData.inventory_financing_status,
-                    purchase_archives_after_status: mnyData.purchase_archives_after_status,
-                    purchase_archives_first_status: mnyData.purchase_archives_first_status,
-                    purchase_status: mnyData.purchase_status,
-                    customerName: this.state.customerName,
-                    backRefresh: () => {
-                        this.allRefresh()
+        try {
+            if (title === '借款') {
+                try {
+                    this.navigatorParams.name = 'LendMoneySence';
+                    this.navigatorParams.component = LendMoneySence;
+                    this.navigatorParams.params = {
+                        credit_status: mnyData.credit_status,
+                        inventory_financing_status: mnyData.inventory_financing_status,
+                        purchase_archives_after_status: mnyData.purchase_archives_after_status,
+                        purchase_archives_first_status: mnyData.purchase_archives_first_status,
+                        purchase_status: mnyData.purchase_status,
+                        customerName: this.state.customerName,
+                        backRefresh: () => {
+                            this.allRefresh()
+                        }
                     }
+                    ;
+                    this.props.callBack(this.navigatorParams);
+                } catch (error) {
+                    this.props.showToast('数据错误');
                 }
-                ;
+
+            } else {
+                this.navigatorParams.name = "RepaymentScene";
+                this.navigatorParams.component = RepaymentScene;
+                this.navigatorParams.params = {
+                    customerName: this.state.customerName,
+
+                };
                 this.props.callBack(this.navigatorParams);
-            } catch (error) {
-                this.props.showToast('数据错误');
             }
-
-        } else {
-            this.navigatorParams.name = "RepaymentScene";
-            this.navigatorParams.component = RepaymentScene;
-            this.navigatorParams.params = {
-                customerName: this.state.customerName,
-
-            };
-            this.props.callBack(this.navigatorParams);
+        }catch (error){
+            this.props.showToast('数据错误');
         }
+
     }
 
 

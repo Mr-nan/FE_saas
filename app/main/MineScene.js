@@ -314,10 +314,10 @@ export default class MineScene extends BaseComponent {
                         "icon": require('../../images/mainImage/myCarSource.png'),
                         "name": "我的车源"
                     },
-                    {
-                        "icon": require('../../images/mainImage/my_order.png'),
-                        "name": "我的订单"
-                    },
+                    // {
+                    //     "icon": require('../../images/mainImage/my_order.png'),
+                    //     "name": "我的订单"
+                    // },
                     {
                         "icon": require('../../images/mainImage/shoucangjilu.png'),
                         "name": "收藏记录"
