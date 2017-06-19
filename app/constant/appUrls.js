@@ -866,3 +866,7 @@ export const ORDER_ALLOW_CANCEL = BASEURL + V +'order/allowCancel';
  *  卖家不同意取消订单
  */
 export const ORDER_DENY_CANCEL = BASEURL + V +'order/denyCancel';
+/**
+ * 查看订单某个类型合同
+ */
+export const ORDER_GET_CONTRACT = BASEURL + V +'order/getContractByType';

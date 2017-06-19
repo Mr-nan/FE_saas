@@ -355,6 +355,31 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         });
     };
 
+    getTypeContractInfo = (type) => {
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.orderDetail.id,
+                    type: type
+                };
+                let url = AppUrls.ORDER_GET_CONTRACT;
+                request(url, 'post', maps).then((response) => {
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        console.log(response.mjson.data);
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
+                }, (error) => {
+                    this.props.showToast(error.mjson.msg);
+                });
+            } else {
+                this.props.showToast('查看合同失败');
+            }
+        });
+    };
+
     payCallBack = () => {
         this.props.showModal(true);
         this.loadData();
@@ -797,9 +822,13 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         style={{marginLeft: Pixel.getPixel(15)}}
                         source={require('../../../images/mainImage/agreed_sign.png')}/>
                     <Text style={{color: fontAndColor.COLORA1, marginLeft: Pixel.getPixel(5)}}>我已同意签署</Text>
-                    <Text style={{color: fontAndColor.COLORA2}}>《买卖协议》</Text>
+                    <Text
+                        onPress={this.getTypeContractInfo(1)}
+                        style={{color: fontAndColor.COLORA2}}>《买卖协议》</Text>
                     <Text style={{color: fontAndColor.COLORA1}}>和</Text>
-                    <Text style={{color: fontAndColor.COLORA2}}>《授权声明》</Text>
+                    <Text
+                        onPress={this.getTypeContractInfo(2)}
+                        style={{color: fontAndColor.COLORA2}}>《授权声明》</Text>
                 </View>
             )
         } else if (rowData === '3') {
@@ -835,7 +864,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 <Text style={styles.carDescribeTitle}>上牌：</Text>
                                 <Text style={styles.carDescribe}>{initRegDate}</Text>
                             </View>
-                            {this.orderState !== 0 ? <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
+                            {this.orderState !== 0 ? <View
+                                style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>成交价：</Text>
                                 <Text style={styles.carDescribe}>{this.orderDetail.transaction_amount}元</Text>
                             </View> : null}
@@ -953,10 +983,10 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         <Text style={styles.infoContent}>{this.orderDetail.seller_name}</Text>
                     </View>
                     {/*<View style={styles.infoItem}>
-                        <Text style={styles.orderInfo}>联系方式</Text>
-                        <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>{this.orderDetail.seller_phone}</Text>
-                    </View>*/}
+                     <Text style={styles.orderInfo}>联系方式</Text>
+                     <View style={{flex: 1}}/>
+                     <Text style={styles.infoContent}>{this.orderDetail.seller_phone}</Text>
+                     </View>*/}
                     <View style={styles.infoItem}>
                         <Text style={styles.orderInfo}>企业名称</Text>
                         <View style={{flex: 1}}/>

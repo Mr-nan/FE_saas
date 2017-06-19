@@ -864,6 +864,31 @@ export default class SalesOrderDetailScene extends BaseComponent {
         });
     };
 
+    getTypeContractInfo = (type) => {
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.orderDetail.id,
+                    type: type
+                };
+                let url = AppUrls.ORDER_GET_CONTRACT;
+                request(url, 'post', maps).then((response) => {
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        console.log(response.mjson.data);
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
+                }, (error) => {
+                    this.props.showToast(error.mjson.msg);
+                });
+            } else {
+                this.props.showToast('查看合同失败');
+            }
+        });
+    };
+
     dateReversal = (time) => {
         const date = new Date();
         date.setTime(time);
@@ -1056,15 +1081,11 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         source={require('../../../images/mainImage/agreed_sign.png')}/>
                     <Text style={{color: fontAndColor.COLORA1, marginLeft: Pixel.getPixel(5)}}>我已同意签署</Text>
                     <Text
-                        onPress={() => {
-
-                        }}
+                        onPress={this.getTypeContractInfo(1)}
                         style={{color: fontAndColor.COLORA2}}>《买卖协议》</Text>
                     <Text style={{color: fontAndColor.COLORA1}}>和</Text>
                     <Text
-                        onPress={() => {
-
-                        }}
+                        onPress={this.getTypeContractInfo(2)}
                         style={{color: fontAndColor.COLORA2}}>《授权声明》</Text>
                 </View>
             )
