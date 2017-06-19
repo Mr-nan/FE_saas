@@ -545,6 +545,21 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     </View>
                 )
                 break;
+            case 8:
+                return (
+                    <View style={styles.bottomBar}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.props.showModal(true);
+                                this.revertOrder();
+                            }}>
+                            <View style={[styles.buttonCancel, {width: Pixel.getPixel(137)}]}>
+                                <Text style={{color: fontAndColor.COLORA2}}>正在处理中请稍后</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                );
+                break;
             default:
                 return null;
                 break;
@@ -641,7 +656,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 if (cancelStatus === 0) {
                     this.orderState = 3;
                     this.topState = -1;
-                    this.bottomState = 2;
+                    if (status === 9) {
+                        this.bottomState = 8;
+                    } else {
+                        this.bottomState = 2;
+                    }
                 } else if (cancelStatus === 1) {
                     this.orderState = 3;
                     this.topState = -1;
