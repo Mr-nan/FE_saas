@@ -43,6 +43,8 @@ import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import AccountScene from "../accountManage/RechargeScene";
 import VinInfo from '../../publish/component/VinInfo';
+import AccountModal from "../../component/AccountModal";
+import AccountWebScene from "../accountManage/AccountWebScene";
 const Pixel = new PixelUtil();
 
 const IS_ANDROID = Platform.OS === 'android';
@@ -910,6 +912,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
     };
 
     getTypeContractInfo = (type) => {
+        this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
@@ -921,7 +924,16 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 let url = AppUrls.ORDER_GET_CONTRACT;
                 request(url, 'post', maps).then((response) => {
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
-                        console.log(response.mjson.data);
+                        //console.log(response.mjson.data);
+                        this.props.showModal(false);
+                        this.toNextPage({
+                            name: 'AccountWebScene',
+                            component: AccountWebScene,
+                            params: {
+                                title: '合同',
+                                webUrl: response.mjson.data.contract_file_path
+                            }
+                        });
                     } else {
                         this.props.showToast(response.mjson.msg);
                     }
@@ -997,6 +1009,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                   content='为了确保交易金额可支付贷款本息，请您补足成交价与贷款本息，及额外30日利息（是交易持续时期可能产生的利息，根据实际日期付息）的差额。如未能在30日内完成交易，则自动关闭交易，并退还双方已支付的款项。'/>
                     <View style={{flex: 1}}/>
                     {this.initDetailPageBottom(this.bottomState)}
+                    <AccountModal ref="accountmodal"/>
                 </View>
             )
         }
@@ -1131,12 +1144,12 @@ export default class SalesOrderDetailScene extends BaseComponent {
                             this.getTypeContractInfo(1)
                         }}
                         style={{color: fontAndColor.COLORA2}}>《买卖协议》</Text>
-                    <Text style={{color: fontAndColor.COLORA1}}>和</Text>
+                    {/*<Text style={{color: fontAndColor.COLORA1}}>和</Text>
                     <Text
                         onPress={() => {
                             this.getTypeContractInfo(2)
                         }}
-                        style={{color: fontAndColor.COLORA2}}>《授权声明》</Text>
+                        style={{color: fontAndColor.COLORA2}}>《授权声明》</Text>*/}
                 </View>
             )
         } else if (rowData === '5') {

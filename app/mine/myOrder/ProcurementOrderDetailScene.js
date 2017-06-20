@@ -34,6 +34,7 @@ import ContactLayout from "./component/ContactLayout";
 import ChooseModal from "./component/ChooseModal";
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
+import AccountWebScene from "../accountManage/AccountWebScene";
 const Pixel = new PixelUtil();
 
 export default class ProcurementOrderDetailScene extends BaseComponent {
@@ -354,6 +355,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
     };
 
     getTypeContractInfo = (type) => {
+        this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
@@ -365,7 +367,16 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 let url = AppUrls.ORDER_GET_CONTRACT;
                 request(url, 'post', maps).then((response) => {
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
-                        console.log(response.mjson.data);
+                        //console.log(response.mjson.data);
+                        this.props.showModal(false);
+                        this.toNextPage({
+                            name: 'AccountWebScene',
+                            component: AccountWebScene,
+                            params: {
+                                title: '合同',
+                                webUrl: response.mjson.data.contract_file_path
+                            }
+                        });
                     } else {
                         this.props.showToast(response.mjson.msg);
                     }
@@ -896,17 +907,28 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         style={{marginLeft: Pixel.getPixel(15)}}
                         source={require('../../../images/mainImage/agreed_sign.png')}/>
                     <Text style={{color: fontAndColor.COLORA1, marginLeft: Pixel.getPixel(5)}}>我已同意签署</Text>
-                    <Text
-                        onPress={() => {
-                            this.getTypeContractInfo(1)
-                        }}
-                        style={{color: fontAndColor.COLORA2}}>《买卖协议》</Text>
-                    <Text style={{color: fontAndColor.COLORA1}}>和</Text>
+                    {
+                        this.orderState == 1 &&
+                        <Text
+                            onPress={() => {
+                                this.getTypeContractInfo(1)
+                            }}
+                            style={{color: fontAndColor.COLORA2}}>《买卖协议》</Text>
+                    }
+                    {
+                        this.orderState == 3 &&
+                        <Text
+                            onPress={() => {
+                                this.getTypeContractInfo(2)
+                            }}
+                            style={{color: fontAndColor.COLORA2}}>《买卖协议附件》</Text>
+                    }
+                    {/*<Text style={{color: fontAndColor.COLORA1}}>和</Text>
                     <Text
                         onPress={() => {
                             this.getTypeContractInfo(2)
                         }}
-                        style={{color: fontAndColor.COLORA2}}>《授权声明》</Text>
+                        style={{color: fontAndColor.COLORA2}}>《授权声明》</Text>*/}
                 </View>
             )
         } else if (rowData === '3') {
