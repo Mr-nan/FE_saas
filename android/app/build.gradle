@@ -169,6 +169,7 @@ dependencies {
         compile project(':react-native-code-push')
         compile 'com.facebook.fresco:animated-gif:0.13.0'
         compile project(':react-native-spinkit')
+        compile 'com.umeng.analytics:analytics:latest.integration'
 }
 
 // Run this once to be able to run the application with BUCK
