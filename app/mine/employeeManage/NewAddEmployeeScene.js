@@ -20,6 +20,7 @@ const Pixel = new PixelUtil();
 import * as fontAndColor from '../../constant/fontAndColor';
 import BaseComponent from '../../component/BaseComponent';
 import NavigationView from '../../component/AllNavigationView';
+import md5 from "react-native-md5";
 let childItems = [];
 import {request} from '../../utils/RequestUtil';
 import * as Urls from '../../constant/appUrls';
@@ -148,8 +149,8 @@ export  default class BankCardScene extends BaseComponent {
         let maps = {
             account: childItems[4].value,
             company_ids: news,
-            password: childItems[5].value,
-            repassword: childItems[6].value,
+            password: md5.hex_md5(childItems[5].value),
+            repassword: md5.hex_md5(childItems[6].value),
             role_id: childItems[3].value.split(',')[1],
             sex: childItems[1].value.split(',')[1],
             username: childItems[0].value
