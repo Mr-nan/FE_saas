@@ -276,6 +276,9 @@ export default class OrderSearchScene extends BaseComponent {
         let mileage = rowData.car[0].mileage;
         let initRegDate = initReg === 0 ? '暂无' : this.dateReversal(initReg + '000');
         let imageUrl = rowData.car.length ? rowData.car[0].thumbs : [];
+
+        let transactionPrice = rowData.order.transaction_amount;
+        let depositAmount = rowData.order.deposit_amount;
         //item 布局
         return (
             <TouchableOpacity
@@ -366,7 +369,7 @@ export default class OrderSearchScene extends BaseComponent {
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color: fontAndColor.COLORA0,
                             fontWeight: 'bold'
-                        }}>{rowData.car.length ? rowData.car[0].transaction_price : '0'}</Text>
+                        }}>{transactionPrice}</Text>
                         <Text style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                             color: fontAndColor.COLORA1,
@@ -377,7 +380,7 @@ export default class OrderSearchScene extends BaseComponent {
                             color: fontAndColor.COLORA0,
                             fontWeight: 'bold',
                             marginRight: Pixel.getPixel(15)
-                        }}>{rowData.order.deposit_amount}</Text>
+                        }}>{depositAmount}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
