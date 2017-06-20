@@ -169,10 +169,9 @@ export default class SalesOrderDetailScene extends BaseComponent {
     };
 
     getLeftTime = (serverTime, cancelTime) => {
-        let currentTime = new Date(serverTime).getTime();
-        let oldTime = new Date(cancelTime).getTime();
-        //console.log('时间啊是啊=====' + (currentTime - oldTime));
-        return currentTime - oldTime;
+        let currentTime = new Date(serverTime.replace(/-/g,'/')).valueOf();
+        let oldTime = new Date(cancelTime.replace(/-/g,'/')).valueOf();
+        return parseFloat(currentTime) - parseFloat(oldTime);
     };
 
     loadData = () => {

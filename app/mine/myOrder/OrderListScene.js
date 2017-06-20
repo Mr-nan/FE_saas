@@ -269,7 +269,10 @@ export default class OrderListScene extends BaseComponent {
                         this.toNextPage({
                             name: 'OrderSearchScene',
                             component: OrderSearchScene,
-                            params: {business: this.props.business}
+                            params: {
+                                business: this.props.business,
+                                status: this.status,
+                            }
                         });
                     }}
                     activeOpacity={0.9}
@@ -331,6 +334,13 @@ export default class OrderListScene extends BaseComponent {
         let mileage = rowData.car[0].mileage;
         let initRegDate = initReg === 0 ? '暂无' : this.dateReversal(initReg + '000');
         let imageUrl = rowData.car.length ? rowData.car[0].thumbs : [];
+
+        let transactionPrice = rowData.car.length ? rowData.car[0].transaction_price : '0.00';
+        let depositAmount = rowData.order.deposit_amount;
+        if (rowData.order.status_number == 0 || rowData.order.status_number == 1) {
+            transactionPrice = '0.00';
+            depositAmount = '0.00';
+        }
         return (
             <TouchableOpacity
                 onPress={() => {
@@ -422,7 +432,7 @@ export default class OrderListScene extends BaseComponent {
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color: fontAndColor.COLORA0,
                             fontWeight: 'bold'
-                        }}>{rowData.car.length ? rowData.car[0].transaction_price : '0'}</Text>
+                        }}>{transactionPrice}</Text>
                         <Text style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                             color: fontAndColor.COLORA1,
@@ -433,7 +443,7 @@ export default class OrderListScene extends BaseComponent {
                             color: fontAndColor.COLORA0,
                             fontWeight: 'bold',
                             marginRight: Pixel.getPixel(15)
-                        }}>{rowData.order.deposit_amount}</Text>
+                        }}>{depositAmount}</Text>
                     </View>
                 </View>
             </TouchableOpacity>

@@ -119,7 +119,8 @@ export default class OrderSearchScene extends BaseComponent {
                     business: this.props.business,
                     page: this.pageNum,
                     rows: 10,
-                    car_name: this.state.value
+                    car_name: this.state.value,
+                    status: this.props.status
                 };
                 let url = AppUrls.ORDER_SEARCH;
                 request(url, 'post', maps).then((response) => {
