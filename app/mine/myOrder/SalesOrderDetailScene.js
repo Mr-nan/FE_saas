@@ -357,7 +357,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     } else {
                         this.topState = -1;
                     }
-                    this.bottomState = -1;
+                    this.bottomState = 7;
                 } else if (cancelStatus === 1) {
                     this.orderState = 3;
                     this.topState = 0;
@@ -654,13 +654,13 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
                             onPress={() => {
-                                this.refs.expModal.changeShowState(true);
+                                this.refs.cancelModal.changeShowType(true);
                             }}>
                             <View style={styles.buttonCancel}>
                                 <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
                             </View>
                         </TouchableOpacity>
-                        <ExplainModal ref='expModal' title='提示' buttonStyle={styles.expButton}
+                        <ExplainModal ref='cancelModal' title='提示' buttonStyle={styles.expButton}
                                       textStyle={styles.expText}
                                       text='确定' content='订单尾款已结清联系客服取消订单'/>
                     </View>
