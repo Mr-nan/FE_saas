@@ -324,7 +324,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     if (this.orderDetail.cancel_side == 3) {
                         this.bottomState = 6;
                     } else {
-                        if (this.orderDetail.cancel_is_agree == 0) {
+                        if (this.orderDetail.cancel_is_agree == 2) {
                             this.bottomState = 4;
                         } else {
                             this.bottomState = 3;
@@ -336,7 +336,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     if (this.orderDetail.cancel_side == 3) {
                         this.bottomState = 6;
                     } else {
-                        if (this.orderDetail.cancel_is_agree == 0) {
+                        if (this.orderDetail.cancel_is_agree == 2) {
                             this.bottomState = 4;
                         } else {
                             this.bottomState = 3;
@@ -366,7 +366,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     if (this.orderDetail.cancel_side == 3) {
                         this.bottomState = 6;
                     } else {
-                        if (this.orderDetail.cancel_is_agree == 0) {
+                        if (this.orderDetail.cancel_is_agree == 2) {
                             this.bottomState = 4;
                         } else {
                             this.bottomState = 3;
@@ -378,7 +378,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     if (this.orderDetail.cancel_side == 3) {
                         this.bottomState = 6;
                     } else {
-                        if (this.orderDetail.cancel_is_agree == 0) {
+                        if (this.orderDetail.cancel_is_agree == 2) {
                             this.bottomState = 4;
                         } else {
                             this.bottomState = 3;
@@ -401,7 +401,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     if (this.orderDetail.cancel_side == 3) {
                         this.bottomState = 6;
                     } else {
-                        if (this.orderDetail.cancel_is_agree == 0) {
+                        if (this.orderDetail.cancel_is_agree == 2) {
                             this.bottomState = 4;
                         } else {
                             this.bottomState = 3;
@@ -413,7 +413,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     if (this.orderDetail.cancel_side == 3) {
                         this.bottomState = 6;
                     } else {
-                        if (this.orderDetail.cancel_is_agree == 0) {
+                        if (this.orderDetail.cancel_is_agree == 2) {
                             this.bottomState = 4;
                         } else {
                             this.bottomState = 3;

@@ -558,6 +558,19 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     </View>
                 );
                 break;
+            case 9:
+                return (
+                    <View style={[styles.bottomBar, {justifyContent: 'center'}]}>
+                        <Text style={{
+                            textAlign: 'center',
+                            fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                            color: fontAndColor.COLORB0
+                        }}>
+                            交易关闭(后台取消订单)
+                        </Text>
+                    </View>
+                );
+                break;
             default:
                 return null;
                 break;
@@ -582,11 +595,19 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 0;
                     this.topState = -1;
-                    this.bottomState = 4;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else {
+                        this.bottomState = 4;
+                    }
                 } else if (cancelStatus === 3) {
                     this.orderState = 0;
                     this.topState = -1;
-                    this.bottomState = 4;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else {
+                        this.bottomState = 4;
+                    }
                 }
                 break;
             case 2: // 待付订金  2=>'订单定价完成'
@@ -607,11 +628,19 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 1;
                     this.topState = -1;
-                    this.bottomState = 4;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else {
+                        this.bottomState = 4;
+                    }
                 } else if (cancelStatus === 3) {
                     this.orderState = 1;
                     this.topState = -1;
-                    this.bottomState = 4;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else {
+                        this.bottomState = 4;
+                    }
                 }
 
                 break;
@@ -633,18 +662,26 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 2;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_is_agree == 0) {
-                        this.bottomState = 6;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
                     } else {
-                        this.bottomState = 5;
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
                     }
                 } else if (cancelStatus === 3) {
                     this.orderState = 2;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_is_agree == 0) {
-                        this.bottomState = 6;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
                     } else {
-                        this.bottomState = 5;
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
                     }
                 }
                 break;
@@ -666,18 +703,26 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 3;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_is_agree == 0) {
-                        this.bottomState = 6;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
                     } else {
-                        this.bottomState = 5;
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
                     }
                 } else if (cancelStatus === 3) {
                     this.orderState = 3;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_is_agree == 0) {
-                        this.bottomState = 6;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
                     } else {
-                        this.bottomState = 5;
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
                     }
                 }
                 break;
@@ -693,18 +738,26 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 4;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_is_agree == 0) {
-                        this.bottomState = 6;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
                     } else {
-                        this.bottomState = 5;
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
                     }
                 } else if (cancelStatus === 3) {
                     this.orderState = 4;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_is_agree == 0) {
-                        this.bottomState = 6;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
                     } else {
-                        this.bottomState = 5;
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
                     }
                 }
                 break;
