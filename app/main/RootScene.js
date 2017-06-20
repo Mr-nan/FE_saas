@@ -239,7 +239,7 @@ export default class RootScene extends BaseComponent {
                                                 that.navigatorParams.params = {from: 'RootScene'}
                                                 that.toNextPage(that.navigatorParams);
                                             }
-                                        } else if (datas.user_level == 1) {
+                                        } else {
                                             if (datas.enterprise_list == null || datas.enterprise_list.length <= 0) {
                                                 that.navigatorParams.component = LoginAndRegister;
                                                 that.toNextPage(that.navigatorParams);
@@ -248,10 +248,6 @@ export default class RootScene extends BaseComponent {
                                                 that.navigatorParams.params = {from: 'RootScene'}
                                                 that.toNextPage(that.navigatorParams);
                                             }
-                                        } else {
-                                            that.navigatorParams.component = MainPage;
-                                            that.navigatorParams.params = {}
-                                            that.toNextPage(that.navigatorParams);
                                         }
                                     });
                                 } else {
