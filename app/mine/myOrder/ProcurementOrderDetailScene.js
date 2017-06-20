@@ -686,6 +686,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     this.topState = -1;
                     if (this.orderDetail.cancel_side == 3) {
                         this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 5;
                     } else {
                         if (this.orderDetail.cancel_is_agree == 2) {
                             this.bottomState = 6;
@@ -698,6 +700,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     this.topState = -1;
                     if (this.orderDetail.cancel_side == 3) {
                         this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 5;
                     } else {
                         if (this.orderDetail.cancel_is_agree == 2) {
                             this.bottomState = 6;
@@ -727,6 +731,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     this.topState = -1;
                     if (this.orderDetail.cancel_side == 3) {
                         this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 5;
                     } else {
                         if (this.orderDetail.cancel_is_agree == 2) {
                             this.bottomState = 6;
@@ -739,6 +745,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     this.topState = -1;
                     if (this.orderDetail.cancel_side == 3) {
                         this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 5;
                     } else {
                         if (this.orderDetail.cancel_is_agree == 2) {
                             this.bottomState = 6;
@@ -762,6 +770,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     this.topState = -1;
                     if (this.orderDetail.cancel_side == 3) {
                         this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 5;
                     } else {
                         if (this.orderDetail.cancel_is_agree == 2) {
                             this.bottomState = 6;
@@ -774,6 +784,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     this.topState = -1;
                     if (this.orderDetail.cancel_side == 3) {
                         this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 5;
                     } else {
                         if (this.orderDetail.cancel_is_agree == 2) {
                             this.bottomState = 6;
