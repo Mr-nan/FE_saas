@@ -20,9 +20,12 @@ const Pixel = new PixelUtil();
 import ConsoleUtils from "../utils/ConsoleUtils";
 const Console = new ConsoleUtils();
 export default class BaseComponent extends Component {
-
+    /**
+     * from @zhaojian
+     *
+     * 监听回退键
+     **/
     handleBack = () => {
-        console.log('11111111111111111');
         this.backPage();
         return true;
     }

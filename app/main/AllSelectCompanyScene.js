@@ -54,11 +54,18 @@ export  default class AllSelectCompanyScene extends BaseComponent {
         };
         request(Urls.FINANCE, 'Post', maps)
             .then((response) => {
-                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    this.setState({
-                        renderPlaceholderOnly: 'success',
-                        source: ds.cloneWithRows(response.mjson.data)
-                    });
+                    if(response.mjson.data==null||response.mjson.data.length<=0){
+                        this.setState({
+                            renderPlaceholderOnly: 'null',
+                        });
+                    }else{
+                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                        this.setState({
+                            renderPlaceholderOnly: 'success',
+                            source: ds.cloneWithRows(response.mjson.data)
+                        });
+                    }
+
                 },
                 (error) => {
                     this.setState({renderPlaceholderOnly: 'error'});

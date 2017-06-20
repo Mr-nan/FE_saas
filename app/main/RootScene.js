@@ -31,6 +31,7 @@ const versionCode = 14.0;
 let canNext = true;
 let Platform = require('Platform');
 let deploymentKey = '';
+import ErrorUtils from "ErrorUtils"
 export default class RootScene extends BaseComponent {
 
     componentDidMount() {
@@ -38,15 +39,19 @@ export default class RootScene extends BaseComponent {
         // AppState.addEventListener("change", (newState) => {
         //     newState === "active" && codePush.sync();
         // });
-        if(Platform.OS === 'android'){
-            deploymentKey='fSQnzvsEP5qb9jD_tr4k2QC9pKlie1b7b22b-ea3f-4c77-abcc-72586c814b3c';
-        }else{
-            deploymentKey='TXKA_1RB5rKvXMOuBTMqPoon2c5Pe1b7b22b-ea3f-4c77-abcc-72586c814b3c';
+        ErrorUtils.setGlobalHandler((e) => {　//发生异常的处理方法,当然如果是打包好的话可能你找都找不到是哪段代码出问题了
+            this.props.showToast(''+JSON.stringify(e));
+        });
+        if (Platform.OS === 'android') {
+            deploymentKey = 'fSQnzvsEP5qb9jD_tr4k2QC9pKlie1b7b22b-ea3f-4c77-abcc-72586c814b3c';
+        } else {
+            deploymentKey = 'TXKA_1RB5rKvXMOuBTMqPoon2c5Pe1b7b22b-ea3f-4c77-abcc-72586c814b3c';
         }
         codePush.checkForUpdate(deploymentKey).then((update) => {
             if (!update) {
             } else {
-                codePush.sync({deploymentKey: deploymentKey,
+                codePush.sync({
+                    deploymentKey: deploymentKey,
                     updateDialog: {
                         optionalIgnoreButtonLabel: '稍后',
                         optionalInstallButtonLabel: '立即更新',
