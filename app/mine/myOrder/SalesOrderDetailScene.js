@@ -649,6 +649,23 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     </View>
                 );
                 break;
+            case 7:
+                return (
+                    <View style={styles.bottomBar}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.refs.expModal.changeShowState(true);
+                            }}>
+                            <View style={styles.buttonCancel}>
+                                <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <ExplainModal ref='expModal' title='提示' buttonStyle={styles.expButton}
+                                      textStyle={styles.expText}
+                                      text='确定' content='订单尾款已结清联系客服取消订单'/>
+                    </View>
+                )
+                break;
             default:
                 return null;
                 break;
@@ -1488,7 +1505,7 @@ const styles = StyleSheet.create({
     },
     expButton: {
         marginBottom: Pixel.getPixel(20),
-        width: width - width / 4 - Pixel.getPixel(40),
+        width: Pixel.getPixel(100),
         height: Pixel.getPixel(35),
         marginTop: Pixel.getPixel(16),
         flexDirection: 'row',

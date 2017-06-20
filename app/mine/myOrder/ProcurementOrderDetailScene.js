@@ -92,8 +92,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
      * @param createdTime  订单创建时间
      */
     getLeftTime = (serverTime, createdTime) => {
-        let currentTime = new Date(serverTime.replace(/-/g,'/')).valueOf();
-        let oldTime = new Date(createdTime.replace(/-/g,'/')).valueOf();
+        let currentTime = new Date(serverTime.replace(/-/g, '/')).valueOf();
+        let oldTime = new Date(createdTime.replace(/-/g, '/')).valueOf();
         return parseFloat(currentTime) - parseFloat(oldTime);
     };
 
@@ -467,6 +467,14 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
                             onPress={() => {
+                                this.refs.expModal.changeShowType(true);
+                            }}>
+                            <View style={styles.buttonCancel}>
+                                <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => {
                                 this.refs.attentionModal.changeShowState(true);
                                 //this.props.showModal(true);
                                 //this.confirmCar();
@@ -483,6 +491,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                      buttonsMargin={Pixel.getPixel(20)}
                                      positiveOperation={this.confirmCar}
                                      content='确定后卖家可提现全款'/>
+                        <ExplainModal ref='expModal' title='提示' buttonStyle={styles.expButton}
+                                      textStyle={styles.expText}
+                                      text='确定' content='订单尾款已结清联系客服取消订单'/>
                     </View>
                 )
                 break;
@@ -924,11 +935,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             style={{color: fontAndColor.COLORA2}}>《买卖协议附件》</Text>
                     }
                     {/*<Text style={{color: fontAndColor.COLORA1}}>和</Text>
-                    <Text
-                        onPress={() => {
-                            this.getTypeContractInfo(2)
-                        }}
-                        style={{color: fontAndColor.COLORA2}}>《授权声明》</Text>*/}
+                     <Text
+                     onPress={() => {
+                     this.getTypeContractInfo(2)
+                     }}
+                     style={{color: fontAndColor.COLORA2}}>《授权声明》</Text>*/}
                 </View>
             )
         } else if (rowData === '3') {
@@ -1244,7 +1255,7 @@ const styles = StyleSheet.create({
     },
     expButton: {
         marginBottom: Pixel.getPixel(20),
-        width: width - width / 4 - Pixel.getPixel(40),
+        width: Pixel.getPixel(100),
         height: Pixel.getPixel(35),
         marginTop: Pixel.getPixel(16),
         flexDirection: 'row',
