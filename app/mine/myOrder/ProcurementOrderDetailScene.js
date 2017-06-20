@@ -89,12 +89,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
      * 获取订单剩余时间
      * @param createdTime  订单创建时间
      */
-    getLeftTime = (createdTime) => {
-        let currentTime = new Date().getTime();
+    getLeftTime = (serverTime,createdTime) => {
+        let currentTime = new Date(serverTime).getTime();
         let oldTime = new Date(createdTime).getTime();
-        //console.log('当前时间:::', currentTime);
-        //console.log('创建时间:::', oldTime);
-        //this.formatLongToTimeStr(currentTime - oldTime);
         return currentTime - oldTime;
     };
 
@@ -730,7 +727,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.orderDetail = response.mjson.data;
                         let status = response.mjson.data.status;
                         let cancelStatus = response.mjson.data.cancel_status;
-                        this.leftTime = this.getLeftTime(this.orderDetail.created_time);
+                        this.leftTime = this.getLeftTime(this.orderDetail.server_time, this.orderDetail.created_time);
                         if (cancelStatus == 2 || cancelStatus == 3) {
                             if (this.orderDetail.order_flows.length > 0) {
                                 let cancel = this.orderDetail.order_flows;

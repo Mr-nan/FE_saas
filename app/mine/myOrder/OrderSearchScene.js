@@ -354,12 +354,12 @@ export default class OrderSearchScene extends BaseComponent {
                     <View style={{
                         height: Pixel.getPixel(40),
                         flexDirection: 'row',
-                        alignItems: 'center'
+                        alignItems: 'center',
+                        justifyContent: 'flex-end'
                     }}>
                         <Text style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                            color: fontAndColor.COLORA1,
-                            marginLeft: Pixel.getPixel(145)
+                            color: fontAndColor.COLORA1
                         }}>成交价：</Text>
                         <Text style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
@@ -374,7 +374,8 @@ export default class OrderSearchScene extends BaseComponent {
                         <Text style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color: fontAndColor.COLORA0,
-                            fontWeight: 'bold'
+                            fontWeight: 'bold',
+                            marginRight: Pixel.getPixel(15)
                         }}>{rowData.order.deposit_amount}</Text>
                     </View>
                 </View>

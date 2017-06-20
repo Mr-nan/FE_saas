@@ -168,8 +168,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
         });
     };
 
-    getLeftTime = (cancelTime) => {
-        let currentTime = new Date().getTime();
+    getLeftTime = (serverTime, cancelTime) => {
+        let currentTime = new Date(serverTime).getTime();
         let oldTime = new Date(cancelTime).getTime();
         //console.log('时间啊是啊=====' + (currentTime - oldTime));
         return currentTime - oldTime;
@@ -192,8 +192,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         this.orderDetail = response.mjson.data;
                         let status = response.mjson.data.status;
                         let cancelStatus = response.mjson.data.cancel_status;
-                        this.leftTime = this.getLeftTime(this.orderDetail.cancel_time);
-                        this.closeOrder = this.getLeftTime(this.orderDetail.pricing_time);
+                        this.leftTime = this.getLeftTime(this.orderDetail.server_time, this.orderDetail.cancel_time);
+                        this.closeOrder = this.getLeftTime(this.orderDetail.server_time, this.orderDetail.pricing_time);
                         this.carAmount = 0;
                         //this.carVin = this.orderDetail.orders_item_data[0].car_vin;
                         //  判断订单处于取消状态 获取取消时订单状态，如已付款判断是否同意退款
@@ -254,11 +254,19 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 0;
                     this.topState = -1;
-                    this.bottomState = 2;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 6;
+                    } else {
+                        this.bottomState = 2;
+                    }
                 } else if (cancelStatus === 3) {
                     this.orderState = 0;
                     this.topState = -1;
-                    this.bottomState = 2;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 6;
+                    } else {
+                        this.bottomState = 2;
+                    }
                 }
                 break;
             case 2:  // 已拍下，价格已定
@@ -280,11 +288,19 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 1;
                     this.topState = -1;
-                    this.bottomState = 2;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 6;
+                    } else {
+                        this.bottomState = 2;
+                    }
                 } else if (cancelStatus === 3) {
                     this.orderState = 1;
                     this.topState = -1;
-                    this.bottomState = 2;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 6;
+                    } else {
+                        this.bottomState = 2;
+                    }
                 }
                 break;
             case 5:  // 订金到账
@@ -306,18 +322,26 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 2;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_is_agree == 0) {
-                        this.bottomState = 4;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 6;
                     } else {
-                        this.bottomState = 3;
+                        if (this.orderDetail.cancel_is_agree == 0) {
+                            this.bottomState = 4;
+                        } else {
+                            this.bottomState = 3;
+                        }
                     }
                 } else if (cancelStatus === 3) {
                     this.orderState = 2;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_is_agree == 0) {
-                        this.bottomState = 4;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 6;
                     } else {
-                        this.bottomState = 3;
+                        if (this.orderDetail.cancel_is_agree == 0) {
+                            this.bottomState = 4;
+                        } else {
+                            this.bottomState = 3;
+                        }
                     }
                 }
                 break;
@@ -340,18 +364,26 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 3;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_is_agree == 0) {
-                        this.bottomState = 4;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 6;
                     } else {
-                        this.bottomState = 3;
+                        if (this.orderDetail.cancel_is_agree == 0) {
+                            this.bottomState = 4;
+                        } else {
+                            this.bottomState = 3;
+                        }
                     }
                 } else if (cancelStatus === 3) {
                     this.orderState = 3;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_is_agree == 0) {
-                        this.bottomState = 4;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 6;
                     } else {
-                        this.bottomState = 3;
+                        if (this.orderDetail.cancel_is_agree == 0) {
+                            this.bottomState = 4;
+                        } else {
+                            this.bottomState = 3;
+                        }
                     }
                 }
                 break;
@@ -367,18 +399,26 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 4;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_is_agree == 0) {
-                        this.bottomState = 4;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 6;
                     } else {
-                        this.bottomState = 3;
+                        if (this.orderDetail.cancel_is_agree == 0) {
+                            this.bottomState = 4;
+                        } else {
+                            this.bottomState = 3;
+                        }
                     }
                 } else if (cancelStatus === 3) {
                     this.orderState = 4;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_is_agree == 0) {
-                        this.bottomState = 4;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 6;
                     } else {
-                        this.bottomState = 3;
+                        if (this.orderDetail.cancel_is_agree == 0) {
+                            this.bottomState = 4;
+                        } else {
+                            this.bottomState = 3;
+                        }
                     }
                 }
                 break;
@@ -594,6 +634,19 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         </View>
                     </View>
                 )
+                break;
+            case 6:
+                return (
+                    <View style={[styles.bottomBar, {justifyContent: 'center'}]}>
+                        <Text style={{
+                            textAlign: 'center',
+                            fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                            color: fontAndColor.COLORB0
+                        }}>
+                            交易关闭(后台取消订单)
+                        </Text>
+                    </View>
+                );
                 break;
             default:
                 return null;
@@ -941,7 +994,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                             />
                         }/>
                     <ExplainModal ref='expModal' title='补差额说明' buttonStyle={styles.expButton} textStyle={styles.expText}
-                                  text='知道了' content='为了确保交易金额可支付贷款本息，请您补足成交价与贷款本息，及额外30日利息（是交易持续时期可能产生的利息，根据实际日期付息）的差额。如未能在30日内完成交易，则自动关闭交易，并退还双方已支付的款项。'/>
+                                  text='知道了'
+                                  content='为了确保交易金额可支付贷款本息，请您补足成交价与贷款本息，及额外30日利息（是交易持续时期可能产生的利息，根据实际日期付息）的差额。如未能在30日内完成交易，则自动关闭交易，并退还双方已支付的款项。'/>
                     <View style={{flex: 1}}/>
                     {this.initDetailPageBottom(this.bottomState)}
                 </View>
@@ -1074,11 +1128,15 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         source={require('../../../images/mainImage/agreed_sign.png')}/>
                     <Text style={{color: fontAndColor.COLORA1, marginLeft: Pixel.getPixel(5)}}>我已同意签署</Text>
                     <Text
-                        onPress={() => {this.getTypeContractInfo(1)}}
+                        onPress={() => {
+                            this.getTypeContractInfo(1)
+                        }}
                         style={{color: fontAndColor.COLORA2}}>《买卖协议》</Text>
                     <Text style={{color: fontAndColor.COLORA1}}>和</Text>
                     <Text
-                        onPress={() => {this.getTypeContractInfo(2)}}
+                        onPress={() => {
+                            this.getTypeContractInfo(2)
+                        }}
                         style={{color: fontAndColor.COLORA2}}>《授权声明》</Text>
                 </View>
             )
@@ -1114,7 +1172,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                 <Text style={styles.carDescribeTitle}>上牌：</Text>
                                 <Text style={styles.carDescribe}>{initRegDate}</Text>
                             </View>
-                            {this.orderState !== 0 ? <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
+                            {this.orderState !== 0 ? <View
+                                style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>成交价：</Text>
                                 <Text style={styles.carDescribe}>{this.orderDetail.transaction_amount}元</Text>
                             </View> : null}
@@ -1278,10 +1337,10 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         <Text style={styles.infoContent}>{this.orderDetail.buyer_name}</Text>
                     </View>
                     {/*<View style={styles.infoItem}>
-                        <Text style={styles.orderInfo}>联系方式</Text>
-                        <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>{this.orderDetail.buyer_phone}</Text>
-                    </View>*/}
+                     <Text style={styles.orderInfo}>联系方式</Text>
+                     <View style={{flex: 1}}/>
+                     <Text style={styles.infoContent}>{this.orderDetail.buyer_phone}</Text>
+                     </View>*/}
                     <View style={styles.infoItem}>
                         <Text style={styles.orderInfo}>企业名称</Text>
                         <View style={{flex: 1}}/>
