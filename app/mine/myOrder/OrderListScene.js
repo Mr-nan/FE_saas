@@ -335,12 +335,13 @@ export default class OrderListScene extends BaseComponent {
         let initRegDate = initReg === 0 ? '暂无' : this.dateReversal(initReg + '000');
         let imageUrl = rowData.car.length ? rowData.car[0].thumbs : [];
 
-        let transactionPrice = rowData.car.length ? rowData.car[0].transaction_price : '0.00';
+        //let transactionPrice = rowData.car.length ? rowData.car[0].transaction_price : '0.00';
+        let transactionPrice = rowData.order.transaction_amount;
         let depositAmount = rowData.order.deposit_amount;
-        if (rowData.order.status_number == 0 || rowData.order.status_number == 1) {
+/*        if (rowData.order.status_number == 0 || rowData.order.status_number == 1) {
             transactionPrice = '0.00';
             depositAmount = '0.00';
-        }
+        }*/
         return (
             <TouchableOpacity
                 onPress={() => {
