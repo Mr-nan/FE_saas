@@ -76,7 +76,7 @@ export  default class AccountScene extends BaseComponent {
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
                            this.getAccountData(datas.company_base_id,
-                               response.mjson.data.account_open_type)
+                               response.mjson.data.account.account_open_type)
                         },
                         (error) => {
                             this.props.showToast('用户信息查询失败');

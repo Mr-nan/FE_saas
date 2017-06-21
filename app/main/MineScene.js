@@ -383,10 +383,10 @@ export default class MineScene extends BaseComponent {
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
-                            if(response.mjson.data==null||response.mjson.data.length<=0){
+                            if(response.mjson.data.account==null||response.mjson.data.account.length<=0){
                                 lastType = 'error';
                             }else{
-                                lastType = response.mjson.data.status;
+                                lastType = response.mjson.data.account.status;
                             }
                             // lastType = '3';、
                             this.changeData();
@@ -470,7 +470,7 @@ export default class MineScene extends BaseComponent {
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
                             this.props.showModal(false);
-                            lastType = response.mjson.data.status;
+                            lastType = response.mjson.data.account.status;
                             if (lastType == '0') {
                                 this.navigatorParams.name = 'AccountManageScene'
                                 this.navigatorParams.component = AccountManageScene
@@ -619,7 +619,7 @@ export default class MineScene extends BaseComponent {
                                         };
                                         request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                                             .then((response) => {
-                                                    lastType = response.mjson.data.status;
+                                                    lastType = response.mjson.data.account.status;
                                                     console.log('========'+lastType);
                                                     if (lastType == '0') {
                                                         this.refs.accountmodal.changeShowType(true,

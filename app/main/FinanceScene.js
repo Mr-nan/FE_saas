@@ -216,7 +216,7 @@ export default class FinanceSence extends BaseComponet {
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
-                            lastType = response.mjson.data.status;
+                            lastType = response.mjson.data.account.status;
                         },
                         (error) => {
 
@@ -276,7 +276,7 @@ export default class FinanceSence extends BaseComponet {
                                         };
                                         request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                                             .then((response) => {
-                                                    lastType = response.mjson.data.status;
+                                                    lastType = response.mjson.data.account.status;
                                                     if (lastType == '0') {
                                                         this.refs.accountmodal.changeShowType(true,
                                                             '您还未开通资金账户，为方便您使用金融产品及购物车，' +
