@@ -459,7 +459,7 @@ export default class CarInfoScene extends BaseComponent {
     orderClick=(carData)=>{
 
         if(carData.show_order==1){
-            this.props.showToast('该车已被下单');
+            this.props.showToast('该车辆已被订购');
 
         }else {
             StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {

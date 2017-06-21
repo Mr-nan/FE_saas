@@ -375,7 +375,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             name: 'ContractWebScene',
                             component: ContractWebScene,
                             params: {
-                                webUrl: response.mjson.data.data[0].contract_file_path
+                                webUrl: response.mjson.data.contract_file_path
                             }
                         });
                     } else {
