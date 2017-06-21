@@ -476,7 +476,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
-                                this.refs.attentionModal.changeShowState(true);
+                                this.refs.chooseModal.changeShowState(true);
                                 //this.props.showModal(true);
                                 //this.confirmCar();
                             }}>
@@ -484,7 +484,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 <Text style={{color: '#ffffff'}}>确认验收</Text>
                             </View>
                         </TouchableOpacity>
-                        <ChooseModal ref='attentionModal' title='注意'
+                        <ChooseModal ref='chooseModal' title='注意'
                                      negativeButtonStyle={styles.negativeButtonStyle}
                                      negativeTextStyle={styles.negativeTextStyle} negativeText='取消'
                                      positiveButtonStyle={styles.positiveButtonStyle}

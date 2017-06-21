@@ -8,7 +8,8 @@ import {
     Dimensions,
     InteractionManager,
     WebView,
-    BackAndroid
+    BackAndroid,
+    Linking
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
@@ -25,14 +26,14 @@ export  default class ContractWebScene extends BaseComponent {
         super(props);
         // 初始状态
         this.state = {
-            renderPlaceholderOnly: true,
+            renderPlaceholderOnly: 'blank',
         };
     }
 
     componentDidMount() {
         BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
         InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: false});
+            this.setState({renderPlaceholderOnly: 'success'});
         });
     }
 
@@ -43,9 +44,11 @@ export  default class ContractWebScene extends BaseComponent {
 
 
     render() {
-        if (this.state.renderPlaceholderOnly) {
+
+        if (this.state.renderPlaceholderOnly!=='success') {
             return this._renderPlaceholderView();
         }
+        //Linking.openURL("http://test.dms.dycd.com//Uploads/bestsign/contract/2017/6/21/1498029055420.pdf");
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
                 <WebViewTitle ref="webviewtitle"/>
@@ -58,11 +61,15 @@ export  default class ContractWebScene extends BaseComponent {
                     javaScriptEnabled={true}
                     domStorageEnabled={true}
                     scalesPageToFit={false}
+                    automaticallyAdjustContentInsets={false}
                     onLoadStart={() => {
                         this.refs.webviewtitle.firstProgress();
                     }}
                     onLoadEnd={() => {
                         this.refs.webviewtitle.lastProgress();
+                    }}
+                    onError={()=>{
+                        this.setState({renderPlaceholderOnly: 'error'});
                     }}
                     onNavigationStateChange={this.onNavigationStateChange.bind(this)}
                 />

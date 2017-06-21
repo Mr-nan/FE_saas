@@ -163,8 +163,13 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 request(url, 'post', maps).then((response) => {
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
                         this.loadData();
-                    } else if (response.mjson.code === 6390000) {
-                        if (response.mjson.data.account_card_status == 0) {
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
+                }, (error) => {
+                    if (error.mjson.code == '6390000') {
+                        this.props.showModal(false);
+                        if (error.mjson.data.account_card_status == 0) {
                             this.refs.accountmodal.changeShowType(true,
                                 '您还未开通资金账户，为方便您使用金融产品及购物车，' +
                                 '请尽快开通！', '去开户', '看看再说', () => {
@@ -174,7 +179,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                         params: {}
                                     });
                                 });
-                        } else if (response.mjson.data.account_card_status == 1) {
+                        } else if (error.mjson.data.account_card_status == 1) {
                             this.refs.accountmodal.changeShowType(true,
                                 '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
                                 , '去绑卡', '看看再说', () => {
@@ -184,7 +189,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                         params: {}
                                     });
                                 });
-                        } else if (response.mjson.data.account_card_status == 2) {
+                        } else if (error.mjson.data.account_card_status == 2) {
                             this.refs.accountmodal.changeShowType(true,
                                 '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
                                 , '去激活', '看看再说', () => {
@@ -195,13 +200,11 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                     });
                                 });
                         } else {
-                            this.props.showToast(response.mjson.msg);
+                            this.props.showToast(error.mjson.msg);
                         }
                     } else {
-                        this.props.showToast(response.mjson.msg);
+                        this.props.showToast(error.mjson.msg);
                     }
-                }, (error) => {
-                    this.props.showToast(error.mjson.msg);
                 });
             } else {
                 this.props.showToast('成交价提交失败');
@@ -210,8 +213,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
     };
 
     getLeftTime = (serverTime, cancelTime) => {
-        let currentTime = new Date(serverTime.replace(/-/g,'/')).valueOf();
-        let oldTime = new Date(cancelTime.replace(/-/g,'/')).valueOf();
+        let currentTime = new Date(serverTime.replace(/-/g, '/')).valueOf();
+        let oldTime = new Date(cancelTime.replace(/-/g, '/')).valueOf();
         return parseFloat(currentTime) - parseFloat(oldTime);
     };
 
@@ -1212,11 +1215,11 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         }}
                         style={{color: fontAndColor.COLORA2}}>《买卖协议》</Text>
                     {/*<Text style={{color: fontAndColor.COLORA1}}>和</Text>
-                    <Text
-                        onPress={() => {
-                            this.getTypeContractInfo(2)
-                        }}
-                        style={{color: fontAndColor.COLORA2}}>《授权声明》</Text>*/}
+                     <Text
+                     onPress={() => {
+                     this.getTypeContractInfo(2)
+                     }}
+                     style={{color: fontAndColor.COLORA2}}>《授权声明》</Text>*/}
                 </View>
             )
         } else if (rowData === '5') {
