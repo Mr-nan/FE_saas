@@ -978,7 +978,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                source={imageUrl.length ? {uri: imageUrl[0].icon_url} : require('../../../images/carSourceImages/car_null_img.png')}/>
                         <View style={{marginLeft: Pixel.getPixel(10)}}>
                             <Text style={{width: width - Pixel.getPixel(15 + 120 + 10 + 15)}}
-                                  numberOfLines={1}>{this.orderDetail.orders_item_data[0].car_name}</Text>
+                                  numberOfLines={1}>{this.orderDetail.orders_item_data[0].car_data.model_name}</Text>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>里程：</Text>
                                 <Text
