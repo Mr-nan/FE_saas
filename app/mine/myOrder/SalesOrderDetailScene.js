@@ -45,6 +45,7 @@ import AccountScene from "../accountManage/RechargeScene";
 import VinInfo from '../../publish/component/VinInfo';
 import AccountModal from "../../component/AccountModal";
 import AccountWebScene from "../accountManage/AccountWebScene";
+import ContractWebScene from "./ContractWebScene";
 const Pixel = new PixelUtil();
 
 const IS_ANDROID = Platform.OS === 'android';
@@ -956,11 +957,10 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         //console.log(response.mjson.data);
                         this.props.showModal(false);
                         this.toNextPage({
-                            name: 'AccountWebScene',
-                            component: AccountWebScene,
+                            name: 'ContractWebScene',
+                            component: ContractWebScene,
                             params: {
-                                title: '合同',
-                                webUrl: response.mjson.data.contract_file_path
+                                webUrl: response.mjson.data.data[0].contract_file_path
                             }
                         });
                     } else {
@@ -1068,7 +1068,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     setPrompt={this.contactData.setPrompt ? this.contactData.setPrompt : false}
                     promptTitle={this.contactData.promptTitle ? this.contactData.promptTitle : ''}
                     promptContent={this.contactData.promptContent ? this.contactData.promptContent : ''}
-                    showShopId={this.orderDetail.orders_item_data[0].car_data.show_shop_id}/>
+                    showShopId={this.orderDetail.buyer_company_id}/>
             )
         } else if (rowData === '2') {
             //this.carAmount = this.orderDetail.orders_item_data[0].transaction_price;

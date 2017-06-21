@@ -35,6 +35,8 @@ import ChooseModal from "./component/ChooseModal";
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import AccountWebScene from "../accountManage/AccountWebScene";
+import WebScene from "../../main/WebScene";
+import ContractWebScene from "./ContractWebScene";
 const Pixel = new PixelUtil();
 
 export default class ProcurementOrderDetailScene extends BaseComponent {
@@ -370,11 +372,10 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         //console.log(response.mjson.data);
                         this.props.showModal(false);
                         this.toNextPage({
-                            name: 'AccountWebScene',
-                            component: AccountWebScene,
+                            name: 'ContractWebScene',
+                            component: ContractWebScene,
                             params: {
-                                title: '合同',
-                                webUrl: response.mjson.data.contract_file_path
+                                webUrl: response.mjson.data.data[0].contract_file_path
                             }
                         });
                     } else {
@@ -921,7 +922,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     setPrompt={this.contactData.setPrompt ? this.contactData.setPrompt : false}
                     promptTitle={this.contactData.promptTitle ? this.contactData.promptTitle : ''}
                     promptContent={this.contactData.promptContent ? this.contactData.promptContent : ''}
-                    showShopId={this.orderDetail.orders_item_data[0].car_data.show_shop_id}/>
+                    showShopId={this.orderDetail.seller_company_id}/>
             )
         } else if (rowData === '2') {
             return (
