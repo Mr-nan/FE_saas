@@ -364,6 +364,13 @@ export const USER_BANK_QUERY = BASEURL + 'v1/user.bank/query';
 /**
  * from @zhaojian
  *
+ * 存储错误信息
+ **/
+export const ADDACCOUNTMESSAGEINFO = BASEURL + 'v1/user.account/addAccountMessageInfo';
+
+/**
+ * from @zhaojian
+ *
  * 根据卡号获取虚拟账号信息
  **/
 export const USER_ACCOUNT_COMPANYINFO = BASEURL + 'v1/user.account/companyInfo';

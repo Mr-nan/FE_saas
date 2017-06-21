@@ -27,11 +27,12 @@ import  UpLoadScene from './UpLoadScene';
 import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
 import codePush from 'react-native-code-push'
-const versionCode = 14.0;
+const versionCode = 15.0;
 let canNext = true;
 let Platform = require('Platform');
 let deploymentKey = '';
 import ErrorUtils from "ErrorUtils"
+
 export default class RootScene extends BaseComponent {
 
     componentDidMount() {
@@ -41,6 +42,19 @@ export default class RootScene extends BaseComponent {
         // });
         ErrorUtils.setGlobalHandler((e) => {　//发生异常的处理方法,当然如果是打包好的话可能你找都找不到是哪段代码出问题了
             this.props.showToast(''+JSON.stringify(e));
+            StorageUtil.mGetItem(KeyNames.PHONE, (data) => {
+                let maps = {
+                    account_id: data.result,
+                    message: ''+JSON.stringify(e)
+                };
+                request(Urls.ADDACCOUNTMESSAGEINFO, 'Post', maps)
+                    .then((response) => {
+
+                        },
+                        (error) => {
+                        });
+            });
+
         });
         if (Platform.OS === 'android') {
             deploymentKey = 'fSQnzvsEP5qb9jD_tr4k2QC9pKlie1b7b22b-ea3f-4c77-abcc-72586c814b3c';
@@ -239,7 +253,7 @@ export default class RootScene extends BaseComponent {
                                                 that.navigatorParams.params = {from: 'RootScene'}
                                                 that.toNextPage(that.navigatorParams);
                                             }
-                                        } else if (datas.user_level == 1) {
+                                        } else {
                                             if (datas.enterprise_list == null || datas.enterprise_list.length <= 0) {
                                                 that.navigatorParams.component = LoginAndRegister;
                                                 that.toNextPage(that.navigatorParams);
@@ -248,10 +262,6 @@ export default class RootScene extends BaseComponent {
                                                 that.navigatorParams.params = {from: 'RootScene'}
                                                 that.toNextPage(that.navigatorParams);
                                             }
-                                        } else {
-                                            that.navigatorParams.component = MainPage;
-                                            that.navigatorParams.params = {}
-                                            that.toNextPage(that.navigatorParams);
                                         }
                                     });
                                 } else {
