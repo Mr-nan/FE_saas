@@ -407,13 +407,13 @@ export default class CarInfoScene extends BaseComponent {
                                 <Text style={styles.callText}>电话咨询</Text>
                             </View>
                         </TouchableOpacity>
-                        {
-                            carData.show_order!==2 && (
-                                <TouchableOpacity style={styles.orderView} onPress={()=>{this.orderClick(carData)}}>
-                                    <Text style={styles.orderText}>订购</Text>
-                                </TouchableOpacity>
-                            )
-                        }
+                        {/*{*/}
+                            {/*carData.show_order!==2 && (*/}
+                                {/*<TouchableOpacity style={styles.orderView} onPress={()=>{this.orderClick(carData)}}>*/}
+                                    {/*<Text style={styles.orderText}>订购</Text>*/}
+                                {/*</TouchableOpacity>*/}
+                            {/*)*/}
+                        {/*}*/}
                     </View>
                 <NavigationView
                     ref="navtigation"
