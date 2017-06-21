@@ -116,7 +116,7 @@ export  default class AccountWebScene extends BaseComponent {
                                              }
                                       }
                            } else if (this.props.backUrl == webBackUrl.PAY) {
-                               this.props.callBack();
+                               //this.props.callBack();
                                this.backPage();
                            } else{
                                 this.backPage();
@@ -158,7 +158,7 @@ export  default class AccountWebScene extends BaseComponent {
                     }
                 }
             } else if (oldUrl == 'http://' + webBackUrl.PAY + '/') {
-                this.props.callBack();
+                //this.props.callBack();
                 this.backPage();
             } else {
                 this.backPage();
