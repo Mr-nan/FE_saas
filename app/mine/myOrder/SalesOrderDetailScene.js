@@ -46,6 +46,10 @@ import VinInfo from '../../publish/component/VinInfo';
 import AccountModal from "../../component/AccountModal";
 import AccountWebScene from "../accountManage/AccountWebScene";
 import ContractWebScene from "./ContractWebScene";
+import OrderSearchScene from "./OrderSearchScene";
+import AccountManageScene from "../accountManage/AccountManageScene";
+import BindCardScene from "../accountManage/BindCardScene";
+import WaitActivationAccountScene from "../accountManage/WaitActivationAccountScene";
 const Pixel = new PixelUtil();
 
 const IS_ANDROID = Platform.OS === 'android';
@@ -159,6 +163,40 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 request(url, 'post', maps).then((response) => {
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
                         this.loadData();
+                    } else if (response.mjson.code === 6390000) {
+                        if (response.mjson.data.account_card_status == 0) {
+                            this.refs.accountmodal.changeShowType(true,
+                                '您还未开通资金账户，为方便您使用金融产品及购物车，' +
+                                '请尽快开通！', '去开户', '看看再说', () => {
+                                    this.toNextPage({
+                                        name: 'AccountManageScene',
+                                        component: AccountManageScene,
+                                        params: {}
+                                    });
+                                });
+                        } else if (response.mjson.data.account_card_status == 1) {
+                            this.refs.accountmodal.changeShowType(true,
+                                '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
+                                , '去绑卡', '看看再说', () => {
+                                    this.toNextPage({
+                                        name: 'BindCardScene',
+                                        component: BindCardScene,
+                                        params: {}
+                                    });
+                                });
+                        } else if (response.mjson.data.account_card_status == 2) {
+                            this.refs.accountmodal.changeShowType(true,
+                                '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
+                                , '去激活', '看看再说', () => {
+                                    this.toNextPage({
+                                        name: 'WaitActivationAccountScene',
+                                        component: WaitActivationAccountScene,
+                                        params: {}
+                                    });
+                                });
+                        } else {
+                            this.props.showToast(response.mjson.msg);
+                        }
                     } else {
                         this.props.showToast(response.mjson.msg);
                     }

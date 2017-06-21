@@ -137,7 +137,8 @@ export default class CheckStand extends BaseComponent {
                         <View style={styles.separatedLine}/>
                         <View style={styles.accountBar}>
                             <Text style={styles.title}>账户：</Text>
-                            <Text style={styles.content}>{this.accountInfo.bank_card_name + ' ' + this.accountInfo.bank_card_no}</Text>
+                            <Text
+                                style={styles.content}>{this.accountInfo.bank_card_name + ' ' + this.accountInfo.bank_card_no}</Text>
                         </View>
                         <View style={styles.separatedLine}/>
                         <View style={styles.accountBar}>
@@ -279,7 +280,9 @@ export default class CheckStand extends BaseComponent {
                             params: {
                                 title: '支付',
                                 webUrl: response.mjson.data.auth_url + '?authTokenId=' + response.mjson.data.auth_token,
-                                callBack: this.checkPay,// 这个callBack就是点击webview容器页面的返回按钮后"收银台"执行的动作
+                                callBack: () => {
+                                    this.checkPay()
+                                },// 这个callBack就是点击webview容器页面的返回按钮后"收银台"执行的动作
                                 backUrl: webBackUrl.PAY
                             }
                         });
