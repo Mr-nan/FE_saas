@@ -70,7 +70,7 @@ export default class CheckStand extends BaseComponent {
                 let url = AppUrls.USER_ACCOUNT_INFO;
                 request(url, 'post', maps).then((response) => {
                     this.props.showModal(false);
-                    this.accountInfo = response.mjson.data;
+                    this.accountInfo = response.mjson.data.account;
                     if (this.accountInfo) {
                         this.setState({
                             isRefreshing: false,
