@@ -59,7 +59,7 @@ export  default class BankCardScene extends BaseComponent {
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
-                            this.getBankData(datas.company_base_id,response.mjson.data.account_open_type);
+                            this.getBankData(datas.company_base_id,response.mjson.data.account.account_open_type);
                         },
                         (error) => {
                             this.setState({
@@ -150,7 +150,7 @@ export  default class BankCardScene extends BaseComponent {
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
-                            this.unBind(datas.company_base_id,response.mjson.data.account_open_type)
+                            this.unBind(datas.company_base_id,response.mjson.data.account.account_open_type)
                         },
                         (error) => {
                             if (error.mycode == -300 || error.mycode == -500) {

@@ -55,7 +55,7 @@ export  default class FlowWithdrawalsPage extends BaseComponent {
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
-                            this.getFlowData(datas.company_base_id,response.mjson.data.account_open_type);
+                            this.getFlowData(datas.company_base_id,response.mjson.data.account.account_open_type);
                         },
                         (error) => {
                             this.setState({

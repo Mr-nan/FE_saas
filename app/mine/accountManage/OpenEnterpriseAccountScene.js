@@ -314,7 +314,7 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
             .then((response) => {
                     this.changeData(cert_no, cert_type, cust_name, legal_cert_no, legal_real_name,
                         org_agent_name, org_agent_cert_no, org_agent_mobile, enter_base_id,
-                        response.mjson.data.bank_card_no);
+                        response.mjson.data.account.bank_card_no);
                 },
                 (error) => {
                     this.props.showToast('用户信息查询失败');

@@ -56,7 +56,7 @@ export  default class WithdrawalsScene extends BaseComponent {
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
-                            this.getBankData(datas.company_base_id,response.mjson.data.account_open_type);
+                            this.getBankData(datas.company_base_id,response.mjson.data.account.account_open_type);
                         },
                         (error) => {
                             this.setState({
