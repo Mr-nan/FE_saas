@@ -207,6 +207,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                         }
                                     });
                                 });
+                        } else if (error.mjson.data.account_card_status == 5) {
+                            this.props.showToast('请您先开通平台账户');
                         } else {
                             this.props.showToast(error.mjson.msg);
                         }
