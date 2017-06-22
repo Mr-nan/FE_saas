@@ -43,13 +43,14 @@ import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import AccountScene from "../accountManage/RechargeScene";
 import VinInfo from '../../publish/component/VinInfo';
-import AccountModal from "../../component/AccountModal";
 import AccountWebScene from "../accountManage/AccountWebScene";
 import ContractWebScene from "./ContractWebScene";
 import OrderSearchScene from "./OrderSearchScene";
 import AccountManageScene from "../accountManage/AccountTypeSelectScene";
 import BindCardScene from "../accountManage/BindCardScene";
 import WaitActivationAccountScene from "../accountManage/WaitActivationAccountScene";
+import AccountModal from "../../component/AccountModal";
+import AccountForOrderModal from "./component/AccountForOrderModal";
 const Pixel = new PixelUtil();
 
 const IS_ANDROID = Platform.OS === 'android';
@@ -167,10 +168,10 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         this.props.showToast(response.mjson.msg);
                     }
                 }, (error) => {
+                    this.props.showModal(false);
                     if (error.mjson.code == '6390000') {
-                        this.props.showModal(false);
                         if (error.mjson.data.account_card_status == 0) {
-                            this.refs.accountmodal.changeShowType(true,
+                            this.refs.accountmodal.changeShowType(height,
                                 '您还未开通资金账户，为方便您使用金融产品及购物车，' +
                                 '请尽快开通！', '去开户', '看看再说', () => {
                                     this.toNextPage({
@@ -182,7 +183,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                     });
                                 });
                         } else if (error.mjson.data.account_card_status == 1) {
-                            this.refs.accountmodal.changeShowType(true,
+                            this.refs.accountmodal.changeShowType(height,
                                 '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
                                 , '去绑卡', '看看再说', () => {
                                     this.toNextPage({
@@ -194,7 +195,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                     });
                                 });
                         } else if (error.mjson.data.account_card_status == 2) {
-                            this.refs.accountmodal.changeShowType(true,
+                            this.refs.accountmodal.changeShowType(height,
                                 '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
                                 , '去激活', '看看再说', () => {
                                     this.toNextPage({
@@ -1085,7 +1086,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                   content='为了确保交易金额可支付贷款本息，请您补足成交价与贷款本息，及额外30日利息（是交易持续时期可能产生的利息，根据实际日期付息）的差额。如未能在30日内完成交易，则自动关闭交易，并退还双方已支付的款项。'/>
                     <View style={{flex: 1}}/>
                     {this.initDetailPageBottom(this.bottomState)}
-                    <AccountModal ref="accountmodal"/>
+                    <AccountForOrderModal ref="accountmodal"/>
                 </View>
             )
         }
