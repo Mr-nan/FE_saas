@@ -168,8 +168,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         this.props.showToast(response.mjson.msg);
                     }
                 }, (error) => {
-                    this.props.showModal(false);
                     if (error.mjson.code == '6390000') {
+                        this.props.showModal(false);
                         if (error.mjson.data.account_card_status == 0) {
                             this.refs.accountmodal.changeShowType(height,
                                 '您还未开通资金账户，为方便您使用金融产品及购物车，' +
