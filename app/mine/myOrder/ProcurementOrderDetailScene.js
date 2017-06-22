@@ -37,6 +37,7 @@ import * as StorageKeyNames from "../../constant/storageKeyNames";
 import AccountWebScene from "../accountManage/AccountWebScene";
 import WebScene from "../../main/WebScene";
 import ContractWebScene from "./ContractWebScene";
+import ContractScene from "./ContractScene";
 const Pixel = new PixelUtil();
 
 export default class ProcurementOrderDetailScene extends BaseComponent {
@@ -374,10 +375,10 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         //console.log(response.mjson.data);
                         this.props.showModal(false);
                         this.toNextPage({
-                            name: 'ContractWebScene',
-                            component: ContractWebScene,
+                            name: 'ContractScene',
+                            component: ContractScene,
                             params: {
-                                webUrl: response.mjson.data.contract_file_path
+                                contractList: response.mjson.data.contract_image_path
                             }
                         });
                     } else {

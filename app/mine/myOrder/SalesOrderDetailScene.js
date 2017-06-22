@@ -51,6 +51,7 @@ import BindCardScene from "../accountManage/BindCardScene";
 import WaitActivationAccountScene from "../accountManage/WaitActivationAccountScene";
 import AccountModal from "../../component/AccountModal";
 import AccountForOrderModal from "./component/AccountForOrderModal";
+import ContractScene from "./ContractScene";
 const Pixel = new PixelUtil();
 
 const IS_ANDROID = Platform.OS === 'android';
@@ -1007,10 +1008,11 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         //console.log(response.mjson.data);
                         this.props.showModal(false);
                         this.toNextPage({
-                            name: 'ContractWebScene',
-                            component: ContractWebScene,
+                            name: 'ContractScene',
+                            component: ContractScene,
                             params: {
-                                webUrl: response.mjson.data.contract_file_path
+                                //webUrl: response.mjson.data.contract_file_path
+                                contractList: response.mjson.data.contract_image_path
                             }
                         });
                     } else {
