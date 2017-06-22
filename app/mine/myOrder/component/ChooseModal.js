@@ -30,6 +30,18 @@ export default class ChooseModal extends Component {
         };
     }
 
+/*    componentWillReceiveProps(nextProps) {
+        this.setState({amount: nextProps.amount, deposit: nextProps.amount / 10});
+
+        this.setState({
+            isShow: value,
+            negativeText: negativeText,
+            positiveText: positiveText,
+            content: content,
+            positiveOperation: positiveOperation
+        });
+    }*/
+
     changeShowType = (value, negativeText, positiveText, content, positiveOperation) => {
         this.setState({
             isShow: value,
@@ -89,7 +101,11 @@ export default class ChooseModal extends Component {
                         }}>
                             {this.state.content}
                         </Text>
-                        <View style={{flexDirection: 'row', marginBottom: Pixel.getPixel(20), marginTop: this.props.buttonsMargin}}>
+                        <View style={{
+                            flexDirection: 'row',
+                            marginBottom: Pixel.getPixel(20),
+                            marginTop: this.props.buttonsMargin
+                        }}>
                             <TouchableOpacity onPress={() => {
                                 this.setState({
                                     isShow: false

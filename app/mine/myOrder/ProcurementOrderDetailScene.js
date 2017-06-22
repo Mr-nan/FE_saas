@@ -304,6 +304,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
      * 确认收车请求
      */
     confirmCar = () => {
+        this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
@@ -332,6 +333,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
      * 撤销取消订单请求
      */
     revertOrder = () => {
+        this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
@@ -407,7 +409,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
                             onPress={() => {
-                                this.refs.chooseModal.changeShowState(true);
+                                this.refs.chooseModal.changeShowType(true, '取消', '确定', '卖家将在您发起取消申请24小时内回复，如已支付订金将与卖家协商退款。',
+                                    this.cancelOrder);
                             }}>
                             <View style={styles.buttonCancel}>
                                 <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
@@ -420,7 +423,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                      positiveTextStyle={styles.positiveTextStyle} positiveText='确定'
                                      buttonsMargin={Pixel.getPixel(20)}
                                      positiveOperation={this.cancelOrder}
-                                     content='卖家将在您发起取消申请24小时内回复，如已支付订金将与卖家协商退款。'/>
+                                     content=''/>
                     </View>
                 )
                 break;
@@ -429,7 +432,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
                             onPress={() => {
-                                this.refs.chooseModal.changeShowState(true);
+                                this.refs.chooseModal.changeShowType(true, '取消', '确定', '卖家将在您发起取消申请24小时内回复，如已支付订金将与卖家协商退款。',
+                                    this.cancelOrder);
                             }}>
                             <View style={styles.buttonCancel}>
                                 <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
@@ -459,7 +463,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                      positiveTextStyle={styles.positiveTextStyle} positiveText='确定'
                                      buttonsMargin={Pixel.getPixel(20)}
                                      positiveOperation={this.cancelOrder}
-                                     content='卖家将在您发起取消申请24小时内回复，如已支付订金将与卖家协商退款。'/>
+                                     content=''/>
                     </View>
                 )
                 break;
@@ -476,7 +480,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
-                                this.refs.chooseModal.changeShowState(true);
+                                this.refs.chooseModal.changeShowType(true, '取消', '确定', '确定后卖家可提现全款。',
+                                    this.confirmCar);
                                 //this.props.showModal(true);
                                 //this.confirmCar();
                             }}>
@@ -491,7 +496,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                      positiveTextStyle={styles.positiveTextStyle} positiveText='确定'
                                      buttonsMargin={Pixel.getPixel(20)}
                                      positiveOperation={this.confirmCar}
-                                     content='确定后卖家可提现全款'/>
+                                     content=''/>
                         <ExplainModal ref='expModal' title='提示' buttonStyle={styles.expButton}
                                       textStyle={styles.expText}
                                       text='确定' content='订单尾款已结清联系客服取消订单'/>

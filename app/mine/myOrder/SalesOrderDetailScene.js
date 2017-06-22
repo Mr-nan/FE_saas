@@ -610,7 +610,9 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
                             onPress={() => {
-                                this.refs.chooseModal.changeShowState(true);
+                                //this.refs.chooseModal.changeShowState(true);
+                                this.refs.chooseModal.changeShowType(true, '取消', '确定', '确定后取消订单。如买家有已支付款项将退款，如您有补差价款可提现。',
+                                    this.cancelOrder);
                             }}>
                             <View style={styles.buttonCancel}>
                                 <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
@@ -623,7 +625,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                      positiveTextStyle={styles.positiveTextStyle} positiveText='确定'
                                      buttonsMargin={Pixel.getPixel(20)}
                                      positiveOperation={this.cancelOrder}
-                                     content='确定后取消订单。如买家有已支付款项将退款，如您有补差价款可提现。'/>
+                                     content=''/>
                     </View>
                 )
                 break;

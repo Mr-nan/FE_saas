@@ -64,9 +64,11 @@ export  default class ContractScene extends BaseComponent {
     _renderRow = (rowData, selectionID, rowID) => {
         return (
             <Image
-                style={{width: width
+                style={{
+                    width: width,
+                    height: height
                 }}
-                source={require('../../../images/mainImage/agreed_sign.png')}/>
+                source={{uri: rowData}}/>
         )
     }
 
