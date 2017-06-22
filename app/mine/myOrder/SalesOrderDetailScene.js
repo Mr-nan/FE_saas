@@ -1033,7 +1033,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
         const date = new Date();
         date.setTime(time);
         return (date.getFullYear() + "-" + (this.PrefixInteger(date.getMonth() + 1, 2)) + "-" +
-        (this.PrefixInteger(date.getDate() + 1, 2)));
+        (this.PrefixInteger(date.getDate(), 2)));
     };
 
     PrefixInteger = (num, length) => {

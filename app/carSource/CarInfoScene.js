@@ -125,11 +125,27 @@ export default class CarInfoScene extends BaseComponent {
     loadData = () => {
 
 
-        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+/*        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != '') {
                 let enters = JSON.parse(data.result);
                 this.loadCarData(enters.company_base_id);
 
+            } else {
+                this.loadCarData('');
+            }
+        });*/
+        StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST, (data) => {
+            if (data.code == 1 && data.result != '') {
+                let enters = JSON.parse(data.result);
+                let company_base_ids = '';
+                for (let index in enters) {
+                    company_base_ids = company_base_ids + enters[index].enterprise_uid;
+                    if (enters.length > index + 1) {
+                        company_base_ids = company_base_ids + ',';
+                    }
+                }
+                //console.log('enters=-=-=-=--=',company_base_ids);
+                this.loadCarData(company_base_ids);
             } else {
                 this.loadCarData('');
             }
