@@ -47,7 +47,7 @@ import AccountModal from "../../component/AccountModal";
 import AccountWebScene from "../accountManage/AccountWebScene";
 import ContractWebScene from "./ContractWebScene";
 import OrderSearchScene from "./OrderSearchScene";
-import AccountManageScene from "../accountManage/AccountManageScene";
+import AccountManageScene from "../accountManage/AccountTypeSelectScene";
 import BindCardScene from "../accountManage/BindCardScene";
 import WaitActivationAccountScene from "../accountManage/WaitActivationAccountScene";
 const Pixel = new PixelUtil();
@@ -176,7 +176,9 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                     this.toNextPage({
                                         name: 'AccountManageScene',
                                         component: AccountManageScene,
-                                        params: {}
+                                        params: {
+                                            callBack: () => {}
+                                        }
                                     });
                                 });
                         } else if (error.mjson.data.account_card_status == 1) {
@@ -186,7 +188,9 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                     this.toNextPage({
                                         name: 'BindCardScene',
                                         component: BindCardScene,
-                                        params: {}
+                                        params: {
+                                            callBack: () => {}
+                                        }
                                     });
                                 });
                         } else if (error.mjson.data.account_card_status == 2) {
@@ -196,7 +200,9 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                     this.toNextPage({
                                         name: 'WaitActivationAccountScene',
                                         component: WaitActivationAccountScene,
-                                        params: {}
+                                        params: {
+                                            callBack: () => {}
+                                        }
                                     });
                                 });
                         } else {

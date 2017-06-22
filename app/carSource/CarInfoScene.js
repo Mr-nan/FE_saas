@@ -37,6 +37,7 @@ import AccountManageScene from '../mine/accountManage/AccountTypeSelectScene'
 import BindCardScene from '../mine/accountManage/BindCardScene'
 import WaitActivationAccountScene from '../mine/accountManage/WaitActivationAccountScene'
 import ProcurementOrderDetailScene from "../mine/myOrder/ProcurementOrderDetailScene";
+import ExplainModal from "../mine/myOrder/component/ExplainModal";
 let Platform = require('Platform');
 const Pixel = new PixelUtil();
 
@@ -463,6 +464,9 @@ export default class CarInfoScene extends BaseComponent {
                     this.CallView = ref
                 }}/>
                 <AccountModal ref="accountmodal"/>
+                <ExplainModal ref={(text) => this.expModal = text} title='说明' buttonStyle={styles.expButton} textStyle={styles.expText}
+                              text='知道了'
+                              content='此质押车暂不可下单请您稍带时日再订购'/>
             </View>
 
         )
@@ -510,7 +514,7 @@ export default class CarInfoScene extends BaseComponent {
                                     let navigatorParams = {
                                         name: '',
                                         component: '',
-                                        params: {}
+                                        params: {callBack: () => {}}
                                     };
                                     if (lastType == '0') {
 
@@ -577,12 +581,14 @@ export default class CarInfoScene extends BaseComponent {
             }
 
         }, (error) => {
-            //if (error.mjson.code == '6350072') {
-                // todo
-            //} else {
+            if (error.mjson.code == '6350072') {
+                this.props.showModal(false);
+                this.expModal.changeShowType(true);
+                //this.props.showToast(error.mjson.msg);
+            } else {
                 this.props.showModal(false);
                 this.props.showToast(error.mjson.msg);
-            //}
+            }
         });
     }
 
@@ -1457,6 +1463,20 @@ const styles = StyleSheet.create({
         marginLeft: Pixel.getPixel(15),
         marginRight: Pixel.getPixel(15),
     },
-
-
+    expButton: {
+        marginBottom: Pixel.getPixel(20),
+        width: Pixel.getPixel(100),
+        height: Pixel.getPixel(35),
+        marginTop: Pixel.getPixel(16),
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 3,
+        borderWidth: 1,
+        borderColor: fontAndColor.COLORB0
+    },
+    expText: {
+        fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
+        color: fontAndColor.COLORB0
+    },
 })
