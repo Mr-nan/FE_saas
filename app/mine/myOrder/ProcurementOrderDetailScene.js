@@ -225,7 +225,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
-                this.mList = ['0', '1', '2', '3', '4', '5', '6'];
+                this.mList = ['0', '1', '2', '3', '4', '8', '6'];
                 this.contactData = {
                     layoutTitle: '确认验收车辆',
                     layoutContent: '确认验收后，请等待贷款放款。',
@@ -236,6 +236,22 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.items.push({title: '结清尾款', nodeState: 2, isLast: false, isFirst: false});
                 //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
                 this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                break;
+            case 8: // 融资单完成交易
+                this.mList = [];
+                this.items = [];
+                this.contactData = {};
+                this.mList = ['0', '1', '3', '4', '8', '6'];
+                this.contactData = {
+                    layoutTitle: '已完成',
+                    layoutContent: '恭喜您交易已完成',
+                    setPrompt: false
+                };
+                this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
+                this.items.push({title: '已付订金', nodeState: 0, isLast: false, isFirst: false});
+                this.items.push({title: '结清尾款', nodeState: 0, isLast: false, isFirst: false});
+                //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
+                this.items.push({title: '完成交易', nodeState: 1, isLast: true, isFirst: false});
                 break;
             default:
                 break;
@@ -854,6 +870,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         }
                     }
                 }
+                break;
+            case 12:
+
                 break;
         }
     };
