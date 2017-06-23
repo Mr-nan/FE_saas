@@ -364,6 +364,13 @@ export const USER_BANK_QUERY = BASEURL + 'v1/user.bank/query';
 /**
  * from @zhaojian
  *
+ * 存储错误信息
+ **/
+export const ADDACCOUNTMESSAGEINFO = BASEURL + 'v1/user.account/addAccountMessageInfo';
+
+/**
+ * from @zhaojian
+ *
  * 根据卡号获取虚拟账号信息
  **/
 export const USER_ACCOUNT_COMPANYINFO = BASEURL + 'v1/user.account/companyInfo';
@@ -866,3 +873,7 @@ export const ORDER_ALLOW_CANCEL = BASEURL + V +'order/allowCancel';
  *  卖家不同意取消订单
  */
 export const ORDER_DENY_CANCEL = BASEURL + V +'order/denyCancel';
+/**
+ * 查看订单某个类型合同
+ */
+export const ORDER_GET_CONTRACT = BASEURL + V +'order/getContractByType';

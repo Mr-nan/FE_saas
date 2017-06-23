@@ -70,7 +70,7 @@ export default class CheckStand extends BaseComponent {
                 let url = AppUrls.USER_ACCOUNT_INFO;
                 request(url, 'post', maps).then((response) => {
                     this.props.showModal(false);
-                    this.accountInfo = response.mjson.data;
+                    this.accountInfo = response.mjson.data.account;
                     if (this.accountInfo) {
                         this.setState({
                             isRefreshing: false,
@@ -137,7 +137,8 @@ export default class CheckStand extends BaseComponent {
                         <View style={styles.separatedLine}/>
                         <View style={styles.accountBar}>
                             <Text style={styles.title}>账户：</Text>
-                            <Text style={styles.content}>{this.accountInfo.bank_card_no}</Text>
+                            <Text
+                                style={styles.content}>{this.accountInfo.bank_card_name + ' ' + this.accountInfo.bank_card_no}</Text>
                         </View>
                         <View style={styles.separatedLine}/>
                         <View style={styles.accountBar}>
@@ -239,9 +240,13 @@ export default class CheckStand extends BaseComponent {
                 let url = AppUrls.ORDER_CHECK_PAY;
                 request(url, 'post', maps).then((response) => {
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
-                        this.props.showToast('支付成功');
-                        this.props.callBack();
-                        this.backPage();
+                        if (response.mjson.data.pay_status == 3) {
+                            this.props.showToast('支付成功');
+                            this.props.callBack();
+                            this.backPage();
+                        } else {
+                            this.props.showToast('支付失败');
+                        }
                     } else {
                         this.props.showToast(response.mjson.msg);
                     }
@@ -279,7 +284,9 @@ export default class CheckStand extends BaseComponent {
                             params: {
                                 title: '支付',
                                 webUrl: response.mjson.data.auth_url + '?authTokenId=' + response.mjson.data.auth_token,
-                                callBack: this.checkPay,// 这个callBack就是点击webview容器页面的返回按钮后"收银台"执行的动作
+                                callBack: () => {
+                                    this.checkPay()
+                                },// 这个callBack就是点击webview容器页面的返回按钮后"收银台"执行的动作
                                 backUrl: webBackUrl.PAY
                             }
                         });

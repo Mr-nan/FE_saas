@@ -9,7 +9,8 @@ import {
     Modal,
     Linking,
     Text,
-    TouchableOpacity
+    TouchableOpacity,
+    Platform
 } from 'react-native';
 import PixelUtil from "../../../utils/PixelUtil";
 let Pixel = new PixelUtil();
@@ -34,7 +35,11 @@ export default class MakePhoneModal extends Component {
     }
 
     callClick = (phoneNumer) => {
-        Linking.openURL('tel:' + phoneNumer);
+        if (Platform.OS === 'android') {
+            NativeModules.VinScan.callPhone(phoneNumer);
+        } else {
+            Linking.openURL('tel:' + phoneNumer);
+        }
     };
 
     render() {

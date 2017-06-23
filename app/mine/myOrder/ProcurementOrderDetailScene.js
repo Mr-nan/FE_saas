@@ -34,6 +34,10 @@ import ContactLayout from "./component/ContactLayout";
 import ChooseModal from "./component/ChooseModal";
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
+import AccountWebScene from "../accountManage/AccountWebScene";
+import WebScene from "../../main/WebScene";
+import ContractWebScene from "./ContractWebScene";
+import ContractScene from "./ContractScene";
 const Pixel = new PixelUtil();
 
 export default class ProcurementOrderDetailScene extends BaseComponent {
@@ -78,7 +82,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         const date = new Date();
         date.setTime(time);
         return (date.getFullYear() + "-" + (this.PrefixInteger(date.getMonth() + 1, 2)) + "-" +
-        (this.PrefixInteger(date.getDate() + 1, 2)));
+        (this.PrefixInteger(date.getDate(), 2)));
     };
 
     PrefixInteger = (num, length) => {
@@ -87,15 +91,13 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
 
     /**
      * 获取订单剩余时间
+     * @param serverTime
      * @param createdTime  订单创建时间
      */
-    getLeftTime = (createdTime) => {
-        let currentTime = new Date().getTime();
-        let oldTime = new Date(createdTime).getTime();
-        //console.log('当前时间:::', currentTime);
-        //console.log('创建时间:::', oldTime);
-        //this.formatLongToTimeStr(currentTime - oldTime);
-        return currentTime - oldTime;
+    getLeftTime = (serverTime, createdTime) => {
+        let currentTime = new Date(serverTime.replace(/-/g, '/')).valueOf();
+        let oldTime = new Date(createdTime.replace(/-/g, '/')).valueOf();
+        return parseFloat(currentTime) - parseFloat(oldTime);
     };
 
     /**
@@ -303,6 +305,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
      * 确认收车请求
      */
     confirmCar = () => {
+        this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
@@ -331,6 +334,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
      * 撤销取消订单请求
      */
     revertOrder = () => {
+        this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
@@ -355,6 +359,40 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         });
     };
 
+    getTypeContractInfo = (type) => {
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.orderDetail.id,
+                    type: type
+                };
+                let url = AppUrls.ORDER_GET_CONTRACT;
+                request(url, 'post', maps).then((response) => {
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        //console.log(response.mjson.data);
+                        this.props.showModal(false);
+                        this.toNextPage({
+                            name: 'ContractScene',
+                            component: ContractScene,
+                            params: {
+                                contractList: response.mjson.data.contract_image_path
+                            }
+                        });
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
+                }, (error) => {
+                    this.props.showToast(error.mjson.msg);
+                });
+            } else {
+                this.props.showToast('查看合同失败');
+            }
+        });
+    };
+
     payCallBack = () => {
         this.props.showModal(true);
         this.loadData();
@@ -372,7 +410,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
                             onPress={() => {
-                                this.refs.chooseModal.changeShowState(true);
+                                this.refs.chooseModal.changeShowType(true, '取消', '确定', '卖家将在您发起取消申请24小时内回复，如已支付订金将与卖家协商退款。',
+                                    this.cancelOrder);
                             }}>
                             <View style={styles.buttonCancel}>
                                 <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
@@ -385,7 +424,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                      positiveTextStyle={styles.positiveTextStyle} positiveText='确定'
                                      buttonsMargin={Pixel.getPixel(20)}
                                      positiveOperation={this.cancelOrder}
-                                     content='卖家将在您发起取消申请24小时内回复，如已支付订金将与卖家协商退款。'/>
+                                     content=''/>
                     </View>
                 )
                 break;
@@ -394,7 +433,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
                             onPress={() => {
-                                this.refs.chooseModal.changeShowState(true);
+                                this.refs.chooseModal.changeShowType(true, '取消', '确定', '卖家将在您发起取消申请24小时内回复，如已支付订金将与卖家协商退款。',
+                                    this.cancelOrder);
                             }}>
                             <View style={styles.buttonCancel}>
                                 <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
@@ -424,7 +464,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                      positiveTextStyle={styles.positiveTextStyle} positiveText='确定'
                                      buttonsMargin={Pixel.getPixel(20)}
                                      positiveOperation={this.cancelOrder}
-                                     content='卖家将在您发起取消申请24小时内回复，如已支付订金将与卖家协商退款。'/>
+                                     content=''/>
                     </View>
                 )
                 break;
@@ -433,7 +473,16 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
                             onPress={() => {
-                                this.refs.attentionModal.changeShowState(true);
+                                this.refs.expModal.changeShowType(true);
+                            }}>
+                            <View style={styles.buttonCancel}>
+                                <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.refs.chooseModal.changeShowType(true, '取消', '确定', '确定后卖家可提现全款。',
+                                    this.confirmCar);
                                 //this.props.showModal(true);
                                 //this.confirmCar();
                             }}>
@@ -441,14 +490,17 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 <Text style={{color: '#ffffff'}}>确认验收</Text>
                             </View>
                         </TouchableOpacity>
-                        <ChooseModal ref='attentionModal' title='注意'
+                        <ChooseModal ref='chooseModal' title='注意'
                                      negativeButtonStyle={styles.negativeButtonStyle}
                                      negativeTextStyle={styles.negativeTextStyle} negativeText='取消'
                                      positiveButtonStyle={styles.positiveButtonStyle}
                                      positiveTextStyle={styles.positiveTextStyle} positiveText='确定'
                                      buttonsMargin={Pixel.getPixel(20)}
                                      positiveOperation={this.confirmCar}
-                                     content='确定后卖家可提现全款'/>
+                                     content=''/>
+                        <ExplainModal ref='expModal' title='提示' buttonStyle={styles.expButton}
+                                      textStyle={styles.expText}
+                                      text='确定' content='订单尾款已结清联系客服取消订单'/>
                     </View>
                 )
                 break;
@@ -520,6 +572,34 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     </View>
                 )
                 break;
+            case 8:
+                return (
+                    <View style={styles.bottomBar}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.props.showModal(true);
+                                this.revertOrder();
+                            }}>
+                            <View style={[styles.buttonCancel, {width: Pixel.getPixel(137)}]}>
+                                <Text style={{color: fontAndColor.COLORA2}}>正在处理中请稍后</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                );
+                break;
+            case 9:
+                return (
+                    <View style={[styles.bottomBar, {justifyContent: 'center'}]}>
+                        <Text style={{
+                            textAlign: 'center',
+                            fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                            color: fontAndColor.COLORB0
+                        }}>
+                            交易关闭(后台取消订单)
+                        </Text>
+                    </View>
+                );
+                break;
             default:
                 return null;
                 break;
@@ -544,11 +624,19 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 0;
                     this.topState = -1;
-                    this.bottomState = 4;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else {
+                        this.bottomState = 4;
+                    }
                 } else if (cancelStatus === 3) {
                     this.orderState = 0;
                     this.topState = -1;
-                    this.bottomState = 4;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else {
+                        this.bottomState = 4;
+                    }
                 }
                 break;
             case 2: // 待付订金  2=>'订单定价完成'
@@ -569,11 +657,19 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 1;
                     this.topState = -1;
-                    this.bottomState = 4;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else {
+                        this.bottomState = 4;
+                    }
                 } else if (cancelStatus === 3) {
                     this.orderState = 1;
                     this.topState = -1;
-                    this.bottomState = 4;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else {
+                        this.bottomState = 4;
+                    }
                 }
 
                 break;
@@ -595,18 +691,30 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 2;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_is_agree == 0) {
-                        this.bottomState = 6;
-                    } else {
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
                         this.bottomState = 5;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
                     }
                 } else if (cancelStatus === 3) {
                     this.orderState = 2;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_is_agree == 0) {
-                        this.bottomState = 6;
-                    } else {
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
                         this.bottomState = 5;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
                     }
                 }
                 break;
@@ -616,7 +724,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 if (cancelStatus === 0) {
                     this.orderState = 3;
                     this.topState = -1;
-                    this.bottomState = 2;
+                    if (status === 9) {
+                        this.bottomState = 8;
+                    } else {
+                        this.bottomState = 2;
+                    }
                 } else if (cancelStatus === 1) {
                     this.orderState = 3;
                     this.topState = -1;
@@ -624,18 +736,30 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 3;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_is_agree == 0) {
-                        this.bottomState = 6;
-                    } else {
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
                         this.bottomState = 5;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
                     }
                 } else if (cancelStatus === 3) {
                     this.orderState = 3;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_is_agree == 0) {
-                        this.bottomState = 6;
-                    } else {
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
                         this.bottomState = 5;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
                     }
                 }
                 break;
@@ -651,18 +775,30 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 4;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_is_agree == 0) {
-                        this.bottomState = 6;
-                    } else {
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
                         this.bottomState = 5;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
                     }
                 } else if (cancelStatus === 3) {
                     this.orderState = 4;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_is_agree == 0) {
-                        this.bottomState = 6;
-                    } else {
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
                         this.bottomState = 5;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
                     }
                 }
                 break;
@@ -686,13 +822,17 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.orderDetail = response.mjson.data;
                         let status = response.mjson.data.status;
                         let cancelStatus = response.mjson.data.cancel_status;
-                        this.leftTime = this.getLeftTime(this.orderDetail.created_time);
+                        this.leftTime = this.getLeftTime(this.orderDetail.server_time, this.orderDetail.created_time);
+                        //console.log('this.leftTime====', this.leftTime);
+                        //this.props.showToast('this.leftTime===='+ this.leftTime);
                         if (cancelStatus == 2 || cancelStatus == 3) {
                             if (this.orderDetail.order_flows.length > 0) {
                                 let cancel = this.orderDetail.order_flows;
                                 for (let state in cancel) {
                                     status = cancel[state];
                                 }
+                            } else {
+                                status = 0;
                             }
                         }
                         this.stateMapping(status, cancelStatus);
@@ -788,7 +928,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     setPrompt={this.contactData.setPrompt ? this.contactData.setPrompt : false}
                     promptTitle={this.contactData.promptTitle ? this.contactData.promptTitle : ''}
                     promptContent={this.contactData.promptContent ? this.contactData.promptContent : ''}
-                    showShopId={this.orderDetail.orders_item_data[0].car_data.show_shop_id}/>
+                    showShopId={this.orderDetail.seller_company_id}/>
             )
         } else if (rowData === '2') {
             return (
@@ -797,9 +937,28 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         style={{marginLeft: Pixel.getPixel(15)}}
                         source={require('../../../images/mainImage/agreed_sign.png')}/>
                     <Text style={{color: fontAndColor.COLORA1, marginLeft: Pixel.getPixel(5)}}>我已同意签署</Text>
-                    <Text style={{color: fontAndColor.COLORA2}}>《买卖协议》</Text>
-                    <Text style={{color: fontAndColor.COLORA1}}>和</Text>
-                    <Text style={{color: fontAndColor.COLORA2}}>《授权声明》</Text>
+                    {
+                        this.orderState == 1 &&
+                        <Text
+                            onPress={() => {
+                                this.getTypeContractInfo(1)
+                            }}
+                            style={{color: fontAndColor.COLORA2}}>《买卖协议》</Text>
+                    }
+                    {
+                        this.orderState == 3 &&
+                        <Text
+                            onPress={() => {
+                                this.getTypeContractInfo(2)
+                            }}
+                            style={{color: fontAndColor.COLORA2}}>《买卖协议附件》</Text>
+                    }
+                    {/*<Text style={{color: fontAndColor.COLORA1}}>和</Text>
+                     <Text
+                     onPress={() => {
+                     this.getTypeContractInfo(2)
+                     }}
+                     style={{color: fontAndColor.COLORA2}}>《授权声明》</Text>*/}
                 </View>
             )
         } else if (rowData === '3') {
@@ -825,7 +984,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                source={imageUrl.length ? {uri: imageUrl[0].icon_url} : require('../../../images/carSourceImages/car_null_img.png')}/>
                         <View style={{marginLeft: Pixel.getPixel(10)}}>
                             <Text style={{width: width - Pixel.getPixel(15 + 120 + 10 + 15)}}
-                                  numberOfLines={1}>{this.orderDetail.orders_item_data[0].car_name}</Text>
+                                  numberOfLines={1}>{this.orderDetail.orders_item_data[0].car_data.model_name}</Text>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>里程：</Text>
                                 <Text
@@ -835,7 +994,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 <Text style={styles.carDescribeTitle}>上牌：</Text>
                                 <Text style={styles.carDescribe}>{initRegDate}</Text>
                             </View>
-                            {this.orderState !== 0 ? <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
+                            {this.orderState !== 0 ? <View
+                                style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>成交价：</Text>
                                 <Text style={styles.carDescribe}>{this.orderDetail.transaction_amount}元</Text>
                             </View> : null}
@@ -953,10 +1113,10 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         <Text style={styles.infoContent}>{this.orderDetail.seller_name}</Text>
                     </View>
                     {/*<View style={styles.infoItem}>
-                        <Text style={styles.orderInfo}>联系方式</Text>
-                        <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>{this.orderDetail.seller_phone}</Text>
-                    </View>*/}
+                     <Text style={styles.orderInfo}>联系方式</Text>
+                     <View style={{flex: 1}}/>
+                     <Text style={styles.infoContent}>{this.orderDetail.seller_phone}</Text>
+                     </View>*/}
                     <View style={styles.infoItem}>
                         <Text style={styles.orderInfo}>企业名称</Text>
                         <View style={{flex: 1}}/>
@@ -1114,7 +1274,7 @@ const styles = StyleSheet.create({
     },
     expButton: {
         marginBottom: Pixel.getPixel(20),
-        width: width - width / 4 - Pixel.getPixel(40),
+        width: Pixel.getPixel(100),
         height: Pixel.getPixel(35),
         marginTop: Pixel.getPixel(16),
         flexDirection: 'row',
