@@ -199,6 +199,28 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
                 this.items.push({title: '完成交易', nodeState: 1, isLast: true, isFirst: false});
                 break;
+            case 5: // 订单融资处理中
+                this.mList = [];
+                this.mList = ['3', '7'];
+                break;
+            case 6: // 待付首付款
+                this.mList = [];
+                this.items = [];
+                this.contactData = {};
+                this.mList = ['0', '1', '2', '3', '4', '5', '6'];
+                this.contactData = {
+                    layoutTitle: '付首付款',
+                    layoutContent: '请支付首付款，之后等待放款。',
+                    setPrompt: true,
+                    promptTitle: '首付款说明',
+                    promptContent: '车贷房贷前您需先支付首付款，卖家可查看到账金额，但不可提现。如交易最终未完成，首付款可退回。'
+                };
+                this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
+                this.items.push({title: '已付订金', nodeState: 1, isLast: false, isFirst: false});
+                this.items.push({title: '结清尾款', nodeState: 2, isLast: false, isFirst: false});
+                //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
+                this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                break;
             default:
                 break;
         }
@@ -1124,6 +1146,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     </View>
                 </View>
             )
+        } else if (rowData === '7') {
+
         }
     }
 }
