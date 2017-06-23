@@ -125,15 +125,15 @@ export default class CarInfoScene extends BaseComponent {
     loadData = () => {
 
 
-/*        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-            if (data.code == 1 && data.result != '') {
-                let enters = JSON.parse(data.result);
-                this.loadCarData(enters.company_base_id);
+        /*        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+         if (data.code == 1 && data.result != '') {
+         let enters = JSON.parse(data.result);
+         this.loadCarData(enters.company_base_id);
 
-            } else {
-                this.loadCarData('');
-            }
-        });*/
+         } else {
+         this.loadCarData('');
+         }
+         });*/
         StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST, (data) => {
             if (data.code == 1 && data.result != '') {
                 let enters = JSON.parse(data.result);
@@ -480,7 +480,8 @@ export default class CarInfoScene extends BaseComponent {
                     this.CallView = ref
                 }}/>
                 <AccountModal ref="accountmodal"/>
-                <ExplainModal ref={(text) => this.expModal = text} title='说明' buttonStyle={styles.expButton} textStyle={styles.expText}
+                <ExplainModal ref={(text) => this.expModal = text} title='说明' buttonStyle={styles.expButton}
+                              textStyle={styles.expText}
                               text='知道了'
                               content='此质押车暂不可下单请您稍带时日再订购'/>
             </View>
@@ -530,7 +531,10 @@ export default class CarInfoScene extends BaseComponent {
                                     let navigatorParams = {
                                         name: '',
                                         component: '',
-                                        params: {callBack: () => {}}
+                                        params: {
+                                            callBack: () => {
+                                            }
+                                        }
                                     };
                                     if (lastType == '0') {
 
