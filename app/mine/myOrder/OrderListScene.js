@@ -45,6 +45,8 @@ export default class OrderListScene extends BaseComponent {
         this.status = this.props.status;
         this.startDate = '选择开始时间';
         this.endDate = '选择结束时间';
+        this.payType = 0;
+        this.payTypeText = '';
         //let business = this.props.business;
         this.state = {
             dataSource: [],
