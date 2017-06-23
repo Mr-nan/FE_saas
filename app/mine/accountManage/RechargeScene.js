@@ -109,7 +109,7 @@ export  default class RechargeScene extends BaseComponent {
                             </View>
                         </View>
                         <Text style={{color: fontAndColor.COLORA1,fontSize: Pixel.getPixel(14)}}>
-                            您可以使用您的银行卡，通过线下转账（柜台、网银、手机银行）的方式将资金充值到您的恒丰银行账户下。</Text>
+                            请务必使用绑定账户的银行卡充值，通过线下转账（柜台、网银、手机银行）的方式将资金充值到您的恒丰银行账户下。</Text>
                         <View style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(120),marginTop:Pixel.getPixel(15),
                     borderRadius: Pixel.getPixel(4),backgroundColor:fontAndColor.COLORA3,justifyContent:'center',paddingLeft:
                     Pixel.getPixel(15)}}>
