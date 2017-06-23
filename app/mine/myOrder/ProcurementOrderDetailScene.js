@@ -279,7 +279,22 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 marginLeft: Pixel.getPixel(15),
                                 fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                                 color: fontAndColor.COLORB7
-                            }}>您申请的贷款已准备放款</Text>
+                            }}>您申请的贷款已准备放款，申请发车后付款到卖家账户，卖家可提现全部车款。</Text>
+                        </View>
+                        <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>
+                    </View>
+                )
+                break;
+            case 3:
+                this.listViewStyle = Pixel.getPixel(0);
+                return (
+                    <View style={{marginTop: Pixel.getTitlePixel(65)}}>
+                        <View style={styles.tradingCountdown}>
+                            <Text style={{
+                                marginLeft: Pixel.getPixel(15),
+                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                color: fontAndColor.COLORB7
+                            }}>正在准备放款请稍后。</Text>
                         </View>
                         <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>
                     </View>
