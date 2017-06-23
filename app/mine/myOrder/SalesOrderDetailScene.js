@@ -1267,7 +1267,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                 <Text style={styles.carDescribeTitle}>上牌：</Text>
                                 <Text style={styles.carDescribe}>{initRegDate}</Text>
                             </View>
-                            {this.orderState !== 0 ? <View
+                            {this.orderState !== 0 && this.orderState !== 1 ? <View
                                 style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>成交价：</Text>
                                 <Text style={styles.carDescribe}>{this.orderDetail.transaction_amount}元</Text>

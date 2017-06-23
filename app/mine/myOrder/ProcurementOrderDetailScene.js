@@ -221,6 +221,22 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
                 this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
                 break;
+            case 7: // 融资单确认验收车辆
+                this.mList = [];
+                this.items = [];
+                this.contactData = {};
+                this.mList = ['0', '1', '2', '3', '4', '5', '6'];
+                this.contactData = {
+                    layoutTitle: '确认验收车辆',
+                    layoutContent: '确认验收后，请等待贷款放款。',
+                    setPrompt: false
+                };
+                this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
+                this.items.push({title: '已付订金', nodeState: 1, isLast: false, isFirst: false});
+                this.items.push({title: '结清尾款', nodeState: 2, isLast: false, isFirst: false});
+                //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
+                this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                break;
             default:
                 break;
         }
@@ -873,6 +889,10 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             }
                         }
                         this.stateMapping(status, cancelStatus);
+
+                        // TODO this is TEST!!!!!!!!!!!!
+                        this.orderState = 5;
+
                         this.initListData(this.orderState);
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
@@ -1083,7 +1103,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             marginLeft: Pixel.getPixel(15)
                         }}>贷款信息</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={{color: fontAndColor.COLORA2}}>还款单号:</Text>
+                        <Text style={{color: fontAndColor.COLORA2}}>贷款单号：</Text>
                         <Text style={{color: fontAndColor.COLORA2}}>232222333</Text>
                         <Image
                             style={styles.backIcon}
@@ -1162,7 +1182,55 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 </View>
             )
         } else if (rowData === '7') {
-
+            return (
+                <TouchableOpacity
+                    style={styles.itemType7}
+                    onPress={() => {
+                        // 跳转金融页面
+                        //this.props.showToast('rowData === 7');
+                    }}>
+                    <View style={{alignItems: 'center', flexDirection: 'row', height: Pixel.getPixel(44)}}>
+                        <Text style={{
+                            marginLeft: Pixel.getPixel(15),
+                            fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                            color: fontAndColor.COLORA0
+                        }}>订单融资状态</Text>
+                        <View style={{flex: 1}}/>
+                        <Text style={{
+                            marginRight: Pixel.getPixel(10),
+                            fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                            color: fontAndColor.COLORB2
+                        }}>等待放款</Text>
+                        <Image source={require('../../../images/mainImage/celljiantou.png')}
+                               style={{marginRight: Pixel.getPixel(15)}}/>
+                    </View>
+                </TouchableOpacity>
+            )
+        } else if (rowData === '8') {
+            return (
+                <TouchableOpacity
+                    style={styles.itemType7}
+                    onPress={() => {
+                        // 跳转金融页面
+                        //this.props.showToast('rowData === 7');
+                    }}>
+                    <View style={{alignItems: 'center', flexDirection: 'row', height: Pixel.getPixel(44)}}>
+                        <Text style={{
+                            marginLeft: Pixel.getPixel(15),
+                            fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                            color: fontAndColor.COLORA0
+                        }}>贷款信息</Text>
+                        <View style={{flex: 1}}/>
+                        <Text style={{
+                            marginRight: Pixel.getPixel(10),
+                            fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                            color: fontAndColor.COLORA1
+                        }}>贷款单号：</Text>
+                        <Image source={require('../../../images/mainImage/celljiantou.png')}
+                               style={{marginRight: Pixel.getPixel(15)}}/>
+                    </View>
+                </TouchableOpacity>
+            )
         }
     }
 }
@@ -1354,5 +1422,9 @@ const styles = StyleSheet.create({
         borderRadius: 3,
         borderWidth: 1,
         borderColor: fontAndColor.COLORB0
+    },
+    itemType7: {
+        backgroundColor: '#ffffff',
+        height: Pixel.getPixel(44)
     }
 });
