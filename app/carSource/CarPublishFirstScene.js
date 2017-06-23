@@ -506,7 +506,6 @@ export default class CarPublishFirstScene extends BaseComponent{
 
 
         }, (error) => {
-            this.props.showModal(false);
             this.props.showToast(error.msg);
         });
 
@@ -520,6 +519,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                 if (data.code == 1) {
                     if (data.result) {
                         this.carData=JSON.parse(data.result);
+                        console.log(this.carData);
                         this.setCarData();
                     }
                 }
