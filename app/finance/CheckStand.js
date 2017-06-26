@@ -39,6 +39,7 @@ export default class CheckStand extends BaseComponent {
         this.accountInfo = '';
         this.transSerialNo = '';
         this.isDoneCredit = 0;
+        this.credit = 0;
         this.state = {
             renderPlaceholderOnly: 'blank',
             isRefreshing: false
@@ -179,7 +180,7 @@ export default class CheckStand extends BaseComponent {
                               childStyle={styles.loginButtonTextStyle}
                               mOnPress={this.goPay}/>
                     {/*---订单融资---*/}
-                    {this.isDoneCredit == 1 && <View>
+                    {<View>
                         <View style={{
                             alignItems: 'center',
                             flexDirection: 'row',
