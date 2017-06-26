@@ -544,7 +544,8 @@ export default class CarInfoScene extends BaseComponent {
             name: "CarUpkeepScene",
             component: CarUpkeepScene,
             params: {
-                    vin:vin
+                vin:vin,
+                carData:this.state.carData
             }
         }
         this.toNextPage(navigationParams);
