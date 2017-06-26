@@ -106,6 +106,7 @@ export default class Grid extends Component {
                     onEndReachedThreshold={height}
                     refreshControl={this.props.refreshControl}
                     renderFooter={this.props.renderFooter}
+                    removeClippedSubviews={false}
                 />
             </View>
         );

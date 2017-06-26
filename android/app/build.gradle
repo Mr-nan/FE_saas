@@ -96,8 +96,8 @@ android {
         applicationId "com.fe_sass"
         minSdkVersion 19
         targetSdkVersion 22
-        versionCode 11
-        versionName "2.8.0"
+        versionCode 15
+        versionName "3.2.0"
         ndk {
             abiFilters "armeabi","armeabi-v8a"
         }
@@ -115,11 +115,11 @@ android {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.release
-            buildConfigField "String", "CODEPUSH_KEY", '"SmjkaVnMj5aa_qPk1L1k8mnP1d58VJvFYEdiG"'
+            buildConfigField "String", "CODEPUSH_KEY", '"fSQnzvsEP5qb9jD_tr4k2QC9pKlie1b7b22b-ea3f-4c77-abcc-72586c814b3c"'
         }
 
         releaseStaging {
-            buildConfigField "String", "CODEPUSH_KEY", '"SmjkaVnMj5aa_qPk1L1k8mnP1d58VJvFYEdiG"'
+            buildConfigField "String", "CODEPUSH_KEY", '"fSQnzvsEP5qb9jD_tr4k2QC9pKlie1b7b22b-ea3f-4c77-abcc-72586c814b3c"'
         }
 
     }
@@ -169,6 +169,7 @@ dependencies {
         compile project(':react-native-code-push')
         compile 'com.facebook.fresco:animated-gif:0.13.0'
         compile project(':react-native-spinkit')
+        compile 'com.umeng.analytics:analytics:latest.integration'
 }
 
 // Run this once to be able to run the application with BUCK

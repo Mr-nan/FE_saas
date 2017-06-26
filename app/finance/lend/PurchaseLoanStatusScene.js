@@ -130,6 +130,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                     </View>
                 </View>
                 <ListView
+                    removeClippedSubviews={false}
                     style={{marginTop: Pixel.getPixel(15)}}
                     dataSource={this.state.dataSource}
                     renderRow={this._renderRow}

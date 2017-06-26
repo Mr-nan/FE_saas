@@ -10,6 +10,7 @@ import {
     InteractionManager,
     Dimensions,
     Modal,
+    NativeModules
 
 
 } from 'react-native';
@@ -31,7 +32,7 @@ import *as weChat from 'react-native-wechat';
 import PixelUtil from '../utils/PixelUtil';
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
-
+let Platform = require('Platform');
 const Pixel = new PixelUtil();
 
 import {request} from "../utils/RequestUtil";
@@ -116,17 +117,30 @@ export default class CarInfoScene extends BaseComponent {
         this.loadData();
     }
 
-
     loadData=()=> {
 
-        this.loadCarData();
+
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if(data.code == 1 && data.result != '')
+            {
+                let enters = JSON.parse(data.result);
+                this.loadCarData(enters.company_base_id);
+
+            }else{
+                this.loadCarData('');
+            }
+        });
+
+
 
     }
 
-    loadCarData=()=>{
-        let url = AppUrls.CAR_DETAIL;
-        request(url, 'post', {
+    loadCarData=(show_shop_id)=>{
+
+        request(AppUrls.CAR_DETAIL, 'post', {
             id: this.props.carID,
+            imgType:1,
+            shop_ids:show_shop_id,
         }).then((response) => {
 
             let carData = response.mjson.data;
@@ -139,7 +153,6 @@ export default class CarInfoScene extends BaseComponent {
                 carData.nature_str,
                 carData.car_color.split("|")[0]+'/'+carData.trim_color.split("|")[0],
             ];
-            carData.show_order = 2;
             if(carData.imgs.length<=0){
 
                 carData.imgs=[ {require:require('../../images/carSourceImages/car_info_null.png')}];
@@ -155,6 +168,7 @@ export default class CarInfoScene extends BaseComponent {
             this.setState({renderPlaceholderOnly: 'error'});
         });
     }
+
 
     loadCarResidualsData=(carData)=>{
 
@@ -232,15 +246,15 @@ export default class CarInfoScene extends BaseComponent {
                                         carData.dealer_price>0&& (
                                             <View style={{flexDirection:'row', alignItems:'center'}}>
                                                 <Text style={styles.priceText}>{this.carMoneyChange(carData.dealer_price) +'万'}</Text>
-                                                {/*{*/}
-                                                    {/*(carData.city_id!='0'&&carData.model_id!='0'&&carData.city_id!=''&&carData.model_id!='') &&*/}
-                                                    {/*<TouchableOpacity style={{flexDirection:'row', alignItems:'center'}}*/}
-                                                                      {/*activeOpacity={1}*/}
-                                                                      {/*onPress={()=>{this.pushCarReferencePriceScene(carData)}}>*/}
-                                                        {/*<Image style={{marginLeft:Pixel.getPixel(10)}} source={require('../../images/carSourceImages/carPriceIcon.png')}/>*/}
-                                                        {/*<Text style={[styles.priceText,{marginLeft:Pixel.getPixel(5), fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}]}>查看参考价</Text>*/}
-                                                    {/*</TouchableOpacity>*/}
-                                                {/*}*/}
+                                                {
+                                                    (carData.city_id!='0'&&carData.model_id!='0'&&carData.city_id!=''&&carData.model_id!='') &&
+                                                    <TouchableOpacity style={{flexDirection:'row', alignItems:'center'}}
+                                                                      activeOpacity={1}
+                                                                      onPress={()=>{this.pushCarReferencePriceScene(carData)}}>
+                                                        <Image style={{marginLeft:Pixel.getPixel(10)}} source={require('../../images/carSourceImages/carPriceIcon.png')}/>
+                                                        <Text style={[styles.priceText,{marginLeft:Pixel.getPixel(5), fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}]}>查看参考价</Text>
+                                                    </TouchableOpacity>
+                                                }
                                             </View>
                                         )
                                     }
@@ -393,13 +407,13 @@ export default class CarInfoScene extends BaseComponent {
                                 <Text style={styles.callText}>电话咨询</Text>
                             </View>
                         </TouchableOpacity>
-                        {
-                            carData.show_order!==2 && (
-                                <TouchableOpacity style={styles.orderView} onPress={()=>{this.orderClick(carData)}}>
-                                    <Text style={styles.orderText}>订购</Text>
-                                </TouchableOpacity>
-                            )
-                        }
+                        {/*{*/}
+                            {/*carData.show_order!==2 && (*/}
+                                {/*<TouchableOpacity style={styles.orderView} onPress={()=>{this.orderClick(carData)}}>*/}
+                                    {/*<Text style={styles.orderText}>订购</Text>*/}
+                                {/*</TouchableOpacity>*/}
+                            {/*)*/}
+                        {/*}*/}
                     </View>
                 <NavigationView
                     ref="navtigation"
@@ -503,8 +517,6 @@ export default class CarInfoScene extends BaseComponent {
             this.props.showToast('没有车辆图片');
             return;
         }
-
-        console.log(this.state.carData.imgs);
 
         let navigatorParams = {
             name: "CarZoomImageScene",
@@ -929,7 +941,7 @@ class CallView extends Component {
                               )
                           }
                           {
-                              this.state.callData.shopsNumber!=='' && (
+                              this.state.callData.shopsNumber!=="" && (
                                   <TouchableOpacity onPress={()=>{this.callAction(this.state.callData.shopsNumber)}}>
                                       <View style={[styles.callModelItem,{marginTop:Pixel.getPixel(20)}]}>
                                           <Image source={require('../../images/carSourceImages/phoneIcon.png')}/>
@@ -946,7 +958,12 @@ class CallView extends Component {
 
       callAction=(number)=>{
           this.isVisible(false,this.state.callData);
-          Linking.openURL('tel:'+number);
+          if (Platform.OS === 'android') {
+              NativeModules.VinScan.callPhone(number);
+          } else {
+              Linking.openURL('tel:'+number);
+          }
+
       }
 }
 

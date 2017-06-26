@@ -56,6 +56,7 @@ export default class VinInfo extends Component{
                 <TouchableOpacity style={styles.container} onPress={this._hiedModal}>
                     <View>
                         <ListView
+                            removeClippedSubviews={false}
                             dataSource={this.state.dataSource}
                             renderRow={this._renderRow}
                         />

@@ -25,6 +25,7 @@ project.xcworkspace
 #
 .idea
 .gradle
+.tmp
 local.properties
 *.iml
 
@@ -53,3 +54,4 @@ fastlane/screenshots
 /android/build
 /android/app/build
 /build
+diff_list

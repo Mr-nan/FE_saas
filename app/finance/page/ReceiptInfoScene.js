@@ -84,6 +84,7 @@ export default  class  ReceiptInfoScene extends BaseComponent{
             <ListView dataSource={this.state.dataSource}
                       renderSectionHeader={this.renderSectionHeader}
                       renderRow={this.renderRow}
+                      removeClippedSubviews={false}
                       renderSeparator={this._renderSeparator}
 
 

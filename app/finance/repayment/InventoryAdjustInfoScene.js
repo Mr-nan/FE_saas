@@ -107,6 +107,7 @@ export default class InventoryRepaymentInfoScene extends BaseComponent {
                 </View>
                 <View style={{width:width,height:1,backgroundColor: fontAndColor.COLORA3}}></View>
                 <ListView
+                    removeClippedSubviews={false}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}

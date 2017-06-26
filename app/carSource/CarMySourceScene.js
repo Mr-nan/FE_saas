@@ -200,7 +200,7 @@ export default class CarMySourceScene extends BaceComponent {
                     <MyCarSourceDropFrameView  ref="dropFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper2"/>
                     <MyCarSourceAuditView  ref="auditView"  carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper3"/>
                 </ScrollableTabView>
-                <LendSuccessAlert ref="showTitleAlert" title={'提示'} subtitle={''}/>
+                <LendSuccessAlert ref="showTitleAlert" title={'退回原因'} subtitle={''} confimTitle="关闭"/>
                 <NavigatorView title='我的车源' backIconClick={this.backToTop}
                                renderRihtFootView={this.renderRightFootView}/>
             </View>)
@@ -653,15 +653,21 @@ class MyCarSourceAuditView extends BaceComponent {
             carAuditData = response.mjson.data.list;
             carAuditStatus = response.mjson.data.status;
 
-            this.setState({
-                carData: this.state.carData.cloneWithRows(carAuditData),
-                isRefreshing: false,
-                renderPlaceholderOnly: 'success',
-                carAuditStatus: carAuditStatus,
+            if(carAuditData.length>0){
+                this.setState({
+                    carData: this.state.carData.cloneWithRows(carAuditData),
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'success',
+                    carAuditStatus: carAuditStatus,
 
-            });
-
-
+                });
+            }else {
+                this.setState({
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'null',
+                    carAuditStatus: carAuditStatus,
+                });
+            }
         }, (error) => {
 
             this.setState({
@@ -675,8 +681,8 @@ class MyCarSourceAuditView extends BaceComponent {
 
     loadMoreData = () => {
 
-        let url = AppUrls.CAR_PERLIST;
-        // let url = AppUrls.CAR_USER_CAR;
+        // let url = AppUrls.CAR_PERLIST;
+        let url = AppUrls.CAR_USER_CAR;
         carAuditPage += 1;
         request(url, 'post', {
             car_status: '3',
@@ -730,8 +736,8 @@ class MyCarSourceAuditView extends BaceComponent {
 
     renderHeader =()=> {
         return(
-            <View style={{paddingHorizontal:Pixel.getPixel(15),alignItems:'center',flex:1,height:Pixel.getPixel(35),backgroundColor:fontAndColor.COLORB6,
-                flexDirection:'row',justifyContent:'space-between',marginBottom:Pixel.getPixel(10)
+            <View style={{paddingHorizontal:Pixel.getPixel(15),alignItems:'center',height:Pixel.getPixel(35),backgroundColor:fontAndColor.COLORB6,
+                flexDirection:'row',justifyContent:'space-between',marginBottom:Pixel.getPixel(10), flex:1
             }}>
                 <View style={{flexDirection:'row', alignItems:'center'}}>
                     <Image source={require('../../images/carSourceImages/pointIcon.png')}/>
@@ -741,7 +747,26 @@ class MyCarSourceAuditView extends BaceComponent {
     }
 
     render() {
-        if (this.state.renderPlaceholderOnly !== 'success') {
+
+        if(this.state.renderPlaceholderOnly == 'null'){
+            return (
+                <View style={styles.loadView}>
+                    {
+                        this.loadView()
+                    }
+                    <View style={{paddingHorizontal:Pixel.getPixel(15),alignItems:'center',height:Pixel.getPixel(35),backgroundColor:fontAndColor.COLORB6,
+                        flexDirection:'row',justifyContent:'space-between',top:0,left:0,
+                        right:0,position:'absolute'
+                    }}>
+                        <View style={{flexDirection:'row', alignItems:'center'}}>
+                            <Image source={require('../../images/carSourceImages/pointIcon.png')}/>
+                            <Text style={{color:fontAndColor.COLORB2, fontSize:fontAndColor.LITTLEFONT28,marginLeft:Pixel.getPixel(5)}}>与其他商户重复的车源需待管理员核实后显示</Text>
+                        </View>
+                    </View>
+                </View>);
+
+        }else if (this.state.renderPlaceholderOnly !== 'success')
+        {
             return (
                 <View style={styles.loadView}>
                     {this.loadView()}

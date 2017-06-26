@@ -39,7 +39,6 @@ RCT_REMAP_METHOD(scan,
         
       };
       AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-      
       [app.window.rootViewController presentViewController:one animated:YES completion:nil];
       
     });
@@ -59,7 +58,6 @@ RCT_REMAP_METHOD(scan,
       };
       
       AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-      
       [app.window.rootViewController presentViewController:onev animated:YES completion:nil];
     
     });

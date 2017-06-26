@@ -86,7 +86,6 @@ export default class PublishModal extends BaseComponent {
     _newPress = ()=>{
         this._closePress();
         // this.props.callBack(this.newCarParams);
-
         let navigatorParams = {
             name: "CarPublishFirstScene",
             component: CarPublishFirstScene,

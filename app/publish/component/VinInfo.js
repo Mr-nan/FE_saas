@@ -57,6 +57,7 @@ export default class VinInfo extends Component{
                 <View style={styles.container}>
                     <View>
                         <ListView
+                            removeClippedSubviews={false}
                             dataSource={this.state.dataSource}
                             renderRow={this._renderRow}
                         />

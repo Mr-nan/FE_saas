@@ -42,6 +42,7 @@ var imgSid: '';
 var smsCode: '';
 var userNames = [];
 var Platform = require('Platform');
+let androidPhoneVersion = '';
 export default class LoginScene extends BaseComponent {
 
     constructor(props) {
@@ -61,6 +62,11 @@ export default class LoginScene extends BaseComponent {
     }
 
     componentDidMount() {
+        if (Platform.OS === 'android') {
+            NativeModules.VinScan.getPhoneVersion((verison) => {
+                androidPhoneVersion = verison;
+            });
+        }
         BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: 'loading'});
@@ -361,17 +367,23 @@ export default class LoginScene extends BaseComponent {
             this.props.showToast("短信验证码不能为空");
         } else {
             let device_code = '';
+            let device_type = '';
             if (Platform.OS === 'android') {
                 device_code = 'dycd_platform_android';
+                device_type = androidPhoneVersion;
             } else {
                 device_code = 'dycd_platform_ios';
+                device_type = 'phoneVersion='+phoneVersion+',phoneModel='
+                    +phoneModel+',appVersion='+appVersion;
             }
+            console.log(device_type);
             let maps = {
                 device_code: device_code,
                 code: smsCode,
                 login_type: "2",
                 phone: userName,
                 pwd: md5.hex_md5(passWord),
+                device_type:device_type
             };
             // this.props.showModal(true);
             this.setState({
@@ -379,74 +391,14 @@ export default class LoginScene extends BaseComponent {
             });
             request(AppUrls.LOGIN, 'Post', maps)
                 .then((response) => {
+                try {
                     // this.props.showModal(false);
                     this.setState({
                         loading: false,
                     });
-                    if (response.mycode == "1") {
-                        if (response.mjson.data.user_level == 2) {
-                            if (response.mjson.data.enterprise_list == [] || response.mjson.data.enterprise_list == "") {
-                                this.props.showToast("无授信企业");
-                            } else {
-                                // 保存用户登录状态
-                                StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '2');
-                                // 保存登录成功后的用户信息
-                                StorageUtil.mGetItem(StorageKeyNames.USERNAME, (data) => {
-                                    if (data.code == 1) {
-                                        if (data.result == null || data.result == "") {
-                                            StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName);
-                                        } else if (data.result.indexOf(userName) == -1) {
-                                            StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName + "," + data.result);
-                                        } else if (data.result == userName) {
-                                        } else {
-                                            let names;
-                                            if (data.result.indexOf(userName + ",") == -1) {
-                                                if (data.result.indexOf("," + userName) == -1) {
-                                                    names = data.result.replace(userName, "")
-                                                } else {
-                                                    names = data.result.replace("," + userName, "")
-                                                }
-                                            } else {
-                                                names = data.result.replace(userName + ",", "")
-                                            }
-                                            StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName + "," + names);
-                                        }
-                                    }
-                                })
-
-                                StorageUtil.mSetItem(StorageKeyNames.USER_INFO, JSON.stringify(response.mjson.data));
-                                // 保存用户信息
-                                StorageUtil.mSetItem(StorageKeyNames.BASE_USER_ID, response.mjson.data.base_user_id + "");
-                                StorageUtil.mSetItem(StorageKeyNames.ENTERPRISE_LIST, JSON.stringify(response.mjson.data.enterprise_list));
-                                StorageUtil.mSetItem(StorageKeyNames.HEAD_PORTRAIT_URL, response.mjson.data.head_portrait_url + "");
-                                StorageUtil.mSetItem(StorageKeyNames.IDCARD_NUMBER, response.mjson.data.idcard_number + "");
-                                StorageUtil.mSetItem(StorageKeyNames.PHONE, response.mjson.data.phone + "");
-                                StorageUtil.mSetItem(StorageKeyNames.REAL_NAME, response.mjson.data.real_name + "");
-                                StorageUtil.mSetItem(StorageKeyNames.TOKEN, response.mjson.data.token + "");
-                                StorageUtil.mSetItem(StorageKeyNames.USER_LEVEL, response.mjson.data.user_level + "");
-                                StorageUtil.mGetItem(response.mjson.data.phone + "", (data) => {
-                                    if (data.code == 1) {
-                                        if (data.result != null) {
-                                            if (response.mjson.data.user_level == 2) {
-                                                if (response.mjson.data.enterprise_list[0].role_type == '2') {
-                                                    this.loginPage({
-                                                        name: 'LoginGesture',
-                                                        component: LoginGesture,
-                                                        params: {from: 'RootScene'}
-                                                    })
-                                                } else {
-                                                    this.loginPage(this.loginSuccess)
-                                                }
-                                            } else {
-                                                this.loginPage(this.loginSuccess)
-                                            }
-                                            StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
-                                        } else {
-                                            this.loginPage(this.setLoginGesture)
-                                        }
-                                    }
-                                })
-                            }
+                    if (response.mjson.data.user_level == 2||response.mjson.data.user_level == 1) {
+                        if (response.mjson.data.enterprise_list == [] || response.mjson.data.enterprise_list == "") {
+                            this.props.showToast("您的账号未绑定企业");
                         } else {
                             // 保存用户登录状态
                             StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '2');
@@ -487,19 +439,19 @@ export default class LoginScene extends BaseComponent {
                             StorageUtil.mGetItem(response.mjson.data.phone + "", (data) => {
                                 if (data.code == 1) {
                                     if (data.result != null) {
-                                        if (response.mjson.data.user_level == 2) {
-                                            if (response.mjson.data.enterprise_list[0].role_type == '2') {
-                                                this.loginPage({
-                                                    name: 'LoginGesture',
-                                                    component: LoginGesture,
-                                                    params: {from: 'RootScene'}
-                                                })
-                                            } else {
-                                                this.loginPage(this.loginSuccess)
-                                            }
-                                        } else {
-                                            this.loginPage(this.loginSuccess)
-                                        }
+                                        // if (response.mjson.data.user_level == 2) {
+                                        //     if (response.mjson.data.enterprise_list[0].role_type == '2') {
+                                        this.loginPage({
+                                            name: 'LoginGesture',
+                                            component: LoginGesture,
+                                            params: {from: 'RootScene'}
+                                        })
+                                        //     } else {
+                                        //         this.loginPage(this.loginSuccess)
+                                        //     }
+                                        // } else {
+                                        //     this.loginPage(this.loginSuccess)
+                                        // }
                                         StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
                                     } else {
                                         this.loginPage(this.setLoginGesture)
@@ -508,8 +460,69 @@ export default class LoginScene extends BaseComponent {
                             })
                         }
                     } else {
-                        this.props.showToast(response.mjson.msg + "");
+                        // 保存用户登录状态
+                        StorageUtil.mSetItem(StorageKeyNames.LOGIN_TYPE, '2');
+                        // 保存登录成功后的用户信息
+                        StorageUtil.mGetItem(StorageKeyNames.USERNAME, (data) => {
+                            if (data.code == 1) {
+                                if (data.result == null || data.result == "") {
+                                    StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName);
+                                } else if (data.result.indexOf(userName) == -1) {
+                                    StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName + "," + data.result);
+                                } else if (data.result == userName) {
+                                } else {
+                                    let names;
+                                    if (data.result.indexOf(userName + ",") == -1) {
+                                        if (data.result.indexOf("," + userName) == -1) {
+                                            names = data.result.replace(userName, "")
+                                        } else {
+                                            names = data.result.replace("," + userName, "")
+                                        }
+                                    } else {
+                                        names = data.result.replace(userName + ",", "")
+                                    }
+                                    StorageUtil.mSetItem(StorageKeyNames.USERNAME, userName + "," + names);
+                                }
+                            }
+                        })
+
+                        StorageUtil.mSetItem(StorageKeyNames.USER_INFO, JSON.stringify(response.mjson.data));
+                        // 保存用户信息
+                        StorageUtil.mSetItem(StorageKeyNames.BASE_USER_ID, response.mjson.data.base_user_id + "");
+                        StorageUtil.mSetItem(StorageKeyNames.ENTERPRISE_LIST, JSON.stringify(response.mjson.data.enterprise_list));
+                        StorageUtil.mSetItem(StorageKeyNames.HEAD_PORTRAIT_URL, response.mjson.data.head_portrait_url + "");
+                        StorageUtil.mSetItem(StorageKeyNames.IDCARD_NUMBER, response.mjson.data.idcard_number + "");
+                        StorageUtil.mSetItem(StorageKeyNames.PHONE, response.mjson.data.phone + "");
+                        StorageUtil.mSetItem(StorageKeyNames.REAL_NAME, response.mjson.data.real_name + "");
+                        StorageUtil.mSetItem(StorageKeyNames.TOKEN, response.mjson.data.token + "");
+                        StorageUtil.mSetItem(StorageKeyNames.USER_LEVEL, response.mjson.data.user_level + "");
+                        StorageUtil.mGetItem(response.mjson.data.phone + "", (data) => {
+                            if (data.code == 1) {
+                                if (data.result != null) {
+                                    // if (response.mjson.data.user_level == 2) {
+                                    //     if (response.mjson.data.enterprise_list[0].role_type == '2') {
+                                    this.loginPage({
+                                        name: 'LoginGesture',
+                                        component: LoginGesture,
+                                        params: {from: 'RootScene'}
+                                    })
+                                    //     } else {
+                                    //         this.loginPage(this.loginSuccess)
+                                    //     }
+                                    // } else {
+                                    //     this.loginPage(this.loginSuccess)
+                                    // }
+                                    StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
+                                } else {
+                                    this.loginPage(this.setLoginGesture)
+                                }
+                            }
+                        })
                     }
+                }catch (error){
+                    this.props.showToast('数据错误');
+                }
+
                 }, (error) => {
                     // this.props.showModal(false);
                     this.setState({

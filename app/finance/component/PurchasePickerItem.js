@@ -103,9 +103,9 @@ export  default class PurchasePickerItem extends PureComponent {
                 path: 'images',
             }
         };
-        if(id=='buyer_seller_vehicle'){
-            this.props.openModal(()=>{this.openCamera()},()=>{this.openPicker()});
-        }else{
+        // if(id=='buyer_seller_vehicle'){
+        //     this.props.openModal(()=>{this.openCamera()},()=>{this.openPicker()});
+        // }else{
             ImagePicker.showImagePicker(options, (response) => {
                 if (response.didCancel) {
 
@@ -125,7 +125,7 @@ export  default class PurchasePickerItem extends PureComponent {
                     // console.log('aaaaaaaaaaaaaaaaaaaaa'+response.data);
                 }
             });
-        }
+        // }
     }
 
     openPicker=()=>{

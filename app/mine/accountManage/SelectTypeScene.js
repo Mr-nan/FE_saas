@@ -43,6 +43,7 @@ export  default class SelectTypeScene extends BaseComponent {
     }
 
 
+
     render() {
         if (this.state.renderPlaceholderOnly != 'success') {
             return this._renderPlaceholderView();
@@ -50,6 +51,7 @@ export  default class SelectTypeScene extends BaseComponent {
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
                 <ListView
+                    removeClippedSubviews={false}
                     style={{marginTop: Pixel.getTitlePixel(79)}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}

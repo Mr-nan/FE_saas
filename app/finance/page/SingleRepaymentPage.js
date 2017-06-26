@@ -119,6 +119,7 @@ export  default class SingleRepaymentPage extends BaseComponent {
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1, paddingTop: Pixel.getPixel(15)}}>
                 <ListView
+                    removeClippedSubviews={false}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}

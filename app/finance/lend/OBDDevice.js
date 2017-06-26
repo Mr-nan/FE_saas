@@ -365,14 +365,15 @@ export default class OBDDevice extends BaseComponent {
                     flex: 1,
                     marginTop: Pixel.getPixel(15)
                 }}>
-                        {
-                            this.state.source ?
-                                <ListView
-                                    dataSource={this.state.source}
-                                    renderRow={this._renderRow}
-                                    renderSeparator={this._renderSeparator}/>
-                                : null
-                        }
+                    {
+                        this.state.source ?
+                            <ListView
+                                removeClippedSubviews={false}
+                                dataSource={this.state.source}
+                                renderRow={this._renderRow}
+                                renderSeparator={this._renderSeparator}/>
+                            : null
+                    }
 
                 </View>
                 <MyButton buttonType={MyButton.TEXTBUTTON}

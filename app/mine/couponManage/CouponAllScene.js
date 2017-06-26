@@ -49,6 +49,7 @@ export default class CouponAllScene extends BaseComponent {
 
 
                 <ListView
+                    removeClippedSubviews={false}
                     contentContainerStyle={styles.listStyle}
                     dataSource={this.state.dataSource}
                     renderRow={this._renderRow}

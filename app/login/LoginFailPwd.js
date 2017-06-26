@@ -22,7 +22,7 @@ import StorageUtil from "../utils/StorageUtil";
 import SetLoginPwdGesture from "./SetLoginPwdGesture";
 import MainPage from "../main/MainPage";
 import * as StorageKeyNames from "../constant/storageKeyNames";
-
+import LoginGesture from './LoginGesture';
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
@@ -161,6 +161,7 @@ export default class LoginFailPwd extends BaseComponent {
                                     StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
                                     this.loginPage(this.loginSuccess)
                                 } else {
+                                    StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'true');
                                     this.loginPage(this.setLoginGesture)
                                 }
                             }
@@ -191,8 +192,8 @@ export default class LoginFailPwd extends BaseComponent {
     }
 
     loginSuccess = {
-        name: 'MainPage',
-        component: MainPage,
+        name: 'LoginGesture',
+        component: LoginGesture,
         params: {}
     }
 

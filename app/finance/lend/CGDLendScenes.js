@@ -504,6 +504,7 @@ export  default  class CGDLendScenes extends BaseComponent {
 
                <View style={commnetStyle.ListWarp}>
                    <ListView
+                       removeClippedSubviews={false}
                        enableEmptySections={true}
                        style={{flex:1}}
                        dataSource={this.state.dataSource}

@@ -101,6 +101,7 @@ export default class EmployeeManageScene extends BaseComponent {
                     {/**      导航栏          */}
 
                     <ListView
+                        removeClippedSubviews={false}
                         style={styles.listStyle}
                         dataSource={this.state.dataSource}
                         renderRow={this._renderRow}

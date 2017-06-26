@@ -119,6 +119,7 @@ export default class SingleSignManageScene extends BaseComponent {
                     <ListView
                         contentContainerStyle={styles.listStyle}
                         dataSource={this.state.dataSource}
+                        removeClippedSubviews={false}
                         renderRow={this._renderRow}
                         renderFooter={
                             this.renderListFooter

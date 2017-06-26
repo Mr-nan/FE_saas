@@ -13,14 +13,10 @@ import {
 
 import MyNavigator  from './component/MyNavigator';
 import ShowToast from "./component/toast/ShowToast";
-import CodePush from 'react-native-code-push';
-import *as weChat from 'react-native-wechat';
+import codePush from 'react-native-code-push'
+import * as weChat from 'react-native-wechat';
 
 export default class root extends Component {
-
-    // componentWillMount() {
-    //     CodePush.sync();
-    // }
 
     render() {
         return (
@@ -36,6 +32,10 @@ export default class root extends Component {
     componentDidMount() {
         weChat.registerApp('wx6211535f6243c779');
         global.iosIDFA = this.props.IDFA;
+        global.phoneVersion = this.props.phoneVersion;
+        global.phoneModel = this.props.phoneModel;
+        global.appVersion = this.props.appVersion;
+
     }
 
     showToast = (content) => {

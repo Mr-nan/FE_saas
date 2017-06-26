@@ -61,7 +61,7 @@ export  default class AccountFlowScene extends BaseComponent {
                             index = obj.i;
                         }
                     }
-                    renderTabBar={() => <RepaymenyTabBar tabName={["全部", "充值",'提现','交易']}/>}
+                    renderTabBar={() => <RepaymenyTabBar tabName={["全部", "充值",'提现','转账']}/>}
                 >
                     <FlowAllPage ref="flowallpage" tabLabel="ios-paper1"/>
                     <FlowRechargePage ref="flowrechargepage" tabLabel="ios-paper2"/>
@@ -77,7 +77,8 @@ export  default class AccountFlowScene extends BaseComponent {
                             this.refs.flowrechargepage.changeTime(time);
                        }else if(index==2){
                             this.refs.flowwithdrawalspage.changeTime(time);
-                       }else if(index==3){
+                       }
+                       else if(index==3){
                             this.refs.flowtransactionpage.changeTime(time);
                        }
                 }}/>

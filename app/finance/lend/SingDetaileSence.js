@@ -450,6 +450,7 @@ export  default  class SingDetaileSence extends BaseComponent {
             <View style={commnetStyle.container}>
 
                 <ListView
+                    removeClippedSubviews={false}
                     style={[commnetStyle.ListWarp]}
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}

@@ -98,6 +98,7 @@ export  default class AdjustManageListScene extends BaseComponent {
                     title="优惠券"
                     backIconClick={this.backPage}/>
                 <ListView
+                    removeClippedSubviews={false}
                     style={{marginTop: Pixel.getTitlePixel(74), flex: 1}}
                     dataSource={this.state.source}
                     renderRow={this._renderRow}
