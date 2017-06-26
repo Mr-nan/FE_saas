@@ -38,6 +38,7 @@ import AccountWebScene from "../accountManage/AccountWebScene";
 import WebScene from "../../main/WebScene";
 import ContractWebScene from "./ContractWebScene";
 import ContractScene from "./ContractScene";
+import LoanInfo from "./component/LoanInfo";
 const Pixel = new PixelUtil();
 
 export default class ProcurementOrderDetailScene extends BaseComponent {
@@ -226,7 +227,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
-                this.mList = ['0', '1', '2', '3', '4', '8', '6'];
+                this.mList = ['0', '1', '2', '3', '4', '7', '6'];
                 this.contactData = {
                     layoutTitle: '确认验收车辆',
                     layoutContent: '确认验收后，请等待贷款放款。',
@@ -242,7 +243,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
-                this.mList = ['0', '1', '3', '4', '8', '6'];
+                this.mList = ['0', '1', '3', '4', '7', '6'];
                 this.contactData = {
                     layoutTitle: '已完成',
                     layoutContent: '恭喜您交易已完成',
@@ -914,7 +915,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.stateMapping(status, cancelStatus);
 
                         // TODO this is TEST!!!!!!!!!!!!
-                        //this.orderState = 5;
+                        //this.orderState = 6;
 
                         this.initListData(this.orderState);
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -1119,57 +1120,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             )
         } else if (rowData === '5') {
             return (
-                <View style={styles.itemType5}>
-                    <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
-                        <Text style={{
-                            fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-                            marginLeft: Pixel.getPixel(15)
-                        }}>贷款信息</Text>
-                        <View style={{flex: 1}}/>
-                        <Text style={{color: fontAndColor.COLORA2}}>贷款单号：</Text>
-                        <Text style={{color: fontAndColor.COLORA2}}>232222333</Text>
-                        <Image
-                            style={styles.backIcon}
-                            source={require('../../../images/mainImage/celljiantou.png')}/>
-                    </View>
-                    <View style={styles.separatedLine}/>
-                    <View style={{
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        marginLeft: Pixel.getPixel(15),
-                        marginTop: Pixel.getPixel(20),
-                        marginRight: Pixel.getPixel(15)
-                    }}>
-                        <Text style={styles.orderInfo}>最大可贷额度</Text>
-                        <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>100000元</Text>
-                    </View>
-                    {/*TODO 输入申请贷款额度*/}
-                    <View style={styles.inputBorder}>
-                        <TextInput defaultValue={0}
-                                   placeholder={"请输入申请贷款的额度"}
-                                   style={styles.inputStyle}
-                                   secureTextEntry={false}
-                                   underlineColorAndroid="transparent"
-                        />
-                        <Text style={{marginRight: Pixel.getPixel(10)}}>元</Text>
-                    </View>
-                    <View style={styles.infoItem}>
-                        <Text style={styles.orderInfo}>需支付服务费</Text>
-                        <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>100000元</Text>
-                    </View>
-                    <View style={styles.infoItem}>
-                        <Text style={styles.orderInfo}>需支付OBD使用费</Text>
-                        <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>100000元</Text>
-                    </View>
-                    <View style={styles.infoItem}>
-                        <Text style={styles.orderInfo}>应付首付款</Text>
-                        <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>100000元</Text>
-                    </View>
-                </View>
+                <LoanInfo
+                    loanCode={this.orderDetail.orders_item_data[0].car_finance_data.loan_code}
+                />
             )
         } else if (rowData === '6') {
             return (
