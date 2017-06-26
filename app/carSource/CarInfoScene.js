@@ -1091,16 +1091,18 @@ class CallView extends Component {
                                 </TouchableOpacity>
                             )
                         }
-                        {/*{*/}
-                        {/*this.state.callData.shopsNumber!=="" && (*/}
-                        {/*<TouchableOpacity onPress={()=>{this.callAction(this.state.callData.shopsNumber)}}>*/}
-                        {/*<View style={[styles.callModelItem,{marginTop:Pixel.getPixel(20)}]}>*/}
-                        {/*<Image source={require('../../images/carSourceImages/phoneIcon.png')}/>*/}
-                        {/*<Text style={styles.callText}>咨询商家</Text>*/}
-                        {/*</View>*/}
-                        {/*</TouchableOpacity>*/}
-                        {/*)*/}
-                        {/*}*/}
+                        {
+                            this.state.callData.shopsNumber !== "" && (
+                                <TouchableOpacity onPress={() => {
+                                    this.callAction(this.state.callData.shopsNumber)
+                                }}>
+                                    <View style={[styles.callModelItem, {marginTop: Pixel.getPixel(20)}]}>
+                                        <Image source={require('../../images/carSourceImages/phoneIcon.png')}/>
+                                        <Text style={styles.callText}>咨询商家</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            )
+                        }
                     </View>
                 </TouchableOpacity>
             </Modal>
