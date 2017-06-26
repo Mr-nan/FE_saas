@@ -115,6 +115,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.mList = ['0', '1', '3', '4', '6'];
                 this.contactData = {
                     layoutTitle: '已拍下',
+                    layoutContent: '请先与卖家联系商议成交价，待卖家确认后支付订金。',
                     setPrompt: false,
                     MerchantNum: merchantNum,
                     CustomerServiceNum: customerServiceNum
@@ -132,7 +133,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.mList = ['0', '1', '2', '3', '4', '6'];
                 this.contactData = {
                     layoutTitle: '付订金',
-                    layoutContent: '请尽快支付订金' + this.orderDetail.deposit_amount + '元，避免此车被其他买家买走。',
+                    layoutContent: '请尽快支付订金' + this.orderDetail.deposit_amount + '元，支付后卖家可查看到账金额，但不可提现。',
                     setPrompt: true,
                     promptTitle: '订金说明',
                     promptContent: '交付订金后卖家会为您保留车源，且卖家不可提现，如果交易最终未完成，您可以和卖家协商退回订金。',
