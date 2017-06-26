@@ -285,7 +285,7 @@ export default class CheckStand extends BaseComponent {
                         }}>申请订单融资额度请联系客服</Text>
                     </View> }
                     <ExplainModal ref='expModal' title='提示' buttonStyle={styles.expButton} textStyle={styles.expText}
-                                  text='确定' content='您的余额不足请充值'/>
+                                  text='确定' content='此车在质押中，需要卖方解除质押后可申请订单融资。'/>
                 </View>
             )
         }
@@ -325,14 +325,21 @@ export default class CheckStand extends BaseComponent {
         });
     };
 
+    /**
+     *  跳转订单融资申请页
+     */
     goApplyLoan = () => {
-        this.toNextPage({
-            name: 'DDApplyLendScene',
-            component: DDApplyLendScene,
-            params: {
-                orderNo: this.props.orderNo
-            }
-        });
+        if (this.props.pledgeType == 1 && this.props.pledgeStatus == 1) {
+            this.refs.expModal.changeShowType(true, '提示', '此车在质押中，需要卖方解除质押后可申请订单融资。', '确定');
+        } else {
+            this.toNextPage({
+                name: 'DDApplyLendScene',
+                component: DDApplyLendScene,
+                params: {
+                    orderNo: this.props.orderNo
+                }
+            });
+        }
     };
 
     goPay = () => {
