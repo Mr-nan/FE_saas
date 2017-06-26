@@ -10,7 +10,8 @@ import {
     Linking,
     Text,
     TouchableOpacity,
-    Platform
+    Platform,
+    NativeModules
 } from 'react-native';
 import PixelUtil from "../../../utils/PixelUtil";
 let Pixel = new PixelUtil();
