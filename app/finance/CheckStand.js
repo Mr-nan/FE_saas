@@ -39,7 +39,7 @@ export default class CheckStand extends BaseComponent {
         super(props);
         this.accountInfo = '';
         this.transSerialNo = '';
-        this.isDoneCredit = 0;
+        this.isShowFinancing = 0;
         this.creditBalanceMny = 0;
         this.state = {
             renderPlaceholderOnly: 'blank',
@@ -77,10 +77,7 @@ export default class CheckStand extends BaseComponent {
                     this.props.showModal(false);
                     this.accountInfo = response.mjson.data.account;
                     if (this.accountInfo) {
-                        this.setState({
-                            isRefreshing: false,
-                            renderPlaceholderOnly: 'success'
-                        });
+                        this.getMergeWhitePoStatus();
                     } else {
                         this.props.showToast('用户信息查询失败');
                         this.setState({
@@ -97,6 +94,59 @@ export default class CheckStand extends BaseComponent {
                 });
             } else {
                 this.props.showToast('用户信息查询失败');
+            }
+        });
+    };
+
+    /**
+     *  检查用户是否是白名单用户
+     */
+    getMergeWhitePoStatus = () => {
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let isDoneCredit = datas.is_done_credit;
+                let mergeId = datas.merge_id;
+                if (isDoneCredit == 0) {
+                    this.isShowFinancing = 0;
+                    this.setState({
+                        isRefreshing: false,
+                        renderPlaceholderOnly: 'success'
+                    });
+                } else {
+                    let maps = {
+                        api: AppUrls.ORDER_GET_MERGE_WHITE_PO_STATUS,
+                        merge_id: mergeId
+                    };
+                    let url = AppUrls.FINANCE;
+                    request(url, 'post', maps).then((response) => {
+/*                        if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                            this.loadData();
+                        } else {
+                            this.props.showToast(response.mjson.msg);
+                        }*/
+                        this.isShowFinancing = 1;
+                        this.setState({
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'success'
+                        });
+                        console.log('-=-=-=code-=-=',response.mjson.code);
+                        console.log('-=-=-=msg-=-=',response.mjson.msg);
+                        console.log('-=-=-=data-=-=',response.mjson.data);
+                    }, (error) => {
+                        this.isShowFinancing = 0;
+                        this.setState({
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'success'
+                        });
+                    });
+                }
+            } else {
+                this.isShowFinancing = 0;
+                this.setState({
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'success'
+                });
             }
         });
     };
@@ -183,7 +233,7 @@ export default class CheckStand extends BaseComponent {
                               childStyle={styles.loginButtonTextStyle}
                               mOnPress={this.goPay}/>
                     {/*---订单融资---*/}
-                    {<View>
+                    {this.isShowFinancing == 1 && this.props.payType == 2 && <View>
                         <View style={{
                             alignItems: 'center',
                             flexDirection: 'row',

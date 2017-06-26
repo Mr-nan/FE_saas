@@ -877,3 +877,7 @@ export const ORDER_DENY_CANCEL = BASEURL + V +'order/denyCancel';
  * 查看订单某个类型合同
  */
 export const ORDER_GET_CONTRACT = BASEURL + V +'order/getContractByType';
+/**
+ *  获取借款人所属白名单状态【订单融资调用】
+ */
+export const ORDER_GET_MERGE_WHITE_PO_STATUS = 'api/v3/account/get_merge_white_po_status';
