@@ -58,8 +58,8 @@ export default class DDApplyLendScene extends BaseComponent {
     initFinish() {
         //加载完成，根据是否有订单号，来判断是不是编辑页面
 
-        //编辑页面。有订单号
-        if(this.props.loan_code){
+        //编辑页面。审核未通过
+        if(this.props.shenhe=="yes"){
             this.getLenddetail()
 
         }
@@ -69,6 +69,12 @@ export default class DDApplyLendScene extends BaseComponent {
         }
     }
 
+    /**
+     * from @yujinzhong
+     *
+     *
+     * 获取订单融资申请前置数据
+     **/
     getLendInfo = () => {
 
         let maps = {
@@ -99,10 +105,17 @@ export default class DDApplyLendScene extends BaseComponent {
 
 
     }
+    /**
+     * from @yujinzhong
+     * @param lendInfo
+     *
+     *
+     * 获取到借款费率      申请获取车辆列表
+     **/
     getCarListInfo = (lendInfo) => {
         let maps = {
             api: apis.AUTOLIST,
-            payment_number: '201704270003'
+            platform_order_number	: '201704270003'//平台订单号
         };
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
@@ -168,12 +181,12 @@ export default class DDApplyLendScene extends BaseComponent {
 
         let dataSource = {};
         let section1 = [
-            {title: '借贷类型', key: '订单融资'},
-            {title: '借款费率', key: jsonData.payment_status_str},
-            {title: '保证金余额', key: jsonData.product_type},
-            {title: '保证金比例', key: jsonData.payment_loanmny_str},
-            {title: '借款期限', key: jsonData.payment_rate_str},
-            {title: '借款额度', key: jsonData.loanperiodstr},
+            {title: '借贷类型', key: jsonData.product_type},
+            {title: '借款费率', key: jsonData.rate},
+            {title: '保证金余额', key: jsonData.bond_mny+"元"},
+            {title: '保证金比例', key: jsonData.bond_mny},
+            {title: '借款期限', key: jsonData.loan_life},
+            {title: '借款额度', key: "30000~"+jsonData.max_loanmny+"元"},
         ]
         dataSource['section1'] = section1
         if (carData.length > 0) {
