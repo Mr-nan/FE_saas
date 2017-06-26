@@ -40,7 +40,7 @@ export default class CheckStand extends BaseComponent {
         this.accountInfo = '';
         this.transSerialNo = '';
         this.isDoneCredit = 0;
-        this.credit = 0;
+        this.creditBalanceMny = 0;
         this.state = {
             renderPlaceholderOnly: 'blank',
             isRefreshing: false
@@ -68,6 +68,7 @@ export default class CheckStand extends BaseComponent {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
                 this.isDoneCredit = datas.is_done_credit;
+                this.creditBalanceMny = datas.credit_balance_mny;
                 let maps = {
                     enter_base_ids: datas.company_base_id,
                 };
@@ -81,6 +82,7 @@ export default class CheckStand extends BaseComponent {
                             renderPlaceholderOnly: 'success'
                         });
                     } else {
+                        this.props.showToast('用户信息查询失败');
                         this.setState({
                             isRefreshing: false,
                             renderPlaceholderOnly: 'null'
@@ -223,7 +225,7 @@ export default class CheckStand extends BaseComponent {
                             }}>授信可用额度：</Text>
                             <Text style={{
                                 fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30)
-                            }}>200万</Text>
+                            }}>{this.creditBalanceMny}</Text>
                         </View>
                         <Text style={{
                             marginLeft: Pixel.getPixel(15),

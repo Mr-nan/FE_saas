@@ -519,6 +519,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                         orderId: this.props.orderId,
                                         orderNo: this.orderDetail.order_no,
                                         payType: this.orderState,
+                                        pledgeType: this.orderDetail.orders_item_data[0].car_finance_data.pledge_type,
+                                        pledgeStatus: this.orderDetail.orders_item_data[0].car_finance_data.pledge_status,
                                         callBack: this.payCallBack
                                     }
                                 });
