@@ -1208,7 +1208,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 <TouchableOpacity
                     style={styles.itemType7}
                     onPress={() => {
-                        // 跳转金融页面
+                        // 跳转金融页面  借款详情
                         //this.props.showToast('rowData === 7');
                     }}>
                     <View style={{alignItems: 'center', flexDirection: 'row', height: Pixel.getPixel(44)}}>
@@ -1216,13 +1216,13 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             marginLeft: Pixel.getPixel(15),
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                             color: fontAndColor.COLORA0
-                        }}>订单融资状态</Text>
+                        }}>借款单号</Text>
                         <View style={{flex: 1}}/>
                         <Text style={{
                             marginRight: Pixel.getPixel(10),
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                            color: fontAndColor.COLORB2
-                        }}>等待放款</Text>
+                            color: fontAndColor.COLORA1
+                        }}>{this.orderDetail.orders_item_data[0].car_finance_data.loan_code ? this.orderDetail.orders_item_data[0].car_finance_data.loan_code : '未生成借款单号'}</Text>
                         <Image source={require('../../../images/mainImage/celljiantou.png')}
                                style={{marginRight: Pixel.getPixel(15)}}/>
                     </View>
