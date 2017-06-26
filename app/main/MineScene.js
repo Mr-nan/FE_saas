@@ -39,12 +39,13 @@ import ImageSource from '../publish/component/ImageSource';
 import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
 import AccountModal from '../component/AccountModal';
-// import OrderTypeSelectScene from  '../mine/myOrder/OrderTypeSelectScene';
+import OrderTypeSelectScene from  '../mine/myOrder/OrderTypeSelectScene';
 
 let Platform = require('Platform');
 import ImagePicker from "react-native-image-picker";
 let firstType = '-1';
 let lastType = '-1';
+let haveOrder = 0;
 
 let componyname = '';
 const cellJianTou = require('../../images/mainImage/celljiantou.png');
@@ -163,6 +164,7 @@ export default class MineScene extends BaseComponent {
         //    拿到所有的json数据
         firstType = '-1';
         lastType = '-1';
+        haveOrder = 0;
         componyname = '';
         this.state = {
             renderPlaceholderOnly: 'blank',
@@ -314,10 +316,10 @@ export default class MineScene extends BaseComponent {
                         "icon": require('../../images/mainImage/myCarSource.png'),
                         "name": "我的车源"
                     },
-                    // {
-                    //     "icon": require('../../images/mainImage/my_order.png'),
-                    //     "name": "我的订单"
-                    // },
+                    {
+                        "icon": require('../../images/mainImage/my_order.png'),
+                        "name": "我的订单"
+                    },
                     {
                         "icon": require('../../images/mainImage/shoucangjilu.png'),
                         "name": "收藏记录"
@@ -383,10 +385,11 @@ export default class MineScene extends BaseComponent {
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
-                            if(response.mjson.data==null||response.mjson.data.length<=0){
+                            haveOrder = response.mjson.data.order.tradeing_count;
+                            if(response.mjson.data.account==null||response.mjson.data.account.length<=0){
                                 lastType = 'error';
                             }else{
-                                lastType = response.mjson.data.status;
+                                lastType = response.mjson.data.account.status;
                             }
                             // lastType = '3';、
                             this.changeData();
@@ -470,7 +473,8 @@ export default class MineScene extends BaseComponent {
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
                             this.props.showModal(false);
-                            lastType = response.mjson.data.status;
+                            haveOrder = response.mjson.data.order.tradeing_count;
+                            lastType = response.mjson.data.account.status;
                             if (lastType == '0') {
                                 this.navigatorParams.name = 'AccountManageScene'
                                 this.navigatorParams.component = AccountManageScene
@@ -543,8 +547,8 @@ export default class MineScene extends BaseComponent {
                 break;
                 break;
             case '我的订单':
-                // this.navigatorParams.name = 'OrderTypeSelectScene'
-                // this.navigatorParams.component = OrderTypeSelectScene
+                this.navigatorParams.name = 'OrderTypeSelectScene'
+                this.navigatorParams.component = OrderTypeSelectScene
                 break;
             case '收藏记录':
                 this.navigatorParams.name = 'CarCollectSourceScene'
@@ -590,6 +594,15 @@ export default class MineScene extends BaseComponent {
                     backgroundColor: '#00000000',color:fontAndClolr.COLORB2,fontSize:
                     Pixel.getFontPixel(fontAndClolr.LITTLEFONT28)}}>{showName}</Text> :
                         <View/>}
+                    {rowData.name == '我的订单' && haveOrder != 0 ?
+                        <View style={{
+                            marginRight: Pixel.getPixel(15),
+                            width: Pixel.getPixel(10),
+                            height: Pixel.getPixel(10),
+                            backgroundColor: fontAndClolr.COLORB2,
+                            borderRadius: 10
+                        }}
+                        /> : <View/>}
 
 
                     <Image source={cellJianTou} style={styles.rowjiantouImage}/>
@@ -619,7 +632,8 @@ export default class MineScene extends BaseComponent {
                                         };
                                         request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                                             .then((response) => {
-                                                    lastType = response.mjson.data.status;
+                                                    haveOrder = response.mjson.data.order.tradeing_count;
+                                                    lastType = response.mjson.data.account.status;
                                                     console.log('========'+lastType);
                                                     if (lastType == '0') {
                                                         this.refs.accountmodal.changeShowType(true,

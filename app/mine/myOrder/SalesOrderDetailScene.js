@@ -14,7 +14,10 @@ import {
     Image,
     Dimensions,
     NativeModules,
-    BackAndroid
+    BackAndroid,
+    InteractionManager,
+    TextInput,
+    RefreshControl
 } from  'react-native'
 
 const {width, height} = Dimensions.get('window');
@@ -29,38 +32,875 @@ import ExplainModal from "./component/ExplainModal";
 import MakePhoneModal from "./component/MakePhoneModal";
 import ChooseModal from "./component/ChooseModal";
 import TransactionPrice from "./component/TransactionPrice";
+import {request} from "../../utils/RequestUtil";
+import * as AppUrls from "../../constant/appUrls";
+import ContactLayout from "./component/ContactLayout";
+import GetCarCountDown from "./component/GetCarCountDown";
+import DepositCountDown from "./component/DepositCountDown";
+import CheckStand from "../../finance/CheckStand";
+import * as Net from '../../utils/RequestUtil';
+import StorageUtil from "../../utils/StorageUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
+import AccountScene from "../accountManage/RechargeScene";
+import VinInfo from '../../publish/component/VinInfo';
+import AccountWebScene from "../accountManage/AccountWebScene";
+import ContractWebScene from "./ContractWebScene";
+import OrderSearchScene from "./OrderSearchScene";
+import AccountManageScene from "../accountManage/AccountTypeSelectScene";
+import BindCardScene from "../accountManage/BindCardScene";
+import WaitActivationAccountScene from "../accountManage/WaitActivationAccountScene";
+import AccountModal from "../../component/AccountModal";
+import AccountForOrderModal from "./component/AccountForOrderModal";
+import ContractScene from "./ContractScene";
 const Pixel = new PixelUtil();
 
 const IS_ANDROID = Platform.OS === 'android';
-let items = [];
 
 export default class SalesOrderDetailScene extends BaseComponent {
 
     constructor(props) {
         super(props);
-        let mList = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
-        items = [];
-        items.push({title: '创建订单', nodeState: 1, isLast: false, isFirst: true});
-        items.push({title: '订金到账', nodeState: 2, isLast: false, isFirst: false});
-        items.push({title: '尾款到账', nodeState: 2, isLast: false, isFirst: false});
-        items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+        //let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.items = [];
+        this.mList = [];
+        this.listViewStyle = Pixel.getPixel(0);
+        this.orderDetail = '';
+        this.orderState = -1;
+        this.topState = -1;
+        this.bottomState = -1;
+        this.contactData = {};
+        this.carAmount = 0;
+        this.carVin = '';
+        this.leftTime = 0;
+        this.closeOrder = 0;
+        this.financeInfo = {};
 
         this.modelData = [];
-        this.scanType = [{model_name: '扫描前风挡'}, {model_name: '扫描行驶证'}, {model_name: '手动输入'}];
+        this.modelInfo = {};
+        this.carData = {'v_type': 1};
+
+        this.modelData = [];
+        this.scanType = [{model_name: '扫描前风挡'}, {model_name: '扫描行驶证'}];
 
         this.state = {
-            source: ds.cloneWithRows(mList)
+            dataSource: [],
+            renderPlaceholderOnly: 'blank',
+            isRefreshing: false
         }
     }
 
     componentDidMount() {
         BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
     }
 
+    initFinish = () => {
+        /*        this.setState({
+         dataSource: this.state.dataSource.cloneWithRows(['','','']),
+         renderPlaceholderOnly: 'success'
+         });*/
+        this.loadData();
+    };
+
+    updateCarAmount = (newAmount) => {
+        this.props.showModal(true);
+        this.carAmount = newAmount;
+    };
+
+    isShowFinance = (financeInfo) => {
+        if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_type == 2 &&
+            this.orderDetail.orders_item_data[0].car_finance_data.pledge_status == 1) {
+            if (financeInfo.is_show_finance == 1) {
+                this.financeInfo = financeInfo;
+                this.mList = [];
+                if (this.orderDetail.orders_item_data[0].car_vin.length === 17) {
+                    this.mList = ['0', '1', '2', '3', '4', '5', '7', '9'];
+                } else {
+                    this.mList = ['0', '1', '2', '3', '4', '5', '6', '7', '9'];
+                }
+                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                this.setState({
+                    dataSource: ds.cloneWithRows(this.mList),
+                    //dataSource: this.state.dataSource.cloneWithRows(this.mList),
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'success'
+                });
+            } else {
+                this.mList = [];
+                if (this.orderDetail.orders_item_data[0].car_vin.length === 17) {
+                    this.mList = ['0', '1', '2', '4', '5', '7', '9'];
+                } else {
+                    this.mList = ['0', '1', '2', '4', '5', '6', '7', '9'];
+                }
+                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                this.setState({
+                    dataSource: ds.cloneWithRows(this.mList),
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'success'
+                });
+            }
+        }
+        this.props.showModal(false);
+    };
+
+    savePrice = () => {
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                //console.log('this.vinInput.value======',this.vinInput.value);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    car_id: this.orderDetail.orders_item_data[0].car_id,
+                    order_id: this.orderDetail.id,
+                    pricing_amount: this.carAmount,
+                    //car_vin: this.carVin.length !== 17 ? this.orderDetail.orders_item_data[0].car_vin : this.carVin
+                    car_vin: this.orderDetail.orders_item_data[0].car_vin.length === 17 ?
+                        this.orderDetail.orders_item_data[0].car_vin : this.carVin
+                };
+                let url = AppUrls.ORDER_SAVE_PRICE;
+                request(url, 'post', maps).then((response) => {
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.loadData();
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
+                }, (error) => {
+                    if (error.mjson.code == '6390000') {
+                        this.props.showModal(false);
+                        if (error.mjson.data.account_card_status == 0) {
+                            this.refs.accountmodal.changeShowType(height,
+                                '您还未开通资金账户，为方便您使用金融产品及购物车，' +
+                                '请尽快开通！', '去开户', '看看再说', () => {
+                                    this.toNextPage({
+                                        name: 'AccountManageScene',
+                                        component: AccountManageScene,
+                                        params: {
+                                            callBack: () => {}
+                                        }
+                                    });
+                                });
+                        } else if (error.mjson.data.account_card_status == 1) {
+                            this.refs.accountmodal.changeShowType(height,
+                                '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
+                                , '去绑卡', '看看再说', () => {
+                                    this.toNextPage({
+                                        name: 'BindCardScene',
+                                        component: BindCardScene,
+                                        params: {
+                                            callBack: () => {}
+                                        }
+                                    });
+                                });
+                        } else if (error.mjson.data.account_card_status == 2) {
+                            this.refs.accountmodal.changeShowType(height,
+                                '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
+                                , '去激活', '看看再说', () => {
+                                    this.toNextPage({
+                                        name: 'WaitActivationAccountScene',
+                                        component: WaitActivationAccountScene,
+                                        params: {
+                                            callBack: () => {}
+                                        }
+                                    });
+                                });
+                        } else if (error.mjson.data.account_card_status == 5) {
+                            this.props.showToast('请您先开通平台账户');
+                        } else {
+                            this.props.showToast(error.mjson.msg);
+                        }
+                    } else {
+                        this.props.showToast(error.mjson.msg);
+                    }
+                });
+            } else {
+                this.props.showToast('成交价提交失败');
+            }
+        });
+    };
+
+    getLeftTime = (serverTime, cancelTime) => {
+        let currentTime = new Date(serverTime.replace(/-/g, '/')).valueOf();
+        let oldTime = new Date(cancelTime.replace(/-/g, '/')).valueOf();
+        return parseFloat(currentTime) - parseFloat(oldTime);
+    };
+
+    loadData = () => {
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.props.orderId,
+                    type: 2,
+                    sort: 2
+                };
+                let url = AppUrls.ORDER_DETAIL;
+                request(url, 'post', maps).then((response) => {
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.props.showModal(false);
+                        this.orderDetail = response.mjson.data;
+                        let status = response.mjson.data.status;
+                        let cancelStatus = response.mjson.data.cancel_status;
+                        this.leftTime = this.getLeftTime(this.orderDetail.server_time, this.orderDetail.cancel_time);
+                        this.closeOrder = this.getLeftTime(this.orderDetail.server_time, this.orderDetail.pricing_time);
+                        this.carAmount = 0;
+                        //this.carVin = this.orderDetail.orders_item_data[0].car_vin;
+                        //  判断订单处于取消状态 获取取消时订单状态，如已付款判断是否同意退款
+                        if (cancelStatus == 2 || cancelStatus == 3) {
+                            if (this.orderDetail.order_flows.length > 0) {
+                                let cancel = this.orderDetail.order_flows;
+                                for (let state in cancel) {
+                                    status = cancel[state];
+                                }
+                            } else {
+                                status = 0;
+                            }
+                        }
+                        this.stateMapping(status, cancelStatus);
+                        this.initListData(this.orderState);
+                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                        this.setState({
+                            dataSource: ds.cloneWithRows(this.mList),
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'success'
+                        });
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                        this.setState({
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'null'
+                        });
+                    }
+                }, (error) => {
+                    //this.props.showToast('获取订单详情失败');
+                    this.props.showToast(error.mjson.msg);
+                    this.setState({
+                        isRefreshing: false,
+                        renderPlaceholderOnly: 'error'
+                    });
+                });
+            } else {
+                this.props.showToast('获取订单详情失败');
+            }
+        });
+    };
+
+    /**
+     *  根据订单详情接口的 status 和 cancel_status 字段组合判断页面渲染
+     */
+    stateMapping = (status, cancelStatus) => {
+        switch (status) {
+            case 0:  // 已拍下，价格未定
+            case 1:
+                if (cancelStatus === 0) {
+                    this.orderState = 0;
+                    this.topState = -1;
+                    this.bottomState = 0;
+                } else if (cancelStatus === 1) {
+                    this.orderState = 0;
+                    this.topState = 0;
+                    this.bottomState = 5;
+                } else if (cancelStatus === 2) {
+                    this.orderState = 0;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 6;
+                    } else {
+                        this.bottomState = 2;
+                    }
+                } else if (cancelStatus === 3) {
+                    this.orderState = 0;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 6;
+                    } else {
+                        this.bottomState = 2;
+                    }
+                }
+                break;
+            case 2:  // 已拍下，价格已定
+            case 3:
+            case 4:
+                if (cancelStatus === 0) {
+                    this.orderState = 1;
+                    if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_type == 2 &&
+                        this.orderDetail.orders_item_data[0].car_finance_data.pledge_status == 1) {
+                        this.topState = 1;
+                    } else {
+                        this.topState = -1;
+                    }
+                    this.bottomState = 1;
+                } else if (cancelStatus === 1) {
+                    this.orderState = 1;
+                    this.topState = 0;
+                    this.bottomState = 5;
+                } else if (cancelStatus === 2) {
+                    this.orderState = 1;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 6;
+                    } else {
+                        this.bottomState = 2;
+                    }
+                } else if (cancelStatus === 3) {
+                    this.orderState = 1;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 6;
+                    } else {
+                        this.bottomState = 2;
+                    }
+                }
+                break;
+            case 5:  // 订金到账
+            case 6:
+            case 7:
+                if (cancelStatus === 0) {
+                    this.orderState = 2;
+                    if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_type == 2 &&
+                        this.orderDetail.orders_item_data[0].car_finance_data.pledge_status == 1) {
+                        this.topState = 1;
+                    } else {
+                        this.topState = -1;
+                    }
+                    this.bottomState = 1;
+                } else if (cancelStatus === 1) {
+                    this.orderState = 2;
+                    this.topState = 0;
+                    this.bottomState = 5;
+                } else if (cancelStatus === 2) {
+                    this.orderState = 2;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 6;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 3;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 4;
+                        } else {
+                            this.bottomState = 3;
+                        }
+                    }
+                } else if (cancelStatus === 3) {
+                    this.orderState = 2;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 6;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 3;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 4;
+                        } else {
+                            this.bottomState = 3;
+                        }
+                    }
+                }
+                break;
+            case 8: // 结清尾款
+            case 9:
+            case 10:
+                if (cancelStatus === 0) {
+                    this.orderState = 3;
+                    if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_type == 2 &&
+                        this.orderDetail.orders_item_data[0].car_finance_data.pledge_status == 1) {
+                        this.topState = 1;
+                    } else {
+                        this.topState = -1;
+                    }
+                    this.bottomState = 7;
+                } else if (cancelStatus === 1) {
+                    this.orderState = 3;
+                    this.topState = 0;
+                    this.bottomState = 5;
+                } else if (cancelStatus === 2) {
+                    this.orderState = 3;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 6;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 3;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 4;
+                        } else {
+                            this.bottomState = 3;
+                        }
+                    }
+                } else if (cancelStatus === 3) {
+                    this.orderState = 3;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 6;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 3;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 4;
+                        } else {
+                            this.bottomState = 3;
+                        }
+                    }
+                }
+                break;
+            case 11:  // 订单完成
+                if (cancelStatus === 0) {
+                    this.orderState = 4;
+                    this.topState = -1;
+                    this.bottomState = -1;
+                } else if (cancelStatus === 1) {
+                    this.orderState = 4;
+                    this.topState = 0;
+                    this.bottomState = 5;
+                } else if (cancelStatus === 2) {
+                    this.orderState = 4;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 6;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 3;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 4;
+                        } else {
+                            this.bottomState = 3;
+                        }
+                    }
+                } else if (cancelStatus === 3) {
+                    this.orderState = 4;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 6;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 3;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 4;
+                        } else {
+                            this.bottomState = 3;
+                        }
+                    }
+                }
+                break;
+        }
+    };
+
+    initDetailPageTop = (topState) => {
+        //  根据订单状态初始化详情页悬浮头、悬浮底
+        switch (topState) {
+            case 0:
+                this.listViewStyle = Pixel.getPixel(0);
+                return (
+                    <View style={{marginTop: Pixel.getTitlePixel(65)}}>
+                        <View style={styles.tradingCountdown}>
+                            <Text>
+                                <Text style={{
+                                    marginLeft: Pixel.getPixel(15),
+                                    fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                    color: fontAndColor.COLORB7
+                                }}>处理申请剩余时间</Text>
+                                <DepositCountDown leftTime={this.leftTime}/>
+                                <Text style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                    color: fontAndColor.COLORB7
+                                }}>超时未处理默认为不同意，订单自动取消</Text>
+                            </Text>
+                        </View>
+                        <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>
+                    </View>
+                )
+                break;
+            case 1:
+                this.listViewStyle = Pixel.getPixel(0);
+                return (
+                    <View style={{marginTop: Pixel.getTitlePixel(65)}}>
+                        <View style={styles.tradingCountdown}>
+                            <Text>
+                                <Text style={{
+                                    marginLeft: Pixel.getPixel(15),
+                                    fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                    color: fontAndColor.COLORB7
+                                }}>完成交易剩余时间</Text>
+                                <GetCarCountDown leftTime={this.closeOrder}/>
+                                <Text style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                    color: fontAndColor.COLORB7
+                                }}>超时订单将关闭。</Text>
+                            </Text>
+                        </View>
+                        <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>
+                    </View>
+                )
+                break;
+            default:
+                this.listViewStyle = Pixel.getTitlePixel(65);
+                return null;
+                break;
+        }
+    };
+
+
+    initDetailPageBottom = (orderState) => {
+        switch (orderState) {
+            case 0:
+                let negativeText = '';
+                let positiveText = '';
+                let content = '';
+                let positiveOperation = '';
+                return (
+                    <View style={styles.bottomBar}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                negativeText = '取消';
+                                positiveText = '确定';
+                                content = '确定后取消订单。如买家有已支付款项将退款，如您有补差价款可提现。';
+                                positiveOperation = this.cancelOrder;
+                                this.refs.chooseModal.changeShowType(true, negativeText, positiveText, content, positiveOperation);
+                            }}>
+                            <View style={styles.buttonCancel}>
+                                <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => {
+                                //console.log('韩梦测试测试测试====',this.carVin);
+                                negativeText = '再想想';
+                                positiveText = '没问题';
+                                content = '此车是库存融资质押车辆，请在买家支付订金后操作车辆出库。';
+                                positiveOperation = this.savePrice;
+                                if (this.carAmount === 0) {
+                                    this.props.showToast('请您先定价');
+                                } else {
+                                    if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_type == 1 &&
+                                        this.orderDetail.orders_item_data[0].car_finance_data.pledge_status == 1) {
+                                        this.refs.chooseModal.changeShowType(true, negativeText, positiveText, content, positiveOperation);
+                                    } else {
+                                        this.props.showModal(true);
+                                        this.savePrice();
+                                    }
+                                }
+                            }}>
+                            <View style={styles.buttonConfirm}>
+                                <Text style={{color: '#ffffff'}}>确认</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <ChooseModal ref='chooseModal' title='提示'
+                                     negativeButtonStyle={styles.negativeButtonStyle}
+                                     negativeTextStyle={styles.negativeTextStyle} negativeText={negativeText}
+                                     positiveButtonStyle={styles.positiveButtonStyle}
+                                     positiveTextStyle={styles.positiveTextStyle} positiveText={positiveText}
+                                     buttonsMargin={Pixel.getPixel(20)}
+                                     positiveOperation={positiveOperation}
+                                     content={content}/>
+                        {/*<ChooseModal ref='chooseModal1' title='提示'
+                         negativeButtonStyle={styles.negativeButtonStyle}
+                         negativeTextStyle={styles.negativeTextStyle} negativeText='再想想'
+                         positiveButtonStyle={styles.positiveButtonStyle}
+                         positiveTextStyle={styles.positiveTextStyle} positiveText='没问题'
+                         buttonsMargin={Pixel.getPixel(20)}
+                         positiveOperation={this.savePrice(this.carAmount)}
+                         content='此车是库存融资质押车辆，请在买家支付订金后操作车辆出库。'/>*/}
+                    </View>
+                )
+                break;
+            case 1:
+                return (
+                    <View style={styles.bottomBar}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                //this.refs.chooseModal.changeShowState(true);
+                                this.refs.chooseModal.changeShowType(true, '取消', '确定', '确定后取消订单。如买家有已支付款项将退款，如您有补差价款可提现。',
+                                    this.cancelOrder);
+                            }}>
+                            <View style={styles.buttonCancel}>
+                                <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <ChooseModal ref='chooseModal' title='提示'
+                                     negativeButtonStyle={styles.negativeButtonStyle}
+                                     negativeTextStyle={styles.negativeTextStyle} negativeText='取消'
+                                     positiveButtonStyle={styles.positiveButtonStyle}
+                                     positiveTextStyle={styles.positiveTextStyle} positiveText='确定'
+                                     buttonsMargin={Pixel.getPixel(20)}
+                                     positiveOperation={this.cancelOrder}
+                                     content=''/>
+                    </View>
+                )
+                break;
+            case 2:
+                return (
+                    <View style={[styles.bottomBar, {justifyContent: 'center'}]}>
+                        <Text style={{
+                            textAlign: 'center',
+                            fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                            color: fontAndColor.COLORB0
+                        }}>
+                            交易关闭
+                        </Text>
+                    </View>
+                );
+                break;
+            case 3:
+                return (
+                    <View style={[styles.bottomBar, {justifyContent: 'center'}]}>
+                        <Text style={{
+                            textAlign: 'center',
+                            fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                            color: fontAndColor.COLORB0
+                        }}>
+                            交易关闭(同意退款)
+                        </Text>
+                    </View>
+                );
+                break;
+            case 4:
+                return (
+                    <View style={[styles.bottomBar, {justifyContent: 'center'}]}>
+                        <Text style={{
+                            textAlign: 'center',
+                            fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                            color: fontAndColor.COLORB0
+                        }}>
+                            交易关闭(不同意退款)
+                        </Text>
+                    </View>
+                );
+                break;
+            case 5:
+                return (
+                    <View style={{backgroundColor: '#ffffff'}}>
+                        <View style={{alignItems: 'center', height: Pixel.getPixel(30), justifyContent: 'center'}}>
+                            <Text style={{color: fontAndColor.COLORB2}}>
+                                买家申请取消订单，如买家已支付款项选择同意后将退回
+                            </Text>
+                        </View>
+                        <View style={styles.bottomBar}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    this.props.showModal(true);
+                                    this.denyCancel();
+                                }}>
+                                <View style={styles.buttonCancel}>
+                                    <Text style={{color: fontAndColor.COLORA2}}>不同意</Text>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    this.props.showModal(true);
+                                    this.allowCancel();
+                                }}>
+                                <View style={styles.buttonConfirm}>
+                                    <Text style={{color: '#ffffff'}}>同意</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                )
+                break;
+            case 6:
+                return (
+                    <View style={[styles.bottomBar, {justifyContent: 'center'}]}>
+                        <Text style={{
+                            textAlign: 'center',
+                            fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                            color: fontAndColor.COLORB0
+                        }}>
+                            交易关闭(后台取消订单)
+                        </Text>
+                    </View>
+                );
+                break;
+            case 7:
+                return (
+                    <View style={styles.bottomBar}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.refs.cancelModal.changeShowType(true);
+                            }}>
+                            <View style={styles.buttonCancel}>
+                                <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <ExplainModal ref='cancelModal' title='提示' buttonStyle={styles.expButton}
+                                      textStyle={styles.expText}
+                                      text='确定' content='订单尾款已结清联系客服取消订单'/>
+                    </View>
+                )
+                break;
+            default:
+                return null;
+                break;
+        }
+    };
+
+    initListData = (orderState, merchantNum, customerServiceNum) => {
+        switch (orderState) {
+            case 0:  //未定价
+                this.mList = [];
+                this.items = [];
+                this.contactData = {};
+                if (this.orderDetail.orders_item_data[0].car_vin.length === 17) {
+                    this.mList = ['0', '1', '2', '4', '5', '7', '9'];
+                } else {
+                    this.mList = ['0', '1', '2', '4', '5', '6', '7', '9'];
+                }
+                this.contactData = {
+                    layoutTitle: '确认成交价',
+                    layoutContent: '确认成交价，待买家付定金，确认后价格不可修改。',
+                    setPrompt: false,
+                    MerchantNum: merchantNum,
+                    CustomerServiceNum: customerServiceNum
+                };
+                this.items.push({title: '创建订单', nodeState: 1, isLast: false, isFirst: true});
+                this.items.push({title: '订金到账', nodeState: 2, isLast: false, isFirst: false});
+                this.items.push({title: '结清尾款', nodeState: 2, isLast: false, isFirst: false});
+                this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                break;
+            case 1:  //已定价
+                this.mList = [];
+                this.items = [];
+                this.contactData = {};
+                this.mList = ['0', '1', '5', '7', '9'];
+                this.contactData = {
+                    layoutTitle: '查看到账',
+                    layoutContent: '您可以查看买家已支付的款项，但暂不可提现，买家确认收车后即可提现。',
+                    setPrompt: false,
+                    MerchantNum: merchantNum,
+                    CustomerServiceNum: customerServiceNum
+                };
+                this.items.push({title: '创建订单', nodeState: 1, isLast: false, isFirst: true});
+                this.items.push({title: '订金到账', nodeState: 2, isLast: false, isFirst: false});
+                this.items.push({title: '结清尾款', nodeState: 2, isLast: false, isFirst: false});
+                this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                break;
+            case 2:  //订金到账
+                this.mList = [];
+                this.items = [];
+                this.contactData = {};
+                this.mList = ['0', '1', '5', '7', '9'];
+                this.contactData = {
+                    layoutTitle: '查看到账',
+                    layoutContent: '您可以查看买家已支付的款项，但暂不可提现，买家确认收车后即可提现。',
+                    setPrompt: false,
+                    MerchantNum: merchantNum,
+                    CustomerServiceNum: customerServiceNum
+                };
+                this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
+                this.items.push({title: '订金到账', nodeState: 1, isLast: false, isFirst: false});
+                this.items.push({title: '结清尾款', nodeState: 2, isLast: false, isFirst: false});
+                this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                break;
+            case 3:  // 结清尾款
+                this.mList = [];
+                this.items = [];
+                this.contactData = {};
+                this.mList = ['0', '1', '5', '7', '9'];
+                this.contactData = {
+                    layoutTitle: '查看到账',
+                    layoutContent: '您可以查看买家已支付的款项，但暂不可提现，买家确认收车后即可提现。',
+                    setPrompt: false,
+                    MerchantNum: merchantNum,
+                    CustomerServiceNum: customerServiceNum
+                };
+                this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
+                this.items.push({title: '订金到账', nodeState: 0, isLast: false, isFirst: false});
+                this.items.push({title: '结清尾款', nodeState: 1, isLast: false, isFirst: false});
+                this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                break;
+            case 4: // 完成交易
+                this.mList = [];
+                this.items = [];
+                this.contactData = {};
+                this.mList = ['0', '1', '5', '7', '9'];
+                this.contactData = {
+                    layoutTitle: '已完成',
+                    layoutContent: '车款可提现。',
+                    setPrompt: false,
+                    MerchantNum: merchantNum,
+                    CustomerServiceNum: customerServiceNum
+                };
+                this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
+                this.items.push({title: '订金到账', nodeState: 0, isLast: false, isFirst: false});
+                this.items.push({title: '结清尾款', nodeState: 0, isLast: false, isFirst: false});
+                this.items.push({title: '完成交易', nodeState: 1, isLast: true, isFirst: false});
+                break;
+            default:
+                break;
+        }
+    };
+
+    orderCancelHandler = (result) => {
+        let url = AppUrls.ORDER_CANCEL_HANDLER;
+        request(url, 'post', {
+            order_id: this.orderDetail.id,
+            result: result
+        }).then((response) => {
+            //this.props.showModal(false);
+            this.loadData();
+        }, (error) => {
+            //this.props.showModal(false);
+            //console.log("成交价提交失败");
+            this.props.showToast('处理取消订单申请失败');
+        });
+    };
+
+    allowCancel = () => {
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.orderDetail.id
+                };
+                let url = AppUrls.ORDER_ALLOW_CANCEL;
+                request(url, 'post', maps).then((response) => {
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.loadData();
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
+                }, (error) => {
+                    //this.props.showToast('处理取消订单申请失败');
+                    this.props.showToast(error.mjson.msg);
+                });
+            } else {
+                this.props.showToast('处理取消订单申请失败');
+            }
+        });
+    };
+
+    denyCancel = () => {
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.orderDetail.id
+                };
+                let url = AppUrls.ORDER_DENY_CANCEL;
+                request(url, 'post', maps).then((response) => {
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.loadData();
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
+                }, (error) => {
+                    //this.props.showToast('处理取消订单申请失败');
+                    this.props.showToast(error.mjson.msg);
+                });
+            } else {
+                this.props.showToast('处理取消订单申请失败');
+            }
+        });
+    };
+
     //扫描
-    _scanPress = () => {
+    _onScanPress = () => {
         this.vinModal.refresh(this.scanType);
         this.vinModal.openModal(1);
     };
@@ -99,36 +939,163 @@ export default class SalesOrderDetailScene extends BaseComponent {
         }
     };
 
+    _onVinChange = (text) => {
+        this.carVin = text;
+        if (text.length === 17) {
+            this.props.showModal(true);
+            this.vinInput.blur();
+            Net.request(AppUrls.VININFO, 'post', {vin: text}).then(
+                (response) => {
+                    this.props.showModal(false);
+                    if (response.mycode === 1) {
+                        let rd = response.mjson.data;
+                        if (rd.length === 0) {
+                            this.props.showToast('车架号校验失败');
+                        }
+                    } else {
+                        this.props.showToast('车架号校验失败');
+                    }
+                },
+                (error) => {
+                    //this.props.showModal(false);
+                    this.props.showToast('车架号校验失败');
+                }
+            );
+        }
+    };
+
+    /**
+     * 取消订单请求
+     */
+    cancelOrder = () => {
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.orderDetail.id,
+                    type: 2
+                };
+                let url = AppUrls.ORDER_CANCEL;
+                request(url, 'post', maps).then((response) => {
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.loadData();
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
+                }, (error) => {
+                    //this.props.showToast('取消订单失败');
+                    this.props.showToast(error.mjson.msg);
+                });
+            } else {
+                this.props.showToast('取消订单失败');
+            }
+        });
+    };
+
+    getTypeContractInfo = (type) => {
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.orderDetail.id,
+                    type: type
+                };
+                let url = AppUrls.ORDER_GET_CONTRACT;
+                request(url, 'post', maps).then((response) => {
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        //console.log(response.mjson.data);
+                        this.props.showModal(false);
+                        this.toNextPage({
+                            name: 'ContractScene',
+                            component: ContractScene,
+                            params: {
+                                //webUrl: response.mjson.data.contract_file_path
+                                contractList: response.mjson.data.contract_image_path
+                            }
+                        });
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
+                }, (error) => {
+                    this.props.showToast(error.mjson.msg);
+                });
+            } else {
+                this.props.showToast('查看合同失败');
+            }
+        });
+    };
+
+    dateReversal = (time) => {
+        const date = new Date();
+        date.setTime(time);
+        return (date.getFullYear() + "-" + (this.PrefixInteger(date.getMonth() + 1, 2)) + "-" +
+        (this.PrefixInteger(date.getDate(), 2)));
+    };
+
+    PrefixInteger = (num, length) => {
+        return (Array(length).join('0') + num).slice(-length);
+    };
+
+    // 下拉刷新数据
+    refreshingData = () => {
+        //this.orderListData = [];
+        this.carAmount = 0;
+        this.setState({isRefreshing: true});
+        this.loadData();
+    };
+
+    refundJudgment = (amount) => {
+        if (amount > 0) {
+            return amount + '元(补偿)';
+        } else if (amount < 0) {
+            return amount + '元(退还)';
+        } else {
+            return amount;
+        }
+    };
+
     render() {
-        return (
-            <View style={styles.container}>
-                <InputVinInfo viewData={this.modelData} vinPress={this._vinPress} ref={(modal) => {
-                    this.vinModal = modal
-                }} navigator={this.props.navigator}/>
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return ( <View style={styles.container}>
+                {this.loadView()}
                 <NavigatorView title='订单详情' backIconClick={this.backPage}/>
-                <ListView
-                    removeClippedSubviews={false}
-                    style={{marginTop: Pixel.getPixel(73)}}
-                    dataSource={this.state.source}
-                    renderRow={this._renderRow}
-                    renderSeparator={this._renderSeperator}
-                    showsVerticalScrollIndicator={false}/>
-                {/*                <ChooseModal ref='expModal' title='补差额说明'
-                 negativeButtonStyle={styles.negativeButtonStyle} negativeTextStyle={styles.negativeTextStyle} negativeText='再想想'
-                 positiveButtonStyle={styles.positiveButtonStyle} positiveTextStyle={styles.positiveTextStyle} positiveText='没问题'
-                 buttonsMargin={Pixel.getPixel(20)}
-                 content='为了确保交易金额可支付贷款本息，请您
-                 补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您
-                 补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您
-                 补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您
-                 补足成交价与贷款本息，'/>*/}
-                <ExplainModal ref='expModal' title='补差额说明' buttonStyle={styles.expButton} textStyle={styles.expText}
-                              text='知道了'
-                              content='为了确保交易金额可支付贷款本息，请您补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您补足成交价与贷款本息，为了确保交易金额可支付贷款本息，请您补足成交价与贷款本息，'/>
-                <MakePhoneModal ref='mkpModal'/>
-                <View style={{flex: 1}}/>
-            </View>
-        )
+            </View>);
+        } else {
+            return (
+                <View style={styles.container}>
+                    <VinInfo viewData={this.scanType} vinPress={this._vinPress} ref={(modal) => {
+                        this.vinModal = modal
+                    }}/>
+                    <NavigatorView title='订单详情' backIconClick={this.backPage}/>
+                    {this.initDetailPageTop(this.topState)}
+                    <ListView
+                        removeClippedSubviews={false}
+                        style={{marginTop: this.listViewStyle}}
+                        dataSource={this.state.dataSource}
+                        renderRow={this._renderRow}
+                        renderSeparator={this._renderSeperator}
+                        showsVerticalScrollIndicator={false}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.state.isRefreshing}
+                                onRefresh={this.refreshingData}
+                                tintColor={[fontAndColor.COLORB0]}
+                                colors={[fontAndColor.COLORB0]}
+                            />
+                        }/>
+                    <ExplainModal ref='expModal' title='补差额说明' buttonStyle={styles.expButton} textStyle={styles.expText}
+                                  text='知道了'
+                                  content='为了确保交易金额可支付贷款本息，请您补足成交价与贷款本息，及额外30日利息（是交易持续时期可能产生的利息，根据实际日期付息）的差额。如未能在30日内完成交易，则自动关闭交易，并退还双方已支付的款项。'/>
+                    <View style={{flex: 1}}/>
+                    {this.initDetailPageBottom(this.bottomState)}
+                    <AccountForOrderModal ref="accountmodal"/>
+                </View>
+            )
+        }
     }
 
     _renderSeperator = (sectionID: number, rowID: number, adjacentRowHighlighted: bool) => {
@@ -144,36 +1111,33 @@ export default class SalesOrderDetailScene extends BaseComponent {
         if (rowData === '0') {
             return (
                 <View style={styles.itemType0}>
-                    <StepView items={items}/>
+                    <StepView items={this.items}/>
                 </View>
             )
         } else if (rowData === '1') {
             return (
-                <View style={styles.itemType1}>
-                    <View style={{width: Pixel.getPixel(310)}}>
-                        <Text style={styles.itemType1Ttile}>确认成交价</Text>
-                        <Text style={styles.itemType1Content}>请尽快和卖家通知后支付订金待卖家通知后支付订金</Text>
-                    </View>
-                    <View style={{flex: 1}}/>
-                    <TouchableOpacity
-                        style={{marginRight: Pixel.getPixel(15), alignSelf: 'center'}}
-                        onPress={() => {
-                            this.refs.mkpModal.changeShowType(true);
-                        }}>
-                        <Image
-                            source={require('../../../images/mainImage/making_call.png')}/>
-                    </TouchableOpacity>
-                </View>
+                <ContactLayout
+                    layoutTitle={this.contactData.layoutTitle ? this.contactData.layoutTitle : ''}
+                    layoutContent={this.contactData.layoutContent ? this.contactData.layoutContent : ''}
+                    setPrompt={this.contactData.setPrompt ? this.contactData.setPrompt : false}
+                    promptTitle={this.contactData.promptTitle ? this.contactData.promptTitle : ''}
+                    promptContent={this.contactData.promptContent ? this.contactData.promptContent : ''}
+                    showShopId={this.orderDetail.buyer_company_id}/>
             )
         } else if (rowData === '2') {
+            //this.carAmount = this.orderDetail.orders_item_data[0].transaction_price;
+            //console.log('this.carAmount', this.carAmount);
             return (
-                <TransactionPrice amount={20000} navigator={this.props.navigator}/>
+                <TransactionPrice amount={this.carAmount} navigator={this.props.navigator}
+                                  updateCarAmount={this.updateCarAmount}
+                                  isShowFinance={this.isShowFinance}
+                                  carId={this.orderDetail.orders_item_data[0].car_id}
+                                  orderId={this.orderDetail.id}/>
 
             )
         } else if (rowData === '3') {
             return (
                 <View style={styles.itemType7}>
-
                     <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
                         <Text style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
@@ -182,7 +1146,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         <Text style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                             color: fontAndColor.COLORB2
-                        }}>5000元</Text>
+                        }}>{this.financeInfo ? this.financeInfo.seller_add_amount : 0}元</Text>
                         <View style={{flex: 1}}/>
                         <Text
                             onPress={() => {
@@ -200,17 +1164,20 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     }}>
                         <Text style={styles.orderInfo}>贷款本金</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContentRed}>12000元</Text>
+                        <Text
+                            style={styles.infoContentRed}>{this.financeInfo ? this.financeInfo.seller_finance_amount : 0}元</Text>
                     </View>
                     <View style={styles.infoItem}>
                         <Text style={styles.orderInfo}>贷款利息</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContentRed}>10000元</Text>
+                        <Text
+                            style={styles.infoContentRed}>{this.financeInfo ? this.financeInfo.interest_amount : 0}元</Text>
                     </View>
                     <View style={styles.infoItem}>
                         <Text style={styles.orderInfo}>30日利息</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContentRed}>5000元</Text>
+                        <Text
+                            style={styles.infoContentRed}>{this.financeInfo ? this.financeInfo.days_interest_amount : 0}元</Text>
                     </View>
                     <View style={{
                         marginTop: Pixel.getPixel(20),
@@ -220,22 +1187,31 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         backgroundColor: fontAndColor.COLORA4
                     }}/>
                     <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
-                        <View style={{
-                            marginLeft: Pixel.getPixel(15),
-                            height: Pixel.getPixel(27),
-                            width: Pixel.getPixel(70),
-                            borderRadius: Pixel.getPixel(2),
-                            borderWidth: Pixel.getPixel(1),
-                            borderColor: fontAndColor.COLORB0,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            marginRight: Pixel.getPixel(15)
-                        }}>
-                            <Text style={{
-                                fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                                color: fontAndColor.COLORB0
-                            }}>充值</Text>
-                        </View>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.toNextPage({
+                                    name: 'AccountScene',
+                                    component: AccountScene,
+                                    params: {}
+                                });
+                            }}>
+                            <View style={{
+                                marginLeft: Pixel.getPixel(15),
+                                height: Pixel.getPixel(27),
+                                width: Pixel.getPixel(70),
+                                borderRadius: Pixel.getPixel(2),
+                                borderWidth: Pixel.getPixel(1),
+                                borderColor: fontAndColor.COLORB0,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                marginRight: Pixel.getPixel(15)
+                            }}>
+                                <Text style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                                    color: fontAndColor.COLORB0
+                                }}>充值</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
                 </View>
             )
@@ -246,46 +1222,56 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         style={{marginLeft: Pixel.getPixel(15)}}
                         source={require('../../../images/mainImage/agreed_sign.png')}/>
                     <Text style={{color: fontAndColor.COLORA1, marginLeft: Pixel.getPixel(5)}}>我已同意签署</Text>
-                    <Text style={{color: fontAndColor.COLORA2}}>《买卖协议》</Text>
-                    <Text style={{color: fontAndColor.COLORA1}}>和</Text>
-                    <Text style={{color: fontAndColor.COLORA2}}>《授权声明》</Text>
+                    <Text
+                        onPress={() => {
+                            this.getTypeContractInfo(1)
+                        }}
+                        style={{color: fontAndColor.COLORA2}}>《买卖协议》</Text>
+                    {/*<Text style={{color: fontAndColor.COLORA1}}>和</Text>
+                     <Text
+                     onPress={() => {
+                     this.getTypeContractInfo(2)
+                     }}
+                     style={{color: fontAndColor.COLORA2}}>《授权声明》</Text>*/}
                 </View>
             )
         } else if (rowData === '5') {
+            //let initRegDate = this.dateReversal(this.orderDetail.orders_item_data[0].car_data.init_reg + '000');
+            //let imageUrl = this.orderDetail.orders_item_data[0].car_data.imgs;
+            let initReg = this.orderDetail.orders_item_data[0].car_data.init_reg;
+            let mileage = this.orderDetail.orders_item_data[0].car_data.mileage;
+            let initRegDate = initReg === 0 ? '暂无' : this.dateReversal(initReg + '000');
+            let imageUrl = this.orderDetail.orders_item_data[0].car_data.imgs;
             return (
                 <View style={styles.itemType3}>
                     <View style={{
-                        flexDirection: 'row',
                         height: Pixel.getPixel(40),
                         marginLeft: Pixel.getPixel(15),
-                        marginRight: Pixel.getPixel(15),
-                        alignItems: 'center'
+                        justifyContent: 'center'
                     }}>
-                        <Text style={styles.orderInfo}>订单号:</Text>
-                        <Text style={styles.orderInfo}>12312332133</Text>
-                        <View style={{flex: 1}}/>
-                        <Text style={styles.orderInfo}>订单日期:</Text>
-                        <Text style={styles.orderInfo}>2019/09/09</Text>
+                        <Text style={styles.orderInfo}>订单号:{this.orderDetail.order_no}</Text>
+                        <Text style={styles.orderInfo}>订单日期:{this.orderDetail.created_time}</Text>
                     </View>
                     <View style={styles.separatedLine}/>
                     <View style={{flexDirection: 'row', height: Pixel.getPixel(105), alignItems: 'center'}}>
                         <Image style={styles.image}
-                               source={{uri: 'http://dycd-static.oss-cn-beijing.aliyuncs.com/Uploads/Oss/201703/13/58c639474ef45.jpg?x-oss-process=image/resize,w_320,h_240'}}/>
+                               source={imageUrl.length ? {uri: imageUrl[0].icon_url} : require('../../../images/carSourceImages/car_null_img.png')}/>
                         <View style={{marginLeft: Pixel.getPixel(10)}}>
-                            <Text numberOfLines={1}
-                                  style={{backgroundColor: 'blue',marginRight: Pixel.getPixel(55)}}>[北京]奔驰M级(进口) 2015款 Masdadadadadada</Text>
+                            <Text style={{width: width - Pixel.getPixel(15 + 120 + 10 + 15)}}
+                                  numberOfLines={1}>{this.orderDetail.orders_item_data[0].car_data.model_name}</Text>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>里程：</Text>
-                                <Text style={styles.carDescribe}>20.59万</Text>
+                                <Text style={styles.carDescribe}>{mileage}万</Text>
                             </View>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
                                 <Text style={styles.carDescribeTitle}>上牌：</Text>
-                                <Text style={styles.carDescribe}>2016-09-09</Text>
+                                <Text style={styles.carDescribe}>{initRegDate}</Text>
                             </View>
-                            <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
-                                <Text style={styles.carDescribeTitle}>标价：</Text>
-                                <Text style={styles.carDescribe}>20.59万</Text>
-                            </View>
+                            {this.orderState !== 0 && this.orderState !== 1 ? <View
+                                style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
+                                <Text style={styles.carDescribeTitle}>成交价：</Text>
+                                <Text style={styles.carDescribe}>{this.orderDetail.transaction_amount}元</Text>
+                            </View> : null}
                         </View>
                     </View>
                 </View>
@@ -299,22 +1285,49 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         color: fontAndColor.COLORB2
                     }}>*</Text>
                     <Text>车架号</Text>
+                    <TextInput style={{
+                        marginLeft: Pixel.getPixel(10),
+                        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                        padding: 0,
+                        width: Pixel.getPixel(180)
+                    }}
+                               placeholder='输入车架号'
+                               underlineColorAndroid='transparent'
+                               maxLength={17}
+                               onChangeText={this._onVinChange}
+                               keyboardType={'ascii-capable'}
+                               placeholderTextColor={fontAndColor.COLORA4}
+                               ref={(input) => {
+                                   this.vinInput = input
+                               }}
+                               placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}/>
                     <View style={{flex: 1}}/>
                     <TouchableOpacity
                         activeOpacity={0.6}
-                        onPress={() => {
-                            this._scanPress()
-                        }}>
+                        onPress={this._onScanPress}>
                         <View style={{flexDirection: 'row'}}>
-                            <Text style={{color: fontAndColor.COLORA2}}>扫描</Text>
+                            {/*<Text style={{color: fontAndColor.COLORA2}}>扫描</Text>*/}
                             <Image
-                                style={styles.backIcon}
-                                source={require('../../../images/mainImage/celljiantou.png')}/>
+                                style={{marginRight: Pixel.getPixel(15)}}
+                                source={require('../../../images/mainImage/scanning.png')}/>
                         </View>
                     </TouchableOpacity>
                 </View>
             )
         } else if (rowData === '7') {
+            let done_deposit_amount = 0;
+            let done_balance_amount = 0;
+            let done_total_amount = this.orderDetail.done_deposit_amount + this.orderDetail.done_balance_amount + '元';
+            if (this.refundJudgment(this.orderDetail.done_back_deposit_amount) === 0) {
+                done_deposit_amount = this.orderDetail.done_deposit_amount + '元';
+            } else {
+                done_deposit_amount = this.orderDetail.done_back_deposit_amount;
+            }
+            if (this.refundJudgment(this.orderDetail.done_back_balance_amount) === 0) {
+                done_balance_amount = this.orderDetail.done_balance_amount + '元';
+            } else {
+                done_balance_amount = this.orderDetail.done_back_balance_amount;
+            }
             return (
                 <View style={styles.itemType4}>
                     <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
@@ -331,19 +1344,20 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         marginTop: Pixel.getPixel(20),
                         marginRight: Pixel.getPixel(15)
                     }}>
-                        <Text style={styles.orderInfo}>支付定金</Text>
+                        <Text style={styles.orderInfo}>到账订金</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>15000元</Text>
+                        <Text style={styles.infoContent}>{this.orderDetail.done_deposit_amount}元</Text>
                     </View>
                     <View style={styles.infoItem}>
-                        <Text style={styles.orderInfo}>支付尾款</Text>
+                        <Text style={styles.orderInfo}>到账尾款</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>115000元</Text>
+                        <Text style={styles.infoContent}>{this.orderDetail.done_balance_amount}元</Text>
                     </View>
                     <View style={styles.infoItem}>
-                        <Text style={styles.orderInfo}>支付总计</Text>
+                        <Text style={styles.orderInfo}>到账总计</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>125000元</Text>
+                        <Text
+                            style={styles.infoContent}>{this.orderDetail.done_total_amount}元</Text>
                     </View>
                 </View>
             )
@@ -398,7 +1412,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
             )
         } else if (rowData === '9') {
             return (
-                <View style={styles.itemType4}>
+                <View style={styles.itemType9}>
                     <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
                         <Text style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
@@ -415,17 +1429,17 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     }}>
                         <Text style={styles.orderInfo}>姓名</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>异议</Text>
+                        <Text style={styles.infoContent}>{this.orderDetail.buyer_name}</Text>
                     </View>
-                    <View style={styles.infoItem}>
-                        <Text style={styles.orderInfo}>联系方式</Text>
-                        <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>123456664444</Text>
-                    </View>
+                    {/*<View style={styles.infoItem}>
+                     <Text style={styles.orderInfo}>联系方式</Text>
+                     <View style={{flex: 1}}/>
+                     <Text style={styles.infoContent}>{this.orderDetail.buyer_phone}</Text>
+                     </View>*/}
                     <View style={styles.infoItem}>
                         <Text style={styles.orderInfo}>企业名称</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>终生二手车经销给你公司</Text>
+                        <Text style={styles.infoContent}>{this.orderDetail.buyer_company_name}</Text>
                     </View>
                 </View>
             )
@@ -504,6 +1518,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         height: Pixel.getPixel(151)
     },
+    itemType9: {
+        backgroundColor: '#ffffff',
+        height: Pixel.getPixel(121)
+    },
     itemType7: {
         backgroundColor: '#ffffff'
         //height: Pixel.getPixel(200)
@@ -549,10 +1567,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         height: Pixel.getPixel(44),
         backgroundColor: '#ffffff',
+        justifyContent: 'center'
     },
     expButton: {
         marginBottom: Pixel.getPixel(20),
-        width: width - width / 4 - Pixel.getPixel(40),
+        width: Pixel.getPixel(100),
         height: Pixel.getPixel(35),
         marginTop: Pixel.getPixel(16),
         flexDirection: 'row',
@@ -593,5 +1612,45 @@ const styles = StyleSheet.create({
     positiveTextStyle: {
         fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
         color: '#ffffff'
+    },
+    bottomBar: {
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        backgroundColor: '#ffffff',
+        height: Pixel.getPixel(50),
+        flexDirection: 'row',
+        borderTopWidth: 1,
+        borderTopColor: fontAndColor.COLORA4
+    },
+    tradingCountdown: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingLeft: Pixel.getPixel(15),
+        paddingRight: Pixel.getPixel(15),
+        paddingTop: Pixel.getPixel(10),
+        paddingBottom: Pixel.getPixel(10),
+        //height: Pixel.getPixel(40),
+        backgroundColor: fontAndColor.COLORB6
+    },
+    buttonCancel: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: Pixel.getPixel(15),
+        height: Pixel.getPixel(32),
+        width: Pixel.getPixel(100),
+        borderRadius: Pixel.getPixel(2),
+        borderWidth: Pixel.getPixel(1),
+        borderColor: fontAndColor.COLORA2
+    },
+    buttonConfirm: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: Pixel.getPixel(15),
+        backgroundColor: fontAndColor.COLORB0,
+        height: Pixel.getPixel(32),
+        width: Pixel.getPixel(100),
+        borderRadius: Pixel.getPixel(2),
+        borderWidth: Pixel.getPixel(1),
+        borderColor: fontAndColor.COLORB0
     }
 });

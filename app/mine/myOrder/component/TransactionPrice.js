@@ -25,10 +25,21 @@ export default class TransactionPrice extends BaseComponent {
 
     constructor(props) {
         super(props);
+        let setAmount = this.props.amount;
         this.state = {
-            amount: this.props.amount,
-            deposit: this.props.amount / 10
+            amount: setAmount,
+            deposit: setAmount / 10
         }
+    }
+
+/*    isShowFinance = (financeInfo) => {
+        this.props.isShowFinance(financeInfo);
+    };*/
+
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({amount:nextProps.amount,deposit: nextProps.amount / 10});
+
     }
 
     render() {
@@ -44,7 +55,10 @@ export default class TransactionPrice extends BaseComponent {
                             component: InputAmountScene,
                             params: {
                                 amount: this.state.amount,
-                                updateAmount: this.updateAmount
+                                updateAmount: this.updateAmount,
+                                carId: this.props.carId,
+                                orderId: this.props.orderId,
+                                isShowFinance: this.props.isShowFinance
                             }
                         });
                     }}>
@@ -87,7 +101,9 @@ export default class TransactionPrice extends BaseComponent {
         )
     }
 
+
     updateAmount = (newAmount) => {
+        this.props.updateCarAmount(newAmount);
         this.setState({
             amount: newAmount,
             deposit: newAmount / 10

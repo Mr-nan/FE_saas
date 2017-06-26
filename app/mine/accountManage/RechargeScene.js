@@ -59,8 +59,8 @@ export  default class RechargeScene extends BaseComponent {
                     .then((response) => {
                             this.setState({
                                 renderPlaceholderOnly: 'success',
-                                name:response.mjson.data.bank_card_name	,
-                                cardNumber:response.mjson.data.bank_card_no
+                                name:response.mjson.data.account.bank_card_name	,
+                                cardNumber:response.mjson.data.account.bank_card_no
                             });
                         },
                         (error) => {

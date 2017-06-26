@@ -1,12 +1,12 @@
 /**
  * 开发地址
  */
-export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+//export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地
  */
-// export const BASEURL = 'http://api-gateway.test.dycd.com/';
+export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 正式地址
@@ -828,4 +828,52 @@ export const ORDER_SEARCH = BASEURL + V + 'order/search';
 /**
  * 订单详情
  */
-export const ORDER_DETAIL = BASEURL + V + 'order/detail';
+export const ORDER_DETAIL = BASEURL + V +'order/detail';
+/**
+ * 订金、尾款支付
+ */
+export const ORDER_PAY = BASEURL + V +'order/pay';
+/**
+ *  车辆成交价提交
+ */
+export const ORDER_SAVE_PRICE = BASEURL + V +'order/savePrice';
+/**
+ *  卖家&买家取消订单
+ */
+export const ORDER_CANCEL = BASEURL + V +'order/cancel';
+/**
+ *  确认收车
+ */
+export const ORDER_CONFIRM_CAR = BASEURL + V +'order/confirmCar';
+/**
+ *  买家撤销取消订单
+ */
+export const ORDER_REVERT = BASEURL + V +'order/revert';
+/**
+ *  卖家处理取消订单
+ */
+export const ORDER_CANCEL_HANDLER = BASEURL + V +'order/cancelHandler';
+/**
+ *  车辆定价检查
+ */
+export const ORDER_CHECK_PRICE = BASEURL + V +'order/checkPrice';
+/**
+ *  获取筛选订单状态
+ */
+export const ORDER_FIELD_DICT = BASEURL + V +'order/fieldDict';
+/**
+ *  支付状态
+ */
+export const ORDER_CHECK_PAY = BASEURL + V +'order/checkPay';
+/**
+ *  卖家同意取消订单
+ */
+export const ORDER_ALLOW_CANCEL = BASEURL + V +'order/allowCancel';
+/**
+ *  卖家不同意取消订单
+ */
+export const ORDER_DENY_CANCEL = BASEURL + V +'order/denyCancel';
+/**
+ * 查看订单某个类型合同
+ */
+export const ORDER_GET_CONTRACT = BASEURL + V +'order/getContractByType';
