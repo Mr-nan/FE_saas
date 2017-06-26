@@ -517,6 +517,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                     params: {
                                         payAmount: this.orderState === 1 ? this.orderDetail.deposit_amount : this.orderDetail.balance_amount,
                                         orderId: this.props.orderId,
+                                        orderNo: this.orderDetail.order_no,
                                         payType: this.orderState,
                                         callBack: this.payCallBack
                                     }
@@ -910,7 +911,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.stateMapping(status, cancelStatus);
 
                         // TODO this is TEST!!!!!!!!!!!!
-                        this.orderState = 5;
+                        //this.orderState = 5;
 
                         this.initListData(this.orderState);
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});

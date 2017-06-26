@@ -30,6 +30,7 @@ import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
 import * as webBackUrl from "../constant/webBackUrl";
 import AccountWebScene from "../mine/accountManage/AccountWebScene";
+import DDApplyLendScene from "./lend/DDApplyLendScene";
 const Pixel = new PixelUtil();
 
 export default class CheckStand extends BaseComponent {
@@ -205,10 +206,12 @@ export default class CheckStand extends BaseComponent {
                                 flex: 1
                             }}/>
                         </View>
-                        <MyButton buttonType={MyButton.TEXTBUTTON}
-                                  content={'订单融资'}
-                                  parentStyle={styles.loginBtnStyle1}
-                                  childStyle={styles.loginButtonTextStyle}/>
+                        <MyButton
+                            mOnPress={this.goApplyLoan}
+                            buttonType={MyButton.TEXTBUTTON}
+                            content={'订单融资'}
+                            parentStyle={styles.loginBtnStyle1}
+                            childStyle={styles.loginButtonTextStyle}/>
                         <View style={{
                             flexDirection: 'row',
                             marginTop: Pixel.getPixel(21),
@@ -266,6 +269,16 @@ export default class CheckStand extends BaseComponent {
                 });
             } else {
                 this.props.showToast('账户支付检查失败');
+            }
+        });
+    };
+
+    goApplyLoan = () => {
+        this.toNextPage({
+            name: 'DDApplyLendScene',
+            component: DDApplyLendScene,
+            params: {
+                orderNo: this.props.orderNo
             }
         });
     };
