@@ -483,7 +483,7 @@ export default class CarInfoScene extends BaseComponent {
                 <ExplainModal ref={(text) => this.expModal = text} title='说明' buttonStyle={styles.expButton}
                               textStyle={styles.expText}
                               text='知道了'
-                              content='此质押车暂不可下单请您稍带时日再订购'/>
+                              content='此质押车暂不可下单请您稍待时日再订购'/>
             </View>
 
         )

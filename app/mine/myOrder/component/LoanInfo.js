@@ -18,6 +18,7 @@ import * as fontAndColor from '../../../constant/fontAndColor';
 import PixelUtil from '../../../utils/PixelUtil';
 import InputAmountScene from "../InputAmountScene";
 import BaseComponent from "../../../component/BaseComponent";
+import CheckLoanAmountScene from "../CheckLoanAmountScene";
 const Pixel = new PixelUtil();
 
 
@@ -27,6 +28,7 @@ export default class LoanInfo extends BaseComponent {
         super(props);
         this.transactionAmount = this.props.transactionAmount;
         this.state = {
+            applyLoanAmount: this.props.applyLoanAmount,
             loanCode: this.props.loanCode,
             maxLoanmny: this.props.maxLoanmny,
             feeMny: '0.00',
@@ -75,10 +77,25 @@ export default class LoanInfo extends BaseComponent {
                     <Text
                         style={styles.infoContent}>{this.state.maxLoanmny ? this.state.maxLoanmny : '0.00'}元</Text>
                 </View>
-                <View style={styles.inputBorder}>
-                    <Text  style={styles.inputStyle}>0</Text>
-                    <Text style={{marginRight: Pixel.getPixel(10)}}>元</Text>
-                </View>
+                <TouchableOpacity
+                    onPress={() => {
+                        this.toNextPage({
+                            name: 'CheckLoanAmountScene',
+                            component: CheckLoanAmountScene,
+                            params: {
+                                amount: this.state.applyLoanAmount,
+                                updateAmount: this.updateAmount,
+                                companyId: this.props.companyId,
+                                orderId: this.props.orderId,
+                            }
+                        });
+                    }}>
+                    <View style={styles.inputBorder}>
+                        <Text style={styles.inputStyle}>{this.state.applyLoanAmount}</Text>
+                        <View style={{flex: 1}}/>
+                        <Text style={{marginRight: Pixel.getPixel(10)}}>元</Text>
+                    </View>
+                </TouchableOpacity>
                 <View style={styles.infoItem}>
                     <Text style={styles.orderInfo}>需支付服务费</Text>
                     <View style={{flex: 1}}/>
@@ -100,10 +117,9 @@ export default class LoanInfo extends BaseComponent {
 
 
     updateAmount = (newAmount) => {
-        this.props.updateCarAmount(newAmount);
+        this.props.updateLoanAmount(newAmount);
         this.setState({
-            amount: newAmount,
-            deposit: newAmount / 10
+            applyLoanAmount: newAmount
         });
     }
 }
@@ -118,5 +134,43 @@ const styles = StyleSheet.create({
     itemType5: {
         backgroundColor: '#ffffff',
         height: Pixel.getPixel(240)
+    },
+    backIcon: {
+        marginRight: Pixel.getPixel(15),
+        marginLeft: Pixel.getPixel(12),
+        height: Pixel.getPixel(15),
+        width: Pixel.getPixel(15)
+    },
+    orderInfo: {
+        color: fontAndColor.COLORA1,
+        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)
+    },
+    infoContent: {
+        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)
+    },
+    infoItem: {
+        alignItems: 'center',
+        flexDirection: 'row',
+        marginLeft: Pixel.getPixel(15),
+        marginTop: Pixel.getPixel(10),
+        marginRight: Pixel.getPixel(15)
+    },
+    inputBorder: {
+        alignItems: 'center',
+        marginLeft: Pixel.getPixel(15),
+        marginRight: Pixel.getPixel(15),
+        height: Pixel.getPixel(40),
+        marginTop: Pixel.getPixel(13),
+        flexDirection: 'row',
+        borderColor: fontAndColor.COLORB0,
+        borderWidth: Pixel.getPixel(1),
+        borderRadius: Pixel.getPixel(2)
+    },
+    inputStyle: {
+        flex: 1,
+        marginLeft: Pixel.getPixel(10),
+        textAlign: 'left',
+        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+        color: fontAndColor.COLORA2
     }
 });

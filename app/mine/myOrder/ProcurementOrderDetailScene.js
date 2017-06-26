@@ -56,6 +56,10 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         this.bottomState = -1;
         this.contactData = {};
         this.leftTime = 0;
+
+        this.companyId = 0;
+        this.applyLoanAmount = 0;
+
         this.state = {
             dataSource: [],
             renderPlaceholderOnly: 'blank',
@@ -521,6 +525,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                         orderId: this.props.orderId,
                                         orderNo: this.orderDetail.order_no,
                                         payType: this.orderState,
+                                        carId: this.orderDetail.orders_item_data[0].car_id,
                                         pledgeType: this.orderDetail.orders_item_data[0].car_finance_data.pledge_type,
                                         pledgeStatus: this.orderDetail.orders_item_data[0].car_finance_data.pledge_status,
                                         callBack: this.payCallBack
@@ -886,6 +891,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
+                this.companyId = datas.company_base_id;
                 let maps = {
                     company_id: datas.company_base_id,
                     order_id: this.props.orderId,
@@ -915,7 +921,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.stateMapping(status, cancelStatus);
 
                         // TODO this is TEST!!!!!!!!!!!!
-                        //this.orderState = 6;
+                        this.orderState = 6;
 
                         this.initListData(this.orderState);
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -943,6 +949,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.props.showToast('获取订单详情失败');
             }
         });
+    };
+
+    updateLoanAmount = (newAmount) => {
+        //this.props.showModal(true);
+        this.applyLoanAmount = newAmount;
     };
 
     // 下拉刷新数据
@@ -1121,8 +1132,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         } else if (rowData === '5') {
             return (
                 <LoanInfo
-                    loanCode={this.orderDetail.orders_item_data[0].car_finance_data.loan_code}
-                />
+                    navigator={this.props.navigator}
+                    updateLoanAmount={this.updateLoanAmount}
+                    applyLoanAmount={this.applyLoanAmount}
+                    orderId={this.orderDetail.id}
+                    companyId={this.companyId}/>
             )
         } else if (rowData === '6') {
             return (

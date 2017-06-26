@@ -881,3 +881,11 @@ export const ORDER_GET_CONTRACT = BASEURL + V +'order/getContractByType';
  *  获取借款人所属白名单状态【订单融资调用】
  */
 export const ORDER_GET_MERGE_WHITE_PO_STATUS = 'api/v3/account/get_merge_white_po_status';
+/**
+ *  添加订单融资车辆
+ */
+export const ADD_PLATFORM_ORDER_CAR = 'api/v5/PlatformOrder/add_platform_order_car';
+/**
+ *  融资订单贷款全额检查
+ */
+export const ORDER_LOAN_AMOUNT_CHECK = BASEURL + V +'order_finance/orderLoanAmountCheck';
