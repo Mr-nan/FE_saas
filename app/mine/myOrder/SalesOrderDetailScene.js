@@ -720,7 +720,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
                             onPress={() => {
-                                this.refs.cancelModal.changeShowType(true);
+                                this.refs.cancelModal.changeShowType(true, '提示', '订单尾款已结清联系客服取消订单', '确定');
                             }}>
                             <View style={styles.buttonCancel}>
                                 <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
@@ -1150,7 +1150,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         <View style={{flex: 1}}/>
                         <Text
                             onPress={() => {
-                                this.refs.expModal.changeShowType(true);
+                                this.refs.expModal.changeShowType(true, '补差额说明', '为了确保交易金额可支付贷款本息，请您补足成交价与贷款本息，及额外30日利息（是交易持续时期可能产生的利息，根据实际日期付息）的差额。如未能在30日内完成交易，则自动关闭交易，并退还双方已支付的款项。',
+                                    '知道了');
                             }}
                             style={{marginRight: Pixel.getPixel(15), color: fontAndColor.COLORB4}}>补差额说明</Text>
                     </View>

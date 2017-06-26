@@ -545,7 +545,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
                             onPress={() => {
-                                this.refs.expModal.changeShowType(true);
+                                this.refs.expModal.changeShowType(true, '提示', '订单尾款已结清联系客服取消订单', '确定');
                             }}>
                             <View style={styles.buttonCancel}>
                                 <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>

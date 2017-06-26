@@ -603,7 +603,7 @@ export default class CarInfoScene extends BaseComponent {
         }, (error) => {
             if (error.mjson.code == '6350072') {
                 this.props.showModal(false);
-                this.expModal.changeShowType(true);
+                this.expModal.changeShowType(true, '说明', '此质押车暂不可下单请您稍带时日再订购', '知道了');
                 //this.props.showToast(error.mjson.msg);
             } else {
                 this.props.showModal(false);
