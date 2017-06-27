@@ -361,6 +361,11 @@ export default class DDApplyLendScene extends BaseComponent {
         }
 
     }
+    /*
+     *
+     * 根据封装的数据，显示section
+     * renderSectionHeader
+     **/
     renderSectionHeader = (sectionData, sectionID) => {
         if(sectionID=='section1'){
             if(this.props.shenhe=="yes"){
@@ -389,6 +394,11 @@ export default class DDApplyLendScene extends BaseComponent {
             </View>
         )
     }
+    /*
+     *
+     * 根据封装的数据，显示分割线
+     * renderSeparator
+     **/
     renderSeparator = (sectionID, rowId, adjacentRowHighlighted) => {
 
         let separtrorHegigth = 1;
@@ -403,6 +413,11 @@ export default class DDApplyLendScene extends BaseComponent {
             </View>
         )
     }
+    /*
+     *
+     * 底部按钮的点击事件
+     * buttonClick
+     **/
     buttonClick = (title) => {
         if (title == '确认金额') {
             this.toNextPage({
