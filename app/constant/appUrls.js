@@ -884,7 +884,7 @@ export const ORDER_GET_MERGE_WHITE_PO_STATUS = 'api/v3/account/get_merge_white_p
 /**
  *  添加订单融资车辆
  */
-export const ADD_PLATFORM_ORDER_CAR = 'api/v5/PlatformOrder/add_platform_order_car';
+export const ADD_PLATFORM_ORDER_CAR = BASEURL + V +'order_finance_car/add';
 /**
  *  融资订单贷款全额检查
  */

@@ -114,6 +114,7 @@ export default class CheckStand extends BaseComponent {
                 let datas = JSON.parse(data.result);
                 let isDoneCredit = datas.is_done_credit;
                 let mergeId = datas.merge_id;
+                //let mergeId = 1110;
                 if (isDoneCredit == 0) {
                     this.isShowFinancing = 0;
                     this.setState({
@@ -343,7 +344,6 @@ export default class CheckStand extends BaseComponent {
      *  跳转订单融资申请页
      */
     goApplyLoan = () => {
-        // TODO 接口问题
         if (this.props.pledgeType == 1 && this.props.pledgeStatus == 1) {
             this.refs.expModal.changeShowType(true, '提示', '此车在质押中，需要卖方解除质押后可申请订单融资。', '确定');
         } else {
@@ -352,13 +352,13 @@ export default class CheckStand extends BaseComponent {
                     let datas = JSON.parse(data.result);
                     let mergeId = datas.merge_id;
                     let maps = {
-                        api: AppUrls.ADD_PLATFORM_ORDER_CAR,
+                        //api: AppUrls.ADD_PLATFORM_ORDER_CAR,
                         merge_id: mergeId,
                         platform_car_id: this.props.carId,
                         platform_order_number: this.props.orderNo
                     };
-                    let url = AppUrls.FINANCE;
-                    request(url, 'post', maps).then((response) => {
+                    let url = AppUrls.ADD_PLATFORM_ORDER_CAR;
+                    request(url, 'Post', maps).then((response) => {
 /*                        if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
                             this.toNextPage({
                                 name: 'DDApplyLendScene',

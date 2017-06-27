@@ -881,8 +881,181 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     }
                 }
                 break;
-            case 12:
-
+            case 12:  // 12=>'订单融资处理中',
+                if (cancelStatus === 0) {
+                    this.orderState = 5;
+                    this.topState = -1;
+                    if (status === 6) {
+                        this.bottomState = 1;
+                    } else {
+                        this.bottomState = 1;
+                    }
+                } else if (cancelStatus === 1) {
+                    this.orderState = 5;
+                    this.topState = -1;
+                    this.bottomState = 3;
+                } else if (cancelStatus === 2) {
+                    this.orderState = 5;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 5;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
+                    }
+                } else if (cancelStatus === 3) {
+                    this.orderState = 5;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 5;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
+                    }
+                }
+                break;
+            case 13:  //13=>'订单融资完成',
+            case 14:  //14=>'支付首付款中',
+            case 15:  //15=>'支付首付款失败',
+                if (cancelStatus === 0) {
+                    this.orderState = 6;
+                    this.topState = -1;
+                    if (status === 6) {
+                        this.bottomState = 1;
+                    } else {
+                        this.bottomState = 1;
+                    }
+                } else if (cancelStatus === 1) {
+                    this.orderState = 6;
+                    this.topState = -1;
+                    this.bottomState = 3;
+                } else if (cancelStatus === 2) {
+                    this.orderState = 6;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 5;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
+                    }
+                } else if (cancelStatus === 3) {
+                    this.orderState = 6;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 5;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
+                    }
+                }
+                break;
+            case 16:  //16=>'支付首付款完成',
+            case 17:  //17=>'融资单确认验收中',
+            case 18:  //18=>'融资单确认验收失败',
+                if (cancelStatus === 0) {
+                    this.orderState = 7;
+                    this.topState = -1;
+                    if (status === 6) {
+                        this.bottomState = 1;
+                    } else {
+                        this.bottomState = 1;
+                    }
+                } else if (cancelStatus === 1) {
+                    this.orderState = 7;
+                    this.topState = -1;
+                    this.bottomState = 3;
+                } else if (cancelStatus === 2) {
+                    this.orderState = 7;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 5;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
+                    }
+                } else if (cancelStatus === 3) {
+                    this.orderState = 7;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 5;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
+                    }
+                }
+                break;
+            case 19:
+                if (cancelStatus === 0) {
+                    this.orderState = 8;
+                    this.topState = -1;
+                    if (status === 6) {
+                        this.bottomState = 1;
+                    } else {
+                        this.bottomState = 1;
+                    }
+                } else if (cancelStatus === 1) {
+                    this.orderState = 8;
+                    this.topState = -1;
+                    this.bottomState = 3;
+                } else if (cancelStatus === 2) {
+                    this.orderState = 8;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 5;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
+                    }
+                } else if (cancelStatus === 3) {
+                    this.orderState = 8;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 5;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
+                    }
+                }
                 break;
         }
     };
@@ -921,7 +1094,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.stateMapping(status, cancelStatus);
 
                         // TODO this is TEST!!!!!!!!!!!!
-                        this.orderState = 6;
+                        //this.orderState = 6;
 
                         this.initListData(this.orderState);
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
