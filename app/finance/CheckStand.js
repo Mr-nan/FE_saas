@@ -378,6 +378,7 @@ export default class CheckStand extends BaseComponent {
      *  跳转订单融资申请页
      */
     goApplyLoan = () => {
+        this.props.showModal(true);
         if (this.props.pledgeType == 1 && this.props.pledgeStatus == 1) {
             this.refs.expModal.changeShowType(true, '提示', '此车在质押中，需要卖方解除质押后可申请订单融资。', '确定');
         } else {
@@ -394,18 +395,23 @@ export default class CheckStand extends BaseComponent {
                     };
                     let url = AppUrls.ADD_PLATFORM_ORDER_CAR;
                     request(url, 'Post', maps).then((response) => {
-/*                        if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
-                            this.toNextPage({
-                                name: 'DDApplyLendScene',
-                                component: DDApplyLendScene,
-                                params: {
-                                    orderNo: this.props.orderNo
-                                }
-                            });
+                        if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                            if (response.mjson.data.status === 1) {
+                                this.props.showModal(false);
+                                this.toNextPage({
+                                    name: 'DDApplyLendScene',
+                                    component: DDApplyLendScene,
+                                    params: {
+                                        orderNo: this.props.orderNo
+                                    }
+                                });
+                            } else {
+                                this.props.showToast(response.mjson.msg);
+                            }
                         } else {
                             this.props.showToast(response.mjson.msg);
-                        }*/
-                        console.log('123y1eh1d1ubkj1b2dk1===', response.mjson.data);
+                        }
+                        //console.log('123y1eh1d1ubkj1b2dk1===', response.mjson.data);
                     }, (error) => {
                         //this.props.showToast('确认验收失败');
                         this.props.showToast('添加订单融资车辆失败');
