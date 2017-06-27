@@ -57,6 +57,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         this.contactData = {};
         this.leftTime = 0;
 
+        this.loanInfo = {};
+
         this.companyId = 0;
         this.applyLoanAmount = 0;
 
@@ -377,7 +379,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
 
 
     /**
-     * 确认收车请求
+     * 普通流程确认验收请求
      */
     confirmCar = () => {
         this.props.showModal(true);
@@ -389,6 +391,35 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     order_id: this.orderDetail.id
                 };
                 let url = AppUrls.ORDER_CONFIRM_CAR;
+                request(url, 'post', maps).then((response) => {
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.loadData();
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
+                }, (error) => {
+                    //this.props.showToast('确认验收失败');
+                    this.props.showToast(error.mjson.msg);
+                });
+            } else {
+                this.props.showToast('确认验收失败');
+            }
+        });
+    };
+
+    /**
+     * 融资流程确认验收请求
+     */
+    loanConfirmCar = () => {
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.orderDetail.id
+                };
+                let url = AppUrls.CONFIRM_FINANCING_ORDER;
                 request(url, 'post', maps).then((response) => {
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
                         this.loadData();
@@ -525,6 +556,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                         orderId: this.props.orderId,
                                         orderNo: this.orderDetail.order_no,
                                         payType: this.orderState,
+                                        sellerId: this.orderDetail.seller_id,
                                         carId: this.orderDetail.orders_item_data[0].car_id,
                                         pledgeType: this.orderDetail.orders_item_data[0].car_finance_data.pledge_type,
                                         pledgeStatus: this.orderDetail.orders_item_data[0].car_finance_data.pledge_status,
@@ -560,8 +592,13 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
-                                this.refs.chooseModal.changeShowType(true, '取消', '确定', '确定后卖家可提现全款。',
-                                    this.confirmCar);
+                                if (this.orderState == 3) {
+                                    this.refs.chooseModal.changeShowType(true, '取消', '确定', '确定后卖家可提现全款。',
+                                        this.confirmCar);
+                                } else if (this.orderState == 7) {
+                                    this.refs.chooseModal.changeShowType(true, '取消', '确定', '确定后安排放款，放款完成后卖家可提现全款。',
+                                        this.loanConfirmCar);
+                                }
                                 //this.props.showModal(true);
                                 //this.confirmCar();
                             }}>
@@ -1094,7 +1131,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.stateMapping(status, cancelStatus);
 
                         // TODO this is TEST!!!!!!!!!!!!
-                        //this.orderState = 6;
+                        //this.orderState = 7;
+                        //this.bottomState = 2;
 
                         this.initListData(this.orderState);
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -1127,6 +1165,10 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
     updateLoanAmount = (newAmount) => {
         //this.props.showModal(true);
         this.applyLoanAmount = newAmount;
+    };
+
+    refreshLoanInfo = (loanInfo) => {
+        this.loanInfo = loanInfo;
     };
 
     // 下拉刷新数据
@@ -1307,6 +1349,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 <LoanInfo
                     navigator={this.props.navigator}
                     updateLoanAmount={this.updateLoanAmount}
+                    refreshLoanInfo={this.refreshLoanInfo}
                     applyLoanAmount={this.applyLoanAmount}
                     orderId={this.orderDetail.id}
                     companyId={this.companyId}/>

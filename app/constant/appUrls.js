@@ -889,3 +889,15 @@ export const ADD_PLATFORM_ORDER_CAR = BASEURL + V +'order_finance_car/add';
  *  融资订单贷款全额检查
  */
 export const ORDER_LOAN_AMOUNT_CHECK = BASEURL + V +'order_finance/orderLoanAmountCheck';
+/**
+ *  融资流程确认验收请求
+ */
+export const CONFIRM_FINANCING_ORDER = BASEURL + V +'order_finance/confirmFinancingOrder';
+/**
+ *  融资订单支付首付款
+ */
+export const FIRST_PAYMENT_PAY = BASEURL + V +'order_finance/firstPaymentPay';
+/**
+ *  融资订单支付首付款回调
+ */
+export const FIRST_PAYMENT_PAY_CALLBACK = BASEURL + V +'order_finance/firstPaymentPayCallback';

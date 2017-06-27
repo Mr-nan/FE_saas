@@ -87,6 +87,7 @@ export default class LoanInfo extends BaseComponent {
                                 updateAmount: this.updateAmount,
                                 companyId: this.props.companyId,
                                 orderId: this.props.orderId,
+                                financeNo: this.props.financeNo
                             }
                         });
                     }}>

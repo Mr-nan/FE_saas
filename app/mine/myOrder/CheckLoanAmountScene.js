@@ -88,10 +88,8 @@ export default class CheckLoanAmountScene extends BaseComponent {
             <TouchableOpacity
                 onPress={() => {
                     if (this.isNumberByHundred(this.number)) {
-                        //this.props.showModal(true);
-                        //this.checkPrice(this.number);
                         this.props.updateAmount(this.number);
-                        //this.checkPrice(this.number);
+                        this.checkPrice(this.number);
                         this.backPage();
                     } else if (this.number === 0) {
                         this.props.showToast("金额不能为零");
@@ -112,15 +110,16 @@ export default class CheckLoanAmountScene extends BaseComponent {
                 let datas = JSON.parse(data.result);
                 let maps = {
                     company_id: datas.company_base_id,
-                    car_id: this.props.carId,
+                    //car_id: this.props.carId,
                     order_id: this.props.orderId,
-                    pricing_amount: price
+                    loan_amount: price,
+                    finance_no: this.props.financeNo
                 };
                 let url = AppUrls.ORDER_LOAN_AMOUNT_CHECK;
                 request(url, 'post', maps).then((response) => {
                     if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
                         this.props.showModal(false);
-                        this.props.isShowFinance(response.mjson.data);
+                        this.props.refreshLoanInfo(response.mjson.data);
                     } else {
                         this.props.showToast(response.mjson.msg);
                     }
