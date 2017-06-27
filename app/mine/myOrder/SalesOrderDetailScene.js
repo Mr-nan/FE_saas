@@ -359,6 +359,13 @@ export default class SalesOrderDetailScene extends BaseComponent {
             case 5:  // 订金到账
             case 6:
             case 7:
+            case 12:  //融资相关状态
+            case 13:
+            case 14:
+            case 15:
+            case 16:
+            case 17:
+            case 18:
                 if (cancelStatus === 0) {
                     this.orderState = 2;
                     if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_type == 2 &&
@@ -449,6 +456,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 }
                 break;
             case 11:  // 订单完成
+            case 19:  // 融资单完成
                 if (cancelStatus === 0) {
                     this.orderState = 4;
                     this.topState = -1;
