@@ -483,7 +483,7 @@ export default class CarInfoScene extends BaseComponent {
                 <ExplainModal ref={(text) => this.expModal = text} title='说明' buttonStyle={styles.expButton}
                               textStyle={styles.expText}
                               text='知道了'
-                              content='此质押车暂不可下单请您稍带时日再订购'/>
+                              content='此质押车暂不可下单请您稍待时日再订购'/>
             </View>
 
         )
@@ -603,7 +603,7 @@ export default class CarInfoScene extends BaseComponent {
         }, (error) => {
             if (error.mjson.code == '6350072') {
                 this.props.showModal(false);
-                this.expModal.changeShowType(true);
+                this.expModal.changeShowType(true, '说明', '此质押车暂不可下单请您稍带时日再订购', '知道了');
                 //this.props.showToast(error.mjson.msg);
             } else {
                 this.props.showModal(false);
@@ -672,12 +672,9 @@ export default class CarInfoScene extends BaseComponent {
             name: "CarUpkeepScene",
             component: CarUpkeepScene,
             params: {
-<<<<<<< HEAD
-                vin: vin
-=======
-                vin:vin,
-                carData:this.state.carData
->>>>>>> 40462269460322bb0f9849bf1896972d59d0ec2f
+
+                vin: vin,
+                carData: this.state.carData
             }
         }
         this.toNextPage(navigationParams);

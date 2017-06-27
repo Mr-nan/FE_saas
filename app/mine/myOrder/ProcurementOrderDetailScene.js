@@ -38,6 +38,7 @@ import AccountWebScene from "../accountManage/AccountWebScene";
 import WebScene from "../../main/WebScene";
 import ContractWebScene from "./ContractWebScene";
 import ContractScene from "./ContractScene";
+import LoanInfo from "./component/LoanInfo";
 const Pixel = new PixelUtil();
 
 export default class ProcurementOrderDetailScene extends BaseComponent {
@@ -55,6 +56,10 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         this.bottomState = -1;
         this.contactData = {};
         this.leftTime = 0;
+
+        this.companyId = 0;
+        this.applyLoanAmount = 0;
+
         this.state = {
             dataSource: [],
             renderPlaceholderOnly: 'blank',
@@ -115,6 +120,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.mList = ['0', '1', '3', '4', '6'];
                 this.contactData = {
                     layoutTitle: '已拍下',
+                    layoutContent: '请先与卖家联系商议成交价，待卖家确认后支付订金。',
                     setPrompt: false,
                     MerchantNum: merchantNum,
                     CustomerServiceNum: customerServiceNum
@@ -132,7 +138,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.mList = ['0', '1', '2', '3', '4', '6'];
                 this.contactData = {
                     layoutTitle: '付订金',
-                    layoutContent: '请尽快支付订金' + this.orderDetail.deposit_amount + '元，避免此车被其他买家买走。',
+                    layoutContent: '请尽快支付订金' + this.orderDetail.deposit_amount + '元，支付后卖家可查看到账金额，但不可提现。',
                     setPrompt: true,
                     promptTitle: '订金说明',
                     promptContent: '交付订金后卖家会为您保留车源，且卖家不可提现，如果交易最终未完成，您可以和卖家协商退回订金。',
@@ -225,7 +231,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
-                this.mList = ['0', '1', '2', '3', '4', '8', '6'];
+                this.mList = ['0', '1', '2', '3', '4', '7', '6'];
                 this.contactData = {
                     layoutTitle: '确认验收车辆',
                     layoutContent: '确认验收后，请等待贷款放款。',
@@ -241,7 +247,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
-                this.mList = ['0', '1', '3', '4', '8', '6'];
+                this.mList = ['0', '1', '3', '4', '7', '6'];
                 this.contactData = {
                     layoutTitle: '已完成',
                     layoutContent: '恭喜您交易已完成',
@@ -519,6 +525,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                         orderId: this.props.orderId,
                                         orderNo: this.orderDetail.order_no,
                                         payType: this.orderState,
+                                        carId: this.orderDetail.orders_item_data[0].car_id,
+                                        pledgeType: this.orderDetail.orders_item_data[0].car_finance_data.pledge_type,
+                                        pledgeStatus: this.orderDetail.orders_item_data[0].car_finance_data.pledge_status,
                                         callBack: this.payCallBack
                                     }
                                 });
@@ -543,7 +552,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
                             onPress={() => {
-                                this.refs.expModal.changeShowType(true);
+                                this.refs.expModal.changeShowType(true, '提示', '订单尾款已结清联系客服取消订单', '确定');
                             }}>
                             <View style={styles.buttonCancel}>
                                 <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
@@ -872,8 +881,181 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     }
                 }
                 break;
-            case 12:
-
+            case 12:  // 12=>'订单融资处理中',
+                if (cancelStatus === 0) {
+                    this.orderState = 5;
+                    this.topState = -1;
+                    if (status === 6) {
+                        this.bottomState = 1;
+                    } else {
+                        this.bottomState = 1;
+                    }
+                } else if (cancelStatus === 1) {
+                    this.orderState = 5;
+                    this.topState = -1;
+                    this.bottomState = 3;
+                } else if (cancelStatus === 2) {
+                    this.orderState = 5;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 5;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
+                    }
+                } else if (cancelStatus === 3) {
+                    this.orderState = 5;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 5;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
+                    }
+                }
+                break;
+            case 13:  //13=>'订单融资完成',
+            case 14:  //14=>'支付首付款中',
+            case 15:  //15=>'支付首付款失败',
+                if (cancelStatus === 0) {
+                    this.orderState = 6;
+                    this.topState = -1;
+                    if (status === 6) {
+                        this.bottomState = 1;
+                    } else {
+                        this.bottomState = 1;
+                    }
+                } else if (cancelStatus === 1) {
+                    this.orderState = 6;
+                    this.topState = -1;
+                    this.bottomState = 3;
+                } else if (cancelStatus === 2) {
+                    this.orderState = 6;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 5;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
+                    }
+                } else if (cancelStatus === 3) {
+                    this.orderState = 6;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 5;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
+                    }
+                }
+                break;
+            case 16:  //16=>'支付首付款完成',
+            case 17:  //17=>'融资单确认验收中',
+            case 18:  //18=>'融资单确认验收失败',
+                if (cancelStatus === 0) {
+                    this.orderState = 7;
+                    this.topState = -1;
+                    if (status === 6) {
+                        this.bottomState = 1;
+                    } else {
+                        this.bottomState = 1;
+                    }
+                } else if (cancelStatus === 1) {
+                    this.orderState = 7;
+                    this.topState = -1;
+                    this.bottomState = 3;
+                } else if (cancelStatus === 2) {
+                    this.orderState = 7;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 5;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
+                    }
+                } else if (cancelStatus === 3) {
+                    this.orderState = 7;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 5;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
+                    }
+                }
+                break;
+            case 19:
+                if (cancelStatus === 0) {
+                    this.orderState = 8;
+                    this.topState = -1;
+                    if (status === 6) {
+                        this.bottomState = 1;
+                    } else {
+                        this.bottomState = 1;
+                    }
+                } else if (cancelStatus === 1) {
+                    this.orderState = 8;
+                    this.topState = -1;
+                    this.bottomState = 3;
+                } else if (cancelStatus === 2) {
+                    this.orderState = 8;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 5;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
+                    }
+                } else if (cancelStatus === 3) {
+                    this.orderState = 8;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 5;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
+                    }
+                }
                 break;
         }
     };
@@ -882,6 +1064,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
+                this.companyId = datas.company_base_id;
                 let maps = {
                     company_id: datas.company_base_id,
                     order_id: this.props.orderId,
@@ -911,7 +1094,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.stateMapping(status, cancelStatus);
 
                         // TODO this is TEST!!!!!!!!!!!!
-                        //this.orderState = 5;
+                        //this.orderState = 6;
 
                         this.initListData(this.orderState);
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -939,6 +1122,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.props.showToast('获取订单详情失败');
             }
         });
+    };
+
+    updateLoanAmount = (newAmount) => {
+        //this.props.showModal(true);
+        this.applyLoanAmount = newAmount;
     };
 
     // 下拉刷新数据
@@ -1116,57 +1304,12 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             )
         } else if (rowData === '5') {
             return (
-                <View style={styles.itemType5}>
-                    <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
-                        <Text style={{
-                            fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-                            marginLeft: Pixel.getPixel(15)
-                        }}>贷款信息</Text>
-                        <View style={{flex: 1}}/>
-                        <Text style={{color: fontAndColor.COLORA2}}>贷款单号：</Text>
-                        <Text style={{color: fontAndColor.COLORA2}}>232222333</Text>
-                        <Image
-                            style={styles.backIcon}
-                            source={require('../../../images/mainImage/celljiantou.png')}/>
-                    </View>
-                    <View style={styles.separatedLine}/>
-                    <View style={{
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        marginLeft: Pixel.getPixel(15),
-                        marginTop: Pixel.getPixel(20),
-                        marginRight: Pixel.getPixel(15)
-                    }}>
-                        <Text style={styles.orderInfo}>最大可贷额度</Text>
-                        <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>100000元</Text>
-                    </View>
-                    {/*TODO 输入申请贷款额度*/}
-                    <View style={styles.inputBorder}>
-                        <TextInput defaultValue={0}
-                                   placeholder={"请输入申请贷款的额度"}
-                                   style={styles.inputStyle}
-                                   secureTextEntry={false}
-                                   underlineColorAndroid="transparent"
-                        />
-                        <Text style={{marginRight: Pixel.getPixel(10)}}>元</Text>
-                    </View>
-                    <View style={styles.infoItem}>
-                        <Text style={styles.orderInfo}>需支付服务费</Text>
-                        <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>100000元</Text>
-                    </View>
-                    <View style={styles.infoItem}>
-                        <Text style={styles.orderInfo}>需支付OBD使用费</Text>
-                        <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>100000元</Text>
-                    </View>
-                    <View style={styles.infoItem}>
-                        <Text style={styles.orderInfo}>应付首付款</Text>
-                        <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>100000元</Text>
-                    </View>
-                </View>
+                <LoanInfo
+                    navigator={this.props.navigator}
+                    updateLoanAmount={this.updateLoanAmount}
+                    applyLoanAmount={this.applyLoanAmount}
+                    orderId={this.orderDetail.id}
+                    companyId={this.companyId}/>
             )
         } else if (rowData === '6') {
             return (
@@ -1206,7 +1349,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 <TouchableOpacity
                     style={styles.itemType7}
                     onPress={() => {
-                        // 跳转金融页面
+                        // 跳转金融页面  借款详情
                         //this.props.showToast('rowData === 7');
                     }}>
                     <View style={{alignItems: 'center', flexDirection: 'row', height: Pixel.getPixel(44)}}>
@@ -1214,13 +1357,13 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             marginLeft: Pixel.getPixel(15),
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                             color: fontAndColor.COLORA0
-                        }}>订单融资状态</Text>
+                        }}>借款单号</Text>
                         <View style={{flex: 1}}/>
                         <Text style={{
                             marginRight: Pixel.getPixel(10),
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                            color: fontAndColor.COLORB2
-                        }}>等待放款</Text>
+                            color: fontAndColor.COLORA1
+                        }}>{this.orderDetail.orders_item_data[0].car_finance_data.loan_code ? this.orderDetail.orders_item_data[0].car_finance_data.loan_code : '未生成借款单号'}</Text>
                         <Image source={require('../../../images/mainImage/celljiantou.png')}
                                style={{marginRight: Pixel.getPixel(15)}}/>
                     </View>

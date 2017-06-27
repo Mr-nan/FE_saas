@@ -39,8 +39,8 @@ export default class CheckStand extends BaseComponent {
         super(props);
         this.accountInfo = '';
         this.transSerialNo = '';
-        this.isDoneCredit = 0;
-        this.credit = 0;
+        this.isShowFinancing = 0;
+        this.creditBalanceMny = 0;
         this.state = {
             renderPlaceholderOnly: 'blank',
             isRefreshing: false
@@ -68,6 +68,7 @@ export default class CheckStand extends BaseComponent {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
                 this.isDoneCredit = datas.is_done_credit;
+                this.creditBalanceMny = datas.credit_balance_mny;
                 let maps = {
                     enter_base_ids: datas.company_base_id,
                 };
@@ -76,11 +77,16 @@ export default class CheckStand extends BaseComponent {
                     this.props.showModal(false);
                     this.accountInfo = response.mjson.data.account;
                     if (this.accountInfo) {
-                        this.setState({
-                            isRefreshing: false,
-                            renderPlaceholderOnly: 'success'
-                        });
+                        if (this.props.payType == 2) {
+                            this.getMergeWhitePoStatus();
+                        } else {
+                            this.setState({
+                                isRefreshing: false,
+                                renderPlaceholderOnly: 'success'
+                            });
+                        }
                     } else {
+                        this.props.showToast('用户信息查询失败');
                         this.setState({
                             isRefreshing: false,
                             renderPlaceholderOnly: 'null'
@@ -95,6 +101,63 @@ export default class CheckStand extends BaseComponent {
                 });
             } else {
                 this.props.showToast('用户信息查询失败');
+            }
+        });
+    };
+
+    /**
+     *  检查用户是否是白名单用户
+     */
+    getMergeWhitePoStatus = () => {
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let isDoneCredit = datas.is_done_credit;
+                let mergeId = datas.merge_id;
+                //let mergeId = 1110;
+                if (isDoneCredit == 0) {
+                    this.isShowFinancing = 0;
+                    this.setState({
+                        isRefreshing: false,
+                        renderPlaceholderOnly: 'success'
+                    });
+                } else {
+                    let maps = {
+                        api: AppUrls.ORDER_GET_MERGE_WHITE_PO_STATUS,
+                        merge_id: mergeId
+                    };
+                    let url = AppUrls.FINANCE;
+                    request(url, 'post', maps).then((response) => {
+                        if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                            this.isShowFinancing = 1;
+                            this.setState({
+                                isRefreshing: false,
+                                renderPlaceholderOnly: 'success'
+                            });
+                        } else {
+                            this.isShowFinancing = 0;
+                            this.setState({
+                                isRefreshing: false,
+                                renderPlaceholderOnly: 'success'
+                            });
+                        }
+                        /*console.log('-=-=-=code-=-=',response.mjson.code);
+                        console.log('-=-=-=msg-=-=',response.mjson.msg);
+                        console.log('-=-=-=data-=-=',response.mjson.data);*/
+                    }, (error) => {
+                        this.isShowFinancing = 0;
+                        this.setState({
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'success'
+                        });
+                    });
+                }
+            } else {
+                this.isShowFinancing = 0;
+                this.setState({
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'success'
+                });
             }
         });
     };
@@ -181,7 +244,7 @@ export default class CheckStand extends BaseComponent {
                               childStyle={styles.loginButtonTextStyle}
                               mOnPress={this.goPay}/>
                     {/*---订单融资---*/}
-                    {<View>
+                    {this.isShowFinancing == 1 && this.props.payType == 2 && <View>
                         <View style={{
                             alignItems: 'center',
                             flexDirection: 'row',
@@ -220,10 +283,14 @@ export default class CheckStand extends BaseComponent {
                             <Text style={{
                                 fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                                 color: fontAndColor.COLORA1
-                            }}>授信可用额度：</Text>
+                            }}>订单融资授信可用额度：</Text>
                             <Text style={{
                                 fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30)
-                            }}>200万</Text>
+                            }}>{this.creditBalanceMny}</Text>
+                            <Text style={{
+                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                color: fontAndColor.COLORA1
+                            }}>元</Text>
                         </View>
                         <Text style={{
                             marginLeft: Pixel.getPixel(15),
@@ -233,7 +300,7 @@ export default class CheckStand extends BaseComponent {
                         }}>申请订单融资额度请联系客服</Text>
                     </View> }
                     <ExplainModal ref='expModal' title='提示' buttonStyle={styles.expButton} textStyle={styles.expText}
-                                  text='确定' content='您的余额不足请充值'/>
+                                  text='确定' content='此车在质押中，需要卖方解除质押后可申请订单融资。'/>
                 </View>
             )
         }
@@ -273,14 +340,46 @@ export default class CheckStand extends BaseComponent {
         });
     };
 
+    /**
+     *  跳转订单融资申请页
+     */
     goApplyLoan = () => {
-        this.toNextPage({
-            name: 'DDApplyLendScene',
-            component: DDApplyLendScene,
-            params: {
-                orderNo: this.props.orderNo
-            }
-        });
+        if (this.props.pledgeType == 1 && this.props.pledgeStatus == 1) {
+            this.refs.expModal.changeShowType(true, '提示', '此车在质押中，需要卖方解除质押后可申请订单融资。', '确定');
+        } else {
+            StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+                if (data.code == 1 && data.result != null) {
+                    let datas = JSON.parse(data.result);
+                    let mergeId = datas.merge_id;
+                    let maps = {
+                        //api: AppUrls.ADD_PLATFORM_ORDER_CAR,
+                        merge_id: mergeId,
+                        platform_car_id: this.props.carId,
+                        platform_order_number: this.props.orderNo
+                    };
+                    let url = AppUrls.ADD_PLATFORM_ORDER_CAR;
+                    request(url, 'Post', maps).then((response) => {
+/*                        if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                            this.toNextPage({
+                                name: 'DDApplyLendScene',
+                                component: DDApplyLendScene,
+                                params: {
+                                    orderNo: this.props.orderNo
+                                }
+                            });
+                        } else {
+                            this.props.showToast(response.mjson.msg);
+                        }*/
+                        console.log('123y1eh1d1ubkj1b2dk1===', response.mjson.data);
+                    }, (error) => {
+                        //this.props.showToast('确认验收失败');
+                        this.props.showToast('添加订单融资车辆失败');
+                    });
+                } else {
+                    this.props.showToast('添加订单融资车辆失败');
+                }
+            });
+        }
     };
 
     goPay = () => {
