@@ -142,7 +142,7 @@ export default class CarPublishSecondScene extends BaseComponent {
             },
                 {
                     title: '分销批发价',
-                    subTitle: '针对同行的分销价格，合理定价可以更快售出',
+                    subTitle: '展示给其他车商看',
                     isShowTag: true,
                     isShowTail: true,
                     tailView: () => {
@@ -175,7 +175,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                 },
                 {
                     title: '圈子内的分销批发价',
-                    subTitle: '展示给其他车商看',
+                    subTitle: '展示给其他圈友看',
                     isShowTag: true,
                     isShowTail: true,
                     tailView: () => {
@@ -427,7 +427,7 @@ export default class CarPublishSecondScene extends BaseComponent {
             [
                 {
                     title: '分销批发价',
-                    subTitle: '针对同行的分销价格，合理定价可以更快售出',
+                    subTitle: '展示给其他车商看',
                     isShowTag: true,
                     isShowTail: true,
                     tailView: () => {
@@ -460,7 +460,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                 },
                 {
                     title: '圈子内的分销批发价',
-                    subTitle: '展示给其他车商看',
+                    subTitle: '展示给其他圈友看',
                     isShowTag: true,
                     isShowTail: true,
                     tailView: () => {

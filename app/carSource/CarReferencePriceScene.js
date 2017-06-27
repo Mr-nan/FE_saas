@@ -46,6 +46,23 @@ export  default class CarReferencePriceScene extends  BaseComponent{
 
         this.loadData();
     }
+
+    /**
+     * from @zhaojian
+     *
+     * 回退到车辆详情页面
+     **/
+    backPage = () => {
+        const navigator = this.props.navigator;
+        if (navigator){
+            for(let i = 0;i<navigator.getCurrentRoutes().length;i++){
+                if(navigator.getCurrentRoutes()[i].name=='CarInfoScene'){
+                    navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                    break;
+                }
+            }
+        }
+    }
     render(){
         if (this.state.renderPlaceholderOnly !== 'success') {
             return (
