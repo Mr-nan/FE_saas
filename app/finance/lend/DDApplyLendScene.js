@@ -73,7 +73,7 @@ export default class DDApplyLendScene extends BaseComponent {
      * from @yujinzhong
      *
      *
-     * 获取订单融资申请前置数据
+     * 获取订单融资申请前置数据,费率，借款额度
      **/
     getLendInfo = () => {
 
@@ -114,8 +114,8 @@ export default class DDApplyLendScene extends BaseComponent {
      **/
     getCarListInfo = (lendInfo) => {
         let maps = {
-            api: apis.AUTOLIST,
-            platform_order_number	: '201704270003'//平台订单号
+            api: apis.DDAUTOLIST,
+            platform_order_number	: this.props.orderNo//平台订单号
         };
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
@@ -184,20 +184,19 @@ export default class DDApplyLendScene extends BaseComponent {
             {title: '借贷类型', key: jsonData.product_type},
             {title: '借款费率', key: jsonData.rate},
             {title: '保证金余额', key: jsonData.bond_mny+"元"},
-            {title: '保证金比例', key: jsonData.bond_mny},
+            {title: '保证金比例', key: jsonData.bond_deposit_rate},
             {title: '借款期限', key: jsonData.loan_life},
             {title: '借款额度', key: "30000~"+jsonData.max_loanmny+"元"},
         ]
         dataSource['section1'] = section1
         if (carData.length > 0) {
             let section2 = [
-                {title: '借款单号', key: '订单融资'},
+                {title: '订单号', key:this.props.orderNo},
 
             ]
             dataSource['section2'] = section2;
 
             let tempCarDate = [];
-
             carData.map((item) => {
 
                 tempCarDate.push(
@@ -217,10 +216,17 @@ export default class DDApplyLendScene extends BaseComponent {
                         invoice_audit_status:item.invoice_audit_status
                     }
                 )
-                dataSource['section3'] = tempCarDate;
             })
+            dataSource['section3'] = tempCarDate;
+
+
+            // if(carData[0].){
+            //
+            // }
             let section4 = [
-                {title: 'OBD设备', key: '订单融资'},
+                {title: 'OBD设备', key: this.OBDtransferToString(carData[0].obd_audit_status,carData[0].obd_bind_status)},
+
+
                 {title: '车属权限', key: '订单融资'},
 
             ]
@@ -229,6 +235,27 @@ export default class DDApplyLendScene extends BaseComponent {
         return dataSource;
     }
 
+    /*
+    *
+    * 根据后台返回，将数据进行转换
+    * OBDtransferToString
+    **/
+    OBDtransferToString =(audit,bind)=>{
+        let status;
+        if (bind == 0){
+            status = '未绑定';
+        }
+        if (bind == 1){
+            status = '已绑定';
+        }
+        return status;
+
+}
+    /*
+     *
+     * 根据后台返回，判断底部按钮的显示
+     * confimOrderState
+     **/
     confimOrderState = (state, isComplete) => {
         let NameBlobs = [];
 
@@ -247,7 +274,11 @@ export default class DDApplyLendScene extends BaseComponent {
         return NameBlobs;
     }
 
-
+    /*
+     *
+     * 根据封装的数据，显示row
+     * renderRow
+     **/
     renderRow = (rowData, sectionID, rowId, highlightRow) => {
 
         if (sectionID === 'section1') {
@@ -332,15 +363,18 @@ export default class DDApplyLendScene extends BaseComponent {
     }
     renderSectionHeader = (sectionData, sectionID) => {
         if(sectionID=='section1'){
+            if(this.props.shenhe=="yes"){
+                return (
+                    <View style={styles.section2Style}>
+                        {/*<Text style={styles.sectionText}>订单信息</Text>*/}
 
-            return (
-                <View style={styles.section2Style}>
-                    {/*<Text style={styles.sectionText}>订单信息</Text>*/}
+                        <Text style={{color:'#ff0000',fontSize:fontadapeSize(15)}}> {'审核未通过:'}</Text>
+                        {/*<Text style={{color:'#000000',fontSize:Pixel.getFontPixel(14)}} numberOfLines={2}>{showData.tempDetailInfo.payment_audit_reason}</Text>*/}
+                    </View>
+                )
+            }
 
-                    <Text style={{color:'#ff0000',fontSize:fontadapeSize(15)}}> {'审核未通过:'}</Text>
-                    {/*<Text style={{color:'#000000',fontSize:Pixel.getFontPixel(14)}} numberOfLines={2}>{showData.tempDetailInfo.payment_audit_reason}</Text>*/}
-                </View>
-            )
+
         }
         if (sectionID === 'section2') {
 
