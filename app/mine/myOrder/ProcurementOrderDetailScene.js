@@ -1252,20 +1252,28 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             }}
                             style={{color: fontAndColor.COLORA2}}>《买卖协议》</Text>
                     }
-                    {
-                        this.orderState == 3 &&
-                        <Text
-                            onPress={() => {
-                                this.getTypeContractInfo(2)
-                            }}
-                            style={{color: fontAndColor.COLORA2}}>《买卖协议附件》</Text>
-                    }
                     {/*<Text style={{color: fontAndColor.COLORA1}}>和</Text>
                      <Text
                      onPress={() => {
                      this.getTypeContractInfo(2)
                      }}
                      style={{color: fontAndColor.COLORA2}}>《授权声明》</Text>*/}
+                    {
+                        (this.orderState == 3 || this.orderState == 7) &&
+                        <Text
+                            onPress={() => {
+                                this.getTypeContractInfo(2)
+                            }}
+                            style={{color: fontAndColor.COLORA2}}>《买卖协议附件》</Text>
+                    }
+                    {
+                        (this.orderState == 6 || this.orderState == 7) &&
+                        <Text
+                            onPress={() => {
+                                this.getTypeContractInfo(3)
+                            }}
+                            style={{color: fontAndColor.COLORA2}}>《售后回租协议》</Text>
+                    }
                 </View>
             )
         } else if (rowData === '3') {
