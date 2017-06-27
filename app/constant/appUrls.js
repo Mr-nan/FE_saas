@@ -11,12 +11,12 @@
 /**
  * 正式地址
  */
-//export const BASEURL = 'https://gatewayapi.dycd.com/';
+export const BASEURL = 'https://gatewayapi.dycd.com/';
 
 /**
  * 预发布地址
  */
-export const BASEURL = 'https://stgatewayapi.dycd.com/';
+//export const BASEURL = 'https://stgatewayapi.dycd.com/';
 
 /**
  * 版本号1
@@ -374,6 +374,13 @@ export const ADDACCOUNTMESSAGEINFO = BASEURL + 'v1/user.account/addAccountMessag
  * 根据卡号获取虚拟账号信息
  **/
 export const USER_ACCOUNT_COMPANYINFO = BASEURL + 'v1/user.account/companyInfo';
+
+/**
+ * from @zhaojian
+ *
+ * 生成订单合同
+ **/
+export const CONTRACT_APPLYPLSEAL = BASEURL + 'v1/contract/applyPlSeal';
 
 /**
  * from @zhaojian
