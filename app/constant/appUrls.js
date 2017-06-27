@@ -4,7 +4,7 @@
 //export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
- * 测试地
+ * 测试地址
  */
 export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
