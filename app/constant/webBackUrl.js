@@ -52,3 +52,9 @@ export const CHANGEPHONE = 'www.changephone.com';
  * 提现
  **/
 export const WITHDRAWALS = 'www.withdrawals.com';
+/**
+ * from @hanmeng
+ *
+ * 支付
+ **/
+export const PAY = 'www.pay.com';

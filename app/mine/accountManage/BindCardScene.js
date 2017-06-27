@@ -68,9 +68,9 @@ export  default class BindCardScene extends BaseComponent {
                     .then((response) => {
                             this.props.showModal(false);
                             if (clickType == 1) {
-                                this.bindCard(datas.company_base_id, response.mjson.data.account_open_type)
+                                this.bindCard(datas.company_base_id, response.mjson.data.account.account_open_type)
                             } else {
-                                if (response.mjson.data.account_open_type == '1') {
+                                if (response.mjson.data.account.account_open_type == '1') {
                                     this.toNextPage({
                                         name: 'OpenEnterpriseAccountScene',
                                         component: OpenEnterpriseAccountScene,

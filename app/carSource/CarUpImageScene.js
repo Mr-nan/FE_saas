@@ -28,7 +28,7 @@ import * as AppUrls from '../constant/appUrls';
 const Pixel = new  PixelUtil();
 const sceneWidth = Dimensions.get('window').width;
 const IS_ANDROID = Platform.OS === 'android';
-
+import SelectPhotoModal from '../component/SelectPhotoModal';
 export default class CarUpImageScene extends BaseComponent{
 
     initFinish=()=>{
@@ -218,6 +218,7 @@ export default class CarUpImageScene extends BaseComponent{
                     )}}
                 />
                 <AllNavigationView title="上传图片" backIconClick={this.backPage}/>
+                <SelectPhotoModal ref="selectphotomodal"/>
             </View>)
     }
     renderSeparator(sectionId, rowId) {

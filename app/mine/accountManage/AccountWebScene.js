@@ -46,7 +46,11 @@ export  default class AccountWebScene extends BaseComponent {
 
     handleBack = () => {
         this.props.showModal(false);
-        if (oldUrl == this.props.webUrl) {
+        if (oldUrl == this.props.webUrl && this.props.backUrl != webBackUrl.PAY) {
+            this.backPage();
+        } else if (this.props.backUrl == webBackUrl.PAY) {
+            this.props.showModal(false);
+            this.props.callBack();
             this.backPage();
         } else {
             this.refs.www.goBack();
@@ -56,73 +60,80 @@ export  default class AccountWebScene extends BaseComponent {
 
 
     render() {
-        if (this.state.renderPlaceholderOnly!=='success') {
+        if (this.state.renderPlaceholderOnly !== 'success') {
             return this._renderPlaceholderView();
         }
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
-               <WebViewTitle ref="webviewtitle"/>
+                <WebViewTitle ref="webviewtitle"/>
                 <WebView
                     ref="www"
-                    style={{width:width,height:height,
-                    backgroundColor:fontAndColor.COLORA3}}
-                    source={{uri:this.props.webUrl,method: 'GET'}}
+                    style={{
+                        width: width, height: height,
+                        backgroundColor: fontAndColor.COLORA3
+                    }}
+                    source={{uri: this.props.webUrl, method: 'GET'}}
                     javaScriptEnabled={true}
                     domStorageEnabled={true}
                     automaticallyAdjustContentInsets={false}
                     scalesPageToFit={false}
-                    onLoadStart={()=>{
+                    onLoadStart={() => {
                         this.refs.webviewtitle.firstProgress();
 
                     }}
-                    onLoadEnd={()=>{
+                    onLoadEnd={() => {
                         this.refs.webviewtitle.lastProgress();
                     }}
-                    onError={()=>{
+                    onError={() => {
                         this.setState({renderPlaceholderOnly: 'error'});
                     }}
                     onNavigationStateChange={this.onNavigationStateChange.bind(this)}
                 />
                 <NavigationView
                     title={this.props.title}
-                    backIconClick={()=>{
-                         this.props.showModal(false);
-                        if(oldUrl==this.props.webUrl){
-                           this.backPage();
-                        }else{
-                           this.props.callBack();
-                           if(this.props.backUrl==webBackUrl.OPENINDIVIDUALACCOUNT||
-                                this.props.backUrl==webBackUrl.OPENENTERPRISEACCOUNT||
-                                this.props.backUrl==webBackUrl.BINDCARD||
-                                this.props.backUrl==webBackUrl.UNBINDCARD){
+                    backIconClick={() => {
+                        this.props.showModal(false);
+                        if (oldUrl == this.props.webUrl && this.props.backUrl != webBackUrl.PAY) {
+                            this.backPage();
+                        } else if (this.props.backUrl == webBackUrl.PAY) {
+                            this.props.showModal(false);
+                            this.props.callBack();
+                            this.backPage();
+                        } else {
+                            this.props.callBack();
+                            if (this.props.backUrl == webBackUrl.OPENINDIVIDUALACCOUNT ||
+                                this.props.backUrl == webBackUrl.OPENENTERPRISEACCOUNT ||
+                                this.props.backUrl == webBackUrl.BINDCARD ||
+                                this.props.backUrl == webBackUrl.UNBINDCARD) {
                                 const navigator = this.props.navigator;
-                                if (navigator){
-                                    for(let i = 0;i<navigator.getCurrentRoutes().length;i++){
-                                        if(navigator.getCurrentRoutes()[i].name=='MainPage'){
+                                if (navigator) {
+                                    for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
+                                        if (navigator.getCurrentRoutes()[i].name == 'MainPage') {
                                             navigator.popToRoute(navigator.getCurrentRoutes()[i]);
                                             break;
                                         }
                                     }
                                 }
-                           }else if(this.props.backUrl == webBackUrl.TRANSFER ||
-                                      this.props.backUrl ==  webBackUrl.WITHDRAWALS ){
-                                      const navigator = this.props.navigator;
-                                      if (navigator) {
-                                           for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
-                                                  if (navigator.getCurrentRoutes()[i].name == 'AccountScene') {
-                                                      navigator.popToRoute(navigator.getCurrentRoutes()[i]);
-                                                       break;
-                                                  }
-                                             }
-                                      }
-                           }else{
+                            } else if (this.props.backUrl == webBackUrl.TRANSFER ||
+                                this.props.backUrl == webBackUrl.WITHDRAWALS) {
+                                const navigator = this.props.navigator;
+                                if (navigator) {
+                                    for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
+                                        if (navigator.getCurrentRoutes()[i].name == 'AccountScene') {
+                                            navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                                            break;
+                                        }
+                                    }
+                                }
+                            } else {
                                 this.backPage();
-                           }
+                            }
                         }
                     }}
                 />
             </View>
-        );
+        )
+            ;
     }
 
     onNavigationStateChange = (navState) => {
@@ -154,6 +165,9 @@ export  default class AccountWebScene extends BaseComponent {
                         }
                     }
                 }
+            } else if (oldUrl == 'http://' + webBackUrl.PAY + '/') {
+                //this.props.callBack();
+                this.backPage();
             } else {
                 this.backPage();
             }
@@ -162,7 +176,7 @@ export  default class AccountWebScene extends BaseComponent {
 
     _renderPlaceholderView() {
         return (
-            <View style={{width: width, height: height,backgroundColor: fontAndColor.COLORA3}}>
+            <View style={{width: width, height: height, backgroundColor: fontAndColor.COLORA3}}>
                 {this.loadView()}
                 <NavigationView
                     title={this.props.title}

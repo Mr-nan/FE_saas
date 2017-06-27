@@ -39,7 +39,7 @@ export default class LabelParent extends PureComponent {
             }
             for (let j = 3 * i - 3; j < allSize; j++) {
                 //console.log(items[j].title);
-                childitem.push(<LabelForOrderScreen callBack={(item)=>{
+                childitem.push(<LabelForOrderScreen callBack={(item, status)=>{
                     // console.log(items[j].ref);
                     // this.refs.a10.unSelected();
                     if (clickitems !== item) {
@@ -47,6 +47,7 @@ export default class LabelParent extends PureComponent {
                             clickitems = item;
                         }else{*/
                         this.props.updateState(item);
+                        this.props.updateStatus(status);
                         items[clickitems].ref.unSelected();
                         clickitems = item;
                         //}

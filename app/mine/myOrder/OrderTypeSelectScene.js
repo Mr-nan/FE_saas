@@ -10,7 +10,6 @@ import  {
     Text,
     Dimensions,
     ListView,
-    RefreshControl,
     Image
 } from  'react-native'
 
@@ -104,8 +103,8 @@ export default class OrderTypeSelectScene extends BaseComponent {
                                 name: 'OrderListScene',
                                 component: OrderListScene,
                                 params: {
-                                    business: 0,
-                                    orderStage: 'trading'
+                                    business: 1,
+                                    status: 'in_the_deal'
                                 }
                             });
                         } else {
@@ -113,8 +112,8 @@ export default class OrderTypeSelectScene extends BaseComponent {
                                 name: 'OrderListScene',
                                 component: OrderListScene,
                                 params: {
-                                    business: 1,
-                                    orderStage: 'trading'
+                                    business: 2,
+                                    status: 'in_the_deal'
                                 }
                             });
                         }
@@ -134,8 +133,8 @@ export default class OrderTypeSelectScene extends BaseComponent {
                                 name: 'OrderListScene',
                                 component: OrderListScene,
                                 params: {
-                                    business: 0,
-                                    orderStage: 'complete'
+                                    business: 1,
+                                    status: 'finish'
                                 }
                             });
                         } else {
@@ -143,8 +142,8 @@ export default class OrderTypeSelectScene extends BaseComponent {
                                 name: 'OrderListScene',
                                 component: OrderListScene,
                                 params: {
-                                    business: 1,
-                                    orderStage: 'complete'
+                                    business: 2,
+                                    status: 'finish'
                                 }
                             });
                         }
@@ -164,8 +163,8 @@ export default class OrderTypeSelectScene extends BaseComponent {
                                 name: 'OrderListScene',
                                 component: OrderListScene,
                                 params: {
-                                    business: 0,
-                                    orderStage: 'close'
+                                    business: 1,
+                                    status: 'closed'
                                 }
                             });
                         } else {
@@ -173,8 +172,8 @@ export default class OrderTypeSelectScene extends BaseComponent {
                                 name: 'OrderListScene',
                                 component: OrderListScene,
                                 params: {
-                                    business: 1,
-                                    orderStage: 'close'
+                                    business: 2,
+                                    status: 'closed'
                                 }
                             });
                         }

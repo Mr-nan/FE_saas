@@ -54,7 +54,7 @@ export  default class WaitActivationAccountScene extends BaseComponent {
                     .then((response) => {
                         this.setState({
                             renderPlaceholderOnly:'success',
-                            cardNumber:response.mjson.data.bank_card_no
+                            cardNumber:response.mjson.data.account.bank_card_no
                         });
                         },
                         (error) => {
