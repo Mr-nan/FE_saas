@@ -614,7 +614,12 @@ export const GET_APPLY_LOAN_DATA = 'api/v3/account/get_apply_loan_data';
  * 采购贷借款车辆列表
  **/
 export const AUTOLIST = 'api/v2/purchaAuto/autoList'
-
+/**
+ * from @lhc
+ *
+ * 订单融资车辆列表
+ **/
+export const DDAUTOLIST = 'api/v1/Order/autoList'
 /**
  * from @huangning
  *

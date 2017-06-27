@@ -672,6 +672,7 @@ export default class CarInfoScene extends BaseComponent {
             name: "CarUpkeepScene",
             component: CarUpkeepScene,
             params: {
+
                 vin: vin,
                 carData: this.state.carData
             }
