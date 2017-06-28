@@ -85,7 +85,8 @@ export default class DDApplyLendScene extends BaseComponent {
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
                     let tempjson = response.mjson.data;
-                    ControlState = this.confimOrderState(Number.parseInt(tempjson.payment_status), Number.parseInt(tempjson.payment_schedule))
+                    // ControlState = this.confimOrderState(Number.parseInt(tempjson.payment_status), Number.parseInt(tempjson.payment_schedule))
+                    ControlState = ["申请借款"];
 
                     this.getCarListInfo(tempjson);
                 },
@@ -256,23 +257,23 @@ export default class DDApplyLendScene extends BaseComponent {
      * 根据后台返回，判断底部按钮的显示
      * confimOrderState
      **/
-    confimOrderState = (state, isComplete) => {
-        let NameBlobs = [];
-
-        if (state > 0 && state <= 32 || state == 50) {
-            NameBlobs = ['取消借款']
-        } else if (state == 33) {
-            NameBlobs = ['取消借款', '确认金额']
-        } else if (state === 35) {
-            NameBlobs = ['取消借款','签署合同']
-        } else if (state == 40 || state == 42 || isComplete == 4) {
-            NameBlobs = ['查看合同']
-        } else if (state == 41) {
-            NameBlobs = ['取消借款', '确认金额', '查看合同']
-        }
-
-        return NameBlobs;
-    }
+    // confimOrderState = (state, isComplete) => {
+    //     let NameBlobs = [];
+    //
+    //     if (state > 0 && state <= 32 || state == 50) {
+    //         NameBlobs = ['取消借款']
+    //     } else if (state == 33) {
+    //         NameBlobs = ['取消借款', '确认金额']
+    //     } else if (state === 35) {
+    //         NameBlobs = ['取消借款','签署合同']
+    //     } else if (state == 40 || state == 42 || isComplete == 4) {
+    //         NameBlobs = ['查看合同']
+    //     } else if (state == 41) {
+    //         NameBlobs = ['取消借款', '确认金额', '查看合同']
+    //     }
+    //
+    //     return NameBlobs;
+    // }
 
     /*
      *

@@ -177,7 +177,6 @@ export  default  class CGDLendScenes extends BaseComponent {
                         })
                         if(error.mycode!= -300||error.mycode!= -500){
                             this.props.showToast(error.mjson.msg);
-
                         }else {
 
                             this.props.showToast('服务器连接有问题')
