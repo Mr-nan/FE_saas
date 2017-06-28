@@ -11,7 +11,8 @@ import {
     PixelRatio,
     TextInput,
     Image,
-    NativeModules
+    NativeModules,
+    TouchableHighlight
 } from "react-native";
 import BaseComponent from "../../component/BaseComponent";
 import NavigationBar from "../../component/NavigationBar";
@@ -20,8 +21,11 @@ import PixelUtil from "../../utils/PixelUtil";
 import {request} from "../../utils/RequestUtil";
 import * as AppUrls from "../../constant/appUrls";
 import PurchasePickerItem from "../component/PurchasePickerItem";
-import DeviceNumber from './DeviceNumber';
-import WebScene from '../../main/WebScene';
+import WebScene from "../../main/WebScene";
+import SelectMaskComponent from "../../mine/employeeManage/SelectMaskComponent";
+import ChooseButton from "../../component/ChooseButton";
+import * as apis from "../../constant/appUrls";
+import MyButton from '../../component/MyButton';
 let results = [];
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -39,20 +43,21 @@ export default class DDCarInfoScene extends BaseComponent {
             chejia_number: "1234567890",
             dengjiren: "张三",
             sign_type: "线上",
-
-            source:{},
+            source: {},
         };
-        // this.bind_type = 1;
-        // this.fromScene_type = "DDCarInfoScene";
-
+        this.xb = ['张三', '李四', '王五', '赵六'];
     }
+
     componentWillUnmount() {
         results = [];
         childItems = [];
     }
+
     initFinish = () => {
-        this.getPurchaAutoPicCate();
+        this.getCarInfo();
+        this.getBusinessList();
     }
+
     // 获取采购贷车辆照片分类
     getPurchaAutoPicCate = () => {
         let maps = {
@@ -102,10 +107,62 @@ export default class DDCarInfoScene extends BaseComponent {
                 }
             )
     }
-    render() {
-        return(
-            <View style={styles.container}>
 
+
+    /**
+     * 获取车辆信息
+     * getCarInfo
+     */
+    getCarInfo = () => {
+        let maps = {
+            api: apis.AUTODETAIL,
+            info_id: this.props.info_id,
+            platform_order_number: this.props.orderNo,
+        }
+        this.props.showModal(true);
+        request(apis.FINANCE, 'Post', maps)
+            .then((response) => {
+                this.getPurchaAutoPicCate();
+                this.props.showModal(false);
+                console.log(response)
+            }, (error) => {
+                this.getPurchaAutoPicCate();
+                this.props.showModal(false);
+                if (error.mycode != -300 || error.mycode != -500) {
+                    this.props.showToast(error.mjson.msg);
+                } else {
+                    this.props.showToast('服务器连接有问题')
+                }
+            });
+    }
+
+
+    /**
+     * 获取商户登记人/收车人列表
+     * getBusinessList
+     */
+    getBusinessList = () => {
+        let maps = {
+            api: apis.GETBUSINESSLIST,
+        }
+        this.props.showModal(true);
+        request(apis.FINANCE, 'Post', maps)
+            .then((response) => {
+                this.props.showModal(false);
+                console.log(response)
+            }, (error) => {
+                this.props.showModal(false);
+                if (error.mycode != -300 || error.mycode != -500) {
+                    this.props.showToast(error.mjson.msg);
+                } else {
+                    this.props.showToast('服务器连接有问题')
+                }
+            });
+    }
+
+    render() {
+        return (
+            <View style={styles.container}>
                 <NavigationBar
                     leftImageShow={true}
                     leftTextShow={false}
@@ -128,24 +185,35 @@ export default class DDCarInfoScene extends BaseComponent {
                     flex: 1,
                     marginTop: Pixel.getPixel(0)
                 }}>
+                    {this._renderSectionHeader()}
                     {
-                        this.state.renderPlaceholderOnly ?
-                            null :
+                        this.state.renderPlaceholderOnly ? null :
                             <ListView
                                 dataSource={this.state.source}
                                 renderRow={this._renderRow}
                                 renderSeparator={this._renderSeparator}
-                                renderSectionHeader={this._renderSectionHeader}
                             />
-
                     }
 
                 </View>
+
+                {/* 蒙版选择器 */}
+                <SelectMaskComponent viewData={[]} onClick={(rowID) => {
+                    this.refs.djr.changeRightText(this.xb[rowID]);
+                }}
+                                     ref={(modal) => {
+                                         this.selectModal = modal
+                                     }}/>
+
+                <MyButton buttonType={MyButton.TEXTBUTTON}
+                          content={'完成'}
+                          parentStyle={styles.loginBtnStyle}
+                          childStyle={styles.loginButtonTextStyle}
+                          mOnPress={() => {
+                              alert("完成")
+                          }}/>
             </View>
-
         )
-
-
     }
 
     _renderRow = (movie, sectionId, rowId) => {
@@ -161,10 +229,10 @@ export default class DDCarInfoScene extends BaseComponent {
 
     _renderSeparator(sectionId, rowId) {
         return (
-            <View style={styles.Separator} key={sectionId + rowId}>
-            </View>
+            <View style={styles.Separator} key={sectionId + rowId}/>
         )
     }
+
     _renderSectionHeader = (sectionData, sectionID) => {
 
         return (
@@ -173,7 +241,6 @@ export default class DDCarInfoScene extends BaseComponent {
                     <Text style={styles.leftFont}>车型</Text>
                     <View style={styles.fillSpace}/>
                     <Text style={styles.headerCellRight}>{this.state.chexing}</Text>
-
                 </View>
 
                 <View style={{backgroundColor: FontAndColor.COLORA4, width: width, height: Pixel.getPixel(1)}}/>
@@ -182,35 +249,19 @@ export default class DDCarInfoScene extends BaseComponent {
                     <Text style={styles.leftFont}>车架号</Text>
                     <View style={styles.fillSpace}/>
                     <Text style={styles.headerCellRight}>{this.state.chejia_number}</Text>
-
                 </View>
+
+                <View style={{backgroundColor: FontAndColor.COLORA4, width: width, height: Pixel.getPixel(1)}}/>
+
+                <ChooseButton ref="djr" leftText={'登记人'} onPressButton={this.onPressButton}/>
 
                 <View style={{backgroundColor: FontAndColor.COLORA4, width: width, height: Pixel.getPixel(1)}}/>
 
                 <View style={styles.itemBackground}>
                     <Text style={styles.leftFont}>
-                        <Text style={{color :FontAndColor.COLORB2}}>
-                        *
-                        </Text>
-                        登记人
-                    </Text>
-                    <View style={styles.fillSpace}/>
-                    <Text style={styles.headerCellRight}>{this.state.dengjiren}</Text>
-
-                </View>
-
-                <View style={{backgroundColor: FontAndColor.COLORA4, width: width, height: Pixel.getPixel(1)}}/>
-
-                <View style={styles.itemBackground}>
-                    <Text style={styles.leftFont}>
-                        <Text style={{color : FontAndColor.COLORB2}}>
-                            *
-                        </Text>
-                    权属声明签署方式
-                    </Text>
+                        <Text style={{color: FontAndColor.COLORB2}}>*</Text>权属声明签署方式</Text>
                     <View style={styles.fillSpace}/>
                     <Text style={styles.headerCellRight}>{this.state.sign_type}</Text>
-
                 </View>
 
                 <View style={{backgroundColor: FontAndColor.COLORA3, width: width, height: Pixel.getPixel(10)}}/>
@@ -219,23 +270,24 @@ export default class DDCarInfoScene extends BaseComponent {
         )
     }
 
+    onPressButton = () => {
+        this._openModal(this.xb);
+    }
+
+    _openModal = (dt) => {
+        this.selectModal.changeData(dt);
+        this.selectModal.openModal();
+        this.currentData = dt;
+    }
 }
 
 const styles = StyleSheet.create({
-    headerALL:{
-        width:width,
-        height:4*Pixel.getPixel(44),
-        backgroundColor:'red',
+    headerALL: {
+        width: width,
     },
-    headerCell:{
-
-    },
-    headerCellLeft:{
-
-    },
-    headerCellRight:{
-
-    },
+    headerCell: {},
+    headerCellLeft: {},
+    headerCellRight: {},
     fillSpace: {
         flex: 1
     },
@@ -334,5 +386,32 @@ const styles = StyleSheet.create({
     Separator: {
         backgroundColor: FontAndColor.COLORA3,
         height: Pixel.getPixel(1),
+    },
+    buttonStyleFill: {
+        height: Pixel.getPixel(40),
+        backgroundColor: FontAndColor.COLORB0,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 5,
+        width: Pixel.getPixel(width) - Pixel.getPixel(20),
+    },
+    buttonsFlex: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+    },
+    loginBtnStyle: {
+        height: Pixel.getPixel(44),
+        width: Pixel.getPixel(width) - Pixel.getPixel(30),
+        backgroundColor: FontAndColor.COLORB0,
+        marginTop: Pixel.getPixel(30),
+        marginBottom: Pixel.getPixel(15),
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: Pixel.getPixel(4),
+    },
+    loginButtonTextStyle: {
+        color: FontAndColor.COLORA3,
+        fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT)
     },
 })

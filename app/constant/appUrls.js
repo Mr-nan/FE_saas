@@ -26,9 +26,9 @@ export const V = "v1/";
 /**
  * 版本号2
  *
-export const V2 = "v2/";
+ export const V2 = "v2/";
 
-/**
+ /**
  * 版本号3
  */
 export const V3 = "v3/";
@@ -717,6 +717,21 @@ export const APPLY_EXTENSION_CARLIST = 'api/v1/account/apply_extension_carlist';
  **/
 export const APPLY_LOAN = 'api/v3/account/apply_loan'
 
+
+/**
+ * from @huagnning
+ *
+ * 获取订单融资车辆详情
+ **/
+export const AUTODETAIL = 'api/v1/Order/autoDetail'
+
+/**
+ * from @huagnning
+ *
+ * 获取商户登记人/收车人列表
+ **/
+export const GETBUSINESSLIST = 'api/v1/Order/getBusinessList'
+
 /**
  * 短信验证码
  *
@@ -833,55 +848,55 @@ export const ORDER_SEARCH = BASEURL + V + 'order/search';
 /**
  * 订单详情
  */
-export const ORDER_DETAIL = BASEURL + V +'order/detail';
+export const ORDER_DETAIL = BASEURL + V + 'order/detail';
 /**
  * 订金、尾款支付
  */
-export const ORDER_PAY = BASEURL + V +'order/pay';
+export const ORDER_PAY = BASEURL + V + 'order/pay';
 /**
  *  车辆成交价提交
  */
-export const ORDER_SAVE_PRICE = BASEURL + V +'order/savePrice';
+export const ORDER_SAVE_PRICE = BASEURL + V + 'order/savePrice';
 /**
  *  卖家&买家取消订单
  */
-export const ORDER_CANCEL = BASEURL + V +'order/cancel';
+export const ORDER_CANCEL = BASEURL + V + 'order/cancel';
 /**
  *  确认收车
  */
-export const ORDER_CONFIRM_CAR = BASEURL + V +'order/confirmCar';
+export const ORDER_CONFIRM_CAR = BASEURL + V + 'order/confirmCar';
 /**
  *  买家撤销取消订单
  */
-export const ORDER_REVERT = BASEURL + V +'order/revert';
+export const ORDER_REVERT = BASEURL + V + 'order/revert';
 /**
  *  卖家处理取消订单
  */
-export const ORDER_CANCEL_HANDLER = BASEURL + V +'order/cancelHandler';
+export const ORDER_CANCEL_HANDLER = BASEURL + V + 'order/cancelHandler';
 /**
  *  车辆定价检查
  */
-export const ORDER_CHECK_PRICE = BASEURL + V +'order/checkPrice';
+export const ORDER_CHECK_PRICE = BASEURL + V + 'order/checkPrice';
 /**
  *  获取筛选订单状态
  */
-export const ORDER_FIELD_DICT = BASEURL + V +'order/fieldDict';
+export const ORDER_FIELD_DICT = BASEURL + V + 'order/fieldDict';
 /**
  *  支付状态
  */
-export const ORDER_CHECK_PAY = BASEURL + V +'order/checkPay';
+export const ORDER_CHECK_PAY = BASEURL + V + 'order/checkPay';
 /**
  *  卖家同意取消订单
  */
-export const ORDER_ALLOW_CANCEL = BASEURL + V +'order/allowCancel';
+export const ORDER_ALLOW_CANCEL = BASEURL + V + 'order/allowCancel';
 /**
  *  卖家不同意取消订单
  */
-export const ORDER_DENY_CANCEL = BASEURL + V +'order/denyCancel';
+export const ORDER_DENY_CANCEL = BASEURL + V + 'order/denyCancel';
 /**
  * 查看订单某个类型合同
  */
-export const ORDER_GET_CONTRACT = BASEURL + V +'order/getContractByType';
+export const ORDER_GET_CONTRACT = BASEURL + V + 'order/getContractByType';
 /**
  *  获取借款人所属白名单状态【订单融资调用】
  */
@@ -889,20 +904,20 @@ export const ORDER_GET_MERGE_WHITE_PO_STATUS = 'api/v3/account/get_merge_white_p
 /**
  *  添加订单融资车辆
  */
-export const ADD_PLATFORM_ORDER_CAR = BASEURL + V +'order_finance_car/add';
+export const ADD_PLATFORM_ORDER_CAR = BASEURL + V + 'order_finance_car/add';
 /**
  *  融资订单贷款全额检查
  */
-export const ORDER_LOAN_AMOUNT_CHECK = BASEURL + V +'order_finance/orderLoanAmountCheck';
+export const ORDER_LOAN_AMOUNT_CHECK = BASEURL + V + 'order_finance/orderLoanAmountCheck';
 /**
  *  融资流程确认验收请求
  */
-export const CONFIRM_FINANCING_ORDER = BASEURL + V +'order_finance/confirmFinancingOrder';
+export const CONFIRM_FINANCING_ORDER = BASEURL + V + 'order_finance/confirmFinancingOrder';
 /**
  *  融资订单支付首付款
  */
-export const FIRST_PAYMENT_PAY = BASEURL + V +'order_finance/firstPaymentPay';
+export const FIRST_PAYMENT_PAY = BASEURL + V + 'order_finance/firstPaymentPay';
 /**
  *  融资订单支付首付款回调
  */
-export const FIRST_PAYMENT_PAY_CALLBACK = BASEURL + V +'order_finance/firstPaymentPayCallback';
+export const FIRST_PAYMENT_PAY_CALLBACK = BASEURL + V + 'order_finance/firstPaymentPayCallback';

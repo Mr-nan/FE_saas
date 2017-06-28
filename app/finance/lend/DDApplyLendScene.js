@@ -1,40 +1,26 @@
-import React, {Component} from 'react';
-import {
-    StyleSheet,
-    View,
-    ListView,
-    Image,
-    Text
-} from 'react-native';
-import AllNavigatior from '../../component/AllNavigationView'
-import {CommnetListItem, CommentHandItem, commnetStyle, CommenButton, CGDCarItems} from './component/ComponentBlob'
+import React, {Component} from "react";
+import {StyleSheet, View, ListView, Image, Text} from "react-native";
+import AllNavigatior from "../../component/AllNavigationView";
+import AllNavigationView from "../../component/AllNavigationView";
+import {CommnetListItem, CommentHandItem, commnetStyle, CommenButton, CGDCarItems} from "./component/ComponentBlob";
 import {
     width,
-    height,
     fontadapeSize,
     adapeSize,
     STATECODE,
     PAGECOLOR,
     getRowData,
-    getSectionData,
-    changeToMillion
-} from './component/MethodComponent'
-import  AllNavigationView from '../../component/AllNavigationView';
-import BaseComponent from '../../component/BaseComponent';
-import {request} from '../../utils/RequestUtil'
-import *as apis from '../../constant/appUrls'
-import ImagePageView from 'react-native-viewpager'
-import AmountConfirm from './AmountConfirm';
-import CGDCarDetailScenes from './CGDCarDetailScenes'
-import PurchaseLoanStatusScene from './PurchaseLoanStatusScene'
-import {LendSuccessAlert, ModalAlert} from './component/ModelComponent'
+    getSectionData
+} from "./component/MethodComponent";
+import BaseComponent from "../../component/BaseComponent";
+import {request} from "../../utils/RequestUtil";
+import *as apis from "../../constant/appUrls";
+import {LendSuccessAlert, ModalAlert} from "./component/ModelComponent";
+import DDCarInfoScene from "./DDCarInfoScene";
+import OBDDevice from "./OBDDevice";
 let ControlState = [];
 let BASE_ID;
 let INFO_ID = [];
-import ContractInfoScene from './ContractInfoScene';
-import DDCarInfoScene from './DDCarInfoScene'
-import  OBDDevice from './OBDDevice'
-import DDDetailScene from './DDDetailScene'
 export default class DDApplyLendScene extends BaseComponent {
 
     constructor(props) {
@@ -48,7 +34,6 @@ export default class DDApplyLendScene extends BaseComponent {
                 sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
             }
         )
-        const ImageData = new ImagePageView.DataSource({pageHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             dataSource: ds.cloneWithRowsAndSections(this.titleNameBlob({}, [])),
             renderPlaceholderOnly: STATECODE.loading,
@@ -83,24 +68,18 @@ export default class DDApplyLendScene extends BaseComponent {
 
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
-                    let tempjson = response.mjson.data;
-                    ControlState = ["申请借款"]
-                    this.getCarListInfo(tempjson);
-                },
-                (error) => {
-
-                    this.setState({
-                        renderPlaceholderOnly: STATECODE.loadError
-                    })
-                    if (error.mycode != -300 || error.mycode != -500) {
-                        this.props.showToast(error.mjson.msg);
-
-                    } else {
-
-                        this.props.showToast('服务器连接有问题')
-                    }
-                });
-
+                ControlState = ["申请借款"]
+                this.getCarListInfo(response.mjson.data);
+            }, (error) => {
+                this.setState({
+                    renderPlaceholderOnly: STATECODE.loadError
+                })
+                if (error.mycode != -300 || error.mycode != -500) {
+                    this.props.showToast(error.mjson.msg);
+                } else {
+                    this.props.showToast('服务器连接有问题')
+                }
+            });
 
     }
     /**
@@ -117,27 +96,24 @@ export default class DDApplyLendScene extends BaseComponent {
         };
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
-                    let tempjson = response.mjson.data;
-                    BASE_ID = tempjson.list[0].base_id;
-                    INFO_ID[0] = tempjson.list[0].info_id;
-                    this.setState({
-                        dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(lendInfo, tempjson.list)),
-                        renderPlaceholderOnly: STATECODE.loadSuccess
-                    })
-                },
-                (error) => {
+                let tempjson = response.mjson.data;
+                BASE_ID = tempjson.list[0].base_id;
+                INFO_ID[0] = tempjson.list[0].info_id;
+                this.setState({
+                    dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(lendInfo, tempjson.list)),
+                    renderPlaceholderOnly: STATECODE.loadSuccess
+                })
+            }, (error) => {
 
-                    this.setState({
-                        renderPlaceholderOnly: STATECODE.loadError
-                    })
-                    if (error.mycode != -300 || error.mycode != -500) {
-                        this.props.showToast(error.mjson.msg);
-
-                    } else {
-
-                        this.props.showToast('服务器连接有问题')
-                    }
-                });
+                this.setState({
+                    renderPlaceholderOnly: STATECODE.loadError
+                })
+                if (error.mycode != -300 || error.mycode != -500) {
+                    this.props.showToast(error.mjson.msg);
+                } else {
+                    this.props.showToast('服务器连接有问题')
+                }
+            });
 
     }
 
@@ -157,9 +133,7 @@ export default class DDApplyLendScene extends BaseComponent {
                     this.props.showModal(false)
                     if (error.mycode != -300 || error.mycode != -500) {
                         this.props.showToast(error.mjson.msg);
-
                     } else {
-
                         this.props.showToast('服务器连接有问题')
                     }
                 });
@@ -246,28 +220,6 @@ export default class DDApplyLendScene extends BaseComponent {
     }
 
     /**
-     * 根据后台返回，判断底部按钮的显示
-     * confimOrderState
-     **/
-    confimOrderState = (state, isComplete) => {
-        let NameBlobs = [];
-
-        if (state > 0 && state <= 32 || state == 50) {
-            NameBlobs = ['取消借款']
-        } else if (state == 33) {
-            NameBlobs = ['取消借款', '确认金额']
-        } else if (state === 35) {
-            NameBlobs = ['取消借款', '签署合同']
-        } else if (state == 40 || state == 42 || isComplete == 4) {
-            NameBlobs = ['查看合同']
-        } else if (state == 41) {
-            NameBlobs = ['取消借款', '确认金额', '查看合同']
-        }
-
-        return NameBlobs;
-    }
-
-    /**
      * 根据封装的数据，显示row
      * renderRow
      **/
@@ -323,7 +275,8 @@ export default class DDApplyLendScene extends BaseComponent {
                             name: 'DDCarInfoScene',
                             component: DDCarInfoScene,
                             params: {
-                                loanNumber: this.props.loanNumber
+                                platform_order_number: this.props.orderNo,//平台订单号
+                                info_id: INFO_ID[0],
                             }
                         }
                         this.toNextPage(navigatorParams);
@@ -352,7 +305,6 @@ export default class DDApplyLendScene extends BaseComponent {
             }
         }
         if (sectionID === 'section2') {
-
             return (
                 <View style={styles.section2Style}>
                     <Text style={styles.sectionText}>订单信息</Text>
@@ -386,34 +338,9 @@ export default class DDApplyLendScene extends BaseComponent {
      * buttonClick
      **/
     buttonClick = (title) => {
-        if (title == '确认金额') {
-            this.toNextPage({
-                name: 'AmountConfirm',
-                component: AmountConfirm,
-                params: {
-                    loan_code: loan_code,
-                    callback: () => {
-                        this.getLendInfo();
-                    }
-                },
-            })
-        } else if (title == '签署合同') {
-            this.toNextPage({
-                name: 'ContractInfoScene', component: ContractInfoScene,
-                params: {loan_code: loan_code, showButton: true}
-            })
-        } else if (title == '查看合同') {
-            this.toNextPage({
-                name: 'ContractInfoScene', component: ContractInfoScene,
-                params: {loan_code: loan_code, showButton: false}
-            })
-        } else if (title == '取消借款') {
-
-            this.cancle.setModelVisible(true);
-        } else if (title == '申请借款') {
+        if (title == '申请借款') {
             this.lendMoneyClick();
         }
-
     }
 
     render() {
