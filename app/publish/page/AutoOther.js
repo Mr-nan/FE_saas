@@ -118,6 +118,7 @@ export default class AutoOther extends Component {
                 params: {
                     modelID:this.props.carData.model!==''?(JSON.parse(this.props.carData.model)).model_id:'',
                     carConfigurationData:[],
+                    from:'AutoOther'
                 }
             };
             this.props.goToPage(configParams);
