@@ -423,9 +423,9 @@ export default class OBDDevice extends BaseComponent {
                         this.props.showModal(false);
                         this.props.showToast("OBD绑定成功");
                         this.props.backRefresh();
-                        if(this.props.fromScene=='DDApplyLendScene'){
+                        if (this.props.fromScene == 'DDApplyLendScene') {
                             this.backPage();
-                        }else{
+                        } else {
                             const navigator = this.props.navigator;
                             if (navigator) {
                                 for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
@@ -436,7 +436,6 @@ export default class OBDDevice extends BaseComponent {
                                 }
                             }
                         }
-
                     }, (error) => {
                         this.props.showModal(false);
                         if (error.mycode == -300 || error.mycode == -500) {
