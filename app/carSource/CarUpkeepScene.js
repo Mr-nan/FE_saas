@@ -215,11 +215,11 @@ export  default class CarUpkeepScene extends BaseComponent {
             name: "AutoConfig",
             component: AutoConfig,
             params: {
-
                 modelID:this.props.carData.model_id,
                 carConfiguraInfo:this.props.carData.modification_instructions,
                 carConfigurationData:carConfigurationData,
                 renderCarConfigurationDataAction:this.renderCarConfigDataAction,
+                from:'CarUpkeepScene'
             }
         }
         this.toNextPage(navigationParams);
@@ -240,6 +240,7 @@ export  default class CarUpkeepScene extends BaseComponent {
                 mileage:this.props.carData.mileage,
                 model_id:this.props.carData.model_id,
                 init_reg:this.dateReversal(this.props.carData.init_reg+'000'),
+                from:'CarUpkeepScene'
             }
         }
         this.toNextPage(navigationParams);
