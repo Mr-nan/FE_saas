@@ -38,6 +38,29 @@ export default class DDApplyLendScene extends BaseComponent {
             dataSource: ds.cloneWithRowsAndSections(this.titleNameBlob({}, [])),
             renderPlaceholderOnly: STATECODE.loading,
         }
+
+        this.carData = {
+            sell_city_id: '',
+            brand_id: '',
+            model_id: '',
+            series_id: '',
+            frame_number: '',
+            car_color: '',
+            mileage: '',
+            init_reg: '',
+            rev_user_id: '',
+            register_user_id: '',
+            purchas_price: '',
+            file_list: '',
+            bind_type: '',
+            obd_number: '',
+            payment_id: '',
+            base_id: '',
+            info_id: '',
+            isCarinvoice: '',
+            obd_bind_status: ''
+        };
+
         OrderHanderState = [];
     }
 
@@ -99,6 +122,8 @@ export default class DDApplyLendScene extends BaseComponent {
                 let tempjson = response.mjson.data;
                 BASE_ID = tempjson.list[0].base_id;
                 INFO_ID[0] = tempjson.list[0].info_id;
+                this.carData.frame_number = tempjson.list[0].frame_number;
+                this.carData.obd_bind_status = tempjson.list[0].obd_bind_status;
                 this.setState({
                     dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(lendInfo, tempjson.list)),
                     renderPlaceholderOnly: STATECODE.loadSuccess
@@ -150,7 +175,7 @@ export default class DDApplyLendScene extends BaseComponent {
             {title: '保证金余额', key: jsonData.bond_mny + "元"},
             {title: '保证金比例', key: jsonData.bond_deposit_rate},
             {title: '借款期限', key: jsonData.loan_life},
-            {title: '借款额度', key: "30000~" + jsonData.max_loanmny + "元"},
+            {title: '借款额度', key: jsonData.min_loanmny + "~" + jsonData.max_loanmny + "元"},
         ]
         dataSource['section1'] = section1
         if (carData.length > 0) {
@@ -255,10 +280,11 @@ export default class DDApplyLendScene extends BaseComponent {
                             name: 'OBDDevice',
                             component: OBDDevice,
                             params: {
-                                carData: {obd_audit_status: '2'},
+                                carData: this.carData,
                                 fromScene: 'DDApplyLendScene',
                                 backRefresh: () => {
                                     //刷新界面
+                                    this.getLendInfo();
                                 }
                             }
                         }
@@ -418,6 +444,7 @@ export default class DDApplyLendScene extends BaseComponent {
             .then((response) => {
                 this.props.showModal(false);
                 // this.apSuccess.setModelVisible(true);
+                this.backPage();
             }, (error) => {
                 this.props.showModal(false);
                 if (error.mycode != -300 || error.mycode != -500) {
