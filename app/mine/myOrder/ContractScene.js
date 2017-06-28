@@ -154,7 +154,10 @@ export  default class ContractScene extends BaseComponent {
 
 }
 const styles = StyleSheet.create({
-
+    container: {
+        flex: 1,
+        backgroundColor: fontAndColor.COLORA3
+    },
     image: {
         width: 43,
         height: 43,
