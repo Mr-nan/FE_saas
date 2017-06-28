@@ -29,7 +29,8 @@ import CGDCarDetailScenes from './CGDCarDetailScenes'
 import PurchaseLoanStatusScene from './PurchaseLoanStatusScene'
 import {LendSuccessAlert, ModalAlert} from './component/ModelComponent'
 let ControlState = [];
-let loan_code;
+let BASE_ID;
+let INFO_ID = [];
 import ContractInfoScene from './ContractInfoScene';
 import DDCarInfoScene from './DDCarInfoScene'
 import  OBDDevice from './OBDDevice'
@@ -61,10 +62,8 @@ export default class DDApplyLendScene extends BaseComponent {
         //编辑页面。审核未通过
         if (this.props.shenhe == "yes") {
             this.getLenddetail()
-
-        }
-        //申请页面
-        else {
+        } else {
+            //申请页面
             this.getLendInfo();
         }
     }
@@ -85,8 +84,7 @@ export default class DDApplyLendScene extends BaseComponent {
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
                     let tempjson = response.mjson.data;
-                    ControlState = this.confimOrderState(Number.parseInt(tempjson.payment_status), Number.parseInt(tempjson.payment_schedule))
-
+                    ControlState = ["申请借款"]
                     this.getCarListInfo(tempjson);
                 },
                 (error) => {
@@ -120,6 +118,8 @@ export default class DDApplyLendScene extends BaseComponent {
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
                     let tempjson = response.mjson.data;
+                    BASE_ID = tempjson.list[0].base_id;
+                    INFO_ID[0] = tempjson.list[0].info_id;
                     this.setState({
                         dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(lendInfo, tempjson.list)),
                         renderPlaceholderOnly: STATECODE.loadSuccess
@@ -140,17 +140,7 @@ export default class DDApplyLendScene extends BaseComponent {
                 });
 
     }
-    carItemClick = (carId) => {
 
-        navigatorParams = {
-            name: 'CGDCarDetailScenes',
-            component: CGDCarDetailScenes,
-            params: {
-                carId: carId
-            }
-        }
-        this.toNextPage(navigatorParams);
-    }
     canclelend = () => {
 
         let maps = {
@@ -215,15 +205,25 @@ export default class DDApplyLendScene extends BaseComponent {
                 )
             })
             dataSource['section3'] = tempCarDate;
+            let section4;
+            if (carData[0].is_mortgagor == 1 || carData[0].is_new == 1) {
+                section4 = [
+                    {
+                        title: 'OBD设备',
+                        key: this.OBDtransferToString(carData[0].obd_audit_status, carData[0].obd_bind_status)
+                    },
 
-            let section4 = [
-                {
-                    title: 'OBD设备',
-                    key: this.OBDtransferToString(carData[0].obd_audit_status, carData[0].obd_bind_status)
-                },
-                {title: '车辆权限', key: '订单融资'},
+                ]
+            } else {
+                section4 = [
+                    {
+                        title: 'OBD设备',
+                        key: this.OBDtransferToString(carData[0].obd_audit_status, carData[0].obd_bind_status)
+                    },
+                    {title: '车辆权限', key: '订单融资'},
 
-            ]
+                ]
+            }
             dataSource['section4'] = section4;
         }
         return dataSource;
@@ -244,6 +244,7 @@ export default class DDApplyLendScene extends BaseComponent {
         return status;
 
     }
+
     /**
      * 根据后台返回，判断底部按钮的显示
      * confimOrderState
@@ -319,8 +320,8 @@ export default class DDApplyLendScene extends BaseComponent {
                                      showValue={rowData.key} textStyle={{color: PAGECOLOR.COLORA1}} handel={() => {
 
                         navigatorParams = {
-                            name: 'DDDetailScene',
-                            component: DDDetailScene,
+                            name: 'DDCarInfoScene',
+                            component: DDCarInfoScene,
                             params: {
                                 loanNumber: this.props.loanNumber
                             }
@@ -409,7 +410,10 @@ export default class DDApplyLendScene extends BaseComponent {
         } else if (title == '取消借款') {
 
             this.cancle.setModelVisible(true);
+        } else if (title == '申请借款') {
+            this.lendMoneyClick();
         }
+
     }
 
     render() {
@@ -432,7 +436,6 @@ export default class DDApplyLendScene extends BaseComponent {
                                              textStyle={index == lengegth ? {color: 'white'} : {color: PAGECOLOR.COLORB0}}
                                              buttonStyle={index == lengegth ? styles.buttonStyleFill : styles.buttonStyleNotFill}
                                              onPress={() => {
-
                                                  this.buttonClick(item);
                                              }} title={item}/>)
             })
@@ -470,6 +473,35 @@ export default class DDApplyLendScene extends BaseComponent {
             </View>
         )
     }
+
+    /**
+     * 申请借款
+     * lendMoneyClick
+     */
+    lendMoneyClick = () => {
+        let maps = {
+            api: apis.APPLY_LOAN,
+            apply_type: "6",
+            platform_order_number: this.props.orderNo,
+            base_id: BASE_ID,
+            car_lists: INFO_ID[0],
+        }
+        this.props.showModal(true);
+        request(apis.FINANCE, 'Post', maps)
+            .then((response) => {
+                this.props.showModal(false);
+                // this.apSuccess.setModelVisible(true);
+            }, (error) => {
+                this.props.showModal(false);
+                if (error.mycode != -300 || error.mycode != -500) {
+                    this.props.showToast(error.mjson.msg);
+                } else {
+                    this.props.showToast('服务器连接有问题')
+                }
+            });
+
+
+    }
 }
 
 const styles = StyleSheet.create({
@@ -484,9 +516,8 @@ const styles = StyleSheet.create({
     },
     buttonsFlex: {
         alignItems: 'center',
-        justifyContent: 'flex-end',
-        flexDirection: 'row'
-
+        justifyContent: 'center',
+        flexDirection: 'row',
     },
 
     thumbTitle: {
@@ -521,15 +552,12 @@ const styles = StyleSheet.create({
         color: PAGECOLOR.COLORA2
     },
     buttonStyleFill: {
-
-        height: adapeSize(32),
+        height: adapeSize(40),
         backgroundColor: PAGECOLOR.COLORB0,
-        marginRight: adapeSize(15),
         justifyContent: 'center',
         alignItems: 'center',
-        marginLeft: 5,
         borderRadius: 5,
-        width: adapeSize(80)
+        width: adapeSize(width) - adapeSize(20),
     },
     buttonStyleNotFill: {
 

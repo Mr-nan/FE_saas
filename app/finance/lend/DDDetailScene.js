@@ -10,7 +10,7 @@ import {
     Text
 } from 'react-native';
 import AllNavigatior from '../../component/AllNavigationView'
-import {CommnetListItem, CommentHandItem, commnetStyle, CommenButton,CGDCarItems} from './component/ComponentBlob'
+import {CommnetListItem, CommentHandItem, commnetStyle, CommenButton, CGDCarItems} from './component/ComponentBlob'
 import {
     width,
     height,
@@ -30,7 +30,7 @@ import ImagePageView from 'react-native-viewpager'
 import AmountConfirm from './AmountConfirm';
 import CGDCarDetailScenes from './CGDCarDetailScenes'
 import PurchaseLoanStatusScene from './PurchaseLoanStatusScene'
-import {LendSuccessAlert,ModalAlert} from './component/ModelComponent'
+import {LendSuccessAlert, ModalAlert} from './component/ModelComponent'
 let ControlState = [];
 let loan_code;
 import ContractInfoScene from './ContractInfoScene';
@@ -129,7 +129,7 @@ export default class DDDetailScene extends BaseComponent {
         }
         this.toNextPage(navigatorParams);
     }
-    canclelend=()=>{
+    canclelend = () => {
 
         let maps = {
             api: apis.CANCEL_LOAN,
@@ -190,10 +190,10 @@ export default class DDDetailScene extends BaseComponent {
                         model_name: item.model_name,
                         init_reg: item.init_reg,
                         base_id: item.base_id,
-                        mileage:item.mileage,
-                        invoice_upload_status:item.invoice_upload_status,
-                        obd_audit_status:item.obd_audit_status,
-                        invoice_audit_status:item.invoice_audit_status
+                        mileage: item.mileage,
+                        invoice_upload_status: item.invoice_upload_status,
+                        obd_audit_status: item.obd_audit_status,
+                        invoice_audit_status: item.invoice_audit_status
                     }
                 )
                 dataSource['section3'] = tempCarDate;
@@ -216,7 +216,7 @@ export default class DDDetailScene extends BaseComponent {
         } else if (state == 33) {
             NameBlobs = ['取消借款', '确认金额']
         } else if (state === 35) {
-            NameBlobs = ['取消借款','签署合同']
+            NameBlobs = ['取消借款', '签署合同']
         } else if (state == 40 || state == 42 || isComplete == 4) {
             NameBlobs = ['查看合同']
         } else if (state == 41) {
@@ -259,26 +259,26 @@ export default class DDDetailScene extends BaseComponent {
                 <CommentHandItem warpstyle={{height: adapeSize(44)}} leftTitle={rowData.title}
                                  showValue={rowData.key} textStyle={{color: PAGECOLOR.COLORA1}} handel={() => {
 
-                        navigatorParams = {
-                            name: 'DDCarInfoScene',
-                            component: DDCarInfoScene,
-                            params: {
-                                loanNumber: this.props.loanNumber
-                            }
+                    navigatorParams = {
+                        name: 'DDCarInfoScene',
+                        component: DDCarInfoScene,
+                        params: {
+                            loanNumber: this.props.loanNumber
                         }
-                        this.toNextPage(navigatorParams);
+                    }
+                    this.toNextPage(navigatorParams);
 
-                    }}/>
+                }}/>
             )
         }
         if (sectionID === 'section3') {
             //
             return (<CGDCarItems url={rowData.icon} title={rowData.model_name}
-                                 invoice_upload_status ={rowData.invoice_upload_status}
+                                 invoice_upload_status={rowData.invoice_upload_status}
                                  obd_bind_status={rowData.obd_bind_status}
                                  obd_audit_status={rowData.obd_audit_status}
                                  invoice_audit_status={rowData.invoice_audit_status}
-                                 date={rowData.init_reg+' / '+rowData.mileage+'万公里'}  onPress={() => {
+                                 date={rowData.init_reg + ' / ' + rowData.mileage + '万公里'} onPress={() => {
                 this.carItemClick(rowData.info_id);
             }}/>)
         }
@@ -293,9 +293,9 @@ export default class DDDetailScene extends BaseComponent {
                             name: 'OBDDevice',
                             component: OBDDevice,
                             params: {
-                                carData: {obd_audit_status:'2'},
-                                fromScene:'DDApplyLendScene',
-                                backRefresh:()=>{
+                                carData: {obd_audit_status: '2'},
+                                fromScene: 'DDApplyLendScene',
+                                backRefresh: () => {
                                     //刷新界面
                                 }
                             }
@@ -305,7 +305,7 @@ export default class DDDetailScene extends BaseComponent {
                     }}/>
                 )
             }
-            if (rowData.title === '车属权限') {
+            if (rowData.title === '车辆权限') {
 
                 return (
                     <CommentHandItem warpstyle={{height: adapeSize(44)}} leftTitle={rowData.title}
@@ -377,7 +377,7 @@ export default class DDDetailScene extends BaseComponent {
                 name: 'ContractInfoScene', component: ContractInfoScene,
                 params: {loan_code: loan_code, showButton: false}
             })
-        }else if (title == '取消借款'){
+        } else if (title == '取消借款') {
 
             this.cancle.setModelVisible(true);
         }
@@ -426,13 +426,19 @@ export default class DDDetailScene extends BaseComponent {
                     this.backPage();
                 }}/>
 
-                <ModalAlert ref={(deleteCar)=>{this.cancle=deleteCar}} title='取消借款'subtitle='您确定要取消借款' confimClick={(setHide)=>{
+                <ModalAlert ref={(deleteCar) => {
+                    this.cancle = deleteCar
+                }} title='取消借款' subtitle='您确定要取消借款' confimClick={(setHide) => {
                     setHide(false);
                     this.canclelend();
-                }} cancleClick={(setHide)=>{setHide(false)}}/>
-                <LendSuccessAlert  title="取消成功"subtitle='恭喜您取消成功' ref={(success)=>{this.cancleSuccess=success}} confimClick={()=>{
-                      this.props.backRefresh();
-                      this.backToTop()
+                }} cancleClick={(setHide) => {
+                    setHide(false)
+                }}/>
+                <LendSuccessAlert title="取消成功" subtitle='恭喜您取消成功' ref={(success) => {
+                    this.cancleSuccess = success
+                }} confimClick={() => {
+                    this.props.backRefresh();
+                    this.backToTop()
                 }}/>
             </View>
         )

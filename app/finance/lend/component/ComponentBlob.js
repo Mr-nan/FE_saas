@@ -63,7 +63,7 @@ export const commnetStyle = StyleSheet.create({
     bottomWarp: {
         position: 'absolute',
         width: width,
-        height: adapeSize(50),
+        height: adapeSize(60),
         bottom: 0,
         backgroundColor: 'white'
     }
@@ -645,7 +645,7 @@ const styles = StyleSheet.create({
         marginTop: adapeSize(15),
         marginBottom: adapeSize(15),
         width: adapeSize(80),
-        height: adapeSize(40)
+        height: adapeSize(40),
     },
 
     CGDInstWarpTop: {
