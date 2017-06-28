@@ -3,9 +3,7 @@
  */
 
 
-
-
-import React, {PropTypes, PureComponent,Component} from 'react';
+import React, {PropTypes, PureComponent, Component} from 'react';
 import {
     StyleSheet,
     Text,
@@ -22,15 +20,15 @@ import {
 import PixelUtil from '../../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 
-import {width,height,adapeSize,PAGECOLOR,fontadapeSize} from './MethodComponent'
+import {width, height, adapeSize, PAGECOLOR, fontadapeSize} from './MethodComponent'
 
 
-export class ComentImageButton extends  PureComponent{
+export class ComentImageButton extends PureComponent {
 
-    render(){
-        const {btnStyle,ImgSource, onPress}=this.props;
+    render() {
+        const {btnStyle, ImgSource, onPress}=this.props;
         return (
-            <TouchableOpacity style={btnStyle} onPress = {onPress}>
+            <TouchableOpacity style={btnStyle} onPress={onPress}>
                 <Image source={ImgSource}/>
             </TouchableOpacity>
         )
@@ -39,37 +37,35 @@ export class ComentImageButton extends  PureComponent{
 }
 
 
+export const commnetStyle = StyleSheet.create({
 
+    container: {
 
-export const commnetStyle=StyleSheet.create({
-
-    container:{
-
-        flex:1,
-        backgroundColor:PAGECOLOR.COLORA3
+        flex: 1,
+        backgroundColor: PAGECOLOR.COLORA3
     },
 
-    ListWarp:{
-        position:'absolute',
-        top:Pixel.getTitlePixel(64),
-        width:width,
-        bottom:adapeSize(50),
-        backgroundColor:PAGECOLOR.COLORA3
+    ListWarp: {
+        position: 'absolute',
+        top: Pixel.getTitlePixel(64),
+        width: width,
+        bottom: adapeSize(50),
+        backgroundColor: PAGECOLOR.COLORA3
     },
-    ListWarpss:{
-        position:'absolute',
-        top:Pixel.getTitlePixel(114),
-        width:width,
-        bottom:adapeSize(50),
-        backgroundColor:PAGECOLOR.COLORA3
+    ListWarpss: {
+        position: 'absolute',
+        top: Pixel.getTitlePixel(114),
+        width: width,
+        bottom: adapeSize(50),
+        backgroundColor: PAGECOLOR.COLORA3
     },
 
-    bottomWarp:{
-        position:'absolute',
-        width:width,
-        height:adapeSize(50),
-        bottom:0,
-        backgroundColor:'white'
+    bottomWarp: {
+        position: 'absolute',
+        width: width,
+        height: adapeSize(60),
+        bottom: 0,
+        backgroundColor: 'white'
     }
 
 
@@ -78,22 +74,23 @@ export const commnetStyle=StyleSheet.create({
 export class LendItem extends PureComponent {
 
 
-    static propTypes ={
+    static propTypes = {
 
-        leftTitle:PropTypes.string.isRequired,
-        rightTitle:PropTypes.string,
-        leftStyle:Text.propTypes.style,
-        rightStyle:Text.propTypes.style,
+        leftTitle: PropTypes.string.isRequired,
+        rightTitle: PropTypes.string,
+        leftStyle: Text.propTypes.style,
+        rightStyle: Text.propTypes.style,
     }
+
     render() {
 
 
-        const {leftStyle,rightStyle,leftTitle,rightTitle}=this.props;
+        const {leftStyle, rightStyle, leftTitle, rightTitle}=this.props;
 
         return (
             <View style={styles.itemView}>
-                <Text style={[styles.itemLeftText,leftStyle]}>{leftTitle}</Text>
-                <Text style={[styles.itemRightText,rightStyle]}>{rightTitle}</Text>
+                <Text style={[styles.itemLeftText, leftStyle]}>{leftTitle}</Text>
+                <Text style={[styles.itemRightText, rightStyle]}>{rightTitle}</Text>
             </View>
         )
     }
@@ -108,6 +105,7 @@ export class CommenButton extends PureComponent {
         title: PropTypes.string.isRequired,
 
     }
+
     render() {
 
         const {buttonStyle, textStyle, onPress, title}=this.props;
@@ -116,7 +114,7 @@ export class CommenButton extends PureComponent {
 
             <TouchableOpacity style={buttonStyle} onPress={onPress} activeOpacity={0.8}>
 
-                <Text style={[{fontSize: Pixel.getPixel(15),color:'#fff'},textStyle]}>{title}</Text>
+                <Text style={[{fontSize: Pixel.getPixel(15), color: '#fff'}, textStyle]}>{title}</Text>
 
             </TouchableOpacity>
         )
@@ -124,31 +122,30 @@ export class CommenButton extends PureComponent {
 
 }
 
-export class LendCarItemCell extends PureComponent{
+export class LendCarItemCell extends PureComponent {
 
 
+    static propTypes = {
 
-    static propTypes={
-
-        carName:PropTypes.string,
-        orderState:PropTypes.string,
-        orderNum:PropTypes.string,
-        price:PropTypes.string,
+        carName: PropTypes.string,
+        orderState: PropTypes.string,
+        orderNum: PropTypes.string,
+        price: PropTypes.string,
     }
 
 
-    render(){
+    render() {
 
-        const {carName,orderState,orderNum,price, onPress}=this.props;
+        const {carName, orderState, orderNum, price, onPress}=this.props;
 
-        return(
+        return (
 
             <TouchableOpacity onPress={onPress} style={styles.lendCarItemCellWarp}>
 
                 <View style={styles.lendCarItemCellInstWarp}>
 
-                   <Text style={styles.lendCarItemCarName} numberOfLines={2}>{carName}</Text>
-                   <Text style={styles.lendCarItemOrderState}>{orderState}</Text>
+                    <Text style={styles.lendCarItemCarName} numberOfLines={2}>{carName}</Text>
+                    <Text style={styles.lendCarItemOrderState}>{orderState}</Text>
 
                 </View>
                 <View style={styles.lendCarItemCellInstWarp}>
@@ -174,20 +171,21 @@ export class LendInputItem extends PureComponent {
         ...Text.prototype.style,
         title: PropTypes.string.isRequired,
         placeholder: PropTypes.string.isRequired,
-        unit:PropTypes.string,
+        unit: PropTypes.string,
     }
 
     render() {
 
 
-        const {title,placeholder,unit,unitStyle,onChangeText,showValue}=this.props;
+        const {title, placeholder, unit, unitStyle, onChangeText, showValue}=this.props;
 
         return (
             <View style={styles.itemView}>
 
                 <Text style={styles.itemLeftText}>{title}</Text>
-                <TextInput underlineColorAndroid={"#00000000"} style={styles.itemInput} placeholder={placeholder} keyboardType={'decimal-pad'} onChangeText={onChangeText} defaultValue={showValue}/>
-                <Text style={[styles.itemPlacehodel,unitStyle]}>{unit}</Text>
+                <TextInput underlineColorAndroid={"#00000000"} style={styles.itemInput} placeholder={placeholder}
+                           keyboardType={'decimal-pad'} onChangeText={onChangeText} defaultValue={showValue}/>
+                <Text style={[styles.itemPlacehodel, unitStyle]}>{unit}</Text>
             </View>
         )
     }
@@ -199,55 +197,58 @@ export class LendDatePike extends PureComponent {
         super(props);
         // 初始状态
         this.state = {
-            value:'',
-            placeholder:this.props.placeholder,
+            value: '',
+            placeholder: this.props.placeholder,
         };
     }
-    componentDidMount(){
+
+    componentDidMount() {
         const {defaultShowValue}=this.props
-        defaultShowValue&&this.changeText(defaultShowValue);
+        defaultShowValue && this.changeText(defaultShowValue);
     }
 
 
-    setPlaceHodel=(vlaue)=>{
+    setPlaceHodel = (vlaue) => {
 
         this.dateInput.setNativeProps({
-            placeholder:vlaue
+            placeholder: vlaue
         })
     }
-    onPress=()=>{
+    onPress = () => {
 
         const {onPress}=this.props;
         onPress(this.changeText);
     }
-    changeText=(value)=>{
+    changeText = (value) => {
 
 
         this.setState({
-            value:value,
+            value: value,
         })
     }
 
-    static propTypes={
+    static propTypes = {
 
-        lefTitle:PropTypes.string.isRequired,
-        placeholder:PropTypes.string.isRequired,
-        imageSouce:PropTypes.number.isRequired,
+        lefTitle: PropTypes.string.isRequired,
+        placeholder: PropTypes.string.isRequired,
+        imageSouce: PropTypes.number.isRequired,
     }
 
     render() {
 
-        const {lefTitle,imageSouce,imageStyle}=this.props
+        const {lefTitle, imageSouce, imageStyle}=this.props
 
         return (
             <TouchableOpacity
                 onPress={this.onPress}
                 style={[styles.itemView, {borderBottomColor: '#d8d8d8', borderBottomWidth: adapeSize(0.5)}] }>
-                <Text  style={styles.itemLeftText}>{lefTitle}</Text>
+                <Text style={styles.itemLeftText}>{lefTitle}</Text>
 
-                <TextInput  underlineColorAndroid={"#00000000"} ref={(date)=>{this.dateInput=date}} editable={false} style={[styles.itemInput, {marginRight: adapeSize(17)}]}
+                <TextInput underlineColorAndroid={"#00000000"} ref={(date) => {
+                    this.dateInput = date
+                }} editable={false} style={[styles.itemInput, {marginRight: adapeSize(17)}]}
                            placeholder={this.state.placeholder} value={this.state.value}/>
-                <Image style={[styles.itemPikerDate,imageStyle]} source={imageSouce}/>
+                <Image style={[styles.itemPikerDate, imageStyle]} source={imageSouce}/>
             </TouchableOpacity>
         )
     }
@@ -262,7 +263,8 @@ export class LendUseful extends PureComponent {
         return (
             <View style={styles.itemUserful}>
                 <Text style={styles.itemLeftText}>借款用途</Text>
-                <TextInput underlineColorAndroid={"#00000000"} onChangeText={onEndEidt} style={styles.itemUserfulInput} placeholder={'请简要描述借款用途'} multiline={true}/>
+                <TextInput underlineColorAndroid={"#00000000"} onChangeText={onEndEidt} style={styles.itemUserfulInput}
+                           placeholder={'请简要描述借款用途'} multiline={true}/>
             </View>
         )
     }
@@ -283,17 +285,18 @@ export class LendRate extends PureComponent {
 }
 
 
-export class CommentHandItem extends  PureComponent{
+export class CommentHandItem extends PureComponent {
 
-    render(){
+    render() {
 
-        const {leftTitle,showValue,textStyle,warpstyle,handel}=this.props;
+        const {leftTitle, showValue, textStyle, warpstyle, handel}=this.props;
         return (
 
-            <TouchableOpacity style={[styles.commentHandeItem,warpstyle] }onPress={handel}>
+            <TouchableOpacity style={[styles.commentHandeItem, warpstyle] } onPress={handel}>
                 <Text style={styles.commentListItemLeft}>{leftTitle}</Text>
-                <Text style={[styles.commentListItemRight,textStyle]}>{showValue}</Text>
-                <Image style={{width:adapeSize(20),height:adapeSize(16),marginRight:adapeSize(10)}} source={require('../../../../images/mainImage/celljiantou.png')}/>
+                <Text style={[styles.commentListItemRight, textStyle]}>{showValue}</Text>
+                <Image style={{width: adapeSize(20), height: adapeSize(16), marginRight: adapeSize(10)}}
+                       source={require('../../../../images/mainImage/celljiantou.png')}/>
             </TouchableOpacity>
 
         )
@@ -301,48 +304,49 @@ export class CommentHandItem extends  PureComponent{
 
 }
 
-export class CommnetListItem extends PureComponent{
+export class CommnetListItem extends PureComponent {
 
 
+    render() {
 
-   render(){
+        const {leftTitle, showValue, textStyle,}=this.props;
+        return (
 
-       const {leftTitle,showValue,textStyle,}=this.props;
-       return (
+            <View style={styles.commentListItemView}>
+                <Text style={styles.commentListItemLeft}>{leftTitle}</Text>
+                <Text style={[styles.commentListItemRight, textStyle]}>{showValue}</Text>
 
-           <View style={styles.commentListItemView}>
-               <Text style={styles.commentListItemLeft}>{leftTitle}</Text>
-               <Text style={[styles.commentListItemRight,textStyle]}>{showValue}</Text>
+            </View>
 
-           </View>
-
-       )
-   }
+        )
+    }
 
 }
 
 
-export class CGDCarItem extends PureComponent{
+export class CGDCarItem extends PureComponent {
 
 
-    render(){
+    render() {
 
-        const {url,title,obdState,shouxuState,date,onPress,deletePress}=this.props;
+        const {url, title, obdState, shouxuState, date, onPress, deletePress}=this.props;
 
-        return(
+        return (
             <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={styles.CGDCarWarp}>
 
-                <Image source={{uri:url}} style={styles.CGDCarImage}/>
+                <Image source={{uri: url}} style={styles.CGDCarImage}/>
                 <View style={styles.CGDInstWarpTop}>
                     <Text style={styles.CGDInstTitle} numberOfLines={2}>{title}</Text>
-                    <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
-                        <View style={[styles.carItemFlage,obdState==1?{backgroundColor:'#ffffff'}:
-                        {backgroundColor:'#d8d8d8'}]}><Text >OBD</Text></View>
+                    <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}>
+                        <View style={[styles.carItemFlage, obdState == 1 ? {backgroundColor: '#ffffff'} :
+                            {backgroundColor: '#d8d8d8'}]}><Text >OBD</Text></View>
                         <View style={[styles.carItemFlage,
-                        typeof(shouxuState)=="undefined"?{width:0}:{width:adapeSize(60),
-                        marginLeft:adapeSize(5)},shouxuState==1?{backgroundColor:'#ffffff'}
-                        :{backgroundColor:'#d8d8d8'}]}>
-                            <Text style={{paddingTop:adapeSize(1),paddingBottom:adapeSize(1)}}>交易发票
+                            typeof(shouxuState) == "undefined" ? {width: 0} : {
+                                    width: adapeSize(60),
+                                    marginLeft: adapeSize(5)
+                                }, shouxuState == 1 ? {backgroundColor: '#ffffff'}
+                                : {backgroundColor: '#d8d8d8'}]}>
+                            <Text style={{paddingTop: adapeSize(1), paddingBottom: adapeSize(1)}}>交易发票
                             </Text></View>
                     </View>
 
@@ -350,8 +354,9 @@ export class CGDCarItem extends PureComponent{
                         <Text style={styles.CGDInserDate}>{date}</Text>
                     </View>
                 </View>
-                <TouchableOpacity style={{justifyContent:'center',alignItems:'center',marginRight:adapeSize(10)}} onPress={deletePress}>
-                    <Text style={{color:'red'}}>{deletePress&&'删除'}</Text>
+                <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center', marginRight: adapeSize(10)}}
+                                  onPress={deletePress}>
+                    <Text style={{color: 'red'}}>{deletePress && '删除'}</Text>
                 </TouchableOpacity>
             </TouchableOpacity>
 
@@ -359,64 +364,86 @@ export class CGDCarItem extends PureComponent{
     }
 
 
-
 }
 
-export class CGDCarItems extends PureComponent{
+export class CGDCarItems extends PureComponent {
 
-    getStateStyle=(obd_bind_status,obd_audit_status,invoice_upload_status,invoice_audit_status)=>{
+    getStateStyle = (obd_bind_status, obd_audit_status, invoice_upload_status, invoice_audit_status) => {
         let obdclor = '#d8d8d8';
         let invoice = '#d8d8d8';
-        if(obd_bind_status=='1'){
-            if(obd_audit_status=='1'){
+        if (obd_bind_status == '1') {
+            if (obd_audit_status == '1') {
                 obdclor = '#00ff00';
-            }else if(obd_audit_status=='2'){
+            } else if (obd_audit_status == '2') {
                 obdclor = '#ff0000';
             }
         }
-        if(invoice_upload_status=='1'){
-            if(invoice_audit_status=='1'){
+        if (invoice_upload_status == '1') {
+            if (invoice_audit_status == '1') {
                 invoice = '#00ff00';
-            }else if(invoice_audit_status=='2'){
+            } else if (invoice_audit_status == '2') {
                 invoice = '#ff0000';
             }
         }
 
-        return {obdColor:obdclor,invoiceClolr:invoice}
+        return {obdColor: obdclor, invoiceClolr: invoice}
     }
 
-        render(){
+    render() {
 
-        const {url,title,invoice_upload_status,obd_bind_status,obd_audit_status,invoice_audit_status,date,onPress,deletePress}=this.props;
+        const {url, title, invoice_upload_status, obd_bind_status, obd_audit_status, invoice_audit_status, date, onPress, deletePress}=this.props;
 
-        const colorstyle =this.getStateStyle(obd_bind_status,obd_audit_status,invoice_upload_status,invoice_audit_status);
+        const colorstyle = this.getStateStyle(obd_bind_status, obd_audit_status, invoice_upload_status, invoice_audit_status);
 
-        return(
+        return (
             <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={styles.CGDCarWarp}>
+                {
+                    obd_bind_status == "2" ?
+                        <Image source={url == '' ? require("../../../../images/login/clear.png") : {uri: url}}
+                               style={styles.CGDCarImage2}/> :
+                        <Image source={url == '' ? require("../../../../images/login/clear.png") : {uri: url}}
+                               style={styles.CGDCarImage}/>
+                }
 
-                <Image source={{uri:url}} style={styles.CGDCarImage}/>
                 <View style={styles.CGDInstWarpTop}>
                     <Text style={styles.CGDInstTitle} numberOfLines={2}>{title}</Text>
-                    <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
-                        <View style={[styles.carItemFlage,{backgroundColor:colorstyle.obdColor}]}><Text >OBD</Text></View>
-                        <View style={[styles.carItemFlage,
-                        typeof(invoice_upload_status)=="undefined"?{width:0}:{width:adapeSize(60),
-                        marginLeft:adapeSize(5)},{backgroundColor:colorstyle.invoiceClolr}]}>
-                            <Text style={{paddingTop:adapeSize(1),paddingBottom:adapeSize(1)}}>交易发票
-                            </Text></View>
+                    <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}>
+                        {
+                            obd_bind_status == "2" ? null :
+                                <View style={[styles.carItemFlage, {backgroundColor: colorstyle.obdColor}]}>
+                                    <Text >OBD</Text>
+                                </View>
+                        }
+                        {
+                            invoice_upload_status == 2 ? null :
+                                <View style={[styles.carItemFlage,
+                                    typeof(invoice_upload_status) == "undefined" ? {width: 0}
+                                        : {
+                                            width: adapeSize(60),
+                                            marginLeft: adapeSize(5)
+                                        }, {backgroundColor: colorstyle.invoiceClolr}]}>
+                                    <Text style={{paddingTop: adapeSize(1), paddingBottom: adapeSize(1)}}>交易发票
+                                    </Text>
+                                </View>
+                        }
+
                     </View>
-                    <View style={styles.CGDInstWarpBooton}>
-                        <Text style={styles.CGDInserDate}>{date}</Text>
-                    </View>
+                    {
+                        date == "" ? null :
+                            <View style={styles.CGDInstWarpBooton}>
+                                <Text style={styles.CGDInserDate}>{date}</Text>
+                            </View>
+                    }
+
                 </View>
-                <TouchableOpacity style={{justifyContent:'center',alignItems:'center',marginRight:adapeSize(10)}} onPress={deletePress}>
-                    <Text style={{color:'red'}}>{deletePress&&'删除'}</Text>
+                <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center', marginRight: adapeSize(10)}}
+                                  onPress={deletePress}>
+                    <Text style={{color: 'red'}}>{deletePress && '删除'}</Text>
                 </TouchableOpacity>
             </TouchableOpacity>
 
         )
     }
-
 
 
 }
@@ -425,60 +452,52 @@ export class CGDCarItems extends PureComponent{
 const styles = StyleSheet.create({
 
     itemView: {
-
         flexDirection: 'row',
         height: adapeSize(44),
         alignItems: 'center',
         borderBottomColor: '#f0eff5',
         borderBottomWidth: adapeSize(0.5),
         backgroundColor: 'white',
-        marginTop:adapeSize(0.5),
-
+        marginTop: adapeSize(0.5),
     },
-    itemLeftText: {
 
+    itemLeftText: {
         marginLeft: adapeSize(15),
         flex: 0.5,
         textAlign: 'left',
         fontSize: fontadapeSize(14),
-
     },
-    itemRightText: {
 
+    itemRightText: {
         marginRight: adapeSize(15),
         flex: 1,
         textAlign: 'right',
         fontSize: fontadapeSize(14),
-
-
     },
-    carItemFlage:{
-        width:adapeSize(45),
-        alignItems:'center',
-    }
-    ,
-    itemInput: {
+    carItemFlage: {
+        width: adapeSize(45),
+        alignItems: 'center',
+    },
 
+    itemInput: {
         flex: 1,
         textAlign: 'right',
         fontSize: fontadapeSize(14),
         marginRight: adapeSize(22),
     },
-    itemPlacehodel: {
 
+    itemPlacehodel: {
         fontSize: fontadapeSize(14),
         marginRight: adapeSize(15),
-
-
     },
-    itemPikerDate: {
 
+    itemPikerDate: {
         marginRight: adapeSize(8),
         width: adapeSize(45 / 2),
         height: adapeSize(45 / 2),
     },
-    itemUserful: {
 
+    itemUserful: {
         flexDirection: 'row',
         height: adapeSize(300 / 2),
         alignItems: 'flex-start',
@@ -487,45 +506,39 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         paddingTop: adapeSize(15),
     },
-    itemUserfulInput: {
 
+    itemUserfulInput: {
         marginRight: adapeSize(15),
         flex: 0.4,
         textAlign: 'left',
         fontSize: fontadapeSize(14),
-
     },
 
     itemRate: {
-
         flexDirection: 'row',
         alignItems: 'center',
         paddingTop: adapeSize(11)
-
     },
-    itemRateThumb: {
 
+    itemRateThumb: {
         width: adapeSize(35 / 2),
         height: adapeSize(35 / 2),
         marginLeft: adapeSize(15)
-
     },
 
     itemRateText: {
-
         color: 'red',
         textAlign: 'center',
         marginLeft: adapeSize(7),
         fontSize: fontadapeSize(12),
     },
-    itRateNum: {
 
+    itRateNum: {
         color: 'black',
         fontSize: fontadapeSize(12),
     },
+
     buttonStyle: {
-
-
         height: adapeSize(44),
         backgroundColor: '#05c5c2',
         marginLeft: adapeSize(15),
@@ -533,145 +546,136 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         position: 'absolute',
         bottom: adapeSize(16),
-        width:width-adapeSize(30),
+        width: width - adapeSize(30),
     },
-    textStyle: {
 
+    textStyle: {
         fontSize: fontadapeSize(15),
         color: '#FFFFFF'
-
     },
-    commentListItemView:{
 
-        flex:1,
-        flexDirection:'row',
-        justifyContent:'flex-start',
-        alignItems:'center',
-        height:adapeSize(44),
+    commentListItemView: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        height: adapeSize(44),
         backgroundColor: 'white',
 
     },
-    commentHandeItem:{
-        flex:1,
-        flexDirection:'row',
-        justifyContent:'flex-start',
-        alignItems:'center',
+    commentHandeItem: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
         backgroundColor: 'white',
     },
 
-    commentListItemLeft:{
-
-        paddingLeft:adapeSize(15),
-        textAlign:'left',
-        color:'#9e9e9e',
-        flex:0.3,
-    },
-    commentListItemRight:{
-
-        paddingRight:adapeSize(15),
-        textAlign:'right',
-        color:'black',
-        flex:0.4,
-    },
-    lendCarItemCellWarp:{
-
-        paddingLeft:adapeSize(15),
-        paddingRight:adapeSize(15),
-        backgroundColor:'white'
-
-    },
-    lendCarItemCellInstWarp:{
-
-        flexDirection:'row',
-        justifyContent:'flex-start',
-        alignItems:'center',
-        marginTop:adapeSize(10),
+    commentListItemLeft: {
+        paddingLeft: adapeSize(15),
+        textAlign: 'left',
+        color: '#9e9e9e',
+        flex: 0.3,
     },
 
-    lendCarItemCarName:{
-
-        fontSize:fontadapeSize(14),
-        flex:0.8
-
-    },
-    lendCarItemOrderState:{
-
-        fontSize:fontadapeSize(14),
-        flex:0.2,
-        marginLeft:5,
-        textAlign:'right'
-    },
-    lendCarItemOrderNum:{
-        flex:0.8,
-        fontSize:fontadapeSize(14),
-        paddingBottom:10,
-        color:'darkgray'
-    },
-    lendCarItemPrice:{
-
-        fontSize:fontadapeSize(14),
-        flex:0.2,
-        marginLeft:5,
-        textAlign:'right',
-        color:'red'
+    commentListItemRight: {
+        paddingRight: adapeSize(15),
+        textAlign: 'right',
+        color: 'black',
+        flex: 0.7,
     },
 
-    CGDCarWarp:{
-
-        flexDirection:'row',
-        justifyContent:'flex-start',
-        backgroundColor:'white',
-
-
-    },
-    CGDCarImage:{
-
-        marginLeft:adapeSize(15),
-        marginTop:adapeSize(15),
-        marginBottom:adapeSize(15),
-        width:adapeSize(120),
-        height:adapeSize(80)
-    },
-    CGDInstWarpTop:{
-
-
-        marginLeft:adapeSize(10),
-        marginRight:adapeSize(15),
-        flex:1,
-        marginTop:adapeSize(15),
-        marginBottom:adapeSize(15),
-    },
-
-    CGDInstWarpBooton:{
-
-        flex:1,
-        flexDirection:'row',
-        alignItems:'flex-end',
-        justifyContent:'space-between',
-    },
-
-
-
-    CGDInstTitle:{
-
-        fontSize:fontadapeSize(14),
-
-    },
-    CGDInserDate:{
-
-        fontSize:fontadapeSize(12),
-        color:PAGECOLOR.COLORA1,
+    lendCarItemCellWarp: {
+        paddingLeft: adapeSize(15),
+        paddingRight: adapeSize(15),
+        backgroundColor: 'white'
 
     },
 
-    CGDInsetPrice:{
+    lendCarItemCellInstWarp: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        marginTop: adapeSize(10),
+    },
 
-        fontSize:fontadapeSize(14),
-        color:PAGECOLOR.COLORB2,
+    lendCarItemCarName: {
+        fontSize: fontadapeSize(14),
+        flex: 0.8
+    },
 
+    lendCarItemOrderState: {
+        fontSize: fontadapeSize(14),
+        flex: 0.2,
+        marginLeft: 5,
+        textAlign: 'right'
+    },
+
+    lendCarItemOrderNum: {
+        flex: 0.8,
+        fontSize: fontadapeSize(14),
+        paddingBottom: 10,
+        color: 'darkgray'
+    },
+
+    lendCarItemPrice: {
+        fontSize: fontadapeSize(14),
+        flex: 0.2,
+        marginLeft: 5,
+        textAlign: 'right',
+        color: 'red'
+    },
+
+    CGDCarWarp: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        backgroundColor: 'white',
+    },
+
+    CGDCarImage: {
+        marginLeft: adapeSize(15),
+        marginTop: adapeSize(15),
+        marginBottom: adapeSize(15),
+        width: adapeSize(120),
+        height: adapeSize(80)
+    },
+
+    CGDCarImage2: {
+        marginLeft: adapeSize(15),
+        marginTop: adapeSize(15),
+        marginBottom: adapeSize(15),
+        width: adapeSize(80),
+        height: adapeSize(40),
+    },
+
+    CGDInstWarpTop: {
+        flex: 1,
+        marginLeft: adapeSize(10),
+        marginRight: adapeSize(15),
+        marginTop: adapeSize(15),
+        marginBottom: adapeSize(15),
+        justifyContent: 'center',
+    },
+
+    CGDInstWarpBooton: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        justifyContent: 'space-between',
+    },
+
+    CGDInstTitle: {
+        fontSize: fontadapeSize(14),
+    },
+
+    CGDInserDate: {
+        fontSize: fontadapeSize(12),
+        color: PAGECOLOR.COLORA1,
+    },
+
+    CGDInsetPrice: {
+        fontSize: fontadapeSize(14),
+        color: PAGECOLOR.COLORB2,
     }
-
-
-
 
 })
