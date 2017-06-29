@@ -330,20 +330,22 @@ export default class DDApplyLendScene extends BaseComponent {
                 return (
                     <CommentHandItem warpstyle={{height: adapeSize(44)}} leftTitle={rowData.title}
                                      showValue={rowData.key} textStyle={{color: PAGECOLOR.COLORA1}} handel={() => {
-                        navigatorParams = {
-                            name: 'OBDDevice',
-                            component: OBDDevice,
-                            params: {
-                                carData: this.carData,
-                                fromScene: 'DDApplyLendScene',
-                                backRefresh: () => {
-                                    //刷新界面
-                                    this.props.sceneName = 'CheckStand';
-                                    this.getLendInfo();
+                        if (this.carData.obd_audit_status != 1) {
+                            navigatorParams = {
+                                name: 'OBDDevice',
+                                component: OBDDevice,
+                                params: {
+                                    carData: this.carData,
+                                    fromScene: 'DDApplyLendScene',
+                                    backRefresh: () => {
+                                        //刷新界面
+                                        this.props.sceneName = 'CheckStand';
+                                        this.getLendInfo();
+                                    }
                                 }
                             }
+                            this.toNextPage(navigatorParams);
                         }
-                        this.toNextPage(navigatorParams);
                     }}/>
                 )
             }
@@ -351,22 +353,22 @@ export default class DDApplyLendScene extends BaseComponent {
                 return (
                     <CommentHandItem warpstyle={{height: adapeSize(44)}} leftTitle={rowData.title}
                                      showValue={rowData.key} textStyle={{color: PAGECOLOR.COLORA1}} handel={() => {
-
-                        navigatorParams = {
-                            name: 'DDCarInfoScene',
-                            component: DDCarInfoScene,
-                            params: {
-                                platform_order_number: this.props.orderNo,//平台订单号
-                                info_id: INFO_ID[0],
-                                backRefresh: () => {
-                                    //刷新界面
-                                    this.props.sceneName = 'CheckStand';
-                                    this.getLendInfo();
+                        if (this.carData.auto_ownership_status != 1) {
+                            navigatorParams = {
+                                name: 'DDCarInfoScene',
+                                component: DDCarInfoScene,
+                                params: {
+                                    platform_order_number: this.props.orderNo,//平台订单号
+                                    info_id: INFO_ID[0],
+                                    backRefresh: () => {
+                                        //刷新界面
+                                        this.props.sceneName = 'CheckStand';
+                                        this.getLendInfo();
+                                    }
                                 }
                             }
+                            this.toNextPage(navigatorParams);
                         }
-                        this.toNextPage(navigatorParams);
-
                     }}/>
                 )
             }
