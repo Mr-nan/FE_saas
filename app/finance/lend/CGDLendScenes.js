@@ -545,7 +545,7 @@ export  default  class CGDLendScenes extends BaseComponent {
                     this.props.backRefresh();
                       this.backToTop()
                 }}/>
-                <ModalAlert ref={(alert)=>{this.infoMessage=alert}} title='解绑提示'subtitle='继续借款将会解绑车辆OB' confimClick={(setHide)=>{
+                <ModalAlert ref={(alert)=>{this.infoMessage=alert}} title='解绑提示'subtitle='继续借款将会解绑车辆OBD' confimClick={(setHide)=>{
                     setHide(false);
                     this.lendMoneyClick()
                 }} cancleClick={(setHide)=>{setHide(false)}}/>

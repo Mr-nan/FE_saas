@@ -15,7 +15,7 @@ import {
     TouchableHighlight
 } from "react-native";
 import BaseComponent from "../../component/BaseComponent";
-import NavigationBar from "../../component/NavigationBar";
+import NavigationView from '../../component/AllNavigationView';
 import * as FontAndColor from "../../constant/fontAndColor";
 import PixelUtil from "../../utils/PixelUtil";
 import {request} from "../../utils/RequestUtil";
@@ -33,12 +33,12 @@ var Pixel = new PixelUtil();
 var onePT = 1 / PixelRatio.get(); //一个像素
 var Platform = require('Platform');
 let childItems = [];
-
+let DengJiRen = [];
 export default class DDCarInfoScene extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-            renderPlaceholderOnly: true,
+            renderPlaceholderOnly: 'blank',
             chexing: "奥迪",
             chejia_number: "1234567890",
             dengjiren: "张三",
@@ -55,84 +55,86 @@ export default class DDCarInfoScene extends BaseComponent {
 
     initFinish = () => {
         this.getCarInfo();
-        this.getBusinessList();
+
     }
 
-    // 获取采购贷车辆照片分类
+    /**
+     * 获取订单融资车辆照片分类
+     * getPurchaAutoPicCate
+     **/
     getPurchaAutoPicCate = () => {
         let maps = {
-            api: AppUrls.GETPURCHAAUTOPICCATE,
-            source_type: '3',
-            archives_status: '2',
+            api: AppUrls.GETDINGDANAUTOPICCATE,
+
         };
         request(AppUrls.FINANCE, 'Post', maps)
             .then((response) => {
-                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    for (let i = 0; i < response.mjson.data.cate_list.length; i++) {
-                        childItems.push({
-                            code: response.mjson.data.cate_list[i].code,
-                            id: response.mjson.data.cate_list[i].id,
-                            list: []
-                        });
-                    }
-                    //下面的判断，是用来显示编辑状态下的界面，从上一界面带过来的数据
-                    // if (this.props.carData.obd_bind_status == '1') {
-                    //     for (let i = 0; i < childItems.length; i++) {
-                    //         for (let j = 0; j < this.props.carData.file_list.length; j++) {
-                    //             if (childItems[i].code == this.props.carData.file_list[j].code) {
-                    //                 childItems[i].list.push({
-                    //                     url: this.props.carData.file_list[j].icon,
-                    //                     fileId: this.props.carData.file_list[j].file_id
-                    //                 });
-                    //                 results.push({
-                    //                     code: this.props.carData.file_list[j].code,
-                    //                     code_id: this.props.carData.file_list[j].id,
-                    //                     file_id: this.props.carData.file_list[j].file_id
-                    //                 });
-                    //             }
-                    //         }
-                    //     }
-                    //
-                    // }
-                    this.setState({
-                        source: ds.cloneWithRows(response.mjson.data.cate_list),
-                        renderPlaceholderOnly: false
+            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+            if(response.mjson.data.cate_list==null||response.mjson.data.cate_list.length<=0){
+                this.setState({
+                    source: ds.cloneWithRows(['10032']),
+                    renderPlaceholderOnly: 'success'
+                });
+            }else{
+                for (let i = 0; i < response.mjson.data.cate_list.length; i++) {
+                    childItems.push({
+                        code: response.mjson.data.cate_list[i].code,
+                        id: response.mjson.data.cate_list[i].id,
+                        list: []
                     });
+                }
+                //下面的判断，是用来显示编辑状态下的界面，从上一界面带过来的数据
+                // if (this.props.carData.obd_bind_status == '1') {
+                //     for (let i = 0; i < childItems.length; i++) {
+                //         for (let j = 0; j < this.props.carData.file_list.length; j++) {
+                //             if (childItems[i].code == this.props.carData.file_list[j].code) {
+                //                 childItems[i].list.push({
+                //                     url: this.props.carData.file_list[j].icon,
+                //                     fileId: this.props.carData.file_list[j].file_id
+                //                 });
+                //                 results.push({
+                //                     code: this.props.carData.file_list[j].code,
+                //                     code_id: this.props.carData.file_list[j].id,
+                //                     file_id: this.props.carData.file_list[j].file_id
+                //                 });
+                //             }
+                //         }
+                //     }
+                //
+                // }
+                this.setState({
+                    source: ds.cloneWithRows(response.mjson.data.cate_list),
+                    renderPlaceholderOnly: 'success'
+                });
+            }
+
                 }, (error) => {
-                    if (error.mycode == -300 || error.mycode == -500) {
-                        this.props.showToast("网络请求失败");
-                    } else {
-                        this.props.showToast(error.mjson.msg + "");
-                    }
+                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                this.setState({
+                    renderPlaceholderOnly: 'success',
+                    source: ds.cloneWithRows(['10032']),
+                });
                 }
             )
     }
 
 
     /**
-     * 获取车辆信息
+     * 获取车辆信息(车型，车架号)
      * getCarInfo
      */
     getCarInfo = () => {
         let maps = {
             api: apis.AUTODETAIL,
             info_id: this.props.info_id,
-            platform_order_number: this.props.orderNo,
+            platform_order_number: this.props.platform_order_number,
         }
-        this.props.showModal(true);
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
-                this.getPurchaAutoPicCate();
-                this.props.showModal(false);
-                console.log(response)
+                this.getBusinessList();
+
             }, (error) => {
-                this.getPurchaAutoPicCate();
-                this.props.showModal(false);
-                if (error.mycode != -300 || error.mycode != -500) {
-                    this.props.showToast(error.mjson.msg);
-                } else {
-                    this.props.showToast('服务器连接有问题')
-                }
+
             });
     }
 
@@ -145,45 +147,39 @@ export default class DDCarInfoScene extends BaseComponent {
         let maps = {
             api: apis.GETBUSINESSLIST,
         }
-        this.props.showModal(true);
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
-                this.props.showModal(false);
-                console.log(response)
-            }, (error) => {
-                this.props.showModal(false);
-                if (error.mycode != -300 || error.mycode != -500) {
-                    this.props.showToast(error.mjson.msg);
-                } else {
-                    this.props.showToast('服务器连接有问题')
+                for (let i = 0; i < response.mjson.data.reg_user_list.length; i++) {
+                    this.xb.push({
+                        name: response.mjson.data.reg_user_list[i].name,
+                        id: response.mjson.data.reg_user_list[i].id,
+                        merge_id: response.mjson.data.reg_user_list[i].merge_id,
+                    });
+                    DengJiRen.push(
+                        {
+                            name: response.mjson.data.reg_user_list[i].name,
+                        }
+                    )
                 }
+                this.getPurchaAutoPicCate();
+            }, (error) => {
+                this.setState({
+                    renderPlaceholderOnly: 'error'
+                });
             });
     }
 
     render() {
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return this._renderPlaceholderView();
+        }
         return (
             <View style={styles.container}>
-                <NavigationBar
-                    leftImageShow={true}
-                    leftTextShow={false}
-                    centerText={"车辆信息"}
-                    rightText={""}
-                    rightTextCallBack={() => {
-
-                        this.toNextPage({
-                            name: 'WebScene',
-                            component: WebScene,
-                            params: {webUrl: "http://h5.bms.dycd.com/installation.html"}
-                        })
-                    }}
-                    leftImageCallBack={this.backPage}/>
-
-
                 <View style={{
                     width: width,
                     flexDirection: 'column',
                     flex: 1,
-                    marginTop: Pixel.getPixel(0)
+                    marginTop: Pixel.getTitlePixel(69)
                 }}>
                     {this._renderSectionHeader()}
                     {
@@ -199,7 +195,7 @@ export default class DDCarInfoScene extends BaseComponent {
 
                 {/* 蒙版选择器 */}
                 <SelectMaskComponent viewData={[]} onClick={(rowID) => {
-                    this.refs.djr.changeRightText(this.xb[rowID]);
+                    this.refs.djr.changeRightText(DengJiRen[rowID]);
                 }}
                                      ref={(modal) => {
                                          this.selectModal = modal
@@ -212,11 +208,18 @@ export default class DDCarInfoScene extends BaseComponent {
                           mOnPress={() => {
                               alert("完成")
                           }}/>
+                <NavigationView
+                    title="车辆信息"
+                    backIconClick={this.backPage}
+                />
             </View>
         )
     }
 
     _renderRow = (movie, sectionId, rowId) => {
+        if(movie=='10032'){
+            return (<View></View>);
+        }
         return (
             <PurchasePickerItem results={results} showModal={(value) => {
                 this.props.showModal(value)
@@ -270,8 +273,21 @@ export default class DDCarInfoScene extends BaseComponent {
         )
     }
 
+    _renderPlaceholderView() {
+        return (
+            <View style={{width: width, height: height,backgroundColor: FontAndColor.COLORA3}}>
+                {this.loadView()}
+                <NavigationView
+                    title="车辆信息"
+                    backIconClick={this.backPage}
+                />
+            </View>
+        );
+    }
+
     onPressButton = () => {
-        this._openModal(this.xb);
+
+        this._openModal(DengJiRen);
     }
 
     _openModal = (dt) => {
@@ -312,13 +328,7 @@ const styles = StyleSheet.create({
         color: FontAndColor.COLORA3,
         fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT)
     },
-    buttonStyle: {
-        width: Pixel.getPixel(100),
-        height: Pixel.getPixel(32),
-        backgroundColor: FontAndColor.COLORB0,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
+
     buttonStyle: {
         borderColor: FontAndColor.COLORB0,
         borderWidth: 1,
@@ -329,10 +339,7 @@ const styles = StyleSheet.create({
         marginTop: Pixel.getPixel(12),
         marginBottom: Pixel.getPixel(12),
     },
-    buttonTextStyle: {
-        fontSize: Pixel.getFontPixel(18),
-        color: FontAndColor.COLORB0,
-    },
+
     buttonSelectStyle: {
         borderColor: FontAndColor.COLORA2,
         borderWidth: 1,
@@ -347,16 +354,7 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(18),
         color: FontAndColor.COLORA2,
     },
-    loginBtnStyle: {
-        height: Pixel.getPixel(44),
-        width: width - Pixel.getPixel(30),
-        backgroundColor: FontAndColor.COLORB0,
-        marginTop: Pixel.getPixel(20),
-        marginBottom: Pixel.getPixel(15),
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: Pixel.getPixel(4),
-    },
+
     loginBtnEnStyle: {
         height: Pixel.getPixel(44),
         width: width - Pixel.getPixel(30),
@@ -367,10 +365,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: Pixel.getPixel(4),
     },
-    loginButtonTextStyle: {
-        color: FontAndColor.COLORA3,
-        fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT)
-    },
+
     boundStateStyle: {
         flex: 1,
         color: FontAndColor.COLORB2,
