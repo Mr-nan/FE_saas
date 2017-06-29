@@ -26,6 +26,7 @@ import SelectMaskComponent from "../../mine/employeeManage/SelectMaskComponent";
 import ChooseButton from "../../component/ChooseButton";
 import * as apis from "../../constant/appUrls";
 import MyButton from '../../component/MyButton';
+import  SelectDJRScene from  '../../finance/lend/SelectDJRScene'
 let results = [];
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -39,18 +40,20 @@ export default class DDCarInfoScene extends BaseComponent {
         super(props);
         this.state = {
             renderPlaceholderOnly: 'blank',
+            listViewShow: true,
             chexing: "奥迪",
             chejia_number: "1234567890",
             dengjiren: "张三",
             sign_type: "线上",
             source: {},
         };
-        this.xb = ['张三', '李四', '王五', '赵六'];
+        this.xb = [];
     }
 
     componentWillUnmount() {
         results = [];
         childItems = [];
+        DengJiRen = [];
     }
 
     initFinish = () => {
@@ -66,54 +69,38 @@ export default class DDCarInfoScene extends BaseComponent {
         let maps = {
             api: AppUrls.GETDINGDANAUTOPICCATE,
 
+
         };
         request(AppUrls.FINANCE, 'Post', maps)
             .then((response) => {
-            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-            if(response.mjson.data.cate_list==null||response.mjson.data.cate_list.length<=0){
-                this.setState({
-                    source: ds.cloneWithRows(['10032']),
-                    renderPlaceholderOnly: 'success'
-                });
-            }else{
-                for (let i = 0; i < response.mjson.data.cate_list.length; i++) {
-                    childItems.push({
-                        code: response.mjson.data.cate_list[i].code,
-                        id: response.mjson.data.cate_list[i].id,
-                        list: []
-                    });
-                }
-                //下面的判断，是用来显示编辑状态下的界面，从上一界面带过来的数据
-                // if (this.props.carData.obd_bind_status == '1') {
-                //     for (let i = 0; i < childItems.length; i++) {
-                //         for (let j = 0; j < this.props.carData.file_list.length; j++) {
-                //             if (childItems[i].code == this.props.carData.file_list[j].code) {
-                //                 childItems[i].list.push({
-                //                     url: this.props.carData.file_list[j].icon,
-                //                     fileId: this.props.carData.file_list[j].file_id
-                //                 });
-                //                 results.push({
-                //                     code: this.props.carData.file_list[j].code,
-                //                     code_id: this.props.carData.file_list[j].id,
-                //                     file_id: this.props.carData.file_list[j].file_id
-                //                 });
-                //             }
-                //         }
-                //     }
-                //
-                // }
-                this.setState({
-                    source: ds.cloneWithRows(response.mjson.data.cate_list),
-                    renderPlaceholderOnly: 'success'
-                });
-            }
+                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                    if (response.mjson.data.cate_list == null || response.mjson.data.cate_list.length <= 0) {
+                        this.setState({
+                            source: ds.cloneWithRows(['10032']),
+                            renderPlaceholderOnly: 'error'
+                        });
+                    }
+                    else {
+                        for (let i = 0; i < response.mjson.data.cate_list.length; i++) {
+                            childItems.push({
+                                code: response.mjson.data.cate_list[i].code,
+                                id: response.mjson.data.cate_list[i].id,
+                                list: []
+                            });
+
+                        }
+                        this.setState({
+                            source: ds.cloneWithRows(response.mjson.data.cate_list),
+                            renderPlaceholderOnly: 'success'
+                        });
+                    }
 
                 }, (error) => {
-                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                this.setState({
-                    renderPlaceholderOnly: 'success',
-                    source: ds.cloneWithRows(['10032']),
-                });
+                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                    this.setState({
+                        renderPlaceholderOnly: 'success',
+                        source: ds.cloneWithRows(['10032']),
+                    });
                 }
             )
     }
@@ -131,7 +118,13 @@ export default class DDCarInfoScene extends BaseComponent {
         }
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
+
                 this.getBusinessList();
+                this.state.chejia_number = response.mjson.data.detail.frame_number,
+                    this.state.chexing = response.mjson.data.detail.model_name,
+                    this.info_id = response.mjson.data.detail.info_id,
+                    this.base_id = response.mjson.data.detail.base_id
+
 
             }, (error) => {
 
@@ -151,14 +144,13 @@ export default class DDCarInfoScene extends BaseComponent {
             .then((response) => {
                 for (let i = 0; i < response.mjson.data.reg_user_list.length; i++) {
                     this.xb.push({
-                        name: response.mjson.data.reg_user_list[i].name,
+                        business_name: response.mjson.data.reg_user_list[i].business_name,
                         id: response.mjson.data.reg_user_list[i].id,
                         merge_id: response.mjson.data.reg_user_list[i].merge_id,
+                        is_mortgagor: response.mjson.data.reg_user_list[i].is_mortgagor,
                     });
                     DengJiRen.push(
-                        {
-                            name: response.mjson.data.reg_user_list[i].name,
-                        }
+                        response.mjson.data.reg_user_list[i].business_name,
                     )
                 }
                 this.getPurchaAutoPicCate();
@@ -168,6 +160,38 @@ export default class DDCarInfoScene extends BaseComponent {
                 });
             });
     }
+    /**
+     * 更新订单融资车辆
+     * updateCarInfo
+     */
+    updateCarInfo = () => {
+        if (JSON.stringify(results) == []) {
+            this.props.showToast("照片不能为空");
+        } else if (this.register_user_id == "" || this.register_user_id == undefined) {
+            this.props.showToast("请选择登记人");
+        } else {
+            let maps = {
+                api: apis.DDUPDATEAUTO,
+                base_id: this.base_id,
+                info_id: this.info_id,
+                register_user_id: this.register_user_id,
+                file_list: JSON.stringify(results),
+            }
+            request(apis.FINANCE, 'Post', maps)
+                .then((response) => {
+                    this.props.backRefresh();
+                    this.backPage();
+
+
+                }, (error) => {
+                    this.setState({
+                        renderPlaceholderOnly: 'error'
+                    });
+                });
+        }
+
+    }
+
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
@@ -183,30 +207,23 @@ export default class DDCarInfoScene extends BaseComponent {
                 }}>
                     {this._renderSectionHeader()}
                     {
-                        this.state.renderPlaceholderOnly ? null :
+                        (this.state.renderPlaceholderOnly == "success" && this.state.listViewShow) ?
                             <ListView
                                 dataSource={this.state.source}
                                 renderRow={this._renderRow}
                                 renderSeparator={this._renderSeparator}
-                            />
+                            /> : null
                     }
 
                 </View>
 
-                {/* 蒙版选择器 */}
-                <SelectMaskComponent viewData={[]} onClick={(rowID) => {
-                    this.refs.djr.changeRightText(DengJiRen[rowID]);
-                }}
-                                     ref={(modal) => {
-                                         this.selectModal = modal
-                                     }}/>
 
                 <MyButton buttonType={MyButton.TEXTBUTTON}
                           content={'完成'}
                           parentStyle={styles.loginBtnStyle}
                           childStyle={styles.loginButtonTextStyle}
                           mOnPress={() => {
-                              alert("完成")
+                              this.updateCarInfo();
                           }}/>
                 <NavigationView
                     title="车辆信息"
@@ -217,7 +234,7 @@ export default class DDCarInfoScene extends BaseComponent {
     }
 
     _renderRow = (movie, sectionId, rowId) => {
-        if(movie=='10032'){
+        if (movie == '10032') {
             return (<View></View>);
         }
         return (
@@ -287,14 +304,29 @@ export default class DDCarInfoScene extends BaseComponent {
 
     onPressButton = () => {
 
-        this._openModal(DengJiRen);
+        // this._openModal(DengJiRen);
+        this.toNextPage(
+            {
+                name: 'SelectDJRScene',
+                component: SelectDJRScene,
+                params: {
+                    regShowData: DengJiRen,
+                    title: '选择登记人',
+                    callBack: (name, index) => {
+
+                        this.refs.djr.changeRightText(name);
+                        this.register_user_id = this.xb[index].id;
+                        if (this.xb[index].is_mortgagor == 1) {
+                            this.setState({
+                                listViewShow: false,
+                            });
+                        }
+
+                    }
+                }
+            })
     }
 
-    _openModal = (dt) => {
-        this.selectModal.changeData(dt);
-        this.selectModal.openModal();
-        this.currentData = dt;
-    }
 }
 
 const styles = StyleSheet.create({
