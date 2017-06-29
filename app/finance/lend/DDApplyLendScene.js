@@ -21,6 +21,7 @@ import OBDDevice from "./OBDDevice";
 let ControlState = [];
 let BASE_ID;
 let INFO_ID = [];
+let OBD_BIND_STATUS;
 export default class DDApplyLendScene extends BaseComponent {
 
     constructor(props) {
@@ -38,6 +39,35 @@ export default class DDApplyLendScene extends BaseComponent {
             dataSource: ds.cloneWithRowsAndSections(this.titleNameBlob({}, [])),
             renderPlaceholderOnly: STATECODE.loading,
         }
+
+        this.carData = {
+            sell_city_id: '',
+            brand_id: '',
+            model_id: '',
+            series_id: '',
+            frame_number: '',
+            car_color: '',
+            mileage: '',
+            init_reg: '',
+            rev_user_id: '',
+            register_user_id: '',
+            purchas_price: '',
+            file_list: '',
+            bind_type: '',
+            obd_number: '',
+            payment_id: '',
+            base_id: '',
+            info_id: '',
+            isCarinvoice: '',
+            obd_bind_status: '',
+            obd_audit_status: '',
+            auto_ownership_status: '',
+            order_ownership_status: '',
+            is_mortgagor: '',
+            is_new: ''
+
+        };
+
         OrderHanderState = [];
     }
 
@@ -99,6 +129,15 @@ export default class DDApplyLendScene extends BaseComponent {
                 let tempjson = response.mjson.data;
                 BASE_ID = tempjson.list[0].base_id;
                 INFO_ID[0] = tempjson.list[0].info_id;
+                this.carData.frame_number = tempjson.list[0].frame_number;
+                this.carData.obd_bind_status = tempjson.list[0].obd_bind_status;
+                this.carData.obd_audit_status = tempjson.list[0].obd_audit_status;
+                this.carData.obd_number = tempjson.list[0].obd_number;
+                this.carData.auto_ownership_status = tempjson.list[0].auto_ownership_status;
+                this.carData.order_ownership_status = tempjson.list[0].order_ownership_status;
+                this.carData.is_mortgagor = tempjson.list[0].is_mortgagor;
+                this.carData.is_new = tempjson.list[0].is_new;
+
                 this.setState({
                     dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(lendInfo, tempjson.list)),
                     renderPlaceholderOnly: STATECODE.loadSuccess
@@ -147,10 +186,10 @@ export default class DDApplyLendScene extends BaseComponent {
         let section1 = [
             {title: '借贷类型', key: jsonData.product_type},
             {title: '借款费率', key: jsonData.rate},
-            {title: '保证金余额', key: jsonData.bond_mny + "元"},
-            {title: '保证金比例', key: jsonData.bond_deposit_rate},
+            {title: '保证金余额', key: jsonData.deposit_amount + "元"},
+            {title: '保证金比例', key: jsonData.deposit_rate},
             {title: '借款期限', key: jsonData.loan_life},
-            {title: '借款额度', key: "30000~" + jsonData.max_loanmny + "元"},
+            {title: '借款额度', key: "30000" + "~" + jsonData.paymnet_maxloanmny + "元"},
         ]
         dataSource['section1'] = section1
         if (carData.length > 0) {
@@ -194,7 +233,10 @@ export default class DDApplyLendScene extends BaseComponent {
                         title: 'OBD设备',
                         key: this.OBDtransferToString(carData[0].obd_audit_status, carData[0].obd_bind_status)
                     },
-                    {title: '车辆权限', key: '订单融资'},
+                    {
+                        title: '车辆权属',
+                        key: this.OwnershiptransferToString(carData[0].auto_ownership_status, carData[0].order_ownership_status)
+                    },
 
                 ]
             }
@@ -209,11 +251,54 @@ export default class DDApplyLendScene extends BaseComponent {
      **/
     OBDtransferToString = (audit, bind) => {
         let status;
-        if (bind == 0) {
-            status = '未绑定';
+        if (this.props.sceneName == 'CheckStand') {
+            if (audit == 1) {
+                status = '已通过';
+            } else {
+                if (bind == 0) {
+                    status = '未绑定';
+                } else if (bind == 1) {
+                    status = '已绑定';
+                } else if (bind == 2) {
+                    status = '解除绑定';
+                }
+            }
+        } else {
+            if (audit == 0) {
+                status = '未审核';
+            } else if (audit == 1) {
+                status = '已通过';
+            } else if (audit == 2) {
+                status = '未通过';
+            }
         }
-        if (bind == 1) {
-            status = '已绑定';
+        return status;
+    }
+
+    /**
+     * 根据后台返回，将数据进行转换
+     * OBDtransferToString
+     **/
+    OwnershiptransferToString = (audit, bind) => {
+        let status;
+        if (this.props.sceneName == 'CheckStand') {
+            if (audit == 1) {
+                status = '已通过';
+            } else {
+                if (bind == 0) {
+                    status = '未上传';
+                } else if (bind == 1) {
+                    status = '已上传';
+                }
+            }
+        } else {
+            if (audit == 0) {
+                status = '未审核';
+            } else if (audit == 1) {
+                status = '已通过';
+            } else if (audit == 2) {
+                status = '未通过';
+            }
         }
         return status;
 
@@ -234,7 +319,8 @@ export default class DDApplyLendScene extends BaseComponent {
             return (
                 <CommentHandItem warpstyle={{height: adapeSize(44)}} leftTitle={rowData.title}
                                  showValue={rowData.key} textStyle={{color: PAGECOLOR.COLORA1}} handel={() => {
-                    this.backPage();
+                    {/*this.backPage();*/
+                    }
                 }}/>
             )
         }
@@ -251,36 +337,45 @@ export default class DDApplyLendScene extends BaseComponent {
                 return (
                     <CommentHandItem warpstyle={{height: adapeSize(44)}} leftTitle={rowData.title}
                                      showValue={rowData.key} textStyle={{color: PAGECOLOR.COLORA1}} handel={() => {
-                        navigatorParams = {
-                            name: 'OBDDevice',
-                            component: OBDDevice,
-                            params: {
-                                carData: {obd_audit_status: '2'},
-                                fromScene: 'DDApplyLendScene',
-                                backRefresh: () => {
-                                    //刷新界面
+                        if (this.carData.obd_audit_status != 1) {
+                            navigatorParams = {
+                                name: 'OBDDevice',
+                                component: OBDDevice,
+                                params: {
+                                    carData: this.carData,
+                                    fromScene: 'DDApplyLendScene',
+                                    backRefresh: () => {
+                                        //刷新界面
+                                        this.props.sceneName = 'CheckStand';
+                                        this.getLendInfo();
+                                    }
                                 }
                             }
+                            this.toNextPage(navigatorParams);
                         }
-                        this.toNextPage(navigatorParams);
                     }}/>
                 )
             }
-            if (rowData.title === '车辆权限') {
+            if (rowData.title === '车辆权属') {
                 return (
                     <CommentHandItem warpstyle={{height: adapeSize(44)}} leftTitle={rowData.title}
                                      showValue={rowData.key} textStyle={{color: PAGECOLOR.COLORA1}} handel={() => {
-
-                        navigatorParams = {
-                            name: 'DDCarInfoScene',
-                            component: DDCarInfoScene,
-                            params: {
-                                platform_order_number: this.props.orderNo,//平台订单号
-                                info_id: INFO_ID[0],
+                        if (this.carData.auto_ownership_status != 1) {
+                            navigatorParams = {
+                                name: 'DDCarInfoScene',
+                                component: DDCarInfoScene,
+                                params: {
+                                    platform_order_number: this.props.orderNo,//平台订单号
+                                    info_id: INFO_ID[0],
+                                    backRefresh: () => {
+                                        //刷新界面
+                                        this.props.sceneName = 'CheckStand';
+                                        this.getLendInfo();
+                                    }
+                                }
                             }
+                            this.toNextPage(navigatorParams);
                         }
-                        this.toNextPage(navigatorParams);
-
                     }}/>
                 )
             }
@@ -339,7 +434,51 @@ export default class DDApplyLendScene extends BaseComponent {
      **/
     buttonClick = (title) => {
         if (title == '申请借款') {
-            this.lendMoneyClick();
+            if (this.props.sceneName == 'CheckStand') {
+                if (bind == 0) {
+                    this.props.showToast("0BD未绑定");
+                } else if (bind == 1) {
+                    if (this.carData.is_mortgagor == 1 || this.carData.is_mortgagor == 1) {
+                        this.lendMoneyClick();
+                    } else {
+                        if (this.carData.order_ownership_status == 1) {
+                            this.lendMoneyClick();
+                        } else {
+                            this.props.showToast("车辆权属未上传");
+                        }
+                    }
+                } else if (bind == 2) {
+                    this.props.showToast("0BD需重新绑定");
+                }
+            } else {
+                if (audit == 0) {
+                    if (this.carData.is_mortgagor == 1 || this.carData.is_mortgagor == 1) {
+                        this.lendMoneyClick();
+                    } else {
+                        if (this.carData.auto_ownership_status == 0) {
+                            this.lendMoneyClick();
+                        } else if (this.carData.auto_ownership_status == 1) {
+                            this.lendMoneyClick();
+                        } else if (this.carData.auto_ownership_status == 2) {
+                            this.props.showToast("车辆权属审核未通过");
+                        }
+                    }
+                } else if (audit == 1) {
+                    if (this.carData.is_mortgagor == 1 || this.carData.is_mortgagor == 1) {
+                        this.lendMoneyClick();
+                    } else {
+                        if (this.carData.auto_ownership_status == 0) {
+                            this.lendMoneyClick();
+                        } else if (this.carData.auto_ownership_status == 1) {
+                            this.lendMoneyClick();
+                        } else if (this.carData.auto_ownership_status == 2) {
+                            this.props.showToast("车辆权属审核未通过");
+                        }
+                    }
+                } else if (audit == 2) {
+                    this.props.showToast("0BD审核未通过");
+                }
+            }
         }
     }
 
@@ -418,6 +557,16 @@ export default class DDApplyLendScene extends BaseComponent {
             .then((response) => {
                 this.props.showModal(false);
                 // this.apSuccess.setModelVisible(true);
+                this.props.callBack();
+                const navigator = this.props.navigator;
+                if (navigator) {
+                    for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
+                        if (navigator.getCurrentRoutes()[i].name == 'ProcurementOrderDetailScene') {
+                            navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                            break;
+                        }
+                    }
+                }
             }, (error) => {
                 this.props.showModal(false);
                 if (error.mycode != -300 || error.mycode != -500) {

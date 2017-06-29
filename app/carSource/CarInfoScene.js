@@ -672,7 +672,6 @@ export default class CarInfoScene extends BaseComponent {
             name: "CarUpkeepScene",
             component: CarUpkeepScene,
             params: {
-
                 vin: vin,
                 carData: this.state.carData
             }
@@ -702,6 +701,7 @@ export default class CarInfoScene extends BaseComponent {
                 mileage: carData.mileage,
                 model_id: carData.model_id,
                 init_reg: this.dateReversal(carData.init_reg + '000'),
+                from:'CarInfoScene'
             }
         }
         this.toNextPage(navigationParams);

@@ -27,20 +27,68 @@ import  UpLoadScene from './UpLoadScene';
 import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
 import codePush from 'react-native-code-push'
-const versionCode = 13.0;
+const versionCode = 16.0;
 let canNext = true;
+let Platform = require('Platform');
+let deploymentKey = '';
+import ErrorUtils from "ErrorUtils"
 
 export default class RootScene extends BaseComponent {
 
     componentDidMount() {
-        codePush.sync();
-        AppState.addEventListener("change", (newState) => {
-            newState === "active" && codePush.sync();
+        // codePush.sync();
+        // AppState.addEventListener("change", (newState) => {
+        //     newState === "active" && codePush.sync();
+        // });
+        ErrorUtils.setGlobalHandler((e) => {　//发生异常的处理方法,当然如果是打包好的话可能你找都找不到是哪段代码出问题了
+            this.props.showToast(''+JSON.stringify(e));
+            StorageUtil.mGetItem(KeyNames.PHONE, (data) => {
+                let maps = {
+                    account_id: data.result,
+                    message: ''+JSON.stringify(e)
+                };
+                request(Urls.ADDACCOUNTMESSAGEINFO, 'Post', maps)
+                    .then((response) => {
+
+                        },
+                        (error) => {
+                        });
+            });
+
         });
+        if (Platform.OS === 'android') {
+            deploymentKey = 'fSQnzvsEP5qb9jD_tr4k2QC9pKlie1b7b22b-ea3f-4c77-abcc-72586c814b3c';
+        } else {
+            deploymentKey = 'TXKA_1RB5rKvXMOuBTMqPoon2c5Pe1b7b22b-ea3f-4c77-abcc-72586c814b3c';
+        }
+        codePush.checkForUpdate(deploymentKey).then((update) => {
+            if (!update) {
+            } else {
+                codePush.sync({
+                    deploymentKey: deploymentKey,
+                    updateDialog: {
+                        optionalIgnoreButtonLabel: '稍后',
+                        optionalInstallButtonLabel: '立即更新',
+                        optionalUpdateMessage: '请更新到最新版本',
+                        title: '更新提示'
+                    },
+                    installMode: codePush.InstallMode.IMMEDIATE,
+                }, (status) => {
+                    switch (status) {
+                        case codePush.SyncStatus.DOWNLOADING_PACKAGE:
+                            break;
+                        case codePush.SyncStatus.INSTALLING_UPDATE:
+                            break;
+                    }
+                }, (progress) => {
+                });
+            }
+        });
+
         BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: 'loading'});
-            //this.initFinish();
+            this.initFinish();
         });
     }
 
@@ -51,13 +99,13 @@ export default class RootScene extends BaseComponent {
         };
         request(Urls.APP_UPDATE, 'Post', maps)
             .then((response) => {
-                    // if (response.mjson.data.versioncode != versionCode) {
-                    //     this.navigatorParams.component = UpLoadScene;
-                    //     this.navigatorParams.params = {url: response.mjson.data.downloadurl}
-                    //     this.toNextPage(this.navigatorParams);
-                    // } else {
-                    this.toJump();
-                    // }
+                    if (response.mjson.data.versioncode > versionCode) {
+                        this.navigatorParams.component = UpLoadScene;
+                        this.navigatorParams.params = {url: response.mjson.data.downloadurl}
+                        this.toNextPage(this.navigatorParams);
+                    } else {
+                        this.toJump();
+                    }
                 },
                 (error) => {
                     this.toJump();
@@ -100,7 +148,7 @@ export default class RootScene extends BaseComponent {
                                                     that.navigatorParams.params = {from: 'RootScene'}
                                                     that.toNextPage(that.navigatorParams);
                                                 }
-                                            } else if (datas.user_level == 1) {
+                                            } else{
                                                 if (datas.enterprise_list == null || datas.enterprise_list.length <= 0) {
                                                     that.navigatorParams.component = LoginAndRegister;
                                                     that.toNextPage(that.navigatorParams);
@@ -109,10 +157,6 @@ export default class RootScene extends BaseComponent {
                                                     that.navigatorParams.params = {from: 'RootScene'}
                                                     that.toNextPage(that.navigatorParams);
                                                 }
-                                            } else {
-                                                that.navigatorParams.component = MainPage;
-                                                that.navigatorParams.params = {}
-                                                that.toNextPage(that.navigatorParams);
                                             }
                                         });
                                     } else {
@@ -213,7 +257,7 @@ export default class RootScene extends BaseComponent {
                                                 that.navigatorParams.params = {from: 'RootScene'}
                                                 that.toNextPage(that.navigatorParams);
                                             }
-                                        } else if (datas.user_level == 1) {
+                                        } else {
                                             if (datas.enterprise_list == null || datas.enterprise_list.length <= 0) {
                                                 that.navigatorParams.component = LoginAndRegister;
                                                 that.toNextPage(that.navigatorParams);
@@ -222,10 +266,6 @@ export default class RootScene extends BaseComponent {
                                                 that.navigatorParams.params = {from: 'RootScene'}
                                                 that.toNextPage(that.navigatorParams);
                                             }
-                                        } else {
-                                            that.navigatorParams.component = MainPage;
-                                            that.navigatorParams.params = {}
-                                            that.toNextPage(that.navigatorParams);
                                         }
                                     });
                                 } else {

@@ -31,7 +31,7 @@ import * as AppUrls from '../constant/appUrls';
 
 const config_no_data = require('../../images/noData.png');
 
-export default class CGDAddCarScene extends BaseComponent {
+export default class AutoConfig extends BaseComponent {
 
     constructor(props) {
         super(props);
@@ -65,15 +65,23 @@ export default class CGDAddCarScene extends BaseComponent {
      * 回退到车辆详情页面
      **/
     backPage = () => {
-        const navigator = this.props.navigator;
-        if (navigator){
-            for(let i = 0;i<navigator.getCurrentRoutes().length;i++){
-                if(navigator.getCurrentRoutes()[i].name=='CarInfoScene'){
-                    navigator.popToRoute(navigator.getCurrentRoutes()[i]);
-                    break;
+        if(this.props.from=='CarUpkeepScene'){
+            const navigator = this.props.navigator;
+            if (navigator){
+                for(let i = 0;i<navigator.getCurrentRoutes().length;i++){
+                    if(navigator.getCurrentRoutes()[i].name=='CarInfoScene'){
+                        navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                        break;
+                    }
                 }
             }
+        }else{
+            const navigator = this.props.navigator;
+            if (navigator) {
+                navigator.pop();
+            }
         }
+
     }
 
     render() {

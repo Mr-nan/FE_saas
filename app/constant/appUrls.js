@@ -378,6 +378,13 @@ export const USER_ACCOUNT_COMPANYINFO = BASEURL + 'v1/user.account/companyInfo';
 /**
  * from @zhaojian
  *
+ * 生成订单合同
+ **/
+export const CONTRACT_APPLYPLSEAL = BASEURL + 'v1/contract/applyPlSeal';
+
+/**
+ * from @zhaojian
+ *
  * 用户发起转账
  **/
 export const USER_ACCOUNT_TRANSFER = BASEURL + 'v1/user.account/transfer';

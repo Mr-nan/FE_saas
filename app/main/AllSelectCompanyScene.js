@@ -115,8 +115,23 @@ export  default class AllSelectCompanyScene extends BaseComponent {
                         }
                     });
         } else {
-            StorageUtil.mSetItem(StorageKeyNames.LOAN_SUBJECT, JSON.stringify(movie) + "");
-            this.loginPage({name:'MainPage',component:MainPage,params:{}});
+            this.props.showModal(true);
+            let maps = {
+
+            };
+            request(Urls.CONTRACT_APPLYPLSEAL, 'Post', maps)
+                .then((response) => {
+                        this.props.showModal(false);
+                        StorageUtil.mSetItem(StorageKeyNames.LOAN_SUBJECT, JSON.stringify(movie) + "");
+                        this.loginPage({name:'MainPage',component:MainPage,params:{}});
+                    },
+                    (error) => {
+                        if (error.mycode == -300 || error.mycode == -500) {
+                            this.props.showToast('网络连接失败');
+                        } else {
+                            this.props.showToast(error.mjson.msg);
+                        }
+                    });
         }
     }
 

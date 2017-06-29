@@ -399,10 +399,12 @@ export class CGDCarItems extends PureComponent {
             <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={styles.CGDCarWarp}>
                 {
                     obd_bind_status == "2" ?
-                        <Image source={url == '' ? require("../../../../images/login/clear.png") : {uri: url}}
-                               style={styles.CGDCarImage2}/> :
-                        <Image source={url == '' ? require("../../../../images/login/clear.png") : {uri: url}}
-                               style={styles.CGDCarImage}/>
+                        <Image
+                            source={url == '' ? require("../../../../images/carSourceImages/car_null_img.png") : {uri: url}}
+                            style={styles.CGDCarImage2}/> :
+                        <Image
+                            source={url == '' ? require("../../../../images/carSourceImages/car_null_img.png") : {uri: url}}
+                            style={styles.CGDCarImage}/>
                 }
 
                 <View style={styles.CGDInstWarpTop}>

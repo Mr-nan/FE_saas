@@ -693,8 +693,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
                             onPress={() => {
-                                this.props.showModal(true);
-                                this.revertOrder();
+                                //this.props.showModal(true);
+                                //this.revertOrder();
                             }}>
                             <View style={[styles.buttonCancel, {width: Pixel.getPixel(137)}]}>
                                 <Text style={{color: fontAndColor.COLORA2}}>正在处理中请稍后</Text>

@@ -341,25 +341,25 @@ export default class CarPublishSecondScene extends BaseComponent {
                 },
                 {
                     title: '评估师价格-对平台交易',
-                    subTitle: '评估服务的价格，展示给平台的车商',
+                    subTitle: '此项在申请评估服务后由评估师填写',
                     isShowTag: false,
                     isShowTail: true,
                     tailView: () => {
                         return (
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                                <Text style={styles.textInputTitle}>暂无</Text>
+                                <Text style={styles.textInputTitle}></Text>
                             </View>)
                     }
                 },
                 {
                     title: '评估师价格-对金融业务',
-                    subTitle: '评估服务的价格，针对金融业务',
+                    subTitle: '此项在申请金融服务后由评估师填写',
                     isShowTag: false,
                     isShowTail: true,
                     tailView: () => {
                         return (
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                                <Text style={styles.textInputTitle}>暂无</Text>
+                                <Text style={styles.textInputTitle}></Text>
                             </View>)
                     }
                 },
@@ -626,25 +626,25 @@ export default class CarPublishSecondScene extends BaseComponent {
                 },
                 {
                     title: '评估师价格-对平台交易',
-                    subTitle: '评估服务的价格，展示给平台的车商',
+                    subTitle: '此项在申请评估服务后由评估师填写',
                     isShowTag: false,
                     isShowTail: true,
                     tailView: () => {
                         return (
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                                <Text style={styles.textInputTitle}>暂无</Text>
+                                <Text style={styles.textInputTitle}></Text>
                             </View>)
                     }
                 },
                 {
                     title: '评估师价格-对金融业务',
-                    subTitle: '评估服务的价格，针对金融业务',
+                    subTitle: '此项在申请金融服务后由评估师填写',
                     isShowTag: false,
                     isShowTail: true,
                     tailView: () => {
                         return (
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                                <Text style={styles.textInputTitle}>暂无</Text>
+                                <Text style={styles.textInputTitle}></Text>
                             </View>)
                     }
                 },
@@ -977,7 +977,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                 mileage: this.carData.mileage,
                 model_id: this.carData.model_id,
                 init_reg: this.carData.init_reg,
-
+                from:'CarPublishSecondScene'
             }
         }
         this.toNextPage(navigationParams);
