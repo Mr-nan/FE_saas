@@ -252,14 +252,17 @@ export default class DDApplyLendScene extends BaseComponent {
     OBDtransferToString = (audit, bind) => {
         let status;
         if (this.props.sceneName == 'CheckStand') {
-            if (bind == 0) {
-                status = '未绑定';
-            } else if (bind == 1) {
-                status = '已绑定';
-            } else if (bind == 2) {
-                status = '解除绑定';
+            if (audit == 1) {
+                status = '已通过';
+            } else {
+                if (bind == 0) {
+                    status = '未绑定';
+                } else if (bind == 1) {
+                    status = '已绑定';
+                } else if (bind == 2) {
+                    status = '解除绑定';
+                }
             }
-
         } else {
             if (audit == 0) {
                 status = '未审核';
@@ -279,10 +282,14 @@ export default class DDApplyLendScene extends BaseComponent {
     OwnershiptransferToString = (audit, bind) => {
         let status;
         if (this.props.sceneName == 'CheckStand') {
-            if (bind == 0) {
-                status = '未上传';
-            } else if (bind == 1) {
-                status = '已上传';
+            if (audit == 1) {
+                status = '已通过';
+            } else {
+                if (bind == 0) {
+                    status = '未上传';
+                } else if (bind == 1) {
+                    status = '已上传';
+                }
             }
         } else {
             if (audit == 0) {
