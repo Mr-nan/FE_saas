@@ -49,7 +49,11 @@ export default class OBDDevice extends BaseComponent {
     }
 
     initFinish = () => {
-        this.getPurchaAutoPicCate();
+        if (this.props.fromScene == 'DDApplyLendScene') {
+
+        } else {
+            this.getPurchaAutoPicCate();
+        }
     }
 
     render() {
@@ -409,7 +413,7 @@ export default class OBDDevice extends BaseComponent {
 
     // 绑定OBD设备
     submit = () => {
-        if (JSON.stringify(results) != []) {
+        if (JSON.stringify(results) != [] || (this.props.fromScene == 'DDApplyLendScene')) {
             let maps = {
                 api: AppUrls.BINDOBD,
                 bind_type: this.bind_type,
@@ -523,7 +527,6 @@ export default class OBDDevice extends BaseComponent {
                                 }
                             }
                         }
-
                     }
                     this.setState({
                         source: ds.cloneWithRows(response.mjson.data.cate_list),
