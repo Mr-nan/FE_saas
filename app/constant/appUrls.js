@@ -673,6 +673,13 @@ export const AUTODETECTOBD = "api/v1/purchaAuto/autoDetectObd";
  * 获取采购贷车辆照片分类
  **/
 export const GETPURCHAAUTOPICCATE = "api/v2/purchaAuto/getPurchaAutoPicCate";
+/**
+ * from @huangning
+ *
+ * 获取订单融资车辆照片分类
+ **/
+export const GETDINGDANAUTOPICCATE = "api/v1/Order/getOrderAutoPicCate";
+
 
 /**
  * from @huangning
