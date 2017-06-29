@@ -124,6 +124,7 @@ export default class DDApplyLendScene extends BaseComponent {
                 INFO_ID[0] = tempjson.list[0].info_id;
                 this.carData.frame_number = tempjson.list[0].frame_number;
                 this.carData.obd_bind_status = tempjson.list[0].obd_bind_status;
+                this.carData.obd_number = tempjson.list[0].obd_number;
                 this.setState({
                     dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(lendInfo, tempjson.list)),
                     renderPlaceholderOnly: STATECODE.loadSuccess
@@ -444,7 +445,16 @@ export default class DDApplyLendScene extends BaseComponent {
             .then((response) => {
                 this.props.showModal(false);
                 // this.apSuccess.setModelVisible(true);
-                this.backPage();
+                this.props.callBack();
+                const navigator = this.props.navigator;
+                if (navigator) {
+                    for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
+                        if (navigator.getCurrentRoutes()[i].name == 'ProcurementOrderDetailScene') {
+                            navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                            break;
+                        }
+                    }
+                }
             }, (error) => {
                 this.props.showModal(false);
                 if (error.mycode != -300 || error.mycode != -500) {
