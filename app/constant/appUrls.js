@@ -642,6 +642,13 @@ export const DO_EXTENSION = 'api/v1/account/do_extension';
 export const BINDOBD = 'api/v1/purchaAuto/bindObd';
 
 /**
+ * from @huangning
+ *
+ * 绑定OBD设备 订单融资
+ **/
+export const BINDOBDDDRZ = 'api/v5/PlatformOrder/bind_obd';
+
+/**
  * 获取微众申请页面数据
  */
 export const GETAPPLYDATA = "/api/v1/microchinese/get_apply_data";

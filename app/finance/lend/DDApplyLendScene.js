@@ -137,6 +137,7 @@ export default class DDApplyLendScene extends BaseComponent {
                 this.carData.order_ownership_status = tempjson.list[0].order_ownership_status;
                 this.carData.is_mortgagor = tempjson.list[0].is_mortgagor;
                 this.carData.is_new = tempjson.list[0].is_new;
+                this.carData.info_id = tempjson.list[0].info_id;
 
                 this.setState({
                     dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(lendInfo, tempjson.list)),

@@ -414,13 +414,23 @@ export default class OBDDevice extends BaseComponent {
     // 绑定OBD设备
     submit = () => {
         if (JSON.stringify(results) != [] || (this.props.fromScene == 'DDApplyLendScene')) {
-            let maps = {
-                api: AppUrls.BINDOBD,
-                bind_type: this.bind_type,
-                file_list: JSON.stringify(results),
-                info_id: this.props.carData.info_id,
-                obd_number: this.state.obd_number,
-            };
+            let maps;
+            if (this.props.fromScene == 'DDApplyLendScene') {
+                maps = {
+                    api: AppUrls.BINDOBDDDRZ,
+                    info_id: this.props.carData.info_id,
+                    obd_number: this.state.obd_number,
+                };
+            } else {
+                maps = {
+                    api: AppUrls.BINDOBD,
+                    bind_type: this.bind_type,
+                    file_list: JSON.stringify(results),
+                    info_id: this.props.carData.info_id,
+                    obd_number: this.state.obd_number,
+                };
+
+            }
             this.props.showModal(true);
             request(AppUrls.FINANCE, 'Post', maps)
                 .then((response) => {
