@@ -405,6 +405,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
             case 8: // 结清尾款
             case 9:
             case 10:
+            case 90:
+            case 91:
                 if (cancelStatus === 0) {
                     this.orderState = 3;
                     if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_type == 2 &&
