@@ -20,7 +20,7 @@ import * as FontAndColor from "../../constant/fontAndColor";
 import PixelUtil from "../../utils/PixelUtil";
 import {request} from "../../utils/RequestUtil";
 import * as AppUrls from "../../constant/appUrls";
-import PurchasePickerItem from "../component/PurchasePickerItem";
+import UploadPickerItem from "../component/UploadPickerItem";
 import ChooseButton from "../../component/ChooseButton";
 import * as apis from "../../constant/appUrls";
 import MyButton from '../../component/MyButton';
@@ -284,7 +284,7 @@ export default class DDCarInfoScene extends BaseComponent {
             return (<View></View>);
         }
         return (
-            <PurchasePickerItem results={results} showModal={(value) => {
+            <UploadPickerItem  totalNum = {5} results={results} showModal={(value) => {
                 this.props.showModal(value)
             }}
                                 showToast={(value) => {
