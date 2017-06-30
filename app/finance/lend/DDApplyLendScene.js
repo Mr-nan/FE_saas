@@ -194,7 +194,7 @@ export default class DDApplyLendScene extends BaseComponent {
             })
             dataSource['section3'] = tempCarDate;
             let section4;
-            if ( carData[0].is_new == 1) {
+            if (carData[0].is_new == 1) {
                 section4 = [
                     {
                         title: 'OBD设备',
@@ -293,9 +293,10 @@ export default class DDApplyLendScene extends BaseComponent {
         }
         if (sectionID === 'section2') {
             return (
-                <CommentHandItem warpstyle={{height: adapeSize(44)}} leftTitle={rowData.title}
-                                 showValue={rowData.key} textStyle={{color: PAGECOLOR.COLORA1}} handel={() => {
-                }}/>
+                <View style={[styles.commentHandeItem, {height: adapeSize(44)}] }>
+                    <Text style={styles.commentListItemLeft}>{rowData.title}</Text>
+                    <Text style={[styles.commentListItemRight, {color: PAGECOLOR.COLORA1}]}>{rowData.key}</Text>
+                </View>
             )
         }
 
@@ -418,7 +419,7 @@ export default class DDApplyLendScene extends BaseComponent {
                 if (this.carData.obd_bind_status == 0) {
                     this.props.showToast("0BD未绑定");
                 } else if (this.carData.obd_bind_status == 1) {
-                    if (this.carData.is_new == 1 ) {
+                    if (this.carData.is_new == 1) {
                         if (this.carData.order_ownership_status == 1) {
                             this.lendMoneyClick();
                         } else {
@@ -432,7 +433,7 @@ export default class DDApplyLendScene extends BaseComponent {
                 }
             } else {
                 if (this.carData.obd_audit_status == 0) {
-                    if (this.carData.is_new == 1 ) {
+                    if (this.carData.is_new == 1) {
                         if (this.carData.auto_ownership_status == 0) {
                             this.lendMoneyClick();
                         } else if (this.carData.auto_ownership_status == 1) {
@@ -444,7 +445,7 @@ export default class DDApplyLendScene extends BaseComponent {
                         this.lendMoneyClick();
                     }
                 } else if (this.carData.obd_audit_status == 1) {
-                    if (this.carData.is_new == 1 ) {
+                    if (this.carData.is_new == 1) {
                         if (this.carData.auto_ownership_status == 0) {
                             this.lendMoneyClick();
                         } else if (this.carData.auto_ownership_status == 1) {
@@ -612,6 +613,26 @@ const styles = StyleSheet.create({
         borderColor: PAGECOLOR.COLORB0,
         borderWidth: 1
 
+    },
+    commentListItemLeft: {
+        paddingLeft: adapeSize(15),
+        textAlign: 'left',
+        color: '#9e9e9e',
+        flex: 0.3,
+    },
+
+    commentListItemRight: {
+        paddingRight: adapeSize(15),
+        textAlign: 'right',
+        color: 'black',
+        flex: 0.7,
+    },
+    commentHandeItem: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        backgroundColor: 'white',
     },
 
 })

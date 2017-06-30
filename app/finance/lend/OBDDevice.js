@@ -289,7 +289,7 @@ export default class OBDDevice extends BaseComponent {
 
     // 绑定OBD设备
     submit = () => {
-        if (JSON.stringify(results) != [] || (this.props.fromScene == 'DDApplyLendScene')) {
+        if (results.length > 0 || (this.props.fromScene == 'DDApplyLendScene')) {
             let maps;
             if (this.props.fromScene == 'DDApplyLendScene') {
                 maps = {
