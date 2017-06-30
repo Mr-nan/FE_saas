@@ -62,7 +62,7 @@ export default class DDApplyLendScene extends BaseComponent {
             order_ownership_status: '',//车辆权属提交状态
             is_mortgagor: '',
             is_new: '',
-            file_list:[],
+            file_list: [],
 
             obd_track_url: ''
         };
@@ -123,6 +123,7 @@ export default class DDApplyLendScene extends BaseComponent {
         };
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
+                this.props.showModal(false);
                 let tempjson = response.mjson.data;
                 this.carData.base_id = tempjson.list[0].base_id;
                 this.carData.frame_number = tempjson.list[0].frame_number;
@@ -141,7 +142,7 @@ export default class DDApplyLendScene extends BaseComponent {
                     renderPlaceholderOnly: STATECODE.loadSuccess
                 })
             }, (error) => {
-
+                this.props.showModal(false);
                 this.setState({
                     renderPlaceholderOnly: STATECODE.loadError
                 })
@@ -322,6 +323,7 @@ export default class DDApplyLendScene extends BaseComponent {
                                     fromScene: 'DDApplyLendScene',
                                     backRefresh: () => {
                                         //刷新界面
+                                        this.props.showModal(true);
                                         this.props.sceneName = 'CheckStand';
                                         this.getLendInfo();
                                     }
@@ -351,6 +353,7 @@ export default class DDApplyLendScene extends BaseComponent {
                                     info_id: this.carData.info_id,
                                     backRefresh: () => {
                                         //刷新界面
+                                        this.props.showModal(true);
                                         this.props.sceneName = 'CheckStand';
                                         this.getLendInfo();
                                     }
