@@ -162,7 +162,6 @@ export default class DDDetailScene extends BaseComponent {
             {title: '借款单号', key: jsonData.loan_code},
             {title: '状态', key: jsonData.payment_status_str},
             {title: '产品类型', key: jsonData.product_type},
-            //{title: '借款类型', key: '---'},
             {title: '借款金额', key: jsonData.payment_loanmny_str},
             {title: '借款费率', key: jsonData.payment_rate_str},
             {title: '借款期限', key: jsonData.loanperiodstr},
