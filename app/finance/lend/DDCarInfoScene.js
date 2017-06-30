@@ -201,7 +201,7 @@ export default class DDCarInfoScene extends BaseComponent {
                  complete = true;
 
              }else {
-                 if (JSON.stringify(results) == []) {
+                 if (results.length<=0) {
                      this.props.showToast("照片不能为空");
                      complete = false;
 
