@@ -43,7 +43,7 @@ export default class ChooseButton extends PureComponent {
                     <Text style={[styles.leftFont, this.props.leftFont]}>
                         <Text style={{color: FontAndColor.COLORB2}}>*</Text>{this.props.leftText}
                     </Text>
-                    <Text style={styles.headerCellRight}>{this.props.dengjiren}</Text>
+                    <Text style={styles.headerCellRight}>{this.state.dengjiren}</Text>
                     <Image style={{width: Pixel.getPixel(20), height: Pixel.getPixel(16), marginRight: Pixel.getPixel(-10)}}
                            source = {require('../../images/mainImage/celljiantou.png')}
                     />

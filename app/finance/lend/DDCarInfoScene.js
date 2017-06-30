@@ -365,6 +365,7 @@ export default class DDCarInfoScene extends BaseComponent {
                         this.refs.djr.changeRightText(name);
                         this.register_user_id = this.xb[index].id;
                         this.is_mortgagor = this.xb[index].is_mortgagor;
+
                         if (this.xb[index].is_mortgagor == 1) {
                             this.setState({
                                 listViewShow: false,
