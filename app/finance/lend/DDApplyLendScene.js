@@ -153,30 +153,6 @@ export default class DDApplyLendScene extends BaseComponent {
 
     }
 
-    canclelend = () => {
-
-        let maps = {
-            api: apis.CANCEL_LOAN,
-            loan_code: this.props.loanNumber
-        };
-        this.props.showModal(true);
-        request(apis.FINANCE, 'Post', maps)
-            .then((response) => {
-                    this.props.showModal(false);
-                    this.cancleSuccess.setModelVisible(true);
-                },
-                (error) => {
-                    this.props.showModal(false)
-                    if (error.mycode != -300 || error.mycode != -500) {
-                        this.props.showToast(error.mjson.msg);
-                    } else {
-                        this.props.showToast('服务器连接有问题')
-                    }
-                });
-
-    }
-
-
     titleNameBlob = (jsonData, carData) => {
 
         let dataSource = {};
@@ -316,8 +292,6 @@ export default class DDApplyLendScene extends BaseComponent {
             return (
                 <CommentHandItem warpstyle={{height: adapeSize(44)}} leftTitle={rowData.title}
                                  showValue={rowData.key} textStyle={{color: PAGECOLOR.COLORA1}} handel={() => {
-                    {/*this.backPage();*/
-                    }
                 }}/>
             )
         }
@@ -335,7 +309,7 @@ export default class DDApplyLendScene extends BaseComponent {
                     <CommentHandItem warpstyle={{height: adapeSize(44)}} leftTitle={rowData.title}
                                      showValue={rowData.key} textStyle={{color: PAGECOLOR.COLORA1}} handel={() => {
                         if (this.carData.obd_audit_status != 1) {
-                            navigatorParams = {
+                            this.toNextPage({
                                 name: 'OBDDevice',
                                 component: OBDDevice,
                                 params: {
@@ -347,8 +321,7 @@ export default class DDApplyLendScene extends BaseComponent {
                                         this.getLendInfo();
                                     }
                                 }
-                            }
-                            this.toNextPage(navigatorParams);
+                            });
                         } else {
                             this.toNextPage({
                                 name: 'WebScene',
