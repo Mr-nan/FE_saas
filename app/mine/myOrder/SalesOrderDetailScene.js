@@ -1445,6 +1445,31 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     </View>
                 </View>
             )
+        } else if (rowData === '10') {
+            return (
+                <TouchableOpacity
+                    style={styles.itemType10}
+                    onPress={() => {
+                        // 跳转金融页面  借款详情
+                        //this.props.showToast('rowData === 7');
+                    }}>
+                    <View style={{alignItems: 'center', flexDirection: 'row', height: Pixel.getPixel(44)}}>
+                        <Text style={{
+                            marginLeft: Pixel.getPixel(15),
+                            fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                            color: fontAndColor.COLORA0
+                        }}>还款单号</Text>
+                        <View style={{flex: 1}}/>
+                        <Text style={{
+                            marginRight: Pixel.getPixel(10),
+                            fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                            color: fontAndColor.COLORA1
+                        }}>{this.orderDetail.orders_item_data[0].car_finance_data.loan_code ? this.orderDetail.orders_item_data[0].car_finance_data.loan_code : '未生成借款单号'}</Text>
+                        <Image source={require('../../../images/mainImage/celljiantou.png')}
+                               style={{marginRight: Pixel.getPixel(15)}}/>
+                    </View>
+                </TouchableOpacity>
+            )
         }
     }
 }
@@ -1654,5 +1679,9 @@ const styles = StyleSheet.create({
         borderRadius: Pixel.getPixel(2),
         borderWidth: Pixel.getPixel(1),
         borderColor: fontAndColor.COLORB0
+    },
+    itemType10: {
+        backgroundColor: '#ffffff',
+        height: Pixel.getPixel(44)
     }
 });
