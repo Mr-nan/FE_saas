@@ -3,6 +3,7 @@ import {StyleSheet, View, ListView, Image, Text} from "react-native";
 import AllNavigatior from "../../component/AllNavigationView";
 import AllNavigationView from "../../component/AllNavigationView";
 import {CommnetListItem, CommentHandItem, commnetStyle, CommenButton, CGDCarItems} from "./component/ComponentBlob";
+import WebScene from '../../main/WebScene';
 import {
     width,
     fontadapeSize,
@@ -353,6 +354,12 @@ export default class DDApplyLendScene extends BaseComponent {
                                 }
                             }
                             this.toNextPage(navigatorParams);
+                        } else {
+                            this.toNextPage({
+                                name: 'WebScene',
+                                component: WebScene,
+                                params: {webUrl: "http://h5.bms.dycd.com/installation.html"}
+                            })
                         }
                     }}/>
                 )
