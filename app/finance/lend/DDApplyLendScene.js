@@ -61,8 +61,8 @@ export default class DDApplyLendScene extends BaseComponent {
             isCarinvoice: '',
             obd_bind_status: '',
             obd_audit_status: '',
-            auto_ownership_status: '',
-            order_ownership_status: '',
+            auto_ownership_status: '',//车辆权属审核状态
+            order_ownership_status: '',//车辆权属提交状态
             is_mortgagor: '',
             is_new: ''
 
@@ -366,6 +366,7 @@ export default class DDApplyLendScene extends BaseComponent {
                                 name: 'DDCarInfoScene',
                                 component: DDCarInfoScene,
                                 params: {
+                                    carData: this.carData,
                                     platform_order_number: this.props.orderNo,//平台订单号
                                     info_id: INFO_ID[0],
                                     backRefresh: () => {
