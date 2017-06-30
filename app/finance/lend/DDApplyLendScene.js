@@ -193,7 +193,7 @@ export default class DDApplyLendScene extends BaseComponent {
             })
             dataSource['section3'] = tempCarDate;
             let section4;
-            if (carData[0].is_mortgagor == 0 || carData[0].is_new == 1) {
+            if (carData[0].is_mortgagor == 0 && carData[0].is_new == 1) {
                 section4 = [
                     {
                         title: 'OBD设备',
@@ -210,6 +210,10 @@ export default class DDApplyLendScene extends BaseComponent {
                     {
                         title: 'OBD设备',
                         key: this.OBDtransferToString(carData[0].obd_audit_status, carData[0].obd_bind_status)
+                    },
+                    {
+                        title: '车辆权属',
+                        key: this.OwnershiptransferToString(carData[0].auto_ownership_status, carData[0].order_ownership_status)
                     },
 
                 ]
@@ -414,7 +418,7 @@ export default class DDApplyLendScene extends BaseComponent {
                 if (this.carData.obd_bind_status == 0) {
                     this.props.showToast("0BD未绑定");
                 } else if (this.carData.obd_bind_status == 1) {
-                    if (this.carData.is_new == 1 || this.carData.is_mortgagor == 0) {
+                    if (this.carData.is_new == 1 && this.carData.is_mortgagor == 0) {
                         if (this.carData.order_ownership_status == 1) {
                             this.lendMoneyClick();
                         } else {
@@ -428,7 +432,7 @@ export default class DDApplyLendScene extends BaseComponent {
                 }
             } else {
                 if (this.carData.obd_audit_status == 0) {
-                    if (this.carData.is_new == 1 || this.carData.is_mortgagor == 0) {
+                    if (this.carData.is_new == 1 && this.carData.is_mortgagor == 0) {
                         if (this.carData.auto_ownership_status == 0) {
                             this.lendMoneyClick();
                         } else if (this.carData.auto_ownership_status == 1) {
@@ -440,7 +444,7 @@ export default class DDApplyLendScene extends BaseComponent {
                         this.lendMoneyClick();
                     }
                 } else if (this.carData.obd_audit_status == 1) {
-                    if (this.carData.is_new == 1 || this.carData.is_mortgagor == 0) {
+                    if (this.carData.is_new == 1 && this.carData.is_mortgagor == 0) {
                         if (this.carData.auto_ownership_status == 0) {
                             this.lendMoneyClick();
                         } else if (this.carData.auto_ownership_status == 1) {
