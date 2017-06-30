@@ -21,8 +21,6 @@ import PixelUtil from "../../utils/PixelUtil";
 import {request} from "../../utils/RequestUtil";
 import * as AppUrls from "../../constant/appUrls";
 import PurchasePickerItem from "../component/PurchasePickerItem";
-import WebScene from "../../main/WebScene";
-import SelectMaskComponent from "../../mine/employeeManage/SelectMaskComponent";
 import ChooseButton from "../../component/ChooseButton";
 import * as apis from "../../constant/appUrls";
 import MyButton from '../../component/MyButton';
@@ -62,7 +60,7 @@ export default class DDCarInfoScene extends BaseComponent {
     }
 
     /**
-     * 获取订单融资车辆照片分类
+     * 获取订单融资车辆照片分类3
      * getPurchaAutoPicCate
      **/
     getPurchaAutoPicCate = () => {
@@ -89,6 +87,23 @@ export default class DDCarInfoScene extends BaseComponent {
                             });
 
                         }
+                        if (this.props.carData.order_ownership_status == '1') {
+                            for (let i = 0; i < childItems.length; i++) {
+                                for (let j = 0; j < this.props.carData.file_list.length; j++) {
+                                    if (childItems[i].code == this.props.carData.file_list[j].code) {
+                                        childItems[i].list.push({
+                                            url: this.props.carData.file_list[j].icon,
+                                            fileId: this.props.carData.file_list[j].file_id
+                                        });
+                                        results.push({
+                                            code: this.props.carData.file_list[j].code,
+                                            code_id: this.props.carData.file_list[j].id,
+                                            file_id: this.props.carData.file_list[j].file_id
+                                        });
+                                    }
+                                }
+                            }
+                        }
                         this.setState({
                             source: ds.cloneWithRows(response.mjson.data.cate_list),
                             renderPlaceholderOnly: 'success'
@@ -107,7 +122,7 @@ export default class DDCarInfoScene extends BaseComponent {
 
 
     /**
-     * 获取车辆信息(车型，车架号)
+     * 获取车辆信息(车型，车架号)1
      * getCarInfo
      */
     getCarInfo = () => {
@@ -123,17 +138,20 @@ export default class DDCarInfoScene extends BaseComponent {
                 this.state.chejia_number = response.mjson.data.detail.frame_number,
                     this.state.chexing = response.mjson.data.detail.model_name,
                     this.info_id = response.mjson.data.detail.info_id,
-                    this.base_id = response.mjson.data.detail.base_id
+                    this.base_id = response.mjson.data.detail.base_id,
+                    this.register_user_name = response.mjson.data.detail.register_user_name
 
 
             }, (error) => {
-
+                this.setState({
+                    renderPlaceholderOnly: 'error'
+                });
             });
     }
 
 
     /**
-     * 获取商户登记人/收车人列表
+     * 获取商户登记人/收车人列表2
      * getBusinessList
      */
     getBusinessList = () => {
@@ -296,7 +314,7 @@ export default class DDCarInfoScene extends BaseComponent {
 
                 <View style={{backgroundColor: FontAndColor.COLORA4, width: width, height: Pixel.getPixel(1)}}/>
 
-                <ChooseButton ref="djr" leftText={'登记人'} onPressButton={this.onPressButton}/>
+                <ChooseButton ref="djr" leftText={'登记人'} dengjiren ={(this.register_user_name)?this.register_user_name:'选择借款人'}   onPressButton={this.onPressButton}/>
 
                 <View style={{backgroundColor: FontAndColor.COLORA4, width: width, height: Pixel.getPixel(1)}}/>
 
