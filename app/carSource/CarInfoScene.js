@@ -480,10 +480,10 @@ export default class CarInfoScene extends BaseComponent {
                     this.CallView = ref
                 }}/>
                 <AccountModal ref="accountmodal"/>
-                <ExplainModal ref={(text) => this.expModal = text} title='说明' buttonStyle={styles.expButton}
+                {/*<ExplainModal ref={(text) => this.expModal = text} title='说明' buttonStyle={styles.expButton}
                               textStyle={styles.expText}
                               text='知道了'
-                              content='此质押车暂不可下单请您稍待时日再订购'/>
+                              content='此质押车暂不可下单请您稍待时日再订购'/>*/}
             </View>
 
         )
@@ -601,14 +601,8 @@ export default class CarInfoScene extends BaseComponent {
             }
 
         }, (error) => {
-            if (error.mjson.code == '6350072') {
-                this.props.showModal(false);
-                this.expModal.changeShowType(true);
-                //this.props.showToast(error.mjson.msg);
-            } else {
-                this.props.showModal(false);
-                this.props.showToast(error.mjson.msg);
-            }
+            this.props.showModal(false);
+            this.props.showToast(error.mjson.msg);
         });
     }
 
@@ -701,7 +695,7 @@ export default class CarInfoScene extends BaseComponent {
                 mileage: carData.mileage,
                 model_id: carData.model_id,
                 init_reg: this.dateReversal(carData.init_reg + '000'),
-                from:'CarInfoScene'
+                from: 'CarInfoScene'
             }
         }
         this.toNextPage(navigationParams);

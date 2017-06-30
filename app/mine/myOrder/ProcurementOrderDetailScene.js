@@ -322,8 +322,12 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.props.showToast(response.mjson.msg);
                     }
                 }, (error) => {
-                    //this.props.showToast('确认验收失败');
-                    this.props.showToast(error.mjson.msg);
+                    if (error.mjson.code == '6350087') {
+                        this.loadData();
+                    } else {
+                        //this.props.showToast('确认验收失败');
+                        this.props.showToast(error.mjson.msg);
+                    }
                 });
             } else {
                 this.props.showToast('确认验收失败');
@@ -474,7 +478,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
                             onPress={() => {
-                                this.refs.expModal.changeShowType(true);
+                                this.refs.expModal.changeShowType(true, '提示', '订单尾款已结清联系客服取消订单', '确定');
                             }}>
                             <View style={styles.buttonCancel}>
                                 <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
