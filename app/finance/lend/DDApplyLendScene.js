@@ -3,6 +3,7 @@ import {StyleSheet, View, ListView, Image, Text} from "react-native";
 import AllNavigatior from "../../component/AllNavigationView";
 import AllNavigationView from "../../component/AllNavigationView";
 import {CommnetListItem, CommentHandItem, commnetStyle, CommenButton, CGDCarItems} from "./component/ComponentBlob";
+import WebScene from '../../main/WebScene';
 import {
     width,
     fontadapeSize,
@@ -19,9 +20,6 @@ import {LendSuccessAlert, ModalAlert} from "./component/ModelComponent";
 import DDCarInfoScene from "./DDCarInfoScene";
 import OBDDevice from "./OBDDevice";
 let ControlState = [];
-let BASE_ID;
-let INFO_ID = [];
-let OBD_BIND_STATUS;
 export default class DDApplyLendScene extends BaseComponent {
 
     constructor(props) {
@@ -64,11 +62,10 @@ export default class DDApplyLendScene extends BaseComponent {
             order_ownership_status: '',//车辆权属提交状态
             is_mortgagor: '',
             is_new: '',
-            file_list:[]
+            file_list:[],
 
+            obd_track_url: ''
         };
-
-        OrderHanderState = [];
     }
 
     initFinish() {
@@ -127,8 +124,7 @@ export default class DDApplyLendScene extends BaseComponent {
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
                 let tempjson = response.mjson.data;
-                BASE_ID = tempjson.list[0].base_id;
-                INFO_ID[0] = tempjson.list[0].info_id;
+                this.carData.base_id = tempjson.list[0].base_id;
                 this.carData.frame_number = tempjson.list[0].frame_number;
                 this.carData.obd_bind_status = tempjson.list[0].obd_bind_status;
                 this.carData.obd_audit_status = tempjson.list[0].obd_audit_status;
@@ -138,6 +134,7 @@ export default class DDApplyLendScene extends BaseComponent {
                 this.carData.is_mortgagor = tempjson.list[0].is_mortgagor;
                 this.carData.is_new = tempjson.list[0].is_new;
                 this.carData.info_id = tempjson.list[0].info_id;
+                this.carData.obd_track_url = tempjson.list[0].obd_track_url;
 
                 this.setState({
                     dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(lendInfo, tempjson.list)),
@@ -156,30 +153,6 @@ export default class DDApplyLendScene extends BaseComponent {
             });
 
     }
-
-    canclelend = () => {
-
-        let maps = {
-            api: apis.CANCEL_LOAN,
-            loan_code: this.props.loanNumber
-        };
-        this.props.showModal(true);
-        request(apis.FINANCE, 'Post', maps)
-            .then((response) => {
-                    this.props.showModal(false);
-                    this.cancleSuccess.setModelVisible(true);
-                },
-                (error) => {
-                    this.props.showModal(false)
-                    if (error.mycode != -300 || error.mycode != -500) {
-                        this.props.showToast(error.mjson.msg);
-                    } else {
-                        this.props.showToast('服务器连接有问题')
-                    }
-                });
-
-    }
-
 
     titleNameBlob = (jsonData, carData) => {
 
@@ -320,8 +293,6 @@ export default class DDApplyLendScene extends BaseComponent {
             return (
                 <CommentHandItem warpstyle={{height: adapeSize(44)}} leftTitle={rowData.title}
                                  showValue={rowData.key} textStyle={{color: PAGECOLOR.COLORA1}} handel={() => {
-                    {/*this.backPage();*/
-                    }
                 }}/>
             )
         }
@@ -339,7 +310,7 @@ export default class DDApplyLendScene extends BaseComponent {
                     <CommentHandItem warpstyle={{height: adapeSize(44)}} leftTitle={rowData.title}
                                      showValue={rowData.key} textStyle={{color: PAGECOLOR.COLORA1}} handel={() => {
                         if (this.carData.obd_audit_status != 1) {
-                            navigatorParams = {
+                            this.toNextPage({
                                 name: 'OBDDevice',
                                 component: OBDDevice,
                                 params: {
@@ -351,8 +322,13 @@ export default class DDApplyLendScene extends BaseComponent {
                                         this.getLendInfo();
                                     }
                                 }
-                            }
-                            this.toNextPage(navigatorParams);
+                            });
+                        } else {
+                            this.toNextPage({
+                                name: 'WebScene',
+                                component: WebScene,
+                                params: {webUrl: this.carData.obd_track_url}
+                            })
                         }
                     }}/>
                 )
@@ -362,21 +338,20 @@ export default class DDApplyLendScene extends BaseComponent {
                     <CommentHandItem warpstyle={{height: adapeSize(44)}} leftTitle={rowData.title}
                                      showValue={rowData.key} textStyle={{color: PAGECOLOR.COLORA1}} handel={() => {
                         if (this.carData.auto_ownership_status != 1) {
-                            navigatorParams = {
+                            this.toNextPage({
                                 name: 'DDCarInfoScene',
                                 component: DDCarInfoScene,
                                 params: {
                                     carData: this.carData,
                                     platform_order_number: this.props.orderNo,//平台订单号
-                                    info_id: INFO_ID[0],
+                                    info_id: this.carData.info_id,
                                     backRefresh: () => {
                                         //刷新界面
                                         this.props.sceneName = 'CheckStand';
                                         this.getLendInfo();
                                     }
                                 }
-                            }
-                            this.toNextPage(navigatorParams);
+                            });
                         }
                     }}/>
                 )
@@ -394,7 +369,6 @@ export default class DDApplyLendScene extends BaseComponent {
                 return (
                     <View style={styles.section2Style}>
                         {/*<Text style={styles.sectionText}>订单信息</Text>*/}
-
                         <Text style={{color: '#ff0000', fontSize: fontadapeSize(15)}}> {'审核未通过:'}</Text>
                         {/*<Text style={{color:'#000000',fontSize:Pixel.getFontPixel(14)}} numberOfLines={2}>{showData.tempDetailInfo.payment_audit_reason}</Text>*/}
                     </View>
@@ -523,21 +497,6 @@ export default class DDApplyLendScene extends BaseComponent {
                 <AllNavigationView title='申请借款' backIconClick={() => {
                     this.backPage();
                 }}/>
-
-                <ModalAlert ref={(deleteCar) => {
-                    this.cancle = deleteCar
-                }} title='取消借款' subtitle='您确定要取消借款' confimClick={(setHide) => {
-                    setHide(false);
-                    this.canclelend();
-                }} cancleClick={(setHide) => {
-                    setHide(false)
-                }}/>
-                <LendSuccessAlert title="取消成功" subtitle='恭喜您取消成功' ref={(success) => {
-                    this.cancleSuccess = success
-                }} confimClick={() => {
-                    this.props.backRefresh();
-                    this.backToTop()
-                }}/>
             </View>
         )
     }
@@ -551,8 +510,8 @@ export default class DDApplyLendScene extends BaseComponent {
             api: apis.APPLY_LOAN,
             apply_type: "6",
             platform_order_number: this.props.orderNo,
-            base_id: BASE_ID,
-            car_lists: INFO_ID[0],
+            base_id: this.carData.base_id,
+            car_lists: this.carData.info_id,
         }
         this.props.showModal(true);
         request(apis.FINANCE, 'Post', maps)
@@ -638,7 +597,6 @@ const styles = StyleSheet.create({
         width: adapeSize(width) - adapeSize(20),
     },
     buttonStyleNotFill: {
-
         height: adapeSize(32),
         backgroundColor: 'white',
         marginRight: adapeSize(15),
@@ -649,7 +607,6 @@ const styles = StyleSheet.create({
         width: adapeSize(80),
         borderColor: PAGECOLOR.COLORB0,
         borderWidth: 1
-
 
     },
 
