@@ -418,7 +418,7 @@ export default class DDApplyLendScene extends BaseComponent {
                 if (this.carData.obd_bind_status == 0) {
                     this.props.showToast("0BD未绑定");
                 } else if (this.carData.obd_bind_status == 1) {
-                    if (this.carData.is_new == 1 && this.carData.is_mortgagor == 0) {
+                    if (this.carData.is_new == 1 ) {
                         if (this.carData.order_ownership_status == 1) {
                             this.lendMoneyClick();
                         } else {
@@ -432,7 +432,7 @@ export default class DDApplyLendScene extends BaseComponent {
                 }
             } else {
                 if (this.carData.obd_audit_status == 0) {
-                    if (this.carData.is_new == 1 && this.carData.is_mortgagor == 0) {
+                    if (this.carData.is_new == 1 ) {
                         if (this.carData.auto_ownership_status == 0) {
                             this.lendMoneyClick();
                         } else if (this.carData.auto_ownership_status == 1) {
@@ -444,7 +444,7 @@ export default class DDApplyLendScene extends BaseComponent {
                         this.lendMoneyClick();
                     }
                 } else if (this.carData.obd_audit_status == 1) {
-                    if (this.carData.is_new == 1 && this.carData.is_mortgagor == 0) {
+                    if (this.carData.is_new == 1 ) {
                         if (this.carData.auto_ownership_status == 0) {
                             this.lendMoneyClick();
                         } else if (this.carData.auto_ownership_status == 1) {
