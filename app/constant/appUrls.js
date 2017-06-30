@@ -680,7 +680,12 @@ export const GET_SMS_VERIFY_CODE = "/api/v1/public/get_sms_verify_code";
  * 检测OBD
  **/
 export const AUTODETECTOBD = "api/v1/purchaAuto/autoDetectObd";
-
+/**
+ * from @huangning
+ *
+ * 更新订单融资车辆
+ **/
+export const DDUPDATEAUTO = "api/v1/Order/updateAuto";
 /**
  * from @huangning
  *
