@@ -44,7 +44,7 @@ export default class DDCarInfoScene extends BaseComponent {
             chexing: "奥迪",
             chejia_number: "1234567890",
             dengjiren: "张三",
-            sign_type: "线上",
+            sign_type: "图片上传",
             source: {},
         };
         this.xb = [];
@@ -163,20 +163,43 @@ export default class DDCarInfoScene extends BaseComponent {
     /**
      * 更新订单融资车辆
      * updateCarInfo
-     */
+     **/
     updateCarInfo = () => {
-        if (JSON.stringify(results) == []) {
-            this.props.showToast("照片不能为空");
-        } else if (this.register_user_id == "" || this.register_user_id == undefined) {
+        let  maps;
+        let  complete;
+         if (this.register_user_id == "" || this.register_user_id == undefined) {
             this.props.showToast("请选择登记人");
+            complete = false;
         } else {
-            let maps = {
-                api: apis.DDUPDATEAUTO,
-                base_id: this.base_id,
-                info_id: this.info_id,
-                register_user_id: this.register_user_id,
-                file_list: JSON.stringify(results),
-            }
+             if(this.is_mortgagor == 1){
+                 maps = {
+                     api: apis.DDUPDATEAUTO,
+                     base_id: this.base_id,
+                     info_id: this.info_id,
+                     register_user_id: this.register_user_id,
+                 }
+                 complete = true;
+
+             }else {
+                 if (JSON.stringify(results) == []) {
+                     this.props.showToast("照片不能为空");
+                     complete = false;
+
+                 } else{
+                     maps = {
+                         api: apis.DDUPDATEAUTO,
+                         base_id: this.base_id,
+                         info_id: this.info_id,
+                         register_user_id: this.register_user_id,
+                         file_list: JSON.stringify(results),
+                     }
+                     complete = true;
+
+                 }
+             }
+
+        }
+        if (complete){
             request(apis.FINANCE, 'Post', maps)
                 .then((response) => {
                     this.props.backRefresh();
@@ -301,10 +324,12 @@ export default class DDCarInfoScene extends BaseComponent {
             </View>
         );
     }
-
+    /**
+     * 点击选择登记人
+     * onPressButton
+     **/
     onPressButton = () => {
 
-        // this._openModal(DengJiRen);
         this.toNextPage(
             {
                 name: 'SelectDJRScene',
@@ -316,6 +341,7 @@ export default class DDCarInfoScene extends BaseComponent {
 
                         this.refs.djr.changeRightText(name);
                         this.register_user_id = this.xb[index].id;
+                        this.is_mortgagor = this.xb[index].is_mortgagor;
                         if (this.xb[index].is_mortgagor == 1) {
                             this.setState({
                                 listViewShow: false,
