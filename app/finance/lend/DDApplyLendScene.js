@@ -436,23 +436,35 @@ export default class DDApplyLendScene extends BaseComponent {
     buttonClick = (title) => {
         if (title == '申请借款') {
             if (this.props.sceneName == 'CheckStand') {
-                if (bind == 0) {
+                if (this.carData.obd_bind_status == 0) {
                     this.props.showToast("0BD未绑定");
-                } else if (bind == 1) {
+                } else if (this.carData.obd_bind_status == 1) {
                     if (this.carData.is_mortgagor == 1 || this.carData.is_mortgagor == 1) {
-                        this.lendMoneyClick();
-                    } else {
                         if (this.carData.order_ownership_status == 1) {
                             this.lendMoneyClick();
                         } else {
                             this.props.showToast("车辆权属未上传");
                         }
+                    } else {
+                        this.lendMoneyClick();
                     }
-                } else if (bind == 2) {
+                } else if (this.carData.obd_bind_status == 2) {
                     this.props.showToast("0BD需重新绑定");
                 }
             } else {
-                if (audit == 0) {
+                if (this.carData.obd_audit_status == 0) {
+                    if (this.carData.is_mortgagor == 1 || this.carData.is_mortgagor == 1) {
+                        if (this.carData.auto_ownership_status == 0) {
+                            this.lendMoneyClick();
+                        } else if (this.carData.auto_ownership_status == 1) {
+                            this.lendMoneyClick();
+                        } else if (this.carData.auto_ownership_status == 2) {
+                            this.props.showToast("车辆权属审核未通过");
+                        }
+                    } else {
+                        this.lendMoneyClick();
+                    }
+                } else if (this.carData.obd_audit_status == 1) {
                     if (this.carData.is_mortgagor == 1 || this.carData.is_mortgagor == 1) {
                         this.lendMoneyClick();
                     } else {
@@ -464,19 +476,7 @@ export default class DDApplyLendScene extends BaseComponent {
                             this.props.showToast("车辆权属审核未通过");
                         }
                     }
-                } else if (audit == 1) {
-                    if (this.carData.is_mortgagor == 1 || this.carData.is_mortgagor == 1) {
-                        this.lendMoneyClick();
-                    } else {
-                        if (this.carData.auto_ownership_status == 0) {
-                            this.lendMoneyClick();
-                        } else if (this.carData.auto_ownership_status == 1) {
-                            this.lendMoneyClick();
-                        } else if (this.carData.auto_ownership_status == 2) {
-                            this.props.showToast("车辆权属审核未通过");
-                        }
-                    }
-                } else if (audit == 2) {
+                } else if (this.carData.obd_audit_status == 2) {
                     this.props.showToast("0BD审核未通过");
                 }
             }
