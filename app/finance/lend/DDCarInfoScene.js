@@ -128,7 +128,7 @@ export default class DDCarInfoScene extends BaseComponent {
     getCarInfo = () => {
         let maps = {
             api: apis.AUTODETAIL,
-            info_id: this.props.info_id,
+            info_id: this.props.carData.info_id,
             platform_order_number: this.props.platform_order_number,
         }
         request(apis.FINANCE, 'Post', maps)
@@ -139,8 +139,10 @@ export default class DDCarInfoScene extends BaseComponent {
                     this.state.chexing = response.mjson.data.detail.model_name,
                     this.info_id = response.mjson.data.detail.info_id,
                     this.base_id = response.mjson.data.detail.base_id,
-                    this.register_user_name = response.mjson.data.detail.register_user_name
+                    this.register_user_name = response.mjson.data.detail.register_user_name,
+                    this.register_user_id = response.mjson.data.detail.register_user_id,
 
+                    this.props.carData.file_list = response.mjson.data.detail.file_list.vehicle_ownership_description
 
             }, (error) => {
                 this.setState({
@@ -218,8 +220,11 @@ export default class DDCarInfoScene extends BaseComponent {
 
         }
         if (complete){
+            this.props.showModal(true);
             request(apis.FINANCE, 'Post', maps)
                 .then((response) => {
+                    this.props.showModal(false);
+                    this.props.showToast("车辆权属信息更新成功");
                     this.props.backRefresh();
                     this.backPage();
 

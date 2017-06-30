@@ -52,7 +52,6 @@ export default class DDApplyLendScene extends BaseComponent {
             rev_user_id: '',
             register_user_id: '',
             purchas_price: '',
-            file_list: '',
             bind_type: '',
             obd_number: '',
             payment_id: '',
@@ -64,7 +63,8 @@ export default class DDApplyLendScene extends BaseComponent {
             auto_ownership_status: '',//车辆权属审核状态
             order_ownership_status: '',//车辆权属提交状态
             is_mortgagor: '',
-            is_new: ''
+            is_new: '',
+            file_list:[]
 
         };
 
