@@ -1403,6 +1403,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 <TouchableOpacity
                     style={styles.itemType7}
                     onPress={() => {
+                        console.log(this.orderDetail.finance_no);
                         // 跳转金融页面  借款详情
                         this.toNextPage({
                             name: 'DDDetailScene',
