@@ -134,15 +134,18 @@ export default class DDCarInfoScene extends BaseComponent {
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
 
-                this.getBusinessList();
                 this.state.chejia_number = response.mjson.data.detail.frame_number,
                     this.state.chexing = response.mjson.data.detail.model_name,
                     this.info_id = response.mjson.data.detail.info_id,
                     this.base_id = response.mjson.data.detail.base_id,
-                    this.register_user_name = response.mjson.data.detail.register_user_name,
+                    this.dengjiren = response.mjson.data.detail.register_user_name,
+                    // this.refs.djr.changeRightText(response.mjson.data.detail.register_user_name);
                     this.register_user_id = response.mjson.data.detail.register_user_id,
+                    // console.log(this.state.dengjiren);
 
-                    this.props.carData.file_list = response.mjson.data.detail.file_list.vehicle_ownership_description
+                this.props.carData.file_list = response.mjson.data.detail.file_list.vehicle_ownership_description,
+                    this.getBusinessList();
+
 
             }, (error) => {
                 this.setState({
@@ -185,41 +188,41 @@ export default class DDCarInfoScene extends BaseComponent {
      * updateCarInfo
      **/
     updateCarInfo = () => {
-        let  maps;
-        let  complete;
-         if (this.register_user_id == "" || this.register_user_id == undefined) {
+        let maps;
+        let complete;
+        if (this.register_user_id == "" || this.register_user_id == undefined) {
             this.props.showToast("请选择登记人");
             complete = false;
         } else {
-             if(this.is_mortgagor == 1){
-                 maps = {
-                     api: apis.DDUPDATEAUTO,
-                     base_id: this.base_id,
-                     info_id: this.info_id,
-                     register_user_id: this.register_user_id,
-                 }
-                 complete = true;
+            if (this.is_mortgagor == 1) {
+                maps = {
+                    api: apis.DDUPDATEAUTO,
+                    base_id: this.base_id,
+                    info_id: this.info_id,
+                    register_user_id: this.register_user_id,
+                }
+                complete = true;
 
-             }else {
-                 if (results.length<=0) {
-                     this.props.showToast("照片不能为空");
-                     complete = false;
+            } else {
+                if (results.length <= 0) {
+                    this.props.showToast("照片不能为空");
+                    complete = false;
 
-                 } else{
-                     maps = {
-                         api: apis.DDUPDATEAUTO,
-                         base_id: this.base_id,
-                         info_id: this.info_id,
-                         register_user_id: this.register_user_id,
-                         file_list: JSON.stringify(results),
-                     }
-                     complete = true;
+                } else {
+                    maps = {
+                        api: apis.DDUPDATEAUTO,
+                        base_id: this.base_id,
+                        info_id: this.info_id,
+                        register_user_id: this.register_user_id,
+                        file_list: JSON.stringify(results),
+                    }
+                    complete = true;
 
-                 }
-             }
+                }
+            }
 
         }
-        if (complete){
+        if (complete) {
             this.props.showModal(true);
             request(apis.FINANCE, 'Post', maps)
                 .then((response) => {
@@ -284,10 +287,10 @@ export default class DDCarInfoScene extends BaseComponent {
             return (<View></View>);
         }
         return (
-            <UploadPickerItem  totalNum = {5} results={results} showModal={(value) => {
+            <UploadPickerItem totalNum={5} results={results} showModal={(value) => {
                 this.props.showModal(value)
             }}
-                                showToast={(value) => {
+                              showToast={(value) => {
                                     this.props.showToast(value)
                                 }} items={movie} childList={childItems[rowId]}/>
         )
@@ -319,7 +322,8 @@ export default class DDCarInfoScene extends BaseComponent {
 
                 <View style={{backgroundColor: FontAndColor.COLORA4, width: width, height: Pixel.getPixel(1)}}/>
 
-                <ChooseButton ref="djr" leftText={'登记人'} dengjiren ={(this.register_user_name)?this.register_user_name:'选择借款人'}   onPressButton={this.onPressButton}/>
+                <ChooseButton ref="djr" leftText={'登记人'} showArrow = {true} rightText={this.dengjiren ? this.dengjiren:"请选择登记人"}
+                              onPressButton={this.onPressButton}/>
 
                 <View style={{backgroundColor: FontAndColor.COLORA4, width: width, height: Pixel.getPixel(1)}}/>
 
@@ -347,6 +351,7 @@ export default class DDCarInfoScene extends BaseComponent {
             </View>
         );
     }
+
     /**
      * 点击选择登记人
      * onPressButton
