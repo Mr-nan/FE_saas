@@ -133,17 +133,13 @@ export default class DDCarInfoScene extends BaseComponent {
         }
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
-
-                this.state.chejia_number = response.mjson.data.detail.frame_number,
+                    this.state.chejia_number = response.mjson.data.detail.frame_number,
                     this.state.chexing = response.mjson.data.detail.model_name,
                     this.info_id = response.mjson.data.detail.info_id,
                     this.base_id = response.mjson.data.detail.base_id,
                     this.dengjiren = response.mjson.data.detail.register_user_name,
-                    // this.refs.djr.changeRightText(response.mjson.data.detail.register_user_name);
                     this.register_user_id = response.mjson.data.detail.register_user_id,
-                    // console.log(this.state.dengjiren);
-
-                this.props.carData.file_list = response.mjson.data.detail.file_list.vehicle_ownership_description,
+                    this.props.carData.file_list = response.mjson.data.detail.file_list.vehicle_ownership_description,
                     this.getBusinessList();
 
 
@@ -322,7 +318,8 @@ export default class DDCarInfoScene extends BaseComponent {
 
                 <View style={{backgroundColor: FontAndColor.COLORA4, width: width, height: Pixel.getPixel(1)}}/>
 
-                <ChooseButton ref="djr" leftText={'登记人'} showArrow = {true}  rightText ={this.dengjiren ? this.dengjiren:"请选择登记人"}
+                <ChooseButton ref="djr" leftText={'登记人'} showArrow={true}
+                              rightText={this.dengjiren ? this.dengjiren:"请选择登记人"}
                               onPressButton={this.onPressButton}/>
 
                 <View style={{backgroundColor: FontAndColor.COLORA4, width: width, height: Pixel.getPixel(1)}}/>
