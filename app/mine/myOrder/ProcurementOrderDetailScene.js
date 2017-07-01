@@ -398,8 +398,12 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.props.showToast(response.mjson.msg);
                     }
                 }, (error) => {
-                    //this.props.showToast('确认验收失败');
-                    this.props.showToast(error.mjson.msg);
+                    if (error.mjson.code == '6350087') {
+                        this.loadData();
+                    } else {
+                        //this.props.showToast('确认验收失败');
+                        this.props.showToast(error.mjson.msg);
+                    }
                 });
             } else {
                 this.props.showToast('确认验收失败');
@@ -837,6 +841,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 8: // 全款付清  8=>'尾款支付完成'
             case 9: // 9=>'确认验收中'
             case 10: // 10=>'确认验收失败'
+            case 90: // 90=>'质押车辆提前还款失败',
+            case 91: // 91=>'质押车辆提前还款成功',
                 if (cancelStatus === 0) {
                     this.orderState = 3;
                     this.topState = -1;
