@@ -219,6 +219,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                             this.props.showToast(error.mjson.msg);
                         }
                     } else if (error.mjson.code == '6350085') {
+                        this.props.showModal(false);
                         this.refs.loanModal.changeShowType(true, '提示', '库存融资车辆请您先出库再交易', '确定');
                     } else {
                         this.props.showToast(error.mjson.msg);
@@ -829,8 +830,10 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
-                if (this.orderDetail.orders_item_data[0].pledge_sub_payment_number &&
-                    this.orderDetail.orders_item_data[0].pledge_sub_payment_number.length > 0) {
+                if (this.orderDetail.orders_item_data[0].car_finance_data.payment_number &&
+                    this.orderDetail.orders_item_data[0].car_finance_data.payment_number.length > 0 &&
+                    this.orderDetail.orders_item_data[0].car_finance_data.pledge_type &&
+                    this.orderDetail.orders_item_data[0].car_finance_data.pledge_type == 2) {
                     this.mList = ['0', '1', '5', '7', '10', '9'];
                     this.contactData = {
                         layoutTitle: '已完成',
@@ -1466,48 +1469,31 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 </View>
             )
         } else if (rowData === '10') {
+            let paymentId = this.orderDetail.orders_item_data[0].car_finance_data.payment_id ?
+                this.orderDetail.orders_item_data[0].car_finance_data.payment_id : 0;
+            let paymentNumber = this.orderDetail.orders_item_data[0].car_finance_data.payment_number ?
+                this.orderDetail.orders_item_data[0].car_finance_data.payment_number : 0;
+            let pledgeType = this.orderDetail.orders_item_data[0].car_finance_data.pledge_type ?
+                this.orderDetail.orders_item_data[0].car_finance_data.pledge_type : 0;
             return (
                 <TouchableOpacity
                     style={styles.itemType10}
                     onPress={() => {
                         // 跳转金融页面  还款详情
-                        /*if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_type == 1) {
+                        if (pledgeType == 2) {
                             this.toNextPage({
                                 name: 'RepaymentInfoScene',
                                 component: RepaymentInfoScene,
                                 params: {
-                                    loan_id: loan_id,
-                                    loan_number: loan_number,
-                                    type: type,
+                                    loan_id: paymentId,
+                                    loan_number: paymentNumber,
+                                    type: pledgeType,
                                     from: 'SingleRepaymentPage'
-                                }
-                            });
-                        } else if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_type == 2) {
-                            this.toNextPage({
-                                name: 'InventoryPlanInfoScene',
-                                component: InventoryPlanInfoScene,
-                                params: {
-                                    loan_id: loan_id,
-                                    loan_number: loan_number,
-                                    type: type,
-                                    from: 'InventoryRepaymentPage',
-                                    planid: planid
-                                }
-                            });
-                        } else if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_type == 3) {
-                            this.toNextPage({
-                                name: 'NewPurchaseRepaymentInfoScene',
-                                component: NewPurchaseRepaymentInfoScene,
-                                params: {
-                                    loan_id: loan_id,
-                                    loan_number: loan_number,
-                                    type: type,
-                                    from: 'PurchaseRepaymentPage'
                                 }
                             });
                         } else {
                             this.props.showToast('车辆质押状态错误');
-                        }*/
+                        }
                     }}>
                     <View style={{alignItems: 'center', flexDirection: 'row', height: Pixel.getPixel(44)}}>
                         <Text style={{
@@ -1520,7 +1506,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                             marginRight: Pixel.getPixel(10),
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color: fontAndColor.COLORA1
-                        }}>{this.orderDetail.orders_item_data[0].pledge_sub_payment_number ? this.orderDetail.orders_item_data[0].pledge_sub_payment_number : '未生成还款单号'}</Text>
+                        }}>{this.orderDetail.orders_item_data[0].car_finance_data.payment_number ? this.orderDetail.orders_item_data[0].car_finance_data.payment_number : '未生成还款单号'}</Text>
                         <Image source={require('../../../images/mainImage/celljiantou.png')}
                                style={{marginRight: Pixel.getPixel(15)}}/>
                     </View>
