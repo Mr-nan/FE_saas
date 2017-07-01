@@ -404,6 +404,7 @@ export default class CheckStand extends BaseComponent {
                                     component: DDApplyLendScene,
                                     params: {
                                         orderNo: this.props.orderNo,
+                                        orderId: this.props.orderId,
                                         callBack: this.props.callBack,
                                         sceneName: 'CheckStand'
                                     }

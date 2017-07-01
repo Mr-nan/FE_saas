@@ -517,12 +517,14 @@ export default class DDApplyLendScene extends BaseComponent {
             platform_order_number: this.props.orderNo,
             base_id: this.carData.base_id,
             car_lists: this.carData.info_id,
+            order_id: this.props.orderId,
         }
         this.props.showModal(true);
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
                 this.props.showModal(false);
                 // this.apSuccess.setModelVisible(true);
+                this.props.showToast(response.mjson.msg);
                 this.props.callBack();
                 const navigator = this.props.navigator;
                 if (navigator) {
