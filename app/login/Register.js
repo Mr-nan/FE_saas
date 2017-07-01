@@ -196,7 +196,7 @@ export default class Register extends BaseComponent {
                         </KeyboardAvoidingView>
                         <TouchableWithoutFeedback onPress={() => dismissKeyboard()}>
                             <View style={styles.imageButtonsStyle}>
-                                <Text
+                                <Text allowFontScaling={false} 
                                     style={{
                                         flex: 1,
                                         color: FontAndColor.COLORA1,
@@ -258,7 +258,7 @@ export default class Register extends BaseComponent {
                         <TouchableWithoutFeedback onPress={() => dismissKeyboard() }>
                             <View style={styles.imageButtonsStyle}>
 
-                                <Text style={{
+                                <Text allowFontScaling={false}  style={{
                                     flex: 1,
                                     color: FontAndColor.COLORA1,
                                     fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT)
@@ -306,7 +306,7 @@ export default class Register extends BaseComponent {
                                 alignItems: 'center',
                                 justifyContent: 'center'
                             }}>
-                                <Text style={{
+                                <Text allowFontScaling={false}  style={{
                                     color: '#fff',
                                     fontSize: Pixel.getPixel(FontAndColor.LITTLEFONT28)
                                 }}>提交</Text>

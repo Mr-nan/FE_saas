@@ -158,8 +158,8 @@ export default class CompleteSignScene extends BaseComponent {
                 }}>
                 <View style={styles.rowView}>
                     <View style={styles.rowLeft}>
-                        <Text style={styles.rowLeftTitle}>{rowData.contract_name}</Text>
-                        <Text style={styles.rowLeftTitle1}>{rowData.payment_number}</Text>
+                        <Text allowFontScaling={false}  style={styles.rowLeftTitle}>{rowData.contract_name}</Text>
+                        <Text allowFontScaling={false}  style={styles.rowLeftTitle1}>{rowData.payment_number}</Text>
                     </View>
                     <Image source={cellJianTou} style={styles.image}></Image>
 

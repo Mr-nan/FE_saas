@@ -60,7 +60,7 @@ export default class LabelForOrderScreen extends PureComponent {
                 onPress={() => {
                     this.setPressDown()
                 }}>
-                <Text
+                <Text allowFontScaling={false} 
                     style={
                         this.props.item.title.length > 7 ?
                         [Styles.labelText1, this.state.enable && Styles.disableText] :

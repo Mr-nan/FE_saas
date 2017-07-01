@@ -113,7 +113,7 @@ export default class DetailModelSelect extends PureComponent {
             <TouchableOpacity
                 activeOpacity={0.6}
                 onPress={()=>{this.props.publishData()}}>
-                <Text style={styles.rightTitleText}>完成</Text>
+                <Text allowFontScaling={false}  style={styles.rightTitleText}>完成</Text>
             </TouchableOpacity>
         );
     };
@@ -132,17 +132,17 @@ export default class DetailModelSelect extends PureComponent {
                         renderRihtFootView={this._renderRihtFootView}
                         />
                     <View style={[styles.circleContainer,styles.vinCircle]}>
-                        <Text style={[styles.fontMain,styles.leftText]}>车架号</Text>
-                        <Text editable={false} style={[styles.fontMain,styles.fillSpace]}>{this.state.vinNum}</Text>
+                        <Text allowFontScaling={false}  style={[styles.fontMain,styles.leftText]}>车架号</Text>
+                        <Text allowFontScaling={false}  editable={false} style={[styles.fontMain,styles.fillSpace]}>{this.state.vinNum}</Text>
                     </View>
-                    <Text style={styles.fontHint}>建议您扫描登记证或行驶证上的车架号</Text>
+                    <Text allowFontScaling={false}  style={styles.fontHint}>建议您扫描登记证或行驶证上的车架号</Text>
                     <TouchableOpacity
                         style={[styles.circleContainer,styles.modelCircle]}
                         activeOpacity={0.6}
                         onPress={()=>{this._modelPress()}}>
                         <View style={styles.rowCenter}>
-                            <Text style={[styles.fontMain,styles.leftText]}>请选择车型</Text>
-                            <Text style={[styles.fontMain,styles.fillSpace]}>{this.state.model_name}</Text>
+                            <Text allowFontScaling={false}  style={[styles.fontMain,styles.leftText]}>请选择车型</Text>
+                            <Text allowFontScaling={false}  style={[styles.fontMain,styles.fillSpace]}>{this.state.model_name}</Text>
                             <Image style={styles.imgContainer} source={arrow}/>
                         </View>
                     </TouchableOpacity>

@@ -87,7 +87,7 @@ export default class AutoOther extends Component {
                 onPress={() => {
                     this.props.publishData()
                 }}>
-                <Text style={styles.rightTitleText}>完成</Text>
+                <Text allowFontScaling={false}  style={styles.rightTitleText}>完成</Text>
             </TouchableOpacity>
         );
     };
@@ -139,21 +139,21 @@ export default class AutoOther extends Component {
                         <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={75}>
                             <View style={styles.avoidContainer}>
                                 <View style={[styles.rectangleContainer, styles.firstMargin]}>
-                                    <Text style={[styles.fontMain, styles.leftText]}>销售价：</Text>
+                                    <Text allowFontScaling={false}  style={[styles.fontMain, styles.leftText]}>销售价：</Text>
                                     <TextInput style={[styles.fontMain, styles.leftInput, styles.fillSpace]}
                                                underlineColorAndroid='transparent' defaultValue={this.dealer_price}
                                                onChangeText={this._onPrice}
                                     />
-                                    <Text style={[styles.fontMain, styles.rightText]}>万元</Text>
+                                    <Text allowFontScaling={false}  style={[styles.fontMain, styles.rightText]}>万元</Text>
                                 </View>
                                 <View style={[styles.rectangleContainer, styles.alignMargin]}>
-                                    <Text style={[styles.fontMain, styles.leftText]}>车况描述：</Text>
+                                    <Text allowFontScaling={false}  style={[styles.fontMain, styles.leftText]}>车况描述：</Text>
                                     <TextInput style={[styles.fontMain, styles.leftInput, styles.fillSpace]}
                                                underlineColorAndroid='transparent' defaultValue={this.describe}
                                                onChangeText={this._onDescribe}/>
                                 </View>
                                 <View style={[styles.modifyContainer, styles.alignMargin]}>
-                                    <Text style={[styles.fontMain, styles.leftText]}>配置改装说明：</Text>
+                                    <Text allowFontScaling={false}  style={[styles.fontMain, styles.leftText]}>配置改装说明：</Text>
                                     <TextInput style={[styles.fontMain, styles.modifyInput]}
                                                underlineColorAndroid='transparent' defaultValue={this.modify}
                                                multiline={true}
@@ -165,7 +165,7 @@ export default class AutoOther extends Component {
                                     <TouchableOpacity style={styles.configPress}
                                                       activeOpacity={0.6}
                                                       onPress={()=>{this._configPress()}}>
-                                        <Text style={[styles.fontMain, styles.leftText]}>查看车辆标准配置</Text>
+                                        <Text allowFontScaling={false}  style={[styles.fontMain, styles.leftText]}>查看车辆标准配置</Text>
                                         <Image style={styles.imgContainer} source={arrow}/>
                                     </TouchableOpacity>
                                 </View>

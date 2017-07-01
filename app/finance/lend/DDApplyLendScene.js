@@ -3,8 +3,8 @@ import {StyleSheet, View, ListView, Image, Text} from "react-native";
 import AllNavigatior from "../../component/AllNavigationView";
 import AllNavigationView from "../../component/AllNavigationView";
 import {CommnetListItem, CommentHandItem, commnetStyle, CommenButton, CGDCarItems} from "./component/ComponentBlob";
-import WebScene from '../../main/WebScene';
-import StorageUtil from '../../utils/StorageUtil';
+import WebScene from "../../main/WebScene";
+import StorageUtil from "../../utils/StorageUtil";
 import {
     width,
     fontadapeSize,
@@ -17,10 +17,10 @@ import {
 import BaseComponent from "../../component/BaseComponent";
 import {request} from "../../utils/RequestUtil";
 import *as apis from "../../constant/appUrls";
-import {LendSuccessAlert, ModalAlert} from "./component/ModelComponent";
 import DDCarInfoScene from "./DDCarInfoLendAndEditScene";
 import OBDDevice from "./OBDDevice";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
+import DDCarInfoCheckScene from "./DDCarInfoCheckScene";
 let ControlState = [];
 export default class DDApplyLendScene extends BaseComponent {
 
@@ -214,8 +214,6 @@ export default class DDApplyLendScene extends BaseComponent {
                         title: 'OBD设备',
                         key: this.OBDtransferToString(carData[0].obd_audit_status, carData[0].obd_bind_status)
                     },
-
-
                 ]
             }
             dataSource['section4'] = section4;
@@ -296,8 +294,8 @@ export default class DDApplyLendScene extends BaseComponent {
         if (sectionID === 'section2') {
             return (
                 <View style={[styles.commentHandeItem, {height: adapeSize(44)}] }>
-                    <Text style={styles.commentListItemLeft}>{rowData.title}</Text>
-                    <Text style={[styles.commentListItemRight, {color: PAGECOLOR.COLORA1}]}>{rowData.key}</Text>
+                    <Text allowFontScaling={false}  style={styles.commentListItemLeft}>{rowData.title}</Text>
+                    <Text allowFontScaling={false}  style={[styles.commentListItemRight, {color: PAGECOLOR.COLORA1}]}>{rowData.key}</Text>
                 </View>
             )
         }
@@ -345,7 +343,7 @@ export default class DDApplyLendScene extends BaseComponent {
                                      showValue={rowData.key} textStyle={{color: PAGECOLOR.COLORA1}} handel={() => {
                         if (this.carData.auto_ownership_status != 1) {
                             this.toNextPage({
-                                name: 'DDCarInfoScene',
+                                name: 'DDCarInfoScene',//DDCarInfoCheckScene
                                 component: DDCarInfoScene,
                                 params: {
                                     carData: this.carData,
@@ -375,9 +373,9 @@ export default class DDApplyLendScene extends BaseComponent {
             if (this.props.shenhe == "yes") {
                 return (
                     <View style={styles.section2Style}>
-                        {/*<Text style={styles.sectionText}>订单信息</Text>*/}
-                        <Text style={{color: '#ff0000', fontSize: fontadapeSize(15)}}> {'审核未通过:'}</Text>
-                        {/*<Text style={{color:'#000000',fontSize:Pixel.getFontPixel(14)}} numberOfLines={2}>{showData.tempDetailInfo.payment_audit_reason}</Text>*/}
+                        {/*<Text allowFontScaling={false}  style={styles.sectionText}>订单信息</Text>*/}
+                        <Text allowFontScaling={false}  style={{color: '#ff0000', fontSize: fontadapeSize(15)}}> {'审核未通过:'}</Text>
+                        {/*<Text allowFontScaling={false}  style={{color:'#000000',fontSize:Pixel.getFontPixel(14)}} numberOfLines={2}>{showData.tempDetailInfo.payment_audit_reason}</Text>*/}
                     </View>
                 )
             }
@@ -385,7 +383,7 @@ export default class DDApplyLendScene extends BaseComponent {
         if (sectionID === 'section2') {
             return (
                 <View style={styles.section2Style}>
-                    <Text style={styles.sectionText}>订单信息</Text>
+                    <Text allowFontScaling={false}  style={styles.sectionText}>订单信息</Text>
                 </View>
             )
         }
@@ -511,7 +509,7 @@ export default class DDApplyLendScene extends BaseComponent {
     /**
      * 申请借款
      * lendMoneyClick
-     */
+     **/
     lendMoneyClick = () => {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
@@ -529,7 +527,7 @@ export default class DDApplyLendScene extends BaseComponent {
                     .then((response) => {
                         this.props.showModal(false);
                         // this.apSuccess.setModelVisible(true);
-                        this.props.showToast(response.mjson.msg + "xxx");
+                        this.props.showToast(response.mjson.msg);
                         this.props.callBack();
                         const navigator = this.props.navigator;
                         if (navigator) {

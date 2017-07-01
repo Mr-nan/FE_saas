@@ -45,7 +45,7 @@ export default class CarInfoScene extends BaseComponent {
         return (
             <TouchableOpacity onPress={this.completeClick}>
                 <View style={{paddingVertical:3, paddingHorizontal:5,backgroundColor:'transparent',borderWidth:StyleSheet.hairlineWidth,borderColor:'white',borderRadius:3}}>
-                    <Text style={{
+                    <Text allowFontScaling={false}  style={{
                         color: 'white',
                         fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                         textAlign: 'center',
@@ -162,10 +162,10 @@ class SelectView extends Component{
         return(
             <View style={styles.selectView}>
                 <View>
-                    <Text style={styles.titleText}>{this.props.title}</Text>
+                    <Text allowFontScaling={false}  style={styles.titleText}>{this.props.title}</Text>
                 </View>
                 <TouchableOpacity style={styles.selectRightView} onPress={this.props.selectCilck}>
-                    <Text style={styles.contentText}>{this.state.content}</Text>
+                    <Text allowFontScaling={false}  style={styles.contentText}>{this.state.content}</Text>
                     <Image source={require('../../images/financeImages/celljiantou.png')}/>
                 </TouchableOpacity>
 
@@ -193,7 +193,7 @@ class CheckedView extends Component{
     render(){
         return(
             <View style={styles.checkedView}>
-                <Text style={styles.titleText}>{this.props.title}</Text>
+                <Text allowFontScaling={false}  style={styles.titleText}>{this.props.title}</Text>
                 <View style={styles.checkedContentView}>
                     {
                         this.props.dataArray.map((data, index) => {
@@ -210,7 +210,7 @@ class CheckedView extends Component{
 
                                 }} activeOpacity={1} key={index}>
                                     <View style={[styles.checkedItemView,(this.state.currentChecked==data.name?{borderColor:fontAndColor.COLORB0}:{borderColor:fontAndColor.COLORA2})]}>
-                                        <Text style={[styles.checkedItemText,(this.state.currentChecked==data.name?{color:fontAndColor.COLORB0}:{color:fontAndColor.COLORA2})] }> {data.name} </Text>
+                                        <Text allowFontScaling={false}  style={[styles.checkedItemText,(this.state.currentChecked==data.name?{color:fontAndColor.COLORB0}:{color:fontAndColor.COLORA2})] }> {data.name} </Text>
                                     </View>
                                 </TouchableOpacity>
                             )
@@ -256,7 +256,7 @@ class CheckedItemView extends Component{
 
             }}>
                 <View style={[styles.checkedItemView,(this.state.isHighlight?{borderColor:fontAndColor.COLORB0}:{borderColor:fontAndColor.COLORA2})]}>
-                    <Text style={[styles.checkedItemText,(this.state.isHighlight?{color:fontAndColor.COLORB0}:{color:fontAndColor.COLORA2})] }>{this.props.data.title}</Text>
+                    <Text allowFontScaling={false}  style={[styles.checkedItemText,(this.state.isHighlight?{color:fontAndColor.COLORB0}:{color:fontAndColor.COLORA2})] }>{this.props.data.title}</Text>
                 </View>
             </TouchableOpacity>
         )

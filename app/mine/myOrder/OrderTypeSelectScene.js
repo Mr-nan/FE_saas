@@ -92,7 +92,7 @@ export default class OrderTypeSelectScene extends BaseComponent {
                         <Image
                             style={{marginLeft: Pixel.getPixel(15)}}
                             source={rowData.orderIcon}/>
-                        <Text style={styles.rowLeft}>{rowData.orderType}</Text>
+                        <Text allowFontScaling={false}  style={styles.rowLeft}>{rowData.orderType}</Text>
                     </View>
                 </TouchableOpacity>
                 <View style={{marginLeft: Pixel.getPixel(55), backgroundColor: fontAndColor.COLORA3, height: 1}}/>
@@ -121,7 +121,7 @@ export default class OrderTypeSelectScene extends BaseComponent {
                     activeOpacity={0.9}
                 >
                     <View style={styles.rowView}>
-                        <Text style={styles.rowLeftTitle}>交易中</Text>
+                        <Text allowFontScaling={false}  style={styles.rowLeftTitle}>交易中</Text>
                         <Image source={cellJianTou} style={styles.image}/>
                     </View>
                 </TouchableOpacity>
@@ -151,7 +151,7 @@ export default class OrderTypeSelectScene extends BaseComponent {
                     activeOpacity={0.9}
                 >
                     <View style={styles.rowView}>
-                        <Text style={styles.rowLeftTitle}>已完成</Text>
+                        <Text allowFontScaling={false}  style={styles.rowLeftTitle}>已完成</Text>
                         <Image source={cellJianTou} style={styles.image}/>
                     </View>
                 </TouchableOpacity>
@@ -181,7 +181,7 @@ export default class OrderTypeSelectScene extends BaseComponent {
                     activeOpacity={0.9}
                 >
                     <View style={styles.rowView}>
-                        <Text style={styles.rowLeftTitle}>交易关闭</Text>
+                        <Text allowFontScaling={false}  style={styles.rowLeftTitle}>交易关闭</Text>
                         <Image source={cellJianTou} style={styles.image}/>
                     </View>
                 </TouchableOpacity>

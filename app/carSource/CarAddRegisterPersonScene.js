@@ -121,7 +121,8 @@ export default class CarAddRegisterPersonScene extends BaseComponent{
                                 this.personData['cooperation_year'] = this.trimString(text);
                             }}
                         />
-                        <Text style={styles.textInputTitle}>年</Text>
+                        <Text allowFontScaling={false} 
+                              style={styles.textInputTitle}>年</Text>
                     </View>)
                 }
             },{
@@ -173,10 +174,11 @@ export default class CarAddRegisterPersonScene extends BaseComponent{
                             })
                         }
                         <View style={styles.footContainer}>
-                            <Text style={{marginLeft:Pixel.getFontPixel(15),color:fontAndColor.COLORA1, fontSize:fontAndColor.LITTLEFONT28,marginBottom:Pixel.getPixel(17)}}>请确保您的企业信息填写正确</Text>
+                            <Text allowFontScaling={false} 
+                                  style={{marginLeft:Pixel.getFontPixel(15),color:fontAndColor.COLORA1, fontSize:fontAndColor.LITTLEFONT28,marginBottom:Pixel.getPixel(17)}}>请确保您的企业信息填写正确</Text>
                             <TouchableOpacity onPress={this.addPersonAction}>
                                 <View style={styles.footView}>
-                                    <Text style={styles.footText}>提交</Text>
+                                    <Text allowFontScaling={false}    style={styles.footText}>提交</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>

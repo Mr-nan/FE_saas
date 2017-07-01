@@ -216,7 +216,8 @@ export default class BrowsingHistoryScene extends BaceComponent {
             this.refs.allloading.changeShowType(true,'确认清空吗？');
         }}>
                 <View style={{paddingVertical:3, paddingHorizontal:5,backgroundColor:'transparent',borderWidth:StyleSheet.hairlineWidth,borderColor:'white',borderRadius:3}}>
-                <Text style={{
+                <Text allowFontScaling={false} 
+                    style={{
                     color: 'white',
                     fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                     textAlign: 'center',

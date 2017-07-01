@@ -20,13 +20,13 @@ export default class Testview22 extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.welcome}>
+                <Text allowFontScaling={false}  style={styles.welcome}>
                     Welcome to React Native!
                 </Text>
-                <Text style={styles.instructions}>
+                <Text allowFontScaling={false}  style={styles.instructions}>
                     To get started, edit index.ios.js
                 </Text>
-                <Text style={styles.instructions}>
+                <Text allowFontScaling={false}  style={styles.instructions}>
                     Press Cmd+R to reload,{'\n'}
                     Cmd+D or shake for dev menu
                 </Text>

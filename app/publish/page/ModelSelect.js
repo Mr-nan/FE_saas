@@ -315,7 +315,7 @@ export default class ModelSelect extends PureComponent {
                         title='选择车辆款型'
                         wrapStyle={styles.wrapStyle}/>
                     <View style={[styles.circleContainer,styles.vinCircle]}>
-                        <Text style={[styles.fontMain,styles.leftText]}>车架号</Text>
+                        <Text allowFontScaling={false}  style={[styles.fontMain,styles.leftText]}>车架号</Text>
                         <TextInput
                             ref={(input)=>{this.vinInput = input}}
                             style={[styles.fontMain,styles.fillSpace]}
@@ -327,22 +327,22 @@ export default class ModelSelect extends PureComponent {
                             activeOpacity={0.6}
                             onPress={()=>{this._scanPress()}}>
                             <View style={styles.center}>
-                                <Text style={[styles.fontMain,styles.rightText]}>扫描</Text>
+                                <Text allowFontScaling={false}  style={[styles.fontMain,styles.rightText]}>扫描</Text>
                                 <Image style={styles.imgContainer} source={scan}/>
                             </View>
                         </TouchableOpacity>
                     </View>
-                    <Text style={styles.fontHint}>建议您扫描登记证或行驶证上的车架号</Text>
+                    <Text allowFontScaling={false}  style={styles.fontHint}>建议您扫描登记证或行驶证上的车架号</Text>
 
                     <View style={styles.modelCircle}>
-                        {this.state.showHint && <Text style={styles.fontHintBelow}>未解析出车型，请自行选择！</Text>}
+                        {this.state.showHint && <Text allowFontScaling={false}  style={styles.fontHintBelow}>未解析出车型，请自行选择！</Text>}
                         <TouchableOpacity
                             style={[styles.circleContainer,styles.hintAlign]}
                             activeOpacity={0.6}
                             onPress={()=>{this._modelPress()}}>
                             <View style={styles.rowCenter}>
-                                <Text style={[styles.fontMain,styles.leftText]}>请选择车型</Text>
-                                <Text style={[styles.fontMain,styles.fillSpace]}>{this.state.modelName}</Text>
+                                <Text allowFontScaling={false}  style={[styles.fontMain,styles.leftText]}>请选择车型</Text>
+                                <Text allowFontScaling={false}  style={[styles.fontMain,styles.fillSpace]}>{this.state.modelName}</Text>
                                 <Image style={styles.imgContainer} source={arrow}/>
                             </View>
                         </TouchableOpacity>

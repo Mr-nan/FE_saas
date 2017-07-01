@@ -58,7 +58,7 @@ export default class AccountModal extends Component {
                     style={{flex:1,justifyContent:'center',alignItems:'center',backgroundColor:'rgba(0,0,0,0.3)'}}>
                     <View style={{width:width-width/4,height:Pixel.getPixel(155),backgroundColor:'#fff',
                      paddingLeft:Pixel.getPixel(20),paddingRight:Pixel.getPixel(20),alignItems: 'center',borderRadius:4}}>
-                        <Text style={{textAlign: 'center',fontSize:Pixel.getPixel(14),color:'#000',marginTop: Pixel.getPixel(35)}}>
+                        <Text allowFontScaling={false}  style={{textAlign: 'center',fontSize:Pixel.getPixel(14),color:'#000',marginTop: Pixel.getPixel(35)}}>
                             {this.state.content}
                         </Text>
                         <View style={{width:width-width/4-Pixel.getPixel(40),height:Pixel.getPixel(35),flexDirection:'row',
@@ -71,7 +71,7 @@ export default class AccountModal extends Component {
                               }} activeOpacity={0.9} style={{flex:1,marginRight:Pixel.getPixel(10),
                               backgroundColor:fontAndColor.COLORB0,borderRadius:3,
                               justifyContent:'center',alignItems:'center'}}>
-                                <Text style={{fontSize:Pixel.getPixel(14),color:'#fff'}}>{this.state.leftText}</Text>
+                                <Text allowFontScaling={false}  style={{fontSize:Pixel.getPixel(14),color:'#fff'}}>{this.state.leftText}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={()=>{
                                  this.setState({
@@ -80,7 +80,7 @@ export default class AccountModal extends Component {
                               }} activeOpacity={0.9} style={{flex:1,marginLeft:Pixel.getPixel(10),
                               backgroundColor:'#fff',borderRadius:3,
                              justifyContent:'center',alignItems:'center',borderWidth:1,borderColor:fontAndColor.COLORB0}}>
-                                <Text
+                                <Text allowFontScaling={false} 
                                     style={{fontSize:Pixel.getPixel(14),color:fontAndColor.COLORB0}}>{this.state.rightText}</Text>
                             </TouchableOpacity>
                         </View>

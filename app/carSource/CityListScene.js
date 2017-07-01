@@ -191,7 +191,7 @@ export default class CityListScene extends BaseComponent {
 
             }}>
                 <View style={styles.rowCell}>
-                    <Text style={styles.rowCellText}>{rowData.city_name}</Text>
+                    <Text allowFontScaling={false}  style={styles.rowCellText}>{rowData.city_name}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -202,7 +202,7 @@ export default class CityListScene extends BaseComponent {
 
         return (
             <View style={styles.sectionHeader}>
-                <Text style={styles.sectionText}>{sectionData}</Text>
+                <Text allowFontScaling={false}  style={styles.sectionText}>{sectionData}</Text>
             </View>
         );
     }
@@ -232,7 +232,7 @@ export default class CityListScene extends BaseComponent {
         return (
             this.props.unlimitedAction &&  <TouchableOpacity onPress={()=>{this.props.unlimitedAction();this.backPage();}}>
                 <View style={{paddingVertical:3, paddingHorizontal:5,backgroundColor:'transparent',borderWidth:StyleSheet.hairlineWidth,borderColor:'white',borderRadius:3}}>
-                    <Text style={{
+                    <Text allowFontScaling={false}  style={{
                         color: 'white',
                         fontSize: Pixel.getFontPixel(fontAnColor.BUTTONFONT30),
                         textAlign: 'center',
@@ -310,7 +310,7 @@ class ZNListIndexView extends Component{
                                 this.props.indexClick(index);
 
                             }}>
-                                <Text style={styles.indexItemText}>{data}</Text>
+                                <Text allowFontScaling={false}  style={styles.indexItemText}>{data}</Text>
                             </TouchableOpacity>
                         )
                     })

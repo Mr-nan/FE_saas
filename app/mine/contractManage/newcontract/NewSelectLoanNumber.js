@@ -97,7 +97,7 @@ export default class SelectLoanNumber extends Component {
                     }
                     this._hiedModal()}}>
                 <View style={styles.rowStyle}>
-                    <Text style={styles.fontMain}>{this.state.topOrBottom == 'top' ? rowData.code : rowData.contract_name}</Text>
+                    <Text allowFontScaling={false}  style={styles.fontMain}>{this.state.topOrBottom == 'top' ? rowData.code : rowData.contract_name}</Text>
                 </View>
             </TouchableOpacity>
         );

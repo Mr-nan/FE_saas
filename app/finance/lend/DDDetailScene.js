@@ -398,7 +398,7 @@ export default class DDDetailScene extends BaseComponent {
 
             return (
                 <View style={styles.section2Style}>
-                    <Text style={styles.sectionText}>订单信息</Text>
+                    <Text allowFontScaling={false}  style={styles.sectionText}>订单信息</Text>
                 </View>
             )
         }

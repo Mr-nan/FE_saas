@@ -75,7 +75,7 @@ export default class VinInfo extends Component{
                 key={rowID}
                 onPress={()=>{this.props.vinPress(rowID),this._hiedModal()}}>
                 <View  style={styles.rowStyle}>
-                    <Text style={styles.fontMain}>{rowData.model_name}</Text>
+                    <Text allowFontScaling={false}  style={styles.fontMain}>{rowData.model_name}</Text>
                 </View>
             </TouchableOpacity>
         );

@@ -124,7 +124,7 @@ export  default class ContractSignScene extends BaseComponent {
                        this.contractSign();
                     }} activeOpacity={0.8} style={{flex:1,backgroundColor:fontAndColor.COLORB0,justifyContent:'center'
                     ,alignItems:'center'}}>
-                                <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                                <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                         color:'#fff'}}>签署合同</Text>
                             </TouchableOpacity> : <View/>}
                     </View>

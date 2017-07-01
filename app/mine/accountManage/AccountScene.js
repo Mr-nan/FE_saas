@@ -172,7 +172,7 @@ export  default class AccountScene extends BaseComponent {
                         } ,money:this.state.info.balance}})
                     }} activeOpacity={0.8}
                                       style={{flex:1,justifyContent:'center',alignItems: 'center',backgroundColor:'#fff'}}>
-                        <Text style={{color: fontAndColor.COLORB0,fontSize: Pixel.getFontPixel(15)}}>提现</Text>
+                        <Text allowFontScaling={false}  style={{color: fontAndColor.COLORB0,fontSize: Pixel.getFontPixel(15)}}>提现</Text>
                     </TouchableOpacity>
                     <View style={{width:1,justifyContent:'center',
                     alignItems: 'center',height:Pixel.getPixel(44)}}></View>
@@ -180,7 +180,7 @@ export  default class AccountScene extends BaseComponent {
                         this.toNextPage({name:'RechargeScene',component:RechargeScene,params:{}})
                     }} activeOpacity={0.8}
                                       style={{flex:1,justifyContent:'center',alignItems: 'center',backgroundColor:'#fff'}}>
-                        <Text style={{color: fontAndColor.COLORB0,fontSize: Pixel.getFontPixel(15)}}>充值</Text>
+                        <Text allowFontScaling={false}  style={{color: fontAndColor.COLORB0,fontSize: Pixel.getFontPixel(15)}}>充值</Text>
                     </TouchableOpacity>
                 </View>
                 <NavigationView
@@ -204,15 +204,15 @@ export  default class AccountScene extends BaseComponent {
                 <View style={{width:width,height:Pixel.getPixel(72),backgroundColor: '#fff',flexDirection: 'row',
             paddingRight:Pixel.getPixel(15),paddingLeft:Pixel.getPixel(15)}}>
                     <View style={{flex:1,justifyContent:'center'}}>
-                        <Text style={{color: '#000',fontSize: Pixel.getPixel(14)}}>
+                        <Text allowFontScaling={false}  style={{color: '#000',fontSize: Pixel.getPixel(14)}}>
                             {movie.operate_name}
                         </Text>
-                        <Text style={{color: fontAndColor.COLORA1,fontSize: Pixel.getPixel(12)}}>
+                        <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getPixel(12)}}>
                             {movie.create_time}
                         </Text>
                     </View>
                     <View style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>
-                        <Text style={{color: '#000',fontSize: Pixel.getPixel(20)}}>
+                        <Text allowFontScaling={false}  style={{color: '#000',fontSize: Pixel.getPixel(20)}}>
                             {movie.amount}
                         </Text>
                     </View>

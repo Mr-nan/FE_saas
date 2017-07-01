@@ -145,8 +145,8 @@ export default class NoneSineScene extends BaseComponent {
         return (
             <View style={styles.rowView}>
                 <View style={styles.rowLeft}>
-                <Text style={styles.rowLeftTitle}>{rowData.contract_name}</Text>
-                <Text style={styles.rowLeftTitle1}>{rowData.payment_number}</Text>
+                <Text allowFontScaling={false}  style={styles.rowLeftTitle}>{rowData.contract_name}</Text>
+                <Text allowFontScaling={false}  style={styles.rowLeftTitle1}>{rowData.payment_number}</Text>
                 </View>
                 <TouchableOpacity
                     style={styles.buttonStyle}
@@ -170,7 +170,7 @@ export default class NoneSineScene extends BaseComponent {
                             },
                         })
                     }}>
-                    <Text style={styles.rowRightTitle}>签署合同</Text>
+                    <Text allowFontScaling={false}  style={styles.rowRightTitle}>签署合同</Text>
 
                 </TouchableOpacity>
             </View>

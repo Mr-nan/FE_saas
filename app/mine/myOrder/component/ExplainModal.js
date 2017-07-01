@@ -68,13 +68,13 @@ export default class ExplainModal extends Component {
                         justifyContent: 'center',
                         alignItems: 'center'
                     }}>
-                        <Text style={{
+                        <Text allowFontScaling={false}  style={{
                             marginTop: Pixel.getPixel(23),
                             fontSize: Pixel.getPixel(17),
                             fontWeight: 'bold',
                             color: '#000'
                         }}>{this.state.title}</Text>
-                        <Text style={{
+                        <Text allowFontScaling={false}  style={{
                             textAlign: 'center', fontSize: Pixel.getPixel(14),
                             marginTop: Pixel.getPixel(11), color: '#000'
                         }}>
@@ -85,7 +85,7 @@ export default class ExplainModal extends Component {
                                 isShow: false
                             });
                         }} activeOpacity={0.9} style={this.props.buttonStyle}>
-                            <Text style={this.props.textStyle}>{this.state.text}</Text>
+                            <Text allowFontScaling={false}  style={this.props.textStyle}>{this.state.text}</Text>
                         </TouchableOpacity>
                     </View>
                 </TouchableOpacity>

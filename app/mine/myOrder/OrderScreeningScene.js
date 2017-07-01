@@ -191,7 +191,7 @@ export default class OrderScreeningScene extends BaseComponent {
         if (movie == 1) {
             return (
                 <View style={styles.containerChild}>
-                    <Text style={styles.carType}>订单状态</Text>
+                    <Text allowFontScaling={false}  style={styles.carType}>订单状态</Text>
                     <LabelParent items={order_state} orderState={this.orderState} updateState={this.setOrderState}
                                  updateStatus={this.setOrderStatus}/>
                 </View>
@@ -201,7 +201,7 @@ export default class OrderScreeningScene extends BaseComponent {
                 <View style={{
                     backgroundColor: '#ffffff'
                 }}>
-                    <Text style={styles.carType}>付款方式</Text>
+                    <Text allowFontScaling={false}  style={styles.carType}>付款方式</Text>
                     <LabelParentPayType items={pay_type} orderState={this.payType} updateState={this.setPayType}
                                  updateStatus={this.setpayTypeKey}/>
                 </View>
@@ -219,32 +219,67 @@ export default class OrderScreeningScene extends BaseComponent {
 
     }
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     setPayType = (newPayType) => {
         this.payType = newPayType;
     }
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     setpayTypeKey = (newpayTypeKey) => {
         this.payTypeKey = newpayTypeKey;
     }
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     setOrderState = (newOrderState) => {
         this.orderState = newOrderState;
         //console.log('setOrderState = ',this.orderState);
     }
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     setOrderStatus = (newStatus) => {
         this.status = newStatus;
         //console.log('status = ',this.status);
     }
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     setStartDate = (newStartDate) => {
         this.startDate = newStartDate;
     }
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     setEndDate = (newEndDate) => {
         this.endDate = newEndDate;
     }
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     _showDateTimePicker = (type) => {
         this.type = type;
         this.setState({isDateTimePickerVisible: true})

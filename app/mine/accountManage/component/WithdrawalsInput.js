@@ -36,7 +36,7 @@ export  default class WithdrawalsInput extends PureComponent {
     render() {
         return (
             <View style={{flex:2,flexDirection: 'row',}}>
-                <Text style={{fontSize: Pixel.getFontPixel(22),color: '#000',fontWeight: 'bold',marginTop:Pixel.getPixel(15)}}>
+                <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(22),color: '#000',fontWeight: 'bold',marginTop:Pixel.getPixel(15)}}>
                     ¥</Text>
                 <TextInput style={{fontSize: Pixel.getFontPixel(38),color: '#000',fontWeight: 'bold',width:width}}
                            returnKeyType={"search"}

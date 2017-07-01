@@ -186,7 +186,7 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                                 rightIcon={false}/>
 
                         </View>
-                        <Text style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                        <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                             marginTop:Pixel.getPixel(20),marginLeft:Pixel.getPixel(15)}}>
                             请确认您的企业信息填写准确
                         </Text>
@@ -196,7 +196,7 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                         }} activeOpacity={0.8} style={{backgroundColor:fontAndColor.COLORB0,marginTop:Pixel.getPixel(15),
                             width:width-Pixel.getPixel(30),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),
                             height:Pixel.getPixel(44),justifyContent:'center',alignItems: 'center'}}>
-                            <Text style={{color:'#fff',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28)}}>{this.props.buttonText}</Text>
+                            <Text allowFontScaling={false}  style={{color:'#fff',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28)}}>{this.props.buttonText}</Text>
                         </TouchableOpacity>
                     </KeyboardAvoidingView>
 

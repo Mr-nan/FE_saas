@@ -110,9 +110,9 @@ export default class GesturePassword extends BaseComponent {
                             <Image style={styles.avatarStyle}
                                    source={require("./../../images/mainImage/zhanghuguanli.png")}/>}
 
-                        <Text style={ styles.topMessageStyle }>用户名：{this.state.phone}</Text>
+                        <Text allowFontScaling={false}  style={ styles.topMessageStyle }>用户名：{this.state.phone}</Text>
 
-                        <Text style={this.state.status !== "wrong" ? styles.topMessageStyle : styles.topMessageWStyle}>
+                        <Text allowFontScaling={false}  style={this.state.status !== "wrong" ? styles.topMessageStyle : styles.topMessageWStyle}>
                             {this.state.message}
                         </Text>
                     </View>
@@ -130,14 +130,14 @@ export default class GesturePassword extends BaseComponent {
                             StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'false');
                             this.loginPage({name: 'LoginScene', component: LoginScene});
                         }}>
-                            <Text style={styles.bottomLeftSytle}>忘记手势密码？</Text>
+                            <Text allowFontScaling={false}  style={styles.bottomLeftSytle}>忘记手势密码？</Text>
                         </TouchableOpacity>
                         <View style={{flex: 1}}/>
                         <TouchableOpacity onPress={() => {
                             StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'false');
                             this.loginPage({name: 'LoginScene', component: LoginScene});
                         }}>
-                            <Text style={styles.bottomRightSytle}>切换登录</Text>
+                            <Text allowFontScaling={false}  style={styles.bottomRightSytle}>切换登录</Text>
                         </TouchableOpacity>
                     </View>
                 }

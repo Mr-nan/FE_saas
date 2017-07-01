@@ -156,8 +156,8 @@ export default class ContractManageScene extends BaseComponent {
 
                    }}>
                 <View style={styles.rowView}>
-                    <Text style={styles.rowLeftTitle}>{rowData.companyname}</Text>
-                    <Text
+                    <Text allowFontScaling={false}  style={styles.rowLeftTitle}>{rowData.companyname}</Text>
+                    <Text allowFontScaling={false} 
                         style={styles.rowRightTitle}>{this.props.from == 'xs' ? rowData.contract_num + '份未签署合同' : ''}</Text>
                     <Image source={cellJianTou} style={styles.image}></Image>
 
