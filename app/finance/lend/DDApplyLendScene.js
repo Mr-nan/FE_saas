@@ -514,41 +514,44 @@ export default class DDApplyLendScene extends BaseComponent {
      */
     lendMoneyClick = () => {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-            this.companyId = JSON.parse(data.result).company_base_id;
-            let maps = {
-                api: apis.APPLY_LOAN,
-                apply_type: "6",
-                platform_order_number: this.props.orderNo,
-                company_base_id: this.companyId,
-                car_lists: this.carData.info_id,
-                order_id: this.props.orderId,
-            }
-            this.props.showModal(true);
-            request(apis.FINANCE, 'Post', maps)
-                .then((response) => {
-                    this.props.showModal(false);
-                    // this.apSuccess.setModelVisible(true);
-                    this.props.showToast(response.mjson.msg + "xxx");
-                    this.props.callBack();
-                    const navigator = this.props.navigator;
-                    if (navigator) {
-                        for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
-                            if (navigator.getCurrentRoutes()[i].name == 'ProcurementOrderDetailScene') {
-                                navigator.popToRoute(navigator.getCurrentRoutes()[i]);
-                                break;
+            if (data.code == 1 && data.result != null) {
+                this.companyId = JSON.parse(data.result).company_base_id;
+                let maps = {
+                    api: apis.APPLY_LOAN,
+                    apply_type: "6",
+                    platform_order_number: this.props.orderNo,
+                    company_base_id: this.companyId,
+                    car_lists: this.carData.info_id,
+                    order_id: this.props.orderId,
+                }
+                this.props.showModal(true);
+                request(apis.FINANCE, 'Post', maps)
+                    .then((response) => {
+                        this.props.showModal(false);
+                        // this.apSuccess.setModelVisible(true);
+                        this.props.showToast(response.mjson.msg + "xxx");
+                        this.props.callBack();
+                        const navigator = this.props.navigator;
+                        if (navigator) {
+                            for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
+                                if (navigator.getCurrentRoutes()[i].name == 'ProcurementOrderDetailScene') {
+                                    navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                                    break;
+                                }
                             }
                         }
-                    }
-                }, (error) => {
-                    this.props.showModal(false);
-                    if (error.mycode != -300 || error.mycode != -500) {
-                        this.props.showToast(error.mjson.msg);
-                    } else {
-                        this.props.showToast('服务器连接有问题')
-                    }
-                });
+                    }, (error) => {
+                        this.props.showModal(false);
+                        if (error.mycode != -300 || error.mycode != -500) {
+                            this.props.showToast(error.mjson.msg);
+                        } else {
+                            this.props.showToast('服务器连接有问题')
+                        }
+                    });
+            } else {
+                this.props.showToast('申请借款失败');
+            }
         });
-
 
     }
 
