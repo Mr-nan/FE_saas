@@ -322,7 +322,7 @@ export default class DDCarInfoScene extends BaseComponent {
 
                 <View style={{backgroundColor: FontAndColor.COLORA4, width: width, height: Pixel.getPixel(1)}}/>
 
-                <ChooseButton ref="djr" leftText={'登记人'} showArrow = {true} rightText={this.dengjiren ? this.dengjiren:"请选择登记人"}
+                <ChooseButton ref="djr" leftText={'登记人'} showArrow = {true}  rightText ={this.dengjiren ? this.dengjiren:"请选择登记人"}
                               onPressButton={this.onPressButton}/>
 
                 <View style={{backgroundColor: FontAndColor.COLORA4, width: width, height: Pixel.getPixel(1)}}/>
