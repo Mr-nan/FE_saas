@@ -126,7 +126,7 @@ export default class LoginScene extends BaseComponent {
                     break;
                 }
                 views.push(
-                    <Text
+                    <Text allowFontScaling={false} 
                         key={x}
                         style={styles.item}
                         onPress={this.hide.bind(this, userNames[x])}
@@ -234,7 +234,7 @@ export default class LoginScene extends BaseComponent {
                                 params: {},
                             })
                         }}>
-                            <Text style={styles.bottomTestSytle}>登录遇到问题 ></Text>
+                            <Text allowFontScaling={false}  style={styles.bottomTestSytle}>登录遇到问题 ></Text>
                         </TouchableOpacity>
                     </View>
 

@@ -92,7 +92,7 @@ export default class AutoTransfer extends Component {
             <TouchableOpacity
                 activeOpacity={0.6}
                 onPress={()=>{this.props.publishData()}}>
-                <Text style={styles.rightTitleText}>完成</Text>
+                <Text allowFontScaling={false}  style={styles.rightTitleText}>完成</Text>
             </TouchableOpacity>
         );
     };
@@ -122,7 +122,7 @@ export default class AutoTransfer extends Component {
                                 </Picker>
                             </View>
                             <View style={styles.timeContainer}>
-                                <Text style={styles.fontTime}>次</Text>
+                                <Text allowFontScaling={false}  style={styles.fontTime}>次</Text>
                             </View>
                         </View>
                     </Image>

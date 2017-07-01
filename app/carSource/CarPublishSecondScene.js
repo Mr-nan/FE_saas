@@ -127,7 +127,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                     onEndEditing={()=>{this.saveCarData();}}
                                     onChangeText={(text)=>{this.carData['mileage'] = text}}
                                 />
-                                <Text style={styles.textInputTitle}>万公里</Text>
+                                <Text allowFontScaling={false}  style={styles.textInputTitle}>万公里</Text>
                             </View>
                         )
                     }
@@ -169,7 +169,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                                text: moneyStr,
                                            });
                                        }}/>
-                                <Text style={styles.textInputTitle}>万元</Text>
+                                <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
                             </View>)
                     }
                 },
@@ -202,7 +202,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                                text: moneyStr,
                                            });
                                        }}/>
-                                <Text style={styles.textInputTitle}>万元</Text>
+                                <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
                             </View>)
                     }
                 },
@@ -235,7 +235,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                                text: moneyStr,
                                            });
                                        }}/>
-                                <Text style={styles.textInputTitle}>万元</Text>
+                                <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
                             </View>)
                     }
                 },
@@ -269,7 +269,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                                text: moneyStr,
                                            });
                                        }}/>
-                                <Text style={styles.textInputTitle}>万元</Text>
+                                <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
                             </View>)
                     }
                 },
@@ -302,7 +302,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                                text: moneyStr,
                                            });
                                        }}/>
-                                <Text style={styles.textInputTitle}>万元</Text>
+                                <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
                             </View>)
                     }
                 },
@@ -335,7 +335,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                                text: moneyStr,
                                            });
                                        }}/>
-                                <Text style={styles.textInputTitle}>万元</Text>
+                                <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
                             </View>)
                     }
                 },
@@ -347,7 +347,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                     tailView: () => {
                         return (
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                                <Text style={styles.textInputTitle}></Text>
+                                <Text allowFontScaling={false}  style={styles.textInputTitle}></Text>
                             </View>)
                     }
                 },
@@ -359,7 +359,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                     tailView: () => {
                         return (
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                                <Text style={styles.textInputTitle}></Text>
+                                <Text allowFontScaling={false}  style={styles.textInputTitle}></Text>
                             </View>)
                     }
                 },
@@ -454,7 +454,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                                text: moneyStr,
                                            });
                                        }}/>
-                                <Text style={styles.textInputTitle}>万元</Text>
+                                <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
                             </View>)
                     }
                 },
@@ -487,7 +487,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                                text: moneyStr,
                                            });
                                        }}/>
-                                <Text style={styles.textInputTitle}>万元</Text>
+                                <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
                             </View>)
                     }
                 },
@@ -520,7 +520,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                                text: moneyStr,
                                            });
                                        }}/>
-                                <Text style={styles.textInputTitle}>万元</Text>
+                                <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
                             </View>)
                     }
                 },
@@ -554,7 +554,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                                text: moneyStr,
                                            });
                                        }}/>
-                                <Text style={styles.textInputTitle}>万元</Text>
+                                <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
                             </View>)
                     }
                 },
@@ -587,7 +587,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                                text: moneyStr,
                                            });
                                        }}/>
-                                <Text style={styles.textInputTitle}>万元</Text>
+                                <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
                             </View>)
                     }
                 },
@@ -620,7 +620,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                                text: moneyStr,
                                            });
                                        }}/>
-                                <Text style={styles.textInputTitle}>万元</Text>
+                                <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
                             </View>)
                     }
                 },
@@ -632,7 +632,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                     tailView: () => {
                         return (
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                                <Text style={styles.textInputTitle}></Text>
+                                <Text allowFontScaling={false}  style={styles.textInputTitle}></Text>
                             </View>)
                     }
                 },
@@ -644,7 +644,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                     tailView: () => {
                         return (
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                                <Text style={styles.textInputTitle}></Text>
+                                <Text allowFontScaling={false}  style={styles.textInputTitle}></Text>
                             </View>)
                     }
                 },
@@ -760,7 +760,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                         <View style={styles.footContainer}>
                             <TouchableOpacity onPress={this.nextAction}>
                                 <View style={styles.footView}>
-                                    <Text style={styles.footText}>下一步</Text>
+                                    <Text allowFontScaling={false}  style={styles.footText}>下一步</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>

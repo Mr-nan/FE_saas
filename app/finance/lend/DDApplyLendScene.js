@@ -294,8 +294,8 @@ export default class DDApplyLendScene extends BaseComponent {
         if (sectionID === 'section2') {
             return (
                 <View style={[styles.commentHandeItem, {height: adapeSize(44)}] }>
-                    <Text style={styles.commentListItemLeft}>{rowData.title}</Text>
-                    <Text style={[styles.commentListItemRight, {color: PAGECOLOR.COLORA1}]}>{rowData.key}</Text>
+                    <Text allowFontScaling={false}  style={styles.commentListItemLeft}>{rowData.title}</Text>
+                    <Text allowFontScaling={false}  style={[styles.commentListItemRight, {color: PAGECOLOR.COLORA1}]}>{rowData.key}</Text>
                 </View>
             )
         }
@@ -373,9 +373,9 @@ export default class DDApplyLendScene extends BaseComponent {
             if (this.props.shenhe == "yes") {
                 return (
                     <View style={styles.section2Style}>
-                        {/*<Text style={styles.sectionText}>订单信息</Text>*/}
-                        <Text style={{color: '#ff0000', fontSize: fontadapeSize(15)}}> {'审核未通过:'}</Text>
-                        {/*<Text style={{color:'#000000',fontSize:Pixel.getFontPixel(14)}} numberOfLines={2}>{showData.tempDetailInfo.payment_audit_reason}</Text>*/}
+                        {/*<Text allowFontScaling={false}  style={styles.sectionText}>订单信息</Text>*/}
+                        <Text allowFontScaling={false}  style={{color: '#ff0000', fontSize: fontadapeSize(15)}}> {'审核未通过:'}</Text>
+                        {/*<Text allowFontScaling={false}  style={{color:'#000000',fontSize:Pixel.getFontPixel(14)}} numberOfLines={2}>{showData.tempDetailInfo.payment_audit_reason}</Text>*/}
                     </View>
                 )
             }
@@ -383,7 +383,7 @@ export default class DDApplyLendScene extends BaseComponent {
         if (sectionID === 'section2') {
             return (
                 <View style={styles.section2Style}>
-                    <Text style={styles.sectionText}>订单信息</Text>
+                    <Text allowFontScaling={false}  style={styles.sectionText}>订单信息</Text>
                 </View>
             )
         }
@@ -509,7 +509,7 @@ export default class DDApplyLendScene extends BaseComponent {
     /**
      * 申请借款
      * lendMoneyClick
-     */
+     **/
     lendMoneyClick = () => {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {

@@ -32,12 +32,12 @@ export  default class NewRepaymentInfoTopItem extends PureComponent {
             <View style={[{width: width, backgroundColor: '#ffffff'},styles.padding]}>
                 <View style={styles.itemStyle}>
                     <View style={{flex:1,justifyContent:'center',alignItems:'flex-start'}}>
-                        <Text style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0)}]}>
+                        <Text allowFontScaling={false}  style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0)}]}>
                             单号:{this.props.loan_number}
                         </Text>
                     </View>
                     <View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
-                        <Text style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0)}]}>
+                        <Text allowFontScaling={false}  style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0)}]}>
                             放款时间:{this.props.items.loan_time_str}
                         </Text>
                     </View>
@@ -45,10 +45,10 @@ export  default class NewRepaymentInfoTopItem extends PureComponent {
                 <View style={styles.lineStyle}/>
                 <View style={styles.itemStyle}>
                     <View style={{flex:1,justifyContent:'flex-start',alignItems:'center',flexDirection:'row'}}>
-                        <Text style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0)}]}>
+                        <Text allowFontScaling={false}  style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0)}]}>
                             放款额:
                         </Text>
-                        <Text style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0),color:fontAndColor.COLORA0}]}>
+                        <Text allowFontScaling={false}  style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0),color:fontAndColor.COLORA0}]}>
                             {this.props.items.loan_mny_str} | {this.props.items.loanperiod_type_str}
                         </Text>
                     </View>

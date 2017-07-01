@@ -113,12 +113,12 @@ export default class LoginInputText extends Component {
                         : null
                 }
                 {this.props.leftText ?
-                    <Text style={styles.leftTextStyle}>{this.props.leftText}</Text>
+                    <Text allowFontScaling={false}  style={styles.leftTextStyle}>{this.props.leftText}</Text>
                     : null
                 }
 
                 {this.props.import ?
-                    <Text style={{
+                    <Text allowFontScaling={false}  style={{
                         color: FontAndColor.COLORB2,
                         fontSize: FontAndColor.BUTTONFONT,
                         paddingRight: Pixel.getPixel(2)

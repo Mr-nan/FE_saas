@@ -60,7 +60,7 @@ export  default class PlanParentItem extends PureComponent {
                     }
                 }}>
                     <View style={[styles.topViewStyle, {alignItems: 'flex-start'}]}>
-                        <Text style={{
+                        <Text allowFontScaling={false}  style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                             color: fontAndColor.COLORA0
                         }}>{dateStr}</Text>
@@ -70,7 +70,7 @@ export  default class PlanParentItem extends PureComponent {
                         justifyContent: 'flex-end',
                         alignItems: 'center'
                     }]}>
-                        <Text style={{
+                        <Text allowFontScaling={false}  style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                             color: fontAndColor.COLORA2
                         }}>{this.state.show === 'row' ? movie.list.length + '笔' : '总额' + movie.sum_str}</Text>

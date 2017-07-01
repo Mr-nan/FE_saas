@@ -231,13 +231,13 @@ export default class DetailAutoPhoto extends Component {
             data.hasPhoto
                 ? <Image key={i} style={styles.photoContainer} source={{uri: data.img_url}}>
                     <Image style={styles.hasPhotoContainer} source={photoMask}>
-                        <Text style={styles.photoLabel}>{data.title + '照'}</Text>
+                        <Text allowFontScaling={false}  style={styles.photoLabel}>{data.title + '照'}</Text>
                         <View style={styles.fillSpace}/>
                         <TouchableOpacity
                             key={i}
                             onPress={()=>{this._rePhoto(data)}}
                             activeOpacity={0.6}>
-                            <Text style={styles.rephotoLabel}>重拍</Text>
+                            <Text allowFontScaling={false}  style={styles.rephotoLabel}>重拍</Text>
                         </TouchableOpacity>
                     </Image>
                 </Image>
@@ -247,7 +247,7 @@ export default class DetailAutoPhoto extends Component {
                     activeOpacity={0.6}>
                     <Image style={styles.photoContainer} source={photo}>
                         <View style={styles.noPhotoContainer}>
-                            <Text style={styles.noPhoto}>{data.title}</Text>
+                            <Text allowFontScaling={false}  style={styles.noPhoto}>{data.title}</Text>
                         </View>
                     </Image>
                 </TouchableOpacity>
@@ -267,7 +267,7 @@ export default class DetailAutoPhoto extends Component {
             <TouchableOpacity
                 activeOpacity={0.6}
                 onPress={()=>{this.props.publishData()}}>
-                <Text style={styles.rightTitleText}>完成</Text>
+                <Text allowFontScaling={false}  style={styles.rightTitleText}>完成</Text>
             </TouchableOpacity>
         );
     };

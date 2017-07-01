@@ -79,7 +79,7 @@ export default class PlanItem extends PureComponent {
                 justifyContent: 'flex-start'
             }}>
                 <MyButton {...this.buttonParams}/>
-                <Text style={{
+                <Text allowFontScaling={false}  style={{
                     marginLeft: Pixel.getPixel(10),
                     fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                     color: fontAndColor.COLORA0
@@ -92,7 +92,7 @@ export default class PlanItem extends PureComponent {
                 alignItems: 'center',
                 justifyContent: 'flex-end'
             }}>
-                <Text style={{
+                <Text allowFontScaling={false}  style={{
                     fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                     color: fontAndColor.COLORA1
                 }}>{movie.loan_number}</Text>
@@ -116,21 +116,21 @@ export default class PlanItem extends PureComponent {
                                   marginRight: Pixel.getPixel(15)
                               }}>
             <View style={{flex: 1, height: Pixel.getPixel(44), justifyContent: 'center', alignItems: 'flex-start'}}>
-                <Text style={{
+                <Text allowFontScaling={false}  style={{
                     fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                     color: fontAndColor.COLORA1
                 }}>{movie.loan_mny_str} | {movie.loanperiod_str}</Text>
             </View>
             <View
                 style={{flex: 1, height: Pixel.getPixel(44), justifyContent: 'center', alignItems: 'flex-end'}}>
-                <Text style={{
+                <Text allowFontScaling={false}  style={{
                     fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                     color: fontAndColor.COLORA1
                 }}>{movie.channel}</Text>
             </View>
             <View
                 style={{flex: 1, height: Pixel.getPixel(44), justifyContent: 'center', alignItems: 'flex-end'}}>
-                <Text style={{
+                <Text allowFontScaling={false}  style={{
                     fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                     color: fontAndColor.COLORB2
                 }}>{xi+'='+money}元</Text>
@@ -150,7 +150,7 @@ export default class PlanItem extends PureComponent {
                                       flex: 1, height: Pixel.getPixel(44), marginLeft: Pixel.getPixel(15),
                                       marginRight: Pixel.getPixel(15), justifyContent: 'center'
                                   }}>
-                <Text style={{
+                <Text allowFontScaling={false}  style={{
                     fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                     color: fontAndColor.COLORA1
                 }}>{movie.model_name}</Text>

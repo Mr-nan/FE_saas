@@ -40,10 +40,10 @@ export default class ChooseButton extends PureComponent {
         return (
             <TouchableHighlight onPress={this.props.onPressButton}>
                 <View style={[styles.itemBackground, this.props.itemBackground]}>
-                    <Text style={[styles.leftFont, this.props.leftFont]}>
-                        <Text style={{color: FontAndColor.COLORB2}}>*</Text>{this.props.leftText}
+                    <Text allowFontScaling={false}  style={[styles.leftFont, this.props.leftFont]}>
+                        <Text allowFontScaling={false}  style={{color: FontAndColor.COLORB2}}>*</Text>{this.props.leftText}
                     </Text>
-                    <Text style={styles.headerCellRight}>{this.state.dengjiren}</Text>
+                    <Text allowFontScaling={false} style={styles.headerCellRight}>{this.state.dengjiren}</Text>
                     {
                         this.props.showArrow ?  <Image style={{width: Pixel.getPixel(20), height: Pixel.getPixel(16), marginRight: Pixel.getPixel(-10)}}
                                                        source = {require('../../images/mainImage/celljiantou.png')}

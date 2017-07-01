@@ -49,7 +49,7 @@ export  default class SelectNumberType extends PureComponent {
         }} activeOpacity={0.8} style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(44),backgroundColor:'#fff'
             ,borderBottomColor:fontAndColor.COLORA4,borderBottomWidth:onePT,flexDirection: 'row'}}>
             <View style={{flex:1,justifyContent:'center'}}>
-                <Text style={[{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(14)},this.state.value==''?
+                <Text allowFontScaling={false}  style={[{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(14)},this.state.value==''?
                 {color: fontAndColor.COLORA1}:{color: '#000'}]}>
                     {this.state.value==''?'请选择企业证件类型':this.state.value}</Text>
             </View>

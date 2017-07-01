@@ -186,7 +186,7 @@ export  default class PurchasePickerScene extends BaseComponent {
                     {/*}*/}
                     {/*console.log(navigator.getCurrentRoutes());*/}
             }}>
-                <Text style={{
+                <Text allowFontScaling={false}  style={{
                     color: 'white',
                     fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                     textAlign: 'center',

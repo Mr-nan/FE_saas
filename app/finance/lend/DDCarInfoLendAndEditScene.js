@@ -54,6 +54,11 @@ export default class DDCarInfoScene extends BaseComponent {
         DengJiRen = [];
     }
 
+    /**
+     * from @zhaojian
+     *
+     * 开始加载
+     **/
     initFinish = () => {
         this.getCarInfo();
 
@@ -124,7 +129,7 @@ export default class DDCarInfoScene extends BaseComponent {
     /**
      * 获取车辆信息(车型，车架号)1
      * getCarInfo
-     */
+     **/
     getCarInfo = () => {
         let maps = {
             api: apis.AUTODETAIL,
@@ -158,7 +163,7 @@ export default class DDCarInfoScene extends BaseComponent {
     /**
      * 获取商户登记人/收车人列表2
      * getBusinessList
-     */
+     **/
     getBusinessList = () => {
         let maps = {
             api: apis.GETBUSINESSLIST,
@@ -282,6 +287,11 @@ export default class DDCarInfoScene extends BaseComponent {
         )
     }
 
+    /**
+     * from @zhaojian
+     *
+     * 绘制列表每一行
+     **/
     _renderRow = (movie, sectionId, rowId) => {
         if (movie == '10032') {
             return (<View></View>);
@@ -302,6 +312,11 @@ export default class DDCarInfoScene extends BaseComponent {
         )
     }
 
+    /**
+     * from @zhaojian
+     *
+     * 绘制头部控件
+     **/
     _renderSectionHeader = (sectionData, sectionID) => {
 
         return (

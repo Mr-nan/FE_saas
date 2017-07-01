@@ -110,8 +110,8 @@ export default  class  ReceiptInfoScene extends BaseComponent{
 
         return (
                 <View style={styles.rowCell}>
-                    <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}}>{rowData.title}</Text>
-                    <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),textAlign:'right'}}>{rowData.value}</Text>
+                    <Text allowFontScaling={false}  style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}}>{rowData.title}</Text>
+                    <Text allowFontScaling={false}  style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),textAlign:'right'}}>{rowData.value}</Text>
                 </View>
         )
     };

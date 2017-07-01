@@ -43,9 +43,9 @@ export default class SelectDate extends BaseComponent {
                     marginRight: Pixel.getPixel(25),
                     marginTop: Pixel.getPixel(17)
                 }}>
-                    <Text style={{fontSize: Pixel.getPixel(fontAndColor.BUTTONFONT30)}}>创建订单日期</Text>
+                    <Text allowFontScaling={false}  style={{fontSize: Pixel.getPixel(fontAndColor.BUTTONFONT30)}}>创建订单日期</Text>
                     <View style={{flex: 1}}/>
-                    <Text
+                    <Text allowFontScaling={false} 
                         onPress={() => {
                             this.setState({
                                 startDate: '选择开始时间',
@@ -63,14 +63,14 @@ export default class SelectDate extends BaseComponent {
                     <TouchableOpacity style={styles.dateBox} onPress={() => {
                         this._showDateTimePicker('start')
                     }}>
-                        <Text
+                        <Text allowFontScaling={false} 
                             style={this.state.startDate === '选择开始时间' ? styles.unSelectDate : styles.selectDate}>{this.state.startDate}</Text>
                     </TouchableOpacity>
-                    <Text>至</Text>
+                    <Text allowFontScaling={false} >至</Text>
                     <TouchableOpacity style={styles.dateBox} onPress={() => {
                         this._showDateTimePicker('end')
                     }}>
-                        <Text
+                        <Text allowFontScaling={false} 
                             style={this.state.endDate === '选择结束时间' ? styles.unSelectDate : styles.selectDate}>{this.state.endDate}</Text>
                     </TouchableOpacity>
                 </View>

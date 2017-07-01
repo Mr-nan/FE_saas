@@ -249,7 +249,7 @@ export default class CarBrandSelectScene extends BaseComponent {
                 <View style={styles.rowCell}>
                     <Image style={styles.rowCellImag}
                            source={{uri:rowData.brand_icon+'?x-oss-process=image/resize,w_'+80+',h_'+80}}></Image>
-                    <Text style={styles.rowCellText}>{rowData.brand_name}</Text>
+                    <Text allowFontScaling={false}  style={styles.rowCellText}>{rowData.brand_name}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -260,7 +260,7 @@ export default class CarBrandSelectScene extends BaseComponent {
 
         return (
             <View style={styles.sectionHeader}>
-                <Text style={styles.sectionText}>{sectionData}</Text>
+                <Text allowFontScaling={false}  style={styles.sectionText}>{sectionData}</Text>
             </View>
         );
     }
@@ -306,7 +306,7 @@ export default class CarBrandSelectScene extends BaseComponent {
         return (
           this.props.unlimitedAction &&  <TouchableOpacity onPress={()=>{this.props.unlimitedAction();this.backPage();}}>
                 <View style={{paddingVertical:3, paddingHorizontal:5,backgroundColor:'transparent',borderWidth:StyleSheet.hairlineWidth,borderColor:'white',borderRadius:3}}>
-                    <Text style={{
+                    <Text allowFontScaling={false}  style={{
                         color: 'white',
                         fontSize: Pixel.getFontPixel(fontAnColor.BUTTONFONT30),
                         textAlign: 'center',
@@ -332,7 +332,7 @@ export default class CarBrandSelectScene extends BaseComponent {
                 {
                     (this.props.status == 1 && this.state.footprintData.length > 0) && (
                         <View style={styles.carBrandHeadView}>
-                            <Text style={styles.carBrandHeadText}>足迹:</Text>
+                            <Text allowFontScaling={false}  style={styles.carBrandHeadText}>足迹:</Text>
                             {
                                 this.state.footprintData.map((data, index) => {
                                     return (
@@ -341,7 +341,7 @@ export default class CarBrandSelectScene extends BaseComponent {
                                         this._checkedCarType(data);
                                     }}>
                                             <View style={styles.footprintView}>
-                                                <Text style={styles.footprintText}>{data.series_name!='0'?data.series_name:data.brand_name}</Text>
+                                                <Text allowFontScaling={false}  style={styles.footprintText}>{data.series_name!='0'?data.series_name:data.brand_name}</Text>
                                             </View>
                                         </TouchableOpacity>)
                                 })
@@ -516,7 +516,7 @@ class CarSeriesList extends BaseComponent {
 
         return (
             <View style={styles.sectionHeader}>
-                <Text style={styles.sectionText}>{sectionData}</Text>
+                <Text allowFontScaling={false}  style={styles.sectionText}>{sectionData}</Text>
             </View>
         );
     }
@@ -557,7 +557,7 @@ class CarSeriesList extends BaseComponent {
 
             }}>
                 <View style={styles.rowCell}>
-                    <Text style={styles.rowCellText}>{rowData.series_name}</Text>
+                    <Text allowFontScaling={false}  style={styles.rowCellText}>{rowData.series_name}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -577,7 +577,7 @@ class CarSeriesList extends BaseComponent {
                 }}>
                     <View style={styles.carSubBrandHeadView}>
                         <Image style={styles.rowCellImag} source={{uri:this.state.brandIcon}}/>
-                        <Text style={styles.rowCellText}>{this.state.carTitle}</Text>
+                        <Text allowFontScaling={false}  style={styles.rowCellText}>{this.state.carTitle}</Text>
                     </View>
                 </TouchableOpacity>
                 {
@@ -674,7 +674,7 @@ class CarModelList extends BaseComponent {
 
             }}>
                 <View style={styles.rowCell}>
-                    <Text style={styles.rowCellText}>{rowData.model_name}</Text>
+                    <Text allowFontScaling={false}  style={styles.rowCellText}>{rowData.model_name}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -693,7 +693,7 @@ class CarModelList extends BaseComponent {
                 }}>
                     <View style={styles.carSubBrandHeadView}>
                         {/*<Image style={styles.rowCellImag}/>*/}
-                        <Text style={styles.rowCellText}>{this.state.carTitle}</Text>
+                        <Text allowFontScaling={false}  style={styles.rowCellText}>{this.state.carTitle}</Text>
                     </View>
                 </TouchableOpacity>
                 {
@@ -727,7 +727,7 @@ class ZNListIndexView extends Component {
                                 this.props.indexClick(index);
 
                             }}>
-                                <Text style={styles.indexItemText}>{data}</Text>
+                                <Text allowFontScaling={false}  style={styles.indexItemText}>{data}</Text>
                             </TouchableOpacity>
                         )
                     })

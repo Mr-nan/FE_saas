@@ -96,7 +96,7 @@ export  default class CarUpkeepScene extends BaseComponent {
                     dataSource={this.state.dataSource}
                     renderHeader={()=>
                         <View style={styles.headView}>
-                            <Text style={styles.headViewText}>特别提示：<Text style={{fontWeight: 'normal'}}>若车辆在非4S店制造商授权店的维修保养信息可能被采集和收录，仅供参考，请结合实车看眼结果和试乘试驾体验，做出准确的交易决策。</Text></Text>
+                            <Text allowFontScaling={false}  style={styles.headViewText}>特别提示：<Text allowFontScaling={false}  style={{fontWeight: 'normal'}}>若车辆在非4S店制造商授权店的维修保养信息可能被采集和收录，仅供参考，请结合实车看眼结果和试乘试驾体验，做出准确的交易决策。</Text></Text>
                     </View>
                     }
                     renderRow={this.renderRow}/>
@@ -114,10 +114,10 @@ export  default class CarUpkeepScene extends BaseComponent {
         return (
             <View style={styles.cellView}>
                 <View style={styles.cellTitleView}>
-                    <Text style={styles.cellTitleViewTitle}>{rowData.date + ' | ' + rowData.mile + '公里'}</Text>
-                    <Text style={styles.cellTitleViewValue}>{rowData.type}</Text>
+                    <Text allowFontScaling={false}  style={styles.cellTitleViewTitle}>{rowData.date + ' | ' + rowData.mile + '公里'}</Text>
+                    <Text allowFontScaling={false}  style={styles.cellTitleViewValue}>{rowData.type}</Text>
                 </View>
-                <Text style={styles.cellContent}>{rowData.detail + rowData.other}</Text>
+                <Text allowFontScaling={false}  style={styles.cellContent}>{rowData.detail + rowData.other}</Text>
             </View>
         )
     }
@@ -167,7 +167,7 @@ export  default class CarUpkeepScene extends BaseComponent {
                                      resizeMode:'stretch'
                                  }}
                     source={require('../../images/noData.png')}/>
-                <Text
+                <Text allowFontScaling={false} 
                     style={{
                              color: fontAndColor.COLORA0, fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                              marginTop: Pixel.getPixel(27),
@@ -183,7 +183,7 @@ export  default class CarUpkeepScene extends BaseComponent {
                            this.pushCarConfigScene();
                      }} activeOpacity={0.8} style={{flex:1,justifyContent:'center',alignItems: 'center',
                                  backgroundColor: fontAndColor.COLORB0,marginRight:Pixel.getPixel(20)}}>
-                        <Text style={{color: '#fff',fontSize:
+                        <Text allowFontScaling={false}  style={{color: '#fff',fontSize:
                                           Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>查看配置信息</Text>
                     </TouchableOpacity>
                     { this.props.carData.dealer_price > 0 && (
@@ -194,7 +194,7 @@ export  default class CarUpkeepScene extends BaseComponent {
                             this.pushCarReferencePriceScene();
                      }} activeOpacity={0.8} style={{flex:1,justifyContent:'center',alignItems: 'center',
                          borderColor:fontAndColor.COLORB0,borderWidth: 1,marginLeft:Pixel.getPixel(20)}}>
-                            <Text style={{color: fontAndColor.COLORB0,fontSize:
+                            <Text allowFontScaling={false}  style={{color: fontAndColor.COLORB0,fontSize:
                                           Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>查看参考价</Text>
                         </TouchableOpacity>
                     )}

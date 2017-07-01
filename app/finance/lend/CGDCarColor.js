@@ -197,7 +197,7 @@ export default class CGDCarColor extends BaseComponent {
                     >
                         <View style={styles.center}>
                             <View style={[styles.colorContainer,{backgroundColor:data.color}]}/>
-                            <Text style={styles.textLabel}>{data.title}</Text>
+                            <Text allowFontScaling={false}  style={styles.textLabel}>{data.title}</Text>
                         </View>
                     </TouchableOpacity>
 
@@ -213,7 +213,7 @@ export default class CGDCarColor extends BaseComponent {
                     >
                         <View style={styles.center}>
                             <Image style={styles.colorContainer} source={data.img}/>
-                            <Text style={styles.textLabel}>{data.title}</Text>
+                            <Text allowFontScaling={false}  style={styles.textLabel}>{data.title}</Text>
                         </View>
                     </TouchableOpacity>
 
@@ -231,7 +231,7 @@ export default class CGDCarColor extends BaseComponent {
                         <View style={[styles.colorContainer,styles.selectColor]}>
                             <Image style={styles.selectImg} source={colorSelect}/>
                         </View>
-                        <Text style={styles.textLabel}>{data.title}</Text>
+                        <Text allowFontScaling={false}  style={styles.textLabel}>{data.title}</Text>
                     </View>
                 </TouchableOpacity>
             );

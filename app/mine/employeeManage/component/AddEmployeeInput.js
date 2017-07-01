@@ -44,7 +44,7 @@ export  default class AddEmployeeInput extends PureComponent {
             <View style={{width:width,height:Pixel.getPixel(44),backgroundColor:'#00000000',flexDirection: 'row',
             paddingLeft: Pixel.getPixel(15),paddingRight: Pixel.getPixel(15)}}>
                 <View style={{flex:1,justifyContent:'center'}}>
-                    <Text style={{fontSize: Pixel.getFontPixel(14),color:'#000'}}>{this.props.items.name}</Text>
+                    <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(14),color:'#000'}}>{this.props.items.name}</Text>
                 </View>
                 <View style={{flex:1,justifyContent:'flex-end',alignItems:'center',flexDirection: 'row'}}>
                     <TextInput style={{fontSize: Pixel.getFontPixel(14),color: fontAndColor.COLORA2,

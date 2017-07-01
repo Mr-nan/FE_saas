@@ -89,8 +89,8 @@ export class LendItem extends PureComponent {
 
         return (
             <View style={styles.itemView}>
-                <Text style={[styles.itemLeftText, leftStyle]}>{leftTitle}</Text>
-                <Text style={[styles.itemRightText, rightStyle]}>{rightTitle}</Text>
+                <Text allowFontScaling={false}  style={[styles.itemLeftText, leftStyle]}>{leftTitle}</Text>
+                <Text allowFontScaling={false}  style={[styles.itemRightText, rightStyle]}>{rightTitle}</Text>
             </View>
         )
     }
@@ -114,7 +114,7 @@ export class CommenButton extends PureComponent {
 
             <TouchableOpacity style={buttonStyle} onPress={onPress} activeOpacity={0.8}>
 
-                <Text style={[{fontSize: Pixel.getPixel(15), color: '#fff'}, textStyle]}>{title}</Text>
+                <Text allowFontScaling={false}  style={[{fontSize: Pixel.getPixel(15), color: '#fff'}, textStyle]}>{title}</Text>
 
             </TouchableOpacity>
         )
@@ -144,14 +144,14 @@ export class LendCarItemCell extends PureComponent {
 
                 <View style={styles.lendCarItemCellInstWarp}>
 
-                    <Text style={styles.lendCarItemCarName} numberOfLines={2}>{carName}</Text>
-                    <Text style={styles.lendCarItemOrderState}>{orderState}</Text>
+                    <Text allowFontScaling={false}  style={styles.lendCarItemCarName} numberOfLines={2}>{carName}</Text>
+                    <Text allowFontScaling={false}  style={styles.lendCarItemOrderState}>{orderState}</Text>
 
                 </View>
                 <View style={styles.lendCarItemCellInstWarp}>
 
-                    <Text style={styles.lendCarItemOrderNum} numberOfLines={2}>{orderNum}</Text>
-                    <Text style={styles.lendCarItemPrice}>{price}</Text>
+                    <Text allowFontScaling={false}  style={styles.lendCarItemOrderNum} numberOfLines={2}>{orderNum}</Text>
+                    <Text allowFontScaling={false}  style={styles.lendCarItemPrice}>{price}</Text>
                 </View>
 
             </TouchableOpacity>
@@ -182,10 +182,10 @@ export class LendInputItem extends PureComponent {
         return (
             <View style={styles.itemView}>
 
-                <Text style={styles.itemLeftText}>{title}</Text>
+                <Text allowFontScaling={false}  style={styles.itemLeftText}>{title}</Text>
                 <TextInput underlineColorAndroid={"#00000000"} style={styles.itemInput} placeholder={placeholder}
                            keyboardType={'decimal-pad'} onChangeText={onChangeText} defaultValue={showValue}/>
-                <Text style={[styles.itemPlacehodel, unitStyle]}>{unit}</Text>
+                <Text allowFontScaling={false}  style={[styles.itemPlacehodel, unitStyle]}>{unit}</Text>
             </View>
         )
     }
@@ -242,7 +242,7 @@ export class LendDatePike extends PureComponent {
             <TouchableOpacity
                 onPress={this.onPress}
                 style={[styles.itemView, {borderBottomColor: '#d8d8d8', borderBottomWidth: adapeSize(0.5)}] }>
-                <Text style={styles.itemLeftText}>{lefTitle}</Text>
+                <Text allowFontScaling={false}  style={styles.itemLeftText}>{lefTitle}</Text>
 
                 <TextInput underlineColorAndroid={"#00000000"} ref={(date) => {
                     this.dateInput = date
@@ -262,7 +262,7 @@ export class LendUseful extends PureComponent {
         const {onEndEidt}=this.props;
         return (
             <View style={styles.itemUserful}>
-                <Text style={styles.itemLeftText}>借款用途</Text>
+                <Text allowFontScaling={false}  style={styles.itemLeftText}>借款用途</Text>
                 <TextInput underlineColorAndroid={"#00000000"} onChangeText={onEndEidt} style={styles.itemUserfulInput}
                            placeholder={'请简要描述借款用途'} multiline={true}/>
             </View>
@@ -277,8 +277,8 @@ export class LendRate extends PureComponent {
         return (
             <View style={styles.itemRate}>
                 <Image style={styles.itemRateThumb} source={require('../../../../images/financeImages/lendRate.png')}/>
-                <Text style={styles.itemRateText}> 借款费率</Text>
-                <Text style={styles.itRateNum}>{this.props.rate}</Text>
+                <Text allowFontScaling={false}  style={styles.itemRateText}> 借款费率</Text>
+                <Text allowFontScaling={false}  style={styles.itRateNum}>{this.props.rate}</Text>
             </View>
         )
     }
@@ -293,8 +293,8 @@ export class CommentHandItem extends PureComponent {
         return (
 
             <TouchableOpacity style={[styles.commentHandeItem, warpstyle] } onPress={handel}>
-                <Text style={styles.commentListItemLeft}>{leftTitle}</Text>
-                <Text style={[styles.commentListItemRight, textStyle]}>{showValue}</Text>
+                <Text allowFontScaling={false}  style={styles.commentListItemLeft}>{leftTitle}</Text>
+                <Text allowFontScaling={false}  style={[styles.commentListItemRight, textStyle]}>{showValue}</Text>
                 <Image style={{width: adapeSize(20), height: adapeSize(16), marginRight: adapeSize(10)}}
                        source={require('../../../../images/mainImage/celljiantou.png')}/>
             </TouchableOpacity>
@@ -313,8 +313,8 @@ export class CommnetListItem extends PureComponent {
         return (
 
             <View style={styles.commentListItemView}>
-                <Text style={styles.commentListItemLeft}>{leftTitle}</Text>
-                <Text style={[styles.commentListItemRight, textStyle]}>{showValue}</Text>
+                <Text allowFontScaling={false}  style={styles.commentListItemLeft}>{leftTitle}</Text>
+                <Text allowFontScaling={false}  style={[styles.commentListItemRight, textStyle]}>{showValue}</Text>
 
             </View>
 
@@ -336,27 +336,27 @@ export class CGDCarItem extends PureComponent {
 
                 <Image source={{uri: url}} style={styles.CGDCarImage}/>
                 <View style={styles.CGDInstWarpTop}>
-                    <Text style={styles.CGDInstTitle} numberOfLines={2}>{title}</Text>
+                    <Text allowFontScaling={false}  style={styles.CGDInstTitle} numberOfLines={2}>{title}</Text>
                     <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}>
                         <View style={[styles.carItemFlage, obdState == 1 ? {backgroundColor: '#ffffff'} :
-                            {backgroundColor: '#d8d8d8'}]}><Text >OBD</Text></View>
+                            {backgroundColor: '#d8d8d8'}]}><Text allowFontScaling={false}  >OBD</Text></View>
                         <View style={[styles.carItemFlage,
                             typeof(shouxuState) == "undefined" ? {width: 0} : {
                                     width: adapeSize(60),
                                     marginLeft: adapeSize(5)
                                 }, shouxuState == 1 ? {backgroundColor: '#ffffff'}
                                 : {backgroundColor: '#d8d8d8'}]}>
-                            <Text style={{paddingTop: adapeSize(1), paddingBottom: adapeSize(1)}}>交易发票
+                            <Text allowFontScaling={false}  style={{paddingTop: adapeSize(1), paddingBottom: adapeSize(1)}}>交易发票
                             </Text></View>
                     </View>
 
                     <View style={styles.CGDInstWarpBooton}>
-                        <Text style={styles.CGDInserDate}>{date}</Text>
+                        <Text allowFontScaling={false}  style={styles.CGDInserDate}>{date}</Text>
                     </View>
                 </View>
                 <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center', marginRight: adapeSize(10)}}
                                   onPress={deletePress}>
-                    <Text style={{color: 'red'}}>{deletePress && '删除'}</Text>
+                    <Text allowFontScaling={false}  style={{color: 'red'}}>{deletePress && '删除'}</Text>
                 </TouchableOpacity>
             </TouchableOpacity>
 
@@ -408,12 +408,12 @@ export class CGDCarItems extends PureComponent {
                 }
 
                 <View style={styles.CGDInstWarpTop}>
-                    <Text style={styles.CGDInstTitle} numberOfLines={2}>{title}</Text>
+                    <Text allowFontScaling={false}  style={styles.CGDInstTitle} numberOfLines={2}>{title}</Text>
                     <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}>
                         {
                             obd_bind_status == "2" ? null :
                                 <View style={[styles.carItemFlage, {backgroundColor: colorstyle.obdColor}]}>
-                                    <Text >OBD</Text>
+                                    <Text allowFontScaling={false}  >OBD</Text>
                                 </View>
                         }
                         {
@@ -424,7 +424,7 @@ export class CGDCarItems extends PureComponent {
                                             width: adapeSize(60),
                                             marginLeft: adapeSize(5)
                                         }, {backgroundColor: colorstyle.invoiceClolr}]}>
-                                    <Text style={{paddingTop: adapeSize(1), paddingBottom: adapeSize(1)}}>交易发票
+                                    <Text allowFontScaling={false}  style={{paddingTop: adapeSize(1), paddingBottom: adapeSize(1)}}>交易发票
                                     </Text>
                                 </View>
                         }
@@ -433,14 +433,14 @@ export class CGDCarItems extends PureComponent {
                     {
                         date == "" ? null :
                             <View style={styles.CGDInstWarpBooton}>
-                                <Text style={styles.CGDInserDate}>{date}</Text>
+                                <Text allowFontScaling={false}  style={styles.CGDInserDate}>{date}</Text>
                             </View>
                     }
 
                 </View>
                 <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center', marginRight: adapeSize(10)}}
                                   onPress={deletePress}>
-                    <Text style={{color: 'red'}}>{deletePress && '删除'}</Text>
+                    <Text allowFontScaling={false}  style={{color: 'red'}}>{deletePress && '删除'}</Text>
                 </TouchableOpacity>
             </TouchableOpacity>
 

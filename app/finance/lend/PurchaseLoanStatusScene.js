@@ -111,7 +111,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                         alignItems: 'flex-start',
                         justifyContent: 'center'
                     }}>
-                        <Text style={{
+                        <Text allowFontScaling={false}  style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color: fontAndColor.COLORA1
                         }}>借款单号</Text>
@@ -122,7 +122,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                         alignItems: 'flex-end',
                         justifyContent: 'center'
                     }}>
-                        <Text style={{
+                        <Text allowFontScaling={false}  style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color: fontAndColor.COLORA0
 

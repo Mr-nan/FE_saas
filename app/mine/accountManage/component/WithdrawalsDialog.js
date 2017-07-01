@@ -60,10 +60,10 @@ export default class WithdrawalsDialog extends Component {
                      justifyContent:'center',alignItems: 'center'}}>
                             <Image style={{width:Pixel.getPixel(163),height:Pixel.getPixel(163)}}
                                    source={image}/>
-                            <Text style={{fontSize:Pixel.getPixel(20),
+                            <Text allowFontScaling={false}  style={{fontSize:Pixel.getPixel(20),
                         color: '#000'}}>{title}
                             </Text>
-                            {this.state.isSuccess=='1' ? <View/> : <Text style={{marginTop:Pixel.getPixel(10),fontSize:Pixel.getPixel(14),
+                            {this.state.isSuccess=='1' ? <View/> : <Text allowFontScaling={false}  style={{marginTop:Pixel.getPixel(10),fontSize:Pixel.getPixel(14),
                         color: fontAndColor.COLORA1,marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),
                         textAlign: 'center'}}>
                                     {this.state.content}
@@ -79,7 +79,7 @@ export default class WithdrawalsDialog extends Component {
                             }}
                                 style={{width:Pixel.getPixel(100),height:Pixel.getPixel(32),backgroundColor:fontAndColor.COLORB0,
                             justifyContent:'center',alignItems: 'center',marginTop: Pixel.getPixel(20)}}>
-                                <Text style={{fontSize:Pixel.getPixel(15),
+                                <Text allowFontScaling={false}  style={{fontSize:Pixel.getPixel(15),
                         color: '#fff'}}>确定
                                 </Text>
                             </TouchableOpacity>

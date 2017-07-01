@@ -72,7 +72,7 @@ export  default class ShareSpanner extends Component {
                                     style={styles.shareIcon}
                                     source={shareIconWechat}
                                 />
-                                <Text style={styles.spinnerTitle}>
+                                <Text allowFontScaling={false}  style={styles.spinnerTitle}>
                                     分享给微信好友
                                 </Text>
                             </View>
@@ -106,7 +106,7 @@ export  default class ShareSpanner extends Component {
                                     style={styles.shareIcon}
                                     source={shareIconMoments}
                                 />
-                                <Text style={styles.spinnerTitle}>
+                                <Text allowFontScaling={false}  style={styles.spinnerTitle}>
                                     分享到朋友圈
                                 </Text>
                             </View>

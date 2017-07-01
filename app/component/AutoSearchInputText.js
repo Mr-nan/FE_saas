@@ -121,7 +121,7 @@ export default class Search extends BaseComponent {
         let views = [];
         for (let x in this.state.saveData) {
             views.push(
-                <Text
+                <Text allowFontScaling={false} 
                     key={x}
                     style={this.props.itemStyle}
                     onPress={this.hide.bind(this, this.state.saveData[x])}

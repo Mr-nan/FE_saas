@@ -48,7 +48,7 @@ export default class CarCollectionItems extends Component {
                                source={carCellData.img?{uri:carCellData.img+'?x-oss-process=image/resize,w_'+320+',h_'+240}:require('../../../images/carSourceImages/car_null_img.png')}>
                             {
                                 (carCellData.status==3||carCellData.status==4) &&<View style={styles.carTypeView}>
-                                    <Text style={styles.carTypeText}>{carCellData.status==3?'已下架':'已成交'}</Text>
+                                    <Text allowFontScaling={false}  style={styles.carTypeText}>{carCellData.status==3?'已下架':'已成交'}</Text>
                                 </View>
                             }
 
@@ -57,16 +57,16 @@ export default class CarCollectionItems extends Component {
 
                     <View style={[styles.textContainer]}>
                         <View style={{backgroundColor:'#00000000'}}>
-                            <Text style={styles.mainText}>{carCellData.model_name}</Text>
+                            <Text allowFontScaling={false}  style={styles.mainText}>{carCellData.model_name}</Text>
                         </View>
                         <View style={{backgroundColor:'#00000000',justifyContent:'center'}}>
-                            <Text
+                            <Text allowFontScaling={false} 
                                 style={styles.subTitleText}>{this.dateReversal(carCellData.manufacture + '000') + '/' + carCellData.mileage + '万公里'}</Text>
                             <TouchableOpacity onPress={()=>{
                                     this.props.callBack(carCellData.id);
                             }} activeOpacity={0.8}
                                               style={{borderWidth:1,borderRadius:3,borderColor:fontAndColor.COLORA3,marginTop:Pixel.getPixel(5),width:Pixel.getPixel(63)}}>
-                                <Text style={[styles.cellFootText,{margin:Pixel.getPixel(3)}]}>{this.props.from=='BrowsingHistoryScene'?'删除记录':'取消收藏'}</Text>
+                                <Text allowFontScaling={false}  style={[styles.cellFootText,{margin:Pixel.getPixel(3)}]}>{this.props.from=='BrowsingHistoryScene'?'删除记录':'取消收藏'}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

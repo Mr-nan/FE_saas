@@ -233,7 +233,7 @@ export default class HomeScene extends BaseComponet {
                     width: width, height: Pixel.getPixel(60), backgroundColor: fontAndClolr.COLORA3,
                     alignItems: 'center'
                 }}>
-                    <Text style={{fontSize: Pixel.getFontPixel(14), marginTop: Pixel.getPixel(7)}}>查看更多车源 ></Text>
+                    <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(14), marginTop: Pixel.getPixel(7)}}>查看更多车源 ></Text>
                 </TouchableOpacity>)
         }
 
@@ -305,7 +305,7 @@ export default class HomeScene extends BaseComponet {
                     }}>
                         <Image style={{width: Pixel.getPixel(17), height: Pixel.getPixel(17)}}
                                source={require('../../images/findIcon.png')}/>
-                        <Text style={{
+                        <Text allowFontScaling={false}  style={{
                             backgroundColor: '#00000000', fontSize: Pixel.getPixel(fontAndClolr.CONTENTFONT24),
                             color: fontAndClolr.COLORA1
                         }}> 搜索您要找的车</Text>
@@ -327,7 +327,7 @@ export default class HomeScene extends BaseComponet {
                 }}>
 
                     <View style={{marginLeft: Pixel.getPixel(20), flex: 1}}>
-                        <Text style={{fontSize: Pixel.getFontPixel(15)}}>
+                        <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(15)}}>
                             意向车源
                         </Text>
 
@@ -339,7 +339,7 @@ export default class HomeScene extends BaseComponet {
                             flexDirection: 'row',
                             alignItems: 'center'
                         }}>
-                            <Text style={{color: 'gray', fontSize: Pixel.getFontPixel(12)}}>
+                            <Text allowFontScaling={false}  style={{color: 'gray', fontSize: Pixel.getFontPixel(12)}}>
                                 更多
                             </Text>
 
@@ -384,9 +384,9 @@ export default class HomeScene extends BaseComponet {
                     <Image style={cellSheet.imageStyle}
                            source={movie.img ? {uri: movie.img + '?x-oss-process=image/resize,w_' + 320 + ',h_' + 240} : require('../../images/carSourceImages/car_null_img.png')}/>
 
-                    <Text style={cellSheet.despritonStyle}
+                    <Text allowFontScaling={false}  style={cellSheet.despritonStyle}
                           numberOfLines={2}>{DIDIAN + movie.model_name}</Text>
-                    <Text
+                    <Text allowFontScaling={false} 
                         style={cellSheet.timeStyle}>{this.dateReversal(movie.create_time + '000') + '/' + movie.mileage + '万公里'}</Text>
 
                 </View>

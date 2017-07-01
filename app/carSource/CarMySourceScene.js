@@ -178,7 +178,7 @@ export default class CarMySourceScene extends BaceComponent {
         return (
             <TouchableOpacity onPress={this.pushNewCarScene}>
                 <View style={{paddingVertical:3, paddingHorizontal:5,backgroundColor:'transparent',borderWidth:StyleSheet.hairlineWidth,borderColor:'white',borderRadius:3}}>
-                <Text style={{
+                <Text allowFontScaling={false}  style={{
                     color: 'white',
                     fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                     textAlign: 'center',
@@ -405,7 +405,7 @@ class MyCarSourceUpperFrameView extends BaceComponent {
        }}>
            <View style={{flexDirection:'row'}}>
                <Image source={require('../../images/carSourceImages/pointIcon.png')}/>
-               <Text style={{color:fontAndColor.COLORB2, fontSize:fontAndColor.LITTLEFONT28,marginLeft:Pixel.getPixel(5)}}>已经出售的长库龄车请尽快操作下架</Text>
+               <Text allowFontScaling={false}  style={{color:fontAndColor.COLORB2, fontSize:fontAndColor.LITTLEFONT28,marginLeft:Pixel.getPixel(5)}}>已经出售的长库龄车请尽快操作下架</Text>
            </View>
             <TouchableOpacity onPress={()=>{
                 this.isCarLong = false;
@@ -741,7 +741,7 @@ class MyCarSourceAuditView extends BaceComponent {
             }}>
                 <View style={{flexDirection:'row', alignItems:'center'}}>
                     <Image source={require('../../images/carSourceImages/pointIcon.png')}/>
-                    <Text style={{color:fontAndColor.COLORB2, fontSize:fontAndColor.LITTLEFONT28,marginLeft:Pixel.getPixel(5)}}>与其他商户重复的车源需待管理员核实后显示</Text>
+                    <Text allowFontScaling={false}  style={{color:fontAndColor.COLORB2, fontSize:fontAndColor.LITTLEFONT28,marginLeft:Pixel.getPixel(5)}}>与其他商户重复的车源需待管理员核实后显示</Text>
                 </View>
             </View>)
     }
@@ -760,7 +760,7 @@ class MyCarSourceAuditView extends BaceComponent {
                     }}>
                         <View style={{flexDirection:'row', alignItems:'center'}}>
                             <Image source={require('../../images/carSourceImages/pointIcon.png')}/>
-                            <Text style={{color:fontAndColor.COLORB2, fontSize:fontAndColor.LITTLEFONT28,marginLeft:Pixel.getPixel(5)}}>与其他商户重复的车源需待管理员核实后显示</Text>
+                            <Text allowFontScaling={false}  style={{color:fontAndColor.COLORB2, fontSize:fontAndColor.LITTLEFONT28,marginLeft:Pixel.getPixel(5)}}>与其他商户重复的车源需待管理员核实后显示</Text>
                         </View>
                     </View>
                 </View>);

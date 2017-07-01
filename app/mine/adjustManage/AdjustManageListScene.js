@@ -126,20 +126,20 @@ export  default class AdjustManageListScene extends BaseComponent {
             <View>
                 <Image style={styles.container} source={bg}>
                     <View style={styles.leftContainer}>
-                        <Text style={styles.leftTitle}>{movie.coupon_name}</Text>
-                        <Text style={styles.leftBottom}>有效期:{coupon_begindate}-{coupon_enddate}</Text>
-                        <Text style={styles.leftBottom}>{money}</Text>
+                        <Text allowFontScaling={false}  style={styles.leftTitle}>{movie.coupon_name}</Text>
+                        <Text allowFontScaling={false}  style={styles.leftBottom}>有效期:{coupon_begindate}-{coupon_enddate}</Text>
+                        <Text allowFontScaling={false}  style={styles.leftBottom}>{money}</Text>
                     </View>
                     <View style={styles.rightContainer}>
                         <View style={styles.rightTitleContainer}>
-                            <Text style={[styles.rightTitle, styles.rightTitleAlign,movie.used_status=='0'?{color: '#05c5c2'}:{color: '#9e9e9e'}]}>¥</Text>
-                            <Text style={[styles.rightTitle,movie.used_status=='0'?{color: '#05c5c2'}:{color: '#9e9e9e'}]}>{movie.coupon_mny}</Text>
+                            <Text allowFontScaling={false}  style={[styles.rightTitle, styles.rightTitleAlign,movie.used_status=='0'?{color: '#05c5c2'}:{color: '#9e9e9e'}]}>¥</Text>
+                            <Text allowFontScaling={false}  style={[styles.rightTitle,movie.used_status=='0'?{color: '#05c5c2'}:{color: '#9e9e9e'}]}>{movie.coupon_mny}</Text>
                         </View>
                         <TouchableOpacity style={styles.rightBottom} onPress={() => {
                                 this.refs.cgdModal.changeShowType(true,movie.coupon_remark);
                         }}>
                             <View>
-                                <Text style={styles.rightBottomText}>使用规则</Text>
+                                <Text allowFontScaling={false}  style={styles.rightBottomText}>使用规则</Text>
                             </View>
                         </TouchableOpacity>
                     </View>

@@ -63,10 +63,10 @@ export default class LoginFail extends BaseComponent {
                     leftImageCallBack={this.backPage}
                 />
                 <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                    <Text style={styles.fontStyle}>
+                    <Text allowFontScaling={false}  style={styles.fontStyle}>
                         您的手机号
                     </Text>
-                    <Text style={styles.fontStyle}>
+                    <Text allowFontScaling={false}  style={styles.fontStyle}>
                         目前能不能接收短信？
                     </Text>
                 </View>

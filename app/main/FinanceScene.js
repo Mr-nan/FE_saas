@@ -526,7 +526,7 @@ export default class FinanceSence extends BaseComponet {
                             alignItems: 'center'
                         }]}>
                             <MyButton {...this.buttonParams}/>
-                            <Text numberOfLines={1} style={cellSheet.rowTopTextStyle}>{this.state.customerName}</Text>
+                            <Text allowFontScaling={false}  numberOfLines={1} style={cellSheet.rowTopTextStyle}>{this.state.customerName}</Text>
                         </View>
                         <View style={[{
                             height: Pixel.getPixel(40),
@@ -534,19 +534,19 @@ export default class FinanceSence extends BaseComponet {
                             justifyContent: 'center',
                             alignItems: 'flex-end'
                         }]}>
-                            <Text style={cellSheet.rowTopGrayTextStyle}>{movie.loan_code}</Text>
+                            <Text allowFontScaling={false}  style={cellSheet.rowTopGrayTextStyle}>{movie.loan_code}</Text>
                         </View>
                     </View>
                     <View style={{height: 0.5, backgroundColor: fontAndColor.COLORA4}}></View>
                     <View style={cellSheet.rowBottomViewStyle}>
                         <View style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-start'}]}>
-                            <Text style={cellSheet.rowBottomLittleStyle}>借款金额</Text>
-                            <Text
+                            <Text allowFontScaling={false}  style={cellSheet.rowBottomLittleStyle}>借款金额</Text>
+                            <Text allowFontScaling={false} 
                                 style={[cellSheet.rowBottomBigStyle, {color: fontAndColor.COLORB2}]}>{movie.loan_mny}</Text>
                         </View>
                         <View style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-start'}]}>
-                            <Text style={cellSheet.rowBottomLittleStyle}>借款期限</Text>
-                            <Text
+                            <Text allowFontScaling={false}  style={cellSheet.rowBottomLittleStyle}>借款期限</Text>
+                            <Text allowFontScaling={false} 
                                 style={[cellSheet.rowBottomBigStyle, {color: fontAndColor.COLORA0}]}>{movie.loan_life}</Text>
                         </View>
                         <View
@@ -560,7 +560,7 @@ export default class FinanceSence extends BaseComponet {
                                 justifyContent: 'center',
                                 alignItems: 'center'
                                 }}>
-                                <Text style={{
+                                <Text allowFontScaling={false}  style={{
                                     fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                     color: fontAndColor.COLORB3,
                                 }}>{movie.status_str}</Text>
@@ -676,7 +676,7 @@ export default class FinanceSence extends BaseComponet {
                     <View style={{width: width, flexDirection: 'row',}}>
                         <View style={{flex: 1}}></View>
                         <View style={{flex: 3, alignItems: 'center'}}>
-                            <Text numberOfLines={1}
+                            <Text allowFontScaling={false}  numberOfLines={1}
                                   style={{
                                       fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34),
                                       color: '#fff', marginTop: Pixel.getTitlePixel(25), backgroundColor: '#00000000'
@@ -691,13 +691,13 @@ export default class FinanceSence extends BaseComponet {
                         <View
                             style={{width: width, height: Pixel.getBottomPixel(65), flexDirection: 'row',marginTop:Pixel.getPixel(30),justifyContent:'space-between'}}>
                             <View style={{flex: 1, alignItems: 'center',}}>
-                                <Text
+                                <Text allowFontScaling={false} 
                                     style={{
                                         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                                         color: '#fff',
                                         backgroundColor: '#00000000'
                                     }}>{this.state.mnyData.is_microchinese_mny == 3 && '综合'}可用额度(万)</Text>
-                                <Text
+                                <Text allowFontScaling={false} 
                                     style={{
                                         fontSize: Pixel.getFontPixel(28),
                                         color: '#fff',
@@ -713,7 +713,7 @@ export default class FinanceSence extends BaseComponet {
                                     <View style={{flex: 1, alignItems: 'center',}}>
                                         <TouchableOpacity style={{flexDirection:'row'}} activeOpacity={1}
                                                           onPress={()=>{this.refs.showTitleAlert.setModelVisible(true)}}>
-                                            <Text
+                                            <Text allowFontScaling={false} 
                                                 style={{
                                                 fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                                                 color: '#fff',
@@ -722,7 +722,7 @@ export default class FinanceSence extends BaseComponet {
                                             <Image source={require('../../images/financeImages/titleAlert.png')}
                                                    style={{marginLeft:5}}/>
                                         </TouchableOpacity>
-                                        <Text
+                                        <Text allowFontScaling={false} 
                                             style={{
                                             fontSize: Pixel.getFontPixel(28),
                                             color: '#fff',
@@ -736,13 +736,13 @@ export default class FinanceSence extends BaseComponet {
                             }
                             <View
                                 style={{flex: 1, alignItems: 'center',borderLeftColor:'white',borderLeftWidth:StyleSheet.hairlineWidth}}>
-                                <Text
+                                <Text allowFontScaling={false} 
                                     style={{
                                         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                                         color: '#fff',
                                         backgroundColor: '#00000000'
                                     }}>贷款余额(万)</Text>
-                                <Text
+                                <Text allowFontScaling={false} 
                                     style={{
                                         fontSize: Pixel.getFontPixel(28),
                                         color: '#fff',
@@ -780,7 +780,7 @@ export default class FinanceSence extends BaseComponet {
                                         justifyContent:'center',overflow:'hidden',
                                             paddingHorizontal:Pixel.getPixel(20),
                                         }}>
-                                            <Text style={{color:'white', fontSize:Pixel.getFontPixel(14),
+                                            <Text allowFontScaling={false}  style={{color:'white', fontSize:Pixel.getFontPixel(14),
                                                 backgroundColor:'#00000000',fontWeight: 'bold',}}>  {this.state.allData.microchineseTitle}  </Text>
                                         </View>
                                     </TouchableOpacity>
@@ -795,13 +795,13 @@ export default class FinanceSence extends BaseComponet {
                         }}>
                         <View
                             style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start'}}>
-                            <Text
+                            <Text allowFontScaling={false} 
                                 style={{
                                     fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                     color: '#fff',
                                     backgroundColor: '#00000000'
                                 }}>保证金额度:</Text>
-                            <Text
+                            <Text allowFontScaling={false} 
                                 style={{
                                     fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                     color: '#fff',
@@ -810,13 +810,13 @@ export default class FinanceSence extends BaseComponet {
                                 }}>{this.state.allData.baozhengjinedu}万</Text>
                         </View>
                         <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end'}}>
-                            <Text
+                            <Text allowFontScaling={false} 
                                 style={{
                                     fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                     color: '#fff',
                                     backgroundColor: '#00000000'
                                 }}>保证金余额:</Text>
-                            <Text
+                            <Text allowFontScaling={false} 
                                 style={{
                                     fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                     color: '#fff',

@@ -95,30 +95,30 @@ export  default class RechargeScene extends BaseComponent {
                             <View style={{flex:1,paddingTop: Pixel.getPixel(35),alignItems: 'center'}}>
                                 <Image style={{width:Pixel.getPixel(61),height:Pixel.getPixel(61)}}
                                        source={require('../../../images/mainImage/guitai.png')}></Image>
-                                <Text style={{color: '#000',fontSize: Pixel.getPixel(14),marginTop:Pixel.getPixel(5)}}>柜台办理</Text>
+                                <Text allowFontScaling={false}  style={{color: '#000',fontSize: Pixel.getPixel(14),marginTop:Pixel.getPixel(5)}}>柜台办理</Text>
                             </View>
                             <View style={{flex:1,paddingTop: Pixel.getPixel(35),alignItems: 'center'}}>
                                 <Image style={{width:Pixel.getPixel(61),height:Pixel.getPixel(61)}}
                                        source={require('../../../images/mainImage/wangyinzhuanzhang.png')}></Image>
-                                <Text style={{color: '#000',fontSize: Pixel.getPixel(14),marginTop:Pixel.getPixel(5)}}>网银转账</Text>
+                                <Text allowFontScaling={false}  style={{color: '#000',fontSize: Pixel.getPixel(14),marginTop:Pixel.getPixel(5)}}>网银转账</Text>
                             </View>
                             <View style={{flex:1,paddingTop: Pixel.getPixel(35),alignItems: 'center'}}>
                                 <Image style={{width:Pixel.getPixel(61),height:Pixel.getPixel(61)}}
                                        source={require('../../../images/mainImage/shoujiyinhang.png')}></Image>
-                                <Text style={{color: '#000',fontSize: Pixel.getPixel(14),marginTop:Pixel.getPixel(5)}}>手机银行</Text>
+                                <Text allowFontScaling={false}  style={{color: '#000',fontSize: Pixel.getPixel(14),marginTop:Pixel.getPixel(5)}}>手机银行</Text>
                             </View>
                         </View>
-                        <Text style={{color: fontAndColor.COLORA1,fontSize: Pixel.getPixel(14)}}>
+                        <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getPixel(14)}}>
                             请务必使用绑定账户的银行卡充值，通过线下转账（柜台、网银、手机银行）的方式将资金充值到您的恒丰银行账户下。</Text>
                         <View style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(120),marginTop:Pixel.getPixel(15),
                     borderRadius: Pixel.getPixel(4),backgroundColor:fontAndColor.COLORA3,justifyContent:'center',paddingLeft:
                     Pixel.getPixel(15)}}>
-                            <Text style={{color: '#000',fontSize: Pixel.getPixel(14)}}>转账时填写的信息如下：</Text>
-                            <Text style={{fontWeight: 'bold',color: '#000',fontSize: Pixel.getPixel(14),marginTop:Pixel.getPixel(7)}}>
+                            <Text allowFontScaling={false}  style={{color: '#000',fontSize: Pixel.getPixel(14)}}>转账时填写的信息如下：</Text>
+                            <Text allowFontScaling={false}  style={{fontWeight: 'bold',color: '#000',fontSize: Pixel.getPixel(14),marginTop:Pixel.getPixel(7)}}>
                                 收款人姓名：{this.state.name}</Text>
-                            <Text style={{fontWeight: 'bold',color: '#000',fontSize: Pixel.getPixel(14),marginTop:Pixel.getPixel(5)}}>
+                            <Text allowFontScaling={false}  style={{fontWeight: 'bold',color: '#000',fontSize: Pixel.getPixel(14),marginTop:Pixel.getPixel(5)}}>
                                 收款账号：{this.state.cardNumber}</Text>
-                            <Text style={{fontWeight: 'bold',color: '#000',fontSize: Pixel.getPixel(14),marginTop:Pixel.getPixel(5)}}>
+                            <Text allowFontScaling={false}  style={{fontWeight: 'bold',color: '#000',fontSize: Pixel.getPixel(14),marginTop:Pixel.getPixel(5)}}>
                                 收款银行：恒丰银行</Text>
                         </View>
                     </View>

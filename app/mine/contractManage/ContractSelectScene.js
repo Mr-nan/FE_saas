@@ -77,8 +77,8 @@ export default class AdjustManageScene extends BaseComponent {
                 activeOpacity={0.9}
             >
                 <View style={styles.rowView} >
-                    <Text style={styles.rowLeftTitle}>{rowData}</Text>
-                    <Text style={styles.rowRightTitle} ></Text>
+                    <Text allowFontScaling={false}  style={styles.rowLeftTitle}>{rowData}</Text>
+                    <Text allowFontScaling={false}  style={styles.rowRightTitle} ></Text>
                     <Image source={cellJianTou} style={styles.image}></Image>
 
                 </View>

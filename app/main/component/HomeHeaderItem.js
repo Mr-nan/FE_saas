@@ -50,8 +50,8 @@ export default class HomeHeaderItem extends Component {
                     style={styles.imageStyle}
                 />
                 <View style={styles.titleStytle}>
-                    <Text style={styles.functionTitleStytle}>{this.props.functionTitle }</Text>
-                    <Text style={styles.describeTitleStytle}>{this.props.describeTitle }</Text>
+                    <Text allowFontScaling={false}  style={styles.functionTitleStytle}>{this.props.functionTitle }</Text>
+                    <Text allowFontScaling={false}  style={styles.describeTitleStytle}>{this.props.describeTitle }</Text>
                 </View>
             </TouchableOpacity>
 
