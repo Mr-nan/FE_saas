@@ -49,7 +49,7 @@ export default class StepNode extends PureComponent {
                         }}/>
                         {isLast ? <View style={styles.transparentLineRight}/> : <View style={styles.greenLineRight}/>}
                     </View>
-                    <Text style={{
+                    <Text allowFontScaling={false}  style={{
                         marginTop: Pixel.getPixel(15),
                         color: fontAndColor.COLORA1,
                         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24)
@@ -66,7 +66,7 @@ export default class StepNode extends PureComponent {
                             source={require('../../../../images/mainImage/current_node.png')}/>
                         {isLast ? <View style={styles.transparentLineRight}/> : <View style={styles.grayLineRight}/>}
                     </View>
-                    <Text style={{
+                    <Text allowFontScaling={false}  style={{
                         marginTop: Pixel.getPixel(15),
                         color: fontAndColor.COLORA1,
                         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24)
@@ -86,7 +86,7 @@ export default class StepNode extends PureComponent {
                         }}/>
                         {isLast ? <View style={styles.transparentLineRight}/> : <View style={styles.grayLineRight}/>}
                     </View>
-                    <Text style={{
+                    <Text allowFontScaling={false}  style={{
                         marginTop: Pixel.getPixel(15),
                         color: fontAndColor.COLORA1,
                         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24)

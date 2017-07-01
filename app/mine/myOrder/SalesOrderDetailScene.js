@@ -506,14 +506,14 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 return (
                     <View style={{marginTop: Pixel.getTitlePixel(65)}}>
                         <View style={styles.tradingCountdown}>
-                            <Text>
-                                <Text style={{
+                            <Text allowFontScaling={false} >
+                                <Text allowFontScaling={false}  style={{
                                     marginLeft: Pixel.getPixel(15),
                                     fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                                     color: fontAndColor.COLORB7
                                 }}>处理申请剩余时间</Text>
                                 <DepositCountDown leftTime={this.leftTime}/>
-                                <Text style={{
+                                <Text allowFontScaling={false}  style={{
                                     fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                                     color: fontAndColor.COLORB7
                                 }}>超时未处理默认为不同意，订单自动取消</Text>
@@ -528,14 +528,14 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 return (
                     <View style={{marginTop: Pixel.getTitlePixel(65)}}>
                         <View style={styles.tradingCountdown}>
-                            <Text>
-                                <Text style={{
+                            <Text allowFontScaling={false} >
+                                <Text allowFontScaling={false}  style={{
                                     marginLeft: Pixel.getPixel(15),
                                     fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                                     color: fontAndColor.COLORB7
                                 }}>完成交易剩余时间</Text>
                                 <GetCarCountDown leftTime={this.closeOrder}/>
-                                <Text style={{
+                                <Text allowFontScaling={false}  style={{
                                     fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                                     color: fontAndColor.COLORB7
                                 }}>超时订单将关闭。</Text>
@@ -571,7 +571,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                 this.refs.chooseModal.changeShowType(true, negativeText, positiveText, content, positiveOperation);
                             }}>
                             <View style={styles.buttonCancel}>
-                                <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                                <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA2}}>取消订单</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity
@@ -594,7 +594,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                 }
                             }}>
                             <View style={styles.buttonConfirm}>
-                                <Text style={{color: '#ffffff'}}>确认</Text>
+                                <Text allowFontScaling={false}  style={{color: '#ffffff'}}>确认</Text>
                             </View>
                         </TouchableOpacity>
                         <ChooseModal ref='chooseModal' title='提示'
@@ -626,7 +626,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                     this.cancelOrder);
                             }}>
                             <View style={styles.buttonCancel}>
-                                <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                                <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA2}}>取消订单</Text>
                             </View>
                         </TouchableOpacity>
                         <ChooseModal ref='chooseModal' title='提示'
@@ -643,7 +643,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
             case 2:
                 return (
                     <View style={[styles.bottomBar, {justifyContent: 'center'}]}>
-                        <Text style={{
+                        <Text allowFontScaling={false}  style={{
                             textAlign: 'center',
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                             color: fontAndColor.COLORB0
@@ -656,7 +656,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
             case 3:
                 return (
                     <View style={[styles.bottomBar, {justifyContent: 'center'}]}>
-                        <Text style={{
+                        <Text allowFontScaling={false}  style={{
                             textAlign: 'center',
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                             color: fontAndColor.COLORB0
@@ -669,7 +669,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
             case 4:
                 return (
                     <View style={[styles.bottomBar, {justifyContent: 'center'}]}>
-                        <Text style={{
+                        <Text allowFontScaling={false}  style={{
                             textAlign: 'center',
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                             color: fontAndColor.COLORB0
@@ -683,7 +683,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 return (
                     <View style={{backgroundColor: '#ffffff'}}>
                         <View style={{alignItems: 'center', height: Pixel.getPixel(30), justifyContent: 'center'}}>
-                            <Text style={{color: fontAndColor.COLORB2}}>
+                            <Text allowFontScaling={false}  style={{color: fontAndColor.COLORB2}}>
                                 买家申请取消订单，如买家已支付款项选择同意后将退回
                             </Text>
                         </View>
@@ -694,7 +694,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                     this.denyCancel();
                                 }}>
                                 <View style={styles.buttonCancel}>
-                                    <Text style={{color: fontAndColor.COLORA2}}>不同意</Text>
+                                    <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA2}}>不同意</Text>
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity
@@ -703,7 +703,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                     this.allowCancel();
                                 }}>
                                 <View style={styles.buttonConfirm}>
-                                    <Text style={{color: '#ffffff'}}>同意</Text>
+                                    <Text allowFontScaling={false}  style={{color: '#ffffff'}}>同意</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -713,7 +713,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
             case 6:
                 return (
                     <View style={[styles.bottomBar, {justifyContent: 'center'}]}>
-                        <Text style={{
+                        <Text allowFontScaling={false}  style={{
                             textAlign: 'center',
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                             color: fontAndColor.COLORB0
@@ -731,7 +731,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                 this.refs.cancelModal.changeShowType(true, '提示', '订单尾款已结清联系客服取消订单', '确定');
                             }}>
                             <View style={styles.buttonCancel}>
-                                <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                                <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA2}}>取消订单</Text>
                             </View>
                         </TouchableOpacity>
                         <ExplainModal ref='cancelModal' title='提示' buttonStyle={styles.expButton}
@@ -1147,16 +1147,16 @@ export default class SalesOrderDetailScene extends BaseComponent {
             return (
                 <View style={styles.itemType7}>
                     <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
-                        <Text style={{
+                        <Text allowFontScaling={false}  style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                             marginLeft: Pixel.getPixel(15)
                         }}>车辆已融资,交易需补差额</Text>
-                        <Text style={{
+                        <Text allowFontScaling={false}  style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                             color: fontAndColor.COLORB2
                         }}>{this.financeInfo ? this.financeInfo.seller_add_amount : 0}元</Text>
                         <View style={{flex: 1}}/>
-                        <Text
+                        <Text allowFontScaling={false} 
                             onPress={() => {
                                 this.refs.expModal.changeShowType(true, '补差额说明', '为了确保交易金额可支付贷款本息，请您补足成交价与贷款本息，及额外30日利息（是交易持续时期可能产生的利息，根据实际日期付息）的差额。如未能在30日内完成交易，则自动关闭交易，并退还双方已支付的款项。',
                                     '知道了');
@@ -1171,21 +1171,21 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         marginTop: Pixel.getPixel(20),
                         marginRight: Pixel.getPixel(15)
                     }}>
-                        <Text style={styles.orderInfo}>贷款本金</Text>
+                        <Text allowFontScaling={false}  style={styles.orderInfo}>贷款本金</Text>
                         <View style={{flex: 1}}/>
-                        <Text
+                        <Text allowFontScaling={false} 
                             style={styles.infoContentRed}>{this.financeInfo ? this.financeInfo.seller_finance_amount : 0}元</Text>
                     </View>
                     <View style={styles.infoItem}>
-                        <Text style={styles.orderInfo}>贷款利息</Text>
+                        <Text allowFontScaling={false}  style={styles.orderInfo}>贷款利息</Text>
                         <View style={{flex: 1}}/>
-                        <Text
+                        <Text allowFontScaling={false} 
                             style={styles.infoContentRed}>{this.financeInfo ? this.financeInfo.interest_amount : 0}元</Text>
                     </View>
                     <View style={styles.infoItem}>
-                        <Text style={styles.orderInfo}>30日利息</Text>
+                        <Text allowFontScaling={false}  style={styles.orderInfo}>30日利息</Text>
                         <View style={{flex: 1}}/>
-                        <Text
+                        <Text allowFontScaling={false} 
                             style={styles.infoContentRed}>{this.financeInfo ? this.financeInfo.days_interest_amount : 0}元</Text>
                     </View>
                     <View style={{
@@ -1215,7 +1215,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                 justifyContent: 'center',
                                 marginRight: Pixel.getPixel(15)
                             }}>
-                                <Text style={{
+                                <Text allowFontScaling={false}  style={{
                                     fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                     color: fontAndColor.COLORB0
                                 }}>充值</Text>
@@ -1230,14 +1230,14 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     <Image
                         style={{marginLeft: Pixel.getPixel(15)}}
                         source={require('../../../images/mainImage/agreed_sign.png')}/>
-                    <Text style={{color: fontAndColor.COLORA1, marginLeft: Pixel.getPixel(5)}}>我已同意签署</Text>
-                    <Text
+                    <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1, marginLeft: Pixel.getPixel(5)}}>我已同意签署</Text>
+                    <Text allowFontScaling={false} 
                         onPress={() => {
                             this.getTypeContractInfo(1)
                         }}
                         style={{color: fontAndColor.COLORA2}}>《买卖协议》</Text>
-                    {/*<Text style={{color: fontAndColor.COLORA1}}>和</Text>
-                     <Text
+                    {/*<Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1}}>和</Text>
+                     <Text allowFontScaling={false} 
                      onPress={() => {
                      this.getTypeContractInfo(2)
                      }}
@@ -1258,28 +1258,28 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         marginLeft: Pixel.getPixel(15),
                         justifyContent: 'center'
                     }}>
-                        <Text style={styles.orderInfo}>订单号:{this.orderDetail.order_no}</Text>
-                        <Text style={styles.orderInfo}>订单日期:{this.orderDetail.created_time}</Text>
+                        <Text allowFontScaling={false}  style={styles.orderInfo}>订单号:{this.orderDetail.order_no}</Text>
+                        <Text allowFontScaling={false}  style={styles.orderInfo}>订单日期:{this.orderDetail.created_time}</Text>
                     </View>
                     <View style={styles.separatedLine}/>
                     <View style={{flexDirection: 'row', height: Pixel.getPixel(105), alignItems: 'center'}}>
                         <Image style={styles.image}
                                source={imageUrl.length ? {uri: imageUrl[0].icon_url} : require('../../../images/carSourceImages/car_null_img.png')}/>
                         <View style={{marginLeft: Pixel.getPixel(10)}}>
-                            <Text style={{width: width - Pixel.getPixel(15 + 120 + 10 + 15)}}
+                            <Text allowFontScaling={false}  style={{width: width - Pixel.getPixel(15 + 120 + 10 + 15)}}
                                   numberOfLines={1}>{this.orderDetail.orders_item_data[0].car_data.model_name}</Text>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
-                                <Text style={styles.carDescribeTitle}>里程：</Text>
-                                <Text style={styles.carDescribe}>{mileage}万</Text>
+                                <Text allowFontScaling={false}  style={styles.carDescribeTitle}>里程：</Text>
+                                <Text allowFontScaling={false}  style={styles.carDescribe}>{mileage}万</Text>
                             </View>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
-                                <Text style={styles.carDescribeTitle}>上牌：</Text>
-                                <Text style={styles.carDescribe}>{initRegDate}</Text>
+                                <Text allowFontScaling={false}  style={styles.carDescribeTitle}>上牌：</Text>
+                                <Text allowFontScaling={false}  style={styles.carDescribe}>{initRegDate}</Text>
                             </View>
                             {this.orderState !== 0 && this.orderState !== 1 ? <View
                                 style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
-                                <Text style={styles.carDescribeTitle}>成交价：</Text>
-                                <Text style={styles.carDescribe}>{this.orderDetail.transaction_amount}元</Text>
+                                <Text allowFontScaling={false}  style={styles.carDescribeTitle}>成交价：</Text>
+                                <Text allowFontScaling={false}  style={styles.carDescribe}>{this.orderDetail.transaction_amount}元</Text>
                             </View> : null}
                         </View>
                     </View>
@@ -1288,12 +1288,12 @@ export default class SalesOrderDetailScene extends BaseComponent {
         } else if (rowData === '6') {
             return (
                 <View style={styles.itemType6}>
-                    <Text style={{
+                    <Text allowFontScaling={false}  style={{
                         marginLeft: Pixel.getPixel(15),
                         marginTop: Pixel.getPixel(3),
                         color: fontAndColor.COLORB2
                     }}>*</Text>
-                    <Text>车架号</Text>
+                    <Text allowFontScaling={false} >车架号</Text>
                     <TextInput style={{
                         marginLeft: Pixel.getPixel(10),
                         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
@@ -1315,7 +1315,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         activeOpacity={0.6}
                         onPress={this._onScanPress}>
                         <View style={{flexDirection: 'row'}}>
-                            {/*<Text style={{color: fontAndColor.COLORA2}}>扫描</Text>*/}
+                            {/*<Text allowFontScaling={false}  style={{color: fontAndColor.COLORA2}}>扫描</Text>*/}
                             <Image
                                 style={{marginRight: Pixel.getPixel(15)}}
                                 source={require('../../../images/mainImage/scanning.png')}/>
@@ -1340,7 +1340,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
             return (
                 <View style={styles.itemType4}>
                     <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
-                        <Text style={{
+                        <Text allowFontScaling={false}  style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                             marginLeft: Pixel.getPixel(15)
                         }}>销售信息</Text>
@@ -1353,19 +1353,19 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         marginTop: Pixel.getPixel(20),
                         marginRight: Pixel.getPixel(15)
                     }}>
-                        <Text style={styles.orderInfo}>到账订金</Text>
+                        <Text allowFontScaling={false}  style={styles.orderInfo}>到账订金</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>{this.orderDetail.done_deposit_amount}元</Text>
+                        <Text allowFontScaling={false}  style={styles.infoContent}>{this.orderDetail.done_deposit_amount}元</Text>
                     </View>
                     <View style={styles.infoItem}>
-                        <Text style={styles.orderInfo}>到账尾款</Text>
+                        <Text allowFontScaling={false}  style={styles.orderInfo}>到账尾款</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>{this.orderDetail.done_balance_amount}元</Text>
+                        <Text allowFontScaling={false}  style={styles.infoContent}>{this.orderDetail.done_balance_amount}元</Text>
                     </View>
                     <View style={styles.infoItem}>
-                        <Text style={styles.orderInfo}>到账总计</Text>
+                        <Text allowFontScaling={false}  style={styles.orderInfo}>到账总计</Text>
                         <View style={{flex: 1}}/>
-                        <Text
+                        <Text allowFontScaling={false} 
                             style={styles.infoContent}>{this.orderDetail.done_total_amount}元</Text>
                     </View>
                 </View>
@@ -1374,13 +1374,13 @@ export default class SalesOrderDetailScene extends BaseComponent {
             return (
                 <View style={styles.itemType5}>
                     <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
-                        <Text style={{
+                        <Text allowFontScaling={false}  style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                             marginLeft: Pixel.getPixel(15)
                         }}>单车融资还款</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={{color: fontAndColor.COLORA2}}>还款单号:</Text>
-                        <Text style={{color: fontAndColor.COLORA2}}>232222333</Text>
+                        <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA2}}>还款单号:</Text>
+                        <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA2}}>232222333</Text>
                         <Image
                             style={styles.backIcon}
                             source={require('../../../images/mainImage/celljiantou.png')}/>
@@ -1393,29 +1393,29 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         marginTop: Pixel.getPixel(20),
                         marginRight: Pixel.getPixel(15)
                     }}>
-                        <Text style={styles.orderInfo}>本金</Text>
+                        <Text allowFontScaling={false}  style={styles.orderInfo}>本金</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>100000元</Text>
+                        <Text allowFontScaling={false}  style={styles.infoContent}>100000元</Text>
                     </View>
                     <View style={styles.infoItem}>
-                        <Text style={styles.orderInfo}>利息</Text>
+                        <Text allowFontScaling={false}  style={styles.orderInfo}>利息</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>100000元</Text>
+                        <Text allowFontScaling={false}  style={styles.infoContent}>100000元</Text>
                     </View>
                     <View style={styles.infoItem}>
-                        <Text style={styles.orderInfo}>居间费</Text>
+                        <Text allowFontScaling={false}  style={styles.orderInfo}>居间费</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>100000元</Text>
+                        <Text allowFontScaling={false}  style={styles.infoContent}>100000元</Text>
                     </View>
                     <View style={styles.infoItem}>
-                        <Text style={styles.orderInfo}>还款总计</Text>
+                        <Text allowFontScaling={false}  style={styles.orderInfo}>还款总计</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>100000元</Text>
+                        <Text allowFontScaling={false}  style={styles.infoContent}>100000元</Text>
                     </View>
                     <View style={styles.infoItem}>
-                        <Text style={styles.orderInfo}>剩余总计</Text>
+                        <Text allowFontScaling={false}  style={styles.orderInfo}>剩余总计</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>100000元</Text>
+                        <Text allowFontScaling={false}  style={styles.infoContent}>100000元</Text>
                     </View>
                 </View>
             )
@@ -1423,7 +1423,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
             return (
                 <View style={styles.itemType9}>
                     <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
-                        <Text style={{
+                        <Text allowFontScaling={false}  style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                             marginLeft: Pixel.getPixel(15)
                         }}>买家信息</Text>
@@ -1436,19 +1436,19 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         marginTop: Pixel.getPixel(20),
                         marginRight: Pixel.getPixel(15)
                     }}>
-                        <Text style={styles.orderInfo}>姓名</Text>
+                        <Text allowFontScaling={false}  style={styles.orderInfo}>姓名</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>{this.orderDetail.buyer_name}</Text>
+                        <Text allowFontScaling={false}  style={styles.infoContent}>{this.orderDetail.buyer_name}</Text>
                     </View>
                     {/*<View style={styles.infoItem}>
-                     <Text style={styles.orderInfo}>联系方式</Text>
+                     <Text allowFontScaling={false}  style={styles.orderInfo}>联系方式</Text>
                      <View style={{flex: 1}}/>
-                     <Text style={styles.infoContent}>{this.orderDetail.buyer_phone}</Text>
+                     <Text allowFontScaling={false}  style={styles.infoContent}>{this.orderDetail.buyer_phone}</Text>
                      </View>*/}
                     <View style={styles.infoItem}>
-                        <Text style={styles.orderInfo}>企业名称</Text>
+                        <Text allowFontScaling={false}  style={styles.orderInfo}>企业名称</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>{this.orderDetail.buyer_company_name}</Text>
+                        <Text allowFontScaling={false}  style={styles.infoContent}>{this.orderDetail.buyer_company_name}</Text>
                     </View>
                 </View>
             )

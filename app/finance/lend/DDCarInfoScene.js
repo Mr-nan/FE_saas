@@ -304,17 +304,17 @@ export default class DDCarInfoScene extends BaseComponent {
         return (
             <View style={styles.headerALL}>
                 <View style={styles.itemBackground}>
-                    <Text style={styles.leftFont}>车型</Text>
+                    <Text allowFontScaling={false}  style={styles.leftFont}>车型</Text>
                     <View style={styles.fillSpace}/>
-                    <Text style={styles.headerCellRight}>{this.state.chexing}</Text>
+                    <Text allowFontScaling={false}  style={styles.headerCellRight}>{this.state.chexing}</Text>
                 </View>
 
                 <View style={{backgroundColor: FontAndColor.COLORA4, width: width, height: Pixel.getPixel(1)}}/>
 
                 <View style={styles.itemBackground}>
-                    <Text style={styles.leftFont}>车架号</Text>
+                    <Text allowFontScaling={false}  style={styles.leftFont}>车架号</Text>
                     <View style={styles.fillSpace}/>
-                    <Text style={styles.headerCellRight}>{this.state.chejia_number}</Text>
+                    <Text allowFontScaling={false}  style={styles.headerCellRight}>{this.state.chejia_number}</Text>
                 </View>
 
                 <View style={{backgroundColor: FontAndColor.COLORA4, width: width, height: Pixel.getPixel(1)}}/>
@@ -324,10 +324,10 @@ export default class DDCarInfoScene extends BaseComponent {
                 <View style={{backgroundColor: FontAndColor.COLORA4, width: width, height: Pixel.getPixel(1)}}/>
 
                 <View style={styles.itemBackground}>
-                    <Text style={styles.leftFont}>
-                        <Text style={{color: FontAndColor.COLORB2}}>*</Text>权属声明签署方式</Text>
+                    <Text allowFontScaling={false}  style={styles.leftFont}>
+                        <Text allowFontScaling={false}  style={{color: FontAndColor.COLORB2}}>*</Text>权属声明签署方式</Text>
                     <View style={styles.fillSpace}/>
-                    <Text style={styles.headerCellRight}>{this.state.sign_type}</Text>
+                    <Text allowFontScaling={false}  style={styles.headerCellRight}>{this.state.sign_type}</Text>
                 </View>
 
                 <View style={{backgroundColor: FontAndColor.COLORA3, width: width, height: Pixel.getPixel(10)}}/>

@@ -147,7 +147,7 @@ export default class AutoLabel extends Component {
                     onPress={()=>{this._labelPress(data.index)}}
                 >
                     <View style={styles.selectItem}>
-                        <Text style={styles.selectText}>
+                        <Text allowFontScaling={false}  style={styles.selectText}>
                             {data.name}
                         </Text>
                         <Image style={styles.hotLabel} source={hot}/>
@@ -163,7 +163,7 @@ export default class AutoLabel extends Component {
                     onPress={()=>{this._labelPress(data.index)}}
                 >
                     <View style={styles.defaultItem}>
-                        <Text style={styles.defaultText}>
+                        <Text allowFontScaling={false}  style={styles.defaultText}>
                             {data.name}
                         </Text>
                     </View>
@@ -186,7 +186,7 @@ export default class AutoLabel extends Component {
             <TouchableOpacity
                 activeOpacity={0.6}
                 onPress={()=>{this.props.publishData()}}>
-                <Text style={styles.rightTitleText}>完成</Text>
+                <Text allowFontScaling={false}  style={styles.rightTitleText}>完成</Text>
             </TouchableOpacity>
         );
     };

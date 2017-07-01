@@ -42,12 +42,12 @@ export default class ConfirmButton extends Component {
                     <Image style={{height:Pixel.getPixel(16),width:Pixel.getPixel(16)}}
                            source={this.state.showImage?require('../../../images/login/okconfirm.png'):require('../../../images/login/noconfirm.png')}></Image>
                 </TouchableOpacity>
-                <Text style={{color: FontAndColor.COLORA1,fontSize:
+                <Text allowFontScaling={false}  style={{color: FontAndColor.COLORA1,fontSize:
                 Pixel.getFontPixel(FontAndColor.CONTENTFONT24),backgroundColor:FontAndColor.COLORA3}}>我已详细阅读并同意</Text>
                 <TouchableOpacity onPress={()=>{
                     this.props.textButton();
                 }}>
-                    <Text style={{color: FontAndColor.COLORA2,fontSize:
+                    <Text allowFontScaling={false}  style={{color: FontAndColor.COLORA2,fontSize:
                 Pixel.getFontPixel(FontAndColor.CONTENTFONT24),backgroundColor:FontAndColor.COLORA3}}>《电子账户服务协议》</Text>
                 </TouchableOpacity>
 

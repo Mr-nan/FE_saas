@@ -28,19 +28,19 @@ export class CellView extends Component {
             <View style={styles.cellType1}>
                 <View style={{flexDirection:'row'}}>
                     {
-                        cellData.isShowTag && <Text style={{color:fontAndColor.COLORB2, fontSize:fontAndColor.LITTLEFONT28}}>*</Text>
+                        cellData.isShowTag && <Text allowFontScaling={false}  style={{color:fontAndColor.COLORB2, fontSize:fontAndColor.LITTLEFONT28}}>*</Text>
                     }
                     <View >
-                    <Text style={styles.cellTitle}>{cellData.title}</Text>
+                    <Text allowFontScaling={false}  style={styles.cellTitle}>{cellData.title}</Text>
                         {
-                           cellData.subTitle? (<Text style={styles.cellSubTitle}>{cellData.subTitle}</Text>):(null)
+                           cellData.subTitle? (<Text allowFontScaling={false}  style={styles.cellSubTitle}>{cellData.subTitle}</Text>):(null)
                         }
                     </View>
                 </View>
                 {
                     cellData.tailView? cellData.tailView():(
                             <View style={{flexDirection:'row', alignItems:'center'}}>
-                                <Text style={styles.cellValue}>{cellData.value}</Text>
+                                <Text allowFontScaling={false}  style={styles.cellValue}>{cellData.value}</Text>
                                 {
                                     cellData.isShowTail &&
                                     <Image style={{marginLeft:Pixel.getPixel(5)}}
@@ -78,9 +78,9 @@ export class CellSelectView extends Component{
             <View style={styles.cellType2}>
                 <View style={{flexDirection:'row'}}>
                     {
-                        cellData.isShowTag && <Text style={{color:fontAndColor.COLORB2, fontSize:fontAndColor.LITTLEFONT28}}>*</Text>
+                        cellData.isShowTag && <Text allowFontScaling={false}  style={{color:fontAndColor.COLORB2, fontSize:fontAndColor.LITTLEFONT28}}>*</Text>
                     }
-                    <Text style={styles.cellTitle}>{cellData.title}</Text>
+                    <Text allowFontScaling={false}  style={styles.cellTitle}>{cellData.title}</Text>
                 </View>
                 <View style={{flexDirection:'row',width:Pixel.getPixel(290),height:Pixel.getPixel(40),alignItems:'center',marginTop:Pixel.getPixel(10),backgroundColor:'white'}}>
                     {
@@ -95,7 +95,7 @@ export class CellSelectView extends Component{
                                     }
                                 }} activeOpacity={1} key={index}>
                                     <View style={[styles.checkedItemView,(this.state.currentChecked==data.title?{borderColor:fontAndColor.COLORB0}:{borderColor:fontAndColor.COLORA2})]}>
-                                        <Text style={[styles.checkedItemText,(this.state.currentChecked==data.title?{color:fontAndColor.COLORB0}:{color:fontAndColor.COLORA2})] }>{data.title}</Text>
+                                        <Text allowFontScaling={false}  style={[styles.checkedItemText,(this.state.currentChecked==data.title?{color:fontAndColor.COLORB0}:{color:fontAndColor.COLORA2})] }>{data.title}</Text>
                                     </View>
                                 </TouchableOpacity>
                             )

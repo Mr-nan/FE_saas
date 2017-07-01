@@ -170,7 +170,7 @@ export  default class BindCardScene extends BaseComponent {
                            source={movie.value}/>
                 </View>
                 <View style={{flex:4,justifyContent:'center'}}>
-                    <Text style={{fontSize: Pixel.getFontPixel(14),color: '#000'}}>{movie.title}</Text>
+                    <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(14),color: '#000'}}>{movie.title}</Text>
                 </View>
                 <View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
                     <Image style={{width:Pixel.getPixel(14),height:Pixel.getPixel(14),marginRight:Pixel.getPixel(15)}}

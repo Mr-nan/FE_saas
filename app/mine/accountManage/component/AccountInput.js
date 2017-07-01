@@ -64,7 +64,7 @@ export  default class AccountInput extends PureComponent {
                 marginTop:Pixel.getTitlePixel(79),paddingLeft: Pixel.getPixel(15),paddingRight:Pixel.getPixel(15)}}>
                 <View style={{flex:1,flexDirection:'row'}}>
                     <View style={{flex:1,justifyContent:'center'}}>
-                        <Text style={{color: '#000',fontSize: Pixel.getFontPixel(14)}}>
+                        <Text allowFontScaling={false}  style={{color: '#000',fontSize: Pixel.getFontPixel(14)}}>
                             转账账号
                         </Text>
                     </View>
@@ -84,12 +84,12 @@ export  default class AccountInput extends PureComponent {
                 <View style={{width:width-Pixel.getPixel(30),height:onePT,backgroundColor:fontAndColor.COLORA3}}></View>
                 <View style={{flex:1,flexDirection:'row'}}>
                     <View style={{flex:1,justifyContent:'center'}}>
-                        <Text style={{color: '#000',fontSize: Pixel.getFontPixel(14)}}>
+                        <Text allowFontScaling={false}  style={{color: '#000',fontSize: Pixel.getFontPixel(14)}}>
                             账号所有人
                         </Text>
                     </View>
                     <View style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>
-                        <Text style={{color: '#000',fontSize: Pixel.getFontPixel(14)}}>
+                        <Text allowFontScaling={false}  style={{color: '#000',fontSize: Pixel.getFontPixel(14)}}>
                             {this.state.name}
                         </Text>
                     </View>

@@ -101,7 +101,7 @@ export default class InputAmountScene extends BaseComponent {
                 }}
                 activeOpacity={0.9}
             >
-                <Text style={{color: '#ffffff'}}>完成</Text>
+                <Text allowFontScaling={false}  style={{color: '#ffffff'}}>完成</Text>
             </TouchableOpacity>
         )
     }

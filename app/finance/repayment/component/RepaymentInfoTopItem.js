@@ -31,17 +31,17 @@ export  default class RepaymentInfoTopItem extends PureComponent {
         return (
             <View style={[{width: width, backgroundColor: '#ffffff'},styles.padding]}>
                 <View style={{flex:1,height:Pixel.getPixel(144)}}>
-                    <Text
+                    <Text allowFontScaling={false} 
                         style={styles.loanCodeStyle}>单号：{this.props.items.loan_number}</Text>
                     <View
                         style={{flex: 1,
                         marginTop:Pixel.getPixel(1),
                         justifyContent:'center',
                         alignItems:'center'}}>
-                        <Text style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(1)}]}>
+                        <Text allowFontScaling={false}  style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(1)}]}>
                             应还总额
                         </Text>
-                        <Text style={styles.loanMoneyStyle}>
+                        <Text allowFontScaling={false}  style={styles.loanMoneyStyle}>
                             {this.props.items.total_repayment}
                         </Text>
                     </View>
@@ -49,22 +49,22 @@ export  default class RepaymentInfoTopItem extends PureComponent {
                 <View style={styles.lineStyle}/>
                 <View style={styles.itemStyle}>
                     <View style={{flex:1,justifyContent:'flex-start',alignItems:'center',flexDirection:'row'}}>
-                        <Text style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0)}]}>
+                        <Text allowFontScaling={false}  style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0)}]}>
                             放款额:
                         </Text>
-                        <Text style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0),color:fontAndColor.COLORA0}]}>
+                        <Text allowFontScaling={false}  style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0),color:fontAndColor.COLORA0}]}>
                             {this.props.items.loan_mny_str} | {this.props.items.loanperiod}{this.props.items.loanperiod_type}
                         </Text>
                     </View>
                     <View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
-                        <Text style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0)}]}>
+                        <Text allowFontScaling={false}  style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0)}]}>
                             放款时间:{this.props.items.loan_time_str}
                         </Text>
                     </View>
                 </View>
                 <View style={styles.lineStyle}/>
                 <View style={styles.itemStyle}>
-                    <Text style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0)}]}>
+                    <Text allowFontScaling={false}  style={[styles.loanCodeStyle,{marginTop: Pixel.getPixel(0)}]}>
                         {this.props.items.model_name}
                     </Text>
                 </View>

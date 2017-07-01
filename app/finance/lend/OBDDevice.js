@@ -149,13 +149,13 @@ export default class OBDDevice extends BaseComponent {
                         }}
                         source={require('./../../../images/login/tanhao.png')}/>
 
-                    <Text style={{
+                    <Text allowFontScaling={false}  style={{
                         flex: 1,
                         color: FontAndColor.COLORB2,
                         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT),
                         marginLeft: Pixel.getPixel(15),
                         fontWeight: 'bold'
-                    }}>提示：<Text style={{fontWeight: 'normal'}}>请将OBD设备安装后进行检测，绑定失败或2015年以前的车请进行手动绑定。</Text></Text>
+                    }}>提示：<Text allowFontScaling={false}  style={{fontWeight: 'normal'}}>请将OBD设备安装后进行检测，绑定失败或2015年以前的车请进行手动绑定。</Text></Text>
                 </View>
                 <View style={{
                     marginTop: Pixel.getPixel(10),
@@ -167,11 +167,11 @@ export default class OBDDevice extends BaseComponent {
                     flexDirection: 'row',
                     alignItems: 'center'
                 }}>
-                    <Text style={{
+                    <Text allowFontScaling={false}  style={{
                         color: FontAndColor.COLORA0,
                         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),
                     }}>绑定状态</Text>
-                    <Text
+                    <Text allowFontScaling={false} 
                         style={this.props.carData.obd_bind_status == "1" ? styles.boundSuccessStyle :
                             this.state.boundState == "已绑定" ? styles.boundSuccessStyle : styles.boundStateStyle }>
                         {this.props.carData.obd_bind_status == "1" ? "已绑定" : this.state.boundState}
@@ -187,26 +187,26 @@ export default class OBDDevice extends BaseComponent {
                     flexDirection: 'row',
                     alignItems: 'center',
                 }}>
-                    <Text style={{
+                    <Text allowFontScaling={false}  style={{
                         color: FontAndColor.COLORA0,
                         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),
                     }}>设备号</Text>
                     {
-                        this.props.carData.obd_bind_status == "1" ? <Text style={{
+                        this.props.carData.obd_bind_status == "1" ? <Text allowFontScaling={false}  style={{
                                 color: FontAndColor.COLORA0,
                                 fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT30),
                                 textAlign: 'right',
                                 flex: 1
                             }}>{this.props.carData.obd_number}</Text> :
                             this.state.obd_number ?
-                                <Text style={{
+                                <Text allowFontScaling={false}  style={{
                                     color: FontAndColor.COLORA0,
                                     fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT30),
                                     textAlign: 'right',
                                     flex: 1
                                 }}>{this.state.obd_number}</Text>
                                 :
-                                <Text style={{
+                                <Text allowFontScaling={false}  style={{
                                     color: FontAndColor.COLORA1,
                                     fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT30),
                                     textAlign: 'right',

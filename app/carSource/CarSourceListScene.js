@@ -873,7 +873,7 @@ class CheckedContentView extends Component {
                     carGenre.title ? (
                             <TouchableOpacity onPress={carGenreClick}>
                                 <View style={styles.checkedContentItem}>
-                                    <Text style={styles.checkedItemText}>{carGenre.title}</Text>
+                                    <Text allowFontScaling={false}  style={styles.checkedItemText}>{carGenre.title}</Text>
                                     <Image style={styles.checkedDeleteImg}
                                            source={require('../../images/deleteIcon2x.png')}/>
                                 </View>
@@ -884,7 +884,7 @@ class CheckedContentView extends Component {
                     carCity.title ? (
                             <TouchableOpacity onPress={carCityClick}>
                                 <View style={styles.checkedContentItem}>
-                                    <Text style={styles.checkedItemText}>{carCity.title}</Text>
+                                    <Text allowFontScaling={false}  style={styles.checkedItemText}>{carCity.title}</Text>
                                     <Image style={styles.checkedDeleteImg}
                                            source={require('../../images/deleteIcon2x.png')}/>
                                 </View>
@@ -895,7 +895,7 @@ class CheckedContentView extends Component {
                     sequencingType.title ? (
                             <TouchableOpacity onPress={sequencingClick}>
                                 <View style={styles.checkedContentItem}>
-                                    <Text style={styles.checkedItemText}>{sequencingType.title}</Text>
+                                    <Text allowFontScaling={false}  style={styles.checkedItemText}>{sequencingType.title}</Text>
                                     <Image style={styles.checkedDeleteImg}
                                            source={require('../../images/deleteIcon2x.png')}/>
                                 </View>
@@ -906,7 +906,7 @@ class CheckedContentView extends Component {
                     carType.title ? (
                             <TouchableOpacity onPress={carTypeClick}>
                                 <View style={styles.checkedContentItem}>
-                                    <Text style={styles.checkedItemText}>{carType.title}</Text>
+                                    <Text allowFontScaling={false}  style={styles.checkedItemText}>{carType.title}</Text>
                                     <Image style={styles.checkedDeleteImg}
                                            source={require('../../images/deleteIcon2x.png')}/>
                                 </View>
@@ -917,7 +917,7 @@ class CheckedContentView extends Component {
                     carAge.title ? (
                             <TouchableOpacity onPress={carAgeClick}>
                                 <View style={styles.checkedContentItem}>
-                                    <Text style={styles.checkedItemText}>{carAge.title}</Text>
+                                    <Text allowFontScaling={false}  style={styles.checkedItemText}>{carAge.title}</Text>
                                     <Image style={styles.checkedDeleteImg}
                                            source={require('../../images/deleteIcon2x.png')}/>
                                 </View>
@@ -927,7 +927,7 @@ class CheckedContentView extends Component {
                     carKM.title ? (
                             <TouchableOpacity onPress={carKMClick}>
                                 <View style={styles.checkedContentItem}>
-                                    <Text style={styles.checkedItemText}>{carKM.title}</Text>
+                                    <Text allowFontScaling={false}  style={styles.checkedItemText}>{carKM.title}</Text>
                                     <Image style={styles.checkedDeleteImg}
                                            source={require('../../images/deleteIcon2x.png')}/>
                                 </View>
@@ -937,7 +937,7 @@ class CheckedContentView extends Component {
 
                 <TouchableOpacity onPress={allDelectClick}>
                     <View style={styles.checkedDelectView}>
-                        <Text style={styles.checkedDelectText}>清空</Text>
+                        <Text allowFontScaling={false}  style={styles.checkedDelectText}>清空</Text>
                     </View>
                 </TouchableOpacity>
 
@@ -957,19 +957,19 @@ class CarListNavigatorView extends Component {
                 <View style={styles.navitgatorContentView}>
                     {/*<TouchableOpacity style={styles.navigatorLoactionView} onPress={this.props.loactionClick}>*/}
                     {/*<Image style={{marginLeft:15}} source={require('../../images/carSourceImages/location.png')}/>*/}
-                    {/*<Text style={styles.navigatorText}>全国</Text>*/}
+                    {/*<Text allowFontScaling={false}  style={styles.navigatorText}>全国</Text>*/}
                     {/*</TouchableOpacity>*/}
                     <TouchableOpacity onPress={this.props.searchClick}>
                         <View style={styles.navigatorSousuoView}>
                             <Image style={{marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(10)}}
                                    source={require('../../images/carSourceImages/sousuoicon.png')}/>
-                            <Text style={styles.navigatorSousuoText}>按品牌、车系搜索</Text>
+                            <Text allowFontScaling={false}  style={styles.navigatorSousuoText}>按品牌、车系搜索</Text>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={this.props.ScreeningClick}>
                         <View style={{marginLeft:Pixel.getPixel(20),width:Pixel.getPixel(50),height:Pixel.getPixel(40),justifyContent:'center',
                             alignItems:'center'}}>
-                            <Text style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>筛选</Text>
+                            <Text allowFontScaling={false}  style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>筛选</Text>
                         </View>
                     </TouchableOpacity>
                 </View>

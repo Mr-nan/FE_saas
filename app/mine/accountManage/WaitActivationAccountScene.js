@@ -77,7 +77,7 @@ export  default class WaitActivationAccountScene extends BaseComponent {
                 paddingRight:Pixel.getPixel(15),marginTop:Pixel.getTitlePixel(79)}}>
                         <View style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(44),justifyContent:'center',
                     }}>
-                            <Text style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28)}}>
+                            <Text allowFontScaling={false}  style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28)}}>
                                 账户号码：{this.state.cardNumber}
                             </Text>
                         </View>
@@ -85,15 +85,15 @@ export  default class WaitActivationAccountScene extends BaseComponent {
                     alignItems: 'center',backgroundColor: fontAndColor.COLORA3}}></View>
                         <View style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(102),justifyContent:'center',
                     }}>
-                            <Text
+                            <Text allowFontScaling={false} 
                                 style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(7)}}>
                                 您的企业账户已经绑定，请进行激活，激活方式如下：
                             </Text>
-                            <Text
+                            <Text allowFontScaling={false} 
                                 style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(7)}}>
                                 1.用您的企业绑定账户向现金账户转账随机金额(0.1~3)元
                             </Text>
-                            <Text
+                            <Text allowFontScaling={false} 
                                 style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(7)}}>
                                 2.恒丰银行对转账金额进行确认，确认无误账户激活
                             </Text>

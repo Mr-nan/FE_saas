@@ -100,7 +100,7 @@ class Toast extends Component {
                         <Image style={{width:60,height:60}} source={require('../../../images/setDataLoading.gif')}/>
                     </View> : <View style={styles.taostModal}>
                         <View style={[styles.toast]}>
-                            <Text style={styles.text}>{this.props.msg}</Text>
+                            <Text allowFontScaling={false}  style={styles.text}>{this.props.msg}</Text>
                         </View>
                     </View>}
             </Modal>

@@ -76,7 +76,7 @@ export  default class WebScene extends BaseComponent {
                         backgroundColor:fontAndColor.COLORB0,
                         alignItems:'center',justifyContent:'center'
                     }}>
-                        <Text style={{fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                        <Text allowFontScaling={false}  style={{fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                             color:'#fff'}}>打开浏览器下载</Text>
                     </TouchableOpacity>
                 </View>

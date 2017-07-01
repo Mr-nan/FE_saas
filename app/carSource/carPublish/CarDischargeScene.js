@@ -87,7 +87,7 @@ export default class CarDischargeScene extends  BaseComponent{
                     onPress={()=>{this._labelPress(data.index)}}
                 >
                     <View >
-                        <Text style={styles.selectText}>
+                        <Text allowFontScaling={false}  style={styles.selectText}>
                             {data.title}
                         </Text>
                     </View>
@@ -102,7 +102,7 @@ export default class CarDischargeScene extends  BaseComponent{
                     onPress={()=>{this._labelPress(data.index)}}
                 >
                     <View >
-                        <Text style={styles.defaultText}>
+                        <Text allowFontScaling={false}  style={styles.defaultText}>
                             {data.title}
                         </Text>
                     </View>

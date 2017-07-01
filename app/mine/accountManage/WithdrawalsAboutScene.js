@@ -47,7 +47,7 @@ export  default class WithdrawalsAboutScene extends BaseComponent {
                 paddingRight:Pixel.getPixel(15),marginTop:Pixel.getTitlePixel(79)}}>
                         <View style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(44),justifyContent:'center',
                     }}>
-                            <Text style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28)}}>
+                            <Text allowFontScaling={false}  style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28)}}>
                                 银行受理业务时间：
                             </Text>
                         </View>
@@ -55,15 +55,15 @@ export  default class WithdrawalsAboutScene extends BaseComponent {
                     alignItems: 'center',backgroundColor: fontAndColor.COLORA3}}></View>
                         <View style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(102),justifyContent:'center',
                     }}>
-                            <Text
+                            <Text allowFontScaling={false} 
                                 style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(7)}}>
                                 提现金额5W以下，7 X24小时受理，准实时到帐
                             </Text>
-                            <Text
+                            <Text allowFontScaling={false} 
                                 style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(7)}}>
                                 提现金额5W以上，需在工作日9：00～16：30时间段内，到帐时间以银行处理时间为准；
                             </Text>
-                            <Text
+                            <Text allowFontScaling={false} 
                                 style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(7)}}>
                                 提现金额5W以上，非工作时间以外的时间，人行大额通道关闭，银行无法受理，将提现失败；
                             </Text>

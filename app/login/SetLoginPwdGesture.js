@@ -110,11 +110,11 @@ export default class SetLoginPwdGesture extends BaseComponent {
                                     <View style={styles.cycleStyle}/>}
                             </View>
                         </View>
-                        <Text style={this.state.status !== "wrong" ? styles.topMessageStyle : styles.topMessageWStyle}>
+                        <Text allowFontScaling={false}  style={this.state.status !== "wrong" ? styles.topMessageStyle : styles.topMessageWStyle}>
                             {this.state.message}
                         </Text>
 
-                        <Text style={{
+                        <Text allowFontScaling={false}  style={{
                             color: FontAndColor.COLORA1,
                             fontSize: Pixel.getFontPixel(14),
                             height: Pixel.getPixel(20),
@@ -145,7 +145,7 @@ export default class SetLoginPwdGesture extends BaseComponent {
                             message: '重新绘制解锁图案',
                         });
                     }}>
-                        <Text style={styles.bottomSytle }>重置手势密码</Text>
+                        <Text allowFontScaling={false}  style={styles.bottomSytle }>重置手势密码</Text>
                     </TouchableOpacity>}/>
         );
     }

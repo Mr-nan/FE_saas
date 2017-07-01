@@ -92,7 +92,7 @@ export  default class SelectCompanyScene extends BaseComponent {
                 this.backPage();
             }} style={{width:Pixel.getPixel(53),height:Pixel.getPixel(27),backgroundColor: '#fff',
             justifyContent:'center',alignItems: 'center'}}>
-                <Text style={{fontSize: Pixel.getFontPixel(15),color:fontAndColor.COLORB0}}>完成</Text>
+                <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(15),color:fontAndColor.COLORB0}}>完成</Text>
             </TouchableOpacity>
         );
     }

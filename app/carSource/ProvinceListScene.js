@@ -105,7 +105,7 @@ let selectData={
                     renderSectionHeader={(sectionData)=>{
                         return(
                             <View style={styles.sectionHeader}>
-                                <Text style={styles.sectionText}>{sectionData}</Text>
+                                <Text allowFontScaling={false}  style={styles.sectionText}>{sectionData}</Text>
                             </View>
                         )
                     }}
@@ -131,7 +131,7 @@ let selectData={
          return (
              this.props.unlimitedAction &&  <TouchableOpacity onPress={()=>{this.props.unlimitedAction();this.backPage();}}>
                  <View style={{paddingVertical:3, paddingHorizontal:5,backgroundColor:'transparent',borderWidth:StyleSheet.hairlineWidth,borderColor:'white',borderRadius:3}}>
-                     <Text style={{
+                     <Text allowFontScaling={false}  style={{
                          color: 'white',
                          fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                          textAlign: 'center',
@@ -155,7 +155,7 @@ let selectData={
                  this.refs.cityList && this.refs.cityList.loadData();
              }}>
                  <View style={styles.rowCell}>
-                     <Text style={styles.rowCellText}>{rowData.title}</Text>
+                     <Text allowFontScaling={false}  style={styles.rowCellText}>{rowData.title}</Text>
                  </View>
              </TouchableOpacity>
          )
@@ -190,7 +190,7 @@ class ZNListIndexView extends Component{
                                 this.props.indexClick(index);
 
                             }}>
-                                <Text style={styles.indexItemText}>{data}</Text>
+                                <Text allowFontScaling={false}  style={styles.indexItemText}>{data}</Text>
                             </TouchableOpacity>
                         )
                     })
@@ -268,7 +268,7 @@ class CityList extends  Component{
                                            this.props.checkedCityClick();
                                        }
                                    }} activeOpacity={1}>
-                                       <Text style={styles.sectionText}>{selectData.city_name}</Text>
+                                       <Text allowFontScaling={false}  style={styles.sectionText}>{selectData.city_name}</Text>
                                    </TouchableOpacity>
                                )}}/>
              </Animated.View>
@@ -283,7 +283,7 @@ class CityList extends  Component{
                 selectData.city_id=rowData.city_id;
                 this.props.checkedCityClick();
             }}>
-                <Text style={styles.rowCellText}>{rowData.city_name}</Text>
+                <Text allowFontScaling={false}  style={styles.rowCellText}>{rowData.city_name}</Text>
             </TouchableOpacity>
         )
     };

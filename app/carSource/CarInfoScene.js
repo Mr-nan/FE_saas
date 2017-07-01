@@ -243,10 +243,10 @@ export default class CarInfoScene extends BaseComponent {
                             return (
                                 <View style={styles.imageFootView}>
                                     <View style={styles.carAgeView}>
-                                        <Text
+                                        <Text allowFontScaling={false} 
                                             style={styles.carAgeText}>{carData.v_type == 1 ? '车龄 ' + carData.init_coty : carData.v_type_str}</Text>
                                     </View>
-                                    <Text
+                                    <Text allowFontScaling={false} 
                                         style={styles.imageIndexText}>{this.state.currentImageIndex + '/' + this.state.carData.imgs.length}</Text>
                                 </View>
                             )
@@ -260,13 +260,13 @@ export default class CarInfoScene extends BaseComponent {
                         }}/>
                     <View style={styles.contentContainer}>
                         <View style={styles.contentView}>
-                            <Text style={styles.titleText}>{carData.model_name}</Text>
+                            <Text allowFontScaling={false}  style={styles.titleText}>{carData.model_name}</Text>
                             {
                                 <View style={styles.titleFootView}>
                                     {
                                         carData.dealer_price > 0 && (
                                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                                <Text
+                                                <Text allowFontScaling={false} 
                                                     style={styles.priceText}>{this.carMoneyChange(carData.dealer_price) + '万'}</Text>
                                                 {
                                                     (carData.city_id != '0' && carData.model_id != '0' && carData.city_id != '' && carData.model_id != '') &&
@@ -278,7 +278,7 @@ export default class CarInfoScene extends BaseComponent {
                                                         }}>
                                                         <Image style={{marginLeft: Pixel.getPixel(10)}}
                                                                source={require('../../images/carSourceImages/carPriceIcon.png')}/>
-                                                        <Text style={[styles.priceText, {
+                                                        <Text allowFontScaling={false}  style={[styles.priceText, {
                                                             marginLeft: Pixel.getPixel(5),
                                                             fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24)
                                                         }]}>查看参考价</Text>
@@ -290,7 +290,7 @@ export default class CarInfoScene extends BaseComponent {
                                     <View style={styles.browseView}>
                                         <Image style={{marginRight: 5}}
                                                source={require('../../images/carSourceImages/browse.png')}/>
-                                        <Text style={styles.browseText}>{carData.views + ' 次浏览'}</Text>
+                                        <Text allowFontScaling={false}  style={styles.browseText}>{carData.views + ' 次浏览'}</Text>
                                     </View>
                                 </View>
                             }
@@ -298,7 +298,7 @@ export default class CarInfoScene extends BaseComponent {
                         {/*{*/}
                         {/*(carData.lowest_pay_price>0||carData.lowest_pay_ratio>0) &&*/}
                         {/*<View style={styles.preferentialView}>*/}
-                        {/*<Text style={styles.preferentialText}>第1车贷合作商户，首付{carData.lowest_pay_price>0?(this.carMoneyChange(carData.lowest_pay_price)+'万'):(this.carMoneyChange(carData.lowest_pay_ratio)+'%')}即可提车</Text>*/}
+                        {/*<Text allowFontScaling={false}  style={styles.preferentialText}>第1车贷合作商户，首付{carData.lowest_pay_price>0?(this.carMoneyChange(carData.lowest_pay_price)+'万'):(this.carMoneyChange(carData.lowest_pay_ratio)+'%')}即可提车</Text>*/}
                         {/*</View>*/}
                         {/*}*/}
                     </View>
@@ -316,7 +316,7 @@ export default class CarInfoScene extends BaseComponent {
                                                             <View
                                                                 style={[styles.carParameterItem, {backgroundColor: carParameterViewColor[index % 3]}]}
                                                                 key={'labels' + index}>
-                                                                <Text
+                                                                <Text allowFontScaling={false} 
                                                                     style={[styles.carParameterText, {color: carParameterTextColor[index % 3]}]}> {data.name} </Text>
                                                             </View>)
                                                     })
@@ -327,7 +327,7 @@ export default class CarInfoScene extends BaseComponent {
 
                                     {
                                         carData.describe !== '' && <View style={styles.carDepictView}>
-                                            <Text style={styles.carDepictText}>{carData.describe}</Text>
+                                            <Text allowFontScaling={false}  style={styles.carDepictText}>{carData.describe}</Text>
                                         </View>
                                     }
 
@@ -335,8 +335,8 @@ export default class CarInfoScene extends BaseComponent {
                                         <View>
                                             {
                                                 carData.city_name !== '' && (<View style={styles.carAddressSubView}>
-                                                    <Text style={styles.carAddressTitleText}>所在地: </Text>
-                                                    <Text
+                                                    <Text allowFontScaling={false}  style={styles.carAddressTitleText}>所在地: </Text>
+                                                    <Text allowFontScaling={false} 
                                                         style={styles.carAddressSubTitleText}>{carData.provice_name + (carData.provice_name === carData.city_name ? " " : ("  " + carData.city_name))}</Text>
                                                 </View>)
                                             }
@@ -344,8 +344,8 @@ export default class CarInfoScene extends BaseComponent {
                                         <View>
                                             {
                                                 carData.plate_number !== '' && (<View style={styles.carAddressSubView}>
-                                                    <Text style={styles.carAddressTitleText}>挂牌地: </Text>
-                                                    <Text
+                                                    <Text allowFontScaling={false}  style={styles.carAddressTitleText}>挂牌地: </Text>
+                                                    <Text allowFontScaling={false} 
                                                         style={styles.carAddressSubTitleText}>{carData.plate_number.substring(0, 2)}</Text>
                                                 </View>)
                                             }
@@ -395,7 +395,7 @@ export default class CarInfoScene extends BaseComponent {
                             <TouchableOpacity style={styles.carInfoBtn} onPress={this.pushCarConfigScene}>
                                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                     <Image source={require('../../images/carSourceImages/carConfigImg.png')}/>
-                                    <Text style={{
+                                    <Text allowFontScaling={false}  style={{
                                         color: fontAndColor.COLORA0,
                                         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                         marginLeft: Pixel.getPixel(10)
@@ -408,7 +408,7 @@ export default class CarInfoScene extends BaseComponent {
                             }}>
                                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                     <Image source={require('../../images/carSourceImages/carUpkeepIcon.png')}/>
-                                    <Text style={{
+                                    <Text allowFontScaling={false}  style={{
                                         color: fontAndColor.COLORA0,
                                         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                         marginLeft: Pixel.getPixel(10)
@@ -424,7 +424,7 @@ export default class CarInfoScene extends BaseComponent {
                                                       }}>
                                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                             <Image source={require('../../images/carSourceImages/carBreakIcon.png')}/>
-                                            <Text style={{
+                                            <Text allowFontScaling={false}  style={{
                                                 color: fontAndColor.COLORA0,
                                                 fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                                 marginLeft: Pixel.getPixel(10)
@@ -445,15 +445,15 @@ export default class CarInfoScene extends BaseComponent {
                 </ScrollView>
                 <View style={styles.footView}>
                     <View style={[styles.carNumberView, carData.show_order == 2 && {width: ScreenWidth / 2}]}>
-                        <Text style={styles.carNumberText}>车源编号</Text>
-                        <Text style={styles.carNumberText}>{carData.serial_num}</Text>
+                        <Text allowFontScaling={false}  style={styles.carNumberText}>车源编号</Text>
+                        <Text allowFontScaling={false}  style={styles.carNumberText}>{carData.serial_num}</Text>
                     </View>
                     <TouchableOpacity onPress={() => {
                         this.callClick(carData.show_shop_id)
                     }}>
                         <View style={[styles.callView, carData.show_order == 2 && {width: ScreenWidth / 2}]}>
                             <Image source={require('../../images/carSourceImages/phoneIcon.png')}/>
-                            <Text style={styles.callText}>电话咨询</Text>
+                            <Text allowFontScaling={false}  style={styles.callText}>电话咨询</Text>
                         </View>
                     </TouchableOpacity>
                     {
@@ -461,7 +461,7 @@ export default class CarInfoScene extends BaseComponent {
                             <TouchableOpacity style={styles.orderView} onPress={() => {
                                 this.orderClick(carData)
                             }}>
-                                <Text style={styles.orderText}>订购</Text>
+                                <Text allowFontScaling={false}  style={styles.orderText}>订购</Text>
                             </TouchableOpacity>
                         )
                     }
@@ -846,9 +846,9 @@ class CarIconView extends Component {
         return (
             <View style={styles.carIconItem}>
                 <Image source={bool ? imageHighData : imageData}/>
-                <Text
+                <Text allowFontScaling={false} 
                     style={[styles.carIconItemContentText, bool && {color: fontAndColor.COLORA0}]}>{bool ? content : '暂无'}</Text>
-                <Text style={styles.carIconItemTitleText}>{title}</Text>
+                <Text allowFontScaling={false}  style={styles.carIconItemTitleText}>{title}</Text>
             </View>
         )
     }
@@ -967,7 +967,7 @@ class SharedView extends Component {
                 }}>
                     <View style={styles.sharedView}>
                         <View style={styles.sharedViewHead}>
-                            <Text style={styles.sharedViewHeadText}>分享到</Text>
+                            <Text allowFontScaling={false}  style={styles.sharedViewHeadText}>分享到</Text>
                         </View>
                         <View style={{flexDirection: 'row'}}>
                             <TouchableOpacity style={styles.sharedItemView} onPress={() => {
@@ -975,14 +975,14 @@ class SharedView extends Component {
                                 this.isVisible(false);
                             }}>
                                 <Image source={require('../../images/carSourceImages/shared_ wx.png')}/>
-                                <Text style={styles.sharedText}>微信好友</Text>
+                                <Text allowFontScaling={false}  style={styles.sharedText}>微信好友</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.sharedItemView} onPress={() => {
                                 this.sharedWechatTimeline(this.props.carData);
                                 this.isVisible(false);
                             }}>
                                 <Image source={require('../../images/carSourceImages/shared_ friend.png')}/>
-                                <Text style={styles.sharedText}>朋友圈</Text>
+                                <Text allowFontScaling={false}  style={styles.sharedText}>朋友圈</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -1088,7 +1088,7 @@ class CallView extends Component {
                                 }}>
                                     <View style={styles.callModelItem}>
                                         <Image source={require('../../images/carSourceImages/phoneIcon.png')}/>
-                                        <Text style={styles.callText}>咨询第1车贷客服</Text>
+                                        <Text allowFontScaling={false}  style={styles.callText}>咨询第1车贷客服</Text>
                                     </View>
                                 </TouchableOpacity>
                             )
@@ -1100,7 +1100,7 @@ class CallView extends Component {
                                 }}>
                                     <View style={[styles.callModelItem, {marginTop: Pixel.getPixel(20)}]}>
                                         <Image source={require('../../images/carSourceImages/phoneIcon.png')}/>
-                                        <Text style={styles.callText}>咨询商家</Text>
+                                        <Text allowFontScaling={false}  style={styles.callText}>咨询商家</Text>
                                     </View>
                                 </TouchableOpacity>
                             )

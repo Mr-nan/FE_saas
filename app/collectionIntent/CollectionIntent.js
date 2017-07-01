@@ -296,10 +296,10 @@ export default class CollectionIntent extends BaseComponent {
                     <View style={ styles.container1}>
                         <View style={styles.containerChild}>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10)}}>
-                                <Text style={styles.carSelect}>
+                                <Text allowFontScaling={false}  style={styles.carSelect}>
                                     品牌、车系
                                 </Text>
-                                <Text style={{fontSize: 15, marginRight: 10, color: FontAndColor.COLORA2}}
+                                <Text allowFontScaling={false}  style={{fontSize: 15, marginRight: 10, color: FontAndColor.COLORA2}}
                                       onPress={() => {
                                           if (this.brandSeriesArr.length >= 5) {
                                               this.props.showToast("车系最多只能选5个");
@@ -339,7 +339,7 @@ export default class CollectionIntent extends BaseComponent {
                             </LabelSelect>
                         </View>
                         <View style={styles.containerChild}>
-                            <Text style={styles.carType}>车龄区间（单位：年）</Text>
+                            <Text allowFontScaling={false}  style={styles.carType}>车龄区间（单位：年）</Text>
                             <LabelSelect
                                 style={styles.labelSelect}
                                 title="Checkbox"
@@ -358,7 +358,7 @@ export default class CollectionIntent extends BaseComponent {
                             </LabelSelect>
                         </View>
                         <View style={styles.containerChild}>
-                            <Text style={styles.carType}>里程区间（单位：万公里）</Text>
+                            <Text allowFontScaling={false}  style={styles.carType}>里程区间（单位：万公里）</Text>
                             <LabelSelect
                                 style={styles.labelSelect}
                                 title="Checkbox"
@@ -377,10 +377,10 @@ export default class CollectionIntent extends BaseComponent {
                                 )}
                             </LabelSelect>
                         </View>
-                        <Text style={styles.bottomText}>根据您提报的收车意向，我们会推荐相关车源，请关注首页意向车源。</Text>
+                        <Text allowFontScaling={false}  style={styles.bottomText}>根据您提报的收车意向，我们会推荐相关车源，请关注首页意向车源。</Text>
                         <TouchableOpacity style={styles.btnStyle}
                                           onPress={() => this.loadData('')}>
-                            <Text style={{
+                            <Text allowFontScaling={false}  style={{
                                 color: FontAndColor.COLORA3,
                                 fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT),
                                 textAlign: 'center'

@@ -64,21 +64,21 @@ export default class Setting extends BaseComponent {
                     rightText={""}
                     leftImageCallBack={this.backPage}/>
                 <Image source={require("./../../../images/setting/logo.png")} style={styles.logoStyle}/>
-                <Text style={{
+                <Text allowFontScaling={false}  style={{
                     marginTop: 15,
                     fontSize: FontAndColor.LITTLEFONT,
                     color: FontAndColor.COLORA0
                 }}>{"当前版本" + StorageKeyNames.VERSON_NAME}</Text>
                 <Image source={require("./../../../images/setting/imagedownload.png")} style={styles.QRCodeStyle}/>
-                <Text
+                <Text allowFontScaling={false} 
                     style={{color: FontAndColor.COLORA0, fontSize: Pixel.getPixel(17), fontWeight: 'bold'}}>扫描二维码</Text>
-                <Text style={{
+                <Text allowFontScaling={false}  style={{
                     fontSize: FontAndColor.LITTLEFONT,
                     color: FontAndColor.COLORA0,
                     marginTop: Pixel.getPixel(10),
                 }}>您的朋友也可以下载服务平台客户端</Text>
                 <View style={{flex: 1}}/>
-                <Text style={{
+                <Text allowFontScaling={false}  style={{
                     fontSize: FontAndColor.CONTENTFONT,
                     color: FontAndColor.COLORA1,
                     marginTop: Pixel.getPixel(10),

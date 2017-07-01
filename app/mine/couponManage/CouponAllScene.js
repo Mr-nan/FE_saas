@@ -70,8 +70,8 @@ export default class CouponAllScene extends BaseComponent {
                         params: {rowID},
                     })}}>
                 <View style={styles.rowView} >
-                    <Text style={styles.rowLeftTitle}>还息优惠券</Text>
-                    {selectionID!=='2' ? <Text style={styles.rowRightTitle} >20张</Text>:null}
+                    <Text allowFontScaling={false}  style={styles.rowLeftTitle}>还息优惠券</Text>
+                    {selectionID!=='2' ? <Text allowFontScaling={false}  style={styles.rowRightTitle} >20张</Text>:null}
                     <Image source={cellJianTou} style={styles.image}></Image>
 
                 </View>

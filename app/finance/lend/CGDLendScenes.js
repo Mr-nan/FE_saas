@@ -466,8 +466,8 @@ export  default  class CGDLendScenes extends BaseComponent {
 
             return (
                 <View style={styles.sections}>
-                    <Text style={{color:'#ff0000',fontSize:Pixel.getFontPixel(14)}}> {'审核未通过:'}</Text>
-                    <Text style={{color:'#000000',fontSize:Pixel.getFontPixel(14)}} numberOfLines={2}>{showData.tempDetailInfo.payment_audit_reason}</Text>
+                    <Text allowFontScaling={false}  style={{color:'#ff0000',fontSize:Pixel.getFontPixel(14)}}> {'审核未通过:'}</Text>
+                    <Text allowFontScaling={false}  style={{color:'#000000',fontSize:Pixel.getFontPixel(14)}} numberOfLines={2}>{showData.tempDetailInfo.payment_audit_reason}</Text>
                 </View>
             )
         }
@@ -477,7 +477,7 @@ export  default  class CGDLendScenes extends BaseComponent {
         }
         return (
             <View style={styles.section}>
-                <Text>采购车辆</Text>
+                <Text allowFontScaling={false} >采购车辆</Text>
             </View>
         )
     }

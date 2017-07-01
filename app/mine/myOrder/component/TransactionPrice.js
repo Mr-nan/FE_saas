@@ -45,7 +45,7 @@ export default class TransactionPrice extends BaseComponent {
     render() {
         return (
             <View style={styles.itemType4}>
-                <Text style={{marginLeft: Pixel.getPixel(15), marginTop: Pixel.getPixel(12)}}>成交价(元)</Text>
+                <Text allowFontScaling={false}  style={{marginLeft: Pixel.getPixel(15), marginTop: Pixel.getPixel(12)}}>成交价(元)</Text>
                 <TouchableOpacity
                     activeOpacity={0.9}
                     style={{flex: 1, justifyContent: 'center'}}
@@ -70,8 +70,8 @@ export default class TransactionPrice extends BaseComponent {
                         <Image
                             style={{marginTop: Pixel.getPixel(5), marginBottom: Pixel.getPixel(10)}}
                             source={require('../../../../images/mainImage/rmb.png')}/>
-                        {/*<Text style={{fontSize: Pixel.getFontPixel(25), marginTop: Pixel.getPixel(5)}}>￥</Text>*/}
-                        <Text style={{
+                        {/*<Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(25), marginTop: Pixel.getPixel(5)}}>￥</Text>*/}
+                        <Text allowFontScaling={false}  style={{
                             //height: Pixel.getPixel(38),
                             marginLeft: Pixel.getPixel(5),
                             fontSize: Pixel.getFontPixel(38),
@@ -88,12 +88,12 @@ export default class TransactionPrice extends BaseComponent {
                 </TouchableOpacity>
                 <View style={styles.separatedLine}/>
                 <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
-                    <Text style={{
+                    <Text allowFontScaling={false}  style={{
                         fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT28),
                         marginLeft: Pixel.getPixel(15),
                         color: fontAndColor.COLORA1
                     }}>应付订金：</Text>
-                    <Text style={{
+                    <Text allowFontScaling={false}  style={{
                         fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT28),
                     }}>{this.state.deposit}元</Text>
                 </View>

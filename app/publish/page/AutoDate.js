@@ -129,7 +129,7 @@ export default class AutoDate extends Component{
             <TouchableOpacity
                 activeOpacity={0.6}
                 onPress={()=>{}}>
-                <Text style={styles.rightTitleText}>完成</Text>
+                <Text allowFontScaling={false}  style={styles.rightTitleText}>完成</Text>
             </TouchableOpacity>
         );
     };
@@ -153,8 +153,8 @@ export default class AutoDate extends Component{
                         onPress={()=>{this._labelPress('factory')}}
                     >
                         <View style={styles.center}>
-                            <Text style={[styles.fontMain,styles.leftText]}>出厂日期</Text>
-                            <Text style={[styles.fontMain,styles.fillSpace]} >{this.state.factoryDate}</Text>
+                            <Text allowFontScaling={false}  style={[styles.fontMain,styles.leftText]}>出厂日期</Text>
+                            <Text allowFontScaling={false}  style={[styles.fontMain,styles.fillSpace]} >{this.state.factoryDate}</Text>
                             <Image style={styles.imgContainer} source={arrow}/>
                         </View>
                     </TouchableOpacity>
@@ -164,8 +164,8 @@ export default class AutoDate extends Component{
                         onPress={()=>{this._labelPress('register')}}
                     >
                         <View style={styles.center}>
-                            <Text style={[styles.fontMain,styles.leftText]}>初登日期</Text>
-                            <Text style={[styles.fontMain,styles.fillSpace]} >{this.state.registerDate}</Text>
+                            <Text allowFontScaling={false}  style={[styles.fontMain,styles.leftText]}>初登日期</Text>
+                            <Text allowFontScaling={false}  style={[styles.fontMain,styles.fillSpace]} >{this.state.registerDate}</Text>
                             <Image style={styles.imgContainer} source={arrow}/>
                         </View>
                     </TouchableOpacity>}

@@ -83,7 +83,7 @@ export default class InputVinInfo extends Component {
                         this.props.vinPress(this.mType, rowID); this._hideModal
                     }}>
                     <View style={styles.rowStyle}>
-                        <Text style={styles.fontMain}>{rowData.model_name}</Text>
+                        <Text allowFontScaling={false}  style={styles.fontMain}>{rowData.model_name}</Text>
                     </View>
                 </TouchableOpacity>
             )
@@ -101,7 +101,7 @@ export default class InputVinInfo extends Component {
                         }); this._hideModal()
                     }}>
                     <View style={styles.rowStyle}>
-                        <Text style={styles.fontMain}>{rowData.model_name}</Text>
+                        <Text allowFontScaling={false}  style={styles.fontMain}>{rowData.model_name}</Text>
                     </View>
                 </TouchableOpacity>
             )

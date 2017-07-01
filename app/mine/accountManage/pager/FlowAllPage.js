@@ -140,12 +140,12 @@ export  default class FlowAllPage extends BaseComponent {
                     paddingRight:Pixel.getPixel(15)
                 }}>
                     <View style={{flex:1,justifyContent:'center'}}>
-                        <Text style={{color: '#000',fontSize: Pixel.getFontPixel(14)}}>{movie.operate_name}</Text>
-                        <Text style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(12)}}>
+                        <Text allowFontScaling={false}  style={{color: '#000',fontSize: Pixel.getFontPixel(14)}}>{movie.operate_name}</Text>
+                        <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(12)}}>
                             {movie.create_time}</Text>
                     </View>
                     <View style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>
-                        <Text style={{color: '#000',fontSize: Pixel.getFontPixel(20)}}>{movie.amount}</Text>
+                        <Text allowFontScaling={false}  style={{color: '#000',fontSize: Pixel.getFontPixel(20)}}>{movie.amount}</Text>
                     </View>
                 </View>
             )

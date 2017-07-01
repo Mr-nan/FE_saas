@@ -173,14 +173,14 @@ export default class CheckStand extends BaseComponent {
                 <View style={styles.container}>
                     <NavigatorView title='收银台' backIconClick={this.backPage}/>
                     {/*                    <View style={styles.tradingCountdown}>
-                     <Text style={{marginRight: Pixel.getPixel(15), marginLeft: Pixel.getPixel(15)}}>
-                     <Text style={{
+                     <Text allowFontScaling={false}  style={{marginRight: Pixel.getPixel(15), marginLeft: Pixel.getPixel(15)}}>
+                     <Text allowFontScaling={false}  style={{
                      marginLeft: Pixel.getPixel(15),
                      fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                      color: fontAndColor.COLORB2,
                      fontWeight: 'bold'
                      }}>重要提示：</Text>
-                     <Text style={{
+                     <Text allowFontScaling={false}  style={{
                      lineHeight: Pixel.getPixel(20),
                      marginLeft: Pixel.getPixel(15),
                      fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
@@ -191,11 +191,11 @@ export default class CheckStand extends BaseComponent {
                      <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>*/}
                     <View style={{backgroundColor: 'white', marginTop: Pixel.getTitlePixel(65)}}>
                         <View style={styles.needPayBar}>
-                            <Text style={{
+                            <Text allowFontScaling={false}  style={{
                                 fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                 marginTop: Pixel.getPixel(25)
                             }}>需支付金额</Text>
-                            <Text style={{
+                            <Text allowFontScaling={false}  style={{
                                 marginTop: Pixel.getPixel(6),
                                 //fontWeight: 'bold',
                                 fontSize: Pixel.getFontPixel(38)
@@ -203,14 +203,14 @@ export default class CheckStand extends BaseComponent {
                         </View>
                         <View style={styles.separatedLine}/>
                         <View style={styles.accountBar}>
-                            <Text style={styles.title}>账户：</Text>
-                            <Text
+                            <Text allowFontScaling={false}  style={styles.title}>账户：</Text>
+                            <Text allowFontScaling={false} 
                                 style={styles.content}>{this.accountInfo.bank_card_name + ' ' + this.accountInfo.bank_card_no}</Text>
                         </View>
                         <View style={styles.separatedLine}/>
                         <View style={styles.accountBar}>
-                            <Text style={styles.title}>账户可用金额：</Text>
-                            <Text style={styles.content}>{this.accountInfo.balance}元</Text>
+                            <Text allowFontScaling={false}  style={styles.title}>账户可用金额：</Text>
+                            <Text allowFontScaling={false}  style={styles.content}>{this.accountInfo.balance}元</Text>
                             <View style={{flex: 1}}/>
                             <TouchableOpacity
                                 onPress={() => {
@@ -230,7 +230,7 @@ export default class CheckStand extends BaseComponent {
                                     justifyContent: 'center',
                                     marginRight: Pixel.getPixel(15)
                                 }}>
-                                    <Text style={{
+                                    <Text allowFontScaling={false}  style={{
                                         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                         color: fontAndColor.COLORB0
                                     }}>充值</Text>
@@ -257,7 +257,7 @@ export default class CheckStand extends BaseComponent {
                                 height: 1,
                                 flex: 1
                             }}/>
-                            <Text style={{
+                            <Text allowFontScaling={false}  style={{
                                 fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                 color: fontAndColor.COLORA1
                             }}>可选融资方案</Text>
@@ -280,19 +280,19 @@ export default class CheckStand extends BaseComponent {
                             marginTop: Pixel.getPixel(21),
                             marginLeft: Pixel.getPixel(15)
                         }}>
-                            <Text style={{
+                            <Text allowFontScaling={false}  style={{
                                 fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                                 color: fontAndColor.COLORA1
                             }}>订单融资授信可用额度：</Text>
-                            <Text style={{
+                            <Text allowFontScaling={false}  style={{
                                 fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30)
                             }}>{this.creditBalanceMny}</Text>
-                            <Text style={{
+                            <Text allowFontScaling={false}  style={{
                                 fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                                 color: fontAndColor.COLORA1
                             }}>元</Text>
                         </View>
-                        <Text style={{
+                        <Text allowFontScaling={false}  style={{
                             marginLeft: Pixel.getPixel(15),
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                             color: fontAndColor.COLORA1,

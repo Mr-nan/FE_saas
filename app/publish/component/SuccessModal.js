@@ -49,14 +49,14 @@ export default class SuccessModal extends Component{
                 <View style={styles.container}>
                     <View style={styles.contentContainer}>
                         <Image style={styles.imgLogo} source={imgLogo}/>
-                        <Text style={styles.fontMain}>发布成功</Text>
-                        <Text style={styles.fontHint}>可进入首页-卖车模块查看已发车辆</Text>
+                        <Text allowFontScaling={false}  style={styles.fontMain}>发布成功</Text>
+                        <Text allowFontScaling={false}  style={styles.fontHint}>可进入首页-卖车模块查看已发车辆</Text>
                         <View style={styles.fillSpace}/>
                         <TouchableOpacity
                             activeOpacity={0.2}
                             onPress={()=>{this._okClick()}}>
                             <View style={styles.okBtn}>
-                                <Text style={styles.okText}>确定</Text>
+                                <Text allowFontScaling={false}  style={styles.okText}>确定</Text>
                             </View>
                         </TouchableOpacity>
                     </View>

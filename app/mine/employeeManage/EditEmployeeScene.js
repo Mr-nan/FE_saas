@@ -355,7 +355,7 @@ export default class EditEmployeeScene extends BaseComponent {
                     this._completedForEdit();
                 }
             }}>
-                <Text style={{
+                <Text allowFontScaling={false}  style={{
                     color: FontAndColor.COLORB0,
                     fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT30),
                     textAlign: 'center',
@@ -544,8 +544,8 @@ export default class EditEmployeeScene extends BaseComponent {
             }>
                 <View style={styles.rowView}>
 
-                    <Text style={styles.rowLeftTitle}>{rowData.title}</Text>
-                    {HIDDEN ? <Text
+                    <Text allowFontScaling={false}  style={styles.rowLeftTitle}>{rowData.title}</Text>
+                    {HIDDEN ? <Text allowFontScaling={false} 
                             style={[styles.rowRightTitle,]}>{this.state.rowdata ? this.state.rowdata : rowData.name}</Text> :
                         <TextInput ref={sectionID + rowID} defaultValue={rowData.name}
                                    placeholder={"请输入" + rowData.title } style={styles.inputStyle}

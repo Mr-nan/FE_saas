@@ -50,7 +50,7 @@ export  default class AccountSettingScene extends BaseComponent {
                 ,paddingRight: Pixel.getPixel(15),
                  paddingLeft:Pixel.getPixel(15),height:Pixel.getPixel(44),flexDirection: 'row'}}>
                     <View style={{flex:1,justifyContent:'center'}}>
-                        <Text style={{color:'#000',fontSize: Pixel.getFontPixel(14)}}>开通电子账户</Text>
+                        <Text allowFontScaling={false}  style={{color:'#000',fontSize: Pixel.getFontPixel(14)}}>开通电子账户</Text>
                     </View>
                     <View style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>
                             <Switch/>

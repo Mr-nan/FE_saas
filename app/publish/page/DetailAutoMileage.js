@@ -122,7 +122,7 @@ export default class DetailAutoMileage extends Component {
             <TouchableOpacity
                 activeOpacity={0.6}
                 onPress={this.props.publishData}>
-                <Text style={styles.rightTitleText}>完成</Text>
+                <Text allowFontScaling={false}  style={styles.rightTitleText}>完成</Text>
             </TouchableOpacity>
         );
     };
@@ -173,7 +173,7 @@ export default class DetailAutoMileage extends Component {
                                 </Picker>
                             </View>
                         </Image>
-                        <Text style={[styles.fontBold,styles.dotSpace]}>.</Text>
+                        <Text allowFontScaling={false}  style={[styles.fontBold,styles.dotSpace]}>.</Text>
                         <Image style={styles.proContainer} source={proBg}>
                             <View style={styles.fillSpace}>
                                 <Picker style={[IS_ANDROID && styles.fillSpace]}
@@ -197,7 +197,7 @@ export default class DetailAutoMileage extends Component {
                             </View>
                         </Image>
                         <View style={styles.endContainer}>
-                            <Text style={[styles.fontBold]}>万公里</Text>
+                            <Text allowFontScaling={false}  style={[styles.fontBold]}>万公里</Text>
                         </View>
                     </View>
                 </Image>

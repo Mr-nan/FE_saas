@@ -71,8 +71,8 @@ export class LendSuccessAlert extends Component{
                     dismissKeyboard();
                 }}>
                     <View style={commentAlertStyle.container}>
-                        <Text style={commentAlertStyle.title}>{title}</Text>
-                        <Text style={commentAlertStyle.subtitle}>{this.state.subtitle!=''?this.state.subtitle:subtitle}</Text>
+                        <Text allowFontScaling={false}  style={commentAlertStyle.title}>{title}</Text>
+                        <Text allowFontScaling={false}  style={commentAlertStyle.subtitle}>{this.state.subtitle!=''?this.state.subtitle:subtitle}</Text>
                         <View style={commentAlertStyle.successWarp}>
                             <CommenButton buttonStyle={[commentAlertStyle.successButton,{marginBottom:adapeSize(20)},
                              commentAlertStyle.buttonLeft]} onPress={this.confimClick} title={confimTitle?confimTitle:"好的"}/>
@@ -134,21 +134,21 @@ export class ModifyBorrowing extends Component{
                 }}>
                     <View style={styles.container}>
 
-                        <Text style={styles.title}>修改借款</Text>
+                        <Text allowFontScaling={false}  style={styles.title}>修改借款</Text>
 
                         <View style={styles.input}>
                             <TextInput underlineColorAndroid={"#00000000"} onChangeText={this.props.onchangeText} style={styles.inputText} placeholder='请输入借款金额' keyboardType='decimal-pad'></TextInput>
                         </View>
                         <View style={styles.showMessage}>
-                            <Text style={styles.showMessageText}>*可借额度{this.props.minLend}-{this.props.maxLend}万</Text>
+                            <Text allowFontScaling={false}  style={styles.showMessageText}>*可借额度{this.props.minLend}-{this.props.maxLend}万</Text>
                         </View>
 
                         <View style={styles.handelWarp}>
                             <TouchableOpacity style={[styles.button,styles.buttonLeft]} onPress={this._confimClick}>
-                                <Text style={styles.text}>确认</Text>
+                                <Text allowFontScaling={false}  style={styles.text}>确认</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={[styles.button,styles.buttonRight]}onPress={this._cancleClick}>
-                                <Text style={styles.text}>取消</Text>
+                                <Text allowFontScaling={false}  style={styles.text}>取消</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -211,7 +211,7 @@ export class ModalList extends PureComponent{
             <TouchableOpacity style={{alignItems:'center'}} onPress={()=>this.pressRow(rowID)} underlayColor='aqua'>
 
 
-                <Text style={[{marginTop:10},rowData.selected&&{color:'red'}]}>{rowData.title}</Text>
+                <Text allowFontScaling={false}  style={[{marginTop:10},rowData.selected&&{color:'red'}]}>{rowData.title}</Text>
 
 
             </TouchableOpacity>
@@ -318,8 +318,8 @@ export class ModalAlert extends PureComponent{
                     dismissKeyboard();
                 }}>
                     <View style={commentAlertStyle.container}>
-                        <Text style={commentAlertStyle.title}>{title}</Text>
-                        <Text style={commentAlertStyle.subtitle}>{subtitle}</Text>
+                        <Text allowFontScaling={false}  style={commentAlertStyle.title}>{title}</Text>
+                        <Text allowFontScaling={false}  style={commentAlertStyle.subtitle}>{subtitle}</Text>
                         <View style={commentAlertStyle.buttonsWarp}>
 
                             <CommenButton buttonStyle={[commentAlertStyle.buttonstyle,{marginRight:adapeSize(10)}, commentAlertStyle.buttonLeft]}
@@ -396,10 +396,10 @@ export  class ModalCGD extends PureComponent{
                     <View style={lendTypeStyle.container}>
 
                         <TouchableOpacity style={[lendTypeStyle.textWarp,lendTypeStyle.Dividingline] } onPress={this.behandClick}>
-                            <Text style={[lendTypeStyle.text,this.state.selected===behand&&lendTypeStyle.selcted]}>提档后采购贷</Text>
+                            <Text allowFontScaling={false}  style={[lendTypeStyle.text,this.state.selected===behand&&lendTypeStyle.selcted]}>提档后采购贷</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={lendTypeStyle.textWarp} onPress={this.focusClick}>
-                            <Text style={[lendTypeStyle.text,this.state.selected===foncus&&lendTypeStyle.selcted]}>提档前采购贷</Text>
+                            <Text allowFontScaling={false}  style={[lendTypeStyle.text,this.state.selected===foncus&&lendTypeStyle.selcted]}>提档前采购贷</Text>
                         </TouchableOpacity>
                     </View>
                 </TouchableOpacity>

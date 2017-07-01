@@ -57,7 +57,7 @@ export  default class PlanParentItem extends PureComponent {
                     }
                 }}>
                     <View style={[styles.topViewStyle, {alignItems: 'flex-start'}]}>
-                        <Text style={{
+                        <Text allowFontScaling={false}  style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                             color: fontAndColor.COLORA0
                         }}>{movie.date_str}</Text>
@@ -67,7 +67,7 @@ export  default class PlanParentItem extends PureComponent {
                         justifyContent: 'flex-end',
                         alignItems: 'center'
                     }]}>
-                        <Text style={{
+                        <Text allowFontScaling={false}  style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                             color: fontAndColor.COLORA2
                         }}>{movie.list.length}笔</Text>
