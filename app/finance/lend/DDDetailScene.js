@@ -100,8 +100,7 @@ export default class DDDetailScene extends BaseComponent {
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
                     let tempjson = response.mjson.data;
-                    // ControlState = this.confimOrderState(Number.parseInt(tempjson.payment_status), Number.parseInt(tempjson.payment_schedule))
-                    ControlState = ["jiekuan"];
+                    ControlState = this.confimOrderState(Number.parseInt(tempjson.payment_status), Number.parseInt(tempjson.payment_schedule))
                     this.getCarListInfo(tempjson);
                 },
                 (error) => {
@@ -282,23 +281,23 @@ export default class DDDetailScene extends BaseComponent {
 
         return status;
     }
-    // confimOrderState = (state, isComplete) => {
-    //     let NameBlobs = [];
-    //
-    //     if (state > 0 && state <= 32 || state == 50) {
-    //         NameBlobs = ['取消借款']
-    //     } else if (state == 33) {
-    //         NameBlobs = ['取消借款', '确认金额']
-    //     } else if (state === 35) {
-    //         NameBlobs = ['取消借款', '签署合同']
-    //     } else if (state == 40 || state == 42 || isComplete == 4) {
-    //         NameBlobs = ['查看合同']
-    //     } else if (state == 41) {
-    //         NameBlobs = ['取消借款', '确认金额', '查看合同']
-    //     }
-    //
-    //     return NameBlobs;
-    // }
+    confimOrderState = (state, isComplete) => {
+        let NameBlobs = [];
+
+        if (state > 0 && state <= 32 || state == 50) {
+            NameBlobs = ['取消借款']
+        } else if (state == 33) {
+            NameBlobs = ['取消借款', '确认金额']
+        } else if (state === 35) {
+            NameBlobs = ['取消借款', '签署合同']
+        } else if (state == 40 || state == 42 || isComplete == 4) {
+            NameBlobs = ['查看合同']
+        } else if (state == 41) {
+            NameBlobs = ['取消借款', '确认金额', '查看合同']
+        }
+
+        return NameBlobs;
+    }
 
 
     renderRow = (rowData, sectionID, rowId, highlightRow) => {
@@ -315,7 +314,7 @@ export default class DDDetailScene extends BaseComponent {
                             name: 'PurchaseLoanStatusScene',
                             component: PurchaseLoanStatusScene,
                             params: {
-                                loanNumber: this.props.loanNumber
+                                loanNumber: this.props.financeNo
                             }
                         }
                         this.toNextPage(navigatorParams);
@@ -329,23 +328,19 @@ export default class DDDetailScene extends BaseComponent {
 
         }
         if (sectionID === 'section2') {
-            return (
+             return (
                 <View style={[styles.commentHandeItem, {height: adapeSize(44)}] }>
-                    <Text style={styles.commentListItemLeft}>{rowData.title}</Text>
-                    <Text style={[styles.commentListItemRight, {color: PAGECOLOR.COLORA1}]}>{rowData.key}</Text>
+                    <Text allowFontScaling={false}  style={styles.commentListItemLeft}>{rowData.title}</Text>
+                    <Text allowFontScaling={false}  style={[styles.commentListItemRight, {color: PAGECOLOR.COLORA1}]}>{rowData.key}</Text>
                 </View>
             )
         }
         if (sectionID === 'section3') {
-            //
             return (<CGDCarItems url={rowData.icon} title={rowData.model_name}
-                                 invoice_upload_status={rowData.invoice_upload_status}
-                                 obd_bind_status={rowData.obd_bind_status}
-                                 obd_audit_status={rowData.obd_audit_status}
-                                 invoice_audit_status={rowData.invoice_audit_status}
-                                 date={rowData.init_reg + ' / ' + rowData.mileage + '万公里'} onPress={() => {
-                this.carItemClick(rowData.info_id);
-            }}/>)
+                                 invoice_upload_status={2}
+                                 obd_bind_status={2}
+                                 date={""}
+            />)
         }
         if (sectionID === 'section4') {
             if (rowData.title === 'OBD设备') {
@@ -377,10 +372,7 @@ export default class DDDetailScene extends BaseComponent {
                                     platform_order_number: this.props.orderNo,//平台订单号
                                     info_id: this.carData.info_id,
                                     backRefresh: () => {
-                                        //刷新界面
-                                        this.props.showModal(true);
-                                        this.props.sceneName = 'CheckStand';
-                                        this.getLendInfo();
+
                                     }
                                 }
                         }
@@ -421,6 +413,13 @@ export default class DDDetailScene extends BaseComponent {
             </View>
         )
     }
+    /*
+    * 底部按钮点击判断
+    *
+    * buttonClick
+    *
+    *
+    ***/
     buttonClick = (title) => {
         if (title == '确认金额') {
             this.toNextPage({
@@ -586,5 +585,26 @@ const styles = StyleSheet.create({
 
 
     },
+    commentListItemLeft: {
+        paddingLeft: adapeSize(15),
+        textAlign: 'left',
+        color: '#9e9e9e',
+        flex: 0.3,
+    },
+
+    commentListItemRight: {
+        paddingRight: adapeSize(15),
+        textAlign: 'right',
+        color: 'black',
+        flex: 0.7,
+    },
+    commentHandeItem: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        backgroundColor: 'white',
+    },
+
 
 })
