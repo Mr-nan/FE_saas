@@ -392,7 +392,6 @@ export default class CheckStand extends BaseComponent {
                         merge_id: mergeId,
                         platform_car_id: this.props.carId,
                         platform_order_number: this.props.orderNo,
-                        platform_order_id: this.props.orderId,
                         register_seller_user_id: this.props.sellerId
                     };
                     let url = AppUrls.ADD_PLATFORM_ORDER_CAR;
@@ -405,6 +404,7 @@ export default class CheckStand extends BaseComponent {
                                     component: DDApplyLendScene,
                                     params: {
                                         orderNo: this.props.orderNo,
+                                        orderId: this.props.orderId,
                                         callBack: this.props.callBack,
                                         sceneName: 'CheckStand'
                                     }
