@@ -1407,7 +1407,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     style={styles.itemType7}
                     onPress={() => {
                         // 跳转金融页面  借款详情
-                        //this.props.showToast('rowData === 7');
+
                     }}>
                     <View style={{alignItems: 'center', flexDirection: 'row', height: Pixel.getPixel(44)}}>
                         <Text style={{
