@@ -47,7 +47,6 @@ export default class CGDCarDetailScenes extends BaseComponent{
     }
 
     initFinish() {
-
         this.getCarInfo();
     }
 

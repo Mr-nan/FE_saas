@@ -3,8 +3,8 @@ import {StyleSheet, View, ListView, Image, Text} from "react-native";
 import AllNavigatior from "../../component/AllNavigationView";
 import AllNavigationView from "../../component/AllNavigationView";
 import {CommnetListItem, CommentHandItem, commnetStyle, CommenButton, CGDCarItems} from "./component/ComponentBlob";
-import WebScene from '../../main/WebScene';
-import StorageUtil from '../../utils/StorageUtil';
+import WebScene from "../../main/WebScene";
+import StorageUtil from "../../utils/StorageUtil";
 import {
     width,
     fontadapeSize,
@@ -17,10 +17,10 @@ import {
 import BaseComponent from "../../component/BaseComponent";
 import {request} from "../../utils/RequestUtil";
 import *as apis from "../../constant/appUrls";
-import {LendSuccessAlert, ModalAlert} from "./component/ModelComponent";
 import DDCarInfoScene from "./DDCarInfoLendAndEditScene";
 import OBDDevice from "./OBDDevice";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
+import DDCarInfoCheckScene from "./DDCarInfoCheckScene";
 let ControlState = [];
 export default class DDApplyLendScene extends BaseComponent {
 
@@ -214,8 +214,6 @@ export default class DDApplyLendScene extends BaseComponent {
                         title: 'OBD设备',
                         key: this.OBDtransferToString(carData[0].obd_audit_status, carData[0].obd_bind_status)
                     },
-
-
                 ]
             }
             dataSource['section4'] = section4;
@@ -345,7 +343,7 @@ export default class DDApplyLendScene extends BaseComponent {
                                      showValue={rowData.key} textStyle={{color: PAGECOLOR.COLORA1}} handel={() => {
                         if (this.carData.auto_ownership_status != 1) {
                             this.toNextPage({
-                                name: 'DDCarInfoScene',
+                                name: 'DDCarInfoScene',//DDCarInfoCheckScene
                                 component: DDCarInfoScene,
                                 params: {
                                     carData: this.carData,
@@ -529,7 +527,7 @@ export default class DDApplyLendScene extends BaseComponent {
                     .then((response) => {
                         this.props.showModal(false);
                         // this.apSuccess.setModelVisible(true);
-                        this.props.showToast(response.mjson.msg + "xxx");
+                        this.props.showToast(response.mjson.msg);
                         this.props.callBack();
                         const navigator = this.props.navigator;
                         if (navigator) {
