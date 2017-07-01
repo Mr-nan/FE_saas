@@ -46,7 +46,7 @@ export default class OrderListScene extends BaseComponent {
         this.startDate = '选择开始时间';
         this.endDate = '选择结束时间';
         this.payType = 0;
-        this.payTypeText = '';
+        this.payTypeKey = '';
         //let business = this.props.business;
         this.state = {
             dataSource: [],
@@ -99,6 +99,7 @@ export default class OrderListScene extends BaseComponent {
                     page: 1,
                     rows: 10,
                     //list_state: this.props.listState,
+                    is_finance: this.payTypeKey,
                     status: this.status,
                     start_time: this.startDate === '选择开始时间' ? '' : this.startDate,
                     end_time: this.endDate === '选择结束时间' ? '' : this.endDate
@@ -167,6 +168,7 @@ export default class OrderListScene extends BaseComponent {
                     page: this.pageNum,
                     rows: 10,
                     //list_state: this.props.listState,
+                    is_finance: this.payTypeKey,
                     status: this.status,
                     start_time: this.startDate === '选择开始时间' ? '' : this.startDate,
                     end_time: this.endDate === '选择结束时间' ? '' : this.endDate
@@ -295,6 +297,8 @@ export default class OrderListScene extends BaseComponent {
                                 startDate: this.startDate,
                                 endDate: this.endDate,
                                 status: this.status,
+                                payType: this.payType,
+                                payTypeKey: this.payTypeKey,
                                 returnConditions: this.returnConditions
                             }
                         });
@@ -307,10 +311,16 @@ export default class OrderListScene extends BaseComponent {
         )
     }
 
-    returnConditions = (newOrderState, newStartDate, newEndDate, newStatus) => {
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
+    returnConditions = (newOrderState, newStartDate, newEndDate, newStatus, newPayType, newpayTypeKey) => {
         if (this.orderState === newOrderState &&
             this.startDate === newStartDate &&
-            this.endDate === newEndDate) {
+            this.endDate === newEndDate &&
+            this.payType === newPayType) {
             return;
         }
         this.props.showModal(true);
@@ -318,6 +328,8 @@ export default class OrderListScene extends BaseComponent {
         this.startDate = newStartDate;
         this.endDate = newEndDate;
         this.status = newStatus;
+        this.payType = newPayType;
+        this.payTypeKey = newpayTypeKey;
         this.loadData();
     };
 

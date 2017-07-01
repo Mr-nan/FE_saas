@@ -17,7 +17,6 @@ let Pixel = new PixelUtil();
 let {width, height} = Dimensions.get('window');
 import  * as fontAndColor from '../../../constant/fontAndColor';
 export default class ExplainModal extends Component {
-
     constructor(props) {
         super(props);
         // 初始状态
@@ -94,7 +93,6 @@ export default class ExplainModal extends Component {
         );
     }
 }
-
 /*
  style={{
  marginBottom: Pixel.getPixel(20),
@@ -108,8 +106,6 @@ export default class ExplainModal extends Component {
  borderWidth: 1,
  borderColor: fontAndColor.COLORB0
  }}
-
-
  {
  fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
  color: fontAndColor.COLORB0

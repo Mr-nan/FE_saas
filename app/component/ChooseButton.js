@@ -18,7 +18,7 @@ export default class ChooseButton extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            dengjiren: '选择借款人'
+            dengjiren: this.props.rightText
         };
     }
 
@@ -43,10 +43,13 @@ export default class ChooseButton extends PureComponent {
                     <Text allowFontScaling={false}  style={[styles.leftFont, this.props.leftFont]}>
                         <Text allowFontScaling={false}  style={{color: FontAndColor.COLORB2}}>*</Text>{this.props.leftText}
                     </Text>
-                    <Text allowFontScaling={false}  style={styles.headerCellRight}>{this.state.dengjiren}</Text>
-                    <Image style={{width: Pixel.getPixel(20), height: Pixel.getPixel(16), marginRight: Pixel.getPixel(-10)}}
-                           source = {require('../../images/mainImage/celljiantou.png')}
-                    />
+                    <Text allowFontScaling={false} style={styles.headerCellRight}>{this.state.dengjiren}</Text>
+                    {
+                        this.props.showArrow ?  <Image style={{width: Pixel.getPixel(20), height: Pixel.getPixel(16), marginRight: Pixel.getPixel(-10)}}
+                                                       source = {require('../../images/mainImage/celljiantou.png')}
+                            /> : null
+                    }
+
                 </View>
             </TouchableHighlight>
         );

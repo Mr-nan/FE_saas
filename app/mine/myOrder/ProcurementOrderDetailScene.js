@@ -39,6 +39,7 @@ import WebScene from "../../main/WebScene";
 import ContractWebScene from "./ContractWebScene";
 import ContractScene from "./ContractScene";
 import LoanInfo from "./component/LoanInfo";
+import DDDetailScene from "../../finance/lend/DDDetailScene";
 const Pixel = new PixelUtil();
 
 export default class ProcurementOrderDetailScene extends BaseComponent {
@@ -398,8 +399,12 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.props.showToast(response.mjson.msg);
                     }
                 }, (error) => {
-                    //this.props.showToast('确认验收失败');
-                    this.props.showToast(error.mjson.msg);
+                    if (error.mjson.code == '6350087') {
+                        this.loadData();
+                    } else {
+                        //this.props.showToast('确认验收失败');
+                        this.props.showToast(error.mjson.msg);
+                    }
                 });
             } else {
                 this.props.showToast('确认验收失败');
@@ -837,6 +842,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 8: // 全款付清  8=>'尾款支付完成'
             case 9: // 9=>'确认验收中'
             case 10: // 10=>'确认验收失败'
+            case 90: // 90=>'质押车辆提前还款失败',
+            case 91: // 91=>'质押车辆提前还款成功',
                 if (cancelStatus === 0) {
                     this.orderState = 3;
                     this.topState = -1;
@@ -922,11 +929,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 if (cancelStatus === 0) {
                     this.orderState = 5;
                     this.topState = -1;
-                    if (status === 6) {
-                        this.bottomState = 1;
-                    } else {
-                        this.bottomState = 1;
-                    }
+                    this.bottomState = 0;
                 } else if (cancelStatus === 1) {
                     this.orderState = 5;
                     this.topState = -1;
@@ -1401,7 +1404,14 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     style={styles.itemType7}
                     onPress={() => {
                         // 跳转金融页面  借款详情
-                        //this.props.showToast('rowData === 7');
+                        this.toNextPage({
+                            name: 'DDDetailScene',
+                            component: DDDetailScene,
+                            params: {
+                                financeNo: this.orderDetail.finance_no,
+                                orderNo: this.orderDetail.order_no
+                            }
+                        });
                     }}>
                     <View style={{alignItems: 'center', flexDirection: 'row', height: Pixel.getPixel(44)}}>
                         <Text allowFontScaling={false}  style={{
@@ -1414,7 +1424,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             marginRight: Pixel.getPixel(10),
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color: fontAndColor.COLORA1
-                        }}>{this.orderDetail.orders_item_data[0].car_finance_data.loan_code ? this.orderDetail.orders_item_data[0].car_finance_data.loan_code : '未生成借款单号'}</Text>
+                        }}>{this.orderDetail.finance_no ? this.orderDetail.finance_no : '未生成借款单号'}</Text>
                         <Image source={require('../../../images/mainImage/celljiantou.png')}
                                style={{marginRight: Pixel.getPixel(15)}}/>
                     </View>
