@@ -17,7 +17,7 @@ import BaseComponent from "../../component/BaseComponent";
 import {request} from "../../utils/RequestUtil";
 import *as apis from "../../constant/appUrls";
 import {LendSuccessAlert, ModalAlert} from "./component/ModelComponent";
-import DDCarInfoScene from "./DDCarInfoScene";
+import DDCarInfoScene from "./DDCarInfoLendAndEditScene";
 import OBDDevice from "./OBDDevice";
 let ControlState = [];
 export default class DDApplyLendScene extends BaseComponent {
