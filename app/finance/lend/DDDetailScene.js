@@ -88,7 +88,10 @@ export default class DDDetailScene extends BaseComponent {
     initFinish() {
         this.getLendInfo();
     }
-
+    /**
+     * 获取借款详情
+     * getLendInfo
+     **/
     getLendInfo = () => {
 
         let maps = {
@@ -119,6 +122,10 @@ export default class DDDetailScene extends BaseComponent {
 
 
     }
+    /**
+     * 获取车辆列表
+     * getCarListInfo
+     **/
     getCarListInfo = (lendInfo) => {
         let maps = {
             api: apis.DDAUTOLIST,
@@ -159,18 +166,11 @@ export default class DDDetailScene extends BaseComponent {
                 });
 
     }
-    // carItemClick = (carId) => {
-    //
-    //     navigatorParams = {
-    //         name: 'CGDCarDetailScenes',
-    //         component: CGDCarDetailScenes,
-    //         params: {
-    //             carId: carId
-    //         }
-    //     }
-    //     this.toNextPage(navigatorParams);
-    // }
 
+    /**
+     * 点击取消借款，确定，取消借款
+     * canclelend
+     **/
     // canclelend = () => {
     //
     //     let maps = {
@@ -196,7 +196,10 @@ export default class DDDetailScene extends BaseComponent {
     //
     // }
 
-
+    /**
+     * 根据取回的数据，对数据源进行封装
+     * titleNameBlob
+     **/
     titleNameBlob = (jsonData, carData) => {
         loan_code = jsonData.loan_code;
         let dataSource = {};
@@ -281,6 +284,10 @@ export default class DDDetailScene extends BaseComponent {
 
         return status;
     }
+    /**
+     * 根据后台返回的状态，判断下面按钮的显示。。
+     * confimOrderState
+     **/
     confimOrderState = (state, isComplete) => {
         let NameBlobs = [];
 
@@ -299,7 +306,10 @@ export default class DDDetailScene extends BaseComponent {
         return NameBlobs;
     }
 
-
+    /**
+     * 绘制界面的row
+     * renderRow
+     **/
     renderRow = (rowData, sectionID, rowId, highlightRow) => {
 
         if (sectionID === 'section1') {
@@ -384,6 +394,10 @@ export default class DDDetailScene extends BaseComponent {
         }
 
     }
+    /**
+     * 绘制界面的SectionHeader
+     * SectionHeader
+     **/
     renderSectionHeader = (sectionData, sectionID) => {
 
         if (sectionID === 'section2') {
@@ -399,6 +413,10 @@ export default class DDDetailScene extends BaseComponent {
             </View>
         )
     }
+    /**
+     * 绘制界面的Separator分割线
+     * Separator
+     **/
     renderSeparator = (sectionID, rowId, adjacentRowHighlighted) => {
 
         let separtrorHegigth = 1;
@@ -415,11 +433,8 @@ export default class DDDetailScene extends BaseComponent {
     }
     /*
     * 底部按钮点击判断
-    *
     * buttonClick
-    *
-    *
-    ***/
+    **/
     buttonClick = (title) => {
         if (title == '确认金额') {
             this.toNextPage({
@@ -447,8 +462,10 @@ export default class DDDetailScene extends BaseComponent {
             this.cancle.setModelVisible(true);
         }
     }
-
-
+    /**
+     * 绘制界面
+     * render
+     **/
     render() {
 
         if (this.state.renderPlaceholderOnly !== STATECODE.loadSuccess) {
