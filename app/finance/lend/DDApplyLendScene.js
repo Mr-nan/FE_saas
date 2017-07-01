@@ -4,6 +4,7 @@ import AllNavigatior from "../../component/AllNavigationView";
 import AllNavigationView from "../../component/AllNavigationView";
 import {CommnetListItem, CommentHandItem, commnetStyle, CommenButton, CGDCarItems} from "./component/ComponentBlob";
 import WebScene from '../../main/WebScene';
+import StorageUtil from '../../utils/StorageUtil';
 import {
     width,
     fontadapeSize,
@@ -19,6 +20,7 @@ import *as apis from "../../constant/appUrls";
 import {LendSuccessAlert, ModalAlert} from "./component/ModelComponent";
 import DDCarInfoScene from "./DDCarInfoScene";
 import OBDDevice from "./OBDDevice";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
 let ControlState = [];
 export default class DDApplyLendScene extends BaseComponent {
 
@@ -511,41 +513,45 @@ export default class DDApplyLendScene extends BaseComponent {
      * lendMoneyClick
      */
     lendMoneyClick = () => {
-        let maps = {
-            api: apis.APPLY_LOAN,
-            apply_type: "6",
-            platform_order_number: this.props.orderNo,
-            base_id: this.carData.base_id,
-            car_lists: this.carData.info_id,
-            order_id: this.props.orderId,
-        }
-        this.props.showModal(true);
-        request(apis.FINANCE, 'Post', maps)
-            .then((response) => {
-                this.props.showModal(false);
-                // this.apSuccess.setModelVisible(true);
-                this.props.showToast(response.mjson.msg);
-                this.props.callBack();
-                const navigator = this.props.navigator;
-                if (navigator) {
-                    for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
-                        if (navigator.getCurrentRoutes()[i].name == 'ProcurementOrderDetailScene') {
-                            navigator.popToRoute(navigator.getCurrentRoutes()[i]);
-                            break;
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            this.companyId = JSON.parse(data.result).company_base_id;
+            let maps = {
+                api: apis.APPLY_LOAN,
+                apply_type: "6",
+                platform_order_number: this.props.orderNo,
+                company_base_id: this.companyId,
+                car_lists: this.carData.info_id,
+                order_id: this.props.orderId,
+            }
+            this.props.showModal(true);
+            request(apis.FINANCE, 'Post', maps)
+                .then((response) => {
+                    this.props.showModal(false);
+                    // this.apSuccess.setModelVisible(true);
+                    this.props.showToast(response.mjson.msg + "xxx");
+                    this.props.callBack();
+                    const navigator = this.props.navigator;
+                    if (navigator) {
+                        for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
+                            if (navigator.getCurrentRoutes()[i].name == 'ProcurementOrderDetailScene') {
+                                navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                                break;
+                            }
                         }
                     }
-                }
-            }, (error) => {
-                this.props.showModal(false);
-                if (error.mycode != -300 || error.mycode != -500) {
-                    this.props.showToast(error.mjson.msg);
-                } else {
-                    this.props.showToast('服务器连接有问题')
-                }
-            });
+                }, (error) => {
+                    this.props.showModal(false);
+                    if (error.mycode != -300 || error.mycode != -500) {
+                        this.props.showToast(error.mjson.msg);
+                    } else {
+                        this.props.showToast('服务器连接有问题')
+                    }
+                });
+        });
 
 
     }
+
 }
 
 const styles = StyleSheet.create({
