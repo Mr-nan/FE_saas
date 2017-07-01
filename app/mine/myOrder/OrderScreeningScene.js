@@ -43,8 +43,8 @@ export default class OrderScreeningScene extends BaseComponent {
         this.startDate = this.props.startDate;
         this.endDate = this.props.endDate;
         this.status = this.props.status;
-        this.payType = 0;
-        this.payTypeText = '';
+        this.payType = this.props.payType;
+        this.payTypeKey = this.props.payTypeKey;
         this.mList = [];
         if (this.props.business === 1) {
             if (this.props.status === 'finish' || this.props.status === 'closed') {
@@ -61,9 +61,9 @@ export default class OrderScreeningScene extends BaseComponent {
         }
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
-        pay_type.push({title: '全部', isSelected: pay_type.length === this.payType, value: 0, ref: 'type_child' + 0});
-        pay_type.push({title: '订单融资', isSelected: pay_type.length === this.payType, value: 1, ref: 'type_child' + 1});
-        pay_type.push({title: '全款', isSelected: pay_type.length === this.payType, value: 2, ref: 'type_child' + 2});
+        pay_type.push({title: '全部', isSelected: pay_type.length === this.payType, value: '', ref: 'type_child' + 0});
+        pay_type.push({title: '全款', isSelected: pay_type.length === this.payType, value: 0, ref: 'type_child' + 1});
+        pay_type.push({title: '订单融资', isSelected: pay_type.length === this.payType, value: 1, ref: 'type_child' + 2});
         this.state = {
             //source: ds.cloneWithRows(mList),
             source: ds,
@@ -170,7 +170,7 @@ export default class OrderScreeningScene extends BaseComponent {
             return;
         }
         if (this.startDate <= this.endDate) {
-            this.props.returnConditions(this.orderState, this.startDate, this.endDate, this.status);
+            this.props.returnConditions(this.orderState, this.startDate, this.endDate, this.status, this.payType, this.payTypeKey);
             this.backPage();
         } else {
             this.props.showToast('开始时间要小于结束时间');
@@ -203,7 +203,7 @@ export default class OrderScreeningScene extends BaseComponent {
                 }}>
                     <Text style={styles.carType}>付款方式</Text>
                     <LabelParentPayType items={pay_type} orderState={this.payType} updateState={this.setPayType}
-                                 updateStatus={this.setPayTypeText}/>
+                                 updateStatus={this.setpayTypeKey}/>
                 </View>
             )
         } else if (movie == 3) {
@@ -221,14 +221,10 @@ export default class OrderScreeningScene extends BaseComponent {
 
     setPayType = (newPayType) => {
         this.payType = newPayType;
-        /*console.log("this.payType=======",this.payType);
-        console.log("this.payTypeText=======",this.payTypeText);
-        console.log("this.orderState==---=====",this.orderState);
-        console.log("this.status==---=====",this.status);*/
     }
 
-    setPayTypeText = (newPayTypeText) => {
-        this.payTypeText = newPayTypeText;
+    setpayTypeKey = (newpayTypeKey) => {
+        this.payTypeKey = newpayTypeKey;
     }
 
     setOrderState = (newOrderState) => {
