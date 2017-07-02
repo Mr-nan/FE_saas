@@ -36,7 +36,6 @@ export default class LoanInfo extends BaseComponent {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({amount: nextProps.amount, deposit: nextProps.amount / 10});
 
     }
 
@@ -57,14 +56,14 @@ export default class LoanInfo extends BaseComponent {
                         });
                     }}>
                     <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
-                        <Text allowFontScaling={false}  style={{
+                        <Text allowFontScaling={false} style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                             marginLeft: Pixel.getPixel(15)
                         }}>贷款信息</Text>
                         <View style={{flex: 1}}/>
-                        <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA2}}>借款单号：</Text>
-                        <Text allowFontScaling={false} 
-                            style={{color: fontAndColor.COLORA2}}>{this.state.financeInfo.loan_code ? this.state.financeInfo.loan_code : '未生成借款单号'}</Text>
+                        <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>借款单号：</Text>
+                        <Text allowFontScaling={false}
+                              style={{color: fontAndColor.COLORA2}}>{this.state.financeInfo.loan_code ? this.state.financeInfo.loan_code : '未生成借款单号'}</Text>
                         <Image
                             style={styles.backIcon}
                             source={require('../../../../images/mainImage/celljiantou.png')}/>
@@ -78,47 +77,60 @@ export default class LoanInfo extends BaseComponent {
                     marginTop: Pixel.getPixel(20),
                     marginRight: Pixel.getPixel(15)
                 }}>
-                    <Text allowFontScaling={false}  style={styles.orderInfo}>最大可贷额度</Text>
+                    <Text allowFontScaling={false} style={styles.orderInfo}>最大可贷额度</Text>
                     <View style={{flex: 1}}/>
-                    <Text allowFontScaling={false} 
-                        style={styles.infoContent}>{this.state.financeInfo.max_loanmny ? this.state.financeInfo.max_loanmny : '0.00'}元</Text>
+                    <Text allowFontScaling={false}
+                          style={styles.infoContent}>{this.state.financeInfo.max_loanmny ? this.state.financeInfo.max_loanmny : '0.00'}元</Text>
                 </View>
-                <TouchableOpacity
-                    onPress={() => {
-                        this.toNextPage({
-                            name: 'CheckLoanAmountScene',
-                            component: CheckLoanAmountScene,
-                            params: {
-                                amount: this.state.applyLoanAmount,
-                                updateAmount: this.updateAmount,
-                                companyId: this.props.companyId,
-                                orderId: this.props.orderId,
-                                financeNo: this.state.financeInfo.loan_code,
-                                maxLoanmny: this.state.financeInfo.max_loanmny,
-                                balanceAmount: this.props.balanceAmount
-                            }
-                        });
-                    }}>
-                    <View style={styles.inputBorder}>
-                        <Text allowFontScaling={false}  style={styles.inputStyle}>{this.state.applyLoanAmount}</Text>
-                        <View style={{flex: 1}}/>
-                        <Text allowFontScaling={false}  style={{marginRight: Pixel.getPixel(10)}}>元</Text>
-                    </View>
-                </TouchableOpacity>
+                {/*<View style={{
+                    alignItems: 'center',
+                    marginLeft: Pixel.getPixel(15),
+                    marginRight: Pixel.getPixel(15),
+                    height: Pixel.getPixel(40),
+                    marginTop: Pixel.getPixel(13),
+                    flexDirection: 'row'
+                }}>
+                    <Text allowFontScaling={false} style={styles.orderInfo}>申请贷款额度</Text>*/}
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.toNextPage({
+                                name: 'CheckLoanAmountScene',
+                                component: CheckLoanAmountScene,
+                                params: {
+                                    amount: this.state.applyLoanAmount,
+                                    updateAmount: this.updateAmount,
+                                    companyId: this.props.companyId,
+                                    orderId: this.props.orderId,
+                                    financeNo: this.state.financeInfo.loan_code,
+                                    maxLoanmny: this.state.financeInfo.max_loanmny,
+                                    balanceAmount: this.props.balanceAmount
+                                }
+                            });
+                        }}>
+                        <View style={styles.inputBorder}>
+                            <Text allowFontScaling={false} style={styles.inputStyle}>{this.state.applyLoanAmount}</Text>
+                            <View style={{flex: 1}}/>
+                            <Text allowFontScaling={false} style={{marginRight: Pixel.getPixel(10)}}>元</Text>
+                        </View>
+                    </TouchableOpacity>
+                {/*</View>*/}
                 <View style={styles.infoItem}>
-                    <Text allowFontScaling={false}  style={styles.orderInfo}>需支付服务费</Text>
+                    <Text allowFontScaling={false} style={styles.orderInfo}>需支付服务费</Text>
                     <View style={{flex: 1}}/>
-                    <Text allowFontScaling={false}  style={styles.infoContent}>{this.state.financeInfo.fee_mny ? this.state.financeInfo.fee_mny : '0.00'}元</Text>
+                    <Text allowFontScaling={false}
+                          style={styles.infoContent}>{this.state.financeInfo.fee_mny ? this.state.financeInfo.fee_mny : '0.00'}元</Text>
                 </View>
                 <View style={styles.infoItem}>
-                    <Text allowFontScaling={false}  style={styles.orderInfo}>需支付OBD使用费</Text>
+                    <Text allowFontScaling={false} style={styles.orderInfo}>需支付OBD使用费</Text>
                     <View style={{flex: 1}}/>
-                    <Text allowFontScaling={false}  style={styles.infoContent}>{this.state.financeInfo.obd_mny ? this.state.financeInfo.obd_mny : '0.00'}元</Text>
+                    <Text allowFontScaling={false}
+                          style={styles.infoContent}>{this.state.financeInfo.obd_mny ? this.state.financeInfo.obd_mny : '0.00'}元</Text>
                 </View>
                 <View style={styles.infoItem}>
-                    <Text allowFontScaling={false}  style={styles.orderInfo}>应付首付款</Text>
+                    <Text allowFontScaling={false} style={styles.orderInfo}>应付首付款</Text>
                     <View style={{flex: 1}}/>
-                    <Text allowFontScaling={false}  style={styles.infoContent}>{(this.balanceAmount - this.state.applyLoanAmount).toFixed(2)}元</Text>
+                    <Text allowFontScaling={false}
+                          style={styles.infoContent}>{(this.balanceAmount - this.state.applyLoanAmount).toFixed(2)}元</Text>
                 </View>
             </View>
         )

@@ -67,7 +67,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         this.financeInfo = {};
 
         this.companyId = 0;
-        this.applyLoanAmount = 0;
+        this.applyLoanAmount = '请输入申请贷款金额';
 
         this.state = {
             dataSource: [],

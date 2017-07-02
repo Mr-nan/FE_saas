@@ -30,7 +30,7 @@ export default class CheckLoanAmountScene extends BaseComponent {
 
     constructor(props) {
         super(props);
-        this.number = this.props.amount;
+        this.number = this.props.amount === '请输入申请贷款金额' ? 0 : this.props.amount;
     }
 
     render() {
@@ -91,7 +91,7 @@ export default class CheckLoanAmountScene extends BaseComponent {
                         this.props.updateAmount(this.number);
                         this.checkPrice(this.number);
                         this.backPage();
-                    } else if (this.number === 0) {
+                    } else if (this.number == 0) {
                         this.props.showToast("金额不能为零");
                     } else {
                         this.props.showToast("请输入整百金额");
