@@ -199,7 +199,7 @@ export default class CheckStand extends BaseComponent {
                                 marginTop: Pixel.getPixel(6),
                                 //fontWeight: 'bold',
                                 fontSize: Pixel.getFontPixel(38)
-                            }}>{this.props.payAmount}元</Text>
+                            }}>{(this.props.payAmount).toFixed(2)}元</Text>
                         </View>
                         <View style={styles.separatedLine}/>
                         <View style={styles.accountBar}>
@@ -440,11 +440,12 @@ export default class CheckStand extends BaseComponent {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
-                // TODO 还缺少两个参数
                 let maps = {
                     company_id: datas.company_base_id,
                     order_id: this.props.orderId,
-                    reback_url: webBackUrl.PAY
+                    back_url: webBackUrl.PAY,
+                    loan_amount: this.props.applyLoanAmount,
+                    finance_no: this.props.financeNo
                 };
                 let url = AppUrls.FIRST_PAYMENT_PAY;
                 request(url, 'post', maps).then((response) => {

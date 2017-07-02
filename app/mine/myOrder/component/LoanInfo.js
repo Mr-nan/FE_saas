@@ -19,6 +19,7 @@ import PixelUtil from '../../../utils/PixelUtil';
 import InputAmountScene from "../InputAmountScene";
 import BaseComponent from "../../../component/BaseComponent";
 import CheckLoanAmountScene from "../CheckLoanAmountScene";
+import DDDetailScene from "../../../finance/lend/DDDetailScene";
 const Pixel = new PixelUtil();
 
 
@@ -26,13 +27,11 @@ export default class LoanInfo extends BaseComponent {
 
     constructor(props) {
         super(props);
-        this.transactionAmount = this.props.transactionAmount;
+        this.balanceAmount = this.props.balanceAmount;
+        //this.financeInfo = this.props.financeInfo;
         this.state = {
             applyLoanAmount: this.props.applyLoanAmount,
-            loanCode: this.props.loanCode,
-            maxLoanmny: this.props.maxLoanmny,
-            feeMny: '0.00',
-            obdMny: '0.00',
+            financeInfo: this.props.financeInfo
         }
     }
 
@@ -48,7 +47,14 @@ export default class LoanInfo extends BaseComponent {
                     style={{height: Pixel.getPixel(40)}}
                     onPress={() => {
                         // 跳转金融页面  借款详情
-                        //this.props.showToast('rowData === 7');
+                        this.toNextPage({
+                            name: 'DDDetailScene',
+                            component: DDDetailScene,
+                            params: {
+                                financeNo: this.state.financeInfo.loan_code,
+                                orderNo: this.props.orderNo
+                            }
+                        });
                     }}>
                     <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
                         <Text allowFontScaling={false}  style={{
@@ -58,7 +64,7 @@ export default class LoanInfo extends BaseComponent {
                         <View style={{flex: 1}}/>
                         <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA2}}>借款单号：</Text>
                         <Text allowFontScaling={false} 
-                            style={{color: fontAndColor.COLORA2}}>{this.state.loanCode ? this.state.loanCode : '未生成借款单号'}</Text>
+                            style={{color: fontAndColor.COLORA2}}>{this.state.financeInfo.loan_code ? this.state.financeInfo.loan_code : '未生成借款单号'}</Text>
                         <Image
                             style={styles.backIcon}
                             source={require('../../../../images/mainImage/celljiantou.png')}/>
@@ -75,7 +81,7 @@ export default class LoanInfo extends BaseComponent {
                     <Text allowFontScaling={false}  style={styles.orderInfo}>最大可贷额度</Text>
                     <View style={{flex: 1}}/>
                     <Text allowFontScaling={false} 
-                        style={styles.infoContent}>{this.state.maxLoanmny ? this.state.maxLoanmny : '0.00'}元</Text>
+                        style={styles.infoContent}>{this.state.financeInfo.max_loanmny ? this.state.financeInfo.max_loanmny : '0.00'}元</Text>
                 </View>
                 <TouchableOpacity
                     onPress={() => {
@@ -87,7 +93,9 @@ export default class LoanInfo extends BaseComponent {
                                 updateAmount: this.updateAmount,
                                 companyId: this.props.companyId,
                                 orderId: this.props.orderId,
-                                financeNo: this.props.financeNo
+                                financeNo: this.state.financeInfo.loan_code,
+                                maxLoanmny: this.state.financeInfo.max_loanmny,
+                                balanceAmount: this.props.balanceAmount
                             }
                         });
                     }}>
@@ -100,17 +108,17 @@ export default class LoanInfo extends BaseComponent {
                 <View style={styles.infoItem}>
                     <Text allowFontScaling={false}  style={styles.orderInfo}>需支付服务费</Text>
                     <View style={{flex: 1}}/>
-                    <Text allowFontScaling={false}  style={styles.infoContent}>100000元</Text>
+                    <Text allowFontScaling={false}  style={styles.infoContent}>{this.state.financeInfo.fee_mny ? this.state.financeInfo.fee_mny : '0.00'}元</Text>
                 </View>
                 <View style={styles.infoItem}>
                     <Text allowFontScaling={false}  style={styles.orderInfo}>需支付OBD使用费</Text>
                     <View style={{flex: 1}}/>
-                    <Text allowFontScaling={false}  style={styles.infoContent}>100000元</Text>
+                    <Text allowFontScaling={false}  style={styles.infoContent}>{this.state.financeInfo.obd_mny ? this.state.financeInfo.obd_mny : '0.00'}元</Text>
                 </View>
                 <View style={styles.infoItem}>
                     <Text allowFontScaling={false}  style={styles.orderInfo}>应付首付款</Text>
                     <View style={{flex: 1}}/>
-                    <Text allowFontScaling={false}  style={styles.infoContent}>100000元</Text>
+                    <Text allowFontScaling={false}  style={styles.infoContent}>{(this.balanceAmount - this.state.applyLoanAmount).toFixed(2)}元</Text>
                 </View>
             </View>
         )
