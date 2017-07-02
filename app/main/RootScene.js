@@ -44,7 +44,7 @@ export default class RootScene extends BaseComponent {
             this.props.showToast(''+JSON.stringify(e));
             StorageUtil.mGetItem(KeyNames.PHONE, (data) => {
                 let maps = {
-                    account_id: data.result,
+                    phone: data.result,
                     message: ''+JSON.stringify(e)
                 };
                 request(Urls.ADDACCOUNTMESSAGEINFO, 'Post', maps)
