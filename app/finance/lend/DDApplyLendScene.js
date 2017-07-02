@@ -404,7 +404,7 @@ export default class DDApplyLendScene extends BaseComponent {
                             numberOfLines={2}
                             style={{
                                 color: '#ff0000',
-                                fontSize: fontadapeSize(12)
+                                fontSize: fontadapeSize(14)
                             }}> {'审核未通过：' + this.payment_audit_reason}
                         </Text>
                     </View>
