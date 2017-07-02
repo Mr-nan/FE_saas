@@ -20,21 +20,20 @@ import *as apis from "../../constant/appUrls";
 import DDCarInfoScene from "./DDCarInfoLendAndEditScene";
 import OBDDevice from "./OBDDevice";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
-import DDCarInfoCheckScene from "./DDCarInfoCheckScene";
 let ControlState = [];
+let obdEdit = true;
+let qsEdit = true;
 export default class DDApplyLendScene extends BaseComponent {
 
     constructor(props) {
         super(props);
         // 初始状态
-        const ds = new ListView.DataSource(
-            {
-                getRowData: getRowData,
-                getSectionHeaderData: getSectionData,
-                rowHasChanged: (row1, row2) => row1 !== row2,
-                sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
-            }
-        )
+        const ds = new ListView.DataSource({
+            getRowData: getRowData,
+            getSectionHeaderData: getSectionData,
+            rowHasChanged: (row1, row2) => row1 !== row2,
+            sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
+        })
         this.state = {
             dataSource: ds.cloneWithRowsAndSections(this.titleNameBlob({}, [])),
             renderPlaceholderOnly: STATECODE.loading,
@@ -65,21 +64,12 @@ export default class DDApplyLendScene extends BaseComponent {
             is_mortgagor: '',
             is_new: '',
             file_list: [],
-
             obd_track_url: ''
         };
     }
 
     initFinish() {
-        //加载完成，根据是否有订单号，来判断是不是编辑页面
-
-        //编辑页面。审核未通过
-        if (this.props.shenhe == "yes") {
-            this.getLenddetail()
-        } else {
-            //申请页面
-            this.getLendInfo();
-        }
+        this.getLendInfo();
     }
 
     /**
@@ -119,10 +109,19 @@ export default class DDApplyLendScene extends BaseComponent {
      * 获取到借款费率      申请获取车辆列表
      **/
     getCarListInfo = (lendInfo) => {
-        let maps = {
-            api: apis.DDAUTOLIST,
-            platform_order_number: this.props.orderNo//平台订单号
-        };
+        let maps;
+        if (this.props.sceneName == "FinanceScene") {
+            maps = {
+                api: apis.DDAUTOLIST,
+                platform_order_number: this.props.orderNo,//平台订单号
+                payment_number: this.props.loan_code,
+            };
+        } else {
+            maps = {
+                api: apis.DDAUTOLIST,
+                platform_order_number: this.props.orderNo//平台订单号
+            };
+        }
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
                 this.props.showModal(false);
@@ -227,7 +226,15 @@ export default class DDApplyLendScene extends BaseComponent {
      **/
     OBDtransferToString = (audit, bind) => {
         let status;
-        if (this.props.sceneName == 'CheckStand') {
+        if (this.props.sceneName == 'FinanceScene' && obdEdit) {
+            if (audit == 0) {
+                status = '未审核';
+            } else if (audit == 1) {
+                status = '已通过';
+            } else if (audit == 2) {
+                status = '未通过';
+            }
+        } else {
             if (audit == 1) {
                 status = '已通过';
             } else {
@@ -239,14 +246,6 @@ export default class DDApplyLendScene extends BaseComponent {
                     status = '解除绑定';
                 }
             }
-        } else {
-            if (audit == 0) {
-                status = '未审核';
-            } else if (audit == 1) {
-                status = '已通过';
-            } else if (audit == 2) {
-                status = '未通过';
-            }
         }
         return status;
     }
@@ -257,7 +256,15 @@ export default class DDApplyLendScene extends BaseComponent {
      **/
     OwnershiptransferToString = (audit, bind) => {
         let status;
-        if (this.props.sceneName == 'CheckStand') {
+        if (this.props.sceneName == 'FinanceScene' && qsEdit) {
+            if (audit == 0) {
+                status = '未审核';
+            } else if (audit == 1) {
+                status = '已通过';
+            } else if (audit == 2) {
+                status = '未通过';
+            }
+        } else {
             if (audit == 1) {
                 status = '已通过';
             } else {
@@ -266,14 +273,6 @@ export default class DDApplyLendScene extends BaseComponent {
                 } else if (bind == 1) {
                     status = '已上传';
                 }
-            }
-        } else {
-            if (audit == 0) {
-                status = '未审核';
-            } else if (audit == 1) {
-                status = '已通过';
-            } else if (audit == 2) {
-                status = '未通过';
             }
         }
         return status;
@@ -294,8 +293,9 @@ export default class DDApplyLendScene extends BaseComponent {
         if (sectionID === 'section2') {
             return (
                 <View style={[styles.commentHandeItem, {height: adapeSize(44)}] }>
-                    <Text allowFontScaling={false}  style={styles.commentListItemLeft}>{rowData.title}</Text>
-                    <Text allowFontScaling={false}  style={[styles.commentListItemRight, {color: PAGECOLOR.COLORA1}]}>{rowData.key}</Text>
+                    <Text allowFontScaling={false} style={styles.commentListItemLeft}>{rowData.title}</Text>
+                    <Text allowFontScaling={false}
+                          style={[styles.commentListItemRight, {color: PAGECOLOR.COLORA1}]}>{rowData.key}</Text>
                 </View>
             )
         }
@@ -321,8 +321,8 @@ export default class DDApplyLendScene extends BaseComponent {
                                     fromScene: 'DDApplyLendScene',
                                     backRefresh: () => {
                                         //刷新界面
+                                        obdEdit = false;
                                         this.props.showModal(true);
-                                        this.props.sceneName = 'CheckStand';
                                         this.getLendInfo();
                                     }
                                 }
@@ -351,8 +351,8 @@ export default class DDApplyLendScene extends BaseComponent {
                                     info_id: this.carData.info_id,
                                     backRefresh: () => {
                                         //刷新界面
+                                        qsEdit = false;
                                         this.props.showModal(true);
-                                        this.props.sceneName = 'CheckStand';
                                         this.getLendInfo();
                                     }
                                 }
@@ -370,11 +370,11 @@ export default class DDApplyLendScene extends BaseComponent {
      **/
     renderSectionHeader = (sectionData, sectionID) => {
         if (sectionID == 'section1') {
-            if (this.props.shenhe == "yes") {
+            if (this.props.sceneName == "FinanceScene") {
                 return (
                     <View style={styles.section2Style}>
-                        {/*<Text allowFontScaling={false}  style={styles.sectionText}>订单信息</Text>*/}
-                        <Text allowFontScaling={false}  style={{color: '#ff0000', fontSize: fontadapeSize(15)}}> {'审核未通过:'}</Text>
+                        <Text allowFontScaling={false}
+                              style={{color: '#ff0000', fontSize: fontadapeSize(15)}}> {'审核未通过:'}</Text>
                         {/*<Text allowFontScaling={false}  style={{color:'#000000',fontSize:Pixel.getFontPixel(14)}} numberOfLines={2}>{showData.tempDetailInfo.payment_audit_reason}</Text>*/}
                     </View>
                 )
@@ -383,13 +383,12 @@ export default class DDApplyLendScene extends BaseComponent {
         if (sectionID === 'section2') {
             return (
                 <View style={styles.section2Style}>
-                    <Text allowFontScaling={false}  style={styles.sectionText}>订单信息</Text>
+                    <Text allowFontScaling={false} style={styles.sectionText}>订单信息</Text>
                 </View>
             )
         }
         return (
-            <View style={styles.sectionStyle}>
-            </View>
+            <View style={styles.sectionStyle}/>
         )
     }
 
@@ -399,10 +398,9 @@ export default class DDApplyLendScene extends BaseComponent {
      **/
     renderSeparator = (sectionID, rowId, adjacentRowHighlighted) => {
 
-        let separtrorHegigth = 1;
         return (
             <View key={`${sectionID}-${rowId}`} style={{
-                height: separtrorHegigth,
+                height: 1,
                 backgroundColor: PAGECOLOR.COLORA3
             }}>
             </View>
@@ -415,7 +413,47 @@ export default class DDApplyLendScene extends BaseComponent {
      **/
     buttonClick = (title) => {
         if (title == '申请借款') {
-            if (this.props.sceneName == 'CheckStand') {
+            if (this.props.sceneName == 'FinanceScene') {
+                if (obdEdit) {
+                    if (this.carData.obd_audit_status == 1 || this.carData.obd_audit_status == 0) {// obd 未审核 、审核通过
+                        if (this.carData.is_new == 1) {
+                            if (qsEdit) {
+                                if (this.carData.auto_ownership_status == 1 || this.carData.auto_ownership_status == 0) {
+                                    this.lendMoneyClick();
+                                } else if (this.carData.auto_ownership_status == 2) {
+                                    this.props.showToast("车辆权属审核未通过");
+                                }
+                            } else {
+                                if (this.carData.order_ownership_status == 1) {
+                                    this.lendMoneyClick();
+                                } else {
+                                    this.props.showToast("车辆权属未上传");
+                                }
+                            }
+                        } else {
+                            this.lendMoneyClick();
+                        }
+                    } else if (this.carData.obd_audit_status == 2) {
+                        this.props.showToast("0BD审核未通过");
+                    }
+                } else {
+                    if (this.carData.obd_bind_status == 0) {
+                        this.props.showToast("0BD未绑定");
+                    } else if (this.carData.obd_bind_status == 1) {
+                        if (this.carData.is_new == 1) {
+                            if (this.carData.order_ownership_status == 1) {
+                                this.lendMoneyClick();
+                            } else {
+                                this.props.showToast("车辆权属未上传");
+                            }
+                        } else {
+                            this.lendMoneyClick();
+                        }
+                    } else if (this.carData.obd_bind_status == 2) {
+                        this.props.showToast("0BD需重新绑定");
+                    }
+                }
+            } else {
                 if (this.carData.obd_bind_status == 0) {
                     this.props.showToast("0BD未绑定");
                 } else if (this.carData.obd_bind_status == 1) {
@@ -431,35 +469,8 @@ export default class DDApplyLendScene extends BaseComponent {
                 } else if (this.carData.obd_bind_status == 2) {
                     this.props.showToast("0BD需重新绑定");
                 }
-            } else {
-                if (this.carData.obd_audit_status == 0) {
-                    if (this.carData.is_new == 1) {
-                        if (this.carData.auto_ownership_status == 0) {
-                            this.lendMoneyClick();
-                        } else if (this.carData.auto_ownership_status == 1) {
-                            this.lendMoneyClick();
-                        } else if (this.carData.auto_ownership_status == 2) {
-                            this.props.showToast("车辆权属审核未通过");
-                        }
-                    } else {
-                        this.lendMoneyClick();
-                    }
-                } else if (this.carData.obd_audit_status == 1) {
-                    if (this.carData.is_new == 1) {
-                        if (this.carData.auto_ownership_status == 0) {
-                            this.lendMoneyClick();
-                        } else if (this.carData.auto_ownership_status == 1) {
-                            this.lendMoneyClick();
-                        } else if (this.carData.auto_ownership_status == 2) {
-                            this.props.showToast("车辆权属审核未通过");
-                        }
-                    } else {
-                        this.lendMoneyClick();
-                    }
-                } else if (this.carData.obd_audit_status == 2) {
-                    this.props.showToast("0BD审核未通过");
-                }
             }
+
         }
     }
 
@@ -514,13 +525,26 @@ export default class DDApplyLendScene extends BaseComponent {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 this.companyId = JSON.parse(data.result).company_base_id;
-                let maps = {
-                    api: apis.APPLY_LOAN,
-                    apply_type: "6",
-                    platform_order_number: this.props.orderNo,
-                    company_base_id: this.companyId,
-                    car_lists: this.carData.info_id,
-                    order_id: this.props.orderId,
+                let maps;
+                if (this.props.sceneName == "FinanceScene") {
+                    maps = {
+                        api: apis.APPLY_LOAN,
+                        apply_type: "6",
+                        platform_order_number: this.props.orderNo,
+                        company_base_id: this.companyId,
+                        car_lists: this.carData.info_id,
+                        order_id: this.props.orderId,
+                        loan_code: this.props.loan_code,
+                    }
+                } else {
+                    maps = {
+                        api: apis.APPLY_LOAN,
+                        apply_type: "6",
+                        platform_order_number: this.props.orderNo,
+                        company_base_id: this.companyId,
+                        car_lists: this.carData.info_id,
+                        order_id: this.props.orderId,
+                    }
                 }
                 this.props.showModal(true);
                 request(apis.FINANCE, 'Post', maps)
