@@ -36,7 +36,10 @@ export default class LoanInfo extends BaseComponent {
     }
 
     componentWillReceiveProps(nextProps) {
-
+        this.setState({
+            applyLoanAmount: nextProps.applyLoanAmount,
+            financeInfo: nextProps.financeInfo
+        });
     }
 
     render() {
@@ -80,7 +83,7 @@ export default class LoanInfo extends BaseComponent {
                     <Text allowFontScaling={false} style={styles.orderInfo}>最大可贷额度</Text>
                     <View style={{flex: 1}}/>
                     <Text allowFontScaling={false}
-                          style={styles.infoContent}>{this.state.financeInfo.max_loanmny ? this.state.financeInfo.max_loanmny : '0.00'}元</Text>
+                          style={styles.infoContent}>{this.state.financeInfo.max_loanmny ? parseFloat(this.state.financeInfo.max_loanmny).toFixed(2) : '0.00'}元</Text>
                 </View>
                 {/*<View style={{
                     alignItems: 'center',
@@ -103,7 +106,8 @@ export default class LoanInfo extends BaseComponent {
                                     orderId: this.props.orderId,
                                     financeNo: this.state.financeInfo.loan_code,
                                     maxLoanmny: this.state.financeInfo.max_loanmny,
-                                    balanceAmount: this.props.balanceAmount
+                                    balanceAmount: this.props.balanceAmount,
+                                    refreshLoanInfo: this.refreshLoanInfo
                                 }
                             });
                         }}>
@@ -118,24 +122,31 @@ export default class LoanInfo extends BaseComponent {
                     <Text allowFontScaling={false} style={styles.orderInfo}>需支付服务费</Text>
                     <View style={{flex: 1}}/>
                     <Text allowFontScaling={false}
-                          style={styles.infoContent}>{this.state.financeInfo.fee_mny ? this.state.financeInfo.fee_mny : '0.00'}元</Text>
+                          style={styles.infoContent}>{this.state.financeInfo.fee_mny ? parseFloat(this.state.financeInfo.fee_mny).toFixed(2) : '0.00'}元</Text>
                 </View>
                 <View style={styles.infoItem}>
                     <Text allowFontScaling={false} style={styles.orderInfo}>需支付OBD使用费</Text>
                     <View style={{flex: 1}}/>
                     <Text allowFontScaling={false}
-                          style={styles.infoContent}>{this.state.financeInfo.obd_mny ? this.state.financeInfo.obd_mny : '0.00'}元</Text>
+                          style={styles.infoContent}>{this.state.financeInfo.obd_mny ? parseFloat(this.state.financeInfo.obd_mny).toFixed(2) : '0.00'}元</Text>
                 </View>
                 <View style={styles.infoItem}>
                     <Text allowFontScaling={false} style={styles.orderInfo}>应付首付款</Text>
                     <View style={{flex: 1}}/>
                     <Text allowFontScaling={false}
-                          style={styles.infoContent}>{(this.balanceAmount - this.state.applyLoanAmount).toFixed(2)}元</Text>
+                          style={styles.infoContent}>{(this.balanceAmount - (this.state.applyLoanAmount === '请输入申请贷款金额' ?
+                    0 : this.state.applyLoanAmount)).toFixed(2)}元</Text>
                 </View>
             </View>
         )
     }
 
+    refreshLoanInfo = (newLoanInfo) =>{
+        newLoanInfo.loan_code = newLoanInfo.finance_no;
+        this.setState({
+            financeInfo: newLoanInfo
+        });
+    };
 
     updateAmount = (newAmount) => {
         this.props.updateLoanAmount(newAmount);

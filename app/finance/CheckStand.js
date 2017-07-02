@@ -199,7 +199,7 @@ export default class CheckStand extends BaseComponent {
                                 marginTop: Pixel.getPixel(6),
                                 //fontWeight: 'bold',
                                 fontSize: Pixel.getFontPixel(38)
-                            }}>{(this.props.payAmount).toFixed(2)}元</Text>
+                            }}>{parseFloat(this.props.payAmount).toFixed(2)}元</Text>
                         </View>
                         <View style={styles.separatedLine}/>
                         <View style={styles.accountBar}>
@@ -349,7 +349,6 @@ export default class CheckStand extends BaseComponent {
                 let maps = {
                     company_id: datas.company_base_id,
                     order_id: this.props.orderId,
-                    type: this.props.payType,
                     trans_serial_no: this.transSerialNo
                 };
                 let url = AppUrls.FIRST_PAYMENT_PAY_CALLBACK;

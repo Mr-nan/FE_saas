@@ -59,6 +59,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         this.leftTime = 0;
 
 /*        this.financeInfo = {
+            order_id: '',
+
             finance_no: '',
             finance_amount: '0.00',
             finance_service_amount: "0.00",
@@ -546,6 +548,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 )
                 break;
             case 1:
+                let applyAmount = this.applyLoanAmount === '请输入申请贷款金额' ? 0 : this.applyLoanAmount;
                 return (
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
@@ -563,7 +566,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                     name: 'CheckStand',
                                     component: CheckStand,
                                     params: {
-                                        payAmount: this.orderState === 1 ? this.orderDetail.deposit_amount : this.orderDetail.balance_amount - this.applyLoanAmount,
+                                        payAmount: this.orderState === 1 ?
+                                            this.orderDetail.deposit_amount :
+                                            parseFloat(this.orderDetail.balance_amount - applyAmount).toFixed(2),
                                         orderId: this.props.orderId,
                                         orderNo: this.orderDetail.order_no,
                                         payType: this.orderState,
@@ -934,6 +939,14 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 }
                 break;
             case 12:  // 12=>'订单融资处理中',
+            case 16:  //16=>'支付首付款完成',
+            case 17:  //17=>'融资单确认验收中',
+            case 19:  //17=>'融资单确认验收中',
+            case 20:  //17=>'融资单确认验收中',
+            case 21:  //17=>'融资单确认验收中',
+            case 22:  //17=>'融资单确认验收中',
+            case 23:  //17=>'融资单确认验收中',
+            case 24:  //17=>'融资单确认验收中',
                 if (cancelStatus === 0) {
                     this.orderState = 5;
                     this.topState = -1;
@@ -1017,17 +1030,12 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     }
                 }
                 break;
-            case 16:  //16=>'支付首付款完成',
-            case 17:  //17=>'融资单确认验收中',
             case 18:  //18=>'融资单确认验收失败',
+            case 160:  //18=>'融资单确认验收失败',
                 if (cancelStatus === 0) {
                     this.orderState = 7;
                     this.topState = -1;
-                    if (status === 6) {
-                        this.bottomState = 1;
-                    } else {
-                        this.bottomState = 1;
-                    }
+                    this.bottomState = 2;
                 } else if (cancelStatus === 1) {
                     this.orderState = 7;
                     this.topState = -1;
@@ -1062,7 +1070,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     }
                 }
                 break;
-            case 19:
+            /*case 19:
                 if (cancelStatus === 0) {
                     this.orderState = 8;
                     this.topState = -1;
@@ -1104,7 +1112,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         }
                     }
                 }
-                break;
+                break;*/
         }
     };
 
@@ -1375,7 +1383,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     loanCode={this.orderDetail.finance_no}
                     navigator={this.props.navigator}
                     updateLoanAmount={this.updateLoanAmount}
-                    refreshLoanoInfo={this.refreshLoanInfo}
+                    //refreshLoanInfo={this.refreshLoanInfo}
                     applyLoanAmount={this.applyLoanAmount}
                     orderId={this.orderDetail.id}
                     orderNo={this.orderDetail.order_no}
