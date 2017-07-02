@@ -565,6 +565,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                         carId: this.orderDetail.orders_item_data[0].car_id,
                                         pledgeType: this.orderDetail.orders_item_data[0].car_finance_data.pledge_type,
                                         pledgeStatus: this.orderDetail.orders_item_data[0].car_finance_data.pledge_status,
+                                        applyLoanAmount: this.applyLoanAmount,
+                                        financeNo: this.orderDetail.finance_no,
                                         callBack: this.payCallBack
                                     }
                                 });
@@ -1358,6 +1360,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         } else if (rowData === '5') {
             return (
                 <LoanInfo
+                    loanCode={this.orderDetail.finance_no}
                     navigator={this.props.navigator}
                     updateLoanAmount={this.updateLoanAmount}
                     refreshLoanInfo={this.refreshLoanInfo}
