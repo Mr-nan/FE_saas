@@ -822,8 +822,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
-                if (this.orderDetail.orders_item_data[0].car_finance_data.payment_number &&
-                    this.orderDetail.orders_item_data[0].car_finance_data.payment_number.length > 0 &&
+                if (this.orderDetail.orders_item_data[0].pledge_sub_payment_number &&
+                    this.orderDetail.orders_item_data[0].pledge_sub_payment_number.length > 0 &&
                     this.orderDetail.orders_item_data[0].car_finance_data.pledge_type &&
                     this.orderDetail.orders_item_data[0].car_finance_data.pledge_type == 2) {
                     this.mList = ['0', '1', '5', '7', '10', '9'];
@@ -1463,8 +1463,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
         } else if (rowData === '10') {
             let paymentId = this.orderDetail.orders_item_data[0].car_finance_data.payment_id ?
                 this.orderDetail.orders_item_data[0].car_finance_data.payment_id : 0;
-            let paymentNumber = this.orderDetail.orders_item_data[0].car_finance_data.payment_number ?
-                this.orderDetail.orders_item_data[0].car_finance_data.payment_number : 0;
+            let paymentNumber = this.orderDetail.orders_item_data[0].pledge_sub_payment_number ?
+                this.orderDetail.orders_item_data[0].pledge_sub_payment_number : 0;
             let pledgeType = this.orderDetail.orders_item_data[0].car_finance_data.pledge_type ?
                 this.orderDetail.orders_item_data[0].car_finance_data.pledge_type : 0;
             return (
@@ -1472,7 +1472,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     style={styles.itemType10}
                     onPress={() => {
                         // 跳转金融页面  还款详情
-                        if (pledgeType == 2) {
+                        if (pledgeType == 2 && paymentNumber != 0) {
                             this.toNextPage({
                                 name: 'RepaymentInfoScene',
                                 component: RepaymentInfoScene,
@@ -1498,7 +1498,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                             marginRight: Pixel.getPixel(10),
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color: fontAndColor.COLORA1
-                        }}>{this.orderDetail.orders_item_data[0].car_finance_data.payment_number ? this.orderDetail.orders_item_data[0].car_finance_data.payment_number : '未生成还款单号'}</Text>
+                        }}>{this.orderDetail.orders_item_data[0].pledge_sub_payment_number ? this.orderDetail.orders_item_data[0].pledge_sub_payment_number : '未生成还款单号'}</Text>
                         <Image source={require('../../../images/mainImage/celljiantou.png')}
                                style={{marginRight: Pixel.getPixel(15)}}/>
                     </View>
