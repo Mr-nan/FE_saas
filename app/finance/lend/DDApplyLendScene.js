@@ -65,7 +65,6 @@ export default class DDApplyLendScene extends BaseComponent {
             is_mortgagor: '',
             is_new: '',
             file_list: [],
-
             obd_track_url: ''
         };
     }
