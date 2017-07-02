@@ -556,9 +556,16 @@ export default class DDApplyLendScene extends BaseComponent {
                         const navigator = this.props.navigator;
                         if (navigator) {
                             for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
-                                if (navigator.getCurrentRoutes()[i].name == 'ProcurementOrderDetailScene') {
-                                    navigator.popToRoute(navigator.getCurrentRoutes()[i]);
-                                    break;
+                                if (this.props.sceneName == "FinanceScene") {
+                                    if (navigator.getCurrentRoutes()[i].name == 'FinanceScene') {
+                                        navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                                        break;
+                                    }
+                                } else {
+                                    if (navigator.getCurrentRoutes()[i].name == 'ProcurementOrderDetailScene') {
+                                        navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                                        break;
+                                    }
                                 }
                             }
                         }
