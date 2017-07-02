@@ -511,7 +511,7 @@ export default class FinanceSence extends BaseComponet {
                         }
                     }
                     else if (nextPage === DDDetailScene) {//订单融资
-                        if (movie.payment_status != '31') {//审核未通过
+                        if (movie.payment_status == '31') {//审核未通过
                             this.navigatorParams.name = 'DDApplyLendScene';
                             this.navigatorParams.component = DDApplyLendScene;
                             this.navigatorParams.params = {
