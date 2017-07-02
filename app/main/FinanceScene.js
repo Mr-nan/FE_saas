@@ -520,7 +520,7 @@ export default class FinanceSence extends BaseComponet {
                                 orderNo: movie.order_number,//平台订单号
                                 orderId: movie.order_id,
 
-                                backRefresh: () => {
+                                callBack: () => {
                                     this.allRefresh()
                                 }, customerName: this.state.customerName,
                             }

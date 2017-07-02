@@ -31,6 +31,7 @@ import ImagePageView from 'react-native-viewpager'
 import AmountConfirm from './AmountConfirm';
 import PurchaseLoanStatusScene from './PurchaseLoanStatusScene';
 import DDCarInfoCheckScene from "./DDCarInfoCheckScene";
+import DDCarInfoLendAndEditScene from "./DDCarInfoLendAndEditScene"
 
 import {LendSuccessAlert, ModalAlert} from './component/ModelComponent'
 let ControlState = [];
@@ -88,6 +89,7 @@ export default class DDDetailScene extends BaseComponent {
     initFinish() {
         this.getLendInfo();
     }
+
     /**
      * 获取借款详情
      * getLendInfo
@@ -343,10 +345,11 @@ export default class DDDetailScene extends BaseComponent {
 
         }
         if (sectionID === 'section2') {
-             return (
+            return (
                 <View style={[styles.commentHandeItem, {height: adapeSize(44)}] }>
-                    <Text allowFontScaling={false}  style={styles.commentListItemLeft}>{rowData.title}</Text>
-                    <Text allowFontScaling={false}  style={[styles.commentListItemRight, {color: PAGECOLOR.COLORA1}]}>{rowData.key}</Text>
+                    <Text allowFontScaling={false} style={styles.commentListItemLeft}>{rowData.title}</Text>
+                    <Text allowFontScaling={false}
+                          style={[styles.commentListItemRight, {color: PAGECOLOR.COLORA1}]}>{rowData.key}</Text>
                 </View>
             )
         }
@@ -374,26 +377,21 @@ export default class DDDetailScene extends BaseComponent {
                 )
             }
             if (rowData.title === '车辆权属') {
-
                 return (
                     <CommentHandItem warpstyle={{height: adapeSize(44)}} leftTitle={rowData.title}
                                      showValue={rowData.key} textStyle={{color: PAGECOLOR.COLORA1}} handel={() => {
+            this.toNextPage({
+                name: 'DDCarInfoCheckScene',//DDCarInfoCheckScene
+                component: DDCarInfoCheckScene,
+                params: {
+                    carData: this.carData,
+                    platform_order_number: this.props.orderNo,//平台订单号
+                    info_id: this.carData.info_id,
 
-                        navigatorParams = {
-                            name: 'DDCarInfoCheckScene',
-                            component: DDCarInfoCheckScene,
-                            params: {
-                                    carData: this.carData,
-                                    platform_order_number: this.props.orderNo,//平台订单号
-                                    info_id: this.carData.info_id,
-                                    backRefresh: () => {
+                }
+            });
 
-                                    }
-                                }
-                        }
-                        this.toNextPage(navigatorParams);
-
-                    }}/>
+    }}/>
                 )
             }
         }
@@ -409,7 +407,7 @@ export default class DDDetailScene extends BaseComponent {
 
             return (
                 <View style={styles.section2Style}>
-                    <Text allowFontScaling={false}  style={styles.sectionText}>订单信息</Text>
+                    <Text allowFontScaling={false} style={styles.sectionText}>订单信息</Text>
                 </View>
             )
         }
@@ -437,9 +435,9 @@ export default class DDDetailScene extends BaseComponent {
         )
     }
     /*
-    * 底部按钮点击判断
-    * buttonClick
-    **/
+     * 底部按钮点击判断
+     * buttonClick
+     **/
     buttonClick = (title) => {
         if (title == '确认金额') {
             this.toNextPage({
@@ -467,6 +465,7 @@ export default class DDDetailScene extends BaseComponent {
             this.cancle.setModelVisible(true);
         }
     }
+
     /**
      * 绘制界面
      * render

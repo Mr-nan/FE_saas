@@ -19,6 +19,7 @@ import * as FontAndColor from "../../constant/fontAndColor";
 import PixelUtil from "../../utils/PixelUtil";
 import {request} from "../../utils/RequestUtil";
 import * as apis from "../../constant/appUrls";
+import NavigationView from "../../component/AllNavigationView"
 let results = [];
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -55,6 +56,7 @@ export default class DDCarInfoCheckScene extends BaseComponent {
      * getCarInfo
      */
     getCarInfo = () => {
+        console.log(this.props.carData.info_id);
         let maps = {
             api: apis.AUTODETAIL,
             info_id: this.props.carData.info_id,
