@@ -142,8 +142,8 @@ export default class CheckStand extends BaseComponent {
                             });
                         }
                         /*console.log('-=-=-=code-=-=',response.mjson.code);
-                        console.log('-=-=-=msg-=-=',response.mjson.msg);
-                        console.log('-=-=-=data-=-=',response.mjson.data);*/
+                         console.log('-=-=-=msg-=-=',response.mjson.msg);
+                         console.log('-=-=-=data-=-=',response.mjson.data);*/
                     }, (error) => {
                         this.isShowFinancing = 0;
                         this.setState({
@@ -191,11 +191,11 @@ export default class CheckStand extends BaseComponent {
                      <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>*/}
                     <View style={{backgroundColor: 'white', marginTop: Pixel.getTitlePixel(65)}}>
                         <View style={styles.needPayBar}>
-                            <Text allowFontScaling={false}  style={{
+                            <Text allowFontScaling={false} style={{
                                 fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                 marginTop: Pixel.getPixel(25)
                             }}>需支付金额</Text>
-                            <Text allowFontScaling={false}  style={{
+                            <Text allowFontScaling={false} style={{
                                 marginTop: Pixel.getPixel(6),
                                 //fontWeight: 'bold',
                                 fontSize: Pixel.getFontPixel(38)
@@ -203,14 +203,14 @@ export default class CheckStand extends BaseComponent {
                         </View>
                         <View style={styles.separatedLine}/>
                         <View style={styles.accountBar}>
-                            <Text allowFontScaling={false}  style={styles.title}>账户：</Text>
-                            <Text allowFontScaling={false} 
-                                style={styles.content}>{this.accountInfo.bank_card_name + ' ' + this.accountInfo.bank_card_no}</Text>
+                            <Text allowFontScaling={false} style={styles.title}>账户：</Text>
+                            <Text allowFontScaling={false}
+                                  style={styles.content}>{this.accountInfo.bank_card_name + ' ' + this.accountInfo.bank_card_no}</Text>
                         </View>
                         <View style={styles.separatedLine}/>
                         <View style={styles.accountBar}>
-                            <Text allowFontScaling={false}  style={styles.title}>账户可用金额：</Text>
-                            <Text allowFontScaling={false}  style={styles.content}>{this.accountInfo.balance}元</Text>
+                            <Text allowFontScaling={false} style={styles.title}>账户可用金额：</Text>
+                            <Text allowFontScaling={false} style={styles.content}>{this.accountInfo.balance}元</Text>
                             <View style={{flex: 1}}/>
                             <TouchableOpacity
                                 onPress={() => {
@@ -230,7 +230,7 @@ export default class CheckStand extends BaseComponent {
                                     justifyContent: 'center',
                                     marginRight: Pixel.getPixel(15)
                                 }}>
-                                    <Text allowFontScaling={false}  style={{
+                                    <Text allowFontScaling={false} style={{
                                         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                         color: fontAndColor.COLORB0
                                     }}>充值</Text>
@@ -257,7 +257,7 @@ export default class CheckStand extends BaseComponent {
                                 height: 1,
                                 flex: 1
                             }}/>
-                            <Text allowFontScaling={false}  style={{
+                            <Text allowFontScaling={false} style={{
                                 fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                 color: fontAndColor.COLORA1
                             }}>可选融资方案</Text>
@@ -275,29 +275,6 @@ export default class CheckStand extends BaseComponent {
                             content={'订单融资'}
                             parentStyle={styles.loginBtnStyle1}
                             childStyle={styles.loginButtonTextStyle}/>
-                        <View style={{
-                            flexDirection: 'row',
-                            marginTop: Pixel.getPixel(21),
-                            marginLeft: Pixel.getPixel(15)
-                        }}>
-                            <Text allowFontScaling={false}  style={{
-                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-                                color: fontAndColor.COLORA1
-                            }}>订单融资授信可用额度：</Text>
-                            <Text allowFontScaling={false}  style={{
-                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30)
-                            }}>{this.creditBalanceMny}</Text>
-                            <Text allowFontScaling={false}  style={{
-                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-                                color: fontAndColor.COLORA1
-                            }}>元</Text>
-                        </View>
-                        <Text allowFontScaling={false}  style={{
-                            marginLeft: Pixel.getPixel(15),
-                            fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-                            color: fontAndColor.COLORA1,
-                            marginTop: Pixel.getPixel(10)
-                        }}>申请订单融资额度请联系客服</Text>
                     </View> }
                     <ExplainModal ref='expModal' title='提示' buttonStyle={styles.expButton} textStyle={styles.expText}
                                   text='确定' content='此车在质押中，需要卖方解除质押后可申请订单融资。'/>
