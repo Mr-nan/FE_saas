@@ -1255,6 +1255,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         this.applyLoanAmount = newAmount;
     };
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     refreshLoanInfo = (financeInfo) => {
         this.financeInfo = financeInfo;
     };

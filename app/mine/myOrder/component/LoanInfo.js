@@ -148,6 +148,11 @@ export default class LoanInfo extends BaseComponent {
         });
     };
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     updateAmount = (newAmount) => {
         this.props.updateLoanAmount(newAmount);
         this.setState({

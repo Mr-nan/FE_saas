@@ -47,6 +47,11 @@ export default class DDCarInfoCheckScene extends BaseComponent {
         DengJiRen = [];
     }
 
+    /**
+     * from @zhaojian
+     *
+     * 页面初始化
+     **/
     initFinish = () => {
         this.getCarInfo();
     }
@@ -54,7 +59,7 @@ export default class DDCarInfoCheckScene extends BaseComponent {
     /**
      * 获取车辆信息(车型，车架号
      * getCarInfo
-     */
+     **/
     getCarInfo = () => {
         console.log(this.props.carData.info_id);
         let maps = {
@@ -116,6 +121,11 @@ export default class DDCarInfoCheckScene extends BaseComponent {
         )
     }
 
+    /**
+     * from @zhaojian
+     *
+     * 绘制列表每行
+     **/
     _renderRow = (movie, sectionId, rowId) => {
         return (
             <Image source={{uri: movie.url}} style={styles.thumb}/>

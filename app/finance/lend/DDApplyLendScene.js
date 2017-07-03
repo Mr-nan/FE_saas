@@ -165,6 +165,11 @@ export default class DDApplyLendScene extends BaseComponent {
 
     }
 
+    /**
+     * from @huangning
+     *
+     *
+     **/
     titleNameBlob = (jsonData, carData) => {
         this.payment_audit_reason = jsonData.payment_audit_reason;
         let dataSource = {};
