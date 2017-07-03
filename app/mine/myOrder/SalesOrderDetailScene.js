@@ -826,7 +826,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     this.orderDetail.orders_item_data[0].pledge_sub_payment_number.length > 0 &&
                     this.orderDetail.orders_item_data[0].car_finance_data.pledge_type &&
                     this.orderDetail.orders_item_data[0].car_finance_data.pledge_type == 2) {
-                    this.mList = ['0', '1', '5', '7', '10', '9'];
+                    this.mList = ['0', '1', '4', '5', '7', '10', '9'];
                     this.contactData = {
                         layoutTitle: '已完成',
                         layoutContent: '提前还款成功，请办理解除质押手续，剩余车款可提现。',
@@ -1244,12 +1244,15 @@ export default class SalesOrderDetailScene extends BaseComponent {
                             this.getTypeContractInfo(1)
                         }}
                         style={{color: fontAndColor.COLORA2}}>《买卖协议》</Text>
-                    {/*<Text style={{color: fontAndColor.COLORA1}}>和</Text>
-                     <Text
-                     onPress={() => {
-                     this.getTypeContractInfo(2)
-                     }}
-                     style={{color: fontAndColor.COLORA2}}>《授权声明》</Text>*/}
+                    {
+                        this.orderDetail.orders_item_data[0].car_finance_data.pledge_type == 2 &&
+                        this.orderDetail.orders_item_data[0].car_finance_data.pledge_status == 1 &&
+                        <Text
+                            onPress={() => {
+                                this.getTypeContractInfo(4)
+                            }}
+                            style={{color: fontAndColor.COLORA2}}>《授权声明》</Text>
+                    }
                 </View>
             )
         } else if (rowData === '5') {
