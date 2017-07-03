@@ -15,30 +15,23 @@ import {
     TouchableHighlight
 } from "react-native";
 import BaseComponent from "../../component/BaseComponent";
-import NavigationView from '../../component/AllNavigationView';
 import * as FontAndColor from "../../constant/fontAndColor";
 import PixelUtil from "../../utils/PixelUtil";
 import {request} from "../../utils/RequestUtil";
-import * as AppUrls from "../../constant/appUrls";
-import UploadPickerItem from "../component/UploadPickerItem";
-import ChooseButton from "../../component/ChooseButton";
 import * as apis from "../../constant/appUrls";
-import MyButton from '../../component/MyButton';
-import  SelectDJRScene from  '../../finance/lend/SelectDJRScene'
+import NavigationView from "../../component/AllNavigationView"
 let results = [];
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var Pixel = new PixelUtil();
-var onePT = 1 / PixelRatio.get(); //一个像素
 var Platform = require('Platform');
 let childItems = [];
 let DengJiRen = [];
-export default class DDCarInfoScene extends BaseComponent {
+export default class DDCarInfoCheckScene extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
             renderPlaceholderOnly: 'blank',
-            listViewShow: true,
             chexing: "奥迪",
             chejia_number: "1234567890",
             dengjiren: "张三",
@@ -54,78 +47,21 @@ export default class DDCarInfoScene extends BaseComponent {
         DengJiRen = [];
     }
 
+    /**
+     * from @zhaojian
+     *
+     * 页面初始化
+     **/
     initFinish = () => {
         this.getCarInfo();
-
     }
 
     /**
-     * 获取订单融资车辆照片分类3
-     * getPurchaAutoPicCate
-     **/
-    getPurchaAutoPicCate = () => {
-        let maps = {
-            api: AppUrls.GETDINGDANAUTOPICCATE,
-
-
-        };
-        request(AppUrls.FINANCE, 'Post', maps)
-            .then((response) => {
-                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    if (response.mjson.data.cate_list == null || response.mjson.data.cate_list.length <= 0) {
-                        this.setState({
-                            source: ds.cloneWithRows(['10032']),
-                            renderPlaceholderOnly: 'error'
-                        });
-                    }
-                    else {
-                        for (let i = 0; i < response.mjson.data.cate_list.length; i++) {
-                            childItems.push({
-                                code: response.mjson.data.cate_list[i].code,
-                                id: response.mjson.data.cate_list[i].id,
-                                list: []
-                            });
-
-                        }
-                        if (this.props.carData.order_ownership_status == '1') {
-                            for (let i = 0; i < childItems.length; i++) {
-                                for (let j = 0; j < this.props.carData.file_list.length; j++) {
-                                    if (childItems[i].code == this.props.carData.file_list[j].code) {
-                                        childItems[i].list.push({
-                                            url: this.props.carData.file_list[j].icon,
-                                            fileId: this.props.carData.file_list[j].file_id
-                                        });
-                                        results.push({
-                                            code: this.props.carData.file_list[j].code,
-                                            code_id: this.props.carData.file_list[j].id,
-                                            file_id: this.props.carData.file_list[j].file_id
-                                        });
-                                    }
-                                }
-                            }
-                        }
-                        this.setState({
-                            source: ds.cloneWithRows(response.mjson.data.cate_list),
-                            renderPlaceholderOnly: 'success'
-                        });
-                    }
-
-                }, (error) => {
-                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    this.setState({
-                        renderPlaceholderOnly: 'success',
-                        source: ds.cloneWithRows(['10032']),
-                    });
-                }
-            )
-    }
-
-
-    /**
-     * 获取车辆信息(车型，车架号)1
+     * 获取车辆信息(车型，车架号
      * getCarInfo
-     */
+     **/
     getCarInfo = () => {
+        console.log(this.props.carData.info_id);
         let maps = {
             api: apis.AUTODETAIL,
             info_id: this.props.carData.info_id,
@@ -133,110 +69,25 @@ export default class DDCarInfoScene extends BaseComponent {
         }
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
-                    this.state.chejia_number = response.mjson.data.detail.frame_number,
-                    this.state.chexing = response.mjson.data.detail.model_name,
-                    this.info_id = response.mjson.data.detail.info_id,
-                    this.base_id = response.mjson.data.detail.base_id,
-                    this.dengjiren = response.mjson.data.detail.register_user_name,
-                    this.register_user_id = response.mjson.data.detail.register_user_id,
-                    this.props.carData.file_list = response.mjson.data.detail.file_list.vehicle_ownership_description,
-                    this.getBusinessList();
+                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                this.state.chejia_number = response.mjson.data.detail.frame_number;
+                this.state.chexing = response.mjson.data.detail.model_name;
+                this.info_id = response.mjson.data.detail.info_id;
+                this.base_id = response.mjson.data.detail.base_id;
+                this.dengjiren = response.mjson.data.detail.register_user_name;
+                this.register_user_id = response.mjson.data.detail.register_user_id;
+                this.props.carData.file_list = response.mjson.data.detail.file_list.vehicle_ownership_description;
 
-
+                this.setState({
+                    source: ds.cloneWithRows(this.props.carData.file_list),
+                    renderPlaceholderOnly: 'success'
+                });
             }, (error) => {
                 this.setState({
                     renderPlaceholderOnly: 'error'
                 });
             });
     }
-
-
-    /**
-     * 获取商户登记人/收车人列表2
-     * getBusinessList
-     */
-    getBusinessList = () => {
-        let maps = {
-            api: apis.GETBUSINESSLIST,
-        }
-        request(apis.FINANCE, 'Post', maps)
-            .then((response) => {
-                for (let i = 0; i < response.mjson.data.reg_user_list.length; i++) {
-                    this.xb.push({
-                        business_name: response.mjson.data.reg_user_list[i].business_name,
-                        id: response.mjson.data.reg_user_list[i].id,
-                        merge_id: response.mjson.data.reg_user_list[i].merge_id,
-                        is_mortgagor: response.mjson.data.reg_user_list[i].is_mortgagor,
-                    });
-                    DengJiRen.push(
-                        response.mjson.data.reg_user_list[i].business_name,
-                    )
-                }
-                this.getPurchaAutoPicCate();
-            }, (error) => {
-                this.setState({
-                    renderPlaceholderOnly: 'error'
-                });
-            });
-    }
-    /**
-     * 更新订单融资车辆
-     * updateCarInfo
-     **/
-    updateCarInfo = () => {
-        let maps;
-        let complete;
-        if (this.register_user_id == "" || this.register_user_id == undefined) {
-            this.props.showToast("请选择登记人");
-            complete = false;
-        } else {
-            if (this.is_mortgagor == 1) {
-                maps = {
-                    api: apis.DDUPDATEAUTO,
-                    base_id: this.base_id,
-                    info_id: this.info_id,
-                    register_user_id: this.register_user_id,
-                }
-                complete = true;
-
-            } else {
-                if (results.length <= 0) {
-                    this.props.showToast("照片不能为空");
-                    complete = false;
-
-                } else {
-                    maps = {
-                        api: apis.DDUPDATEAUTO,
-                        base_id: this.base_id,
-                        info_id: this.info_id,
-                        register_user_id: this.register_user_id,
-                        file_list: JSON.stringify(results),
-                    }
-                    complete = true;
-
-                }
-            }
-
-        }
-        if (complete) {
-            this.props.showModal(true);
-            request(apis.FINANCE, 'Post', maps)
-                .then((response) => {
-                    this.props.showModal(false);
-                    this.props.showToast("车辆权属信息更新成功");
-                    this.props.backRefresh();
-                    this.backPage();
-
-
-                }, (error) => {
-                    this.setState({
-                        renderPlaceholderOnly: 'error'
-                    });
-                });
-        }
-
-    }
-
 
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
@@ -252,43 +103,32 @@ export default class DDCarInfoScene extends BaseComponent {
                 }}>
                     {this._renderSectionHeader()}
                     {
-                        (this.state.renderPlaceholderOnly == "success" && this.state.listViewShow) ?
+                        this.state.renderPlaceholderOnly == "success" ?
                             <ListView
                                 dataSource={this.state.source}
                                 renderRow={this._renderRow}
-                                renderSeparator={this._renderSeparator}
-                            /> : null
+                                renderSeparator={this._renderSeparator}/>
+                            : null
                     }
 
                 </View>
 
-
-                <MyButton buttonType={MyButton.TEXTBUTTON}
-                          content={'完成'}
-                          parentStyle={styles.loginBtnStyle}
-                          childStyle={styles.loginButtonTextStyle}
-                          mOnPress={() => {
-                              this.updateCarInfo();
-                          }}/>
                 <NavigationView
                     title="车辆信息"
-                    backIconClick={this.backPage}
-                />
+                    backIconClick={this.backPage}/>
+
             </View>
         )
     }
 
+    /**
+     * from @zhaojian
+     *
+     * 绘制列表每行
+     **/
     _renderRow = (movie, sectionId, rowId) => {
-        if (movie == '10032') {
-            return (<View></View>);
-        }
         return (
-            <UploadPickerItem totalNum={5} results={results} showModal={(value) => {
-                this.props.showModal(value)
-            }}
-                              showToast={(value) => {
-                                    this.props.showToast(value)
-                                }} items={movie} childList={childItems[rowId]}/>
+            <Image source={{uri: movie.url}} style={styles.thumb}/>
         )
     }
 
@@ -318,9 +158,12 @@ export default class DDCarInfoScene extends BaseComponent {
 
                 <View style={{backgroundColor: FontAndColor.COLORA4, width: width, height: Pixel.getPixel(1)}}/>
 
-                <ChooseButton ref="djr" leftText={'登记人'} showArrow={true}
-                              rightText={this.dengjiren ? this.dengjiren:"请选择登记人"}
-                              onPressButton={this.onPressButton}/>
+                <View style={styles.itemBackground}>
+                    <Text style={styles.leftFont}>
+                        <Text style={{color: FontAndColor.COLORB2}}>*</Text>登记人</Text>
+                    <View style={styles.fillSpace}/>
+                    <Text style={styles.headerCellRight}>{this.dengjiren}</Text>
+                </View>
 
                 <View style={{backgroundColor: FontAndColor.COLORA4, width: width, height: Pixel.getPixel(1)}}/>
 
@@ -339,46 +182,14 @@ export default class DDCarInfoScene extends BaseComponent {
 
     _renderPlaceholderView() {
         return (
-            <View style={{width: width, height: height,backgroundColor: FontAndColor.COLORA3}}>
+            <View style={{width: width, height: height, backgroundColor: FontAndColor.COLORA3}}>
                 {this.loadView()}
                 <NavigationView
                     title="车辆信息"
-                    backIconClick={this.backPage}
-                />
+                    backIconClick={this.backPage}/>
             </View>
         );
     }
-
-    /**
-     * 点击选择登记人
-     * onPressButton
-     **/
-    onPressButton = () => {
-
-        this.toNextPage(
-            {
-                name: 'SelectDJRScene',
-                component: SelectDJRScene,
-                params: {
-                    regShowData: DengJiRen,
-                    title: '选择登记人',
-                    callBack: (name, index) => {
-
-                        this.refs.djr.changeRightText(name);
-                        this.register_user_id = this.xb[index].id;
-                        this.is_mortgagor = this.xb[index].is_mortgagor;
-
-                        if (this.xb[index].is_mortgagor == 1) {
-                            this.setState({
-                                listViewShow: false,
-                            });
-                        }
-
-                    }
-                }
-            })
-    }
-
 }
 
 const styles = StyleSheet.create({
@@ -492,5 +303,14 @@ const styles = StyleSheet.create({
     loginButtonTextStyle: {
         color: FontAndColor.COLORA3,
         fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT)
+    },
+    thumb: {
+        backgroundColor: 'white',
+        height: Pixel.getPixel(250),
+        width: width - Pixel.getPixel(10),
+        marginLeft: Pixel.getPixel(5),
+        marginRight: Pixel.getPixel(5),
+        resizeMode: 'stretch',
+        paddingTop: Pixel.getPixel(2)
     },
 })

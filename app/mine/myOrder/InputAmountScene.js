@@ -93,7 +93,7 @@ export default class InputAmountScene extends BaseComponent {
                         this.props.updateAmount(this.number);
                         this.checkPrice(this.number);
                         this.backPage();
-                    } else if (this.number === 0) {
+                    } else if (this.number == 0) {
                         this.props.showToast("金额不能为零");
                     } else {
                         this.props.showToast("请输入整百金额");

@@ -23,13 +23,16 @@ import {
     changeToMillion
 } from './component/MethodComponent'
 import  AllNavigationView from '../../component/AllNavigationView';
+import WebScene from '../../main/WebScene';
 import BaseComponent from '../../component/BaseComponent';
 import {request} from '../../utils/RequestUtil'
 import *as apis from '../../constant/appUrls'
 import ImagePageView from 'react-native-viewpager'
 import AmountConfirm from './AmountConfirm';
-import CGDCarDetailScenes from './CGDCarDetailScenes'
-import PurchaseLoanStatusScene from './PurchaseLoanStatusScene'
+import PurchaseLoanStatusScene from './PurchaseLoanStatusScene';
+import DDCarInfoCheckScene from "./DDCarInfoCheckScene";
+import DDCarInfoLendAndEditScene from "./DDCarInfoLendAndEditScene"
+
 import {LendSuccessAlert, ModalAlert} from './component/ModelComponent'
 let ControlState = [];
 let loan_code;
@@ -53,25 +56,56 @@ export default class DDDetailScene extends BaseComponent {
             dataSource: ds.cloneWithRowsAndSections(this.titleNameBlob({}, [])),
             renderPlaceholderOnly: STATECODE.loading,
         }
-        OrderHanderState = [];
+        this.carData = {
+            sell_city_id: '',
+            brand_id: '',
+            model_id: '',
+            series_id: '',
+            frame_number: '',
+            car_color: '',
+            mileage: '',
+            init_reg: '',
+            rev_user_id: '',
+            register_user_id: '',
+            purchas_price: '',
+            bind_type: '',
+            obd_number: '',
+            payment_id: '',
+            base_id: '',
+            info_id: '',
+            isCarinvoice: '',
+            obd_bind_status: '',
+            obd_audit_status: '',
+            auto_ownership_status: '',//车辆权属审核状态
+            order_ownership_status: '',//车辆权属提交状态
+            is_mortgagor: '',
+            is_new: '',
+            file_list: [],
+
+            obd_track_url: ''
+        };
     }
 
     initFinish() {
         this.getLendInfo();
     }
 
+    /**
+     * 获取借款详情
+     * getLendInfo
+     **/
     getLendInfo = () => {
 
         let maps = {
             api: apis.GET_APPLY_INFO,
-            loan_code: '201704270003',
+            loan_code: this.props.financeNo,
+
         };
 
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
                     let tempjson = response.mjson.data;
-                    ControlState = this.confimOrderState(Number.parseInt(tempjson.payment_status), Number.parseInt(tempjson.payment_schedule))
-
+                    ControlState = this.confimOrderState(Number.parseInt(tempjson.payment_status), Number.parseInt(tempjson.aduitstatus))
                     this.getCarListInfo(tempjson);
                 },
                 (error) => {
@@ -90,14 +124,30 @@ export default class DDDetailScene extends BaseComponent {
 
 
     }
+    /**
+     * 获取车辆列表
+     * getCarListInfo
+     **/
     getCarListInfo = (lendInfo) => {
         let maps = {
-            api: apis.AUTOLIST,
-            payment_number: "201704270003"
+            api: apis.DDAUTOLIST,
+            payment_number: this.props.financeNo,//借款单号
+            platform_order_number: this.props.orderNo,//平台订单号
         };
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
                     let tempjson = response.mjson.data;
+                    this.carData.base_id = tempjson.list[0].base_id;
+                    this.carData.frame_number = tempjson.list[0].frame_number;
+                    this.carData.obd_bind_status = tempjson.list[0].obd_bind_status;
+                    this.carData.obd_audit_status = tempjson.list[0].obd_audit_status;
+                    this.carData.obd_number = tempjson.list[0].obd_number;
+                    this.carData.auto_ownership_status = tempjson.list[0].auto_ownership_status;
+                    this.carData.order_ownership_status = tempjson.list[0].order_ownership_status;
+                    this.carData.is_mortgagor = tempjson.list[0].is_mortgagor;
+                    this.carData.is_new = tempjson.list[0].is_new;
+                    this.carData.info_id = tempjson.list[0].info_id;
+                    this.carData.obd_track_url = tempjson.list[0].obd_track_url;
                     this.setState({
                         dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(lendInfo, tempjson.list)),
                         renderPlaceholderOnly: STATECODE.loadSuccess
@@ -118,43 +168,40 @@ export default class DDDetailScene extends BaseComponent {
                 });
 
     }
-    carItemClick = (carId) => {
 
-        navigatorParams = {
-            name: 'CGDCarDetailScenes',
-            component: CGDCarDetailScenes,
-            params: {
-                carId: carId
-            }
-        }
-        this.toNextPage(navigatorParams);
-    }
-    canclelend = () => {
+    /**
+     * 点击取消借款，确定，取消借款
+     * canclelend
+     **/
+    // canclelend = () => {
+    //
+    //     let maps = {
+    //         api: apis.CANCEL_LOAN,
+    //         loan_code: this.props.loanNumber
+    //     };
+    //     this.props.showModal(true);
+    //     request(apis.FINANCE, 'Post', maps)
+    //         .then((response) => {
+    //                 this.props.showModal(false);
+    //                 this.cancleSuccess.setModelVisible(true);
+    //             },
+    //             (error) => {
+    //                 this.props.showModal(false)
+    //                 if (error.mycode != -300 || error.mycode != -500) {
+    //                     this.props.showToast(error.mjson.msg);
+    //
+    //                 } else {
+    //
+    //                     this.props.showToast('服务器连接有问题')
+    //                 }
+    //             });
+    //
+    // }
 
-        let maps = {
-            api: apis.CANCEL_LOAN,
-            loan_code: this.props.loanNumber
-        };
-        this.props.showModal(true);
-        request(apis.FINANCE, 'Post', maps)
-            .then((response) => {
-                    this.props.showModal(false);
-                    this.cancleSuccess.setModelVisible(true);
-                },
-                (error) => {
-                    this.props.showModal(false)
-                    if (error.mycode != -300 || error.mycode != -500) {
-                        this.props.showToast(error.mjson.msg);
-
-                    } else {
-
-                        this.props.showToast('服务器连接有问题')
-                    }
-                });
-
-    }
-
-
+    /**
+     * 根据取回的数据，对数据源进行封装
+     * titleNameBlob
+     **/
     titleNameBlob = (jsonData, carData) => {
         loan_code = jsonData.loan_code;
         let dataSource = {};
@@ -170,10 +217,10 @@ export default class DDDetailScene extends BaseComponent {
         dataSource['section1'] = section1
         if (carData.length > 0) {
             let section2 = [
-                {title: '借款单号', key: '订单融资'},
-
+                {title: '借款单号', key: this.props.orderNo},
             ]
             dataSource['section2'] = section2;
+
             let tempCarDate = [];
 
             carData.map((item) => {
@@ -195,37 +242,75 @@ export default class DDDetailScene extends BaseComponent {
                         invoice_audit_status: item.invoice_audit_status
                     }
                 )
-                dataSource['section3'] = tempCarDate;
             })
-            let section4 = [
-                {title: 'OBD设备', key: '订单融资'},
-                {title: '车属权限', key: '订单融资'},
+            dataSource['section3'] = tempCarDate;
+            let section4;
+            if (carData[0].is_new == 1) {
+                section4 = [
+                    {
+                        title: 'OBD设备',
+                        key: this.OBDtransferToString(carData[0].obd_audit_status, carData[0].obd_bind_status)
+                    },
+                    {
+                        title: '车辆权属',
+                        key: this.OBDtransferToString(carData[0].auto_ownership_status, carData[0].order_ownership_status)
+                    },
 
-            ]
+                ]
+            } else {
+                section4 = [
+                    {
+                        title: 'OBD设备',
+                        key: this.OBDtransferToString(carData[0].obd_audit_status, carData[0].obd_bind_status)
+                    },
+
+
+                ]
+            }
             dataSource['section4'] = section4;
         }
         return dataSource;
     }
+    /**
+     * 根据后台返回，将数据进行转换，也可以判断车辆权属，只能用在详情页！！！！！
+     * OBDtransferToString
+     **/
+    OBDtransferToString = (audit, bind) => {
+        let status;
 
+        if (audit == 0) {
+            status = '未审核';
+        } else if (audit == 1) {
+            status = '已通过';
+        }
+
+        return status;
+    }
+    /**
+     * 根据后台返回的状态，判断下面按钮的显示。。
+     * confimOrderState
+     **/
     confimOrderState = (state, isComplete) => {
         let NameBlobs = [];
 
-        if (state > 0 && state <= 32 || state == 50) {
+        if (state == 30 || state == 32 || state == 50|| state == 52) {
             NameBlobs = ['取消借款']
-        } else if (state == 33) {
-            NameBlobs = ['取消借款', '确认金额']
-        } else if (state === 35) {
-            NameBlobs = ['取消借款', '签署合同']
-        } else if (state == 40 || state == 42 || isComplete == 4) {
-            NameBlobs = ['查看合同']
-        } else if (state == 41) {
-            NameBlobs = ['取消借款', '确认金额', '查看合同']
+        } else if (state == 42) {
+            if (isComplete == 2){
+                NameBlobs = ['查看合同']
+            }else {
+                NameBlobs = ['取消借款', '签署合同']
+            }
+
         }
 
         return NameBlobs;
     }
 
-
+    /**
+     * 绘制界面的row
+     * renderRow
+     **/
     renderRow = (rowData, sectionID, rowId, highlightRow) => {
 
         if (sectionID === 'section1') {
@@ -240,7 +325,7 @@ export default class DDDetailScene extends BaseComponent {
                             name: 'PurchaseLoanStatusScene',
                             component: PurchaseLoanStatusScene,
                             params: {
-                                loanNumber: this.props.loanNumber
+                                loanNumber: this.props.financeNo
                             }
                         }
                         this.toNextPage(navigatorParams);
@@ -255,31 +340,19 @@ export default class DDDetailScene extends BaseComponent {
         }
         if (sectionID === 'section2') {
             return (
-                <CommentHandItem warpstyle={{height: adapeSize(44)}} leftTitle={rowData.title}
-                                 showValue={rowData.key} textStyle={{color: PAGECOLOR.COLORA1}} handel={() => {
-
-                    navigatorParams = {
-                        name: 'DDCarInfoScene',
-                        component: DDCarInfoScene,
-                        params: {
-                            loanNumber: this.props.loanNumber
-                        }
-                    }
-                    this.toNextPage(navigatorParams);
-
-                }}/>
+                <View style={[styles.commentHandeItem, {height: adapeSize(44)}] }>
+                    <Text allowFontScaling={false} style={styles.commentListItemLeft}>{rowData.title}</Text>
+                    <Text allowFontScaling={false}
+                          style={[styles.commentListItemRight, {color: PAGECOLOR.COLORA1}]}>{rowData.key}</Text>
+                </View>
             )
         }
         if (sectionID === 'section3') {
-            //
             return (<CGDCarItems url={rowData.icon} title={rowData.model_name}
-                                 invoice_upload_status={rowData.invoice_upload_status}
-                                 obd_bind_status={rowData.obd_bind_status}
-                                 obd_audit_status={rowData.obd_audit_status}
-                                 invoice_audit_status={rowData.invoice_audit_status}
-                                 date={rowData.init_reg + ' / ' + rowData.mileage + '万公里'} onPress={() => {
-                this.carItemClick(rowData.info_id);
-            }}/>)
+                                 invoice_upload_status={2}
+                                 obd_bind_status={2}
+                                 date={""}
+            />)
         }
         if (sectionID === 'section4') {
             if (rowData.title === 'OBD设备') {
@@ -288,50 +361,47 @@ export default class DDDetailScene extends BaseComponent {
                     <CommentHandItem warpstyle={{height: adapeSize(44)}} leftTitle={rowData.title}
                                      showValue={rowData.key} textStyle={{color: PAGECOLOR.COLORA1}} handel={() => {
 
-                        navigatorParams = {
-                            name: 'OBDDevice',
-                            component: OBDDevice,
-                            params: {
-                                carData: {obd_audit_status: '2'},
-                                fromScene: 'DDApplyLendScene',
-                                backRefresh: () => {
-                                    //刷新界面
-                                }
-                            }
-                        }
-                        this.toNextPage(navigatorParams);
+                                         this.toNextPage({
+                                         name: 'WebScene',
+                                         component: WebScene,
+                                         params: {webUrl: this.carData.obd_track_url}
+                            })
 
                     }}/>
                 )
             }
-            if (rowData.title === '车辆权限') {
-
+            if (rowData.title === '车辆权属') {
                 return (
                     <CommentHandItem warpstyle={{height: adapeSize(44)}} leftTitle={rowData.title}
                                      showValue={rowData.key} textStyle={{color: PAGECOLOR.COLORA1}} handel={() => {
+            this.toNextPage({
+                name: 'DDCarInfoCheckScene',//DDCarInfoCheckScene
+                component: DDCarInfoCheckScene,
+                params: {
+                    carData: this.carData,
+                    platform_order_number: this.props.orderNo,//平台订单号
+                    info_id: this.carData.info_id,
 
-                        navigatorParams = {
-                            name: 'DDDetailScene',
-                            component: DDDetailScene,
-                            params: {
-                                loanNumber: this.props.loanNumber
-                            }
-                        }
-                        this.toNextPage(navigatorParams);
+                }
+            });
 
-                    }}/>
+    }}/>
                 )
             }
         }
 
     }
+    /**
+     * 绘制界面的SectionHeader
+     * SectionHeader
+     **/
     renderSectionHeader = (sectionData, sectionID) => {
 
         if (sectionID === 'section2') {
 
             return (
                 <View style={styles.section2Style}>
-                    <Text allowFontScaling={false}  style={styles.sectionText}>订单信息</Text>
+                    <Text allowFontScaling={false} style={styles.sectionText}>订单信息</Text>
                 </View>
             )
         }
@@ -340,6 +410,10 @@ export default class DDDetailScene extends BaseComponent {
             </View>
         )
     }
+    /**
+     * 绘制界面的Separator分割线
+     * Separator
+     **/
     renderSeparator = (sectionID, rowId, adjacentRowHighlighted) => {
 
         let separtrorHegigth = 1;
@@ -354,6 +428,10 @@ export default class DDDetailScene extends BaseComponent {
             </View>
         )
     }
+    /*
+     * 底部按钮点击判断
+     * buttonClick
+     **/
     buttonClick = (title) => {
         if (title == '确认金额') {
             this.toNextPage({
@@ -382,7 +460,10 @@ export default class DDDetailScene extends BaseComponent {
         }
     }
 
-
+    /**
+     * 绘制界面
+     * render
+     **/
     render() {
 
         if (this.state.renderPlaceholderOnly !== STATECODE.loadSuccess) {
@@ -519,5 +600,26 @@ const styles = StyleSheet.create({
 
 
     },
+    commentListItemLeft: {
+        paddingLeft: adapeSize(15),
+        textAlign: 'left',
+        color: '#9e9e9e',
+        flex: 0.3,
+    },
+
+    commentListItemRight: {
+        paddingRight: adapeSize(15),
+        textAlign: 'right',
+        color: 'black',
+        flex: 0.7,
+    },
+    commentHandeItem: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        backgroundColor: 'white',
+    },
+
 
 })
