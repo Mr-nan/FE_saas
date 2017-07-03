@@ -50,9 +50,9 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
             api: apis.GET_PAYMENT_SCHEDULE_ALL,
             loan_code: this.props.loanNumber
         };
-        if(this.props.loanType ){
-            Object.assign(maps,{type: this.props.loanType})
-        }
+        // if(this.props.loanType ){
+        //     Object.assign(maps,{type: this.props.loanType})
+        // }
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
                     let tempjson = response.mjson.data;
