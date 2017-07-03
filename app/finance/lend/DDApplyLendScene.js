@@ -79,11 +79,20 @@ export default class DDApplyLendScene extends BaseComponent {
      * 获取订单融资申请前置数据,费率，借款额度
      **/
     getLendInfo = () => {
+        let maps;
+        if (this.props.sceneName == "FinanceScene") {
+            maps = {
+                api: apis.GET_APPLY_INFO,
+                apply_type: '6',
+                loan_code: this.props.loan_code,
+            };
+        } else {
+            maps = {
+                api: apis.GET_APPLY_LOAN_DATA,
+                apply_type: '6',
+            };
+        }
 
-        let maps = {
-            api: apis.GET_APPLY_LOAN_DATA,
-            apply_type: '6',
-        };
 
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
@@ -156,17 +165,36 @@ export default class DDApplyLendScene extends BaseComponent {
 
     }
 
+    /**
+     * from @huangning
+     *
+     *
+     **/
     titleNameBlob = (jsonData, carData) => {
-
+        this.payment_audit_reason = jsonData.payment_audit_reason;
         let dataSource = {};
-        let section1 = [
-            {title: '借贷类型', key: jsonData.product_type},
-            {title: '借款费率', key: jsonData.rate},
-            {title: '保证金余额', key: jsonData.deposit_amount + "元"},
-            {title: '保证金比例', key: jsonData.deposit_rate},
-            {title: '借款期限', key: jsonData.loan_life},
-            {title: '借款额度', key: "30000" + "~" + jsonData.paymnet_maxloanmny + "元"},
-        ]
+        let section1;
+        if (this.props.sceneName == "FinanceScene") {
+            section1 = [
+                {title: '借贷类型', key: jsonData.product_type},
+                {title: '借款费率', key: jsonData.payment_rate_str},
+                {title: '保证金余额', key: jsonData.deposit_amount + "元"},
+                {title: '保证金比例', key: jsonData.deposit_rate},
+                {title: '借款期限', key: jsonData.loanperiodstr},
+                {title: '借款额度', key: "30000" + "~" + jsonData.max_loanmny + "元"},
+            ]
+        } else {
+            section1 = [
+                {title: '借贷类型', key: jsonData.product_type},
+                {title: '借款费率', key: jsonData.rate},
+                {title: '保证金余额', key: jsonData.deposit_amount + "元"},
+                {title: '保证金比例', key: jsonData.deposit_rate},
+                {title: '借款期限', key: jsonData.loan_life},
+                {title: '借款额度', key: "30000" + "~" + jsonData.paymnet_maxloanmny + "元"},
+            ]
+        }
+
+
         dataSource['section1'] = section1
         if (carData.length > 0) {
             let section2 = [{title: '订单号', key: this.props.orderNo}]
@@ -372,10 +400,18 @@ export default class DDApplyLendScene extends BaseComponent {
         if (sectionID == 'section1') {
             if (this.props.sceneName == "FinanceScene") {
                 return (
-                    <View style={styles.section2Style}>
-                        <Text allowFontScaling={false}
-                              style={{color: '#ff0000', fontSize: fontadapeSize(15)}}> {'审核未通过:'}</Text>
-                        {/*<Text allowFontScaling={false}  style={{color:'#000000',fontSize:Pixel.getFontPixel(14)}} numberOfLines={2}>{showData.tempDetailInfo.payment_audit_reason}</Text>*/}
+                    <View style={{
+                        backgroundColor: PAGECOLOR.COLORA3,
+                        alignItems: 'flex-start',
+                        justifyContent: 'center'
+                    }}>
+                        <Text
+                            numberOfLines={2}
+                            style={{
+                                color: '#ff0000',
+                                fontSize: fontadapeSize(14)
+                            }}> {'审核未通过：' + this.payment_audit_reason}
+                        </Text>
                     </View>
                 )
             }
