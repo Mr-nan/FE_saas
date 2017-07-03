@@ -325,7 +325,8 @@ export default class DDDetailScene extends BaseComponent {
                             name: 'PurchaseLoanStatusScene',
                             component: PurchaseLoanStatusScene,
                             params: {
-                                loanNumber: this.props.financeNo
+                                loanNumber: this.props.financeNo,
+                                loanType : "6"
                             }
                         }
                         this.toNextPage(navigatorParams);
