@@ -441,7 +441,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     }
                 }, (error) => {
                     //this.props.showToast('确认验收失败');
-                    this.props.showToast(error.mjson.msg);
+                    if (error.mjson.code == '6350087') {
+                        this.loadData();
+                    } else {
+                        this.props.showToast(error.mjson.msg);
+                    }
                 });
             } else {
                 this.props.showToast('确认验收失败');
@@ -1099,6 +1103,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 break;
             case 18:  //18=>'融资单确认验收失败',
             case 160:  //18=>'融资单确认验收失败',
+            case 50:  //18=>'融资单确认验收失败',
                 if (cancelStatus === 0) {
                     this.orderState = 7;
                     this.topState = -1;

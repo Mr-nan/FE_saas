@@ -373,8 +373,16 @@ export default class SalesOrderDetailScene extends BaseComponent {
             case 14:
             case 15:
             case 16:
+            case 160:
+            case 50:
             case 17:
             case 18:
+            case 19:  //
+            case 20:  //
+            case 21:  //
+            case 22:  //
+            case 23:  //
+            case 24:  //
                 if (cancelStatus === 0) {
                     this.orderState = 2;
                     if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_type == 2 &&
@@ -467,7 +475,6 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 }
                 break;
             case 11:  // 订单完成
-            case 19:  // 融资单完成
                 if (cancelStatus === 0) {
                     this.orderState = 4;
                     this.topState = -1;
@@ -1255,7 +1262,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     {/*<Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1}}>和</Text>
                      <Text allowFontScaling={false} 
                      onPress={() => {
-                     this.getTypeContractInfo(2)
+                     this.getTypeContractInfo(4)
                      }}
                      style={{color: fontAndColor.COLORA2}}>《授权声明》</Text>*/}
                 </View>
