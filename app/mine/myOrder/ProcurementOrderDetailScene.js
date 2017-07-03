@@ -734,6 +734,73 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     </View>
                 );
                 break;
+            case 10:
+                return (
+                    <View style={styles.bottomBar}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.refs.cancelModal.changeShowType(true, '提示', '已申请订单融资请联系客服取消订单', '确定');
+                            }}>
+                            <View style={styles.buttonCancel}>
+                                <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <ExplainModal ref='cancelModal' title='提示' buttonStyle={styles.expButton}
+                                      textStyle={styles.expText}
+                                      text='确定' content='订单尾款已结清联系客服取消订单'/>
+                    </View>
+                )
+                break;
+/*            case 11:
+                let applyAmount = this.applyLoanAmount === '请输入申请贷款金额' ? 0 : this.applyLoanAmount;
+                return (
+                    <View style={styles.bottomBar}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.refs.chooseModal.changeShowType(true, '取消', '确定', '卖家将在您发起取消申请24小时内回复，如已支付订金将与卖家协商退款。',
+                                    this.cancelOrder);
+                            }}>
+                            <View style={styles.buttonCancel}>
+                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.toNextPage({
+                                    name: 'CheckStand',
+                                    component: CheckStand,
+                                    params: {
+                                        payAmount: this.orderState === 1 ?
+                                            this.orderDetail.deposit_amount :
+                                            parseFloat(this.orderDetail.balance_amount - applyAmount).toFixed(2),
+                                        orderId: this.props.orderId,
+                                        orderNo: this.orderDetail.order_no,
+                                        payType: this.orderState,
+                                        sellerId: this.orderDetail.seller_id,
+                                        carId: this.orderDetail.orders_item_data[0].car_id,
+                                        pledgeType: this.orderDetail.orders_item_data[0].car_finance_data.pledge_type,
+                                        pledgeStatus: this.orderDetail.orders_item_data[0].car_finance_data.pledge_status,
+                                        applyLoanAmount: this.applyLoanAmount,
+                                        financeNo: this.orderDetail.finance_no,
+                                        callBack: this.payCallBack
+                                    }
+                                });
+                            }}>
+                            <View style={styles.buttonConfirm}>
+                                <Text allowFontScaling={false} style={{color: '#ffffff'}}>支付</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <ChooseModal ref='chooseModal' title='提示'
+                                     negativeButtonStyle={styles.negativeButtonStyle}
+                                     negativeTextStyle={styles.negativeTextStyle} negativeText='取消'
+                                     positiveButtonStyle={styles.positiveButtonStyle}
+                                     positiveTextStyle={styles.positiveTextStyle} positiveText='确定'
+                                     buttonsMargin={Pixel.getPixel(20)}
+                                     positiveOperation={this.cancelOrder}
+                                     content=''/>
+                    </View>
+                )
+                break;*/
             default:
                 return null;
                 break;
@@ -950,7 +1017,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 if (cancelStatus === 0) {
                     this.orderState = 5;
                     this.topState = -1;
-                    this.bottomState = 0;
+                    this.bottomState = 10;
                 } else if (cancelStatus === 1) {
                     this.orderState = 5;
                     this.topState = -1;
@@ -1291,15 +1358,15 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                   this.getTypeContractInfo(2)
                               }}
                               style={{color: fontAndColor.COLORA2}}>《买卖协议附件》</Text>
-                    }
-                    {
-                        (this.orderState == 6 || this.orderState == 7) &&
-                        <Text allowFontScaling={false}
-                              onPress={() => {
-                                  this.getTypeContractInfo(3)
-                              }}
-                              style={{color: fontAndColor.COLORA2}}>《售后回租协议》</Text>
-                    }
+                    }{/*{
+                 (this.orderState == 6 || this.orderState == 7) &&
+                 <Text allowFontScaling={false}
+                 onPress={() => {
+                 this.getTypeContractInfo(3)
+                 }}
+                 style={{color: fontAndColor.COLORA2}}>《售后回租协议》</Text>
+                 }*/}
+
                 </View>
             )
         } else if (rowData === '3') {

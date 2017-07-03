@@ -98,10 +98,11 @@ export default class GesturePassword extends BaseComponent {
                 NavigationBar={
                     <View style={styles.topStyle}>
                         <NavigationBar
-                            leftImageShow={true}
-                            leftTextShow={false}
+                            leftImageShow={false}
+                            leftTextShow={true}
                             centerText={"解锁手势密码"}
                             rightText={""}
+                            leftText={""}
                             leftImage={require('./../../images/login/left_cancle.png')}
                             leftImageCallBack={this.backPage}/>
 
@@ -110,9 +111,10 @@ export default class GesturePassword extends BaseComponent {
                             <Image style={styles.avatarStyle}
                                    source={require("./../../images/mainImage/zhanghuguanli.png")}/>}
 
-                        <Text allowFontScaling={false}  style={ styles.topMessageStyle }>用户名：{this.state.phone}</Text>
+                        <Text allowFontScaling={false} style={ styles.topMessageStyle }>用户名：{this.state.phone}</Text>
 
-                        <Text allowFontScaling={false}  style={this.state.status !== "wrong" ? styles.topMessageStyle : styles.topMessageWStyle}>
+                        <Text allowFontScaling={false}
+                              style={this.state.status !== "wrong" ? styles.topMessageStyle : styles.topMessageWStyle}>
                             {this.state.message}
                         </Text>
                     </View>
@@ -130,14 +132,14 @@ export default class GesturePassword extends BaseComponent {
                             StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'false');
                             this.loginPage({name: 'LoginScene', component: LoginScene});
                         }}>
-                            <Text allowFontScaling={false}  style={styles.bottomLeftSytle}>忘记手势密码？</Text>
+                            <Text allowFontScaling={false} style={styles.bottomLeftSytle}>忘记手势密码？</Text>
                         </TouchableOpacity>
                         <View style={{flex: 1}}/>
                         <TouchableOpacity onPress={() => {
                             StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'false');
                             this.loginPage({name: 'LoginScene', component: LoginScene});
                         }}>
-                            <Text allowFontScaling={false}  style={styles.bottomRightSytle}>切换登录</Text>
+                            <Text allowFontScaling={false} style={styles.bottomRightSytle}>切换登录</Text>
                         </TouchableOpacity>
                     </View>
                 }
@@ -166,11 +168,11 @@ export default class GesturePassword extends BaseComponent {
                 message: '验证成功',
             });
             StorageUtil.mSetItem(StorageKeyNames.NEED_GESTURE, 'false');
-                StorageUtil.mGetItem(StorageKeyNames.USER_LEVEL, (data) => {
-                    if (data.code == 1) {
-                         this.loginPage({name: 'AllSelectCompanyScene', component: AllSelectCompanyScene});
-                    }
-                })
+            StorageUtil.mGetItem(StorageKeyNames.USER_LEVEL, (data) => {
+                if (data.code == 1) {
+                    this.loginPage({name: 'AllSelectCompanyScene', component: AllSelectCompanyScene});
+                }
+            })
         } else {
             this.setState({
                 status: 'wrong',
