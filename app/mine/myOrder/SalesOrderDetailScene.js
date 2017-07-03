@@ -52,7 +52,7 @@ import WaitActivationAccountScene from "../accountManage/WaitActivationAccountSc
 import AccountModal from "../../component/AccountModal";
 import AccountForOrderModal from "./component/AccountForOrderModal";
 import ContractScene from "./ContractScene";
-import RepaymentInfoScene from "../../finance/repayment/RepaymentInfoScene";
+import RepaymentInfoScene from "../../finance/repayment/RepaymentCreditInfoScene";
 import InventoryPlanInfoScene from "../../finance/repayment/InventoryPlanInfoScene";
 import NewPurchaseRepaymentInfoScene from "../../finance/repayment/NewPurchaseRepaymentInfoScene";
 const Pixel = new PixelUtil();
