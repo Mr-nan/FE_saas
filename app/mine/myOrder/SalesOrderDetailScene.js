@@ -1262,6 +1262,48 @@ export default class SalesOrderDetailScene extends BaseComponent {
             let mileage = this.orderDetail.orders_item_data[0].car_data.mileage;
             let initRegDate = initReg === 0 ? '暂无' : this.dateReversal(initReg + '000');
             let imageUrl = this.orderDetail.orders_item_data[0].car_data.imgs;
+            {/*return (*/
+            }
+            {/*<View style={styles.itemType3}>*/
+            }
+            {/*<View style={{*/
+            }
+            {/*height: Pixel.getPixel(40),*/
+            }
+            {/*marginLeft: Pixel.getPixel(15),*/
+            }
+            {/*justifyContent: 'center'*/
+            }
+            {/*}}>*/
+            }
+            {/*<Text style={styles.orderInfo}>订单号:{this.orderDetail.order_no}</Text>*/
+            }
+            //             <Text style={styles.orderInfo}>订单日期:{this.orderDetail.created_time}</Text>
+            //         </View>
+            //         <View style={styles.separatedLine}/>
+            //         <View style={{flexDirection: 'row', height: Pixel.getPixel(105), alignItems: 'center'}}>
+            //             <Image style={styles.image}
+            //                    source={imageUrl.length ? {uri: imageUrl[0].icon_url} : require('../../../images/carSourceImages/car_null_img.png')}/>
+            //             <View style={{marginLeft: Pixel.getPixel(10)}}>
+            //                 <Text style={{width: width - Pixel.getPixel(15 + 120 + 10 + 15)}}
+            //                       numberOfLines={1}>{this.orderDetail.orders_item_data[0].car_data.model_name}</Text>
+            //                 <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
+            //                     <Text style={styles.carDescribeTitle}>里程：</Text>
+            //                     <Text style={styles.carDescribe}>{mileage}万</Text>
+            //                 </View>
+            //                 <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
+            //                     <Text style={styles.carDescribeTitle}>上牌：</Text>
+            //                     <Text style={styles.carDescribe}>{initRegDate}</Text>
+            //                 </View>
+            //                 {this.orderState !== 0 ? <View
+            //                     style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
+            //                     <Text style={styles.carDescribeTitle}>成交价：</Text>
+            //                     <Text style={styles.carDescribe}>{this.orderDetail.transaction_amount}元</Text>
+            //                 </View> : null}
+            //             </View>
+            //         </View>
+            //     </View>
+            // )
             return (
                 <View style={styles.itemType3}>
                     <View style={{
@@ -1273,25 +1315,52 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         <Text style={styles.orderInfo}>订单日期:{this.orderDetail.created_time}</Text>
                     </View>
                     <View style={styles.separatedLine}/>
-                    <View style={{flexDirection: 'row', height: Pixel.getPixel(105), alignItems: 'center'}}>
-                        <Image style={styles.image}
-                               source={imageUrl.length ? {uri: imageUrl[0].icon_url} : require('../../../images/carSourceImages/car_null_img.png')}/>
-                        <View style={{marginLeft: Pixel.getPixel(10)}}>
+                    <View style={{flexDirection: 'row', height: Pixel.getPixel(105)}}>
+                        <View style={{flex:1,backgroundColor: '#fff',justifyContent:'center'}}>
+                            <Image style={styles.image} source={imageUrl.length
+                            ? {uri: imageUrl[0].icon_url} :
+                            require('../../../images/carSourceImages/car_null_img.png')}/>
+                        </View>
+                        <View style={{flex:2,backgroundColor: '#fff',justifyContent:'center',
+                        marginRight:Pixel.getPixel(15),paddingLeft:Pixel.getPixel(10)}}>
                             <Text style={{width: width - Pixel.getPixel(15 + 120 + 10 + 15)}}
-                                  numberOfLines={1}>{this.orderDetail.orders_item_data[0].car_data.model_name}</Text>
-                            <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
-                                <Text style={styles.carDescribeTitle}>里程：</Text>
-                                <Text style={styles.carDescribe}>{mileage}万</Text>
+                                  numberOfLines={1}>{this.orderDetail.orders_item_data[0]
+                                .car_data.model_name}</Text>
+                            <View style={{marginTop: Pixel.getPixel(10),flexDirection:'row',
+                            }}>
+                                <Text style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                    color: fontAndColor.COLORA1
+                                }}>里程：</Text>
+                                <Text style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                    color: '#000'
+                                }}>{mileage}万</Text>
                             </View>
-                            <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
-                                <Text style={styles.carDescribeTitle}>上牌：</Text>
-                                <Text style={styles.carDescribe}>{initRegDate}</Text>
+                            <View style={{marginTop: Pixel.getPixel(5),flexDirection:'row',
+                            }}>
+                                <Text style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                    color: fontAndColor.COLORA1
+                                }}>上牌：</Text>
+                                <Text style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                    color: '#000'
+                                }}>{initRegDate}</Text>
                             </View>
-                            {this.orderState !== 0 ? <View
-                                style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
-                                <Text style={styles.carDescribeTitle}>成交价：</Text>
-                                <Text style={styles.carDescribe}>{this.orderDetail.transaction_amount}元</Text>
-                            </View> : null}
+                            {this.orderState !== 0 ?
+                                <View style={{marginTop: Pixel.getPixel(5),flexDirection:'row',
+                            }}>
+                                    <Text style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                    color: fontAndColor.COLORA1
+                                }}>成交价：</Text>
+                                    <Text style={{
+                                    fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                    color: '#000'
+                                }}>{this.orderDetail.transaction_amount}元</Text>
+                                </View>
+                                : <View/>}
                         </View>
                     </View>
                 </View>
