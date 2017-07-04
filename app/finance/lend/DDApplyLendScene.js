@@ -514,7 +514,7 @@ export default class DDApplyLendScene extends BaseComponent {
         if (this.state.renderPlaceholderOnly !== STATECODE.loadSuccess) {
             return ( <View style={styles.container}>
                 {this.loadView()}
-                <AllNavigatior title='借款详情' backIconClick={() => {
+                <AllNavigatior title='申请借款' backIconClick={() => {
                     this.backPage();
                 }}/>
 
