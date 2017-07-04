@@ -61,7 +61,7 @@ export default class ContactLayout extends Component {
                         {this.props.setPrompt ? <TouchableOpacity
                             style={{marginLeft: Pixel.getPixel(10)}}
                             onPress={() => {
-                                this.refs.expModal.changeShowType(true);
+                                this.refs.expModal.changeShowType(true, this.props.promptTitle, this.props.promptContent, '知道了');
                             }}>
                             <Image
                                 source={require('../../../../images/mainImage/down_payment.png')}/>

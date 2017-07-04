@@ -1048,6 +1048,7 @@ export default class CarPublishFirstScene extends BaseComponent{
 
                 modelID:this.carData.model_id,
                 carConfigurationData:[],
+                from:'CarPublishFirstScene'
             }
         }
         this.toNextPage(navigationParams);

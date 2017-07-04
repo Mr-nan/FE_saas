@@ -52,6 +52,9 @@ import WaitActivationAccountScene from "../accountManage/WaitActivationAccountSc
 import AccountModal from "../../component/AccountModal";
 import AccountForOrderModal from "./component/AccountForOrderModal";
 import ContractScene from "./ContractScene";
+import RepaymentInfoScene from "../../finance/repayment/RepaymentCreditInfoScene";
+import InventoryPlanInfoScene from "../../finance/repayment/InventoryPlanInfoScene";
+import NewPurchaseRepaymentInfoScene from "../../finance/repayment/NewPurchaseRepaymentInfoScene";
 const Pixel = new PixelUtil();
 
 const IS_ANDROID = Platform.OS === 'android';
@@ -179,7 +182,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                         name: 'AccountManageScene',
                                         component: AccountManageScene,
                                         params: {
-                                            callBack: () => {}
+                                            callBack: () => {
+                                            }
                                         }
                                     });
                                 });
@@ -191,7 +195,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                         name: 'BindCardScene',
                                         component: BindCardScene,
                                         params: {
-                                            callBack: () => {}
+                                            callBack: () => {
+                                            }
                                         }
                                     });
                                 });
@@ -203,7 +208,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                         name: 'WaitActivationAccountScene',
                                         component: WaitActivationAccountScene,
                                         params: {
-                                            callBack: () => {}
+                                            callBack: () => {
+                                            }
                                         }
                                     });
                                 });
@@ -212,6 +218,9 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         } else {
                             this.props.showToast(error.mjson.msg);
                         }
+                    } else if (error.mjson.code == '6350085') {
+                        this.props.showModal(false);
+                        this.refs.loanModal.changeShowType(true, '提示', '库存融资车辆请您先出库再交易', '确定');
                     } else {
                         this.props.showToast(error.mjson.msg);
                     }
@@ -405,6 +414,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
             case 8: // 结清尾款
             case 9:
             case 10:
+            case 90:
+            case 91:
                 if (cancelStatus === 0) {
                     this.orderState = 3;
                     if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_type == 2 &&
@@ -576,13 +587,13 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                 if (this.carAmount === 0) {
                                     this.props.showToast('请您先定价');
                                 } else {
-                                    if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_type == 1 &&
-                                        this.orderDetail.orders_item_data[0].car_finance_data.pledge_status == 1) {
-                                        this.refs.chooseModal.changeShowType(true, negativeText, positiveText, content, positiveOperation);
-                                    } else {
-                                        this.props.showModal(true);
-                                        this.savePrice();
-                                    }
+                                    //if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_type == 1 &&
+                                    //this.orderDetail.orders_item_data[0].car_finance_data.pledge_status == 1) {
+                                    //this.refs.loanModal.changeShowType(true, '提示', '库存融资车辆请您先出库再交易', '确定');
+                                    //} else {
+                                    this.props.showModal(true);
+                                    this.savePrice();
+                                    //}
                                 }
                             }}>
                             <View style={styles.buttonConfirm}>
@@ -597,14 +608,9 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                      buttonsMargin={Pixel.getPixel(20)}
                                      positiveOperation={positiveOperation}
                                      content={content}/>
-                        {/*<ChooseModal ref='chooseModal1' title='提示'
-                         negativeButtonStyle={styles.negativeButtonStyle}
-                         negativeTextStyle={styles.negativeTextStyle} negativeText='再想想'
-                         positiveButtonStyle={styles.positiveButtonStyle}
-                         positiveTextStyle={styles.positiveTextStyle} positiveText='没问题'
-                         buttonsMargin={Pixel.getPixel(20)}
-                         positiveOperation={this.savePrice(this.carAmount)}
-                         content='此车是库存融资质押车辆，请在买家支付订金后操作车辆出库。'/>*/}
+                        <ExplainModal ref='loanModal' title='提示' buttonStyle={styles.expButton}
+                                      textStyle={styles.expText}
+                                      text='确定' content='库存融资车辆请您先出库再交易'/>
                     </View>
                 )
                 break;
@@ -720,7 +726,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
                             onPress={() => {
-                                this.refs.cancelModal.changeShowType(true);
+                                this.refs.cancelModal.changeShowType(true, '提示', '订单尾款已结清联系客服取消订单', '确定');
                             }}>
                             <View style={styles.buttonCancel}>
                                 <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
@@ -816,14 +822,24 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
-                this.mList = ['0', '1', '5', '7', '9'];
-                this.contactData = {
-                    layoutTitle: '已完成',
-                    layoutContent: '车款可提现。',
-                    setPrompt: false,
-                    MerchantNum: merchantNum,
-                    CustomerServiceNum: customerServiceNum
-                };
+                if (this.orderDetail.orders_item_data[0].pledge_sub_payment_number &&
+                    this.orderDetail.orders_item_data[0].pledge_sub_payment_number.length > 0 &&
+                    this.orderDetail.orders_item_data[0].car_finance_data.pledge_type &&
+                    this.orderDetail.orders_item_data[0].car_finance_data.pledge_type == 2) {
+                    this.mList = ['0', '1', '4', '5', '7', '10', '9'];
+                    this.contactData = {
+                        layoutTitle: '已完成',
+                        layoutContent: '提前还款成功，请办理解除质押手续，剩余车款可提现。',
+                        setPrompt: false
+                    };
+                } else {
+                    this.mList = ['0', '1', '5', '7', '9'];
+                    this.contactData = {
+                        layoutTitle: '已完成',
+                        layoutContent: '车款可提现。',
+                        setPrompt: false
+                    };
+                }
                 this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
                 this.items.push({title: '订金到账', nodeState: 0, isLast: false, isFirst: false});
                 this.items.push({title: '结清尾款', nodeState: 0, isLast: false, isFirst: false});
@@ -1150,7 +1166,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                         <View style={{flex: 1}}/>
                         <Text
                             onPress={() => {
-                                this.refs.expModal.changeShowType(true);
+                                this.refs.expModal.changeShowType(true, '补差额说明', '为了确保交易金额可支付贷款本息，请您补足成交价与贷款本息，及额外30日利息（是交易持续时期可能产生的利息，根据实际日期付息）的差额。如未能在30日内完成交易，则自动关闭交易，并退还双方已支付的款项。',
+                                    '知道了');
                             }}
                             style={{marginRight: Pixel.getPixel(15), color: fontAndColor.COLORB4}}>补差额说明</Text>
                     </View>
@@ -1227,12 +1244,15 @@ export default class SalesOrderDetailScene extends BaseComponent {
                             this.getTypeContractInfo(1)
                         }}
                         style={{color: fontAndColor.COLORA2}}>《买卖协议》</Text>
-                    {/*<Text style={{color: fontAndColor.COLORA1}}>和</Text>
-                     <Text
-                     onPress={() => {
-                     this.getTypeContractInfo(2)
-                     }}
-                     style={{color: fontAndColor.COLORA2}}>《授权声明》</Text>*/}
+                    {
+                        this.orderDetail.orders_item_data[0].car_finance_data.pledge_type == 2 &&
+                        this.orderDetail.orders_item_data[0].car_finance_data.pledge_status == 1 &&
+                        <Text
+                            onPress={() => {
+                                this.getTypeContractInfo(4)
+                            }}
+                            style={{color: fontAndColor.COLORA2}}>《授权声明》</Text>
+                    }
                 </View>
             )
         } else if (rowData === '5') {
@@ -1443,6 +1463,50 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     </View>
                 </View>
             )
+        } else if (rowData === '10') {
+            let paymentId = this.orderDetail.orders_item_data[0].car_finance_data.payment_id ?
+                this.orderDetail.orders_item_data[0].car_finance_data.payment_id : 0;
+            let paymentNumber = this.orderDetail.orders_item_data[0].pledge_sub_payment_number ?
+                this.orderDetail.orders_item_data[0].pledge_sub_payment_number : 0;
+            let pledgeType = this.orderDetail.orders_item_data[0].car_finance_data.pledge_type ?
+                this.orderDetail.orders_item_data[0].car_finance_data.pledge_type : 0;
+            return (
+                <TouchableOpacity
+                    style={styles.itemType10}
+                    onPress={() => {
+                        // 跳转金融页面  还款详情
+                        if (pledgeType == 2 && paymentNumber != 0) {
+                            this.toNextPage({
+                                name: 'RepaymentInfoScene',
+                                component: RepaymentInfoScene,
+                                params: {
+                                    loan_id: paymentId,
+                                    loan_number: paymentNumber,
+                                    type: pledgeType,
+                                    from: 'SingleRepaymentPage'
+                                }
+                            });
+                        } else {
+                            this.props.showToast('车辆质押状态错误');
+                        }
+                    }}>
+                    <View style={{alignItems: 'center', flexDirection: 'row', height: Pixel.getPixel(44)}}>
+                        <Text style={{
+                            marginLeft: Pixel.getPixel(15),
+                            fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                            color: fontAndColor.COLORA0
+                        }}>还款单号</Text>
+                        <View style={{flex: 1}}/>
+                        <Text style={{
+                            marginRight: Pixel.getPixel(10),
+                            fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                            color: fontAndColor.COLORA1
+                        }}>{this.orderDetail.orders_item_data[0].pledge_sub_payment_number ? this.orderDetail.orders_item_data[0].pledge_sub_payment_number : '未生成还款单号'}</Text>
+                        <Image source={require('../../../images/mainImage/celljiantou.png')}
+                               style={{marginRight: Pixel.getPixel(15)}}/>
+                    </View>
+                </TouchableOpacity>
+            )
         }
     }
 }
@@ -1652,5 +1716,9 @@ const styles = StyleSheet.create({
         borderRadius: Pixel.getPixel(2),
         borderWidth: Pixel.getPixel(1),
         borderColor: fontAndColor.COLORB0
+    },
+    itemType10: {
+        backgroundColor: '#ffffff',
+        height: Pixel.getPixel(44)
     }
 });

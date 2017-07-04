@@ -977,7 +977,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                 mileage: this.carData.mileage,
                 model_id: this.carData.model_id,
                 init_reg: this.carData.init_reg,
-
+                from:'CarPublishSecondScene'
             }
         }
         this.toNextPage(navigationParams);

@@ -17,21 +17,25 @@ let Pixel = new PixelUtil();
 let {width, height} = Dimensions.get('window');
 import  * as fontAndColor from '../../../constant/fontAndColor';
 export default class ExplainModal extends Component {
-
     constructor(props) {
         super(props);
         // 初始状态
         this.state = {
             isShow: false,
+            title: this.props.title,
+            content: this.props.content,
+            text: this.props.text
         };
     }
 
-    changeShowType = (value) => {
+    changeShowType = (value, title, content, text) => {
         this.setState({
-            isShow: value
+            isShow: value,
+            title: title,
+            content: content,
+            text: text
         });
-    }
-
+    };
 
     render() {
         return (
@@ -69,19 +73,19 @@ export default class ExplainModal extends Component {
                             fontSize: Pixel.getPixel(17),
                             fontWeight: 'bold',
                             color: '#000'
-                        }}>{this.props.title}</Text>
+                        }}>{this.state.title}</Text>
                         <Text style={{
                             textAlign: 'center', fontSize: Pixel.getPixel(14),
                             marginTop: Pixel.getPixel(11), color: '#000'
                         }}>
-                            {this.props.content}
+                            {this.state.content}
                         </Text>
                         <TouchableOpacity onPress={() => {
                             this.setState({
                                 isShow: false
                             });
                         }} activeOpacity={0.9} style={this.props.buttonStyle}>
-                            <Text style={this.props.textStyle}>{this.props.text}</Text>
+                            <Text style={this.props.textStyle}>{this.state.text}</Text>
                         </TouchableOpacity>
                     </View>
                 </TouchableOpacity>
@@ -89,7 +93,6 @@ export default class ExplainModal extends Component {
         );
     }
 }
-
 /*
  style={{
  marginBottom: Pixel.getPixel(20),
@@ -103,8 +106,6 @@ export default class ExplainModal extends Component {
  borderWidth: 1,
  borderColor: fontAndColor.COLORB0
  }}
-
-
  {
  fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
  color: fontAndColor.COLORB0

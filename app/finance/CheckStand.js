@@ -219,8 +219,6 @@ export default class CheckStand extends BaseComponent {
                      color: fontAndColor.COLORA1,
                      marginTop: Pixel.getPixel(10)
                      }}>申请订单融资额度请联系客服</Text>*/}
-                    <ExplainModal ref='expModal' title='提示' buttonStyle={styles.expButton} textStyle={styles.expText}
-                                  text='确定' content='您的余额不足请充值'/>
                 </View>
             )
         }

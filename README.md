@@ -107,49 +107,59 @@ return [
 
   account_card_status_error
 
+  return [
+      'orders_status'=>[
+          0=>'创建订单',
+          1=>'订单订价中',
+          2=>'订单订价完成',//------------代付订金
+          3=>'订金支付中',
+          4=>'订金支付失败',
+          5=>'订金支付完成',//代付尾款
+          6=>'尾款支付中',
+          7=>'尾款支付失败',
+          8=>'尾款支付完成',//
+          9=>'质押车辆提前还款中',//------------
+          90=>'质押车辆提前还款失败',//------------
+          91=>'质押车辆提前还款成功',//------------
+          10=>'确认验收圈提失败',//-----------
+          11=>'确认验收完成',//------------订单完成
+          12=>'订单融资处理中',
+          13=>'订单融资完成',
+          14=>'支付首付款中',
+          15=>'支付首付款失败',
+          16=>'支付首付款完成',
+          17=>'融资单确认验收中',//----
+          18=>'融资单确认验收失败',//------------
+          19=>'融资单确然验收完成',//------------订单完成
+      ],
 
-  StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
-                          if (data.code == 1) {
-                              let datas = JSON.parse(data.result);
-                              console.log(datas);
-                              if (datas.user_level>0&&datas.enterprise_list[0].role_type == '1') {
-                                  StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (datac) => {
-                                      if (datac.code == 1) {
-                                          let datasc = JSON.parse(datac.result);
-                                          let maps = {
-                                              enter_base_ids: datasc.company_base_id,
-                                              child_type: '1'
-                                          };
-                                          request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
-                                              .then((response) => {
-                                                      lastType = response.mjson.data.account.status;
-                                                      console.log('========'+lastType);
-                                                      if (lastType == '0') {
-                                                          this.refs.accountmodal.changeShowType(true,
-                                                              '您还未开通资金账户，为方便您使用金融产品及购物车，' +
-                                                              '请尽快开通！', '去开户', '看看再说', () => {
-                                                                  this.toPage();
-                                                              });
-                                                      } else if (lastType == '1') {
-                                                          this.refs.accountmodal.changeShowType(true,
-                                                              '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
-                                                              , '去绑卡', '看看再说', () => {
-                                                                  this.toPage();
-                                                              });
-                                                      } else if (lastType == '2') {
-                                                          this.refs.accountmodal.changeShowType(true,
-                                                              '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
-                                                              , '去激活', '看看再说', () => {
-                                                                  this.toPage();
-                                                              });
-                                                      }
-                                                      firstType = lastType;
-                                                  },
-                                                  (error) => {
-
-                                                  });
-                                      }
-                                  });
-                              }
-                          }
-                      });
+return [
+    'orders_status'=>[
+        0=>'创建订单',
+        1=>'订单订价中',
+        2=>'订单订价完成',//------------代付订金
+        3=>'订金支付中',
+        4=>'订金支付失败',
+        5=>'订金支付完成',//代付尾款
+        6=>'尾款支付中',
+        7=>'尾款支付失败',
+        8=>'尾款支付完成',//
+        9=>'质押车辆提前还款中',//------------
+        90=>'质押车辆提前还款失败',//------------
+        91=>'质押车辆提前还款成功',//------------
+        10=>'确认验收圈提失败',//-----------
+        11=>'确认验收完成',//------------订单完成
+        12=>'订单融资处理中',
+        13=>'订单融资完成',
+        14=>'支付首付款中',
+        15=>'支付首付款失败',
+        16=>'支付首付款完成',
+        17=>'融资单放款发起成功',//----
+        18=>'融资单放款发起失败',//------------
+        19=>'融资单放款成功',//------------
+        20=>'融资单放款失败',//------------
+        21=>'融资单质押车辆提前还款中',//------------
+        22=>'融资单质押车辆提前还款失败',//------------
+        23=>'融资单质押车辆提前还款成功',
+        24=>'融资单确认验收失败',
+    ],

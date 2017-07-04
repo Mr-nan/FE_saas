@@ -53,13 +53,20 @@ export  default class CarReferencePriceScene extends  BaseComponent{
      * 回退到车辆详情页面
      **/
     backPage = () => {
-        const navigator = this.props.navigator;
-        if (navigator){
-            for(let i = 0;i<navigator.getCurrentRoutes().length;i++){
-                if(navigator.getCurrentRoutes()[i].name=='CarInfoScene'){
-                    navigator.popToRoute(navigator.getCurrentRoutes()[i]);
-                    break;
+        if(this.props.from=='CarUpkeepScene'){
+            const navigator = this.props.navigator;
+            if (navigator){
+                for(let i = 0;i<navigator.getCurrentRoutes().length;i++){
+                    if(navigator.getCurrentRoutes()[i].name=='CarInfoScene'){
+                        navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                        break;
+                    }
                 }
+            }
+        }else{
+            const navigator = this.props.navigator;
+            if (navigator) {
+                navigator.pop();
             }
         }
     }
