@@ -390,6 +390,10 @@ export default class DDCarInfoScene extends BaseComponent {
                             this.setState({
                                 listViewShow: false,
                             });
+                        }else {
+                            this.setState({
+                                listViewShow: true,
+                            });
                         }
 
                     }

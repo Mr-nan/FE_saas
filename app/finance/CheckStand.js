@@ -244,7 +244,8 @@ export default class CheckStand extends BaseComponent {
                               childStyle={styles.loginButtonTextStyle}
                               mOnPress={this.goPay}/>
                     {/*---订单融资---*/}
-                    {this.isShowFinancing == 1 && this.props.payType == 2 && <View>
+                    {this.isShowFinancing == 1 && this.props.payType == 2 &&
+                    <View>
                         <View style={{
                             alignItems: 'center',
                             flexDirection: 'row',
