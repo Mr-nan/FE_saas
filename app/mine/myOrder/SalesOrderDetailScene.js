@@ -109,43 +109,48 @@ export default class SalesOrderDetailScene extends BaseComponent {
         this.loadData();
     };
 
+    /**
+     * 更新车辆定价
+     * @param newAmount
+     **/
     updateCarAmount = (newAmount) => {
         this.props.showModal(true);
         this.carAmount = newAmount;
     };
 
+    /**
+     * 补差价提示栏
+     * @param financeInfo
+     **/
     isShowFinance = (financeInfo) => {
-        if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_type == 2 &&
-            this.orderDetail.orders_item_data[0].car_finance_data.pledge_status == 1) {
-            if (financeInfo.is_show_finance == 1) {
-                this.financeInfo = financeInfo;
-                this.mList = [];
-                if (this.orderDetail.orders_item_data[0].car_vin.length === 17) {
-                    this.mList = ['0', '1', '2', '3', '4', '5', '7', '9'];
-                } else {
-                    this.mList = ['0', '1', '2', '3', '4', '5', '6', '7', '9'];
-                }
-                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                this.setState({
-                    dataSource: ds.cloneWithRows(this.mList),
-                    //dataSource: this.state.dataSource.cloneWithRows(this.mList),
-                    isRefreshing: false,
-                    renderPlaceholderOnly: 'success'
-                });
+        if (financeInfo.is_show_finance == 1) {
+            this.financeInfo = financeInfo;
+            this.mList = [];
+            if (this.orderDetail.orders_item_data[0].car_vin.length === 17) {
+                this.mList = ['0', '1', '2', '3', '4', '5', '7', '9'];
             } else {
-                this.mList = [];
-                if (this.orderDetail.orders_item_data[0].car_vin.length === 17) {
-                    this.mList = ['0', '1', '2', '4', '5', '7', '9'];
-                } else {
-                    this.mList = ['0', '1', '2', '4', '5', '6', '7', '9'];
-                }
-                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                this.setState({
-                    dataSource: ds.cloneWithRows(this.mList),
-                    isRefreshing: false,
-                    renderPlaceholderOnly: 'success'
-                });
+                this.mList = ['0', '1', '2', '3', '4', '5', '6', '7', '9'];
             }
+            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+            this.setState({
+                dataSource: ds.cloneWithRows(this.mList),
+                //dataSource: this.state.dataSource.cloneWithRows(this.mList),
+                isRefreshing: false,
+                renderPlaceholderOnly: 'success'
+            });
+        } else {
+            this.mList = [];
+            if (this.orderDetail.orders_item_data[0].car_vin.length === 17) {
+                this.mList = ['0', '1', '2', '4', '5', '7', '9'];
+            } else {
+                this.mList = ['0', '1', '2', '4', '5', '6', '7', '9'];
+            }
+            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+            this.setState({
+                dataSource: ds.cloneWithRows(this.mList),
+                isRefreshing: false,
+                renderPlaceholderOnly: 'success'
+            });
         }
         this.props.showModal(false);
     };
@@ -1122,6 +1127,14 @@ export default class SalesOrderDetailScene extends BaseComponent {
         )
     }
 
+    /**
+     *
+     * @param rowData
+     * @param selectionID
+     * @param rowID
+     * @returns {XML}
+     * @private
+     **/
     _renderRow = (rowData, selectionID, rowID) => {
         //item 布局
         if (rowData === '0') {
@@ -1316,17 +1329,20 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     </View>
                     <View style={styles.separatedLine}/>
                     <View style={{flexDirection: 'row', height: Pixel.getPixel(105)}}>
-                        <View style={{flex:1,backgroundColor: '#fff',justifyContent:'center'}}>
+                        <View style={{flex: 1, backgroundColor: '#fff', justifyContent: 'center'}}>
                             <Image style={styles.image} source={imageUrl.length
-                            ? {uri: imageUrl[0].icon_url} :
-                            require('../../../images/carSourceImages/car_null_img.png')}/>
+                                ? {uri: imageUrl[0].icon_url} :
+                                require('../../../images/carSourceImages/car_null_img.png')}/>
                         </View>
-                        <View style={{flex:2,backgroundColor: '#fff',justifyContent:'center',
-                        marginRight:Pixel.getPixel(15),paddingLeft:Pixel.getPixel(10)}}>
+                        <View style={{
+                            flex: 2, backgroundColor: '#fff', justifyContent: 'center',
+                            marginRight: Pixel.getPixel(15), paddingLeft: Pixel.getPixel(10)
+                        }}>
                             <Text style={{width: width - Pixel.getPixel(15 + 120 + 10 + 15)}}
                                   numberOfLines={1}>{this.orderDetail.orders_item_data[0]
                                 .car_data.model_name}</Text>
-                            <View style={{marginTop: Pixel.getPixel(10),flexDirection:'row',
+                            <View style={{
+                                marginTop: Pixel.getPixel(10), flexDirection: 'row',
                             }}>
                                 <Text style={{
                                     fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
@@ -1337,7 +1353,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                     color: '#000'
                                 }}>{mileage}万</Text>
                             </View>
-                            <View style={{marginTop: Pixel.getPixel(5),flexDirection:'row',
+                            <View style={{
+                                marginTop: Pixel.getPixel(5), flexDirection: 'row',
                             }}>
                                 <Text style={{
                                     fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
@@ -1349,16 +1366,17 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                 }}>{initRegDate}</Text>
                             </View>
                             {this.orderState !== 0 ?
-                                <View style={{marginTop: Pixel.getPixel(5),flexDirection:'row',
-                            }}>
+                                <View style={{
+                                    marginTop: Pixel.getPixel(5), flexDirection: 'row',
+                                }}>
                                     <Text style={{
-                                    fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                                    color: fontAndColor.COLORA1
-                                }}>成交价：</Text>
+                                        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                        color: fontAndColor.COLORA1
+                                    }}>成交价：</Text>
                                     <Text style={{
-                                    fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                                    color: '#000'
-                                }}>{this.orderDetail.transaction_amount}元</Text>
+                                        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                        color: '#000'
+                                    }}>{this.orderDetail.transaction_amount}元</Text>
                                 </View>
                                 : <View/>}
                         </View>
