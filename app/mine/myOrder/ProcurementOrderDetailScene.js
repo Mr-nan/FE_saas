@@ -44,6 +44,11 @@ const Pixel = new PixelUtil();
 
 export default class ProcurementOrderDetailScene extends BaseComponent {
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     constructor(props) {
         super(props);
 
@@ -78,6 +83,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         }
     }
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     componentDidMount() {
         BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
         InteractionManager.runAfterInteractions(() => {
@@ -86,6 +96,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         });
     }
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     initFinish = () => {
         /*        this.setState({
          dataSource: this.state.dataSource.cloneWithRows(['', '', '']),
@@ -94,6 +109,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         this.loadData();
     };
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     dateReversal = (time) => {
         const date = new Date();
         date.setTime(time);
@@ -553,6 +573,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 break;
             case 1:
                 let applyAmount = this.applyLoanAmount === '请输入申请贷款金额' ? 0 : this.applyLoanAmount;
+                let obdAmount = this.financeInfo.obd_mny ? 0 : this.financeInfo.obd_mny;
+                let feeAmount = this.financeInfo.fee_mny ? 0 : this.financeInfo.fee_mny;
+                //console.log('this.financeInfo==='+this.financeInfo.obd_mny);
+                //console.log('obdAmount==='+obdAmount,'   feeAmount==='+feeAmount);
+                //console.log('121d1k1lk2d1.d.1==='+parseFloat(this.orderDetail.balance_amount - applyAmount + obdAmount + feeAmount).toFixed(2));
                 return (
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
@@ -572,7 +597,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                     params: {
                                         payAmount: this.orderState === 1 ?
                                             this.orderDetail.deposit_amount :
-                                            parseFloat(this.orderDetail.balance_amount - applyAmount).toFixed(2),
+                                            parseFloat(this.orderDetail.balance_amount - applyAmount + obdAmount + feeAmount).toFixed(2),
                                         orderId: this.props.orderId,
                                         orderNo: this.orderDetail.order_no,
                                         payType: this.orderState,
@@ -1188,6 +1213,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         }
     };
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     loadData = () => {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
@@ -1255,6 +1285,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         });
     };
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     updateLoanAmount = (newAmount) => {
         //this.props.showModal(true);
         this.applyLoanAmount = newAmount;
@@ -1266,10 +1301,16 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
      *
      **/
     refreshLoanInfo = (financeInfo) => {
+        //console.log('new.financeInfo==='+financeInfo.obd_mny);
         this.financeInfo = financeInfo;
     };
 
     // 下拉刷新数据
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     refreshingData = () => {
         //this.orderListData = [];
         this.setState({isRefreshing: true});
@@ -1460,7 +1501,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     loanCode={this.orderDetail.finance_no}
                     navigator={this.props.navigator}
                     updateLoanAmount={this.updateLoanAmount}
-                    //refreshLoanInfo={this.refreshLoanInfo}
+                    refreshLoanInfo={this.refreshLoanInfo}
                     applyLoanAmount={this.applyLoanAmount}
                     orderId={this.orderDetail.id}
                     orderNo={this.orderDetail.order_no}

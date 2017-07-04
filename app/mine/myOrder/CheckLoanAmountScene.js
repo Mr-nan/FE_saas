@@ -74,23 +74,37 @@ export default class CheckLoanAmountScene extends BaseComponent {
          });*/
     }
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     isNumberByHundred = (number) => {
         let re = /^[0-9]*[0-9]$/i;
-        if (re.test(number) && number % 100 === 0 && number !== 0) {
+        if (re.test(number) && number % 100 == 0  && number != 0) {
             return true;
         } else {
             return false;
         }
     };
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     renderRihtFootView = () => {
         return (
             <TouchableOpacity
                 onPress={() => {
                     if (this.isNumberByHundred(this.number)) {
-                        this.props.updateAmount(this.number);
-                        this.checkPrice(this.number);
-                        this.backPage();
+                        if (this.number >= this.props.maxLoanmny) {
+                            this.props.showToast("不能超过最大贷款额度");
+                        } else {
+                            this.props.updateAmount(this.number);
+                            this.checkPrice(this.number);
+                            this.backPage();
+                        }
                     } else if (this.number == 0) {
                         this.props.showToast("金额不能为零");
                     } else {
@@ -104,7 +118,13 @@ export default class CheckLoanAmountScene extends BaseComponent {
         )
     }
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     checkPrice = (price) => {
+        this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
