@@ -1560,9 +1560,10 @@ export default class SalesOrderDetailScene extends BaseComponent {
             return (
                 <TouchableOpacity
                     style={styles.itemType10}
+                    activeOpacity={0.9}
                     onPress={() => {
                         // 跳转金融页面  还款详情
-                        if (pledgeType == 2 && paymentNumber != 0) {
+                        /*if (pledgeType == 2 && paymentNumber != 0) {
                             this.toNextPage({
                                 name: 'RepaymentInfoScene',
                                 component: RepaymentInfoScene,
@@ -1575,7 +1576,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                             });
                         } else {
                             this.props.showToast('车辆质押状态错误');
-                        }
+                        }*/
                     }}>
                     <View style={{alignItems: 'center', flexDirection: 'row', height: Pixel.getPixel(44)}}>
                         <Text style={{
@@ -1589,8 +1590,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color: fontAndColor.COLORA1
                         }}>{this.orderDetail.orders_item_data[0].pledge_sub_payment_number ? this.orderDetail.orders_item_data[0].pledge_sub_payment_number : '未生成还款单号'}</Text>
-                        <Image source={require('../../../images/mainImage/celljiantou.png')}
-                               style={{marginRight: Pixel.getPixel(15)}}/>
+                        {/*<Image source={require('../../../images/mainImage/celljiantou.png')}
+                               style={{marginRight: Pixel.getPixel(15)}}/>*/}
                     </View>
                 </TouchableOpacity>
             )
