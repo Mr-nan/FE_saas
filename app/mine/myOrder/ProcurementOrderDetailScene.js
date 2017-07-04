@@ -573,8 +573,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 break;
             case 1:
                 let applyAmount = this.applyLoanAmount === '请输入申请贷款金额' ? 0 : this.applyLoanAmount;
-                let obdAmount = this.financeInfo.obd_mny ? 0 : this.financeInfo.obd_mny;
-                let feeAmount = this.financeInfo.fee_mny ? 0 : this.financeInfo.fee_mny;
+                //let obdAmount = this.financeInfo.obd_mny ? this.financeInfo.obd_mny : 0;
+                //let feeAmount = this.financeInfo.fee_mny ? this.financeInfo.fee_mny : 0;
                 //console.log('this.financeInfo==='+this.financeInfo.obd_mny);
                 //console.log('obdAmount==='+obdAmount,'   feeAmount==='+feeAmount);
                 //console.log('121d1k1lk2d1.d.1==='+parseFloat(this.orderDetail.balance_amount - applyAmount + obdAmount + feeAmount).toFixed(2));
@@ -591,25 +591,31 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
-                                this.toNextPage({
-                                    name: 'CheckStand',
-                                    component: CheckStand,
-                                    params: {
-                                        payAmount: this.orderState === 1 ?
-                                            this.orderDetail.deposit_amount :
-                                            parseFloat(this.orderDetail.balance_amount - applyAmount + obdAmount + feeAmount).toFixed(2),
-                                        orderId: this.props.orderId,
-                                        orderNo: this.orderDetail.order_no,
-                                        payType: this.orderState,
-                                        sellerId: this.orderDetail.seller_id,
-                                        carId: this.orderDetail.orders_item_data[0].car_id,
-                                        pledgeType: this.orderDetail.orders_item_data[0].car_finance_data.pledge_type,
-                                        pledgeStatus: this.orderDetail.orders_item_data[0].car_finance_data.pledge_status,
-                                        applyLoanAmount: this.applyLoanAmount,
-                                        financeNo: this.orderDetail.finance_no,
-                                        callBack: this.payCallBack
-                                    }
-                                });
+                                if (this.applyLoanAmount === '请输入申请贷款金额') {
+                                    this.props.showToast('请输入申请贷款金额');
+                                } else {
+                                    this.toNextPage({
+                                        name: 'CheckStand',
+                                        component: CheckStand,
+                                        params: {
+                                            payAmount: this.orderState === 1 ?
+                                                this.orderDetail.deposit_amount :
+                                                parseFloat(this.orderDetail.balance_amount - applyAmount +
+                                                    this.financeInfo.obd_mny +
+                                                    this.financeInfo.fee_mny).toFixed(2),
+                                            orderId: this.props.orderId,
+                                            orderNo: this.orderDetail.order_no,
+                                            payType: this.orderState,
+                                            sellerId: this.orderDetail.seller_id,
+                                            carId: this.orderDetail.orders_item_data[0].car_id,
+                                            pledgeType: this.orderDetail.orders_item_data[0].car_finance_data.pledge_type,
+                                            pledgeStatus: this.orderDetail.orders_item_data[0].car_finance_data.pledge_status,
+                                            applyLoanAmount: this.applyLoanAmount,
+                                            financeNo: this.orderDetail.finance_no,
+                                            callBack: this.payCallBack
+                                        }
+                                    });
+                                }
                             }}>
                             <View style={styles.buttonConfirm}>
                                 <Text allowFontScaling={false} style={{color: '#ffffff'}}>支付</Text>
