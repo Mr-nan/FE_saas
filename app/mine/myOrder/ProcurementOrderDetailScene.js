@@ -786,8 +786,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     </View>
                 )
                 break;
-/*            case 11:
-                let applyAmount = this.applyLoanAmount === '请输入申请贷款金额' ? 0 : this.applyLoanAmount;
+            case 11:
                 return (
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
@@ -801,41 +800,31 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
-                                this.toNextPage({
-                                    name: 'CheckStand',
-                                    component: CheckStand,
-                                    params: {
-                                        payAmount: this.orderState === 1 ?
-                                            this.orderDetail.deposit_amount :
-                                            parseFloat(this.orderDetail.balance_amount - applyAmount).toFixed(2),
-                                        orderId: this.props.orderId,
-                                        orderNo: this.orderDetail.order_no,
-                                        payType: this.orderState,
-                                        sellerId: this.orderDetail.seller_id,
-                                        carId: this.orderDetail.orders_item_data[0].car_id,
-                                        pledgeType: this.orderDetail.orders_item_data[0].car_finance_data.pledge_type,
-                                        pledgeStatus: this.orderDetail.orders_item_data[0].car_finance_data.pledge_status,
-                                        applyLoanAmount: this.applyLoanAmount,
-                                        financeNo: this.orderDetail.finance_no,
-                                        callBack: this.payCallBack
-                                    }
-                                });
+                                if (this.orderState == 3) {
+                                    this.refs.chooseModal.changeShowType(true, '取消', '确定', '确定后卖家可提现全款。',
+                                        this.confirmCar);
+                                } else if (this.orderState == 7) {
+                                    this.refs.chooseModal.changeShowType(true, '取消', '确定', '确定后安排放款，放款完成后卖家可提现全款。',
+                                        this.loanConfirmCar);
+                                }
+                                //this.props.showModal(true);
+                                //this.confirmCar();
                             }}>
                             <View style={styles.buttonConfirm}>
-                                <Text allowFontScaling={false} style={{color: '#ffffff'}}>支付</Text>
+                                <Text allowFontScaling={false} style={{color: '#ffffff'}}>确认验收</Text>
                             </View>
                         </TouchableOpacity>
-                        <ChooseModal ref='chooseModal' title='提示'
+                        <ChooseModal ref='chooseModal' title='注意'
                                      negativeButtonStyle={styles.negativeButtonStyle}
                                      negativeTextStyle={styles.negativeTextStyle} negativeText='取消'
                                      positiveButtonStyle={styles.positiveButtonStyle}
                                      positiveTextStyle={styles.positiveTextStyle} positiveText='确定'
                                      buttonsMargin={Pixel.getPixel(20)}
-                                     positiveOperation={this.cancelOrder}
+                                     positiveOperation={this.confirmCar}
                                      content=''/>
                     </View>
                 )
-                break;*/
+                break;
             default:
                 return null;
                 break;
@@ -1052,7 +1041,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 if (cancelStatus === 0) {
                     this.orderState = 5;
                     this.topState = -1;
-                    this.bottomState = 10;
+                    this.bottomState = 0;
                 } else if (cancelStatus === 1) {
                     this.orderState = 5;
                     this.topState = -1;
@@ -1138,7 +1127,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 if (cancelStatus === 0) {
                     this.orderState = 7;
                     this.topState = -1;
-                    this.bottomState = 2;
+                    this.bottomState = 11;
                 } else if (cancelStatus === 1) {
                     this.orderState = 7;
                     this.topState = -1;
