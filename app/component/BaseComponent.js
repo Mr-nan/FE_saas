@@ -31,7 +31,8 @@ export default class BaseComponent extends Component {
     }
 
     componentDidMount() {
-        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        // InteractionManager.setDeadline(500);
+        BackAndroid.addEventListener('hardwareB、ackPress', this.handleBack);
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: 'loading'});
             this.initFinish();

@@ -18,12 +18,24 @@ import * as fontAndColor from '../../../constant/fontAndColor';
 
 export default class StepNode extends PureComponent {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            item: this.props.item
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            item: nextProps.item
+        });
+    }
+
     render() {
-        let nodeState = this.props.item.nodeState;
-        let isLast = this.props.item.isLast;
-        let isFirst = this.props.item.isFirst;
-        let title = this.props.item.title;
-        //let item = this.props.item;
+        let nodeState = this.state.item.nodeState;
+        let isLast = this.state.item.isLast;
+        let isFirst = this.state.item.isFirst;
+        let title = this.state.item.title;
         if (nodeState === 0) {
             return (
                 <View style={styles.container}>

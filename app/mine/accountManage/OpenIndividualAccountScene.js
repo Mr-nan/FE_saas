@@ -180,7 +180,7 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
         };
         request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
             .then((response) => {
-                    this.changeIndividual(name, number, phone,base_id,response.mjson.data.bank_card_no)
+                    this.changeIndividual(name, number, phone,base_id,response.mjson.data.account.bank_card_no)
                 },
                 (error) => {
                     this.props.showToast('用户信息查询失败');

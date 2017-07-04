@@ -6,11 +6,12 @@ import {
     Dimensions,
     StyleSheet,
     View,
-    StatusBar,
     Modal,
-    Image,
+    Linking,
     Text,
-    TouchableOpacity
+    TouchableOpacity,
+    Platform,
+    NativeModules
 } from 'react-native';
 import PixelUtil from "../../../utils/PixelUtil";
 let Pixel = new PixelUtil();
@@ -23,15 +24,24 @@ export default class MakePhoneModal extends Component {
         // 初始状态
         this.state = {
             isShow: false,
+            callData: {}
         };
     }
 
-    changeShowType = (value) => {
+    changeShowType = (value, callData) => {
         this.setState({
-            isShow: value
+            isShow: value,
+            callData: callData
         });
     }
 
+    callClick = (phoneNumer) => {
+        if (Platform.OS === 'android') {
+            NativeModules.VinScan.callPhone(phoneNumer);
+        } else {
+            Linking.openURL('tel:' + phoneNumer);
+        }
+    };
 
     render() {
         return (
@@ -66,22 +76,26 @@ export default class MakePhoneModal extends Component {
                         borderWidth: Pixel.getPixel(1),
                         borderColor: '#ffffff'
                     }}>
-                        <TouchableOpacity
-                            onPress={() => {
-
-                            }}>
-                            <View style={styles.buttonMerchant}>
-                                <Text style={{color: '#ffffff'}}>联系商家</Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => {
-
-                            }}>
-                            <View style={styles.buttonCustomerService}>
-                                <Text style={{color: fontAndColor.COLORB0}}>联系客服</Text>
-                            </View>
-                        </TouchableOpacity>
+                        {
+                            this.state.callData.shopsNumber !== '' && (<TouchableOpacity
+                                onPress={() => {
+                                    this.callClick(this.state.callData.shopsNumber);
+                                }}>
+                                <View style={styles.buttonMerchant}>
+                                    <Text style={{color: '#ffffff'}}>联系商家</Text>
+                                </View>
+                            </TouchableOpacity>)
+                        }
+                        {
+                            this.state.callData.phone !== '' && (<TouchableOpacity
+                                onPress={() => {
+                                    this.callClick(this.state.callData.phone);
+                                }}>
+                                <View style={styles.buttonCustomerService}>
+                                    <Text style={{color: fontAndColor.COLORB0}}>联系客服</Text>
+                                </View>
+                            </TouchableOpacity>)
+                        }
 
                     </View>
                 </TouchableOpacity>

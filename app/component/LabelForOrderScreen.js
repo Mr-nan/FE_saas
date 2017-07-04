@@ -33,6 +33,7 @@ export default class LabelForOrderScreen extends PureComponent {
         this.state = {
             enable: this.props.item.isSelected,
         };
+        console.log('this.props.item.title.length = ',this.props.item.title.length);
     }
 
     /*    componentWillReceiveProps(nextProps) {
@@ -47,10 +48,9 @@ export default class LabelForOrderScreen extends PureComponent {
             this.props.value = this.props.item.value;
             this.setState({enable: !en});
         }
-        this.props.callBack(this.props.index);
+        this.props.callBack(this.props.index, this.props.item.value);
         //this.props.select(this.props.key);
         //console.log(this.props.item.value);
-
     };
 
     render() {
@@ -61,7 +61,11 @@ export default class LabelForOrderScreen extends PureComponent {
                     this.setPressDown()
                 }}>
                 <Text
-                    style={[Styles.labelText, this.state.enable && Styles.disableText]}>{this.props.item.title}</Text>
+                    style={
+                        this.props.item.title.length > 7 ?
+                        [Styles.labelText1, this.state.enable && Styles.disableText] :
+                        [Styles.labelText, this.state.enable && Styles.disableText]
+                    }>{this.props.item.title}</Text>
             </TouchableOpacity>
 
         );
@@ -101,6 +105,10 @@ const Styles = {
     },
     labelText: {
         fontSize: Pixel.getPixel(14),
+        color: FontAndColor.COLORA2
+    },
+    labelText1: {
+        fontSize: Pixel.getPixel(10),
         color: FontAndColor.COLORA2
     },
     closeContainer: {
