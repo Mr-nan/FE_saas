@@ -128,7 +128,7 @@ export default class CheckStand extends BaseComponent {
                     };
                     let url = AppUrls.FINANCE;
                     request(url, 'post', maps).then((response) => {
-                        if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        if (response.mjson.code === 1) {
                             this.isShowFinancing = 1;
                             this.setState({
                                 isRefreshing: false,
