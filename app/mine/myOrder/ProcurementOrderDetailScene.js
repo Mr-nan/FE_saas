@@ -591,7 +591,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
-                                if (this.applyLoanAmount === '请输入申请贷款金额' && this.orderState == 7) {
+                                if (this.applyLoanAmount === '请输入申请贷款金额' && this.orderState == 6) {
                                     this.props.showToast('请输入申请贷款金额');
                                 } else {
                                     this.toNextPage({
