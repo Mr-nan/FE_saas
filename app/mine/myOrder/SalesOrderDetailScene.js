@@ -109,43 +109,48 @@ export default class SalesOrderDetailScene extends BaseComponent {
         this.loadData();
     };
 
+    /**
+     * 更新车辆定价
+     * @param newAmount
+     **/
     updateCarAmount = (newAmount) => {
         this.props.showModal(true);
         this.carAmount = newAmount;
     };
 
+    /**
+     * 补差价提示栏
+     * @param financeInfo
+     **/
     isShowFinance = (financeInfo) => {
-        if (this.orderDetail.orders_item_data[0].car_finance_data.pledge_type == 2 &&
-            this.orderDetail.orders_item_data[0].car_finance_data.pledge_status == 1) {
-            if (financeInfo.is_show_finance == 1) {
-                this.financeInfo = financeInfo;
-                this.mList = [];
-                if (this.orderDetail.orders_item_data[0].car_vin.length === 17) {
-                    this.mList = ['0', '1', '2', '3', '4', '5', '7', '9'];
-                } else {
-                    this.mList = ['0', '1', '2', '3', '4', '5', '6', '7', '9'];
-                }
-                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                this.setState({
-                    dataSource: ds.cloneWithRows(this.mList),
-                    //dataSource: this.state.dataSource.cloneWithRows(this.mList),
-                    isRefreshing: false,
-                    renderPlaceholderOnly: 'success'
-                });
+        if (financeInfo.is_show_finance == 1) {
+            this.financeInfo = financeInfo;
+            this.mList = [];
+            if (this.orderDetail.orders_item_data[0].car_vin.length === 17) {
+                this.mList = ['0', '1', '2', '3', '4', '5', '7', '9'];
             } else {
-                this.mList = [];
-                if (this.orderDetail.orders_item_data[0].car_vin.length === 17) {
-                    this.mList = ['0', '1', '2', '4', '5', '7', '9'];
-                } else {
-                    this.mList = ['0', '1', '2', '4', '5', '6', '7', '9'];
-                }
-                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                this.setState({
-                    dataSource: ds.cloneWithRows(this.mList),
-                    isRefreshing: false,
-                    renderPlaceholderOnly: 'success'
-                });
+                this.mList = ['0', '1', '2', '3', '4', '5', '6', '7', '9'];
             }
+            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+            this.setState({
+                dataSource: ds.cloneWithRows(this.mList),
+                //dataSource: this.state.dataSource.cloneWithRows(this.mList),
+                isRefreshing: false,
+                renderPlaceholderOnly: 'success'
+            });
+        } else {
+            this.mList = [];
+            if (this.orderDetail.orders_item_data[0].car_vin.length === 17) {
+                this.mList = ['0', '1', '2', '4', '5', '7', '9'];
+            } else {
+                this.mList = ['0', '1', '2', '4', '5', '6', '7', '9'];
+            }
+            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+            this.setState({
+                dataSource: ds.cloneWithRows(this.mList),
+                isRefreshing: false,
+                renderPlaceholderOnly: 'success'
+            });
         }
         this.props.showModal(false);
     };
@@ -1137,6 +1142,14 @@ export default class SalesOrderDetailScene extends BaseComponent {
         )
     }
 
+    /**
+     *
+     * @param rowData
+     * @param selectionID
+     * @param rowID
+     * @returns {XML}
+     * @private
+     **/
     _renderRow = (rowData, selectionID, rowID) => {
         //item 布局
         if (rowData === '0') {
@@ -1283,6 +1296,48 @@ export default class SalesOrderDetailScene extends BaseComponent {
             let mileage = this.orderDetail.orders_item_data[0].car_data.mileage;
             let initRegDate = initReg === 0 ? '暂无' : this.dateReversal(initReg + '000');
             let imageUrl = this.orderDetail.orders_item_data[0].car_data.imgs;
+            {/*return (*/
+            }
+            {/*<View style={styles.itemType3}>*/
+            }
+            {/*<View style={{*/
+            }
+            {/*height: Pixel.getPixel(40),*/
+            }
+            {/*marginLeft: Pixel.getPixel(15),*/
+            }
+            {/*justifyContent: 'center'*/
+            }
+            {/*}}>*/
+            }
+            {/*<Text style={styles.orderInfo}>订单号:{this.orderDetail.order_no}</Text>*/
+            }
+            //             <Text style={styles.orderInfo}>订单日期:{this.orderDetail.created_time}</Text>
+            //         </View>
+            //         <View style={styles.separatedLine}/>
+            //         <View style={{flexDirection: 'row', height: Pixel.getPixel(105), alignItems: 'center'}}>
+            //             <Image style={styles.image}
+            //                    source={imageUrl.length ? {uri: imageUrl[0].icon_url} : require('../../../images/carSourceImages/car_null_img.png')}/>
+            //             <View style={{marginLeft: Pixel.getPixel(10)}}>
+            //                 <Text style={{width: width - Pixel.getPixel(15 + 120 + 10 + 15)}}
+            //                       numberOfLines={1}>{this.orderDetail.orders_item_data[0].car_data.model_name}</Text>
+            //                 <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
+            //                     <Text style={styles.carDescribeTitle}>里程：</Text>
+            //                     <Text style={styles.carDescribe}>{mileage}万</Text>
+            //                 </View>
+            //                 <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
+            //                     <Text style={styles.carDescribeTitle}>上牌：</Text>
+            //                     <Text style={styles.carDescribe}>{initRegDate}</Text>
+            //                 </View>
+            //                 {this.orderState !== 0 ? <View
+            //                     style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
+            //                     <Text style={styles.carDescribeTitle}>成交价：</Text>
+            //                     <Text style={styles.carDescribe}>{this.orderDetail.transaction_amount}元</Text>
+            //                 </View> : null}
+            //             </View>
+            //         </View>
+            //     </View>
+            // )
             return (
                 <View style={styles.itemType3}>
                     <View style={{
@@ -1295,26 +1350,70 @@ export default class SalesOrderDetailScene extends BaseComponent {
                               style={styles.orderInfo}>订单日期:{this.orderDetail.created_time}</Text>
                     </View>
                     <View style={styles.separatedLine}/>
-                    <View style={{flexDirection: 'row', height: Pixel.getPixel(105), alignItems: 'center'}}>
-                        <Image style={styles.image}
-                               source={imageUrl.length ? {uri: imageUrl[0].icon_url} : require('../../../images/carSourceImages/car_null_img.png')}/>
-                        <View style={{marginLeft: Pixel.getPixel(10)}}>
-                            <Text allowFontScaling={false} style={{width: width - Pixel.getPixel(15 + 120 + 10 + 15)}}
-                                  numberOfLines={1}>{this.orderDetail.orders_item_data[0].car_data.model_name}</Text>
-                            <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
-                                <Text allowFontScaling={false} style={styles.carDescribeTitle}>里程：</Text>
-                                <Text allowFontScaling={false} style={styles.carDescribe}>{mileage}万</Text>
+                    <View style={{flexDirection: 'row', height: Pixel.getPixel(105)}}>
+                        <View style={{flex: 1, backgroundColor: '#fff', justifyContent: 'center'}}>
+                            <Image style={styles.image} source={imageUrl.length
+                                ? {uri: imageUrl[0].icon_url} :
+                                require('../../../images/carSourceImages/car_null_img.png')}/>
+                        </View>
+                        <View style={{
+                            flex: 2, backgroundColor: '#fff', justifyContent: 'center',
+                            marginRight: Pixel.getPixel(15), paddingLeft: Pixel.getPixel(10)
+                        }}>
+                            <Text allowFontScaling={false}
+                                  style={{width: width - Pixel.getPixel(15 + 120 + 10 + 15)}}
+                                  numberOfLines={1}>{this.orderDetail.orders_item_data[0]
+                                .car_data.model_name}</Text>
+                            <View style={{
+                                marginTop: Pixel.getPixel(10), flexDirection: 'row',
+                            }}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={{
+                                        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                        color: fontAndColor.COLORA1
+                                    }}>里程：</Text>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={{
+                                        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                        color: '#000'
+                                    }}>{mileage}万</Text>
                             </View>
-                            <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
-                                <Text allowFontScaling={false} style={styles.carDescribeTitle}>上牌：</Text>
-                                <Text allowFontScaling={false} style={styles.carDescribe}>{initRegDate}</Text>
+                            <View style={{
+                                marginTop: Pixel.getPixel(5), flexDirection: 'row',
+                            }}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={{
+                                        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                        color: fontAndColor.COLORA1
+                                    }}>上牌：</Text>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={{
+                                        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                        color: '#000'
+                                    }}>{initRegDate}</Text>
                             </View>
-                            {this.orderState !== 0 && this.orderState !== 1 ? <View
-                                style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
-                                <Text allowFontScaling={false} style={styles.carDescribeTitle}>成交价：</Text>
-                                <Text allowFontScaling={false}
-                                      style={styles.carDescribe}>{this.orderDetail.transaction_amount}元</Text>
-                            </View> : null}
+                            {this.orderState !== 0 && this.orderState !== 1 ?
+                                <View style={{
+                                    marginTop: Pixel.getPixel(5), flexDirection: 'row',
+                                }}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={{
+                                            fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                            color: fontAndColor.COLORA1
+                                        }}>成交价：</Text>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={{
+                                            fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                            color: '#000'
+                                        }}>{this.orderDetail.transaction_amount}元</Text>
+                                </View>
+                                : <View/>}
                         </View>
                     </View>
                 </View>
@@ -1497,22 +1596,23 @@ export default class SalesOrderDetailScene extends BaseComponent {
             return (
                 <TouchableOpacity
                     style={styles.itemType10}
+                    activeOpacity={0.9}
                     onPress={() => {
                         // 跳转金融页面  还款详情
-                        if (pledgeType == 2 && paymentNumber != 0) {
-                            this.toNextPage({
-                                name: 'RepaymentInfoScene',
-                                component: RepaymentInfoScene,
-                                params: {
-                                    loan_id: paymentId,
-                                    loan_number: paymentNumber,
-                                    type: pledgeType,
-                                    from: 'SingleRepaymentPage'
-                                }
-                            });
-                        } else {
-                            this.props.showToast('车辆质押状态错误');
-                        }
+                        /*if (pledgeType == 2 && paymentNumber != 0) {
+                         this.toNextPage({
+                         name: 'RepaymentInfoScene',
+                         component: RepaymentInfoScene,
+                         params: {
+                         loan_id: paymentId,
+                         loan_number: paymentNumber,
+                         type: pledgeType,
+                         from: 'SingleRepaymentPage'
+                         }
+                         });
+                         } else {
+                         this.props.showToast('车辆质押状态错误');
+                         }*/
                     }}>
                     <View style={{alignItems: 'center', flexDirection: 'row', height: Pixel.getPixel(44)}}>
                         <Text style={{
@@ -1526,8 +1626,8 @@ export default class SalesOrderDetailScene extends BaseComponent {
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color: fontAndColor.COLORA1
                         }}>{this.orderDetail.orders_item_data[0].pledge_sub_payment_number ? this.orderDetail.orders_item_data[0].pledge_sub_payment_number : '未生成还款单号'}</Text>
-                        <Image source={require('../../../images/mainImage/celljiantou.png')}
-                               style={{marginRight: Pixel.getPixel(15)}}/>
+                        {/*<Image source={require('../../../images/mainImage/celljiantou.png')}
+                         style={{marginRight: Pixel.getPixel(15)}}/>*/}
                     </View>
                 </TouchableOpacity>
             )

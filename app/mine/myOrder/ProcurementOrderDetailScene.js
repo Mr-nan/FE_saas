@@ -63,14 +63,14 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         this.contactData = {};
         this.leftTime = 0;
 
-/*        this.financeInfo = {
-            order_id: '',
+        /*        this.financeInfo = {
+         order_id: '',
 
-            finance_no: '',
-            finance_amount: '0.00',
-            finance_service_amount: "0.00",
-            finance_obd_amount: "0.00"
-        };*/
+         finance_no: '',
+         finance_amount: '0.00',
+         finance_service_amount: "0.00",
+         finance_obd_amount: "0.00"
+         };*/
         this.financeInfo = {};
 
         this.companyId = 0;
@@ -573,11 +573,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 break;
             case 1:
                 let applyAmount = this.applyLoanAmount === '请输入申请贷款金额' ? 0 : this.applyLoanAmount;
-                let obdAmount = this.financeInfo.obd_mny ? 0 : this.financeInfo.obd_mny;
-                let feeAmount = this.financeInfo.fee_mny ? 0 : this.financeInfo.fee_mny;
-                //console.log('this.financeInfo==='+this.financeInfo.obd_mny);
+                //let obdAmount = this.financeInfo.obd_mny ? this.financeInfo.obd_mny : 0;
+                //let feeAmount = this.financeInfo.fee_mny ? this.financeInfo.fee_mny : 0;
+                //console.log('this.balance_amount===' + this.orderDetail.balance_amount);
                 //console.log('obdAmount==='+obdAmount,'   feeAmount==='+feeAmount);
-                //console.log('121d1k1lk2d1.d.1==='+parseFloat(this.orderDetail.balance_amount - applyAmount + obdAmount + feeAmount).toFixed(2));
+                //console.log('121d1k1lk2d1.d.1===');
                 return (
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
@@ -591,25 +591,31 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
-                                this.toNextPage({
-                                    name: 'CheckStand',
-                                    component: CheckStand,
-                                    params: {
-                                        payAmount: this.orderState === 1 ?
-                                            this.orderDetail.deposit_amount :
-                                            parseFloat(this.orderDetail.balance_amount - applyAmount + obdAmount + feeAmount).toFixed(2),
-                                        orderId: this.props.orderId,
-                                        orderNo: this.orderDetail.order_no,
-                                        payType: this.orderState,
-                                        sellerId: this.orderDetail.seller_id,
-                                        carId: this.orderDetail.orders_item_data[0].car_id,
-                                        pledgeType: this.orderDetail.orders_item_data[0].car_finance_data.pledge_type,
-                                        pledgeStatus: this.orderDetail.orders_item_data[0].car_finance_data.pledge_status,
-                                        applyLoanAmount: this.applyLoanAmount,
-                                        financeNo: this.orderDetail.finance_no,
-                                        callBack: this.payCallBack
-                                    }
-                                });
+                                if (this.applyLoanAmount === '请输入申请贷款金额' && this.orderState == 6) {
+                                    this.props.showToast('请输入申请贷款金额');
+                                } else {
+                                    this.toNextPage({
+                                        name: 'CheckStand',
+                                        component: CheckStand,
+                                        params: {
+                                            payAmount: this.orderState === 1 ?
+                                                this.orderDetail.deposit_amount :
+                                                this.orderDetail.balance_amount - applyAmount +
+                                                (this.financeInfo.obd_mny ? this.financeInfo.obd_mny : 0) +
+                                                (this.financeInfo.fee_mny ? this.financeInfo.fee_mny : 0),
+                                            orderId: this.props.orderId,
+                                            orderNo: this.orderDetail.order_no,
+                                            payType: this.orderState,
+                                            sellerId: this.orderDetail.seller_id,
+                                            carId: this.orderDetail.orders_item_data[0].car_id,
+                                            pledgeType: this.orderDetail.orders_item_data[0].car_finance_data.pledge_type,
+                                            pledgeStatus: this.orderDetail.orders_item_data[0].car_finance_data.pledge_status,
+                                            applyLoanAmount: this.applyLoanAmount,
+                                            financeNo: this.orderDetail.finance_no,
+                                            callBack: this.payCallBack
+                                        }
+                                    });
+                                }
                             }}>
                             <View style={styles.buttonConfirm}>
                                 <Text allowFontScaling={false} style={{color: '#ffffff'}}>支付</Text>
@@ -771,7 +777,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 this.refs.cancelModal.changeShowType(true, '提示', '已申请订单融资请联系客服取消订单', '确定');
                             }}>
                             <View style={styles.buttonCancel}>
-                                <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>取消订单</Text>
                             </View>
                         </TouchableOpacity>
                         <ExplainModal ref='cancelModal' title='提示' buttonStyle={styles.expButton}
@@ -780,8 +786,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     </View>
                 )
                 break;
-/*            case 11:
-                let applyAmount = this.applyLoanAmount === '请输入申请贷款金额' ? 0 : this.applyLoanAmount;
+            case 11:
                 return (
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
@@ -795,41 +800,31 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
-                                this.toNextPage({
-                                    name: 'CheckStand',
-                                    component: CheckStand,
-                                    params: {
-                                        payAmount: this.orderState === 1 ?
-                                            this.orderDetail.deposit_amount :
-                                            parseFloat(this.orderDetail.balance_amount - applyAmount).toFixed(2),
-                                        orderId: this.props.orderId,
-                                        orderNo: this.orderDetail.order_no,
-                                        payType: this.orderState,
-                                        sellerId: this.orderDetail.seller_id,
-                                        carId: this.orderDetail.orders_item_data[0].car_id,
-                                        pledgeType: this.orderDetail.orders_item_data[0].car_finance_data.pledge_type,
-                                        pledgeStatus: this.orderDetail.orders_item_data[0].car_finance_data.pledge_status,
-                                        applyLoanAmount: this.applyLoanAmount,
-                                        financeNo: this.orderDetail.finance_no,
-                                        callBack: this.payCallBack
-                                    }
-                                });
+                                if (this.orderState == 3) {
+                                    this.refs.chooseModal.changeShowType(true, '取消', '确定', '确定后卖家可提现全款。',
+                                        this.confirmCar);
+                                } else if (this.orderState == 7) {
+                                    this.refs.chooseModal.changeShowType(true, '取消', '确定', '确定后安排放款，放款完成后卖家可提现全款。',
+                                        this.loanConfirmCar);
+                                }
+                                //this.props.showModal(true);
+                                //this.confirmCar();
                             }}>
                             <View style={styles.buttonConfirm}>
-                                <Text allowFontScaling={false} style={{color: '#ffffff'}}>支付</Text>
+                                <Text allowFontScaling={false} style={{color: '#ffffff'}}>确认验收</Text>
                             </View>
                         </TouchableOpacity>
-                        <ChooseModal ref='chooseModal' title='提示'
+                        <ChooseModal ref='chooseModal' title='注意'
                                      negativeButtonStyle={styles.negativeButtonStyle}
                                      negativeTextStyle={styles.negativeTextStyle} negativeText='取消'
                                      positiveButtonStyle={styles.positiveButtonStyle}
                                      positiveTextStyle={styles.positiveTextStyle} positiveText='确定'
                                      buttonsMargin={Pixel.getPixel(20)}
-                                     positiveOperation={this.cancelOrder}
+                                     positiveOperation={this.confirmCar}
                                      content=''/>
                     </View>
                 )
-                break;*/
+                break;
             default:
                 return null;
                 break;
@@ -1046,7 +1041,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 if (cancelStatus === 0) {
                     this.orderState = 5;
                     this.topState = -1;
-                    this.bottomState = 10;
+                    this.bottomState = 0;
                 } else if (cancelStatus === 1) {
                     this.orderState = 5;
                     this.topState = -1;
@@ -1132,7 +1127,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 if (cancelStatus === 0) {
                     this.orderState = 7;
                     this.topState = -1;
-                    this.bottomState = 2;
+                    this.bottomState = 11;
                 } else if (cancelStatus === 1) {
                     this.orderState = 7;
                     this.topState = -1;
@@ -1168,48 +1163,48 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 }
                 break;
             /*case 19:
-                if (cancelStatus === 0) {
-                    this.orderState = 8;
-                    this.topState = -1;
-                    if (status === 6) {
-                        this.bottomState = 1;
-                    } else {
-                        this.bottomState = 1;
-                    }
-                } else if (cancelStatus === 1) {
-                    this.orderState = 8;
-                    this.topState = -1;
-                    this.bottomState = 3;
-                } else if (cancelStatus === 2) {
-                    this.orderState = 8;
-                    this.topState = -1;
-                    if (this.orderDetail.cancel_side == 3) {
-                        this.bottomState = 9;
-                    } else if (this.orderDetail.cancel_side == 2) {
-                        this.bottomState = 5;
-                    } else {
-                        if (this.orderDetail.cancel_is_agree == 2) {
-                            this.bottomState = 6;
-                        } else {
-                            this.bottomState = 5;
-                        }
-                    }
-                } else if (cancelStatus === 3) {
-                    this.orderState = 8;
-                    this.topState = -1;
-                    if (this.orderDetail.cancel_side == 3) {
-                        this.bottomState = 9;
-                    } else if (this.orderDetail.cancel_side == 2) {
-                        this.bottomState = 5;
-                    } else {
-                        if (this.orderDetail.cancel_is_agree == 2) {
-                            this.bottomState = 6;
-                        } else {
-                            this.bottomState = 5;
-                        }
-                    }
-                }
-                break;*/
+             if (cancelStatus === 0) {
+             this.orderState = 8;
+             this.topState = -1;
+             if (status === 6) {
+             this.bottomState = 1;
+             } else {
+             this.bottomState = 1;
+             }
+             } else if (cancelStatus === 1) {
+             this.orderState = 8;
+             this.topState = -1;
+             this.bottomState = 3;
+             } else if (cancelStatus === 2) {
+             this.orderState = 8;
+             this.topState = -1;
+             if (this.orderDetail.cancel_side == 3) {
+             this.bottomState = 9;
+             } else if (this.orderDetail.cancel_side == 2) {
+             this.bottomState = 5;
+             } else {
+             if (this.orderDetail.cancel_is_agree == 2) {
+             this.bottomState = 6;
+             } else {
+             this.bottomState = 5;
+             }
+             }
+             } else if (cancelStatus === 3) {
+             this.orderState = 8;
+             this.topState = -1;
+             if (this.orderDetail.cancel_side == 3) {
+             this.bottomState = 9;
+             } else if (this.orderDetail.cancel_side == 2) {
+             this.bottomState = 5;
+             } else {
+             if (this.orderDetail.cancel_is_agree == 2) {
+             this.bottomState = 6;
+             } else {
+             this.bottomState = 5;
+             }
+             }
+             }
+             break;*/
         }
     };
 
