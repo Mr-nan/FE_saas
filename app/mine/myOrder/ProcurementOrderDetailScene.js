@@ -63,14 +63,14 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         this.contactData = {};
         this.leftTime = 0;
 
-/*        this.financeInfo = {
-            order_id: '',
+        /*        this.financeInfo = {
+         order_id: '',
 
-            finance_no: '',
-            finance_amount: '0.00',
-            finance_service_amount: "0.00",
-            finance_obd_amount: "0.00"
-        };*/
+         finance_no: '',
+         finance_amount: '0.00',
+         finance_service_amount: "0.00",
+         finance_obd_amount: "0.00"
+         };*/
         this.financeInfo = {};
 
         this.companyId = 0;
@@ -575,9 +575,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 let applyAmount = this.applyLoanAmount === '请输入申请贷款金额' ? 0 : this.applyLoanAmount;
                 //let obdAmount = this.financeInfo.obd_mny ? this.financeInfo.obd_mny : 0;
                 //let feeAmount = this.financeInfo.fee_mny ? this.financeInfo.fee_mny : 0;
-                //console.log('this.financeInfo==='+this.financeInfo.obd_mny);
+                //console.log('this.balance_amount===' + this.orderDetail.balance_amount);
                 //console.log('obdAmount==='+obdAmount,'   feeAmount==='+feeAmount);
-                //console.log('121d1k1lk2d1.d.1==='+parseFloat(this.orderDetail.balance_amount - applyAmount + obdAmount + feeAmount).toFixed(2));
+                //console.log('121d1k1lk2d1.d.1===');
                 return (
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
@@ -591,7 +591,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
-                                if (this.applyLoanAmount === '请输入申请贷款金额') {
+                                if (this.applyLoanAmount === '请输入申请贷款金额' && this.orderState == 7) {
                                     this.props.showToast('请输入申请贷款金额');
                                 } else {
                                     this.toNextPage({
@@ -600,9 +600,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                         params: {
                                             payAmount: this.orderState === 1 ?
                                                 this.orderDetail.deposit_amount :
-                                                parseFloat(this.orderDetail.balance_amount - applyAmount +
-                                                    this.financeInfo.obd_mny +
-                                                    this.financeInfo.fee_mny).toFixed(2),
+                                                this.orderDetail.balance_amount - applyAmount +
+                                                (this.financeInfo.obd_mny ? this.financeInfo.obd_mny : 0) +
+                                                (this.financeInfo.fee_mny ? this.financeInfo.fee_mny : 0),
                                             orderId: this.props.orderId,
                                             orderNo: this.orderDetail.order_no,
                                             payType: this.orderState,
@@ -777,7 +777,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 this.refs.cancelModal.changeShowType(true, '提示', '已申请订单融资请联系客服取消订单', '确定');
                             }}>
                             <View style={styles.buttonCancel}>
-                                <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>取消订单</Text>
                             </View>
                         </TouchableOpacity>
                         <ExplainModal ref='cancelModal' title='提示' buttonStyle={styles.expButton}
@@ -1163,48 +1163,48 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 }
                 break;
             /*case 19:
-                if (cancelStatus === 0) {
-                    this.orderState = 8;
-                    this.topState = -1;
-                    if (status === 6) {
-                        this.bottomState = 1;
-                    } else {
-                        this.bottomState = 1;
-                    }
-                } else if (cancelStatus === 1) {
-                    this.orderState = 8;
-                    this.topState = -1;
-                    this.bottomState = 3;
-                } else if (cancelStatus === 2) {
-                    this.orderState = 8;
-                    this.topState = -1;
-                    if (this.orderDetail.cancel_side == 3) {
-                        this.bottomState = 9;
-                    } else if (this.orderDetail.cancel_side == 2) {
-                        this.bottomState = 5;
-                    } else {
-                        if (this.orderDetail.cancel_is_agree == 2) {
-                            this.bottomState = 6;
-                        } else {
-                            this.bottomState = 5;
-                        }
-                    }
-                } else if (cancelStatus === 3) {
-                    this.orderState = 8;
-                    this.topState = -1;
-                    if (this.orderDetail.cancel_side == 3) {
-                        this.bottomState = 9;
-                    } else if (this.orderDetail.cancel_side == 2) {
-                        this.bottomState = 5;
-                    } else {
-                        if (this.orderDetail.cancel_is_agree == 2) {
-                            this.bottomState = 6;
-                        } else {
-                            this.bottomState = 5;
-                        }
-                    }
-                }
-                break;*/
+             if (cancelStatus === 0) {
+             this.orderState = 8;
+             this.topState = -1;
+             if (status === 6) {
+             this.bottomState = 1;
+             } else {
+             this.bottomState = 1;
+             }
+             } else if (cancelStatus === 1) {
+             this.orderState = 8;
+             this.topState = -1;
+             this.bottomState = 3;
+             } else if (cancelStatus === 2) {
+             this.orderState = 8;
+             this.topState = -1;
+             if (this.orderDetail.cancel_side == 3) {
+             this.bottomState = 9;
+             } else if (this.orderDetail.cancel_side == 2) {
+             this.bottomState = 5;
+             } else {
+             if (this.orderDetail.cancel_is_agree == 2) {
+             this.bottomState = 6;
+             } else {
+             this.bottomState = 5;
+             }
+             }
+             } else if (cancelStatus === 3) {
+             this.orderState = 8;
+             this.topState = -1;
+             if (this.orderDetail.cancel_side == 3) {
+             this.bottomState = 9;
+             } else if (this.orderDetail.cancel_side == 2) {
+             this.bottomState = 5;
+             } else {
+             if (this.orderDetail.cancel_is_agree == 2) {
+             this.bottomState = 6;
+             } else {
+             this.bottomState = 5;
+             }
+             }
+             }
+             break;*/
         }
     };
 
