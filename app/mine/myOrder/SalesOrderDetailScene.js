@@ -1361,7 +1361,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                             marginRight: Pixel.getPixel(15), paddingLeft: Pixel.getPixel(10)
                         }}>
                             <Text allowFontScaling={false}
-                                style={{width: width - Pixel.getPixel(15 + 120 + 10 + 15)}}
+                                  style={{width: width - Pixel.getPixel(15 + 120 + 10 + 15)}}
                                   numberOfLines={1}>{this.orderDetail.orders_item_data[0]
                                 .car_data.model_name}</Text>
                             <View style={{
@@ -1370,15 +1370,15 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                 <Text
                                     allowFontScaling={false}
                                     style={{
-                                    fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                                    color: fontAndColor.COLORA1
-                                }}>里程：</Text>
+                                        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                        color: fontAndColor.COLORA1
+                                    }}>里程：</Text>
                                 <Text
                                     allowFontScaling={false}
                                     style={{
-                                    fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                                    color: '#000'
-                                }}>{mileage}万</Text>
+                                        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                        color: '#000'
+                                    }}>{mileage}万</Text>
                             </View>
                             <View style={{
                                 marginTop: Pixel.getPixel(5), flexDirection: 'row',
@@ -1386,15 +1386,15 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                 <Text
                                     allowFontScaling={false}
                                     style={{
-                                    fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                                    color: fontAndColor.COLORA1
-                                }}>上牌：</Text>
+                                        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                        color: fontAndColor.COLORA1
+                                    }}>上牌：</Text>
                                 <Text
                                     allowFontScaling={false}
                                     style={{
-                                    fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                                    color: '#000'
-                                }}>{initRegDate}</Text>
+                                        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                        color: '#000'
+                                    }}>{initRegDate}</Text>
                             </View>
                             {this.orderState !== 0 && this.orderState !== 1 ?
                                 <View style={{
@@ -1403,15 +1403,15 @@ export default class SalesOrderDetailScene extends BaseComponent {
                                     <Text
                                         allowFontScaling={false}
                                         style={{
-                                        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                                        color: fontAndColor.COLORA1
-                                    }}>成交价：</Text>
+                                            fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                            color: fontAndColor.COLORA1
+                                        }}>成交价：</Text>
                                     <Text
                                         allowFontScaling={false}
                                         style={{
-                                        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                                        color: '#000'
-                                    }}>{this.orderDetail.transaction_amount}元</Text>
+                                            fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                            color: '#000'
+                                        }}>{this.orderDetail.transaction_amount}元</Text>
                                 </View>
                                 : <View/>}
                         </View>
@@ -1600,19 +1600,19 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     onPress={() => {
                         // 跳转金融页面  还款详情
                         /*if (pledgeType == 2 && paymentNumber != 0) {
-                            this.toNextPage({
-                                name: 'RepaymentInfoScene',
-                                component: RepaymentInfoScene,
-                                params: {
-                                    loan_id: paymentId,
-                                    loan_number: paymentNumber,
-                                    type: pledgeType,
-                                    from: 'SingleRepaymentPage'
-                                }
-                            });
-                        } else {
-                            this.props.showToast('车辆质押状态错误');
-                        }*/
+                         this.toNextPage({
+                         name: 'RepaymentInfoScene',
+                         component: RepaymentInfoScene,
+                         params: {
+                         loan_id: paymentId,
+                         loan_number: paymentNumber,
+                         type: pledgeType,
+                         from: 'SingleRepaymentPage'
+                         }
+                         });
+                         } else {
+                         this.props.showToast('车辆质押状态错误');
+                         }*/
                     }}>
                     <View style={{alignItems: 'center', flexDirection: 'row', height: Pixel.getPixel(44)}}>
                         <Text style={{
@@ -1627,7 +1627,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                             color: fontAndColor.COLORA1
                         }}>{this.orderDetail.orders_item_data[0].pledge_sub_payment_number ? this.orderDetail.orders_item_data[0].pledge_sub_payment_number : '未生成还款单号'}</Text>
                         {/*<Image source={require('../../../images/mainImage/celljiantou.png')}
-                               style={{marginRight: Pixel.getPixel(15)}}/>*/}
+                         style={{marginRight: Pixel.getPixel(15)}}/>*/}
                     </View>
                 </TouchableOpacity>
             )
