@@ -105,7 +105,7 @@ export default class DDDetailScene extends BaseComponent {
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
                     let tempjson = response.mjson.data;
-                    ControlState = this.confimOrderState(Number.parseInt(tempjson.payment_status), Number.parseInt(tempjson.aduitstatus))
+                    ControlState = this.confimOrderState(Number.parseInt(tempjson.payment_status), Number.parseInt(tempjson.aduitstatus), Number.parseInt(tempjson.status))
                     this.getCarListInfo(tempjson);
                 },
                 (error) => {
@@ -290,16 +290,18 @@ export default class DDDetailScene extends BaseComponent {
      * 根据后台返回的状态，判断下面按钮的显示。。
      * confimOrderState
      **/
-    confimOrderState = (state, isComplete) => {
+    confimOrderState = (state, isComplete,hetong) => {
         let NameBlobs = [];
 
         if (state == 30 || state == 32 || state == 50|| state == 52) {
             NameBlobs = ['取消借款']
         } else if (state == 42) {
-            if (isComplete == 2){
-                NameBlobs = ['查看合同']
-            }else {
+            if (hetong == 2){
                 NameBlobs = ['取消借款', '签署合同']
+            }else  if (hetong == 1){
+                NameBlobs = ['取消借款']
+            }else {
+                    NameBlobs = ['查看合同']
             }
 
         }
