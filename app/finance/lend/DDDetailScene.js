@@ -177,7 +177,7 @@ export default class DDDetailScene extends BaseComponent {
 
         let maps = {
             api: apis.CANCEL_LOAN,
-            loan_code: this.props.loanNumber
+            loan_code: this.props.financeNo
         };
         this.props.showModal(true);
         request(apis.FINANCE, 'Post', maps)
