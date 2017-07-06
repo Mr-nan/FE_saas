@@ -427,7 +427,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.props.showToast(response.mjson.msg);
                     }
                 }, (error) => {
-                    if (error.mjson.code == '6350087') {
+                    if (error.mjson.code == '6350087' || error.mjson.code == '6350082') {
                         this.loadData();
                     } else {
                         //this.props.showToast('确认验收失败');
