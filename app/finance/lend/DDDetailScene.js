@@ -173,30 +173,30 @@ export default class DDDetailScene extends BaseComponent {
      * 点击取消借款，确定，取消借款
      * canclelend
      **/
-    // canclelend = () => {
-    //
-    //     let maps = {
-    //         api: apis.CANCEL_LOAN,
-    //         loan_code: this.props.loanNumber
-    //     };
-    //     this.props.showModal(true);
-    //     request(apis.FINANCE, 'Post', maps)
-    //         .then((response) => {
-    //                 this.props.showModal(false);
-    //                 this.cancleSuccess.setModelVisible(true);
-    //             },
-    //             (error) => {
-    //                 this.props.showModal(false)
-    //                 if (error.mycode != -300 || error.mycode != -500) {
-    //                     this.props.showToast(error.mjson.msg);
-    //
-    //                 } else {
-    //
-    //                     this.props.showToast('服务器连接有问题')
-    //                 }
-    //             });
-    //
-    // }
+    canclelend = () => {
+
+        let maps = {
+            api: apis.CANCEL_LOAN,
+            loan_code: this.props.loanNumber
+        };
+        this.props.showModal(true);
+        request(apis.FINANCE, 'Post', maps)
+            .then((response) => {
+                    this.props.showModal(false);
+                    this.cancleSuccess.setModelVisible(true);
+                },
+                (error) => {
+                    this.props.showModal(false)
+                    if (error.mycode != -300 || error.mycode != -500) {
+                        this.props.showToast(error.mjson.msg);
+
+                    } else {
+
+                        this.props.showToast('服务器连接有问题')
+                    }
+                });
+
+    }
 
     /**
      * 根据取回的数据，对数据源进行封装
