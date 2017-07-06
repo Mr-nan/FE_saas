@@ -427,7 +427,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.props.showToast(response.mjson.msg);
                     }
                 }, (error) => {
-                    if (error.mjson.code == '6350087' || error.mjson.code == '6350082') {
+                    if (error.mjson.code == '6350087') {
                         this.loadData();
                     } else {
                         //this.props.showToast('确认验收失败');
@@ -442,7 +442,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
 
     /**
      * 融资流程确认验收请求
-     */
+     **/
     loanConfirmCar = () => {
         this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
@@ -461,7 +461,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     }
                 }, (error) => {
                     //this.props.showToast('确认验收失败');
-                    if (error.mjson.code == '6350087') {
+                    if (error.mjson.code == '6350087' || error.mjson.code == '6350082') {
                         this.loadData();
                     } else {
                         this.props.showToast(error.mjson.msg);
