@@ -34,9 +34,19 @@ const {width, height} = Dimensions.get('window');
 var Car = [];
 
 export default class EditEmployeeScene extends BaseComponent {
+    /**
+     * from @huangning
+     *
+     *
+     **/
     initFinish = () => {
         this.loadData();
     }
+    /**
+     * from @huangning
+     * 提交编辑
+     *
+     **/
     saveData = () => {
         this.props.showModal(true);
         this.isClick = false;
@@ -52,8 +62,8 @@ export default class EditEmployeeScene extends BaseComponent {
         request(url, 'post', {
             account: Car[2].cars[0].name,
             company_ids: this.company_idss.toString(),
-            password: md5.hex_md5(Car[2].cars[1].name),
-            repassword: md5.hex_md5(Car[2].cars[1].name),
+            password: Car[2].cars[1].name.length > 1 ? md5.hex_md5(Car[2].cars[1].name) : '',
+            repassword: Car[2].cars[1].name.length > 1 ? md5.hex_md5(Car[2].cars[1].name) : '',
             role_id: this.roleId,   //角色ID【必填】	number	1：实际控制人 2：财务 3：收车人员 4：销售人员
             sex: this.sex,//number	1：男（默认）；2：女
             staff_id: this.props.id,	  //	number
@@ -81,6 +91,11 @@ export default class EditEmployeeScene extends BaseComponent {
         });
 
     }
+    /**
+     * from @huangning
+     *
+     *
+     **/
     loadData = () => {
         let url = AppUrls.BASEURL + 'v1/user.employee/view';
         request(url, 'post', {
@@ -102,6 +117,11 @@ export default class EditEmployeeScene extends BaseComponent {
         });
 
     }
+    /**
+     * from @huangning
+     *
+     *
+     **/
     deleteData = () => {
         let url = AppUrls.BASEURL + 'v1/user.employee/destroy';
         request(url, 'post', {
@@ -125,7 +145,12 @@ export default class EditEmployeeScene extends BaseComponent {
         });
 
     }
-    // 构造
+
+    /**
+     * from @huangning
+     *
+     *
+     **/
     constructor(props) {
 
         super(props);
@@ -305,11 +330,19 @@ export default class EditEmployeeScene extends BaseComponent {
         );
     }
 
-    /**      注销按钮点击事件          */
+    /**
+     * from @huangning
+     *
+     * 注销按钮点击事件
+     **/
     _loginOut = () => {
         this.deleteData();
     }
-    /**      导航栏完成按钮点击事件          */
+    /**
+     * from @huangning
+     *
+     * 导航栏完成按钮点击事件
+     **/
     _completedForEdit = () => {
         for (let i = 0; i < Car.length; i++) {
             let cars = Car[i].cars;
@@ -323,24 +356,28 @@ export default class EditEmployeeScene extends BaseComponent {
                 }
             }
         }
-        if (Car[2].cars[0].name == this.props.mobile) {//手机号没改,密码传''
-            Car[2].cars[1].name = '';
-        } else if (Car[2].cars[1].name.length < 6) {
-            this.props.showToast("密码必须为6~16位");
-            return;
-        } else if (Car[2].cars[1].name !== Car[2].cars[2].name) {
-            this.props.showToast("两次输入的密码不同");
-            return;
-        }
-        if (Car[2].cars[0].name.length != 11) {
-            this.props.showToast("请输入正确的用户名");
+        if (Car[2].cars[0].name == this.props.mobile) {//手机号没改,密码可写可不写
+            this.saveData();
         } else {
-            this.saveData()
+            if (Car[2].cars[1].name.length < 6) {
+                this.props.showToast("密码必须为6~16位");
+                return;
+            } else if (Car[2].cars[1].name !== Car[2].cars[2].name) {
+                this.props.showToast("两次输入的密码不同");
+                return;
+            }
+            if (Car[2].cars[0].name.length != 11) {
+                this.props.showToast("请输入正确的用户名");
+            } else {
+                this.saveData()
+            }
         }
-
-
     }
-    /**      导航栏右侧按钮          */
+    /**
+     * from @huangning
+     *
+     * 导航栏右侧按钮
+     **/
     _navigatorRightView = () => {
         return (
             <TouchableOpacity
@@ -355,7 +392,7 @@ export default class EditEmployeeScene extends BaseComponent {
                     this._completedForEdit();
                 }
             }}>
-                <Text allowFontScaling={false}  style={{
+                <Text allowFontScaling={false} style={{
                     color: FontAndColor.COLORB0,
                     fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT30),
                     textAlign: 'center',
@@ -365,11 +402,14 @@ export default class EditEmployeeScene extends BaseComponent {
         );
     }
 
-    /**      row的点击事件          */
+    /**
+     * from @huangning
+     * row的点击事件
+     *
+     **/
     _rowAndSectionClick = (rowID, sectionID) => {
         ROWID = rowID;
         SECTIONID = sectionID;
-        alert("rowID " + rowID + " sectionID " + sectionID)
         if (sectionID === 0 && rowID === 1) {
             this._openModal(this.xb);
         } else if (sectionID === 1 && rowID === 0) {
@@ -379,6 +419,11 @@ export default class EditEmployeeScene extends BaseComponent {
         }
     }
 
+    /**
+     * from @huangning
+     *
+     *
+     **/
     _openModal = (dt, rowId, sectionID) => {
         this.selectModal.changeData(dt);
         this.selectModal.openModal();
@@ -387,6 +432,11 @@ export default class EditEmployeeScene extends BaseComponent {
             // this.selectModal.isCompanys();
         }
     }
+    /**
+     * from @huangning
+     *
+     *
+     **/
     _openModal1 = (dt, rowId, sectionID) => {
         this.selectModal1.changeData(dt);
         this.selectModal1.openModal();
@@ -395,6 +445,11 @@ export default class EditEmployeeScene extends BaseComponent {
             // this.selectModal.isCompanys();
         }
     }
+    /**
+     * from @huangning
+     *
+     *
+     **/
     onClickCompany = (itemIds) => {
         if (SECTIONID === 1 && ROWID === 0) {
             if (itemIds.length > 0) {
@@ -453,7 +508,11 @@ export default class EditEmployeeScene extends BaseComponent {
             source: ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
         });
     }
-    /**      蒙版listview  点击选择,返回点击cell的id          */
+    /**
+     * from @huangning
+     *
+     * 蒙版listview  点击选择,返回点击cell的id
+     **/
     _onClick = (rowID) => {
         if (SECTIONID === 0 && ROWID === 1) {
 
@@ -521,7 +580,11 @@ export default class EditEmployeeScene extends BaseComponent {
     }
 
 
-    // 每一行中的数据
+    /**
+     * from @huangning
+     * 每一行中的数据
+     *
+     **/
     _renderRow = (rowData, sectionID, rowID) => {
         let HIDDEN;
         let PASSWORD = false;
@@ -544,9 +607,9 @@ export default class EditEmployeeScene extends BaseComponent {
             }>
                 <View style={styles.rowView}>
 
-                    <Text allowFontScaling={false}  style={styles.rowLeftTitle}>{rowData.title}</Text>
-                    {HIDDEN ? <Text allowFontScaling={false} 
-                            style={[styles.rowRightTitle,]}>{this.state.rowdata ? this.state.rowdata : rowData.name}</Text> :
+                    <Text allowFontScaling={false} style={styles.rowLeftTitle}>{rowData.title}</Text>
+                    {HIDDEN ? <Text allowFontScaling={false}
+                                    style={[styles.rowRightTitle,]}>{this.state.rowdata ? this.state.rowdata : rowData.name}</Text> :
                         <TextInput ref={sectionID + rowID} defaultValue={rowData.name}
                                    placeholder={"请输入" + rowData.title } style={styles.inputStyle}
                                    onChangeText={(text) => this._textChange(sectionID, rowID, text)}
@@ -563,12 +626,23 @@ export default class EditEmployeeScene extends BaseComponent {
             </TouchableOpacity>
         );
     }
+
+    /**
+     * from @huangning
+     *
+     *
+     **/
     _textChange = (sectionID, rowID, text) => {
         ROWID = rowID;
         SECTIONID = sectionID;
         Car[SECTIONID].cars[ROWID].name = text;
     }
-    // 每一组对应的数据
+
+    /**
+     * from @huangning
+     *
+     * 每一组对应的数据
+     **/
     _renderSectionHeader(sectionData, sectionId) {
         return (
             <View style={styles.sectionView}>

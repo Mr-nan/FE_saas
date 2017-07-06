@@ -134,10 +134,10 @@ export default class LoanInfo extends BaseComponent {
                     <Text allowFontScaling={false} style={styles.orderInfo}>应付首付款</Text>
                     <View style={{flex: 1}}/>
                     <Text allowFontScaling={false}
-                          style={styles.infoContent}>{(this.balanceAmount - (this.state.applyLoanAmount === '请输入申请贷款金额' ?
-                        0 : this.state.applyLoanAmount) +
-                    this.state.financeInfo.fee_mny +
-                    this.state.financeInfo.obd_mny).toFixed(2)}元</Text>
+                          style={styles.infoContent}>{parseFloat(this.balanceAmount - (this.state.applyLoanAmount === '请输入申请贷款金额' ?
+                        0 : parseFloat(this.state.applyLoanAmount)) +
+                        parseFloat(this.state.financeInfo.fee_mny) +
+                        parseFloat(this.state.financeInfo.obd_mny)).toFixed(2)}元</Text>
                 </View>
             </View>
         )

@@ -427,7 +427,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.props.showToast(response.mjson.msg);
                     }
                 }, (error) => {
-                    if (error.mjson.code == '6350087') {
+                    if (error.mjson.code == '6350087' || error.mjson.code == '6350082') {
                         this.loadData();
                     } else {
                         //this.props.showToast('确认验收失败');
@@ -600,9 +600,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                         params: {
                                             payAmount: this.orderState === 1 ?
                                                 this.orderDetail.deposit_amount :
-                                                this.orderDetail.balance_amount - applyAmount +
-                                                (this.financeInfo.obd_mny ? this.financeInfo.obd_mny : 0) +
-                                                (this.financeInfo.fee_mny ? this.financeInfo.fee_mny : 0),
+                                                parseFloat(this.orderDetail.balance_amount - applyAmount +
+                                                    parseFloat(this.financeInfo.obd_mny ? this.financeInfo.obd_mny : 0) +
+                                                    parseFloat(this.financeInfo.fee_mny ? this.financeInfo.fee_mny : 0)).toFixed(2),
                                             orderId: this.props.orderId,
                                             orderNo: this.orderDetail.order_no,
                                             payType: this.orderState,

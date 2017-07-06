@@ -98,7 +98,7 @@ export default class CheckLoanAmountScene extends BaseComponent {
             <TouchableOpacity
                 onPress={() => {
                     if (this.isNumberByHundred(this.number)) {
-                        if (this.number >= this.props.maxLoanmny) {
+                        if (this.number > this.props.maxLoanmny) {
                             this.props.showToast("不能超过最大贷款额度");
                         } else {
                             this.props.updateAmount(this.number);
