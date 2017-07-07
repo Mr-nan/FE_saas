@@ -108,7 +108,7 @@ export  default class SignContractScene extends BaseComponent {
                     <SingleSignManageScene tabLabel="ios-people" opt_user_id={this.props.opt_user_id}
                                            navigator={this.props.navigator}/>
 
-                    <FundSignScene tabLabel="ios-chatboxes"
+                    <FundSignScene tabLabel="ios-chatboxes11"
                                    opt_user_id={this.props.opt_user_id} navigator={this.props.navigator}/>
 
                     <CompleteSignScene tabLabel="ios-chatboxes"
