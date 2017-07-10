@@ -37,6 +37,7 @@ import  {request}           from '../utils/RequestUtil';
 import PixelUtil            from '../utils/PixelUtil';
 import * as storageKeyNames from '../constant/storageKeyNames';
 import StorageUtil from '../utils/StorageUtil';
+import * as CarDeployData from './carData/CarDeployData';
 
 
 let Pixel = new PixelUtil();
@@ -44,6 +45,9 @@ let carFilterData = require('./carData/carFilterData.json');
 let carAgeSource = [];
 let carKMSource = [];
 let carTypeSource = [];
+let carNatureSource = [];
+let carColorSource = [];
+let carDischargeSource = [];
 let sequencingDataSource = carFilterData.sequencingDataSource;
 let currentCheckedIndex = 1;
 let checkedSource = [];
@@ -61,6 +65,10 @@ const APIParameter = {
     order_type: 0,
     coty: 0,
     mileage: 0,
+    dealer_price:0,
+    emission_standards:0,
+    nature_use:0,
+    car_color:0,
     v_type:0,
     rows: 10,
     page: 1,
@@ -123,6 +131,22 @@ export  default  class carSourceListScene extends BaseComponent {
                 title: '',
                 province_id:'',
                 city_id:''
+            },
+            checkedCarPrice:{
+                title: '',
+                value: '',
+            },
+            checkedCarDischarge:{
+                title: '',
+                value: '',
+            },
+            checkedCarColor:{
+                title: '',
+                value: '',
+            },
+            checkedCarNature:{
+                title: '',
+                value: '',
             },
 
             renderPlaceholderOnly: 'blank',
@@ -193,7 +217,6 @@ export  default  class carSourceListScene extends BaseComponent {
 
     // 下拉刷新数据
     refreshingData = () => {
-        console.log('下拉了');
 
         carData = [];
         this.setState({isRefreshing: true});
@@ -306,14 +329,21 @@ export  default  class carSourceListScene extends BaseComponent {
     // 获取筛选数据
     loadCarConfigData=(succeedAction)=>{
 
-            this.props.showModal(true);
-            request(AppUrls.CAR_CONFIG,'post',{}).then((response) => {
-                succeedAction(response.mjson.data);
-                this.props.showModal(false);
-            }, (error) => {
-                this.props.showModal(false);
-                this.props.showToast(error.msg);
-            });
+
+        CarDeployData.getCarDeployData(this.props.showModal,this.props.showToast,(dataSource)=>{
+
+            succeedAction(dataSource);
+
+        });
+
+            // this.props.showModal(true);
+            // request(AppUrls.CAR_CONFIG,'post',{}).then((response) => {
+            //     succeedAction(response.mjson.data);
+            //     this.props.showModal(false);
+            // }, (error) => {
+            //     this.props.showModal(false);
+            //     this.props.showToast(error.msg);
+            // });
     }
 
     // 选择城市列表
@@ -354,38 +384,46 @@ export  default  class carSourceListScene extends BaseComponent {
 
     ScreeningClick=()=>{
 
-        if(carAgeSource.length<=0||carKMSource.length<=0||carTypeSource.length<=0){
-            this.loadCarConfigData((carConfigData)=>{
 
+            this.loadCarConfigData((carConfigData)=>{
                 carAgeSource = carConfigData.auto_age;
                 carKMSource = carConfigData.auto_mileage;
                 carTypeSource = carConfigData.auto_type;
-                this.ScreeningClick();
+                carNatureSource = carConfigData.auto_use;
+                carColorSource = carConfigData.auto_body_color;
+                carDischargeSource = carConfigData.auto_es;
+
+                let {checkedCarType,checkedCarAgeType,checkedCarKMType,checkedCarGenre,checkedCity,checkedCarPrice,checkedCarDischarge,checkedCarColor,checkedCarNature}= this.state;
+                let screeningObject = {
+
+                    checkedCarType:{title:checkedCarType.title,brand_id:checkedCarType.brand_id,series_id:checkedCarType.series_id},
+                    checkedCarAgeType:{title:checkedCarAgeType.title,value:checkedCarAgeType.value},
+                    checkedCarKMType:{title:checkedCarKMType.title,value:checkedCarKMType.value},
+                    checkedCarGenre:{title:checkedCarGenre.title,value:checkedCarGenre.value},
+                    checkedCity:{title:checkedCity.title,provice_id:checkedCity.province_id,city_id:checkedCity.city_id},
+                    checkedCarPrice:{title:checkedCarPrice.title,value:checkedCarPrice.value},
+                    checkedCarDischarge:{title:checkedCarDischarge.title,value:checkedCarDischarge.value},
+                    checkedCarColor:{title:checkedCarColor.title,value:checkedCarColor.value},
+                    checkedCarNature:{title:checkedCarNature.title,value:checkedCarNature.value},
+                    carAgeSource:carAgeSource,
+                    carKMSource:carKMSource,
+                    carTypeSource:carTypeSource,
+                    carNatureSource:carNatureSource,
+                    carColorSource:carColorSource,
+                    carDischargeSource:carDischargeSource,
+                };
+                let navigatorParams = {
+                    name: "CarScreeningScene",
+                    component: CarScreeningScene,
+                    params: {
+                        screeningObject:screeningObject,
+                        screeningCompleteClick:this.screeningCompleteClick
+                    }
+                };
+                this.props.callBack(navigatorParams);
             });
-            return;
-        }
 
-        let {checkedCarType,checkedCarAgeType,checkedCarKMType,checkedCarGenre,checkedCity}= this.state;
 
-        let screeningObject = {
-            checkedCarType:{title:checkedCarType.title,brand_id:checkedCarType.brand_id,series_id:checkedCarType.series_id},
-            checkedCarAgeType:{title:checkedCarAgeType.title,value:checkedCarAgeType.value},
-            checkedCarKMType:{title:checkedCarKMType.title,value:checkedCarKMType.value},
-            checkedCarGenre:{title:checkedCarGenre.title,value:checkedCarGenre.value},
-            checkedCity:{title:checkedCity.title,provice_id:checkedCity.province_id,city_id:checkedCity.city_id},
-            carAgeSource:carAgeSource,
-            carKMSource:carKMSource,
-            carTypeSource:carTypeSource,
-        };
-        let navigatorParams = {
-            name: "CarScreeningScene",
-            component: CarScreeningScene,
-            params: {
-                screeningObject:screeningObject,
-                screeningCompleteClick:this.screeningCompleteClick
-            }
-        };
-        this.props.callBack(navigatorParams);
     }
 
 
@@ -397,6 +435,10 @@ export  default  class carSourceListScene extends BaseComponent {
             checkedCarKMType:screeningObject.checkedCarKMType,
             checkedCarGenre:screeningObject.checkedCarGenre,
             checkedCity:screeningObject.checkedCity,
+            checkedCarPrice:screeningObject.checkedCarPrice,
+            checkedCarDischarge:screeningObject.checkedCarDischarge,
+            checkedCarColor:screeningObject.checkedCarColor,
+            checkedCarNature:screeningObject.checkedCarNature,
         });
 
         APIParameter.brand_id = screeningObject.checkedCarType.brand_id;
@@ -406,7 +448,10 @@ export  default  class carSourceListScene extends BaseComponent {
         APIParameter.provice_id = screeningObject.checkedCity.provice_id;
         APIParameter.city_id = screeningObject.checkedCity.city_id;
         APIParameter.v_type = screeningObject.checkedCarGenre.value;
-
+        APIParameter.car_color = screeningObject.checkedCarColor.value;
+        APIParameter.emission_standards = screeningObject.checkedCarDischarge.value;
+        APIParameter.nature_use = screeningObject.checkedCarNature.value;
+        APIParameter.dealer_price = screeningObject.checkedCarPrice.value;
         if (this.refs.headView.state.isCheckRecommend) {
             this.refs.headView.setCheckRecommend(false)
         } else {
@@ -675,6 +720,70 @@ export  default  class carSourceListScene extends BaseComponent {
         }
     };
 
+
+
+
+
+    carPriceClick = () => {
+        this.setState({
+            checkedCarPrice:{
+                title: '',
+                value: '',
+            },
+        });
+        APIParameter.dealer_price = 0;
+        if (this.refs.headView.state.isCheckRecommend) {
+            this.refs.headView.setCheckRecommend(false)
+        } else {
+            this.filterData();
+        }
+    };
+
+    carDischargeClick = () => {
+        this.setState({
+            checkedCarDischarge:{
+                title: '',
+                value: '',
+            },
+        });
+        APIParameter.emission_standards = 0;
+        if (this.refs.headView.state.isCheckRecommend) {
+            this.refs.headView.setCheckRecommend(false)
+        } else {
+            this.filterData();
+        }
+    };
+
+    carColorClick = () => {
+        this.setState({
+            checkedCarColor:{
+                title: '',
+                value: '',
+            },
+        });
+        APIParameter.car_color = 0;
+        if (this.refs.headView.state.isCheckRecommend) {
+            this.refs.headView.setCheckRecommend(false)
+        } else {
+            this.filterData();
+        }
+    };
+
+    carNatureClick = () => {
+        this.setState({
+            checkedCarNature:{
+                title: '',
+                value: '',
+            },
+        });
+        APIParameter.nature_use = 0;
+        if (this.refs.headView.state.isCheckRecommend) {
+            this.refs.headView.setCheckRecommend(false)
+        } else {
+            this.filterData();
+        }
+    };
+
     allDelectClick = () => {
 
         this.setState({
@@ -704,6 +813,22 @@ export  default  class carSourceListScene extends BaseComponent {
                 provice_id:'',
                 city_id:'',
             },
+            checkedCarPrice:{
+                title: '',
+                value: '',
+            },
+            checkedCarDischarge:{
+                title: '',
+                value: '',
+            },
+            checkedCarColor:{
+                title: '',
+                value: '',
+            },
+            checkedCarNature:{
+                title: '',
+                value: '',
+            },
         });
 
         APIParameter.order_type = 0;
@@ -714,6 +839,10 @@ export  default  class carSourceListScene extends BaseComponent {
         APIParameter.v_type=0;
         APIParameter.provice_id = 0;
         APIParameter.city_id=0;
+        APIParameter.dealer_price = 0;
+        APIParameter.emission_standards = 0;
+        APIParameter.car_color = 0;
+        APIParameter.nature_use = 0;
 
         if (this.refs.headView.state.isCheckRecommend) {
             this.refs.headView.setCheckRecommend(false);
@@ -793,7 +922,7 @@ export  default  class carSourceListScene extends BaseComponent {
                                          isCheckRecommend = {isCheckRecommend}/>
                 {
 
-                    (this.state.checkedCarKMType.title || this.state.checkedCarAgeType.title || this.state.checkedCarType.title || this.state.sequencingType.title || this.state.checkedCity.title || this.state.checkedCarGenre.title) ?
+                    (this.state.checkedCarKMType.title || this.state.checkedCarAgeType.title || this.state.checkedCarType.title || this.state.sequencingType.title || this.state.checkedCity.title || this.state.checkedCarGenre.title || this.state.checkedCarPrice.title || this.state.checkedCarDischarge.title || this.state.checkedCarColor.title || this.state.checkedCarNature.title) ?
                         ( <CheckedContentView
                                 sequencingType={this.state.sequencingType}
                                 carType={this.state.checkedCarType}
@@ -801,13 +930,23 @@ export  default  class carSourceListScene extends BaseComponent {
                                 carKM={this.state.checkedCarKMType}
                                 carGenre={this.state.checkedCarGenre}
                                 carCity={this.state.checkedCity}
+                                carPrice = {this.state.checkedCarPrice}
+                                carDischarge = {this.state.checkedCarDischarge}
+                                carColor = {this.state.checkedCarColor}
+                                carNature = {this.state.checkedCarNature}
+
                                 sequencingClick={this.sequencingClick}
                                 carTypeClick={this.carTypeClick}
                                 carAgeClick={this.carAgeClick}
                                 carKMClick={this.carKMClick}
                                 carGenreClick = {this.carGenreClick}
                                 carCityClick={this.carCityClick}
+                                carPriceClick={this.carPriceClick}
+                                carDischargeClick={this.carDischargeClick}
+                                carColorClick = {this.carColorClick}
+                                carNatureClick={this.carNatureClick}
                                 allDelectClick={this.allDelectClick}
+
                             />
                         ) : (null)
                 }
@@ -865,7 +1004,7 @@ export  default  class carSourceListScene extends BaseComponent {
 class CheckedContentView extends Component {
 
     render() {
-        const {sequencingType, carType, carAge, carKM,carGenre,carCity, sequencingClick, carTypeClick, carAgeClick, carKMClick, carGenreClick,carCityClick,allDelectClick} = this.props;
+        const {sequencingType, carType, carAge, carKM,carGenre,carCity, carPrice,carDischarge,carColor,carNature,sequencingClick, carTypeClick, carAgeClick, carKMClick, carGenreClick,carCityClick,allDelectClick,carPriceClick,carDischargeClick,carColorClick,carNatureClick} = this.props;
         return (
 
             <View style={styles.checkedContentView}>
@@ -933,8 +1072,46 @@ class CheckedContentView extends Component {
                                 </View>
                             </TouchableOpacity>) : (null)
                 }
-
-
+                {
+                    carPrice.title ? (
+                            <TouchableOpacity onPress={carPriceClick}>
+                                <View style={styles.checkedContentItem}>
+                                    <Text style={styles.checkedItemText}>{carPrice.title}</Text>
+                                    <Image style={styles.checkedDeleteImg}
+                                           source={require('../../images/deleteIcon2x.png')}/>
+                                </View>
+                            </TouchableOpacity>) : (null)
+                }
+                {
+                    carDischarge.title ? (
+                            <TouchableOpacity onPress={carDischargeClick}>
+                                <View style={styles.checkedContentItem}>
+                                    <Text style={styles.checkedItemText}>{carDischarge.title}</Text>
+                                    <Image style={styles.checkedDeleteImg}
+                                           source={require('../../images/deleteIcon2x.png')}/>
+                                </View>
+                            </TouchableOpacity>) : (null)
+                }
+                {
+                    carColor.title ? (
+                            <TouchableOpacity onPress={carColorClick}>
+                                <View style={styles.checkedContentItem}>
+                                    <Text style={styles.checkedItemText}>{carColor.title}</Text>
+                                    <Image style={styles.checkedDeleteImg}
+                                           source={require('../../images/deleteIcon2x.png')}/>
+                                </View>
+                            </TouchableOpacity>) : (null)
+                }
+                {
+                    carNature.title ? (
+                            <TouchableOpacity onPress={carNatureClick}>
+                                <View style={styles.checkedContentItem}>
+                                    <Text style={styles.checkedItemText}>{carNature.title}</Text>
+                                    <Image style={styles.checkedDeleteImg}
+                                           source={require('../../images/deleteIcon2x.png')}/>
+                                </View>
+                            </TouchableOpacity>) : (null)
+                }
                 <TouchableOpacity onPress={allDelectClick}>
                     <View style={styles.checkedDelectView}>
                         <Text allowFontScaling={false}  style={styles.checkedDelectText}>清空</Text>

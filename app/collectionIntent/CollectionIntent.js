@@ -8,7 +8,9 @@ import {
     Button,
     StyleSheet,
     AppRegistry,
-    TouchableOpacity
+    TouchableOpacity,
+    ScrollView,
+
 } from 'react-native';
 import LabelSelect from './LabelSelect/LabelSelect';
 import NavigationBar from "../component/NavigationBar";
@@ -20,6 +22,7 @@ import BaseComponent from '../component/BaseComponent';
 import CarBrandSelectScene  from './../carSource/CarBrandSelectScene';
 import  {request}from '../utils/RequestUtil';
 import * as AppUrls from "../constant/appUrls";
+import ProvinceListScene from  '../carSource/ProvinceListScene';
 let isHeadInteraction = false;
 let auto_age = [];
 let auto_mileage = [];
@@ -30,10 +33,19 @@ export default class CollectionIntent extends BaseComponent {
     }
 
     loadData = () => {
+
+
+        console.log('*********************');
+        console.log(this.provsArray);
+        console.log(this.citiesArray);
+
         this.props.showModal(true);
         let yearArr = [];
         let mileArr = [];
-        if (this.brandSeriesArr.length == 0 && this.carYearArr.size == 0 && this.mileageArr.size == 0) {
+        let provsArray = [];
+        let citiesArray = [];
+
+        if (this.brandSeriesArr.length == 0 && this.carYearArr.size == 0 && this.mileageArr.size == 0 && this.citiesArray.length ==0 &&  this.provsArray.length ==0 ) {
             this.props.showToast("请选择收车意向");
         }else if (this.carYearArr.size > 5) {
             this.props.showToast('车龄区间最多只能选五个');
@@ -52,13 +64,30 @@ export default class CollectionIntent extends BaseComponent {
                     mileArr.push(this.mileageArr.get(key))
                 }
             }
+            if(this.provsArray.length>0)
+            {
+                for (let item of this.provsArray)
+                {
+                    provsArray.push(item.value);
+                }
+            }
+            if(this.citiesArray.length>0)
+            {
+                for (let item of this.citiesArray)
+                {
+                    citiesArray.push(item.value);
+                }
+            }
 
             let url = AppUrls.BASEURL + 'v1/receiveIntention/save';
             request(url, 'post', {
 
                 brand_series: this.brandSeriesArr.toString(),
                 cotys: yearArr.toString(),
-                mileages: mileArr.toString()
+                mileages: mileArr.toString(),
+                cities:citiesArray.toString(),
+                provs:provsArray.toString(),
+
 
             }).then((response) => {
 
@@ -170,6 +199,8 @@ export default class CollectionIntent extends BaseComponent {
         this.carYearArr = new Map();
         this.mileageArr = new Map();
         this.brandSeriesArr = [];
+        this.citiesArray = [];
+        this.provsArray = [];
         this.isAdd = false;
         isHeadInteraction = this.props.isHeadInteraction;
 
@@ -178,13 +209,17 @@ export default class CollectionIntent extends BaseComponent {
             arr: [],
             arr1: [],
             arr2: [],
+            cityArray:[],
+
         };
         this.selectConfirm = this.selectConfirm.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
 
     }
 
-    //  选择车型
+    /**
+     * 选择车型
+      */
     checkedCarClick = (carObject) => {
 // {brand_id: 2, series_id: 2446, series_name: "拉共达Taraf", model_id: 29702, model_name: "2015款 拉共达Taraf 6.0L 标准型"}
 
@@ -217,6 +252,44 @@ export default class CollectionIntent extends BaseComponent {
         this.isAdd = false;
     }
 
+    /**
+     * 选择地区
+     * @param cityType
+     */
+    checkedCityClick=(cityType)=>{
+
+        let isCityTitle = true;
+
+        console.log('**'+cityType.city_name+':'+cityType.city_id + '|'+cityType.provice_id);
+        for (let item of this.state.cityArray)
+        {
+            console.log(item.title);
+            if(item.title == cityType.city_name)
+            {
+                isCityTitle = false;
+                break;
+            }
+        }
+
+        if(isCityTitle)
+        {
+            this.state.cityArray.push({
+                title: cityType.city_name,
+                isSelected: true,
+            })
+            this.setState({
+                cityArray:this.state.cityArray,
+            });
+            if(cityType.city_id!==0){
+                this.citiesArray.push({title:cityType.city_name,value:cityType.city_id});
+            }else {
+                this.provsArray.push({title:cityType.city_name,value:cityType.provice_id});
+            }
+        }
+
+
+    }
+
     navigatorParams = {
         title: "CarBrandSelectScene",
         component: CarBrandSelectScene,
@@ -246,6 +319,35 @@ export default class CollectionIntent extends BaseComponent {
         this.setState({arr: arr});
         this.brandSeriesArr.splice(index, 1);
         this.state.arr.splice(index, 1);
+    }
+    deleteCityItem(item) {
+
+        console.log(item);
+        let {cityArray} = this.state;
+        let index = cityArray.findIndex(a => a === item);
+        cityArray[index].isSelected = false;
+
+        for (let i=0;i<this.citiesArray.length;i++)
+        {
+            if(this.citiesArray[i].title == item.title)
+            {
+                this.citiesArray.splice(i,1);
+                break;
+            }
+        }
+
+        for (let i=0;i<this.provsArray.length;i++)
+        {
+            if(this.provsArray[i].title == item.title)
+            {
+                this.provsArray.splice(i,1);
+                break;
+            }
+        }
+
+        this.state.cityArray.splice(index, 1);
+        this.setState({cityArray: cityArray});
+
     }
 
     countItem(item, array) {//获取车龄区间或里程区间选中的个数
@@ -293,7 +395,7 @@ export default class CollectionIntent extends BaseComponent {
                         leftImageCallBack={this.backPage}
 
                     />
-                    <View style={ styles.container1}>
+                    <ScrollView style={ styles.container1}>
                         <View style={styles.containerChild}>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10)}}>
                                 <Text allowFontScaling={false}  style={styles.carSelect}>
@@ -383,10 +485,10 @@ export default class CollectionIntent extends BaseComponent {
                             <Text allowFontScaling={false}  style={{
                                 color: FontAndColor.COLORA3,
                                 fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT),
-                                textAlign: 'center'
+                                textAlign: 'center',
                             }}>提交</Text>
                         </TouchableOpacity>
-                    </View>
+                    </ScrollView>
 
                 </View>
             );
@@ -430,9 +532,9 @@ const styles = StyleSheet.create({
     },
     containerChild: {
         backgroundColor: '#ffffff',
-        height: Pixel.getPixel(125),
         paddingLeft: Pixel.getPixel(12),
-        marginBottom: Pixel.getPixel(10)
+        marginBottom: Pixel.getPixel(10),
+        flexWrap: 'wrap',
     },
     btnStyle: {
         height: Pixel.getPixel(40),
@@ -440,7 +542,9 @@ const styles = StyleSheet.create({
         marginTop: Pixel.getPixel(40),
         borderRadius: 3,
         marginHorizontal: Pixel.getPixel(15),
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginBottom:Pixel.getPixel(10)
+
     },
 });
 

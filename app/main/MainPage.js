@@ -402,6 +402,7 @@ export default class MainPage extends BaseComponent {
                 }
                 }}/>)
         ];
+
         StorageUtil.mGetItem(storageKeyNames.USER_INFO, (data) => {
             if (data.code == 1) {
                 let datas = JSON.parse(data.result);
