@@ -86,7 +86,7 @@ export default class AutoOperation extends Component{
             <TouchableOpacity
                 activeOpacity={0.6}
                 onPress={()=>{this.props.publishData()}}>
-                <Text style={styles.rightTitleText}>完成</Text>
+                <Text allowFontScaling={false}  style={styles.rightTitleText}>完成</Text>
             </TouchableOpacity>
         );
     };
@@ -108,7 +108,7 @@ export default class AutoOperation extends Component{
                         style={[ !this.state.operate ? styles.selectContainer:styles.circleContainer,styles.contentTop]}
                         onPress={()=>{this._labelPress()}}>
                         <View style={styles.center}>
-                            <Text style={!this.state.operate ? styles.selectText :styles.unselectText}>非营运</Text>
+                            <Text allowFontScaling={false}  style={!this.state.operate ? styles.selectText :styles.unselectText}>非营运</Text>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -116,7 +116,7 @@ export default class AutoOperation extends Component{
                         style={[this.state.operate ? styles.selectContainer:styles.circleContainer,styles.contentAlign]}
                         onPress={()=>{this._labelPress()}}>
                         <View style={styles.center}>
-                            <Text style={this.state.operate ? styles.selectText :styles.unselectText}>营运</Text>
+                            <Text allowFontScaling={false}  style={this.state.operate ? styles.selectText :styles.unselectText}>营运</Text>
                         </View>
                     </TouchableOpacity>
                 </Image>

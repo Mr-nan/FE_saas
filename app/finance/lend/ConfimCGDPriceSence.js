@@ -25,8 +25,8 @@ class ConfimCarCell extends Component{
            <View style={styles.warp}>
                <Image style={styles.thumb}/>
                <View style={styles.insertWarp}>
-                  <Text style={styles.title}></Text>
-                   <Text style={styles.price}></Text>
+                  <Text allowFontScaling={false}  style={styles.title}></Text>
+                   <Text allowFontScaling={false}  style={styles.price}></Text>
                </View>
            </View>
         )

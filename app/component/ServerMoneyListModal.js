@@ -52,14 +52,14 @@ export default class AdjustModal extends Component {
                     activeOpacity={1}
                     style={{flex:1,justifyContent:'center',alignItems:'center',backgroundColor:'rgba(0,0,0,0.3)'}}>
                     <View style={{width:width-width/4,backgroundColor:'#fff',justifyContent:'center',alignItems: 'center'}}>
-                        <Text style={{fontSize:Pixel.getPixel(17),fontWeight: 'bold',color:'#000',marginTop: Pixel.getPixel(11)}}>调整</Text>
+                        <Text allowFontScaling={false}  style={{fontSize:Pixel.getPixel(17),fontWeight: 'bold',color:'#000',marginTop: Pixel.getPixel(11)}}>调整</Text>
                         <View style={{width:width-width/4,height:Pixel.getPixel(32),backgroundColor:fontAndColor.COLORA3
                         ,flexDirection:'row',paddingRight:Pixel.getPixel(15),paddingLeft:Pixel.getPixel(15),marginTop: Pixel.getPixel(11)}}>
                            <View style={{flex:1,justifyContent:'center',alignItems:'flex-start'}}>
-                               <Text style={{fontSize: Pixel.getPixel(fontAndColor.MARKFONT22),color: fontAndColor.COLORA1}}>调整项</Text>
+                               <Text allowFontScaling={false}  style={{fontSize: Pixel.getPixel(fontAndColor.MARKFONT22),color: fontAndColor.COLORA1}}>调整项</Text>
                            </View>
                             <View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
-                                <Text style={{fontSize: Pixel.getPixel(fontAndColor.MARKFONT22),color: fontAndColor.COLORA1}}>调整金额</Text>
+                                <Text allowFontScaling={false}  style={{fontSize: Pixel.getPixel(fontAndColor.MARKFONT22),color: fontAndColor.COLORA1}}>调整金额</Text>
                             </View>
                         </View>
                         {this.state.isShow?<ListView
@@ -77,7 +77,7 @@ export default class AdjustModal extends Component {
                          marginTop:Pixel.getPixel(16),flexDirection:'row',
                          justifyContent:'center',alignItems:'center',borderRadius:3,borderWidth:1,borderColor:fontAndColor.COLORB0,
                          marginBottom:Pixel.getPixel(16)}}>
-                             <Text style={{fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),color: fontAndColor.COLORB0}}>知道了</Text>
+                             <Text allowFontScaling={false}  style={{fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),color: fontAndColor.COLORB0}}>知道了</Text>
                         </TouchableOpacity>
                     </View>
                 </TouchableOpacity>
@@ -91,12 +91,12 @@ export default class AdjustModal extends Component {
             <View style={{width:width-width/4,height:Pixel.getPixel(44)
                         ,flexDirection:'row',paddingRight:Pixel.getPixel(15),paddingLeft:Pixel.getPixel(15),marginTop: Pixel.getPixel(11)}}>
                 <View style={{flex:1,justifyContent:'center',alignItems:'flex-start'}}>
-                    <Text style={{fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),color: fontAndColor.COLORA1}}>
+                    <Text allowFontScaling={false}  style={{fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),color: fontAndColor.COLORA1}}>
                         {isadjust}
                     </Text>
                 </View>
                 <View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
-                    <Text style={{fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),color: fontAndColor.COLORA1}}>
+                    <Text allowFontScaling={false}  style={{fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),color: fontAndColor.COLORA1}}>
                         {movie.extra_fee}
                     </Text>
                 </View>

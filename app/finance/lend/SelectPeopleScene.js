@@ -73,7 +73,7 @@ export  default class SelectPeopleScene extends BaseComponent {
             }} activeOpacity={0.8} style={{width:width,height:Pixel.getPixel(44),paddingRight:Pixel.getPixel(15),paddingLeft:
             Pixel.getPixel(15),backgroundColor: '#fff',flexDirection: 'row'}}>
                 <View style={{flex:1,justifyContent:'center'}}>
-                    <Text style={{color: '#000',fontSize: Pixel.getFontPixel(14)}}>{movie}</Text>
+                    <Text allowFontScaling={false}  style={{color: '#000',fontSize: Pixel.getFontPixel(14)}}>{movie}</Text>
                 </View>
                 <View style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>
                     <Image style={{width:Pixel.getPixel(14),height:Pixel.getPixel(14)}}

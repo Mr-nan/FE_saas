@@ -84,10 +84,10 @@ export default class MyCarCell extends Component {
                         </View>
                         <View style={[styles.textContainer]}>
                             <View style={{backgroundColor:'white'}}>
-                                <Text style={styles.mainText}>{(carCellData.city_name!=""?('['+carCellData.city_name+']'):"")+(carCellData.model_name)}</Text>
-                                <Text style={styles.subTitleText}>{this.dateReversal(carCellData.manufacture+'000')+'/'+carCellData.mileage+'万公里'}</Text>
+                                <Text allowFontScaling={false}  style={styles.mainText}>{(carCellData.city_name!=""?('['+carCellData.city_name+']'):"")+(carCellData.model_name)}</Text>
+                                <Text allowFontScaling={false}  style={styles.subTitleText}>{this.dateReversal(carCellData.manufacture+'000')+'/'+carCellData.mileage+'万公里'}</Text>
                             </View>
-                            <Text style={styles.carPriceText}>{carCellData.dealer_price>0?(this.carMoneyChange(carCellData.dealer_price) +'万'):''}</Text>
+                            <Text allowFontScaling={false}  style={styles.carPriceText}>{carCellData.dealer_price>0?(this.carMoneyChange(carCellData.dealer_price) +'万'):''}</Text>
 
                         </View>
                             <Image style={styles.tailImage} source={this.getImage(carType,review_status)}/>
@@ -99,20 +99,20 @@ export default class MyCarCell extends Component {
                                         (carType==1&&carCellData.review_status==2) &&
                                         <TouchableOpacity onPress={()=>{this.footButtonClick('查看退回原因',this.props.type,carCellData)}}>
                                             <View style={[styles.cellFoot,{borderColor:fontAndColor.COLORB4}]}>
-                                                <Text style={[styles.cellFootText,{color:fontAndColor.COLORB4}]}> 查看退回原因 </Text>
+                                                <Text allowFontScaling={false}  style={[styles.cellFootText,{color:fontAndColor.COLORB4}]}> 查看退回原因 </Text>
                                             </View>
                                         </TouchableOpacity>
                                     }
                                     <TouchableOpacity onPress={()=>{this.footButtonClick('编辑',this.props.type,carCellData)}}>
                                         <View style={styles.cellFoot}>
-                                            <Text style={styles.cellFootText}>  编辑  </Text>
+                                            <Text allowFontScaling={false}  style={styles.cellFootText}>  编辑  </Text>
                                         </View>
                                     </TouchableOpacity>
                                     {
                                         carType==2 &&
                                         <TouchableOpacity onPress={()=>{this.footButtonClick('下架',this.props.type,carCellData)}}>
                                             <View style={styles.cellFoot}>
-                                                <Text style={styles.cellFootText}>  下架  </Text>
+                                                <Text allowFontScaling={false}  style={styles.cellFootText}>  下架  </Text>
                                             </View>
                                         </TouchableOpacity>
                                     }
@@ -120,7 +120,7 @@ export default class MyCarCell extends Component {
                                         ((carType==1&&carCellData.review_status==1)||carType==3 ) &&
                                         <TouchableOpacity onPress={()=>{this.footButtonClick('上架',this.props.type,carCellData)}}>
                                             <View style={styles.cellFoot}>
-                                                <Text style={styles.cellFootText}> 申请上架 </Text>
+                                                <Text allowFontScaling={false}  style={styles.cellFootText}> 申请上架 </Text>
                                             </View>
                                         </TouchableOpacity>
                                     }

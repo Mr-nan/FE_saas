@@ -69,7 +69,7 @@ export default class PublishScene extends BaseComponent {
                     >
                         <View style={styles.rowCenter}>
                             <Image style={styles.img} source={publishNew}/>
-                            <Text style={styles.fontMain}>发布新车源</Text>
+                            <Text allowFontScaling={false}  style={styles.fontMain}>发布新车源</Text>
                         </View>
                     </TouchableOpacity>
                     <View style={styles.fillSpace}/>
@@ -78,7 +78,7 @@ export default class PublishScene extends BaseComponent {
                         onPress={()=>{this._receivePress()}}>
                         <View style={styles.rowCenter}>
                             <Image style={styles.img} source={publishReceive}/>
-                            <Text style={styles.fontMain}>发布收车意向</Text>
+                            <Text allowFontScaling={false}  style={styles.fontMain}>发布收车意向</Text>
                         </View>
                     </TouchableOpacity>
                 </View>

@@ -34,21 +34,21 @@ export default class InventoryRepaymentInfoTop extends PureComponent {
                     paddingRight:Pixel.getPixel(15)}}>
                 <View style={{flex:1,flexDirection:'row'}}>
                     <View style={{flex:1,justifyContent:'center',alignItems:'flex-start'}}>
-                        <Text
+                        <Text allowFontScaling={false} 
                             style={{fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),color:fontAndColor.COLORA1}}>单号：{movies.loan_number}</Text>
                     </View>
                     <View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
-                        <Text
+                        <Text allowFontScaling={false} 
                             style={{fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),color:fontAndColor.COLORA1}}>放款时间：{movies.loan_time_str}</Text>
                     </View>
                 </View>
                 <View
                     style={{height:1,backgroundColor: fontAndColor.COLORA3,width:width-Pixel.getPixel(30)}}></View>
                 <View style={{flex:1,flexDirection:'row',alignItems:'center'}}>
-                    <Text
+                    <Text allowFontScaling={false} 
                         style={{fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color:fontAndColor.COLORA1}}>放款额：</Text>
-                    <Text
+                    <Text allowFontScaling={false} 
                         style={{fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color:fontAndColor.COLORA0}}>{movies.loan_mny_str} | {movies.loanperiod_type}</Text>
                 </View>

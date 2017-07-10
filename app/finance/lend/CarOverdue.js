@@ -118,8 +118,8 @@ export  default class CarOverdue extends BaseComponent {
                 <View style={styles.container}>
                     <View style={styles.containerTop}>
                         <View style={styles.carInfoWarp}>
-                            <Text numberOfLines={2} style={styles.carType}>{rowData.model_name} </Text>
-                            <Text style={styles.carFramNum}>{"车牌号:" + rowData.model_name}</Text>
+                            <Text allowFontScaling={false}  numberOfLines={2} style={styles.carType}>{rowData.model_name} </Text>
+                            <Text allowFontScaling={false}  style={styles.carFramNum}>{"车牌号:" + rowData.model_name}</Text>
                         </View>
                         {typeof(this.map.get(rowData.auto_id)) == 'undefined' ?
                             <Image style={styles.orderState}
@@ -131,10 +131,10 @@ export  default class CarOverdue extends BaseComponent {
                         }
                     </View>
                     <View style={styles.containerBottom}>
-                        <Text
+                        <Text allowFontScaling={false} 
                             style={[styles.carFramNum, {flex: 1}]}>{rowData.loan_time + "|" + rowData.status_str}
                         </Text>
-                        <Text style={styles.price}> {"放款额：" + rowData.loan_mny_fk_str}</Text>
+                        <Text allowFontScaling={false}  style={styles.price}> {"放款额：" + rowData.loan_mny_fk_str}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -152,7 +152,7 @@ export  default class CarOverdue extends BaseComponent {
                 width: width,
             }}>
 
-                <Text style={{
+                <Text allowFontScaling={false}  style={{
                     marginLeft: Pixel.getPixel(15),
                     fontSize: Pixel.getFontPixel(12),
                     color: '#fa5741',

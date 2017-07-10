@@ -151,8 +151,8 @@ export default class AdjustManageScene extends BaseComponent {
                 },
             })}}>
                 <View style={styles.rowView} >
-                    <Text style={styles.rowLeftTitle}>{rowData.companyname}</Text>
-                    <Text style={styles.rowRightTitle} ></Text>
+                    <Text allowFontScaling={false}  style={styles.rowLeftTitle}>{rowData.companyname}</Text>
+                    <Text allowFontScaling={false}  style={styles.rowRightTitle} ></Text>
                     <Image source={cellJianTou} style={styles.image}></Image>
 
                 </View>

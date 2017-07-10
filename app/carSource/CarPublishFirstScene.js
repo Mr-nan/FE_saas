@@ -144,7 +144,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                                   {
                                       !this.props.carID &&(<TouchableOpacity onPress={this._onScanPress} style={{flexDirection:'row', alignItems:'center'}}>
                                           <Image style={styles.scanImage} source={scanImg}/>
-                                          <Text style={{color:fontAndColor.COLORA2, fontSize:fontAndColor.LITTLEFONT28,marginLeft:Pixel.getPixel(5)}}>扫描</Text>
+                                          <Text allowFontScaling={false}  style={{color:fontAndColor.COLORA2, fontSize:fontAndColor.LITTLEFONT28,marginLeft:Pixel.getPixel(5)}}>扫描</Text>
                                       </TouchableOpacity>)
                                   }
                               </View>
@@ -279,7 +279,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                                   {
                                       !this.props.carID &&(<TouchableOpacity onPress={this._onScanPress} style={{flexDirection:'row', alignItems:'center'}}>
                                           <Image style={styles.scanImage} source={scanImg}/>
-                                          <Text style={{color:fontAndColor.COLORA2, fontSize:fontAndColor.LITTLEFONT28,marginLeft:Pixel.getPixel(5)}}>扫描</Text>
+                                          <Text allowFontScaling={false}  style={{color:fontAndColor.COLORA2, fontSize:fontAndColor.LITTLEFONT28,marginLeft:Pixel.getPixel(5)}}>扫描</Text>
                                       </TouchableOpacity>)
                                   }
                               </View>
@@ -462,7 +462,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                         <View style={styles.footContainer}>
                             <TouchableOpacity onPress={this.footBtnClick}>
                                 <View style={styles.footView}>
-                                    <Text style={styles.footText}>下一步</Text>
+                                    <Text allowFontScaling={false}  style={styles.footText}>下一步</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>

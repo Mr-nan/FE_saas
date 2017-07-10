@@ -25,7 +25,7 @@ export default class ChildTabView extends PureComponent {
         }} style={styles.tab}>
             <View
                 style={[{flex: 1, height: Pixel.getPixel(38), justifyContent: 'center', alignItems: 'center'}]}>
-                <Text ref="ttt"
+                <Text allowFontScaling={false}  ref="ttt"
                     style={[this.props.activeTab === this.props.i ? {color: fontAndColor.COLORB0} : {color: fontAndColor.COLORA0},
                         {fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}]}>
                     {that.state.tabName[this.props.i]}

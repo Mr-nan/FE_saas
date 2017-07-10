@@ -73,7 +73,7 @@ export default class NavigationBar extends PureComponent {
                 }
 
 
-                <Text style={[styles.centerTextStyle, this.props.centerTextStyle]}>
+                <Text allowFontScaling={false}  style={[styles.centerTextStyle, this.props.centerTextStyle]}>
                     {this.props.centerText}
                 </Text>
 

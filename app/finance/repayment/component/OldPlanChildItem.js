@@ -44,7 +44,7 @@ export default class PlanItem extends PureComponent {
                     alignItems: 'center',
                     justifyContent: 'flex-start'
                 }}>
-                    <Text style={{
+                    <Text allowFontScaling={false}  style={{
                         fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                         color: fontAndColor.COLORA0
                     }}>本金{this.props.money_str}</Text>
@@ -56,7 +56,7 @@ export default class PlanItem extends PureComponent {
                     alignItems: 'center',
                     justifyContent: 'flex-end'
                 }}>
-                    <Text style={{
+                    <Text allowFontScaling={false}  style={{
                         fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                         color: fontAndColor.COLORB2
                     }}>利息{this.props.interest_str}</Text>
@@ -86,7 +86,7 @@ export default class PlanItem extends PureComponent {
                 alignItems: 'center',
                 justifyContent: 'flex-start'
             }}>
-                <Text style={{
+                <Text allowFontScaling={false}  style={{
                     fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                     color: fontAndColor.COLORA1
                 }}>{typeName+movie.payment_number}</Text>
@@ -98,7 +98,7 @@ export default class PlanItem extends PureComponent {
                 alignItems: 'center',
                 justifyContent: 'flex-end'
             }}>
-                <Text style={{
+                <Text allowFontScaling={false}  style={{
                     fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                     color: fontAndColor.COLORA1
                 }}>{movie.plan_type==1?'息':'本'}{movie.repaymentmny_str}</Text>

@@ -160,7 +160,7 @@ export  default class PlanListScene extends BaseComponent {
             <TouchableOpacity activeOpacity={0.8} onPress={() => {
                 this.toNextPage(this.navigatorParams)
             }}>
-                <Text style={{
+                <Text allowFontScaling={false}  style={{
                     color: 'white',
                     fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                     textAlign: 'center',

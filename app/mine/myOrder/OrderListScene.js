@@ -45,6 +45,8 @@ export default class OrderListScene extends BaseComponent {
         this.status = this.props.status;
         this.startDate = '选择开始时间';
         this.endDate = '选择结束时间';
+        this.payType = 0;
+        this.payTypeKey = '';
         //let business = this.props.business;
         this.state = {
             dataSource: [],
@@ -97,6 +99,7 @@ export default class OrderListScene extends BaseComponent {
                     page: 1,
                     rows: 10,
                     //list_state: this.props.listState,
+                    is_finance: this.payTypeKey,
                     status: this.status,
                     start_time: this.startDate === '选择开始时间' ? '' : this.startDate,
                     end_time: this.endDate === '选择结束时间' ? '' : this.endDate
@@ -165,6 +168,7 @@ export default class OrderListScene extends BaseComponent {
                     page: this.pageNum,
                     rows: 10,
                     //list_state: this.props.listState,
+                    is_finance: this.payTypeKey,
                     status: this.status,
                     start_time: this.startDate === '选择开始时间' ? '' : this.startDate,
                     end_time: this.endDate === '选择结束时间' ? '' : this.endDate
@@ -293,6 +297,8 @@ export default class OrderListScene extends BaseComponent {
                                 startDate: this.startDate,
                                 endDate: this.endDate,
                                 status: this.status,
+                                payType: this.payType,
+                                payTypeKey: this.payTypeKey,
                                 returnConditions: this.returnConditions
                             }
                         });
@@ -305,10 +311,16 @@ export default class OrderListScene extends BaseComponent {
         )
     }
 
-    returnConditions = (newOrderState, newStartDate, newEndDate, newStatus) => {
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
+    returnConditions = (newOrderState, newStartDate, newEndDate, newStatus, newPayType, newpayTypeKey) => {
         if (this.orderState === newOrderState &&
             this.startDate === newStartDate &&
-            this.endDate === newEndDate) {
+            this.endDate === newEndDate &&
+            this.payType === newPayType) {
             return;
         }
         this.props.showModal(true);
@@ -316,6 +328,8 @@ export default class OrderListScene extends BaseComponent {
         this.startDate = newStartDate;
         this.endDate = newEndDate;
         this.status = newStatus;
+        this.payType = newPayType;
+        this.payTypeKey = newpayTypeKey;
         this.loadData();
     };
 
@@ -377,13 +391,13 @@ export default class OrderListScene extends BaseComponent {
                 <View style={styles.rowView}>
                     <View style={styles.rowTitleLine}>
                         <View>
-                            <Text
+                            <Text allowFontScaling={false} 
                                 includeFontPadding={false}
                                 style={{
                                 fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                                 color: fontAndColor.COLORA0
                             }}>{rowData.order.company}</Text>
-                            <Text
+                            <Text allowFontScaling={false} 
                                 includeFontPadding={false}
                                 style={{
                                 marginTop: Pixel.getPixel(3),
@@ -392,29 +406,29 @@ export default class OrderListScene extends BaseComponent {
                             }}>订单号:({rowData.order.order_no})</Text>
                         </View>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.rowTitleState}>{rowData.order.status}</Text>
+                        <Text allowFontScaling={false}  style={styles.rowTitleState}>{rowData.order.status}</Text>
                     </View>
                     <View style={styles.separatedLine}/>
                     <View style={{flexDirection: 'row', height: Pixel.getPixel(104), alignItems: 'center'}}>
                         <Image style={styles.image}
                                source={imageUrl.length ? {uri: imageUrl[0].icon_url} : require('../../../images/carSourceImages/car_null_img.png')}/>
                         <View style={{marginLeft: Pixel.getPixel(10), marginRight: Pixel.getPixel(15)}}>
-                            <Text
+                            <Text allowFontScaling={false} 
                                 style={{width: width - Pixel.getPixel(15 + 120 + 10 + 15)}}
                                 numberOfLines={1}
                             >{rowData.car.length ? rowData.car[0].title : '未公开'}</Text>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
-                                <Text style={styles.carDescribeTitle}>里程：</Text>
-                                <Text
+                                <Text allowFontScaling={false}  style={styles.carDescribeTitle}>里程：</Text>
+                                <Text allowFontScaling={false} 
                                     style={styles.carDescribe}>{rowData.car.length ? mileage + '万' : '未公开'}</Text>
                             </View>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
-                                <Text style={styles.carDescribeTitle}>上牌：</Text>
-                                <Text style={styles.carDescribe}>{initRegDate}</Text>
+                                <Text allowFontScaling={false}  style={styles.carDescribeTitle}>上牌：</Text>
+                                <Text allowFontScaling={false}  style={styles.carDescribe}>{initRegDate}</Text>
                             </View>
                             {/*                            <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
-                             <Text style={styles.carDescribeTitle}>标价：</Text>
-                             <Text style={styles.carDescribe}>20.59万</Text>
+                             <Text allowFontScaling={false}  style={styles.carDescribeTitle}>标价：</Text>
+                             <Text allowFontScaling={false}  style={styles.carDescribe}>20.59万</Text>
                              </View>*/}
                         </View>
                     </View>
@@ -425,21 +439,21 @@ export default class OrderListScene extends BaseComponent {
                         alignItems: 'center',
                         justifyContent: 'flex-end'
                     }}>
-                        <Text style={{
+                        <Text allowFontScaling={false}  style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                             color: fontAndColor.COLORA1
                         }}>成交价：</Text>
-                        <Text style={{
+                        <Text allowFontScaling={false}  style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color: fontAndColor.COLORA0,
                             fontWeight: 'bold'
                         }}>{transactionPrice}</Text>
-                        <Text style={{
+                        <Text allowFontScaling={false}  style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                             color: fontAndColor.COLORA1,
                             marginLeft: Pixel.getPixel(25)
                         }}>订金：</Text>
-                        <Text style={{
+                        <Text allowFontScaling={false}  style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color: fontAndColor.COLORA0,
                             fontWeight: 'bold',

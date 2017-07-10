@@ -23,7 +23,7 @@ export default class MyButton extends PureComponent {
             return (
                 <TouchableOpacity style={this.props.parentStyle} onPress={() => this.onPress()}
                                   activeOpacity={this.props.opacity == null ? 0.5 : this.props.opacity}>
-                    <Text style={this.props.childStyle}>{this.props.content}</Text>
+                    <Text allowFontScaling={false}  style={this.props.childStyle}>{this.props.content}</Text>
                 </TouchableOpacity>
             );
         } else {

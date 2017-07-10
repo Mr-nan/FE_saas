@@ -83,7 +83,7 @@ export class CarSourceSelectHeadView extends Component{
 
                 }}>
                     <Image style={{marginLeft:10}} source={this.state.isCheckRecommend ? (require('../../../images/carSourceImages/checkIcone.png')):(require('../../../images/carSourceImages/checkIcone_nil.png'))}/>
-                    <Text style={styles.unitsText}>意向</Text>
+                    <Text allowFontScaling={false}  style={styles.unitsText}>意向</Text>
                 </TouchableOpacity>
             </Image>
         )
@@ -131,7 +131,7 @@ export class SelectButton extends  Component{
             <TouchableOpacity onPress={this._btnClick}>
             <View style={styles.selectBtn}>
                     <View>
-                        <Text style={styles.selectBtnText}>{this.props.title}</Text>
+                        <Text allowFontScaling={false}  style={styles.selectBtnText}>{this.props.title}</Text>
                     </View>
                     <View style={{marginLeft:5}}>
                         <Image source={this.state.imgSource}></Image>
@@ -163,7 +163,7 @@ export class CarSourceSelectView extends Component{
                                         }}>
                                             <View style={styles.checkedCell}>
                                                 {
-                                                        <Text
+                                                        <Text allowFontScaling={false} 
                                                             style={[styles.checkedCellText,
                                                                 data.name==checkedTypeString && {color:fontAndColor.COLORB0}]}>{data.name}
                                                         </Text>

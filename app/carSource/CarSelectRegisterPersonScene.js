@@ -117,7 +117,7 @@ export default class CarSelectRegisterPersonScene extends BaseComponent{
                     this.props.selectPersonClick(data);
                     this.backPage()}}>
                 <View style={styles.cellView}>
-                    <Text style={[styles.cellText,data.business_name==this.props.currentPerson && {color:fontAndColor.COLORB0}]}>{data.business_name+"  "+data.phone}</Text>
+                    <Text allowFontScaling={false}  style={[styles.cellText,data.business_name==this.props.currentPerson && {color:fontAndColor.COLORB0}]}>{data.business_name+"  "+data.phone}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -129,7 +129,7 @@ export default class CarSelectRegisterPersonScene extends BaseComponent{
             <TouchableOpacity onPress={()=>{this.addPersonClick()}}>
                 <View style={styles.footView}>
                     <Image source={require('../../images/carSourceImages/addPerson.png')}/>
-                    <Text style={{color:fontAndColor.COLORB0,fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28) }}>  添加新登记人  </Text>
+                    <Text allowFontScaling={false}  style={{color:fontAndColor.COLORB0,fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28) }}>  添加新登记人  </Text>
                 </View>
             </TouchableOpacity>
             </View>
@@ -154,7 +154,7 @@ export default class CarSelectRegisterPersonScene extends BaseComponent{
         return (
             <TouchableOpacity onPress={this.addPersonClick}>
                 <View style={{paddingVertical:3, paddingHorizontal:5,backgroundColor:'transparent',borderWidth:StyleSheet.hairlineWidth,borderColor:'white',borderRadius:3}}>
-                    <Text style={{
+                    <Text allowFontScaling={false}  style={{
                         color: 'white',
                         fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                         textAlign: 'center',

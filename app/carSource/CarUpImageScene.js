@@ -233,7 +233,7 @@ export default class CarUpImageScene extends BaseComponent{
             <View style={styles.footContainer}>
                 <TouchableOpacity onPress={this.footBtnClick}>
                     <View style={styles.footView}>
-                        <Text style={styles.footText}>申请上架</Text>
+                        <Text allowFontScaling={false}  style={styles.footText}>申请上架</Text>
                     </View>
                 </TouchableOpacity>
             </View>

@@ -64,20 +64,20 @@ class Confirm extends Component {
 				<View style={styles.confirmModal}>
 	          		<View style={styles.confirm}>
 	          			<View style={styles.title}>
-	          				<Text style={styles.titleCon}>{this.props.title}</Text>
+	          				<Text allowFontScaling={false}  style={styles.titleCon}>{this.props.title}</Text>
 	          			</View>
 	          			<View style={styles.content}>
-	          				<Text style={styles.text}>{this.props.msg}</Text>
+	          				<Text allowFontScaling={false}  style={styles.text}>{this.props.msg}</Text>
 	          			</View>
 	          			<View style={styles.btn}>
 	          				<TouchableHighlight underlayColor='#eee' onPress={this._onLeftPress} style={styles.btnClick}>
 	          					<View style={[styles.btnView, styles.btnLeft]}>
-	          						<Text style={styles.btnText}>{this.props.btnLeftText}</Text>
+	          						<Text allowFontScaling={false}  style={styles.btnText}>{this.props.btnLeftText}</Text>
 	          					</View>
 	          				</TouchableHighlight>
 	          				<TouchableHighlight underlayColor='#eee' onPress={this._onRightPress} style={styles.btnClick}>
 	          					<View style={[styles.btnView,styles.btnRight]}>
-	          						<Text style={styles.btnText}>{this.props.btnRightText}</Text>
+	          						<Text allowFontScaling={false}  style={styles.btnText}>{this.props.btnRightText}</Text>
 	          					</View>
 	          				</TouchableHighlight>
 	          			</View>

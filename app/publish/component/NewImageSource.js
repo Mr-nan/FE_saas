@@ -57,7 +57,7 @@ export default class ImageSource extends Component {
                             activeOpacity={0.6}
                             onPress={()=>{this._cancelClick();camera = true;}}>
                             <View style={styles.btnContainer}>
-                                <Text style={styles.fontMain}>拍摄</Text>
+                                <Text allowFontScaling={false}  style={styles.fontMain}>拍摄</Text>
                             </View>
                         </TouchableOpacity>
                         <View style={styles.splitLine}/>
@@ -65,7 +65,7 @@ export default class ImageSource extends Component {
                             activeOpacity={0.6}
                             onPress={()=>{this._cancelClick();gallery = true;}}>
                             <View style={styles.btnContainer}>
-                                <Text style={styles.fontMain}>从手机相册选择</Text>
+                                <Text allowFontScaling={false}  style={styles.fontMain}>从手机相册选择</Text>
                             </View>
                         </TouchableOpacity>
                         <View style={styles.splitView}/>
@@ -73,7 +73,7 @@ export default class ImageSource extends Component {
                             activeOpacity={0.6}
                             onPress={()=>{this._cancelClick()}}>
                             <View style={styles.btnContainer}>
-                                <Text style={styles.fontMain}>取消</Text>
+                                <Text allowFontScaling={false}  style={styles.fontMain}>取消</Text>
                             </View>
                         </TouchableOpacity>
                     </View>

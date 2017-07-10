@@ -157,19 +157,19 @@ export default class PlanInfoPage extends BaseComponent {
 
                               }}>
                 <View style={styles.textAllStyle}>
-                    <Text style={styles.rowTextStyle}>{rowData.dead_line}</Text>
-                    <Text style={styles.rowTextStyle}>{rowData.repaymentmny}</Text>
+                    <Text allowFontScaling={false}  style={styles.rowTextStyle}>{rowData.dead_line}</Text>
+                    <Text allowFontScaling={false}  style={styles.rowTextStyle}>{rowData.repaymentmny}</Text>
                     <TouchableOpacity activeOpacity={1} onPress={() => {
                         if(rowData.adjustmoney!='0'&&rowData.relist){
                             console.log('123123');
                             this._moneyAdjustClick(rowID)
                         }
                     }}>
-                        <Text
+                        <Text allowFontScaling={false} 
                             style={[styles.rowTextStyle,rowData.adjustmoney!='0'?styles.textColors:{}]}>{rowData.adjustmoney}</Text>
                     </TouchableOpacity>
 
-                    <Text style={styles.rowTextStyle}>{rowData.aftermny}</Text>
+                    <Text allowFontScaling={false}  style={styles.rowTextStyle}>{rowData.aftermny}</Text>
                 </View>
 
 
@@ -200,10 +200,10 @@ export default class PlanInfoPage extends BaseComponent {
         return (
             <View style={styles.listHeader}>
                 <View style={styles.textAllStyle}>
-                    <Text style={styles.headerTextStyle}>到期日</Text>
-                    <Text style={styles.headerTextStyle}>调整前</Text>
-                    <Text style={styles.headerTextStyle}>调整金额</Text>
-                    <Text style={styles.headerTextStyle}>调整后</Text>
+                    <Text allowFontScaling={false}  style={styles.headerTextStyle}>到期日</Text>
+                    <Text allowFontScaling={false}  style={styles.headerTextStyle}>调整前</Text>
+                    <Text allowFontScaling={false}  style={styles.headerTextStyle}>调整金额</Text>
+                    <Text allowFontScaling={false}  style={styles.headerTextStyle}>调整后</Text>
                 </View>
 
 

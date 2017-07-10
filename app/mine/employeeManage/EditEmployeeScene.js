@@ -31,68 +31,83 @@ let SECTIONID = 0;
 let Pixel = new PixelUtil();
 
 const {width, height} = Dimensions.get('window');
-var Car=[];
+var Car = [];
 
 export default class EditEmployeeScene extends BaseComponent {
+    /**
+     * from @huangning
+     *
+     *
+     **/
     initFinish = () => {
         this.loadData();
     }
+    /**
+     * from @huangning
+     * 提交编辑
+     *
+     **/
     saveData = () => {
         this.props.showModal(true);
-        this.isClick=false;
-            if (this.items.length>0){
-                this.company_idss=[];
-                Car[SECTIONID].cars[ROWID].name =this.companys[this.items[0]];
-                for(let value of this.items){
+        this.isClick = false;
+        if (this.items.length > 0) {
+            this.company_idss = [];
+            Car[SECTIONID].cars[ROWID].name = this.companys[this.items[0]];
+            for (let value of this.items) {
 
-                    this.company_idss.push(this.company_ids[value]);
-                }
+                this.company_idss.push(this.company_ids[value]);
             }
-            let url = AppUrls.BASEURL + 'v1/user.employee/save';
-            request(url, 'post', {
-                account	: Car[2].cars[0].name,
-            company_ids	: this.company_idss.toString(),
-            password    : md5.hex_md5(Car[2].cars[1].name),
-            repassword : md5.hex_md5(Car[2].cars[1].name),
-            role_id	   : this.roleId,   //角色ID【必填】	number	1：实际控制人 2：财务 3：收车人员 4：销售人员
-            sex	   :  this.sex,//number	1：男（默认）；2：女
+        }
+        let url = AppUrls.BASEURL + 'v1/user.employee/save';
+        request(url, 'post', {
+            account: Car[2].cars[0].name,
+            company_ids: this.company_idss.toString(),
+            password: Car[2].cars[1].name.length > 1 ? md5.hex_md5(Car[2].cars[1].name) : '',
+            repassword: Car[2].cars[1].name.length > 1 ? md5.hex_md5(Car[2].cars[1].name) : '',
+            role_id: this.roleId,   //角色ID【必填】	number	1：实际控制人 2：财务 3：收车人员 4：销售人员
+            sex: this.sex,//number	1：男（默认）；2：女
             staff_id: this.props.id,	  //	number
             username: Car[0].cars[0].name
 
-            }).then((response) => {
-                this.props.showModal(false);
-                if (response.mjson.code == '1') {
+        }).then((response) => {
+            this.props.showModal(false);
+            if (response.mjson.code == '1') {
 
-                    this.props.showToast("提交成功");
-                    if (this.props.callBack) {
-                        this.props.callBack();
-                    }
-                    this.backPage();
-                    this.isClick=true;
-                }else{
-                    this.props.showToast(response.mjson.msg);
+                this.props.showToast("提交成功");
+                if (this.props.callBack) {
+                    this.props.callBack();
                 }
+                this.backPage();
+                this.isClick = true;
+            } else {
+                this.props.showToast(response.mjson.msg);
+            }
 
-            }, (error) => {
-                this.isClick=true;
-                this.props.showModal(false);
-                this.props.showToast(error.mjson.msg);
+        }, (error) => {
+            this.isClick = true;
+            this.props.showModal(false);
+            this.props.showToast(error.mjson.msg);
 
-            });
+        });
 
     }
+    /**
+     * from @huangning
+     *
+     *
+     **/
     loadData = () => {
         let url = AppUrls.BASEURL + 'v1/user.employee/view';
         request(url, 'post', {
-            staff_id : this.props.id,
+            staff_id: this.props.id,
 
         }).then((response) => {
 
             if (response.mjson.code == '1') {
-                this.roleId=response.mjson.data.company.role_id;
-                this.sex =response.mjson.data.base.sex;
-                this.company_idss=response.mjson.data.company.ids;
-            }else{
+                this.roleId = response.mjson.data.company.role_id;
+                this.sex = response.mjson.data.base.sex;
+                this.company_idss = response.mjson.data.company.ids;
+            } else {
                 this.props.showToast(response.mjson.msg);
             }
 
@@ -102,10 +117,15 @@ export default class EditEmployeeScene extends BaseComponent {
         });
 
     }
+    /**
+     * from @huangning
+     *
+     *
+     **/
     deleteData = () => {
         let url = AppUrls.BASEURL + 'v1/user.employee/destroy';
         request(url, 'post', {
-            staff_id : this.props.id,
+            staff_id: this.props.id,
 
         }).then((response) => {
 
@@ -115,7 +135,7 @@ export default class EditEmployeeScene extends BaseComponent {
                     this.props.callBack();
                 }
                 this.backPage();
-            }else{
+            } else {
                 this.props.showToast(response.mjson.msg);
             }
 
@@ -125,7 +145,12 @@ export default class EditEmployeeScene extends BaseComponent {
         });
 
     }
-    // 构造
+
+    /**
+     * from @huangning
+     *
+     *
+     **/
     constructor(props) {
 
         super(props);
@@ -177,26 +202,26 @@ export default class EditEmployeeScene extends BaseComponent {
             },
         ]
         this.companys = [];
-        this.company_ids=[];
-        this.company_idss=[];
-        this.items=[];
-        this.roleId= '';
-        this.sex=''
-        const {username, mobile, sex, company,role} = this.props;
-        Car[0].cars[0].name=username;
-        Car[0].cars[1].name=sex;
-        Car[2].cars[0].name=mobile;
-        Car[1].cars[0].name=company;
-        Car[1].cars[1].name=role;
-        Car[2].cars[1].name='';
-        Car[2].cars[2].name='';
-        this.companyName=company;
-        this.isClick=true;
+        this.company_ids = [];
+        this.company_idss = [];
+        this.items = [];
+        this.roleId = '';
+        this.sex = ''
+        const {username, mobile, sex, company, role} = this.props;
+        Car[0].cars[0].name = username;
+        Car[0].cars[1].name = sex;
+        Car[2].cars[0].name = mobile;
+        Car[1].cars[0].name = company;
+        Car[1].cars[1].name = role;
+        Car[2].cars[1].name = '';
+        Car[2].cars[2].name = '';
+        this.companyName = company;
+        this.isClick = true;
 
         StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST, (data) => {
             if (data.code == 1 && data.result != null) {
                 this.comps = JSON.parse(data.result);
-                for(let value of JSON.parse(data.result) ){
+                for (let value of JSON.parse(data.result)) {
                     this.companys.push(value.enterprise_name);
                     this.company_ids.push(value.enterprise_uid);
                 }
@@ -264,7 +289,6 @@ export default class EditEmployeeScene extends BaseComponent {
             <View style={styles.container}>
 
 
-
                 { /**      界面listview          */}
                 <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={5}>
                     <ListView
@@ -283,39 +307,47 @@ export default class EditEmployeeScene extends BaseComponent {
                 />
 
                 {/*              蒙版选择器        */}
-                <SelectMaskComponent viewData={[]} onClick={(rowID)=>this._onClick(rowID)}
-                                     ref={(modal)=> {
+                <SelectMaskComponent viewData={[]} onClick={(rowID) => this._onClick(rowID)}
+                                     ref={(modal) => {
                                          this.selectModal = modal
                                      }}
                 />
                 {/*              蒙版选择器        */}
-                <SelectMaskComponent1 viewData={[]} onClick={(rowID)=>this.onClickCompany(rowID)}
-                                      ref={(modal)=> {
+                <SelectMaskComponent1 viewData={[]} onClick={(rowID) => this.onClickCompany(rowID)}
+                                      ref={(modal) => {
                                           this.selectModal1 = modal
                                       }}
                 />
 
                 {/**      注销按钮          */}
                 {this.props.isAddEmployee ? <MyButton buttonType={MyButton.TEXTBUTTON}
-                                                content={'注销'}
-                                                parentStyle={styles.loginBtnStyle}
-                                                childStyle={styles.loginButtonTextStyle}
-                                                mOnPress={this._loginOut}/> : null}
+                                                      content={'注销'}
+                                                      parentStyle={styles.loginBtnStyle}
+                                                      childStyle={styles.loginButtonTextStyle}
+                                                      mOnPress={this._loginOut}/> : null}
 
             </View>
         );
     }
 
-    /**      注销按钮点击事件          */
+    /**
+     * from @huangning
+     *
+     * 注销按钮点击事件
+     **/
     _loginOut = () => {
         this.deleteData();
     }
-    /**      导航栏完成按钮点击事件          */
+    /**
+     * from @huangning
+     *
+     * 导航栏完成按钮点击事件
+     **/
     _completedForEdit = () => {
         for (let i = 0; i < Car.length; i++) {
             let cars = Car[i].cars;
             for (let j = 0; j < cars.length; j++) {
-                if(!(i==2 && (j==1 || j==2))){
+                if (!(i == 2 && (j == 1 || j == 2))) {
 
                     if (cars[j].name <= 0) {
                         this.props.showToast("请输入" + Car[i].cars[j].title);
@@ -324,25 +356,28 @@ export default class EditEmployeeScene extends BaseComponent {
                 }
             }
         }
-        if(Car[2].cars[0].name == this.props.mobile){//手机号没改,密码传''
-            Car[2].cars[1].name='';
-        }else if (Car[2].cars[1].name.length < 6) {
-            this.props.showToast("密码必须为6~16位");
-            return;
-        }else if (Car[2].cars[1].name !== Car[2].cars[2].name) {
-            this.props.showToast("两次输入的密码不同");
-            return;
+        if (Car[2].cars[0].name == this.props.mobile) {//手机号没改,密码可写可不写
+            this.saveData();
+        } else {
+            if (Car[2].cars[1].name.length < 6) {
+                this.props.showToast("密码必须为6~16位");
+                return;
+            } else if (Car[2].cars[1].name !== Car[2].cars[2].name) {
+                this.props.showToast("两次输入的密码不同");
+                return;
+            }
+            if (Car[2].cars[0].name.length != 11) {
+                this.props.showToast("请输入正确的用户名");
+            } else {
+                this.saveData()
+            }
         }
-        if (Car[2].cars[0].name.length != 11) {
-            this.props.showToast("请输入正确的用户名");
-        }else{
-            this.saveData()
-        }
-
-
-
     }
-    /**      导航栏右侧按钮          */
+    /**
+     * from @huangning
+     *
+     * 导航栏右侧按钮
+     **/
     _navigatorRightView = () => {
         return (
             <TouchableOpacity
@@ -352,12 +387,12 @@ export default class EditEmployeeScene extends BaseComponent {
                     justifyContent: 'center', alignItems: 'center', borderRadius: 5
                 }}
                 activeOpacity={0.8} onPress={() => {
-                    if (this.isClick){
+                if (this.isClick) {
 
-                        this._completedForEdit();
-                    }
+                    this._completedForEdit();
+                }
             }}>
-                <Text style={{
+                <Text allowFontScaling={false} style={{
                     color: FontAndColor.COLORB0,
                     fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT30),
                     textAlign: 'center',
@@ -367,7 +402,11 @@ export default class EditEmployeeScene extends BaseComponent {
         );
     }
 
-    /**      row的点击事件          */
+    /**
+     * from @huangning
+     * row的点击事件
+     *
+     **/
     _rowAndSectionClick = (rowID, sectionID) => {
         ROWID = rowID;
         SECTIONID = sectionID;
@@ -380,30 +419,45 @@ export default class EditEmployeeScene extends BaseComponent {
         }
     }
 
+    /**
+     * from @huangning
+     *
+     *
+     **/
     _openModal = (dt, rowId, sectionID) => {
         this.selectModal.changeData(dt);
         this.selectModal.openModal();
         this.currentData = dt;
-        if(SECTIONID ===1&& ROWID ===0){
+        if (SECTIONID === 1 && ROWID === 0) {
             // this.selectModal.isCompanys();
         }
     }
+    /**
+     * from @huangning
+     *
+     *
+     **/
     _openModal1 = (dt, rowId, sectionID) => {
         this.selectModal1.changeData(dt);
         this.selectModal1.openModal();
         this.currentData = dt;
-        if(SECTIONID ===1&& ROWID ===0){
+        if (SECTIONID === 1 && ROWID === 0) {
             // this.selectModal.isCompanys();
         }
     }
-    onClickCompany=(itemIds)=>{
-        if(SECTIONID ===1&& ROWID ===0){
-            if (itemIds.length>0){
+    /**
+     * from @huangning
+     *
+     *
+     **/
+    onClickCompany = (itemIds) => {
+        if (SECTIONID === 1 && ROWID === 0) {
+            if (itemIds.length > 0) {
 
-                Car[SECTIONID].cars[ROWID].name =this.companys[itemIds[0]];
-                this.items=itemIds;
-            }else {
-                Car[SECTIONID].cars[ROWID].name =this.companyName;
+                Car[SECTIONID].cars[ROWID].name = this.companys[itemIds[0]];
+                this.items = itemIds;
+            } else {
+                Car[SECTIONID].cars[ROWID].name = this.companyName;
             }
         }
         let jsonData = Car;
@@ -454,16 +508,20 @@ export default class EditEmployeeScene extends BaseComponent {
             source: ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
         });
     }
-    /**      蒙版listview  点击选择,返回点击cell的id          */
+    /**
+     * from @huangning
+     *
+     * 蒙版listview  点击选择,返回点击cell的id
+     **/
     _onClick = (rowID) => {
-        if(SECTIONID ===0&& ROWID ===1){
+        if (SECTIONID === 0 && ROWID === 1) {
 
-            this.sex=Number.parseInt(rowID)+1+'';
-        }else if (SECTIONID ===1&& ROWID ===1){
+            this.sex = Number.parseInt(rowID) + 1 + '';
+        } else if (SECTIONID === 1 && ROWID === 1) {
 
-            for(let value of this.props.roleData){
+            for (let value of this.props.roleData) {
 
-                if(value.role_name==this.props.roleList[rowID]){
+                if (value.role_name == this.props.roleList[rowID]) {
 
                     this.roleId = value.role_id;
                 }
@@ -472,7 +530,6 @@ export default class EditEmployeeScene extends BaseComponent {
         Car[SECTIONID].cars[ROWID].name = this.currentData[rowID];
 
 
-
         let jsonData = Car;
 
         //    定义变量
@@ -523,10 +580,14 @@ export default class EditEmployeeScene extends BaseComponent {
     }
 
 
-    // 每一行中的数据
+    /**
+     * from @huangning
+     * 每一行中的数据
+     *
+     **/
     _renderRow = (rowData, sectionID, rowID) => {
         let HIDDEN;
-        let PASSWORD=false;
+        let PASSWORD = false;
         if ((sectionID === 0 && rowID === 0) || sectionID === 2) {
             HIDDEN = false;
         }
@@ -542,16 +603,16 @@ export default class EditEmployeeScene extends BaseComponent {
         }
 
         return (
-            <TouchableOpacity onPress={()=>this._rowAndSectionClick(rowID, sectionID)
+            <TouchableOpacity onPress={() => this._rowAndSectionClick(rowID, sectionID)
             }>
                 <View style={styles.rowView}>
 
-                    <Text style={styles.rowLeftTitle}>{rowData.title}</Text>
-                    {HIDDEN ? <Text
-                        style={[styles.rowRightTitle,]}>{this.state.rowdata ? this.state.rowdata : rowData.name}</Text> :
+                    <Text allowFontScaling={false} style={styles.rowLeftTitle}>{rowData.title}</Text>
+                    {HIDDEN ? <Text allowFontScaling={false}
+                                    style={[styles.rowRightTitle,]}>{this.state.rowdata ? this.state.rowdata : rowData.name}</Text> :
                         <TextInput ref={sectionID + rowID} defaultValue={rowData.name}
                                    placeholder={"请输入" + rowData.title } style={styles.inputStyle}
-                                   onChangeText={(text)=>this._textChange(sectionID, rowID, text)}
+                                   onChangeText={(text) => this._textChange(sectionID, rowID, text)}
                                    secureTextEntry={PASSWORD}
                                    underlineColorAndroid={"#00000000"}
 
@@ -565,12 +626,23 @@ export default class EditEmployeeScene extends BaseComponent {
             </TouchableOpacity>
         );
     }
-    _textChange = (sectionID, rowID, text)=> {
+
+    /**
+     * from @huangning
+     *
+     *
+     **/
+    _textChange = (sectionID, rowID, text) => {
         ROWID = rowID;
         SECTIONID = sectionID;
         Car[SECTIONID].cars[ROWID].name = text;
     }
-    // 每一组对应的数据
+
+    /**
+     * from @huangning
+     *
+     * 每一组对应的数据
+     **/
     _renderSectionHeader(sectionData, sectionId) {
         return (
             <View style={styles.sectionView}>

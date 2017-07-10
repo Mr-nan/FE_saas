@@ -86,9 +86,9 @@ export  default class CarUpImageCell extends PureComponent {
         return (
             <View style={styles.parentView}>
                 <View style={{width: width, marginTop: Pixel.getPixel(15), flexDirection: 'row'}}>
-                    {movie.explain=='1'?<Text style={{fontSize: fontAndColor.BUTTONFONT30, color: fontAndColor.COLORB2}}>*</Text>:<View/>}
-                    <Text style={{fontSize: fontAndColor.BUTTONFONT30, color: fontAndColor.COLORA0}}>{movie.title}</Text>
-                    <Text style={{fontSize: fontAndColor.BUTTONFONT30, color: fontAndColor.COLORA1}}>({movie.subTitle})</Text>
+                    {movie.explain=='1'?<Text allowFontScaling={false}  style={{fontSize: fontAndColor.BUTTONFONT30, color: fontAndColor.COLORB2}}>*</Text>:<View/>}
+                    <Text allowFontScaling={false}  style={{fontSize: fontAndColor.BUTTONFONT30, color: fontAndColor.COLORA0}}>{movie.title}</Text>
+                    <Text allowFontScaling={false}  style={{fontSize: fontAndColor.BUTTONFONT30, color: fontAndColor.COLORA1}}>({movie.subTitle})</Text>
                 </View>
                 <View style={{width: width, marginTop: Pixel.getPixel(7), flexDirection: 'row', flexWrap: 'wrap'}}>
                     {movieItems}

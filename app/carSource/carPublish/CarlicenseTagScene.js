@@ -65,7 +65,7 @@ export default class CarDischargeScene extends  BaseComponent{
                             onPress={()=>{this._openModal()}}
                             style={styles.preContainer}>
                             <Image style={styles.preContainer} source={preBg}>
-                                <Text style={styles.fontPre}>{this.state.city}</Text>
+                                <Text allowFontScaling={false}  style={styles.fontPre}>{this.state.city}</Text>
                             </Image>
                         </TouchableOpacity>
 

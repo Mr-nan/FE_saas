@@ -1492,6 +1492,7 @@
 				PRODUCT_NAME = FE_Sass;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos10.3;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1529,6 +1530,7 @@
 				PRODUCT_NAME = FE_Sass;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos10.3;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
@@ -1603,6 +1605,7 @@
 				PRODUCT_NAME = FE_Sass;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos10.3;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Staging;

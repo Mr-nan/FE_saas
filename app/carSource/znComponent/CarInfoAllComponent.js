@@ -41,12 +41,12 @@ export class CarDeploySwitchoverButton extends Component{
             <View style={styles.carDeploySwitchoverButton}>
                 <TouchableOpacity style={[styles.carDeploySwitchoverItemView,this.state.currentSwitchoverType==0&&{borderBottomWidth:1,borderBottomColor:fontAndColor.COLORB0}]}
                                   onPress={()=>{this.switchoverAction(0)}} activeOpacity={1}>
-                    <Text style={[styles.carDeploySwitchoverItemText,this.state.currentSwitchoverType==0 && {color:fontAndColor.COLORB0}]}>基本信息</Text>
+                    <Text allowFontScaling={false}  style={[styles.carDeploySwitchoverItemText,this.state.currentSwitchoverType==0 && {color:fontAndColor.COLORB0}]}>基本信息</Text>
                 </TouchableOpacity>
                 <View style={{backgroundColor:fontAndColor.COLORA4,width:StyleSheet.hairlineWidth,height:20}}/>
                 <TouchableOpacity  style={[styles.carDeploySwitchoverItemView ,this.state.currentSwitchoverType==1&&{borderBottomWidth:1,borderBottomColor:fontAndColor.COLORB0}]}
                                    onPress={()=>{this.switchoverAction(1)}} activeOpacity={1}>
-                    <Text  style={[styles.carDeploySwitchoverItemText,this.state.currentSwitchoverType==1 && {color:fontAndColor.COLORB0}]}>车辆配置</Text>
+                    <Text allowFontScaling={false}   style={[styles.carDeploySwitchoverItemText,this.state.currentSwitchoverType==1 && {color:fontAndColor.COLORB0}]}>车辆配置</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -167,17 +167,17 @@ export class CarConfigurationView extends BaseComponent{
                 dataSource={this.state.dataSource}
                 renderHeader={()=>{return(
                     <View style={{paddingHorizontal:Pixel.getPixel(15),paddingVertical:Pixel.getPixel(10),backgroundColor:'white'}}>
-                        <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getPixel(fontAndColor.LITTLEFONT28)}}>{this.props.carConfiguraInfo}</Text>
+                        <Text allowFontScaling={false}  style={{color:fontAndColor.COLORA0, fontSize:Pixel.getPixel(fontAndColor.LITTLEFONT28)}}>{this.props.carConfiguraInfo}</Text>
                     </View>
                 )}}
                 renderRow={(rowData, sectionID, rowID)=>{
                 return(<View  style={styles.carConfigurationViewItem}>
-                    <Text style={styles.carConfigurationViewItemtTitleText}>{rowData.title}</Text>
-                    <Text style={styles.carConfigurationViewItemtValueText}>{rowData.value==1?'标配':(rowData.value==0?'选配':rowData.value)}</Text>
+                    <Text allowFontScaling={false}  style={styles.carConfigurationViewItemtTitleText}>{rowData.title}</Text>
+                    <Text allowFontScaling={false}  style={styles.carConfigurationViewItemtValueText}>{rowData.value==1?'标配':(rowData.value==0?'选配':rowData.value)}</Text>
                 </View>) }}
                 renderSectionHeader={(sectionData, sectionId)=>{
                     return(<View style={styles.carConfigurationViewItemHead}>
-                        <Text style={styles.carConfigurationViewItemHeadText}>{sectionData}</Text>
+                        <Text allowFontScaling={false}  style={styles.carConfigurationViewItemHeadText}>{sectionData}</Text>
                     </View>)}}
                 enableEmptySections={true}/>
         </View>

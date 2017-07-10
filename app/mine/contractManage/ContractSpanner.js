@@ -54,7 +54,7 @@ export  default class ShareSpanner extends Component {
                         <TouchableHighlight onPress={() => {
                             this.setModalVisible()}}>
                             <View style={styles.content}>
-                                <Text style={styles.spinnerTitle}>
+                                <Text allowFontScaling={false}  style={styles.spinnerTitle}>
                                     某某某担保合同
                                 </Text>
                             </View>
@@ -62,7 +62,7 @@ export  default class ShareSpanner extends Component {
                         <TouchableHighlight onPress={() => {
                             this.setModalVisible()}}>
                             <View style={styles.content}>
-                                <Text style={[styles.spinnerTitle,{color: fontAndClolr.COLORB0} ]}>
+                                <Text allowFontScaling={false}  style={[styles.spinnerTitle,{color: fontAndClolr.COLORB0} ]}>
                                     融资服务合同
                                 </Text>
                             </View>
@@ -70,7 +70,7 @@ export  default class ShareSpanner extends Component {
                         <TouchableHighlight onPress={() => {
                             this.setModalVisible()}}>
                             <View style={styles.content}>
-                                <Text style={styles.spinnerTitle}>
+                                <Text allowFontScaling={false}  style={styles.spinnerTitle}>
                                     高额保证反担保合同
                                 </Text>
                             </View>

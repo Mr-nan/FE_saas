@@ -121,7 +121,7 @@ export default class AutoType extends Component {
                             style={[styles.selectContainer,styles.contentAlign]}
                             onPress={()=>{this._labelPress(i)}}>
                             <View >
-                                <Text style={styles.selectText}>{data.title}</Text>
+                                <Text allowFontScaling={false}  style={styles.selectText}>{data.title}</Text>
                             </View>
                         </TouchableOpacity>
                     );
@@ -133,7 +133,7 @@ export default class AutoType extends Component {
                             style={[styles.circleContainer,styles.contentAlign]}
                             onPress={()=>{this._labelPress(i)}}>
                             <View >
-                                <Text style={styles.unselectText}>{data.title}</Text>
+                                <Text allowFontScaling={false}  style={styles.unselectText}>{data.title}</Text>
                             </View>
                         </TouchableOpacity>
                     );
@@ -151,7 +151,7 @@ export default class AutoType extends Component {
             <TouchableOpacity
                 activeOpacity={0.6}
                 onPress={()=>{}}>
-                <Text style={styles.rightTitleText}>完成</Text>
+                <Text allowFontScaling={false}  style={styles.rightTitleText}>完成</Text>
             </TouchableOpacity>
         );
     };
