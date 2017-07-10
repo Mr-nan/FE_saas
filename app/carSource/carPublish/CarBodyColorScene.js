@@ -203,7 +203,6 @@ export default class CarBodyColorScene extends  BaseComponent{
         //         data.img = '';
         //     }
         //
-        //
         // });
 
         this.viewShell.map((data,index)=>{
