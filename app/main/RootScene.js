@@ -27,7 +27,7 @@ import  UpLoadScene from './UpLoadScene';
 import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
 import codePush from 'react-native-code-push'
-const versionCode = 16.0;
+const versionCode = 17.0;
 let canNext = true;
 let Platform = require('Platform');
 let deploymentKey = '';
