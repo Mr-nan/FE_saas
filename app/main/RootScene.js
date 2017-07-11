@@ -47,11 +47,11 @@ export default class RootScene extends BaseComponent {
 
 
         ErrorUtils.setGlobalHandler((e) => {　//发生异常的处理方法,当然如果是打包好的话可能你找都找不到是哪段代码出问题了
-            this.props.showToast(''+JSON.stringify(e));
+            this.props.showToast(''+e);
             StorageUtil.mGetItem(KeyNames.PHONE, (data) => {
                 let maps = {
                     phone: data.result,
-                    message: ''+JSON.stringify(e)
+                    message: ''+e
                 };
                 request(Urls.ADDACCOUNTMESSAGEINFO, 'Post', maps)
                     .then((response) => {
