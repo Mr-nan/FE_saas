@@ -38,10 +38,17 @@ import AccountWebScene from "../accountManage/AccountWebScene";
 import WebScene from "../../main/WebScene";
 import ContractWebScene from "./ContractWebScene";
 import ContractScene from "./ContractScene";
+import LoanInfo from "./component/LoanInfo";
+import DDDetailScene from "../../finance/lend/DDDetailScene";
 const Pixel = new PixelUtil();
 
 export default class ProcurementOrderDetailScene extends BaseComponent {
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     constructor(props) {
         super(props);
 
@@ -55,6 +62,20 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         this.bottomState = -1;
         this.contactData = {};
         this.leftTime = 0;
+
+        /*        this.financeInfo = {
+         order_id: '',
+
+         finance_no: '',
+         finance_amount: '0.00',
+         finance_service_amount: "0.00",
+         finance_obd_amount: "0.00"
+         };*/
+        this.financeInfo = {};
+
+        this.companyId = 0;
+        this.applyLoanAmount = '请输入申请贷款金额';
+
         this.state = {
             dataSource: [],
             renderPlaceholderOnly: 'blank',
@@ -62,6 +83,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         }
     }
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     componentDidMount() {
         BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
         InteractionManager.runAfterInteractions(() => {
@@ -70,6 +96,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         });
     }
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     initFinish = () => {
         /*        this.setState({
          dataSource: this.state.dataSource.cloneWithRows(['', '', '']),
@@ -78,6 +109,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         this.loadData();
     };
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     dateReversal = (time) => {
         const date = new Date();
         date.setTime(time);
@@ -200,6 +236,60 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
                 this.items.push({title: '完成交易', nodeState: 1, isLast: true, isFirst: false});
                 break;
+            case 5: // 订单融资处理中
+                this.mList = [];
+                this.mList = ['3', '7'];
+                break;
+            case 6: // 待付首付款
+                this.mList = [];
+                this.items = [];
+                this.contactData = {};
+                this.mList = ['0', '1', '3', '4', '5', '6'];
+                this.contactData = {
+                    layoutTitle: '付首付款',
+                    layoutContent: '请支付首付款，之后等待放款。',
+                    setPrompt: true,
+                    promptTitle: '首付款说明',
+                    promptContent: '车贷房贷前您需先支付首付款，卖家可查看到账金额，但不可提现。如交易最终未完成，首付款可退回。'
+                };
+                this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
+                this.items.push({title: '已付订金', nodeState: 1, isLast: false, isFirst: false});
+                this.items.push({title: '结清尾款', nodeState: 2, isLast: false, isFirst: false});
+                //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
+                this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                break;
+            case 7: // 融资单确认验收车辆
+                this.mList = [];
+                this.items = [];
+                this.contactData = {};
+                this.mList = ['0', '1', '2', '3', '4', '7', '6'];
+                this.contactData = {
+                    layoutTitle: '确认验收车辆',
+                    layoutContent: '确认验收后，请等待贷款放款。',
+                    setPrompt: false
+                };
+                this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
+                this.items.push({title: '已付订金', nodeState: 1, isLast: false, isFirst: false});
+                this.items.push({title: '结清尾款', nodeState: 2, isLast: false, isFirst: false});
+                //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
+                this.items.push({title: '完成交易', nodeState: 2, isLast: true, isFirst: false});
+                break;
+            case 8: // 融资单完成交易
+                this.mList = [];
+                this.items = [];
+                this.contactData = {};
+                this.mList = ['0', '1', '3', '4', '7', '6'];
+                this.contactData = {
+                    layoutTitle: '已完成',
+                    layoutContent: '恭喜您交易已完成',
+                    setPrompt: false
+                };
+                this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});
+                this.items.push({title: '已付订金', nodeState: 0, isLast: false, isFirst: false});
+                this.items.push({title: '结清尾款', nodeState: 0, isLast: false, isFirst: false});
+                //this.items.push({title: '车辆发车', nodeState: 2, isLast: false, isFirst: false});
+                this.items.push({title: '完成交易', nodeState: 1, isLast: true, isFirst: false});
+                break;
             default:
                 break;
         }
@@ -217,13 +307,13 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 return (
                     <View style={{marginTop: Pixel.getTitlePixel(65)}}>
                         <View style={styles.tradingCountdown}>
-                            <Text>
-                                <Text style={{
+                            <Text allowFontScaling={false}>
+                                <Text allowFontScaling={false} style={{
                                     fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                                     color: fontAndColor.COLORB7
                                 }}>订金支付剩余时间</Text>
                                 <DepositCountDown leftTime={this.leftTime}/>
-                                <Text style={{
+                                <Text allowFontScaling={false} style={{
                                     fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                                     color: fontAndColor.COLORB7
                                 }}>超时未付订单自动取消</Text>
@@ -238,7 +328,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 return (
                     <View style={{marginTop: Pixel.getTitlePixel(65)}}>
                         <View style={styles.tradingCountdown}>
-                            <Text style={{
+                            <Text allowFontScaling={false} style={{
                                 marginLeft: Pixel.getPixel(15),
                                 fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                                 color: fontAndColor.COLORB7
@@ -254,11 +344,26 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 return (
                     <View style={{marginTop: Pixel.getTitlePixel(65)}}>
                         <View style={styles.tradingCountdown}>
-                            <Text style={{
+                            <Text allowFontScaling={false} style={{
                                 marginLeft: Pixel.getPixel(15),
                                 fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                                 color: fontAndColor.COLORB7
-                            }}>您申请的贷款已准备放款</Text>
+                            }}>您申请的贷款已准备放款，申请发车后付款到卖家账户，卖家可提现全部车款。</Text>
+                        </View>
+                        <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>
+                    </View>
+                )
+                break;
+            case 3:
+                this.listViewStyle = Pixel.getPixel(0);
+                return (
+                    <View style={{marginTop: Pixel.getTitlePixel(65)}}>
+                        <View style={styles.tradingCountdown}>
+                            <Text allowFontScaling={false} style={{
+                                marginLeft: Pixel.getPixel(15),
+                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                color: fontAndColor.COLORB7
+                            }}>正在准备放款请稍后。</Text>
                         </View>
                         <View style={{backgroundColor: fontAndColor.COLORB8, height: 1}}/>
                     </View>
@@ -303,7 +408,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
 
 
     /**
-     * 确认收车请求
+     * 普通流程确认验收请求
      */
     confirmCar = () => {
         this.props.showModal(true);
@@ -326,6 +431,39 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.loadData();
                     } else {
                         //this.props.showToast('确认验收失败');
+                        this.props.showToast(error.mjson.msg);
+                    }
+                });
+            } else {
+                this.props.showToast('确认验收失败');
+            }
+        });
+    };
+
+    /**
+     * 融资流程确认验收请求
+     **/
+    loanConfirmCar = () => {
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let maps = {
+                    company_id: datas.company_base_id,
+                    order_id: this.orderDetail.id
+                };
+                let url = AppUrls.CONFIRM_FINANCING_ORDER;
+                request(url, 'post', maps).then((response) => {
+                    if (response.mjson.msg === 'ok' && response.mjson.code === 1) {
+                        this.loadData();
+                    } else {
+                        this.props.showToast(response.mjson.msg);
+                    }
+                }, (error) => {
+                    //this.props.showToast('确认验收失败');
+                    if (error.mjson.code == '6350087' || error.mjson.code == '6350082') {
+                        this.loadData();
+                    } else {
                         this.props.showToast(error.mjson.msg);
                     }
                 });
@@ -419,7 +557,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                     this.cancelOrder);
                             }}>
                             <View style={styles.buttonCancel}>
-                                <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>取消订单</Text>
                             </View>
                         </TouchableOpacity>
                         <ChooseModal ref='chooseModal' title='提示'
@@ -434,6 +572,12 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 )
                 break;
             case 1:
+                let applyAmount = this.applyLoanAmount === '请输入申请贷款金额' ? 0 : this.applyLoanAmount;
+                //let obdAmount = this.financeInfo.obd_mny ? this.financeInfo.obd_mny : 0;
+                //let feeAmount = this.financeInfo.fee_mny ? this.financeInfo.fee_mny : 0;
+                //console.log('this.balance_amount===' + this.orderDetail.balance_amount);
+                //console.log('obdAmount==='+obdAmount,'   feeAmount==='+feeAmount);
+                //console.log('121d1k1lk2d1.d.1===');
                 return (
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
@@ -442,24 +586,39 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                     this.cancelOrder);
                             }}>
                             <View style={styles.buttonCancel}>
-                                <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>取消订单</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
-                                this.toNextPage({
-                                    name: 'CheckStand',
-                                    component: CheckStand,
-                                    params: {
-                                        payAmount: this.orderState === 1 ? this.orderDetail.deposit_amount : this.orderDetail.balance_amount,
-                                        orderId: this.props.orderId,
-                                        payType: this.orderState,
-                                        callBack: this.payCallBack
-                                    }
-                                });
+                                if (this.applyLoanAmount === '请输入申请贷款金额' && this.orderState == 6) {
+                                    this.props.showToast('请输入申请贷款金额');
+                                } else {
+                                    this.toNextPage({
+                                        name: 'CheckStand',
+                                        component: CheckStand,
+                                        params: {
+                                            payAmount: this.orderState === 1 ?
+                                                this.orderDetail.deposit_amount :
+                                                parseFloat(this.orderDetail.balance_amount - applyAmount +
+                                                    parseFloat(this.financeInfo.obd_mny ? this.financeInfo.obd_mny : 0) +
+                                                    parseFloat(this.financeInfo.fee_mny ? this.financeInfo.fee_mny : 0)).toFixed(2),
+                                            orderId: this.props.orderId,
+                                            orderNo: this.orderDetail.order_no,
+                                            payType: this.orderState,
+                                            sellerId: this.orderDetail.seller_id,
+                                            carId: this.orderDetail.orders_item_data[0].car_id,
+                                            pledgeType: this.orderDetail.orders_item_data[0].car_finance_data.pledge_type,
+                                            pledgeStatus: this.orderDetail.orders_item_data[0].car_finance_data.pledge_status,
+                                            applyLoanAmount: this.applyLoanAmount,
+                                            financeNo: this.orderDetail.finance_no,
+                                            callBack: this.payCallBack
+                                        }
+                                    });
+                                }
                             }}>
                             <View style={styles.buttonConfirm}>
-                                <Text style={{color: '#ffffff'}}>支付</Text>
+                                <Text allowFontScaling={false} style={{color: '#ffffff'}}>支付</Text>
                             </View>
                         </TouchableOpacity>
                         <ChooseModal ref='chooseModal' title='提示'
@@ -481,18 +640,23 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 this.refs.expModal.changeShowType(true, '提示', '订单尾款已结清联系客服取消订单', '确定');
                             }}>
                             <View style={styles.buttonCancel}>
-                                <Text style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>取消订单</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
-                                this.refs.chooseModal.changeShowType(true, '取消', '确定', '确定后卖家可提现全款。',
-                                    this.confirmCar);
+                                if (this.orderState == 3) {
+                                    this.refs.chooseModal.changeShowType(true, '取消', '确定', '确定后卖家可提现全款。',
+                                        this.confirmCar);
+                                } else if (this.orderState == 7) {
+                                    this.refs.chooseModal.changeShowType(true, '取消', '确定', '确定后安排放款，放款完成后卖家可提现全款。',
+                                        this.loanConfirmCar);
+                                }
                                 //this.props.showModal(true);
                                 //this.confirmCar();
                             }}>
                             <View style={styles.buttonConfirm}>
-                                <Text style={{color: '#ffffff'}}>确认验收</Text>
+                                <Text allowFontScaling={false} style={{color: '#ffffff'}}>确认验收</Text>
                             </View>
                         </TouchableOpacity>
                         <ChooseModal ref='chooseModal' title='注意'
@@ -518,7 +682,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 this.revertOrder();
                             }}>
                             <View style={[styles.buttonCancel, {width: Pixel.getPixel(137)}]}>
-                                <Text style={{color: fontAndColor.COLORA2}}>撤回取消订单申请</Text>
+                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>撤回取消订单申请</Text>
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -527,7 +691,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 4:
                 return (
                     <View style={[styles.bottomBar, {justifyContent: 'center'}]}>
-                        <Text style={{
+                        <Text allowFontScaling={false} style={{
                             textAlign: 'center',
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                             color: fontAndColor.COLORB0
@@ -540,7 +704,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 5:
                 return (
                     <View style={[styles.bottomBar, {justifyContent: 'center'}]}>
-                        <Text style={{
+                        <Text allowFontScaling={false} style={{
                             textAlign: 'center',
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                             color: fontAndColor.COLORB0
@@ -553,7 +717,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 6:
                 return (
                     <View style={[styles.bottomBar, {justifyContent: 'center'}]}>
-                        <Text style={{
+                        <Text allowFontScaling={false} style={{
                             textAlign: 'center',
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                             color: fontAndColor.COLORB0
@@ -571,7 +735,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
 
                             }}>
                             <View style={styles.buttonCancel}>
-                                <Text style={{color: fontAndColor.COLORA2}}>款项支付中</Text>
+                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>款项支付中</Text>
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -586,7 +750,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 //this.revertOrder();
                             }}>
                             <View style={[styles.buttonCancel, {width: Pixel.getPixel(137)}]}>
-                                <Text style={{color: fontAndColor.COLORA2}}>正在处理中请稍后</Text>
+                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>正在处理中请稍后</Text>
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -595,7 +759,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 9:
                 return (
                     <View style={[styles.bottomBar, {justifyContent: 'center'}]}>
-                        <Text style={{
+                        <Text allowFontScaling={false} style={{
                             textAlign: 'center',
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                             color: fontAndColor.COLORB0
@@ -604,6 +768,62 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         </Text>
                     </View>
                 );
+                break;
+            case 10:
+                return (
+                    <View style={styles.bottomBar}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.refs.cancelModal.changeShowType(true, '提示', '已申请订单融资请联系客服取消订单', '确定');
+                            }}>
+                            <View style={styles.buttonCancel}>
+                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <ExplainModal ref='cancelModal' title='提示' buttonStyle={styles.expButton}
+                                      textStyle={styles.expText}
+                                      text='确定' content='订单尾款已结清联系客服取消订单'/>
+                    </View>
+                )
+                break;
+            case 11:
+                return (
+                    <View style={styles.bottomBar}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.refs.chooseModal.changeShowType(true, '取消', '确定', '卖家将在您发起取消申请24小时内回复，如已支付订金将与卖家协商退款。',
+                                    this.cancelOrder);
+                            }}>
+                            <View style={styles.buttonCancel}>
+                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => {
+                                if (this.orderState == 3) {
+                                    this.refs.chooseModal.changeShowType(true, '取消', '确定', '确定后卖家可提现全款。',
+                                        this.confirmCar);
+                                } else if (this.orderState == 7) {
+                                    this.refs.chooseModal.changeShowType(true, '取消', '确定', '确定后安排放款，放款完成后卖家可提现全款。',
+                                        this.loanConfirmCar);
+                                }
+                                //this.props.showModal(true);
+                                //this.confirmCar();
+                            }}>
+                            <View style={styles.buttonConfirm}>
+                                <Text allowFontScaling={false} style={{color: '#ffffff'}}>确认验收</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <ChooseModal ref='chooseModal' title='注意'
+                                     negativeButtonStyle={styles.negativeButtonStyle}
+                                     negativeTextStyle={styles.negativeTextStyle} negativeText='取消'
+                                     positiveButtonStyle={styles.positiveButtonStyle}
+                                     positiveTextStyle={styles.positiveTextStyle} positiveText='确定'
+                                     buttonsMargin={Pixel.getPixel(20)}
+                                     positiveOperation={this.confirmCar}
+                                     content=''/>
+                    </View>
+                )
                 break;
             default:
                 return null;
@@ -809,13 +1029,195 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     }
                 }
                 break;
+            case 12:  // 12=>'订单融资处理中',
+            case 16:  //16=>'支付首付款完成',
+            case 17:  //17=>'融资单确认验收中',
+            case 19:  //17=>'融资单确认验收中',
+            case 20:  //17=>'融资单确认验收中',
+            case 21:  //17=>'融资单确认验收中',
+            case 22:  //17=>'融资单确认验收中',
+            case 23:  //17=>'融资单确认验收中',
+            case 24:  //17=>'融资单确认验收中',
+                if (cancelStatus === 0) {
+                    this.orderState = 5;
+                    this.topState = -1;
+                    this.bottomState = 0;
+                } else if (cancelStatus === 1) {
+                    this.orderState = 5;
+                    this.topState = -1;
+                    this.bottomState = 3;
+                } else if (cancelStatus === 2) {
+                    this.orderState = 5;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 5;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
+                    }
+                } else if (cancelStatus === 3) {
+                    this.orderState = 5;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 5;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
+                    }
+                }
+                break;
+            case 13:  //13=>'订单融资完成',
+            case 14:  //14=>'支付首付款中',
+            case 15:  //15=>'支付首付款失败',
+                if (cancelStatus === 0) {
+                    this.orderState = 6;
+                    this.topState = -1;
+                    if (status === 6) {
+                        this.bottomState = 1;
+                    } else {
+                        this.bottomState = 1;
+                    }
+                } else if (cancelStatus === 1) {
+                    this.orderState = 6;
+                    this.topState = -1;
+                    this.bottomState = 3;
+                } else if (cancelStatus === 2) {
+                    this.orderState = 6;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 5;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
+                    }
+                } else if (cancelStatus === 3) {
+                    this.orderState = 6;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 5;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
+                    }
+                }
+                break;
+            case 18:  //18=>'融资单确认验收失败',
+            case 160:  //18=>'融资单确认验收失败',
+            case 50:  //18=>'融资单确认验收失败',
+                if (cancelStatus === 0) {
+                    this.orderState = 7;
+                    this.topState = -1;
+                    this.bottomState = 11;
+                } else if (cancelStatus === 1) {
+                    this.orderState = 7;
+                    this.topState = -1;
+                    this.bottomState = 3;
+                } else if (cancelStatus === 2) {
+                    this.orderState = 7;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 5;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
+                    }
+                } else if (cancelStatus === 3) {
+                    this.orderState = 7;
+                    this.topState = -1;
+                    if (this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 9;
+                    } else if (this.orderDetail.cancel_side == 2) {
+                        this.bottomState = 5;
+                    } else {
+                        if (this.orderDetail.cancel_is_agree == 2) {
+                            this.bottomState = 6;
+                        } else {
+                            this.bottomState = 5;
+                        }
+                    }
+                }
+                break;
+            /*case 19:
+             if (cancelStatus === 0) {
+             this.orderState = 8;
+             this.topState = -1;
+             if (status === 6) {
+             this.bottomState = 1;
+             } else {
+             this.bottomState = 1;
+             }
+             } else if (cancelStatus === 1) {
+             this.orderState = 8;
+             this.topState = -1;
+             this.bottomState = 3;
+             } else if (cancelStatus === 2) {
+             this.orderState = 8;
+             this.topState = -1;
+             if (this.orderDetail.cancel_side == 3) {
+             this.bottomState = 9;
+             } else if (this.orderDetail.cancel_side == 2) {
+             this.bottomState = 5;
+             } else {
+             if (this.orderDetail.cancel_is_agree == 2) {
+             this.bottomState = 6;
+             } else {
+             this.bottomState = 5;
+             }
+             }
+             } else if (cancelStatus === 3) {
+             this.orderState = 8;
+             this.topState = -1;
+             if (this.orderDetail.cancel_side == 3) {
+             this.bottomState = 9;
+             } else if (this.orderDetail.cancel_side == 2) {
+             this.bottomState = 5;
+             } else {
+             if (this.orderDetail.cancel_is_agree == 2) {
+             this.bottomState = 6;
+             } else {
+             this.bottomState = 5;
+             }
+             }
+             }
+             break;*/
         }
     };
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     loadData = () => {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
+                this.companyId = datas.company_base_id;
                 let maps = {
                     company_id: datas.company_base_id,
                     order_id: this.props.orderId,
@@ -843,6 +1245,13 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             }
                         }
                         this.stateMapping(status, cancelStatus);
+
+                        // TODO this is TEST!!!!!!!!!!!!
+                        //this.orderState = 7;
+                        //this.bottomState = 2;
+
+                        this.financeInfo = this.orderDetail.finance_data;
+
                         this.initListData(this.orderState);
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
@@ -871,7 +1280,32 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         });
     };
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
+    updateLoanAmount = (newAmount) => {
+        //this.props.showModal(true);
+        this.applyLoanAmount = newAmount;
+    };
+
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
+    refreshLoanInfo = (financeInfo) => {
+        //console.log('new.financeInfo==='+financeInfo.obd_mny);
+        this.financeInfo = financeInfo;
+    };
+
     // 下拉刷新数据
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     refreshingData = () => {
         //this.orderListData = [];
         this.setState({isRefreshing: true});
@@ -943,29 +1377,37 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     <Image
                         style={{marginLeft: Pixel.getPixel(15)}}
                         source={require('../../../images/mainImage/agreed_sign.png')}/>
-                    <Text style={{color: fontAndColor.COLORA1, marginLeft: Pixel.getPixel(5)}}>我已同意签署</Text>
+                    <Text allowFontScaling={false} style={{color: fontAndColor.COLORA1, marginLeft: Pixel.getPixel(5)}}>我已同意签署</Text>
                     {
                         this.orderState == 1 &&
-                        <Text
-                            onPress={() => {
-                                this.getTypeContractInfo(1)
-                            }}
-                            style={{color: fontAndColor.COLORA2}}>《买卖协议》</Text>
+                        <Text allowFontScaling={false}
+                              onPress={() => {
+                                  this.getTypeContractInfo(1)
+                              }}
+                              style={{color: fontAndColor.COLORA2}}>《买卖协议》</Text>
                     }
-                    {
-                        this.orderState == 3 &&
-                        <Text
-                            onPress={() => {
-                                this.getTypeContractInfo(2)
-                            }}
-                            style={{color: fontAndColor.COLORA2}}>《买卖协议附件》</Text>
-                    }
-                    {/*<Text style={{color: fontAndColor.COLORA1}}>和</Text>
-                     <Text
+                    {/*<Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1}}>和</Text>
+                     <Text allowFontScaling={false} 
                      onPress={() => {
                      this.getTypeContractInfo(2)
                      }}
                      style={{color: fontAndColor.COLORA2}}>《授权声明》</Text>*/}
+                    {
+                        (this.orderState == 3 || this.orderState == 7) &&
+                        <Text allowFontScaling={false}
+                              onPress={() => {
+                                  this.getTypeContractInfo(2)
+                              }}
+                              style={{color: fontAndColor.COLORA2}}>《买卖协议附件》</Text>
+                    }{/*{
+                 (this.orderState == 6 || this.orderState == 7) &&
+                 <Text allowFontScaling={false}
+                 onPress={() => {
+                 this.getTypeContractInfo(3)
+                 }}
+                 style={{color: fontAndColor.COLORA2}}>《售后回租协议》</Text>
+                 }*/}
+
                 </View>
             )
         } else if (rowData === '3') {
@@ -982,29 +1424,31 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         marginLeft: Pixel.getPixel(15),
                         justifyContent: 'center'
                     }}>
-                        <Text style={styles.orderInfo}>订单号:{this.orderDetail.order_no}</Text>
-                        <Text style={styles.orderInfo}>订单日期:{this.orderDetail.created_time}</Text>
+                        <Text allowFontScaling={false} style={styles.orderInfo}>订单号:{this.orderDetail.order_no}</Text>
+                        <Text allowFontScaling={false}
+                              style={styles.orderInfo}>订单日期:{this.orderDetail.created_time}</Text>
                     </View>
                     <View style={styles.separatedLine}/>
                     <View style={{flexDirection: 'row', height: Pixel.getPixel(105), alignItems: 'center'}}>
                         <Image style={styles.image}
                                source={imageUrl.length ? {uri: imageUrl[0].icon_url} : require('../../../images/carSourceImages/car_null_img.png')}/>
                         <View style={{marginLeft: Pixel.getPixel(10)}}>
-                            <Text style={{width: width - Pixel.getPixel(15 + 120 + 10 + 15)}}
+                            <Text allowFontScaling={false} style={{width: width - Pixel.getPixel(15 + 120 + 10 + 15)}}
                                   numberOfLines={1}>{this.orderDetail.orders_item_data[0].car_data.model_name}</Text>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(10), alignItems: 'center'}}>
-                                <Text style={styles.carDescribeTitle}>里程：</Text>
-                                <Text
-                                    style={styles.carDescribe}>{mileage}万</Text>
+                                <Text allowFontScaling={false} style={styles.carDescribeTitle}>里程：</Text>
+                                <Text allowFontScaling={false}
+                                      style={styles.carDescribe}>{mileage}万</Text>
                             </View>
                             <View style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
-                                <Text style={styles.carDescribeTitle}>上牌：</Text>
-                                <Text style={styles.carDescribe}>{initRegDate}</Text>
+                                <Text allowFontScaling={false} style={styles.carDescribeTitle}>上牌：</Text>
+                                <Text allowFontScaling={false} style={styles.carDescribe}>{initRegDate}</Text>
                             </View>
                             {this.orderState !== 0 ? <View
                                 style={{flexDirection: 'row', marginTop: Pixel.getPixel(5), alignItems: 'center'}}>
-                                <Text style={styles.carDescribeTitle}>成交价：</Text>
-                                <Text style={styles.carDescribe}>{this.orderDetail.transaction_amount}元</Text>
+                                <Text allowFontScaling={false} style={styles.carDescribeTitle}>成交价：</Text>
+                                <Text allowFontScaling={false}
+                                      style={styles.carDescribe}>{this.orderDetail.transaction_amount}元</Text>
                             </View> : null}
                         </View>
                     </View>
@@ -1014,7 +1458,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             return (
                 <View style={styles.itemType4}>
                     <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
-                        <Text style={{
+                        <Text allowFontScaling={false} style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                             marginLeft: Pixel.getPixel(15)
                         }}>采购信息</Text>
@@ -1027,82 +1471,42 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         marginTop: Pixel.getPixel(20),
                         marginRight: Pixel.getPixel(15)
                     }}>
-                        <Text style={styles.orderInfo}>支付订金</Text>
+                        <Text allowFontScaling={false} style={styles.orderInfo}>支付订金</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>{this.orderDetail.done_deposit_amount}元</Text>
+                        <Text allowFontScaling={false} style={styles.infoContent}>{this.orderDetail.done_deposit_amount}元</Text>
                     </View>
                     <View style={styles.infoItem}>
-                        <Text style={styles.orderInfo}>支付尾款</Text>
+                        <Text allowFontScaling={false} style={styles.orderInfo}>支付尾款</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>{this.orderDetail.done_balance_amount}元</Text>
+                        <Text allowFontScaling={false} style={styles.infoContent}>{this.orderDetail.done_balance_amount}元</Text>
                     </View>
                     <View style={styles.infoItem}>
-                        <Text style={styles.orderInfo}>支付总计</Text>
+                        <Text allowFontScaling={false} style={styles.orderInfo}>支付总计</Text>
                         <View style={{flex: 1}}/>
-                        <Text
-                            style={styles.infoContent}>{this.orderDetail.done_total_amount}元</Text>
+                        <Text allowFontScaling={false}
+                              style={styles.infoContent}>{this.orderDetail.done_total_amount}元</Text>
                     </View>
                 </View>
             )
         } else if (rowData === '5') {
             return (
-                <View style={styles.itemType5}>
-                    <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
-                        <Text style={{
-                            fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-                            marginLeft: Pixel.getPixel(15)
-                        }}>贷款信息</Text>
-                        <View style={{flex: 1}}/>
-                        <Text style={{color: fontAndColor.COLORA2}}>还款单号:</Text>
-                        <Text style={{color: fontAndColor.COLORA2}}>232222333</Text>
-                        <Image
-                            style={styles.backIcon}
-                            source={require('../../../images/mainImage/celljiantou.png')}/>
-                    </View>
-                    <View style={styles.separatedLine}/>
-                    <View style={{
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        marginLeft: Pixel.getPixel(15),
-                        marginTop: Pixel.getPixel(20),
-                        marginRight: Pixel.getPixel(15)
-                    }}>
-                        <Text style={styles.orderInfo}>最大可贷额度</Text>
-                        <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>100000元</Text>
-                    </View>
-                    {/*TODO 输入申请贷款额度*/}
-                    <View style={styles.inputBorder}>
-                        <TextInput defaultValue={0}
-                                   placeholder={"请输入申请贷款的额度"}
-                                   style={styles.inputStyle}
-                                   secureTextEntry={false}
-                                   underlineColorAndroid="transparent"
-                        />
-                        <Text style={{marginRight: Pixel.getPixel(10)}}>元</Text>
-                    </View>
-                    <View style={styles.infoItem}>
-                        <Text style={styles.orderInfo}>需支付服务费</Text>
-                        <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>100000元</Text>
-                    </View>
-                    <View style={styles.infoItem}>
-                        <Text style={styles.orderInfo}>需支付OBD使用费</Text>
-                        <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>100000元</Text>
-                    </View>
-                    <View style={styles.infoItem}>
-                        <Text style={styles.orderInfo}>应付首付款</Text>
-                        <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>100000元</Text>
-                    </View>
-                </View>
+                <LoanInfo
+                    balanceAmount={this.orderDetail.balance_amount}
+                    financeInfo={this.financeInfo}
+                    loanCode={this.orderDetail.finance_no}
+                    navigator={this.props.navigator}
+                    updateLoanAmount={this.updateLoanAmount}
+                    refreshLoanInfo={this.refreshLoanInfo}
+                    applyLoanAmount={this.applyLoanAmount}
+                    orderId={this.orderDetail.id}
+                    orderNo={this.orderDetail.order_no}
+                    companyId={this.companyId}/>
             )
         } else if (rowData === '6') {
             return (
                 <View style={styles.itemType6}>
                     <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
-                        <Text style={{
+                        <Text allowFontScaling={false} style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                             marginLeft: Pixel.getPixel(15)
                         }}>卖家信息</Text>
@@ -1115,21 +1519,80 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         marginTop: Pixel.getPixel(20),
                         marginRight: Pixel.getPixel(15)
                     }}>
-                        <Text style={styles.orderInfo}>姓名</Text>
+                        <Text allowFontScaling={false} style={styles.orderInfo}>姓名</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>{this.orderDetail.seller_name}</Text>
+                        <Text allowFontScaling={false} style={styles.infoContent}>{this.orderDetail.seller_name}</Text>
                     </View>
                     {/*<View style={styles.infoItem}>
-                     <Text style={styles.orderInfo}>联系方式</Text>
+                     <Text allowFontScaling={false}  style={styles.orderInfo}>联系方式</Text>
                      <View style={{flex: 1}}/>
-                     <Text style={styles.infoContent}>{this.orderDetail.seller_phone}</Text>
+                     <Text allowFontScaling={false}  style={styles.infoContent}>{this.orderDetail.seller_phone}</Text>
                      </View>*/}
                     <View style={styles.infoItem}>
-                        <Text style={styles.orderInfo}>企业名称</Text>
+                        <Text allowFontScaling={false} style={styles.orderInfo}>企业名称</Text>
                         <View style={{flex: 1}}/>
-                        <Text style={styles.infoContent}>{this.orderDetail.seller_company_name}</Text>
+                        <Text allowFontScaling={false}
+                              style={styles.infoContent}>{this.orderDetail.seller_company_name}</Text>
                     </View>
                 </View>
+            )
+        } else if (rowData === '7') {
+            return (
+                <TouchableOpacity
+                    style={styles.itemType7}
+                    onPress={() => {
+                        console.log(this.orderDetail.finance_no);
+                        // 跳转金融页面  借款详情
+                        this.toNextPage({
+                            name: 'DDDetailScene',
+                            component: DDDetailScene,
+                            params: {
+                                financeNo: this.orderDetail.finance_no,
+                                orderNo: this.orderDetail.order_no
+                            }
+                        });
+                    }}>
+                    <View style={{alignItems: 'center', flexDirection: 'row', height: Pixel.getPixel(44)}}>
+                        <Text allowFontScaling={false} style={{
+                            marginLeft: Pixel.getPixel(15),
+                            fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                            color: fontAndColor.COLORA0
+                        }}>借款单号</Text>
+                        <View style={{flex: 1}}/>
+                        <Text allowFontScaling={false} style={{
+                            marginRight: Pixel.getPixel(10),
+                            fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                            color: fontAndColor.COLORA1
+                        }}>{this.orderDetail.finance_no ? this.orderDetail.finance_no : '未生成借款单号'}</Text>
+                        <Image source={require('../../../images/mainImage/celljiantou.png')}
+                               style={{marginRight: Pixel.getPixel(15)}}/>
+                    </View>
+                </TouchableOpacity>
+            )
+        } else if (rowData === '8') {
+            return (
+                <TouchableOpacity
+                    style={styles.itemType7}
+                    onPress={() => {
+                        // 跳转金融页面
+                        //this.props.showToast('rowData === 7');
+                    }}>
+                    <View style={{alignItems: 'center', flexDirection: 'row', height: Pixel.getPixel(44)}}>
+                        <Text allowFontScaling={false} style={{
+                            marginLeft: Pixel.getPixel(15),
+                            fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                            color: fontAndColor.COLORA0
+                        }}>贷款信息</Text>
+                        <View style={{flex: 1}}/>
+                        <Text allowFontScaling={false} style={{
+                            marginRight: Pixel.getPixel(10),
+                            fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                            color: fontAndColor.COLORA1
+                        }}>贷款单号：</Text>
+                        <Image source={require('../../../images/mainImage/celljiantou.png')}
+                               style={{marginRight: Pixel.getPixel(15)}}/>
+                    </View>
+                </TouchableOpacity>
             )
         }
     }
@@ -1322,5 +1785,9 @@ const styles = StyleSheet.create({
         borderRadius: 3,
         borderWidth: 1,
         borderColor: fontAndColor.COLORB0
+    },
+    itemType7: {
+        backgroundColor: '#ffffff',
+        height: Pixel.getPixel(44)
     }
 });

@@ -33,7 +33,7 @@ export default class LabelForOrderScreen extends PureComponent {
         this.state = {
             enable: this.props.item.isSelected,
         };
-        console.log('this.props.item.title.length = ',this.props.item.title.length);
+        //console.log('this.props.item.title.length = ',this.props.item.title.length);
     }
 
     /*    componentWillReceiveProps(nextProps) {
@@ -60,7 +60,7 @@ export default class LabelForOrderScreen extends PureComponent {
                 onPress={() => {
                     this.setPressDown()
                 }}>
-                <Text
+                <Text allowFontScaling={false} 
                     style={
                         this.props.item.title.length > 7 ?
                         [Styles.labelText1, this.state.enable && Styles.disableText] :

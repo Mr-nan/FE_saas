@@ -57,7 +57,7 @@ export default class ContactLayout extends Component {
                         alignItems: 'center',
                         marginLeft: Pixel.getPixel(15)
                     }}>
-                        <Text style={styles.itemType1Ttile}>{this.props.layoutTitle}</Text>
+                        <Text allowFontScaling={false}  style={styles.itemType1Ttile}>{this.props.layoutTitle}</Text>
                         {this.props.setPrompt ? <TouchableOpacity
                             style={{marginLeft: Pixel.getPixel(10)}}
                             onPress={() => {
@@ -68,7 +68,7 @@ export default class ContactLayout extends Component {
                         </TouchableOpacity> : null}
                     </View>
                     {this.props.layoutContent ?
-                        <Text style={styles.itemType1Content}>{this.props.layoutContent}</Text> :
+                        <Text allowFontScaling={false}  style={styles.itemType1Content}>{this.props.layoutContent}</Text> :
                         null}
                 </View>
                 <View style={{flex: 1}}/>

@@ -201,12 +201,12 @@ export default class AutoPhoto extends Component {
                         this.state.hasPhoto
                             ? <Image style={styles.photoContainer} source={this.selectSource}>
                                 <Image style={styles.hasPhotoContainer} source={photoMask}>
-                                    <Text style={styles.photoLabel}>左前45°照</Text>
+                                    <Text allowFontScaling={false}  style={styles.photoLabel}>左前45°照</Text>
                                     <View style={styles.fillSpace}/>
                                     <TouchableOpacity
                                         onPress={this._rePhoto}
                                         activeOpacity={0.6}>
-                                        <Text style={styles.rephotoLabel}>重拍</Text>
+                                        <Text allowFontScaling={false}  style={styles.rephotoLabel}>重拍</Text>
                                     </TouchableOpacity>
                                 </Image>
                             </Image>
@@ -215,7 +215,7 @@ export default class AutoPhoto extends Component {
                                 activeOpacity={0.6}>
                                 <Image style={styles.photoContainer} source={photo}>
                                     <View style={styles.noPhotoContainer}>
-                                        <Text style={styles.noPhoto}>请拍摄左前45°照</Text>
+                                        <Text allowFontScaling={false}  style={styles.noPhoto}>请拍摄左前45°照</Text>
                                     </View>
                                 </Image>
                             </TouchableOpacity>

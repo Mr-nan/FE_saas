@@ -41,6 +41,8 @@ import * as Net from '../utils/RequestUtil';
 import * as AppUrls from '../constant/appUrls';
 import PixelUtil from '../utils/PixelUtil';
 
+import * as CarDeployData from './carData/CarDeployData';
+
 
 const Pixel = new  PixelUtil();
 const sceneWidth = Dimensions.get('window').width;
@@ -144,7 +146,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                                   {
                                       !this.props.carID &&(<TouchableOpacity onPress={this._onScanPress} style={{flexDirection:'row', alignItems:'center'}}>
                                           <Image style={styles.scanImage} source={scanImg}/>
-                                          <Text style={{color:fontAndColor.COLORA2, fontSize:fontAndColor.LITTLEFONT28,marginLeft:Pixel.getPixel(5)}}>扫描</Text>
+                                          <Text allowFontScaling={false}  style={{color:fontAndColor.COLORA2, fontSize:fontAndColor.LITTLEFONT28,marginLeft:Pixel.getPixel(5)}}>扫描</Text>
                                       </TouchableOpacity>)
                                   }
                               </View>
@@ -279,7 +281,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                                   {
                                       !this.props.carID &&(<TouchableOpacity onPress={this._onScanPress} style={{flexDirection:'row', alignItems:'center'}}>
                                           <Image style={styles.scanImage} source={scanImg}/>
-                                          <Text style={{color:fontAndColor.COLORA2, fontSize:fontAndColor.LITTLEFONT28,marginLeft:Pixel.getPixel(5)}}>扫描</Text>
+                                          <Text allowFontScaling={false}  style={{color:fontAndColor.COLORA2, fontSize:fontAndColor.LITTLEFONT28,marginLeft:Pixel.getPixel(5)}}>扫描</Text>
                                       </TouchableOpacity>)
                                   }
                               </View>
@@ -462,7 +464,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                         <View style={styles.footContainer}>
                             <TouchableOpacity onPress={this.footBtnClick}>
                                 <View style={styles.footView}>
-                                    <Text style={styles.footText}>下一步</Text>
+                                    <Text allowFontScaling={false}  style={styles.footText}>下一步</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -981,15 +983,20 @@ export default class CarPublishFirstScene extends BaseComponent{
     }
 
     pushCarDischarge=()=>{
-        let brandParams = {
-            name: 'CarDischargeScene',
-            component: CarDischargeScene,
-            params: {
-                checkedCarDischargeClick:this._checkedCarDischargeClick,
-                currentChecked:this.titleData1[0][4].value,
-            }
-        };
-        this.toNextPage(brandParams);
+
+        CarDeployData.getCarDeployData(this.props.showModal,this.props.showToast,(fetchObject)=>{
+            let brandParams = {
+                name: 'CarDischargeScene',
+                component: CarDischargeScene,
+                params: {
+                    checkedCarDischargeClick:this._checkedCarDischargeClick,
+                    currentChecked:this.titleData1[0][4].value,
+                    DischargeData:fetchObject.auto_es,
+                }
+            };
+            this.toNextPage(brandParams);
+        });
+
     }
 
     _checkedCarDischargeClick=(dischargeObject)=>{
@@ -1000,15 +1007,21 @@ export default class CarPublishFirstScene extends BaseComponent{
     }
 
     pushCarBodyColorScene=()=>{
-        let brandParams = {
-            name: 'CarBodyColorScene',
-            component:CarBodyColorScene,
-            params: {
-                checkedCarBodyColorClick:this._checkedCarBodyColorClick,
-                currentChecked:this.titleData1[0][5].value,
-            }
-        };
-        this.toNextPage(brandParams);
+
+        CarDeployData.getCarDeployData(this.props.showModal,this.props.showToast,(fetchObject)=>{
+            let brandParams = {
+                name: 'CarBodyColorScene',
+                component:CarBodyColorScene,
+                params: {
+                    checkedCarBodyColorClick:this._checkedCarBodyColorClick,
+                    currentChecked:this.titleData1[0][5].value,
+                    carBodyColorData:fetchObject.auto_body_color,
+                }
+            };
+            this.toNextPage(brandParams);
+        });
+
+
     }
 
     _checkedCarBodyColorClick=(carBodyColorSceneObject)=>{
@@ -1021,15 +1034,21 @@ export default class CarPublishFirstScene extends BaseComponent{
     }
 
     pushCarInwardColorScene=()=>{
-        let brandParams = {
-            name: 'CarInwardColorScene',
-            component: CarInwardColorScene,
-            params: {
-                checkedCarInwardColorClick:this._checkedCarInwardColorClick,
-                currentChecked:this.titleData1[0][6].value,
-            }
-        };
-        this.toNextPage(brandParams);
+
+        CarDeployData.getCarDeployData(this.props.showModal,this.props.showToast,(fetchObject)=>{
+            let brandParams = {
+                name: 'CarInwardColorScene',
+                component: CarInwardColorScene,
+                params: {
+                    checkedCarInwardColorClick:this._checkedCarInwardColorClick,
+                    currentChecked:this.titleData1[0][6].value,
+                    carInwardColor:fetchObject.auto_interior_color,
+                }
+            };
+            this.toNextPage(brandParams);
+        });
+
+
     }
 
     _checkedCarInwardColorClick=(carInwardSceneObject)=>{

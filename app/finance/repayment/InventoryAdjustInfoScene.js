@@ -78,16 +78,16 @@ export default class InventoryRepaymentInfoScene extends BaseComponent {
                 backgroundColor: '#ffffff',flexDirection:'row',
                 paddingRight:Pixel.getPixel(15),paddingLeft:Pixel.getPixel(15),marginTop:Pixel.getTitlePixel(74)}}>
                     <View style={{flex:1,justifyContent:'center'}}>
-                        <Text
+                        <Text allowFontScaling={false} 
                             style={{fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30), color:fontAndColor.COLORA0}}>
                             还款日：{movie.dead_line_str}</Text>
-                        <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                        <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                     color:fontAndColor.COLORA1,marginTop:Pixel.getPixel(9)}}>{repaymentStatus}</Text>
                     </View>
                     <View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
-                        <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                        <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                     color:fontAndColor.COLORB2,fontWeight: 'bold'}}>{movie.repaymentmny}</Text>
-                        <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                        <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                     color:fontAndColor.COLORA1,marginTop:Pixel.getPixel(9)}}>调整：{movie.adjustmoney}</Text>
                     </View>
                 </View>
@@ -96,12 +96,12 @@ export default class InventoryRepaymentInfoScene extends BaseComponent {
                 backgroundColor: '#ffffff',flexDirection:'row',
                 paddingRight:Pixel.getPixel(15),paddingLeft:Pixel.getPixel(15)}}>
                     <View style={{flex:1,justifyContent:'center'}}>
-                        <Text
+                        <Text allowFontScaling={false} 
                             style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28), color:fontAndColor.COLORA1}}>
                             调整前</Text>
                     </View>
                     <View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
-                        <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                        <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                     color:fontAndColor.COLORA0,fontWeight: 'bold'}}>{movie.agomny}</Text>
                     </View>
                 </View>
@@ -135,13 +135,13 @@ export default class InventoryRepaymentInfoScene extends BaseComponent {
                 backgroundColor: '#ffffff',flexDirection:'row',
                 paddingRight:Pixel.getPixel(15),paddingLeft:Pixel.getPixel(15)}}>
                 <View style={{flex:1,justifyContent:'center'}}>
-                    <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                    <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                     color:fontAndColor.COLORA1}}>{movie.adjusttime}</Text>
                 </View>
                 <View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
-                    <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                    <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                     color:fontAndColor.COLORA0,fontWeight: 'bold'}}>{movie.adjustmoney}</Text>
-                    <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.MARKFONT22),
+                    <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(fontAndColor.MARKFONT22),
                     color:fontAndColor.COLORA1}}>{movie.adjusttype}</Text>
                 </View>
             </View>

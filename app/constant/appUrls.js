@@ -26,9 +26,9 @@ export const V = "v1/";
 /**
  * 版本号2
  *
-export const V2 = "v2/";
+ export const V2 = "v2/";
 
-/**
+ /**
  * 版本号3
  */
 export const V3 = "v3/";
@@ -621,7 +621,12 @@ export const GET_APPLY_LOAN_DATA = 'api/v3/account/get_apply_loan_data';
  * 采购贷借款车辆列表
  **/
 export const AUTOLIST = 'api/v2/purchaAuto/autoList'
-
+/**
+ * from @lhc
+ *
+ * 订单融资车辆列表
+ **/
+export const DDAUTOLIST = 'api/v1/Order/autoList'
 /**
  * from @huangning
  *
@@ -635,6 +640,13 @@ export const DO_EXTENSION = 'api/v1/account/do_extension';
  * 绑定OBD设备
  **/
 export const BINDOBD = 'api/v1/purchaAuto/bindObd';
+
+/**
+ * from @huangning
+ *
+ * 绑定OBD设备 订单融资
+ **/
+export const BINDOBDDDRZ = 'api/v5/PlatformOrder/bind_obd';
 
 /**
  * 获取微众申请页面数据
@@ -668,13 +680,25 @@ export const GET_SMS_VERIFY_CODE = "/api/v1/public/get_sms_verify_code";
  * 检测OBD
  **/
 export const AUTODETECTOBD = "api/v1/purchaAuto/autoDetectObd";
-
+/**
+ * from @huangning
+ *
+ * 更新订单融资车辆
+ **/
+export const DDUPDATEAUTO = "api/v1/Order/updateAuto";
 /**
  * from @huangning
  *
  * 获取采购贷车辆照片分类
  **/
 export const GETPURCHAAUTOPICCATE = "api/v2/purchaAuto/getPurchaAutoPicCate";
+/**
+ * from @huangning
+ *
+ * 获取订单融资车辆照片分类
+ **/
+export const GETDINGDANAUTOPICCATE = "api/v1/Order/getOrderAutoPicCate";
+
 
 /**
  * from @huangning
@@ -718,6 +742,21 @@ export const APPLY_EXTENSION_CARLIST = 'api/v1/account/apply_extension_carlist';
  * 申请借款
  **/
 export const APPLY_LOAN = 'api/v3/account/apply_loan'
+
+
+/**
+ * from @huagnning
+ *
+ * 获取订单融资车辆详情
+ **/
+export const AUTODETAIL = 'api/v1/Order/autoDetail'
+
+/**
+ * from @huagnning
+ *
+ * 获取商户登记人/收车人列表
+ **/
+export const GETBUSINESSLIST = 'api/v1/Order/getBusinessList'
 
 /**
  * 短信验证码
@@ -835,52 +874,76 @@ export const ORDER_SEARCH = BASEURL + V + 'order/search';
 /**
  * 订单详情
  */
-export const ORDER_DETAIL = BASEURL + V +'order/detail';
+export const ORDER_DETAIL = BASEURL + V + 'order/detail';
 /**
  * 订金、尾款支付
  */
-export const ORDER_PAY = BASEURL + V +'order/pay';
+export const ORDER_PAY = BASEURL + V + 'order/pay';
 /**
  *  车辆成交价提交
  */
-export const ORDER_SAVE_PRICE = BASEURL + V +'order/savePrice';
+export const ORDER_SAVE_PRICE = BASEURL + V + 'order/savePrice';
 /**
  *  卖家&买家取消订单
  */
-export const ORDER_CANCEL = BASEURL + V +'order/cancel';
+export const ORDER_CANCEL = BASEURL + V + 'order/cancel';
 /**
  *  确认收车
  */
-export const ORDER_CONFIRM_CAR = BASEURL + V +'order/confirmCar';
+export const ORDER_CONFIRM_CAR = BASEURL + V + 'order/confirmCar';
 /**
  *  买家撤销取消订单
  */
-export const ORDER_REVERT = BASEURL + V +'order/revert';
+export const ORDER_REVERT = BASEURL + V + 'order/revert';
 /**
  *  卖家处理取消订单
  */
-export const ORDER_CANCEL_HANDLER = BASEURL + V +'order/cancelHandler';
+export const ORDER_CANCEL_HANDLER = BASEURL + V + 'order/cancelHandler';
 /**
  *  车辆定价检查
  */
-export const ORDER_CHECK_PRICE = BASEURL + V +'order/checkPrice';
+export const ORDER_CHECK_PRICE = BASEURL + V + 'order/checkPrice';
 /**
  *  获取筛选订单状态
  */
-export const ORDER_FIELD_DICT = BASEURL + V +'order/fieldDict';
+export const ORDER_FIELD_DICT = BASEURL + V + 'order/fieldDict';
 /**
  *  支付状态
  */
-export const ORDER_CHECK_PAY = BASEURL + V +'order/checkPay';
+export const ORDER_CHECK_PAY = BASEURL + V + 'order/checkPay';
 /**
  *  卖家同意取消订单
  */
-export const ORDER_ALLOW_CANCEL = BASEURL + V +'order/allowCancel';
+export const ORDER_ALLOW_CANCEL = BASEURL + V + 'order/allowCancel';
 /**
  *  卖家不同意取消订单
  */
-export const ORDER_DENY_CANCEL = BASEURL + V +'order/denyCancel';
+export const ORDER_DENY_CANCEL = BASEURL + V + 'order/denyCancel';
 /**
  * 查看订单某个类型合同
  */
-export const ORDER_GET_CONTRACT = BASEURL + V +'order/getContractByType';
+export const ORDER_GET_CONTRACT = BASEURL + V + 'order/getContractByType';
+/**
+ *  获取借款人所属白名单状态【订单融资调用】
+ */
+export const ORDER_GET_MERGE_WHITE_PO_STATUS = 'api/v3/account/get_merge_white_po_status';
+/**
+ *  添加订单融资车辆
+ */
+export const ADD_PLATFORM_ORDER_CAR = BASEURL + V + 'order_finance_car/add';
+/**
+ *  融资订单贷款全额检查
+ */
+export const ORDER_LOAN_AMOUNT_CHECK = BASEURL + V + 'order_finance/orderLoanAmountCheck';
+/**
+ *  融资流程确认验收请求
+ */
+export const CONFIRM_FINANCING_ORDER = BASEURL + V + 'order_finance/confirmFinancingOrder';
+/**
+ *  融资订单支付首付款
+ */
+export const FIRST_PAYMENT_PAY = BASEURL + V + 'order_finance/firstPaymentPay';
+/**
+ *  融资订单支付首付款回调
+ */
+export const FIRST_PAYMENT_PAY_CALLBACK = BASEURL + V + 'order_finance/firstPaymentPayCallback';

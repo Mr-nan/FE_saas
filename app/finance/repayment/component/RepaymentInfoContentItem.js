@@ -52,11 +52,11 @@ export  default class RepaymentInfoContentItem extends PureComponent {
                     }
                 }} activeOpacity={1} key={i} style={styles.itemStyle}>
                     <View style={{flex:1,justifyContent:'flex-start',alignItems:'center',flexDirection:'row'}}>
-                        <Text style={[styles.loanCodeStyle]}>{this.props.items[i].name}</Text>
+                        <Text allowFontScaling={false}  style={[styles.loanCodeStyle]}>{this.props.items[i].name}</Text>
                     </View>
                     <View activeOpacity={0.8}
                           style={{flex:2,justifyContent:'flex-end',alignItems:'center',flexDirection:'row'}}>
-                        <Text
+                        <Text allowFontScaling={false} 
                             style={[styles.loanCodeStyle,
                             {color:color}]}>
                             {value}</Text>

@@ -47,12 +47,12 @@ export default class ChildTabView extends PureComponent {
             <View
                 style={[{width:Pixel.getPixel(widths), height: Pixel.getPixel(38),
                 justifyContent: 'center', alignItems: 'center',flexDirection: 'row'}]}>
-                <Text ref="ttt"
+                <Text allowFontScaling={false}  ref="ttt"
                       style={[this.props.activeTab === this.props.i ? {color: fontAndColor.COLORB0} : {color: fontAndColor.COLORA0},
                         {fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}]}>
                     {list[0]}
                 </Text>
-                {count==''?<View/>:<Text
+                {count==''?<View/>:<Text allowFontScaling={false} 
                         style={[{color: fontAndColor.COLORB2},
                         {fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}]}>{count}</Text>}
             </View>

@@ -33,7 +33,7 @@ class TitleImage extends PureComponent {
 
             <View style={styles.titleImage}>
                 <Image style={styles.image} source={imageSource}/>
-                <Text style={styles.text}>{title}</Text>
+                <Text allowFontScaling={false}  style={styles.text}>{title}</Text>
             </View>
         )
     }

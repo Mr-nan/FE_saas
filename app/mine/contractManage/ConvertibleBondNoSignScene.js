@@ -160,15 +160,15 @@ export default class CompleteSignScene extends BaseComponent {
             paddingRight:Pixel.getPixel(15)}}>
                 <View style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(65),flexDirection:'row'}}>
                     <View style={{flex:1,justifyContent:'center',}}>
-                        <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                        <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                         color:fontAndColor.COLORA1}}>{rowData.loan_number}</Text>
-                        <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                        <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                         color:fontAndColor.COLORA0,marginTop:Pixel.getPixel(6)}}>{this.props.companyname}</Text>
                     </View>
                     <View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
-                        <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                        <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                         color:fontAndColor.COLORA1}}>借款金额</Text>
-                        <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                        <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                         color:fontAndColor.COLORB2,marginTop:Pixel.getPixel(6)}}>{rowData.money_str}</Text>
                     </View>
                 </View>
@@ -176,7 +176,7 @@ export default class CompleteSignScene extends BaseComponent {
                     style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(1),backgroundColor: fontAndColor.COLORA3}}></View>
                 <View style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(45),flexDirection:'row'}}>
                     <View style={{flex:1,justifyContent:'center'}}>
-                        <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                        <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                         color:fontAndColor.COLORA1}}>{rowData.contract_name}</Text>
                     </View>
                     <TouchableOpacity onPress={()=>{
@@ -199,7 +199,7 @@ export default class CompleteSignScene extends BaseComponent {
                             backgroundColor: fontAndColor.COLORB0,
                             width:Pixel.getPixel(80),height:Pixel.getPixel(30),justifyContent:'center',alignItems: 'center'
                         }}>
-                            <Text style={{ color: fontAndColor.COLORA3,
+                            <Text allowFontScaling={false}  style={{ color: fontAndColor.COLORA3,
                                 fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>
                                 签署合同
                             </Text>

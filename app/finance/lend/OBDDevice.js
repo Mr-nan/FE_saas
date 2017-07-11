@@ -49,156 +49,57 @@ export default class OBDDevice extends BaseComponent {
     }
 
     initFinish = () => {
-        this.getPurchaAutoPicCate();
+        if (this.props.fromScene == 'DDApplyLendScene') {
+
+        } else {
+            this.getPurchaAutoPicCate();
+        }
     }
 
     render() {
         if (this.state.renderPlaceholderOnly) {
-            return ( <TouchableWithoutFeedback onPress={() => {
-                this.setState({
-                    show: false,
-                });
-            }}>
+            return (
+                <TouchableWithoutFeedback >
+                    <View style={styles.container}>
+                        {this._topView()}
+                        <View style={{
+                            width: width,
+                            height: Pixel.getPixel(1),
+                            flex: 1
+                        }}/>
+                        <MyButton buttonType={MyButton.TEXTBUTTON}
+                                  content={'完成'}
+                                  parentStyle={this.state.boundState == '已绑定' ? styles.loginBtnStyle : styles.loginBtnEnStyle}
+                                  childStyle={styles.loginButtonTextStyle}
+                                  mOnPress={() => {
+                                      if (this.state.boundState == '已绑定') {
+                                          this.submit();
+                                      }
+                                  }}/>
+                    </View>
+                </TouchableWithoutFeedback>);
+        } else {
+            return (
                 <View style={styles.container}>
-                    <NavigationBar
-                        leftImageShow={false}
-                        leftTextShow={true}
-                        leftText={""}
-                        centerText={"OBD设备"}
-                        rightText={"安装说明"}/>
-
-                    <View style={{
-                        width: width,
-                        height: Pixel.getPixel(57),
-                        flexDirection: 'row',
-                        backgroundColor: '#FFF8EA',
-                        paddingLeft: Pixel.getPixel(15),
-                        paddingRight: Pixel.getPixel(15),
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}>
-                        <Image
-                            style={{
-                                width: Pixel.getPixel(18),
-                                height: Pixel.getPixel(18),
-                                marginTop: Pixel.getPixel(-13)
-                            }}
-                            source={require('./../../../images/login/tanhao.png')}/>
-
-                        <Text style={{
-                            flex: 1,
-                            color: FontAndColor.COLORB2,
-                            fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT),
-                            marginLeft: Pixel.getPixel(15),
-                            fontWeight: 'bold'
-                        }}>提示：<Text style={{fontWeight: 'normal'}}>请将OBD设备安装后进行检测，绑定失败或2015年以前的车请进行手动绑定。</Text></Text>
-                    </View>
-                    <View style={{
-                        marginTop: Pixel.getPixel(10),
-                        paddingLeft: Pixel.getPixel(15),
-                        paddingRight: Pixel.getPixel(15),
-                        backgroundColor: '#ffffff',
-                        width: width,
-                        height: Pixel.getPixel(44),
-                        flexDirection: 'row',
-                        alignItems: 'center'
-                    }}>
-                        <Text style={{
-                            color: FontAndColor.COLORA0,
-                            fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),
-                        }}>绑定状态</Text>
-                        <Text
-                            style={this.state.boundState == "已绑定" ? styles.boundSuccessStyle : styles.boundStateStyle}>
-                            {this.state.boundState}
-                        </Text>
-                    </View>
+                    {this._topView()}
                     <View style={{backgroundColor: FontAndColor.COLORA4, width: width, height: Pixel.getPixel(1)}}/>
                     <View style={{
-                        paddingLeft: Pixel.getPixel(15),
-                        paddingRight: Pixel.getPixel(15),
-                        backgroundColor: '#ffffff',
                         width: width,
-                        height: Pixel.getPixel(44),
-                        flexDirection: 'row',
-                        alignItems: 'center',
+                        flexDirection: 'column',
+                        flex: 1,
+                        marginTop: Pixel.getPixel(15)
                     }}>
-                        <Text style={{
-                            color: FontAndColor.COLORA0,
-                            fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),
-                        }}>设备号</Text>
                         {
-                            this.state.obd_number ?
-                                <Text style={{
-                                    color: FontAndColor.COLORA0,
-                                    fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT30),
-                                    textAlign: 'right',
-                                    flex: 1
-                                }}>{this.state.obd_number}</Text>
-                                :
-                                <Text style={{
-                                    color: FontAndColor.COLORA1,
-                                    fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT30),
-                                    textAlign: 'right',
-                                    flex: 1
-                                }}>请输入</Text>
+                            this.state.source ?
+                                <ListView
+                                    removeClippedSubviews={false}
+                                    dataSource={this.state.source}
+                                    renderRow={this._renderRow}
+                                    renderSeparator={this._renderSeparator}/>
+                                : null
                         }
 
                     </View>
-                    <View style={{backgroundColor: FontAndColor.COLORA4, width: width, height: Pixel.getPixel(1)}}/>
-                    <View style={{
-                        paddingLeft: Pixel.getPixel(15),
-                        paddingRight: Pixel.getPixel(15),
-                        backgroundColor: '#ffffff',
-                        width: width,
-                        height: Pixel.getPixel(70),
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                    }}>
-                        <View style={{flex: 1}}/>
-                        <MyButton buttonType={MyButton.TEXTBUTTON} content="检测"
-                                  parentStyle={this.state.boundState == '已绑定' ? styles.buttonSelectStyle : styles.buttonStyle}
-                                  childStyle={this.state.boundState == '已绑定' ? styles.buttonTextSelectStyle : styles.buttonTextStyle  }
-                                  mOnPress={() => {
-                                      this.checkOBD(this.bind_type);
-                                  }}/>
-                        <View style={{width: Pixel.getPixel(22)}}/>
-                        <MyButton buttonType={MyButton.TEXTBUTTON} content="手动绑定" parentStyle={styles.buttonStyle}
-                                  childStyle={styles.buttonTextStyle} mOnPress={() => {
-                            NativeModules.QrScan.scan().then((data) => {
-
-                                console.log(data)
-                                if (data.scan_hand == "input") {
-                                    this.toNextPage({
-                                        name: 'DeviceNumber',
-                                        component: DeviceNumber,
-                                        params: {
-                                            callBack: (obd_number) => {
-                                                if (obd_number != '') {
-                                                    this.setState({
-                                                        obd_number: obd_number,
-                                                        boundState: '未检测',
-                                                    });
-                                                    this.bind_type = 2;
-                                                }
-                                            }
-                                        },
-                                    })
-                                } else {
-                                    this.setState({
-                                        obd_number: data.scan_result,
-                                        boundState: '未检测',
-                                    });
-                                    this.bind_type = 2;
-                                }
-                            }, (error) => {
-                            });
-                        }}/>
-                    </View>
-                    <View style={{
-                        width: width,
-                        height: Pixel.getPixel(1),
-                        flex: 1
-                    }}/>
                     <MyButton buttonType={MyButton.TEXTBUTTON}
                               content={'完成'}
                               parentStyle={this.state.boundState == '已绑定' ? styles.loginBtnStyle : styles.loginBtnEnStyle}
@@ -209,10 +110,13 @@ export default class OBDDevice extends BaseComponent {
                                   }
                               }}/>
                 </View>
-            </TouchableWithoutFeedback>);
+            );
         }
+    }
+
+    _topView = () => {
         return (
-            <View style={styles.container}>
+            <View>
                 <NavigationBar
                     leftImageShow={true}
                     leftTextShow={false}
@@ -238,16 +142,20 @@ export default class OBDDevice extends BaseComponent {
                     alignItems: 'center',
                 }}>
                     <Image
-                        style={{width: Pixel.getPixel(18), height: Pixel.getPixel(18), marginTop: Pixel.getPixel(-13)}}
+                        style={{
+                            width: Pixel.getPixel(18),
+                            height: Pixel.getPixel(18),
+                            marginTop: Pixel.getPixel(-13)
+                        }}
                         source={require('./../../../images/login/tanhao.png')}/>
 
-                    <Text style={{
+                    <Text allowFontScaling={false}  style={{
                         flex: 1,
                         color: FontAndColor.COLORB2,
                         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT),
                         marginLeft: Pixel.getPixel(15),
                         fontWeight: 'bold'
-                    }}>提示：<Text style={{fontWeight: 'normal'}}>请将OBD设备安装后进行检测，绑定失败或2015年以前的车请进行手动绑定。</Text></Text>
+                    }}>提示：<Text allowFontScaling={false}  style={{fontWeight: 'normal'}}>请将OBD设备安装后进行检测，绑定失败或2015年以前的车请进行手动绑定。</Text></Text>
                 </View>
                 <View style={{
                     marginTop: Pixel.getPixel(10),
@@ -259,11 +167,11 @@ export default class OBDDevice extends BaseComponent {
                     flexDirection: 'row',
                     alignItems: 'center'
                 }}>
-                    <Text style={{
+                    <Text allowFontScaling={false}  style={{
                         color: FontAndColor.COLORA0,
                         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),
                     }}>绑定状态</Text>
-                    <Text
+                    <Text allowFontScaling={false} 
                         style={this.props.carData.obd_bind_status == "1" ? styles.boundSuccessStyle :
                             this.state.boundState == "已绑定" ? styles.boundSuccessStyle : styles.boundStateStyle }>
                         {this.props.carData.obd_bind_status == "1" ? "已绑定" : this.state.boundState}
@@ -279,26 +187,26 @@ export default class OBDDevice extends BaseComponent {
                     flexDirection: 'row',
                     alignItems: 'center',
                 }}>
-                    <Text style={{
+                    <Text allowFontScaling={false}  style={{
                         color: FontAndColor.COLORA0,
                         fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),
                     }}>设备号</Text>
                     {
-                        this.props.carData.obd_bind_status == "1" ? <Text style={{
+                        this.props.carData.obd_bind_status == "1" ? <Text allowFontScaling={false}  style={{
                                 color: FontAndColor.COLORA0,
                                 fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT30),
                                 textAlign: 'right',
                                 flex: 1
                             }}>{this.props.carData.obd_number}</Text> :
                             this.state.obd_number ?
-                                <Text style={{
+                                <Text allowFontScaling={false}  style={{
                                     color: FontAndColor.COLORA0,
                                     fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT30),
                                     textAlign: 'right',
                                     flex: 1
                                 }}>{this.state.obd_number}</Text>
                                 :
-                                <Text style={{
+                                <Text allowFontScaling={false}  style={{
                                     color: FontAndColor.COLORA1,
                                     fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT30),
                                     textAlign: 'right',
@@ -356,37 +264,10 @@ export default class OBDDevice extends BaseComponent {
                         });
                     }}/>
                 </View>
-                <View style={{backgroundColor: FontAndColor.COLORA4, width: width, height: Pixel.getPixel(1)}}/>
+            </View>)
 
-                <View style={{
-                    width: width,
-                    flexDirection: 'column',
-                    flex: 1,
-                    marginTop: Pixel.getPixel(15)
-                }}>
-                    {
-                        this.state.source ?
-                            <ListView
-                                removeClippedSubviews={false}
-                                dataSource={this.state.source}
-                                renderRow={this._renderRow}
-                                renderSeparator={this._renderSeparator}/>
-                            : null
-                    }
-
-                </View>
-                <MyButton buttonType={MyButton.TEXTBUTTON}
-                          content={'完成'}
-                          parentStyle={this.state.boundState == '已绑定' ? styles.loginBtnStyle : styles.loginBtnEnStyle}
-                          childStyle={styles.loginButtonTextStyle}
-                          mOnPress={() => {
-                              if (this.state.boundState == '已绑定') {
-                                  this.submit();
-                              }
-                          }}/>
-            </View>
-        );
     }
+
 
     _renderRow = (movie, sectionId, rowId) => {
         return (
@@ -408,26 +289,40 @@ export default class OBDDevice extends BaseComponent {
 
     // 绑定OBD设备
     submit = () => {
-        if (JSON.stringify(results) != []) {
-            let maps = {
-                api: AppUrls.BINDOBD,
-                bind_type: this.bind_type,
-                file_list: JSON.stringify(results),
-                info_id: this.props.carData.info_id,
-                obd_number: this.state.obd_number,
-            };
+        if (results.length > 0 || (this.props.fromScene == 'DDApplyLendScene')) {
+            let maps;
+            if (this.props.fromScene == 'DDApplyLendScene') {
+                maps = {
+                    api: AppUrls.BINDOBDDDRZ,
+                    info_id: this.props.carData.info_id,
+                    obd_number: this.state.obd_number,
+                };
+            } else {
+                maps = {
+                    api: AppUrls.BINDOBD,
+                    bind_type: this.bind_type,
+                    file_list: JSON.stringify(results),
+                    info_id: this.props.carData.info_id,
+                    obd_number: this.state.obd_number,
+                };
+
+            }
             this.props.showModal(true);
             request(AppUrls.FINANCE, 'Post', maps)
                 .then((response) => {
                         this.props.showModal(false);
                         this.props.showToast("OBD绑定成功");
                         this.props.backRefresh();
-                        const navigator = this.props.navigator;
-                        if (navigator) {
-                            for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
-                                if (navigator.getCurrentRoutes()[i].name == 'CGDLendScenes') {
-                                    navigator.popToRoute(navigator.getCurrentRoutes()[i]);
-                                    break;
+                        if (this.props.fromScene == 'DDApplyLendScene') {
+                            this.backPage();
+                        } else {
+                            const navigator = this.props.navigator;
+                            if (navigator) {
+                                for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
+                                    if (navigator.getCurrentRoutes()[i].name == 'CGDLendScenes') {
+                                        navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -518,7 +413,6 @@ export default class OBDDevice extends BaseComponent {
                                 }
                             }
                         }
-
                     }
                     this.setState({
                         source: ds.cloneWithRows(response.mjson.data.cate_list),

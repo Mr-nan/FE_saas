@@ -50,6 +50,9 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
             api: apis.GET_PAYMENT_SCHEDULE_ALL,
             loan_code: this.props.loanNumber
         };
+        // if(this.props.loanType ){
+        //     Object.assign(maps,{type: this.props.loanType})
+        // }
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
                     let tempjson = response.mjson.data;
@@ -111,7 +114,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                         alignItems: 'flex-start',
                         justifyContent: 'center'
                     }}>
-                        <Text style={{
+                        <Text allowFontScaling={false}  style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color: fontAndColor.COLORA1
                         }}>借款单号</Text>
@@ -122,7 +125,7 @@ export  default class PurchaseLoanStatusScene extends BaseComponent {
                         alignItems: 'flex-end',
                         justifyContent: 'center'
                     }}>
-                        <Text style={{
+                        <Text allowFontScaling={false}  style={{
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color: fontAndColor.COLORA0
 

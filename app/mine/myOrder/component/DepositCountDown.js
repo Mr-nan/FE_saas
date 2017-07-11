@@ -72,7 +72,7 @@ export default class DepositCountDown extends Component {
 
     render() {
         return (
-            <Text style={styles.textStyle}>{this.state.hour}时{this.state.minute}分</Text>
+            <Text allowFontScaling={false}  style={styles.textStyle}>{this.state.hour}时{this.state.minute}分</Text>
         );
     }
 

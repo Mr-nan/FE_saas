@@ -31,25 +31,29 @@ export default class CarDischargeScene extends  BaseComponent{
     // 构造
     constructor(props) {
         super(props);
-        this.viewData = [
-            {title: '国Ⅱ', selected: false,index:0,value:'naitonal_ii'},
-            {title: '欧Ⅳ', selected: false,index:1,value:'european_iv'},
-            {title: '国Ⅲ', selected: false,index:2,value:'naitonal_iii'},
-            {title: '欧Ⅴ', selected: false,index:3,value:'european_v'},
-            {title: '国Ⅳ', selected: false,index:4,value:'naitonal_iv'},
-            {title: '欧Ⅵ', selected: false,index:5,value:'european_vi'},
-            {title: '国Ⅴ', selected: false,index:6,value:'naitonal_v'},
-            {title: '欧Ⅲ', selected: false,index:7,value:'european_iii'},
-            {title: '京Ⅴ', selected: false,index:8,value:'beijing_v'},
-            {title: '欧Ⅱ', selected: false,index:9,value:'european_ii'},
-            {title: 'OBD', selected: false,index:10,value:'obd'},
-            {title: '欧Ⅰ', selected: false,index:11,value:'european_i'},
-        ];
+        // this.viewData = [
+        //     {title: '国Ⅱ', selected: false,index:0,value:'naitonal_ii'},
+        //     {title: '欧Ⅳ', selected: false,index:1,value:'european_iv'},
+        //     {title: '国Ⅲ', selected: false,index:2,value:'naitonal_iii'},
+        //     {title: '欧Ⅴ', selected: false,index:3,value:'european_v'},
+        //     {title: '国Ⅳ', selected: false,index:4,value:'naitonal_iv'},
+        //     {title: '欧Ⅵ', selected: false,index:5,value:'european_vi'},
+        //     {title: '国Ⅴ', selected: false,index:6,value:'naitonal_v'},
+        //     {title: '欧Ⅲ', selected: false,index:7,value:'european_iii'},
+        //     {title: '京Ⅴ', selected: false,index:8,value:'beijing_v'},
+        //     {title: '欧Ⅱ', selected: false,index:9,value:'european_ii'},
+        //     {title: 'OBD', selected: false,index:10,value:'obd'},
+        //     {title: '欧Ⅰ', selected: false,index:11,value:'european_i'},
+        // ];
 
+        this.viewData = this.props.DischargeData;
         this.viewData.map((data,index)=>{
-            if(data.title == this.props.currentChecked)
+            data.index = index;
+            if(data.name == this.props.currentChecked)
             {
                 data.selected = true;
+            }else {
+                data.selected = false;
             }
         });
 
@@ -87,7 +91,7 @@ export default class CarDischargeScene extends  BaseComponent{
                     onPress={()=>{this._labelPress(data.index)}}
                 >
                     <View >
-                        <Text style={styles.selectText}>
+                        <Text allowFontScaling={false}  style={styles.selectText}>
                             {data.title}
                         </Text>
                     </View>
@@ -102,7 +106,7 @@ export default class CarDischargeScene extends  BaseComponent{
                     onPress={()=>{this._labelPress(data.index)}}
                 >
                     <View >
-                        <Text style={styles.defaultText}>
+                        <Text allowFontScaling={false}  style={styles.defaultText}>
                             {data.title}
                         </Text>
                     </View>
@@ -119,8 +123,8 @@ export default class CarDischargeScene extends  BaseComponent{
     _labelPress = (i) => {
 
         this.props.checkedCarDischargeClick({
-            title:this.viewData[i].title,
-            value:this.viewData[i].value,
+            title:this.viewData[i].name,
+            value:this.viewData[i].key,
         });
         this.backPage();
 

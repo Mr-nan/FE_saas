@@ -24,6 +24,8 @@ import * as fontAndColor from '../constant/fontAndColor';
 import BaseComponent from '../component/BaseComponent';
 let oldUrl = '';
 import WebViewTitle from '../mine/accountManage/component/WebViewTitle';
+import CarInfoScene from '../carSource/CarInfoScene';
+import MainPage from './MainPage'
 export  default class WebScene extends BaseComponent {
 
     constructor(props) {
@@ -44,9 +46,9 @@ export  default class WebScene extends BaseComponent {
 
     handleBack = () => {
         this.props.showModal(false);
-        if(oldUrl==this.props.webUrl){
+        if (oldUrl == this.props.webUrl) {
             this.backPage();
-        }else{
+        } else {
             this.refs.www.goBack();
         }
         return true;
@@ -91,8 +93,35 @@ export  default class WebScene extends BaseComponent {
         );
     }
 
-    onNavigationStateChange=(navState)=> {
-        oldUrl=navState.url;
+    onNavigationStateChange = (navState) => {
+        oldUrl = navState.url;
+        let urls = oldUrl.split('?');
+        if (urls[0] == 'http://dycd.tocarsource.com/') {
+            let id = urls[1].replace('id=','');
+            let navigatorParams = {
+                name: "CarInfoScene",
+                component: CarInfoScene,
+                params: {
+                    carID: id,
+                }
+            };
+            let mainParams = {
+                name: "MainPage",
+                component: MainPage,
+                params: {
+                }
+            };
+            this.loginPage(navigatorParams,)
+        }
+    }
+
+    loginPage = (mProps) => {
+        const navigator = this.props.navigator;
+        if (navigator) {
+            navigator.immediatelyResetRouteStack([{
+                ...mProps
+            }])
+        }
     }
 
     _renderPlaceholderView() {

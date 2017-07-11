@@ -592,8 +592,8 @@ export default class MineScene extends BaseComponent {
 
                     <Image source={rowData.icon} style={styles.rowLeftImage}/>
 
-                    <Text style={styles.rowTitle}>{rowData.name}</Text>
-                    {rowData.name == '账户管理' ? <Text style={{ marginRight: Pixel.getPixel(15),
+                    <Text allowFontScaling={false}  style={styles.rowTitle}>{rowData.name}</Text>
+                    {rowData.name == '账户管理' ? <Text allowFontScaling={false}  style={{ marginRight: Pixel.getPixel(15),
                     backgroundColor: '#00000000',color:fontAndClolr.COLORB2,fontSize:
                     Pixel.getFontPixel(fontAndClolr.LITTLEFONT28)}}>{showName}</Text> :
                         <View/>}
@@ -693,10 +693,10 @@ export default class MineScene extends BaseComponent {
                         }}
                     />
                 </TouchableOpacity>
-                <Text style={styles.headerNameStyle}>
+                <Text allowFontScaling={false}  style={styles.headerNameStyle}>
                     {this.state.name}
                 </Text>
-                <Text style={styles.headerPhoneStyle}>
+                <Text allowFontScaling={false}  style={styles.headerPhoneStyle}>
                     {componyname}
                 </Text>
             </View>

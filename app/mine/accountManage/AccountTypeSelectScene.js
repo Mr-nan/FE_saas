@@ -80,9 +80,9 @@ export  default class AccountTypeSelectScene extends BaseComponent {
                                source={require('../../../images/mainImage/individualaccount.png')}/>
                     </View>
                     <View style={{flex:3,height: Pixel.getPixel(95),justifyContent:'center'}}>
-                        <Text style={{color: fontAndColor.COLORA0,fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>
+                        <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA0,fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>
                             开通个人账户</Text>
-                        <Text style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                        <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                     marginTop:Pixel.getPixel(8)}}>
                             开通个人账户将绑定个人银行卡，每个自然人只能开通一个个人账户</Text>
                     </View>
@@ -110,9 +110,9 @@ export  default class AccountTypeSelectScene extends BaseComponent {
                                source={require('../../../images/mainImage/Enterpriseaccount.png')}/>
                     </View>
                     <View style={{flex:3,height: Pixel.getPixel(95),justifyContent:'center'}}>
-                        <Text style={{color: fontAndColor.COLORA0,fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>
+                        <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA0,fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>
                             开通企业账户</Text>
-                        <Text style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                        <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                     marginTop:Pixel.getPixel(8)}}>
                             开通企业账户将绑定企业账户，每个自然人可以开通多个企业账户</Text>
                     </View>
@@ -139,8 +139,8 @@ export  default class AccountTypeSelectScene extends BaseComponent {
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3,width:width,height:Pixel.getPixel(45),
             flexDirection:'row',paddingRight:Pixel.getPixel(15),paddingLeft:Pixel.getPixel(23)}}>
-                <Text style={{color: fontAndColor.COLORA0,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}}>注意：</Text>
-                <Text style={{color: fontAndColor.COLORA1,fontSize:
+                <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA0,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}}>注意：</Text>
+                <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize:
                 Pixel.getFontPixel(fontAndColor.CONTENTFONT24)}}>请根据您的借款情况选择开户类型，开通以后不能修改</Text>
             </View>
         )

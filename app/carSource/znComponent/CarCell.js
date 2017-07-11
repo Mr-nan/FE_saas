@@ -48,18 +48,18 @@ export default class CarCell extends Component {
 
                 <View style={[styles.textContainer]}>
                     <View style={{backgroundColor:'white'}}>
-                        <Text style={styles.mainText}>{(carCellData.city_name!=""?('['+carCellData.city_name+']'):"")+(carCellData.model_name)}</Text>
+                        <Text allowFontScaling={false}  style={styles.mainText}>{(carCellData.city_name!=""?('['+carCellData.city_name+']'):"")+(carCellData.model_name)}</Text>
                         <View style={{backgroundColor:'white'}}>
-                            <Text style={styles.subTitleText}>{this.dateReversal(carCellData.manufacture+'000')+'/'+carCellData.mileage+'万公里'}</Text>
+                            <Text allowFontScaling={false}  style={styles.subTitleText}>{this.dateReversal(carCellData.manufacture+'000')+'/'+carCellData.mileage+'万公里'}</Text>
                         </View>
                     </View>
-                    <Text style={styles.carPriceText}>{carCellData.dealer_price>0?(this.carMoneyChange(carCellData.dealer_price) +'万'):''}</Text>
+                    <Text allowFontScaling={false}  style={styles.carPriceText}>{carCellData.dealer_price>0?(this.carMoneyChange(carCellData.dealer_price) +'万'):''}</Text>
 
                 </View>
                 {
                     this.props.showBtn &&
                     <View style={styles.cellFoot}>
-                        <Text style={styles.cellFootText}>取消收藏</Text>
+                        <Text allowFontScaling={false}  style={styles.cellFootText}>取消收藏</Text>
                     </View>
                 }
             </View>

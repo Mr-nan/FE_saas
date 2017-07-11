@@ -152,8 +152,8 @@ class PriceCell extends Component{
                   this.props.data.map((data,index)=>{
                       return(
                           <View style={styles.cellContentView} key={this.props.myKey+index}>
-                              <Text style={styles.cellTitle}>{data.title}</Text>
-                              <Text style={styles.cellValue}>{data.value} 万元</Text>
+                              <Text allowFontScaling={false}  style={styles.cellTitle}>{data.title}</Text>
+                              <Text allowFontScaling={false}  style={styles.cellValue}>{data.value} 万元</Text>
                           </View>
                       )
                   })

@@ -60,7 +60,7 @@ export default class AccountForOrderModal extends Component {
                     alignItems: 'center',
                     borderRadius: 4
                 }}>
-                    <Text style={{
+                    <Text allowFontScaling={false}  style={{
                         textAlign: 'center',
                         fontSize: Pixel.getPixel(14),
                         color: '#000',
@@ -82,7 +82,7 @@ export default class AccountForOrderModal extends Component {
                             backgroundColor: fontAndColor.COLORB0, borderRadius: 3,
                             justifyContent: 'center', alignItems: 'center'
                         }}>
-                            <Text style={{fontSize: Pixel.getPixel(14), color: '#fff'}}>{this.state.leftText}</Text>
+                            <Text allowFontScaling={false}  style={{fontSize: Pixel.getPixel(14), color: '#fff'}}>{this.state.leftText}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
                             this.setState({
@@ -98,7 +98,7 @@ export default class AccountForOrderModal extends Component {
                             borderWidth: 1,
                             borderColor: fontAndColor.COLORB0
                         }}>
-                            <Text
+                            <Text allowFontScaling={false} 
                                 style={{
                                     fontSize: Pixel.getPixel(14),
                                     color: fontAndColor.COLORB0

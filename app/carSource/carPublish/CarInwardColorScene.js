@@ -36,83 +36,38 @@ export default class CarInwardColorScene extends  BaseComponent{
     // 构造
     constructor(props) {
         super(props);
-        this.viewShell = [
-            {
-                title: '黑色',
-                selected: false,
-                fill: true,
-                color: '#000000',
-                img: '',
-                index: 0
-            },
-            {
-                title: '白色',
-                selected: false,
-                fill: true,
-                color: '#FFFFFF',
-                img: '',
-                index: 1
-            },
-            {
-                title: '灰色',
-                selected: false,
-                fill: true,
-                color: '#a8a8a8',
-                img: '',
-                index: 2
-            },
-            {
-                title: '红色',
-                selected: false,
-                fill: true,
-                color: '#d22c23',
-                img: '',
-                index: 3
-            },
-            {
-                title: '蓝色',
-                selected: false,
-                fill: true,
-                color: '#0c99f9',
-                img: '',
-                index: 4
-            },
-            {
-                title: '黄色',
-                selected: false,
-                fill: true,
-                color: '#ffcf12',
-                img: '',
-                index: 5
-            },
-            {
-                title: '银色',
-                selected: false,
-                fill: false,
-                color: '',
-                img: grayColor,
-                index: 6
-            },
-            {
-                title: '其他',
-                selected: false,
-                fill: false,
-                color: '',
-                img: doubleColor,
-                index: 7
-            },
-        ];
 
+        this.viewShell = this.props.carInwardColor;
         this.viewShell.map((data,index)=>{
-            if(data.title == this.props.currentChecked)
+            data.index = index;
+            if(data.name == this.props.currentChecked)
             {
                 data.selected = true;
+
+            }else if(data.name ==' ')
+            {
+                data.selected = '';
+
+            }else {
+                data.selected = false;
+
+            }
+            if(data.name == '多彩色'){
+                data.fill = false;
+                data.img = multiColor;
+            }else if(data.name == '其他'){
+                data.fill = false;
+                data.img = doubleColor;
+            }else {
+                data.fill = true;
+                data.img = '';
             }
         });
 
         this.state = {
             carShell: this.viewShell,
         }
+
     }
 
     render(){
@@ -148,7 +103,7 @@ export default class CarInwardColorScene extends  BaseComponent{
                     >
                         <View style={styles.center}>
                             <View style={[styles.colorContainer,{backgroundColor:data.color}]}/>
-                            <Text style={styles.textLabel}>{data.title}</Text>
+                            <Text allowFontScaling={false}  style={styles.textLabel}>{data.title}</Text>
                         </View>
                     </TouchableOpacity>
 
@@ -164,7 +119,7 @@ export default class CarInwardColorScene extends  BaseComponent{
                     >
                         <View style={styles.center}>
                             <Image style={styles.colorContainer} source={data.img}/>
-                            <Text style={styles.textLabel}>{data.title}</Text>
+                            <Text allowFontScaling={false}  style={styles.textLabel}>{data.title}</Text>
                         </View>
                     </TouchableOpacity>
 
@@ -182,7 +137,7 @@ export default class CarInwardColorScene extends  BaseComponent{
                         <View style={[styles.colorContainer,styles.selectColor]}>
                             <Image style={styles.selectImg} source={colorSelect}/>
                         </View>
-                        <Text style={styles.textLabel}>{data.title}</Text>
+                        <Text allowFontScaling={false}  style={styles.textLabel}>{data.title}</Text>
                     </View>
                 </TouchableOpacity>
             );
@@ -198,8 +153,8 @@ export default class CarInwardColorScene extends  BaseComponent{
     };
     _shellPress = (i) => {
         this.props.checkedCarInwardColorClick({
-            title:this.viewShell[i].title,
-            value:this.viewShell[i].color,
+            title:this.viewShell[i].name,
+            value:this.viewShell[i].value,
         });
         this.backPage();
     };

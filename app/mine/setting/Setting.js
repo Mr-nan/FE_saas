@@ -81,7 +81,7 @@ export default class Setting extends BaseComponent {
                     <View style={[styles.itemStyle, {marginTop: Pixel.getPixel(15)}]}>
                         <Image source={require("./../../../images/setting/account_security.png")}
                                style={styles.leftImageStyle}/>
-                        <Text style={styles.centerTextStyle}>账户与安全</Text>
+                        <Text allowFontScaling={false}  style={styles.centerTextStyle}>账户与安全</Text>
                         <Image source={require("./../../../images/mainImage/celljiantou@3x.png")}
                                style={styles.rightImageStyle}/>
                     </View>
@@ -99,7 +99,7 @@ export default class Setting extends BaseComponent {
                     <View style={styles.itemStyle}>
                         <Image source={require("./../../../images/setting/platform.png")}
                                style={styles.leftImageStyle}/>
-                        <Text style={styles.centerTextStyle}>关于交易服务平台</Text>
+                        <Text allowFontScaling={false}  style={styles.centerTextStyle}>关于交易服务平台</Text>
                         <Image source={require("./../../../images/mainImage/celljiantou@3x.png")}
                                style={styles.rightImageStyle}/>
                     </View>

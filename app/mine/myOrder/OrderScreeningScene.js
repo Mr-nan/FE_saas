@@ -22,6 +22,7 @@ import PixelUtil from '../../utils/PixelUtil';
 import MyButton from "../../component/MyButton";
 import {request} from "../../utils/RequestUtil";
 import * as AppUrls from "../../constant/appUrls";
+import LabelParentPayType from "../../component/LabelParentPayType";
 const Pixel = new PixelUtil();
 const arrow = require('../../../images/publish/date-select.png');
 import LabelParent from '../../component/LabelParent';
@@ -42,12 +43,14 @@ export default class OrderScreeningScene extends BaseComponent {
         this.startDate = this.props.startDate;
         this.endDate = this.props.endDate;
         this.status = this.props.status;
+        this.payType = this.props.payType;
+        this.payTypeKey = this.props.payTypeKey;
         this.mList = [];
         if (this.props.business === 1) {
             if (this.props.status === 'finish' || this.props.status === 'closed') {
-                this.mList = ['3'];
+                this.mList = ['2', '3'];
             } else {
-                this.mList = ['1', '3'];
+                this.mList = ['1', '2', '3'];
             }
         } else {
             if (this.props.status === 'finish' || this.props.status === 'closed') {
@@ -58,9 +61,9 @@ export default class OrderScreeningScene extends BaseComponent {
         }
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
-        pay_type.push({title: '全部', isSelected: false, value: 0});
-        pay_type.push({title: '订单融资', isSelected: false, value: 1});
-        pay_type.push({title: '全款', isSelected: false, value: 2});
+        pay_type.push({title: '全部', isSelected: pay_type.length === this.payType, value: '', ref: 'type_child' + 0});
+        pay_type.push({title: '全款', isSelected: pay_type.length === this.payType, value: 0, ref: 'type_child' + 1});
+        pay_type.push({title: '订单融资', isSelected: pay_type.length === this.payType, value: 1, ref: 'type_child' + 2});
         this.state = {
             //source: ds.cloneWithRows(mList),
             source: ds,
@@ -167,14 +170,13 @@ export default class OrderScreeningScene extends BaseComponent {
             return;
         }
         if (this.startDate <= this.endDate) {
-            this.props.returnConditions(this.orderState, this.startDate, this.endDate, this.status);
+            this.props.returnConditions(this.orderState, this.startDate, this.endDate, this.status, this.payType, this.payTypeKey);
             this.backPage();
         } else {
             this.props.showToast('开始时间要小于结束时间');
         }
 
     }
-
 
 
     _renderSeperator = (sectionID: number, rowID: number, adjacentRowHighlighted: bool) => {
@@ -189,7 +191,7 @@ export default class OrderScreeningScene extends BaseComponent {
         if (movie == 1) {
             return (
                 <View style={styles.containerChild}>
-                    <Text style={styles.carType}>订单状态</Text>
+                    <Text allowFontScaling={false}  style={styles.carType}>订单状态</Text>
                     <LabelParent items={order_state} orderState={this.orderState} updateState={this.setOrderState}
                                  updateStatus={this.setOrderStatus}/>
                 </View>
@@ -199,8 +201,9 @@ export default class OrderScreeningScene extends BaseComponent {
                 <View style={{
                     backgroundColor: '#ffffff'
                 }}>
-                    <Text style={styles.carType}>付款方式</Text>
-                    <LabelParent style={{}} items={pay_type} orderState={this.orderState}/>
+                    <Text allowFontScaling={false}  style={styles.carType}>付款方式</Text>
+                    <LabelParentPayType items={pay_type} orderState={this.payType} updateState={this.setPayType}
+                                 updateStatus={this.setpayTypeKey}/>
                 </View>
             )
         } else if (movie == 3) {
@@ -216,24 +219,67 @@ export default class OrderScreeningScene extends BaseComponent {
 
     }
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
+    setPayType = (newPayType) => {
+        this.payType = newPayType;
+    }
+
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
+    setpayTypeKey = (newpayTypeKey) => {
+        this.payTypeKey = newpayTypeKey;
+    }
+
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     setOrderState = (newOrderState) => {
         this.orderState = newOrderState;
         //console.log('setOrderState = ',this.orderState);
     }
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     setOrderStatus = (newStatus) => {
         this.status = newStatus;
         //console.log('status = ',this.status);
     }
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     setStartDate = (newStartDate) => {
         this.startDate = newStartDate;
     }
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     setEndDate = (newEndDate) => {
         this.endDate = newEndDate;
     }
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     _showDateTimePicker = (type) => {
         this.type = type;
         this.setState({isDateTimePickerVisible: true})

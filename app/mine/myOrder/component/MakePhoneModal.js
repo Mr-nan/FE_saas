@@ -82,7 +82,7 @@ export default class MakePhoneModal extends Component {
                                     this.callClick(this.state.callData.shopsNumber);
                                 }}>
                                 <View style={styles.buttonMerchant}>
-                                    <Text style={{color: '#ffffff'}}>联系商家</Text>
+                                    <Text allowFontScaling={false}  style={{color: '#ffffff'}}>联系商家</Text>
                                 </View>
                             </TouchableOpacity>)
                         }
@@ -92,7 +92,7 @@ export default class MakePhoneModal extends Component {
                                     this.callClick(this.state.callData.phone);
                                 }}>
                                 <View style={styles.buttonCustomerService}>
-                                    <Text style={{color: fontAndColor.COLORB0}}>联系客服</Text>
+                                    <Text allowFontScaling={false}  style={{color: fontAndColor.COLORB0}}>联系客服</Text>
                                 </View>
                             </TouchableOpacity>)
                         }

@@ -51,7 +51,7 @@ export default class CarInfoNavigationView extends PureComponent {
                                       onPress={backIconClick}>
                     {backIconClick && <Image style={styles.backIcon}  source={ this.state.navigationBackgroundColor==false? require('../../images/carSourceImages/back.png') : require('../../images/mainImage/navigatorBack.png')}/>}
                      </TouchableOpacity>
-                    <Text style={styles.titleText}>{title}</Text>
+                    <Text allowFontScaling={false}  style={styles.titleText}>{title}</Text>
                     <View style={styles.imageFoot}>
                        <NavigationRightView ref="navigationRightView" isStore={isStore} addStoreAction={addStoreAction} cancelStoreAction={cancelStoreAction} showShared={showShared}/>
                     </View>

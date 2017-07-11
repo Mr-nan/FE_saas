@@ -158,7 +158,7 @@ export default class OrderCarDetailScene extends BaseComponent{
             return (
 
                 <View style={ {backgroundColor:PAGECOLOR.COLORA3, height:adapeSize(20),alignItems:'flex-start',justifyContent:'center'}}>
-                    <Text style={{marginLeft:adapeSize(15)}}>车辆照片</Text>
+                    <Text allowFontScaling={false}  style={{marginLeft:adapeSize(15)}}>车辆照片</Text>
                 </View>
             )
         }
