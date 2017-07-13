@@ -386,7 +386,7 @@ export default class HomeScene extends BaseComponet {
 
                     <Text allowFontScaling={false}  style={cellSheet.despritonStyle}
                           numberOfLines={2}>{DIDIAN + movie.model_name}</Text>
-                    <Text allowFontScaling={false} 
+                    <Text allowFontScaling={false}
                         style={cellSheet.timeStyle}>{this.dateReversal(movie.create_time + '000') + '/' + movie.mileage + '万公里'}</Text>
 
                 </View>
