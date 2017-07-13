@@ -32,6 +32,7 @@ import CarBrandSelectScene  from './CarBrandSelectScene';
 import CarScreeningScene    from  './CarScreeningScene';
 import CityListScene        from './CityListScene';
 import {SequencingButton, SequencingView} from './znComponent/CarSequencingView';
+import CarSeekScene from './CarSeekScene';
 import * as AppUrls         from "../constant/appUrls";
 import  {request}           from '../utils/RequestUtil';
 import PixelUtil            from '../utils/PixelUtil';
@@ -69,6 +70,7 @@ const APIParameter = {
     emission_standards:0,
     nature_use:0,
     car_color:0,
+    model_name:'',
     v_type:0,
     rows: 10,
     page: 1,
@@ -233,6 +235,9 @@ export  default  class carSourceListScene extends BaseComponent {
         this.loadData();
 
     }
+    allRefresh=()=>{
+        this.loadData();
+    }
 
     // 获取数据
     loadData = () => {
@@ -330,20 +335,20 @@ export  default  class carSourceListScene extends BaseComponent {
     loadCarConfigData=(succeedAction)=>{
 
 
-        // CarDeployData.getCarDeployData(this.props.showModal,this.props.showToast,(dataSource)=>{
-        //
-        //     succeedAction(dataSource);
-        //
-        // });
+        CarDeployData.getCarDeployData(this.props.showModal,this.props.showToast,(dataSource)=>{
 
-            this.props.showModal(true);
-            request(AppUrls.CAR_CONFIG,'post',{}).then((response) => {
-                succeedAction(response.mjson.data);
-                this.props.showModal(false);
-            }, (error) => {
-                this.props.showModal(false);
-                this.props.showToast(error.msg);
-            });
+            succeedAction(dataSource);
+
+        });
+
+            // this.props.showModal(true);
+            // request(AppUrls.CAR_CONFIG,'post',{}).then((response) => {
+            //     succeedAction(response.mjson.data);
+            //     this.props.showModal(false);
+            // }, (error) => {
+            //     this.props.showModal(false);
+            //     this.props.showToast(error.msg);
+            // });
     }
 
     // 选择城市列表
@@ -364,18 +369,28 @@ export  default  class carSourceListScene extends BaseComponent {
 
     presCarTypeScene = () => {
 
-        let navigatorParams = {
-            name: "CarBrandSelectScene",
-            component: CarBrandSelectScene,
-            params: {
-                checkedCarType: this.state.checkedCarType,
-                checkedCarClick: this.checkedCarClick,
-                status: 1,
-                isHeadInteraction: true,
-                unlimitedAction:this.carTypeClick,
-                // isCheckedCarModel:true,
+        // let navigatorParams = {
+        //     name: "CarBrandSelectScene",
+        //     component: CarBrandSelectScene,
+        //     params: {
+        //         checkedCarType: this.state.checkedCarType,
+        //         checkedCarClick: this.checkedCarClick,
+        //         status: 1,
+        //         isHeadInteraction: true,
+        //         unlimitedAction:this.carTypeClick,
+        //         // isCheckedCarModel:true,
+        //
+        //     }
+        // };
+        // this.props.callBack(navigatorParams);
 
+        let navigatorParams = {
+            name: "CarSeekScene",
+            component: CarSeekScene,
+            params: {
+                checkedCarClick: this.checkedCarClick,
             }
+
         };
         this.props.callBack(navigatorParams);
 
@@ -467,7 +482,21 @@ export  default  class carSourceListScene extends BaseComponent {
 
         if (index === 1) {
 
-            this.presCarTypeScene();
+            let navigatorParams = {
+                name: "CarBrandSelectScene",
+                component: CarBrandSelectScene,
+                params: {
+                    checkedCarType: this.state.checkedCarType,
+                    checkedCarClick: this.checkedCarClick,
+                    status: 1,
+                    isHeadInteraction: true,
+                    unlimitedAction:this.carTypeClick,
+                    // isCheckedCarModel:true,
+
+                }
+            };
+            this.props.callBack(navigatorParams);
+
             if (!this.state.isHide) {
                 this.setState({
                     isHide: true,
@@ -546,6 +575,16 @@ export  default  class carSourceListScene extends BaseComponent {
 
         APIParameter.brand_id = carObject.brand_id;
         APIParameter.series_id = carObject.series_id;
+
+        if(carObject.brand_id == 0 && carObject.series_id ==0)
+        {
+            APIParameter.model_name = carObject.brand_name;
+
+        }else {
+
+            APIParameter.model_name = '';
+
+        }
         this.setState({
             checkedCarType: {
                 title: carObject.series_id == 0 ? carObject.brand_name : carObject.series_name,
@@ -650,6 +689,8 @@ export  default  class carSourceListScene extends BaseComponent {
         });
         APIParameter.brand_id = 0;
         APIParameter.series_id = 0;
+        APIParameter.model_name = '';
+
         if (this.refs.headView.state.isCheckRecommend) {
             this.refs.headView.setCheckRecommend(false)
         } else {
@@ -843,6 +884,7 @@ export  default  class carSourceListScene extends BaseComponent {
         APIParameter.emission_standards = 0;
         APIParameter.car_color = 0;
         APIParameter.nature_use = 0;
+        APIParameter.model_name = '';
 
         if (this.refs.headView.state.isCheckRecommend) {
             this.refs.headView.setCheckRecommend(false);

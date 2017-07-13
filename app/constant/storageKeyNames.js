@@ -9,6 +9,7 @@ export const USERNAME = "username";
 export const LOGIN_TYPE = "login_type"
 export const FIRST_INTO = "first_into"
 export const CAR_TYPE_FOOTMARK = "car_type_footmark"; // 车品牌足迹
+export const CAR_SEEK_DATA = 'car_seek_data';       //  车辆历史搜索
 /* userinfo start */
 export const BASE_USER_ID = "base_user_id";//用户ID
 export const ENTERPRISE_LIST = "enterprise_list";//	企业列表	array<object> enterprise_list
