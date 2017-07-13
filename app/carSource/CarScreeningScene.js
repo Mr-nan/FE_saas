@@ -36,13 +36,13 @@ export default class CarInfoScene extends BaseComponent {
                 <ScrollView>
                     <SelectView     ref="cityView"          title="地区"          content={screeningObject.checkedCity.title!=''?screeningObject.checkedCity.title:'请选择'} selectCilck={this.pushCitySceneAction}/>
                     <SelectView     ref="carView"           title="品牌车系"       content={(screeningObject.checkedCarType.title!='')?screeningObject.checkedCarType.title:'请选择'} selectCilck={this.pushCarBrandSceneAction}/>
-                    <SelectView     ref="carDischargeView"  title="排放标准"       content={screeningObject.checkedCarDischarge.title!=''?screeningObject.checkedCarDischarge.title:'请选择'} selectCilck={this.pushCarDischargeSceneAction}/>
-                    <SelectView     ref="carColorView"      title="车身颜色"       content={screeningObject.checkedCarColor.title!=''?screeningObject.checkedCarColor.title:'请选择'} selectCilck={this.pushCarColorSceneAction}/>
-                    <CheckedView    title="价格"  contentView={this.carPriceView}/>
+                    {/*<SelectView     ref="carDischargeView"  title="排放标准"       content={screeningObject.checkedCarDischarge.title!=''?screeningObject.checkedCarDischarge.title:'请选择'} selectCilck={this.pushCarDischargeSceneAction}/>*/}
+                    {/*<SelectView     ref="carColorView"      title="车身颜色"       content={screeningObject.checkedCarColor.title!=''?screeningObject.checkedCarColor.title:'请选择'} selectCilck={this.pushCarColorSceneAction}/>*/}
+                    {/*<CheckedView    title="价格"  contentView={this.carPriceView}/>*/}
                     <CheckedView    title="车龄"  contentView={this.carAgeView} dataArray={screeningObject.carAgeSource}    checkedClick={this.carAgeClick} currentChecked={screeningObject.checkedCarAgeType.title}/>
                     <CheckedView    title="里程" dataArray={screeningObject.carKMSource}     checkedClick={this.carKMClick} currentChecked={screeningObject.checkedCarKMType.title}/>
-                    <CheckedView    title="类型" dataArray={screeningObject.carTypeSource}   checkedClick={this.carTypeClick}    currentChecked={screeningObject.checkedCarGenre.title}/>
-                    <CheckedView    title="使用性质" dataArray={screeningObject.carNatureSource}   checkedClick={this.carNatureClick}    currentChecked={screeningObject.checkedCarNature.title}/>
+                    {/*<CheckedView    title="类型" dataArray={screeningObject.carTypeSource}   checkedClick={this.carTypeClick}    currentChecked={screeningObject.checkedCarGenre.title}/>*/}
+                    {/*<CheckedView    title="使用性质" dataArray={screeningObject.carNatureSource}   checkedClick={this.carNatureClick}    currentChecked={screeningObject.checkedCarNature.title}/>*/}
                 </ScrollView>
                 <NavigationView title="筛选" backIconClick={this.backPage} renderRihtFootView={this.renderRightFootView}/>
             </View>

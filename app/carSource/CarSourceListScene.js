@@ -330,20 +330,20 @@ export  default  class carSourceListScene extends BaseComponent {
     loadCarConfigData=(succeedAction)=>{
 
 
-        CarDeployData.getCarDeployData(this.props.showModal,this.props.showToast,(dataSource)=>{
+        // CarDeployData.getCarDeployData(this.props.showModal,this.props.showToast,(dataSource)=>{
+        //
+        //     succeedAction(dataSource);
+        //
+        // });
 
-            succeedAction(dataSource);
-
-        });
-
-            // this.props.showModal(true);
-            // request(AppUrls.CAR_CONFIG,'post',{}).then((response) => {
-            //     succeedAction(response.mjson.data);
-            //     this.props.showModal(false);
-            // }, (error) => {
-            //     this.props.showModal(false);
-            //     this.props.showToast(error.msg);
-            // });
+            this.props.showModal(true);
+            request(AppUrls.CAR_CONFIG,'post',{}).then((response) => {
+                succeedAction(response.mjson.data);
+                this.props.showModal(false);
+            }, (error) => {
+                this.props.showModal(false);
+                this.props.showToast(error.msg);
+            });
     }
 
     // 选择城市列表

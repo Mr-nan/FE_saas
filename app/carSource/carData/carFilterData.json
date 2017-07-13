@@ -42,35 +42,16 @@
 
   "sequencingDataSource": [
     {
-      "title": " 上架时间由新到旧 ",
-      "value": "5"
-    },
-    {
-      "title": " 上架时间由旧到新 ",
+      "title": " 最新发布 ",
       "value": "1"
     },
     {
-      "title": " 里程由多到少 ",
-      "value": "6"
-    },
-    {
-      "title": " 里程由少到多 ",
+      "title": " 里程少 ",
       "value": "2"
     },
     {
-      "title": " 车龄由长到短 ",
-      "value": "7"
-    },
-    {
-      "title": " 车龄由短到长 ",
+      "title": " 车龄短 ",
       "value": "3"
-    },
-    {
-      "title": " 价格由高到低 ",
-      "value": "8"
-    },{
-      "title": " 价格由低到高 ",
-      "value": "4"
     }
   ],
   "carAgeMaxSource": [
