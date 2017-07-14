@@ -74,16 +74,31 @@ export  default class LendMoneySence extends BaseComponent {
     ]
     componentWillMount(){
 
-        if (Number.parseInt(this.props.inventory_financing_status)==1){
+        try{
+            if (parseInt(this.props.inventory_financing_status)==1){
 
+                this.dataSource.push( {
+                    backImage: require('../../../images/financeImages/backkurong.png'),
+                    imageSource: require('../../../images/financeImages/kurongIcon.png'),
+                    title: '库融融资',
+                    key: 'kurong'
+                })
+            }
+            if (parseInt(this.props.purchase_status)==1){
+                this.dataSource.push({
+                    backImage: require('../../../images/financeImages/backcaigou.png'),
+                    imageSource: require('../../../images/financeImages/caigouIcon.png'),
+                    title: '采购融资',
+                    key: 'caigoudai'
+                })
+            }
+        }catch (e){
             this.dataSource.push( {
                 backImage: require('../../../images/financeImages/backkurong.png'),
                 imageSource: require('../../../images/financeImages/kurongIcon.png'),
                 title: '库融融资',
                 key: 'kurong'
             })
-        }
-        if (Number.parseInt(this.props.purchase_status)==1){
             this.dataSource.push({
                 backImage: require('../../../images/financeImages/backcaigou.png'),
                 imageSource: require('../../../images/financeImages/caigouIcon.png'),
@@ -91,6 +106,7 @@ export  default class LendMoneySence extends BaseComponent {
                 key: 'caigoudai'
             })
         }
+
     }
 
     initFinish = () => {
