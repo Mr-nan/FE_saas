@@ -396,7 +396,12 @@ export default class SalesOrderDetailScene extends BaseComponent {
                     } else {
                         this.topState = -1;
                     }
-                    this.bottomState = 1;
+                    if (status === 17 || status === 19 || status === 20 || status === 21 || status === 22 ||
+                        status === 23 || status === 24 ) {
+                        this.bottomState = -1;
+                    } else {
+                        this.bottomState = 1;
+                    }
                 } else if (cancelStatus === 1) {
                     this.orderState = 2;
                     this.topState = 0;
