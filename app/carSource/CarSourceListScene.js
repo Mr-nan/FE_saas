@@ -49,6 +49,7 @@ let carTypeSource = [];
 let carNatureSource = [];
 let carColorSource = [];
 let carDischargeSource = [];
+let carPriceSource = [];
 let sequencingDataSource = carFilterData.sequencingDataSource;
 let currentCheckedIndex = 1;
 let checkedSource = [];
@@ -71,6 +72,7 @@ const APIParameter = {
     nature_use:0,
     car_color:0,
     model_name:'',
+    prov_id:0,
     v_type:0,
     rows: 10,
     page: 1,
@@ -202,6 +204,7 @@ export  default  class carSourceListScene extends BaseComponent {
                 if(data.result == 'true'){
                     isCheckRecommend = false
                     APIParameter.type = 0;
+                    APIParameter.prov_id = 0;
                     this.loadData();
                     return;
                 }
@@ -211,7 +214,20 @@ export  default  class carSourceListScene extends BaseComponent {
         StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
         StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND,'false');
 
-        this.loadData();
+
+        StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
+            if(data.code == 1 && data.result != '')
+            {
+                let enters = JSON.parse(data.result);
+                this.prov_id = enters.prov_id;
+                APIParameter.prov_id=enters.prov_id;
+                this.loadData();
+
+            }else{
+                this.loadData();
+            }
+        });
+
 
 
 
@@ -236,6 +252,7 @@ export  default  class carSourceListScene extends BaseComponent {
 
     }
     allRefresh=()=>{
+        this.setState({renderPlaceholderOnly: 'loading'});
         this.loadData();
     }
 
@@ -248,7 +265,6 @@ export  default  class carSourceListScene extends BaseComponent {
             this.props.backToLogin();
         })
             .then((response) => {
-
                 carData = response.mjson.data.list;
                 if (typeof(response.mjson.data.start) == "undefined") {
                     APIParameter.start = 0;
@@ -407,6 +423,7 @@ export  default  class carSourceListScene extends BaseComponent {
                 carNatureSource = carConfigData.auto_use;
                 carColorSource = carConfigData.auto_body_color;
                 carDischargeSource = carConfigData.auto_es;
+                carPriceSource = carConfigData.auto_price;
 
                 let {checkedCarType,checkedCarAgeType,checkedCarKMType,checkedCarGenre,checkedCity,checkedCarPrice,checkedCarDischarge,checkedCarColor,checkedCarNature}= this.state;
                 let screeningObject = {
@@ -426,6 +443,7 @@ export  default  class carSourceListScene extends BaseComponent {
                     carNatureSource:carNatureSource,
                     carColorSource:carColorSource,
                     carDischargeSource:carDischargeSource,
+                    carPriceSource:carPriceSource,
                 };
                 let navigatorParams = {
                     name: "CarScreeningScene",
@@ -560,11 +578,13 @@ export  default  class carSourceListScene extends BaseComponent {
 
         if (isCheck) {
             APIParameter.type = 1;
+            APIParameter.prov_id=this.prov_id;
             this.allDelectClick();
 
 
         } else {
             APIParameter.type = 0;
+            APIParameter.prov_id=0;
             this.filterData();
         }
 
@@ -1182,7 +1202,7 @@ class CarListNavigatorView extends Component {
                         <View style={styles.navigatorSousuoView}>
                             <Image style={{marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(10)}}
                                    source={require('../../images/carSourceImages/sousuoicon.png')}/>
-                            <Text allowFontScaling={false}  style={styles.navigatorSousuoText}>按品牌、车系搜索</Text>
+                            <Text allowFontScaling={false}  style={styles.navigatorSousuoText}>请输入车型关键词</Text>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={this.props.ScreeningClick}>

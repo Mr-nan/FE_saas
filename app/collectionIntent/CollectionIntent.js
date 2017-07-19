@@ -35,11 +35,6 @@ export default class CollectionIntent extends BaseComponent {
 
     loadData = () => {
 
-
-        console.log('*********************');
-        console.log(this.provsArray);
-        console.log(this.citiesArray);
-
         this.props.showModal(true);
         let yearArr = [];
         let mileArr = [];
@@ -152,8 +147,8 @@ export default class CollectionIntent extends BaseComponent {
                     this.setState({renderPlaceholderOnly: 'success'});
                     if(response.mjson.data != null){
 
-                        this.getSelectedItems(this.state.arr1, response.mjson.data.coty, this.carYearArr);
                         this.getSelectedItems(this.state.arr, response.mjson.data.brand_series, this.brandSeriesArr);
+                        this.getSelectedItems(this.state.arr1, response.mjson.data.coty, this.carYearArr);
                         this.getSelectedItems(this.state.arr2, response.mjson.data.mileage, this.mileageArr);
                         this.getCityItems(response.mjson.data.city,response.mjson.data.province);
                     }
@@ -194,9 +189,9 @@ export default class CollectionIntent extends BaseComponent {
 
             } else if (arrs == this.state.arr1)
             {
-                this.setState({arr1: this.state.arr1});
+                this.setState({arr1:this.state.arr1});
             } else {
-                this.setState({arr2: this.state.arr2});
+                this.setState({arr2:this.state.arr2});
             }
 
         }
@@ -204,23 +199,26 @@ export default class CollectionIntent extends BaseComponent {
 
     getCityItems =(citiesArray,provsArray)=>{
 
-
         for (let object of citiesArray){
             this.state.cityArray.push({
                 title: object.name,
                 isSelected: true,
+                provsID:object.prov_id,
             })
-            this.citiesArray.push({title:object.name,value:object.id});
+            this.citiesArray.push({title:object.name,value:object.id,});
 
         }
         for (let object of provsArray){
             this.state.cityArray.push({
                 title: object.name,
                 isSelected: true,
+                provsID:object.id
             })
             this.provsArray.push({title:object.name,value:object.id});
 
         }
+
+
         this.setState({
             cityArray:this.state.cityArray,
         });
@@ -297,9 +295,10 @@ export default class CollectionIntent extends BaseComponent {
         for (let item of this.state.cityArray)
         {
             console.log(item.title);
-            if(item.title == cityType.city_name)
+            if(item.title == cityType.city_name ||  item.provsID == cityType.provice_id )
             {
                 isCityTitle = false;
+                this.props.showToast('已存在该地区');
                 break;
             }
         }
@@ -309,6 +308,7 @@ export default class CollectionIntent extends BaseComponent {
             this.state.cityArray.push({
                 title: cityType.city_name,
                 isSelected: true,
+                provsID:cityType.provice_id,
             })
             this.setState({
                 cityArray:this.state.cityArray,
@@ -507,18 +507,21 @@ export default class CollectionIntent extends BaseComponent {
                             <Text allowFontScaling={false}  style={styles.carType}>车龄区间（单位：年）</Text>
                             <LabelSelect
                                 style={styles.labelSelect}
-                                title="Checkbox"
+                                title="CheckboxCarAge"
                                 readOnly={true}
+                                isBigSize={true}
                             >
-                                {this.state.arr1.map((item, index) =>
-                                    <LabelSelect.Label
-                                        key={'label-' + index}
+                                {this.state.arr1.map((item, index) =>{
+                                    return (<LabelSelect.Label
+                                        key={'CarAge-' + index}
                                         data={item}
                                         enables={item.isSelected}
                                         onCancel={() => {
                                             this.countItem(item, this.state.arr1);
                                         }}
-                                    >{item.title}</LabelSelect.Label>
+                                    >{item.title}
+                                    </LabelSelect.Label>)
+                                    }
                                 )}
                             </LabelSelect>
                         </View>
@@ -530,15 +533,19 @@ export default class CollectionIntent extends BaseComponent {
                                 readOnly={true}
                                 isBigSize={true}
                             >
-                                {this.state.arr2.map((item, index) =>
-                                    <LabelSelect.Label
-                                        key={'label-' + index}
-                                        data={item}
-                                        enables={item.isSelected}
-                                        onCancel={() => {
-                                            this.countItem(item, this.state.arr2);
-                                        }}
-                                    >{item.title}</LabelSelect.Label>
+                                {this.state.arr2.map((item, index) =>{
+                                        return(
+                                            <LabelSelect.Label
+                                                key={'label-' + index}
+                                                data={item}
+                                                enables={item.isSelected}
+                                                onCancel={() => {
+                                                    this.countItem(item, this.state.arr2);
+                                                }}
+                                            >{item.title}
+                                            </LabelSelect.Label>
+                                        )
+                                    }
                                 )}
                             </LabelSelect>
                         </View>

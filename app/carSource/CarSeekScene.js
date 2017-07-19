@@ -82,6 +82,7 @@ export default class CarSeekScene extends BaseComponent {
 
                 </View>
                 <ListView renderHeader={this.renderHeader}
+                          keyboardDismissMode={'on-drag'}
                           removeClippedSubviews={false}
                           enableEmptySections = {true}
                           key ='historySeekList'
@@ -115,6 +116,7 @@ export default class CarSeekScene extends BaseComponent {
                     this.seekArray.length>0 && (
                         <ListView style={styles.listView}
                                   key = 'seekList'
+                                  keyboardDismissMode={'on-drag'}
                                   dataSource={this.state.seekData}
                                   enableEmptySections = {true}
                                   removeClippedSubviews={false}
@@ -138,11 +140,11 @@ export default class CarSeekScene extends BaseComponent {
 
     loadSeekData=()=>{
 
-        if(seekDataArray.length>0)
-        {
-            this.setSeekData(seekDataArray);
-            return;
-        }
+        // if(seekDataArray.length>0)
+        // {
+        //     this.setSeekData(seekDataArray);
+        //     return;
+        // }
 
         request(AppUrls.CAR_SEARCH_TOP,'POST',{}).then((response) => {
 
@@ -380,13 +382,13 @@ const styles = StyleSheet.create({
         marginTop: Pixel.getPixel(5),
         marginBottom: Pixel.getPixel(5),
         marginLeft: Pixel.getPixel(15),
+        marginRight:Pixel.getPixel(10)
 
     },
 
     footprintView: {
 
-        marginLeft: Pixel.getPixel(7),
-        marginRight: Pixel.getPixel(3),
+        marginRight: Pixel.getPixel(5),
         paddingHorizontal: Pixel.getPixel(10),
         height: Pixel.getPixel(20),
         borderRadius: 4,

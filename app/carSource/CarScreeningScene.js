@@ -38,7 +38,7 @@ export default class CarInfoScene extends BaseComponent {
                     <SelectView     ref="carView"           title="品牌车系"       content={(screeningObject.checkedCarType.title!='')?screeningObject.checkedCarType.title:'请选择'} selectCilck={this.pushCarBrandSceneAction}/>
                     <SelectView     ref="carDischargeView"  title="排放标准"       content={screeningObject.checkedCarDischarge.title!=''?screeningObject.checkedCarDischarge.title:'请选择'} selectCilck={this.pushCarDischargeSceneAction}/>
                     <SelectView     ref="carColorView"      title="车身颜色"       content={screeningObject.checkedCarColor.title!=''?screeningObject.checkedCarColor.title:'请选择'} selectCilck={this.pushCarColorSceneAction}/>
-                    <CheckedView    title="价格"  contentView={this.carPriceView}/>
+                    <CheckedView    title="价格"  contentView={this.carPriceView} dataArray={screeningObject.carPriceSource}    checkedClick={this.carPriceClick} currentChecked={screeningObject.checkedCarPrice.title}/>
                     <CheckedView    title="车龄"  contentView={this.carAgeView} dataArray={screeningObject.carAgeSource}    checkedClick={this.carAgeClick} currentChecked={screeningObject.checkedCarAgeType.title}/>
                     <CheckedView    title="里程" dataArray={screeningObject.carKMSource}     checkedClick={this.carKMClick} currentChecked={screeningObject.checkedCarKMType.title}/>
                     <CheckedView    title="类型" dataArray={screeningObject.carTypeSource}   checkedClick={this.carTypeClick}    currentChecked={screeningObject.checkedCarGenre.title}/>
@@ -341,6 +341,11 @@ export default class CarInfoScene extends BaseComponent {
         this.props.screeningObject.checkedCarType.title = title;
         this.props.screeningObject.checkedCarType.brand_id = carObject.brand_id;
         this.props.screeningObject.checkedCarType.series_id = carObject.series_id;
+    }
+
+    carPriceClick=(checkedObject)=>{
+        this.props.screeningObject.checkedCarPrice.title = checkedObject.title;
+        this.props.screeningObject.checkedCarPrice.value = checkedObject.value;
     }
 
     carAgeClick=(checkedObject)=>{
