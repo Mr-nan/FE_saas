@@ -14,12 +14,15 @@
 #import <React/RCTBundleURLProvider.h>
 #import <AdSupport/AdSupport.h>
 #import "sys/utsname.h"
+#import "Growing.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
  NSURL *jsCodeLocation;
+ [Growing startWithAccountId:@"8c70ed29c1985918"];
+ [Growing setRnNavigatorPageEnabled:YES];
 
    
 #ifdef DEBUG
@@ -86,6 +89,14 @@
   
   return [RCTLinkingManager application:application openURL:url sourceApplication:sourceApplication annotation:annotation];
   
+}
+-(BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+  if ([Growing handleUrl:url]) // 请务必确保该函数被调用
+  {
+    return YES;
+  }
+  return NO;
 }
 
 @end
