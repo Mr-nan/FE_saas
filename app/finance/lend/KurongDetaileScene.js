@@ -150,7 +150,7 @@ export  default  class KurongDetaileScene extends BaseComponent {
             {title: '状态',     key: jsonData.status_str},
             {title: '放款日期', key: jsonData.loan_time},
             {title: '借款用途', key: jsonData.remarks},
-            ]
+        ]
         if(carData.length>0){
 
             let tempCarDate=[];
@@ -188,6 +188,8 @@ export  default  class KurongDetaileScene extends BaseComponent {
                 return styles.controlButton
             case '已取消借款':
                 return styles.canceledButton
+            case '资金方签署中':
+                return styles.cancelButton
             default:
                 return styles.cancelButton
 
@@ -232,6 +234,10 @@ export  default  class KurongDetaileScene extends BaseComponent {
             this.toNextPage({
                 name: 'ContractInfoScene', component: ContractInfoScene, params: {loan_code:this.props.loanNumber,showButton:false}
             });
+        }else if(title === '资金方签署中'){
+            this.toNextPage({
+                name: 'ContractInfoScene', component: ContractInfoScene, params: {loan_code:this.props.loanNumber,showButton:false}
+            });
         }
     }
 
@@ -257,7 +263,9 @@ export  default  class KurongDetaileScene extends BaseComponent {
         if(stateCode!==''&&extendCode!==''){
 
             let tempTitle=[]
-            if (stateCode==='1'){
+            if(stateCode==='8'){
+                tempTitle=['资金方签署中']
+            }else if (stateCode==='1'){
                 tempTitle=['取消借款']
             }else if(stateCode==='2'){
                 tempTitle=['签署合同','取消借款']
@@ -403,7 +411,7 @@ export  default  class KurongDetaileScene extends BaseComponent {
 
                     }}
                 />
-               </View>
+            </View>
 
         );
     }

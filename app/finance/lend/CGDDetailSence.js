@@ -195,21 +195,28 @@ export default class OrderCarDetailScene extends BaseComponent {
         return dataSource;
     }
 
-    confimOrderState = (state, isComplete) => {
+    /**
+     * from @zhaojian
+     *
+     * 根据状态给予对应名称
+     **/
+    confimOrderState = (state, isComplete,status) => {
         let NameBlobs = [];
-
-        if (state > 0 && state <= 32 || state == 50) {
-            NameBlobs = ['取消借款']
-        } else if (state == 33) {
-            NameBlobs = ['取消借款', '确认金额']
-        } else if (state === 35) {
-            NameBlobs = ['取消借款','签署合同']
-        } else if (state == 40 || state == 42 || isComplete == 4) {
-            NameBlobs = ['查看合同']
-        } else if (state == 41) {
-            NameBlobs = ['取消借款', '确认金额', '查看合同']
+        if(status=='8'){
+            NameBlobs = ['资金方签署中']
+        }else{
+            if (state > 0 && state <= 32 || state == 50) {
+                NameBlobs = ['取消借款']
+            } else if (state == 33) {
+                NameBlobs = ['取消借款', '确认金额']
+            } else if (state === 35) {
+                NameBlobs = ['取消借款','签署合同']
+            } else if (state == 40 || state == 42 || isComplete == 4) {
+                NameBlobs = ['查看合同']
+            } else if (state == 41) {
+                NameBlobs = ['取消借款', '确认金额', '查看合同']
+            }
         }
-
         return NameBlobs;
     }
 
@@ -301,6 +308,11 @@ export default class OrderCarDetailScene extends BaseComponent {
                 params: {loan_code: loan_code, showButton: true}
             })
         } else if (title == '查看合同') {
+            this.toNextPage({
+                name: 'ContractInfoScene', component: ContractInfoScene,
+                params: {loan_code: loan_code, showButton: false}
+            })
+        }else if(title == '资金方签署中'){
             this.toNextPage({
                 name: 'ContractInfoScene', component: ContractInfoScene,
                 params: {loan_code: loan_code, showButton: false}
