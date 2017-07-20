@@ -67,7 +67,7 @@ export default class KurongSence extends BaseComponent {
         {title: '可借额度', key: 'maxMoney'},
         {title: '借款类型', key: 'type'}
     ];
-    dateBlob =['30天','60天','90天','180天','360天'];
+    dateBlob =['30天','90天','180天','360天'];
     initFinish() {
         this.getData('');
 
@@ -99,9 +99,9 @@ export default class KurongSence extends BaseComponent {
                     })
                 console.log(tempjson.oneyear_inventory_financing_status);
                 if(tempjson.oneyear_inventory_financing_status=='1'){
-                    this.dateBlob =['30天','60天','90天','180天','360天'];
+                    this.dateBlob =['30天','90天','180天','360天'];
                 }else{
-                    this.dateBlob =['30天','60天','90天','180天'];
+                    this.dateBlob =['30天','90天','180天'];
                 }
                 },
                 (error) => {
