@@ -86,14 +86,14 @@ export  default  class SingDetaileSence extends BaseComponent {
             .then((response) => {
 
                     let tempjson = response.mjson.data
-                    let carNum = Number.parseInt(tempjson.car_count)
+                    let carNum = parseInt(tempjson.car_count)
                     controlCode.stateCode = tempjson.status
                     controlCode.extendCode = tempjson.is_extend;
                     controlCode.lendType = tempjson.type;
                     controlCode.minLend = changeToMillion(tempjson.min_loanmny);
                     controlCode.loan_code = tempjson.loan_code;
                     controlCode.is_microchinese_contract = tempjson.is_microchinese_contract;
-                    let Maxmum = Number.parseFloat(tempjson.max_loanmny) + Number.parseFloat(tempjson.payment_loanmny)
+                    let Maxmum = parseFloat(tempjson.max_loanmny) + parseFloat(tempjson.payment_loanmny)
                     controlCode.maxLend = changeToMillion(Maxmum)
 
                     if (carNum > 0) {
@@ -213,10 +213,10 @@ export  default  class SingDetaileSence extends BaseComponent {
             // else if (stateCode === '2') {
             //     tempTitle = ['已取消借款']
             // }
-            else if (Number.parseInt(stateCode) > 2 && stateCode != '5') {
+            else if (parseInt(stateCode) > 2 && stateCode != '5') {
                 tempTitle = ['查看合同']
             } else if (stateCode == '5') {
-                if (Number.parseInt(extendCode) == 1) {
+                if (parseInt(extendCode) == 1) {
                     tempTitle = ['查看合同', '申请展期']
                 } else {
                     tempTitle = ['查看合同']

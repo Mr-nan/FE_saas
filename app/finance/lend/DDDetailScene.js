@@ -101,7 +101,7 @@ export default class DDDetailScene extends BaseComponent {
 		request(apis.FINANCE, 'Post', maps)
 			.then((response) => {
 					let tempjson = response.mjson.data;
-					ControlState = this.confimOrderState(Number.parseInt(tempjson.payment_status), Number.parseInt(tempjson.aduitstatus), Number.parseInt(tempjson.status))
+					ControlState = this.confimOrderState(parseInt(tempjson.payment_status), parseInt(tempjson.aduitstatus), parseInt(tempjson.status))
 					this.getCarListInfo(tempjson);
 				},
 				(error) => {

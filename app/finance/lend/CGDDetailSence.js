@@ -67,7 +67,7 @@ export default class OrderCarDetailScene extends BaseComponent {
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
                     let tempjson = response.mjson.data;
-                    ControlState = this.confimOrderState(Number.parseInt(tempjson.payment_status), Number.parseInt(tempjson.payment_schedule))
+                    ControlState = this.confimOrderState(parseInt(tempjson.payment_status), parseInt(tempjson.payment_schedule))
 
                     this.getCarListInfo(tempjson);
                 },
