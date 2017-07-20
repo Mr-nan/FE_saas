@@ -392,6 +392,7 @@ export default class LoginScene extends BaseComponent {
             request(AppUrls.LOGIN, 'Post', maps)
                 .then((response) => {
                 try {
+                    NativeModules.GrowingIOModule.setCS1("user_id", userName);
                     // this.props.showModal(false);
                     this.setState({
                         loading: false,

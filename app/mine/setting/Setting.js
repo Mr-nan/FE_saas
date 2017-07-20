@@ -9,7 +9,8 @@ import {
     PixelRatio,
     TouchableOpacity,
     InteractionManager,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    NativeModules
 } from "react-native";
 import BaseComponent from "../../component/BaseComponent";
 import PixelUtil from "../../utils/PixelUtil";
@@ -128,6 +129,7 @@ export default class Setting extends BaseComponent {
 
     loginOut = () => {
         StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'false');
+        NativeModules.GrowingIOModule.setCS1("user_id", null);
         this.exitPage({name: 'LoginAndRegister', component: LoginAndRegister});
     }
 

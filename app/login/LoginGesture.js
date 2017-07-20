@@ -8,7 +8,8 @@ import {
     Dimensions,
     TouchableOpacity,
     InteractionManager,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    NativeModules
 } from "react-native";
 import PwdGesture from "../gesture/PwdGesture";
 import BaseComponent from "../component/BaseComponent";
@@ -167,6 +168,7 @@ export default class GesturePassword extends BaseComponent {
                 status: 'right',
                 message: '验证成功',
             });
+            NativeModules.GrowingIOModule.setCS1("user_id", this.state.phone);
             StorageUtil.mSetItem(StorageKeyNames.NEED_GESTURE, 'false');
             StorageUtil.mGetItem(StorageKeyNames.USER_LEVEL, (data) => {
                 if (data.code == 1) {
