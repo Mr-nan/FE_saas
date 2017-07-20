@@ -100,8 +100,7 @@ export default class HomeScene extends BaseComponet {
             if(data.code == 1 && data.result != '')
             {
                 let enters = JSON.parse(data.result);
-                // this.getData(enters.prov_id);
-                this.getData(1);
+                this.getData(enters.prov_id);
 
             }else{
                 this.getData(0);

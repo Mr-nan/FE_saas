@@ -79,6 +79,7 @@ const APIParameter = {
     start: 0,
     type: 1,
     status: 1,
+    no_cache:1,
 
 };
 
