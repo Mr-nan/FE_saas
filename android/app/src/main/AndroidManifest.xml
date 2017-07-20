@@ -33,7 +33,7 @@
         </intent-filter>
 
           <intent-filter>
-              <data android:scheme="growing.4a2248462e55201a"/>
+              <data android:scheme="growing.f115f58aa5c1f754"/>
               <action android:name="android.intent.action.VIEW"/>
 
               <category android:name="android.intent.category.DEFAULT"/>

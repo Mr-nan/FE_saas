@@ -29,7 +29,7 @@ var Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;
 var onePT = 1 / PixelRatio.get(); //一个像素
-
+var Platform = require('Platform');
 export default class Setting extends BaseComponent {
     constructor(props) {
         super(props);
@@ -129,7 +129,11 @@ export default class Setting extends BaseComponent {
 
     loginOut = () => {
         StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, 'false');
-        NativeModules.GrowingIOModule.setCS1("user_id", null);
+        if (Platform.OS === 'android') {
+            NativeModules.GrowingIOModule.setCS1("user_id", null);
+        }else {
+            NativeModules.growingSetCS1("user_id", null);
+        }
         this.exitPage({name: 'LoginAndRegister', component: LoginAndRegister});
     }
 

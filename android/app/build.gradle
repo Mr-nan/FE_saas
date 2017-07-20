@@ -105,7 +105,7 @@ android {
         versionCode 18
         versionName "3.5.0"
         resValue("string", "growingio_project_id", "8c70ed29c1985918")
-        resValue("string", "growingio_url_scheme", "growing.4a2248462e55201a")
+        resValue("string", "growingio_url_scheme", "growing.f115f58aa5c1f754")
         ndk {
             abiFilters "armeabi","armeabi-v8a"
         }
