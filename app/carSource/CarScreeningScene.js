@@ -456,6 +456,7 @@ class CheckedView extends Component{
                                                     currentChecked:data.name,
                                                 });
                                                 this.props.checkedClick({title:data.name,value:data.value});
+
                                             }
 
                                         }} activeOpacity={1} key={index}>
