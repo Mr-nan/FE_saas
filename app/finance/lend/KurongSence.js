@@ -148,7 +148,7 @@ export default class KurongSence extends BaseComponent {
         }
 
 
-        if (Number.parseFloat(PostData.loan_mny)<Number.parseFloat(ShowData.tempMin)||Number.parseFloat(PostData.loan_mny)>Number.parseFloat(ShowData.tempMax)){
+        if (parseFloat(PostData.loan_mny)<parseFloat(ShowData.tempMin)||parseFloat(PostData.loan_mny)>parseFloat(ShowData.tempMax)){
 
             infoComolete=false;
             this.props.showToast('借款金额范围为'+ShowData.maxMoney)
@@ -214,7 +214,7 @@ export default class KurongSence extends BaseComponent {
                                     onPickerConfirm: data => {
                                         let tempString=data.toString();
                                         let  placeHodel =tempString==='0'?this.dateBlob[0]:tempString;
-                                        let  num = Number.parseInt(placeHodel);
+                                        let  num = parseInt(placeHodel);
                                         PostData.loan_life=num;
                                         this.dateLimit.changeText(placeHodel);
                                         if(num=="360"){

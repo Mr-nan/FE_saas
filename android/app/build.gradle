@@ -68,6 +68,9 @@ import com.android.build.OutputFile
 apply from: "../../node_modules/react-native/react.gradle"
 apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 
+apply plugin: 'com.android.application'
+apply plugin: 'com.growingio.android'
+
 /**
  * Set this to true to create two separate APKs instead of one:
  *   - An APK that only works on ARM devices
@@ -92,12 +95,17 @@ android {
         abortOnError false
     }
 
+    aaptOptions.cruncherEnabled = false
+    aaptOptions.useNewCruncher = false
+
     defaultConfig {
         applicationId "com.fe_sass"
         minSdkVersion 19
         targetSdkVersion 22
-        versionCode 17
-        versionName "3.4.0"
+        versionCode 19
+        versionName "3.6.0"
+        resValue("string", "growingio_project_id", "8c70ed29c1985918")
+        resValue("string", "growingio_url_scheme", "growing.f115f58aa5c1f754")
         ndk {
             abiFilters "armeabi","armeabi-v8a"
         }
@@ -170,6 +178,8 @@ dependencies {
         compile 'com.facebook.fresco:animated-gif:0.13.0'
         compile project(':react-native-spinkit')
         compile 'com.umeng.analytics:analytics:latest.integration'
+        compile 'com.growingio.reactnative:vds-android-agent:0.0.9@aar'
+        compile 'com.growingio.reactnative:rn-vds-agent:0.0.9@aar'
 }
 
 // Run this once to be able to run the application with BUCK

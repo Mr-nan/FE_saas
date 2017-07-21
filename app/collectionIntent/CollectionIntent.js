@@ -81,8 +81,8 @@ export default class CollectionIntent extends BaseComponent {
                 brand_series: this.brandSeriesArr.toString(),
                 cotys: yearArr.toString(),
                 mileages: mileArr.toString(),
-                cities:citiesArray.toString(),
-                provs:provsArray.toString(),
+                // cities:citiesArray.toString(),
+                // provs:provsArray.toString(),
 
 
             }).then((response) => {
