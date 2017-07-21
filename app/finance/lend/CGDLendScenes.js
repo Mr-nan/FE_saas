@@ -96,7 +96,7 @@ export  default  class CGDLendScenes extends BaseComponent {
 
     getType=(state)=>{
 
-        let  temp =Number.parseInt(state);
+        let  temp =parseInt(state);
 
         return temp==1?'有':'无'
     }
@@ -208,7 +208,7 @@ export  default  class CGDLendScenes extends BaseComponent {
                         payment_audit_reason:tempjson.payment_audit_reason,
                     };
 
-                    PostData.loan_mny=(Number.parseFloat(tempjson.payment_loanmny_str)).toString();
+                    PostData.loan_mny=(parseFloat(tempjson.payment_loanmny_str)).toString();
                     PostData.use_time=tempjson.use_time_str;
                     this.getLendInfo(showData.tempDetailInfo.isobd,showData.tempDetailInfo.isinvoice);
                 },
@@ -285,7 +285,7 @@ export  default  class CGDLendScenes extends BaseComponent {
         }
 
         if (infoIsall&&isHasCar){
-            if (Number.parseFloat(PostData.loan_mny)<Number.parseFloat(showData.tempMin)||Number.parseFloat(PostData.loan_mny)>Number.parseFloat(showData.tempMax)){
+            if (parseFloat(PostData.loan_mny)<parseFloat(showData.tempMin)||parseFloat(PostData.loan_mny)>parseFloat(showData.tempMax)){
                 moneyAdape=false;
                 this.props.showToast('借款金额范围为'+showData.tempMin+'-'+showData.tempMax+'万元')
             }
@@ -295,8 +295,8 @@ export  default  class CGDLendScenes extends BaseComponent {
             let isinvoice =this.props.loan_code?showData.tempDetailInfo.isinvoice:this.props.isCarinvoice;
 
             showData.tempCarList.map((item)=>{
-                let obdState =Number.parseInt(item.obd_bind_status);
-                let invoice  =Number.parseInt(item.invoice_upload_status);
+                let obdState =parseInt(item.obd_bind_status);
+                let invoice  =parseInt(item.invoice_upload_status);
                 if(invoice<isinvoice){
                     this.props.showToast('请补全票据信息')
                     return
