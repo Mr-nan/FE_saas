@@ -984,18 +984,28 @@ export default class CarPublishFirstScene extends BaseComponent{
 
     pushCarDischarge=()=>{
 
-        CarDeployData.getCarDeployData(this.props.showModal,this.props.showToast,(fetchObject)=>{
-            let brandParams = {
-                name: 'CarDischargeScene',
-                component: CarDischargeScene,
-                params: {
-                    checkedCarDischargeClick:this._checkedCarDischargeClick,
-                    currentChecked:this.titleData1[0][4].value,
-                    DischargeData:fetchObject.auto_es,
-                }
-            };
-            this.toNextPage(brandParams);
-        });
+        // CarDeployData.getCarDeployData(this.props.showModal,this.props.showToast,(fetchObject)=>{
+        //     let brandParams = {
+        //         name: 'CarDischargeScene',
+        //         component: CarDischargeScene,
+        //         params: {
+        //             checkedCarDischargeClick:this._checkedCarDischargeClick,
+        //             currentChecked:this.titleData1[0][4].value,
+        //             DischargeData:fetchObject.auto_es,
+        //         }
+        //     };
+        //     this.toNextPage(brandParams);
+        // });
+
+        let brandParams = {
+            name: 'CarDischargeScene',
+            component: CarDischargeScene,
+            params: {
+                checkedCarDischargeClick:this._checkedCarDischargeClick,
+                currentChecked:this.titleData1[0][4].value,
+            }
+        };
+        this.toNextPage(brandParams);
 
     }
 
@@ -1008,19 +1018,28 @@ export default class CarPublishFirstScene extends BaseComponent{
 
     pushCarBodyColorScene=()=>{
 
-        CarDeployData.getCarDeployData(this.props.showModal,this.props.showToast,(fetchObject)=>{
-            let brandParams = {
-                name: 'CarBodyColorScene',
-                component:CarBodyColorScene,
-                params: {
-                    checkedCarBodyColorClick:this._checkedCarBodyColorClick,
-                    currentChecked:this.titleData1[0][5].value,
-                    carBodyColorData:fetchObject.auto_body_color,
-                }
-            };
-            this.toNextPage(brandParams);
-        });
+        // CarDeployData.getCarDeployData(this.props.showModal,this.props.showToast,(fetchObject)=>{
+        //     let brandParams = {
+        //         name: 'CarBodyColorScene',
+        //         component:CarBodyColorScene,
+        //         params: {
+        //             checkedCarBodyColorClick:this._checkedCarBodyColorClick,
+        //             currentChecked:this.titleData1[0][5].value,
+        //             carBodyColorData:fetchObject.auto_body_color,
+        //         }
+        //     };
+        //     this.toNextPage(brandParams);
+        // });
 
+        let brandParams = {
+            name: 'CarBodyColorScene',
+            component:CarBodyColorScene,
+            params: {
+                checkedCarBodyColorClick:this._checkedCarBodyColorClick,
+                currentChecked:this.titleData1[0][5].value,
+            }
+        };
+        this.toNextPage(brandParams);
 
     }
 
@@ -1035,18 +1054,28 @@ export default class CarPublishFirstScene extends BaseComponent{
 
     pushCarInwardColorScene=()=>{
 
-        CarDeployData.getCarDeployData(this.props.showModal,this.props.showToast,(fetchObject)=>{
-            let brandParams = {
-                name: 'CarInwardColorScene',
-                component: CarInwardColorScene,
-                params: {
-                    checkedCarInwardColorClick:this._checkedCarInwardColorClick,
-                    currentChecked:this.titleData1[0][6].value,
-                    carInwardColor:fetchObject.auto_interior_color,
-                }
-            };
-            this.toNextPage(brandParams);
-        });
+        // CarDeployData.getCarDeployData(this.props.showModal,this.props.showToast,(fetchObject)=>{
+        //     let brandParams = {
+        //         name: 'CarInwardColorScene',
+        //         component: CarInwardColorScene,
+        //         params: {
+        //             checkedCarInwardColorClick:this._checkedCarInwardColorClick,
+        //             currentChecked:this.titleData1[0][6].value,
+        //             carInwardColor:fetchObject.auto_interior_color,
+        //         }
+        //     };
+        //     this.toNextPage(brandParams);
+        // });
+
+        let brandParams = {
+            name: 'CarInwardColorScene',
+            component: CarInwardColorScene,
+            params: {
+                checkedCarInwardColorClick:this._checkedCarInwardColorClick,
+                currentChecked:this.titleData1[0][6].value,
+            }
+        };
+        this.toNextPage(brandParams);
 
 
     }

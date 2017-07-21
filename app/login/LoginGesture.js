@@ -8,7 +8,8 @@ import {
     Dimensions,
     TouchableOpacity,
     InteractionManager,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    NativeModules
 } from "react-native";
 import PwdGesture from "../gesture/PwdGesture";
 import BaseComponent from "../component/BaseComponent";
@@ -24,7 +25,7 @@ import AllSelectCompanyScene from "../main/AllSelectCompanyScene";
 let Pixel = new PixelUtil();
 const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;
-
+var Platform = require('Platform');
 let Password = '';
 export default class GesturePassword extends BaseComponent {
     constructor(props) {
@@ -167,6 +168,11 @@ export default class GesturePassword extends BaseComponent {
                 status: 'right',
                 message: '验证成功',
             });
+            if (Platform.OS === 'android') {
+                NativeModules.GrowingIOModule.setCS1("user_id", this.state.phone);
+            }else {
+                NativeModules.growingSetCS1("user_id", this.state.phone);
+            }
             StorageUtil.mSetItem(StorageKeyNames.NEED_GESTURE, 'false');
             StorageUtil.mGetItem(StorageKeyNames.USER_LEVEL, (data) => {
                 if (data.code == 1) {

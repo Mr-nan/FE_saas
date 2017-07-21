@@ -36,157 +36,181 @@ export default class CarBodyColorScene extends  BaseComponent{
     // 构造
     constructor(props) {
         super(props);
-        // this.viewShell = [
-        //     {
-        //         title: '黑色',
-        //         selected: false,
-        //         fill: true,
-        //         color: '#000000',
-        //         img: '',
-        //         index: 0
-        //     },
-        //     {
-        //         title: '白色',
-        //         selected: false,
-        //         fill: true,
-        //         color: '#FFFFFF',
-        //         img: '',
-        //         index: 1
-        //     },
-        //     {
-        //         title: '银灰色',
-        //         selected: false,
-        //         fill: false,
-        //         color: '',
-        //         img: grayColor,
-        //         index: 2
-        //     },
-        //     {
-        //         title: '深灰色',
-        //         selected: false,
-        //         fill: true,
-        //         color: '#a8a8a8',
-        //         img: '',
-        //         index: 3
-        //     },
-        //     {
-        //         title: '绿色',
-        //         selected: false,
-        //         fill: true,
-        //         color: '#79c65e',
-        //         img: '',
-        //         index: 4
-        //     },
-        //     {
-        //         title: '红色',
-        //         selected: false,
-        //         fill: true,
-        //         color: '#d22c23',
-        //         img: '',
-        //         index: 5
-        //     },
-        //     {
-        //         title: '橙色',
-        //         selected: false,
-        //         fill: true,
-        //         color: '#ffaa25',
-        //         img: '',
-        //         index: 6
-        //     },
-        //     {
-        //         title: '黄色',
-        //         selected: false,
-        //         fill: true,
-        //         color: '#ffcf12',
-        //         img: '',
-        //         index: 7
-        //     },
-        //     {
-        //         title: '蓝色',
-        //         selected: false,
-        //         fill: true,
-        //         color: '#0c99f9',
-        //         img: '',
-        //         index: 8
-        //     },
-        //     {
-        //         title: '咖啡色',
-        //         selected: false,
-        //         fill: true,
-        //         color: '#814505',
-        //         img: '',
-        //         index: 9
-        //     },
-        //     {
-        //         title: '紫色',
-        //         selected: false,
-        //         fill: true,
-        //         color: '#6c1d90',
-        //         img: '',
-        //         index: 10
-        //     },
-        //     {
-        //         title: '香槟色',
-        //         selected: false,
-        //         fill: true,
-        //         color: '#e1c8b4',
-        //         img: '',
-        //         index: 11
-        //     },
-        //     {
-        //         title: '多彩色',
-        //         selected: false,
-        //         fill: false,
-        //         color: '',
-        //         img: multiColor,
-        //         index: 12
-        //     },
-        //     {
-        //         title: '其他',
-        //         selected: false,
-        //         fill: false,
-        //         color: '',
-        //         img: doubleColor,
-        //         index: 13
-        //     },
-        //
-        // ];
-
-        this.viewShell = this.props.carBodyColorData;
-        this.viewShell.push(
+        this.viewShell = [
             {
-                name: ' ',
-                value: '',
+                title: '黑色',
+                selected: false,
+                fill: true,
+                color: '#000000',
+                img: '',
+                index: 0
             },
-            {  name: ' ',
-                value: '',
-            });
+            {
+                title: '白色',
+                selected: false,
+                fill: true,
+                color: '#FFFFFF',
+                img: '',
+                index: 1
+            },
+            {
+                title: '银灰色',
+                selected: false,
+                fill: false,
+                color: '',
+                img: grayColor,
+                index: 2
+            },
+            {
+                title: '深灰色',
+                selected: false,
+                fill: true,
+                color: '#a8a8a8',
+                img: '',
+                index: 3
+            },
+            {
+                title: '绿色',
+                selected: false,
+                fill: true,
+                color: '#79c65e',
+                img: '',
+                index: 4
+            },
+            {
+                title: '红色',
+                selected: false,
+                fill: true,
+                color: '#d22c23',
+                img: '',
+                index: 5
+            },
+            {
+                title: '橙色',
+                selected: false,
+                fill: true,
+                color: '#ffaa25',
+                img: '',
+                index: 6
+            },
+            {
+                title: '黄色',
+                selected: false,
+                fill: true,
+                color: '#ffcf12',
+                img: '',
+                index: 7
+            },
+            {
+                title: '蓝色',
+                selected: false,
+                fill: true,
+                color: '#0c99f9',
+                img: '',
+                index: 8
+            },
+            {
+                title: '咖啡色',
+                selected: false,
+                fill: true,
+                color: '#814505',
+                img: '',
+                index: 9
+            },
+            {
+                title: '紫色',
+                selected: false,
+                fill: true,
+                color: '#6c1d90',
+                img: '',
+                index: 10
+            },
+            {
+                title: '香槟色',
+                selected: false,
+                fill: true,
+                color: '#e1c8b4',
+                img: '',
+                index: 11
+            },
+            {
+                title: '多彩色',
+                selected: false,
+                fill: false,
+                color: '',
+                img: multiColor,
+                index: 12
+            },
+            {
+                title: '其他',
+                selected: false,
+                fill: false,
+                color: '',
+                img: doubleColor,
+                index: 13
+            },
+            {
+                title: '',
+                selected: '',
+                fill: false,
+                color: '',
+                img: '',
+                index: 14
+            },
+            {
+                title: '',
+                selected: '',
+                fill: false,
+                color: '',
+                img: '',
+                index: 15
+            }
+
+        ];
+
+        {/*this.viewShell = this.props.carBodyColorData;*/}
+        {/*this.viewShell.push(*/}
+            {/*{*/}
+                {/*name: ' ',*/}
+                {/*value: '',*/}
+            {/*},*/}
+            {/*{  name: ' ',*/}
+                {/*value: '',*/}
+            {/*});*/}
+
+        // this.viewShell.map((data,index)=>{
+        //     data.index = index;
+        //     if(data.name == this.props.currentChecked)
+        //     {
+        //         data.selected = true;
+        //
+        //     }else if(data.name ==' ')
+        //     {
+        //         data.selected = '';
+        //
+        //     }else {
+        //         data.selected = false;
+        //
+        //     }
+        //     if(data.name == '多彩色'){
+        //         data.fill = false;
+        //         data.img = multiColor;
+        //     }else if(data.name == '其他'){
+        //         data.fill = false;
+        //         data.img = doubleColor;
+        //     }else {
+        //         data.fill = true;
+        //         data.img = '';
+        //     }
+        //
+        // });
 
         this.viewShell.map((data,index)=>{
-            data.index = index;
-            if(data.name == this.props.currentChecked)
+            if(data.title == this.props.currentChecked)
             {
                 data.selected = true;
 
-            }else if(data.name ==' ')
-            {
-                data.selected = '';
-
-            }else {
-                data.selected = false;
-
             }
-            if(data.name == '多彩色'){
-                data.fill = false;
-                data.img = multiColor;
-            }else if(data.name == '其他'){
-                data.fill = false;
-                data.img = doubleColor;
-            }else {
-                data.fill = true;
-                data.img = '';
-            }
-
 
         });
 
@@ -277,8 +301,8 @@ export default class CarBodyColorScene extends  BaseComponent{
     };
     _shellPress = (i) => {
         this.props.checkedCarBodyColorClick({
-            title:this.viewShell[i].name,
-            value:this.viewShell[i].value,
+            title:this.viewShell[i].title,
+            value:this.viewShell[i].color,
         });
         this.backPage();
     };
