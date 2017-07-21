@@ -395,7 +395,7 @@ export default class LoginScene extends BaseComponent {
                     if (Platform.OS === 'android') {
                         NativeModules.GrowingIOModule.setCS1("user_id", userName);
                     }else {
-                        NativeModules.growingSetCS1("user_id", userName);
+                        // NativeModules.growingSetCS1("user_id", userName);
                     }
                     // this.props.showModal(false);
                     this.setState({

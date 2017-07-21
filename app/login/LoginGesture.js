@@ -171,7 +171,7 @@ export default class GesturePassword extends BaseComponent {
             if (Platform.OS === 'android') {
                 NativeModules.GrowingIOModule.setCS1("user_id", this.state.phone);
             }else {
-                NativeModules.growingSetCS1("user_id", this.state.phone);
+               // NativeModules.growingSetCS1("user_id", this.state.phone);
             }
             StorageUtil.mSetItem(StorageKeyNames.NEED_GESTURE, 'false');
             StorageUtil.mGetItem(StorageKeyNames.USER_LEVEL, (data) => {
