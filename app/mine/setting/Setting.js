@@ -132,7 +132,7 @@ export default class Setting extends BaseComponent {
         if (Platform.OS === 'android') {
             NativeModules.GrowingIOModule.setCS1("user_id", null);
         }else {
-            NativeModules.growingSetCS1("user_id", null);
+           // NativeModules.growingSetCS1("user_id", null);
         }
         this.exitPage({name: 'LoginAndRegister', component: LoginAndRegister});
     }
