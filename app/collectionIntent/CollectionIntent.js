@@ -593,6 +593,7 @@ const styles = StyleSheet.create({
     // },
     labelSelect: {
         marginTop: Pixel.getPixel(10),
+        backgroundColor:'red'
     },
     text: {
         fontSize: Pixel.getPixel(16),
