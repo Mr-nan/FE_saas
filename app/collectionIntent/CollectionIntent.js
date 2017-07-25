@@ -40,25 +40,30 @@ export default class CollectionIntent extends BaseComponent {
         let mileArr = [];
         let provsArray = [];
         let citiesArray = [];
+        console.log('***************');
+      console.log(this.carYearArr);
+        console.log('***************');
 
-        if (this.brandSeriesArr.length == 0 && this.carYearArr.size == 0 && this.mileageArr.size == 0 && this.citiesArray.length ==0 &&  this.provsArray.length ==0 ) {
+        console.log(this.mileageArr);
+        console.log('***************');
+
+        if (this.brandSeriesArr.length == 0 && this.carYearArr.length == 0 && this.mileageArr.length == 0 && this.citiesArray.length ==0 &&  this.provsArray.length ==0 ) {
             this.props.showToast("请选择收车意向");
-        }else if (this.carYearArr.size > 5) {
+        }else if (this.carYearArr.length > 5) {
             this.props.showToast('车龄区间最多只能选五个');
-        }else if (this.mileageArr.size > 5) {
+        }else if (this.mileageArr.length > 5) {
             this.props.showToast('里程区间最多只能选五个');
         } else {
-            if(this.carYearArr.size>0){
+            if(this.carYearArr.length>0){
 
-                for (let key of this.carYearArr.keys()) {
-                    yearArr.push(this.carYearArr.get(key))
-                }
+                yearArr.push(...this.carYearArr);
+
             }
-            if(this.mileageArr.size>0){
+            if(this.mileageArr.length>0){
 
-                for (let key of this.mileageArr.keys()) {
-                    mileArr.push(this.mileageArr.get(key))
-                }
+
+                mileArr.push(...this.mileageArr);
+
             }
             if(this.provsArray.length>0)
             {
@@ -111,15 +116,19 @@ export default class CollectionIntent extends BaseComponent {
                 if(response.mjson.data == null){
                     return ;
                 }else{
-                    for(let value of response.mjson.data.auto_age){
+                    for(let i=0;i<response.mjson.data.auto_age.length;i++   ){
+                        let value  = response.mjson.data.auto_age[i];
                         auto_age.push({
+                            id:i,
                             title: value.name,
                             isSelected: false,
                             value: value.value
                         });
                     }
-                    for(let value of response.mjson.data.auto_mileage){
+                    for(let i=0;i<response.mjson.data.auto_mileage.length;i++){
+                        let value  = response.mjson.data.auto_mileage[i];
                         auto_mileage.push({
+                            id:i,
                             title: value.name,
                             isSelected: false,
                             value: value.value
@@ -150,6 +159,7 @@ export default class CollectionIntent extends BaseComponent {
                         this.getSelectedItems(this.state.arr, response.mjson.data.brand_series, this.brandSeriesArr);
                         this.getSelectedItems(this.state.arr1, response.mjson.data.coty, this.carYearArr);
                         this.getSelectedItems(this.state.arr2, response.mjson.data.mileage, this.mileageArr);
+
                         this.getCityItems(response.mjson.data.city,response.mjson.data.province);
                     }
                 } else {
@@ -170,28 +180,31 @@ export default class CollectionIntent extends BaseComponent {
             for (let item of items) {
                 if (arrs == this.state.arr)
                 {// 车系
-
                     params.push(item.value);
                     this.state.arr.push({
                         title: item.name,
                         isSelected: true,
                     });
+
                 } else {
-                    params.set(item.id, item.id + '|' + item.value);
+                    params.push(item.id + '|' + item.value);
                     arrs[item.id].isSelected = true;
                 }
             }
+
             if (arrs == this.state.arr) {
 
                 this.setState({arr:this.state.arr});
 
-                // this.selectConfirm(this.state.arr);
-
             } else if (arrs == this.state.arr1)
             {
                 this.setState({arr1:this.state.arr1});
+                // console.log(this.carYearArr);
+
             } else {
                 this.setState({arr2:this.state.arr2});
+                console.log(this.mileageArr);
+
             }
 
         }
@@ -228,8 +241,8 @@ export default class CollectionIntent extends BaseComponent {
 
     constructor(props) {
         super(props);
-        this.carYearArr = new Map();
-        this.mileageArr = new Map();
+        this.carYearArr = [];
+        this.mileageArr = [];
         this.brandSeriesArr = [];
         this.citiesArray = [];
         this.provsArray = [];
@@ -403,26 +416,66 @@ export default class CollectionIntent extends BaseComponent {
     }
 
     countItem(item, array) {//获取车龄区间或里程区间选中的个数
-        let index = array.findIndex(a => a === item);
-        if (array === this.state.arr1) {
-            if (item.isSelected) {
-                if (this.carYearArr.has(index+'')) {
-                    this.carYearArr.delete(index+'')
-                }
-            } else {
-                this.carYearArr.set(index, index + '|' + array[index].value);
 
-            }
-        } else if (array === this.state.arr2) {
+        console.log('item:',item);
+
+        if (array === this.state.arr1) {
+
             if (item.isSelected) {
-                if (this.mileageArr.has(index+'')) {
-                    this.mileageArr.delete(index+'')
+                for (let i=0;i<this.carYearArr.length;i++)
+                {
+                    let object = this.carYearArr[i];
+                    console.log('object:',object);
+                    if(object == item.id + '|' + item.value)
+                    {
+                        this.carYearArr.splice(i,1);
+                        break;
+                    }
                 }
+
             } else {
-                this.mileageArr.set(index, index + '|' + array[index].value);
+                this.carYearArr.push(item.id + '|' + item.value);
             }
+
+            for( let i=0;i<this.state.arr1.length;i++ )
+            {
+                if(this.state.arr1[i].value == item.value)
+                {
+                    this.state.arr1[i].isSelected =!this.state.arr1[i].isSelected;
+                    break;
+                }
+            }
+
+            console.log(this.carYearArr);
+
+        } else if (array === this.state.arr2) {
+
+            if (item.isSelected) {
+                for (let i=0;i<this.mileageArr.length;i++)
+                {
+                    let object = this.mileageArr[i];
+                    if(object == item.id + '|' + item.value)
+                    {
+                        this.mileageArr.splice(i,1);
+                        break;
+                    }
+                }
+
+            } else {
+                this.mileageArr.push(item.id + '|' + item.value);
+            }
+
+            for( let i=0;i<this.state.arr2.length;i++ )
+            {
+                if(this.state.arr2[i].value == item.value)
+                {
+                    this.state.arr2[i].isSelected =!this.state.arr2[i].isSelected;
+                    break;
+                }
+            }
+            console.log(this.mileageArr);
+
         }
-        array[index].isSelected = !array[index].isSelected;
     }
 
     render() {
@@ -523,17 +576,16 @@ export default class CollectionIntent extends BaseComponent {
                         </View>
                         <View style={styles.containerChild}>
                             <Text allowFontScaling={false}  style={styles.carType}>车龄区间（单位：年）</Text>
-                            <LabelSelect
+                            <View
                                 style={styles.labelSelect}
-                                title="CheckboxCarAge"
-                                readOnly={true}
-                                isBigSize={true}
                             >
                                 {this.state.arr1.map((item, index) =>{
                                     return (<LabelSelect.Label
                                         key={'CarAge-' + index}
                                         data={item}
                                         enables={item.isSelected}
+                                        readOnly={true}
+                                        isBigSize={true}
                                         onCancel={() => {
                                             this.countItem(item, this.state.arr1);
                                         }}
@@ -541,20 +593,19 @@ export default class CollectionIntent extends BaseComponent {
                                     </LabelSelect.Label>)
                                     }
                                 )}
-                            </LabelSelect>
+                            </View>
                         </View>
                         <View style={styles.containerChild}>
                             <Text allowFontScaling={false}  style={styles.carType}>里程区间（单位：万公里）</Text>
-                            <LabelSelect
+                            <View
                                 style={styles.labelSelect}
-                                title="Checkbox"
-                                readOnly={true}
-                                isBigSize={true}
                             >
                                 {this.state.arr2.map((item, index) =>{
                                         return(
                                             <LabelSelect.Label
                                                 key={'label-' + index}
+                                                readOnly={true}
+                                                isBigSize={true}
                                                 data={item}
                                                 enables={item.isSelected}
                                                 onCancel={() => {
@@ -565,7 +616,7 @@ export default class CollectionIntent extends BaseComponent {
                                         )
                                     }
                                 )}
-                            </LabelSelect>
+                            </View>
                         </View>
                         <Text allowFontScaling={false}  style={styles.bottomText}>根据您提报的收车意向，我们会推荐相关车源，请关注首页意向车源。</Text>
                         <TouchableOpacity style={styles.btnStyle}
@@ -592,8 +643,11 @@ const styles = StyleSheet.create({
     //     backgroundColor: '#e3eeee'
     // },
     labelSelect: {
-        marginTop: Pixel.getPixel(10),
-        backgroundColor:'red'
+        backgroundColor: 'white',
+        alignItems: 'center',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        paddingVertical:Pixel.getPixel(10),
     },
     text: {
         fontSize: Pixel.getPixel(16),

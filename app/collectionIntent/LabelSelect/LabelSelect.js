@@ -111,7 +111,7 @@ class LabelSelect extends Component {
                     visible={this.state.isModalVisible}
                     onRequestClose={() => {
                     }}>
-                    <View style={{flex: 1,}}>
+                    <View style={{flex: 1}}>
                         <TouchableHighlight
                             style={Styles.modalMask}
                             activeOpacity={1}
@@ -190,8 +190,7 @@ class Label extends Component {
             <TouchableOpacity
                 style={[Styles.selectedItem, this.state.enable && Styles.disableColor, !isBigSize && Styles.layoutSize]}
                 onPress={() => {
-                    if (!readOnly)
-                    {
+                    if (!readOnly) {
                         onCancel();
                     } else {
                         this.setPressDown()
