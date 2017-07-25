@@ -108,7 +108,7 @@ class LabelSelect extends Component {
                 {selectedLabels}
                 <Modal
                     transparent={true}
-                    visible={this.state.isModalVisible}
+                    visible={false}
                     onRequestClose={() => {
                     }}>
                     <View style={{flex: 1}}>
