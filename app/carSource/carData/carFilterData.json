@@ -43,11 +43,11 @@
   "sequencingDataSource": [
     {
       "title": " 上架时间由新到旧 ",
-      "value": "5"
+      "value": "1"
     },
     {
       "title": " 上架时间由旧到新 ",
-      "value": "1"
+      "value": "5"
     },
     {
       "title": " 里程由多到少 ",
