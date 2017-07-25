@@ -204,6 +204,7 @@ export default class CollectionIntent extends BaseComponent {
                 title: object.name,
                 isSelected: true,
                 provsID:object.prov_id,
+                cityID:object.id,
             })
             this.citiesArray.push({title:object.name,value:object.id,});
 
@@ -212,7 +213,8 @@ export default class CollectionIntent extends BaseComponent {
             this.state.cityArray.push({
                 title: object.name,
                 isSelected: true,
-                provsID:object.id
+                provsID:object.id,
+                cityID:0,
             })
             this.provsArray.push({title:object.name,value:object.id});
 
@@ -295,11 +297,26 @@ export default class CollectionIntent extends BaseComponent {
         for (let item of this.state.cityArray)
         {
             console.log(item.title);
-            if(item.title == cityType.city_name ||  item.provsID == cityType.provice_id )
+            if(item.title == cityType.city_name)
             {
                 isCityTitle = false;
                 this.props.showToast('已存在该地区');
                 break;
+
+            }else if(item.provsID == cityType.provice_id){
+
+
+                if(cityType.city_id !=0 && item.cityID ==0){
+                    isCityTitle = false;
+                    this.props.showToast('已存在该地区');
+                    break;
+
+                }else if(cityType.city_id ==0){
+                    isCityTitle = false;
+                    this.props.showToast('已存在该地区');
+                    break;
+                }
+
             }
         }
 
@@ -309,6 +326,7 @@ export default class CollectionIntent extends BaseComponent {
                 title: cityType.city_name,
                 isSelected: true,
                 provsID:cityType.provice_id,
+                cityID:cityType.city_id,
             })
             this.setState({
                 cityArray:this.state.cityArray,

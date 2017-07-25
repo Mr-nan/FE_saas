@@ -6,7 +6,7 @@
 /**
  * 测试地址
  */
-export const BASEURL = 'http://api-gateway.test.dycd.com/';
+// export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 正式地址
@@ -16,7 +16,7 @@ export const BASEURL = 'http://api-gateway.test.dycd.com/';
 /**
  * 预发布地址
  */
-// export const BASEURL = 'https://stgatewayapi.dycd.com/';
+export const BASEURL = 'https://stgatewayapi.dycd.com/';
 
 /**
  * 版本号1
@@ -86,6 +86,10 @@ export const INDEX_CITY = BASEURL + V + 'index/city';
  */
 export const CAR_INDEX = BASEURL + V + 'car/index';
 
+/**
+ * 获取车搜索
+ */
+export const CAR_SEARCH_TOP=BASEURL + V +'car/searchHistory';
 
 /**
  * 获取车辆详情

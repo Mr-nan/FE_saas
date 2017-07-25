@@ -167,8 +167,6 @@ export default class CarUpImageScene extends BaseComponent{
           }
 
 
-          console.log(this.titleData);
-
           if(this.carData.pictures){
               let imgas = JSON.parse(this.carData.pictures);
               this.results.push(...imgas);
