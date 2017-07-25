@@ -5,6 +5,7 @@ SQLiteStorage.DEBUG(true);
 var db;
 const Collection_TABLE_NAME = "CarName";//收藏表
 const PUBLISH_TABLE_NAME = "publishCar"; //发布编辑
+const CAR_TYPE_LIST = 'carTypeList'; // 车型列表
 
 const SQLite = React.createClass({
 
@@ -70,6 +71,21 @@ const SQLite = React.createClass({
                 +'dealer_price VARCHAR default "",'
                 +'describe VARCHAR default "",'
                 +'modify VARCHAR default ""'
+                + ');'
+                , [], () => {
+                    this._successCB('executeSql');
+                }, (err) => {
+                    this._errorCB('executeSql', err);
+                });
+        }, (err) => {
+            this._errorCB('transaction', err);
+        }, () => {
+            this._successCB('transaction');
+        })
+
+        db.transaction((tx) => {
+            tx.executeSql('CREATE TABLE IF NOT EXISTS ' + CAR_TYPE_LIST + '('
+                +'car_name VARCHAR default ""'
                 + ');'
                 , [], () => {
                     this._successCB('executeSql');

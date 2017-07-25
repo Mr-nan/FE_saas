@@ -84,8 +84,10 @@ export default class PublishModal extends BaseComponent {
     };
 
     _newPress = ()=>{
-        this._closePress();
+
         // this.props.callBack(this.newCarParams);
+
+        this._closePress();
         let navigatorParams = {
             name: "CarPublishFirstScene",
             component: CarPublishFirstScene,
@@ -93,6 +95,7 @@ export default class PublishModal extends BaseComponent {
             }
         };
         this.props.callBack(navigatorParams);
+
 
     };
 

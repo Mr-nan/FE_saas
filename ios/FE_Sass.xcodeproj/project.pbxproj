@@ -31,6 +31,11 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		1510B5451F2057B40046BBD8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1510B5441F2057B40046BBD8 /* libsqlite3.tbd */; };
+		1510B5471F2057D50046BBD8 /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1510B5461F2057D50046BBD8 /* libicucore.tbd */; };
+		1510B5491F2058080046BBD8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1510B5481F2058080046BBD8 /* Security.framework */; };
+		1510B5531F2067570046BBD8 /* libGrowing.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1510B5511F2067570046BBD8 /* libGrowing.a */; };
+		1510B5541F2067570046BBD8 /* VERSION in Resources */ = {isa = PBXBuildFile; fileRef = 1510B5521F2067570046BBD8 /* VERSION */; };
 		16FB421C1EF23352006C6077 /* SystomTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 16FB421B1EF23352006C6077 /* SystomTools.m */; };
 		2C1964C803524664A77CBF9E /* libRCTWeChat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 754AC2C278594A7D8ACD7F05 /* libRCTWeChat.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
@@ -365,6 +370,12 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = FE_Sass/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = FE_Sass/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
+		1510B5441F2057B40046BBD8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		1510B5461F2057D50046BBD8 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
+		1510B5481F2058080046BBD8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		1510B5501F2067570046BBD8 /* Growing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Growing.h; sourceTree = "<group>"; };
+		1510B5511F2067570046BBD8 /* libGrowing.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGrowing.a; sourceTree = "<group>"; };
+		1510B5521F2067570046BBD8 /* VERSION */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VERSION; sourceTree = "<group>"; };
 		16FB421A1EF23352006C6077 /* SystomTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystomTools.h; sourceTree = "<group>"; };
 		16FB421B1EF23352006C6077 /* SystomTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystomTools.m; sourceTree = "<group>"; };
 		1F2A351FE20A472BABAB3F42 /* RCTBEEPickerManager.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTBEEPickerManager.xcodeproj; path = "../node_modules/react-native-picker/ios/RCTBEEPickerManager.xcodeproj"; sourceTree = "<group>"; };
@@ -443,10 +454,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E3B817061E613EAC00279287 /* SystemConfiguration.framework in Frameworks */,
+				E36AEB881E6ABF35000F4E11 /* Foundation.framework in Frameworks */,
+				1510B5491F2058080046BBD8 /* Security.framework in Frameworks */,
+				E3B817081E613EB600279287 /* CoreTelephony.framework in Frameworks */,
+				1510B5471F2057D50046BBD8 /* libicucore.tbd in Frameworks */,
+				1510B5451F2057B40046BBD8 /* libsqlite3.tbd in Frameworks */,
 				7D4BDE2A1ECAD84A002DD5E1 /* AdSupport.framework in Frameworks */,
 				7DB2CBB21E779CB400DE146C /* libbz2.1.0.tbd in Frameworks */,
-				E3B817081E613EB600279287 /* CoreTelephony.framework in Frameworks */,
-				E36AEB881E6ABF35000F4E11 /* Foundation.framework in Frameworks */,
 				E36AEB861E6ABF2A000F4E11 /* CoreMedia.framework in Frameworks */,
 				E36AEB841E6ABF17000F4E11 /* AVFoundation.framework in Frameworks */,
 				E36AEB821E6ABF0C000F4E11 /* AudioToolbox.framework in Frameworks */,
@@ -454,7 +469,6 @@
 				E3B8170B1E613ED600279287 /* libz.tbd in Frameworks */,
 				E3B817091E613ECF00279287 /* libc++.tbd in Frameworks */,
 				6EFC1612A1C141A990AA381C /* libsqlite3.0.tbd in Frameworks */,
-				E3B817061E613EAC00279287 /* SystemConfiguration.framework in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				7DB2CBD11E779DDF00DE146C /* libSVehicleLicense.a in Frameworks */,
@@ -473,6 +487,7 @@
 				6B4FBA6C55A04B9CA9AED806 /* libRCTBEEPickerManager.a in Frameworks */,
 				400052FA1E8E478F9E60534C /* libRCTUmengPush.a in Frameworks */,
 				2C1964C803524664A77CBF9E /* libRCTWeChat.a in Frameworks */,
+				1510B5531F2067570046BBD8 /* libGrowing.a in Frameworks */,
 				8764F52B800544BDB35F20A3 /* libRCTBEEPickerManager.a in Frameworks */,
 				57AE4D60A14A49F3BFB62E1A /* libRNSpinkit.a in Frameworks */,
 				4F901FA6C8544C1C9AE1F413 /* libCodePush.a in Frameworks */,
@@ -566,6 +581,9 @@
 		033B617BF03E4DCEBBEDB683 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1510B5481F2058080046BBD8 /* Security.framework */,
+				1510B5461F2057D50046BBD8 /* libicucore.tbd */,
+				1510B5441F2057B40046BBD8 /* libsqlite3.tbd */,
 				7D4BDE291ECAD84A002DD5E1 /* AdSupport.framework */,
 				121CE05A1EA88EE5003CA579 /* CodePush.h */,
 				7DB2CBB11E779CB400DE146C /* libbz2.1.0.tbd */,
@@ -613,6 +631,7 @@
 		13B07FAE1A68108700A75B9A /* FE_Sass */ = {
 			isa = PBXGroup;
 			children = (
+				1510B54F1F2067570046BBD8 /* GrowingIO-iOS-SDK */,
 				7DB2CBB31E779DDF00DE146C /* OCRSCancer */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -637,6 +656,16 @@
 				3DAD3EAF1DF850E9000B6D8A /* libjschelpers.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		1510B54F1F2067570046BBD8 /* GrowingIO-iOS-SDK */ = {
+			isa = PBXGroup;
+			children = (
+				1510B5501F2067570046BBD8 /* Growing.h */,
+				1510B5511F2067570046BBD8 /* libGrowing.a */,
+				1510B5521F2067570046BBD8 /* VERSION */,
+			);
+			path = "GrowingIO-iOS-SDK";
 			sourceTree = "<group>";
 		};
 		5E91572E1DD0AC6500FF2AA8 /* Products */ = {
@@ -912,7 +941,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 3BH2YRLSPK;
+						DevelopmentTeam = 8RXU2MG5MH;
 						ProvisioningStyle = Automatic;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
@@ -1280,6 +1309,7 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				7DB2CBD51E779DDF00DE146C /* change_btn@2x.png in Resources */,
 				7DB2CBD81E779DDF00DE146C /* flash_off@3x.png in Resources */,
+				1510B5541F2067570046BBD8 /* VERSION in Resources */,
 				124A59131E9C8B24007C1C15 /* Icon_SaoYiSao@2x.png in Resources */,
 				7DB2CBD71E779DDF00DE146C /* flash_off@2x.png in Resources */,
 			);
@@ -1466,7 +1496,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = 3BH2YRLSPK;
+				DEVELOPMENT_TEAM = 8RXU2MG5MH;
 				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
@@ -1482,13 +1512,14 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/OCRSCancer",
+					"$(PROJECT_DIR)/GrowingIO-iOS-SDK",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.BMSHtmls;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.dycdsaas;
 				PRODUCT_NAME = FE_Sass;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1504,7 +1535,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 3BH2YRLSPK;
+				DEVELOPMENT_TEAM = 8RXU2MG5MH;
 				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
@@ -1520,13 +1551,14 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/OCRSCancer",
+					"$(PROJECT_DIR)/GrowingIO-iOS-SDK",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.BMSHtmls;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.dycdsaas;
 				PRODUCT_NAME = FE_Sass;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1579,7 +1611,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 3BH2YRLSPK;
+				DEVELOPMENT_TEAM = 8RXU2MG5MH;
 				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
@@ -1595,13 +1627,14 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/OCRSCancer",
+					"$(PROJECT_DIR)/GrowingIO-iOS-SDK",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.BMSHtmls;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dycd.dycdsaas;
 				PRODUCT_NAME = FE_Sass;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";

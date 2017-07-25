@@ -497,7 +497,11 @@ export default class MainPage extends BaseComponent {
         })
         return (
             <View style={styles.flex}>
-                <PublishModal callBack={(params)=> {
+                <PublishModal backToLogin={()=>{
+                    this.backToLogin({name:'LoginScene',component:LoginScene});
+                }} showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);}} ref={(modal) => {this.publishModal = modal}}/>
                 <TabNavigator
                     sceneStyle={{backgroundColor: '#00000000'}}

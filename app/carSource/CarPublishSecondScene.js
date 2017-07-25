@@ -893,6 +893,7 @@ export default class CarPublishSecondScene extends BaseComponent {
             component: CarUpImageScene,
             params: {
                 carData: this.carData,
+                carConfigurationData:this.props.carConfigurationData,
             }
         };
         this.toNextPage(navigatorParams);
