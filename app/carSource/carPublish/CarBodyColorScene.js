@@ -149,8 +149,33 @@ export default class CarBodyColorScene extends  BaseComponent{
         //         img: doubleColor,
         //         index: 13
         //     },
+        //     {
+        //         title: '',
+        //         selected: '',
+        //         fill: false,
+        //         color: '',
+        //         img: '',
+        //         index: 14
+        //     },
+        //     {
+        //         title: '',
+        //         selected: '',
+        //         fill: false,
+        //         color: '',
+        //         img: '',
+        //         index: 15
+        //     }
         //
         // ];
+
+        // this.viewShell.map((data,index)=>{
+        //     if(data.title == this.props.currentChecked)
+        //     {
+        //         data.selected = true;
+        //
+        //     }
+        //
+        // });
 
         this.viewShell = this.props.carBodyColorData;
         this.viewShell.push(
@@ -158,8 +183,9 @@ export default class CarBodyColorScene extends  BaseComponent{
                 name: ' ',
                 value: '',
             },
-            {  name: ' ',
-                value: '',
+            {
+                name: ' ',
+                value: ''
             });
 
         this.viewShell.map((data,index)=>{
@@ -187,8 +213,9 @@ export default class CarBodyColorScene extends  BaseComponent{
                 data.img = '';
             }
 
-
         });
+
+
 
         this.state = {
             carShell: this.viewShell,
@@ -226,8 +253,8 @@ export default class CarBodyColorScene extends  BaseComponent{
                         onPress={()=>{this._shellPress(data.index)}}
                     >
                         <View style={styles.center}>
-                            <View style={[styles.colorContainer,{backgroundColor:data.color}]}/>
-                            <Text allowFontScaling={false}  style={styles.textLabel}>{data.title}</Text>
+                            <View style={[styles.colorContainer,{backgroundColor:data.value}]}/>
+                            <Text allowFontScaling={false}  style={styles.textLabel}>{data.name}</Text>
                         </View>
                     </TouchableOpacity>
 
@@ -243,7 +270,7 @@ export default class CarBodyColorScene extends  BaseComponent{
                     >
                         <View style={styles.center}>
                             <Image style={styles.colorContainer} source={data.img}/>
-                            <Text allowFontScaling={false}  style={styles.textLabel}>{data.title}</Text>
+                            <Text allowFontScaling={false}  style={styles.textLabel}>{data.name}</Text>
                         </View>
                     </TouchableOpacity>
 
@@ -261,7 +288,7 @@ export default class CarBodyColorScene extends  BaseComponent{
                         <View style={[styles.colorContainer,styles.selectColor]}>
                             <Image style={styles.selectImg} source={colorSelect}/>
                         </View>
-                        <Text allowFontScaling={false}  style={styles.textLabel}>{data.title}</Text>
+                        <Text allowFontScaling={false}  style={styles.textLabel}>{data.name}</Text>
                     </View>
                 </TouchableOpacity>
             );

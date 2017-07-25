@@ -38,7 +38,7 @@ export default class CarInfoScene extends BaseComponent {
                     <SelectView     ref="carView"           title="品牌车系"       content={(screeningObject.checkedCarType.title!='')?screeningObject.checkedCarType.title:'请选择'} selectCilck={this.pushCarBrandSceneAction}/>
                     <SelectView     ref="carDischargeView"  title="排放标准"       content={screeningObject.checkedCarDischarge.title!=''?screeningObject.checkedCarDischarge.title:'请选择'} selectCilck={this.pushCarDischargeSceneAction}/>
                     <SelectView     ref="carColorView"      title="车身颜色"       content={screeningObject.checkedCarColor.title!=''?screeningObject.checkedCarColor.title:'请选择'} selectCilck={this.pushCarColorSceneAction}/>
-                    <CheckedView    title="价格"  contentView={this.carPriceView}/>
+                    <CheckedView    title="价格"  contentView={this.carPriceView} dataArray={screeningObject.carPriceSource}    checkedClick={this.carPriceClick} currentChecked={screeningObject.checkedCarPrice.title}/>
                     <CheckedView    title="车龄"  contentView={this.carAgeView} dataArray={screeningObject.carAgeSource}    checkedClick={this.carAgeClick} currentChecked={screeningObject.checkedCarAgeType.title}/>
                     <CheckedView    title="里程" dataArray={screeningObject.carKMSource}     checkedClick={this.carKMClick} currentChecked={screeningObject.checkedCarKMType.title}/>
                     <CheckedView    title="类型" dataArray={screeningObject.carTypeSource}   checkedClick={this.carTypeClick}    currentChecked={screeningObject.checkedCarGenre.title}/>
@@ -343,6 +343,11 @@ export default class CarInfoScene extends BaseComponent {
         this.props.screeningObject.checkedCarType.series_id = carObject.series_id;
     }
 
+    carPriceClick=(checkedObject)=>{
+        this.props.screeningObject.checkedCarPrice.title = checkedObject.title;
+        this.props.screeningObject.checkedCarPrice.value = checkedObject.value;
+    }
+
     carAgeClick=(checkedObject)=>{
         this.props.screeningObject.checkedCarAgeType.title = checkedObject.title;
         this.props.screeningObject.checkedCarAgeType.value = checkedObject.value;
@@ -434,29 +439,43 @@ class CheckedView extends Component{
         return(
             <View style={styles.checkedView}>
                 <Text allowFontScaling={false}  style={styles.titleText}>{this.props.title}</Text>
-                <View style={styles.checkedContentView}>
-                    {
-                        this.props.dataArray.map((data, index) => {
-                            return (
-                                <TouchableOpacity style={{height:Pixel.getPixel(20), marginTop:Pixel.getPixel(10),marginBottom:Pixel.getPixel(5),
-                                }} onPress={()=>
-                                {
-                                    if(this.state.currentChecked!=data.name){
-                                        this.setState({
-                                            currentChecked:data.name,
-                                        });
-                                        this.props.checkedClick({title:data.name,value:data.value});
-                                    }
+                {
+                    this.props.contentView && this.props.contentView()
+                }
+                {
+                    this.props.dataArray && (
+                        <View style={styles.checkedContentView}>
+                            {
+                                this.props.dataArray.map((data, index) => {
+                                    return (
+                                        <TouchableOpacity style={{height:Pixel.getPixel(20), marginTop:Pixel.getPixel(10),marginBottom:Pixel.getPixel(5),
+                                        }} onPress={()=>
+                                        {
+                                            if(this.state.currentChecked!=data.name){
+                                                this.setState({
+                                                    currentChecked:data.name,
+                                                });
+                                                this.props.checkedClick({title:data.name,value:data.value});
 
-                                }} activeOpacity={1} key={index}>
-                                    <View style={[styles.checkedItemView,(this.state.currentChecked==data.name?{borderColor:fontAndColor.COLORB0}:{borderColor:fontAndColor.COLORA2})]}>
-                                        <Text allowFontScaling={false}  style={[styles.checkedItemText,(this.state.currentChecked==data.name?{color:fontAndColor.COLORB0}:{color:fontAndColor.COLORA2})] }> {data.name} </Text>
-                                    </View>
-                                </TouchableOpacity>
-                            )
-                        })
-                    }
-                </View>
+                                            }else {
+                                                this.setState({
+                                                    currentChecked:'',
+                                                });
+                                                this.props.checkedClick({title:'',value:''});
+                                            }
+
+                                        }} activeOpacity={1} key={index}>
+                                            <View style={[styles.checkedItemView,(this.state.currentChecked==data.name?{borderColor:fontAndColor.COLORB0}:{borderColor:fontAndColor.COLORA2})]}>
+                                                <Text allowFontScaling={false}  style={[styles.checkedItemText,(this.state.currentChecked==data.name?{color:fontAndColor.COLORB0}:{color:fontAndColor.COLORA2})] }> {data.name} </Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    )
+                                })
+                            }
+                        </View>
+                    )
+                }
+
             </View>
         )
     }

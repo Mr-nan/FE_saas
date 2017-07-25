@@ -55,53 +55,48 @@ export default class CarPublishFirstScene extends BaseComponent{
 
 
     initFinish=()=>{
-
-        if(this.props.carID!==undefined){
-
-            this.loadCarData();
-
-        }else {
-            StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-                if(data.code == 1 && data.result != '')
-                {
-                    let enters = JSON.parse(data.result);
-                    this.carData['show_shop_id'] = enters.company_base_id;
-                    this.carData['city_id'] = enters.city_id;
-                    this.carData['provice_id'] = enters.prov_id;
-                    this.carData['city_name'] = enters.city_name;
-                    this.getLocalityCarData();
-
-                }else{
-                    this._showHint('无法找到所属商户');
-                }
-            });
-
-            // StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST,(data)=>{
-            //     if(data.code == 1 && data.result != ''){
-            //         let enters = JSON.parse(data.result);
-            //         if(enters.length === 1){
-            //
-            //             this.carData['show_shop_id'] = enters[0].enterprise_uid;
-            //             this.carData['city_id'] = enters[0].city_id;
-            //             this.carData['provice_id'] = enters[0].prov_id;
-            //             this.carData['city_name'] = enters[0].city_name;
-            //             this.getLocalityCarData();
-            //
-            //         }else if(enters.length > 1){
-            //
-            //             this.enterpriseList = enters;
-            //             this.enterpriseModal.refresh(this.enterpriseList);
-            //             this.enterpriseModal.openModal();
-            //
-            //         }else{
-            //             this._showHint('无法找到所属商户');
-            //         }
-            //     }else{
-            //         this._showHint('无法找到所属商户');
-            //     }
-            // });
-        }
+        this.loadCarConfigurationData();
     }
+    allRefresh = () => {
+        this.loadCarConfigurationData();
+    }
+
+    loadCarConfigurationData=()=>{
+
+        CarDeployData.getCarDeployData((value)=>{
+            this.setState({
+                renderPlaceholderOnly:value?'loading':'success'
+            });
+        },(value)=>{
+            this.setState({
+                renderPlaceholderOnly:'error'
+            });
+        },(fetchObject)=>{
+
+            this.carConfigurationData = fetchObject;
+            if(this.props.carID!==undefined){
+
+                this.loadCarData();
+
+            }else {
+                StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+                    if(data.code == 1 && data.result != '')
+                    {
+                        let enters = JSON.parse(data.result);
+                        this.carData['show_shop_id'] = enters.company_base_id;
+                        this.carData['city_id'] = enters.city_id;
+                        this.carData['provice_id'] = enters.prov_id;
+                        this.carData['city_name'] = enters.city_name;
+                        this.getLocalityCarData();
+
+                    }else{
+                        this._showHint('无法找到所属商户');
+                    }
+                });
+            }
+        });
+    }
+
     // 构造
       constructor(props) {
         super(props);
@@ -382,6 +377,7 @@ export default class CarPublishFirstScene extends BaseComponent{
           this.state = {
               titleData:this.titleData1,
               isDateTimePickerVisible:false,
+              renderPlaceholderOnly:'loading'
           };
       }
 
@@ -421,6 +417,13 @@ export default class CarPublishFirstScene extends BaseComponent{
 
 
     render(){
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return (
+                <View style={{flex: 1, backgroundColor: 'white'}}>
+                    {this.loadView()}
+                    <AllNavigationView title="车辆基本信息" backIconClick={this.backPage}/>
+                </View>);
+        }
 
         return(
             <View style={styles.rootContainer}>
@@ -703,6 +706,7 @@ export default class CarPublishFirstScene extends BaseComponent{
             component: CarPublishSecondScene,
             params: {
                 carData:this.carData,
+                carConfigurationData:this.carConfigurationData,
             }
         }
         this.toNextPage(navigatorParams);
@@ -984,18 +988,18 @@ export default class CarPublishFirstScene extends BaseComponent{
 
     pushCarDischarge=()=>{
 
-        CarDeployData.getCarDeployData(this.props.showModal,this.props.showToast,(fetchObject)=>{
+
             let brandParams = {
                 name: 'CarDischargeScene',
                 component: CarDischargeScene,
                 params: {
                     checkedCarDischargeClick:this._checkedCarDischargeClick,
                     currentChecked:this.titleData1[0][4].value,
-                    DischargeData:fetchObject.auto_es,
+                    DischargeData:this.carConfigurationData.auto_es,
                 }
             };
             this.toNextPage(brandParams);
-        });
+
 
     }
 
@@ -1008,19 +1012,16 @@ export default class CarPublishFirstScene extends BaseComponent{
 
     pushCarBodyColorScene=()=>{
 
-        CarDeployData.getCarDeployData(this.props.showModal,this.props.showToast,(fetchObject)=>{
             let brandParams = {
                 name: 'CarBodyColorScene',
                 component:CarBodyColorScene,
                 params: {
                     checkedCarBodyColorClick:this._checkedCarBodyColorClick,
                     currentChecked:this.titleData1[0][5].value,
-                    carBodyColorData:fetchObject.auto_body_color,
+                    carBodyColorData:this.carConfigurationData.auto_body_color,
                 }
             };
             this.toNextPage(brandParams);
-        });
-
 
     }
 
@@ -1035,18 +1036,16 @@ export default class CarPublishFirstScene extends BaseComponent{
 
     pushCarInwardColorScene=()=>{
 
-        CarDeployData.getCarDeployData(this.props.showModal,this.props.showToast,(fetchObject)=>{
-            let brandParams = {
-                name: 'CarInwardColorScene',
-                component: CarInwardColorScene,
-                params: {
-                    checkedCarInwardColorClick:this._checkedCarInwardColorClick,
-                    currentChecked:this.titleData1[0][6].value,
-                    carInwardColor:fetchObject.auto_interior_color,
-                }
-            };
-            this.toNextPage(brandParams);
-        });
+        let brandParams = {
+            name: 'CarInwardColorScene',
+            component: CarInwardColorScene,
+            params: {
+                checkedCarInwardColorClick:this._checkedCarInwardColorClick,
+                currentChecked:this.titleData1[0][6].value,
+                carInwardColor:this.carConfigurationData.auto_interior_color,
+            }
+        };
+        this.toNextPage(brandParams);
 
 
     }

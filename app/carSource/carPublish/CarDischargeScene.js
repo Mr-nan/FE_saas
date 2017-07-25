@@ -46,6 +46,13 @@ export default class CarDischargeScene extends  BaseComponent{
         //     {title: '欧Ⅰ', selected: false,index:11,value:'european_i'},
         // ];
 
+        // this.viewData.map((data,index)=>{
+        //     if(data.title == this.props.currentChecked)
+        //     {
+        //         data.selected = true;
+        //     }
+        // });
+
         this.viewData = this.props.DischargeData;
         this.viewData.map((data,index)=>{
             data.index = index;
@@ -56,6 +63,8 @@ export default class CarDischargeScene extends  BaseComponent{
                 data.selected = false;
             }
         });
+
+
 
         this.state = {
             dataSource: this.viewData,
@@ -92,7 +101,7 @@ export default class CarDischargeScene extends  BaseComponent{
                 >
                     <View >
                         <Text allowFontScaling={false}  style={styles.selectText}>
-                            {data.title}
+                            {data.name}
                         </Text>
                     </View>
                 </TouchableOpacity>
@@ -107,7 +116,7 @@ export default class CarDischargeScene extends  BaseComponent{
                 >
                     <View >
                         <Text allowFontScaling={false}  style={styles.defaultText}>
-                            {data.title}
+                            {data.name}
                         </Text>
                     </View>
                 </TouchableOpacity>
@@ -124,7 +133,7 @@ export default class CarDischargeScene extends  BaseComponent{
 
         this.props.checkedCarDischargeClick({
             title:this.viewData[i].name,
-            value:this.viewData[i].key,
+            value:this.viewData[i].value,
         });
         this.backPage();
 

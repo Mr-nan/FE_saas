@@ -32,6 +32,7 @@ import CarBrandSelectScene  from './CarBrandSelectScene';
 import CarScreeningScene    from  './CarScreeningScene';
 import CityListScene        from './CityListScene';
 import {SequencingButton, SequencingView} from './znComponent/CarSequencingView';
+import CarSeekScene from './CarSeekScene';
 import * as AppUrls         from "../constant/appUrls";
 import  {request}           from '../utils/RequestUtil';
 import PixelUtil            from '../utils/PixelUtil';
@@ -48,6 +49,7 @@ let carTypeSource = [];
 let carNatureSource = [];
 let carColorSource = [];
 let carDischargeSource = [];
+let carPriceSource = [];
 let sequencingDataSource = carFilterData.sequencingDataSource;
 let currentCheckedIndex = 1;
 let checkedSource = [];
@@ -69,12 +71,15 @@ const APIParameter = {
     emission_standards:0,
     nature_use:0,
     car_color:0,
+    model_name:'',
+    prov_id:0,
     v_type:0,
     rows: 10,
     page: 1,
     start: 0,
     type: 1,
     status: 1,
+    no_cache:1,
 
 };
 
@@ -200,6 +205,7 @@ export  default  class carSourceListScene extends BaseComponent {
                 if(data.result == 'true'){
                     isCheckRecommend = false
                     APIParameter.type = 0;
+                    APIParameter.prov_id = 0;
                     this.loadData();
                     return;
                 }
@@ -209,7 +215,20 @@ export  default  class carSourceListScene extends BaseComponent {
         StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
         StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND,'false');
 
-        this.loadData();
+
+        StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
+            if(data.code == 1 && data.result != '')
+            {
+                let enters = JSON.parse(data.result);
+                this.prov_id = enters.prov_id;
+                APIParameter.prov_id=enters.prov_id;
+                this.loadData();
+
+            }else{
+                this.loadData();
+            }
+        });
+
 
 
 
@@ -233,6 +252,10 @@ export  default  class carSourceListScene extends BaseComponent {
         this.loadData();
 
     }
+    allRefresh=()=>{
+        this.setState({renderPlaceholderOnly: 'loading'});
+        this.loadData();
+    }
 
     // 获取数据
     loadData = () => {
@@ -243,7 +266,6 @@ export  default  class carSourceListScene extends BaseComponent {
             this.props.backToLogin();
         })
             .then((response) => {
-
                 carData = response.mjson.data.list;
                 if (typeof(response.mjson.data.start) == "undefined") {
                     APIParameter.start = 0;
@@ -364,18 +386,28 @@ export  default  class carSourceListScene extends BaseComponent {
 
     presCarTypeScene = () => {
 
-        let navigatorParams = {
-            name: "CarBrandSelectScene",
-            component: CarBrandSelectScene,
-            params: {
-                checkedCarType: this.state.checkedCarType,
-                checkedCarClick: this.checkedCarClick,
-                status: 1,
-                isHeadInteraction: true,
-                unlimitedAction:this.carTypeClick,
-                // isCheckedCarModel:true,
+        // let navigatorParams = {
+        //     name: "CarBrandSelectScene",
+        //     component: CarBrandSelectScene,
+        //     params: {
+        //         checkedCarType: this.state.checkedCarType,
+        //         checkedCarClick: this.checkedCarClick,
+        //         status: 1,
+        //         isHeadInteraction: true,
+        //         unlimitedAction:this.carTypeClick,
+        //         // isCheckedCarModel:true,
+        //
+        //     }
+        // };
+        // this.props.callBack(navigatorParams);
 
+        let navigatorParams = {
+            name: "CarSeekScene",
+            component: CarSeekScene,
+            params: {
+                checkedCarClick: this.checkedCarClick,
             }
+
         };
         this.props.callBack(navigatorParams);
 
@@ -392,6 +424,7 @@ export  default  class carSourceListScene extends BaseComponent {
                 carNatureSource = carConfigData.auto_use;
                 carColorSource = carConfigData.auto_body_color;
                 carDischargeSource = carConfigData.auto_es;
+                carPriceSource = carConfigData.auto_price;
 
                 let {checkedCarType,checkedCarAgeType,checkedCarKMType,checkedCarGenre,checkedCity,checkedCarPrice,checkedCarDischarge,checkedCarColor,checkedCarNature}= this.state;
                 let screeningObject = {
@@ -411,6 +444,7 @@ export  default  class carSourceListScene extends BaseComponent {
                     carNatureSource:carNatureSource,
                     carColorSource:carColorSource,
                     carDischargeSource:carDischargeSource,
+                    carPriceSource:carPriceSource,
                 };
                 let navigatorParams = {
                     name: "CarScreeningScene",
@@ -467,7 +501,21 @@ export  default  class carSourceListScene extends BaseComponent {
 
         if (index === 1) {
 
-            this.presCarTypeScene();
+            let navigatorParams = {
+                name: "CarBrandSelectScene",
+                component: CarBrandSelectScene,
+                params: {
+                    checkedCarType: this.state.checkedCarType,
+                    checkedCarClick: this.checkedCarClick,
+                    status: 1,
+                    isHeadInteraction: true,
+                    unlimitedAction:this.carTypeClick,
+                    // isCheckedCarModel:true,
+
+                }
+            };
+            this.props.callBack(navigatorParams);
+
             if (!this.state.isHide) {
                 this.setState({
                     isHide: true,
@@ -531,11 +579,13 @@ export  default  class carSourceListScene extends BaseComponent {
 
         if (isCheck) {
             APIParameter.type = 1;
+            APIParameter.prov_id=this.prov_id;
             this.allDelectClick();
 
 
         } else {
             APIParameter.type = 0;
+            APIParameter.prov_id=0;
             this.filterData();
         }
 
@@ -546,6 +596,16 @@ export  default  class carSourceListScene extends BaseComponent {
 
         APIParameter.brand_id = carObject.brand_id;
         APIParameter.series_id = carObject.series_id;
+
+        if(carObject.brand_id == 0 && carObject.series_id ==0)
+        {
+            APIParameter.model_name = carObject.brand_name;
+
+        }else {
+
+            APIParameter.model_name = '';
+
+        }
         this.setState({
             checkedCarType: {
                 title: carObject.series_id == 0 ? carObject.brand_name : carObject.series_name,
@@ -650,6 +710,8 @@ export  default  class carSourceListScene extends BaseComponent {
         });
         APIParameter.brand_id = 0;
         APIParameter.series_id = 0;
+        APIParameter.model_name = '';
+
         if (this.refs.headView.state.isCheckRecommend) {
             this.refs.headView.setCheckRecommend(false)
         } else {
@@ -843,6 +905,7 @@ export  default  class carSourceListScene extends BaseComponent {
         APIParameter.emission_standards = 0;
         APIParameter.car_color = 0;
         APIParameter.nature_use = 0;
+        APIParameter.model_name = '';
 
         if (this.refs.headView.state.isCheckRecommend) {
             this.refs.headView.setCheckRecommend(false);
@@ -1140,7 +1203,7 @@ class CarListNavigatorView extends Component {
                         <View style={styles.navigatorSousuoView}>
                             <Image style={{marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(10)}}
                                    source={require('../../images/carSourceImages/sousuoicon.png')}/>
-                            <Text allowFontScaling={false}  style={styles.navigatorSousuoText}>按品牌、车系搜索</Text>
+                            <Text allowFontScaling={false}  style={styles.navigatorSousuoText}>请输入车型关键词</Text>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={this.props.ScreeningClick}>

@@ -122,6 +122,10 @@ export default class CarInfoScene extends BaseComponent {
         this.loadData();
     }
 
+    allRefresh=()=>{
+        this.loadData();
+    }
+
     loadData = () => {
 
 
