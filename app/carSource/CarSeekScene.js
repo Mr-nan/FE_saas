@@ -148,17 +148,13 @@ export default class CarSeekScene extends BaseComponent {
 
         request(AppUrls.CAR_SEARCH_TOP,'POST',{}).then((response) => {
 
-            console.log('========='+response);
             if(response.mjson.code ==1){
 
                 seekDataArray = response.mjson.data.list;
                 this.setSeekData(seekDataArray);
-
             }
 
         }, (error) => {
-
-            console.log('========='+error);
 
             this.props.showToast(error.msg);
         });

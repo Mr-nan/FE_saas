@@ -87,9 +87,15 @@ export const INDEX_CITY = BASEURL + V + 'index/city';
 export const CAR_INDEX = BASEURL + V + 'car/index';
 
 /**
- * 获取车搜索
+ * 获取车辆搜索历史
  */
-export const CAR_SEARCH_TOP=BASEURL + V +'car/searchHistory';
+export const CAR_HiSTORY = BASEURL + V + 'car/searchHistory';
+
+/**
+ * 获取车辆搜索匹配信息
+ */
+export const CAR_SEARCH_TOP = BASEURL + V + 'car/searchTop';
+
 
 /**
  * 获取车辆详情
