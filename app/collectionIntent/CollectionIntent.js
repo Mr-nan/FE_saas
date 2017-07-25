@@ -40,12 +40,7 @@ export default class CollectionIntent extends BaseComponent {
         let mileArr = [];
         let provsArray = [];
         let citiesArray = [];
-        console.log('***************');
-      console.log(this.carYearArr);
-        console.log('***************');
 
-        console.log(this.mileageArr);
-        console.log('***************');
 
         if (this.brandSeriesArr.length == 0 && this.carYearArr.length == 0 && this.mileageArr.length == 0 && this.citiesArray.length ==0 &&  this.provsArray.length ==0 ) {
             this.props.showToast("请选择收车意向");
@@ -446,7 +441,6 @@ export default class CollectionIntent extends BaseComponent {
                 }
             }
 
-            console.log(this.carYearArr);
 
         } else if (array === this.state.arr2) {
 
@@ -473,7 +467,6 @@ export default class CollectionIntent extends BaseComponent {
                     break;
                 }
             }
-            console.log(this.mileageArr);
 
         }
     }
