@@ -11,6 +11,9 @@ import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import org.pgsqlite.SQLitePluginPackage;
 import com.beefe.picker.PickerViewPackage;
+import com.growingio.android.sdk.collection.Configuration;
+import com.growingio.android.sdk.collection.GrowingIO;
+import com.growingio.plugin.rnsdk.rnPackge.GrowingIOPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.vin.scan.VinScanPackage;
 import com.qr.scan.QrScanPackage;
@@ -54,7 +57,8 @@ public class MainApplication extends UmengPushApplication implements ReactApplic
           new QrScanPackage(),
           new CustomCameraPackage(),
           new RNSpinkitPackage(),
-          new CodePush("xmOhd_I_phLbpA3a4AKSbAMFaN5DVJvFYEdiG", getApplicationContext(), BuildConfig.DEBUG)
+          new CodePush("xmOhd_I_phLbpA3a4AKSbAMFaN5DVJvFYEdiG", getApplicationContext(), BuildConfig.DEBUG),
+          new GrowingIOPackage()
       );
     }
   };
@@ -68,5 +72,13 @@ public class MainApplication extends UmengPushApplication implements ReactApplic
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+
+    GrowingIO.startWithConfiguration(this, new Configuration()
+            .useID()
+            .trackAllFragments()
+            .setChannel("huangning"));
+
+    GrowingIO.enableRNNavigatorPage();    // 开启Navigator页面采集
+    GrowingIO.enableRNOptimizedPath();    // 开启RN页面元素识别优化
   }
 }

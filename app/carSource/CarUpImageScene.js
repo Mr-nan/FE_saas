@@ -38,135 +38,136 @@ export default class CarUpImageScene extends BaseComponent{
       constructor(props) {
         super(props);
 
-          this.baseTitleData=[
-              {
-                  name: 'left_anterior',
-                  title:'左前45度',
-                  subTitle:'至多1张',
-                  number:1,
-                  imgArray:[],
-                  explain:'1',
-              },{
-                  name: 'rear_right',
-                  title:'右后45度',
-                  subTitle:'至多1张',
-                  imgArray:[],
-                  explain:'1',
-
-              },{
-                  name: 'dash_board',
-                  title:'仪表盘',
-                  subTitle:'至多1张',
-                  imgArray:[],
-                  explain:'1',
-
-              },{
-                  name: 'front_trim',
-                  title:'前内饰',
-                  subTitle:'至多1张',
-                  number:1,
-                  imgArray:[],
-                  explain:'1',
-
-              },{
-                  name: 'rear_trim',
-                  title:'后内饰',
-                  subTitle:'至多1张',
-                  number:1,
-                  imgArray:[],
-                  explain:'1',
-
-              },{
-                  name: 'engine',
-                  title:'发动机',
-                  subTitle:'至多1张',
-                  number:1,
-                  imgArray:[],
-                  explain:'1',
-
-              },{
-                  name: 'vin_no',
-                  title:'车架号',
-                  subTitle:'至多1张',
-                  number:1,
-                  imgArray:[],
-                  explain:'0',
-              }
-          ];
-
-          this.usedCarTitleData=[
-              {
-                  name: 'registration_card',
-                  title:'登记证',
-                  subTitle:'至多5张',
-                  number:5,
-                  imgArray:[],
-                  explain:'1',
-              },
-          ];
-
-          this.importCarTitleData = [
-              {
-                  name: 'conformance_certificate',
-                  title:'车辆一致性证书正反面',
-                  subTitle:'至多5张',
-                  number:5,
-                  imgArray:[],
-                  explain:'1',
-              }, {
-                  name: 'customs_declaration',
-                  title:'关单',
-                  subTitle:'至多5张',
-                  number:5,
-                  imgArray:[],
-                  explain:'1',
-              }, {
-                  name: 'inspection_report',
-                  title:'商检单',
-                  subTitle:'至多5张',
-                  number:5,
-                  imgArray:[],
-                  explain:'1',
-              },
-          ];
+          // this.baseTitleData=[
+          //     {
+          //         name: 'left_anterior',
+          //         title:'左前45度',
+          //         subTitle:'至多1张',
+          //         number:1,
+          //         imgArray:[],
+          //         explain:'1',
+          //     },{
+          //         name: 'rear_right',
+          //         title:'右后45度',
+          //         subTitle:'至多1张',
+          //         imgArray:[],
+          //         explain:'1',
+          //
+          //     },{
+          //         name: 'dash_board',
+          //         title:'仪表盘',
+          //         subTitle:'至多1张',
+          //         imgArray:[],
+          //         explain:'1',
+          //
+          //     },{
+          //         name: 'front_trim',
+          //         title:'前内饰',
+          //         subTitle:'至多1张',
+          //         number:1,
+          //         imgArray:[],
+          //         explain:'1',
+          //
+          //     },{
+          //         name: 'rear_trim',
+          //         title:'后内饰',
+          //         subTitle:'至多1张',
+          //         number:1,
+          //         imgArray:[],
+          //         explain:'1',
+          //
+          //     },{
+          //         name: 'engine',
+          //         title:'发动机',
+          //         subTitle:'至多1张',
+          //         number:1,
+          //         imgArray:[],
+          //         explain:'1',
+          //
+          //     },{
+          //         name: 'vin_no',
+          //         title:'车架号',
+          //         subTitle:'至多1张',
+          //         number:1,
+          //         imgArray:[],
+          //         explain:'0',
+          //     }
+          // ];
+          //
+          // this.usedCarTitleData=[
+          //     {
+          //         name: 'registration_card',
+          //         title:'登记证',
+          //         subTitle:'至多5张',
+          //         number:5,
+          //         imgArray:[],
+          //         explain:'1',
+          //     },
+          // ];
+          //
+          // this.importCarTitleData = [
+          //     {
+          //         name: 'conformance_certificate',
+          //         title:'车辆一致性证书正反面',
+          //         subTitle:'至多5张',
+          //         number:5,
+          //         imgArray:[],
+          //         explain:'1',
+          //     }, {
+          //         name: 'customs_declaration',
+          //         title:'关单',
+          //         subTitle:'至多5张',
+          //         number:5,
+          //         imgArray:[],
+          //         explain:'1',
+          //     }, {
+          //         name: 'inspection_report',
+          //         title:'商检单',
+          //         subTitle:'至多5张',
+          //         number:5,
+          //         imgArray:[],
+          //         explain:'1',
+          //     },
+          // ];
 
 
           this.titleData = [];
           this.results = [];
           this.carData = this.props.carData;
-          this.titleData.push(...this.baseTitleData);
-
           if(this.carData.v_type==1){
 
-              this.titleData.push(...this.usedCarTitleData);
-              if(this.carData.registrant_actual == 0){
-                  this.titleData.push({
-                      name: 'ownership_sale',
-                      title:'权属声明/买卖协议',
-                      subTitle:'至多5张',
-                      number:5,
-                      imgArray:[],
-                      explain:'1',
-                  })
+              for(let carImageObject of this.props.carConfigurationData.used_car_pic){
+                  carImageObject['imgArray'] = [];
+                  if(carImageObject.title == '权属声明/买卖协议'){
+
+                      if(this.carData.registrant_actual == 0)
+                      {
+                          this.titleData.push(carImageObject);
+                      }
+
+                  }else {
+                      this.titleData.push(carImageObject);
+                  }
               }
 
           }else if(this.carData.v_type==2){
 
-              this.titleData.push({
-                  name: 'certificate',
-                  title:'合格证',
-                  subTitle:'至多5张',
-                  number:5,
-                  imgArray:[],
-                  explain:'0',
-              });
+              for(let carImageObject of this.props.carConfigurationData.new_car_pic){
+                  carImageObject['imgArray'] = [];
+                  this.titleData.push(carImageObject);
+              }
+
 
           } else if(this.carData.v_type==3){
 
-              this.titleData.push(...this.importCarTitleData);
+              for(let carImageObject of this.props.carConfigurationData.imported_car_pic){
+                  carImageObject['imgArray'] = [];
+                  this.titleData.push(carImageObject);
+              }
           }
 
 
+          console.log(this.titleData);
 
           if(this.carData.pictures){
               let imgas = JSON.parse(this.carData.pictures);
@@ -181,7 +182,6 @@ export default class CarUpImageScene extends BaseComponent{
           }else if(this.carData.imgs){
               this.results.push(...this.carData.imgs);
               this.carData['pictures']=JSON.stringify(this.results);
-
               this.titleData.map((data,index)=>{
                   this.carData.imgs.map((imgData,subIndex)=>{
                       if(data.name == imgData.name){
@@ -223,8 +223,7 @@ export default class CarUpImageScene extends BaseComponent{
     }
     renderSeparator(sectionId, rowId) {
         return (
-            <View style={styles.Separator} key={sectionId + rowId}>
-            </View>
+            <View style={styles.Separator} key={sectionId + rowId}/>
         )
     }
 

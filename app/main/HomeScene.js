@@ -92,12 +92,26 @@ export default class HomeScene extends BaseComponet {
 
 //初始化结束后,请求网络,将数据添加到界面
     initFinish = () => {
-        this.getData();
+        this.loadData();
     }
-    getData = () => {
+    loadData=()=>{
+
+        StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
+            if(data.code == 1 && data.result != '')
+            {
+                let enters = JSON.parse(data.result);
+                this.getData(enters.prov_id);
+
+            }else{
+                this.getData(0);
+            }
+        });
+    }
+    getData = (prov_id) => {
         let maps = {
             page: page,
-            rows: 6
+            rows: 6,
+            prov_id:prov_id
         };
         request(Urls.HOME, 'Post', maps,()=>{
             this.props.backToLogin()
@@ -153,7 +167,7 @@ export default class HomeScene extends BaseComponet {
         allList = [];
         this.setState({renderPlaceholderOnly: 'loading'});
         page = 1;
-        this.getData();
+        this.loadData();
     }
 
     _renderSeparator(sectionId, rowId) {
@@ -168,7 +182,7 @@ export default class HomeScene extends BaseComponet {
     toEnd = () => {
         if (page<status) {
             page++;
-            this.getData();
+            this.loadData();
         }
         // else {
         //     this.props.jumpScene('carpage');
@@ -190,6 +204,7 @@ export default class HomeScene extends BaseComponet {
             <View style={cellSheet.container}>
 
                 <ListView
+                    enableEmptySections = {true}
                     removeClippedSubviews={false}
                     initialListSize={6}
                     stickyHeaderIndices={[]}
@@ -243,7 +258,7 @@ export default class HomeScene extends BaseComponet {
         allList = [];
         this.setState({isRefreshing: true});
         page = 1;
-        this.getData();
+        this.loadData();
     };
 
     homeOnPress = (title) => {
