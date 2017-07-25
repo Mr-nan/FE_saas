@@ -446,6 +446,7 @@ export default class CollectionIntent extends BaseComponent {
                                 style={styles.labelSelect}
                                 title="Checkbox"
                                 readOnly={true}
+                                isBigSize={true}
                             >
                                 {this.state.arr1.map((item, index) =>
                                     <LabelSelect.Label
