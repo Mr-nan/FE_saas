@@ -103,6 +103,7 @@ export  default class WebScene extends BaseComponent {
                 component: CarInfoScene,
                 params: {
                     carID: id,
+                    from:'webview'
                 }
             };
             let mainParams = {
@@ -111,14 +112,14 @@ export  default class WebScene extends BaseComponent {
                 params: {
                 }
             };
-            this.loginPage(navigatorParams,)
+            this.loginPage(navigatorParams,mainParams)
         }
     }
 
-    loginPage = (mProps) => {
+    loginPage = (mProps,mainParams) => {
         const navigator = this.props.navigator;
         if (navigator) {
-            navigator.immediatelyResetRouteStack([{
+            navigator.immediatelyResetRouteStack([{...mainParams},{
                 ...mProps
             }])
         }
