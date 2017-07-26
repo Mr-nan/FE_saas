@@ -47,11 +47,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
     /**
      * from @hanmeng
      *
-     *
      **/
     constructor(props) {
         super(props);
-
         //let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.items = [];
         this.mList = [];
@@ -121,6 +119,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         (this.PrefixInteger(date.getDate(), 2)));
     };
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     PrefixInteger = (num, length) => {
         return (Array(length).join('0') + num).slice(-length);
     };
@@ -129,7 +132,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
      * 获取订单剩余时间
      * @param serverTime
      * @param createdTime  订单创建时间
-     */
+     **/
     getLeftTime = (serverTime, createdTime) => {
         let currentTime = new Date(serverTime.replace(/-/g, '/')).valueOf();
         let oldTime = new Date(createdTime.replace(/-/g, '/')).valueOf();
@@ -141,7 +144,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
      * @param orderState   订单状态
      * @param merchantNum   商家电话
      * @param customerServiceNum   客服电话
-     */
+     **/
     initListData = (orderState, merchantNum, customerServiceNum) => {
         switch (orderState) {
             case 0: //创建订单
@@ -299,7 +302,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
      * 根据订单状态初始化详情页悬浮头
      * @param topState 页面悬浮头状态
      * @returns 返回顶部布局
-     */
+     **/
     initDetailPageTop = (topState) => {
         switch (topState) {
             case 0:
@@ -378,7 +381,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
 
     /**
      * 取消订单请求
-     */
+     **/
     cancelOrder = () => {
         this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
@@ -409,7 +412,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
 
     /**
      * 普通流程确认验收请求
-     */
+     **/
     confirmCar = () => {
         this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
@@ -475,7 +478,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
 
     /**
      * 撤销取消订单请求
-     */
+     **/
     revertOrder = () => {
         this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
@@ -502,6 +505,10 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         });
     };
 
+    /**
+     * from @hanmeng
+     * 合同预览页加载
+     **/
     getTypeContractInfo = (type) => {
         this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
@@ -536,6 +543,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         });
     };
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     payCallBack = () => {
         this.props.showModal(true);
         this.loadData();
@@ -545,7 +557,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
      * 根据订单状态初始化详情页悬浮底
      * @param orderState 页面悬浮底状态
      * @returns {*}
-     */
+     **/
     initDetailPageBottom = (orderState) => {
         switch (orderState) {
             case 0:
@@ -833,7 +845,10 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
 
     /**
      *  根据订单详情接口的 status 和 cancel_status 字段组合判断页面渲染
-     */
+     *  orderState为详情内容渲染
+     *  topState为吸顶渲染 （倒计时）
+     *  bottomState为吸底渲染（各种功能按钮）
+     **/
     stateMapping = (status, cancelStatus) => {
         switch (status) {
             case 0:  // 已拍下，价格未定  0=>'创建订单'
@@ -1029,19 +1044,24 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     }
                 }
                 break;
-            case 12:  // 12=>'订单融资处理中',
+            case 12:  //12=>'订单融资处理中',
             case 16:  //16=>'支付首付款完成',
             case 17:  //17=>'融资单确认验收中',
-            case 19:  //17=>'融资单确认验收中',
-            case 20:  //17=>'融资单确认验收中',
-            case 21:  //17=>'融资单确认验收中',
-            case 22:  //17=>'融资单确认验收中',
-            case 23:  //17=>'融资单确认验收中',
-            case 24:  //17=>'融资单确认验收中',
+            case 19:  //19=>'融资单放款成功',
+            case 20:  //20=>'融资单放款失败',
+            case 21:  //21=>'融资单质押车辆提前还款中',
+            case 22:  //22=>'融资单质押车辆提前还款失败',
+            case 23:  //23=>'融资单质押车辆提前还款成功',
+            case 24:  //24=>'融资单确认验收失败',
                 if (cancelStatus === 0) {
                     this.orderState = 5;
                     this.topState = -1;
-                    this.bottomState = 0;
+                    if (status === 17 || status === 19 || status === 20 || status === 21 || status === 22 ||
+                        status === 23 || status === 24 ) {
+                        this.bottomState = -1;
+                    } else {
+                        this.bottomState = 0;
+                    }
                 } else if (cancelStatus === 1) {
                     this.orderState = 5;
                     this.topState = -1;
@@ -1122,8 +1142,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 }
                 break;
             case 18:  //18=>'融资单确认验收失败',
-            case 160:  //18=>'融资单确认验收失败',
-            case 50:  //18=>'融资单确认验收失败',
+            case 160:  //160=>'支付首付款完成',
+            case 50:  // 160=>'支付首付款完成',
                 if (cancelStatus === 0) {
                     this.orderState = 7;
                     this.topState = -1;
@@ -1210,8 +1230,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
 
     /**
      * from @hanmeng
-     *
-     *
+     * 详情页数据加载
      **/
     loadData = () => {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
@@ -1245,13 +1264,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             }
                         }
                         this.stateMapping(status, cancelStatus);
-
-                        // TODO this is TEST!!!!!!!!!!!!
-                        //this.orderState = 7;
-                        //this.bottomState = 2;
-
                         this.financeInfo = this.orderDetail.finance_data;
-
                         this.initListData(this.orderState);
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
@@ -1282,8 +1295,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
 
     /**
      * from @hanmeng
-     *
-     *
+     * 根据输入数字更新贷款金额
      **/
     updateLoanAmount = (newAmount) => {
         //this.props.showModal(true);
@@ -1292,19 +1304,16 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
 
     /**
      * from @hanmeng
-     *
-     *
+     * 根据输入的贷款额度，更新贷款数据
      **/
     refreshLoanInfo = (financeInfo) => {
         //console.log('new.financeInfo==='+financeInfo.obd_mny);
         this.financeInfo = financeInfo;
     };
 
-    // 下拉刷新数据
     /**
      * from @hanmeng
-     *
-     *
+     * 下拉刷新数据
      **/
     refreshingData = () => {
         //this.orderListData = [];
@@ -1312,6 +1321,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         this.loadData();
     };
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     render() {
         if (this.state.renderPlaceholderOnly !== 'success') {
             return ( <View style={styles.container}>
@@ -1345,6 +1359,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         }
     }
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     _renderSeperator = (sectionID: number, rowID: number, adjacentRowHighlighted: bool) => {
         return (
             <View
@@ -1353,6 +1372,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         )
     }
 
+    /**
+     * from @hanmeng
+     *
+     *
+     **/
     _renderRow = (rowData, selectionID, rowID) => {
         //item 布局
         if (rowData === '0') {

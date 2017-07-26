@@ -369,7 +369,7 @@ export default class AddEmployeeScene extends BaseComponent {
     _onClick = (rowID) => {
         if (SECTIONID === 0 && ROWID === 1) {
 
-            this.sex = Number.parseInt(rowID) + 1 + '';
+            this.sex = parseInt(rowID) + 1 + '';
         } else if (SECTIONID === 1 && ROWID === 1) {
 
             for(let value of this.props.roleData){

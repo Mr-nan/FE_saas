@@ -592,10 +592,10 @@ export default class FinanceSence extends BaseComponet {
                                 borderColor: fontAndColor.COLORA4,
                                 borderRadius: 100,
                                 height: Pixel.getPixel(23),
-                                width: Pixel.getPixel(72),
+                                width: Pixel.getPixel(120),
                                 justifyContent: 'center',
-                                alignItems: 'center'
-                                }}>
+                                alignItems: 'center',
+                            }}>
                                 <Text allowFontScaling={false}  style={{
                                     fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                     color: fontAndColor.COLORB3,

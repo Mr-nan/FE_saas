@@ -142,7 +142,7 @@ export default class SingelCarSence extends BaseComponent {
               break;
            }
         }
-        if (Number.parseFloat(PostData.loan_mny)<Number.parseFloat(showData.tempMin)||Number.parseFloat(PostData.loan_mny)>Number.parseFloat(showData.tempMax)){
+        if (parseFloat(PostData.loan_mny)<parseFloat(showData.tempMin)||parseFloat(PostData.loan_mny)>parseFloat(showData.tempMax)){
 
             infoComolete=false;
             this.props.showToast('借款金额范围为'+showData.maxMoney)

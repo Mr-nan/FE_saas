@@ -31,6 +31,9 @@ export default class ChildTabView extends PureComponent {
         if(list[0]=='微单合同已确认'){
             widths = 125;
         }
+        if(list[0]=='资金方签署中'){
+            widths = 125;
+        }
         if(list.length>1&&list[0]=='微单合同未确认'){
             widths = 145;
         }

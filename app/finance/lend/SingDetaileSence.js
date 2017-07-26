@@ -86,14 +86,14 @@ export  default  class SingDetaileSence extends BaseComponent {
             .then((response) => {
 
                     let tempjson = response.mjson.data
-                    let carNum = Number.parseInt(tempjson.car_count)
+                    let carNum = parseInt(tempjson.car_count)
                     controlCode.stateCode = tempjson.status
                     controlCode.extendCode = tempjson.is_extend;
                     controlCode.lendType = tempjson.type;
                     controlCode.minLend = changeToMillion(tempjson.min_loanmny);
                     controlCode.loan_code = tempjson.loan_code;
                     controlCode.is_microchinese_contract = tempjson.is_microchinese_contract;
-                    let Maxmum = Number.parseFloat(tempjson.max_loanmny) + Number.parseFloat(tempjson.payment_loanmny)
+                    let Maxmum = parseFloat(tempjson.max_loanmny) + parseFloat(tempjson.payment_loanmny)
                     controlCode.maxLend = changeToMillion(Maxmum)
 
                     if (carNum > 0) {
@@ -205,7 +205,9 @@ export  default  class SingDetaileSence extends BaseComponent {
         if (stateCode !== '' && extendCode !== '') {
 
             let tempTitle = []
-            if (stateCode == '1') {
+            if(stateCode == '8'){
+                tempTitle = ['资金方签署中']
+            }else if (stateCode == '1') {
                 tempTitle = ['取消借款']
             } else if (stateCode == '2') {
                 tempTitle = ['签署合同', '取消借款']
@@ -213,10 +215,10 @@ export  default  class SingDetaileSence extends BaseComponent {
             // else if (stateCode === '2') {
             //     tempTitle = ['已取消借款']
             // }
-            else if (Number.parseInt(stateCode) > 2 && stateCode != '5') {
+            else if (parseInt(stateCode) > 2 && stateCode != '5') {
                 tempTitle = ['查看合同']
             } else if (stateCode == '5') {
-                if (Number.parseInt(extendCode) == 1) {
+                if (parseInt(extendCode) == 1) {
                     tempTitle = ['查看合同', '申请展期']
                 } else {
                     tempTitle = ['查看合同']
@@ -246,6 +248,8 @@ export  default  class SingDetaileSence extends BaseComponent {
                 return styles.canceledButton
             case '签署微单合同':
                 return styles.controlButton
+            case '资金方签署中':
+                return styles.cancelButton
             default:
                 return styles.cancelButton
 
@@ -299,7 +303,13 @@ export  default  class SingDetaileSence extends BaseComponent {
                 component: ContractInfoScene,
                 params: {loan_code: this.props.loanNumber, showButton: false}
             });
-        } else if (title === "申请展期") {
+        } else if(title === '资金方签署中'){
+            this.toNextPage({
+                name: 'ContractInfoScene',
+                component: ContractInfoScene,
+                params: {loan_code: this.props.loanNumber, showButton: false}
+            });
+        }else if (title === "申请展期") {
             this.toNextPage({
                 name: 'CarOverdue', component: CarOverdue, params: {loan_code: controlCode.loan_code}
             });

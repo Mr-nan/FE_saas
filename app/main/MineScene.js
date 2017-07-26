@@ -19,7 +19,7 @@ import MycarScene from '../carSource/CarMySourceScene';
 import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
 
-import ContractManageScene from '../mine/contractManage/ContractSelectScene';
+import ContractManageScene from '../mine/contractManage/ContractManageScene';
 
 import AccountManageScene from '../mine/accountManage/AccountTypeSelectScene'
 import WaitActivationAccountScene from '../mine/accountManage/WaitActivationAccountScene'
@@ -536,6 +536,9 @@ export default class MineScene extends BaseComponent {
             case '合同管理':
                 this.navigatorParams.name = 'ContractManageScene'
                 this.navigatorParams.component = ContractManageScene
+                this.navigatorParams.params = {
+                    from:'xs'
+                }
                 break;
             case '员工管理':
                 this.navigatorParams.name = 'EmployeeManageScene'

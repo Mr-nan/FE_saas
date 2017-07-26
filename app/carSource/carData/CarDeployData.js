@@ -9,23 +9,20 @@ let DeployData = {};
 
 export const getCarDeployData =(showLoadAction,showToastAction,fetchDeployDataAction)=>{
 
-console.log('****************1');
     if(Object.keys(DeployData).length ){
-        console.log('****************2');
 
+        showLoadAction &&  showLoadAction(false);
         fetchDeployDataAction(DeployData);
 
     }else {
-        console.log('****************3');
-
-        showLoadAction(true);
+       showLoadAction && showLoadAction(true);
         request(appUrls.CAR_CONFIG,'post',{}).then((response) => {
             DeployData = response.mjson.data;
             fetchDeployDataAction(response.mjson.data);
-            showLoadAction(false);
+          showLoadAction &&  showLoadAction(false);
         }, (error) => {
-            showLoadAction(false);
-            showToastAction(error.msg);
+            showLoadAction && showLoadAction(false);
+          showToastAction &&  showToastAction(error.msg);
         });
     }
 }
