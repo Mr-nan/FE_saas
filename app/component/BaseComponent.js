@@ -32,7 +32,7 @@ export default class BaseComponent extends Component {
 
     componentDidMount() {
         // InteractionManager.setDeadline(500);
-        BackAndroid.addEventListener('hardwareB、ackPress', this.handleBack);
+        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
         InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: 'loading'});
             this.initFinish();
@@ -125,7 +125,7 @@ export default class BaseComponent extends Component {
                         marginTop: Pixel.getTitlePixel(189) - margintop
                     }}
                     source={require('../../images/loading.gif')}/>
-                <Text allowFontScaling={false} 
+                <Text allowFontScaling={false}
                     style={{
                         color: fontAndColor.COLORA0,
                         fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
@@ -143,14 +143,14 @@ export default class BaseComponent extends Component {
                         marginTop: Pixel.getTitlePixel(85 + 64) - margintop
                     }}
                     source={require('../../images/loadingError.png')}/>
-                <Text allowFontScaling={false} 
+                <Text allowFontScaling={false}
                     style={{
                         color: fontAndColor.COLORA0, fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                         marginTop: Pixel.getPixel(27)
                     }}>
                     网络错误
                 </Text>
-                <Text allowFontScaling={false} 
+                <Text allowFontScaling={false}
                     style={{
                         color: fontAndColor.COLORA1, fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                         marginTop: Pixel.getPixel(10)
@@ -168,14 +168,14 @@ export default class BaseComponent extends Component {
                         marginTop: Pixel.getTitlePixel(85 + 64) - margintop
                     }}
                     source={require('../../images/noData.png')}/>
-                <Text allowFontScaling={false} 
+                <Text allowFontScaling={false}
                     style={{
                         color: fontAndColor.COLORA0, fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                         marginTop: Pixel.getPixel(27)
                     }}>
                     暂无数据
                 </Text>
-                <Text allowFontScaling={false} 
+                <Text allowFontScaling={false}
                     style={{
                         color: fontAndColor.COLORA1, fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                         marginTop: Pixel.getPixel(10)
