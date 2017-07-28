@@ -13,22 +13,22 @@ import {
     Image,
 }   from 'react-native';
 
-import BaseComponent from '../component/BaseComponent';
-import AllNavigationView from '../component/AllNavigationView';
-import *as fontAndColor from '../constant/fontAndColor';
-import PixelUtil from '../utils/PixelUtil';
-import CarUpImageCell from './znComponent/CarUpImageCell';
-import StorageUtil from "../utils/StorageUtil";
-import SuccessModal from '../publish/component/SuccessModal';
-import CarMySourceScene from './CarMySourceScene';
+import BaseComponent from '../../component/BaseComponent';
+import AllNavigationView from '../../component/AllNavigationView';
+import *as fontAndColor from '../../constant/fontAndColor';
+import PixelUtil from '../../utils/PixelUtil';
+import CarUpImageCell from '../znComponent/CarUpImageCell';
+import StorageUtil from "../../utils/StorageUtil";
+import SuccessModal from '../../publish/component/SuccessModal';
+import CarMySourceScene from '../CarMySourceScene';
 
-import * as Net from '../utils/RequestUtil';
-import * as AppUrls from '../constant/appUrls';
+import * as Net from '../../utils/RequestUtil';
+import * as AppUrls from '../../constant/appUrls';
 
 const Pixel = new  PixelUtil();
 const sceneWidth = Dimensions.get('window').width;
 const IS_ANDROID = Platform.OS === 'android';
-import SelectPhotoModal from '../component/SelectPhotoModal';
+import SelectPhotoModal from '../../component/SelectPhotoModal';
 export default class CarUpImageScene extends BaseComponent{
 
     initFinish=()=>{
@@ -211,7 +211,7 @@ export default class CarUpImageScene extends BaseComponent{
                     renderFooter={this.renderFooter}
                     renderHeader={()=>{return(
                         <View style={{width:sceneWidth,paddingVertical:Pixel.getPixel(25),backgroundColor:'white',borderBottomWidth:Pixel.getPixel(10),borderBottomColor:fontAndColor.COLORA3}}>
-                            <Image style={{width:sceneWidth}} resizeMode={'contain'} source={require('../../images/carSourceImages/publishCarperpos3.png')}/>
+                            <Image style={{width:sceneWidth}} resizeMode={'contain'} source={require('../../../images/carSourceImages/publishCarperpos3.png')}/>
                         </View>
                     )}}
                 />

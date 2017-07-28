@@ -21,33 +21,33 @@ import {
 }   from 'react-native';
 
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import BaseComponent from '../component/BaseComponent';
-import AllNavigationView from '../component/AllNavigationView';
-import {CellView,CellSelectView} from './znComponent/CarPublishCell';
-import EnterpriseInfo from '../publish/component/EnterpriseInfo';
+import BaseComponent from '../../component/BaseComponent';
+import AllNavigationView from '../../component/AllNavigationView';
+import {CellView,CellSelectView} from '../znComponent/CarPublishCell';
+import EnterpriseInfo from '../../publish/component/EnterpriseInfo';
 
 import CarPublishSecondScene from './CarPublishSecondScene';
-import *as fontAndColor from '../constant/fontAndColor';
-import VinInfo from '../publish/component/VinInfo';
-import CarBrandSelectScene   from './CarBrandSelectScene';
-import CarDischargeScene from  './carPublish/CarDischargeScene';
-import CarBodyColorScene from './carPublish/CarBodyColorScene';
-import CarInwardColorScene from './carPublish/CarInwardColorScene';
-import AutoConfig      from '../publish/AutoConfig';
+import *as fontAndColor from '../../constant/fontAndColor';
+import VinInfo from '../../publish/component/VinInfo';
+import CarBrandSelectScene   from '../CarBrandSelectScene';
+import CarDischargeScene from  './CarDischargeScene';
+import CarBodyColorScene from './CarBodyColorScene';
+import CarInwardColorScene from './CarInwardColorScene';
+import AutoConfig      from '../../publish/AutoConfig';
 
-import StorageUtil from "../utils/StorageUtil";
-import * as StorageKeyNames from "../constant/storageKeyNames";
-import * as Net from '../utils/RequestUtil';
-import * as AppUrls from '../constant/appUrls';
-import PixelUtil from '../utils/PixelUtil';
+import StorageUtil from "../../utils/StorageUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
+import * as Net from '../../utils/RequestUtil';
+import * as AppUrls from '../../constant/appUrls';
+import PixelUtil from '../../utils/PixelUtil';
 
-import * as CarDeployData from './carData/CarDeployData';
+import * as CarDeployData from '../carData/CarDeployData';
 
 
 const Pixel = new  PixelUtil();
 const sceneWidth = Dimensions.get('window').width;
 const sceneHeight = Dimensions.get('window').height;
-const scanImg = require('../../images/financeImages/scan.png');
+const scanImg = require('../../../images/financeImages/scan.png');
 const IS_ANDROID = Platform.OS === 'android';
 
 export default class CarPublishFirstScene extends BaseComponent{
@@ -430,7 +430,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                 <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={-Pixel.getPixel(100)}>
                     <ScrollView  ref={(ref)=>{this.scrollView = ref}} keyboardDismissMode={'on-drag'}>
                         <View style={{width:sceneWidth,paddingVertical:Pixel.getPixel(25),backgroundColor:'white'}}>
-                            <Image style={{width:sceneWidth}} resizeMode={'contain'} source={require('../../images/carSourceImages/publishCarperpos1.png')}/>
+                            <Image style={{width:sceneWidth}} resizeMode={'contain'} source={require('../../../images/carSourceImages/publishCarperpos1.png')}/>
                         </View>
                         {
                             this.state.titleData.map((data,index)=>{

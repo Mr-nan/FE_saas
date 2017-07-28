@@ -21,7 +21,7 @@ import * as fontAndColor from '../constant/fontAndColor';
 import  PixelUtil from '../utils/PixelUtil';
 import BaseComponent from '../component/BaseComponent';
 import NewCarScene from '../publish/NewCarScene';
-import CarPublishFirstScene from '../carSource/CarPublishFirstScene';
+import CarPublishFirstScene from '../carSource/carPublish/CarPublishFirstScene';
 
 const  publishReceive = require('../../images/mainImage/publishReceive.png');
 const publishNew = require('../../images/mainImage/publishNew.png');

@@ -40,6 +40,8 @@ import  CarMySourceScene from '../carSource/CarMySourceScene';
 import  NewRepaymentInfoScene from '../finance/repayment/NewRepaymentInfoScene';
 import AllLoading from '../component/AllLoading';
 import QuotaApplication from '../login/QuotaApplication';
+import CarBuyScene from "../carSource/carBuy/CarBuyScene";
+import CarTrimScene from "../carSource/carBuy/CarTrimScene";
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 let allList = [];
 export class HomeHeaderItemInfo {
@@ -263,9 +265,13 @@ export default class HomeScene extends BaseComponet {
 
     homeOnPress = (title) => {
         if (title == '收车') {
-            this.props.jumpScene('carpage','checkRecommend');
+
+            this.props.callBack({name:'CarBuyScene',component:CarBuyScene,params:{}})
+
+            // this.props.jumpScene('carpage','checkRecommend');
         } else if (title == '卖车') {
-            this.props.callBack({name:'CarMySourceScene',component:CarMySourceScene,params:{}});
+            this.props.callBack({name:'CarTrimScene',component:CarTrimScene,params:{}});
+            // this.props.callBack({name:'CarMySourceScene',component:CarMySourceScene,params:{}});
         } else if (title == '借款') {
             this.props.jumpScene('financePage');
         } else {
