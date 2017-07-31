@@ -27,23 +27,29 @@ import CarBuyCell from './View/CarBuyCell';
 import *as fontAndColor from  '../../constant/fontAndColor';
 import PixelUtil from  '../../utils/PixelUtil';
 import CarInitialTaskScene from "./CarInitialTaskScene";
+import CarTrimInformationScene from "./CarTrimInformationScene";
+import CarManagerTaskScene from "./CarManagerTaskScene";
+import CarOperationScene from "./CarOperationScene";
 let Pixel = new  PixelUtil();
 
 const sceneWidth = Dimensions.get('window').width;
+
 
 export default class CarTrimScene extends BaseComponent {
 
     render(){
         return(
             <View style={styles.rootContainer}>
-                <CarTrimHeaderView click={this.headerViewItemClick}/>
+                {
+                  this.state.isShowHeadView &&  <CarTrimHeaderView click={this.headerViewItemClick}/>
+                }
                 <ScrollableTabView
                     style={styles.ScrollableTabView}
                     initialPage={0}
                     locked={true}
                     renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["未办任务(0)", "已办任务(0)"]}/>}>
-                    <CarTaskUnsettledView ref="CarBuyUnsettledView"  cellBtnClick={this.cellBtnClick} tabLabel="ios-paper1"/>
-                    <CarTaskTradedView   ref="CarBuyTradedView"  tabLabel="ios-paper2"/>
+                    <CarTaskUnsettledView ref='CarTaskUnsettledView'  toNextPage={this.toNextPage} tabLabel="ios-paper1" isShowHeadView={this.isShowHeadView}/>
+                    <CarTaskTradedView   ref='CarTaskTradedView'  tabLabel="ios-paper2" isShowHeadView={this.isShowHeadView}/>
                 </ScrollableTabView>
                 <AllNavigationView title='名车行' backIconClick={this.backPage} renderRihtFootView={this.renderRightView}/>
             </View>
@@ -55,7 +61,7 @@ export default class CarTrimScene extends BaseComponent {
         super(props);
         // 初始状态
         this.state = {
-
+            isShowHeadView:true
         };
     }
 
@@ -89,14 +95,17 @@ export default class CarTrimScene extends BaseComponent {
      * @param title
      */
     headerViewItemClick=(title)=>{
-        this.userType = title;
+        this.refs.CarTaskUnsettledView &&  this.refs.CarTaskUnsettledView.setRoleType(title);
+        this.refs.CarTaskTradedView && this.refs.CarTaskTradedView.setRoleType(title);
+
     }
 
-    cellBtnClick=()=>{
-        if(this.userType == '整备员')
-        {
 
-        }
+    isShowHeadView =(isShow)=>{
+
+        this.setState({
+            isShowHeadView:isShow,
+        });
     }
 
 }
@@ -110,6 +119,15 @@ class CarTaskUnsettledView extends BaseComponent {
     render(){
         return(
             <ListView style={{marginTop:Pixel.getPixel(10)}}
+                      onScroll={(event)=>{
+                          if (event.nativeEvent.contentOffset.y > Pixel.getPixel(30)) {
+
+                             this.props.isShowHeadView(false);
+
+                          } else {
+                              this.props.isShowHeadView(true);
+                          }
+                      }}
                       dataSource={this.state.dataSource}
                       renderRow={this.renderRow}
             />
@@ -120,6 +138,7 @@ class CarTaskUnsettledView extends BaseComponent {
     constructor(props) {
         super(props);
         const ds = new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2});
+        this.roleType='手续员';
         this.state = {
             dataSource:ds.cloneWithRows(['1','2','3','4','5']),
         };
@@ -127,8 +146,49 @@ class CarTaskUnsettledView extends BaseComponent {
 
     renderRow=(rowData)=>{
         return(
-            <CarBuyCell btnTitle="跟进" cellBtnClick={this.props.cellBtnClick}/>
+            <CarBuyCell btnTitle="跟进" cellBtnClick={this.cellBtnClick}/>
         )
+    }
+
+    /**
+     * from @zn
+     * 获取当前角色状态
+     * @param roleType
+     */
+    setRoleType=(roleType)=>{
+        this.roleType= roleType;
+    }
+
+    cellBtnClick=()=>{
+
+        if(this.roleType == '整备员')
+        {
+            this.props.toNextPage(
+                {
+                    name: 'CarTrimInformationScene',
+                    component: CarTrimInformationScene,
+                    params: {}
+                }
+            );
+        }else if(this.roleType == '经理')
+        {
+            this.props.toNextPage(
+                {
+                    name: 'CarManagerTaskScene',
+                    component: CarManagerTaskScene,
+                    params: {}
+                }
+            );
+        }else if(this.roleType == '运营专员')
+        {
+            this.props.toNextPage(
+                {
+                    name: 'CarOperationScene',
+                    component: CarOperationScene,
+                    params: {}
+                }
+            );
+        }
     }
 }
 
@@ -139,6 +199,13 @@ class CarTaskTradedView extends BaseComponent {
     render(){
         return(
             <ListView style={{marginTop:Pixel.getPixel(10)}}
+                      onScroll={(event)=>{
+                          if (event.nativeEvent.contentOffset.y > Pixel.getPixel(30)) {
+                              this.props.isShowHeadView(false);
+                          } else {
+                              this.props.isShowHeadView(true);
+                          }
+                      }}
                       dataSource={this.state.dataSource}
                       renderRow={this.renderRow}
             />
@@ -149,6 +216,7 @@ class CarTaskTradedView extends BaseComponent {
     constructor(props) {
         super(props);
         const ds = new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2});
+        this.roleType='手续员';
         this.state = {
             dataSource:ds.cloneWithRows(['1','2','3','4','5']),
         };
@@ -156,8 +224,20 @@ class CarTaskTradedView extends BaseComponent {
 
     renderRow=(rowData)=>{
         return(
-            <CarBuyCell/>
+            <CarBuyCell btnTitle="查看" cellBtnClick={this.cellBtnClick}/>
         )
+    }
+
+    /**
+     * from @zn
+     * 获取当前角色状态
+     * @param roleType
+     */
+    setRoleType=(roleType)=>{
+        this.roleType= roleType;
+    }
+    cellBtnClick=()=>{
+        alert(this.roleType);
     }
 }
 
@@ -169,7 +249,6 @@ const styles = StyleSheet.create({
         flex:1,
         backgroundColor:fontAndColor.COLORA3,
         paddingTop:Pixel.getTitlePixel(64),
-        paddingBottom:Pixel.getPixel(44),
     },
     footBtn:{
         left:0,

@@ -40,7 +40,7 @@ export default class CarBuyTaskScene extends BaseComponent{
     render(){
         return(
             <View style={styles.rootContaier}>
-                <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={-Pixel.getPixel(200)}>
+                <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={this.state.keyboardOffset}>
                 <ScrollView keyboardDismissMode={'on-drag'}>
                 {
                     this.state.titleData.map((data, index) => {
@@ -120,6 +120,16 @@ export default class CarBuyTaskScene extends BaseComponent{
                                              placeholder='输入车架号'
                                              underlineColorAndroid='transparent'
                                              maxLength={17}
+                                             onFocus={()=>{
+                                                 this.setState({
+                                                     keyboardOffset:-Pixel.getPixel(300)
+                                                 });
+                                             }}
+                                             onBlur={()=>{
+                                                 this.setState({
+                                                     keyboardOffset:-Pixel.getPixel(64)
+                                                 });
+                                             }}
                                              editable={this.props.carID?false:true}
                                              onChangeText={this._onVinChange}
                                              placeholderTextColor={fontAndColor.COLORA4}
@@ -315,7 +325,16 @@ export default class CarBuyTaskScene extends BaseComponent{
                                   placeholder='请填写'
                                   maxLength={200}
                                   underlineColorAndroid='transparent'
-                                  ref={(input) => {this.instructionsInput = input}}
+                                  onFocus={()=>{
+                                      this.setState({
+                                          keyboardOffset:-Pixel.getPixel(0)
+                                      });
+                                  }}
+                                  onBlur={()=>{
+                                      this.setState({
+                                          keyboardOffset:-Pixel.getPixel(64)
+                                      });
+                                  }}
                                   placeholderTextColor={fontAndColor.COLORA4}
                                   placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
                               />
@@ -328,6 +347,7 @@ export default class CarBuyTaskScene extends BaseComponent{
         this.state = {
 
             titleData:this.titleData1,
+            keyboardOffset:-Pixel.getPixel(64),
             isDateTimePickerVisible:false
         };
       }

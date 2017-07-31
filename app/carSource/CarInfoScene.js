@@ -947,6 +947,7 @@ class SharedView extends Component {
                     this.isVisible(false);
                 }
             });
+
     }
 
 

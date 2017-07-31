@@ -41,7 +41,7 @@ export default class CarInitialTaskScene extends BaseComponent{
     render(){
         return(
             <View style={styles.rootContaier}>
-                <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={-Pixel.getPixel(200)}>
+                <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={this.state.keyboardOffset}>
                     <ScrollView keyboardDismissMode={'on-drag'}>
                         {
                             this.state.titleData.map((data, index) => {
@@ -49,24 +49,11 @@ export default class CarInitialTaskScene extends BaseComponent{
                                     <View style={{marginTop:10,backgroundColor:'white',marginBottom:10}} key={index}>
                                         {
                                             data.map((rowData, subIndex) => {
-                                                return ( rowData.selectDict ?
-                                                        (
-                                                            <TouchableOpacity
-                                                                key={subIndex}
-                                                                activeOpacity={1}
-                                                                onPress={()=>this.cellCilck(rowData.title)}>
-                                                                <CellSelectView
-                                                                    currentTitle={rowData.selectDict.current}
-                                                                    cellData={rowData}
-                                                                    cellSelectAction={this.cellSelectAction}/>
-                                                            </TouchableOpacity>) :
-                                                        (
-                                                            <TouchableOpacity key={subIndex}
-                                                                              activeOpacity={1}
-                                                                              onPress={()=>this.cellCilck(rowData.title)}>
-                                                                <CellView cellData={rowData}/>
-                                                            </TouchableOpacity>)
-                                                )
+                                                return( <TouchableOpacity key={subIndex}
+                                                                          activeOpacity={1}
+                                                                          onPress={()=>this.cellCilck(rowData.title)}>
+                                                    <CellView cellData={rowData}/>
+                                                </TouchableOpacity>)
                                             })
                                         }
                                     </View>
@@ -125,6 +112,16 @@ export default class CarInitialTaskScene extends BaseComponent{
                                            maxLength={17}
                                            editable={this.props.carID?false:true}
                                            onChangeText={this._onVinChange}
+                                           onFocus={()=>{
+                                               this.setState({
+                                                   keyboardOffset:-Pixel.getPixel(300)
+                                               });
+                                           }}
+                                           onBlur={()=>{
+                                               this.setState({
+                                                   keyboardOffset:-Pixel.getPixel(64)
+                                               });
+                                           }}
                                            placeholderTextColor={fontAndColor.COLORA4}
                                            keyboardType={'ascii-capable'}
                                            placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
@@ -283,6 +280,7 @@ export default class CarInitialTaskScene extends BaseComponent{
         ];
         this.state = {
             titleData:this.titleData1,
+            keyboardOffset:-Pixel.getPixel(64),
         };
     }
 
