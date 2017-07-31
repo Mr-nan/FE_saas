@@ -21,6 +21,7 @@ import ClientInfoSelected from "../ClientInfoSelected";
 import CustomerInfoInput from "../ClientInfoInput";
 import SelectScene from "../../SelectScene";
 const Pixel = new PixelUtil();
+import DateTimePicker from 'react-native-modal-datetime-picker';
 
 export default class CommunicationRecordItem extends BaseComponent {
 
@@ -29,11 +30,15 @@ export default class CommunicationRecordItem extends BaseComponent {
      **/
     constructor(props) {
         super(props);
+        this.type = '';
         this.childItems = [];
         this.childItems.push({name: '客户级别', value: ''});
         this.childItems.push({name: '进店时间', value: ''});
         this.childItems.push({name: '离店时间', value: ''});
         this.childItems.push({name: '进店人数', value: ''});
+        this.state = {
+            isDateTimePickerVisible: false
+        }
     }
 
     /**
@@ -77,33 +82,12 @@ export default class CommunicationRecordItem extends BaseComponent {
             } else if (i == 1) {
                 items.push(<ClientInfoSelected ref="company" key={i + 'bo'} items={this.childItems[i]}
                                                  toSelect={() => {
-                                                     this.toNextPage({
-                                                         name: 'SelectCompanyScene',
-                                                         component: SelectCompanyScene,
-                                                         params: {
-                                                             comps: comps,
-                                                             title: '选择公司',
-                                                             callBack: (selected) => {
-                                                                 this.childItems[i].value = selected;
-                                                                 this.refs.company.setValue(selected[0].enterprise_name);
-                                                             }
-                                                         }
-                                                     })
+                                                     this._showDateTimePicker('start');
                                                  }}/>);
             } else if (i == 2) {
                 items.push(<ClientInfoSelected ref='juese' key={i + 'bo'} items={this.childItems[i]}
                                                  toSelect={() => {
-                                                     this.toNextPage({
-                                                         name: 'SelectGenderScene',
-                                                         component: SelectGenderScene,
-                                                         params: {
-                                                             title: '选择角色',
-                                                             callBack: (name, index) => {
-                                                                 this.childItems[i].value = name + ',' + index;
-                                                                 this.refs.juese.setValue(name);
-                                                             }
-                                                         }
-                                                     })
+                                                     this._showDateTimePicker('end');
                                                  }}/>);
             } else {
                 items.push(<CustomerInfoInput key={i + 'bo'} items={this.childItems[i]}/>);
@@ -131,8 +115,73 @@ export default class CommunicationRecordItem extends BaseComponent {
                     backgroundColor: fontAndColor.COLORA3
                 }}/>
                 {items}
+                <DateTimePicker
+                    mode="datetime"
+                    titleIOS="请选择时间"
+                    confirmTextIOS='确定'
+                    cancelTextIOS='取消'
+                    isVisible={this.state.isDateTimePickerVisible}
+                    onConfirm={this._handleDatePicked}
+                    onCancel={this._hideDateTimePicker}/>
             </View>
         )
+    }
+
+    /**
+     *
+     * @param type
+     * @private
+     **/
+    _showDateTimePicker = (type) => {
+        this.type = type;
+        this.setState({isDateTimePickerVisible: true})
+    };
+
+    /**
+     *
+     * @private
+     **/
+    _hideDateTimePicker = () => this.setState({isDateTimePickerVisible: false});
+
+    /**
+     *
+     * @private
+     **/
+    _handleDatePicked = (date) => {
+        let d = this.dateFormat(date, 'yyyy-MM-dd hh:mm:ss');
+        if (this.type === 'start') {
+            this.childItems[1].value = d;
+            this.refs.company.setValue(d);
+            this.setState({
+                isDateTimePickerVisible: false
+            });
+        } else {
+            this.childItems[2].value = d;
+            this.refs.juese.setValue(d);
+            this.setState({
+                isDateTimePickerVisible: false
+            });
+        }
+        //this._hideDateTimePicker();
+    };
+
+    /**
+     *
+     **/
+    dateFormat = (date, fmt) => {
+        let o = {
+            "M+": date.getMonth() + 1, //月份
+            "d+": date.getDate(), //日
+            "h+": date.getHours(), //小时
+            "m+": date.getMinutes(), //分
+            "s+": date.getSeconds(), //秒
+            "q+": Math.floor((date.getMonth() + 3) / 3), //季度
+            "S": date.getMilliseconds() //毫秒
+        };
+        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (let k in o)
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
     }
 
 }
