@@ -1,8 +1,8 @@
 import  React, {Component, PropTypes} from  'react'
 import  {
     View,
-    Text,
-    ListView,
+    WebView,
+    BackAndroid,
     StyleSheet,
     Dimensions,
     Image,
@@ -10,19 +10,20 @@ import  {
     InteractionManager
 } from  'react-native'
 
-import * as fontAndClolr from '../../constant/fontAndColor';
 import  PixelUtil from '../../utils/PixelUtil'
 var Pixel = new PixelUtil();
 import {request} from '../../utils/RequestUtil';
-
+import * as fontAndColor from '../../constant/fontAndColor';
 import BaseComponent from "../../component/BaseComponent";
 import NavigationView from '../../component/AllNavigationView';
 import * as AppUrls from '../../constant/appUrls';
 import CustomerAddScene from "./ClientAddScene";
+import WebViewTitle from "../../mine/accountManage/component/WebViewTitle";
 /*
  * 获取屏幕的宽和高
  **/
 const {width, height} = Dimensions.get('window');
+let oldUrl = '';
 
 export default class StoreReceptionManageScene extends BaseComponent {
 
@@ -32,25 +33,28 @@ export default class StoreReceptionManageScene extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-            renderPlaceholderOnly: 'blank'
+            renderPlaceholderOnly: true
         };
     }
 
     /**
      *
      **/
-    initFinish() {
-        this.setState({renderPlaceholderOnly: 'success'});
+    componentDidMount() {
+        oldUrl = this.props.webUrl;
+        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: false});
+        });
     }
 
     /**
      *
      **/
     render() {
-        if (this.state.renderPlaceholderOnly !== 'success') {
+        if (this.state.renderPlaceholderOnly) {
             return (
                 <View style={styles.container}>
-                    {this.loadView()}
                     <NavigationView
                         backIconClick={this.backPage}
                         title="门店接待管理"
@@ -61,6 +65,22 @@ export default class StoreReceptionManageScene extends BaseComponent {
         } else {
             return (
                 <View style={styles.container}>
+                    <WebViewTitle ref="webviewtitle"/>
+                    <WebView
+                        ref="www"
+                        style={{width: width, height: height, backgroundColor: fontAndColor.COLORA3}}
+                        source={{uri: AppUrls.STORE_RECEPTION_MANAGE, method: 'GET'}}
+                        javaScriptEnabled={true}
+                        domStorageEnabled={true}
+                        scalesPageToFit={false}
+                        onLoadStart={() => {
+                            this.refs.webviewtitle.firstProgress();
+                        }}
+                        onLoadEnd={() => {
+                            this.refs.webviewtitle.lastProgress();
+                        }}
+                        //onNavigationStateChange={this.onNavigationStateChange.bind(this)}
+                    />
                     <NavigationView
                         backIconClick={this.backPage}
                         title="门店接待管理"
@@ -98,6 +118,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         marginTop: Pixel.getPixel(0),
-        backgroundColor: fontAndClolr.COLORA3,
+        backgroundColor: fontAndColor.COLORA3,
     }
 });

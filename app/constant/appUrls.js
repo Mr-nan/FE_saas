@@ -959,8 +959,14 @@ export const FIRST_PAYMENT_PAY = BASEURL + V + 'order_finance/firstPaymentPay';
 export const FIRST_PAYMENT_PAY_CALLBACK = BASEURL + V + 'order_finance/firstPaymentPayCallback';
 
 
+//export const PRE = "http://192.168.1.160:8010/";
 export const PRE = "http://10.3.10.38:8080/";
+//CRM TEST
 /**
- *  CRM TEST
+ *  添加潜在客户
+ */
+export const STORE_RECEPTION_MANAGE = PRE + "ceshi.do?mobile=13521759156";
+/**
+ *  添加潜在客户
  */
 export const CUSTOMER_ADD_URL = PRE + "customer/customerInsert.do";
