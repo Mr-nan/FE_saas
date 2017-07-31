@@ -12,8 +12,8 @@ import {
 } from 'react-native';
 
 import MyNavigator  from './component/MyNavigator';
+import CustomerServiceButton  from './component/CustomerServiceButton';
 import ShowToast from "./component/toast/ShowToast";
-import codePush from 'react-native-code-push'
 import * as weChat from 'react-native-wechat';
 
 export default class root extends Component {
@@ -24,11 +24,8 @@ export default class root extends Component {
                 <MyNavigator showToast={(content)=>{
                     this.showToast(content)
                 }} showModal={(value)=>{this.showModal(value)}}/>
-
-                <View style={{position: 'absolute',height:'100',width:'100',backgroundColor:'#f0f'}}>
-
-                </View>
                 <ShowToast ref='toast' msg={''}></ShowToast>
+                <CustomerServiceButton/>
             </View>
         );
     }
