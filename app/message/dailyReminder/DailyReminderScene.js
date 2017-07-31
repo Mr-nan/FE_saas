@@ -30,6 +30,7 @@ import  {request}           from '../../utils/RequestUtil';
 import CarPublishFirstScene from '../../carSource/CarPublishFirstScene';
 import {LendSuccessAlert} from '../../finance/lend/component/ModelComponent'
 import PixelUtil from '../../utils/PixelUtil';
+import {DailyReminderSelectView} from "../component/DailyReminderSelectView";
 const Pixel = new PixelUtil();
 
 
@@ -48,6 +49,17 @@ let carAuditStatus = 1;
 
 export default class DailyReminderScene extends BaceComponent {
 
+    /**
+     *
+     **/
+    constructor(props) {
+        super(props);
+        // 初始状态
+        this.timeFrame = [{name: '每日', value: ''}, {name: '每周', value: ''}, {name: '每月', value: ''}];
+        this.state = {
+            isHide: true,
+        };
+    }
 
     /**
      *
@@ -190,7 +202,9 @@ export default class DailyReminderScene extends BaceComponent {
                 <TouchableOpacity
                     style={{marginLeft: Pixel.getPixel(10)}}
                     onPress={() => {
-
+                        this.setState({
+                            isHide: false
+                        });
                     }}
                     activeOpacity={0.9}
                 >
@@ -216,10 +230,36 @@ export default class DailyReminderScene extends BaceComponent {
                     <MyCarSourceDropFrameView ref="dropFrameView" carCellClick={this.carCellClick}
                                               footButtonClick={this.footButtonClick} tabLabel="ios-paper2"/>
                 </ScrollableTabView>
+                {
+                    !this.state.isHide && (
+                        <DailyReminderSelectView
+                            checkedSource={this.timeFrame}
+                            checkTimeFrameClick={this.checkTimeFrameClick}
+                            hideClick={this.hideCheckedView}
+                        />)
+                }
                 <NavigatorView title='每日提醒' backIconClick={this.backToTop}
                                renderRihtFootView={this.renderRightFootView}/>
             </View>)
 
+    }
+
+    /**
+     *
+     **/
+    checkTimeFrameClick = () => {
+        this.setState({
+            isHide: false,
+        });
+    }
+
+    /**
+     *
+     **/
+    hideCheckedView = () => {
+        this.setState({
+            isHide: true,
+        });
     }
 
 }
