@@ -24,6 +24,10 @@ export default class root extends Component {
                 <MyNavigator showToast={(content)=>{
                     this.showToast(content)
                 }} showModal={(value)=>{this.showModal(value)}}/>
+
+                <View style={{position: 'absolute',height:'100',width:'100',backgroundColor:'#f0f'}}>
+
+                </View>
                 <ShowToast ref='toast' msg={''}></ShowToast>
             </View>
         );
