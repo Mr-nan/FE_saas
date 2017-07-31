@@ -11,7 +11,7 @@ export const BASEURL = 'http://api-gateway.test.dycd.com/';
 /**
  * 正式地址
  */
- // export const BASEURL = 'https://gatewayapi.dycd.com/';
+//export const BASEURL = 'https://gatewayapi.dycd.com/';
 
 /**
  * 预发布地址
@@ -957,3 +957,10 @@ export const FIRST_PAYMENT_PAY = BASEURL + V + 'order_finance/firstPaymentPay';
  *  融资订单支付首付款回调
  */
 export const FIRST_PAYMENT_PAY_CALLBACK = BASEURL + V + 'order_finance/firstPaymentPayCallback';
+
+
+export const PRE = "http://10.3.10.38:8080/";
+/**
+ *  CRM TEST
+ */
+export const CUSTOMER_ADD_URL = PRE + "customer/customerInsert.do";

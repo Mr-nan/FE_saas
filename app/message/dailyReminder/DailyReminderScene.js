@@ -1,0 +1,978 @@
+/**
+ * Created by ZN on 17/2/25.
+ */
+
+import  React, {Component} from 'react';
+import {
+    StyleSheet,
+    View,
+    TouchableOpacity,
+    Text,
+    Dimensions,
+    ListView,
+    ScrollView,
+    RefreshControl,
+    InteractionManager,
+    Image,
+} from 'react-native';
+
+import BaceComponent from '../../component/BaseComponent';
+import NavigatorView from '../../component/AllNavigationView';
+import ListFooter           from '../../carSource/znComponent/LoadMoreFooter';
+import SGListView           from 'react-native-sglistview';
+import CarInfoScene         from '../../carSource/CarInfoScene';
+import MyCarCell     from '../../carSource/znComponent/MyCarCell';
+import ScrollableTabView from 'react-native-scrollable-tab-view';
+import RepaymenyTabBar from '../../finance/repayment/component/RepaymenyTabBar';
+import * as fontAndColor from '../../constant/fontAndColor';
+import * as AppUrls from "../../constant/appUrls";
+import  {request}           from '../../utils/RequestUtil';
+import CarPublishFirstScene from '../../carSource/CarPublishFirstScene';
+import {LendSuccessAlert} from '../../finance/lend/component/ModelComponent'
+import PixelUtil from '../../utils/PixelUtil';
+const Pixel = new PixelUtil();
+
+
+let carUpperFrameData = [];
+let carDropFrameData = [];
+let carAuditData = [];
+
+let carUpperFramePage = 1;
+let carUpperFrameStatus = 1;
+
+let carDropFramePage = 1;
+let carDropFrameStatus = 1;
+
+let carAuditPage = 1;
+let carAuditStatus = 1;
+
+export default class DailyReminderScene extends BaceComponent {
+
+
+    /**
+     *
+     * @param carData
+     **/
+    carCellClick = (carData) => {
+        let navigatorParams = {
+
+            name: "CarInfoScene",
+            component: CarInfoScene,
+            params: {
+                carID: carData.id,
+            }
+        };
+        this.toNextPage(navigatorParams);
+
+    }
+
+    /**
+     *
+     **/
+    footButtonClick = (typeStr, groupStr, carData) => {
+
+        if (typeStr == '上架') {
+
+            this.carAction(2, groupStr, carData.id);
+
+        } else if (typeStr == '下架') {
+
+            this.carAction(3, groupStr, carData.id);
+
+        } else if (typeStr == '编辑') {
+
+            // let navigatorParams = {
+            //
+            //     name: "EditCarScene",
+            //     component: EditCarScene,
+            //     params: {
+            //
+            //         fromNew: false,
+            //         carId: carData.id,
+            //     }
+            // };
+            // this.toNextPage(navigatorParams);
+
+            let navigatorParams = {
+
+                name: "CarPublishFirstScene",
+                component: CarPublishFirstScene,
+                params: {
+
+                    carID: carData.id,
+                }
+            };
+            this.toNextPage(navigatorParams);
+
+        } else if (typeStr == '查看退回原因') {
+
+            this.refs.showTitleAlert.setModelVisibleAndSubTitle(true, carData.audit_message);
+        }
+    }
+
+    /**
+     *
+     **/
+    carAction = (type, groupStr, carID) => {
+
+        this.props.showModal(true);
+        let url = AppUrls.CAR_STATUS;
+        request(url, 'post', {
+
+            id: carID,
+            op_type: type,
+
+        }).then((response) => {
+
+            this.props.showModal(false);
+            if (type == 3) {
+
+                this.refs.upperFrameView.refreshingData();
+                if ((typeof(this.refs.dropFrameView) != "undefined")) {
+                    this.refs.dropFrameView.refreshingData();
+                }
+                this.props.showToast('已成功下架');
+
+            } else if (type == 2) {
+
+                if (groupStr == 3) {
+
+                    this.refs.auditView.refreshingData();
+                    this.refs.upperFrameView.refreshingData();
+
+                } else if (groupStr == 2) {
+
+                    this.refs.dropFrameView.refreshingData();
+                    this.refs.upperFrameView.refreshingData();
+                }
+                this.props.showToast('已成功上架');
+
+            }
+
+        }, (error) => {
+
+            this.props.showModal(false);
+            alert(error.msg);
+        });
+    }
+
+    /**
+     *
+     **/
+    pushNewCarScene = () => {
+
+        // let navigatorParams = {
+        //
+        //     name: "NewCarScene",
+        //     component: NewCarScene,
+        //     params: {
+        //
+        //         fromNew: false,
+        //     }
+        // };
+        // this.toNextPage(navigatorParams);
+        let navigatorParams = {
+
+            name: "CarPublishFirstScene",
+            component: CarPublishFirstScene,
+            params: {}
+        };
+        this.toNextPage(navigatorParams);
+
+    }
+
+    /**
+     *
+     **/
+    renderRightFootView = () => {
+        return (
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <TouchableOpacity
+                    style={{marginLeft: Pixel.getPixel(10)}}
+                    onPress={() => {
+
+                    }}
+                    activeOpacity={0.9}
+                >
+                    <Image source={require('../../../images/mainImage/screening.png')}/>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
+    /**
+     *
+     **/
+    render() {
+        return (
+            <View style={styles.rootContainer}>
+                <ScrollableTabView
+                    style={styles.ScrollableTabView}
+                    initialPage={this.props.page ? this.props.page : 0}
+                    locked={true}
+                    renderTabBar={() => <RepaymenyTabBar style={{backgroundColor: 'white'}} tabName={["分享", "统计"]}/>}>
+                    <MyCarSourceUpperFrameView ref="upperFrameView" carCellClick={this.carCellClick}
+                                               footButtonClick={this.footButtonClick} tabLabel="ios-paper1"/>
+                    <MyCarSourceDropFrameView ref="dropFrameView" carCellClick={this.carCellClick}
+                                              footButtonClick={this.footButtonClick} tabLabel="ios-paper2"/>
+                </ScrollableTabView>
+                <NavigatorView title='每日提醒' backIconClick={this.backToTop}
+                               renderRihtFootView={this.renderRightFootView}/>
+            </View>)
+
+    }
+
+}
+
+class MyCarSourceUpperFrameView extends BaceComponent {
+
+    // 构造
+    /**
+     *
+     **/
+    constructor(props) {
+        super(props);
+        // 初始状态
+
+        this.isCarLong = false;
+        const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id != r2.id});
+        this.state = {
+            isCarLong: false,
+            carData: carData,
+            isRefreshing: true,
+            renderPlaceholderOnly: 'blank',
+            carUpperFrameStatus: carUpperFrameStatus,
+        };
+    }
+
+    /**
+     *
+     **/
+    componentDidMount() {
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
+    }
+
+    /**
+     *
+     **/
+    initFinish = () => {
+        this.setState({renderPlaceholderOnly: 'loading'});
+        this.loadData();
+    };
+
+    /**
+     *
+     **/
+    refreshingData = () => {
+
+        this.setState({
+            isRefreshing: true,
+        });
+        this.loadData();
+
+    }
+    /**
+     *
+     **/
+    loadData = () => {
+
+        let url = AppUrls.CAR_USER_CAR;
+        carUpperFramePage = 1;
+        request(url, 'post', {
+            car_status: '1',
+            isCarLong: false,
+            page: carUpperFramePage,
+            row: 10,
+
+        }).then((response) => {
+
+            carUpperFrameData = response.mjson.data.list;
+            carUpperFrameStatus = response.mjson.data.status;
+            if (carUpperFrameData.length) {
+                this.setState({
+                    carData: this.state.carData.cloneWithRows(carUpperFrameData),
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'success',
+                    carUpperFrameStatus: carUpperFrameStatus,
+                });
+
+            } else {
+                this.setState({
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'null',
+                    carUpperFrameStatus: carUpperFrameStatus,
+
+                });
+            }
+
+        }, (error) => {
+
+            this.setState({
+                isRefreshing: false,
+                renderPlaceholderOnly: 'error',
+
+            });
+
+        });
+
+    }
+
+    /**
+     *
+     **/
+    loadMoreData = () => {
+
+        let url = AppUrls.CAR_USER_CAR;
+        carUpperFramePage += 1;
+        request(url, 'post', {
+            car_status: '1',
+            page: carUpperFramePage,
+            row: 10,
+
+        }).then((response) => {
+            carUpperFrameStatus = response.mjson.data.status;
+            let carData = response.mjson.data.list;
+            if (carData.length) {
+                for (let i = 0; i < carData.length; i++) {
+                    carUpperFrameData.push(carData[i]);
+                }
+
+                this.setState({
+                    carData: this.state.carData.cloneWithRows(carUpperFrameData),
+                    carUpperFrameStatus: carUpperFrameStatus,
+                });
+            } else {
+
+                this.setState({
+                    carUpperFrameStatus: carUpperFrameStatus,
+                });
+            }
+
+        }, (error) => {
+
+
+        });
+    }
+
+    /**
+     *
+     **/
+    toEnd = () => {
+
+        if (carUpperFrameData.length && !this.state.isRefreshing && carUpperFrameStatus != 2) {
+            this.loadMoreData();
+        }
+
+    };
+
+    /**
+     *
+     **/
+    renderListFooter = () => {
+
+        if (this.state.isRefreshing) {
+            return null;
+        } else {
+            return (<ListFooter isLoadAll={this.state.carUpperFrameStatus == 1 ? false : true}/>)
+        }
+    }
+
+    /**
+     *
+     **/
+    render() {
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return (
+                <View style={styles.loadView}>
+                    {this.loadView()}
+                </View>);
+        }
+        return (
+
+            <View style={styles.viewContainer}>
+                {
+                    this.state.carData &&
+                    <ListView
+                        removeClippedSubviews={false}
+                        style={styles.listView}
+                        dataSource={this.state.carData}
+                        ref={'carListView'}
+                        initialListSize={10}
+                        onEndReachedThreshold={1}
+                        stickyHeaderIndices={[]}//仅ios
+                        enableEmptySections={true}
+                        scrollRenderAheadDistance={10}
+                        pageSize={10}
+                        renderFooter={this.renderListFooter}
+                        onEndReached={this.toEnd}
+                        renderHeader={this.renderHeader}
+                        renderRow={this.renderRow}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.state.isRefreshing}
+                                onRefresh={this.refreshingData}
+                                tintColor={[fontAndColor.COLORB0]}
+                                colors={[fontAndColor.COLORB0]}/>}
+                    />
+                }
+            </View>
+        )
+    }
+
+    /**
+     *
+     **/
+    renderRow = (rowData) => {
+
+        if (!this.isCarLong && rowData.long_aging == 1) {
+            this.isCarLong = true;
+            this.setState({
+                isCarLong: true
+            });
+        }
+        return (
+            <MyCarCell carCellData={rowData} cellClick={this.props.carCellClick}
+                       footButtonClick={this.props.footButtonClick} type={1}/>
+        )
+    }
+
+    /**
+     *
+     **/
+    renderHeader = () => {
+
+        if (!this.state.isCarLong) {
+            return (null);
+        }
+        return (
+            <View style={{
+                paddingHorizontal: Pixel.getPixel(15),
+                alignItems: 'center',
+                flex: 1,
+                height: Pixel.getPixel(35),
+                backgroundColor: fontAndColor.COLORB6,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginBottom: Pixel.getPixel(10)
+            }}>
+                <View style={{flexDirection: 'row'}}>
+                    <Image source={require('../../../images/carSourceImages/pointIcon.png')}/>
+                    <Text allowFontScaling={false} style={{
+                        color: fontAndColor.COLORB2,
+                        fontSize: fontAndColor.LITTLEFONT28,
+                        marginLeft: Pixel.getPixel(5)
+                    }}>已经出售的长库龄车请尽快操作下架</Text>
+                </View>
+                <TouchableOpacity onPress={() => {
+                    this.isCarLong = false;
+                    this.setState({
+                        isCarLong: false
+                    });
+                }}>
+                    <Image source={require('../../../images/carSourceImages/closeBtn.png')}/>
+                </TouchableOpacity>
+            </View>)
+    }
+
+}
+
+class MyCarSourceDropFrameView extends BaceComponent {
+
+    // 构造
+    /**
+     *
+     **/
+    constructor(props) {
+        super(props);
+        // 初始状态
+
+        const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id != r2.id});
+        this.state = {
+
+            carData: carData,
+            isRefreshing: true,
+            carDropFrameStatus: carDropFrameStatus,
+            renderPlaceholderOnly: 'blank',
+
+
+        };
+    }
+
+    /**
+     *
+     **/
+    componentDidMount() {
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
+    }
+
+    /**
+     *
+     **/
+    initFinish = () => {
+        this.setState({renderPlaceholderOnly: 'loading'});
+        this.loadData();
+    };
+
+    /**
+     *
+     **/
+    refreshingData = () => {
+
+        this.setState({
+            isRefreshing: true,
+        });
+        this.loadData();
+
+    }
+
+    /**
+     *
+     **/
+    loadData = () => {
+
+        let url = AppUrls.CAR_USER_CAR;
+        carDropFramePage = 1;
+        request(url, 'post', {
+            car_status: '2',
+            page: carDropFramePage,
+            row: 10,
+
+        }).then((response) => {
+
+            carDropFrameData = response.mjson.data.list;
+            carDropFrameStatus = response.mjson.data.status;
+            if (carDropFrameData.length) {
+                this.setState({
+                    carData: this.state.carData.cloneWithRows(carDropFrameData),
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'success',
+                    carDropFrameStatus: carDropFrameStatus,
+
+                });
+
+            } else {
+
+                this.setState({
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'null',
+                    carDropFrameStatus: carDropFrameStatus,
+
+                });
+            }
+
+        }, (error) => {
+
+            this.setState({
+                isRefreshing: false,
+                renderPlaceholderOnly: 'error',
+            });
+
+        });
+
+    }
+
+    /**
+     *
+     **/
+    loadMoreData = () => {
+
+        let url = AppUrls.CAR_USER_CAR;
+        carDropFramePage += 1;
+        request(url, 'post', {
+            car_status: '2',
+            page: carDropFramePage,
+            row: 10,
+
+        }).then((response) => {
+
+            carDropFrameStatus = response.mjson.data.status;
+            let carData = response.mjson.data.list;
+            if (carData.length) {
+                for (let i = 0; i < carData.length; i++) {
+                    carDropFrameData.push(carData[i]);
+                }
+
+                this.setState({
+                    carData: this.state.carData.cloneWithRows(carDropFrameData),
+                    carDropFrameStatus: carDropFrameStatus,
+                });
+
+            } else {
+
+                this.setState({
+                    carDropFrameStatus: carDropFrameStatus,
+                });
+            }
+
+        }, (error) => {
+
+
+        });
+    }
+
+    /**
+     *
+     **/
+    toEnd = () => {
+
+        if (carDropFrameData.length && !this.state.isRefreshing && this.state.carDropFrameStatus != 2) {
+            this.loadMoreData();
+        }
+
+    };
+
+    /**
+     *
+     **/
+    renderListFooter = () => {
+
+        if (this.state.isRefreshing) {
+            return null;
+        } else {
+            return (<ListFooter isLoadAll={this.state.carDropFrameStatus == 1 ? false : true}/>)
+        }
+    }
+
+    /**
+     *
+     **/
+    render() {
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return (
+                <View style={styles.loadView}>
+                    {this.loadView()}
+                </View>);
+        }
+        return (
+
+            <View style={styles.viewContainer}>
+                {
+                    this.state.carData &&
+                    <ListView style={styles.listView}
+                              dataSource={this.state.carData}
+                              ref={'carListView'}
+                              initialListSize={10}
+                              removeClippedSubviews={false}
+                              onEndReachedThreshold={1}
+                              stickyHeaderIndices={[]}//仅ios
+                              enableEmptySections={true}
+                              scrollRenderAheadDistance={10}
+                              pageSize={10}
+                              renderFooter={this.renderListFooter}
+                              onEndReached={this.toEnd}
+                              renderRow={(rowData) => <MyCarCell carCellData={rowData}
+                                                                 cellClick={this.props.carCellClick}
+                                                                 footButtonClick={this.props.footButtonClick}
+                                                                 type={2}/>}
+                              refreshControl={
+                                  <RefreshControl
+                                      refreshing={this.state.isRefreshing}
+                                      onRefresh={this.refreshingData}
+                                      tintColor={[fontAndColor.COLORB0]}
+                                      colors={[fontAndColor.COLORB0]}
+                                  />}
+                    />
+                }
+            </View>
+        )
+    }
+
+}
+
+class MyCarSourceAuditView extends BaceComponent {
+
+    // 构造
+    /**
+     *
+     **/
+    constructor(props) {
+        super(props);
+        // 初始状态
+
+        const carData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id != r2.id});
+        this.state = {
+
+            carData: carData,
+            isRefreshing: true,
+            carAuditStatus: carAuditStatus,
+            renderPlaceholderOnly: 'blank',
+
+        };
+    }
+
+    /**
+     *
+     **/
+    componentDidMount() {
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
+    }
+
+    /**
+     *
+     **/
+    initFinish = () => {
+
+        this.setState({renderPlaceholderOnly: 'loading'});
+        this.loadData();
+    };
+
+    /**
+     *
+     **/
+    refreshingData = () => {
+
+        this.setState({
+            isRefreshing: true,
+        });
+        this.loadData();
+
+    }
+
+    /**
+     *
+     **/
+    loadData = () => {
+
+        let url = AppUrls.CAR_USER_CAR;
+        // let url = AppUrls.CAR_PERLIST;
+        carAuditPage = 1;
+        request(url, 'post', {
+
+            car_status: '3',
+            page: carAuditPage,
+            row: 10,
+
+        }).then((response) => {
+
+            carAuditData = response.mjson.data.list;
+            carAuditStatus = response.mjson.data.status;
+
+            if (carAuditData.length > 0) {
+                this.setState({
+                    carData: this.state.carData.cloneWithRows(carAuditData),
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'success',
+                    carAuditStatus: carAuditStatus,
+
+                });
+            } else {
+                this.setState({
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'null',
+                    carAuditStatus: carAuditStatus,
+                });
+            }
+        }, (error) => {
+
+            this.setState({
+                isRefreshing: false,
+                renderPlaceholderOnly: 'error'
+            });
+
+        });
+
+    }
+
+    /**
+     *
+     **/
+    loadMoreData = () => {
+
+        // let url = AppUrls.CAR_PERLIST;
+        let url = AppUrls.CAR_USER_CAR;
+        carAuditPage += 1;
+        request(url, 'post', {
+            car_status: '3',
+            page: carAuditPage,
+            row: 10,
+
+        }).then((response) => {
+
+            carAuditStatus = response.mjson.data.status;
+            let carData = response.mjson.data.list;
+            if (carData.length) {
+                for (let i = 0; i < carData.length; i++) {
+                    carAuditData.push(carData[i]);
+                }
+
+                this.setState({
+                    carData: this.state.carData.cloneWithRows(carAuditData),
+                    carAuditStatus: carAuditStatus,
+                });
+
+            } else {
+                this.state({
+                    carAuditStatus: carAuditStatus,
+                })
+            }
+
+        }, (error) => {
+
+
+        });
+    }
+
+    /**
+     *
+     **/
+    toEnd = () => {
+
+        if (carAuditData.length && !this.state.isRefreshing && this.state.carAuditStatus != 2) {
+
+            this.loadMoreData();
+        }
+
+    };
+
+    /**
+     *
+     **/
+    renderListFooter = () => {
+
+        if (this.state.isRefreshing) {
+            return null;
+        } else {
+            return (<ListFooter isLoadAll={this.state.carAuditStatus == 1 ? false : true}/>)
+        }
+    }
+
+    /**
+     *
+     **/
+    renderHeader = () => {
+        return (
+            <View style={{
+                paddingHorizontal: Pixel.getPixel(15),
+                alignItems: 'center',
+                height: Pixel.getPixel(35),
+                backgroundColor: fontAndColor.COLORB6,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginBottom: Pixel.getPixel(10),
+                flex: 1
+            }}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <Image source={require('../../../images/carSourceImages/pointIcon.png')}/>
+                    <Text allowFontScaling={false} style={{
+                        color: fontAndColor.COLORB2,
+                        fontSize: fontAndColor.LITTLEFONT28,
+                        marginLeft: Pixel.getPixel(5)
+                    }}>与其他商户重复的车源需待管理员核实后显示</Text>
+                </View>
+            </View>)
+    }
+
+    /**
+     *
+     **/
+    render() {
+
+        if (this.state.renderPlaceholderOnly == 'null') {
+            return (
+                <View style={styles.loadView}>
+                    {
+                        this.loadView()
+                    }
+                    <View style={{
+                        paddingHorizontal: Pixel.getPixel(15),
+                        alignItems: 'center',
+                        height: Pixel.getPixel(35),
+                        backgroundColor: fontAndColor.COLORB6,
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        position: 'absolute'
+                    }}>
+                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <Image source={require('../../../images/carSourceImages/pointIcon.png')}/>
+                            <Text allowFontScaling={false} style={{
+                                color: fontAndColor.COLORB2,
+                                fontSize: fontAndColor.LITTLEFONT28,
+                                marginLeft: Pixel.getPixel(5)
+                            }}>与其他商户重复的车源需待管理员核实后显示</Text>
+                        </View>
+                    </View>
+                </View>);
+
+        } else if (this.state.renderPlaceholderOnly !== 'success') {
+            return (
+                <View style={styles.loadView}>
+                    {this.loadView()}
+                </View>);
+        }
+        return (
+
+            <View style={styles.viewContainer}>
+                {
+                    this.state.carData &&
+                    <SGListView style={styles.listView}
+                                dataSource={this.state.carData}
+                                ref={'carListView'}
+                                initialListSize={10}
+                                onEndReachedThreshold={1}
+                                stickyHeaderIndices={[]}//仅ios
+                                enableEmptySections={true}
+                                scrollRenderAheadDistance={10}
+                                pageSize={10}
+                                renderHeader={this.renderHeader}
+                                renderFooter={this.renderListFooter}
+                                onEndReached={this.toEnd}
+                                renderRow={(rowData) => <MyCarCell carCellData={rowData}
+                                                                   cellClick={this.props.carCellClick}
+                                                                   footButtonClick={this.props.footButtonClick}
+                                                                   type={3}/>}
+                                refreshControl={
+                                    <RefreshControl
+                                        refreshing={this.state.isRefreshing}
+                                        onRefresh={this.refreshingData}
+                                        tintColor={[fontAndColor.COLORB0]}
+                                        colors={[fontAndColor.COLORB0]}
+                                    />}
+                    />
+                }
+            </View>
+        )
+    }
+
+}
+
+
+const styles = StyleSheet.create({
+
+    rootContainer: {
+
+        flex: 1,
+        backgroundColor: fontAndColor.COLORA3,
+
+    },
+    ScrollableTabView: {
+
+        marginTop: Pixel.getTitlePixel(64),
+    },
+    loadView: {
+        flex: 1,
+        backgroundColor: 'white',
+        marginTop: Pixel.getPixel(5),
+    },
+    viewContainer: {
+        flex: 1,
+        backgroundColor: fontAndColor.COLORA3
+    },
+    listView: {
+
+        backgroundColor: fontAndColor.COLORA3,
+        marginTop: Pixel.getPixel(5),
+    }
+
+})

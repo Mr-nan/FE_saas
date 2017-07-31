@@ -40,6 +40,9 @@ import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
 import AccountModal from '../component/AccountModal';
 import OrderTypeSelectScene from  '../mine/myOrder/OrderTypeSelectScene';
+import CustomerAddScene from "../crm/StoresReception/ClientAddScene";
+import StoreReceptionManageScene from "../crm/StoresReception/StoreReceptionManageScene";
+import MessageList from "../message/MessageList";
 
 let Platform = require('Platform');
 import ImagePicker from "react-native-image-picker";
@@ -78,6 +81,14 @@ let Car = [
     },
     {
         "cars": [
+            {
+                "icon": require('../../images/mainImage/yuangongguanli.png'),
+                "name": "消息"
+            },
+            {
+                "icon": require('../../images/mainImage/yuangongguanli.png'),
+                "name": "门店接待管理"
+            },
             {
                 "icon": require('../../images/mainImage/myCarSource.png'),
                 "name": "我的车源"
@@ -313,6 +324,14 @@ export default class MineScene extends BaseComponent {
             {
                 "cars": [
                     {
+                        "icon": require('../../images/mainImage/yuangongguanli.png'),
+                        "name": "消息"
+                    },
+                    {
+                        "icon": require('../../images/mainImage/yuangongguanli.png'),
+                        "name": "门店接待管理"
+                    },
+                    {
                         "icon": require('../../images/mainImage/myCarSource.png'),
                         "name": "我的车源"
                     },
@@ -543,6 +562,14 @@ export default class MineScene extends BaseComponent {
             case '员工管理':
                 this.navigatorParams.name = 'EmployeeManageScene'
                 this.navigatorParams.component = EmployeeManageScene
+                break;
+            case '消息':
+                this.navigatorParams.name = 'MessageList'
+                this.navigatorParams.component = MessageList
+                break;
+            case '门店接待管理':
+                this.navigatorParams.name = 'StoreReceptionManageScene'
+                this.navigatorParams.component = StoreReceptionManageScene
                 break;
             case '我的车源':
                 this.navigatorParams.name = 'MycarScene'
