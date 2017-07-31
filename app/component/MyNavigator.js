@@ -27,6 +27,13 @@ export default class MyNavigator extends Component {
                 renderScene={(route, navigator) => {
                     let Component = route.component;
                     if (route.component) {
+                        console.log(route.name);
+                        if(route.name=='MainPage'){
+                            this.props.showView();
+                        }
+                        if(route.name=='LoginAndRegister'||route.name=='LoginScene'){
+                            this.props.hideView();
+                        }
                          setAll(navigator);
                         return <Component {...route.params} navigator={navigator} showToast={(content)=>{
                             this.props.showToast(content);

@@ -131,12 +131,14 @@ export default class RootScene extends BaseComponent {
         StorageUtil.mGetItem(KeyNames.FIRST_INTO, (res) => {
             if (res.result == null) {
                 that.navigatorParams.component = WelcomScene;
+                that.navigatorParams.name = 'WelcomScene';
                 that.toNextPage(that.navigatorParams);
             } else {
                 StorageUtil.mGetItem(KeyNames.ISLOGIN, (res) => {
                     if (res.result !== StorageUtil.ERRORCODE) {
                         if (res.result == null) {
                             that.navigatorParams.component = LoginAndRegister;
+                            that.navigatorParams.name = 'LoginAndRegister';
                             that.toNextPage(that.navigatorParams);
                         } else {
                             if (res.result == "true") {
@@ -146,18 +148,22 @@ export default class RootScene extends BaseComponent {
                                     if (datas.user_level == 2) {
                                         if (datas.enterprise_list == null || datas.enterprise_list.length <= 0) {
                                             that.navigatorParams.component = LoginAndRegister;
+                                            that.navigatorParams.name = 'LoginAndRegister';
                                             that.toNextPage(that.navigatorParams);
                                         } else {
                                             that.navigatorParams.component = LoginGesture;
+                                            that.navigatorParams.name = 'LoginGesture';
                                             that.navigatorParams.params = {from: 'RootScene'}
                                             that.toNextPage(that.navigatorParams);
                                         }
                                     } else {
                                         if (datas.enterprise_list == null || datas.enterprise_list.length <= 0) {
                                             that.navigatorParams.component = LoginAndRegister;
+                                            that.navigatorParams.name = 'LoginAndRegister';
                                             that.toNextPage(that.navigatorParams);
                                         } else {
                                             that.navigatorParams.component = LoginGesture;
+                                            that.navigatorParams.name = 'LoginGesture';
                                             that.navigatorParams.params = {from: 'RootScene'}
                                             that.toNextPage(that.navigatorParams);
                                         }
@@ -165,6 +171,7 @@ export default class RootScene extends BaseComponent {
                                 });
                             } else {
                                 that.navigatorParams.component = LoginAndRegister;
+                                that.navigatorParams.name = 'LoginAndRegister';
                                 that.toNextPage(that.navigatorParams);
                             }
                         }
@@ -237,12 +244,14 @@ export default class RootScene extends BaseComponent {
         StorageUtil.mGetItem(KeyNames.FIRST_INTO, (res) => {
             if (res.result == null) {
                 that.navigatorParams.component = WelcomScene;
+                that.navigatorParams.name = 'WelcomScene';
                 that.toNextPage(that.navigatorParams);
             } else {
                 StorageUtil.mGetItem(KeyNames.ISLOGIN, (res) => {
                     if (res.result !== StorageUtil.ERRORCODE) {
                         if (res.result == null) {
                             that.navigatorParams.component = LoginAndRegister;
+                            that.navigatorParams.name = 'LoginAndRegister';
                             that.toNextPage(that.navigatorParams);
                         } else {
                             if (res.result == "true") {
@@ -252,18 +261,22 @@ export default class RootScene extends BaseComponent {
                                     if (datas.user_level == 2) {
                                         if (datas.enterprise_list == null || datas.enterprise_list.length <= 0) {
                                             that.navigatorParams.component = LoginAndRegister;
+                                            that.navigatorParams.name = 'LoginAndRegister';
                                             that.toNextPage(that.navigatorParams);
                                         } else {
                                             that.navigatorParams.component = LoginGesture;
+                                            that.navigatorParams.name = 'LoginGesture';
                                             that.navigatorParams.params = {from: 'RootScene'}
                                             that.toNextPage(that.navigatorParams);
                                         }
                                     } else {
                                         if (datas.enterprise_list == null || datas.enterprise_list.length <= 0) {
                                             that.navigatorParams.component = LoginAndRegister;
+                                            that.navigatorParams.name = 'LoginAndRegister';
                                             that.toNextPage(that.navigatorParams);
                                         } else {
                                             that.navigatorParams.component = LoginGesture;
+                                            that.navigatorParams.name = 'LoginGesture';
                                             that.navigatorParams.params = {from: 'RootScene'}
                                             that.toNextPage(that.navigatorParams);
                                         }
@@ -271,6 +284,7 @@ export default class RootScene extends BaseComponent {
                                 });
                             } else {
                                 that.navigatorParams.component = LoginAndRegister;
+                                that.navigatorParams.name = 'LoginAndRegister';
                                 that.toNextPage(that.navigatorParams);
                             }
                         }

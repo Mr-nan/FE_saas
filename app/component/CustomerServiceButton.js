@@ -17,16 +17,33 @@ export default class CustomerServiceButton extends PureComponent {
 
     constructor(props) {
         super(props);
-        this.oldTop = height-Pixel.getPixel(48)-Pixel.getPixel(100);
-        this.oldLeft = width-Pixel.getPixel(48)-Pixel.getPixel(15);
+        this.state = {
+            width: 0,
+            height: 0
+        }
+        this.oldTop = height - Pixel.getPixel(48) - Pixel.getPixel(150);
+        this.oldLeft = width - Pixel.getPixel(48) - Pixel.getPixel(15);
         this.viewStyle = {
             style: {
-                top: this.oldTop, left: this.oldLeft
+                top: this.oldTop, left: this.oldLeft,
+                height:0,width:0
             }
         }
 
         this.circle = (null : ?{setNativeProps(props: Object): void})
 
+    }
+
+    hideView = () => {
+        this.viewStyle.style.height = 0;
+        this.viewStyle.style.width = 0;
+        this.circle && this.circle.setNativeProps(this.viewStyle);
+    }
+
+    showView = () => {
+        this.viewStyle.style.height = Pixel.getPixel(48);
+        this.viewStyle.style.width = Pixel.getPixel(48);
+        this.circle && this.circle.setNativeProps(this.viewStyle);
     }
 
     componentWillMount() {
@@ -47,14 +64,14 @@ export default class CustomerServiceButton extends PureComponent {
                 if (locationX < 0) {
                     locationX = 0;
                 }
-                if ((locationX+this.layout.layout.width) > width) {
-                    locationX = width-this.layout.layout.width;
+                if ((locationX + this.layout.layout.width) > width) {
+                    locationX = width - this.layout.layout.width;
                 }
                 if (locationY < 0) {
                     locationY = 0;
                 }
-                if ((locationY+this.layout.layout.height) > height) {
-                    locationY = height-this.layout.layout.height;
+                if ((locationY + this.layout.layout.height) > height) {
+                    locationY = height - this.layout.layout.height;
                 }
                 this.viewStyle.style.left = locationX;
                 this.viewStyle.style.top = locationY;
@@ -79,18 +96,15 @@ export default class CustomerServiceButton extends PureComponent {
         return (
             <Image source={require('../../images/mainImage/customerServiceButton.png')}
                    ref={(circle) => {this.circle = circle;
-                }}  {...this._panResponder.panHandlers} style={styles.circle}
-                  onLayout={({nativeEvent:e})=>{this.layout = e}}
+                }}  {...this._panResponder.panHandlers} style={{
+        position: 'absolute', height: this.state.height,
+        width: this.state.width, top: height - Pixel.getPixel(48) - Pixel.getPixel(100),
+        left: width - Pixel.getPixel(48) - Pixel.getPixel(15),
+        resizeMode: 'stretch'
+    }}
+                   onLayout={({nativeEvent:e})=>{this.layout = e}}
             />
 
         );
     }
 }
-var styles = StyleSheet.create({
-    circle: {
-        position: 'absolute', height: Pixel.getPixel(48),
-        width: Pixel.getPixel(48), top: height-Pixel.getPixel(48)-Pixel.getPixel(100),
-        left: width-Pixel.getPixel(48)-Pixel.getPixel(15),
-        resizeMode:'stretch'
-    }
-});
