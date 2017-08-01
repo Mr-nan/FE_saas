@@ -30,6 +30,8 @@ import CarInitialTaskScene from "./CarInitialTaskScene";
 import CarTrimInformationScene from "./CarTrimInformationScene";
 import CarManagerTaskScene from "./CarManagerTaskScene";
 import CarOperationScene from "./CarOperationScene";
+import EvaluateCarInfo from "../../mine/setting/EvaluateCarInfo";
+import WriteArrangeCostDetailTWO from "../../mine/setting/WriteArrangeCostDetailTWO";
 let Pixel = new  PixelUtil();
 
 const sceneWidth = Dimensions.get('window').width;
@@ -48,8 +50,8 @@ export default class CarTrimScene extends BaseComponent {
                     initialPage={0}
                     locked={true}
                     renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["未办任务(0)", "已办任务(0)"]}/>}>
-                    <CarTaskUnsettledView ref='CarTaskUnsettledView'  toNextPage={this.toNextPage} tabLabel="ios-paper1" isShowHeadView={this.isShowHeadView}/>
-                    <CarTaskTradedView   ref='CarTaskTradedView'  tabLabel="ios-paper2" isShowHeadView={this.isShowHeadView}/>
+                    <CarTaskUnsettledView ref='CarTaskUnsettledView'   tabLabel="ios-paper1" isShowHeadView={this.isShowHeadView} cellBtnClick={this.cellBtnClick}/>
+                    <CarTaskTradedView   ref='CarTaskTradedView'  tabLabel="ios-paper2" isShowHeadView={this.isShowHeadView} cellBtnClick={this.cellBtnClick}/>
                 </ScrollableTabView>
                 <AllNavigationView title='名车行' backIconClick={this.backPage} renderRihtFootView={this.renderRightView}/>
             </View>
@@ -95,8 +97,7 @@ export default class CarTrimScene extends BaseComponent {
      * @param title
      */
     headerViewItemClick=(title)=>{
-        this.refs.CarTaskUnsettledView &&  this.refs.CarTaskUnsettledView.setRoleType(title);
-        this.refs.CarTaskTradedView && this.refs.CarTaskTradedView.setRoleType(title);
+       this.roleType = title;
 
     }
 
@@ -106,6 +107,90 @@ export default class CarTrimScene extends BaseComponent {
         this.setState({
             isShowHeadView:isShow,
         });
+    }
+
+    cellBtnClick=(type)=>{
+
+        if(type==1){
+            if(this.roleType == '整备员')
+            {
+                this.toNextPage(
+                    {
+                        name: 'CarTrimInformationScene',
+                        component: CarTrimInformationScene,
+                        params: {}
+                    }
+                );
+            }else if(this.roleType == '评估师'){
+
+                this.toNextPage(
+                    {
+                        name: 'EvaluateCarInfo',
+                        component: EvaluateCarInfo,
+                        params: {}
+                    }
+                );
+
+            }else if(this.roleType == '经理')
+            {
+                this.toNextPage(
+                    {
+                        name: 'CarManagerTaskScene',
+                        component: CarManagerTaskScene,
+                        params: {}
+                    }
+                );
+            }else if(this.roleType == '运营专员')
+            {
+                this.props.toNextPage(
+                    {
+                        name: 'CarOperationScene',
+                        component: CarOperationScene,
+                        params: {}
+                    }
+                );
+            }
+        }else {
+            if(this.roleType == '整备员')
+            {
+                this.toNextPage(
+                    {
+                        name: 'CarTrimInformationScene',
+                        component: CarTrimInformationScene,
+                        params: {}
+                    }
+                );
+            }else if(this.roleType == '评估师'){
+
+                this.toNextPage(
+                    {
+                        name: 'EvaluateCarInfo',
+                        component: EvaluateCarInfo,
+                        params: {}
+                    }
+                );
+
+            }else if(this.roleType == '经理')
+            {
+                this.toNextPage(
+                    {
+                        name: 'CarManagerTaskScene',
+                        component: CarManagerTaskScene,
+                        params: {}
+                    }
+                );
+            }else if(this.roleType == '运营专员')
+            {
+                this.toNextPage(
+                    {
+                        name: 'CarOperationScene',
+                        component: CarOperationScene,
+                        params: {}
+                    }
+                );
+            }
+        }
+
     }
 
 }
@@ -138,7 +223,6 @@ class CarTaskUnsettledView extends BaseComponent {
     constructor(props) {
         super(props);
         const ds = new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2});
-        this.roleType='手续员';
         this.state = {
             dataSource:ds.cloneWithRows(['1','2','3','4','5']),
         };
@@ -146,50 +230,12 @@ class CarTaskUnsettledView extends BaseComponent {
 
     renderRow=(rowData)=>{
         return(
-            <CarBuyCell btnTitle="跟进" cellBtnClick={this.cellBtnClick}/>
+            <CarBuyCell btnTitle="跟进" cellBtnClick={()=>{this.props.cellBtnClick(1)}}/>
         )
     }
 
-    /**
-     * from @zn
-     * 获取当前角色状态
-     * @param roleType
-     */
-    setRoleType=(roleType)=>{
-        this.roleType= roleType;
-    }
 
-    cellBtnClick=()=>{
 
-        if(this.roleType == '整备员')
-        {
-            this.props.toNextPage(
-                {
-                    name: 'CarTrimInformationScene',
-                    component: CarTrimInformationScene,
-                    params: {}
-                }
-            );
-        }else if(this.roleType == '经理')
-        {
-            this.props.toNextPage(
-                {
-                    name: 'CarManagerTaskScene',
-                    component: CarManagerTaskScene,
-                    params: {}
-                }
-            );
-        }else if(this.roleType == '运营专员')
-        {
-            this.props.toNextPage(
-                {
-                    name: 'CarOperationScene',
-                    component: CarOperationScene,
-                    params: {}
-                }
-            );
-        }
-    }
 }
 
 /**
@@ -216,7 +262,6 @@ class CarTaskTradedView extends BaseComponent {
     constructor(props) {
         super(props);
         const ds = new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2});
-        this.roleType='手续员';
         this.state = {
             dataSource:ds.cloneWithRows(['1','2','3','4','5']),
         };
@@ -224,21 +269,11 @@ class CarTaskTradedView extends BaseComponent {
 
     renderRow=(rowData)=>{
         return(
-            <CarBuyCell btnTitle="查看" cellBtnClick={this.cellBtnClick}/>
+            <CarBuyCell btnTitle="查看" cellBtnClick={()=>{this.props.cellBtnClick(2)}}/>
         )
     }
 
-    /**
-     * from @zn
-     * 获取当前角色状态
-     * @param roleType
-     */
-    setRoleType=(roleType)=>{
-        this.roleType= roleType;
-    }
-    cellBtnClick=()=>{
-        alert(this.roleType);
-    }
+
 }
 
 

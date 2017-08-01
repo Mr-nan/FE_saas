@@ -39,6 +39,7 @@ export default class CarTrimHeaderView extends Component{
                 {title:'运营专员',isSelected:false,img:require('../../../../images/carSourceImages/carTrim5.png')}
             ]
         };
+        this.props.click('手续员');
     }
 
     /**

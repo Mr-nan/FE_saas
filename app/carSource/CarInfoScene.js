@@ -943,6 +943,7 @@ class SharedView extends Component {
 
                     }).catch((error) => {
                     })
+
                 } else {
                     this.isVisible(false);
                 }
