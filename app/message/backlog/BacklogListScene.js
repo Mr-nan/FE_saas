@@ -17,12 +17,8 @@ import * as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 
-export class DailyReminderSelectView extends Component {
+export class BacklogListScene extends Component {
 
-    /**
-     *
-     * @returns {XML}
-     **/
     render() {
         const {checkedSource, checkTimeFrameClick, hideClick, checkedTypeString} = this.props;
         return (

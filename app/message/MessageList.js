@@ -1,7 +1,7 @@
 /**
  * Created by hanmeng on 2017/5/8.
  * 采购订单
- */
+ **/
 import React, {Component, PropTypes} from 'react'
 import {
     StyleSheet,
@@ -9,7 +9,8 @@ import {
     Text,
     ListView,
     TouchableOpacity,
-    Dimensions
+    Dimensions,
+    Image
 } from  'react-native'
 
 const {width, height} = Dimensions.get('window');
@@ -44,7 +45,7 @@ export default class MessageList extends BaseComponent {
     initFinish = () => {
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.setState({
-            dataSource: ds.cloneWithRows(['0', '1', '2', '3', '4', '5']),
+            dataSource: ds.cloneWithRows(['0', '1', '2', '3', '4']),
             renderPlaceholderOnly: 'success'
         });
         //this.loadData();
@@ -97,9 +98,39 @@ export default class MessageList extends BaseComponent {
      **/
     _renderRow = (rowData, selectionID, rowID) => {
         if (rowData == '0') {
-            return (<View style={styles.listItem}>
-                <Text>待办事项</Text>
-            </View>)
+            return (
+                <TouchableOpacity
+                    onPress={() => {
+
+                    }}>
+                    <View style={styles.listItem}>
+                        <View style={{marginLeft: Pixel.getPixel(15)}}>
+                            <Image source={require('../../images/mainImage/jiekuan.png')}/>
+                            <View style={{
+                                position: 'absolute',
+                                right: 0,
+                                width: Pixel.getPixel(18),
+                                height: Pixel.getPixel(18),
+                                backgroundColor: fontAndColor.COLORB2,
+                                borderRadius: 18,
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={{
+                                        textAlign: 'center',
+                                        fontSize: Pixel.getFontPixel(10),
+                                        color: fontAndColor.COLORA3
+                                    }}>99</Text>
+                            </View>
+                        </View>
+                        <Text
+                            style={{marginLeft: Pixel.getPixel(15)}}
+                            allowFontScaling={false}>待办事项</Text>
+                    </View>
+                </TouchableOpacity>
+            )
         } else if (rowData == '1') {
             return (
                 <TouchableOpacity
@@ -107,33 +138,139 @@ export default class MessageList extends BaseComponent {
                         this.toNextPage({
                             name: 'DailyReminderScene',
                             component: DailyReminderScene,
-                            params: {
-
-                            }
+                            params: {}
                         });
-                    }}
-                >
+                    }}>
                     <View style={styles.listItem}>
-                        <Text>每日提醒</Text>
+                        <View style={{marginLeft: Pixel.getPixel(15)}}>
+                            <Image source={require('../../images/mainImage/jiekuan.png')}/>
+                            <View style={{
+                                position: 'absolute',
+                                right: 0,
+                                width: Pixel.getPixel(18),
+                                height: Pixel.getPixel(18),
+                                backgroundColor: fontAndColor.COLORB2,
+                                borderRadius: 18,
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={{
+                                        textAlign: 'center',
+                                        fontSize: Pixel.getFontPixel(10),
+                                        color: fontAndColor.COLORA3
+                                    }}>99</Text>
+                            </View>
+                        </View>
+                        <Text
+                            style={{marginLeft: Pixel.getPixel(15)}}
+                            allowFontScaling={false}>每日提醒</Text>
                     </View>
                 </TouchableOpacity>
             )
         } else if (rowData == '2') {
-            return (<View style={styles.listItem}>
-                <Text>互动消息</Text>
-            </View>)
+            return (
+                <TouchableOpacity
+                    onPress={() => {
+
+                    }}>
+                    <View style={styles.listItem}>
+                        <View style={{marginLeft: Pixel.getPixel(15)}}>
+                            <Image source={require('../../images/mainImage/jiekuan.png')}/>
+                            <View style={{
+                                position: 'absolute',
+                                right: 0,
+                                width: Pixel.getPixel(18),
+                                height: Pixel.getPixel(18),
+                                backgroundColor: fontAndColor.COLORB2,
+                                borderRadius: 18,
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={{
+                                        textAlign: 'center',
+                                        fontSize: Pixel.getFontPixel(10),
+                                        color: fontAndColor.COLORA3
+                                    }}>99</Text>
+                            </View>
+                        </View>
+                        <Text
+                            style={{marginLeft: Pixel.getPixel(15)}}
+                            allowFontScaling={false}>互动消息</Text>
+                    </View>
+                </TouchableOpacity>
+            )
         } else if (rowData == '3') {
-            return (<View style={styles.listItem}>
-                <Text>系统消息</Text>
-            </View>)
+            return (
+                <TouchableOpacity
+                    onPress={() => {
+
+                    }}>
+                    <View style={styles.listItem}>
+                        <View style={{marginLeft: Pixel.getPixel(15)}}>
+                            <Image source={require('../../images/mainImage/jiekuan.png')}/>
+                            <View style={{
+                                position: 'absolute',
+                                right: 0,
+                                width: Pixel.getPixel(18),
+                                height: Pixel.getPixel(18),
+                                backgroundColor: fontAndColor.COLORB2,
+                                borderRadius: 18,
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={{
+                                        textAlign: 'center',
+                                        fontSize: Pixel.getFontPixel(10),
+                                        color: fontAndColor.COLORA3
+                                    }}>99</Text>
+                            </View>
+                        </View>
+                        <Text
+                            style={{marginLeft: Pixel.getPixel(15)}}
+                            allowFontScaling={false}>系统消息</Text>
+                    </View>
+                </TouchableOpacity>
+            )
         } else if (rowData == '4') {
-            return (<View style={styles.listItem}>
-                <Text>车市头条</Text>
-            </View>)
-        } else if (rowData == '5') {
-            return (<View style={styles.listItem}>
-                <Text>系统消息</Text>
-            </View>)
+            return (
+                <TouchableOpacity
+                    onPress={() => {
+
+                    }}>
+                    <View style={styles.listItem}>
+                        <View style={{marginLeft: Pixel.getPixel(15)}}>
+                            <Image source={require('../../images/mainImage/jiekuan.png')}/>
+                            <View style={{
+                                position: 'absolute',
+                                right: 0,
+                                width: Pixel.getPixel(18),
+                                height: Pixel.getPixel(18),
+                                backgroundColor: fontAndColor.COLORB2,
+                                borderRadius: 18,
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={{
+                                        textAlign: 'center',
+                                        fontSize: Pixel.getFontPixel(10),
+                                        color: fontAndColor.COLORA3
+                                    }}>99</Text>
+                            </View>
+                        </View>
+                        <Text
+                            style={{marginLeft: Pixel.getPixel(15)}}
+                            allowFontScaling={false}>车市头条</Text>
+                    </View>
+                </TouchableOpacity>
+            )
         }
     }
 
@@ -152,6 +289,8 @@ const styles = StyleSheet.create({
         backgroundColor: fontAndColor.COLORA4
     },
     listItem: {
+        alignItems: 'center',
+        flexDirection: 'row',
         height: Pixel.getPixel(75),
         backgroundColor: '#ffffff',
     }

@@ -238,7 +238,7 @@ export default class DailyReminderScene extends BaceComponent {
                             hideClick={this.hideCheckedView}
                         />)
                 }
-                <NavigatorView title='每日提醒' backIconClick={this.backToTop}
+                <NavigatorView title='每日提醒' backIconClick={this.backPage}
                                renderRihtFootView={this.renderRightFootView}/>
             </View>)
 

@@ -965,7 +965,7 @@ export const PRE = "http://10.3.10.38:8080/";
 /**
  *  添加潜在客户
  */
-export const STORE_RECEPTION_MANAGE = PRE + "ceshi.do?mobile=13521759156";
+export const STORE_RECEPTION_MANAGE = PRE + "ceshi.do?mobile=15102373840";
 /**
  *  添加潜在客户
  */
