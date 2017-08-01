@@ -29,7 +29,7 @@ import ImagePageView from 'react-native-viewpager'
 import AmountConfirm from './AmountConfirm';
 import PurchaseLoanStatusScene from './PurchaseLoanStatusScene';
 import DDCarInfoCheckScene from "./DDCarInfoCheckScene";
-import {LendSuccessAlert, ModalAlert} from './component/ModelComponent'
+import {LendSuccessAlert, ModalAlert, DDModalAlert} from './component/ModelComponent'
 let ControlState = [];
 let loan_code;
 import ContractInfoScene from './ContractInfoScene';
@@ -444,10 +444,8 @@ export default class DDDetailScene extends BaseComponent {
 				},
 			})
 		} else if (title == '签署合同') {
-			this.toNextPage({
-				name: 'ContractInfoScene', component: ContractInfoScene,
-				params: {loan_code: loan_code, showButton: true}
-			})
+			this.qianshuhetong.setModelVisible(true);
+
 		} else if (title == '查看合同') {
 			this.toNextPage({
 				name: 'ContractInfoScene', component: ContractInfoScene,
@@ -510,6 +508,17 @@ export default class DDDetailScene extends BaseComponent {
                 }} title='取消借款' subtitle='您确定要取消借款' confimClick={(setHide) => {
                     setHide(false);
                     this.canclelend();
+                }} cancleClick={(setHide) => {
+                    setHide(false)
+                }}/>
+				<DDModalAlert ref={(deleteCar) => {
+                    this.qianshuhetong = deleteCar
+                }} title='提示' subtitle='确认签署后，融资申请不可撤销，已付款项不可退款' sureTitle = '确认' cnacelTitle = '再想想'confimClick={(setHide) => {
+                    setHide(false);
+                    this.toNextPage({
+                    	name: 'ContractInfoScene', component: ContractInfoScene,
+				        params: {loan_code: loan_code, showButton: true}
+			        })
                 }} cancleClick={(setHide) => {
                     setHide(false)
                 }}/>
