@@ -18,6 +18,7 @@ import BaseComponent from '../../component/BaseComponent';
 import * as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
 import DailyReminderScene from "../dailyReminder/DailyReminderScene";
+import ShareRankingScene from "./ShareRankingScene";
 const Pixel = new PixelUtil();
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 
@@ -92,20 +93,29 @@ export class ShareListView extends BaseComponent {
     _renderRow = (rowData, selectionID, rowID) => {
         if (rowData == '0') {
             return (
-                <View style={styles.listItem}>
-                    <View style={{flexDirection: 'row'}}>
-                        <Text allowFontScaling={false} style={styles.title}>本周统计</Text>
-                        <View style={{flex: 1}}/>
-                        <Text allowFontScaling={false} style={styles.date}>本周统计</Text>
+                <TouchableOpacity
+                    onPress={() => {
+                        this.toNextPage({
+                            name: 'ShareRankingScene',
+                            component: ShareRankingScene,
+                            params: {}
+                        });
+                    }}>
+                    <View style={styles.listItem}>
+                        <View style={{flexDirection: 'row'}}>
+                            <Text allowFontScaling={false} style={styles.title}>本周统计</Text>
+                            <View style={{flex: 1}}/>
+                            <Text allowFontScaling={false} style={styles.date}>本周统计</Text>
+                        </View>
+                        <Text allowFontScaling={false} style={styles.describe}>测试测试测试测试测试测试测试测试测试</Text>
+                        <View style={styles.separatedLine}/>
+                        <View style={styles.subItem}>
+                            <Text allowFontScaling={false} style={styles.subTitle}>查看详情</Text>
+                            <View style={{flex: 1}}/>
+                            <Image source={cellJianTou} style={styles.image}/>
+                        </View>
                     </View>
-                    <Text allowFontScaling={false} style={styles.describe}>测试测试测试测试测试测试测试测试测试</Text>
-                    <View style={styles.separatedLine}/>
-                    <View style={styles.subItem}>
-                        <Text allowFontScaling={false} style={styles.subTitle}>查看详情</Text>
-                        <View style={{flex: 1}}/>
-                        <Image source={cellJianTou} style={styles.image}/>
-                    </View>
-                </View>
+                </TouchableOpacity>
             )
         }
     }

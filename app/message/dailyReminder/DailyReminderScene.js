@@ -227,8 +227,9 @@ export default class DailyReminderScene extends BaceComponent {
                     initialPage={this.props.page ? this.props.page : 0}
                     locked={true}
                     renderTabBar={() => <RepaymenyTabBar style={{backgroundColor: 'white'}} tabName={["分享", "统计"]}/>}>
-                    <ShareListView ref="shareListView" tabLabel="ios-paper1"/>
-                    <StatisticalListView ref="statisticalListView" tabLabel="ios-paper2"/>
+                    <ShareListView navigator={this.props.navigator} ref="shareListView" tabLabel="ios-paper1"/>
+                    <StatisticalListView navigator={this.props.navigator} ref="statisticalListView"
+                                         tabLabel="ios-paper2"/>
                 </ScrollableTabView>
                 {
                     !this.state.isHide && (
