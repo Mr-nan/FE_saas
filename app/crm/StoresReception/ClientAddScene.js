@@ -20,6 +20,8 @@ import BaseComponent from '../../component/BaseComponent';
 import BaseInfoItem from "./component/item/BaseInfoItem";
 import BuyerDemandItem from "./component/item/BuyerDemandItem";
 import CommunicationRecordItem from "./component/item/CommunicationRecordItem";
+import * as AppUrls from "../../constant/appUrls";
+import {request} from "../../utils/RequestUtil";
 
 export default class ClientAddScene extends BaseComponent {
 
@@ -136,7 +138,7 @@ export default class ClientAddScene extends BaseComponent {
                 }}
                 activeOpacity={0.8}
                 onPress={() => {
-                    this.checkInfo();
+                    this.submitClientInfo();
                 }}>
                 <Text style={{color: fontAndColor.COLORA3}}>保存</Text>
             </TouchableOpacity>
@@ -147,7 +149,49 @@ export default class ClientAddScene extends BaseComponent {
      *
      **/
     submitClientInfo = () => {
-
+        if (this.checkInfo()) {
+            let maps = {
+                outTime: "2017-08-01 10:25:00",
+                inTime: "2017-08-01 09:25:00",
+                mobiles: "15102373842",
+                intentionalVehicle: "阿斯顿·马丁 阿斯顿马丁DB11 2016款 阿斯顿・马丁DB11 5.2T 设计师定制版",
+                customerBudget: "10万以下",
+                peopleNum: 1,
+                customerLevel: "A",
+                customerStatus: 1,
+                informationSources: "自到店",
+                customerRegion: "本地",
+                customerPhone: "13401091922",
+                customerName: "ceshi"
+            };
+            let url = AppUrls.CUSTOMER_ADD_URL;
+            request(url, 'post', maps).then((response) => {
+                this.props.showModal(false);
+                this.orderListData = response.mjson.data.items;
+                this.allPage = response.mjson.data.total / response.mjson.data.rows;
+                //console.log('订单列表数据 = ', this.orderListData[0].car);
+                if (this.orderListData) {
+                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                    this.setState({
+                        dataSource: ds.cloneWithRows(this.orderListData),
+                        isRefreshing: false,
+                        renderPlaceholderOnly: 'success'
+                    });
+                } else {
+                    this.setState({
+                        isRefreshing: false,
+                        renderPlaceholderOnly: 'null'
+                    });
+                }
+            }, (error) => {
+                this.props.showModal(false);
+                //console.log('请求错误 = ', error);
+                this.setState({
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'error'
+                });
+            });
+        }
     };
 
     /**

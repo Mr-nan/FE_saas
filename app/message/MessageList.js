@@ -1,6 +1,6 @@
 /**
- * Created by hanmeng on 2017/5/8.
- * 采购订单
+ * Created by hanmeng on 2017/8/2.
+ * 消息列表
  **/
 import React, {Component, PropTypes} from 'react'
 import {
@@ -23,13 +23,16 @@ import {request} from "../utils/RequestUtil";
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
 import DailyReminderScene from "./dailyReminder/DailyReminderScene";
+import {BacklogListScene} from "./backlog/BacklogListScene";
+import {HeadLineListScene} from "./headLine/HeadLineListScene";
+import {SysMessageListScene} from "./sysMessage/SysMessageListScene";
 
 var Pixel = new PixelUtil();
 
 export default class MessageList extends BaseComponent {
 
     /**
-     *
+     *  初始化
      **/
     constructor(props) {
         super(props);
@@ -40,7 +43,7 @@ export default class MessageList extends BaseComponent {
     }
 
     /**
-     *
+     *   初始化数据
      **/
     initFinish = () => {
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -52,14 +55,14 @@ export default class MessageList extends BaseComponent {
     };
 
     /**
-     *
+     *   数据请求
      **/
     loadData = () => {
 
     };
 
     /**
-     *
+     *  render
      **/
     render() {
         if (this.state.renderPlaceholderOnly != 'success') {
@@ -83,7 +86,7 @@ export default class MessageList extends BaseComponent {
     }
 
     /**
-     *
+     *  listView间隔线
      **/
     _renderSeperator = (sectionID: number, rowID: number, adjacentRowHighlighted: bool) => {
         return (
@@ -94,14 +97,18 @@ export default class MessageList extends BaseComponent {
     }
 
     /**
-     *
+     *   listView item 数据
      **/
     _renderRow = (rowData, selectionID, rowID) => {
         if (rowData == '0') {
             return (
                 <TouchableOpacity
                     onPress={() => {
-
+                        this.toNextPage({
+                            name: 'BacklogListScene',
+                            component: BacklogListScene,
+                            params: {}
+                        });
                     }}>
                     <View style={styles.listItem}>
                         <View style={{marginLeft: Pixel.getPixel(15)}}>
@@ -207,7 +214,11 @@ export default class MessageList extends BaseComponent {
             return (
                 <TouchableOpacity
                     onPress={() => {
-
+                        this.toNextPage({
+                            name: 'SysMessageListScene',
+                            component: SysMessageListScene,
+                            params: {}
+                        });
                     }}>
                     <View style={styles.listItem}>
                         <View style={{marginLeft: Pixel.getPixel(15)}}>
@@ -241,7 +252,11 @@ export default class MessageList extends BaseComponent {
             return (
                 <TouchableOpacity
                     onPress={() => {
-
+                        this.toNextPage({
+                            name: 'HeadLineListScene',
+                            component: HeadLineListScene,
+                            params: {}
+                        });
                     }}>
                     <View style={styles.listItem}>
                         <View style={{marginLeft: Pixel.getPixel(15)}}>

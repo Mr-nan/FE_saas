@@ -21,7 +21,7 @@ import DailyReminderScene from "../dailyReminder/DailyReminderScene";
 const Pixel = new PixelUtil();
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 
-export class BacklogListScene extends BaseComponent {
+export class SysMessageListScene extends BaseComponent {
 
     /**
      *
@@ -61,11 +61,11 @@ export class BacklogListScene extends BaseComponent {
             // 加载中....
             return ( <View style={styles.container}>
                 {this.loadView()}
-                <NavigatorView title='待办事项' backIconClick={this.backPage}/>
+                <NavigatorView title='系统消息' backIconClick={this.backPage}/>
             </View>);
         } else {
             return (<View style={styles.container}>
-                <NavigatorView title='待办事项' backIconClick={this.backPage}/>
+                <NavigatorView title='系统消息' backIconClick={this.backPage}/>
                 <ListView style={{backgroundColor: fontAndColor.COLORA3, marginTop: Pixel.getTitlePixel(80)}}
                           dataSource={this.state.dataSource}
                           removeClippedSubviews={false}
@@ -113,6 +113,7 @@ export class BacklogListScene extends BaseComponent {
         } else if (rowData == '1') {
             return (
                 <TouchableOpacity
+                    style={{}}
                     onPress={() => {
 
                     }}>
