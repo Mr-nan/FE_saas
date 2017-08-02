@@ -62,6 +62,11 @@ export default class PlanItem extends PureComponent {
             this.buttonParams.parentStyle.push({borderColor: fontAndColor.COLORB1});
             this.buttonParams.childStyle.push({color: fontAndColor.COLORB1});
             this.buttonParams.content = "采购";
+        }else if(movie.type =='6'){
+            count = 2;
+            this.buttonParams.parentStyle.push({borderColor: fontAndColor.COLORB4});
+            this.buttonParams.childStyle.push({color: fontAndColor.COLORB4});
+            this.buttonParams.content = "车抵";
         }
         movieItems.push(<View key="top" style={{
             flex: 1,

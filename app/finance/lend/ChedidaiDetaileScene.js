@@ -73,9 +73,6 @@ export  default  class KurongDetaileScene extends BaseComponent {
         this.getLendinfo();
     }
 
-    /**
-     * 获取借款详情
-     */
     getLendinfo = () => {
         let maps = {
             api: apis.GET_APPLY_INFO,
@@ -83,6 +80,7 @@ export  default  class KurongDetaileScene extends BaseComponent {
         };
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
+
                     let tempjson = response.mjson.data
                     let carNum = parseInt(tempjson.car_count)
                     controlCode.stateCode = tempjson.status
@@ -92,10 +90,12 @@ export  default  class KurongDetaileScene extends BaseComponent {
                     let Maxmum = parseFloat(tempjson.max_loanmny) + parseFloat(tempjson.payment_loanmny)
                     controlCode.maxLend = changeToMillion(Maxmum)
                     if (carNum > 0) {
+
                         this.getOrderCarInfo(tempjson)
                     }
                     else {
                         this.setState({
+
                             dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(tempjson, [])),
                             renderPlaceholderOnly: STATECODE.loadSuccess
                         })
@@ -108,18 +108,16 @@ export  default  class KurongDetaileScene extends BaseComponent {
                         renderPlaceholderOnly: STATECODE.loadError,
                     })
                     if (error.mycode != -300 || error.mycode != -500) {
+
                         this.props.showToast('服务器连接有问题')
                     } else {
+
                         this.props.showToast(error.mjson.msg);
                     }
 
                 });
     }
 
-    /**
-     * 获取订单车辆列表
-     * @param lendInfoJson
-     */
     getOrderCarInfo = (lendInfoJson) => {
 
         let maps = {
@@ -194,6 +192,7 @@ export  default  class KurongDetaileScene extends BaseComponent {
     getButtonStyleWithTitle = (title) => {
 
         switch (title) {
+
             case '取消借款':
                 return styles.cancelButton
             case '签署合同':
@@ -212,12 +211,8 @@ export  default  class KurongDetaileScene extends BaseComponent {
         }
 
     }
-
-    /**
-     *修改借款金额
-     * @param callback
-     */
     modifyLengNum = (callback) => {
+
         if (controlCode.changeMoney !== '') {
             let maps = {
                 api: apis.SET_APPLY_MNY,
@@ -233,11 +228,12 @@ export  default  class KurongDetaileScene extends BaseComponent {
                         this.change.setModelVisible(true)
                     },
                     (error) => {
-                        //需要做处理
 
                     });
+
         }
     }
+
 
     controsButtonClick = (title) => {
 
@@ -264,6 +260,7 @@ export  default  class KurongDetaileScene extends BaseComponent {
         }
     }
 
+
     //获取不同页面的颜色
     getStyle = (state) => {
 
@@ -278,7 +275,6 @@ export  default  class KurongDetaileScene extends BaseComponent {
                 return PAGECOLOR.COLORA1
         }
     }
-
     getControlTitleblob = (stateCode, extendCode) => {
 
         if (stateCode !== '' && extendCode !== '') {
@@ -341,11 +337,6 @@ export  default  class KurongDetaileScene extends BaseComponent {
             </View>
         )
     }
-
-    /**
-     * 取消借款
-     * @param setModelVis
-     */
     cancleLoad = (setModelVis) => {
 
         setModelVis(false);
