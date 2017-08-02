@@ -99,11 +99,11 @@ export class BacklogListScene extends BaseComponent {
 
                     }}>
                     <View style={styles.listItem}>
-                        <Text style={styles.title}>车辆成交</Text>
-                        <Text style={styles.describe}>测试测试测试测试测试测试测试测试测试</Text>
+                        <Text allowFontScaling={false} style={styles.title}>车辆成交</Text>
+                        <Text allowFontScaling={false} style={styles.describe}>测试测试测试测试测试测试测试测试测试</Text>
                         <View style={styles.separatedLine}/>
                         <View style={styles.subItem}>
-                            <Text style={styles.subTitle}>查看详情</Text>
+                            <Text allowFontScaling={false} style={styles.subTitle}>查看详情</Text>
                             <View style={{flex: 1}}/>
                             <Image source={cellJianTou} style={styles.image}/>
                         </View>
@@ -117,11 +117,11 @@ export class BacklogListScene extends BaseComponent {
 
                     }}>
                     <View style={styles.listItem}>
-                        <Text style={styles.title}>保有客户跟进</Text>
-                        <Text style={styles.describe}>测试测试测试测试测试测试测试测试测试</Text>
+                        <Text allowFontScaling={false} style={styles.title}>保有客户跟进</Text>
+                        <Text allowFontScaling={false} style={styles.describe}>测试测试测试测试测试测试测试测试测试</Text>
                         <View style={styles.separatedLine}/>
                         <View style={styles.subItem}>
-                            <Text style={styles.subTitle}>查看详情</Text>
+                            <Text allowFontScaling={false} style={styles.subTitle}>查看详情</Text>
                             <View style={{flex: 1}}/>
                             <Image source={cellJianTou} style={styles.image}/>
                         </View>
