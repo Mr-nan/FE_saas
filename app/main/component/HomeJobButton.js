@@ -30,7 +30,8 @@ export default class HomeJobButton extends PureComponent {
     render() {
         return (
             <View style={{width:width,backgroundColor:fontAndColor.COLORA3}}>
-                <View style={{width:width,backgroundColor:'#fff',height:200,marginBottom:Pixel.getPixel(10)}}>
+                <View style={{width:width,backgroundColor:'#fff',height:200,
+                marginBottom:Pixel.getPixel(10)}}>
 
                 </View>
             </View>
