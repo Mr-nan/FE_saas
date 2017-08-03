@@ -1,13 +1,13 @@
 import  React, {Component, PropTypes} from  'react'
 import  {
     View,
-    WebView,
+    TextInput,
     ListView,
     StyleSheet,
     Dimensions,
     Image,
     TouchableOpacity,
-    InteractionManager
+    Text
 } from  'react-native'
 
 import  PixelUtil from '../../utils/PixelUtil'
@@ -19,6 +19,8 @@ import NavigationView from '../../component/AllNavigationView';
 import * as AppUrls from '../../constant/appUrls';
 import CustomerAddScene from "./ClientAddScene";
 import WebViewTitle from "../../mine/accountManage/component/WebViewTitle";
+import ClientSearchScene from "./ClientSearchScene";
+import {ClientScreeningHeadView} from "./component/ClientScreeningHeadView";
 /*
  * 获取屏幕的宽和高
  **/
@@ -59,8 +61,8 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                     <NavigationView
                         backIconClick={this.backPage}
                         title="门店接待管理"
-                        renderRihtFootView={this._navigatorRightView}
-                    />
+                        renderRihtFootView={this._navigatorRightView}/>
+                    <ClientScreeningHeadView ref="headView" />
                 </View>
             );
         } else {
@@ -69,8 +71,8 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                     <NavigationView
                         backIconClick={this.backPage}
                         title="门店接待管理"
-                        renderRihtFootView={this._navigatorRightView}
-                    />
+                        renderRihtFootView={this._navigatorRightView}/>
+                    <ClientScreeningHeadView ref="headView" />
                 </View>
             );
         }
@@ -81,20 +83,36 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
      **/
     _navigatorRightView = () => {
         return (
-            <TouchableOpacity
-                style={{
-                    width: Pixel.getPixel(53), height: Pixel.getPixel(27),
-                    justifyContent: 'center', alignItems: 'flex-end',
-                }}
-                activeOpacity={0.8} onPress={() => {
-                this.toNextPage({
-                    name: 'ClientAddScene',
-                    component: CustomerAddScene,
-                    params: {}
-                })
-            }}>
-                <Image source={require('../../../images/employee_manage.png')}/>
-            </TouchableOpacity>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <TouchableOpacity
+                    style={{marginRight: Pixel.getPixel(7)}}
+                    onPress={() => {
+                        this.toNextPage({
+                            name: 'ClientSearchScene',
+                            component: ClientSearchScene,
+                            params: {
+                                business: this.props.business,
+                                status: this.status,
+                            }
+                        });
+                    }}
+                    activeOpacity={0.9}
+                >
+                    <Image source={require('../../../images/mainImage/search_order.png')}/>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={{marginLeft: Pixel.getPixel(7)}}
+                    activeOpacity={0.9}
+                    onPress={() => {
+                        this.toNextPage({
+                            name: 'ClientAddScene',
+                            component: CustomerAddScene,
+                            params: {}
+                        })
+                    }}>
+                    <Image source={require('../../../images/employee_manage.png')}/>
+                </TouchableOpacity>
+            </View>
         );
     }
 }
