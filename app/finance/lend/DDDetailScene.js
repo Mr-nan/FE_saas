@@ -444,6 +444,8 @@ export default class DDDetailScene extends BaseComponent {
 				},
 			})
 		} else if (title == '签署合同') {
+
+
 			this.qianshuhetong.setModelVisible(true);
 
 		} else if (title == '查看合同') {
@@ -511,9 +513,11 @@ export default class DDDetailScene extends BaseComponent {
                 }} cancleClick={(setHide) => {
                     setHide(false)
                 }}/>
+
+
 				<DDModalAlert ref={(deleteCar) => {
                     this.qianshuhetong = deleteCar
-                }} title='提示' subtitle='确认签署后，融资申请不可撤销，已付款项不可退款' sureTitle = '确认' cnacelTitle = '再想想'confimClick={(setHide) => {
+                }} title='提示' subtitle='确认签署后，融资申请不可撤销，已付款项不可退款' sureTitle = '确认' cancelTitle = '再想想' confimClick={(setHide) => {
                     setHide(false);
                     this.toNextPage({
                     	name: 'ContractInfoScene', component: ContractInfoScene,
@@ -522,6 +526,9 @@ export default class DDDetailScene extends BaseComponent {
                 }} cancleClick={(setHide) => {
                     setHide(false)
                 }}/>
+
+
+
 				<LendSuccessAlert title="取消成功" subtitle='恭喜您取消成功' ref={(success) => {
                     this.cancleSuccess = success
                 }} confimClick={() => {
