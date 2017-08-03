@@ -20,7 +20,9 @@ import * as AppUrls from '../../constant/appUrls';
 import CustomerAddScene from "./ClientAddScene";
 import WebViewTitle from "../../mine/accountManage/component/WebViewTitle";
 import ClientSearchScene from "./ClientSearchScene";
-import {ClientScreeningHeadView} from "./component/ClientScreeningHeadView";
+import {ClientAddTimeSelectView} from "./component/ClientAddTimeSelectView";
+import {ClientScreeningSelectButton} from "./component/ClientScreeningSelectButton";
+import {ClientScreeningView} from "./component/ClientScreeningView";
 /*
  * 获取屏幕的宽和高
  **/
@@ -36,7 +38,9 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
         this.state = {
             dataSource: [],
             renderPlaceholderOnly: 'blank',
-            isRefreshing: false
+            isRefreshing: false,
+            addTimeHide: false,
+            selectFilterHide: false
         };
     }
 
@@ -55,14 +59,14 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
      *
      **/
     render() {
-        if (this.state.renderPlaceholderOnly) {
+        if (this.state.renderPlaceholderOnly != 'success') {
             return (
                 <View style={styles.container}>
                     <NavigationView
                         backIconClick={this.backPage}
                         title="门店接待管理"
                         renderRihtFootView={this._navigatorRightView}/>
-                    <ClientScreeningHeadView ref="headView" />
+                    {this.loadView()}
                 </View>
             );
         } else {
@@ -72,11 +76,54 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                         backIconClick={this.backPage}
                         title="门店接待管理"
                         renderRihtFootView={this._navigatorRightView}/>
-                    <ClientScreeningHeadView ref="headView" />
+                    {/*<ClientScreeningHeadView ref="headView"/>*/}
+                    <Image style={{
+                        marginTop: Pixel.getTitlePixel(64),
+                        height: Pixel.getPixel(40),
+                        width: width,
+                        flexDirection: 'row'
+                    }}
+                           source={require('../../../images/carSourceImages/bottomShaow.png')}>
+                        <View style={{flex: 1, alignItems: 'center'}}>
+                            <ClientScreeningSelectButton
+                                style={{flex: 1}}
+                                ref="but1" title="今天" index={1} btnClick={this.selectAddTime}/>
+                        </View>
+                        <View style={styles.lineView}>
+                            <View style={styles.line}/>
+                        </View>
+                        <View style={{flex: 1, alignItems: 'center'}}>
+                            <ClientScreeningSelectButton
+                                style={{flex: 1}}
+                                ref="but2" title="筛选" index={2} btnClick={this.selectFilterItems}/>
+                        </View>
+                    </Image>
+                    {this.state.addTimeHide && <ClientAddTimeSelectView hideView={this.selectAddTime}/>}
+                    {this.state.selectFilterHide && <ClientScreeningView hideView={this.selectFilterItems}/>}
                 </View>
             );
         }
     }
+
+    /**
+     *  筛选项选择
+     **/
+    selectFilterItems = () => {
+        this.setState({
+            addTimeHide: false,
+            selectFilterHide: !this.state.selectFilterHide
+        });
+    };
+
+    /**
+     *  时间选择
+     **/
+    selectAddTime = () => {
+        this.setState({
+            addTimeHide: !this.state.addTimeHide,
+            selectFilterHide: false
+        });
+    };
 
     /**
      *
@@ -121,6 +168,22 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         marginTop: Pixel.getPixel(0),
+        backgroundColor: fontAndColor.COLORA3,
+    },
+    selectView: {
+        //top: Pixel.getTitlePixel(90),
+        backgroundColor: 'rgba(0, 0, 0,0.3)',
+        left: 0,
+        right: 0,
+        position: 'absolute',
+        bottom: 0,
+    },
+    lineView: {
+        width: StyleSheet.hairlineWidth,
+        justifyContent: 'center'
+    },
+    line: {
+        height: Pixel.getPixel(15),
         backgroundColor: fontAndColor.COLORA3,
     }
 });
