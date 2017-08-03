@@ -43,6 +43,7 @@ import OrderTypeSelectScene from  '../mine/myOrder/OrderTypeSelectScene';
 import CustomerAddScene from "../crm/StoresReception/ClientAddScene";
 import StoreReceptionManageScene from "../crm/StoresReception/StoreReceptionManageScene";
 import MessageList from "../message/MessageList";
+import StoreReceptionManageNewScene from "../crm/StoresReception/StoreReceptionManageNewScene";
 
 let Platform = require('Platform');
 import ImagePicker from "react-native-image-picker";
@@ -568,8 +569,8 @@ export default class MineScene extends BaseComponent {
                 this.navigatorParams.component = MessageList
                 break;
             case '门店接待管理':
-                this.navigatorParams.name = 'StoreReceptionManageScene'
-                this.navigatorParams.component = StoreReceptionManageScene
+                this.navigatorParams.name = 'StoreReceptionManageNewScene'
+                this.navigatorParams.component = StoreReceptionManageNewScene
                 break;
             case '我的车源':
                 this.navigatorParams.name = 'MycarScene'
