@@ -533,7 +533,11 @@ export default class DDDetailScene extends BaseComponent {
                     this.cancleSuccess = success
                 }} confimClick={() => {
                     this.props.backRefresh();
-                    this.backToTop()
+                    if(this.props.FromScene == "FinanceScene"){
+                    	 this.backToTop();
+                    }else {
+                    	this.backPage();
+                    }
                 }}/>
 			</View>
 		)

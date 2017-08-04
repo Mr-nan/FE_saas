@@ -1573,6 +1573,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             params: {
                                 financeNo: this.orderDetail.finance_no,
                                 orderNo: this.orderDetail.order_no,
+                                FromScene:"DingDanXiangQingScene",
                                   backRefresh: () => {
                                     this.payCallBack();
                                 }
