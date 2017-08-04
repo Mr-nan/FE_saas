@@ -22,7 +22,7 @@ import WebViewTitle from "../../mine/accountManage/component/WebViewTitle";
 import ClientSearchScene from "./ClientSearchScene";
 import {ClientAddTimeSelectView} from "./component/ClientAddTimeSelectView";
 import {ClientScreeningSelectButton} from "./component/ClientScreeningSelectButton";
-import {ClientScreeningView} from "./component/ClientScreeningView";
+import ClientScreeningView from "./component/ClientScreeningView";
 /*
  * 获取屏幕的宽和高
  **/

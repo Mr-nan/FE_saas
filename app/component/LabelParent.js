@@ -16,12 +16,12 @@ let {width, height, scale} = Dimensions.get('window');
 import  * as FontAndColor from '../constant/fontAndColor';
 import  LabelForOrderScreen from './LabelForOrderScreen';
 
-let clickitems = '0';
+//let clickitems = '0';
 
 export default class LabelParent extends PureComponent {
     constructor(props) {
         super(props);
-        clickitems = this.props.orderState;
+        this.clickitems = this.props.orderState;
     }
 
     render() {
@@ -42,14 +42,14 @@ export default class LabelParent extends PureComponent {
                 childitem.push(<LabelForOrderScreen callBack={(item, status)=>{
                     // console.log(items[j].ref);
                     // this.refs.a10.unSelected();
-                    if (clickitems !== item) {
+                    if (this.clickitems !== item) {
                         /*if(clickitems === ''){
                             clickitems = item;
                         }else{*/
                         this.props.updateState(item);
                         this.props.updateStatus(status);
-                        items[clickitems].ref.unSelected();
-                        clickitems = item;
+                        items[this.clickitems].ref.unSelected();
+                        this.clickitems = item;
                         //}
                     }
 
