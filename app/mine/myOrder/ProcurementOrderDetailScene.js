@@ -1572,8 +1572,12 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             component: DDDetailScene,
                             params: {
                                 financeNo: this.orderDetail.finance_no,
-                                orderNo: this.orderDetail.order_no
+                                orderNo: this.orderDetail.order_no,
+                                  backRefresh: () => {
+                                    this.payCallBack();
+                                }
                             }
+
                         });
                     }}>
                     <View style={{alignItems: 'center', flexDirection: 'row', height: Pixel.getPixel(44)}}>
