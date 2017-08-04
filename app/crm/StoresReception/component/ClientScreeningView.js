@@ -90,7 +90,7 @@ export default class ClientScreeningView extends BaseComponent {
 
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: ds.cloneWithRows(['1', '2', '3', '4']),
+            dataSource: ds.cloneWithRows(['1', '2', '3', '4'])
         };
     }
 
@@ -104,21 +104,64 @@ export default class ClientScreeningView extends BaseComponent {
     };
 
     /**
+     *   重置筛选项
+     **/
+    resetSelection = () => {
+        this.infoSourceKey = 0;
+        this.infoSourceValue = '';
+        this.clientLevelKey = 0;
+        this.clientLevelValue = '';
+        this.visitStateKey = 0;
+        this.visitStisateValue = '';
+        this.purchaseBudgetKey = 0;
+        this.purchaseBudgetValue = '';
+        this.is.resetLabel(this.infoSourceKey, info_source);
+        this.cl.resetLabel(this.clientLevelKey, client_level);
+        this.vs.resetLabel(this.visitStateKey, visit_state);
+        this.pb.resetLabel(this.purchaseBudgetKey, purchase_budget);
+    };
+
+    /**
+     *   确认筛选项
+     **/
+    confirmSelection = () => {
+        this.props.hideView();
+    };
+
+    /**
      *
      * @param props
      **/
     render() {
         return (<View style={styles.container}>
-            <View style={{backgroundColor: 'white'}}>
                 <ListView style={{backgroundColor: '#ffffff'}}
                           dataSource={this.state.dataSource}
                           removeClippedSubviews={false}
                           renderRow={this._renderRow}
                           enableEmptySections={true}
                           renderSeparator={this._renderSeperator}/>
-            </View>
-            <View style={{flexDirection: 'row', height: Pixel.getPixel(44)}}>
-
+            <View style={styles.separatedLine}/>
+            <View style={{flexDirection: 'row', height: Pixel.getPixel(44), backgroundColor: '#ffffff'}}>
+                <TouchableOpacity
+                    style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
+                    onPress={() => {
+                        this.resetSelection();
+                    }}>
+                    <View >
+                        <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT),
+                        color: fontAndColor.COLORA0}}>重置</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={{flex: 1, alignItems: 'center', backgroundColor: fontAndColor.COLORB0, justifyContent: 'center'}}
+                    onPress={() => {
+                        this.confirmSelection();
+                    }}>
+                    <View >
+                        <Text style={{fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT),
+                            color: '#ffffff'}}>确定</Text>
+                    </View>
+                </TouchableOpacity>
             </View>
 {/*            <TouchableOpacity style={{flex: 1}} onPress={() => {
                 this.props.hideView()
@@ -146,7 +189,7 @@ export default class ClientScreeningView extends BaseComponent {
                 <View style={styles.containerChild}>
                     <Text allowFontScaling={false} style={styles.carType}>信息来源</Text>
                     <LabelParent items={info_source} orderState={this.infoSourceKey} updateState={this.setInfoSourceKey}
-                                 updateStatus={this.setInfoSourceValue}/>
+                                 updateStatus={this.setInfoSourceValue} ref={(ref) => {this.is = ref}}/>
                 </View>
             )
         } else if (movie == 2) {
@@ -156,7 +199,7 @@ export default class ClientScreeningView extends BaseComponent {
                 }}>
                     <Text allowFontScaling={false} style={styles.carType}>客户级别</Text>
                     <LabelParent items={client_level} orderState={this.clientLevelKey} updateState={this.setClientLevelKey}
-                                 updateStatus={this.setClientLevelValue}/>
+                                 updateStatus={this.setClientLevelValue} ref={(ref) => {this.cl = ref}}/>
                 </View>
             )
         } else if (movie == 3) {
@@ -166,7 +209,7 @@ export default class ClientScreeningView extends BaseComponent {
                 }}>
                     <Text allowFontScaling={false} style={styles.carType}>到访状态</Text>
                     <LabelParent items={visit_state} orderState={this.visitStateKey} updateState={this.setVisitStateKey}
-                                 updateStatus={this.setVisitStateValue}/>
+                                 updateStatus={this.setVisitStateValue} ref={(ref) => {this.vs = ref}}/>
                 </View>
             )
         } else if (movie == 4) {
@@ -176,7 +219,7 @@ export default class ClientScreeningView extends BaseComponent {
                 }}>
                     <Text allowFontScaling={false} style={styles.carType}>购买预算</Text>
                     <LabelParent items={purchase_budget} orderState={this.purchaseBudgetKey} updateState={this.setPurchaseBudgetKey}
-                                 updateStatus={this.setPurchaseBudgetValue}/>
+                                 updateStatus={this.setPurchaseBudgetValue} ref={(ref) => {this.pb = ref}}/>
                 </View>
             )
         } else {
@@ -247,9 +290,6 @@ export default class ClientScreeningView extends BaseComponent {
 }
 
 const styles = StyleSheet.create({
-    labelSelect: {
-        marginTop: Pixel.getPixel(10),
-    },
     text: {
         fontSize: Pixel.getPixel(16),
         color: 'rgb(13, 131, 144)'
@@ -273,28 +313,8 @@ const styles = StyleSheet.create({
         //paddingLeft: Pixel.getPixel(12),
         //marginBottom: Pixel.getPixel(10)
     },
-    dateBox: {
-        marginLeft: Pixel.getPixel(16),
-        marginRight: Pixel.getPixel(16),
-        justifyContent: 'center',
-        //width: Pixel.getPixel(140),
-        flex: 1,
-        height: Pixel.getPixel(32),
-        backgroundColor: fontAndColor.COLORA3
-    },
-    loginBtnStyle: {
-        height: Pixel.getPixel(44),
-        width: width - Pixel.getPixel(30),
-        backgroundColor: fontAndColor.COLORB0,
-        marginTop: Pixel.getPixel(30),
-        marginBottom: Pixel.getPixel(30),
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: Pixel.getPixel(4),
-        marginLeft: Pixel.getPixel(15)
-    },
-    loginButtonTextStyle: {
-        color: fontAndColor.COLORA3,
-        fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT)
+    separatedLine: {
+        height: 1,
+        backgroundColor: fontAndColor.COLORA4
     }
 });

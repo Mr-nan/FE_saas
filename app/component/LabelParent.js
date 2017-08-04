@@ -21,11 +21,29 @@ import  LabelForOrderScreen from './LabelForOrderScreen';
 export default class LabelParent extends PureComponent {
     constructor(props) {
         super(props);
-        this.clickitems = this.props.orderState;
+        //this.clickitems = this.props.orderState;
+        this.state = {
+            clickitems: this.props.orderState,
+            items: this.props.items
+        };
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            clickitems: nextProps.orderState,
+            items: nextProps.items
+        });
+    }
+
+    resetLabel = (clickitems, items) => {
+        this.setState({
+            clickitems: clickitems,
+            items: items
+        });
+    };
+
     render() {
-        let items = this.props.items;
+        let items = this.state.items;
         //let parameters = this.props.parameters.orderState;
         let item = [];
         let line = Math.ceil(items.length / 3);
@@ -42,14 +60,14 @@ export default class LabelParent extends PureComponent {
                 childitem.push(<LabelForOrderScreen callBack={(item, status)=>{
                     // console.log(items[j].ref);
                     // this.refs.a10.unSelected();
-                    if (this.clickitems !== item) {
+                    if (this.state.clickitems !== item) {
                         /*if(clickitems === ''){
                             clickitems = item;
                         }else{*/
                         this.props.updateState(item);
                         this.props.updateStatus(status);
-                        items[this.clickitems].ref.unSelected();
-                        this.clickitems = item;
+                        items[this.state.clickitems].ref.unSelected();
+                        this.state.clickitems = item;
                         //}
                     }
 
