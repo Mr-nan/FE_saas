@@ -23,6 +23,8 @@ import ClientSearchScene from "./ClientSearchScene";
 import {ClientAddTimeSelectView} from "./component/ClientAddTimeSelectView";
 import {ClientScreeningSelectButton} from "./component/ClientScreeningSelectButton";
 import ClientScreeningView from "./component/ClientScreeningView";
+import ClientInfoScene from "./ClientInfoScene";
+const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 /*
  * 获取屏幕的宽和高
  **/
@@ -50,7 +52,7 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
     initFinish = () => {
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.setState({
-            dataSource: ds.cloneWithRows(['', '', '']),
+            dataSource: ds.cloneWithRows(['', '', '', '', '', '', '', '', '']),
             renderPlaceholderOnly: 'success'
         });
     };
@@ -98,11 +100,66 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                                 ref="but2" title="筛选" index={2} btnClick={this.selectFilterItems}/>
                         </View>
                     </Image>
+                    <ListView style={{backgroundColor: fontAndColor.COLORA3}}
+                              dataSource={this.state.dataSource}
+                              removeClippedSubviews={false}
+                              renderRow={this._renderRow}
+                              enableEmptySections={true}
+                              renderSeparator={this._renderSeperator}/>
                     {this.state.addTimeHide && <ClientAddTimeSelectView hideView={this.selectAddTime}/>}
                     {this.state.selectFilterHide && <ClientScreeningView hideView={this.selectFilterItems}/>}
                 </View>
             );
         }
+    }
+
+    /**
+     *  listView间隔线
+     **/
+    _renderSeperator = (sectionID: number, rowID: number, adjacentRowHighlighted: bool) => {
+        return (
+            <View
+                key={`${sectionID}-${rowID}`}
+                style={{backgroundColor: fontAndColor.COLORA3, height: Pixel.getPixel(1)}}/>
+        )
+    }
+
+    /**
+     *  _renderRow
+     **/
+    _renderRow = (rowData, selectionID, rowID) => {
+        return (
+            <TouchableOpacity
+                onPress={() => {
+                    this.toNextPage({
+                        name: 'ClientInfoScene',
+                        component: ClientInfoScene,
+                        params: {
+
+                        }
+                    });
+                }}
+                activeOpacity={0.9}
+            >
+                <View style={{
+                    height: Pixel.getPixel(44),
+                    backgroundColor: '#ffffff',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}>
+                    <Text
+                        allowFontScaling={false}
+                        style={{
+                            marginLeft: Pixel.getPixel(15),
+                            fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                            color: fontAndColor.COLORA0
+                        }}>测试人员</Text>
+                    <View style={{flex: 1}}/>
+                    <Image source={cellJianTou} style={{marginRight: Pixel.getPixel(15),}}/>
+                </View>
+            </TouchableOpacity>
+        )
     }
 
     /**
