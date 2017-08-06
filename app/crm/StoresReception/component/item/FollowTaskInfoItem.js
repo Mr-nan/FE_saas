@@ -100,7 +100,7 @@ export default class FollowTaskInfoItem extends BaseComponent {
                                                            }
                                                        })
                                                    }}/>);
-                } else {
+                } else if (this.childItems[i].name == '跟踪内容') {
                     items.push(<CustomerInfoInput key={i + 'bo'} items={this.childItems[i]}/>);
                 }
 
