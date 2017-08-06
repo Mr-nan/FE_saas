@@ -1,5 +1,5 @@
 /**
- * Created by zhengnan on 17/2/8.
+ * Created by zhengnan on 2017/8/4.
  */
 
 
@@ -19,7 +19,7 @@ import * as fontAndColor from '../../constant/fontAndColor';
 import  PixelUtil from '../../utils/PixelUtil';
 let     Pixel = new PixelUtil();
 
-export default class MyCarCell extends Component {
+export default class CarShareCell extends Component {
 
     cellClick=(carData)=>{
 
@@ -74,9 +74,8 @@ export default class MyCarCell extends Component {
     }
 
     render(){
-
-        const {carCellData} = this.props;
-        const carType = carCellData.status; // 1:审核中 2:已上架 3：已下架 4：已成交
+        const {carCellData,index,cellSelectBtnclick} = this.props;
+        const  carType = carCellData.status;
         const review_status = carCellData.review_status;
         return(
             <TouchableOpacity onPress={()=>{this.cellClick(carCellData)}}>
@@ -104,95 +103,27 @@ export default class MyCarCell extends Component {
                             <View/>
                             {/*<Text allowFontScaling={false}  style={styles.carPriceText}>{carCellData.dealer_price>0?(this.carMoneyChange(carCellData.dealer_price) +'万'):''}</Text>*/}
                         </View>
-                            <Image style={styles.tailImage} source={this.getImage(carType,review_status)}/>
+                        <Image style={styles.tailImage} source={this.getImage(carType,review_status)}/>
                     </View>
-                        <View style={styles.cellFootView}>
-                                <View style={{justifyContent:'center'}}>
-                                    {
-                                        carType==2 && (
-                                            <View style={{flexDirection:'row', alignItems:'center'}}>
-                                                <Image style={{marginRight:Pixel.getPixel(8)}} source={require('../../../images/carSourceImages/carViewIcon.png')}/>
-                                                <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>302次</Text>
-                                                <Image style={{marginRight:Pixel.getPixel(8)}} source={require('../../../images/carSourceImages/carPhoneIcon.png')}/>
-                                                <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>2次</Text>
-                                                <Image style={{marginRight:Pixel.getPixel(8)}} source={require('../../../images/carSourceImages/carDealIcon.png')}/>
-                                                <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>15天</Text>
-                                            </View>
-                                        )
-                                    }
-                                    {
-                                        carType ==4 && (
-                                            <View style={{flexDirection:'row',alignItems:'center'}}>
-                                                <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>售出:2017-07-10</Text>
-                                                <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>售价:25.05万元</Text>
-                                            </View>
-                                        )
-                                    }
-                                    </View>
+                    <View style={styles.cellFootView}>
+                        <View style={{justifyContent:'center'}}>
                             {
-                            (carCellData.in_valid_order && carCellData.in_valid_order==1)?(null): <View style={{flexDirection:'row'}}>
-                                    {
-                                        (carType==1&&carCellData.review_status==2) &&
-                                        <TouchableOpacity onPress={()=>{this.footButtonClick('查看退回原因',this.props.type,carCellData)}}>
-                                            <View style={[styles.cellFoot,{borderColor:fontAndColor.COLORB4}]}>
-                                                <Text allowFontScaling={false}  style={[styles.cellFootText,{color:fontAndColor.COLORB4}]}> 查看退回原因 </Text>
-                                            </View>
-                                        </TouchableOpacity>
-                                    }
-                                    {/*<TouchableOpacity onPress={()=>{this.footButtonClick('编辑',this.props.type,carCellData)}}>*/}
-                                        {/*<View style={styles.cellFoot}>*/}
-                                            {/*<Text allowFontScaling={false}  style={styles.cellFootText}>  编辑  </Text>*/}
-                                        {/*</View>*/}
-                                    {/*</TouchableOpacity>*/}
-
-                                    {/*{*/}
-                                        {/*carType==2 &&*/}
-                                        {/*<TouchableOpacity onPress={()=>{this.footButtonClick('下架',this.props.type,carCellData)}}>*/}
-                                            {/*<View style={styles.cellFoot}>*/}
-                                                {/*<Text allowFontScaling={false}  style={styles.cellFootText}>  下架  </Text>*/}
-                                            {/*</View>*/}
-                                        {/*</TouchableOpacity>*/}
-                                    {/*}*/}
-                                    {/*{*/}
-                                        {/*((carType==1&&carCellData.review_status==1)||carType==3 ) &&*/}
-                                        {/*<TouchableOpacity onPress={()=>{this.footButtonClick('上架',this.props.type,carCellData)}}>*/}
-                                            {/*<View style={styles.cellFoot}>*/}
-                                                {/*<Text allowFontScaling={false}  style={styles.cellFootText}> 申请上架 </Text>*/}
-                                            {/*</View>*/}
-                                        {/*</TouchableOpacity>*/}
-                                    {/*}*/}
-
-                                    {
-                                        carType == 2 &&
-                                        <TouchableOpacity onPress={()=>{this.footButtonClick('管理',this.props.type,carCellData)}}>
-                                            <View style={styles.cellFoot}>
-                                                <Text allowFontScaling={false}  style={styles.cellFootText}>  管理  </Text>
-                                            </View>
-                                        </TouchableOpacity>
-                                    }
-                                    {
-                                        (carType == 4 || carType == 3)&&
-                                        <TouchableOpacity onPress={()=>{this.footButtonClick('删除',this.props.type,carCellData)}}>
-                                            <View style={styles.cellFoot}>
-                                                <Text allowFontScaling={false}  style={styles.cellFootText}>  删除  </Text>
-                                            </View>
-                                        </TouchableOpacity>
-
-                                    }
-                                    {
-                                        carType == 1 &&
-                                        <TouchableOpacity onPress={()=>{this.footButtonClick('编辑',this.props.type,carCellData)}}>
-                                            <View style={styles.cellFoot}>
-                                                <Text allowFontScaling={false}  style={styles.cellFootText}>  编辑  </Text>
-                                            </View>
-                                        </TouchableOpacity>
-
-                                    }
-
-
-                                </View>
-                         }
+                                carType==2 && (
+                                    <View style={{flexDirection:'row', alignItems:'center'}}>
+                                        <Image style={{marginRight:Pixel.getPixel(8)}} source={require('../../../images/carSourceImages/carViewIcon.png')}/>
+                                        <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>302次</Text>
+                                        <Image style={{marginRight:Pixel.getPixel(8)}} source={require('../../../images/carSourceImages/carPhoneIcon.png')}/>
+                                        <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>2次</Text>
+                                        <Image style={{marginRight:Pixel.getPixel(8)}} source={require('../../../images/carSourceImages/carDealIcon.png')}/>
+                                        <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>15天</Text>
+                                    </View>
+                                )
+                            }
                         </View>
+                        <TouchableOpacity onPress={()=>{cellSelectBtnclick(!carCellData.select,index)}}>
+                            <Image source={carCellData.select?require('../../../images/carSourceImages/carSelectImgHigh.png') : require('../../../images/carSourceImages/carSelectImg.png')}/>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </TouchableOpacity>
         )
@@ -203,8 +134,6 @@ export default class MyCarCell extends Component {
         let newCarMoney = parseFloat(carMoney);
         let carMoneyStr = newCarMoney.toFixed(2);
         let moneyArray = carMoneyStr.split(".");
-
-        // console.log(carMoney+'/'+newCarMoney +'/' + carMoneyStr +'/' +moneyArray);
 
         if(moneyArray.length>1)
         {
@@ -221,10 +150,9 @@ export default class MyCarCell extends Component {
             return carMoneyStr;
         }
 
-
     }
-
 }
+
 const styles = StyleSheet.create({
 
     container:{

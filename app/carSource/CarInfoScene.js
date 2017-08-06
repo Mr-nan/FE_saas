@@ -46,7 +46,7 @@ import * as AppUrls from "../constant/appUrls";
 
 var ScreenWidth = Dimensions.get('window').width;
 let resolveAssetSource = require('resolveAssetSource');
-
+var  shareClass = NativeModules.ZNShareClass;
 
 const carParameterViewColor = [
 
@@ -448,26 +448,39 @@ export default class CarInfoScene extends BaseComponent {
                     }
                 </ScrollView>
                 <View style={styles.footView}>
-                    <View style={[styles.carNumberView, carData.show_order == 2 && {width: ScreenWidth / 2}]}>
-                        <Text allowFontScaling={false}  style={styles.carNumberText}>车源编号</Text>
-                        <Text allowFontScaling={false}  style={styles.carNumberText}>{carData.serial_num}</Text>
-                    </View>
-                    <TouchableOpacity onPress={() => {
-                        this.callClick(carData.show_shop_id)
-                    }}>
-                        <View style={[styles.callView, carData.show_order == 2 && {width: ScreenWidth / 2}]}>
-                            <Image source={require('../../images/carSourceImages/phoneIcon.png')}/>
-                            <Text allowFontScaling={false}  style={styles.callText}>电话咨询</Text>
-                        </View>
-                    </TouchableOpacity>
                     {
-                        carData.show_order !== 2 && (
-                            <TouchableOpacity style={styles.orderView} onPress={() => {
-                                this.orderClick(carData)
-                            }}>
-                                <Text allowFontScaling={false}  style={styles.orderText}>订购</Text>
-                            </TouchableOpacity>
-                        )
+                        carData.status==3 ?
+                            (
+                            <View style={{flex:1, alignItems:'center',justifyContent:'center',backgroundColor:fontAndColor.COLORA4,height:Pixel.getPixel(44)}}>
+                                <Text style={{fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),color:'white',textAlign:'center'
+                                }}>该车辆已经下架啦~</Text>
+                            </View>
+                                ):
+                            (
+                                <View style={{flex:1,justifyContent:'center', alignItems:'center', flexDirection:'row'}}>
+                                    <View style={[styles.carNumberView, carData.show_order == 2 && {width: ScreenWidth / 2}]}>
+                                        <Text allowFontScaling={false}  style={styles.carNumberText}>车源编号</Text>
+                                        <Text allowFontScaling={false}  style={styles.carNumberText}>{carData.serial_num}</Text>
+                                    </View>
+                                    <TouchableOpacity onPress={() => {
+                                        this.callClick(carData.show_shop_id)
+                                    }}>
+                                        <View style={[styles.callView, carData.show_order == 2 && {width: ScreenWidth / 2}]}>
+                                            <Image source={require('../../images/carSourceImages/phoneIcon.png')}/>
+                                            <Text allowFontScaling={false}  style={styles.callText}>电话咨询</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    {
+                                        carData.show_order !== 2 && (
+                                            <TouchableOpacity style={styles.orderView} onPress={() => {
+                                                this.orderClick(carData)
+                                            }}>
+                                                <Text allowFontScaling={false}  style={styles.orderText}>订购</Text>
+                                            </TouchableOpacity>
+                                        )
+                                    }
+                                </View>
+                            )
                     }
                 </View>
                 <NavigationView
@@ -871,6 +884,24 @@ class SharedView extends Component {
         });
     }
 
+    // 多图分享
+    sharedMoreImage=(carData)=>{
+        let shareArray = [];
+        for (let i =0;i<carData.imgs.length;i++)
+        {
+            shareArray.push({image:carData.imgs[i].url});
+        }
+
+        shareClass.shareAction([shareArray]).then((data) => {
+
+            this.props.showToast('分享成功');
+
+        }, (error) => {
+
+            this.props.showToast('分享已取消');
+        });
+    }
+
     // 分享好友
     sharedWechatSession = (carData) => {
         weChat.isWXAppInstalled()
@@ -908,11 +939,14 @@ class SharedView extends Component {
                         thumbImage: carImage,
 
                     }).catch((error) => {
+
                     })
                 } else {
                     this.isVisible(false);
                 }
             });
+
+
     }
 
     // 分享朋友圈
@@ -967,24 +1001,43 @@ class SharedView extends Component {
                     this.isVisible(false)
                 }}>
                     <View style={styles.sharedView}>
-                        <View style={styles.sharedViewHead}>
-                            <Text allowFontScaling={false}  style={styles.sharedViewHeadText}>分享到</Text>
-                        </View>
-                        <View style={{flexDirection: 'row'}}>
+                        {/*<View style={styles.sharedViewHead}>*/}
+                        {/*<Text allowFontScaling={false}  style={styles.sharedViewHeadText}>分享到</Text>*/}
+                        {/*</View>*/}
+                        <View style={{flexDirection: 'row',paddingVertical:Pixel.getPixel(15)}}>
+                            <TouchableOpacity style={styles.sharedItemView} onPress={() => {
+                                this.sharedMoreImage(this.props.carData);
+                                this.isVisible(false);
+                            }}>
+                                <View style={styles.sharedImageBack}>
+                                    <Image source={require('../../images/carSourceImages/shareImgIcon.png')}/>
+                                </View>
+                                <Text allowFontScaling={false}  style={styles.sharedText}>多图分享</Text>
+                            </TouchableOpacity>
+
                             <TouchableOpacity style={styles.sharedItemView} onPress={() => {
                                 this.sharedWechatSession(this.props.carData);
                                 this.isVisible(false);
                             }}>
-                                <Image source={require('../../images/carSourceImages/shared_ wx.png')}/>
+                                <View style={styles.sharedImageBack}>
+                                    <Image source={require('../../images/carSourceImages/shared_wx.png')}/>
+                                </View>
                                 <Text allowFontScaling={false}  style={styles.sharedText}>微信好友</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.sharedItemView} onPress={() => {
                                 this.sharedWechatTimeline(this.props.carData);
                                 this.isVisible(false);
                             }}>
-                                <Image source={require('../../images/carSourceImages/shared_ friend.png')}/>
+                                <View style={styles.sharedImageBack}>
+                                    <Image source={require('../../images/carSourceImages/shared_friend.png')}/>
+                                </View>
                                 <Text allowFontScaling={false}  style={styles.sharedText}>朋友圈</Text>
                             </TouchableOpacity>
+                        </View>
+                        <View  style={{justifyContent:'center',alignItems:'center',borderTopWidth:Pixel.getPixel(1),borderTopColor:fontAndColor.COLORA3,height:Pixel.getPixel(44),
+                            width:ScreenWidth
+                        }}>
+                            <Text style={styles.sharedViewHeadText}>取消</Text>
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -1430,11 +1483,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(1,1,1,0.5)',
     },
     sharedView: {
-
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: fontAndColor.COLORA3,
+        backgroundColor: 'white',
         justifyContent: 'center',
         alignItems: 'center',
         position: 'absolute',
@@ -1449,8 +1501,16 @@ const styles = StyleSheet.create({
     },
     sharedViewHeadText: {
 
-        color: fontAndColor.COLORA0,
+        color: fontAndColor.COLORA1,
         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+    },
+    sharedImageBack:{
+        backgroundColor:fontAndColor.COLORB9,
+        borderRadius:Pixel.getPixel(10),
+        width:Pixel.getPixel(50),
+        height:Pixel.getPixel(50),
+        justifyContent:'center',
+        alignItems:'center'
     },
     sharedItemView: {
 

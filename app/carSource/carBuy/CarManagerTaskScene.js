@@ -285,6 +285,26 @@ export default class CarManagerTaskScene extends BaseComponent{
         this.props.showModal(false);
     };
 
+    /**
+     * from @zhaojian
+     *
+     * 正则校验，保证小数点后只能有两位
+     **/
+    chkPrice = (obj) => {
+        obj = obj.replace(/[^\d.]/g, "");
+        //必须保证第一位为数字而不是.
+        obj = obj.replace(/^\./g, "");
+        //保证只有出现一个.而没有多个.
+        obj = obj.replace(/\.{2,}/g, ".");
+        //保证.只出现一次，而不能出现两次以上
+        obj = obj.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+        if ((/\.\d{3}/).test(obj)) {
+            obj = obj.substring(0, obj.length - 1);
+        }
+
+        return obj;
+    }
+
 }
 
 const styles = StyleSheet.create({
