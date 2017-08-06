@@ -63,40 +63,79 @@ export default class BuyerDemandItem extends BaseComponent {
      **/
     render() {
         let items = [];
-        for (let i = 0; i < this.childItems.length; i++) {
-            if (i == 0) {
-                items.push(<ClientInfoSelected ref='selectsex' key={i + 'bo'} items={this.childItems[i]}
-                                               toSelect={() => {
-                                                   this.toNextPage({
-                                                       name: 'SelectScene',
-                                                       component: SelectScene,
-                                                       params: {
-                                                           regShowData: ['10万以下', '10-20万', '10-40万', '40-60万', '60万以上'],
-                                                           title: '购车预算',
-                                                           callBack: (name, index) => {
-                                                               this.childItems[i].value = name + ',' + index;
-                                                               this.refs.selectsex.setValue(name);
+        if (this.props.editState != 'look') {
+            for (let i = 0; i < this.childItems.length; i++) {
+                if (i == 0) {
+                    items.push(<ClientInfoSelected ref='selectsex' key={i + 'bo'} items={this.childItems[i]}
+                                                   toSelect={() => {
+                                                       this.toNextPage({
+                                                           name: 'SelectScene',
+                                                           component: SelectScene,
+                                                           params: {
+                                                               regShowData: ['10万以下', '10-20万', '10-40万', '40-60万', '60万以上'],
+                                                               title: '购车预算',
+                                                               callBack: (name, index) => {
+                                                                   this.childItems[i].value = name + ',' + index;
+                                                                   this.refs.selectsex.setValue(name);
+                                                               }
                                                            }
-                                                       }
-                                                   })
-                                               }}/>);
-            } else if (i == 1) {
-                items.push(<ClientInfoSelected ref="company" key={i + 'bo'} items={this.childItems[i]}
-                                               toSelect={() => {
-                                                   this.toNextPage({
-                                                       name: 'CarBrandSelectScene',
-                                                       component: CarBrandSelectScene,
-                                                       params: {
-                                                           isHeadInteraction: true,
-                                                           checkedCarClick: this.checkedCarClick
-                                                       }
-                                                   })
-                                               }}/>);
-                /*items.push(<SelectView
-                    ref="carView"
-                    title="意向车型"
-                    content={(this.checkedCarType.title != '') ? this.checkedCarType.title : '请选择意向车型'}
-                    selectCilck={this.pushCarBrandSceneAction}/>);*/
+                                                       })
+                                                   }}/>);
+                } else if (i == 1) {
+                    items.push(<ClientInfoSelected ref="company" key={i + 'bo'} items={this.childItems[i]}
+                                                   toSelect={() => {
+                                                       this.toNextPage({
+                                                           name: 'CarBrandSelectScene',
+                                                           component: CarBrandSelectScene,
+                                                           params: {
+                                                               isHeadInteraction: true,
+                                                               checkedCarClick: this.checkedCarClick
+                                                           }
+                                                       })
+                                                   }}/>);
+                    /*items.push(<SelectView
+                     ref="carView"
+                     title="意向车型"
+                     content={(this.checkedCarType.title != '') ? this.checkedCarType.title : '请选择意向车型'}
+                     selectCilck={this.pushCarBrandSceneAction}/>);*/
+                }
+            }
+        } else {
+            for (let i = 0; i < this.childItems.length; i++) {
+                items.push(
+                    <View
+                        key={i + 'bo'}
+                        style={{
+                        width: width,
+                        height: Pixel.getPixel(45),
+                        backgroundColor: '#fff'
+                    }}>
+                        <View style={{
+                            width: width,
+                            height: Pixel.getPixel(44),
+                            backgroundColor: '#00000000',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                        }}>
+                            <Text allowFontScaling={false}
+                                  style={{
+                                      marginLeft: Pixel.getPixel(15),
+                                      width: Pixel.getPixel(125),
+                                      fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                                      color: fontAndColor.COLORA1
+                                  }}>{this.childItems[i].name}</Text>
+                            <Text allowFontScaling={false}
+                                  style={{
+                                      fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                                      color: '#000'
+                                  }}>dasdadada</Text>
+                        </View>
+                        <View style={{
+                            width: width,
+                            height: Pixel.getPixel(1),
+                            backgroundColor: fontAndColor.COLORA3
+                        }}/>
+                    </View>)
             }
         }
         return (

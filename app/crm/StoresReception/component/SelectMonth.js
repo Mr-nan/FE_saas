@@ -25,6 +25,9 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 
 export default class SelectMonth extends BaseComponent {
 
+    /**
+     *
+     **/
     constructor(props) {
         super(props);
         this.state = {
@@ -33,6 +36,9 @@ export default class SelectMonth extends BaseComponent {
         }
     }
 
+    /**
+     *
+     **/
     render() {
         return (
             <View>
@@ -63,12 +69,24 @@ export default class SelectMonth extends BaseComponent {
         )
     }
 
+    /**
+     *
+     * @private
+     **/
     _showDateTimePicker = () => {
         this.setState({isDateTimePickerVisible: true})
     };
 
+    /**
+     *
+     * @private
+     **/
     _hideDateTimePicker = () => this.setState({isDateTimePickerVisible: false});
 
+    /**
+     *
+     * @private
+     **/
     _handleDatePicked = (date) => {
         //console.log('A date has been picked: ', date);
         let d = this.dateFormat(date, 'yyyy-MM');
@@ -81,6 +99,10 @@ export default class SelectMonth extends BaseComponent {
         //this._hideDateTimePicker();
     };
 
+    /**
+     *
+     * @private
+     **/
     dateFormat = (date, fmt) => {
         let o = {
             "M+": date.getMonth() + 1, //月份

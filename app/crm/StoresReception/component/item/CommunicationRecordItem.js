@@ -62,37 +62,76 @@ export default class CommunicationRecordItem extends BaseComponent {
      **/
     render() {
         let items = [];
-        for (let i = 0; i < this.childItems.length; i++) {
-            if (i == 0) {
-                items.push(<ClientInfoSelected ref='selectsex' key={i + 'bo'} items={this.childItems[i]}
-                                                 toSelect={() => {
-                                                     this.toNextPage({
-                                                         name: 'SelectScene',
-                                                         component: SelectScene,
-                                                         params: {
-                                                             regShowData: ['A:一周以内(购买欲望特别强)', 'B:一月以内(准买车用户)', 'C:三个月以内(有购买意向)', 'D:闲逛(近期无意向)'],
-                                                             title: '客户级别',
-                                                             callBack: (name, index) => {
-                                                                 this.childItems[i].value = name + ',' + index;
-                                                                 this.refs.selectsex.setValue(name);
-                                                             }
-                                                         }
-                                                     })
-                                                 }}/>);
-            } else if (i == 1) {
-                items.push(<ClientInfoSelected ref="company" key={i + 'bo'} items={this.childItems[i]}
-                                                 toSelect={() => {
-                                                     this._showDateTimePicker('start');
-                                                 }}/>);
-            } else if (i == 2) {
-                items.push(<ClientInfoSelected ref='juese' key={i + 'bo'} items={this.childItems[i]}
-                                                 toSelect={() => {
-                                                     this._showDateTimePicker('end');
-                                                 }}/>);
-            } else {
-                items.push(<CustomerInfoInput key={i + 'bo'} items={this.childItems[i]}/>);
-            }
+        if (this.props.editState != 'look') {
+            for (let i = 0; i < this.childItems.length; i++) {
+                if (i == 0) {
+                    items.push(<ClientInfoSelected ref='selectsex' key={i + 'bo'} items={this.childItems[i]}
+                                                   toSelect={() => {
+                                                       this.toNextPage({
+                                                           name: 'SelectScene',
+                                                           component: SelectScene,
+                                                           params: {
+                                                               regShowData: ['A:一周以内(购买欲望特别强)', 'B:一月以内(准买车用户)', 'C:三个月以内(有购买意向)', 'D:闲逛(近期无意向)'],
+                                                               title: '客户级别',
+                                                               callBack: (name, index) => {
+                                                                   this.childItems[i].value = name + ',' + index;
+                                                                   this.refs.selectsex.setValue(name);
+                                                               }
+                                                           }
+                                                       })
+                                                   }}/>);
+                } else if (i == 1) {
+                    items.push(<ClientInfoSelected ref="company" key={i + 'bo'} items={this.childItems[i]}
+                                                   toSelect={() => {
+                                                       this._showDateTimePicker('start');
+                                                   }}/>);
+                } else if (i == 2) {
+                    items.push(<ClientInfoSelected ref='juese' key={i + 'bo'} items={this.childItems[i]}
+                                                   toSelect={() => {
+                                                       this._showDateTimePicker('end');
+                                                   }}/>);
+                } else {
+                    items.push(<CustomerInfoInput key={i + 'bo'} items={this.childItems[i]}/>);
+                }
 
+            }
+        } else {
+            for (let i = 0; i < this.childItems.length; i++) {
+                items.push(
+                    <View
+                        key={i + 'bo'}
+                        style={{
+                        width: width,
+                        height: Pixel.getPixel(45),
+                        backgroundColor: '#fff'
+                    }}>
+                        <View style={{
+                            width: width,
+                            height: Pixel.getPixel(44),
+                            backgroundColor: '#00000000',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                        }}>
+                            <Text allowFontScaling={false}
+                                  style={{
+                                      marginLeft: Pixel.getPixel(15),
+                                      width: Pixel.getPixel(125),
+                                      fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                                      color: fontAndColor.COLORA1
+                                  }}>{this.childItems[i].name}</Text>
+                            <Text allowFontScaling={false}
+                                  style={{
+                                      fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                                      color: '#000'
+                                  }}>dasdadada</Text>
+                        </View>
+                        <View style={{
+                            width: width,
+                            height: Pixel.getPixel(1),
+                            backgroundColor: fontAndColor.COLORA3
+                        }}/>
+                    </View>)
+            }
         }
         return (
             <View style={{
@@ -108,7 +147,7 @@ export default class CommunicationRecordItem extends BaseComponent {
                     }}/>
                     <Text
                         style={{marginLeft: Pixel.getPixel(5), fontWeight: 'bold'}}
-                        allowFontScaling={false}>基本信息</Text>
+                        allowFontScaling={false}>本次沟通记录</Text>
                 </View>
                 <View style={{
                     height: 1,

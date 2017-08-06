@@ -30,9 +30,9 @@ import  {request}           from '../../utils/RequestUtil';
 import CarPublishFirstScene from '../../carSource/CarPublishFirstScene';
 import {LendSuccessAlert} from '../../finance/lend/component/ModelComponent'
 import PixelUtil from '../../utils/PixelUtil';
-import {DailyReminderSelectView} from "../../message/component/DailyReminderSelectView";
-import {ShareListView} from "../../message/dailyReminder/ShareListView";
 import {StatisticalListView} from "../../message/dailyReminder/StatisticalListView";
+import {FollowUpRecordsView} from "./FollowUpRecordsView";
+import ClientInfoDetailView from "./ClientInfoDetailView";
 const Pixel = new PixelUtil();
 
 
@@ -88,19 +88,62 @@ export default class ClientInfoScene extends BaceComponent {
         return (
             <View style={styles.rootContainer}>
                 <NavigatorView title='客户信息' backIconClick={this.backPage}/>
-                <View style={{height: Pixel.getPixel(90), backgroundColor: fontAndColor.COLORB0, marginTop: Pixel.getTitlePixel(64)}}>
+                <View style={{
+                    height: Pixel.getPixel(90),
+                    backgroundColor: fontAndColor.COLORB0,
+                    marginTop: Pixel.getTitlePixel(64),
+                    alignItems: 'center',
+                    flexDirection: 'row'
+                }}>
+                    <Text
+                        allowFontScaling={false}
+                        style={{
+                            marginLeft: Pixel.getPixel(32),
+                            color: '#ffffff',
+                            fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34)
+                        }}>韩梦</Text>
+                    <View style={{
+                        marginLeft: Pixel.getPixel(32),
+                        backgroundColor: '#ffffff',
+                        height: Pixel.getPixel(35),
+                        width: 1
+                    }}/>
+                    <View style={{alignItems: 'center', marginLeft: Pixel.getPixel(12),}}>
+                        <Text
+                            allowFontScaling={false}
+                            style={{
+                                color: '#ffffff',
+                                fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)
+                            }}>销售顾问：</Text>
+                        <Text
+                            allowFontScaling={false}
+                            style={{
+                                marginTop: Pixel.getPixel(8),
+                                color: '#ffffff',
+                                fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)
+                            }}>客户状态：</Text>
+                    </View>
+                    <View style={{flex: 1}}/>
+                    <TouchableOpacity
+                        onPress={() => {
 
+                        }}>
+                        <Image
+                            style={{marginRight: Pixel.getPixel(20)}}
+                            source={require('../../../images/mainImage/make_call.png')}/>
+                    </TouchableOpacity>
                 </View>
                 <ScrollableTabView
                     //style={styles.ScrollableTabView}
                     initialPage={this.props.page ? this.props.page : 0}
                     locked={true}
-                    renderTabBar={() => <RepaymenyTabBar style={{backgroundColor: 'white'}} tabName={["跟进记录", "详细资料"]}/>}>
-                    <ShareListView navigator={this.props.navigator} ref="shareListView" tabLabel="ios-paper1"/>
-                    <StatisticalListView navigator={this.props.navigator} ref="statisticalListView"
-                                         tabLabel="ios-paper2"/>
+                    renderTabBar={() => <RepaymenyTabBar style={{backgroundColor: 'white'}}
+                                                         tabName={["跟进记录", "详细资料"]}/>}>
+                    <FollowUpRecordsView navigator={this.props.navigator} tabLabel="ios-paper1"/>
+                    <ClientInfoDetailView navigator={this.props.navigator} tabLabel="ios-paper2"/>
                 </ScrollableTabView>
-            </View>)
+            </View>
+        )
 
     }
 
