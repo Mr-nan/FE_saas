@@ -51,7 +51,7 @@ export default class CommunicationRecordItem extends BaseComponent {
     }
 
     /**
-     *
+     *   获取表单内数据
      **/
     getItemData = () => {
         return this.childItems;
@@ -167,7 +167,7 @@ export default class CommunicationRecordItem extends BaseComponent {
     }
 
     /**
-     *
+     *  显示时间选择器
      * @param type
      * @private
      **/
@@ -177,13 +177,13 @@ export default class CommunicationRecordItem extends BaseComponent {
     };
 
     /**
-     *
+     * 隐藏时间选择器
      * @private
      **/
     _hideDateTimePicker = () => this.setState({isDateTimePickerVisible: false});
 
     /**
-     *
+     * 处理时间选择
      * @private
      **/
     _handleDatePicked = (date) => {
@@ -205,7 +205,7 @@ export default class CommunicationRecordItem extends BaseComponent {
     };
 
     /**
-     *
+     *   日期格式化
      **/
     dateFormat = (date, fmt) => {
         let o = {

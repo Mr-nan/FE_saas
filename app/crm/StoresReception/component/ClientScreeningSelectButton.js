@@ -23,7 +23,9 @@ var Pixel = new PixelUtil();
 
 export class ClientScreeningSelectButton extends Component {
 
-    // 构造
+    /**
+     *
+     **/
     constructor(props) {
         super(props);
         // 初始状态
@@ -33,16 +35,26 @@ export class ClientScreeningSelectButton extends Component {
         };
     }
 
+    /**
+     * 筛选项点击
+     * @private
+     **/
     _btnClick = () => {
         // this._setImgHighlighted(!this.state.isHighlighted);
         this.props.btnClick(this.props.index, this.state.isHighlighted, this._setImgHighlighted);
     };
 
+    /**
+     *
+     **/
     componentDidMount() {
         this._setImgHighlighted(false);
     }
 
-    // 设置按钮图片类型
+    /**
+     * 设置按钮图片类型
+     * @private
+     **/
     _setImgHighlighted = (bool) => {
         const {imgSource, isHighlighted} = this.state;
         this.setState({
@@ -51,6 +63,10 @@ export class ClientScreeningSelectButton extends Component {
         })
     }
 
+    /**
+     *
+     * @returns {XML}
+     **/
     render() {
         return (
             <TouchableOpacity

@@ -52,7 +52,7 @@ export default class BuyerDemandItem extends BaseComponent {
     }
 
     /**
-     *
+     *   获取表单内数据
      **/
     getItemData = () => {
         return this.childItems;

@@ -50,7 +50,7 @@ export default class FollowTaskInfoItem extends BaseComponent {
     }
 
     /**
-     *
+     *   获取表单内数据
      **/
     getItemData = () => {
         return this.childItems;
