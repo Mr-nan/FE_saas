@@ -90,12 +90,25 @@ export default class ClientInfoInput extends PureComponent {
     }
 
     /**
-     *
+     *   更新文字内容
      **/
     goSearch = (text) => {
         this.props.items.value = text;
         this.setState({
             value: text
         });
+        if (text.length == 11 && this.props.items.name == '电话') {
+            this.uniqueCheck(text);
+        }
     }
+
+    /**
+     *   检查用户手机号是否存在
+     **/
+    uniqueCheck = (text) => {
+        this.setState({
+            value: ''
+        });
+        this.props.callBack();
+    };
 }

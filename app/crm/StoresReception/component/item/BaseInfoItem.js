@@ -20,6 +20,7 @@ import BaseComponent from "../../../../component/BaseComponent";
 import ClientInfoSelected from "../ClientInfoSelected";
 import CustomerInfoInput from "../ClientInfoInput";
 import SelectScene from "../../SelectScene";
+import ExplainModal from "../../../../mine/myOrder/component/ExplainModal";
 const Pixel = new PixelUtil();
 
 export default class BaseInfoItem extends BaseComponent {
@@ -109,7 +110,8 @@ export default class BaseInfoItem extends BaseComponent {
                                                        })
                                                    }}/>);
                 } else {
-                    items.push(<CustomerInfoInput key={i + 'bo'} items={this.childItems[i]}/>);
+                    items.push(<CustomerInfoInput callBack={this.userAireadyExist} key={i + 'bo'}
+                                                  items={this.childItems[i]}/>);
                 }
 
             }
@@ -119,10 +121,10 @@ export default class BaseInfoItem extends BaseComponent {
                     <View
                         key={i + 'bo'}
                         style={{
-                        width: width,
-                        height: Pixel.getPixel(45),
-                        backgroundColor: '#fff'
-                    }}>
+                            width: width,
+                            height: Pixel.getPixel(45),
+                            backgroundColor: '#fff'
+                        }}>
                         <View style={{
                             width: width,
                             height: Pixel.getPixel(44),
@@ -172,10 +174,21 @@ export default class BaseInfoItem extends BaseComponent {
                     backgroundColor: fontAndColor.COLORA3
                 }}/>
                 {items}
+                <ExplainModal ref={(ref) => {
+                    this.em = ref
+                }} title="提示" content="用户已经存在" text="确定"
+                              buttonStyle={styles.expButton}
+                              textStyle={styles.expText}/>
             </View>
         )
     }
 
+    /**
+     *  用户已经存在弹出提示框
+     **/
+    userAireadyExist = () => {
+        this.em.changeShowType(true, "提示", "用户已经存在", "确定");
+    };
 }
 
 const styles = StyleSheet.create({
@@ -184,5 +197,21 @@ const styles = StyleSheet.create({
         marginLeft: Pixel.getPixel(15),
         height: 1,
         backgroundColor: fontAndColor.COLORA4
+    },
+    expButton: {
+        marginBottom: Pixel.getPixel(20),
+        width: Pixel.getPixel(100),
+        height: Pixel.getPixel(35),
+        marginTop: Pixel.getPixel(16),
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 3,
+        borderWidth: 1,
+        borderColor: fontAndColor.COLORB0
+    },
+    expText: {
+        fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
+        color: fontAndColor.COLORB0
     },
 });
