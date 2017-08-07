@@ -36,7 +36,7 @@ import  StorageUtil from '../utils/StorageUtil';
 import * as storageKeyNames from '../constant/storageKeyNames';
 import WebScene from './WebScene';
 import  CarMySourceScene from '../carSource/CarMySourceScene';
-import HomeJobButton from './component/HomeJobButton';
+import HomeJobItem from './component/HomeJobItem';
 import HomeRowButton from './component/HomeRowButton';
 import HomeAdvertisementButton from './component/HomeAdvertisementButton';
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -92,7 +92,7 @@ export default class HomeScene extends BaseComponet {
                     </TouchableOpacity>
                 </View>
 
-                <HomeJobButton/>
+                <HomeJobItem/>
                 <HomeRowButton/>
                 <HomeAdvertisementButton/>
 

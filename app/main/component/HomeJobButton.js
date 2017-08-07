@@ -17,10 +17,7 @@ export default class HomeJobButton extends PureComponent {
 
     constructor(props) {
         super(props);
-        this.state = {
-            width: 0,
-            height: 0
-        }
+
     }
 
     componentWillMount() {
@@ -29,13 +26,21 @@ export default class HomeJobButton extends PureComponent {
 
     render() {
         return (
-            <View style={{width:width,backgroundColor:fontAndColor.COLORA3}}>
-                <View style={{width:width,backgroundColor:'#fff',height:200,
-                marginBottom:Pixel.getPixel(10)}}>
-
-                </View>
-            </View>
-
+            <TouchableOpacity onPress={()=>{
+                this.props.click();
+            }} activeOpacity={0.8}
+                              style={{width:Pixel.getPixel(67),
+                                                 marginRight:(width-Pixel.getPixel(67)*4)/8
+                                                 ,marginLeft:(width-Pixel.getPixel(67)*4)/8,
+                                                 alignItems:'center'}}>
+                <Image style={{resizeMode: 'stretch',height:Pixel.getPixel(48),
+                    width:Pixel.getPixel(48),
+                    }} source={this.props.image}/>
+                <Text style={{fontSize: Pixel.getFontPixel(13),color:'#000',
+                    marginTop:Pixel.getPixel(7)}}>{
+                    this.props.name
+                }</Text>
+            </TouchableOpacity>
         );
     }
 }

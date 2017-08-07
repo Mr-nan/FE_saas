@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 
 import MyNavigator  from './component/MyNavigator';
-import CustomerServiceButton  from './component/CustomerServiceButton';
+
 import ShowToast from "./component/toast/ShowToast";
 import * as weChat from 'react-native-wechat';
 
@@ -23,21 +23,13 @@ export default class root extends Component {
             <View style={{flex:1}}>
                 <MyNavigator showToast={(content)=>{
                     this.showToast(content)
-                }} showModal={(value)=>{this.showModal(value)}}
-                hideView={()=>{this.hideView()}} showView={()=>{this.showView()}}/>
+                }} showModal={(value)=>{this.showModal(value)}}/>
                 <ShowToast ref='toast' msg={''}></ShowToast>
-                <CustomerServiceButton ref='customerservicebutton'/>
+
             </View>
         );
     }
 
-    hideView = () => {
-        this.refs.customerservicebutton.hideView();
-    }
-
-    showView = () => {
-        this.refs.customerservicebutton.showView()
-    }
 
     componentDidMount() {
         weChat.registerApp('wx6211535f6243c779');

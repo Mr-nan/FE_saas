@@ -13,7 +13,7 @@ let {height, width} = Dimensions.get('window');
 import  PixelUtil from '../../utils/PixelUtil'
 import  * as fontAndColor from '../../constant/fontAndColor'
 var Pixel = new PixelUtil();
-export default class HomeJobButton extends PureComponent {
+export default class HomeAdvertisementButton extends PureComponent {
 
     constructor(props) {
         super(props);

@@ -35,7 +35,7 @@ import NonCreditScene from './NonCreditScene';
 import LoginScene from '../login/LoginScene';
 import AllSelectCompanyScene from '../main/AllSelectCompanyScene';
 let tabArray = [];
-
+import CustomerServiceButton  from '../component/CustomerServiceButton';
 export class tableItemInfo {
     constructor(ref, key, title, selectedImg, defaultImg, topView) {
 
@@ -512,7 +512,7 @@ export default class MainPage extends BaseComponent {
                 </TabNavigator>
                 <View
                     style={[styles.imageStyle, this.props.identity == "finance" ? {width: Pixel.getPixel(1)} : {width: 0}]}></View>
-
+                <CustomerServiceButton ref='customerservicebutton'/>
             </View>
         );
     }
