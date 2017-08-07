@@ -127,6 +127,10 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT),
         color: fontAndColor.COLORA0
     },
+    selectedDescribe: {
+        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT),
+        color: fontAndColor.COLORB0
+    },
     separatedLine: {
         marginTop: Pixel.getPixel(10),
         marginRight: Pixel.getPixel(15),

@@ -32,6 +32,7 @@ export class ClientScreeningSelectButton extends Component {
         this.state = {
             imgSource: require('../../../../images/carSourceImages/btnIcon@2x.png'),
             isHighlighted: false,
+            title: this.props.title
         };
     }
 
@@ -48,7 +49,11 @@ export class ClientScreeningSelectButton extends Component {
      *
      **/
     componentDidMount() {
-        this._setImgHighlighted(false);
+        /*if (this.props.title == '筛选') {
+            this._setImgHighlighted(false);
+        } else {*/
+            this._setImgHighlighted(true);
+        //}
     }
 
     /**
@@ -64,7 +69,7 @@ export class ClientScreeningSelectButton extends Component {
     }
 
     /**
-     *
+     *  render
      * @returns {XML}
      **/
     render() {
@@ -73,7 +78,7 @@ export class ClientScreeningSelectButton extends Component {
                 onPress={this._btnClick}>
                 <View style={styles.selectBtn}>
                     <View>
-                        <Text allowFontScaling={false} style={styles.selectBtnText}>{this.props.title}</Text>
+                        <Text allowFontScaling={false} style={styles.selectedBtnText}>{this.state.title}</Text>
                     </View>
                     <View style={{marginLeft: 5}}>
                         <Image source={this.state.imgSource}></Image>
@@ -92,18 +97,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
-    lineView: {
-        width: StyleSheet.hairlineWidth,
-        justifyContent: 'center'
-    },
-    line: {
-        height: Pixel.getPixel(15),
-        backgroundColor: fontAndColor.COLORA3,
-    },
-    countView: {
-        marginLeft: Pixel.getPixel(10),
-        justifyContent: 'center'
-    },
     selectBtn: {
         width: Pixel.getPixel(80),
         height: Pixel.getPixel(40),
@@ -116,19 +109,8 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT),
         backgroundColor: 'white',
     },
-    countText: {
-        color: fontAndColor.COLORB3,
-        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT),
-    },
-    unitsView: {
-        marginRight: Pixel.getPixel(15),
-        marginLeft: Pixel.getPixel(10),
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'row',
-    },
-    unitsText: {
-        color: fontAndColor.COLORA0,
+    selectedBtnText: {
+        color: fontAndColor.COLORB0,
         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT),
         backgroundColor: 'white',
     },
@@ -138,19 +120,6 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         position: 'absolute',
-        bottom: 0,
-    },
-    checkedCell: {
-        backgroundColor: 'white',
-        height: Pixel.getPixel(44),
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: fontAndColor.COLORA3,
-    },
-    checkedCellText: {
-        fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT),
-        textAlign: 'center',
-        color: fontAndColor.COLORA0,
-    },
+        bottom: 0
+    }
 });
