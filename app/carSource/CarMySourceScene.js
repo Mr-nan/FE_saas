@@ -22,6 +22,7 @@ import NavigatorView from '../component/AllNavigationView';
 import ListFooter           from './znComponent/LoadMoreFooter';
 import SGListView           from 'react-native-sglistview';
 import CarInfoScene         from './CarInfoScene';
+import AccountModal from '../component/AccountModal'
 import EditCarScene         from '../publish/EditCarScene'
 import MyCarCell     from './znComponent/MyCarCell';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
@@ -82,7 +83,7 @@ export default class CarMySourceScene extends BaceComponent {
                 {
                     this.state.isShowCarSharedView && <CarSharedView offClick={()=>{this.setState({isShowCarSharedView:false})}} carSharedBtnClick={this.carSharedBtnClick} isShowMore={this.carData.img!=''?true:false}/>
                 }
-
+                <AccountModal ref="accountmodal"/>
                 <NavigatorView title='我的车源' backIconClick={this.backToTop} renderRihtFootView={this.renderRightFootView}/>
             </View>)
 
@@ -121,7 +122,11 @@ export default class CarMySourceScene extends BaceComponent {
 
         } else if (typeStr == '下架') {
 
-            this.carAction(3,groupStr,carData.id);
+            this.refs.accountmodal.changeShowType(true,
+                '' +
+                '是否需要下架该车', '确定', '取消', () => {
+                    this.carAction(3,groupStr,carData.id);
+                });
 
         } else if (typeStr == '编辑') {
 
@@ -173,7 +178,11 @@ export default class CarMySourceScene extends BaceComponent {
             })
         }else if(type =='下架'){
 
-            this.carAction(3,this.groupStr,this.carData.id);
+            this.refs.accountmodal.changeShowType(true,
+                '' +
+                '是否需要下架该车', '确定', '取消', () => {
+                    this.carAction(3,this.groupStr,this.carData.id);
+                });
 
         }else if(type=='编辑'){
 
@@ -194,6 +203,12 @@ export default class CarMySourceScene extends BaceComponent {
 
         }else if(type =='已售'){
             this.pushCarDealScene(this.carData.id);
+        }else if(type == '删除'){
+            this.refs.accountmodal.changeShowType(true,
+                '' +
+                '是否需要删除该车', '确定', '取消', () => {
+                  console.log('删除');
+                });
         }
     }
 

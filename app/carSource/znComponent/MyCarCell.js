@@ -112,9 +112,9 @@ export default class MyCarCell extends Component {
                                         carType==2 && (
                                             <View style={{flexDirection:'row', alignItems:'center'}}>
                                                 <Image style={{marginRight:Pixel.getPixel(8)}} source={require('../../../images/carSourceImages/carViewIcon.png')}/>
-                                                <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>302次</Text>
-                                                <Image style={{marginRight:Pixel.getPixel(8)}} source={require('../../../images/carSourceImages/carPhoneIcon.png')}/>
-                                                <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>2次</Text>
+                                                <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>{carCellData.views}次</Text>
+                                                {/*<Image style={{marginRight:Pixel.getPixel(8)}} source={require('../../../images/carSourceImages/carPhoneIcon.png')}/>*/}
+                                                {/*<Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>2次</Text>*/}
                                                 <Image style={{marginRight:Pixel.getPixel(8)}} source={require('../../../images/carSourceImages/carDealIcon.png')}/>
                                                 <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>15天</Text>
                                             </View>
