@@ -1515,6 +1515,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         } else if (rowData === '5') {
             return (
                 <LoanInfo
+                    refresh={this.payCallBack}
                     balanceAmount={this.orderDetail.balance_amount}
                     financeInfo={this.financeInfo}
                     loanCode={this.orderDetail.finance_no}
