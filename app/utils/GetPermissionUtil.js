@@ -4,6 +4,7 @@ import {
     Platform,
 } from 'react-native';
 const data = require('./quanxian.json');
+import Setting from '../mine/setting/Setting';
 const GetPermissionUtil = React.createClass({
 
     render(){
@@ -72,9 +73,13 @@ const GetPermissionUtil = React.createClass({
     }, getInfoById(id, name){
         let image = {};
         let names = '';
+        let component = {};
+        let componentName = '';
         if (id == 20) {
             image = require('../../images/workbench/fc.png');
             names = name;
+            component = Setting;
+            componentName = 'setting';
         } else if (id == 21 || id == 22 || id == 23 || id == 24 || id == 25) {
             image = require('../../images/workbench/zb.png');
             names = '整备';

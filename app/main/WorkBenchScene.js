@@ -78,7 +78,7 @@ export default class NonCreditScene extends BaseComponent {
 
     _renderRow = (movie, sectionId, rowId) => {
         return (
-            <WorkBenchItem items={movie}/>
+            <WorkBenchItem items={movie} callBack={(params)=>{this.props.callBack(params);}}/>
         )
     }
 

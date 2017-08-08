@@ -36,7 +36,8 @@ export default class HomeJobItem extends PureComponent {
         let itemList = [];
         for (let i = 0; i < this.list.length; i++) {
             firstChild.push(<HomeJobButton key={'job'+i} image={this.list[i].image} name={this.list[i].name}
-                                           click={()=>{}}/>);
+                                           click={()=>{this.props.callBack({name:this.list[i].componentName,
+                                           component:this.list[i].component,params:{}})}}/>);
         }
         let index = Math.ceil(firstChild.length / 4);
         for (let i = 1; i <= index; i++) {
