@@ -26,6 +26,7 @@ const request = (url, method, params,backToLogin) => {
             let token = '';
             if (data.code === 1) {
                 token = data.result;
+                // token = '9f3e77686ab10f9648148c8c8278209f';
             }
             console.log('token===' + token);
             let device_code = '';

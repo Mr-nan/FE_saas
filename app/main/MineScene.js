@@ -28,7 +28,7 @@ import BindCardScene from '../mine/accountManage/BindCardScene'
 
 import AdjustManageScene from '../mine/adjustManage/AdjustManageScene'
 import EmployeeManageScene from '../mine/employeeManage/EmployeeManageScene'
-import CouponAllScene from '../mine/couponManage/CouponAllScene'
+import EvaluateCarInfo from '../mine/setting/EvaluateCarInfo'
 import Setting from './../mine/setting/Setting'
 import  CarCollectSourceScene from '../carSource/CarCollectSourceScene';
 import  BrowsingHistoryScene from '../carSource/BrowsingHistoryScene';
@@ -565,10 +565,15 @@ export default class MineScene extends BaseComponent {
                 this.navigatorParams.name = 'BrowsingHistoryScene'
                 this.navigatorParams.component = BrowsingHistoryScene
                 break;
-            case '设置':
-                this.navigatorParams.name = 'Setting'
-                this.navigatorParams.component = Setting
-                break;
+            // case '设置':
+            //     this.navigatorParams.name = 'Setting'
+            //     this.navigatorParams.component = Setting
+            //     break;
+	        case '设置':
+		        this.navigatorParams.name = 'Setting'
+		        this.navigatorParams.component = EvaluateCarInfo
+		        break;
+
 
         }
         this.props.callBack(this.navigatorParams);

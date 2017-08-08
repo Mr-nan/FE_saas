@@ -1,0 +1,191 @@
+/**
+ * Created by yujinzhong on 2017/7/27.
+ */
+import React, {Component} from "react";
+import {
+	AppRegistry,
+	View,
+	Text,
+	StyleSheet,
+	Image,
+	Dimensions,
+	PixelRatio,
+	TouchableOpacity,
+	InteractionManager,
+	TouchableWithoutFeedback,
+	NativeModules,
+	ScrollView,
+	TextInput
+} from "react-native";
+import BaseComponent from "../../component/BaseComponent";
+import PixelUtil from "../../utils/PixelUtil";
+import * as FontAndColor from "../../constant/fontAndColor";
+import NavigationBar from "../../component/NavigationBar";
+import MyButton from "../../component/MyButton";
+
+import WriteArrangeCostDetailTWO from '../../mine/setting/WriteArrangeCostDetailTWO';
+
+var Pixel = new PixelUtil();
+const Width = Dimensions.get('window').width;
+const Height = Dimensions.get('window').height;
+var onePT = 1 / PixelRatio.get(); //一个像素
+var Platform = require('Platform');
+export default class EvaluateCarInfo extends BaseComponent {
+	constructor(props) {
+		super(props);
+		this.state = {
+			values: '',
+		}
+	}
+
+	initFinish = () => {
+		InteractionManager.runAfterInteractions(() => {
+			this.setState({renderPlaceholderOnly: false});
+			// this.Verifycode();
+		});
+	}
+
+	render() {
+
+		return (
+			<View style={styles.container}>
+				<NavigationBar
+					leftImageShow={true}
+					leftTextShow={false}
+					centerText={"评估车辆信息"}
+					rightText={""}
+					leftImageCallBack={this.backPage}/>
+
+				<View style={[styles.itemStyle, {marginTop: Pixel.getPixel(15)}]}>
+
+					<Text allowFontScaling={false} style={styles.firstTextStyle}>2014款 斯柯达昊锐 1.8T自动贵雅版</Text>
+					<Text allowFontScaling={false} style={styles.secondTextStyle}>VVVF124325923423452ARe2</Text>
+					<Image
+						source={require('../../../images/mainImage/progressFOUR.png')}
+						style={styles.progressImageStyle}
+
+					/>
+					<Text allowFontScaling={false} style={styles.secondTextStyle}></Text>
+					<View style={{height: Pixel.getPixel(1),width: Width -Pixel.getPixel(30),
+					              marginBottom:Pixel.getPixel(0),backgroundColor: FontAndColor.COLORA4}}/>
+
+				</View>
+
+				<View style={{height: Pixel.getPixel(120),width: Width,
+					         marginTop:Pixel.getPixel(10),backgroundColor:'white'}}>
+					<Text allowFontScaling={false} style={styles.beizhuTextStyle}>备注</Text>
+					<TextInput
+						multiline={true}
+						maxLength={8}
+						ref="inputText"
+						underlineColorAndroid={"#00000000"}
+						placeholder="请输入备注信息"
+						placeholderTextColor={FontAndColor.COLORA1}
+						style={styles.textInputStyle}
+						value={this.state.values}
+						onChangeText={(text) => {
+                            this.setState({
+                                values: text
+                            });
+                        }}/>
+				</View>
+
+
+				<MyButton buttonType={MyButton.TEXTBUTTON}
+				          content={'提交'}
+				          parentStyle={styles.loginBtnStyle}
+				          childStyle={styles.loginButtonTextStyle}
+				          mOnPress={this.loginOut}/>
+
+
+			</View>
+		);
+	}
+
+	loginOut = () => {
+		// alert(this.state.values);
+		this.toNextPage({
+			name: 'WriteArrangeCostDetailTWO',
+			component: WriteArrangeCostDetailTWO,
+			params: {},
+		})
+	}
+
+
+}
+const styles = StyleSheet.create({
+		container: {
+			flex: 1,
+			alignItems: 'center',
+			backgroundColor: FontAndColor.COLORA3,
+		},
+		itemStyle: {
+			flexDirection: 'column',
+			alignItems: 'center',
+			width: Width,
+			height: Pixel.getPixel(160),
+			backgroundColor: '#ffffff'
+		},
+		firstTextStyle: {
+			color: FontAndColor.COLORA0,
+			fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT30),
+			marginTop: Pixel.getPixel(20),
+		},
+		secondTextStyle: {
+			color: FontAndColor.COLORA0,
+			fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),
+			marginTop: Pixel.getPixel(10),
+		},
+		forthTextStyle: {
+			flex: 1,
+			color: FontAndColor.COLORA0,
+			fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT28),
+			marginTop: Pixel.getPixel(19),
+		},
+		beizhuTextStyle: {
+			color: FontAndColor.COLORA0,
+			fontSize: Pixel.getFontPixel(FontAndColor.NAVIGATORFONT34),
+			marginTop: Pixel.getPixel(10),
+			marginLeft: Pixel.getPixel(10),
+		},
+		loginBtnStyle: {
+			height: Pixel.getPixel(44),
+			width: Width - Pixel.getPixel(30),
+			backgroundColor: FontAndColor.COLORB0,
+			marginTop: Pixel.getPixel(30),
+			marginBottom: Pixel.getPixel(10),
+			justifyContent: 'center',
+			alignItems: 'center',
+			borderRadius: Pixel.getPixel(4),
+		},
+		loginButtonTextStyle: {
+			color: FontAndColor.COLORA3,
+			fontSize: Pixel.getFontPixel(FontAndColor.BUTTONFONT)
+		},
+		imageStyle: {
+			marginTop: Pixel.getPixel(20),
+			width: Pixel.getPixel(327),
+			height: Pixel.getPixel(415),
+		},
+		progressImageStyle: {
+			marginTop: Pixel.getPixel(15),
+			width: Pixel.getPixel(291),
+			height: Pixel.getPixel(30),
+		},
+		textInputStyle: {
+
+			width: Width - Pixel.getPixel(30),
+			flex: 1,
+			textAlign: 'left',
+			marginTop: Pixel.getPixel(10),
+			fontSize: Pixel.getFontPixel(FontAndColor.LITTLEFONT),
+			marginLeft: Pixel.getPixel(10),
+			paddingLeft: Pixel.getPixel(0),
+			paddingTop: 0,
+			paddingBottom: 0,
+			color: FontAndColor.COLORA0,
+
+		},
+
+	})
+	;

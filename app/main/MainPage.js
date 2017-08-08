@@ -35,7 +35,8 @@ import NonCreditScene from './NonCreditScene';
 import LoginScene from '../login/LoginScene';
 import AllSelectCompanyScene from '../main/AllSelectCompanyScene';
 let tabArray = [];
-
+import CustomerServiceButton  from '../component/CustomerServiceButton';
+import WorkBenchScene from './WorkBenchScene';
 export class tableItemInfo {
     constructor(ref, key, title, selectedImg, defaultImg, topView) {
 
@@ -69,6 +70,7 @@ export default class MainPage extends BaseComponent {
     componentWillUnmount() {
         tabArray = [];
     }
+
     /**
      * 初始化,指定tab及页面被选中
      */
@@ -127,8 +129,9 @@ export default class MainPage extends BaseComponent {
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
                 }}/>),
-            new tableItemInfo('sendpage', 'page13', '发布', require('../../images/mainImage/publishSelect.png'), require('../../images/mainImage/publishUnSelect.png'),
-                <PublishModal backToLogin={()=>{
+            new tableItemInfo('sendpage', 'page3', '工作台', require('../../images/workbench/gztxz.png'),
+                require('../../images/workbench/gztwxz.png'),
+                <WorkBenchScene backToLogin={()=>{
                      this.backToLogin({name:'LoginScene',component:LoginScene});
                 }} showModal={(value)=>{
                     this.props.showModal(value);
@@ -267,8 +270,9 @@ export default class MainPage extends BaseComponent {
 
                     this.toNextPage(params);
                 }}/>),
-            new tableItemInfo('sendpage', 'page3', '发布', require('../../images/mainImage/sendButton.png'), require('../../images/mainImage/sendButton.png'),
-                <PublishModal backToLogin={()=>{
+            new tableItemInfo('sendpage', 'page3', '工作台', require('../../images/workbench/gztxz.png'),
+                require('../../images/workbench/gztwxz.png'),
+                <WorkBenchScene backToLogin={()=>{
                      this.backToLogin({name:'LoginScene',component:LoginScene});
                 }} showModal={(value)=>{
                     this.props.showModal(value);
@@ -333,7 +337,7 @@ export default class MainPage extends BaseComponent {
                   });
                       }else{
                             this.setState({selectedTab: ref})
-                        StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
+                            StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
                       }
                     }
                 }} callBack={(params)=> {
@@ -348,8 +352,9 @@ export default class MainPage extends BaseComponent {
 
                     this.toNextPage(params);
                 }}/>),
-            new tableItemInfo('sendpage', 'page3', '发布', require('../../images/mainImage/sendButton.png'), require('../../images/mainImage/sendButton.png'),
-                <PublishModal backToLogin={()=>{
+            new tableItemInfo('sendpage', 'page3', '工作台', require('../../images/workbench/gztxz.png'),
+                require('../../images/workbench/gztwxz.png'),
+                <WorkBenchScene backToLogin={()=>{
                      this.backToLogin({name:'LoginScene',component:LoginScene});
                 }} showModal={(value)=>{
                     this.props.showModal(value);
@@ -460,30 +465,12 @@ export default class MainPage extends BaseComponent {
                 selected={this.state.selectedTab === data.ref}
                 key={data.key}
                 title={data.title}
-                renderSelectedIcon={() => <Image style={data.key === 'page3' ? styles.bigimg : styles.img}
+                renderSelectedIcon={() => <Image style={styles.img}
                                                  source={data.selectedImg}/>}
-                renderIcon={() => <Image style={data.key === 'page3' ? styles.bigimg : styles.img}
+                renderIcon={() => <Image style={styles.img}
                                          source={data.defaultImg}/>}
                 onPress={() => {
-                    if(data.ref==='sendpage'){
-                        this.publishModal.openModal();
-                    }else if(data.ref==='financePage'){
-                             StorageUtil.mGetItem(storageKeyNames.NEED_GESTURE,(datas)=>{
-                       if(datas.code==1){
-                             if(datas.result=='true'){
-                             this.toNextPage({name:'LoginGesture',component:LoginGesture,params:{
-                                callBack:()=>{
-                                    this.setState({selectedTab: data.ref})
-                               }
-                            }});
-                          }else{
-                                this.setState({selectedTab: data.ref})
-                                  }
-                       }
-                  });
-                      } else{
                         this.setState({selectedTab: data.ref})
-                        }
                     }
                 }
                 selectedTitleStyle={styles.selectedTitleStyle}
@@ -506,13 +493,13 @@ export default class MainPage extends BaseComponent {
                 <TabNavigator
                     sceneStyle={{backgroundColor: '#00000000'}}
                     tabBarShadowStyle={{backgroundColor: '#00000000'}}
-                    tabBarStyle={{overflow: 'visible', height: Pixel.getPixel(75), backgroundColor: '#00000000'}}
+                    tabBarStyle={{overflow: 'visible', height: Pixel.getPixel(65), backgroundColor: '#00000000'}}
                 >
                     {items}
                 </TabNavigator>
                 <View
                     style={[styles.imageStyle, this.props.identity == "finance" ? {width: Pixel.getPixel(1)} : {width: 0}]}></View>
-
+                <CustomerServiceButton ref='customerservicebutton'/>
             </View>
         );
     }

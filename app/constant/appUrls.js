@@ -1,7 +1,7 @@
 /**
  * 开发地址
  */
-export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+//export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
@@ -11,7 +11,7 @@ export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 /**
  * 正式地址
  */
-//export const BASEURL = 'https://gatewayapi.dycd.com/';
+export const BASEURL = 'https://gatewayapi.dycd.com/';
 
 /**
  * 预发布地址
@@ -102,6 +102,8 @@ export const CAR_SEARCH_TOP = BASEURL + V + 'car/searchTop';
  */
 export const CAR_DETAIL = BASEURL + V + 'car/detail';
 
+
+
 /**
  * 获取车辆配置信息
  */
@@ -151,6 +153,16 @@ export const CAR_USER_CAR = BASEURL + V + 'user/car';
  * 我的车源-已上架/下架-操作
  */
 export const CAR_STATUS = BASEURL + V + 'car/status';
+
+/**
+ * 我的车源-更新车辆发布时间
+ */
+export const CAR_REFRESH_TIME = BASEURL + V + 'car/refreshPublisherTime';
+
+/**
+ * 我的车源-已售操作
+ */
+export const CAR_SALE = BASEURL + V + 'car/sale';
 
 /**
  * 获取我的车源-未审核

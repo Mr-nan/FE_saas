@@ -27,7 +27,6 @@ import RepaymenyTabBar from '../../finance/repayment/component/RepaymenyTabBar';
 import * as fontAndColor from '../../constant/fontAndColor';
 import * as AppUrls from "../../constant/appUrls";
 import  {request}           from '../../utils/RequestUtil';
-import CarPublishFirstScene from '../../carSource/CarPublishFirstScene';
 import {LendSuccessAlert} from '../../finance/lend/component/ModelComponent'
 import PixelUtil from '../../utils/PixelUtil';
 import {StatisticalListView} from "../../message/dailyReminder/StatisticalListView";
