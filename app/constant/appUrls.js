@@ -1,7 +1,7 @@
 /**
  * 开发地址
  */
-//export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
@@ -11,7 +11,7 @@
 /**
  * 正式地址
  */
-export const BASEURL = 'https://gatewayapi.dycd.com/';
+//export const BASEURL = 'https://gatewayapi.dycd.com/';
 
 /**
  * 预发布地址
@@ -985,4 +985,12 @@ export const CUSTOMER_ADD_URL = PRE + "customer/customerInsert.do";
 /**
  *  获取待办消息数量
  */
-export const HANDLE_COUNT = BASEURL + V + "cheshang/sass/handleCount";
+export const HANDLE_COUNT = BASEURL + "cheshang/sass/handleCount";
+/**
+ *  获取系统消息或车市头条消息数量
+ */
+export const SELECT_UNREAD_MESSAGE_COUNT = BASEURL + "cheshang/sass/selectUnReadMessageCount";
+/**
+ *  待办事项、系统消息、车市头条列表数据
+ */
+export const SELECT_MSG_BY_CONTENT_TYPE = BASEURL + "cheshang/sass/selectMsgByContentType";

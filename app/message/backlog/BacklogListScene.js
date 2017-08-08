@@ -20,6 +20,8 @@ import PixelUtil from '../../utils/PixelUtil';
 import DailyReminderScene from "../dailyReminder/DailyReminderScene";
 const Pixel = new PixelUtil();
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
+import * as AppUrls from "../../constant/appUrls";
+import {request, requestNoToken} from "../../utils/RequestUtil";
 
 export class BacklogListScene extends BaseComponent {
 
@@ -43,14 +45,23 @@ export class BacklogListScene extends BaseComponent {
             dataSource: ds.cloneWithRows(['0', '1']),
             renderPlaceholderOnly: 'success'
         });
-        //this.loadData();
+        this.loadData();
     };
 
     /**
      *
      **/
     loadData = () => {
+        let url = AppUrls.SELECT_MSG_BY_CONTENT_TYPE;
+        requestNoToken(url, 'post', {
+            accountMobile: '15102373842',
+            token: '99ce9653-b199-4797-a563-63c748da923c',
 
+        }).then((response) => {
+
+        }, (error) => {
+
+        });
     };
 
     /**

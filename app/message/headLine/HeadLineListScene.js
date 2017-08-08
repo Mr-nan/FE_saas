@@ -19,6 +19,8 @@ import * as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
 import DailyReminderScene from "../dailyReminder/DailyReminderScene";
 const Pixel = new PixelUtil();
+import * as AppUrls from "../../constant/appUrls";
+import {request, requestNoToken} from "../../utils/RequestUtil";
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 
 export class HeadLineListScene extends BaseComponent {
@@ -50,7 +52,15 @@ export class HeadLineListScene extends BaseComponent {
      *
      **/
     loadData = () => {
+        let url = AppUrls.HANDLE_COUNT;
+        requestNoToken(url, 'post', {
+            accountMobile: '15102373842',
+            token: '99ce9653-b199-4797-a563-63c748da923c'
+        }).then((response) => {
 
+        }, (error) => {
+
+        });
     };
 
     /**
