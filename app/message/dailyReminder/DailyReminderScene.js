@@ -27,12 +27,12 @@ import RepaymenyTabBar from '../../finance/repayment/component/RepaymenyTabBar';
 import * as fontAndColor from '../../constant/fontAndColor';
 import * as AppUrls from "../../constant/appUrls";
 import  {request}           from '../../utils/RequestUtil';
-import CarPublishFirstScene from '../../carSource/CarPublishFirstScene';
 import {LendSuccessAlert} from '../../finance/lend/component/ModelComponent'
 import PixelUtil from '../../utils/PixelUtil';
 import {DailyReminderSelectView} from "../component/DailyReminderSelectView";
 import {ShareListView} from "./ShareListView";
 import {StatisticalListView} from "./StatisticalListView";
+import CarPublishFirstScene from "../../carSource/carPublish/CarPublishFirstScene";
 const Pixel = new PixelUtil();
 
 

@@ -129,9 +129,9 @@ export default class MainPage extends BaseComponent {
                 }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
                     this.toNextPage(params);
                 }}/>),
-            new tableItemInfo('sendpage', 'page13', '工作台', require('../../images/workbench/gztxz.png'),
+            new tableItemInfo('sendpage', 'page3', '工作台', require('../../images/workbench/gztxz.png'),
                 require('../../images/workbench/gztwxz.png'),
-                <PublishModal backToLogin={()=>{
+                <WorkBenchScene backToLogin={()=>{
                      this.backToLogin({name:'LoginScene',component:LoginScene});
                 }} showModal={(value)=>{
                     this.props.showModal(value);
@@ -272,7 +272,7 @@ export default class MainPage extends BaseComponent {
                 }}/>),
             new tableItemInfo('sendpage', 'page3', '工作台', require('../../images/workbench/gztxz.png'),
                 require('../../images/workbench/gztwxz.png'),
-                <PublishModal backToLogin={()=>{
+                <WorkBenchScene backToLogin={()=>{
                      this.backToLogin({name:'LoginScene',component:LoginScene});
                 }} showModal={(value)=>{
                     this.props.showModal(value);

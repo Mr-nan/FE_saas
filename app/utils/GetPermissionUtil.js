@@ -3,8 +3,19 @@ import {
     PixelRatio,
     Platform,
 } from 'react-native';
+import StoreReceptionManageNewScene from "../crm/StoresReception/StoreReceptionManageNewScene";
+import KeepCustomerManageScene from "../crm/KeepCustomer/KeepCustomerManageScene";
+import {BacklogListScene} from "../message/backlog/BacklogListScene";
+import DailyReminderScene from "../message/dailyReminder/DailyReminderScene";
+import {HeadLineListScene} from "../message/headLine/HeadLineListScene";
+import Setting from "../mine/setting/Setting";
+import CarMySourceScene from "../carSource/CarMySourceScene";
+import CarPublishFirstScene from "../carSource/carPublish/CarPublishFirstScene";
+import CarTrimScene from "../carSource/carBuy/CarTrimScene";
+import CarBuyScene from "../carSource/carBuy/CarBuyScene";
+import CollectionIntent from "../collectionIntent/CollectionIntent";
+import CarSharedListScene from "../carSource/CarSharedListScene";
 const data = require('./quanxian.json');
-import Setting from '../mine/setting/Setting';
 const GetPermissionUtil = React.createClass({
 
     render(){
@@ -78,49 +89,75 @@ const GetPermissionUtil = React.createClass({
         if (id == 20) {
             image = require('../../images/workbench/fc.png');
             names = name;
-            component = Setting;
-            componentName = 'setting';
+            component = CarPublishFirstScene;
+            componentName = 'carpublishfirstscene';
         } else if (id == 21 || id == 22 || id == 23 || id == 24 || id == 25) {
             image = require('../../images/workbench/zb.png');
             names = '整备';
+            component = CarTrimScene;
+            componentName = 'cartrimscene';
         } else if (id == 19) {
             image = require('../../images/workbench/kcgl.png');
             names = name;
+            component = CarMySourceScene;
+            componentName = 'carmysourcescene';
         } else if (id == 26) {
             image = require('../../images/workbench/sc.png');
             names = name;
+            component = CarBuyScene;
+            componentName = 'carbuyscene';
         } else if (id == 28) {
             image = require('../../images/workbench/mdjd.png');
             names = name;
+            component = StoreReceptionManageNewScene;
+            componentName = 'storereceptionmanagenewscene';
         } else if (id == 29) {
             image = require('../../images/workbench/khgl.png');
             names = name;
+            component = KeepCustomerManageScene;
+            componentName = 'keepcustomermanagescene';
         } else if (id == 27) {
             image = require('../../images/workbench/yxzx.png');
             names = name;
+            component = Setting;
+            componentName = 'setting';
         } else if (id == 17) {
             image = require('../../images/workbench/plfx.png');
             names = name;
+            component = CarSharedListScene;
+            componentName = 'carsharedlistscene';
         } else if (id == 30) {
             image = require('../../images/workbench/dbsx.png');
             names = name;
+            component = BacklogListScene;
+            componentName = 'backloglistscene';
         } else if (id == 31) {
             image = require('../../images/workbench/mrtx.png');
             names = name;
+            component = DailyReminderScene;
+            componentName = 'dailyreminderscene';
         } else if (id == 33) {
             image = require('../../images/workbench/hdxx.png');
             names = name;
+            component = Setting;
+            componentName = 'setting';
         } else if (id == 18) {
             image = require('../../images/workbench/dycy.png');
             names = name;
+            component = CollectionIntent;
+            componentName = 'collectionintent';
         } else if (id == 32) {
             image = require('../../images/workbench/cstt.png');
             names = name;
+            component = HeadLineListScene;
+            componentName = 'headlinelistscene';
         } else if (id == 34) {
             image = require('../../images/workbench/xtxx.png');
             names = name;
+            component = Setting;
+            componentName = 'setting';
         }
-        return {name: names, id: id, image: image}
+        return {name: names, id: id, image: image, component: component, componentName: componentName}
     }, removal(array){
         let r = [];
         for (let i = 0, l = array.length; i < l; i++) {

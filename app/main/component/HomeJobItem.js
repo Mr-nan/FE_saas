@@ -39,7 +39,8 @@ export default class HomeJobItem extends PureComponent {
             }
             if (i < 4) {
                 firstChild.push(<HomeJobButton key={'job'+i} image={this.list[i].image} name={this.list[i].name}
-                                               click={()=>{}}/>);
+                                               click={()=>{this.props.callBack({name:this.list[i].componentName,
+                                           component:this.list[i].component,params:{}})}}/>);
             } else {
                 if (i > 6 && this.list.length > 8) {
                     lastChild.push(<HomeJobButton key={'job'+i} image={require('../../../images/workbench/gd.png')}
@@ -47,7 +48,8 @@ export default class HomeJobItem extends PureComponent {
                                                   click={()=>{this.props.jumpScene('sendpage','a')}}/>);
                 } else {
                     lastChild.push(<HomeJobButton key={'job'+i} image={this.list[i].image} name={this.list[i].name}
-                                                  click={()=>{}}/>);
+                                                  click={()=>{this.props.callBack({name:this.list[i].componentName,
+                                           component:this.list[i].component,params:{}})}}/>);
                 }
 
             }

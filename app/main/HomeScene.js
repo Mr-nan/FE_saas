@@ -93,7 +93,8 @@ export default class HomeScene extends BaseComponet {
                     </TouchableOpacity>
                 </View>
 
-                <HomeJobItem jumpScene={(ref,com)=>{this.props.jumpScene(ref,com)}}/>
+                <HomeJobItem jumpScene={(ref,com)=>{this.props.jumpScene(ref,com)}}
+                             callBack={(params)=>{this.props.callBack(params)}}/>
                 <HomeRowButton/>
                 <HomeAdvertisementButton/>
 
