@@ -35,34 +35,35 @@ export default class HomeJobItem extends PureComponent {
         let firstChild = [];
         let itemList = [];
         for (let i = 0; i < this.list.length; i++) {
-            firstChild.push(<HomeJobButton key={'job'+i} image={this.list[i].image} name={this.list[i].name}
+            firstChild.push(<HomeJobButton key={'job'+i} image={this.list[i].image}
+                                           name={this.list[i].name}
                                            click={()=>{this.props.callBack({name:this.list[i].componentName,
                                            component:this.list[i].component,params:{}})}}/>);
         }
         let index = Math.ceil(firstChild.length / 4);
-        for (let i = 1; i <= index; i++) {
-            if (i == 1) {
+        for (let i = 0; i < index; i++) {
+            if (i == 0) {
                 let child = [];
                 for (let j = 0; j < firstChild.length; j++) {
                     child.push(firstChild[j]);
                 }
                 if (child.length > 4) {
-                    child.splice(3, child.length);
+                    child.splice(4, child.length);
                 }
                 itemList.push(<View key={'view'+i} style={[{marginTop:Pixel.getPixel(15),width:width,
-                flexDirection: 'row'},i==index?{marginBottom:Pixel.getPixel(20)}:{}]}>
+                flexDirection: 'row'},i==index-1?{marginBottom:Pixel.getPixel(20)}:{}]}>
                     {child}
                 </View>);
             } else {
                 let child = [];
-                for (let j = i * 4 - 1; j < firstChild.length; j++) {
+                for (let j = i * 4; j < firstChild.length; j++) {
                     child.push(firstChild[j]);
                 }
                 if (child.length > 4) {
                     child.splice(3, child.length);
                 }
                 itemList.push(<View key={'view'+i} style={[{marginTop:Pixel.getPixel(22),width:width,
-                flexDirection: 'row'},i==index?{marginBottom:Pixel.getPixel(20)}:{}]}>
+                flexDirection: 'row'},i==index-1?{marginBottom:Pixel.getPixel(20)}:{}]}>
                     {child}
                 </View>);
             }
