@@ -27,7 +27,7 @@ const cellJianTou = require('../../../images/mainImage/celljiantou.png');
  **/
 const {width, height} = Dimensions.get('window');
 
-export default class StoreReceptionManageNewScene extends BaseComponent {
+export default class KeepCustomerManageScene extends BaseComponent {
 
     /**
      *
