@@ -1,7 +1,7 @@
 /**
  * 开发地址
  */
-//export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
@@ -11,7 +11,7 @@
 /**
  * 正式地址
  */
-export const BASEURL = 'https://gatewayapi.dycd.com/';
+//export const BASEURL = 'https://gatewayapi.dycd.com/';
 
 /**
  * 预发布地址
@@ -963,10 +963,14 @@ export const FIRST_PAYMENT_PAY_CALLBACK = BASEURL + V + 'order_finance/firstPaym
 export const PRE = "http://10.3.10.38:8080/";
 //CRM TEST
 /**
- *  添加潜在客户
+ *  门店管理web页
  */
 export const STORE_RECEPTION_MANAGE = PRE + "ceshi.do?mobile=15102373840";
 /**
  *  添加潜在客户
  */
 export const CUSTOMER_ADD_URL = PRE + "customer/customerInsert.do";
+/**
+ *  获取待办消息数量
+ */
+export const HANDLE_COUNT = BASEURL + V + "cheshang/sass/handleCount";

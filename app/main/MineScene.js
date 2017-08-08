@@ -83,14 +83,6 @@ let Car = [
     {
         "cars": [
             {
-                "icon": require('../../images/mainImage/yuangongguanli.png'),
-                "name": "消息"
-            },
-            {
-                "icon": require('../../images/mainImage/yuangongguanli.png'),
-                "name": "门店接待管理"
-            },
-            {
                 "icon": require('../../images/mainImage/myCarSource.png'),
                 "name": "我的车源"
             },
@@ -325,14 +317,6 @@ export default class MineScene extends BaseComponent {
             {
                 "cars": [
                     {
-                        "icon": require('../../images/mainImage/yuangongguanli.png'),
-                        "name": "消息"
-                    },
-                    {
-                        "icon": require('../../images/mainImage/yuangongguanli.png'),
-                        "name": "门店接待管理"
-                    },
-                    {
                         "icon": require('../../images/mainImage/myCarSource.png'),
                         "name": "我的车源"
                     },
@@ -563,14 +547,6 @@ export default class MineScene extends BaseComponent {
             case '员工管理':
                 this.navigatorParams.name = 'EmployeeManageScene'
                 this.navigatorParams.component = EmployeeManageScene
-                break;
-            case '消息':
-                this.navigatorParams.name = 'MessageList'
-                this.navigatorParams.component = MessageList
-                break;
-            case '门店接待管理':
-                this.navigatorParams.name = 'StoreReceptionManageNewScene'
-                this.navigatorParams.component = StoreReceptionManageNewScene
                 break;
             case '我的车源':
                 this.navigatorParams.name = 'MycarScene'

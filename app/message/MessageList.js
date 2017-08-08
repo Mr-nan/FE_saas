@@ -51,14 +51,21 @@ export default class MessageList extends BaseComponent {
             dataSource: ds.cloneWithRows(['0', '1', '2', '3', '4']),
             renderPlaceholderOnly: 'success'
         });
-        //this.loadData();
+        this.loadData();
     };
 
     /**
      *   数据请求
      **/
     loadData = () => {
+        let url = AppUrls.HANDLE_COUNT;
+        request(url, 'post', {
+            accountMobile: '18000000002'
+        }).then((response) => {
 
+        }, (error) => {
+
+        });
     };
 
     /**
