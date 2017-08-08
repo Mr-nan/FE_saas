@@ -67,7 +67,6 @@ const GetPermissionUtil = React.createClass({
                     }
                 }
             }
-
         }
         return this.removal(list);
     }, getInfoById(id, name){
@@ -106,13 +105,13 @@ const GetPermissionUtil = React.createClass({
         } else if (id == 33) {
             image = require('../../images/workbench/hdxx.png');
             names = name;
-        }else if (id == 18) {
+        } else if (id == 18) {
             image = require('../../images/workbench/dycy.png');
             names = name;
-        }else if (id == 32) {
+        } else if (id == 32) {
             image = require('../../images/workbench/cstt.png');
             names = name;
-        }else if (id == 34) {
+        } else if (id == 34) {
             image = require('../../images/workbench/xtxx.png');
             names = name;
         }
@@ -125,6 +124,39 @@ const GetPermissionUtil = React.createClass({
             r.push(array[i]);
         }
         return r;
+    }, getAllList(){
+        let list = [];
+        data.data.response.sort(function (a, b) {
+            return a.sort_id - b.sort_id;
+        });
+        for (let i = 0; i < data.data.response.length; i++) {
+            data.data.response[i].children.sort(function (a, b) {
+                return a.sort_id - b.sort_id;
+            });
+            for (let j = 0; j < data.data.response[i].children.length; j++) {
+                data.data.response[i].children[j].children.sort(function (a, b) {
+                    return a.sort_id - b.sort_id;
+                });
+            }
+        }
+        for (let i = 0; i < data.data.response.length; i++) {
+            if (data.data.response[i].id == 3) {
+                for (let j = 0; j < data.data.response[i].children.length; j++) {
+                    let childList = [];
+                    for (let k = 0; k < data.data.response[i].children[j].children.length; k++) {
+                        childList.push(this.getInfoById(data.data.response[i].children[j].children[k].id,
+                            data.data.response[i].children[j].children[k].name));
+                    }
+                    list.push({
+                        name: data.data.response[i].children[j].name,
+                        id: data.data.response[i].children[j].id,
+                        childList: this.removal(childList)
+                    });
+                }
+            }
+        }
+        return list;
+
     }
 });
 

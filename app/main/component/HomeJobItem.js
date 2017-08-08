@@ -41,10 +41,10 @@ export default class HomeJobItem extends PureComponent {
                 firstChild.push(<HomeJobButton key={'job'+i} image={this.list[i].image} name={this.list[i].name}
                                                click={()=>{}}/>);
             } else {
-                if (i > 6) {
+                if (i > 6 && this.list.length > 8) {
                     lastChild.push(<HomeJobButton key={'job'+i} image={require('../../../images/workbench/gd.png')}
                                                   name='更多'
-                                                  click={()=>{}}/>);
+                                                  click={()=>{this.props.jumpScene('sendpage','a')}}/>);
                 } else {
                     lastChild.push(<HomeJobButton key={'job'+i} image={this.list[i].image} name={this.list[i].name}
                                                   click={()=>{}}/>);

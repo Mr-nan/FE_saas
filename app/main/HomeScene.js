@@ -92,7 +92,7 @@ export default class HomeScene extends BaseComponet {
                     </TouchableOpacity>
                 </View>
 
-                <HomeJobItem/>
+                <HomeJobItem jumpScene={(ref,com)=>{this.props.jumpScene(ref,com)}}/>
                 <HomeRowButton/>
                 <HomeAdvertisementButton/>
 
@@ -195,13 +195,13 @@ export default class HomeScene extends BaseComponet {
                             }
 
                             this.setState({
-                                 renderPlaceholderOnly: 'success',
+                                renderPlaceholderOnly: 'success',
                                 source: ds.cloneWithRows(allList), isRefreshing: false,
                                 allData: response.mjson.data
                             });
                             if (allList.length <= 0) {
                                 this.setState({
-                                     renderPlaceholderOnly: 'success',
+                                    renderPlaceholderOnly: 'success',
                                     source: ds.cloneWithRows(['1']), isRefreshing: false,
                                     allData: response.mjson.data
                                 });
@@ -332,7 +332,6 @@ export default class HomeScene extends BaseComponet {
             this.props.jumpScene('financePage');
         }
     }
-
 
 
     _renderRow = (movie, sindex, rowID) => {
