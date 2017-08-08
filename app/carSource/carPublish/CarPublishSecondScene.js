@@ -17,17 +17,17 @@ import {
     KeyboardAvoidingView
 }   from 'react-native';
 
-import BaseComponent from '../component/BaseComponent';
-import AllNavigationView from '../component/AllNavigationView';
-import {CellView, CellSelectView} from './znComponent/CarPublishCell';
-import CarSelectRegisterPersonScene from './CarSelectRegisterPersonScene';
-import CarlicenseTagScene from  './carPublish/CarlicenseTagScene';
+import BaseComponent from '../../component/BaseComponent';
+import AllNavigationView from '../../component/AllNavigationView';
+import {CellView, CellSelectView} from '../znComponent/CarPublishCell';
+import CarSelectRegisterPersonScene from '../CarSelectRegisterPersonScene';
+import CarlicenseTagScene from  './CarlicenseTagScene';
 import CarUpImageScene   from './CarUpImageScene';
-import CityListScene from  './CityListScene';
-import *as fontAndColor from '../constant/fontAndColor';
-import PixelUtil from '../utils/PixelUtil';
-import StorageUtil from "../utils/StorageUtil";
-import CarReferencePriceScene from './CarReferencePriceScene';
+import CityListScene from  '../CityListScene';
+import *as fontAndColor from '../../constant/fontAndColor';
+import PixelUtil from '../../utils/PixelUtil';
+import StorageUtil from "../../utils/StorageUtil";
+import CarReferencePriceScene from '../CarReferencePriceScene';
 
 const Pixel = new PixelUtil();
 const sceneWidth = Dimensions.get('window').width;
@@ -725,7 +725,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                     <ScrollView ref={(ref)=>{this.scrollView = ref}} keyboardDismissMode={'on-drag'}>
                         <View style={{width:sceneWidth,paddingVertical:Pixel.getPixel(25),backgroundColor:'white'}}>
                             <Image style={{width:sceneWidth}} resizeMode={'contain'}
-                                   source={require('../../images/carSourceImages/publishCarperpos2.png')}/>
+                                   source={require('../../../images/carSourceImages/publishCarperpos2.png')}/>
                         </View>
                         {
                             this.state.titleData.map((data, index) => {

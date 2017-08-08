@@ -16,14 +16,14 @@ import {
     Platform
 }   from 'react-native';
 
-import BaseComponent from '../component/BaseComponent';
-import AllNavigationView from '../component/AllNavigationView';
-import {CellView,CellSelectView} from './znComponent/CarPublishCell';
-import *as fontAndColor from '../constant/fontAndColor';
-import PixelUtil from '../utils/PixelUtil';
+import BaseComponent from '../../component/BaseComponent';
+import AllNavigationView from '../../component/AllNavigationView';
+import {CellView,CellSelectView} from '../znComponent/CarPublishCell';
+import *as fontAndColor from '../../constant/fontAndColor';
+import PixelUtil from '../../utils/PixelUtil';
 
-import *as AppUrls from '../constant/appUrls';
-import * as Net from '../utils/RequestUtil';
+import *as AppUrls from '../../constant/appUrls';
+import * as Net from '../../utils/RequestUtil';
 
 const Pixel = new  PixelUtil();
 const sceneWidth = Dimensions.get('window').width;
