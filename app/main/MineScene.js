@@ -40,6 +40,10 @@ import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
 import AccountModal from '../component/AccountModal';
 import OrderTypeSelectScene from  '../mine/myOrder/OrderTypeSelectScene';
+import CustomerAddScene from "../crm/StoresReception/ClientAddScene";
+import StoreReceptionManageScene from "../crm/StoresReception/StoreReceptionManageScene";
+import MessageList from "../message/MessageList";
+import StoreReceptionManageNewScene from "../crm/StoresReception/StoreReceptionManageNewScene";
 
 let Platform = require('Platform');
 import ImagePicker from "react-native-image-picker";
