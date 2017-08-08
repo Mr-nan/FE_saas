@@ -99,7 +99,19 @@ export default class MyCarCell extends Component {
                             <View style={{backgroundColor:'white'}}>
                                 <Text allowFontScaling={false} numberOfLines={1}  style={styles.mainText}>{(carCellData.city_name!=""?('['+carCellData.city_name+']'):"")+(carCellData.model_name)}</Text>
                                 <Text allowFontScaling={false}  style={styles.subTitleText}>{this.dateReversal(carCellData.manufacture+'000',false)+'初登 | '+carCellData.mileage+'万公里'}</Text>
-                                <Text allowFontScaling={false}  style={styles.subTitleText}>{carCellData.dealer_price>0?(this.carMoneyChange(carCellData.dealer_price) +'万'):''}</Text>
+                                {
+                                    (carCellData.dealer_price>0 && carCellData.low_price>0) &&
+                                    (<Text allowFontScaling={false}  style={styles.subTitleText}>{(this.carMoneyChange(carCellData.dealer_price)) +'万 | 低价：' +(this.carMoneyChange(carCellData.low_price))}万</Text>)
+                                }
+                                {
+                                    (carCellData.dealer_price>0 &&carCellData.low_price<=0) &&
+                                    (<Text allowFontScaling={false}  style={styles.subTitleText}>{(this.carMoneyChange(carCellData.dealer_price))}万</Text>)
+                                }
+                                {
+                                    (carCellData.low_price>0 && carCellData.dealer_price<=0) &&
+                                    (<Text allowFontScaling={false}  style={styles.subTitleText}>{ '低价：' +(this.carMoneyChange(carCellData.low_price))}万</Text>)
+                                }
+
                             </View>
                             <View/>
                             {/*<Text allowFontScaling={false}  style={styles.carPriceText}>{carCellData.dealer_price>0?(this.carMoneyChange(carCellData.dealer_price) +'万'):''}</Text>*/}
@@ -116,7 +128,7 @@ export default class MyCarCell extends Component {
                                                 {/*<Image style={{marginRight:Pixel.getPixel(8)}} source={require('../../../images/carSourceImages/carPhoneIcon.png')}/>*/}
                                                 {/*<Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>2次</Text>*/}
                                                 <Image style={{marginRight:Pixel.getPixel(8)}} source={require('../../../images/carSourceImages/carDealIcon.png')}/>
-                                                <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>15天</Text>
+                                                <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>{carCellData.sale_day}天</Text>
                                             </View>
                                         )
                                     }
