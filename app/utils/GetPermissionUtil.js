@@ -31,6 +31,7 @@ const GetPermissionUtil = React.createClass({
         let list = [];
         let image = {};
         let unImage = {};
+        let ref = '';
         data.data.response.sort(function (a, b) {
             return a.sort_id - b.sort_id;
         });
@@ -38,24 +39,30 @@ const GetPermissionUtil = React.createClass({
             if (data.data.response[i].id == 1) {
                 image = require('../../images/mainImage/homeSelect.png');
                 unImage = require('../../images/mainImage/homeUnSelect.png');
+                ref = 'firstpage';
             } else if (data.data.response[i].id == 2) {
                 image = require('../../images/mainImage/carSelect.png');
                 unImage = require('../../images/mainImage/carUnSelect.png');
+                ref = 'carpage';
             } else if (data.data.response[i].id == 3) {
                 image = require('../../images/workbench/gztxz.png');
                 unImage = require('../../images/workbench/gztwxz.png');
+                ref = 'sendpage';
             } else if (data.data.response[i].id == 4) {
                 image = require('../../images/mainImage/moneySelect.png');
                 unImage = require('../../images/mainImage/moneyUnSelect.png');
+                ref = 'financePage';
             } else if (data.data.response[i].id == 5) {
                 image = require('../../images/mainImage/mineSelect.png');
                 unImage = require('../../images/mainImage/mineUnSelect.png');
+                ref = 'mypage';
             }
             list.push({
                 name: data.data.response[i].name, id: data.data.response[i].id,
-                image: image, unImage: unImage, ref: '', key: 'page' + data.data.response[i].id
+                image: image, unImage: unImage, ref: ref, key: 'page' + data.data.response[i].id
             });
         }
+        return list;
     }, getLastList(){
         let list = [];
         data.data.response.sort(function (a, b) {

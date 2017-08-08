@@ -39,6 +39,7 @@ import  CarMySourceScene from '../carSource/CarMySourceScene';
 import HomeJobItem from './component/HomeJobItem';
 import HomeRowButton from './component/HomeRowButton';
 import HomeAdvertisementButton from './component/HomeAdvertisementButton';
+import MessageList from "../message/MessageList";
 
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 let allList = [];
@@ -73,7 +74,7 @@ export default class HomeScene extends BaseComponet {
                         this.props.jumpScene('carpage', 'true');
                     }} activeOpacity={0.8} style={{
                         backgroundColor: 'rgba(255,255,255,0.8)',
-                        width: width - Pixel.getPixel(40),
+                        width: width - Pixel.getPixel(75),
                         height: Pixel.getPixel(27),
                         position: 'absolute',
                         marginTop: Pixel.getTitlePixel(26)
@@ -90,6 +91,21 @@ export default class HomeScene extends BaseComponet {
                             backgroundColor: '#00000000', fontSize: Pixel.getPixel(fontAndClolr.CONTENTFONT24),
                             color: fontAndClolr.COLORA1
                         }}> 搜索您要找的车</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={()=> {
+                        this.props.callBack({name:'messagelist',component:MessageList,params:{}});
+                    }} activeOpacity={0.8} style={{
+                        backgroundColor: '#00000000',
+                        width: Pixel.getPixel(25),
+                        height: Pixel.getPixel(25),
+                        position: 'absolute',
+                        marginTop: Pixel.getTitlePixel(26)
+                        ,
+                        marginLeft: width - Pixel.getPixel(35),
+
+                    }}>
+                        <Image style={{flex:1,resizeMode:'stretch'}}
+                               source={require('../../images/workbench/ysjxx.png')}/>
                     </TouchableOpacity>
                 </View>
 
