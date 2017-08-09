@@ -6,6 +6,7 @@ var db;
 const Collection_TABLE_NAME = "CarName";//收藏表
 const PUBLISH_TABLE_NAME = "publishCar"; //发布编辑
 const CAR_TYPE_LIST = 'carTypeList'; // 车型列表
+const MESSAGE_BACK_LOG_MODEL = 'messageBackLogModel'; // 待办事项列缓存表
 
 const SQLite = React.createClass({
 
@@ -71,6 +72,36 @@ const SQLite = React.createClass({
                 +'dealer_price VARCHAR default "",'
                 +'describe VARCHAR default "",'
                 +'modify VARCHAR default ""'
+                + ');'
+                , [], () => {
+                    this._successCB('executeSql');
+                }, (err) => {
+                    this._errorCB('executeSql', err);
+                });
+        }, (err) => {
+            this._errorCB('transaction', err);
+        }, () => {
+            this._successCB('transaction');
+        })
+
+        //创建待办事项列缓存表
+        db.transaction((tx) => {
+            tx.executeSql('CREATE TABLE IF NOT EXISTS ' + MESSAGE_BACK_LOG_MODEL + '('
+                + '_id INTEGER PRIMARY KEY ,'
+                +'CONTENT TEXT ,'
+                +'CONTENT_TYPE TEXT ,'
+                +'CREATE_TIME TEXT ,'
+                +'ENABLE INTEGER NOT NULL ,'
+                +'PUSH_FROM TEXT ,'
+                +'PUSH_STATUS INTEGER NOT NULL,'
+                +'PUSH_TO TEXT,'
+                +'ROLE_NAME TEXT,'
+                +'TASK_ID INTEGER NOT NULL,'
+                +'MENDIAN_ID INTEGER NOT NULL,'
+                +'BAOYOU_ID INTEGER NOT NULL,'
+                +'TITLE TEXT,'
+                +'IS_READ INTEGER NOT NULL,'
+                +'TEL TEXT'
                 + ');'
                 , [], () => {
                     this._successCB('executeSql');

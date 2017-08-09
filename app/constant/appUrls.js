@@ -994,3 +994,7 @@ export const SELECT_UNREAD_MESSAGE_COUNT = BASEURL + "cheshang/sass/selectUnRead
  *  待办事项、系统消息、车市头条列表数据
  */
 export const SELECT_MSG_BY_CONTENT_TYPE = BASEURL + "cheshang/sass/selectMsgByContentType";
+/**
+ *  门店查询当前人是否存在
+ */
+export const SELECT_CUST_IF_EXIST = BASEURL + "cheshang/customer/selectCustIfExist";

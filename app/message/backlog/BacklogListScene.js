@@ -52,11 +52,10 @@ export class BacklogListScene extends BaseComponent {
      *
      **/
     loadData = () => {
-        let url = AppUrls.SELECT_MSG_BY_CONTENT_TYPE;
+        let url = AppUrls.HANDLE_COUNT;
         requestNoToken(url, 'post', {
             accountMobile: '15102373842',
-            token: '99ce9653-b199-4797-a563-63c748da923c',
-
+            token: '99ce9653-b199-4797-a563-63c748da923c'
         }).then((response) => {
 
         }, (error) => {
