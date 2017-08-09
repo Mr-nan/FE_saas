@@ -40,10 +40,10 @@ export  default class InventoryRepaymentPage extends BaseComponent {
     }
 
     componentDidMount() {
-        InteractionManager.runAfterInteractions(() => {
+        //InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: 'loading'});
             this.initFinish();
-        });
+       // });
     }
 
     componentWillUnmount() {

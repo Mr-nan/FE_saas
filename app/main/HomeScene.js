@@ -162,11 +162,16 @@ export default class HomeScene extends BaseComponet {
     }
 
     componentDidMount() {
-        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
-        InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: 'loading'});
-            this.initFinish();
-        });
+        try {
+            BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        } catch (e) {
+
+        } finally {
+            //InteractionManager.runAfterInteractions(() => {
+                this.setState({renderPlaceholderOnly: 'loading'});
+                this.initFinish();
+            //});
+        }
     }
 
 //初始化结束后,请求网络,将数据添加到界面
