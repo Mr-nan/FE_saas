@@ -37,10 +37,10 @@ export default class BaseComponent extends Component {
         } catch (e) {
 
         } finally {
-            InteractionManager.runAfterInteractions(() => {
+            //InteractionManager.runAfterInteractions(() => {
                 this.setState({renderPlaceholderOnly: 'loading'});
                 this.initFinish();
-            });
+           // });
         }
 
 
@@ -88,7 +88,6 @@ export default class BaseComponent extends Component {
     }
 
     componentWillUnmount() {
-        BackAndroid.removeEventListener('hardwareBackPress', this.handleBack)
     }
 
     allRefreshParams = {

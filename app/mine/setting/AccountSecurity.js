@@ -36,10 +36,10 @@ export default class AccountSecurity extends BaseComponent {
     }
 
     initFinish = () => {
-        InteractionManager.runAfterInteractions(() => {
+        //InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: false});
             // this.Verifycode();
-        });
+        //});
         StorageUtil.mGetItem(StorageKeyNames.LOGIN_TYPE, (data) => {
             this.setState({
                 loginType: data.result

@@ -96,10 +96,10 @@ export default class RootScene extends BaseComponent {
         } catch (e) {
 
         } finally {
-            InteractionManager.runAfterInteractions(() => {
+            //InteractionManager.runAfterInteractions(() => {
                 this.setState({renderPlaceholderOnly: 'loading'});
                 this.initFinish();
-            });
+            //});
         }
 
 
