@@ -55,9 +55,8 @@ export default class LoanInfo extends BaseComponent {
                             params: {
                                 financeNo: this.state.financeInfo.loan_code,
                                 orderNo: this.props.orderNo,
-                                backRefresh: () => {
-                                    this.props.refresh;
-                                }
+                                backRefresh: this.props.refresh
+
                             }
                         });
                     }}>
