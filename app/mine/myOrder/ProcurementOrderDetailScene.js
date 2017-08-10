@@ -801,7 +801,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             case 11:
                 return (
                     <View style={styles.bottomBar}>
-                        <TouchableOpacity
+                        {/*<TouchableOpacity
                             onPress={() => {
                                 this.refs.chooseModal.changeShowType(true, '取消', '确定', '卖家将在您发起取消申请24小时内回复，如已支付订金将与卖家协商退款。',
                                     this.cancelOrder);
@@ -809,7 +809,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             <View style={styles.buttonCancel}>
                                 <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>取消订单</Text>
                             </View>
-                        </TouchableOpacity>
+                        </TouchableOpacity>*/}
                         <TouchableOpacity
                             onPress={() => {
                                 if (this.orderState == 3) {
