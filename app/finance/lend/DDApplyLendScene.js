@@ -297,11 +297,11 @@ export default class DDApplyLendScene extends BaseComponent {
                 }
             }
         } else {
-            if (this.carData.is_mortgagor == 1) {
-                status = '已上传';
+            if (audit == 1) {
+                status = '已通过';
             } else {
-                if (audit == 1) {
-                    status = '已通过';
+                if (this.carData.is_mortgagor == 1) {
+                    status = '已上传';
                 } else {
                     if (bind == 0) {
                         status = '未上传';
@@ -310,7 +310,6 @@ export default class DDApplyLendScene extends BaseComponent {
                     }
                 }
             }
-
         }
         return status;
 
