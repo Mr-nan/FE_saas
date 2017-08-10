@@ -14,39 +14,40 @@ import *as fontAndColor from  '../../../constant/fontAndColor';
 import PixelUtil from  '../../../utils/PixelUtil';
 let Pixel = new  PixelUtil();
 
-export default class CarBuyCell extends  Component{
+export default class CarTrimTaskCell extends  Component{
+
     render(){
-        let {titleData} = this.props;
+        let {cellData} = this.props;
+        console.log(cellData);
         return(
+
             <View style={styles.rootContainer}>
                 <View style={styles.titleView}>
-                    <Text style={styles.titleText}>{}</Text>
+                    <Text style={styles.titleText}>单号:{cellData.taskNum}</Text>
                 </View>
                 <View style={styles.contentView}>
                     <View style={styles.contentSubView}>
-                        <Text style={styles.subTitleText}>VIN:</Text>
-                        <Text style={styles.subTitleText}>1200299919992222</Text>
+                        <Text style={styles.subTitleText}>VIN</Text>
+                        <Text style={styles.subTitleText}>{cellData.vin}</Text>
                     </View>
                     <View style={styles.contentSubView}>
-                        <Text style={styles.subTitleText}>验车时间:</Text>
-                        <Text style={styles.subTitleText}>2017-07-17</Text>
+                        <Text style={styles.subTitleText}>车辆信息</Text>
+                        <Text style={styles.subTitleText}>{cellData.carName}</Text>
                     </View>
-
                     <View style={styles.contentSubView}>
-                        <Text style={styles.subTitleText}>{titleData.thirdly}</Text>
-                        <Text style={styles.subTitleText}>郑南 18690700551</Text>
+                        <Text style={styles.subTitleText}>任务时间</Text>
+                        <Text style={styles.subTitleText}>{cellData.taskTime}</Text>
                     </View>)
-
                 </View>
                 {
-                     this.props.btnTitle &&
-                     (<View style={styles.footView}>
-                         <TouchableOpacity onPress={this.props.cellBtnClick}>
-                             <View style={styles.footBtn}>
-                                 <Text style={styles.footBtnText}>{this.props.btnTitle}</Text>
-                             </View>
-                         </TouchableOpacity>
-                     </View>)
+                    this.props.btnTitle &&
+                    (<View style={styles.footView}>
+                        <TouchableOpacity onPress={this.props.cellBtnClick}>
+                            <View style={styles.footBtn}>
+                                <Text style={styles.footBtnText}>{this.props.btnTitle}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>)
                 }
 
             </View>

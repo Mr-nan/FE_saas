@@ -28,11 +28,13 @@ import CarBrandSelectScene from "../CarBrandSelectScene";
 import CarInfomationSourceScene from './CarInformationSourceScene';
 import CityListScene from "../CityListScene";
 import * as AppUrls from "../../constant/appUrls";
+import  {request}           from '../../utils/RequestUtil';
 import * as Net from "../../utils/ImageUpload";
 let Pixel = new  PixelUtil();
 const sceneWidth = Dimensions.get('window').width;
 const scanImg = require('../../../images/financeImages/scan.png');
 const IS_ANDROID = Platform.OS === 'android';
+
 
 
 export default class CarBuyTaskScene extends BaseComponent{
@@ -92,11 +94,35 @@ export default class CarBuyTaskScene extends BaseComponent{
     }
 
     cellSelectAction=(selectDict)=>{
-        alert(selectDict.title,selectDict.value);
+        this.carData['isDeal'] = selectDict.value;
     }
 
+    /**
+     * 提交
+     */
     footBtnClick=()=>{
-        alert('提交');
+
+        if(parseFloat(this.carData.consultPrice) >0)
+        {
+               if(this.carData.consultList.length>0){
+
+                   this.carData.consultList.push({consultPrice:this.carData.consultPrice, acquisitionId:0, id:0});
+
+               }else {
+                   this.carData.consultList = [{id:0,consultPrice:this.carData.consultPrice}];
+               }
+
+               this.carData.consultList = JSON.stringify(this.carData.consultList);
+        }
+        console.log(this.carData);
+
+        this.props.showModal(true);
+        request(AppUrls.CAR_SASS_PUBLISH, 'post', this.carData).then((response) => {
+            this.props.showModal(false);
+        }, (error) => {
+            this.props.showModal(false);
+        });
+
     }
 
     // 构造
@@ -106,6 +132,36 @@ export default class CarBuyTaskScene extends BaseComponent{
               {model_name: '扫描前风挡'},
               {model_name: '扫描行驶证'}
           ];
+          this.carData={
+              consultList:[],
+              isDeal:1,
+              collectionArea:'',
+              customerName:'',
+              contentNum:'',
+              consultPrice:'',
+              mobile:'18690700551',
+              vin:'',
+              closeingPrice:'',
+              collectionType:'',
+              preferPrice:'',
+              brand:'',
+              remark:'',
+              firstUpTime:'',
+              infoRecourse:'',
+          };
+
+          if(this.carData.isDeal == 1)
+          {
+              this.currentDealStr = '尚未成交';
+
+          }else if(this.carData.isDeal == 2)
+          {
+              this.currentDealStr = '已成交';
+
+          }else{
+              this.currentDealStr = '已放弃';
+          }
+
           this.titleData1=[
               [
                   {
@@ -170,6 +226,8 @@ export default class CarBuyTaskScene extends BaseComponent{
                                              maxLength={7}
                                              underlineColorAndroid='transparent'
                                              onChangeText={(text)=>{
+                                                 this.carData['customerName'] = text;
+
                                              }}/>
                               </View>)
                       }
@@ -189,7 +247,7 @@ export default class CarBuyTaskScene extends BaseComponent{
                                              maxLength={11}
                                              underlineColorAndroid='transparent'
                                              onChangeText={(text)=>{
-
+                                                this.carData['contentNum'] = text;
                                              }}/>
 
                               </View>)
@@ -218,6 +276,7 @@ export default class CarBuyTaskScene extends BaseComponent{
                                                      text = text.substring(0,text.length-1);
                                                  }
                                                  let moneyStr = this.chkPrice(text);
+                                                 this.carData['preferPrice'] = moneyStr;
                                                  this.online_retail_price.setNativeProps({
                                                      text: moneyStr,
                                                  });
@@ -239,7 +298,7 @@ export default class CarBuyTaskScene extends BaseComponent{
                       isShowTail:true,
                   },
                   {
-                      title:'初登日期',
+                      title:'上牌时间',
                       isShowTag:false,
                       value:'请选择',
                       isShowTail:true,
@@ -264,6 +323,7 @@ export default class CarBuyTaskScene extends BaseComponent{
                                                      text = text.substring(0,text.length-1);
                                                  }
                                                  let moneyStr = this.chkPrice(text);
+                                                 this.carData['consultPrice'] = moneyStr;
                                                  this.firstPrice.setNativeProps({
                                                      text: moneyStr,
                                                  });
@@ -280,7 +340,7 @@ export default class CarBuyTaskScene extends BaseComponent{
                       title:'是后成交',
                       isShowTag:false,
                       isShowTail:true,
-                      selectDict:{current:'尚未成交',data:[{title:'尚未成交',value:1},{title:'已经成交',value:2},{title:'已放弃',value:3}]},
+                      selectDict:{current:this.currentDealStr,data:[{title:'尚未成交',value:1},{title:'已经成交',value:2},{title:'已放弃',value:3}]},
                   },
 
               ],
@@ -305,6 +365,7 @@ export default class CarBuyTaskScene extends BaseComponent{
                                                      text = text.substring(0,text.length-1);
                                                  }
                                                  let moneyStr = this.chkPrice(text);
+                                                 this.carData['closeingPrice ']=moneyStr;
                                                  this.dealPrice.setNativeProps({
                                                      text: moneyStr,
                                                  });
@@ -334,6 +395,9 @@ export default class CarBuyTaskScene extends BaseComponent{
                                       this.setState({
                                           keyboardOffset:-Pixel.getPixel(64)
                                       });
+                                  }}
+                                  onChangeText={(text)=>{
+                                      this.carData['remark'] = text;
                                   }}
                                   placeholderTextColor={fontAndColor.COLORA4}
                                   placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
@@ -371,7 +435,7 @@ export default class CarBuyTaskScene extends BaseComponent{
 
             this.pushCityListScene();
 
-        }else if(title == '初登日期'){
+        }else if(title == '上牌时间'){
 
             this._labelPress('register');
 
@@ -404,7 +468,8 @@ export default class CarBuyTaskScene extends BaseComponent{
     _checkedCarClick=(carObject)=>{
 
         this.titleData1[0][1].value = carObject.model_name;
-        this.titleData1[2][3].value = carObject.model_year+'-06-01';
+        this.carData['brand'] = carObject.brand_name;
+        this.carData['collectionType'] = carObject.model_name;
         this.upTitleData();
     }
 
@@ -435,6 +500,7 @@ export default class CarBuyTaskScene extends BaseComponent{
      */
     carInformationSourceSelectAction =(selectObject)=>{
         this.titleData1[2][1].value = selectObject.title;
+        this.carData['infoRecourse']=selectObject.title;
     }
 
     /**
@@ -462,6 +528,7 @@ export default class CarBuyTaskScene extends BaseComponent{
     checkedCityClick = (city) => {
 
         this.titleData1[2][2].value = city.city_name;
+        this.carData['collectionArea'] = city.city_name;
         this.upTitleData();
     }
 
@@ -475,6 +542,7 @@ export default class CarBuyTaskScene extends BaseComponent{
         if(this.type === 'register') {
 
             this.titleData1[2][3].value = d;
+            this.carData['firstUpTime'] = d;
         }
 
         this.upTitleData();
@@ -534,8 +602,8 @@ export default class CarBuyTaskScene extends BaseComponent{
         }else if (type==0){
 
             this.titleData1[0][1].value = this.modelData[index].model_name;
-            this.titleData2[2][3].value = this.modelData[index].model_year+'-06-01';
-
+            this.carData['brand'] = this.modelData[index].brand_name;
+            this.carData['collectionType'] = this.modelData[index].model_name;
             this.upTitleData();
         }
 
@@ -573,7 +641,11 @@ export default class CarBuyTaskScene extends BaseComponent{
 
                             this.titleData1[0][0].subTitle='';
                             this.titleData1[0][1].value = rd[0].model_name;
-                            this.titleData1[2][3].value = rd[0].model_year+'-06-01';
+
+                            this.carData['vin'] = text;
+                            this.carData['brand'] = rd[0].brand_name;
+                            this.carData['collectionType'] = rd[0].model_name;
+
 
                             this.upTitleData();
 

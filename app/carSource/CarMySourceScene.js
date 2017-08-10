@@ -159,8 +159,12 @@ export default class CarMySourceScene extends BaceComponent {
 
         }else  if(typeStr == '管理'){
             this.setState({isShowManageView:true})
-        }else {
-            console.log(typeStr);
+        }else if(typeStr=='删除') {
+            this.refs.accountmodal.changeShowType(true,
+                '' +
+                '是否需要删除该车', '确定', '取消', () => {
+                    this.carDelete(this.carData.id);
+                });
         }
     }
 
@@ -207,7 +211,7 @@ export default class CarMySourceScene extends BaceComponent {
             this.refs.accountmodal.changeShowType(true,
                 '' +
                 '是否需要删除该车', '确定', '取消', () => {
-                  console.log('删除');
+                 this.carDelete(this.carData.id);
                 });
         }
     }
@@ -262,6 +266,34 @@ export default class CarMySourceScene extends BaceComponent {
                 this.props.showToast('已成功上架');
 
             }
+
+        }, (error) => {
+
+            this.props.showModal(false);
+            this.props.showToast(error.msg);
+        });
+    }
+
+    carDelete=(carID)=>{
+        this.props.showModal(true);
+        let url = AppUrls.CAR_DELETE;
+        request(url, 'post', {
+
+            id: carID,
+
+        }).then((response) => {
+
+            this.props.showModal(false);
+            this.refs.upperFrameView.refreshingData();
+            if((typeof(this.refs.upperFrameView)!= "undefined")){
+                this.refs.upperFrameView.refreshingData();
+            }
+
+            if((typeof(this.refs.dropFrameView)!= "undefined")){
+                this.refs.dropFrameView.refreshingData();
+            }
+            this.props.showToast('已删除该车辆');
+
 
         }, (error) => {
 
@@ -799,7 +831,7 @@ class MyCarSourceDropFrameView extends BaceComponent {
         let url = AppUrls.CAR_USER_CAR;
         carDropFramePage = 1;
         request(url, 'post', {
-            car_status: '2',
+            car_status: '4',
             page: carDropFramePage,
             row: 10,
 
@@ -842,7 +874,7 @@ class MyCarSourceDropFrameView extends BaceComponent {
         let url = AppUrls.CAR_USER_CAR;
         carDropFramePage += 1;
         request(url, 'post', {
-            car_status: '2',
+            car_status: '4',
             page: carDropFramePage,
             row: 10,
 
