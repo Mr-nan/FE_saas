@@ -27,7 +27,7 @@ import WebViewTitle from "../../mine/accountManage/component/WebViewTitle";
 const {width, height} = Dimensions.get('window');
 let oldUrl = '';
 
-export default class HeadLineDetailScene extends BaseComponent {
+export default class SysMessageDetailScene extends BaseComponent {
 
     /**
      *
@@ -59,7 +59,7 @@ export default class HeadLineDetailScene extends BaseComponent {
                 <View style={styles.container}>
                     <NavigationView
                         backIconClick={this.backPage}
-                        title="车市头条"
+                        title="系统消息"
                     />
                 </View>
             );
@@ -84,7 +84,7 @@ export default class HeadLineDetailScene extends BaseComponent {
                     />
                     <NavigationView
                         backIconClick={this.backPage}
-                        title="车市头条"
+                        title="系统消息"
                     />
                 </View>
             );

@@ -98,7 +98,7 @@ export default class ClientInfoInput extends PureComponent {
             value: text
         });
         if (text.length == 11 && this.props.items.name == '电话') {
-            this.uniqueCheck(text);
+            //this.uniqueCheck(text);
         }
     }
 

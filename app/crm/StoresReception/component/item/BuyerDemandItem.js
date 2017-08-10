@@ -38,8 +38,8 @@ export default class BuyerDemandItem extends BaseComponent {
             series_id: ''
         };
         this.childItems = [];
-        this.childItems.push({name: '购车预算', value: ''});
-        this.childItems.push({name: '意向车型', value: ''});
+        this.childItems.push({name: '购车预算', value: '', parameter: 'customerBudget'});
+        this.childItems.push({name: '意向车型', value: '', parameter: 'intentionalVehicle'});
     }
 
     /**

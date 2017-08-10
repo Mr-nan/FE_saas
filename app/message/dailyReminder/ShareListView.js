@@ -17,6 +17,8 @@ import NavigatorView from '../../component/AllNavigationView';
 import BaseComponent from '../../component/BaseComponent';
 import * as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
+import * as AppUrls from "../../constant/appUrls";
+import {request, requestNoToken} from "../../utils/RequestUtil";
 import DailyReminderScene from "../dailyReminder/DailyReminderScene";
 import ShareRankingScene from "./ShareRankingScene";
 const Pixel = new PixelUtil();
@@ -29,8 +31,10 @@ export class ShareListView extends BaseComponent {
      **/
     constructor(props) {
         super(props);
+        this.shareListData = [];
         this.state = {
             dataSource: [],
+            isRefreshing: false,
             renderPlaceholderOnly: 'blank'
         };
     }
@@ -39,19 +43,43 @@ export class ShareListView extends BaseComponent {
      *
      **/
     initFinish = () => {
-        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.setState({
-            dataSource: ds.cloneWithRows(['0', '0', '0']),
-            renderPlaceholderOnly: 'success'
-        });
-        //this.loadData();
+        /*        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+         this.setState({
+         dataSource: ds.cloneWithRows(['0', '0', '0']),
+         renderPlaceholderOnly: 'success'
+         });*/
+        this.loadData();
     };
 
     /**
      *
      **/
     loadData = () => {
-
+        let url = AppUrls.DAILY_REMINDER_RANK_LEVEL;
+        requestNoToken(url, 'post', {
+            type: 1,
+            token: '5afa531b-4295-4c64-8d6c-ac436c619078'
+        }).then((response) => {
+            this.shareListData = response.mjson.data;
+            if (this.shareListData && this.shareListData.length > 0) {
+                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                this.setState({
+                    dataSource: ds.cloneWithRows(this.shareListData),
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'success'
+                });
+            } else {
+                this.setState({
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'null'
+                });
+            }
+        }, (error) => {
+            this.setState({
+                isRefreshing: false,
+                renderPlaceholderOnly: 'error'
+            });
+        });
     };
 
     /**
@@ -91,33 +119,31 @@ export class ShareListView extends BaseComponent {
      *
      **/
     _renderRow = (rowData, selectionID, rowID) => {
-        if (rowData == '0') {
-            return (
-                <TouchableOpacity
-                    onPress={() => {
-                        this.toNextPage({
-                            name: 'ShareRankingScene',
-                            component: ShareRankingScene,
-                            params: {}
-                        });
-                    }}>
-                    <View style={styles.listItem}>
-                        <View style={{flexDirection: 'row'}}>
-                            <Text allowFontScaling={false} style={styles.title}>本周统计</Text>
-                            <View style={{flex: 1}}/>
-                            <Text allowFontScaling={false} style={styles.date}>本周统计</Text>
-                        </View>
-                        <Text allowFontScaling={false} style={styles.describe}>测试测试测试测试测试测试测试测试测试</Text>
-                        <View style={styles.separatedLine}/>
-                        <View style={styles.subItem}>
-                            <Text allowFontScaling={false} style={styles.subTitle}>查看详情</Text>
-                            <View style={{flex: 1}}/>
-                            <Image source={cellJianTou} style={styles.image}/>
-                        </View>
+        return (
+            <TouchableOpacity
+                onPress={() => {
+                    this.toNextPage({
+                        name: 'ShareRankingScene',
+                        component: ShareRankingScene,
+                        params: {}
+                    });
+                }}>
+                <View style={styles.listItem}>
+                    <View style={{flexDirection: 'row'}}>
+                        <Text allowFontScaling={false} style={styles.title}>每日统计</Text>
+                        <View style={{flex: 1}}/>
+                        <Text allowFontScaling={false} style={styles.date}>{rowData.days}</Text>
                     </View>
-                </TouchableOpacity>
-            )
-        }
+                    <Text allowFontScaling={false} style={styles.describe}>今日无人分享</Text>
+                    <View style={styles.separatedLine}/>
+                    <View style={styles.subItem}>
+                        <Text allowFontScaling={false} style={styles.subTitle}>查看详情</Text>
+                        <View style={{flex: 1}}/>
+                        <Image source={cellJianTou} style={styles.image}/>
+                    </View>
+                </View>
+            </TouchableOpacity>
+        )
     }
 
 }

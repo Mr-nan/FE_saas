@@ -31,11 +31,11 @@ export default class BaseInfoItem extends BaseComponent {
     constructor(props) {
         super(props);
         this.childItems = [];
-        this.childItems.push({name: '客户姓名', value: ''});
-        this.childItems.push({name: '电话', value: ''});
-        this.childItems.push({name: '当前客户状态', value: ''});
-        this.childItems.push({name: '信息来源', value: ''});
-        this.childItems.push({name: '地域', value: ''});
+        this.childItems.push({name: '客户姓名', value: '', parameter: 'customerName'});
+        this.childItems.push({name: '电话', value: '', parameter: 'customerPhone'});
+        this.childItems.push({name: '当前客户状态', value: '', parameter: 'customerStatus'});
+        this.childItems.push({name: '信息来源', value: '', parameter: 'informationSources'});
+        this.childItems.push({name: '地域', value: '', parameter: 'customerRegion'});
     }
 
     /**

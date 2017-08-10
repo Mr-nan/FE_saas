@@ -970,18 +970,16 @@ export const FIRST_PAYMENT_PAY = BASEURL + V + 'order_finance/firstPaymentPay';
  */
 export const FIRST_PAYMENT_PAY_CALLBACK = BASEURL + V + 'order_finance/firstPaymentPayCallback';
 
-
-//export const PRE = "http://192.168.1.160:8010/";
-export const PRE = "http://10.3.10.38:8080/";
 //CRM TEST
+export const PRE = "http://10.3.10.38:8080/";
 /**
  *  门店管理web页
  */
-export const STORE_RECEPTION_MANAGE = PRE + "ceshi.do?mobile=15102373840";
+export const STORE_RECEPTION_MANAGE = PRE + "ceshi.do?mobile=15102373842";
 /**
  *  添加潜在客户
  */
-export const CUSTOMER_ADD_URL = PRE + "customer/customerInsert.do";
+export const CUSTOMER_ADD_URL = BASEURL + "cheshang/customer/create";
 /**
  *  获取待办消息数量
  */
@@ -998,3 +996,11 @@ export const SELECT_MSG_BY_CONTENT_TYPE = BASEURL + "cheshang/sass/selectMsgByCo
  *  门店查询当前人是否存在
  */
 export const SELECT_CUST_IF_EXIST = BASEURL + "cheshang/customer/selectCustIfExist";
+/**
+ *  每日，周，月提醒
+ */
+export const DAILY_REMINDER_RANK_LEVEL = BASEURL + "cheshang/sass/rankLevel";
+/**
+ *  每日，周，月统计
+ */
+export const DAILY_REMINDER_STATISTICS = BASEURL + "cheshang/sass/statistics";

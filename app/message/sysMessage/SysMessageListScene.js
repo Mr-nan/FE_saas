@@ -17,7 +17,10 @@ import NavigatorView from '../../component/AllNavigationView';
 import BaseComponent from '../../component/BaseComponent';
 import * as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
+import * as AppUrls from "../../constant/appUrls";
+import {request, requestNoToken} from "../../utils/RequestUtil";
 import DailyReminderScene from "../dailyReminder/DailyReminderScene";
+import SysMessageDetailScene from "./SysMessageDetailScene";
 const Pixel = new PixelUtil();
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 
@@ -28,6 +31,7 @@ export class SysMessageListScene extends BaseComponent {
      **/
     constructor(props) {
         super(props);
+        this.sysMessageListData = [];
         this.state = {
             dataSource: [],
             renderPlaceholderOnly: 'blank'
@@ -39,18 +43,45 @@ export class SysMessageListScene extends BaseComponent {
      **/
     initFinish = () => {
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.setState({
+/*        this.setState({
             dataSource: ds.cloneWithRows(['0', '1']),
             renderPlaceholderOnly: 'success'
-        });
-        //this.loadData();
+        });*/
+        this.loadData();
     };
 
     /**
      *
      **/
     loadData = () => {
-
+        let url = AppUrls.SELECT_MSG_BY_CONTENT_TYPE;
+        requestNoToken(url, 'post', {
+            pushTo: '15102373842',
+            //pushTo: '18000000002',
+            token: '5afa531b-4295-4c64-8d6c-ac436c619078',
+            contentType: 'systems',
+            createTime: '2017-08-09 15:18:47'
+        }).then((response) => {
+            this.sysMessageListData = response.mjson.data;
+            if (this.sysMessageListData && this.sysMessageListData.length > 0) {
+                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                this.setState({
+                    dataSource: ds.cloneWithRows(this.sysMessageListData),
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'success'
+                });
+            } else {
+                this.setState({
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'null'
+                });
+            }
+        }, (error) => {
+            this.setState({
+                isRefreshing: false,
+                renderPlaceholderOnly: 'error'
+            });
+        });
     };
 
     /**
@@ -92,77 +123,29 @@ export class SysMessageListScene extends BaseComponent {
      *
      **/
     _renderRow = (rowData, selectionID, rowID) => {
-        if (rowData == '0') {
-            return (
-                <TouchableOpacity
-                    onPress={() => {
-
-                    }}>
-                    <View style={styles.listItem}>
-                        <Text allowFontScaling={false} style={styles.title}>车辆成交</Text>
-                        <Text allowFontScaling={false} style={styles.describe}>测试测试测试测试测试测试测试测试测试</Text>
-                        <View style={styles.separatedLine}/>
-                        <View style={styles.subItem}>
-                            <Text allowFontScaling={false} style={styles.subTitle}>查看详情</Text>
-                            <View style={{flex: 1}}/>
-                            <Image source={cellJianTou} style={styles.image}/>
-                        </View>
+        return (
+            <TouchableOpacity
+                onPress={() => {
+                    this.toNextPage({
+                        name: 'SysMessageDetailScene',
+                        component: SysMessageDetailScene,
+                        params: {
+                            url: rowData.content
+                        }
+                    });
+                }}>
+                <View style={styles.listItem}>
+                    <Text allowFontScaling={false} style={styles.title}>{rowData.title}</Text>
+                    <Text allowFontScaling={false} style={styles.describe}> </Text>
+                    <View style={styles.separatedLine}/>
+                    <View style={styles.subItem}>
+                        <Text allowFontScaling={false} style={styles.subTitle}>查看详情</Text>
+                        <View style={{flex: 1}}/>
+                        <Image source={cellJianTou} style={styles.image}/>
                     </View>
-                </TouchableOpacity>
-            )
-        } else if (rowData == '1') {
-            return (
-                <TouchableOpacity
-                    style={{}}
-                    onPress={() => {
-
-                    }}>
-                    <View style={styles.listItem}>
-                        <Text allowFontScaling={false} style={styles.title}>保有客户跟进</Text>
-                        <Text allowFontScaling={false} style={styles.describe}>测试测试测试测试测试测试测试测试测试</Text>
-                        <View style={styles.separatedLine}/>
-                        <View style={styles.subItem}>
-                            <Text allowFontScaling={false} style={styles.subTitle}>查看详情</Text>
-                            <View style={{flex: 1}}/>
-                            <Image source={cellJianTou} style={styles.image}/>
-                        </View>
-                    </View>
-                </TouchableOpacity>
-            )
-        } else if (rowData == '2') {
-            return (
-                <TouchableOpacity
-                    onPress={() => {
-
-                    }}>
-                    <View style={styles.listItem}>
-
-                    </View>
-                </TouchableOpacity>
-            )
-        } else if (rowData == '3') {
-            return (
-                <TouchableOpacity
-                    onPress={() => {
-
-                    }}>
-                    <View style={styles.listItem}>
-
-                    </View>
-                </TouchableOpacity>
-            )
-        } else if (rowData == '4') {
-            return (
-                <TouchableOpacity
-                    onPress={() => {
-
-                    }}>
-                    <View style={styles.listItem}>
-
-                    </View>
-                </TouchableOpacity>
-            )
-        }
+                </View>
+            </TouchableOpacity>
+        )
     }
 
 }

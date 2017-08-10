@@ -17,6 +17,8 @@ import NavigatorView from '../../component/AllNavigationView';
 import BaseComponent from '../../component/BaseComponent';
 import * as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
+import * as AppUrls from "../../constant/appUrls";
+import {request, requestNoToken} from "../../utils/RequestUtil";
 import DailyReminderScene from "../dailyReminder/DailyReminderScene";
 const Pixel = new PixelUtil();
 const dashed = require('../../../images/mainImage/dashed.png');
@@ -28,8 +30,10 @@ export class StatisticalListView extends BaseComponent {
      **/
     constructor(props) {
         super(props);
+        this.statisticalListData = [];
         this.state = {
             dataSource: [],
+            isRefreshing: false,
             renderPlaceholderOnly: 'blank'
         };
     }
@@ -38,19 +42,43 @@ export class StatisticalListView extends BaseComponent {
      *
      **/
     initFinish = () => {
-        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.setState({
-            dataSource: ds.cloneWithRows(['0', '0', '0']),
-            renderPlaceholderOnly: 'success'
-        });
-        //this.loadData();
+        /*        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+         this.setState({
+         dataSource: ds.cloneWithRows(['0', '0', '0']),
+         renderPlaceholderOnly: 'success'
+         });*/
+        this.loadData();
     };
 
     /**
      *
      **/
     loadData = () => {
-
+        let url = AppUrls.DAILY_REMINDER_STATISTICS;
+        requestNoToken(url, 'post', {
+            type: 1,
+            token: '5afa531b-4295-4c64-8d6c-ac436c619078'
+        }).then((response) => {
+            this.statisticalListData = response.mjson.data;
+            if (this.statisticalListData && this.statisticalListData.length > 0) {
+                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                this.setState({
+                    dataSource: ds.cloneWithRows(this.statisticalListData),
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'success'
+                });
+            } else {
+                this.setState({
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'null'
+                });
+            }
+        }, (error) => {
+            this.setState({
+                isRefreshing: false,
+                renderPlaceholderOnly: 'error'
+            });
+        });
     };
 
     /**
@@ -90,33 +118,31 @@ export class StatisticalListView extends BaseComponent {
      *
      **/
     _renderRow = (rowData, selectionID, rowID) => {
-        if (rowData == '0') {
-            return (
-                <View style={styles.listItem}>
-                    <View style={{flexDirection: 'row'}}>
-                        <Text allowFontScaling={false} style={styles.title}>本周统计</Text>
-                        <View style={{flex: 1}}/>
-                        <Text allowFontScaling={false} style={styles.date}>2017.07</Text>
+        return (
+            <View style={styles.listItem}>
+                <View style={{flexDirection: 'row'}}>
+                    <Text allowFontScaling={false} style={styles.title}>本周统计</Text>
+                    <View style={{flex: 1}}/>
+                    <Text allowFontScaling={false} style={styles.date}>{rowData.date}</Text>
+                </View>
+                <View style={styles.subItem}>
+                    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                        <Text allowFontScaling={false} style={styles.contentTitle}>上架车辆</Text>
+                        <Text allowFontScaling={false} style={styles.contentvalue}>{rowData.putAway}</Text>
                     </View>
-                    <View style={styles.subItem}>
-                        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                            <Text allowFontScaling={false} style={styles.contentTitle}>上架车辆</Text>
-                            <Text allowFontScaling={false} style={styles.contentvalue}>30</Text>
-                        </View>
-                        <Image source={dashed}/>
-                        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                            <Text allowFontScaling={false} style={styles.contentTitle}>库存车辆</Text>
-                            <Text allowFontScaling={false} style={styles.contentvalue}>30</Text>
-                        </View>
-                        <Image source={dashed}/>
-                        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                            <Text allowFontScaling={false} style={styles.contentTitle}>采购车辆</Text>
-                            <Text allowFontScaling={false} style={styles.contentvalue}>30</Text>
-                        </View>
+                    <Image source={dashed}/>
+                    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                        <Text allowFontScaling={false} style={styles.contentTitle}>库存车辆</Text>
+                        <Text allowFontScaling={false} style={styles.contentvalue}>{rowData.repertory}</Text>
+                    </View>
+                    <Image source={dashed}/>
+                    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                        <Text allowFontScaling={false} style={styles.contentTitle}>采购车辆</Text>
+                        <Text allowFontScaling={false} style={styles.contentvalue}>{rowData.sold}</Text>
                     </View>
                 </View>
-            )
-        }
+            </View>
+        )
     }
 
 }

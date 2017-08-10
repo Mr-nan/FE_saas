@@ -32,10 +32,10 @@ export default class CommunicationRecordItem extends BaseComponent {
         super(props);
         this.type = '';
         this.childItems = [];
-        this.childItems.push({name: '客户级别', value: ''});
-        this.childItems.push({name: '进店时间', value: ''});
-        this.childItems.push({name: '离店时间', value: ''});
-        this.childItems.push({name: '进店人数', value: ''});
+        this.childItems.push({name: '客户级别', value: '', parameter: 'customerLevel'});
+        this.childItems.push({name: '进店时间', value: '', parameter: 'inTime'});
+        this.childItems.push({name: '离店时间', value: '', parameter: 'outTime'});
+        this.childItems.push({name: '进店人数', value: '', parameter: 'peopleNum'});
         this.state = {
             isDateTimePickerVisible: false
         }

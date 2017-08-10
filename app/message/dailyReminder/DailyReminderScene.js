@@ -18,36 +18,17 @@ import {
 
 import BaceComponent from '../../component/BaseComponent';
 import NavigatorView from '../../component/AllNavigationView';
-import ListFooter           from '../../carSource/znComponent/LoadMoreFooter';
-import SGListView           from 'react-native-sglistview';
 import CarInfoScene         from '../../carSource/CarInfoScene';
-import MyCarCell     from '../../carSource/znComponent/MyCarCell';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import RepaymenyTabBar from '../../finance/repayment/component/RepaymenyTabBar';
 import * as fontAndColor from '../../constant/fontAndColor';
 import * as AppUrls from "../../constant/appUrls";
 import  {request}           from '../../utils/RequestUtil';
-import {LendSuccessAlert} from '../../finance/lend/component/ModelComponent'
 import PixelUtil from '../../utils/PixelUtil';
 import {DailyReminderSelectView} from "../component/DailyReminderSelectView";
 import {ShareListView} from "./ShareListView";
 import {StatisticalListView} from "./StatisticalListView";
-import CarPublishFirstScene from "../../carSource/carPublish/CarPublishFirstScene";
 const Pixel = new PixelUtil();
-
-
-let carUpperFrameData = [];
-let carDropFrameData = [];
-let carAuditData = [];
-
-let carUpperFramePage = 1;
-let carUpperFrameStatus = 1;
-
-let carDropFramePage = 1;
-let carDropFrameStatus = 1;
-
-let carAuditPage = 1;
-let carAuditStatus = 1;
 
 export default class DailyReminderScene extends BaceComponent {
 
@@ -75,121 +56,6 @@ export default class DailyReminderScene extends BaceComponent {
             params: {
                 carID: carData.id,
             }
-        };
-        this.toNextPage(navigatorParams);
-
-    }
-
-    /**
-     *
-     **/
-    footButtonClick = (typeStr, groupStr, carData) => {
-
-        if (typeStr == '上架') {
-
-            this.carAction(2, groupStr, carData.id);
-
-        } else if (typeStr == '下架') {
-
-            this.carAction(3, groupStr, carData.id);
-
-        } else if (typeStr == '编辑') {
-
-            // let navigatorParams = {
-            //
-            //     name: "EditCarScene",
-            //     component: EditCarScene,
-            //     params: {
-            //
-            //         fromNew: false,
-            //         carId: carData.id,
-            //     }
-            // };
-            // this.toNextPage(navigatorParams);
-
-            let navigatorParams = {
-
-                name: "CarPublishFirstScene",
-                component: CarPublishFirstScene,
-                params: {
-
-                    carID: carData.id,
-                }
-            };
-            this.toNextPage(navigatorParams);
-
-        } else if (typeStr == '查看退回原因') {
-
-            this.refs.showTitleAlert.setModelVisibleAndSubTitle(true, carData.audit_message);
-        }
-    }
-
-    /**
-     *
-     **/
-    carAction = (type, groupStr, carID) => {
-
-        this.props.showModal(true);
-        let url = AppUrls.CAR_STATUS;
-        request(url, 'post', {
-
-            id: carID,
-            op_type: type,
-
-        }).then((response) => {
-
-            this.props.showModal(false);
-            if (type == 3) {
-
-                this.refs.upperFrameView.refreshingData();
-                if ((typeof(this.refs.dropFrameView) != "undefined")) {
-                    this.refs.dropFrameView.refreshingData();
-                }
-                this.props.showToast('已成功下架');
-
-            } else if (type == 2) {
-
-                if (groupStr == 3) {
-
-                    this.refs.auditView.refreshingData();
-                    this.refs.upperFrameView.refreshingData();
-
-                } else if (groupStr == 2) {
-
-                    this.refs.dropFrameView.refreshingData();
-                    this.refs.upperFrameView.refreshingData();
-                }
-                this.props.showToast('已成功上架');
-
-            }
-
-        }, (error) => {
-
-            this.props.showModal(false);
-            alert(error.msg);
-        });
-    }
-
-    /**
-     *
-     **/
-    pushNewCarScene = () => {
-
-        // let navigatorParams = {
-        //
-        //     name: "NewCarScene",
-        //     component: NewCarScene,
-        //     params: {
-        //
-        //         fromNew: false,
-        //     }
-        // };
-        // this.toNextPage(navigatorParams);
-        let navigatorParams = {
-
-            name: "CarPublishFirstScene",
-            component: CarPublishFirstScene,
-            params: {}
         };
         this.toNextPage(navigatorParams);
 

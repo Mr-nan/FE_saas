@@ -16,6 +16,7 @@ import CarBuyScene from "../carSource/carBuy/CarBuyScene";
 import CollectionIntent from "../collectionIntent/CollectionIntent";
 import CarSharedListScene from "../carSource/CarSharedListScene";
 import {SysMessageListScene} from "../message/sysMessage/SysMessageListScene";
+import StoreReceptionManageScene from "../crm/StoresReception/StoreReceptionManageScene";
 const data = require('./quanxian.json');
 const GetPermissionUtil = React.createClass({
 
@@ -110,7 +111,7 @@ const GetPermissionUtil = React.createClass({
         } else if (id == 28) {
             image = require('../../images/workbench/mdjd.png');
             names = name;
-            component = StoreReceptionManageNewScene;
+            component = StoreReceptionManageScene;
             componentName = 'storereceptionmanagenewscene';
         } else if (id == 29) {
             image = require('../../images/workbench/khgl.png');

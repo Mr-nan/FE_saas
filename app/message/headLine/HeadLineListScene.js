@@ -132,7 +132,7 @@ export class HeadLineListScene extends BaseComponent {
                         name: 'HeadLineDetailScene',
                         component: HeadLineDetailScene,
                         params: {
-                            headLineUrl: rowData.content
+                            url: rowData.content
                         }
                     });
                 }}>

@@ -21,7 +21,7 @@ import BaseInfoItem from "./component/item/BaseInfoItem";
 import BuyerDemandItem from "./component/item/BuyerDemandItem";
 import CommunicationRecordItem from "./component/item/CommunicationRecordItem";
 import * as AppUrls from "../../constant/appUrls";
-import {request} from "../../utils/RequestUtil";
+import {request, requestNoToken} from "../../utils/RequestUtil";
 
 export default class ClientAddScene extends BaseComponent {
 
@@ -162,27 +162,12 @@ export default class ClientAddScene extends BaseComponent {
                 informationSources: "自到店",
                 customerRegion: "本地",
                 customerPhone: "13401091922",
-                customerName: "ceshi"
+                customerName: "ceshi111",
+                token: '5afa531b-4295-4c64-8d6c-ac436c619078'
             };
             let url = AppUrls.CUSTOMER_ADD_URL;
-            request(url, 'post', maps).then((response) => {
-                this.props.showModal(false);
-                this.orderListData = response.mjson.data.items;
-                this.allPage = response.mjson.data.total / response.mjson.data.rows;
-                //console.log('订单列表数据 = ', this.orderListData[0].car);
-                if (this.orderListData) {
-                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    this.setState({
-                        dataSource: ds.cloneWithRows(this.orderListData),
-                        isRefreshing: false,
-                        renderPlaceholderOnly: 'success'
-                    });
-                } else {
-                    this.setState({
-                        isRefreshing: false,
-                        renderPlaceholderOnly: 'null'
-                    });
-                }
+            requestNoToken(url, 'post', maps).then((response) => {
+
             }, (error) => {
                 this.props.showModal(false);
                 //console.log('请求错误 = ', error);
@@ -213,7 +198,7 @@ export default class ClientAddScene extends BaseComponent {
         for (let key in communicationRecordItems) {
             this.clientInfo.push(communicationRecordItems[key]);
         }
-        //console.log('this.clientInfo=====', this.clientInfo);
+        console.log('this.clientInfo=====', this.clientInfo);
         for (let key in this.clientInfo) {
             //console.log('this.clientInfo=====', key + this.clientInfo[key]);
             if (this.clientInfo[key].value == '') {
