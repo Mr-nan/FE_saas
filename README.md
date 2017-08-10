@@ -191,3 +191,33 @@ return [
         23=>'融资单质押车辆提前还款成功',  //--3
         24=>'融资单确认验收失败',         //--3
     ],
+
+    {
+                    /*<TouchableOpacity
+                     onPress={() => {
+                     this.updateInfoState(rowData.id);
+                     this.toNextPage({
+                     name: 'HeadLineDetailScene',
+                     component: HeadLineDetailScene,
+                     params: {
+                     url: rowData.content
+                     }
+                     });
+                     }}>
+                     <View style={styles.listItem}>
+                     <Text allowFontScaling={false} style={{
+                     marginLeft: Pixel.getPixel(15),
+                     marginTop: Pixel.getPixel(20),
+                     fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT),
+                     color: rowData.isRead ? fontAndColor.COLORA1: fontAndColor.COLORA0
+                     }}>{rowData.title}</Text>
+                     <Text allowFontScaling={false} style={styles.describe}> </Text>
+                     <View style={styles.separatedLine}/>
+                     <View style={styles.subItem}>
+                     <Text allowFontScaling={false} style={styles.subTitle}>查看详情</Text>
+                     <View style={{flex: 1}}/>
+                     <Image source={cellJianTou} style={styles.image}/>
+                     </View>
+                     </View>
+                     </TouchableOpacity>*/
+                }

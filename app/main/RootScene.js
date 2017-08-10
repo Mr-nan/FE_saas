@@ -27,6 +27,8 @@ import  UpLoadScene from './UpLoadScene';
 import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
 import codePush from 'react-native-code-push'
+import SQLiteUtil from "../utils/SQLiteUtil";
+const SQLite = new SQLiteUtil();
 const versionCode = 20.0;
 let canNext = true;
 let Platform = require('Platform');
@@ -101,7 +103,13 @@ export default class RootScene extends BaseComponent {
         });
     }
 
+    /**
+     *   初始化
+     **/
     initFinish = () => {
+        SQLite.createTable();
+        let d = this.dateFormat(new Date(), 'yyyy-MM-dd hh:mm:ss');
+        StorageUtil.mSetItem(KeyNames.INTO_TIME, d);
         let maps = {
             type: '6',
             api: 'api/v1/App/Update'
@@ -329,6 +337,25 @@ export default class RootScene extends BaseComponent {
                 </TouchableOpacity>
             </Image>
         );
+    }
+
+    /**
+     *   日期格式化
+     **/
+    dateFormat = (date, fmt) => {
+        let o = {
+            "M+": date.getMonth() + 1, //月份
+            "d+": date.getDate(), //日
+            "h+": date.getHours(), //小时
+            "m+": date.getMinutes(), //分
+            "s+": date.getSeconds(), //秒
+            "q+": Math.floor((date.getMonth() + 3) / 3), //季度
+            "S": date.getMilliseconds() //毫秒
+        };
+        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (let k in o)
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
     }
 }
 
