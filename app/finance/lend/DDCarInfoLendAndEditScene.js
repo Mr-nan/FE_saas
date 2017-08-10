@@ -146,8 +146,6 @@ export default class DDCarInfoScene extends BaseComponent {
 					this.dengjiren = response.mjson.data.detail.register_user_name,
 					// this.refs.djr.changeRightText(response.mjson.data.detail.register_user_name);
 					this.register_user_id = response.mjson.data.detail.register_user_id,
-					// console.log(this.state.dengjiren);
-
 					this.props.carData.file_list = response.mjson.data.detail.file_list.vehicle_ownership_description,
 					this.getBusinessList();
 

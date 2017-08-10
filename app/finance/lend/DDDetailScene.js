@@ -133,17 +133,20 @@ export default class DDDetailScene extends BaseComponent {
 		request(apis.FINANCE, 'Post', maps)
 			.then((response) => {
 					let tempjson = response.mjson.data;
-					this.carData.base_id = tempjson.list[0].base_id;
-					this.carData.frame_number = tempjson.list[0].frame_number;
-					this.carData.obd_bind_status = tempjson.list[0].obd_bind_status;
-					this.carData.obd_audit_status = tempjson.list[0].obd_audit_status;
-					this.carData.obd_number = tempjson.list[0].obd_number;
-					this.carData.auto_ownership_status = tempjson.list[0].auto_ownership_status;
-					this.carData.order_ownership_status = tempjson.list[0].order_ownership_status;
-					this.carData.is_mortgagor = tempjson.list[0].is_mortgagor;
-					this.carData.is_new = tempjson.list[0].is_new;
-					this.carData.info_id = tempjson.list[0].info_id;
-					this.carData.obd_track_url = tempjson.list[0].obd_track_url;
+					if(tempjson.list.length > 0){
+                        this.carData.base_id = tempjson.list[0].base_id;
+                        this.carData.frame_number = tempjson.list[0].frame_number;
+                        this.carData.obd_bind_status = tempjson.list[0].obd_bind_status;
+                        this.carData.obd_audit_status = tempjson.list[0].obd_audit_status;
+                        this.carData.obd_number = tempjson.list[0].obd_number;
+                        this.carData.auto_ownership_status = tempjson.list[0].auto_ownership_status;
+                        this.carData.order_ownership_status = tempjson.list[0].order_ownership_status;
+                        this.carData.is_mortgagor = tempjson.list[0].is_mortgagor;
+                        this.carData.is_new = tempjson.list[0].is_new;
+                        this.carData.info_id = tempjson.list[0].info_id;
+                        this.carData.obd_track_url = tempjson.list[0].obd_track_url;
+					}
+
 					this.setState({
 						dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(lendInfo, tempjson.list)),
 						renderPlaceholderOnly: STATECODE.loadSuccess
@@ -213,7 +216,7 @@ export default class DDDetailScene extends BaseComponent {
 		dataSource['section1'] = section1
 		if (carData.length > 0) {
 			let section2 = [
-				{title: '借款单号', key: this.props.orderNo},
+				{title: '订单号', key: this.props.orderNo},
 			]
 			dataSource['section2'] = section2;
 
