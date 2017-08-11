@@ -21,6 +21,7 @@ import {
     Modal
 } from 'react-native';
 
+const {width, height} = Dimensions.get('window');
 import NavigatorView from '../../component/AllNavigationView';
 import BaseComponent from '../../component/BaseComponent';
 import * as fontAndColor from '../../constant/fontAndColor';
@@ -34,6 +35,7 @@ import HeadLineDetailScene from "./HeadLineDetailScene";
 import StorageUtil from "../../utils/StorageUtil";
 import SQLiteUtil from "../../utils/SQLiteUtil";
 import {MessageListItem} from "../component/MessageListItem";
+import {GesturesIntercepterView} from "../component/GesturesIntercepterView";
 const SQLite = new SQLiteUtil();
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 
@@ -47,6 +49,8 @@ export class HeadLineListScene extends BaseComponent {
         this.headLineListData = [];
         this.createTime = '';
         this.custPhone = '';
+        this.itemRefs = [];
+        this.refKey = '';
         this.state = {
             dataSource: [],
             isRefreshing: false,
@@ -183,10 +187,30 @@ export class HeadLineListScene extends BaseComponent {
                           renderRow={this._renderRow}
                           enableEmptySections={true}
                           renderSeparator={this._renderSeperator}/>
+                <GesturesIntercepterView ref={(ref) => {this.giv = ref}} />
             </View>);
         }
 
     }
+
+    /**
+     *   开启手势拦截
+     **/
+    showGesturesIntercepter = (itemRef, y) => {
+        this.giv.changeState(true, y);
+        this.refKey = itemRef;
+        //console.log('this.mli=========', this.mli);
+    };
+
+    /**
+     *   关闭手势拦截
+     **/
+    hideGesturesIntercepter = () => {
+        this.giv.changeState(false);
+        //console.log('this.mli=========', this.mli);
+        let itemRef = this.itemRefs[this.refKey];
+        //itemRef.changeButtonState(false);
+    };
 
     /**
      *
@@ -204,7 +228,16 @@ export class HeadLineListScene extends BaseComponent {
      **/
     _renderRow = (rowData, selectionID, rowID) => {
         return (
-            <MessageListItem ref='msi' navigator={this.props.navigator} rowData={rowData} type='advertisement'/>
+            <MessageListItem ref={(ref) => {
+                this.mli = ref;
+                this.itemRefs.push(this.mli);
+            }}
+                             keys={rowID}
+                             navigator={this.props.navigator}
+                             rowData={rowData}
+                             type='advertisement'
+                             rowID={rowID}
+                             callBack={this.showGesturesIntercepter}/>
         )
     }
 

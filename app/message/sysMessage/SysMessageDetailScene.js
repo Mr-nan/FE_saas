@@ -64,21 +64,23 @@ export default class SysMessageDetailScene extends BaseComponent {
                 </View>
             );
         } else {
+            let url = "<html><style type=\"text/css\">img{ width: 100%% }</style><body>" + this.props.url +
+                "</body></html>";
             return (
                 <View style={styles.container}>
                     <WebViewTitle ref="webviewtitle"/>
                     <WebView
                         ref="www"
                         style={{width: width, height: height, backgroundColor: fontAndColor.COLORA3}}
-                        source={{uri: this.props.url, method: 'GET'}}
+                        source={{html: url, method: 'GET'}}
                         javaScriptEnabled={true}
                         domStorageEnabled={true}
                         scalesPageToFit={false}
                         onLoadStart={() => {
-                            this.refs.webviewtitle.firstProgress();
+                            this.refs.webviewtitle.lastProgress();
                         }}
                         onLoadEnd={() => {
-                            this.refs.webviewtitle.lastProgress();
+                            //this.refs.webviewtitle.lastProgress();
                         }}
                         //onNavigationStateChange={this.onNavigationStateChange.bind(this)}
                     />

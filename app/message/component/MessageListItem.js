@@ -10,9 +10,12 @@ import {
     TouchableOpacity,
     Dimensions,
     ScrollView,
-    Modal
+    Modal,
+    UIManager,
+    findNodeHandle
 } from 'react-native';
 
+const {width, height} = Dimensions.get('window');
 import * as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
 import HeadLineDetailScene from "../headLine/HeadLineDetailScene";
@@ -31,7 +34,8 @@ export class MessageListItem extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-            isRead: this.props.rowData.isRead
+            isRead: this.props.rowData.isRead,
+            longPress: false
         };
     }
 
@@ -41,73 +45,150 @@ export class MessageListItem extends BaseComponent {
      **/
     render() {
         return (
-            <TouchableOpacity
-                onPress={() => {
-                    if (this.props.type === 'advertisement') {
-                        this.updateHeadLineInfoState(this.props.rowData.id);
-                        this.toNextPage({
-                            name: 'HeadLineDetailScene',
-                            component: HeadLineDetailScene,
-                            params: {
-                                url: this.props.rowData.content
-                            }
+            <View>
+                <TouchableOpacity
+                    ref={(sectionHeader) => { this.sectionHeader = sectionHeader; }}
+                    onLongPress={() => {
+                        this.setState({
+                            longPress: true
                         });
-                    } else {
-                        this.updateSysMessageInfoState(this.props.rowData.id);
-                        this.toNextPage({
-                            name: 'SysMessageDetailScene',
-                            component: SysMessageDetailScene,
-                            params: {
-                                url: this.props.rowData.content
-                            }
+                        const handle = findNodeHandle(this.sectionHeader);
+                        UIManager.measure(handle, (x, y, width, height, pageX, pageY) => {
+                            //console.log(pageX+'-----'+pageY);
+                            this.props.callBack(this.props.keys, pageY);
                         });
-                    }
-                }}>
-                <View style={{
-                    marginRight: Pixel.getPixel(15),
-                    marginLeft: Pixel.getPixel(15),
-                    backgroundColor: '#ffffff',
-                    borderRadius: Pixel.getPixel(4),
-                    borderWidth: 1,
-                    borderColor: '#ffffff'
-                }}>
-                    <Text allowFontScaling={false} style={{
-                        marginLeft: Pixel.getPixel(15),
-                        marginTop: Pixel.getPixel(20),
-                        fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT),
-                        color: this.state.isRead ? fontAndColor.COLORA1 : fontAndColor.COLORA0
-                    }}>{this.props.rowData.title}</Text>
-                    <Text allowFontScaling={false} style={{
-                        marginLeft: Pixel.getPixel(15),
-                        marginTop: Pixel.getPixel(10),
-                        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT),
-                        color: fontAndColor.COLORA1
-                    }}> </Text>
+
+                    }}
+                    onPress={() => {
+                        if (this.props.type === 'advertisement') {
+                            this.updateHeadLineInfoState(this.props.rowData.id);
+                            this.toNextPage({
+                                name: 'HeadLineDetailScene',
+                                component: HeadLineDetailScene,
+                                params: {
+                                    url: this.props.rowData.content
+                                }
+                            });
+                        } else {
+                            this.updateSysMessageInfoState(this.props.rowData.id);
+                            this.toNextPage({
+                                name: 'SysMessageDetailScene',
+                                component: SysMessageDetailScene,
+                                params: {
+                                    url: this.props.rowData.content
+                                }
+                            });
+                        }
+                    }}>
                     <View style={{
-                        marginTop: Pixel.getPixel(10),
                         marginRight: Pixel.getPixel(15),
                         marginLeft: Pixel.getPixel(15),
-                        height: 1,
-                        backgroundColor: fontAndColor.COLORA4
-                    }}/>
-                    <View style={{
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        height: Pixel.getPixel(44),
-                        backgroundColor: '#ffffff'
+                        backgroundColor: '#ffffff',
+                        borderRadius: Pixel.getPixel(4),
+                        borderWidth: 1,
+                        borderColor: '#ffffff'
+
                     }}>
                         <Text allowFontScaling={false} style={{
                             marginLeft: Pixel.getPixel(15),
+                            marginTop: Pixel.getPixel(20),
+                            fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT),
+                            color: this.state.isRead ? fontAndColor.COLORA1 : fontAndColor.COLORA0
+                        }}>{this.props.rowData.title}</Text>
+                        <Text allowFontScaling={false} style={{
+                            marginLeft: Pixel.getPixel(15),
+                            marginTop: Pixel.getPixel(10),
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT),
-                            color: fontAndColor.COLORA2
-                        }}>查看详情</Text>
-                        <View style={{flex: 1}}/>
-                        <Image source={cellJianTou} style={{marginRight: Pixel.getPixel(15)}}/>
+                            color: fontAndColor.COLORA1
+                        }}> </Text>
+                        <View style={{
+                            marginTop: Pixel.getPixel(10),
+                            marginRight: Pixel.getPixel(15),
+                            marginLeft: Pixel.getPixel(15),
+                            height: 1,
+                            backgroundColor: fontAndColor.COLORA4
+                        }}/>
+                        <View style={{
+                            alignItems: 'center',
+                            flexDirection: 'row',
+                            height: Pixel.getPixel(44),
+                            backgroundColor: '#ffffff'
+                        }}>
+                            <Text allowFontScaling={false} style={{
+                                marginLeft: Pixel.getPixel(15),
+                                fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT),
+                                color: fontAndColor.COLORA2
+                            }}>查看详情</Text>
+                            <View style={{flex: 1}}/>
+                            <Image source={cellJianTou} style={{marginRight: Pixel.getPixel(15)}}/>
+                        </View>
                     </View>
-                </View>
-            </TouchableOpacity>
+                </TouchableOpacity>
+
+                {/*this.state.longPress &&
+                <TouchableOpacity onPress={() => {
+
+                }}>
+                    <View style={{
+                        position: 'absolute',
+                        right: Pixel.getPixel(30),
+                        top: this.props.rowID == 0 ? 0 : Pixel.getPixel(-15),
+                    }}>
+                        <Image
+                            style={{
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                            }}
+                            source={require('../../../images/message/longPressButton.png')}>
+                            <Text style={{
+                                marginBottom: Pixel.getPixel(8),
+                                backgroundColor: '#00000000',
+                                fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                                color: '#ffffff'
+                            }}>删除</Text>
+                        </Image>
+                    </View>
+                </TouchableOpacity>*/}
+                {/*this.state.longPress &&
+                    <TouchableOpacity
+                        style={{position: 'absolute',width: width, height: height,backgroundColor:'#F0F'
+                        }}
+                        onPress={() => {
+                            this.setState({
+                                longPress: false
+                            });
+                        }}
+                        activeOpacity={1}>
+
+                            <Image
+                                style={{
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    position: 'absolute',
+                                    right: Pixel.getPixel(30),
+                                    top: Pixel.getPixel(-15),
+                                }}
+                                source={require('../../../images/message/longPressButton.png')}>
+                                <Text style={{
+                                    marginBottom: Pixel.getPixel(8),
+                                    backgroundColor: '#00000000',
+                                    fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                                    color: '#ffffff'
+                                }}>删除</Text>
+                            </Image>
+                    </TouchableOpacity>*/}
+            </View>
         )
     }
+
+    /**
+     *   show / hide
+     **/
+    changeButtonState = (isHide) => {
+        this.setState({
+            longPress: isHide
+        });
+    };
 
     /**
      *   更新数据库中数据的已读状态isRead
@@ -136,23 +217,10 @@ export class MessageListItem extends BaseComponent {
 const styles = StyleSheet.create({
     selectView: {
         top: Pixel.getTitlePixel(75),
-        backgroundColor: 'rgba(0, 0, 0,0.3)',
+        backgroundColor: '#00000000',
         left: 0,
         right: 0,
         position: 'absolute',
         bottom: 0
-    },
-    checkedCell: {
-        backgroundColor: 'white',
-        height: Pixel.getPixel(44),
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: fontAndColor.COLORA3
-    },
-    checkedCellText: {
-        fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT),
-        textAlign: 'center',
-        color: fontAndColor.COLORA0
     }
 });
