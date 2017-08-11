@@ -35,7 +35,7 @@ import HeadLineDetailScene from "./HeadLineDetailScene";
 import StorageUtil from "../../utils/StorageUtil";
 import SQLiteUtil from "../../utils/SQLiteUtil";
 import {MessageListItem} from "../component/MessageListItem";
-import {GesturesIntercepterView} from "../component/GesturesIntercepterView";
+import {ItemDeleteButton} from "../component/ItemDeleteButton";
 const SQLite = new SQLiteUtil();
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 
@@ -169,6 +169,14 @@ export class HeadLineListScene extends BaseComponent {
     };
 
     /**
+     *   删除数据库中数据
+     **/
+    deleteHeadLineInfo = (id) => {
+        SQLite.changeData('DELETE FROM messageHeadLineModel WHERE id = ?',
+            [id]);
+    };
+
+    /**
      *
      **/
     render() {
@@ -187,7 +195,7 @@ export class HeadLineListScene extends BaseComponent {
                           renderRow={this._renderRow}
                           enableEmptySections={true}
                           renderSeparator={this._renderSeperator}/>
-                <GesturesIntercepterView ref={(ref) => {this.giv = ref}} />
+                <ItemDeleteButton ref={(ref) => {this.giv = ref}} />
             </View>);
         }
 

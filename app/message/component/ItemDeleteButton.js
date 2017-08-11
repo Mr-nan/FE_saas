@@ -18,7 +18,7 @@ import * as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 
-export class GesturesIntercepterView extends Component {
+export class ItemDeleteButton extends Component {
 
     /**
      *
@@ -56,7 +56,7 @@ export class GesturesIntercepterView extends Component {
 
                             }}
                             onPress={() => {
-
+                                // TODO 删除一条数据
                             }}>
                             <Image
                                 style={{
