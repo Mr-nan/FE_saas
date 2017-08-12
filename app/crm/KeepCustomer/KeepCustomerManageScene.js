@@ -20,12 +20,14 @@ import * as fontAndColor from '../../constant/fontAndColor';
 import BaseComponent from "../../component/BaseComponent";
 import NavigationView from '../../component/AllNavigationView';
 import * as AppUrls from '../../constant/appUrls';
-import WebViewTitle from "../../mine/accountManage/component/WebViewTitle";
+import {ClientAddTimeSelectView} from "../StoresReception/component/ClientAddTimeSelectView";
+import ClientSearchScene from "../StoresReception/ClientSearchScene";
+import {ClientScreeningSelectButton} from "../StoresReception/component/ClientScreeningSelectButton";
+import {ClientStateSelectView} from "./component/ClientStateSelectView";
+import KeepCustomerDetailScene from "./KeepCustomerDetailScene";
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
-/*
- * 获取屏幕的宽和高
- **/
 const {width, height} = Dimensions.get('window');
+
 
 export default class KeepCustomerManageScene extends BaseComponent {
 
@@ -44,12 +46,12 @@ export default class KeepCustomerManageScene extends BaseComponent {
     }
 
     /**
-     *
+     *  页面初始化
      **/
     initFinish = () => {
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.setState({
-            dataSource: ds.cloneWithRows(['', '', '', '', '', '', '', '', '']),
+            dataSource: ds.cloneWithRows(['', '', '', '1', '', '1', '', '', '']),
             renderPlaceholderOnly: 'success'
         });
     };
@@ -63,7 +65,7 @@ export default class KeepCustomerManageScene extends BaseComponent {
                 <View style={styles.container}>
                     <NavigationView
                         backIconClick={this.backPage}
-                        title="门店接待管理"
+                        title="保有客户管理"
                         renderRihtFootView={this._navigatorRightView}/>
                     {this.loadView()}
                 </View>
@@ -73,7 +75,7 @@ export default class KeepCustomerManageScene extends BaseComponent {
                 <View style={styles.container}>
                     <NavigationView
                         backIconClick={this.backPage}
-                        title="门店接待管理"
+                        title="保有客户管理"
                         renderRihtFootView={this._navigatorRightView}/>
                     {/*<ClientScreeningHeadView ref="headView"/>*/}
                     <Image style={{
@@ -104,7 +106,7 @@ export default class KeepCustomerManageScene extends BaseComponent {
                               enableEmptySections={true}
                               renderSeparator={this._renderSeperator}/>
                     {this.state.addTimeHide && <ClientAddTimeSelectView hideView={this.selectAddTime}/>}
-                    {this.state.selectFilterHide && <ClientScreeningView hideView={this.selectFilterItems}/>}
+                    {this.state.selectFilterHide && <ClientStateSelectView hideView={this.selectFilterItems}/>}
                 </View>
             );
         }
@@ -117,7 +119,7 @@ export default class KeepCustomerManageScene extends BaseComponent {
         return (
             <View
                 key={`${sectionID}-${rowID}`}
-                style={{backgroundColor: fontAndColor.COLORA3, height: Pixel.getPixel(1)}}/>
+                style={{backgroundColor: fontAndColor.COLORA3, height: Pixel.getPixel(10)}}/>
         )
     }
 
@@ -129,31 +131,79 @@ export default class KeepCustomerManageScene extends BaseComponent {
             <TouchableOpacity
                 onPress={() => {
                     this.toNextPage({
-                        name: 'ClientInfoScene',
-                        component: ClientInfoScene,
-                        params: {
-
-                        }
+                        name: 'KeepCustomerDetailScene',
+                        component: KeepCustomerDetailScene,
+                        params: {}
                     });
                 }}
                 activeOpacity={0.9}
             >
                 <View style={{
-                    height: Pixel.getPixel(44),
-                    backgroundColor: '#ffffff',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'center'
+                    height: Pixel.getPixel(125),
+                    backgroundColor: '#ffffff'
                 }}>
                     <Text
                         allowFontScaling={false}
+                        numberOfLines={1}
                         style={{
+                            marginTop: Pixel.getPixel(20),
+                            width: width - Pixel.getPixel(30),
                             marginLeft: Pixel.getPixel(15),
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color: fontAndColor.COLORA0
-                        }}>测试人员</Text>
+                        }}>[北京]奔驰M级(进口) 2015款 ML 4MATIC 动感动感动感</Text>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            marginTop: Pixel.getPixel(8),
+                            marginLeft: Pixel.getPixel(15),
+                            alignItems: 'center',
+                        }}>
+                        <Text
+                            allowFontScaling={false}
+                            style={{
+                                fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                                color: fontAndColor.COLORA1
+                            }}>成交时间:2017-08-01</Text>
+                        <View style={{flex: 1}}/>
+                        <Text
+                            allowFontScaling={false}
+                            style={{
+                                marginRight: Pixel.getPixel(15),
+                                fontSize: Pixel.getFontPixel(19),
+                                color: fontAndColor.COLORB2
+                            }}>14.8万</Text>
+                    </View>
                     <View style={{flex: 1}}/>
-                    <Image source={cellJianTou} style={{marginRight: Pixel.getPixel(15),}}/>
+                    <View style={{backgroundColor: fontAndColor.COLORA4, height: 1}}/>
+                    {rowData == '1' &&
+                    <View style={{height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center'}}>
+                        <Text allowFontScaling={false} style={{
+                            marginLeft: Pixel.getPixel(15),
+                            fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                            color: fontAndColor.COLORA0
+                        }}>购车人:</Text>
+                        <View style={{flex: 1}}/>
+                        <Text allowFontScaling={false} style={{
+                            marginRight: Pixel.getPixel(15),
+                            fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                            color: fontAndColor.COLORA0
+                        }}>手机号:</Text>
+                    </View>}
+                    {rowData == '' &&
+                    <View style={{
+                        height: Pixel.getPixel(44),
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'flex-end'
+                    }}>
+                        <View style={[styles.expButton, {marginRight: Pixel.getPixel(15)}]}>
+                            <Text allowFontScaling={false} style={{
+                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                color: fontAndColor.COLORB0
+                            }}>完善资料</Text>
+                        </View>
+                    </View>}
                 </View>
             </TouchableOpacity>
         )
@@ -186,7 +236,6 @@ export default class KeepCustomerManageScene extends BaseComponent {
         return (
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <TouchableOpacity
-                    style={{marginRight: Pixel.getPixel(7)}}
                     onPress={() => {
                         this.toNextPage({
                             name: 'ClientSearchScene',
@@ -200,18 +249,6 @@ export default class KeepCustomerManageScene extends BaseComponent {
                     activeOpacity={0.9}
                 >
                     <Image source={require('../../../images/mainImage/search_order.png')}/>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={{marginLeft: Pixel.getPixel(7)}}
-                    activeOpacity={0.9}
-                    onPress={() => {
-                        this.toNextPage({
-                            name: 'ClientAddScene',
-                            component: CustomerAddScene,
-                            params: {}
-                        })
-                    }}>
-                    <Image source={require('../../../images/employee_manage.png')}/>
                 </TouchableOpacity>
             </View>
         );
@@ -239,5 +276,15 @@ const styles = StyleSheet.create({
     line: {
         height: Pixel.getPixel(15),
         backgroundColor: fontAndColor.COLORA3,
-    }
+    },
+    expButton: {
+        width: Pixel.getPixel(88),
+        height: Pixel.getPixel(27),
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 3,
+        borderWidth: 1,
+        borderColor: fontAndColor.COLORB0
+    },
 });

@@ -37,6 +37,7 @@ export class ItemDeleteButton extends Component {
      **/
     render() {
         if (this.state.isHide) {
+            let top = Pixel.getPixel(this.state.codeY - 15);
             return (
                 <TouchableOpacity style={{
                     width: width,
@@ -52,7 +53,7 @@ export class ItemDeleteButton extends Component {
                             style={{
                                 position: 'absolute',
                                 right: Pixel.getPixel(30),
-                                top: this.state.codeY - Pixel.getPixel(15),
+                                top: top < 30 ? 30 : top,
 
                             }}
                             onPress={() => {
