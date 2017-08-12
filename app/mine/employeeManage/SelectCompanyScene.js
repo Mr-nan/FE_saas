@@ -70,7 +70,7 @@ export  default class SelectCompanyScene extends BaseComponent {
 
     _renderRow = (movie, sectionId, rowId) => {
         return (
-            <CompanyItem movie={movie} callBack={(value)=>{
+            <CompanyItem name={movie.enterprise_name} callBack={(value)=>{
                 if(value){
                     selected.push(movie);
                 }else{

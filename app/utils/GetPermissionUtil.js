@@ -164,6 +164,11 @@ const GetPermissionUtil = React.createClass({
             names = name;
             component = SysMessageListScene;
             componentName = 'sysmessagelistscene';
+        }else if (id == 46) {
+            image = require('../../images/workbench/wd.png');
+            names = name;
+            component = SysMessageListScene;
+            componentName = 'sysmessagelistscene';
         }
         return {name: names, id: id, image: image, component: component, componentName: componentName}
     }, removal(array){
@@ -207,6 +212,39 @@ const GetPermissionUtil = React.createClass({
         }
         return list;
 
+    }, getRoleList(){
+        let list = [];
+        for (let i = 0; i < data.data.response.length; i++) {
+            if (data.data.response[i].id == 3) {
+                for (let j = 0; j < data.data.response[i].children.length; j++) {
+                    for (let k = 0; k < data.data.response[i].children[j].children.length; k++) {
+                        let id = data.data.response[i].children[j].children[k].id;
+                        if (id == 21 || id == 22 || id == 23 || id == 24 || id == 25) {
+                            list.push({
+                                id: data.data.response[i].children[j].children[k].id,
+                                name: data.data.response[i].children[j].children[k].name
+                            });
+                        }
+                    }
+                }
+            }
+        }
+        return list;
+    }, getMineList(){
+        let list = [];
+        for (let i = 0; i < data.data.response.length; i++) {
+            if (data.data.response[i].id == 5) {
+                for (let j = 0; j < data.data.response[i].children.length; j++) {
+                    for (let k = 0; k < data.data.response[i].children[j].children.length; k++) {
+                        list.push({
+                            id: data.data.response[i].children[j].children[k].id,
+                            name: data.data.response[i].children[j].children[k].name
+                        });
+                    }
+                }
+            }
+        }
+        return list;
     }
 });
 
