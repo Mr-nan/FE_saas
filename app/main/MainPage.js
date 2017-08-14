@@ -147,7 +147,7 @@ export default class MainPage extends BaseComponent {
                 </TabNavigator>
                 <View
                     style={[styles.imageStyle, this.props.identity == "finance" ? {width: Pixel.getPixel(1)} : {width: 0}]}></View>
-                <CustomerServiceButton ref='customerservicebutton'/>
+                {/*<CustomerServiceButton ref='customerservicebutton'/>*/}
             </View>
         );
     }
