@@ -55,7 +55,7 @@ export default class LoginScene extends BaseComponent {
             verifyCode: null,
             renderPlaceholderOnly: true,
         }
-        this.needToast = false;
+        this.needToast = '';
     }
 
     handleBack = () => {
@@ -88,11 +88,7 @@ export default class LoginScene extends BaseComponent {
         })
         StorageUtil.mGetItem(StorageKeyNames.NEED_TOAST_ERROR, (data) => {
             if (data.code == 1 && data.result != null) {
-                if(data.result=='true'){
-                    this.needToast = true;
-                }else{
-                    this.needToast = false;
-                }
+                this.needToast = data.result;
             }
             this.setState({renderPlaceholderOnly: false});
             this.Verifycode();
@@ -100,8 +96,10 @@ export default class LoginScene extends BaseComponent {
     }
 
     componentDidUpdate() {
-        if(this.needToast){
-            this.refs.errorbacktoast.show();
+        if (this.needToast != '') {
+            StorageUtil.mSetItem(StorageKeyNames.NEED_TOAST_ERROR, '');
+            this.refs.errorbacktoast.show(this.needToast);
+            this.needToast = '';
         }
     }
 

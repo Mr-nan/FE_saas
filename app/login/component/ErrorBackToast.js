@@ -23,12 +23,13 @@ export default class ErrorBackToast extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            show: true
+            show: false,
+            content:''
         }
     }
 
-    show = () => {
-        this.setState({show: true});
+    show = (content) => {
+        this.setState({show: true,content:content});
     }
 
     render() {
@@ -37,7 +38,7 @@ export default class ErrorBackToast extends Component {
                 this.setState({show:false});
             }} activeOpacity={1} style={{width:this.state.show?width:0,height:height,
             position: 'absolute',
-            justifyContent:'center',alignItems:'center'}}>
+            justifyContent:'center',alignItems:'center',overflow:'hidden'}}>
                 <View style={{width:width-Pixel.getPixel(90),backgroundColor:'#fff',
                 borderRadius:Pixel.getPixel(5),justifyContent:'center',alignItems:'center',
                 borderColor:FontAndColor.COLORB0,borderWidth:onePT}}>

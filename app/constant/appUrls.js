@@ -297,6 +297,13 @@ export const USER_ACCOUNT_EDITPAYPWD = BASEURL + 'v1/user.account/editPayPwd';
 /**
  * from @zhaojian
  *
+ * 通过商户ID获取财务是否有账户管理权限
+ **/
+export const GETACCOUNTSTATUSBYUID = BASEURL + ' v1/user.account/getAccountStatusByUID';
+
+/**
+ * from @zhaojian
+ *
  * 重置交易密码
  **/
 export const USER_ACCOUNT_RESETPAYPWD = BASEURL + 'v1/user.account/resetPayPwd';
