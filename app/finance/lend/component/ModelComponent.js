@@ -338,6 +338,74 @@ export class ModalAlert extends PureComponent{
 
 }
 
+export class DDModalAlert extends PureComponent{
+
+
+	state={
+		show:false,
+	}
+
+	setModelVisible=(value)=>{
+
+		this.setState({
+			show:value
+		})
+	}
+
+	confimClick=()=>{
+
+		const {confimClick} =this.props;
+
+		confimClick(this.setModelVisible)
+
+	}
+
+	cancleClick=()=>{
+
+		const {cancleClick} =this.props;
+
+		cancleClick(this.setModelVisible)
+
+	}
+
+
+	render(){
+
+
+		const {title,subtitle,sureTitle,cancelTitle}=this.props;
+		return(
+
+            <Modal animationType='none'
+                   transparent={true}
+                   visible={this.state.show}
+                   onShow={() => {
+                   }}
+                   onRequestClose={() => {
+                   }}
+            >
+                <TouchableOpacity style={commentAlertStyle.mask} activeOpacity={1} onPress={()=>{
+                    dismissKeyboard();
+                }}>
+                    <View style={commentAlertStyle.container}>
+                        <Text allowFontScaling={false}  style={commentAlertStyle.title}>{title}</Text>
+                        <Text allowFontScaling={false}  style={commentAlertStyle.subtitle}>{subtitle}</Text>
+                        <View style={commentAlertStyle.buttonsWarp}>
+
+                            <CommenButton buttonStyle={[commentAlertStyle.buttonstyle,{marginRight:adapeSize(10)}, commentAlertStyle.buttonLeft]}
+                                          onPress={this.confimClick}
+                                          title={sureTitle}/>
+                            <CommenButton buttonStyle={[commentAlertStyle.buttonstyle,commentAlertStyle.buttonRight]} onPress={this.cancleClick} title={cancelTitle}/>
+
+                        </View>
+                    </View>
+                </TouchableOpacity>
+            </Modal>
+
+		)
+	}
+
+
+}
 
 export  class ModalCGD extends PureComponent{
 

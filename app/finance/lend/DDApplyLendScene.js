@@ -179,7 +179,7 @@ export default class DDApplyLendScene extends BaseComponent {
                 {title: '借贷类型', key: jsonData.product_type},
                 {title: '借款费率', key: jsonData.payment_rate_str},
                 {title: '保证金余额', key: jsonData.deposit_amount + "元"},
-                {title: '保证金比例', key: jsonData.deposit_rate+'%'},
+                {title: '保证金比例', key: jsonData.deposit_rate + '%'},
                 {title: '借款期限', key: jsonData.loanperiodstr},
                 {title: '借款额度', key: "30000" + "~" + jsonData.max_loanmny + "元"},
             ]
@@ -188,7 +188,7 @@ export default class DDApplyLendScene extends BaseComponent {
                 {title: '借贷类型', key: jsonData.product_type},
                 {title: '借款费率', key: jsonData.rate},
                 {title: '保证金余额', key: jsonData.deposit_amount + "元"},
-                {title: '保证金比例', key: jsonData.deposit_rate+'%'},
+                {title: '保证金比例', key: jsonData.deposit_rate + '%'},
                 {title: '借款期限', key: jsonData.loan_life},
                 {title: '借款额度', key: "30000" + "~" + jsonData.paymnet_maxloanmny + "元"},
             ]
@@ -285,21 +285,29 @@ export default class DDApplyLendScene extends BaseComponent {
     OwnershiptransferToString = (audit, bind) => {
         let status;
         if (this.props.sceneName == 'FinanceScene' && qsEdit) {
-            if (audit == 0) {
-                status = '未审核';
-            } else if (audit == 1) {
+            if (this.carData.is_mortgagor == 1) {
                 status = '已通过';
-            } else if (audit == 2) {
-                status = '未通过';
+            } else {
+                if (audit == 0) {
+                    status = '未审核';
+                } else if (audit == 1) {
+                    status = '已通过';
+                } else if (audit == 2) {
+                    status = '未通过';
+                }
             }
         } else {
             if (audit == 1) {
                 status = '已通过';
             } else {
-                if (bind == 0) {
-                    status = '未上传';
-                } else if (bind == 1) {
+                if (this.carData.is_mortgagor == 1) {
                     status = '已上传';
+                } else {
+                    if (bind == 0) {
+                        status = '未上传';
+                    } else if (bind == 1) {
+                        status = '已上传';
+                    }
                 }
             }
         }
@@ -463,7 +471,11 @@ export default class DDApplyLendScene extends BaseComponent {
                                 if (this.carData.order_ownership_status == 1) {
                                     this.lendMoneyClick();
                                 } else {
-                                    this.props.showToast("车辆权属未上传");
+                                    if (this.carData.is_mortgagor == 1) {
+                                        this.lendMoneyClick();
+                                    } else {
+                                        this.props.showToast("车辆权属未上传");
+                                    }
                                 }
                             }
                         } else {
@@ -480,7 +492,11 @@ export default class DDApplyLendScene extends BaseComponent {
                             if (this.carData.order_ownership_status == 1) {
                                 this.lendMoneyClick();
                             } else {
-                                this.props.showToast("车辆权属未上传");
+                                if (this.carData.is_mortgagor == 1) {
+                                    this.lendMoneyClick();
+                                } else {
+                                    this.props.showToast("车辆权属未上传");
+                                }
                             }
                         } else {
                             this.lendMoneyClick();
@@ -497,7 +513,11 @@ export default class DDApplyLendScene extends BaseComponent {
                         if (this.carData.order_ownership_status == 1) {
                             this.lendMoneyClick();
                         } else {
-                            this.props.showToast("车辆权属未上传");
+                            if (this.carData.is_mortgagor == 1) {
+                                this.lendMoneyClick();
+                            } else {
+                                this.props.showToast("车辆权属未上传");
+                            }
                         }
                     } else {
                         this.lendMoneyClick();
