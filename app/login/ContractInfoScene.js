@@ -44,8 +44,11 @@ export default class ContractInfoScene extends BaseComponent {
 
     componentDidMount() {
         oldUrl = this.props.webUrl;
-        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        try {
+            BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        } catch (e) {
 
+        }
     }
 
     handleBack = () => {

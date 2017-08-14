@@ -12,7 +12,6 @@ import {
     PixelRatio,
     TouchableOpacity,
     NativeModules,
-    BackAndroid,
     InteractionManager
 } from 'react-native';
 

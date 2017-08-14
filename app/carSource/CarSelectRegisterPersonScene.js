@@ -58,10 +58,10 @@ export default class CarSelectRegisterPersonScene extends BaseComponent{
         this.timer && clearTimeout(this.timer);
     }
     componentDidMount() {
-        InteractionManager.runAfterInteractions(() => {
+        //InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: 'loading'});
             this.initFinish();
-        });
+        //});
     }
 
     render(){
