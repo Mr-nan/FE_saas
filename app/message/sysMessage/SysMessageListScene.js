@@ -26,6 +26,7 @@ const Pixel = new PixelUtil();
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import SQLiteUtil from "../../utils/SQLiteUtil";
 import {MessageListItem} from "../component/MessageListItem";
+import {ItemDeleteButton} from "../component/ItemDeleteButton";
 const SQLite = new SQLiteUtil();
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 
@@ -39,6 +40,9 @@ export class SysMessageListScene extends BaseComponent {
         this.sysMessageListData = [];
         this.createTime = '';
         this.custPhone = '';
+        this.itemRefs = [];
+        this.refKey = '';
+        this.dataKey = '';
         this.state = {
             dataSource: [],
             isRefreshing: false,
@@ -51,10 +55,10 @@ export class SysMessageListScene extends BaseComponent {
      **/
     initFinish = () => {
         //let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-/*        this.setState({
-            dataSource: ds.cloneWithRows(['0', '1']),
-            renderPlaceholderOnly: 'success'
-        });*/
+        /*        this.setState({
+         dataSource: ds.cloneWithRows(['0', '1']),
+         renderPlaceholderOnly: 'success'
+         });*/
         this.loadData();
     };
 
@@ -172,10 +176,37 @@ export class SysMessageListScene extends BaseComponent {
                           renderRow={this._renderRow}
                           enableEmptySections={true}
                           renderSeparator={this._renderSeperator}/>
+                <ItemDeleteButton ref={(ref) => {
+                    this.giv = ref
+                }} itemDelete={this.deleteSystemInfo}/>
             </View>);
         }
 
     }
+
+    /**
+     *   删除数据库中数据
+     **/
+    deleteSystemInfo = () => {
+        SQLite.changeData('DELETE FROM messageSystemModel WHERE id = ?', [this.dataKey]);
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.sysMessageListData.splice(this.refKey, 1);
+        this.setState({
+            dataSource: ds.cloneWithRows(this.sysMessageListData),
+            renderPlaceholderOnly: this.sysMessageListData.length > 0 ? 'success' : 'null'
+        })
+        this.giv.changeState(false);
+    };
+
+    /**
+     *   开启手势拦截
+     **/
+    showGesturesIntercepter = (itemRef, y, dataKey) => {
+        this.giv.changeState(true, y);
+        this.refKey = itemRef;
+        this.dataKey = dataKey;
+        //console.log('this.mli=========', this.mli);
+    };
 
     /**
      *
@@ -193,7 +224,16 @@ export class SysMessageListScene extends BaseComponent {
      **/
     _renderRow = (rowData, selectionID, rowID) => {
         return (
-            <MessageListItem ref='msi' navigator={this.props.navigator} rowData={rowData} type='system'/>
+            <MessageListItem ref={(ref) => {
+                this.mli = ref;
+                this.itemRefs.push(this.mli);
+            }}
+                             keys={rowID}
+                             navigator={this.props.navigator}
+                             rowData={rowData}
+                             type='system'
+                             rowID={rowID}
+                             callBack={this.showGesturesIntercepter}/>
         )
     }
 

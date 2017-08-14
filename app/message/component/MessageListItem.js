@@ -55,7 +55,7 @@ export class MessageListItem extends BaseComponent {
                         const handle = findNodeHandle(this.sectionHeader);
                         UIManager.measure(handle, (x, y, width, height, pageX, pageY) => {
                             //console.log(pageX+'-----'+pageY);
-                            this.props.callBack(this.props.keys, pageY);
+                            this.props.callBack(this.props.keys, pageY, this.props.rowData.id);
                         });
 
                     }}

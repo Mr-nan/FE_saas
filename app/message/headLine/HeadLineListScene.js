@@ -51,6 +51,7 @@ export class HeadLineListScene extends BaseComponent {
         this.custPhone = '';
         this.itemRefs = [];
         this.refKey = '';
+        this.dataKey = '';
         this.state = {
             dataSource: [],
             isRefreshing: false,
@@ -169,14 +170,6 @@ export class HeadLineListScene extends BaseComponent {
     };
 
     /**
-     *   删除数据库中数据
-     **/
-    deleteHeadLineInfo = (id) => {
-        SQLite.changeData('DELETE FROM messageHeadLineModel WHERE id = ?',
-            [id]);
-    };
-
-    /**
      *
      **/
     render() {
@@ -195,18 +188,33 @@ export class HeadLineListScene extends BaseComponent {
                           renderRow={this._renderRow}
                           enableEmptySections={true}
                           renderSeparator={this._renderSeperator}/>
-                <ItemDeleteButton ref={(ref) => {this.giv = ref}} />
+                <ItemDeleteButton ref={(ref) => {this.giv = ref}} itemDelete={this.deleteHeadLineInfo}/>
             </View>);
         }
 
     }
 
     /**
+     *   删除数据库中数据
+     **/
+    deleteHeadLineInfo = () => {
+        SQLite.changeData('DELETE FROM messageHeadLineModel WHERE id = ?', [this.dataKey]);
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.headLineListData.splice(this.refKey, 1);
+        this.setState({
+            dataSource: ds.cloneWithRows(this.headLineListData),
+            renderPlaceholderOnly: this.headLineListData.length > 0 ? 'success' : 'null'
+        })
+        this.giv.changeState(false);
+    };
+
+    /**
      *   开启手势拦截
      **/
-    showGesturesIntercepter = (itemRef, y) => {
+    showGesturesIntercepter = (itemRef, y, dataKey) => {
         this.giv.changeState(true, y);
         this.refKey = itemRef;
+        this.dataKey = dataKey;
         //console.log('this.mli=========', this.mli);
     };
 

@@ -111,7 +111,7 @@ const GetPermissionUtil = React.createClass({
         } else if (id == 28) {
             image = require('../../images/workbench/mdjd.png');
             names = name;
-            component = StoreReceptionManageScene;
+            component = StoreReceptionManageNewScene;
             componentName = 'storereceptionmanagenewscene';
         } else if (id == 29) {
             image = require('../../images/workbench/khgl.png');

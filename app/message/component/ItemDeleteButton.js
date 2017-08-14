@@ -58,6 +58,7 @@ export class ItemDeleteButton extends Component {
                             }}
                             onPress={() => {
                                 // TODO 删除一条数据
+                                this.props.itemDelete();
                             }}>
                             <Image
                                 style={{
