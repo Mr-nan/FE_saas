@@ -43,6 +43,7 @@ var smsCode: '';
 var userNames = [];
 var Platform = require('Platform');
 let androidPhoneVersion = '';
+import ErrorBackToast from './component/ErrorBackToast';
 export default class LoginScene extends BaseComponent {
 
     constructor(props) {
@@ -54,6 +55,7 @@ export default class LoginScene extends BaseComponent {
             verifyCode: null,
             renderPlaceholderOnly: true,
         }
+        this.needToast = false;
     }
 
     handleBack = () => {
@@ -73,8 +75,6 @@ export default class LoginScene extends BaseComponent {
 
         } finally {
             InteractionManager.runAfterInteractions(() => {
-                this.setState({renderPlaceholderOnly: 'loading'});
-                this.props.showModal(false);
                 this.initFinish();
             });
         }
@@ -86,10 +86,23 @@ export default class LoginScene extends BaseComponent {
                 userNames = data.result.split(",");
             }
         })
-        InteractionManager.runAfterInteractions(() => {
+        StorageUtil.mGetItem(StorageKeyNames.NEED_TOAST_ERROR, (data) => {
+            if (data.code == 1 && data.result != null) {
+                if(data.result=='true'){
+                    this.needToast = true;
+                }else{
+                    this.needToast = false;
+                }
+            }
             this.setState({renderPlaceholderOnly: false});
             this.Verifycode();
-        });
+        })
+    }
+
+    componentDidUpdate() {
+        if(this.needToast){
+            this.refs.errorbacktoast.show();
+        }
     }
 
     loginSuccess = {
@@ -152,7 +165,6 @@ export default class LoginScene extends BaseComponent {
                     <NavigationBar
                         leftImageShow={false}
                         leftTextShow={true}
-                        leftText={"取消"}
                         centerText={"登录"}
                         rightText={"注册"}
                         leftTextCallBack={this.backPage}
@@ -249,7 +261,7 @@ export default class LoginScene extends BaseComponent {
                            style={{width: width, height: Pixel.getPixel(175)}}/>
 
                     {this.loadingView()}
-
+                    <ErrorBackToast ref="errorbacktoast"/>
                 </View>
             </TouchableWithoutFeedback>
         );
