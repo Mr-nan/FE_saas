@@ -29,7 +29,7 @@ import {SysMessageListScene} from "./sysMessage/SysMessageListScene";
 
 var Pixel = new PixelUtil();
 
-export default class MessageList extends BaseComponent {
+export default class MessageListScene extends BaseComponent {
 
     /**
      *  初始化

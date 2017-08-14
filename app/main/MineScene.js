@@ -42,7 +42,7 @@ import AccountModal from '../component/AccountModal';
 import OrderTypeSelectScene from  '../mine/myOrder/OrderTypeSelectScene';
 import CustomerAddScene from "../crm/StoresReception/ClientAddScene";
 import StoreReceptionManageScene from "../crm/StoresReception/StoreReceptionManageScene";
-import MessageList from "../message/MessageList";
+import MessageList from "../message/MessageListScene";
 import StoreReceptionManageNewScene from "../crm/StoresReception/StoreReceptionManageNewScene";
 
 let Platform = require('Platform');

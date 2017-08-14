@@ -48,18 +48,28 @@ export class ShareListView extends BaseComponent {
          dataSource: ds.cloneWithRows(['0', '0', '0']),
          renderPlaceholderOnly: 'success'
          });*/
-        this.loadData();
+        this.loadData(1);
+    };
+
+    /**
+     *  按筛选条件刷新数据
+     **/
+    refreshData = (type) => {
+        this.props.showModal(true);
+        this.shareListData = [];
+        this.loadData(type);
     };
 
     /**
      *
      **/
-    loadData = () => {
+    loadData = (type) => {
         let url = AppUrls.DAILY_REMINDER_RANK_LEVEL;
         requestNoToken(url, 'post', {
-            type: 1,
+            type: type,
             token: '5afa531b-4295-4c64-8d6c-ac436c619078'
         }).then((response) => {
+            this.props.showModal(false);
             this.shareListData = response.mjson.data;
             if (this.shareListData && this.shareListData.length > 0) {
                 let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -75,6 +85,7 @@ export class ShareListView extends BaseComponent {
                 });
             }
         }, (error) => {
+            this.props.showModal(false);
             this.setState({
                 isRefreshing: false,
                 renderPlaceholderOnly: 'error'
@@ -119,6 +130,7 @@ export class ShareListView extends BaseComponent {
      *
      **/
     _renderRow = (rowData, selectionID, rowID) => {
+
         return (
             <TouchableOpacity
                 onPress={() => {
@@ -130,7 +142,7 @@ export class ShareListView extends BaseComponent {
                 }}>
                 <View style={styles.listItem}>
                     <View style={{flexDirection: 'row'}}>
-                        <Text allowFontScaling={false} style={styles.title}>每日统计</Text>
+                        <Text allowFontScaling={false} style={styles.title}>{rowID == 0 ? '今日分享' : '每日分享'}</Text>
                         <View style={{flex: 1}}/>
                         <Text allowFontScaling={false} style={styles.date}>{rowData.days}</Text>
                     </View>

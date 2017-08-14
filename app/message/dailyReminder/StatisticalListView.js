@@ -47,16 +47,25 @@ export class StatisticalListView extends BaseComponent {
          dataSource: ds.cloneWithRows(['0', '0', '0']),
          renderPlaceholderOnly: 'success'
          });*/
-        this.loadData();
+        this.loadData(1);
+    };
+
+    /**
+     *  按筛选条件刷新数据
+     **/
+    refreshData = (type) => {
+        this.props.showModal(true);
+        this.statisticalListData = [];
+        this.loadData(type);
     };
 
     /**
      *
      **/
-    loadData = () => {
+    loadData = (type) => {
         let url = AppUrls.DAILY_REMINDER_STATISTICS;
         requestNoToken(url, 'post', {
-            type: 1,
+            type: type,
             token: '5afa531b-4295-4c64-8d6c-ac436c619078'
         }).then((response) => {
             this.statisticalListData = response.mjson.data;

@@ -38,9 +38,12 @@ export default class DailyReminderScene extends BaceComponent {
     constructor(props) {
         super(props);
         // 初始状态
-        this.timeFrame = [{name: '每日', value: ''}, {name: '每周', value: ''}, {name: '每月', value: ''}];
+        this.timeFrame = [{name: '每日', value: '1'}, {name: '每周', value: '2'}, {name: '每月', value: '3'}];
+        this.shareCurrentFrame = {name: '每日', value: '1'};
+        this.statisticalCurrentFrame = {name: '每日', value: '1'};
+        this.currentTab = 0;
         this.state = {
-            isHide: true,
+            isHide: true
         };
     }
 
@@ -50,7 +53,6 @@ export default class DailyReminderScene extends BaceComponent {
      **/
     carCellClick = (carData) => {
         let navigatorParams = {
-
             name: "CarInfoScene",
             component: CarInfoScene,
             params: {
@@ -58,8 +60,7 @@ export default class DailyReminderScene extends BaceComponent {
             }
         };
         this.toNextPage(navigatorParams);
-
-    }
+    };
 
     /**
      *
@@ -70,9 +71,11 @@ export default class DailyReminderScene extends BaceComponent {
                 <TouchableOpacity
                     style={{marginLeft: Pixel.getPixel(10)}}
                     onPress={() => {
-                        this.setState({
-                            isHide: false
-                        });
+                        if (this.currentTab == 0) {
+                            this.refs.drsv.changeClick(true, this.shareCurrentFrame.name);
+                        } else {
+                            this.refs.drsv.changeClick(true, this.statisticalCurrentFrame.name);
+                        }
                     }}
                     activeOpacity={0.9}
                 >
@@ -92,15 +95,21 @@ export default class DailyReminderScene extends BaceComponent {
                     style={styles.ScrollableTabView}
                     initialPage={this.props.page ? this.props.page : 0}
                     locked={true}
+                    onChangeTab={({i, ref}) => {
+                        this.currentTab = i;
+                        //console.log('this.index=====', this.currentTab);
+                    }}
                     renderTabBar={() => <RepaymenyTabBar style={{backgroundColor: 'white'}} tabName={["分享", "统计"]}/>}>
-                    <ShareListView navigator={this.props.navigator} ref="shareListView" tabLabel="ios-paper1"/>
+                    <ShareListView navigator={this.props.navigator} ref="shareListView" tabLabel="ios-paper1" showModal={this.props.showModal}/>
                     <StatisticalListView navigator={this.props.navigator} ref="statisticalListView"
-                                         tabLabel="ios-paper2"/>
+                                         tabLabel="ios-paper2" showModal={this.props.showModal}/>
                 </ScrollableTabView>
                 {
-                    !this.state.isHide && (
+                      (
                         <DailyReminderSelectView
+                            ref='drsv'
                             checkedSource={this.timeFrame}
+                            checkedTypeString={this.shareCurrentFrame.name}
                             checkTimeFrameClick={this.checkTimeFrameClick}
                             hideClick={this.hideCheckedView}
                         />)
@@ -114,10 +123,17 @@ export default class DailyReminderScene extends BaceComponent {
     /**
      *
      **/
-    checkTimeFrameClick = () => {
-        this.setState({
-            isHide: false,
-        });
+    checkTimeFrameClick = (data, index) => {
+        //console.log('this.currentTab=====', this.currentTab);
+        if (this.currentTab == 0) {
+            this.shareCurrentFrame = data;
+            this.refs.drsv.changeClick(false, this.shareCurrentFrame.name);
+            this.refs.shareListView.refreshData(this.shareCurrentFrame.value);
+        } else {
+            this.statisticalCurrentFrame = data;
+            this.refs.drsv.changeClick(false, this.statisticalCurrentFrame.name);
+            this.refs.statisticalListView.refreshData(this.statisticalCurrentFrame.value);
+        }
     }
 
     /**
