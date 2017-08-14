@@ -255,7 +255,9 @@ export  default class AccountScene extends BaseComponent {
                               webBackUrl.CHANGEPHONE);
                           }}
                           accountSetting={()=>{this.toNextPage({name:'AccountSettingScene',
-                          component:AccountSettingScene,params:{}})}}
+                          component:AccountSettingScene,params:{
+                                  protocolType:1,
+                              }})}}
                           moreFlow={()=>{this.toNextPage({name:'AccountFlowScene',
                           component:AccountFlowScene,params:{}})}}
                           frozen={()=>{

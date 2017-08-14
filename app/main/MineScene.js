@@ -480,6 +480,7 @@ export default class MineScene extends BaseComponent {
                             this.props.showModal(false);
                             haveOrder = response.mjson.data.order.tradeing_count;
                             lastType = response.mjson.data.account.status;
+
                             if (lastType == '0') {
                                 this.navigatorParams.name = 'AccountManageScene'
                                 this.navigatorParams.component = AccountManageScene
