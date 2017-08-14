@@ -12,7 +12,6 @@ import {
     Dimensions,
     Image
 } from  'react-native'
-
 const {width, height} = Dimensions.get('window');
 import BaseComponent from "../component/BaseComponent";
 import * as fontAndColor from '../constant/fontAndColor';
@@ -26,8 +25,8 @@ import DailyReminderScene from "./dailyReminder/DailyReminderScene";
 import {BacklogListScene} from "./backlog/BacklogListScene";
 import {HeadLineListScene} from "./headLine/HeadLineListScene";
 import {SysMessageListScene} from "./sysMessage/SysMessageListScene";
-
 var Pixel = new PixelUtil();
+
 
 export default class MessageListScene extends BaseComponent {
 
@@ -44,11 +43,12 @@ export default class MessageListScene extends BaseComponent {
 
     /**
      *   初始化数据
+     *
      **/
     initFinish = () => {
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.setState({
-            dataSource: ds.cloneWithRows(['0', '1', '2', '3', '4']),
+            dataSource: ds.cloneWithRows(['0', '1', '3', '4']),
             renderPlaceholderOnly: 'success'
         });
         this.loadData();
