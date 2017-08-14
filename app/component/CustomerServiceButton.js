@@ -18,15 +18,15 @@ export default class CustomerServiceButton extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            width: 0,
-            height: 0
+            width: Pixel.getPixel(48),
+            height: Pixel.getPixel(48)
         }
-        this.oldTop = height - Pixel.getPixel(48) - Pixel.getPixel(150);
+        this.oldTop = height - Pixel.getPixel(48) - Pixel.getPixel(200);
         this.oldLeft = width - Pixel.getPixel(48) - Pixel.getPixel(15);
         this.viewStyle = {
             style: {
                 top: this.oldTop, left: this.oldLeft,
-                height:0,width:0
+                height: Pixel.getPixel(48), width: Pixel.getPixel(48)
             }
         }
 
@@ -64,14 +64,14 @@ export default class CustomerServiceButton extends PureComponent {
                 if (locationX < 0) {
                     locationX = 0;
                 }
-                if ((locationX + this.layout.layout.width) > width) {
-                    locationX = width - this.layout.layout.width;
+                if ((locationX + Pixel.getPixel(48)) > width) {
+                    locationX = width - Pixel.getPixel(48);
                 }
                 if (locationY < 0) {
                     locationY = 0;
                 }
-                if ((locationY + this.layout.layout.height) > height) {
-                    locationY = height - this.layout.layout.height;
+                if ((locationY + Pixel.getPixel(48)) > height) {
+                    locationY = height - Pixel.getPixel(48);
                 }
                 this.viewStyle.style.left = locationX;
                 this.viewStyle.style.top = locationY;
@@ -98,11 +98,10 @@ export default class CustomerServiceButton extends PureComponent {
                    ref={(circle) => {this.circle = circle;
                 }}  {...this._panResponder.panHandlers} style={{
         position: 'absolute', height: this.state.height,
-        width: this.state.width, top: height - Pixel.getPixel(48) - Pixel.getPixel(100),
+        width: this.state.width, top: height - Pixel.getPixel(48) - Pixel.getPixel(180),
         left: width - Pixel.getPixel(48) - Pixel.getPixel(15),
         resizeMode: 'stretch'
     }}
-                   onLayout={({nativeEvent:e})=>{this.layout = e}}
             />
 
         );

@@ -18,7 +18,7 @@ import {request} from '../../utils/RequestUtil';
 import SeeEmployeeInfoScene from '../employeeManage/SeeEmployeeInfoScene';
 // import AddEmployeeScene from '../employeeManage/AddEmployeeScene';
 import AddEmployeeScene from '../employeeManage/NewAddEmployeeScene';
-import EditEmployeeScene from '../employeeManage/EditEmployeeScene';
+import NewEditEmployeeScene from '../employeeManage/NewEditEmployeeScene';
 
 import BaseComponent from "../../component/BaseComponent";
 import NavigationView from '../../component/AllNavigationView';
@@ -164,8 +164,8 @@ export default class EmployeeManageScene extends BaseComponent {
                     style={styles.buttonStyle}
                     onPress={() => {
                         this.toNextPage({
-                            name: 'EditEmployeeScene',
-                            component: EditEmployeeScene,
+                            name: 'NewEditEmployeeScene',
+                            component: NewEditEmployeeScene,
                             params: {
                                 callBack: () => {
                                     this.setState({renderPlaceholderOnly: 'loading'});

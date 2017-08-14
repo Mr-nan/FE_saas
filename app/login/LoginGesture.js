@@ -19,7 +19,6 @@ import NavigationBar from "../component/NavigationBar";
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
 import LoginScene from "./LoginScene";
-import MainPage from "../main/MainPage";
 import AllSelectCompanyScene from "../main/AllSelectCompanyScene";
 
 let Pixel = new PixelUtil();
@@ -41,36 +40,34 @@ export default class GesturePassword extends BaseComponent {
     }
 
     initFinish = () => {
-        InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: false});
-            // this.Verifycode();
-        });
-
         StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
             if (data.code == 1) {
                 if (data.result != null) {
-                    this.setState({
-                        phone: data.result,
-                    });
-                    StorageUtil.mGetItem(data.result + "", (data) => {
-                        if (data.code == 1) {
-                            if (data.result != null) {
-                                Password = data.result;
+                    StorageUtil.mGetItem(data.result + "", (datass) => {
+                        if (datass.code == 1) {
+                            if (datass.result != null) {
+                                Password = datass.result;
                             } else {
                                 Password = "";
                             }
+                            StorageUtil.mGetItem(StorageKeyNames.HEAD_PORTRAIT_URL, (datas) => {
+                                if (datas.code == 1) {
+                                    if (datas.result != null) {
+                                        this.setState({
+                                            url: datas.result,
+                                            renderPlaceholderOnly: false,
+                                            phone: data.result,
+                                        });
+                                    }else{
+                                        this.setState({
+                                            renderPlaceholderOnly: false,
+                                            phone: data.result,
+                                        });
+                                    }
+                                }
+                            })
                         }
                     })
-                }
-            }
-        })
-
-        StorageUtil.mGetItem(StorageKeyNames.HEAD_PORTRAIT_URL, (data) => {
-            if (data.code == 1) {
-                if (data.result != null) {
-                    this.setState({
-                        url: data.result,
-                    });
                 }
             }
         })

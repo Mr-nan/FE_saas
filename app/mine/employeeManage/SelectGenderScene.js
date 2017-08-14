@@ -22,13 +22,16 @@ import * as fontAndColor from '../../constant/fontAndColor';
 import BaseComponent from '../../component/BaseComponent';
 import NavigationView from '../../component/AllNavigationView';
 import {request} from '../../utils/RequestUtil';
+import CompanyItem from './component/CompanyItem';
 import * as MyUrl from '../../constant/appUrls';
+let selected = [];
 export  default class SelectGenderScene extends BaseComponent {
 
     constructor(props) {
         super(props);
         // 初始状态
         // let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        selected = [];
         this.state = {
             renderPlaceholderOnly: 'blank',
             source: []
@@ -39,10 +42,8 @@ export  default class SelectGenderScene extends BaseComponent {
     initFinish = () => {
         this.getData();
     }
-    getData=()=>{
-        let maps = {
-
-        };
+    getData = () => {
+        let maps = {};
         request(MyUrl.USER_ROLE, 'Post', maps)
             .then((response) => {
                     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -52,7 +53,7 @@ export  default class SelectGenderScene extends BaseComponent {
                     });
                 },
                 (error) => {
-                    if (error.mycode == '-2100045'||error.mycode == '-1') {
+                    if (error.mycode == '-2100045' || error.mycode == '-1') {
                         this.setState({renderPlaceholderOnly: 'null'});
                     } else {
                         this.setState({renderPlaceholderOnly: 'error'});
@@ -77,6 +78,7 @@ export  default class SelectGenderScene extends BaseComponent {
                 <NavigationView
                     title={this.props.title}
                     backIconClick={this.backPage}
+                    renderRihtFootView={this._navigatorRightView}
                 />
             </View>
         );
@@ -84,20 +86,32 @@ export  default class SelectGenderScene extends BaseComponent {
 
     _renderRow = (movie, sectionId, rowId) => {
         return (
-            <TouchableOpacity onPress={()=>{
-                this.props.callBack(movie.role_name,movie.role_id);
-                this.backPage();
-            }} activeOpacity={0.8} style={{width:width,height:Pixel.getPixel(44),paddingRight:Pixel.getPixel(15),paddingLeft:
-            Pixel.getPixel(15),backgroundColor: '#fff',flexDirection: 'row'}}>
-                <View style={{flex:1,justifyContent:'center'}}>
-                    <Text allowFontScaling={false}  style={{color: '#000',fontSize: Pixel.getFontPixel(14)}}>{movie.role_name}</Text>
-                </View>
-                <View style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>
-                    <Image style={{width:Pixel.getPixel(14),height:Pixel.getPixel(14)}}
-                           source={require('../../../images/mainImage/celljiantou.png')}/>
-                </View>
-            </TouchableOpacity>
+            <CompanyItem name={movie.role_name} callBack={(value)=>{
+                if(value){
+                    selected.push(movie);
+                }else{
+                    for(let i = 0;i<selected.length;i++){
+                        if(movie.role_id==selected[i].role_id){
+                            selected.splice(i,1);
+                            return;
+                        }
+                    }
+                }
+            }}/>
         )
+    }
+
+    _navigatorRightView = () => {
+        return (
+            <TouchableOpacity activeOpacity={0.8} onPress={() => {
+                this.props.callBack(selected);
+                this.backPage();
+            }} style={{width:Pixel.getPixel(53),height:Pixel.getPixel(27),backgroundColor: '#fff',
+            justifyContent:'center',alignItems: 'center'}}>
+                <Text allowFontScaling={false}
+                      style={{fontSize: Pixel.getFontPixel(15),color:fontAndColor.COLORB0}}>完成</Text>
+            </TouchableOpacity>
+        );
     }
 
     _renderSeparator(sectionId, rowId) {

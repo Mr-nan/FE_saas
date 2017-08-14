@@ -33,9 +33,9 @@ let cityData = new Array;
 export default class CityListScene extends BaseComponent {
 
     initFinish = () => {
-        InteractionManager.runAfterInteractions(() => {
+        //InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: false});
-        });
+        //});
 
     }
     _backIconClick = () => {

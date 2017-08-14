@@ -6,7 +6,7 @@ export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 /**
  * 测试地址
  */
-//export const BASEURL = 'http://api-gateway.test.dycd.com/';
+export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 正式地址
@@ -101,7 +101,6 @@ export const CAR_SEARCH_TOP = BASEURL + V + 'car/searchTop';
  * 获取车辆详情
  */
 export const CAR_DETAIL = BASEURL + V + 'car/detail';
-
 
 
 /**
@@ -288,6 +287,13 @@ export const USER_EMPLOYEE_SAVE = BASEURL + 'v1/user.employee/save';
 /**
  * from @zhaojian
  *
+ * 查看员工
+ **/
+export const USER_EMPLOYEE_VIEW = BASEURL + 'v1/user.employee/view';
+
+/**
+ * from @zhaojian
+ *
  * 开通个人账户
  **/
 export const USER_OPEN_ACCOUNT_PERSONAL = BASEURL + 'v1/user.open_account/personal';
@@ -361,6 +367,13 @@ export const USER_ACCOUNT_INDEX = BASEURL + 'v1/user.account/index';
  * 获取交易流水
  **/
 export const USER_ACCOUNT_PAYLOG = BASEURL + 'v1/user.account/payLog';
+
+/**
+ * from @zhaojian
+ *
+ * 注销员工
+ **/
+export const USER_EMPLOYEE_DESTROY = BASEURL + 'v1/user.employee/destroy';
 
 /**
  * from @zhaojian
