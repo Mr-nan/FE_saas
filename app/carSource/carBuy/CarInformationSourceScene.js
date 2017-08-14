@@ -79,7 +79,7 @@ class CarInformationSourceView extends Component {
                                                         this.props.cellSelectAction({title:subData.title,value:subData.value})
                                                     }else {
                                                         this.setCurrentChecked('');
-                                                        this.props.cellSelectAction({title:'',value:''})
+                                                        this.props.cellSelectAction({title:'',value:0})
                                                     }
                                                 }} activeOpacity={1} key={'sub'+subIndex}>
                                                     <View style={[styles.checkedItemView,(this.state.currentChecked==subData.title?{borderColor:fontAndColor.COLORB0}:{borderColor:fontAndColor.COLORA2})]}>

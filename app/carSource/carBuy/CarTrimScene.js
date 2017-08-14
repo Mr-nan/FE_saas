@@ -43,9 +43,11 @@ export default class CarTrimScene extends BaseComponent {
         return(
             <View style={styles.rootContainer}>
                 <ListView
+                    enableEmptySections={true}
                     dataSource={this.state.dataSource}
                     renderHeader={()=>{return(<TrimTaskHeadView ref="headView" headerViewItemClick={this.headerViewItemClick} selectAction={this.selectAction}/>)}}
                     renderRow={this.renderRow}
+
                 />
                 <AllNavigationView title='名车行' backIconClick={this.backPage} renderRihtFootView={this.renderRightView}/>
             </View>
@@ -61,7 +63,7 @@ export default class CarTrimScene extends BaseComponent {
         this.state = {
             isShowHeadView:true,
             dataSource:ds,
-            taskType:0,
+            taskType:1,
         };
     }
 
@@ -69,9 +71,9 @@ export default class CarTrimScene extends BaseComponent {
         return(
             <CarTrimTaskCell cellData={rowData} btnTitle={this.state.taskType == 1? '跟进':'查看'} cellBtnClick={()=>{
                 if(this.state.taskType==1){
-                    this.cellBtnClick(1);
+                    this.cellBtnClick(1,rowData);
                 }else {
-                    this.cellBtnClick(2);
+                    this.cellBtnClick(2,rowData);
                 }
             }}/>
         )
@@ -89,7 +91,9 @@ export default class CarTrimScene extends BaseComponent {
                     {
                         name: 'CarInitialTaskScene',
                         component: CarInitialTaskScene,
-                        params: {}
+                        params: {
+                            reloadTaskData:this.reloadData,
+                        }
                     }
                 );
             }}>
@@ -102,17 +106,32 @@ export default class CarTrimScene extends BaseComponent {
     }
 
     initFinish=()=>{
-        this.loadData(this.roleValue,1);
+        this.loadData(this.roleValue,this.state.taskType);
     }
+
+    reloadData=()=>{
+        this.loadData(this.roleValue,this.state.taskType);
+    }
+
+
 
     loadData=(roleValue,type)=>{
 
+        this.setState({
+            dataSource:this.state.dataSource.cloneWithRows([]),
+            taskType:type
+        });
+
+        if(roleValue=='sxy' && type==1)
+        {
+            return;
+        }
         this.props.showModal(true);
-        request(AppUrls.CAR_CHESHANG_TASKS, 'post', {roleName:roleValue,type:type,token:'a78eee2a-5836-475c-bee0-15e00b02511a'}).then((response) => {
+        request(AppUrls.CAR_CHESHANG_TASKS, 'post', {roleName:roleValue,type:type,token:'c5cd2f08-f052-4d3e-8943-86c798945953'}).then((response) => {
             this.props.showModal(false);
-            console.log(response.mjson.data);
             this.setState({
-                dataSource:this.state.dataSource.cloneWithRows(response.mjson.data)
+                dataSource:this.state.dataSource.cloneWithRows(response.mjson.data),
+                taskType:type
             });
 
         }, (error) => {
@@ -140,37 +159,49 @@ export default class CarTrimScene extends BaseComponent {
     }
 
 
+    cellBtnClick=(type,carData)=>{
 
-
-    cellBtnClick=(type)=>{
-
+        // 1 未办理 2，已办理
         if(type==1){
-            if(this.roleTitle == '整备员')
-            {
-                this.toNextPage(
-                    {
-                        name: 'CarTrimInformationScene',
-                        component: CarTrimInformationScene,
-                        params: {}
-                    }
-                );
-            }else if(this.roleTitle == '评估师'){
+            if(this.roleTitle == '评估师'){
 
                 this.toNextPage(
                     {
                         name: 'EvaluateCarInfo',
                         component: EvaluateCarInfo,
-                        params: {}
+                        params: {
+                            carData:carData,
+                            reloadTaskData:this.reloadData,
+                        }
                     }
                 );
 
+            } else if(this.roleTitle == '整备员')
+            {
+                this.toNextPage(
+                    {
+                        name: 'CarTrimInformationScene',
+                        component: CarTrimInformationScene,
+                        params: {
+                            type:type,
+                            taskid:carData.id,
+                            roleName:this.roleValue,
+                            reloadTaskData:this.reloadData,
+                        }
+                    }
+                );
             }else if(this.roleTitle == '经理')
             {
                 this.toNextPage(
                     {
                         name: 'CarManagerTaskScene',
                         component: CarManagerTaskScene,
-                        params: {}
+                        params: {
+                            type:type,
+                            taskid:carData.id,
+                            roleName:this.roleValue,
+                            reloadTaskData:this.reloadData,
+                        }
                     }
                 );
             }else if(this.roleTitle == '运营专员')
@@ -179,37 +210,69 @@ export default class CarTrimScene extends BaseComponent {
                     {
                         name: 'CarOperationScene',
                         component: CarOperationScene,
-                        params: {}
+                        params: {
+                            type:type,
+                            taskid:carData.id,
+                            roleName:this.roleValue,
+                            reloadTaskData:this.reloadData,
+                        }
                     }
                 );
             }
         }else {
-            if(this.roleTitle == '整备员')
-            {
+            if(this.roleTitle =='手续员'){
+
                 this.toNextPage(
                     {
-                        name: 'CarTrimInformationScene',
-                        component: CarTrimInformationScene,
-                        params: {}
+                        name: 'CarInitialTaskScene',
+                        component: CarInitialTaskScene,
+                        params: {
+                            type:type,
+                            taskid:carData.id,
+                            roleName:this.roleValue
+                        }
                     }
                 );
+
             }else if(this.roleTitle == '评估师'){
 
                 this.toNextPage(
                     {
                         name: 'WriteArrangeCostDetailTWO',
                         component: WriteArrangeCostDetailTWO,
-                        params: {}
+                        params: {
+                            type:type,
+                            taskid:carData.id,
+                            roleName:this.roleValue
+                        }
                     }
                 );
 
-            }else if(this.roleTitle == '经理')
+            } else if(this.roleTitle == '整备员')
+            {
+                this.toNextPage(
+                    {
+                        name: 'CarTrimInformationScene',
+                        component: CarTrimInformationScene,
+                        params: {
+                            type:type,
+                            taskid:carData.id,
+                            roleName:this.roleValue,
+                            reloadTaskData:this.reloadData,
+                        }
+                    }
+                );
+            }else  if(this.roleTitle == '经理')
             {
                 this.toNextPage(
                     {
                         name: 'CarManagerTaskScene',
                         component: CarManagerTaskScene,
-                        params: {}
+                        params: {
+                            type:type,
+                            taskid:carData.id,
+                            roleName:this.roleValue,
+                        }
                     }
                 );
             }else if(this.roleTitle == '运营专员')
@@ -218,7 +281,11 @@ export default class CarTrimScene extends BaseComponent {
                     {
                         name: 'CarOperationScene',
                         component: CarOperationScene,
-                        params: {}
+                        params: {
+                            type:type,
+                            taskid:carData.id,
+                            roleName:this.roleValue,
+                        }
                     }
                 );
             }
@@ -256,14 +323,14 @@ class TrimTaskSelectView extends Component {
                     this.setSelectType(1);
                 }}>
                     <View style={[styles.selectContenView,this.state.currentSeletType==1&&{borderBottomColor:fontAndColor.COLORB0}]}>
-                        <Text style={styles.selectText}>未办任务(0)</Text>
+                        <Text style={styles.selectText}>未办任务</Text>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={()=>{
                     this.setSelectType(2);
                 }}>
                     <View style={[styles.selectContenView,this.state.currentSeletType==2&&{borderBottomColor:fontAndColor.COLORB0}]}>
-                        <Text style={styles.selectText}>已办任务(0)</Text>
+                        <Text style={styles.selectText}>已办任务</Text>
                     </View>
                 </TouchableOpacity>
             </View>

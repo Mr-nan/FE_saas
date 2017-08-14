@@ -95,7 +95,7 @@ class CarBuyUnsettledView extends BaseComponent {
 
       renderRow=(rowData)=>{
         return(
-            <CarBuyCell btnTitle="跟进"/>
+            <CarBuyCell btnTitle="跟进" />
         )
       }
 }

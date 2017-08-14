@@ -27,7 +27,7 @@ import PixelUtil from  '../../utils/PixelUtil';
 import CarBrandSelectScene from "../CarBrandSelectScene";
 import CarInfomationSourceScene from './CarInformationSourceScene';
 import * as AppUrls from "../../constant/appUrls";
-import * as Net from "../../utils/ImageUpload";
+import  {request}   from '../../utils/RequestUtil';
 import CarlicenseTagScene from "../carPublish/CarlicenseTagScene";
 import CarInitialTaskUpImagScene from "./CarInitialTaskUpImagScene";
 let Pixel = new  PixelUtil();
@@ -39,6 +39,13 @@ const IS_ANDROID = Platform.OS === 'android';
 export default class CarInitialTaskScene extends BaseComponent{
 
     render(){
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return (
+                <View style={{flex: 1, backgroundColor: 'white'}}>
+                    {this.loadView()}
+                    <AllNavigationView title="车辆信息" backIconClick={this.backPage}/>
+                </View>);
+        }
         return(
             <View style={styles.rootContaier}>
                 <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={this.state.keyboardOffset}>
@@ -60,17 +67,21 @@ export default class CarInitialTaskScene extends BaseComponent{
                                 )
                             })
                         }
-                        <View style={styles.footContainer}>
-                            <TouchableOpacity onPress={this.footBtnClick}>
-                                <View style={styles.footView}>
-                                    <Text allowFontScaling={false}  style={styles.footText}>下一步</Text>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
+                        {
+                            this.type == 1&&
+                            (<View style={styles.footContainer}>
+                                <TouchableOpacity onPress={this.footBtnClick}>
+                                    <View style={styles.footView}>
+                                        <Text allowFontScaling={false}  style={styles.footText}>下一步</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>)
+                        }
+
                     </ScrollView>
                 </KeyboardAvoidingView>
                 <VinInfo viewData={this.scanType} vinPress={this._vinPress} ref={(modal) => {this.vinModal = modal}}/>
-                <AllNavigationView title="录入车辆信息" backIconClick={this.backPage}/>
+                <AllNavigationView title= {this.props.taskid ? '车辆信息': "录入车辆信息"} backIconClick={this.backPage}/>
             </View>
         )
     }
@@ -80,18 +91,149 @@ export default class CarInitialTaskScene extends BaseComponent{
     }
 
     footBtnClick=()=>{
+
+        console.log(this.carData);
+
         this.toNextPage({
             name:'CarInitialTaskUpImagScene',
             component: CarInitialTaskUpImagScene,
             params: {
+                carData:this.carData,
+                reloadTaskData:this.props.reloadTaskData,
 
             }
         })
     }
 
+
+    initFinish=()=>{
+
+        this.setState({
+            renderPlaceholderOnly:'success'
+        });
+
+        if(this.props.taskid){
+            this.loadData();
+        }
+    }
+
+    /**
+     * 加载数据
+     */
+    loadData=()=>{
+
+        this.setState({
+            renderPlaceholderOnly:'loading'
+        });
+        console.log('================加载',this.type,this.roleName,this.props.taskid);
+        request(AppUrls.CAR_CHESHANG_TASKINFO,'post',{
+            token : 'c5cd2f08-f052-4d3e-8943-86c798945953',
+            type:this.type,
+            roleName:this.roleName,
+            taskid:this.props.taskid,
+        }).then((response) => {
+
+            console.log(response.mjson);
+            this.setData(response.mjson.data);
+        }, (error) => {
+        });
+    }
+
+    setData=(carData)=>{
+        this.titleData1[0][0].tailView='';
+        this.titleData1[1][0].tailView='';
+        this.titleData1[1][1].tailView='';
+        this.titleData1[2][2].tailView='';
+        this.titleData1[3][0].tailView='';
+        this.titleData1[3][1].tailView='';
+        this.titleData1[3][2].tailView='';
+
+        this.titleData1[0][0].value = carData.vin;
+        this.titleData1[0][1].value = carData.carName;
+
+
+
+        this.titleData1[1][0].value = carData.infoName;
+        this.titleData1[1][1].value = carData.infoMobile;
+
+        let infoSourceStr = '';
+        switch(carData.infoSource){
+            case 1:{
+                infoSourceStr='本平台';
+                break;
+            }
+            case 2:{
+                infoSourceStr='其他网络平台';
+                break;
+            }
+            case 3:{
+                infoSourceStr='朋友圈';
+                break;
+            }
+            case 4:{
+                infoSourceStr='信息员介绍';
+                break;
+            }
+            case 5:{
+                infoSourceStr='友商合车';
+                break;
+            }
+            case 6:{
+                infoSourceStr='拍卖';
+                break;
+            }
+            case 7:{
+                infoSourceStr='自到店';
+                break;
+            }
+            case 8:{
+                infoSourceStr='客户转介绍';
+                break;
+            }
+            case 9:{
+                infoSourceStr='置换';
+                break;
+            }
+        }
+        this.titleData1[2][0].value = infoSourceStr;
+        this.titleData1[2][1].value = carData.carNum;
+        this.titleData1[2][2].value = carData.taskInfo.keysNum;
+
+        this.titleData1[3][0].value = carData.taskInfo.selfName;
+        this.titleData1[3][1].value = carData.taskInfo.selfMobile;
+        this.titleData1[3][2].value = carData.remark;
+
+        this.setState({
+            renderPlaceholderOnly:'success',
+            titleData:this.titleData1,
+        });
+
+    }
+
     // 构造
     constructor(props) {
         super(props);
+
+        this.carData ={
+            dlPath:'',
+            policyPath:'',
+            arcPath:'',
+            idcardPath:'',
+            carName:'',
+            infoName:'',
+            vin:'',
+            selfName:'',
+            keysNum:'',
+            remark:'',
+            carNum:'',
+            infoMobile:'',
+            infoSource:1,
+            selfMobile:''
+        };
+
+        this.roleName = this.props.roleName;
+        this.type = this.props.type;
+
         this.scanType = [
             {model_name: '扫描前风挡'},
             {model_name: '扫描行驶证'}
@@ -100,7 +242,7 @@ export default class CarInitialTaskScene extends BaseComponent{
             [
                 {
                     title:'车架号',
-                    isShowTag:true,
+                    isShowTag:this.props.taskid?false:true,
                     subTitle:"",
                     tailView:()=>{
                         return(
@@ -138,9 +280,9 @@ export default class CarInitialTaskScene extends BaseComponent{
                 },
                 {
                     title:'车型',
-                    isShowTag:true,
+                    isShowTag:this.props.taskid?false:true,
                     value:'请选择',
-                    isShowTail:true,
+                    isShowTail:this.props.taskid?false:true,
                 },
 
             ],
@@ -149,7 +291,6 @@ export default class CarInitialTaskScene extends BaseComponent{
                     title:'信息员姓名',
                     isShowTag:false,
                     value:'请选择',
-                    isShowTail:true,
                     tailView: () => {
                         return (
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
@@ -158,15 +299,13 @@ export default class CarInitialTaskScene extends BaseComponent{
                                            keyboardType={'numeric'}
                                            maxLength={7}
                                            underlineColorAndroid='transparent'
-                                           onChangeText={(text)=>{
-                                           }}/>
+                                           onChangeText={(text)=>{this.carData.infoName = text}}/>
                             </View>)
                     }
                 },
                 {
                     title:'信息员电话',
                     isShowTag:false,
-                    isShowTail:true,
                     tailView: () => {
                         return (
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
@@ -175,9 +314,7 @@ export default class CarInitialTaskScene extends BaseComponent{
                                            keyboardType={'numeric'}
                                            maxLength={11}
                                            underlineColorAndroid='transparent'
-                                           onChangeText={(text)=>{
-
-                                           }}/>
+                                           onChangeText={(text)=>{this.carData.infoMobile = text}}/>
 
                             </View>)
                     }
@@ -189,18 +326,17 @@ export default class CarInitialTaskScene extends BaseComponent{
                     title:'信息来源',
                     isShowTag:false,
                     value:'请选择',
-                    isShowTail:true,
+                    isShowTail:this.props.taskid?false:true,
                 },
                 {
                     title:'原车牌号',
                     isShowTag:false,
                     value:'请选择',
-                    isShowTail:true,
+                    isShowTail:this.props.taskid?false:true,
                 },
                 {
                     title:'钥匙数',
                     isShowTag:false,
-                    isShowTail:true,
                     tailView: () => {
                         return (
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
@@ -209,9 +345,7 @@ export default class CarInitialTaskScene extends BaseComponent{
                                            keyboardType={'numeric'}
                                            maxLength={11}
                                            underlineColorAndroid='transparent'
-                                           onChangeText={(text)=>{
-
-                                           }}/>
+                                           onChangeText={(text)=>{this.carData.keysNum=text}}/>
 
                             </View>)
                     }
@@ -221,7 +355,6 @@ export default class CarInitialTaskScene extends BaseComponent{
                 {
                     title:'卖车人姓名',
                     isShowTag:false,
-                    isShowTail:true,
                     tailView: () => {
                         return (
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
@@ -230,9 +363,7 @@ export default class CarInitialTaskScene extends BaseComponent{
                                            keyboardType={'numeric'}
                                            maxLength={11}
                                            underlineColorAndroid='transparent'
-                                           onChangeText={(text)=>{
-
-                                           }}/>
+                                           onChangeText={(text)=>{this.carData.selfName = text}}/>
 
                             </View>)
                     }
@@ -240,7 +371,6 @@ export default class CarInitialTaskScene extends BaseComponent{
                 {
                     title:'卖车人电话',
                     isShowTag:false,
-                    isShowTail:true,
                     tailView: () => {
                         return (
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
@@ -249,9 +379,7 @@ export default class CarInitialTaskScene extends BaseComponent{
                                            keyboardType={'numeric'}
                                            maxLength={11}
                                            underlineColorAndroid='transparent'
-                                           onChangeText={(text)=>{
-
-                                           }}/>
+                                           onChangeText={(text)=>{this.carData.selfMobile = text}}/>
 
                             </View>)
                     }
@@ -260,7 +388,6 @@ export default class CarInitialTaskScene extends BaseComponent{
                     title:'备注',
                     isShowTag:false,
                     value:'请填写',
-                    isShowTail:false,
                     tailView:()=>{
                         return(
                             <TextInput
@@ -270,6 +397,7 @@ export default class CarInitialTaskScene extends BaseComponent{
                                 underlineColorAndroid='transparent'
                                 ref={(input) => {this.instructionsInput = input}}
                                 placeholderTextColor={fontAndColor.COLORA4}
+                                onChangeText={(text)=>{this.carData.remark = text}}
                                 placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
                             />
                         )
@@ -281,6 +409,7 @@ export default class CarInitialTaskScene extends BaseComponent{
         this.state = {
             titleData:this.titleData1,
             keyboardOffset:-Pixel.getPixel(64),
+            renderPlaceholderOnly:'success'
         };
     }
 
@@ -291,6 +420,12 @@ export default class CarInitialTaskScene extends BaseComponent{
      * 点击对应标题
      */
     cellCilck=(title)=>{
+
+        if(this.props.taskid)
+        {
+            return;
+        }
+
         if(title=='车型'){
 
             this.pushCarBrand();
@@ -331,7 +466,7 @@ export default class CarInitialTaskScene extends BaseComponent{
     _checkedCarClick=(carObject)=>{
 
         this.titleData1[0][1].value = carObject.model_name;
-        this.titleData1[2][3].value = carObject.model_year+'-06-01';
+        this.carData.carName = carObject.model_name;
         this.upTitleData();
     }
 
@@ -362,6 +497,7 @@ export default class CarInitialTaskScene extends BaseComponent{
      */
     carInformationSourceSelectAction =(selectObject)=>{
         this.titleData1[2][0].value = selectObject.title;
+        this.carData.infoSource = selectObject.value;
     }
 
     /**
@@ -389,6 +525,7 @@ export default class CarInitialTaskScene extends BaseComponent{
      **/
     _checkedCarlicenseTagClick = (title) => {
         this.titleData1[2][1].value = title;
+        this.carData.carNum = title;
         this.upTitleData();
     }
 
@@ -442,8 +579,7 @@ export default class CarInitialTaskScene extends BaseComponent{
         }else if (type==0){
 
             this.titleData1[0][1].value = this.modelData[index].model_name;
-            this.titleData2[2][3].value = this.modelData[index].model_year+'-06-01';
-
+            this.carData.carName = this.modelData[index].model_name;
             this.upTitleData();
         }
 
@@ -456,6 +592,7 @@ export default class CarInitialTaskScene extends BaseComponent{
      */
     _onVinChange = (text) => {
 
+        this.carData.vin = '';
         if (text.length === 17) {
             this._showLoading();
             this.vinInput.blur();
@@ -464,6 +601,7 @@ export default class CarInitialTaskScene extends BaseComponent{
                     this._closeLoading();
                     if (response.mycode === 1) {
 
+                        this.carData.vin = text;
                         let rd = response.mjson.data;
 
                         if (rd.length === 0) {
@@ -481,7 +619,8 @@ export default class CarInitialTaskScene extends BaseComponent{
 
                             this.titleData1[0][0].subTitle='';
                             this.titleData1[0][1].value = rd[0].model_name;
-                            this.titleData1[2][3].value = rd[0].model_year+'-06-01';
+
+                            this.carData.carName = rd[0].model_name;
 
                             this.upTitleData();
 

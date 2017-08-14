@@ -22,6 +22,8 @@ import PixelUtil from "../../utils/PixelUtil";
 import * as FontAndColor from "../../constant/fontAndColor";
 import NavigationBar from "../../component/NavigationBar";
 import MyButton from "../../component/MyButton";
+import * as AppUrls from "../../constant/appUrls";
+import  {request}   from '../../utils/RequestUtil';
 
 import WriteArrangeCostDetailTWO from '../../mine/setting/WriteArrangeCostDetailTWO';
 
@@ -33,10 +35,9 @@ var Platform = require('Platform');
 export default class EvaluateCarInfo extends BaseComponent {
 	constructor(props) {
 		super(props);
-		this.state = {
-			values: '',
-		}
-	}
+		this.remark = '  ';
+
+    }
 
 	initFinish = () => {
 		InteractionManager.runAfterInteractions(() => {
@@ -58,8 +59,8 @@ export default class EvaluateCarInfo extends BaseComponent {
 
 				<View style={[styles.itemStyle, {marginTop: Pixel.getPixel(15)}]}>
 
-					<Text allowFontScaling={false} style={styles.firstTextStyle}>2014款 斯柯达昊锐 1.8T自动贵雅版</Text>
-					<Text allowFontScaling={false} style={styles.secondTextStyle}>VVVF124325923423452ARe2</Text>
+					<Text allowFontScaling={false} style={styles.firstTextStyle}>{this.props.carData.carName}</Text>
+					<Text allowFontScaling={false} style={styles.secondTextStyle}>{this.props.carData.vin}</Text>
 					<Image
 						source={require('../../../images/mainImage/progressFOUR.png')}
 						style={styles.progressImageStyle}
@@ -82,11 +83,8 @@ export default class EvaluateCarInfo extends BaseComponent {
 						placeholder="请输入备注信息"
 						placeholderTextColor={FontAndColor.COLORA1}
 						style={styles.textInputStyle}
-						value={this.state.values}
 						onChangeText={(text) => {
-                            this.setState({
-                                values: text
-                            });
+                            this.remark = text;
                         }}/>
 				</View>
 
@@ -103,13 +101,66 @@ export default class EvaluateCarInfo extends BaseComponent {
 	}
 
 	loginOut = () => {
-		// alert(this.state.values);
-		this.toNextPage({
-			name: 'WriteArrangeCostDetailTWO',
-			component: WriteArrangeCostDetailTWO,
-			params: {},
-		})
+
+		let {aspectSelectArray,withinArray,paintArray} = this.props;
+		console.log(aspectSelectArray,withinArray,paintArray);
+		let selectStr = '';
+		if(aspectSelectArray.length>0){
+			selectStr+='1:';
+			for (let [index, NumTitle]of aspectSelectArray.entries()){
+				selectStr+=(NumTitle + (index==aspectSelectArray.length-1?';':','));
+			}
+		}
+		if(withinArray.length>0){
+			selectStr+='2:';
+			for (let [index, NumTitle]of withinArray.entries()){
+				selectStr+=(NumTitle + (index==withinArray.length-1?';':','));
+			}
+		}
+		if(paintArray.length>0){
+			selectStr+='3:';
+			for (let [index, NumTitle]of paintArray.entries()){
+				selectStr+=(NumTitle + (index==paintArray.length-1?'':','));
+			}
+		}
+
+		console.log(selectStr);
+
+        let token = 'c5cd2f08-f052-4d3e-8943-86c798945953'
+
+        this.props.showModal(true);
+        request(AppUrls.CAR_CHESHANG_PGS_EDIT_TASK,'post',{
+            infos:selectStr,
+            remark:this.remark,
+            tid:this.props.carData.id,
+			token:token
+		}).then((response) => {
+            this.props.showModal(false);
+
+            console.log(response.mjson);
+            this.props.showToast('任务提交成功');
+            this.navigationBack();
+
+        }, (error) => {
+            this.props.showModal(false);
+
+        });
+
+
 	}
+
+    navigationBack=()=>{
+        const navigator = this.props.navigator;
+        if (navigator) {
+            for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
+                if (navigator.getCurrentRoutes()[i].name == 'CarTrimScene') {
+                    this.props.reloadTaskData && this.props.reloadTaskData();
+                    navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                    break;
+                }
+            }
+        }
+    }
 
 
 }

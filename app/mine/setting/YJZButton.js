@@ -26,6 +26,7 @@ export default class YJZButton extends Component {
 	constructor(props) {
 		super(props);
 
+		this.selectType = this.props.select;
 		this.state = {
 
 			SELECT: this.props.select,
@@ -55,10 +56,11 @@ export default class YJZButton extends Component {
 		if (this.props.UnableClick){
 
 		}else{
+            this.selectType = !this.selectType;
 			this.setState({
-				SELECT:!this.state.SELECT
+				SELECT:this.selectType
 			});
-			this.props.callBack(this.props.PartTitle)
+			this.props.callBack(this.props.PartTitle,this.selectType,this.props.NumTitle);
 		}
 
 	}

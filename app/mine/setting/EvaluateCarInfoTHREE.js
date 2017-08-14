@@ -36,6 +36,8 @@ var Platform = require('Platform');
 export default class EvaluateCarInfo extends BaseComponent {
 	constructor(props) {
 		super(props);
+
+		this.paintArray = [];
 		this.state = {
 			SELECT: true,
 		}
@@ -62,8 +64,8 @@ export default class EvaluateCarInfo extends BaseComponent {
 				<ScrollView contentContainerStyle={{alignItems: 'center',backgroundColor:'white'}} >
 					<View style={[styles.itemStyle, {marginTop: Pixel.getPixel(15)}]}>
 
-						<Text allowFontScaling={false} style={styles.firstTextStyle}>2014款 斯柯达昊锐 1.8T自动贵雅版</Text>
-						<Text allowFontScaling={false} style={styles.secondTextStyle}>VVVF124325923423452ARe2</Text>
+						<Text allowFontScaling={false} style={styles.firstTextStyle}>{this.props.carData.carName}</Text>
+						<Text allowFontScaling={false} style={styles.secondTextStyle}>{this.props.carData.vin}</Text>
 						<Image
 							source={require('../../../images/mainImage/progressTHREE.png')}
 							style={styles.progressImageStyle}
@@ -79,63 +81,25 @@ export default class EvaluateCarInfo extends BaseComponent {
 						style={styles.imageStyle}
 
 					>
-						<YJZButton PartTitle="左前大灯" NumTitle="2" MYLEFT={100} MYTOP={80} callBack={(partTitle)=>{
-                                console.log(partTitle);
-                            }}/>
-						<YJZButton PartTitle="右前大灯" NumTitle="1" MYLEFT={170} MYTOP={80} callBack={(partTitle)=>{
-                                console.log(partTitle);
-                            }}/>
-						<YJZButton PartTitle="左外后车镜" NumTitle="13" MYLEFT={70} MYTOP={40} callBack={(partTitle)=>{
-                                console.log(partTitle);
-                            }}/>
-						<YJZButton PartTitle="右外后车镜" NumTitle="11" MYLEFT={190} MYTOP={40} callBack={(partTitle)=>{
-                                console.log(partTitle);
-                            }}/>
-						<YJZButton PartTitle="前格栅" NumTitle="12" MYLEFT={144} MYTOP={20} callBack={(partTitle)=>{
-                                console.log(partTitle);
-                            }}/>
-						<YJZButton PartTitle="左前轮" NumTitle="3" MYLEFT={7} MYTOP={122} callBack={(partTitle)=>{
-                                console.log(partTitle);
-                            }}/>
-						<YJZButton PartTitle="左后轮" NumTitle="6" MYLEFT={6} MYTOP={285} callBack={(partTitle)=>{
-                                console.log(partTitle);
-                            }}/>
-						<YJZButton PartTitle="右前轮" NumTitle="7" MYLEFT={290} MYTOP={120} callBack={(partTitle)=>{
-                                console.log(partTitle);
-                            }}/>
-						<YJZButton PartTitle="右后轮" NumTitle="10" MYLEFT={288} MYTOP={282} callBack={(partTitle)=>{
-                                console.log(partTitle);
-                            }}/>
-						<YJZButton PartTitle="左前车窗" NumTitle="4" MYLEFT={53} MYTOP={182} callBack={(partTitle)=>{
-                                console.log(partTitle);
-                            }}/>
-						<YJZButton PartTitle="左后车窗" NumTitle="5" MYLEFT={53} MYTOP={225} callBack={(partTitle)=>{
-                                console.log(partTitle);
-                            }}/>
-						<YJZButton PartTitle="右前车窗" NumTitle="8" MYLEFT={225} MYTOP={183} callBack={(partTitle)=>{
-                                console.log(partTitle);
-                            }}/>
-						<YJZButton PartTitle="右后车窗" NumTitle="9" MYLEFT={225} MYTOP={226} callBack={(partTitle)=>{
-                                console.log(partTitle);
-                            }}/>
-						<YJZButton PartTitle="前挡风玻璃" NumTitle="14" MYLEFT={135} MYTOP={156} callBack={(partTitle)=>{
-                                console.log(partTitle);
-                            }}/>
-						<YJZButton PartTitle="天窗玻璃及饰条" NumTitle="15" MYLEFT={125} MYTOP={210} callBack={(partTitle)=>{
-                                console.log(partTitle);
-                            }}/>
-						<YJZButton PartTitle="后挡风玻璃" NumTitle="16" MYLEFT={135} MYTOP={276} callBack={(partTitle)=>{
-                                console.log(partTitle);
-                            }}/>
-						<YJZButton PartTitle="右后尾灯" NumTitle="17" MYLEFT={198} MYTOP={376} callBack={(partTitle)=>{
-                                console.log(partTitle);
-                            }}/>
-						<YJZButton PartTitle="四轮轮罩" NumTitle="18" MYLEFT={142} MYTOP={376} callBack={(partTitle)=>{
-                                console.log(partTitle);
-                            }}/>
-						<YJZButton PartTitle="左后尾灯" NumTitle="19" MYLEFT={85} MYTOP={376} callBack={(partTitle)=>{
-                                console.log(partTitle);
-                            }}/>
+						<YJZButton PartTitle="左前大灯" NumTitle="2" MYLEFT={100} MYTOP={80} callBack={this.callBack}/>
+						<YJZButton PartTitle="右前大灯" NumTitle="1" MYLEFT={170} MYTOP={80} callBack={this.callBack}/>
+						<YJZButton PartTitle="左外后车镜" NumTitle="13" MYLEFT={70} MYTOP={40} callBack={this.callBack}/>
+						<YJZButton PartTitle="右外后车镜" NumTitle="11" MYLEFT={190} MYTOP={40} callBack={this.callBack}/>
+						<YJZButton PartTitle="前格栅" NumTitle="12" MYLEFT={144} MYTOP={20} callBack={this.callBack}/>
+						<YJZButton PartTitle="左前轮" NumTitle="3" MYLEFT={7} MYTOP={122} callBack={this.callBack}/>
+						<YJZButton PartTitle="左后轮" NumTitle="6" MYLEFT={6} MYTOP={285} callBack={this.callBack}/>
+						<YJZButton PartTitle="右前轮" NumTitle="7" MYLEFT={290} MYTOP={120} callBack={this.callBack}/>
+						<YJZButton PartTitle="右后轮" NumTitle="10" MYLEFT={288} MYTOP={282} callBack={this.callBack}/>
+						<YJZButton PartTitle="左前车窗" NumTitle="4" MYLEFT={53} MYTOP={182} callBack={this.callBack}/>
+						<YJZButton PartTitle="左后车窗" NumTitle="5" MYLEFT={53} MYTOP={225} callBack={this.callBack}/>
+						<YJZButton PartTitle="右前车窗" NumTitle="8" MYLEFT={225} MYTOP={183} callBack={this.callBack}/>
+						<YJZButton PartTitle="右后车窗" NumTitle="9" MYLEFT={225} MYTOP={226} callBack={this.callBack}/>
+						<YJZButton PartTitle="前挡风玻璃" NumTitle="14" MYLEFT={135} MYTOP={156} callBack={this.callBack}/>
+						<YJZButton PartTitle="天窗玻璃及饰条" NumTitle="15" MYLEFT={125} MYTOP={210} callBack={this.callBack}/>
+						<YJZButton PartTitle="后挡风玻璃" NumTitle="16" MYLEFT={135} MYTOP={276} callBack={this.callBack}/>
+						<YJZButton PartTitle="右后尾灯" NumTitle="17" MYLEFT={198} MYTOP={376} callBack={this.callBack}/>
+						<YJZButton PartTitle="四轮轮罩" NumTitle="18" MYLEFT={142} MYTOP={376} callBack={this.callBack}/>
+						<YJZButton PartTitle="左后尾灯" NumTitle="19" MYLEFT={85} MYTOP={376} callBack={this.callBack}/>
 
 					</Image>
 
@@ -151,11 +115,32 @@ export default class EvaluateCarInfo extends BaseComponent {
 		);
 	}
 
+    callBack=(PartTitle,selectType,NumTitle)=>{
+        if(selectType){
+            this.paintArray.push(NumTitle);
+        }else {
+            for(let i=0;i<this.paintArray.length;i++){
+                if(this.paintArray[i] == NumTitle){
+                    this.paintArray.splice(i,1);
+                }
+            }
+        }
+
+    }
+
 	loginOut = () => {
 		this.toNextPage({
 			name: 'EvaluateCarInfoFOUR',
 			component: EvaluateCarInfoFOUR,
-			params: {},
+			params: {
+                carData:this.props.carData,
+                roleName:this.props.roleValue,
+                type:this.props.type,
+                aspectSelectArray:this.props.aspectSelectArray,
+                withinArray:this.props.withinArray,
+                paintArray:this.paintArray,
+                reloadTaskData:this.props.reloadTaskData,
+			},
 		})
 	}
 

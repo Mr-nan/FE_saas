@@ -16,7 +16,6 @@ let Pixel = new  PixelUtil();
 
 export default class CarBuyCell extends  Component{
     render(){
-        let {titleData} = this.props;
         return(
             <View style={styles.rootContainer}>
                 <View style={styles.titleView}>
@@ -33,9 +32,9 @@ export default class CarBuyCell extends  Component{
                     </View>
 
                     <View style={styles.contentSubView}>
-                        <Text style={styles.subTitleText}>{titleData.thirdly}</Text>
+                        <Text style={styles.subTitleText}>{}</Text>
                         <Text style={styles.subTitleText}>郑南 18690700551</Text>
-                    </View>)
+                    </View>
 
                 </View>
                 {

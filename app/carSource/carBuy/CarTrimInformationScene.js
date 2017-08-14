@@ -21,9 +21,12 @@ import {CellView, CellSelectView} from '../znComponent/CarPublishCell';
 import CarTrimCostView from './View/CarTrimCostView';
 import *as fontAndColor from  '../../constant/fontAndColor';
 import PixelUtil from  '../../utils/PixelUtil';
+import * as AppUrls from "../../constant/appUrls";
+import  {request}   from '../../utils/RequestUtil';
 
 import CarlicenseTagScene from "../carPublish/CarlicenseTagScene";
 import CarAddTrimCostScene from "./CarAddTrimCostScene";
+import WriteArrangeCostDetailTWO from "../../mine/setting/WriteArrangeCostDetailTWO";
 let Pixel = new  PixelUtil();
 const sceneWidth = Dimensions.get('window').width;
 
@@ -32,6 +35,13 @@ const sceneWidth = Dimensions.get('window').width;
 export default class CarTrimInformationScene extends BaseComponent{
 
     render(){
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return (
+                <View style={{flex: 1, backgroundColor: 'white'}}>
+                    {this.loadView()}
+                    <AllNavigationView title={this.props.type==2?"整备信息":"填写整备信息"}  backIconClick={this.backPage}/>
+                </View>);
+        }
         return(
             <View style={styles.rootContaier}>
                 <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={-Pixel.getPixel(200)}>
@@ -66,7 +76,11 @@ export default class CarTrimInformationScene extends BaseComponent{
                                 )
                             })
                         }
-                        <CarTrimCostView ref={(ref)=>{this.CarTrimCostView = ref}} costObject={this.costObject} addClick={this.addClick}  moverClick={this.moverCostAction} alterClilk={this.alterClilk}/>
+                        <CarTrimCostView ref={(ref)=>{this.CarTrimCostView = ref}}
+                                         costObject={this.costObject}
+                                         addClick={this.props.type!==2 && this.addClick}
+                                         moverClick={this.props.type!==2&& this.moverCostAction}
+                                         alterClilk={this.props.type!==2 && this.alterClilk}/>
                         <View style={{flexDirection:'row',backgroundColor:'white',paddingHorizontal:Pixel.getPixel(15),paddingVertical:Pixel.getPixel(10),
                             alignItems:'center',justifyContent:'space-between'
                         }}>
@@ -75,34 +89,120 @@ export default class CarTrimInformationScene extends BaseComponent{
                                 style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(60)}]}
                                 placeholder='请填写'
                                 maxLength={200}
+                                editable={this.props.type==2?false:true}
+                                defaultValue={this.props.type!==2?"":this.carData.remark}
+                                onChangeText={(text)=>{this.remark = text}}
                                 underlineColorAndroid='transparent'
                                 placeholderTextColor={fontAndColor.COLORA4}
                                 placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
                             />
                         </View>
-                        <View style={styles.footContainer}>
-                            <TouchableOpacity onPress={this.footBtnClick}>
-                                <View style={styles.footView}>
-                                    <Text allowFontScaling={false}  style={styles.footText}>提交</Text>
+                        {
+                            this.props.type ==1 && (
+                                <View style={styles.footContainer}>
+                                    <TouchableOpacity onPress={this.footBtnClick}>
+                                        <View style={styles.footView}>
+                                            <Text allowFontScaling={false}  style={styles.footText}>提交</Text>
+                                        </View>
+                                    </TouchableOpacity>
                                 </View>
-                            </TouchableOpacity>
-                        </View>
+                            )
+                        }
+
                     </ScrollView>
                 </KeyboardAvoidingView>
-                <AllNavigationView title="填写整备信息" backIconClick={this.backPage}/>
+                <AllNavigationView title={this.props.type==2?"整备信息":"填写整备信息"}  backIconClick={this.backPage}/>
             </View>
         )
     }
 
+    initFinish=()=>{
+
+        this.loadData();
+    }
+
+    /**
+     * 加载数据
+     */
+    loadData=()=>{
+
+        request(AppUrls.CAR_CHESHANG_TASKINFO,'post',{
+            token : 'c5cd2f08-f052-4d3e-8943-86c798945953',
+            type:this.props.type,
+            roleName:this.props.roleName,
+            taskid:this.props.taskid,
+        }).then((response) => {
+
+            console.log(response.mjson);
+            this.setData(response.mjson.data);
+        }, (error) => {
+
+        });
+    }
+
+    setData=(data)=>{
+
+        this.carData = data;
+        this.titleData1[0][0].value = data.vin;
+        this.titleData1[0][1].value = data.carName;
+        this.titleData1[1][0].value = data.carNum;
+        this.titleData1[1][2].value = data.remark;
+
+        if(this.props.type == 2){
+            this.titleData1[2][0].value = data.lastCarNum;
+            this.titleData1[1].splice(1,1);
+            this.titleData1[1].splice(1,1);
+
+
+            this.costObject.sumNumber = parseFloat(data.taskInfo.zbMoney);
+            for(let item of data.taskInfo.mlist)
+            {
+               this.costObject.array.push({
+                   price:parseFloat(item.amount),
+                   content:item.detail,
+                   typeTitle:item.classification,
+               });
+            }
+        }
+
+
+        this.setState({
+            renderPlaceholderOnly:'success',
+            titleData:this.titleData1,
+        });
+
+    }
 
     footBtnClick=()=>{
-        this.toNextPage({
-            name:'CarInitialTaskUpImagScene',
-            component: CarInitialTaskUpImagScene,
-            params: {
 
-            }
-        })
+        this.props.showModal(true);
+        let minfos = [];
+        for(let item of this.costObject.array){
+            minfos.push({id:0,zbyId:this.props.taskid,amount:item.price,detail:item.content,classification:item.typeTitle});
+        }
+
+        let params={
+            minfos:JSON.stringify(minfos),
+            tid:this.props.taskid,
+            zbMoney:this.costObject.sumNumber,
+            lastCarNum:this.lastCarNum,
+            remark:this.remark,
+            token : 'c5cd2f08-f052-4d3e-8943-86c798945953',
+        }
+
+        request(AppUrls.CAR_CHESHANG_ZBY_EDIT_TASK,'post',params).then((response) => {
+
+            this.props.showModal(false);
+            this.props.showToast('任务提交成功');
+            this.props.reloadTaskData();
+            this.backPage();
+
+        }, (error) => {
+
+            this.props.showModal(false);
+        });
+
+
     }
 
     /**
@@ -176,6 +276,8 @@ export default class CarTrimInformationScene extends BaseComponent{
     // 构造
     constructor(props) {
         super(props);
+        this.lastCarNum = '';
+        this.remark=' ';
         this.titleData1=[
             [
                 {
@@ -223,31 +325,20 @@ export default class CarTrimInformationScene extends BaseComponent{
                     title:'过户后车牌号',
                     isShowTag:false,
                     value:'请输入',
-                    isShowTail:true,
+                    isShowTail:this.props.type==2?false:true,
                 },
 
             ],
         ];
 
         this.costObject={
-            sumNumber:3000,
+            sumNumber:0,
             array:[
-                {
-                    typeTitle:'机械维修',
-                    content:'当为true时，如果文本被按下，则没有任何视觉效果。默认情况下，文本被按下时会有一个灰色的、椭圆形的高光。',
-                    price:1000,
-                }, {
-                    typeTitle:'机械维修',
-                    content:'当为true时，如果文本被按下，则没有任何视觉效果。默认情况下，文本被按下时会有一个灰色的、椭圆形的高光。',
-                    price:1000,
-                }, {
-                    typeTitle:'机械维修',
-                    content:'当为true时，如果文本被按下，则没有任何视觉效果。默认情况下，文本被按下时会有一个灰色的、椭圆形的高光。',
-                    price:1000,
-                }
+
             ]
         };
         this.state = {
+            renderPlaceholderOnly:'loading',
             titleData:this.titleData1,
         };
     }
@@ -260,8 +351,22 @@ export default class CarTrimInformationScene extends BaseComponent{
      */
     cellCilck=(title)=>{
 
-        if(title == '过户后车牌号'){
+        console.log(this.carData);
+
+        if(title == '过户后车牌号' && this.props.type!=2){
+
             this.pushCarIicenseTagScene();
+
+        }else if(title =='评估图片'){
+            this.toNextPage(
+                {
+                    name: 'WriteArrangeCostDetailTWO',
+                    component: WriteArrangeCostDetailTWO,
+                    params: {
+                        taskInfo:this.carData.taskInfo,
+                    }
+                }
+            );
         }
     }
 
@@ -291,6 +396,7 @@ export default class CarTrimInformationScene extends BaseComponent{
      **/
     _checkedCarlicenseTagClick = (title) => {
         this.titleData1[2][0].value = title;
+        this.lastCarNum = title;
         this.upTitleData();
     }
 

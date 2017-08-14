@@ -183,9 +183,34 @@ export const CAR_SASS_PUBLISH = BASEURL + 'cheshang/sass/publish';
 export const CAR_CHESHANG_TASKS= BASEURL + 'cheshang/sass/tasks';
 
 /**
- * 创建收车任务
+ * 创建整备任务
  */
 export const CAR_CHESHANG_PUBLISHTASK= BASEURL + 'cheshang/sass/publishTask';
+
+/**
+ * 查看整备任务
+ */
+export const CAR_CHESHANG_TASKINFO= BASEURL + 'cheshang/sass/taskInfo';
+
+/**
+ * 整备任务 - 评估师提交任务
+ */
+export const CAR_CHESHANG_PGS_EDIT_TASK= BASEURL + 'cheshang/sass/pgsEditTask';
+
+/**
+ * 整备任务 - 整备员提交任务
+ */
+export const CAR_CHESHANG_ZBY_EDIT_TASK= BASEURL + 'cheshang/sass/zbyEditTask';
+
+/**
+ * 整备任务 - 经理提交任务
+ */
+export const CAR_CHESHANG_MANAGER_EDIT_TASK= BASEURL + 'cheshang/sass/managerEditTask';
+
+/**
+ * 整备任务 - 运营专员交任务
+ */
+export const CAR_CHESHANG_YYZY_EDIT_TASK= BASEURL + 'cheshang/sass/updateTaskByyyzy';
 
 /**
  * 获取登记人信息

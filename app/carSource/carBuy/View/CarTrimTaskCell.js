@@ -8,17 +8,18 @@ import {
     View,
     TouchableOpacity,
     Text,
+    Dimensions
 } from 'react-native';
 
 import *as fontAndColor from  '../../../constant/fontAndColor';
 import PixelUtil from  '../../../utils/PixelUtil';
 let Pixel = new  PixelUtil();
+const sceneWidth = Dimensions.get('window').width;
 
 export default class CarTrimTaskCell extends  Component{
 
     render(){
         let {cellData} = this.props;
-        console.log(cellData);
         return(
 
             <View style={styles.rootContainer}>
@@ -27,17 +28,17 @@ export default class CarTrimTaskCell extends  Component{
                 </View>
                 <View style={styles.contentView}>
                     <View style={styles.contentSubView}>
-                        <Text style={styles.subTitleText}>VIN</Text>
-                        <Text style={styles.subTitleText}>{cellData.vin}</Text>
+                        <Text style={styles.subTitleText}>VIN:</Text>
+                        <Text style={[styles.subTitleText,{textAlign:'right'}]}>{cellData.vin}</Text>
                     </View>
                     <View style={styles.contentSubView}>
-                        <Text style={styles.subTitleText}>车辆信息</Text>
-                        <Text style={styles.subTitleText}>{cellData.carName}</Text>
+                        <Text style={styles.subTitleText}>车辆信息:</Text>
+                        <Text style={[styles.subTitleText,{width:sceneWidth*0.65,textAlign:'right'}]} numberOfLines={1}>{cellData.carName} {cellData.carNum}</Text>
                     </View>
                     <View style={styles.contentSubView}>
-                        <Text style={styles.subTitleText}>任务时间</Text>
-                        <Text style={styles.subTitleText}>{cellData.taskTime}</Text>
-                    </View>)
+                        <Text style={styles.subTitleText}>任务时间:</Text>
+                        <Text style={[styles.subTitleText,{textAlign:'right'}]}>{cellData.taskTime}</Text>
+                    </View>
                 </View>
                 {
                     this.props.btnTitle &&

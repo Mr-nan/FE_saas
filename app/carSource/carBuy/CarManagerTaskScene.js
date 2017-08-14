@@ -24,6 +24,8 @@ import AllNavigationView from  '../../component/AllNavigationView';
 import {CellView, CellSelectView} from '../znComponent/CarPublishCell';
 import *as fontAndColor from  '../../constant/fontAndColor';
 import PixelUtil from  '../../utils/PixelUtil';
+import * as AppUrls from "../../constant/appUrls";
+import  {request}   from '../../utils/RequestUtil';
 
 import CarInitialTaskUpImagScene from "./CarInitialTaskUpImagScene";
 let Pixel = new  PixelUtil();
@@ -32,6 +34,13 @@ const sceneWidth = Dimensions.get('window').width;
 export default class CarManagerTaskScene extends BaseComponent{
 
     render(){
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return (
+                <View style={{flex: 1, backgroundColor: 'white'}}>
+                    {this.loadView()}
+                    <AllNavigationView title={this.props.type==1?"录入车辆信息":'查看价格信息'} backIconClick={this.backPage}/>
+                </View>);
+        }
         return(
             <View style={styles.rootContaier}>
                 <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={-Pixel.getPixel(64)}>
@@ -66,32 +75,153 @@ export default class CarManagerTaskScene extends BaseComponent{
                                 )
                             })
                         }
-                        <View style={styles.footContainer}>
-                            <TouchableOpacity onPress={this.footBtnClick}>
-                                <View style={styles.footView}>
-                                    <Text allowFontScaling={false}  style={styles.footText}>提交</Text>
+                        {
+                            this.props.type == 1 && (
+                                <View style={styles.footContainer}>
+                                    <TouchableOpacity onPress={this.footBtnClick}>
+                                        <View style={styles.footView}>
+                                            <Text allowFontScaling={false} style={styles.footText}>提交</Text>
+                                        </View>
+                                    </TouchableOpacity>
                                 </View>
-                            </TouchableOpacity>
-                        </View>
+                            )
+                        }
                     </ScrollView>
                 </KeyboardAvoidingView>
-                <AllNavigationView title="录入车辆信息" backIconClick={this.backPage}/>
+                <AllNavigationView title={this.props.type==1?"录入车辆信息":'查看价格信息'} backIconClick={this.backPage}/>
             </View>
         )
     }
+
+
+    initFinish=()=>{
+        this.loadData();
+    }
+
+    /**
+     * 加载数据
+     */
+    loadData=()=>{
+
+        this.setState({
+            renderPlaceholderOnly:'loading'
+        });
+        request(AppUrls.CAR_CHESHANG_TASKINFO,'post',{
+            token : 'c5cd2f08-f052-4d3e-8943-86c798945953',
+            type:this.props.type,
+            roleName:this.props.roleName,
+            taskid:this.props.taskid,
+        }).then((response) => {
+
+            console.log(response.mjson);
+            this.setData(response.mjson.data);
+        }, (error) => {
+
+        });
+    }
+
+    setData=(data)=>{
+
+        this.carData = data;
+        this.titleData1[0][0].value = data.vin;
+        this.titleData1[0][1].value = data.carName;
+
+        if(this.props.type ==1){
+            this.titleData1[1][1].tailView=()=> {
+                return (
+                    <View style={{alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-end'}}>
+                        <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),textAlign:'right'}}>{String(data.taskInfo.zbMoney)}</Text>
+                        <Text allowFontScaling={false} style={styles.textInputTitle}>元</Text>
+                    </View>)
+            };
+
+        }
+
+        if(this.props.type==2){
+            this.titleData1[1][0].tailView=()=> {
+                return (
+                    <View style={{alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-end'}}>
+                        <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),textAlign:'right'}}>{String(data.taskInfo.managerInfo.buyprice)}</Text>
+                        <Text allowFontScaling={false} style={styles.textInputTitle}>元</Text>
+                    </View>)
+            };this.titleData1[1][2].tailView=()=> {
+                return (
+                    <View style={{alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-end'}}>
+                        <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),textAlign:'right'}}>{String(data.taskInfo.managerInfo.selfprice)}</Text>
+                        <Text allowFontScaling={false} style={styles.textInputTitle}>元</Text>
+                    </View>)
+            };this.titleData1[1][3].tailView=()=> {
+                return (
+                    <View style={{alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-end'}}>
+                        <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),textAlign:'right'}}>{String(data.taskInfo.managerInfo.selfprice)}</Text>
+                        <Text allowFontScaling={false} style={styles.textInputTitle}>元</Text>
+                    </View>)
+            };
+
+            this.titleData1[2][0].tailView='';
+            this.titleData1[2][0].value = data.remark;
+
+            this.titleData1[1].splice(1,1);
+        }
+
+        this.setState({
+            renderPlaceholderOnly:'success',
+            titleData:this.titleData1,
+        });
+
+    }
+
+
 
     cellSelectAction=(selectDict)=>{
         alert(selectDict.title,selectDict.value);
     }
 
-    footBtnClick=()=>{
-        this.toNextPage({
-            name:'CarInitialTaskUpImagScene',
-            component: CarInitialTaskUpImagScene,
-            params: {
 
-            }
-        })
+    footBtnClick=()=>{
+
+        if(parseFloat(this.overprice)>parseFloat(this.selfprice))
+        {
+            this.props.showToast('卖车底价不能大于标价');
+            return;
+
+        }
+
+        if(parseFloat(this.buyprice)<=0)
+        {
+            this.props.showToast('请输入正确的收车价');
+            return;
+        }
+        if(parseFloat(this.selfprice)<=0)
+        {
+            this.props.showToast('请输入正确的卖车标价');
+            return;
+        }
+        if(parseFloat(this.overprice)<=0)
+        {
+            this.props.showToast('请输入正确的卖车底价');
+            return;
+        }
+
+        this.props.showModal(true);
+        request(AppUrls.CAR_CHESHANG_MANAGER_EDIT_TASK,'post',{
+            token : 'c5cd2f08-f052-4d3e-8943-86c798945953',
+            buyprice:this.buyprice,
+            overprice:this.overprice,
+            selfprice:this.selfprice,
+            remark:this.remark,
+            tid:this.props.taskid,
+        }).then((response) => {
+
+            this.props.showModal(false);
+            this.props.showToast('任务提交成功');
+            this.props.reloadTaskData();
+            this.backPage();
+
+        }, (error) => {
+            this.props.showModal(false);
+
+        });
     }
 
     // 构造
@@ -119,8 +249,7 @@ export default class CarManagerTaskScene extends BaseComponent{
             [
                 {
                     title: '收车价格',
-                    isShowTag: true,
-                    isShowTail: true,
+                    isShowTag:this.props.type==1?true:false,
                     tailView: () => {
                         return (
                             <View style={{alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-end'}}>
@@ -138,6 +267,7 @@ export default class CarManagerTaskScene extends BaseComponent{
                                                    text = text.substring(0, text.length - 1);
                                                }
                                                let moneyStr = this.chkPrice(text);
+                                               this.buyprice = moneyStr;
                                                this.buyPrice.setNativeProps({
                                                    text: moneyStr,
                                                });
@@ -149,34 +279,9 @@ export default class CarManagerTaskScene extends BaseComponent{
                     title: '整备价格',
                     isShowTag: false,
                     isShowTail: true,
-                    tailView: () => {
-                        return (
-                            <View style={{alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-end'}}>
-                                <TextInput style={styles.textInput}
-                                           ref={(ref) => {
-                                               this.trimPrice = ref
-                                           }}
-                                           placeholder='请输入'
-                                           keyboardType={'numeric'}
-                                           maxLength={7}
-                                           underlineColorAndroid='transparent'
-                                           onChangeText={(text) => {
-
-                                               if (text.length > 4 && text.indexOf('.') == -1) {
-                                                   text = text.substring(0, text.length - 1);
-                                               }
-                                               let moneyStr = this.chkPrice(text);
-                                               this.trimPrice.setNativeProps({
-                                                   text: moneyStr,
-                                               });
-                                           }}/>
-                                <Text allowFontScaling={false} style={styles.textInputTitle}>元</Text>
-                            </View>)
-                    }
                 },{
                     title: '卖车标价',
-                    isShowTag: true,
-                    isShowTail: true,
+                    isShowTag:this.props.type==1?true:false,
                     tailView: () => {
                         return (
                             <View style={{alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-end'}}>
@@ -194,6 +299,7 @@ export default class CarManagerTaskScene extends BaseComponent{
                                                    text = text.substring(0, text.length - 1);
                                                }
                                                let moneyStr = this.chkPrice(text);
+                                               this.selfprice = moneyStr;
                                                this.normPrice.setNativeProps({
                                                    text: moneyStr,
                                                });
@@ -203,8 +309,7 @@ export default class CarManagerTaskScene extends BaseComponent{
                     }
                 },{
                     title: '卖车低价',
-                    isShowTag: true,
-                    isShowTail: true,
+                    isShowTag:this.props.type==1?true:false,
                     tailView: () => {
                         return (
                             <View style={{alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-end'}}>
@@ -222,6 +327,7 @@ export default class CarManagerTaskScene extends BaseComponent{
                                                    text = text.substring(0, text.length - 1);
                                                }
                                                let moneyStr = this.chkPrice(text);
+                                               this.overprice = moneyStr;
                                                this.dealPrice.setNativeProps({
                                                    text: moneyStr,
                                                });
@@ -234,15 +340,14 @@ export default class CarManagerTaskScene extends BaseComponent{
             [
                 {
                     title:'备注',
-                    isShowTag:false,
-                    value:'请填写',
-                    isShowTail:false,
+                    isShowTag:this.props.type==1?true:false,
                     tailView:()=>{
                         return(
                             <TextInput
                                 style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(60)}]}
                                 placeholder='请填写'
                                 maxLength={200}
+                                onChangeText={(text)=>{this.remark = text}}
                                 underlineColorAndroid='transparent'
                                 placeholderTextColor={fontAndColor.COLORA4}
                                 placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
@@ -255,6 +360,7 @@ export default class CarManagerTaskScene extends BaseComponent{
         ];
         this.state = {
             titleData:this.titleData1,
+            renderPlaceholderOnly:'loading'
         };
     }
 
