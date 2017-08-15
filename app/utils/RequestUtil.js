@@ -61,6 +61,7 @@ const request = (url, method, params, backToLogin) => {
                             resolve({mjson: responseData, mycode: 1});
                         } else {
                             if (responseData.code == 7040011 || responseData.code == 7040020) {
+                                StorageUtil.mSetItem(StorageKeyNames.ISLOGIN,'');
                                 StorageUtil.mSetItem(StorageKeyNames.NEED_TOAST_ERROR, responseData.msg + '');
                                 if (all) {
                                     all.immediatelyResetRouteStack([{
