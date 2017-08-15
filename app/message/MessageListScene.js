@@ -102,14 +102,14 @@ export default class MessageListScene extends BaseComponent {
                 if (data.result.rows.length > 0) {
                     let dbLastTime = data.result.rows.item(0).createTime;
                     let dbCount = 0;
-                    for (let i = 0; i < data.result.rows.item.length; i++) {
+                    for (let i = 0; i < data.result.rows.length; i++) {
                         if (!data.result.rows.item(i).isRead) {
                             dbCount++;
                         }
                     }
                     StorageUtil.mGetItem(StorageKeyNames.SYSTEMS_LAST_MESSAGE_TIME, (timeData) => {
                         if (timeData.code == 1 && timeData.result != null) {
-                            if (timeData.result > data.createTime) {
+                            if (timeData.result > data.result.rows.item(0).createTime) {
                                 dbLastTime = timeData.result;
                             }
                         }
@@ -162,14 +162,15 @@ export default class MessageListScene extends BaseComponent {
                 if (data.result.rows.length > 0) {
                     let dbLastTime = data.result.rows.item(0).createTime;
                     let dbCount = 0;
-                    for (let i = 0; i < data.result.rows.item.length; i++) {
+                    for (let i = 0; i < data.result.rows.length; i++) {
+                        console.log('data.result.rows.item(i).isRead-=-=-=-', data.result.rows.item(i).isRead);
                         if (!data.result.rows.item(i).isRead) {
                             dbCount ++;
                         }
                     }
                     StorageUtil.mGetItem(StorageKeyNames.ADVERTISEMENT_LAST_MESSAGE_TIME, (timeData) => {
                         if (timeData.code == 1 && timeData.result != null) {
-                            if (timeData.result > data.createTime) {
+                            if (timeData.result > data.result.rows.item(0).createTime) {
                                 dbLastTime = timeData.result;
                             }
                         }
