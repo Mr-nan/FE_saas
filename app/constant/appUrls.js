@@ -6,12 +6,12 @@
 /**
  * 测试地址
  */
-//export const BASEURL = 'http://api-gateway.test.dycd.com/';
+export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 正式地址
  */
-export const BASEURL = 'https://gatewayapi.dycd.com/';
+//export const BASEURL = 'https://gatewayapi.dycd.com/';
 
 /**
  * 预发布地址
@@ -299,7 +299,7 @@ export const USER_ACCOUNT_EDITPAYPWD = BASEURL + 'v1/user.account/editPayPwd';
  *
  * 通过商户ID获取财务是否有账户管理权限
  **/
-export const GETACCOUNTSTATUSBYUID = BASEURL + ' v1/user.account/getAccountStatusByUID';
+export const GETACCOUNTSTATUSBYUID = BASEURL + 'v1/user.account/getAccountStatusByUID';
 
 /**
  * from @zhaojian
