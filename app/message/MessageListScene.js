@@ -1,6 +1,13 @@
 /**
  * Created by hanmeng on 2017/8/2.
  * 消息列表
+ *  获取未读消息数量流程:
+ *  1.获取待办消息未读数量(http请求)
+ *  2.获取数据库中系统消息最新一条的create_time作为请求参数，如数据库没数据则取StorageKeyNames.INTO_TIME
+ *  3.获取系统消息未读数量(http请求)
+ *  4.获取数据库中车市头条最新一条的create_time作为请求参数，如数据库没数据则取StorageKeyNames.INTO_TIME
+ *  5.获取车市头条未读数量(http请求)
+ *  目前为嵌套请求，最好改成网关统一请求
  **/
 import React, {Component, PropTypes} from 'react'
 import {
@@ -18,7 +25,7 @@ import * as fontAndColor from '../constant/fontAndColor';
 import NavigatorView from '../component/AllNavigationView';
 import PixelUtil from '../utils/PixelUtil'
 import * as AppUrls from "../constant/appUrls";
-import {request} from "../utils/RequestUtil";
+import {request, requestNoToken} from "../utils/RequestUtil";
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
 import DailyReminderScene from "./dailyReminder/DailyReminderScene";
@@ -35,6 +42,7 @@ export default class MessageListScene extends BaseComponent {
      **/
     constructor(props) {
         super(props);
+        this.backlogNum = 0;
         this.state = {
             dataSource: [],
             renderPlaceholderOnly: 'blank'
@@ -46,31 +54,43 @@ export default class MessageListScene extends BaseComponent {
      *
      **/
     initFinish = () => {
-        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+/*        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.setState({
             dataSource: ds.cloneWithRows(['0', '1', '3', '4']),
             renderPlaceholderOnly: 'success'
-        });
+        });*/
         this.loadData();
     };
 
     /**
-     *   数据请求
+     *   获取待办消息未读数量
      **/
     loadData = () => {
-        let url = AppUrls.HANDLE_COUNT;
-        request(url, 'post', {
-            accountMobile: '18000000002'
-        }).then((response) => {
+        StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let maps = {
+                    accountMobile: '15102373842',
+                    token: '5afa531b-4295-4c64-8d6c-ac436c619078'
+                };
+                let url = AppUrls.HANDLE_COUNT;
+                requestNoToken(url, 'post', maps).then((response) => {
+                    this.backlogNum = response.mjson.data;
+                    //console.log('this.backlogNum======', this.backlogNum);
+                }, (error) => {
 
-        }, (error) => {
-
+                });
+            } else {
+                //this.props.showToast('确认验收失败');
+            }
         });
     };
 
     /**
-     *   获取
+     *   获取系统消息未读数量
      **/
+    getSysMessageNum = () => {
+
+    };
 
     /**
      *  render
@@ -140,7 +160,7 @@ export default class MessageListScene extends BaseComponent {
                                         textAlign: 'center',
                                         fontSize: Pixel.getFontPixel(10),
                                         color: fontAndColor.COLORA3
-                                    }}>99</Text>
+                                    }}>{this.backlogNum}</Text>
                             </View>
                         </View>
                         <Text
