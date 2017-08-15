@@ -32,6 +32,8 @@ import DailyReminderScene from "./dailyReminder/DailyReminderScene";
 import {BacklogListScene} from "./backlog/BacklogListScene";
 import {HeadLineListScene} from "./headLine/HeadLineListScene";
 import {SysMessageListScene} from "./sysMessage/SysMessageListScene";
+import SQLiteUtil from "../utils/SQLiteUtil";
+const SQLite = new SQLiteUtil();
 var Pixel = new PixelUtil();
 
 
@@ -42,7 +44,10 @@ export default class MessageListScene extends BaseComponent {
      **/
     constructor(props) {
         super(props);
+        this.custPhone = '';
         this.backlogNum = 0;
+        this.sysMessageNum = 0;
+        this.headLineNum = 0;
         this.state = {
             dataSource: [],
             renderPlaceholderOnly: 'blank'
@@ -54,34 +59,37 @@ export default class MessageListScene extends BaseComponent {
      *
      **/
     initFinish = () => {
-/*        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.setState({
-            dataSource: ds.cloneWithRows(['0', '1', '3', '4']),
-            renderPlaceholderOnly: 'success'
-        });*/
-        this.loadData();
+        /*        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+         this.setState({
+         dataSource: ds.cloneWithRows(['0', '1', '3', '4']),
+         renderPlaceholderOnly: 'success'
+         });*/
+        StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
+            if (data.code == 1 && data.result != null) {
+                //this.custPhone = data.result;
+                this.custPhone = '15102373842';
+                this.loadData();
+            } else {
+                this.props.showToast('查询账户信息失败');
+            }
+        });
     };
 
     /**
      *   获取待办消息未读数量
      **/
     loadData = () => {
-        StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
-            if (data.code == 1 && data.result != null) {
-                let maps = {
-                    accountMobile: '15102373842',
-                    token: '5afa531b-4295-4c64-8d6c-ac436c619078'
-                };
-                let url = AppUrls.HANDLE_COUNT;
-                requestNoToken(url, 'post', maps).then((response) => {
-                    this.backlogNum = response.mjson.data;
-                    //console.log('this.backlogNum======', this.backlogNum);
-                }, (error) => {
-
-                });
-            } else {
-                //this.props.showToast('确认验收失败');
-            }
+        let maps = {
+            accountMobile: this.custPhone,
+            token: '5afa531b-4295-4c64-8d6c-ac436c619078'
+        };
+        let url = AppUrls.HANDLE_COUNT;
+        requestNoToken(url, 'post', maps).then((response) => {
+            this.backlogNum = response.mjson.data;
+            this.getSysMessageNum();
+            //console.log('this.backlogNum======', this.backlogNum);
+        }, (error) => {
+            this.getSysMessageNum();
         });
     };
 
@@ -89,7 +97,131 @@ export default class MessageListScene extends BaseComponent {
      *   获取系统消息未读数量
      **/
     getSysMessageNum = () => {
+        SQLite.selectData('SELECT * FROM messageSystemModel WHERE tel = ? order by createTime desc', [this.custPhone],
+            (data) => {
+                if (data.result.rows.length > 0) {
+                    let dbLastTime = data.result.rows.item(0).createTime;
+                    let dbCount = 0;
+                    for (let i = 0; i < data.result.rows.item.length; i++) {
+                        if (!data.result.rows.item(i).isRead) {
+                            dbCount++;
+                        }
+                    }
+                    StorageUtil.mGetItem(StorageKeyNames.SYSTEMS_LAST_MESSAGE_TIME, (timeData) => {
+                        if (timeData.code == 1 && timeData.result != null) {
+                            if (timeData.result > data.createTime) {
+                                dbLastTime = timeData.result;
+                            }
+                        }
+                        // http
+                        let maps = {
+                            type: 'systems',
+                            timestamp: new Date(dbLastTime.replace(/-/g, '/')).valueOf(),
+                            token: '5afa531b-4295-4c64-8d6c-ac436c619078'
+                        };
+                        let url = AppUrls.SELECT_UNREAD_MESSAGE_COUNT;
+                        requestNoToken(url, 'post', maps).then((response) => {
+                            this.sysMessageNum = response.mjson.data + dbCount;
+                            //console.log('this.sysMessageNum======', this.sysMessageNum);
+                            this.getHeadLineNum();
+                        }, (error) => {
+                            this.getHeadLineNum();
+                        });
+                    });
+                } else {
+                    StorageUtil.mGetItem(StorageKeyNames.INTO_TIME, (data) => {
+                        if (data.code == 1 && data.result != null) {
+                            let dbLastTime = data.result;
+                            let maps = {
+                                type: 'systems',
+                                timestamp: new Date(dbLastTime.replace(/-/g, '/')).valueOf(),
+                                token: '5afa531b-4295-4c64-8d6c-ac436c619078'
+                            };
+                            let url = AppUrls.SELECT_UNREAD_MESSAGE_COUNT;
+                            requestNoToken(url, 'post', maps).then((response) => {
+                                this.sysMessageNum = response.mjson.data;
+                                //console.log('this.sysMessageNum======', this.sysMessageNum);
+                                this.getHeadLineNum();
+                            }, (error) => {
+                                this.getHeadLineNum();
+                            });
+                        } else {
+                            //this.props.showToast('确认验收失败');
+                        }
+                    });
+                }
+            });
+    };
 
+    /**
+     *   获取车市头条未读数量
+     **/
+    getHeadLineNum = () => {
+        SQLite.selectData('SELECT * FROM messageHeadLineModel WHERE tel = ? order by createTime desc', [this.custPhone],
+            (data) => {
+                if (data.result.rows.length > 0) {
+                    let dbLastTime = data.result.rows.item(0).createTime;
+                    let dbCount = 0;
+                    for (let i = 0; i < data.result.rows.item.length; i++) {
+                        if (!data.result.rows.item(i).isRead) {
+                            dbCount ++;
+                        }
+                    }
+                    StorageUtil.mGetItem(StorageKeyNames.ADVERTISEMENT_LAST_MESSAGE_TIME, (timeData) => {
+                        if (timeData.code == 1 && timeData.result != null) {
+                            if (timeData.result > data.createTime) {
+                                dbLastTime = timeData.result;
+                            }
+                        }
+                        // http
+                        let maps = {
+                            type: 'advertisement',
+                            timestamp: new Date(dbLastTime.replace(/-/g, '/')).valueOf(),
+                            token: '5afa531b-4295-4c64-8d6c-ac436c619078'
+                        };
+                        let url = AppUrls.SELECT_UNREAD_MESSAGE_COUNT;
+                        requestNoToken(url, 'post', maps).then((response) => {
+                            this.headLineNum = response.mjson.data + dbCount;
+                            //console.log('this.sysMessageNum======', this.sysMessageNum);
+                            this.loadListData();
+                        }, (error) => {
+                            this.loadListData();
+                        });
+                    });
+                } else {
+                    StorageUtil.mGetItem(StorageKeyNames.INTO_TIME, (data) => {
+                        if (data.code == 1 && data.result != null) {
+                            let dbLastTime = data.result;
+                            let maps = {
+                                type: 'advertisement',
+                                timestamp: new Date(dbLastTime.replace(/-/g, '/')).valueOf(),
+                                token: '5afa531b-4295-4c64-8d6c-ac436c619078'
+                            };
+                            let url = AppUrls.SELECT_UNREAD_MESSAGE_COUNT;
+                            requestNoToken(url, 'post', maps).then((response) => {
+                                this.headLineNum = response.mjson.data;
+                                //console.log('this.sysMessageNum======', this.sysMessageNum);
+                                this.loadListData();
+                            }, (error) => {
+                                this.loadListData();
+                            });
+                        } else {
+                            //this.props.showToast('确认验收失败');
+                        }
+                    });
+                }
+            });
+    };
+
+    /**
+     *   加载listview数据
+     **/
+    loadListData = () =>{
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.setState({
+            dataSource: ds.cloneWithRows(['0', '1', '3', '4']),
+            renderPlaceholderOnly: 'success'
+        });
     };
 
     /**
@@ -144,7 +276,7 @@ export default class MessageListScene extends BaseComponent {
                     <View style={styles.listItem}>
                         <View style={{marginLeft: Pixel.getPixel(15)}}>
                             <Image source={require('../../images/mainImage/jiekuan.png')}/>
-                            <View style={{
+                            {this.backlogNum > 0 && <View style={{
                                 position: 'absolute',
                                 right: 0,
                                 width: Pixel.getPixel(18),
@@ -161,7 +293,7 @@ export default class MessageListScene extends BaseComponent {
                                         fontSize: Pixel.getFontPixel(10),
                                         color: fontAndColor.COLORA3
                                     }}>{this.backlogNum}</Text>
-                            </View>
+                            </View>}
                         </View>
                         <Text
                             style={{marginLeft: Pixel.getPixel(15)}}
@@ -183,23 +315,23 @@ export default class MessageListScene extends BaseComponent {
                         <View style={{marginLeft: Pixel.getPixel(15)}}>
                             <Image source={require('../../images/mainImage/jiekuan.png')}/>
                             {/*<View style={{
-                                position: 'absolute',
-                                right: 0,
-                                width: Pixel.getPixel(18),
-                                height: Pixel.getPixel(18),
-                                backgroundColor: fontAndColor.COLORB2,
-                                borderRadius: 18,
-                                justifyContent: 'center',
-                                alignItems: 'center'
-                            }}>
-                                <Text
-                                    allowFontScaling={false}
-                                    style={{
-                                        textAlign: 'center',
-                                        fontSize: Pixel.getFontPixel(10),
-                                        color: fontAndColor.COLORA3
-                                    }}>99</Text>
-                            </View>*/}
+                             position: 'absolute',
+                             right: 0,
+                             width: Pixel.getPixel(18),
+                             height: Pixel.getPixel(18),
+                             backgroundColor: fontAndColor.COLORB2,
+                             borderRadius: 18,
+                             justifyContent: 'center',
+                             alignItems: 'center'
+                             }}>
+                             <Text
+                             allowFontScaling={false}
+                             style={{
+                             textAlign: 'center',
+                             fontSize: Pixel.getFontPixel(10),
+                             color: fontAndColor.COLORA3
+                             }}>99</Text>
+                             </View>*/}
                         </View>
                         <Text
                             style={{marginLeft: Pixel.getPixel(15)}}
@@ -254,7 +386,7 @@ export default class MessageListScene extends BaseComponent {
                     <View style={styles.listItem}>
                         <View style={{marginLeft: Pixel.getPixel(15)}}>
                             <Image source={require('../../images/mainImage/jiekuan.png')}/>
-                            <View style={{
+                            {this.sysMessageNum > 0 && <View style={{
                                 position: 'absolute',
                                 right: 0,
                                 width: Pixel.getPixel(18),
@@ -270,8 +402,8 @@ export default class MessageListScene extends BaseComponent {
                                         textAlign: 'center',
                                         fontSize: Pixel.getFontPixel(10),
                                         color: fontAndColor.COLORA3
-                                    }}>99</Text>
-                            </View>
+                                    }}>{this.sysMessageNum}</Text>
+                            </View>}
                         </View>
                         <Text
                             style={{marginLeft: Pixel.getPixel(15)}}
@@ -292,7 +424,7 @@ export default class MessageListScene extends BaseComponent {
                     <View style={styles.listItem}>
                         <View style={{marginLeft: Pixel.getPixel(15)}}>
                             <Image source={require('../../images/mainImage/jiekuan.png')}/>
-                            <View style={{
+                            {this.headLineNum > 0 && <View style={{
                                 position: 'absolute',
                                 right: 0,
                                 width: Pixel.getPixel(18),
@@ -308,8 +440,8 @@ export default class MessageListScene extends BaseComponent {
                                         textAlign: 'center',
                                         fontSize: Pixel.getFontPixel(10),
                                         color: fontAndColor.COLORA3
-                                    }}>99</Text>
-                            </View>
+                                    }}>{this.headLineNum}</Text>
+                            </View>}
                         </View>
                         <Text
                             style={{marginLeft: Pixel.getPixel(15)}}
