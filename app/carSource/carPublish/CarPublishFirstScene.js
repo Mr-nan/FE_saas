@@ -79,6 +79,10 @@ export default class CarPublishFirstScene extends BaseComponent{
                 this.loadCarData();
 
             }else {
+
+                if(this.props.carData.tid!==undefined){
+                        this.carData = this.props.carData;
+                }
                 StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
                     if(data.code == 1 && data.result != '')
                     {
@@ -519,12 +523,17 @@ export default class CarPublishFirstScene extends BaseComponent{
     // 获取本地数据
     getLocalityCarData=()=>{
 
+        if(this.carData.kid!==undefined){
+            this.setCarData();
+            return;
+        }
+
+
         if(this.carData.show_shop_id){
             StorageUtil.mGetItem(String(this.carData.show_shop_id),(data) => {
                 if (data.code == 1) {
                     if (data.result) {
                         this.carData=JSON.parse(data.result);
-                        console.log(this.carData);
                         this.setCarData();
                     }
                 }
@@ -554,6 +563,11 @@ export default class CarPublishFirstScene extends BaseComponent{
             this.vinInput.setNativeProps({
                 text: this.carData.vin
             });
+
+            if(this.carData.kid!==undefined)
+            {
+                this._onVinChange(this.carData.vin)
+            }
         }
         this.titleData1[0][2].value = this.carData.model_name?this.carData.model_name:'请选择';
         this.titleData2[0][2].value = this.carData.model_name?this.carData.model_name:'请选择';

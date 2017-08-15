@@ -147,8 +147,9 @@ export default class CarOperationScene extends BaseComponent{
             selfName:data.taskInfo.managersxy.selfName,
             selfMobile:data.taskInfo.managersxy.selfMobile,
             keysNum:parseFloat(data.taskInfo.managersxy.keysNum),
-            zbyid:data.id,
+            zbyid:data.taskInfo.managerzby.id,
             sxyid:data.id,
+            id:data.id,
             zbMoney:data.taskInfo.managerzby.zbMoney,
             carNum:data.carNum,
             overprice:data.taskInfo.overprice,
@@ -279,19 +280,19 @@ export default class CarOperationScene extends BaseComponent{
         this.props.showModal(true);
         let minfos = [];
         for(let item of this.costObject.array){
-            minfos.push({id:0,zbyId:this.props.taskid,amount:item.price,detail:item.content,classification:item.typeTitle});
+            minfos.push({id:0,zbyId:this.carParams.zbyid,amount:item.price,detail:item.content,classification:item.typeTitle});
         }
         this.carParams.zbMoney = this.costObject.sumNumber;
         this.carParams.managerInfoList = JSON.stringify(minfos);
-        console.log(this.carParams);
+        this.carParams.token = 'c5cd2f08-f052-4d3e-8943-86c798945953';
 
         request(AppUrls.CAR_CHESHANG_YYZY_EDIT_TASK,'post',this.carParams).then((response) => {
 
             console.log(response.mjson);
             this.props.showModal(false);
             this.props.showToast('任务提交成功');
-
-
+            this.backPage();
+            this.props.reloadTaskData();
 
         }, (error) => {
             this.props.showModal(false);

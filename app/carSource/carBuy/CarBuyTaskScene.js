@@ -97,27 +97,265 @@ export default class CarBuyTaskScene extends BaseComponent{
         this.carData['isDeal'] = selectDict.value;
     }
 
+    initFinish=()=>{
+        if(this.props.id){
+            this.loadData();
+        }
+    }
+
+    loadData=()=>{
+        request(AppUrls.CAR_SASS_SELECT_MSG, 'post', {
+            id:this.props.id,
+            token:'c5cd2f08-f052-4d3e-8943-86c798945953',
+        }).then((response) => {
+            this.props.showModal(false);
+            this.setData(response.mjson.data.acquisitionCar);
+        }, (error) => {
+            this.props.showModal(false);
+        });
+    }
+
+    setData=(data)=>{
+
+        this.carData={
+            consultList:data.consultList,
+            isDeal:data.isDeal,
+            collectionArea:data.collectionArea,
+            customerName:data.customerName,
+            contentNum:data.contentNum,
+            consultPrice:data.consultPrice,
+            mobile:'15102373847',
+            vin:data.vin,
+            closeingPrice:data.closeingPrice,
+            collectionType:data.collectionType,
+            preferPrice:data.preferPrice,
+            brand:data.brand,
+            remark:data.remark,
+            infoRecourse:data.infoRecourse,
+            id:data.id,
+        };
+
+        if(data.firstUpTime!==undefined){
+            let date = new Date(data.firstUpTime.replace(/-/g,"/"));
+            this.carData.firstUpTime = this.dateFormat(date,'yyyy-MM-dd');
+        }
+
+        if(this.carData.isDeal == 2)
+        {
+            this.currentDealStr = '尚未成交';
+
+        }else if(this.carData.isDeal == 1)
+        {
+            this.currentDealStr = '已成交';
+
+        }else{
+            this.currentDealStr = '已放弃';
+        }
+
+        this.titleData1[0][0].value = data.vin;
+        this.titleData1[0][1].value = data.collectionType;
+
+        this.titleData1[1][0].tailView=() => {
+            return (
+                <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                    <TextInput style={styles.textInput}
+                               ref={(ref)=>{this.firstPrice = ref}}
+                               placeholder='请输入'
+                               keyboardType={'numeric'}
+                               maxLength={7}
+                               defaultValue={data.customerName}
+                               underlineColorAndroid='transparent'
+                               onChangeText={(text)=>{
+                                   this.carData['customerName'] = text;
+                               }}/>
+                </View>)
+        }
+
+        this.titleData1[1][1].tailView=() => {
+            return (
+                <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                    <TextInput style={styles.textInput}
+                               ref={(ref)=>{this.firstPrice = ref}}
+                               placeholder='请输入'
+                               keyboardType={'numeric'}
+                               maxLength={11}
+                               defaultValue={data.contentNum}
+                               underlineColorAndroid='transparent'
+                               onChangeText={(text)=>{
+                                   this.carData['contentNum'] = text;
+                               }}/>
+
+                </View>)
+        }
+
+        this.titleData1[2][0].tailView=()=>{
+            return (
+                <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                    <TextInput style={styles.textInput}
+                               ref={(ref)=>{this.online_retail_price = ref}}
+                               placeholder='请输入'
+                               keyboardType={'numeric'}
+                               maxLength={7}
+                               defaultValue={String(data.preferPrice)}
+                               underlineColorAndroid='transparent'
+                               onChangeText={(text)=>{
+
+                                   if(text.length>4&&text.indexOf('.')==-1){
+                                       text = text.substring(0,text.length-1);
+                                   }
+                                   let moneyStr = this.chkPrice(text);
+                                   this.carData['preferPrice'] = moneyStr;
+                                   this.online_retail_price.setNativeProps({
+                                       text: moneyStr,
+                                   });
+                               }}/>
+                    <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
+                </View>)
+        }
+
+        this.titleData1[2][1].value = data.infoRecourse==''?'请选择':data.infoRecourse;
+        this.titleData1[2][2].value = data.collectionArea ==''?'请选择':data.collectionArea;
+        this.titleData1[2][3].value = this.carData.firstUpTime ==undefined?'请选择':this.carData.firstUpTime;
+
+        if(data.consultList.length>0){
+
+            this.titleData1[2].splice(4,1);
+            for(let [index,item] of data.consultList.entries()){
+               this.titleData1[2].push({
+                   title:'第'+String(index+1)+'次给价',
+                   value:String(item.consultPrice)+'万元',
+               });
+            }
+            this.titleData1[2].push({
+                title:'第'+String(data.consultList.length+1)+'次出价',
+                tailView:()=> {
+                    return (
+                        <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                            <TextInput style={styles.textInput}
+                                       ref={(ref)=>{this.firstPrice = ref}}
+                                       placeholder='请输入'
+                                       keyboardType={'numeric'}
+                                       maxLength={7}
+                                       underlineColorAndroid='transparent'
+                                       onChangeText={(text)=>{
+
+                                           if(text.length>4&&text.indexOf('.')==-1){
+                                               text = text.substring(0,text.length-1);
+                                           }
+                                           let moneyStr = this.chkPrice(text);
+                                           this.carData['consultPrice'] = moneyStr;
+                                           this.firstPrice.setNativeProps({
+                                               text: moneyStr,
+                                           });
+                                       }}/>
+                            <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
+                        </View>)
+                }
+            });
+
+        }else {
+            this.titleData1[2][4].tailView=()=> {
+                return (
+                    <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                        <TextInput style={styles.textInput}
+                                   ref={(ref)=>{this.firstPrice = ref}}
+                                   placeholder='请输入'
+                                   keyboardType={'numeric'}
+                                   maxLength={7}
+                                   underlineColorAndroid='transparent'
+                                   onChangeText={(text)=>{
+
+                                       if(text.length>4&&text.indexOf('.')==-1){
+                                           text = text.substring(0,text.length-1);
+                                       }
+                                       let moneyStr = this.chkPrice(text);
+                                       this.carData['consultPrice'] = moneyStr;
+                                       this.firstPrice.setNativeProps({
+                                           text: moneyStr,
+                                       });
+                                   }}/>
+                        <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
+                    </View>)
+            }
+        }
+        this.titleData1[3][0].selectDict={current:this.currentDealStr,data:[{title:'尚未成交',value:2},{title:'已经成交',value:1},{title:'已放弃',value:3}]},
+        this.titleData1[4][0].tailView=() => {
+            return (
+                <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                    <TextInput style={styles.textInput}
+                               ref={(ref)=>{this.dealPrice = ref}}
+                               placeholder='请输入'
+                               keyboardType={'numeric'}
+                               maxLength={7}
+                               underlineColorAndroid='transparent'
+                               defaultValue={String(data.closeingPrice)}
+                               onChangeText={(text)=>{
+
+                                   if(text.length>4&&text.indexOf('.')==-1){
+                                       text = text.substring(0,text.length-1);
+                                   }
+                                   let moneyStr = this.chkPrice(text);
+                                   this.carData['closeingPrice ']=moneyStr;
+                                   this.dealPrice.setNativeProps({
+                                       text: moneyStr,
+                                   });
+                               }}/>
+                    <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
+                </View>)
+        };
+        this.titleData1[4][1].tailView=()=>{
+            return(
+                <TextInput
+                    style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(60)}]}
+                    placeholder='请填写'
+                    maxLength={200}
+                    underlineColorAndroid='transparent'
+                    defaultValue={data.remark}
+                    onFocus={()=>{
+                        this.setState({
+                            keyboardOffset:-Pixel.getPixel(0)
+                        });
+                    }}
+                    onBlur={()=>{
+                        this.setState({
+                            keyboardOffset:-Pixel.getPixel(64)
+                        });
+                    }}
+                    onChangeText={(text)=>{
+                        this.carData['remark'] = text;
+                    }}
+                    placeholderTextColor={fontAndColor.COLORA4}
+                    placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
+                />
+            )
+        };
+
+        this.upTitleData();
+
+    }
     /**
      * 提交
      */
     footBtnClick=()=>{
 
+        let carData = {...this.carData};
+        let consultList =[];
         if(parseFloat(this.carData.consultPrice) >0)
         {
                if(this.carData.consultList.length>0){
 
-                   this.carData.consultList.push({consultPrice:this.carData.consultPrice, acquisitionId:0, id:0});
+                   consultList.push(...this.carData.consultList);
+                   consultList.push({consultPrice:this.carData.consultPrice, acquisitionId:0, id:0});
 
                }else {
-                   this.carData.consultList = [{id:0,consultPrice:this.carData.consultPrice}];
+                   consultList = [{id:0,consultPrice:this.carData.consultPrice}];
                }
 
-               this.carData.consultList = JSON.stringify(this.carData.consultList);
+               carData.consultList = JSON.stringify(consultList);
         }
-        console.log(this.carData);
-
+        console.log(carData);
         this.props.showModal(true);
-        request(AppUrls.CAR_SASS_PUBLISH, 'post', this.carData).then((response) => {
+        request(AppUrls.CAR_SASS_PUBLISH, 'post', carData).then((response) => {
             this.props.showModal(false);
         }, (error) => {
             this.props.showModal(false);
@@ -134,27 +372,27 @@ export default class CarBuyTaskScene extends BaseComponent{
           ];
           this.carData={
               consultList:[],
-              isDeal:1,
-              collectionArea:'',
-              customerName:'',
-              contentNum:'',
-              consultPrice:'',
-              mobile:'18690700551',
+              isDeal:2,
+              collectionArea:' ',
+              customerName:' ',
+              contentNum:' ',
+              consultPrice:' ',
+              mobile:'15102373847',
               vin:'',
               closeingPrice:'',
               collectionType:'',
               preferPrice:'',
               brand:'',
               remark:'',
-              firstUpTime:'',
+              // firstUpTime:'',
               infoRecourse:'',
           };
 
-          if(this.carData.isDeal == 1)
+          if(this.carData.isDeal == 2)
           {
               this.currentDealStr = '尚未成交';
 
-          }else if(this.carData.isDeal == 2)
+          }else if(this.carData.isDeal == 1)
           {
               this.currentDealStr = '已成交';
 
@@ -166,9 +404,13 @@ export default class CarBuyTaskScene extends BaseComponent{
               [
                   {
                       title:'车架号',
-                      isShowTag:true,
+                      isShowTag:this.props.id!=undefined?false:true,
                       subTitle:"",
                       tailView:()=>{
+                         if (this.props.id)
+                         {
+                             return null;
+                         }
                           return(
                               <View style={{flexDirection:'row', alignItems:'center'}}>
                                   <TextInput style={styles.textInput}
@@ -204,7 +446,7 @@ export default class CarBuyTaskScene extends BaseComponent{
                   },
                   {
                       title:'车型',
-                      isShowTag:true,
+                      isShowTag:this.props.id!=undefined?false:true,
                       value:'请选择',
                       isShowTail:true,
                   },
@@ -304,7 +546,7 @@ export default class CarBuyTaskScene extends BaseComponent{
                       isShowTail:true,
                   },
                   {
-                      title:'第一次给价',
+                      title:'第1次给价',
                       isShowTag:false,
                       value:'请选择',
                       isShowTail:true,
@@ -340,7 +582,7 @@ export default class CarBuyTaskScene extends BaseComponent{
                       title:'是后成交',
                       isShowTag:false,
                       isShowTail:true,
-                      selectDict:{current:this.currentDealStr,data:[{title:'尚未成交',value:1},{title:'已经成交',value:2},{title:'已放弃',value:3}]},
+                      selectDict:{current:this.currentDealStr,data:[{title:'尚未成交',value:2},{title:'已经成交',value:1},{title:'已放弃',value:3}]},
                   },
 
               ],
@@ -554,10 +796,9 @@ export default class CarBuyTaskScene extends BaseComponent{
     };
 
     upTitleData=()=>{
-
-        // this.setState({
-        //     titleData:this.titleData1,
-        // });
+        this.setState({
+            titleData:this.titleData1,
+        });
     };
 
     /**

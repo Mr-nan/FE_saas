@@ -157,62 +157,40 @@ export default class CarInitialTaskUpImagScene extends BaseComponent{
 
     footBtnClick=()=>{
 
-        this.props.showModal(true);
-        let errorTitle = '';
         for(let i=0;i<this.titleData.length;i++)
         {
             let item = this.titleData[i];
-            if(item.explain=='1')
-            {
-                let isNull = true;
+            let isNull = true;
                 for(let j=0;j<this.results.length;j++)
                 {
                     let name = this.results[j].name;
-                    let base64 = this.results[j].base64;
-                    if(name == item.name)
-                    {
-                        isNull = false;
-                    }
+                    let url = this.results[j].url;
                     if(name == 'left_anterior'){
 
-                        this.carData.arcPath = base64; // 车辆图片
+                        this.carData.arcPath = url; // 车辆图片
 
                     }else if(name =='customs_declaration')
                     {
-                        this.carData.dlPath = base64; // 行驶证
+                        this.carData.dlPath = url; // 行驶证
 
                     }else if(name =='inspection_report')
                     {
-                        this.carData.policyPath = base64; // 保单
+                        this.carData.policyPath = url; // 保单
 
                     }else if(name =='idcardPath')
                     {
-                        this.carData.idcardPath = base64; // 身份证
+                        this.carData.idcardPath = url; // 身份证
 
                     }
                 }
-                if(isNull)
-                {
-                    errorTitle = item.title;
-                    break;
-                }
-            }
+
         }
 
-        if(errorTitle!='')
-        {
-            this.props.showModal(false);
-            this.props.showToast('请上传'+errorTitle+'图片');
-
-        }else {
-
-            console.log(this.carData);
             this.carData.token = 'c5cd2f08-f052-4d3e-8943-86c798945953'
-
+            this.props.showModal(true);
             Net.request(AppUrls.CAR_CHESHANG_PUBLISHTASK,'post',this.carData).then((response) => {
                 this.props.showModal(false);
 
-                console.log(response.mjson);
                 this.props.showToast('创建成功');
                 this.navigationBack();
 
@@ -221,7 +199,7 @@ export default class CarInitialTaskUpImagScene extends BaseComponent{
 
             });
 
-        }
+
     }
 
     navigationBack=()=>{

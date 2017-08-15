@@ -68,7 +68,7 @@ export default class CarInitialTaskScene extends BaseComponent{
                             })
                         }
                         {
-                            this.type == 1&&
+                            this.props.type != 2&&
                             (<View style={styles.footContainer}>
                                 <TouchableOpacity onPress={this.footBtnClick}>
                                     <View style={styles.footView}>
@@ -108,12 +108,13 @@ export default class CarInitialTaskScene extends BaseComponent{
 
     initFinish=()=>{
 
-        this.setState({
-            renderPlaceholderOnly:'success'
-        });
 
         if(this.props.taskid){
             this.loadData();
+        }else {
+            this.setState({
+                renderPlaceholderOnly:'success'
+            });
         }
     }
 
@@ -125,7 +126,6 @@ export default class CarInitialTaskScene extends BaseComponent{
         this.setState({
             renderPlaceholderOnly:'loading'
         });
-        console.log('================加载',this.type,this.roleName,this.props.taskid);
         request(AppUrls.CAR_CHESHANG_TASKINFO,'post',{
             token : 'c5cd2f08-f052-4d3e-8943-86c798945953',
             type:this.type,
@@ -133,9 +133,9 @@ export default class CarInitialTaskScene extends BaseComponent{
             taskid:this.props.taskid,
         }).then((response) => {
 
-            console.log(response.mjson);
             this.setData(response.mjson.data);
         }, (error) => {
+
         });
     }
 
@@ -252,7 +252,6 @@ export default class CarInitialTaskScene extends BaseComponent{
                                            placeholder='输入车架号'
                                            underlineColorAndroid='transparent'
                                            maxLength={17}
-                                           editable={this.props.carID?false:true}
                                            onChangeText={this._onVinChange}
                                            onFocus={()=>{
                                                this.setState({
@@ -532,9 +531,9 @@ export default class CarInitialTaskScene extends BaseComponent{
 
     upTitleData=()=>{
 
-        // this.setState({
-        //     titleData:this.titleData1,
-        // });
+        this.setState({
+            titleData:this.titleData1,
+        });
     };
 
     /**
@@ -596,7 +595,7 @@ export default class CarInitialTaskScene extends BaseComponent{
         if (text.length === 17) {
             this._showLoading();
             this.vinInput.blur();
-            Net.request(AppUrls.VININFO, 'post',{vin:text}).then(
+            request(AppUrls.VININFO, 'post',{vin:text}).then(
                 (response) => {
                     this._closeLoading();
                     if (response.mycode === 1) {

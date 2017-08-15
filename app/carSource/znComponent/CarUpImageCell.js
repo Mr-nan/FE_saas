@@ -135,8 +135,6 @@ export  default class CarUpImageCell extends PureComponent {
         let params ={
             file:'data:image/jpeg;base64,' + base64
         };
-
-        console.log(encodeURI(responses.data).replace(/\+/g,'%2B'));
         ImageUpload.request(MyUrl.INDEX_UPLOAD,'Post',params).then(
             (response)=>{
                 this.props.showModal(false);

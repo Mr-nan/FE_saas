@@ -178,6 +178,16 @@ export const CAR_PERLIST = BASEURL + V + 'car/preList';
 export const CAR_SASS_PUBLISH = BASEURL + 'cheshang/sass/publish';
 
 /**
+ * 创建收车管理列表
+ */
+export const CAR_SASS_SELECT_LIST= BASEURL + 'cheshang/sass/selectList';
+
+/**
+ * 收车任务详情
+ */
+export const CAR_SASS_SELECT_MSG= BASEURL + 'cheshang/sass/selectMsg';
+
+/**
  * 整备车辆任务列表
  */
 export const CAR_CHESHANG_TASKS= BASEURL + 'cheshang/sass/tasks';
