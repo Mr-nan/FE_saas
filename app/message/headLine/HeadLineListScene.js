@@ -165,6 +165,7 @@ export class HeadLineListScene extends BaseComponent {
                         }
                     });
                 }
+                console.log('this.createTime=======', this.createTime);
                 this.loadHttpData();
             });
     };
