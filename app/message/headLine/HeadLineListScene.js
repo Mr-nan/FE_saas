@@ -151,22 +151,37 @@ export class HeadLineListScene extends BaseComponent {
                 //数据库中有数据
                 let count = data.result.rows.length;
                 if (count > 0) {
-                    this.createTime = data.result.rows.item(0).createTime;
-                    for (let i = 0; i < count; i++) {
-                        //console.log(data.result.rows.item(i));
-                        this.headLineListData.push(data.result.rows.item(i));
-                    }
+                    let dbCreateTime = data.result.rows.item(0).createTime;
+                    StorageUtil.mGetItem(StorageKeyNames.ADVERTISEMENT_LAST_MESSAGE_TIME, (timeData) => {
+                        if (timeData.code == 1 && timeData.result != null) {
+                            if (timeData.result > dbCreateTime) {
+                                this.createTime = timeData.result;
+                            } else {
+                                this.createTime = dbCreateTime;
+                                StorageUtil.mSetItem(StorageKeyNames.ADVERTISEMENT_LAST_MESSAGE_TIME, dbCreateTime);
+                            }
+                        } else {
+                            this.createTime = dbCreateTime;
+                            StorageUtil.mSetItem(StorageKeyNames.ADVERTISEMENT_LAST_MESSAGE_TIME, dbCreateTime);
+                        }
+                        for (let i = 0; i < count; i++) {
+                            //console.log(data.result.rows.item(i));
+                            this.headLineListData.push(data.result.rows.item(i));
+                        }
+                        this.loadHttpData();
+                    });
+                    //this.createTime = data.result.rows.item[0].createTime;
                 } else {
-                    StorageUtil.mGetItem(StorageKeyNames.INTO_TIME, (data) => {
-                        if (data.code == 1 && data.result != null) {
-                            this.createTime = data.result;
+                    StorageUtil.mGetItem(StorageKeyNames.INTO_TIME, (intoTimeData) => {
+                        if (intoTimeData.code == 1 && intoTimeData.result != null) {
+                            this.createTime = intoTimeData.result;
+                            this.loadHttpData();
                         } else {
                             //this.props.showToast('确认验收失败');
                         }
                     });
                 }
-                console.log('this.createTime=======', this.createTime);
-                this.loadHttpData();
+                //console.log('this.createTime=======', this.createTime);
             });
     };
 
