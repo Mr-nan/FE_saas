@@ -385,7 +385,7 @@ export default class MineScene extends BaseComponent {
                 };
                 request(Urls.GETACCOUNTSTATUSBYUID, 'Post', maps)
                     .then((response) => {
-                            if (response.mjson.data == 'true') {
+                            if (response.mjson.data == '1') {
                                 this.accountShow = true;
                             } else {
                                 this.accountShow = false;
