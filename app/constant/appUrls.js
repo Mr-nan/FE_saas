@@ -1,7 +1,7 @@
 /**
  * 开发地址
  */
-export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+//export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
@@ -1017,3 +1017,7 @@ export const DAILY_REMINDER_RANK_LEVEL = BASEURL + "cheshang/sass/rankLevel";
  *  每日，周，月统计
  */
 export const DAILY_REMINDER_STATISTICS = BASEURL + "cheshang/sass/statistics";
+/**
+ *  获取潜在客户列表
+ */
+export const POTENTIAL_CUSTOMER_LISTS = BASEURL + "cheshang/customer/lists";

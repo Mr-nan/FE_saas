@@ -69,6 +69,10 @@ export default class MessageListScene extends BaseComponent {
     };
 
     /**
+     *   获取
+     **/
+
+    /**
      *  render
      **/
     render() {
@@ -158,7 +162,7 @@ export default class MessageListScene extends BaseComponent {
                     <View style={styles.listItem}>
                         <View style={{marginLeft: Pixel.getPixel(15)}}>
                             <Image source={require('../../images/mainImage/jiekuan.png')}/>
-                            <View style={{
+                            {/*<View style={{
                                 position: 'absolute',
                                 right: 0,
                                 width: Pixel.getPixel(18),
@@ -175,7 +179,7 @@ export default class MessageListScene extends BaseComponent {
                                         fontSize: Pixel.getFontPixel(10),
                                         color: fontAndColor.COLORA3
                                     }}>99</Text>
-                            </View>
+                            </View>*/}
                         </View>
                         <Text
                             style={{marginLeft: Pixel.getPixel(15)}}

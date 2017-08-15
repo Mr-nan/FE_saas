@@ -12,7 +12,7 @@ import  {
 
 import  PixelUtil from '../../utils/PixelUtil'
 var Pixel = new PixelUtil();
-import {request} from '../../utils/RequestUtil';
+import {request, requestNoToken} from '../../utils/RequestUtil';
 import * as fontAndColor from '../../constant/fontAndColor';
 import BaseComponent from "../../component/BaseComponent";
 import NavigationView from '../../component/AllNavigationView';
@@ -25,6 +25,8 @@ import {ClientScreeningSelectButton} from "./component/ClientScreeningSelectButt
 import ClientScreeningView from "./component/ClientScreeningView";
 import ClientInfoScene from "./ClientInfoScene";
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
+import StorageUtil from "../../utils/StorageUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
 /*
  * 获取屏幕的宽和高
  **/
@@ -50,10 +52,42 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
      *
      **/
     initFinish = () => {
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+/*        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.setState({
             dataSource: ds.cloneWithRows(['', '', '', '', '', '', '', '', '']),
             renderPlaceholderOnly: 'success'
+        });*/
+        this.loadData();
+    };
+
+    /**
+     *   数据请求
+     **/
+    loadData = () => {
+        StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let maps = {
+                    mobile: '15102373842',
+                    //pushTo: this.custPhone,
+                    token: '5afa531b-4295-4c64-8d6c-ac436c619078',
+                    xxly: '全部车源',
+                    khjb: '全部级别',
+                    dfzp: '全部状态',
+                    gmys: '所有预算'
+                    //createTime: '2017-08-09 15:18:47'
+                };
+                let url = AppUrls.POTENTIAL_CUSTOMER_LISTS;
+                requestNoToken(url, 'post', maps).then((response) => {
+
+                }, (error) => {
+                    this.setState({
+                        isRefreshing: false,
+                        renderPlaceholderOnly: 'error'
+                    });
+                });
+            } else {
+                //this.props.showToast('确认验收失败');
+            }
         });
     };
 
@@ -134,9 +168,7 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                     this.toNextPage({
                         name: 'ClientInfoScene',
                         component: ClientInfoScene,
-                        params: {
-
-                        }
+                        params: {}
                     });
                 }}
                 activeOpacity={0.9}
