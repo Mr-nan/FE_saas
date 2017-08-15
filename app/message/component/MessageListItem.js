@@ -34,9 +34,15 @@ export class MessageListItem extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-            isRead: this.props.rowData.isRead,
+            rowData: this.props.rowData,
             longPress: false
         };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            rowData: nextProps.rowData
+        });
     }
 
     /**
@@ -55,27 +61,29 @@ export class MessageListItem extends BaseComponent {
                         const handle = findNodeHandle(this.sectionHeader);
                         UIManager.measure(handle, (x, y, width, height, pageX, pageY) => {
                             //console.log(pageX+'-----'+pageY);
-                            this.props.callBack(this.props.keys, pageY, this.props.rowData.id);
+                            this.props.callBack(this.props.keys, pageY, this.state.rowData.id);
                         });
 
                     }}
                     onPress={() => {
+                        let data = this.state.rowData;
+                        data.isRead = true;
                         if (this.props.type === 'advertisement') {
-                            this.updateHeadLineInfoState(this.props.rowData.id);
+                            this.updateHeadLineInfoState(data);
                             this.toNextPage({
                                 name: 'HeadLineDetailScene',
                                 component: HeadLineDetailScene,
                                 params: {
-                                    url: this.props.rowData.content
+                                    url: this.state.rowData.content
                                 }
                             });
                         } else {
-                            this.updateSysMessageInfoState(this.props.rowData.id);
+                            this.updateSysMessageInfoState(data);
                             this.toNextPage({
                                 name: 'SysMessageDetailScene',
                                 component: SysMessageDetailScene,
                                 params: {
-                                    url: this.props.rowData.content
+                                    url: this.state.rowData.content
                                 }
                             });
                         }
@@ -93,8 +101,8 @@ export class MessageListItem extends BaseComponent {
                             marginLeft: Pixel.getPixel(15),
                             marginTop: Pixel.getPixel(20),
                             fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT),
-                            color: this.state.isRead ? fontAndColor.COLORA1 : fontAndColor.COLORA0
-                        }}>{this.props.rowData.title}</Text>
+                            color: this.state.rowData.isRead ? fontAndColor.COLORA1 : fontAndColor.COLORA0
+                        }}>{this.state.rowData.title}</Text>
                         <Text allowFontScaling={false} style={{
                             marginLeft: Pixel.getPixel(15),
                             marginTop: Pixel.getPixel(10),
@@ -193,22 +201,22 @@ export class MessageListItem extends BaseComponent {
     /**
      *   更新数据库中数据的已读状态isRead
      **/
-    updateHeadLineInfoState = (id) => {
-        SQLite.changeData('UPDATE messageHeadLineModel set isRead = ? WHERE id = ?',
-            [true, id]);
+    updateHeadLineInfoState = (data) => {
+        SQLite.changeData('UPDATE messageHeadLineModel set isRead = ? WHERE id = ? AND tel = ?',
+            [true, data.id, data.tel]);
         this.setState({
-            isRead: true
+            rowData: data
         });
     };
 
     /**
      *   更新数据库中数据的已读状态isRead
      **/
-    updateSysMessageInfoState = (id) => {
-        SQLite.changeData('UPDATE messageSystemModel set isRead = ? WHERE id = ?',
-            [true, id]);
+    updateSysMessageInfoState = (data) => {
+        SQLite.changeData('UPDATE messageSystemModel set isRead = ? WHERE id = ? AND tel = ?',
+            [true, data.id, data.tel]);
         this.setState({
-            isRead: true
+            rowData: data
         });
     };
 

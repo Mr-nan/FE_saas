@@ -59,73 +59,75 @@ export class SysMessageListScene extends BaseComponent {
          dataSource: ds.cloneWithRows(['0', '1']),
          renderPlaceholderOnly: 'success'
          });*/
-        this.loadData();
+        StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
+            if (data.code == 1 && data.result != null) {
+                //this.custPhone = data.result;
+                this.custPhone = '15102373842';
+                this.loadData();
+            } else {
+                this.props.showToast('查询账户信息失败');
+            }
+        });
     };
 
     /**
      *   加载数据
      **/
     loadHttpData = () => {
-        StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
-            if (data.code == 1 && data.result != null) {
-                this.custPhone = data.result;
-                let maps = {
-                    pushTo: '15102373842',
-                    //pushTo: this.custPhone,
-                    token: '5afa531b-4295-4c64-8d6c-ac436c619078',
-                    contentType: 'systems',
-                    //createTime: '2017-08-09 15:18:47'
-                    createTime: this.createTime
-                };
-                let url = AppUrls.SELECT_MSG_BY_CONTENT_TYPE;
-                requestNoToken(url, 'post', maps).then((response) => {
-                    let listData = response.mjson.data;
-                    if (listData && listData.length > 0) {
-                        let batch = {sql: '', array: []};
-                        let batches = [];
-                        for (let i = 0; i < listData.length; i++) {
-                            //console.log('listData[i]===',listData[i]);
-                            this.sysMessageListData.unshift(listData[i]);
-                            listData[i].isRead = false;
-                            listData[i].tel = this.custPhone;
+        let maps = {
+            //pushTo: '15102373842',
+            pushTo: this.custPhone,
+            token: '5afa531b-4295-4c64-8d6c-ac436c619078',
+            contentType: 'systems',
+            //createTime: '2017-08-09 15:18:47'
+            createTime: this.createTime
+        };
+        let url = AppUrls.SELECT_MSG_BY_CONTENT_TYPE;
+        requestNoToken(url, 'post', maps).then((response) => {
+            let listData = response.mjson.data;
+            if (listData && listData.length > 0) {
+                let batch = {sql: '', array: []};
+                let batches = [];
+                for (let i = 0; i < listData.length; i++) {
+                    //console.log('listData[i]===',listData[i]);
+                    this.sysMessageListData.unshift(listData[i]);
+                    listData[i].isRead = false;
+                    listData[i].tel = this.custPhone;
 
-                            batch = {
-                                sql: 'INSERT INTO messageSystemModel (id,content,contentType,createTime,enable,pushFrom,pushStatus,pushTo,roleName,taskId,title,isRead,tel) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
-                                array: []
-                            };
-                            batch.array.push(listData[i].id, listData[i].content, listData[i].contentType, listData[i].createTime, listData[i].enable, listData[i].pushFrom,
-                                listData[i].pushStatus, listData[i].pushTo, listData[i].roleName, listData[i].taskId, listData[i].title, listData[i].isRead, listData[i].tel);
-                            batches.push(batch)
-                            /*SQLite.changeData('INSERT INTO messageHeadLineModel (id,content,contentType,createTime,enable,pushFrom,pushStatus,pushTo,roleName,taskId,title,isRead,tel) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
-                             [listData[i].id, listData[i].content, listData[i].contentType, listData[i].createTime, listData[i].enable, listData[i].pushFrom,
-                             listData[i].pushStatus, listData[i].pushTo, listData[i].roleName, listData[i].taskId, listData[i].title, listData[i].isRead, listData[i].tel]);*/
-                        }
-                        SQLite.changeDataBatch(batches);
-                    }
-                    if (this.sysMessageListData && this.sysMessageListData.length > 0) {
-                        //console.log('this.sysMessageListData===',this.sysMessageListData);
-                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                        this.setState({
-                            dataSource: ds.cloneWithRows(this.sysMessageListData),
-                            isRefreshing: false,
-                            renderPlaceholderOnly: 'success'
-                        });
-                    } else {
-                        this.setState({
-                            isRefreshing: false,
-                            renderPlaceholderOnly: 'null'
-                        });
-                    }
-                }, (error) => {
-                    this.setState({
-                        isRefreshing: false,
-                        renderPlaceholderOnly: 'error'
-                    });
+                    batch = {
+                        sql: 'INSERT INTO messageSystemModel (id,content,contentType,createTime,enable,pushFrom,pushStatus,pushTo,roleName,taskId,title,isRead,tel) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                        array: []
+                    };
+                    batch.array.push(listData[i].id, listData[i].content, listData[i].contentType, listData[i].createTime, listData[i].enable, listData[i].pushFrom,
+                        listData[i].pushStatus, listData[i].pushTo, listData[i].roleName, listData[i].taskId, listData[i].title, listData[i].isRead, listData[i].tel);
+                    batches.push(batch)
+                    /*SQLite.changeData('INSERT INTO messageHeadLineModel (id,content,contentType,createTime,enable,pushFrom,pushStatus,pushTo,roleName,taskId,title,isRead,tel) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                     [listData[i].id, listData[i].content, listData[i].contentType, listData[i].createTime, listData[i].enable, listData[i].pushFrom,
+                     listData[i].pushStatus, listData[i].pushTo, listData[i].roleName, listData[i].taskId, listData[i].title, listData[i].isRead, listData[i].tel]);*/
+                }
+                SQLite.changeDataBatch(batches);
+            }
+            if (this.sysMessageListData && this.sysMessageListData.length > 0) {
+                //console.log('this.sysMessageListData===',this.sysMessageListData);
+                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                this.setState({
+                    dataSource: ds.cloneWithRows(this.sysMessageListData),
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'success'
                 });
             } else {
-                //this.props.showToast('确认验收失败');
+                this.setState({
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'null'
+                });
             }
+        }, (error) => {
+            this.setState({
+                isRefreshing: false,
+                renderPlaceholderOnly: 'error'
+            });
         });
+
     };
 
     /**
@@ -133,7 +135,7 @@ export class SysMessageListScene extends BaseComponent {
      **/
     loadData = () => {
         this.sysMessageListData = [];
-        SQLite.selectData('SELECT * FROM messageSystemModel order by createTime desc', [],
+        SQLite.selectData('SELECT * FROM messageSystemModel WHERE tel = ? order by createTime desc', [this.custPhone],
             (data) => {
                 //console.log('SELECT * FROM messageHeadLineModel', data);
                 //数据库中有数据
@@ -188,7 +190,7 @@ export class SysMessageListScene extends BaseComponent {
      *   删除数据库中数据
      **/
     deleteSystemInfo = () => {
-        SQLite.changeData('DELETE FROM messageSystemModel WHERE id = ?', [this.dataKey]);
+        SQLite.changeData('DELETE FROM messageSystemModel WHERE id = ? AND tel = ?', [this.dataKey, this.custPhone]);
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.sysMessageListData.splice(this.refKey, 1);
         this.setState({

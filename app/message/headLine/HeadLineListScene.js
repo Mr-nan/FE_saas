@@ -71,72 +71,72 @@ export class HeadLineListScene extends BaseComponent {
         /*        StorageUtil.mGetItem(StorageKeyNames.INTO_TIME, (res) => {
          console.log('INTO_TIME=====', res);
          });*/
-        this.loadData();
+        StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
+            if (data.code == 1 && data.result != null) {
+                //this.custPhone = data.result;
+                this.custPhone = '15102373842';
+                this.loadData();
+            } else {
+                this.props.showToast('查询账户信息失败');
+            }
+        });
     };
 
     /**
      *   加载数据
      **/
     loadHttpData = () => {
-        StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
-            if (data.code == 1 && data.result != null) {
-                this.custPhone = data.result;
-                let maps = {
-                    pushTo: '15102373842',
-                    //pushTo: this.custPhone,
-                    token: '5afa531b-4295-4c64-8d6c-ac436c619078',
-                    contentType: 'advertisement',
-                    //createTime: '2017-08-09 15:18:47'
-                    createTime: this.createTime
-                };
-                let url = AppUrls.SELECT_MSG_BY_CONTENT_TYPE;
-                requestNoToken(url, 'post', maps).then((response) => {
-                    let listData = response.mjson.data;
-                    if (listData && listData.length > 0) {
-                        let batch = {sql: '', array: []};
-                        let batches = [];
-                        for (let i = 0; i < listData.length; i++) {
-                            //console.log('listData[i]===',listData[i]);
-                            this.headLineListData.unshift(listData[i]);
-                            listData[i].isRead = false;
-                            listData[i].tel = this.custPhone;
+        let maps = {
+            pushTo: this.custPhone,
+            token: '5afa531b-4295-4c64-8d6c-ac436c619078',
+            contentType: 'advertisement',
+            //createTime: '2017-08-09 15:18:47'
+            createTime: this.createTime
+        };
+        let url = AppUrls.SELECT_MSG_BY_CONTENT_TYPE;
+        requestNoToken(url, 'post', maps).then((response) => {
+            let listData = response.mjson.data;
+            if (listData && listData.length > 0) {
+                let batch = {sql: '', array: []};
+                let batches = [];
+                for (let i = 0; i < listData.length; i++) {
+                    //console.log('listData[i]===',listData[i]);
+                    this.headLineListData.unshift(listData[i]);
+                    listData[i].isRead = false;
+                    listData[i].tel = this.custPhone;
 
-                            batch = {
-                                sql: 'INSERT INTO messageHeadLineModel (id,content,contentType,createTime,enable,pushFrom,pushStatus,pushTo,roleName,taskId,title,isRead,tel) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
-                                array: []
-                            };
-                            batch.array.push(listData[i].id, listData[i].content, listData[i].contentType, listData[i].createTime, listData[i].enable, listData[i].pushFrom,
-                                listData[i].pushStatus, listData[i].pushTo, listData[i].roleName, listData[i].taskId, listData[i].title, listData[i].isRead, listData[i].tel);
-                            batches.push(batch)
-                            /*SQLite.changeData('INSERT INTO messageHeadLineModel (id,content,contentType,createTime,enable,pushFrom,pushStatus,pushTo,roleName,taskId,title,isRead,tel) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
-                             [listData[i].id, listData[i].content, listData[i].contentType, listData[i].createTime, listData[i].enable, listData[i].pushFrom,
-                             listData[i].pushStatus, listData[i].pushTo, listData[i].roleName, listData[i].taskId, listData[i].title, listData[i].isRead, listData[i].tel]);*/
-                        }
-                        SQLite.changeDataBatch(batches);
-                    }
-                    if (this.headLineListData && this.headLineListData.length > 0) {
-                        //console.log('this.headLineListData===',this.headLineListData);
-                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                        this.setState({
-                            dataSource: ds.cloneWithRows(this.headLineListData),
-                            isRefreshing: false,
-                            renderPlaceholderOnly: 'success'
-                        });
-                    } else {
-                        this.setState({
-                            isRefreshing: false,
-                            renderPlaceholderOnly: 'null'
-                        });
-                    }
-                }, (error) => {
-                    this.setState({
-                        isRefreshing: false,
-                        renderPlaceholderOnly: 'error'
-                    });
+                    batch = {
+                        sql: 'INSERT INTO messageHeadLineModel (id,content,contentType,createTime,enable,pushFrom,pushStatus,pushTo,roleName,taskId,title,isRead,tel) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                        array: []
+                    };
+                    batch.array.push(listData[i].id, listData[i].content, listData[i].contentType, listData[i].createTime, listData[i].enable, listData[i].pushFrom,
+                        listData[i].pushStatus, listData[i].pushTo, listData[i].roleName, listData[i].taskId, listData[i].title, listData[i].isRead, listData[i].tel);
+                    batches.push(batch)
+                    /*SQLite.changeData('INSERT INTO messageHeadLineModel (id,content,contentType,createTime,enable,pushFrom,pushStatus,pushTo,roleName,taskId,title,isRead,tel) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                     [listData[i].id, listData[i].content, listData[i].contentType, listData[i].createTime, listData[i].enable, listData[i].pushFrom,
+                     listData[i].pushStatus, listData[i].pushTo, listData[i].roleName, listData[i].taskId, listData[i].title, listData[i].isRead, listData[i].tel]);*/
+                }
+                SQLite.changeDataBatch(batches);
+            }
+            if (this.headLineListData && this.headLineListData.length > 0) {
+                //console.log('this.headLineListData===',this.headLineListData);
+                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                this.setState({
+                    dataSource: ds.cloneWithRows(this.headLineListData),
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'success'
                 });
             } else {
-                //this.props.showToast('确认验收失败');
+                this.setState({
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'null'
+                });
             }
+        }, (error) => {
+            this.setState({
+                isRefreshing: false,
+                renderPlaceholderOnly: 'error'
+            });
         });
     };
 
@@ -145,7 +145,7 @@ export class HeadLineListScene extends BaseComponent {
      **/
     loadData = () => {
         this.headLineListData = [];
-        SQLite.selectData('SELECT * FROM messageHeadLineModel order by createTime desc', [],
+        SQLite.selectData('SELECT * FROM messageHeadLineModel WHERE tel = ? order by createTime desc', [this.custPhone],
             (data) => {
                 //console.log('SELECT * FROM messageHeadLineModel', data);
                 //数据库中有数据
@@ -188,7 +188,9 @@ export class HeadLineListScene extends BaseComponent {
                           renderRow={this._renderRow}
                           enableEmptySections={true}
                           renderSeparator={this._renderSeperator}/>
-                <ItemDeleteButton ref={(ref) => {this.giv = ref}} itemDelete={this.deleteHeadLineInfo}/>
+                <ItemDeleteButton ref={(ref) => {
+                    this.giv = ref
+                }} itemDelete={this.deleteHeadLineInfo}/>
             </View>);
         }
 
@@ -198,7 +200,7 @@ export class HeadLineListScene extends BaseComponent {
      *   删除数据库中数据
      **/
     deleteHeadLineInfo = () => {
-        SQLite.changeData('DELETE FROM messageHeadLineModel WHERE id = ?', [this.dataKey]);
+        SQLite.changeData('DELETE FROM messageHeadLineModel WHERE id = ? AND tel = ?', [this.dataKey, this.custPhone]);
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.headLineListData.splice(this.refKey, 1);
         this.setState({

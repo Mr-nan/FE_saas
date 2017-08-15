@@ -17,6 +17,7 @@ import CollectionIntent from "../collectionIntent/CollectionIntent";
 import CarSharedListScene from "../carSource/CarSharedListScene";
 import StoreReceptionManageScene from "../crm/StoresReception/StoreReceptionManageScene";
 import MessageListScene from "../message/MessageListScene";
+import {SysMessageListScene} from "../message/sysMessage/SysMessageListScene";
 const data = require('./quanxian.json');
 const GetPermissionUtil = React.createClass({
 
@@ -163,8 +164,8 @@ const GetPermissionUtil = React.createClass({
         } else if (id == 34) {
             image = require('../../images/workbench/xtxx.png');
             names = name;
-            component = MessageListScene;
-            componentName = 'messagelistscene';
+            component = SysMessageListScene;
+            componentName = 'sysmessagelistscene';
         }else if (id == 46) {
             image = require('../../images/workbench/wd.png');
             names = name;
