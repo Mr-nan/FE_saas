@@ -40,6 +40,13 @@ const IS_ANDROID = Platform.OS === 'android';
 export default class CarBuyTaskScene extends BaseComponent{
 
     render(){
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return (
+                <View style={{flex: 1, backgroundColor: 'white'}}>
+                    {this.loadView()}
+                    <AllNavigationView title={'收车任务'} backIconClick={this.backPage}/>
+                </View>);
+        }
         return(
             <View style={styles.rootContaier}>
                 <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={this.state.keyboardOffset}>
@@ -104,6 +111,9 @@ export default class CarBuyTaskScene extends BaseComponent{
     }
 
     loadData=()=>{
+        this.setState({
+            renderPlaceholderOnly:'loading'
+        });
         request(AppUrls.CAR_SASS_SELECT_MSG, 'post', {
             id:this.props.id,
             token:'c5cd2f08-f052-4d3e-8943-86c798945953',
@@ -278,7 +288,13 @@ export default class CarBuyTaskScene extends BaseComponent{
                     </View>)
             }
         }
-        this.titleData1[3][0].selectDict={current:this.currentDealStr,data:[{title:'尚未成交',value:2},{title:'已经成交',value:1},{title:'已放弃',value:3}]},
+
+        if(this.props.isHideInfoRecourse){
+            this.titleData1[3].splice(0,1);
+        }else {
+            this.titleData1[3][0].selectDict={current:this.currentDealStr,data:[{title:'尚未成交',value:2},{title:'已经成交',value:1},{title:'已放弃',value:3}]};
+        }
+
         this.titleData1[4][0].tailView=() => {
             return (
                 <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
@@ -656,7 +672,8 @@ export default class CarBuyTaskScene extends BaseComponent{
 
             titleData:this.titleData1,
             keyboardOffset:-Pixel.getPixel(64),
-            isDateTimePickerVisible:false
+            isDateTimePickerVisible:false,
+            renderPlaceholderOnly:'success'
         };
       }
 
@@ -800,6 +817,8 @@ export default class CarBuyTaskScene extends BaseComponent{
     upTitleData=()=>{
         this.setState({
             titleData:this.titleData1,
+            renderPlaceholderOnly:'success'
+
         });
     };
 

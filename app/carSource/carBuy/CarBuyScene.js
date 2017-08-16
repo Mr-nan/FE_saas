@@ -33,17 +33,17 @@ const sceneWidth = Dimensions.get('window').width;
 export default class CarBuyScene extends BaseComponent {
 
     render(){
-        let tabBar = <RepaymenyTabBar refs={(ref)=>{this.tabBar =ref }} style={{backgroundColor:'white'}} tabName={["未成交", "已成交", "已放弃"]}/>
+
         return(
             <View style={styles.rootContainer}>
                 <ScrollableTabView
                     style={styles.ScrollableTabView}
                     initialPage={0}
                     locked={true}
-                    renderTabBar={()=>tabBar}>
+                    renderTabBar={()=><RepaymenyTabBar refs={(ref)=>{this.tabBar =ref }} style={{backgroundColor:'white'}} tabName={["未成交", "已成交", "已放弃"]}/>}>
                     <CarBuyUnsettledView ref="CarBuyUnsettledView"  tabLabel="ios-paper1" updateHeadView ={this.updateHeadView} cellClick={this.cellClick}/>
-                    <CarBuyTradedView   ref="CarBuyTradedView"  tabLabel="ios-paper2" updateHeadView ={this.updateHeadView}/>
-                    <CarBuyAbandonView  ref="CarBuyAbandonView"   tabLabel="ios-paper3" updateHeadView ={this.updateHeadView}/>
+                    <CarBuyTradedView   ref="CarBuyTradedView"  tabLabel="ios-paper2" updateHeadView ={this.updateHeadView} cellClick={this.cellClick}/>
+                    <CarBuyAbandonView  ref="CarBuyAbandonView"   tabLabel="ios-paper3" updateHeadView ={this.updateHeadView} cellClick={this.cellClick}/>
                 </ScrollableTabView>
                 <TouchableOpacity style={styles.footBtn} onPress={this.footBtnClick}>
                     <Text style={styles.footBtnText}>创建</Text>
@@ -84,13 +84,14 @@ export default class CarBuyScene extends BaseComponent {
         this.refs.CarBuyAbandonView && this.refs.CarBuyAbandonView.allRefresh();
     }
 
-    cellClick=(data)=>{
+    cellClick=(data,isHideInfoRecourse)=>{
         this.toNextPage({
             name: "CarBuyTaskScene",
             component: CarBuyTaskScene,
             params: {
                 id:data.id,
                 updateData:this.updateData,
+                isHideInfoRecourse:isHideInfoRecourse,
             }
         })
     }
@@ -257,7 +258,7 @@ class CarBuyUnsettledView extends BaseComponent {
 
       renderRow=(rowData)=>{
         return(
-            <CarBuyCell btnTitle="跟进"  cellData ={rowData} cellBtnClick={()=>{this.props.cellClick(rowData)}}/>
+            <CarBuyCell btnTitle="跟进"  cellData ={rowData} cellBtnClick={()=>{this.props.cellClick(rowData,false)}}/>
         )
       }
 }
@@ -422,7 +423,7 @@ class CarBuyTradedView extends BaseComponent {
 
     renderRow=(rowData)=>{
         return(
-            <CarBuyCell btnTitle="补充"  cellData ={rowData}/>
+            <CarBuyCell btnTitle="补充"  cellData ={rowData}  cellBtnClick={()=>{this.props.cellClick(rowData,true)}}/>
         )
     }
 }
@@ -585,7 +586,7 @@ class CarBuyAbandonView extends BaseComponent {
 
     renderRow=(rowData)=>{
         return(
-            <CarBuyCell btnTitle="补充"  cellData ={rowData}/>
+            <CarBuyCell btnTitle="补充"  cellData ={rowData} cellBtnClick={()=>{this.props.cellClick(rowData,true)}}/>
         )
     }
 }
