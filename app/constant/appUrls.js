@@ -198,6 +198,11 @@ export const CAR_CHESHANG_TASKS= BASEURL + 'cheshang/sass/tasks';
 export const CAR_CHESHANG_PUBLISHTASK= BASEURL + 'cheshang/sass/publishTask';
 
 /**
+ * saas-发布车辆
+ */
+export const CAR_CHESHANG_PUBLISHCAR= BASEURL + 'cheshang/sass/publishCar';
+
+/**
  * 查看整备任务
  */
 export const CAR_CHESHANG_TASKINFO= BASEURL + 'cheshang/sass/taskInfo';

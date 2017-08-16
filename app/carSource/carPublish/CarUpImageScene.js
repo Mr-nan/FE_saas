@@ -300,53 +300,87 @@ export default class CarUpImageScene extends BaseComponent{
 
         }else {
 
-            Net.request(AppUrls.CAR_SAVE,'post',this.carData).then((response) => {
+           if(this.carData.tid!==undefined){
+               let saasCarData={
+                   province:this.carData.city_name,
+                   city:this.carData.city_name,
+                   cBrand:this.carData.brand_name,
+                   price:this.carData.dealer_price_circle,
+                   miles:this.carData.mileage,
+                   cModel:this.carData.series_name,
+                   cType:this.carData.model_name,
+                   firstUpTime:this.carData.manufacture,
+                   picList:'[]',
+                   productDescr:' ',
+                   miniprice: this.carData.dealer_price,
+                   tid:this.carData.tid,
+                   token:'c5cd2f08-f052-4d3e-8943-86c798945953'
+               };
+               Net.request(AppUrls.CAR_CHESHANG_PUBLISHCAR,'post',saasCarData).then((response) => {
 
-                this.props.showModal(false);
+                   this.publishCar();
+                   this.carData.tid = '';
 
-                if(response.mycode == 1 || response.mycode == 600010){
-                    if(this.carData.show_shop_id){
-                        StorageUtil.mRemoveItem(String(this.carData.show_shop_id));
-                    }
-                    if(IS_ANDROID === true){
-                        this.successModal.openModal();
-                    }else {
-                        this.timer = setTimeout(
-                            () => { this.successModal.openModal(); },
-                            500
-                        );
-                    }
-                }else {
-                    this.showToast('网络连接失败');
+               }, (error) => {
 
-                }
+                   this.props.showModal(false);
+                   this.showToast(error.mjson.msg);
 
-                }, (error) => {
-
-                    this.props.showModal(false);
-
-                    if(error.mycode === -300 || error.mycode === -500){
-                        this.showToast('网络连接失败');
-
-                    }else if(error.mycode == 600010){
-                        if(this.carData.show_shop_id){
-                            StorageUtil.mRemoveItem(String(this.carData.show_shop_id));
-                        }
-                        if(IS_ANDROID === true){
-                            this.successModal.openModal();
-                        }else {
-                            this.timer = setTimeout(
-                                () => { this.successModal.openModal();},
-                                500
-                            );
-                        }
-                    }
-                    else{
-                        this.showToast(error.mjson.msg);
-                    }
-                });
+               });
+           }else {
+               this.publishCar();
+           }
 
         }
+    }
+
+    publishCar=()=>{
+
+        Net.request(AppUrls.CAR_SAVE,'post',this.carData).then((response) => {
+
+            this.props.showModal(false);
+
+            if(response.mycode == 1 || response.mycode == 600010){
+                if(this.carData.show_shop_id){
+                    StorageUtil.mRemoveItem(String(this.carData.show_shop_id));
+                }
+                if(IS_ANDROID === true){
+                    this.successModal.openModal();
+                }else {
+                    this.timer = setTimeout(
+                        () => { this.successModal.openModal(); },
+                        500
+                    );
+                }
+            }else {
+                this.showToast('网络连接失败');
+
+            }
+
+        }, (error) => {
+
+            this.props.showModal(false);
+
+            if(error.mycode === -300 || error.mycode === -500){
+                this.showToast('网络连接失败');
+
+            }else if(error.mycode == 600010){
+                if(this.carData.show_shop_id){
+                    StorageUtil.mRemoveItem(String(this.carData.show_shop_id));
+                }
+                if(IS_ANDROID === true){
+                    this.successModal.openModal();
+                }else {
+                    this.timer = setTimeout(
+                        () => { this.successModal.openModal();},
+                        500
+                    );
+                }
+            }
+            else{
+                this.showToast(error.mjson.msg);
+            }
+        });
     }
 
     showToast=(errorMsg)=>{

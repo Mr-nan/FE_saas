@@ -27,6 +27,7 @@ import CarInitialTaskUpImagScene from "./CarInitialTaskUpImagScene";
 import CarAddTrimCostScene from "./CarAddTrimCostScene";
 import * as AppUrls from "../../constant/appUrls";
 import  {request}   from '../../utils/RequestUtil';
+import CarPublishFirstScene from "../carPublish/CarPublishFirstScene";
 let Pixel = new  PixelUtil();
 const sceneWidth = Dimensions.get('window').width;
 
@@ -137,7 +138,6 @@ export default class CarOperationScene extends BaseComponent{
     setData=(data)=>{
 
         this.carData = data;
-
         this.carParams={
             vin:data.vin,
             carName:data.carName,
@@ -291,7 +291,7 @@ export default class CarOperationScene extends BaseComponent{
             console.log(response.mjson);
             this.props.showModal(false);
             this.props.showToast('任务提交成功');
-            this.backPage();
+            this.pushCarPublishScene();
             this.props.reloadTaskData();
 
         }, (error) => {
@@ -365,7 +365,25 @@ export default class CarOperationScene extends BaseComponent{
             sumNumber+=item.price;
         }
         this.costObject.sumNumber=sumNumber;
+    }
 
+    /**
+     * 发布车辆
+     */
+    pushCarPublishScene =()=>{
+        let navigatorParams = {
+
+            name: "CarPublishFirstScene",
+            component: CarPublishFirstScene,
+            params: {
+                carData: {
+                    vin:this.carParams.vin,
+                    tid:this.carParams.id,
+                    v_type:1
+                },
+            }
+        };
+        this.toNextPage(navigatorParams);
     }
 
 
