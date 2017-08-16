@@ -75,9 +75,7 @@ export default class LoginScene extends BaseComponent {
         } catch (e) {
 
         } finally {
-            InteractionManager.runAfterInteractions(() => {
-                this.initFinish();
-            });
+            this.initFinish();
         }
     }
 
@@ -91,8 +89,9 @@ export default class LoginScene extends BaseComponent {
             if (data.code == 1 && data.result != null) {
                 this.needToast = data.result;
             }
-            this.setState({renderPlaceholderOnly: false});
-            this.Verifycode();
+            this.setState({renderPlaceholderOnly: false},()=>{
+                this.Verifycode();
+            });
         })
     }
 
