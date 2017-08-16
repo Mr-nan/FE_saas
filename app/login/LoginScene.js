@@ -56,6 +56,7 @@ export default class LoginScene extends BaseComponent {
             renderPlaceholderOnly: true,
         }
         this.needToast = '';
+        this.props.showModal(false);
     }
 
     handleBack = () => {
