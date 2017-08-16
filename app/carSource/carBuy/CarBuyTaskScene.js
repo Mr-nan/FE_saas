@@ -357,6 +357,8 @@ export default class CarBuyTaskScene extends BaseComponent{
         this.props.showModal(true);
         request(AppUrls.CAR_SASS_PUBLISH, 'post', carData).then((response) => {
             this.props.showModal(false);
+            this.props.updateData();
+            this.backPage();
         }, (error) => {
             this.props.showModal(false);
         });

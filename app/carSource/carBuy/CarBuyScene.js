@@ -28,21 +28,19 @@ import *as fontAndColor from  '../../constant/fontAndColor';
 import PixelUtil from  '../../utils/PixelUtil';
 import CarBuyTaskScene from "./CarBuyTaskScene";
 let Pixel = new  PixelUtil();
-
 const sceneWidth = Dimensions.get('window').width;
 
 export default class CarBuyScene extends BaseComponent {
 
     render(){
-        let {dealN,dealY,dealF} =this.state;
-        console.log(dealN,dealY,dealF,'render==========');
+        let tabBar = <RepaymenyTabBar refs={(ref)=>{this.tabBar =ref }} style={{backgroundColor:'white'}} tabName={["未成交", "已成交", "已放弃"]}/>
         return(
             <View style={styles.rootContainer}>
                 <ScrollableTabView
                     style={styles.ScrollableTabView}
                     initialPage={0}
                     locked={true}
-                    renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["未成交"+'('+this.state.dealN+')', "已成交"+'('+this.state.dealY+')', "已放弃"+'('+this.state.dealF+')']}/>}>
+                    renderTabBar={()=>tabBar}>
                     <CarBuyUnsettledView ref="CarBuyUnsettledView"  tabLabel="ios-paper1" updateHeadView ={this.updateHeadView} cellClick={this.cellClick}/>
                     <CarBuyTradedView   ref="CarBuyTradedView"  tabLabel="ios-paper2" updateHeadView ={this.updateHeadView}/>
                     <CarBuyAbandonView  ref="CarBuyAbandonView"   tabLabel="ios-paper3" updateHeadView ={this.updateHeadView}/>
@@ -60,9 +58,7 @@ export default class CarBuyScene extends BaseComponent {
         super(props);
         // 初始状态
         this.state = {
-            dealN:'0',
-            dealY:'0',
-            dealF:'0',
+
         };
       }
     
@@ -79,15 +75,13 @@ export default class CarBuyScene extends BaseComponent {
 
     updateHeadView =(dealN,dealY,dealF)=>{
 
-        console.log(dealN,dealY,dealF);
-        if(this.state.dealN!=dealN || this.state.dealY !=dealY || this.state.dealF!=dealF)
-        {
-            this.setState({
-                dealN:String(dealN) ,
-                dealY:String(dealY),
-                dealF:String(dealF),
-            });
-        }
+
+    }
+
+    updateData=()=>{
+        this.refs.CarBuyUnsettledView && this.refs.CarBuyUnsettledView.allRefresh();
+        this.refs.CarBuyTradedView && this.refs.CarBuyTradedView.allRefresh();
+        this.refs.CarBuyAbandonView && this.refs.CarBuyAbandonView.allRefresh();
     }
 
     cellClick=(data)=>{
@@ -95,7 +89,8 @@ export default class CarBuyScene extends BaseComponent {
             name: "CarBuyTaskScene",
             component: CarBuyTaskScene,
             params: {
-                id:data.id
+                id:data.id,
+                updateData:this.updateData,
             }
         })
     }
