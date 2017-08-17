@@ -61,8 +61,8 @@ export class SysMessageListScene extends BaseComponent {
          });*/
         StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
             if (data.code == 1 && data.result != null) {
-                //this.custPhone = data.result;
-                this.custPhone = '15102373842';
+                this.custPhone = data.result;
+                //this.custPhone = '15102373842';
                 this.loadData();
             } else {
                 this.props.showToast('查询账户信息失败');
@@ -77,13 +77,13 @@ export class SysMessageListScene extends BaseComponent {
         let maps = {
             //pushTo: '15102373842',
             pushTo: this.custPhone,
-            token: '5afa531b-4295-4c64-8d6c-ac436c619078',
+            //token: '5afa531b-4295-4c64-8d6c-ac436c619078',
             contentType: 'systems',
             //createTime: '2017-08-09 15:18:47'
             createTime: this.createTime
         };
         let url = AppUrls.SELECT_MSG_BY_CONTENT_TYPE;
-        requestNoToken(url, 'post', maps).then((response) => {
+        request(url, 'post', maps).then((response) => {
             let listData = response.mjson.data;
             if (listData && listData.length > 0) {
                 let batch = {sql: '', array: []};
@@ -161,12 +161,39 @@ export class SysMessageListScene extends BaseComponent {
                         this.loadHttpData();
                     });
                 } else {
-                    StorageUtil.mGetItem(StorageKeyNames.INTO_TIME, (data) => {
+/*                    StorageUtil.mGetItem(StorageKeyNames.INTO_TIME, (data) => {
                         if (data.code == 1 && data.result != null) {
                             this.createTime = data.result;
                             this.loadHttpData();
                         } else {
                             //this.props.showToast('确认验收失败');
+                        }
+                    });*/
+                    StorageUtil.mGetItem(StorageKeyNames.SYSTEMS_LAST_MESSAGE_TIME, (timeData) => {
+                        if (timeData.code == 1 && timeData.result != null) {
+                            StorageUtil.mGetItem(StorageKeyNames.INTO_TIME, (intoTimeData) => {
+                                if (intoTimeData.code == 1 && intoTimeData.result != null) {
+                                    if (timeData.result > intoTimeData.result) {
+                                        this.createTime = timeData.result;
+                                        this.loadHttpData();
+                                    } else {
+                                        this.createTime = intoTimeData.result;
+                                        StorageUtil.mSetItem(StorageKeyNames.SYSTEMS_LAST_MESSAGE_TIME, intoTimeData.result);
+                                        this.loadHttpData();
+                                    }
+                                } else {
+                                    //this.props.showToast('确认验收失败');
+                                }
+                            });
+                        } else {
+                            StorageUtil.mGetItem(StorageKeyNames.INTO_TIME, (intoTimeData) => {
+                                if (intoTimeData.code == 1 && intoTimeData.result != null) {
+                                    this.createTime = intoTimeData.result;
+                                    this.loadHttpData();
+                                } else {
+                                    //this.props.showToast('确认验收失败');
+                                }
+                            });
                         }
                     });
                 }

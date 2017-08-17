@@ -984,7 +984,7 @@ export const FIRST_PAYMENT_PAY = BASEURL + V + 'order_finance/firstPaymentPay';
 export const FIRST_PAYMENT_PAY_CALLBACK = BASEURL + V + 'order_finance/firstPaymentPayCallback';
 
 //CRM TEST
-export const PRE = "http://10.3.10.38:8080/";
+export const PRE = "http://10.3.10.35:8080/";
 /**
  *  门店管理web页
  */
@@ -1020,4 +1020,9 @@ export const DAILY_REMINDER_STATISTICS = BASEURL + "cheshang/sass/statistics";
 /**
  *  获取潜在客户列表
  */
-export const POTENTIAL_CUSTOMER_LISTS = BASEURL + "cheshang/customer/lists";
+//export const POTENTIAL_CUSTOMER_LISTS = BASEURL + "cheshang/customer/lists";
+export const POTENTIAL_CUSTOMER_LISTS = PRE + "customer/querycustomerList.do";
+/**
+ *  获取所有跟进信息
+ */
+export const SELECT_ALL_FLOW = PRE + "customer/selectAllFlow.do";

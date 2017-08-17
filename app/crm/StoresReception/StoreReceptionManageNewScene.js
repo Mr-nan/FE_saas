@@ -39,6 +39,7 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
      **/
     constructor(props) {
         super(props);
+        this.potentialClientList = [];
         this.state = {
             dataSource: [],
             renderPlaceholderOnly: 'blank',
@@ -73,16 +74,23 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                     xxly: '全部车源',
                     khjb: '全部级别',
                     dfzp: '全部状态',
-                    gmys: '所有预算'
+                    gmys: '所有预算',
+                    pc: 1,
+                    times: 3,
+                    mouth: ''
                     //createTime: '2017-08-09 15:18:47'
                 };
                 let url = AppUrls.POTENTIAL_CUSTOMER_LISTS;
                 requestNoToken(url, 'post', maps).then((response) => {
 
                 }, (error) => {
+                    //console.log('error===============', error);
+                    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                    this.potentialClientList = error.mjson.record.beanlist;
                     this.setState({
+                        dataSource: ds.cloneWithRows(this.potentialClientList),
                         isRefreshing: false,
-                        renderPlaceholderOnly: 'error'
+                        renderPlaceholderOnly: 'success'
                     });
                 });
             } else {
@@ -168,7 +176,9 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                     this.toNextPage({
                         name: 'ClientInfoScene',
                         component: ClientInfoScene,
-                        params: {}
+                        params: {
+                            rowData: rowData
+                        }
                     });
                 }}
                 activeOpacity={0.9}
@@ -186,7 +196,7 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                             marginLeft: Pixel.getPixel(15),
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color: fontAndColor.COLORA0
-                        }}>测试人员</Text>
+                        }}>{rowData.customerName}</Text>
                     <View style={{flex: 1}}/>
                     <Image source={cellJianTou} style={{marginRight: Pixel.getPixel(15),}}/>
                 </View>

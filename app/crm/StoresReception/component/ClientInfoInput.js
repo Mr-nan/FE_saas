@@ -98,7 +98,7 @@ export default class ClientInfoInput extends PureComponent {
             value: text
         });
         if (text.length == 11 && this.props.items.name == '电话') {
-            //this.uniqueCheck(text);
+            this.uniqueCheck(text);
         }
     }
 
@@ -106,9 +106,9 @@ export default class ClientInfoInput extends PureComponent {
      *   检查用户手机号是否存在
      **/
     uniqueCheck = (text) => {
-        this.setState({
+/*        this.setState({
             value: ''
-        });
-        this.props.callBack();
+        });*/
+        this.props.callBack(text);
     };
 }

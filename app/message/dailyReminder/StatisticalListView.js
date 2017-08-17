@@ -64,9 +64,9 @@ export class StatisticalListView extends BaseComponent {
      **/
     loadData = (type) => {
         let url = AppUrls.DAILY_REMINDER_STATISTICS;
-        requestNoToken(url, 'post', {
+        request(url, 'post', {
             type: type,
-            token: '5afa531b-4295-4c64-8d6c-ac436c619078'
+            //token: '5afa531b-4295-4c64-8d6c-ac436c619078'
         }).then((response) => {
             this.statisticalListData = response.mjson.data;
             if (this.statisticalListData && this.statisticalListData.length > 0) {

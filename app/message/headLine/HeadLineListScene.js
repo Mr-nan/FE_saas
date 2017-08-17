@@ -73,10 +73,11 @@ export class HeadLineListScene extends BaseComponent {
          });*/
         StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
             if (data.code == 1 && data.result != null) {
-                //this.custPhone = data.result;
-                this.custPhone = '15102373842';
+                this.custPhone = data.result;
+                //this.custPhone = '15102373842';
                 this.loadData();
             } else {
+                //
                 this.props.showToast('查询账户信息失败');
             }
         });
@@ -88,13 +89,13 @@ export class HeadLineListScene extends BaseComponent {
     loadHttpData = () => {
         let maps = {
             pushTo: this.custPhone,
-            token: '5afa531b-4295-4c64-8d6c-ac436c619078',
+            //token: '5afa531b-4295-4c64-8d6c-ac436c619078',
             contentType: 'advertisement',
             //createTime: '2017-08-09 15:18:47'
             createTime: this.createTime
         };
         let url = AppUrls.SELECT_MSG_BY_CONTENT_TYPE;
-        requestNoToken(url, 'post', maps).then((response) => {
+        request(url, 'post', maps).then((response) => {
             let listData = response.mjson.data;
             if (listData && listData.length > 0) {
                 let batch = {sql: '', array: []};
@@ -147,7 +148,6 @@ export class HeadLineListScene extends BaseComponent {
         this.headLineListData = [];
         SQLite.selectData('SELECT * FROM messageHeadLineModel WHERE tel = ? order by createTime desc', [this.custPhone],
             (data) => {
-                //console.log('SELECT * FROM messageHeadLineModel', data);
                 //数据库中有数据
                 let count = data.result.rows.length;
                 if (count > 0) {
@@ -163,6 +163,7 @@ export class HeadLineListScene extends BaseComponent {
                         } else {
                             this.createTime = dbCreateTime;
                             StorageUtil.mSetItem(StorageKeyNames.ADVERTISEMENT_LAST_MESSAGE_TIME, dbCreateTime);
+                            //console.log('333333333this.createTime=======', this.createTime);
                         }
                         for (let i = 0; i < count; i++) {
                             //console.log(data.result.rows.item(i));
@@ -170,19 +171,45 @@ export class HeadLineListScene extends BaseComponent {
                         }
                         this.loadHttpData();
                     });
-                    //this.createTime = data.result.rows.item[0].createTime;
                 } else {
-                    StorageUtil.mGetItem(StorageKeyNames.INTO_TIME, (intoTimeData) => {
-                        if (intoTimeData.code == 1 && intoTimeData.result != null) {
-                            this.createTime = intoTimeData.result;
-                            this.loadHttpData();
+                    StorageUtil.mGetItem(StorageKeyNames.ADVERTISEMENT_LAST_MESSAGE_TIME, (timeData) => {
+                        if (timeData.code == 1 && timeData.result != null) {
+                            StorageUtil.mGetItem(StorageKeyNames.INTO_TIME, (intoTimeData) => {
+                                if (intoTimeData.code == 1 && intoTimeData.result != null) {
+                                    if (timeData.result > intoTimeData.result) {
+                                        this.createTime = timeData.result;
+                                        this.loadHttpData();
+                                    } else {
+                                        this.createTime = intoTimeData.result;
+                                        StorageUtil.mSetItem(StorageKeyNames.ADVERTISEMENT_LAST_MESSAGE_TIME, intoTimeData.result);
+                                        this.loadHttpData();
+                                    }
+                                } else {
+                                    //this.props.showToast('确认验收失败');
+                                }
+                            });
                         } else {
-                            //this.props.showToast('确认验收失败');
+                            StorageUtil.mGetItem(StorageKeyNames.INTO_TIME, (intoTimeData) => {
+                                if (intoTimeData.code == 1 && intoTimeData.result != null) {
+                                    this.createTime = intoTimeData.result;
+                                    this.loadHttpData();
+                                } else {
+                                    //this.props.showToast('确认验收失败');
+                                }
+                            });
                         }
                     });
                 }
                 //console.log('this.createTime=======', this.createTime);
             });
+    };
+
+    /**
+     *   确定请求参数createTime 并请求数据
+     *   lastTime StorageKeyNames.ADVERTISEMENT_LAST_MESSAGE_TIME
+     **/
+    confirmParameters = (lastTime) => {
+
     };
 
     /**

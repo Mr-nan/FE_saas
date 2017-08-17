@@ -21,6 +21,10 @@ import ClientInfoSelected from "../ClientInfoSelected";
 import CustomerInfoInput from "../ClientInfoInput";
 import SelectScene from "../../SelectScene";
 import ExplainModal from "../../../../mine/myOrder/component/ExplainModal";
+import * as StorageKeyNames from "../../../../constant/storageKeyNames";
+import StorageUtil from "../../../../utils/StorageUtil";
+import {request, requestNoToken} from "../../../../utils/RequestUtil";
+import * as AppUrls from "../../../../constant/appUrls";
 const Pixel = new PixelUtil();
 
 export default class BaseInfoItem extends BaseComponent {
@@ -186,8 +190,25 @@ export default class BaseInfoItem extends BaseComponent {
     /**
      *  用户已经存在弹出提示框
      **/
-    userAireadyExist = () => {
-        this.em.changeShowType(true, "提示", "用户已经存在", "确定");
+    userAireadyExist = (customerPhone) => {
+        //this.em.changeShowType(true, "提示", "用户已经存在", "确定");
+        StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let maps = {
+                    mobiles: data.result,
+                    customerPhone: customerPhone,
+                    token: '5afa531b-4295-4c64-8d6c-ac436c619078'
+                };
+                let url = AppUrls.SELECT_CUST_IF_EXIST;
+                requestNoToken(url, 'post', maps).then((response) => {
+                    console.log('SELECT_CUST_IF_EXIST', 'succ');
+                }, (error) => {
+                    console.log('SELECT_CUST_IF_EXIST', error);
+                });
+            } else {
+                this.props.showToast('查询账户信息失败');
+            }
+        });
     };
 }
 

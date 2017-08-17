@@ -63,13 +63,13 @@ export class BacklogListScene extends BaseComponent {
             if (data.code == 1 && data.result != null) {
                 this.custPhone = data.result;
                 let maps = {
-                    pushTo: '15102373842',
-                    //pushTo: this.custPhone,
-                    token: '5afa531b-4295-4c64-8d6c-ac436c619078'
+                    //pushTo: '15102373842',
+                    pushTo: this.custPhone,
+                    //token: '5afa531b-4295-4c64-8d6c-ac436c619078'
                     //createTime: '2017-08-09 15:18:47'
                 };
                 let url = AppUrls.SELECT_MSG_BY_CONTENT_TYPE;
-                requestNoToken(url, 'post', maps).then((response) => {
+                request(url, 'post', maps).then((response) => {
                     this.backlogListData = response.mjson.data;
                     if (this.backlogListData && this.backlogListData.length > 0) {
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});

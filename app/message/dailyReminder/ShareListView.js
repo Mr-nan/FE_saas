@@ -65,9 +65,9 @@ export class ShareListView extends BaseComponent {
      **/
     loadData = (type) => {
         let url = AppUrls.DAILY_REMINDER_RANK_LEVEL;
-        requestNoToken(url, 'post', {
+        request(url, 'post', {
             type: type,
-            token: '5afa531b-4295-4c64-8d6c-ac436c619078'
+            //token: '5afa531b-4295-4c64-8d6c-ac436c619078'
         }).then((response) => {
             this.props.showModal(false);
             this.shareListData = response.mjson.data;

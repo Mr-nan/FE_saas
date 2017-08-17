@@ -66,8 +66,8 @@ export default class MessageListScene extends BaseComponent {
          });*/
         StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
             if (data.code == 1 && data.result != null) {
-                //this.custPhone = data.result;
-                this.custPhone = '15102373842';
+                this.custPhone = data.result;
+                //this.custPhone = '15102373842';
                 this.loadData();
             } else {
                 this.props.showToast('查询账户信息失败');
@@ -81,10 +81,10 @@ export default class MessageListScene extends BaseComponent {
     loadData = () => {
         let maps = {
             accountMobile: this.custPhone,
-            token: '5afa531b-4295-4c64-8d6c-ac436c619078'
+            //token: '5afa531b-4295-4c64-8d6c-ac436c619078'
         };
         let url = AppUrls.HANDLE_COUNT;
-        requestNoToken(url, 'post', maps).then((response) => {
+        request(url, 'post', maps).then((response) => {
             this.backlogNum = response.mjson.data;
             this.getSysMessageNum();
             //console.log('this.backlogNum======', this.backlogNum);
@@ -117,10 +117,10 @@ export default class MessageListScene extends BaseComponent {
                         let maps = {
                             type: 'systems',
                             timestamp: new Date(dbLastTime.replace(/-/g, '/')).valueOf(),
-                            token: '5afa531b-4295-4c64-8d6c-ac436c619078'
+                            //token: '5afa531b-4295-4c64-8d6c-ac436c619078'
                         };
                         let url = AppUrls.SELECT_UNREAD_MESSAGE_COUNT;
-                        requestNoToken(url, 'post', maps).then((response) => {
+                        request(url, 'post', maps).then((response) => {
                             this.sysMessageNum = response.mjson.data + dbCount;
                             //console.log('this.sysMessageNum======', this.sysMessageNum);
                             this.getHeadLineNum();
@@ -129,24 +129,54 @@ export default class MessageListScene extends BaseComponent {
                         });
                     });
                 } else {
-                    StorageUtil.mGetItem(StorageKeyNames.INTO_TIME, (data) => {
-                        if (data.code == 1 && data.result != null) {
-                            let dbLastTime = data.result;
-                            let maps = {
-                                type: 'systems',
-                                timestamp: new Date(dbLastTime.replace(/-/g, '/')).valueOf(),
-                                token: '5afa531b-4295-4c64-8d6c-ac436c619078'
-                            };
-                            let url = AppUrls.SELECT_UNREAD_MESSAGE_COUNT;
-                            requestNoToken(url, 'post', maps).then((response) => {
-                                this.sysMessageNum = response.mjson.data;
-                                //console.log('this.sysMessageNum======', this.sysMessageNum);
-                                this.getHeadLineNum();
-                            }, (error) => {
-                                this.getHeadLineNum();
+                    StorageUtil.mGetItem(StorageKeyNames.SYSTEMS_LAST_MESSAGE_TIME, (timeData) => {
+                        if (timeData.code == 1 && timeData.result != null) {
+                            StorageUtil.mGetItem(StorageKeyNames.INTO_TIME, (intoTimeData) => {
+                                if (intoTimeData.code == 1 && intoTimeData.result != null) {
+                                    let dbLastTime = intoTimeData.result;
+                                    if (timeData.result > intoTimeData.result) {
+                                        dbLastTime = timeData.result;
+                                    } else {
+                                        dbLastTime = intoTimeData.result;
+                                    }
+                                    let maps = {
+                                        type: 'systems',
+                                        timestamp: new Date(dbLastTime.replace(/-/g, '/')).valueOf(),
+                                        //token: '5afa531b-4295-4c64-8d6c-ac436c619078'
+                                    };
+                                    let url = AppUrls.SELECT_UNREAD_MESSAGE_COUNT;
+                                    request(url, 'post', maps).then((response) => {
+                                        this.sysMessageNum = response.mjson.data;
+                                        //console.log('this.sysMessageNum======', this.sysMessageNum);
+                                        this.getHeadLineNum();
+                                    }, (error) => {
+                                        this.getHeadLineNum();
+                                    });
+                                } else {
+                                    //this.props.showToast('确认验收失败');
+                                }
                             });
                         } else {
-                            //this.props.showToast('确认验收失败');
+                            StorageUtil.mGetItem(StorageKeyNames.INTO_TIME, (data) => {
+                                if (data.code == 1 && data.result != null) {
+                                    let dbLastTime = data.result;
+                                    let maps = {
+                                        type: 'systems',
+                                        timestamp: new Date(dbLastTime.replace(/-/g, '/')).valueOf(),
+                                        //token: '5afa531b-4295-4c64-8d6c-ac436c619078'
+                                    };
+                                    let url = AppUrls.SELECT_UNREAD_MESSAGE_COUNT;
+                                    request(url, 'post', maps).then((response) => {
+                                        this.sysMessageNum = response.mjson.data;
+                                        //console.log('this.sysMessageNum======', this.sysMessageNum);
+                                        this.getHeadLineNum();
+                                    }, (error) => {
+                                        this.getHeadLineNum();
+                                    });
+                                } else {
+                                    //this.props.showToast('确认验收失败');
+                                }
+                            });
                         }
                     });
                 }
@@ -163,7 +193,7 @@ export default class MessageListScene extends BaseComponent {
                     let dbLastTime = data.result.rows.item(0).createTime;
                     let dbCount = 0;
                     for (let i = 0; i < data.result.rows.length; i++) {
-                        console.log('data.result.rows.item(i).isRead-=-=-=-', data.result.rows.item(i).isRead);
+                        //console.log('data.result.rows.item(i).isRead-=-=-=-', data.result.rows.item(i).isRead);
                         if (!data.result.rows.item(i).isRead) {
                             dbCount ++;
                         }
@@ -178,10 +208,10 @@ export default class MessageListScene extends BaseComponent {
                         let maps = {
                             type: 'advertisement',
                             timestamp: new Date(dbLastTime.replace(/-/g, '/')).valueOf(),
-                            token: '5afa531b-4295-4c64-8d6c-ac436c619078'
+                            //token: '5afa531b-4295-4c64-8d6c-ac436c619078'
                         };
                         let url = AppUrls.SELECT_UNREAD_MESSAGE_COUNT;
-                        requestNoToken(url, 'post', maps).then((response) => {
+                        request(url, 'post', maps).then((response) => {
                             this.headLineNum = response.mjson.data + dbCount;
                             //console.log('this.sysMessageNum======', this.sysMessageNum);
                             this.loadListData();
@@ -190,24 +220,54 @@ export default class MessageListScene extends BaseComponent {
                         });
                     });
                 } else {
-                    StorageUtil.mGetItem(StorageKeyNames.INTO_TIME, (data) => {
-                        if (data.code == 1 && data.result != null) {
-                            let dbLastTime = data.result;
-                            let maps = {
-                                type: 'advertisement',
-                                timestamp: new Date(dbLastTime.replace(/-/g, '/')).valueOf(),
-                                token: '5afa531b-4295-4c64-8d6c-ac436c619078'
-                            };
-                            let url = AppUrls.SELECT_UNREAD_MESSAGE_COUNT;
-                            requestNoToken(url, 'post', maps).then((response) => {
-                                this.headLineNum = response.mjson.data;
-                                //console.log('this.sysMessageNum======', this.sysMessageNum);
-                                this.loadListData();
-                            }, (error) => {
-                                this.loadListData();
+                    StorageUtil.mGetItem(StorageKeyNames.ADVERTISEMENT_LAST_MESSAGE_TIME, (timeData) => {
+                        if (timeData.code == 1 && timeData.result != null) {
+                            StorageUtil.mGetItem(StorageKeyNames.INTO_TIME, (intoTimeData) => {
+                                if (intoTimeData.code == 1 && intoTimeData.result != null) {
+                                    let dbLastTime = intoTimeData.result;
+                                    if (timeData.result > intoTimeData.result) {
+                                        dbLastTime = timeData.result;
+                                    } else {
+                                        dbLastTime = intoTimeData.result;
+                                    }
+                                    let maps = {
+                                        type: 'advertisement',
+                                        timestamp: new Date(dbLastTime.replace(/-/g, '/')).valueOf(),
+                                        //token: '5afa531b-4295-4c64-8d6c-ac436c619078'
+                                    };
+                                    let url = AppUrls.SELECT_UNREAD_MESSAGE_COUNT;
+                                    request(url, 'post', maps).then((response) => {
+                                        this.headLineNum = response.mjson.data;
+                                        //console.log('this.sysMessageNum======', this.sysMessageNum);
+                                        this.loadListData();
+                                    }, (error) => {
+                                        this.loadListData();
+                                    });
+                                } else {
+                                    //this.props.showToast('确认验收失败');
+                                }
                             });
                         } else {
-                            //this.props.showToast('确认验收失败');
+                            StorageUtil.mGetItem(StorageKeyNames.INTO_TIME, (data) => {
+                                if (data.code == 1 && data.result != null) {
+                                    let dbLastTime = data.result;
+                                    let maps = {
+                                        type: 'advertisement',
+                                        timestamp: new Date(dbLastTime.replace(/-/g, '/')).valueOf(),
+                                        //token: '5afa531b-4295-4c64-8d6c-ac436c619078'
+                                    };
+                                    let url = AppUrls.SELECT_UNREAD_MESSAGE_COUNT;
+                                    request(url, 'post', maps).then((response) => {
+                                        this.headLineNum = response.mjson.data;
+                                        //console.log('this.sysMessageNum======', this.sysMessageNum);
+                                        this.loadListData();
+                                    }, (error) => {
+                                        this.loadListData();
+                                    });
+                                } else {
+                                    //this.props.showToast('确认验收失败');
+                                }
+                            });
                         }
                     });
                 }

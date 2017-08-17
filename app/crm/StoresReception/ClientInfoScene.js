@@ -18,35 +18,16 @@ import {
 
 import BaceComponent from '../../component/BaseComponent';
 import NavigatorView from '../../component/AllNavigationView';
-import ListFooter           from '../../carSource/znComponent/LoadMoreFooter';
-import SGListView           from 'react-native-sglistview';
-import CarInfoScene         from '../../carSource/CarInfoScene';
-import MyCarCell     from '../../carSource/znComponent/MyCarCell';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import RepaymenyTabBar from '../../finance/repayment/component/RepaymenyTabBar';
 import * as fontAndColor from '../../constant/fontAndColor';
 import * as AppUrls from "../../constant/appUrls";
 import  {request}           from '../../utils/RequestUtil';
-import {LendSuccessAlert} from '../../finance/lend/component/ModelComponent'
 import PixelUtil from '../../utils/PixelUtil';
-import {StatisticalListView} from "../../message/dailyReminder/StatisticalListView";
 import {FollowUpRecordsView} from "./FollowUpRecordsView";
 import ClientInfoDetailView from "./ClientInfoDetailView";
 const Pixel = new PixelUtil();
 
-
-let carUpperFrameData = [];
-let carDropFrameData = [];
-let carAuditData = [];
-
-let carUpperFramePage = 1;
-let carUpperFrameStatus = 1;
-
-let carDropFramePage = 1;
-let carDropFrameStatus = 1;
-
-let carAuditPage = 1;
-let carAuditStatus = 1;
 
 export default class ClientInfoScene extends BaceComponent {
 
@@ -56,29 +37,28 @@ export default class ClientInfoScene extends BaceComponent {
     constructor(props) {
         super(props);
         // 初始状态
-        this.timeFrame = [{name: '每日', value: ''}, {name: '每周', value: ''}, {name: '每月', value: ''}];
         this.state = {
-            isHide: true,
+            rowData: this.props.rowData
         };
     }
 
     /**
-     *
-     * @param carData
+     *   客户状态映射
      **/
-    carCellClick = (carData) => {
-        let navigatorParams = {
-
-            name: "CarInfoScene",
-            component: CarInfoScene,
-            params: {
-                carID: carData.id,
-            }
-        };
-        this.toNextPage(navigatorParams);
-
-    }
-
+    customerStatusMapping = (int) => {
+        switch (int) {
+            case 1:
+                return '初次到店';
+            case 2:
+                return '电话邀约';
+            case 3:
+                return '已购买';
+            case 4:
+                return '置换';
+            case 5:
+                return '复购';
+        }
+    };
 
     /**
      *
@@ -100,27 +80,27 @@ export default class ClientInfoScene extends BaceComponent {
                             marginLeft: Pixel.getPixel(32),
                             color: '#ffffff',
                             fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34)
-                        }}>韩梦</Text>
+                        }}>{this.state.rowData.customerName}</Text>
                     <View style={{
                         marginLeft: Pixel.getPixel(32),
                         backgroundColor: '#ffffff',
                         height: Pixel.getPixel(35),
                         width: 1
                     }}/>
-                    <View style={{alignItems: 'center', marginLeft: Pixel.getPixel(12),}}>
+                    <View style={{alignItems: 'flex-start', marginLeft: Pixel.getPixel(12)}}>
                         <Text
                             allowFontScaling={false}
                             style={{
                                 color: '#ffffff',
                                 fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)
-                            }}>销售顾问：</Text>
+                            }}>销售顾问:{this.state.rowData.salesAdviser}</Text>
                         <Text
                             allowFontScaling={false}
                             style={{
                                 marginTop: Pixel.getPixel(8),
                                 color: '#ffffff',
                                 fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)
-                            }}>客户状态：</Text>
+                            }}>客户状态:{this.customerStatusMapping(this.state.rowData.customerStatus)}</Text>
                     </View>
                     <View style={{flex: 1}}/>
                     <TouchableOpacity
@@ -138,30 +118,18 @@ export default class ClientInfoScene extends BaceComponent {
                     locked={true}
                     renderTabBar={() => <RepaymenyTabBar style={{backgroundColor: 'white'}}
                                                          tabName={["跟进记录", "详细资料"]}/>}>
-                    <FollowUpRecordsView navigator={this.props.navigator} tabLabel="ios-paper1"/>
-                    <ClientInfoDetailView navigator={this.props.navigator} tabLabel="ios-paper2"/>
+                    <FollowUpRecordsView
+                        rowData={this.state.rowData}
+                        navigator={this.props.navigator}
+                        tabLabel="ios-paper1"/>
+                    <ClientInfoDetailView
+                        rowData={this.state.rowData}
+                        navigator={this.props.navigator}
+                        tabLabel="ios-paper2"/>
                 </ScrollableTabView>
             </View>
         )
 
-    }
-
-    /**
-     *
-     **/
-    checkTimeFrameClick = () => {
-        this.setState({
-            isHide: false,
-        });
-    }
-
-    /**
-     *
-     **/
-    hideCheckedView = () => {
-        this.setState({
-            isHide: true,
-        });
     }
 
 }
