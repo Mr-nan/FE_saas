@@ -1,12 +1,12 @@
 /**
  * 开发地址
  */
-export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
  */
-// export const BASEURL = 'http://api-gateway.test.dycd.com/';
+export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 正式地址
@@ -962,3 +962,8 @@ export const FIRST_PAYMENT_PAY_CALLBACK = BASEURL + V + 'order_finance/firstPaym
  *  扣款协议合同
  */
 export const FIRST_REPAYMENT_CONTRACT = '/api/v1/Contract/see_electron_repayment_contract';
+
+/**
+ *  签署-扣款协议合同
+ */
+export const FIRST_REPAYMENT_CONTRACT_SIGN = '//api/v1/Contract/sign_electron_repayment_contract';
