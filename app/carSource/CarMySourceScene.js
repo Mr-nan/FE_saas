@@ -60,7 +60,6 @@ let carAuditStatus = 1;
 export default class CarMySourceScene extends BaceComponent {
 
 
-
     render() {
         return (
             <View style={styles.rootContainer}>

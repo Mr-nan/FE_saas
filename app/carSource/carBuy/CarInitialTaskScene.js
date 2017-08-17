@@ -22,6 +22,7 @@ import BaseComponent from '../../component/BaseComponent';
 import AllNavigationView from  '../../component/AllNavigationView';
 import {CellView, CellSelectView} from '../znComponent/CarPublishCell';
 import VinInfo from '../../publish/component/VinInfo';
+import CarZoomImageScene from '../CarZoomImagScene';
 import *as fontAndColor from  '../../constant/fontAndColor';
 import PixelUtil from  '../../utils/PixelUtil';
 import CarBrandSelectScene from "../CarBrandSelectScene";
@@ -68,6 +69,18 @@ export default class CarInitialTaskScene extends BaseComponent{
                             })
                         }
                         {
+                            this.state.imageArray.map((data,index)=>{
+                                return(
+                                    <View style={{backgroundColor:'white',paddingVertical:Pixel.getPixel(15),paddingHorizontal:Pixel.getPixel(15)}} key={'imgkey'+index}>
+                                        <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>{data.title}</Text>
+                                        <TouchableOpacity activeOpacity={1} onPress={()=>{this.showPhotoView(index)}}>
+                                            <Image style={{width:sceneWidth-Pixel.getPixel(30),height:(sceneWidth-Pixel.getPixel(30))/Pixel.getPixel(1.5),backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getPixel(15)}} source={{uri:data.url}}/>
+                                        </TouchableOpacity>
+                                    </View>
+                                )
+                            })
+                        }
+                        {
                             this.props.type != 2&&
                             (<View style={styles.footContainer}>
                                 <TouchableOpacity onPress={this.footBtnClick}>
@@ -107,7 +120,6 @@ export default class CarInitialTaskScene extends BaseComponent{
 
 
     initFinish=()=>{
-
 
         if(this.props.taskid){
             this.loadData();
@@ -150,8 +162,6 @@ export default class CarInitialTaskScene extends BaseComponent{
 
         this.titleData1[0][0].value = carData.vin;
         this.titleData1[0][1].value = carData.carName;
-
-
 
         this.titleData1[1][0].value = carData.infoName;
         this.titleData1[1][1].value = carData.infoMobile;
@@ -203,9 +213,28 @@ export default class CarInitialTaskScene extends BaseComponent{
         this.titleData1[3][1].value = carData.taskInfo.selfMobile;
         this.titleData1[3][2].value = carData.remark;
 
+        let imageArray = [];
+
+        if(carData.taskInfo.arcPath){
+            imageArray.push({title:'车辆图片',url:carData.taskInfo.arcPath})
+        }
+        if(carData.taskInfo.dlPath){
+            imageArray.push({title:'行驶证',url:carData.taskInfo.dlPath})
+
+        }
+         if(carData.taskInfo.policyPath){
+             imageArray.push({title:'保险单',url:carData.taskInfo.policyPath})
+
+        }
+         if(carData.taskInfo.policyPath){
+             imageArray.push({title:'身份证',url:carData.taskInfo.policyPath})
+
+        }
+
         this.setState({
             renderPlaceholderOnly:'success',
             titleData:this.titleData1,
+            imageArray:imageArray,
         });
 
     }
@@ -233,7 +262,6 @@ export default class CarInitialTaskScene extends BaseComponent{
 
         this.roleName = this.props.roleName;
         this.type = this.props.type;
-
         this.scanType = [
             {model_name: '扫描前风挡'},
             {model_name: '扫描行驶证'}
@@ -407,11 +435,25 @@ export default class CarInitialTaskScene extends BaseComponent{
         ];
         this.state = {
             titleData:this.titleData1,
+            imageArray:[],
             keyboardOffset:-Pixel.getPixel(64),
             renderPlaceholderOnly:'success'
         };
     }
 
+    // 浏览图片
+    showPhotoView = (index) => {
+
+        let navigatorParams = {
+            name: "CarZoomImageScene",
+            component: CarZoomImageScene,
+            params: {
+                images: this.state.imageArray,
+                index: index,
+            }
+        }
+        this.toNextPage(navigatorParams);
+    }
 
     /**
      *  form @ZN
@@ -424,7 +466,6 @@ export default class CarInitialTaskScene extends BaseComponent{
         {
             return;
         }
-
         if(title=='车型'){
 
             this.pushCarBrand();

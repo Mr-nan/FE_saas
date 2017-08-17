@@ -107,6 +107,10 @@ export default class CarBuyTaskScene extends BaseComponent{
     initFinish=()=>{
         if(this.props.id){
             this.loadData();
+        }else {
+            this.setState({
+                renderPlaceholderOnly:'success'
+            });
         }
     }
 
@@ -669,7 +673,6 @@ export default class CarBuyTaskScene extends BaseComponent{
 
           ];
         this.state = {
-
             titleData:this.titleData1,
             keyboardOffset:-Pixel.getPixel(64),
             isDateTimePickerVisible:false,
