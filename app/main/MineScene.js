@@ -150,14 +150,15 @@ export default class MineScene extends BaseComponent {
     }
 
     componentDidMount() {
+        this.accountShow = false;
         try {
             BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
         } catch (e) {
 
         } finally {
             //InteractionManager.runAfterInteractions(() => {
-                this.setState({renderPlaceholderOnly: 'loading'});
-                this.initFinish();
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
             //});
         }
     }
@@ -188,15 +189,21 @@ export default class MineScene extends BaseComponent {
                 let datas = JSON.parse(data.result);
                 if (datas.user_level == 2) {
                     if (datas.enterprise_list[0].role_type == '1') {
-                        if(lastType=='error'){
+                        if (lastType == 'error') {
                             Car[0].cars.splice(0, 1);
                         }
                         user_list.push(...Car);
                     } else if (datas.enterprise_list[0].role_type == '6') {
-                        Car[0].cars.splice(0, 1);
+                        if (!this.accountShow) {
+                            Car[0].cars.splice(0, 1);
+                        }
                         user_list.push(...Car);
                     } else if (datas.enterprise_list[0].role_type == '2') {
-                        Car[0].cars.splice(0, 2);
+                        if (!this.accountShow) {
+                            Car[0].cars.splice(0, 2);
+                        } else {
+                            Car[0].cars.splice(1, 2);
+                        }
                         user_list.push(Car[0], Car[1], Car[3], Car[4]);
                     } else {
                         Car[0].cars.splice(0, 2);
@@ -204,7 +211,7 @@ export default class MineScene extends BaseComponent {
                     }
                 } else if (datas.user_level == 1) {
                     if (datas.enterprise_list[0].role_type == '1') {
-                        if(lastType=='error'){
+                        if (lastType == 'error') {
                             Car[0].cars.splice(0, 1);
                         }
                         user_list.push(Car[0], Car[2], Car[3], Car[4]);
@@ -212,7 +219,11 @@ export default class MineScene extends BaseComponent {
                         Car[0].cars.splice(0, 1);
                         user_list.push(Car[0], Car[2], Car[3], Car[4]);
                     } else {
-                        Car[0].cars.splice(0, 2);
+                        if (!this.accountShow) {
+                            Car[0].cars.splice(0, 2);
+                        } else {
+                            Car[0].cars.splice(1, 2);
+                        }
                         user_list.push(Car[0], Car[2], Car[3], Car[4]);
 
                     }
@@ -356,51 +367,50 @@ export default class MineScene extends BaseComponent {
                 "title": "section3"
             },
         ]
-        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
-            if (data.code == 1) {
-                let datas = JSON.parse(data.result);
-                if(datas.user_level=='0'){
-                    this.noCompany();
-                }else{
-                    this.toCompany();
-                }
-            }
-        });
-
+        this.toCompany();
     }
 
-    noCompany=()=>{
-        lastType = 'error';
-        this.changeData();
-    }
-
-    toCompany=()=>{
+    toCompany = () => {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1) {
                 let datas = JSON.parse(data.result);
-                componyname  = '';
+                componyname = '';
                 if (datas.companyname == null || datas.companyname == '') {
                     componyname = datas.name;
                 } else {
                     componyname = datas.name + '(' + datas.companyname + ')';
                 }
                 let maps = {
-                    enter_base_ids: datas.company_base_id,
-                    child_type: '1'
+                    enter_base_id: datas.company_base_id,
                 };
-                request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+                request(Urls.GETACCOUNTSTATUSBYUID, 'Post', maps)
                     .then((response) => {
-                            haveOrder = response.mjson.data.order.tradeing_count;
-                            if(response.mjson.data.account==null||response.mjson.data.account.length<=0){
-                                lastType = 'error';
-                            }else{
-                                lastType = response.mjson.data.account.status;
+                            if (response.mjson.data == '1') {
+                                this.accountShow = true;
+                            } else {
+                                this.accountShow = false;
                             }
-                            // lastType = '3';、
-                            this.changeData();
+                            let mapss = {
+                                enter_base_ids: datas.company_base_id,
+                                child_type: '1'
+                            };
+                            request(Urls.USER_ACCOUNT_INFO, 'Post', mapss)
+                                .then((responses) => {
+                                        haveOrder = responses.mjson.data.order.tradeing_count;
+                                        if (responses.mjson.data.account == null || responses.mjson.data.account.length <= 0) {
+                                            lastType = 'error';
+                                        } else {
+                                            lastType = responses.mjson.data.account.status;
+                                        }
+                                        // lastType = '3';、
+                                        this.changeData();
+                                    },
+                                    (error) => {
+                                        this.changeData();
+                                    });
                         },
                         (error) => {
-                            this.changeData();
+                            this.setState({renderPlaceholderOnly: 'error'});
                         });
             }
         });
@@ -517,7 +527,7 @@ export default class MineScene extends BaseComponent {
                         (error) => {
                             this.props.showToast('用户信息查询失败');
                         });
-            }else{
+            } else {
                 this.props.showToast('用户信息查询失败');
             }
         });
@@ -543,7 +553,7 @@ export default class MineScene extends BaseComponent {
                 this.navigatorParams.name = 'ContractManageScene'
                 this.navigatorParams.component = ContractManageScene
                 this.navigatorParams.params = {
-                    from:'xs'
+                    from: 'xs'
                 }
                 break;
             case '员工管理':
@@ -598,8 +608,8 @@ export default class MineScene extends BaseComponent {
 
                     <Image source={rowData.icon} style={styles.rowLeftImage}/>
 
-                    <Text allowFontScaling={false}  style={styles.rowTitle}>{rowData.name}</Text>
-                    {rowData.name == '账户管理' ? <Text allowFontScaling={false}  style={{ marginRight: Pixel.getPixel(15),
+                    <Text allowFontScaling={false} style={styles.rowTitle}>{rowData.name}</Text>
+                    {rowData.name == '账户管理' ? <Text allowFontScaling={false} style={{ marginRight: Pixel.getPixel(15),
                     backgroundColor: '#00000000',color:fontAndClolr.COLORB2,fontSize:
                     Pixel.getFontPixel(fontAndClolr.LITTLEFONT28)}}>{showName}</Text> :
                         <View/>}
@@ -627,11 +637,11 @@ export default class MineScene extends BaseComponent {
         if (this.state.renderPlaceholderOnly == 'success') {
             if (firstType != lastType) {
                 if (lastType != '3') {
-                    StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
-                        if (data.code == 1) {
-                            let datas = JSON.parse(data.result);
-                            console.log(datas);
-                            if (datas.user_level>0&&datas.enterprise_list[0].role_type == '1') {
+                    if (this.accountShow) {
+                        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+                            if (data.code == 1) {
+                                let datas = JSON.parse(data.result);
+                                console.log(datas);
                                 StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (datac) => {
                                     if (datac.code == 1) {
                                         let datasc = JSON.parse(datac.result);
@@ -643,7 +653,6 @@ export default class MineScene extends BaseComponent {
                                             .then((response) => {
                                                     haveOrder = response.mjson.data.order.tradeing_count;
                                                     lastType = response.mjson.data.account.status;
-                                                    console.log('========'+lastType);
                                                     if (lastType == '0') {
                                                         this.refs.accountmodal.changeShowType(true,
                                                             '您还未开通资金账户，为方便您使用金融产品及购物车，' +
@@ -671,8 +680,8 @@ export default class MineScene extends BaseComponent {
                                     }
                                 });
                             }
-                        }
-                    });
+                        });
+                    }
                 }
             }
         }
@@ -699,10 +708,10 @@ export default class MineScene extends BaseComponent {
                         }}
                     />
                 </TouchableOpacity>
-                <Text allowFontScaling={false}  style={styles.headerNameStyle}>
+                <Text allowFontScaling={false} style={styles.headerNameStyle}>
                     {this.state.name}
                 </Text>
-                <Text allowFontScaling={false}  style={styles.headerPhoneStyle}>
+                <Text allowFontScaling={false} style={styles.headerPhoneStyle}>
                     {componyname}
                 </Text>
             </View>
