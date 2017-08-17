@@ -10,6 +10,7 @@ import {
     WebView,
     TouchableOpacity,
     Dimensions,
+    Image,
 
 } from 'react-native';
 
@@ -29,17 +30,7 @@ const {width, height} = Dimensions.get('window');
 
 export default class AccountDeductProtocolScene extends BaseComponent {
     render(){
-        if (this.state.renderPlaceholderOnly !== 'success') {
-            return (
-                <View style={{width: width, flex:1}}>
-                    {this.loadView()}
-                    <NavigationView
-                        title="账户划扣授权委托书"
-                        backIconClick={this.backPage}
-                    />
-                </View>
-            )
-        }
+
         return(
             <View style={styles.rootView}>
                 <ViewPager style={ this.props.protocolType!=1 && {marginBottom:Pixel.getPixel(64)}}
@@ -58,7 +49,7 @@ export default class AccountDeductProtocolScene extends BaseComponent {
                     </TouchableOpacity>
                     )
                 }
-                <NavigationView title="账户划扣授权委托书" backIconClick={this.backPage}/>
+                <NavigationView title={this.props.contractData.contract_name} backIconClick={this.backPage}/>
             </View>
         )
     }
@@ -67,53 +58,20 @@ export default class AccountDeductProtocolScene extends BaseComponent {
         super(props);
           let ds = new ViewPager.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
           this.state = {
-            renderPlaceholderOnly:'success',
-            dataSource:ds,
+            dataSource:ds.cloneWithPages(this.props.contractData.contract_image_path),
         };
       }
 
-    initFinish=()=>{
 
-      this.loadData();
-    }
-
-    allRefresh=()=>{
-        this.loadData();
-    }
-
-    loadData=()=>{
-
-        this.setState({
-            renderPlaceholderOnly:'loading'
-        });
-        let maps = {
-            api: Urls.FIRST_REPAYMENT_CONTRACT,
-        };
-        request(Urls.FINANCE, 'Post', maps).then((response) => {
-            this.contract_id = response.mjson.data.contract_id;
-            let imageItems = [];
-                imageItems.push(...response.mjson.data.contract_image_path);
-                    this.setState({
-                        renderPlaceholderOnly:'success',
-                        dataSource:this.state.dataSource.cloneWithPages(imageItems),
-                    });
-                },
-                (error) => {
-                    this.setState({renderPlaceholderOnly: 'error'});
-                });
-    }
 
     _renderPage = (data) => {
-
-        let nowdate = Date.parse(new Date());
-
         return (
             <Image onLoadEnd={()=>{
                 this.props.showModal(false);
             }} onLoadStart={()=>{
                 this.props.showModal(true);
             }} style={{flex:1}}
-                   source={{uri: data+'?'+nowdate}}
+                   source={{uri:data}}
             />
         );
 
@@ -122,20 +80,14 @@ export default class AccountDeductProtocolScene extends BaseComponent {
     openProtocol=()=>{
         let maps = {
             api: Urls.FIRST_REPAYMENT_CONTRACT_SIGN,
-            contract_id:this.contract_id,
+            contract_id:this.props.contractData.contract_id,
+            signator_id:this.props.contractData.signator_id,
         };
         this.props.showModal(true);
         request(Urls.FINANCE, 'Post', maps).then((response) => {
                 this.props.showModal(false);
-                StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
-                    if (data.code == 1 && data.result != null) {
-                        let data = JSON.parse(data.result);
-                        data.is_open_electron_repayment_contract = 1;
-                        StorageUtil.mSetItem(StorageKeyNames.LOAN_SUBJECT,JSON.stringify(data));
-                    }
-                    this.backToTop();
-                    }
-                );
+                this.props.showToast('已开通成功');
+                this.backToTop();
             },
             (error) => {
                 this.props.showModal(false);

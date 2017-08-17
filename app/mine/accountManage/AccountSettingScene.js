@@ -32,13 +32,37 @@ export  default class AccountSettingScene extends BaseComponent {
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             renderPlaceholderOnly: 'blank',
+            protocolType:0,
         };
     }
 
-    initFinish = () => {
+    initFinish=()=>{
+
+        this.loadData();
+    }
+
+    allRefresh=()=>{
+        this.loadData();
+    }
+
+    loadData=()=>{
+
         this.setState({
-            renderPlaceholderOnly: 'success',
+            renderPlaceholderOnly:'loading'
         });
+        let maps = {
+            api: Urls.FIRST_REPAYMENT_CONTRACT,
+        };
+        request(Urls.FINANCE, 'Post', maps).then((response) => {
+                this.contractData = response.mjson.data;
+                this.setState({
+                    renderPlaceholderOnly:'success',
+                    protocolType:response.mjson.data.open_status,
+                });
+            },
+            (error) => {
+                this.setState({renderPlaceholderOnly: 'error'});
+            });
     }
 
     render() {
@@ -61,7 +85,7 @@ export  default class AccountSettingScene extends BaseComponent {
                     <View style={{justifyContent:'center'}}>
                         <Text allowFontScaling={false}  style={{color:'#000',fontSize: Pixel.getFontPixel(14)}}>电子账户还款设置</Text>
                         {
-                            this.props.protocolType == 1 && (
+                            this.state.protocolType == 1 && (
                                 <Text allowFontScaling={false}  style={{color:fontAndColor.COLORA1,fontSize:Pixel.getFontPixel(12), marginTop:Pixel.getPixel(5)
                                 }}>查看《账户划扣授权委托书》</Text>
                             )
@@ -97,7 +121,8 @@ export  default class AccountSettingScene extends BaseComponent {
             name: 'AccountDeductProtocolScene',
             component: AccountDeductProtocolScene,
             params: {
-                protocolType:this.props.protocolType,
+                protocolType:this.state.protocolType,
+                contractData:this.contractData,
             }
         });
     }
