@@ -17,17 +17,16 @@ import NavigatorView from '../../component/AllNavigationView';
 import BaseComponent from '../../component/BaseComponent';
 import * as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
-import DailyReminderScene from "../dailyReminder/DailyReminderScene";
 const Pixel = new PixelUtil();
-import SQLiteUtil from "../../utils/SQLiteUtil";
-const SQLite = new SQLiteUtil();
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import StorageUtil from "../../utils/StorageUtil";
+import GetPermissionUtil from '../../utils/GetPermissionUtil';
+//const GetPermission = new GetPermissionUtil();
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 import * as AppUrls from "../../constant/appUrls";
 import {request, requestNoToken} from "../../utils/RequestUtil";
 
-export class BacklogListScene extends BaseComponent {
+export default class BacklogListScene extends BaseComponent {
 
     /**
      *
@@ -46,12 +45,16 @@ export class BacklogListScene extends BaseComponent {
      *
      **/
     initFinish = () => {
+        console.log(GetPermissionUtil);
+        console.log(PixelUtil);
 /*        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.setState({
             dataSource: ds.cloneWithRows(['0', '1']),
             isRefreshing: false,
             renderPlaceholderOnly: 'success'
         });*/
+        //GetPermission.getFirstList();
+        //console.log('this.currentTab=====', GetPermission.getRoleList());
         this.loadData();
     };
 

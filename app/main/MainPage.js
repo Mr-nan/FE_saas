@@ -103,19 +103,8 @@ export default class MainPage extends BaseComponent {
     }
 
     getUserPermission = (id) => {
-        let maps = {
-            enterprise_uid: id
-        };
-        request(Urls.GETFUNCTIONBYTOKENENTER, 'Post', maps)
-            .then((response) => {
-                    if (response.mjson.data == null || response.mjson.data.length <= 0) {
-                        this.setState({
-                            renderPlaceholderOnly: 'null',
-                        });
-                    } else {
-                        StorageUtil.mSetItem(storageKeyNames.GET_USER_PERMISSION,
-                            JSON.stringify(response.mjson.data), () => {
-                                let list = GetPermission.getFirstList();
+
+        let list = GetPermission.getFirstList();
                                 for (let i = 0; i < list.length; i++) {
                                     tabArray.push(new tableItemInfo(list[i].ref, list[i].key, list[i].name, list[i].image,
                                         list[i].unImage, this.getTopView(list[i].ref)));
@@ -124,12 +113,35 @@ export default class MainPage extends BaseComponent {
                                     selectedTab: tabArray[0].ref,
                                     renderPlaceholderOnly: 'success'
                                 });
-                            });
-                    }
-                },
-                (error) => {
-                    this.setState({renderPlaceholderOnly: 'error'});
-                });
+
+
+        // let maps = {
+        //     enterprise_uid: id
+        // };
+        // request(Urls.GETFUNCTIONBYTOKENENTER, 'Post', maps)
+        //     .then((response) => {
+        //             if (response.mjson.data == null || response.mjson.data.length <= 0) {
+        //                 this.setState({
+        //                     renderPlaceholderOnly: 'null',
+        //                 });
+        //             } else {
+        //                 StorageUtil.mSetItem(storageKeyNames.GET_USER_PERMISSION,
+        //                     JSON.stringify(response.mjson.data), () => {
+        //                         let list = GetPermission.getFirstList();
+        //                         for (let i = 0; i < list.length; i++) {
+        //                             tabArray.push(new tableItemInfo(list[i].ref, list[i].key, list[i].name, list[i].image,
+        //                                 list[i].unImage, this.getTopView(list[i].ref)));
+        //                         }
+        //                         this.setState({
+        //                             selectedTab: tabArray[0].ref,
+        //                             renderPlaceholderOnly: 'success'
+        //                         });
+        //                     });
+        //             }
+        //         },
+        //         (error) => {
+        //             this.setState({renderPlaceholderOnly: 'error'});
+        //         });
     }
 
     render() {

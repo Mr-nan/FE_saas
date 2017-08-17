@@ -39,7 +39,7 @@ import {ItemDeleteButton} from "../component/ItemDeleteButton";
 const SQLite = new SQLiteUtil();
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 
-export class HeadLineListScene extends BaseComponent {
+export default class HeadLineListScene extends BaseComponent {
 
     /**
      *

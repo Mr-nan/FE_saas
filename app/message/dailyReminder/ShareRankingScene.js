@@ -17,14 +17,6 @@ import BaseComponent from "../../component/BaseComponent";
 import * as fontAndColor from '../../constant/fontAndColor';
 import NavigatorView from '../../component/AllNavigationView';
 import PixelUtil from '../../utils/PixelUtil'
-import * as AppUrls from "../../constant/appUrls";
-import {request} from "../../utils/RequestUtil";
-import StorageUtil from "../../utils/StorageUtil";
-import * as StorageKeyNames from "../../constant/storageKeyNames";
-import DailyReminderScene from "../dailyReminder/DailyReminderScene";
-import {BacklogListScene} from "../backlog/BacklogListScene";
-import {HeadLineListScene} from "../headLine/HeadLineListScene";
-import {SysMessageListScene} from "../sysMessage/SysMessageListScene";
 
 var Pixel = new PixelUtil();
 

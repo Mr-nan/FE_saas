@@ -30,7 +30,7 @@ import {ItemDeleteButton} from "../component/ItemDeleteButton";
 const SQLite = new SQLiteUtil();
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 
-export class SysMessageListScene extends BaseComponent {
+export default class SysMessageListScene extends BaseComponent {
 
     /**
      *
