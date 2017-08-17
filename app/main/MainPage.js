@@ -38,6 +38,8 @@ import CustomerServiceButton  from '../component/CustomerServiceButton';
 import WorkBenchScene from './WorkBenchScene';
 import GetPermissionUtil from '../utils/GetPermissionUtil';
 const GetPermission = new GetPermissionUtil();
+import {request} from '../utils/RequestUtil';
+import * as Urls from '../constant/appUrls';
 export class tableItemInfo {
     constructor(ref, key, title, selectedImg, defaultImg, topView) {
 
@@ -64,10 +66,6 @@ export default class MainPage extends BaseComponent {
     };
 
 
-    initFinish = () => {
-
-    }
-
     componentWillUnmount() {
         tabArray = [];
     }
@@ -79,31 +77,64 @@ export default class MainPage extends BaseComponent {
         super(props);
         this.state = {
             // selectedTab: tabArray[0].ref,
-            canShow: false,
+            renderPlaceholderOnly: 'blank',
             openSelectBranch: false
 
         }
         tabArray = [];
+    }
+
+
+    initFinish = () => {
         StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (childdata) => {
             if (childdata.code == 1) {
                 let childdatas = JSON.parse(childdata.result);
-                this.is_done_credit = childdatas.is_done_credit
-                let list = GetPermission.getFirstList();
-                for (let i = 0; i < list.length; i++) {
-                    tabArray.push(new tableItemInfo(list[i].ref, list[i].key, list[i].name, list[i].image,
-                        list[i].unImage, this.getTopView(list[i].ref)));
-                }
-                this.setState({
-                    selectedTab: tabArray[0].ref,
-                    canShow: true
-                });
+                this.is_done_credit = childdatas.is_done_credit;
+                this.getUserPermission();
+            } else {
+                this.setState({renderPlaceholderOnly: 'error'});
             }
         });
     }
 
+    allRefresh = () => {
+        this.setState({renderPlaceholderOnly: 'loading'});
+        this.initFinish();
+    }
+
+    getUserPermission = (id) => {
+        let maps = {
+            enterprise_uid: id
+        };
+        request(Urls.GETFUNCTIONBYTOKENENTER, 'Post', maps)
+            .then((response) => {
+                    if (response.mjson.data == null || response.mjson.data.length <= 0) {
+                        this.setState({
+                            renderPlaceholderOnly: 'null',
+                        });
+                    } else {
+                        StorageUtil.mSetItem(storageKeyNames.GET_USER_PERMISSION,
+                            JSON.stringify(response.mjson.data), () => {
+                                let list = GetPermission.getFirstList();
+                                for (let i = 0; i < list.length; i++) {
+                                    tabArray.push(new tableItemInfo(list[i].ref, list[i].key, list[i].name, list[i].image,
+                                        list[i].unImage, this.getTopView(list[i].ref)));
+                                }
+                                this.setState({
+                                    selectedTab: tabArray[0].ref,
+                                    renderPlaceholderOnly: 'success'
+                                });
+                            });
+                    }
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error'});
+                });
+    }
+
     render() {
-        if (!this.state.canShow) {
-            return (<View style={{width:width,height:height,backgroundColor:fontAndClolr.COLORA3}}/>);
+        if (this.state.renderPlaceholderOnly != 'success') {
+            return this.loadView();
         }
         let items = [];
 
@@ -147,7 +178,7 @@ export default class MainPage extends BaseComponent {
                 </TabNavigator>
                 <View
                     style={[styles.imageStyle, this.props.identity == "finance" ? {width: Pixel.getPixel(1)} : {width: 0}]}></View>
-                <CustomerServiceButton ref='customerservicebutton'/>
+                {/*<CustomerServiceButton ref='customerservicebutton'/>*/}
             </View>
         );
     }

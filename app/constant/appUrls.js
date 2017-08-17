@@ -357,6 +357,13 @@ export const USER_ACCOUNT_INFO = BASEURL + 'v1/user.account/info';
 /**
  * from @zhaojian
  *
+ * 获取用户功能权限
+ **/
+export const GETFUNCTIONBYTOKENENTER = BASEURL + 'v1/user/getFunctionByTokenEnter';
+
+/**
+ * from @zhaojian
+ *
  * 获取账户管理首页
  **/
 export const USER_ACCOUNT_INDEX = BASEURL + 'v1/user.account/index';

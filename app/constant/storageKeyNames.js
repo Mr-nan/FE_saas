@@ -29,3 +29,4 @@ export const NEED_CHECK_RECOMMEND = "checkRecommend";   // 取消推荐车源
 export const ADVERTISEMENT_LAST_MESSAGE_TIME = "advertisement_last_message_time"; //车市头条数据库中缓存的最近一条数据的时间
 export const SYSTEMS_LAST_MESSAGE_TIME = "systems_last_message_time"; //系统消息数据库中缓存的最近一条数据的时间
 /* message end */
+export const GET_USER_PERMISSION = "get_user_permission";   // 获取角色权限
