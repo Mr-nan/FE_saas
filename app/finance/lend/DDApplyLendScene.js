@@ -401,7 +401,7 @@ export default class DDApplyLendScene extends BaseComponent {
         }
         if (sectionID === 'section5') {
             return (
-            <View style={{width:width,padding:adapeSize(15)}}>
+            <View style={{width:width,padding:adapeSize(15),paddingTop:adapeSize(10),paddingBottom:adapeSize(10)}}>
                 <Text style={{color:'red',fontSize:adapeSize(12)}}>{rowData}</Text>
             </View>)
         }
