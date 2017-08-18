@@ -148,7 +148,7 @@ export default class CarBuyTaskScene extends BaseComponent{
             id:data.id,
         };
 
-        if(data.firstUpTime!==undefined){
+        if(data.firstUpTime){
             let date = new Date(data.firstUpTime.replace(/-/g,"/"));
             this.carData.firstUpTime = this.dateFormat(date,'yyyy-MM-dd');
         }
@@ -376,7 +376,7 @@ export default class CarBuyTaskScene extends BaseComponent{
         this.props.showModal(true);
         request(AppUrls.CAR_SASS_PUBLISH, 'post', carData).then((response) => {
             this.props.showModal(false);
-            this.props.updateData();
+            this.props.reloadData();
             this.backPage();
         }, (error) => {
             this.props.showModal(false);
@@ -394,10 +394,10 @@ export default class CarBuyTaskScene extends BaseComponent{
           this.carData={
               consultList:[],
               isDeal:2,
-              collectionArea:' ',
-              customerName:' ',
-              contentNum:' ',
-              consultPrice:' ',
+              collectionArea:'',
+              customerName:'',
+              contentNum:'',
+              consultPrice:'',
               mobile:this.props.userPhone,
               vin:'',
               closeingPrice:'',

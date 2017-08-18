@@ -113,6 +113,7 @@ export default class CarBuyScene extends BaseComponent {
             component: CarBuyTaskScene,
             params: {
                 userPhone:userPhone,
+                reloadData:this.reloadData,
             }
         })
       }
@@ -122,22 +123,22 @@ export default class CarBuyScene extends BaseComponent {
 
     }
 
-    updateData=()=>{
-        this.refs.CarBuyUnsettledView && this.refs.CarBuyUnsettledView.allRefresh();
-        this.refs.CarBuyTradedView && this.refs.CarBuyTradedView.allRefresh();
-        this.refs.CarBuyAbandonView && this.refs.CarBuyAbandonView.allRefresh();
-    }
-
     cellClick=(data,isHideInfoRecourse)=>{
         this.toNextPage({
             name: "CarBuyTaskScene",
             component: CarBuyTaskScene,
             params: {
                 id:data.id,
-                updateData:this.updateData,
                 isHideInfoRecourse:isHideInfoRecourse,
+                reloadData:this.reloadData,
             }
         })
+    }
+
+    reloadData=()=>{
+        this.refs.CarBuyUnsettledView && this.refs.CarBuyUnsettledView.allRefresh();
+        this.refs.CarBuyTradedView && this.refs.CarBuyTradedView.allRefresh();
+        this.refs.CarBuyAbandonView && this.refs.CarBuyAbandonView.allRefresh();
     }
 }
 
