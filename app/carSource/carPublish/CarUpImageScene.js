@@ -300,36 +300,7 @@ export default class CarUpImageScene extends BaseComponent{
 
         }else {
 
-           if(this.carData.tid!==undefined){
-               let saasCarData={
-                   province:this.carData.city_name,
-                   city:this.carData.city_name,
-                   cBrand:this.carData.brand_name,
-                   price:this.carData.dealer_price_circle,
-                   miles:this.carData.mileage,
-                   cModel:this.carData.series_name,
-                   cType:this.carData.model_name,
-                   firstUpTime:this.carData.manufacture,
-                   picList:'[]',
-                   productDescr:' ',
-                   miniprice: this.carData.dealer_price,
-                   tid:this.carData.tid,
-                   token:'c5cd2f08-f052-4d3e-8943-86c798945953'
-               };
-               Net.request(AppUrls.CAR_CHESHANG_PUBLISHCAR,'post',saasCarData).then((response) => {
-
-                   this.publishCar();
-                   this.carData.tid = '';
-
-               }, (error) => {
-
-                   this.props.showModal(false);
-                   this.showToast(error.mjson.msg);
-
-               });
-           }else {
-               this.publishCar();
-           }
+           this.publishCar();
 
         }
     }

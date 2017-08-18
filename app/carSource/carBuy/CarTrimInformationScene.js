@@ -349,8 +349,6 @@ export default class CarTrimInformationScene extends BaseComponent{
      */
     cellCilck=(title)=>{
 
-        console.log(this.carData);
-
         if(title == '过户后车牌号' && this.props.type!=2){
 
             this.pushCarIicenseTagScene();

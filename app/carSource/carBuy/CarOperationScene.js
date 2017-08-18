@@ -119,7 +119,6 @@ export default class CarOperationScene extends BaseComponent{
     loadData=()=>{
 
         request(AppUrls.CAR_CHESHANG_TASKINFO,'post',{
-            token : 'c5cd2f08-f052-4d3e-8943-86c798945953',
             type:this.props.type,
             roleName:this.props.roleName,
             taskid:this.props.taskid,
@@ -284,13 +283,10 @@ export default class CarOperationScene extends BaseComponent{
         }
         this.carParams.zbMoney = this.costObject.sumNumber;
         this.carParams.managerInfoList = JSON.stringify(minfos);
-        this.carParams.token = 'c5cd2f08-f052-4d3e-8943-86c798945953';
-
         request(AppUrls.CAR_CHESHANG_YYZY_EDIT_TASK,'post',this.carParams).then((response) => {
 
             console.log(response.mjson);
             this.props.showModal(false);
-            this.props.showToast('任务提交成功');
             this.pushCarPublishScene();
             this.props.reloadTaskData();
 

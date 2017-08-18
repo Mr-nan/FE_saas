@@ -107,7 +107,6 @@ export default class CarManagerTaskScene extends BaseComponent{
             renderPlaceholderOnly:'loading'
         });
         request(AppUrls.CAR_CHESHANG_TASKINFO,'post',{
-            token : 'c5cd2f08-f052-4d3e-8943-86c798945953',
             type:this.props.type,
             roleName:this.props.roleName,
             taskid:this.props.taskid,

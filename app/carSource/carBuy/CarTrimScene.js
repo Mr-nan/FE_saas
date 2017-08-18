@@ -45,7 +45,7 @@ export default class CarTrimScene extends BaseComponent {
                 <ListView
                     enableEmptySections={true}
                     dataSource={this.state.dataSource}
-                    renderHeader={()=>{return(<TrimTaskHeadView ref="headView" headerViewItemClick={this.headerViewItemClick} selectAction={this.selectAction}/>)}}
+                    renderHeader={()=>{return(<TrimTaskHeadView defaultIndex={this.props.defaultIndex} ref="headView" headerViewItemClick={this.headerViewItemClick} selectAction={this.selectAction}/>)}}
                     renderRow={this.renderRow}
 
                 />
@@ -57,8 +57,46 @@ export default class CarTrimScene extends BaseComponent {
     // 构造
     constructor(props) {
         super(props);
-        this.roleTitle = '手续员';
-        this.roleValue = 'sxy';
+
+        if(this.props.defaultIndex){
+
+            switch(this.props.defaultIndex){
+                case 0:
+                    this.roleTitle = '手续员';
+                    this.roleValue = 'sxy';
+                    break;
+                case 1:
+                    this.roleTitle = '评估师';
+                    this.roleValue = 'pgs';
+                    break;
+                case 2:
+                    this.roleTitle = '整备员';
+                    this.roleValue = 'zby';
+                    break;
+                case 3:
+                    this.roleTitle = '经理';
+                    this.roleValue = 'manager';
+                    break;
+                case 4:
+                    this.roleTitle = '运营专员';
+                    this.roleValue = 'yyzy';
+                    break;
+                default:
+                    this.roleTitle = '手续员';
+                    this.roleValue = 'sxy';
+                    break;
+
+            }
+
+        }else {
+            this.roleTitle = '手续员';
+            this.roleValue = 'sxy';
+        }
+
+
+
+
+
         const ds = new ListView.DataSource({rowHasChanged:(r1,r2)=>r1==r2});
         this.state = {
             isShowHeadView:true,
@@ -299,7 +337,7 @@ class TrimTaskHeadView extends Component{
     render(){
         return(
             <View style={{marginBottom:Pixel.getPixel(10)}}>
-                <CarTrimHeaderView click={(title,value)=>{this.props.headerViewItemClick(title,value);this.setSelectType(1)}}/>
+                <CarTrimHeaderView defaultIndex={this.props.defaultIndex} click={(title,value)=>{this.props.headerViewItemClick(title,value);this.setSelectType(1)}}/>
                 <TrimTaskSelectView ref="TrimTaskSelectView" selectAction={this.props.selectAction}/>
             </View>
         )

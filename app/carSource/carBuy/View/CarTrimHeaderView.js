@@ -30,14 +30,24 @@ export default class CarTrimHeaderView extends Component{
     // 构造
     constructor(props) {
         super(props);
+
+        let titleArray = [
+            {title:'手续员',value:'sxy',isSelected:false,img:require('../../../../images/carSourceImages/carTrim1.png')},
+            {title:'评估师',value:'pgs',isSelected:false,img:require('../../../../images/carSourceImages/carTrim2.png')},
+            {title:'整备员',value:'zby',isSelected:false,img:require('../../../../images/carSourceImages/carTrim3.png')},
+            {title:'经理',value:'manager',isSelected:false,img:require('../../../../images/carSourceImages/carTrim4.png')},
+            {title:'运营专员',value:'yyzy',isSelected:false,img:require('../../../../images/carSourceImages/carTrim5.png')}
+        ];
+
+        if(this.props.defaultIndex){
+            titleArray[this.props.defaultIndex].isSelected = true;
+        }else {
+            titleArray[0].isSelected = true;
+
+        }
+
         this.state = {
-            titleSource:[
-                {title:'手续员',value:'sxy',isSelected:true,img:require('../../../../images/carSourceImages/carTrim1.png')},
-                {title:'评估师',value:'pgs',isSelected:false,img:require('../../../../images/carSourceImages/carTrim2.png')},
-                {title:'整备员',value:'zby',isSelected:false,img:require('../../../../images/carSourceImages/carTrim3.png')},
-                {title:'经理',value:'manager',isSelected:false,img:require('../../../../images/carSourceImages/carTrim4.png')},
-                {title:'运营专员',value:'yyzy',isSelected:false,img:require('../../../../images/carSourceImages/carTrim5.png')}
-            ]
+            titleSource:titleArray,
         };
         // this.props.click('手续员');
     }

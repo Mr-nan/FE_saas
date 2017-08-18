@@ -143,7 +143,7 @@ export  default class CarUpImageCell extends PureComponent {
                     let news =[];
                     news.push(...this.state.childMovie);
                     news.push({url: response.mjson.data.url,file_id:response.mjson.data.file_id});
-                    this.props.results.push({url: response.mjson.data.url,file_id:response.mjson.data.file_id,name:this.props.items.name,base64:base64});
+                    this.props.results.push({url: response.mjson.data.url,file_id:response.mjson.data.file_id,name:this.props.items.name,});
                     this.props.retureSaveAction();
                     this.setState({
                         childMovie:news,
