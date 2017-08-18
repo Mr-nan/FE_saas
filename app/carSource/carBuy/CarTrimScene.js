@@ -122,12 +122,12 @@ export default class CarTrimScene extends BaseComponent {
             taskType:type
         });
 
-        // if(roleValue=='sxy' && type==1)
-        // {
-        //     return;
-        // }
+        if(roleValue=='sxy' && type==1)
+        {
+            return;
+        }
         this.props.showModal(true);
-        request(AppUrls.CAR_CHESHANG_TASKS, 'post', {roleName:roleValue,type:type,token:'c5cd2f08-f052-4d3e-8943-86c798945953'}).then((response) => {
+        request(AppUrls.CAR_CHESHANG_TASKS, 'post', {roleName:roleValue,type:type,}).then((response) => {
             this.props.showModal(false);
             this.setState({
                 dataSource:this.state.dataSource.cloneWithRows(response.mjson.data),

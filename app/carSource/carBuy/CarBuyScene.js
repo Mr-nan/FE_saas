@@ -27,13 +27,21 @@ import  {request}           from '../../utils/RequestUtil';
 import *as fontAndColor from  '../../constant/fontAndColor';
 import PixelUtil from  '../../utils/PixelUtil';
 import CarBuyTaskScene from "./CarBuyTaskScene";
+import StorageUtil from "../../utils/StorageUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
 let Pixel = new  PixelUtil();
 const sceneWidth = Dimensions.get('window').width;
+let userPhone = '';
 
 export default class CarBuyScene extends BaseComponent {
 
     render(){
-
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return (
+                <View style={styles.loadView}>
+                    {this.loadView()}
+                </View>);
+        }
         return(
             <View style={styles.rootContainer}>
                 <ScrollableTabView
@@ -53,12 +61,47 @@ export default class CarBuyScene extends BaseComponent {
         )
     }
 
+    initFinish=()=>{
+        this.loadData();
+    }
+
+    loadData=()=>{
+        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+            if (data.code == 1) {
+                if (data.result != null && data.result != "")
+                {
+                    let userData = JSON.parse(data.result);
+                    userPhone = userData.phone;
+                    this.setState({
+                        renderPlaceholderOnly:'success'
+                    });
+
+                }else {
+                    this.setState({
+                        renderPlaceholderOnly:'error'
+                    });
+                }
+
+            }else {
+                this.setState({
+                    renderPlaceholderOnly:'error'
+                });
+            }
+        })
+    }
+
+    allRefresh=()=>{
+        this.loadData();
+    }
+
     // 构造
       constructor(props) {
         super(props);
-        // 初始状态
-        this.state = {
 
+        userPhone = '';
+
+        this.state = {
+            renderPlaceholderOnly:'loading'
         };
       }
     
@@ -69,6 +112,7 @@ export default class CarBuyScene extends BaseComponent {
             name: "CarBuyTaskScene",
             component: CarBuyTaskScene,
             params: {
+                userPhone:userPhone,
             }
         })
       }
@@ -146,6 +190,7 @@ class CarBuyUnsettledView extends BaseComponent {
 
     initFinish=()=>{
         this.setState({renderPlaceholderOnly: 'loading'});
+
         this.loadData();
     }
 
@@ -165,12 +210,10 @@ class CarBuyUnsettledView extends BaseComponent {
 
         this.pc = 1;
         request(AppUrls.CAR_SASS_SELECT_LIST, 'post', {
-            mobile:'15102373847',
+            mobile:userPhone,
             status:'2',
             pc:this.pc,
             pr: 10,
-            token:'c5cd2f08-f052-4d3e-8943-86c798945953'
-
         }).then((response) => {
             let data = response.mjson.data
             this.carArray = data.record.beanlist;
@@ -202,7 +245,7 @@ class CarBuyUnsettledView extends BaseComponent {
 
         this.pc += 1;
         request(AppUrls.CAR_SASS_SELECT_LIST, 'post', {
-            mobile:'15102373847',
+            mobile:userPhone,
             status:'2',
             page: this.pc,
             pr: 10,
@@ -330,12 +373,10 @@ class CarBuyTradedView extends BaseComponent {
 
         this.pc = 1;
         request(AppUrls.CAR_SASS_SELECT_LIST, 'post', {
-            mobile:'15102373847',
+            mobile:userPhone,
             status:'1',
             pc:this.pc,
             pr: 10,
-            token:'c5cd2f08-f052-4d3e-8943-86c798945953'
-
         }).then((response) => {
             let data = response.mjson.data
             this.carArray = data.record.beanlist;
@@ -367,12 +408,10 @@ class CarBuyTradedView extends BaseComponent {
 
         this.pc += 1;
         request(AppUrls.CAR_SASS_SELECT_LIST, 'post', {
-            mobile:'15102373847',
+            mobile:userPhone,
             status:'1',
             page: this.pc,
             pr: 10,
-            token:'c5cd2f08-f052-4d3e-8943-86c798945953'
-
         }).then((response) => {
             let carData = response.mjson.data.record.beanlist;
             if (carData.length) {
@@ -495,12 +534,10 @@ class CarBuyAbandonView extends BaseComponent {
 
         this.pc = 1;
         request(AppUrls.CAR_SASS_SELECT_LIST, 'post', {
-            mobile:'15102373847',
+            mobile:userPhone,
             status:'3',
             pc:this.pc,
             pr: 10,
-            token:'c5cd2f08-f052-4d3e-8943-86c798945953'
-
         }).then((response) => {
             let data = response.mjson.data
             this.carArray = data.record.beanlist;
@@ -532,12 +569,10 @@ class CarBuyAbandonView extends BaseComponent {
 
         this.pc += 1;
         request(AppUrls.CAR_SASS_SELECT_LIST, 'post', {
-            mobile:'15102373847',
+            mobile:userPhone,
             status:'3',
             page: this.pc,
             pr: 10,
-            token:'c5cd2f08-f052-4d3e-8943-86c798945953'
-
         }).then((response) => {
             let carData = response.mjson.data.record.beanlist;
             if (carData.length) {

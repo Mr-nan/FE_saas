@@ -127,7 +127,6 @@ export default class CarTrimInformationScene extends BaseComponent{
     loadData=()=>{
 
         request(AppUrls.CAR_CHESHANG_TASKINFO,'post',{
-            token : 'c5cd2f08-f052-4d3e-8943-86c798945953',
             type:this.props.type,
             roleName:this.props.roleName,
             taskid:this.props.taskid,
@@ -187,7 +186,6 @@ export default class CarTrimInformationScene extends BaseComponent{
             zbMoney:this.costObject.sumNumber,
             lastCarNum:this.lastCarNum,
             remark:this.remark,
-            token : 'c5cd2f08-f052-4d3e-8943-86c798945953',
         }
 
         request(AppUrls.CAR_CHESHANG_ZBY_EDIT_TASK,'post',params).then((response) => {

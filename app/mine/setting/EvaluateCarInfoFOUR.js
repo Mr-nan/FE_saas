@@ -124,16 +124,11 @@ export default class EvaluateCarInfo extends BaseComponent {
 			}
 		}
 
-		console.log(selectStr);
-
-        let token = 'c5cd2f08-f052-4d3e-8943-86c798945953'
-
         this.props.showModal(true);
         request(AppUrls.CAR_CHESHANG_PGS_EDIT_TASK,'post',{
             infos:selectStr,
             remark:this.remark,
             tid:this.props.carData.id,
-			token:token
 		}).then((response) => {
             this.props.showModal(false);
 

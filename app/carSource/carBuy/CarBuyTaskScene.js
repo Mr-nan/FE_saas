@@ -120,7 +120,6 @@ export default class CarBuyTaskScene extends BaseComponent{
         });
         request(AppUrls.CAR_SASS_SELECT_MSG, 'post', {
             id:this.props.id,
-            token:'c5cd2f08-f052-4d3e-8943-86c798945953',
         }).then((response) => {
             this.props.showModal(false);
             this.setData(response.mjson.data.acquisitionCar);
@@ -138,7 +137,7 @@ export default class CarBuyTaskScene extends BaseComponent{
             customerName:data.customerName,
             contentNum:data.contentNum,
             consultPrice:data.consultPrice,
-            mobile:'15102373847',
+            mobile:this.props.userPhone,
             vin:data.vin,
             closeingPrice:data.closeingPrice,
             collectionType:data.collectionType,
@@ -399,7 +398,7 @@ export default class CarBuyTaskScene extends BaseComponent{
               customerName:' ',
               contentNum:' ',
               consultPrice:' ',
-              mobile:'15102373847',
+              mobile:this.props.userPhone,
               vin:'',
               closeingPrice:'',
               collectionType:'',
@@ -748,10 +747,8 @@ export default class CarBuyTaskScene extends BaseComponent{
             name: 'CarInfomationSourceScene',
             component: CarInfomationSourceScene,
             params: {
-
                 currentTitle:this.titleData1[2][1].value,
                 carInformationSourceSelectAction:this.carInformationSourceSelectAction,
-
             }
         };
         this.toNextPage(brandParams);

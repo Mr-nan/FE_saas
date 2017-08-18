@@ -185,9 +185,7 @@ export default class CarInitialTaskUpImagScene extends BaseComponent{
                 }
 
         }
-
-            this.carData.token = 'c5cd2f08-f052-4d3e-8943-86c798945953'
-            this.props.showModal(true);
+         this.props.showModal(true);
             Net.request(AppUrls.CAR_CHESHANG_PUBLISHTASK,'post',this.carData).then((response) => {
                 this.props.showModal(false);
 

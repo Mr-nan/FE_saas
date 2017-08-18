@@ -205,7 +205,6 @@ export default class CarManagerTaskScene extends BaseComponent{
 
         this.props.showModal(true);
         request(AppUrls.CAR_CHESHANG_MANAGER_EDIT_TASK,'post',{
-            token : 'c5cd2f08-f052-4d3e-8943-86c798945953',
             buyprice:this.buyprice,
             overprice:this.overprice,
             selfprice:this.selfprice,
