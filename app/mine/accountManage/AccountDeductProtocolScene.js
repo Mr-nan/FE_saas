@@ -65,8 +65,10 @@ export default class AccountDeductProtocolScene extends BaseComponent {
 
 
     _renderPage = (data) => {
+        let nowdate = Date.parse(new Date());
+        console.log('================',data+'?date'+nowdate);
         return (
-            <Image  style={{flex:1}} source={{uri:data}}/>
+            <Image  style={{flex:1}}  source={{uri: data+'?'+nowdate}}/>
         );
 
     }
