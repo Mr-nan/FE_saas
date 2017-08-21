@@ -121,10 +121,12 @@ export default class ClientInfoScene extends BaceComponent {
                     <FollowUpRecordsView
                         rowData={this.state.rowData}
                         navigator={this.props.navigator}
+                        showModal={this.props.showModal}
                         tabLabel="ios-paper1"/>
                     <ClientInfoDetailView
                         rowData={this.state.rowData}
                         navigator={this.props.navigator}
+                        showModal={this.props.showModal}
                         tabLabel="ios-paper2"/>
                 </ScrollableTabView>
             </View>

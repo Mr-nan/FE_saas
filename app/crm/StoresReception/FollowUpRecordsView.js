@@ -62,20 +62,30 @@ export class FollowUpRecordsView extends BaseComponent {
         };
         let url = AppUrls.SELECT_ALL_FLOW;
         request(url, 'post', maps).then((response) => {
+            this.props.showModal(false);
             const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             this.followUpRecordsList = response.mjson.data.maps;
             this.setState({
-                dataSource: ds.cloneWithRows(this.followUpRecordsList),
+                dataSource: ds.cloneWithRows(this.followUpRecordsList.reverse()),
                 isRefreshing: false,
                 renderPlaceholderOnly: 'success'
             });
         }, (error) => {
             //console.log('error===============', error);
+            this.props.showModal(false);
             this.setState({
                 isRefreshing: false,
                 renderPlaceholderOnly: 'error'
             });
         });
+    };
+
+    /**
+     *   刷新页面数据
+     **/
+    refreshData = () => {
+        this.props.showModal(true);
+        this.loadData();
     };
 
     /**
@@ -102,7 +112,8 @@ export class FollowUpRecordsView extends BaseComponent {
                             name: 'FollowUpTaskScene',
                             component: FollowUpTaskScene,
                             params: {
-                                rowData: this.props.rowData
+                                rowData: this.props.rowData,
+                                callBack: this.refreshData
                             }
                         });
                     }}>

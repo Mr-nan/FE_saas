@@ -44,7 +44,7 @@ export default class FollowUpTaskScene extends BaseComponent {
      *
      **/
     initFinish = () => {
-        console.log('this.taskInfo=====', this.props.rowData);
+        //console.log('this.taskInfo=====', this.props.rowData);
         /*        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
          this.setState({
          dataSource: ds.cloneWithRows(['0', '1']),
@@ -134,11 +134,21 @@ export default class FollowUpTaskScene extends BaseComponent {
     _renderRow = (rowData, selectionID, rowID) => {
         if (rowData === '0') {
             return (
-                <CurrentTaskInfoItem navigator={this.props.navigator} data={this.taskInfo} rowData={this.props.rowData}/>
+                <CurrentTaskInfoItem
+                    ref={(ref) => {
+                        this.currentTaskInfoItem = ref
+                    }}
+                    navigator={this.props.navigator}
+                    data={this.taskInfo} rowData={this.props.rowData}/>
             )
         } else if (rowData === '1') {
             return (
-                <FollowTaskInfoItem navigator={this.props.navigator} data={this.taskInfo} rowData={this.props.rowData}/>
+                <FollowTaskInfoItem
+                    ref={(ref) => {
+                        this.followTaskInfoItem = ref
+                    }}
+                    navigator={this.props.navigator}
+                    data={this.taskInfo} rowData={this.props.rowData}/>
             )
         }
     };
@@ -168,20 +178,37 @@ export default class FollowUpTaskScene extends BaseComponent {
      *
      **/
     submitFlowInfo = () => {
-        let maps = {
-            custP: "",
-            custN: "",
-            custI: 4,
-            custFlow: "跟踪内容11111",
-            customerStatus: 4,
-            remind: "11112222", // 日期
-            comeIf: ""
-        };
+        this.props.showModal(true);
+        let maps = [];
+        let clientInfo = [];
+        let inputData = this.followTaskInfoItem.getItemData();
+        for (let key in inputData) {
+            clientInfo.push(inputData[key]);
+        }
+        for (let i = 0; i < clientInfo.length; i++) {
+            maps[clientInfo[i].parameter] = clientInfo[i].value;
+        }
+        maps['custI'] = this.props.rowData.id;
+        maps['custN'] = '';
+        maps['custP'] = '';
+        /*        let maps = {
+         custP: "",
+         custN: "",
+         custI: 4,
+         custFlow: "跟踪内容11111",
+         customerStatus: 4,
+         remind: "11112222", // 日期
+         comeIf: ""
+         };*/
         let url = AppUrls.CUSTOMER_FLOW;
         request(url, 'post', maps).then((response) => {
-
+            // 提交成功并刷新信息页数据
+            this.props.showModal(false);
+            this.props.callBack();
+            this.backPage();
         }, (error) => {
-
+            this.props.showModal(false);
+            this.props.showToast("提交跟进任务失败");
         });
     };
 
