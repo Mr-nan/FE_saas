@@ -157,8 +157,18 @@ export default class CarManagerTaskScene extends BaseComponent{
                     </View>)
             };
 
-            this.titleData1[2][0].tailView='';
-            this.titleData1[2][0].value = data.remark;
+            this.titleData1[2][0].tailView=()=>{
+                return(
+                    <TextInput
+                        style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(60)}]}
+                        value={data.remark}
+                        editable={false}
+                        underlineColorAndroid='transparent'
+                        placeholderTextColor={fontAndColor.COLORA4}
+                        placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
+                    />
+                )
+            };
 
             this.titleData1[1].splice(1,1);
         }

@@ -17,6 +17,7 @@ import BaceComponent from '../../component/BaseComponent';
 import MyCarCell     from './CarCell';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import RepaymenyTabBar from '../../finance/repayment/component/RepaymenyTabBar';
+import ListFooter           from './LoadMoreFooter';
 import * as AppUrls from "../../constant/appUrls";
 import  {request}           from '../../utils/RequestUtil';
 import * as fontAndColor from '../../constant/fontAndColor';
@@ -41,8 +42,8 @@ export default class CarMyListView extends  BaceComponent{
                     initialPage={0}
                     locked={true}
                     renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["在售车源", "已售车源"]}/>}>
-                    <MyCarSourceUpperFrameView ref="upperFrameView" carCellClick={this.props.carCellClick}  tabLabel="ios-paper1"/>
-                    <MyCarSourceDropFrameView  ref="dropFrameView" carCellClick={this.props.carCellClick} tabLabel="ios-paper2"/>
+                    <MyCarSourceUpperFrameView ref="upperFrameView" carCellClick={this.props.carCellClick} renderFootView={this.props.renderFootView}  tabLabel="ios-paper1"/>
+                    <MyCarSourceDropFrameView  ref="dropFrameView" carCellClick={this.props.carCellClick} renderFootView={this.props.renderFootView} tabLabel="ios-paper2"/>
                 </ScrollableTabView>
             </View>
         )
@@ -177,7 +178,7 @@ class MyCarSourceUpperFrameView extends BaceComponent {
         if(this.props.renderFootView)
         {
             this.props.renderFootView();
-            return;
+            return null;
         }
 
         if (this.state.isRefreshing) {
@@ -371,7 +372,7 @@ class MyCarSourceDropFrameView extends BaceComponent {
 
         if(this.props.renderFootView){
             this.props.renderFootView();
-            return;
+            return null;
         }
 
         if (this.state.isRefreshing) {

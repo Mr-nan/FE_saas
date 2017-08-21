@@ -145,7 +145,6 @@ export default class CarTrimInformationScene extends BaseComponent{
         this.titleData1[0][0].value = data.vin;
         this.titleData1[0][1].value = data.carName;
         this.titleData1[1][0].value = data.carNum;
-        this.titleData1[1][2].value = data.remark;
 
         if(this.props.type == 2){
             this.titleData1[2][0].value = data.lastCarNum;
@@ -191,7 +190,6 @@ export default class CarTrimInformationScene extends BaseComponent{
         request(AppUrls.CAR_CHESHANG_ZBY_EDIT_TASK,'post',params).then((response) => {
 
             this.props.showModal(false);
-            this.props.showToast('任务提交成功');
             this.props.reloadTaskData();
             this.backPage();
 

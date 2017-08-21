@@ -21,6 +21,7 @@ import NavigatorView from '../component/AllNavigationView';
 import CarInfoScene         from './CarInfoScene';
 import CarMyListView from './znComponent/CarMyListView';
 
+
 import * as fontAndColor from '../constant/fontAndColor';
 import * as AppUrls from "../constant/appUrls";
 import * as weChat from "react-native-wechat";

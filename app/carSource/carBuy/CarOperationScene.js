@@ -245,7 +245,7 @@ export default class CarOperationScene extends BaseComponent{
                                }}/>
                 </View>)
         };
-        this.titleData1[0][9].value = data.taskInfo.managersxy.remark!=''?  data.taskInfo.managersxy.remark:'无';
+        this.titleData1[0][9].value = data.taskInfo.managersxy.remark?data.taskInfo.managersxy.remark:'无';
 
         this.titleData1[1][0].value = data.lastCarNum;
         this.costObject.sumNumber = parseFloat(data.taskInfo.managerzby.zbMoney);
@@ -260,7 +260,7 @@ export default class CarOperationScene extends BaseComponent{
 
         this.titleData1[2][0].value = data.taskInfo.selfprice;
         this.titleData1[2][1].value = data.taskInfo.overprice;
-        this.titleData1[2][2].value = data.remark!=''?  data.remark:'无';
+        this.titleData1[2][2].value = data.remark?  data.remark:'无';
 
         this.setState({
             renderPlaceholderOnly:'success',

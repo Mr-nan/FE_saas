@@ -47,7 +47,6 @@ export default class CarTrimScene extends BaseComponent {
                     dataSource={this.state.dataSource}
                     renderHeader={()=>{return(<TrimTaskHeadView defaultIndex={this.props.defaultIndex} ref="headView" headerViewItemClick={this.headerViewItemClick} selectAction={this.selectAction}/>)}}
                     renderRow={this.renderRow}
-
                 />
                 <AllNavigationView title='名车行' backIconClick={this.backPage} renderRihtFootView={this.renderRightView}/>
             </View>
@@ -116,6 +115,12 @@ export default class CarTrimScene extends BaseComponent {
             }}/>
         )
     }
+    renderFooter =()=> {
+        console.log('=========',this.state.dataSource.rowData);
+        return(
+            <View/>
+        )
+    }
 
     /**
      * 导航右侧按钮
@@ -160,6 +165,7 @@ export default class CarTrimScene extends BaseComponent {
             taskType:type
         });
 
+
         if(roleValue=='sxy' && type==1)
         {
             return;
@@ -174,7 +180,7 @@ export default class CarTrimScene extends BaseComponent {
 
         }, (error) => {
             this.props.showModal(false);
-            this.props.showToast(error.msg);
+            this.props.showToast(error.mjson.msg);
         });
     }
 

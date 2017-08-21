@@ -157,7 +157,6 @@ export default class CarInitialTaskScene extends BaseComponent{
         this.titleData1[2][2].tailView='';
         this.titleData1[3][0].tailView='';
         this.titleData1[3][1].tailView='';
-        this.titleData1[3][2].tailView='';
 
         this.titleData1[0][0].value = carData.vin;
         this.titleData1[0][1].value = carData.carName;
@@ -210,7 +209,6 @@ export default class CarInitialTaskScene extends BaseComponent{
 
         this.titleData1[3][0].value = carData.taskInfo.selfName;
         this.titleData1[3][1].value = carData.taskInfo.selfMobile;
-        this.titleData1[3][2].value = carData.remark;
 
         let imageArray = [];
 
@@ -229,6 +227,24 @@ export default class CarInitialTaskScene extends BaseComponent{
              imageArray.push({title:'身份证',url:carData.taskInfo.policyPath})
 
         }
+
+        this.titleData1[3][2].tailView=()=>{
+            return(
+                <TextInput
+                    style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(60)}]}
+                    maxLength={200}
+                    value={carData.remark}
+                    editable={false}
+                    underlineColorAndroid='transparent'
+                    ref={(input) => {this.instructionsInput = input}}
+                    placeholderTextColor={fontAndColor.COLORA4}
+                    onChangeText={(text)=>{this.carData.remark = text}}
+                    placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
+                />
+            )
+        }
+
+
 
         this.setState({
             renderPlaceholderOnly:'success',
