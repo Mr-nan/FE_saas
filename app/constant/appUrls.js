@@ -1027,9 +1027,17 @@ export const DAILY_REMINDER_STATISTICS = BASEURL + "cheshang/sass/statistics";
 /**
  *  获取潜在客户列表
  */
-//export const POTENTIAL_CUSTOMER_LISTS = BASEURL + "cheshang/customer/lists";
-export const POTENTIAL_CUSTOMER_LISTS = PRE + "customer/querycustomerList.do";
+export const POTENTIAL_CUSTOMER_LISTS = BASEURL + "cheshang/customer/lists";
+//export const POTENTIAL_CUSTOMER_LISTS = PRE + "customer/querycustomerList.do";
 /**
  *  获取所有跟进信息
  */
-export const SELECT_ALL_FLOW = PRE + "customer/selectAllFlow.do";
+export const SELECT_ALL_FLOW = BASEURL + "cheshang/customer/selectAllFlow";
+/**
+ *  获取当前任务信息
+ */
+export const SELECT_FLOW = BASEURL + "cheshang/customer/selectFlow";
+/**
+ *  提交当前任务信息
+ */
+export const CUSTOMER_FLOW = BASEURL + "cheshang/customer/customerFlow";

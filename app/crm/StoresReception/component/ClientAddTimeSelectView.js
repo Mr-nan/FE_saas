@@ -29,8 +29,17 @@ export class ClientAddTimeSelectView extends Component {
         super(props);
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: ds.cloneWithRows(['今天', '本周', '本月', '选择月份']),
+            dataSource: ds.cloneWithRows(['今天', '本周', '本月', this.props.selectMonth]),
         };
+    }
+
+    /**
+     *
+     * @param nextProps
+     **/
+    componentWillReceiveProps(nextProps) {
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.setState({dataSource: ds.cloneWithRows(['今天', '本周', '本月', nextProps.selectMonth])})
     }
 
     /**
@@ -54,7 +63,7 @@ export class ClientAddTimeSelectView extends Component {
                           renderSeparator={this._renderSeperator}/>
             </View>
             <TouchableOpacity style={{flex: 1}} onPress={() => {
-                this.props.hideView()
+                this.props.hideView();
             }}/>
         </View>);
     }
@@ -74,21 +83,25 @@ export class ClientAddTimeSelectView extends Component {
      *
      **/
     _renderRow = (rowData, selectionID, rowID) => {
-        if (rowData != '选择月份') {
+        if (rowID < 3) {
             return (
                 <TouchableOpacity
                     onPress={() => {
-
+                        this.props.callBack(rowData);
                     }}>
                     <View style={styles.listItem}>
-                        <Text allowFontScaling={false} style={styles.describe}>{rowData}</Text>
+                        <Text allowFontScaling={false} style={rowData == this.props.currentSelect ? styles.selectedDescribe : styles.describe}>{rowData}</Text>
                     </View>
                 </TouchableOpacity>
             )
         } else {
+/*            let currentDate = rowData;
+            if (rowData == '今天' || rowData == '本周' ||rowData == '本月') {
+                currentDate = '选择月份';
+            }*/
             return (
                 <View style={styles.listItem}>
-                    <SelectMonth date='选择月份'/>
+                    <SelectMonth date={this.props.selectMonth} callBack={this.props.updateMonth}/>
                 </View>
             )
         }

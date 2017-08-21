@@ -37,6 +37,15 @@ export class ClientScreeningSelectButton extends Component {
     }
 
     /**
+     *
+     **/
+    setTitle = (title) => {
+        this.setState({
+            title: title
+        });
+    };
+
+    /**
      * 筛选项点击
      * @private
      **/

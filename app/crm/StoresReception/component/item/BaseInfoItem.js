@@ -59,6 +59,17 @@ export default class BaseInfoItem extends BaseComponent {
     };
 
     /**
+     *   将传入本页的数据解析
+     **/
+    parseData = () => {
+        let parameter = '';
+        for (let i = 0; i < this.childItems.length; i++) {
+            parameter = this.childItems[i].parameter;
+            this.childItems[i].value = this.props.rowData[parameter];
+        }
+    };
+
+    /**
      *
      **/
     render() {
@@ -72,10 +83,10 @@ export default class BaseInfoItem extends BaseComponent {
                                                            name: 'SelectScene',
                                                            component: SelectScene,
                                                            params: {
-                                                               regShowData: ['初次到店', '3日电话邀约-到店', '3日电话邀约-未到店', '7日电话邀约-到店', '7日电话邀约-未到店', '首次购买', '首次置换购买', '置换', '复购'],
+                                                               regShowData: ['初次到店', '电话邀约', '已购买', '置换', '复购'],
                                                                title: '客户状态',
                                                                callBack: (name, index) => {
-                                                                   this.childItems[i].value = name + ',' + index;
+                                                                   this.childItems[i].value = name;
                                                                    this.refs.selectsex.setValue(name);
                                                                }
                                                            }
@@ -91,7 +102,7 @@ export default class BaseInfoItem extends BaseComponent {
                                                                regShowData: ['朋友介绍', '朋友圈', '58同城', '二手车之家', 'FM调频广播', '室外广告牌', '同行引荐', '文章引导', '自到店', '转介绍', '其他'],
                                                                title: '信息来源',
                                                                callBack: (name, index) => {
-                                                                   this.childItems[i].value = name + ',' + index;
+                                                                   this.childItems[i].value = name;
                                                                    this.refs.company.setValue(name);
                                                                }
                                                            }
@@ -107,7 +118,7 @@ export default class BaseInfoItem extends BaseComponent {
                                                                regShowData: ['本地', '非本地'],
                                                                title: '地域',
                                                                callBack: (name, index) => {
-                                                                   this.childItems[i].value = name + ',' + index;
+                                                                   this.childItems[i].value = name;
                                                                    this.refs.juese.setValue(name);
                                                                }
                                                            }
@@ -120,6 +131,7 @@ export default class BaseInfoItem extends BaseComponent {
 
             }
         } else {
+            this.parseData();
             for (let i = 0; i < this.childItems.length; i++) {
                 items.push(
                     <View
@@ -147,7 +159,7 @@ export default class BaseInfoItem extends BaseComponent {
                                   style={{
                                       fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                       color: '#000'
-                                  }}>dasdadada</Text>
+                                  }}>{this.childItems[i].value}</Text>
                         </View>
                         <View style={{
                             width: width,

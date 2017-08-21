@@ -36,6 +36,9 @@ export default class KeepCustomerManageScene extends BaseComponent {
      **/
     constructor(props) {
         super(props);
+        this.timeSelect = '今天';
+        this.stateSelect = '待完善客户';
+        this.selectMonth = '选择月份';
         this.state = {
             dataSource: [],
             renderPlaceholderOnly: 'blank',
@@ -88,7 +91,9 @@ export default class KeepCustomerManageScene extends BaseComponent {
                         <View style={{flex: 1, alignItems: 'center'}}>
                             <ClientScreeningSelectButton
                                 style={{flex: 1}}
-                                ref="but1" title="今天" index={1} btnClick={this.selectAddTime}/>
+                                ref={(ref) => {
+                                    this.btn1 = ref
+                                }} title={this.timeSelect} index={1} btnClick={this.selectAddTime}/>
                         </View>
                         <View style={styles.lineView}>
                             <View style={styles.line}/>
@@ -96,7 +101,9 @@ export default class KeepCustomerManageScene extends BaseComponent {
                         <View style={{flex: 1, alignItems: 'center'}}>
                             <ClientScreeningSelectButton
                                 style={{flex: 1}}
-                                ref="but2" title="筛选" index={2} btnClick={this.selectFilterItems}/>
+                                ref={(ref) => {
+                                    this.btn2 = ref
+                                }} title={this.stateSelect} index={2} btnClick={this.selectFilterItems}/>
                         </View>
                     </Image>
                     <ListView style={{backgroundColor: fontAndColor.COLORA3}}
@@ -105,12 +112,46 @@ export default class KeepCustomerManageScene extends BaseComponent {
                               renderRow={this._renderRow}
                               enableEmptySections={true}
                               renderSeparator={this._renderSeperator}/>
-                    {this.state.addTimeHide && <ClientAddTimeSelectView hideView={this.selectAddTime}/>}
-                    {this.state.selectFilterHide && <ClientStateSelectView hideView={this.selectFilterItems}/>}
+                    {this.state.addTimeHide && <ClientAddTimeSelectView hideView={this.selectAddTime}
+                                                                        selectMonth={this.selectMonth}
+                                                                        updateMonth={this.updateMonth}
+                                                                        currentSelect={this.timeSelect}
+                                                                        callBack={this.updateTimeSelect}/>}
+
+                    {this.state.selectFilterHide &&
+                    <ClientStateSelectView hideView={this.selectFilterItems}
+                                           currentSelect={this.stateSelect}
+                                           callBack={this.updateStateSelect}/>}
                 </View>
             );
         }
     }
+
+    /**
+     *
+     **/
+    updateTimeSelect = (newTime) => {
+        this.timeSelect = newTime;
+        this.selectAddTime();
+        this.btn1.setTitle(this.timeSelect);
+        this.selectMonth = '选择月份';
+    };
+
+    updateMonth = (newMonth) => {
+        this.selectMonth = newMonth;
+        this.selectAddTime();
+        this.btn1.setTitle(this.selectMonth);
+        this.timeSelect = '';
+    };
+
+    /**
+     *
+     **/
+    updateStateSelect = (newState) => {
+        this.stateSelect = newState;
+        this.selectFilterItems();
+        this.btn2.setTitle(this.stateSelect);
+    };
 
     /**
      *  listView间隔线

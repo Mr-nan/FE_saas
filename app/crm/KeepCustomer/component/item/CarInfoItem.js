@@ -22,6 +22,8 @@ import ClientInfoSelected from "../../../StoresReception/component/ClientInfoSel
 import CustomerInfoInput from "../../../StoresReception/component/ClientInfoInput";
 import SelectScene from "../../../StoresReception/SelectScene";
 const Pixel = new PixelUtil();
+import DateTimePicker from 'react-native-modal-datetime-picker';
+
 
 export default class CarInfoItem extends BaseComponent {
 
@@ -30,12 +32,16 @@ export default class CarInfoItem extends BaseComponent {
      **/
     constructor(props) {
         super(props);
+        this.type = '';
         this.childItems = [];
         this.childItems.push({name: '车辆号码', value: '', parameter: 'customerName'});
         this.childItems.push({name: '交强险到期', value: '', parameter: 'customerPhone'});
         this.childItems.push({name: '商业险到期', value: '', parameter: 'customerStatus'});
         this.childItems.push({name: '保养到期', value: '', parameter: 'informationSources'});
         this.childItems.push({name: '质保到期', value: '', parameter: 'customerRegion'});
+        this.state = {
+            isDateTimePickerVisible: false
+        }
     }
 
     /**
@@ -59,98 +65,31 @@ export default class CarInfoItem extends BaseComponent {
      **/
     render() {
         let items = [];
-        if (this.props.editState != 'look') {
-            for (let i = 0; i < this.childItems.length; i++) {
-                if (i == 2) {
-                    items.push(<ClientInfoSelected ref='selectsex' key={i + 'bo'} items={this.childItems[i]}
-                                                   toSelect={() => {
-                                                       this.toNextPage({
-                                                           name: 'SelectScene',
-                                                           component: SelectScene,
-                                                           params: {
-                                                               regShowData: ['初次到店', '3日电话邀约-到店', '3日电话邀约-未到店', '7日电话邀约-到店', '7日电话邀约-未到店', '首次购买', '首次置换购买', '置换', '复购'],
-                                                               title: '客户状态',
-                                                               callBack: (name, index) => {
-                                                                   this.childItems[i].value = name + ',' + index;
-                                                                   this.refs.selectsex.setValue(name);
-                                                               }
-                                                           }
-                                                       })
-                                                   }}/>);
-                } else if (i == 3) {
-                    items.push(<ClientInfoSelected ref="company" key={i + 'bo'} items={this.childItems[i]}
-                                                   toSelect={() => {
-                                                       this.toNextPage({
-                                                           name: 'SelectScene',
-                                                           component: SelectScene,
-                                                           params: {
-                                                               regShowData: ['朋友介绍', '朋友圈', '58同城', '二手车之家', 'FM调频广播', '室外广告牌', '同行引荐', '文章引导', '自到店', '转介绍', '其他'],
-                                                               title: '信息来源',
-                                                               callBack: (name, index) => {
-                                                                   this.childItems[i].value = name + ',' + index;
-                                                                   this.refs.company.setValue(name);
-                                                               }
-                                                           }
-                                                       })
-                                                   }}/>);
-                } else if (i == 4) {
-                    items.push(<ClientInfoSelected ref='juese' key={i + 'bo'} items={this.childItems[i]}
-                                                   toSelect={() => {
-                                                       this.toNextPage({
-                                                           name: 'SelectScene',
-                                                           component: SelectScene,
-                                                           params: {
-                                                               regShowData: ['本地', '非本地'],
-                                                               title: '地域',
-                                                               callBack: (name, index) => {
-                                                                   this.childItems[i].value = name + ',' + index;
-                                                                   this.refs.juese.setValue(name);
-                                                               }
-                                                           }
-                                                       })
-                                                   }}/>);
-                } else {
-                    items.push(<CustomerInfoInput callBack={this.userAireadyExist} key={i + 'bo'}
-                                                  items={this.childItems[i]}/>);
-                }
+        for (let i = 0; i < this.childItems.length; i++) {
+            if (i == 0) {
+                items.push(<CustomerInfoInput key={i + 'bo'} items={this.childItems[i]}/>);
+            } else if (i == 1) {
+                items.push(<ClientInfoSelected ref="insurance" key={i + 'bo'} items={this.childItems[i]}
+                                               toSelect={() => {
+                                                   this._showDateTimePicker('insurance');
+                                               }}/>);
+            } else if (i == 2) {
+                items.push(<ClientInfoSelected ref="business" key={i + 'bo'} items={this.childItems[i]}
+                                               toSelect={() => {
+                                                   this._showDateTimePicker('business');
+                                               }}/>);
+            } else if (i == 3) {
+                items.push(<ClientInfoSelected ref="maintenance" key={i + 'bo'} items={this.childItems[i]}
+                                               toSelect={() => {
+                                                   this._showDateTimePicker('maintenance');
+                                               }}/>);
+            } else if (i == 4) {
+                items.push(<ClientInfoSelected ref="quality" key={i + 'bo'} items={this.childItems[i]}
+                                               toSelect={() => {
+                                                   this._showDateTimePicker('quality');
+                                               }}/>);
+            } else {
 
-            }
-        } else {
-            for (let i = 0; i < this.childItems.length; i++) {
-                items.push(
-                    <View
-                        key={i + 'bo'}
-                        style={{
-                            width: width,
-                            height: Pixel.getPixel(45),
-                            backgroundColor: '#fff'
-                        }}>
-                        <View style={{
-                            width: width,
-                            height: Pixel.getPixel(44),
-                            backgroundColor: '#00000000',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                        }}>
-                            <Text allowFontScaling={false}
-                                  style={{
-                                      marginLeft: Pixel.getPixel(15),
-                                      width: Pixel.getPixel(125),
-                                      fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                                      color: fontAndColor.COLORA1
-                                  }}>{this.childItems[i].name}</Text>
-                            <Text allowFontScaling={false}
-                                  style={{
-                                      fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                                      color: '#000'
-                                  }}>dasdadada</Text>
-                        </View>
-                        <View style={{
-                            width: width,
-                            height: Pixel.getPixel(1),
-                            backgroundColor: fontAndColor.COLORA3
-                        }}/>
-                    </View>)
             }
         }
         return (
@@ -207,44 +146,88 @@ export default class CarInfoItem extends BaseComponent {
                     backgroundColor: fontAndColor.COLORA3
                 }}/>
                 {items}
-                <ExplainModal ref={(ref) => {
-                    this.em = ref
-                }} title="提示" content="用户已经存在" text="确定"
-                              buttonStyle={styles.expButton}
-                              textStyle={styles.expText}/>
+                <DateTimePicker
+                    titleIOS="请选择时间"
+                    confirmTextIOS='确定'
+                    cancelTextIOS='取消'
+                    isVisible={this.state.isDateTimePickerVisible}
+                    onConfirm={this._handleDatePicked}
+                    onCancel={this._hideDateTimePicker}/>
             </View>
         )
     }
 
     /**
-     *  用户已经存在弹出提示框
+     *  显示时间选择器
+     * @param type
+     * @private
      **/
-    userAireadyExist = () => {
-        this.em.changeShowType(true, "提示", "用户已经存在", "确定");
+    _showDateTimePicker = (type) => {
+        this.type = type;
+        this.setState({isDateTimePickerVisible: true})
     };
+
+    /**
+     * 隐藏时间选择器
+     * @private
+     **/
+    _hideDateTimePicker = () => this.setState({isDateTimePickerVisible: false});
+
+    /**
+     * 处理时间选择
+     * @private
+     **/
+    _handleDatePicked = (date) => {
+        let d = this.dateFormat(date, 'yyyy-MM-dd');
+        if (this.type === 'insurance') {
+            this.childItems[1].value = d;
+            this.refs.insurance.setValue(d);
+            this.setState({
+                isDateTimePickerVisible: false
+            });
+        } else if (this.type === 'business') {
+            this.childItems[2].value = d;
+            this.refs.business.setValue(d);
+            this.setState({
+                isDateTimePickerVisible: false
+            });
+        } else if (this.type === 'maintenance') {
+            this.childItems[3].value = d;
+            this.refs.maintenance.setValue(d);
+            this.setState({
+                isDateTimePickerVisible: false
+            });
+        } else if (this.type === 'quality') {
+            this.childItems[4].value = d;
+            this.refs.quality.setValue(d);
+            this.setState({
+                isDateTimePickerVisible: false
+            });
+        } else {
+
+        }
+        //this._hideDateTimePicker();
+    };
+
+    /**
+     *   日期格式化
+     **/
+    dateFormat = (date, fmt) => {
+        let o = {
+            "M+": date.getMonth() + 1, //月份
+            "d+": date.getDate(), //日
+            "h+": date.getHours(), //小时
+            "m+": date.getMinutes(), //分
+            "s+": date.getSeconds(), //秒
+            "q+": Math.floor((date.getMonth() + 3) / 3), //季度
+            "S": date.getMilliseconds() //毫秒
+        };
+        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (let k in o)
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+    }
+
 }
 
-const styles = StyleSheet.create({
-    separatedLine: {
-        marginRight: Pixel.getPixel(15),
-        marginLeft: Pixel.getPixel(15),
-        height: 1,
-        backgroundColor: fontAndColor.COLORA4
-    },
-    expButton: {
-        marginBottom: Pixel.getPixel(20),
-        width: Pixel.getPixel(100),
-        height: Pixel.getPixel(35),
-        marginTop: Pixel.getPixel(16),
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 3,
-        borderWidth: 1,
-        borderColor: fontAndColor.COLORB0
-    },
-    expText: {
-        fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
-        color: fontAndColor.COLORB0
-    },
-});
+const styles = StyleSheet.create({});

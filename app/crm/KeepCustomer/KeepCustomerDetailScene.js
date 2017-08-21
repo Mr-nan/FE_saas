@@ -113,7 +113,7 @@ export default class KeepCustomerDetailScene extends BaseComponent {
             )
         } else if (rowData === '2') {
             return (
-                <BuyersInfoItem />
+                <BuyersInfoItem navigator={this.props.navigator}/>
             )
         }
     };

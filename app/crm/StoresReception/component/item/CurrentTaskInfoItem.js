@@ -52,6 +52,54 @@ export default class CurrentTaskInfoItem extends BaseComponent {
     };
 
     /**
+     *   客户状态映射
+     **/
+    customerStatusMapping = (int) => {
+        switch (int) {
+            case 1:
+                return '初次到店';
+            case 2:
+                return '电话邀约';
+            case 3:
+                return '已购买';
+            case 4:
+                return '置换';
+            case 5:
+                return '复购';
+        }
+    };
+
+    /**
+     *   根据title取对应的content
+     **/
+    getContent = (title, data) => {
+        switch (title) {
+            case '客户状态':
+                return this.customerStatusMapping(data.maps2);
+            case '跟进时间':
+                if (data.maps2 == 1) {
+                    return this.props.rowData.createTime;
+                } else {
+                    return data.maps.createTime
+                }
+            case '跟踪内容':
+                if (data.maps2 == 1) {
+                    return '用户信息录入';
+                } else {
+                    return data.maps.customerFlowMessage;
+                }
+            case '消息提醒日期':
+                return data.maps.pushTime;
+            case '客户是否到店':
+                if (data.maps.custCome == -1) {
+                    return '未到店';
+                } else {
+                    return '到店';
+                }
+        }
+    };
+
+    /**
      *
      **/
     render() {
@@ -91,7 +139,7 @@ export default class CurrentTaskInfoItem extends BaseComponent {
                                   textAlign: 'left',
                                   fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                   color: fontAndColor.COLORA0
-                              }}>测试测试测测试测试测测试测试测测试测试测测试测试测测试测试测</Text>
+                              }}>{this.getContent(this.childItems[i].name, this.props.data, this.props.rowData)}</Text>
                     </View>
                 </View>
                 <View style={{

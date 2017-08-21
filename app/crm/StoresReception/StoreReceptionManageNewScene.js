@@ -68,9 +68,9 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
         StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
             if (data.code == 1 && data.result != null) {
                 let maps = {
-                    mobile: '15102373842',
-                    //pushTo: this.custPhone,
-                    token: '5afa531b-4295-4c64-8d6c-ac436c619078',
+                    //mobile: '15102373842',
+                    mobile: data.result,
+                    //token: '5afa531b-4295-4c64-8d6c-ac436c619078',
                     xxly: '全部车源',
                     khjb: '全部级别',
                     dfzp: '全部状态',
@@ -81,16 +81,25 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                     //createTime: '2017-08-09 15:18:47'
                 };
                 let url = AppUrls.POTENTIAL_CUSTOMER_LISTS;
-                requestNoToken(url, 'post', maps).then((response) => {
-
+                request(url, 'post', maps).then((response) => {
+                    this.potentialClientList = response.mjson.data.record.beanlist;
+                    if (this.potentialClientList && this.potentialClientList.length > 0) {
+                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                        this.setState({
+                            dataSource: ds.cloneWithRows(this.potentialClientList),
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'success'
+                        });
+                    } else {
+                        this.setState({
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'null'
+                        });
+                    }
                 }, (error) => {
-                    //console.log('error===============', error);
-                    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    this.potentialClientList = error.mjson.record.beanlist;
                     this.setState({
-                        dataSource: ds.cloneWithRows(this.potentialClientList),
                         isRefreshing: false,
-                        renderPlaceholderOnly: 'success'
+                        renderPlaceholderOnly: 'error'
                     });
                 });
             } else {

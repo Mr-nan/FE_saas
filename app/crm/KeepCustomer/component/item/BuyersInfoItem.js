@@ -22,6 +22,9 @@ import ClientInfoSelected from "../../../StoresReception/component/ClientInfoSel
 import CustomerInfoInput from "../../../StoresReception/component/ClientInfoInput";
 import SelectScene from "../../../StoresReception/SelectScene";
 const Pixel = new PixelUtil();
+import DateTimePicker from 'react-native-modal-datetime-picker';
+import CarBrandSelectScene from "../../../../carSource/CarBrandSelectScene";
+
 
 export default class BuyersInfoItem extends BaseComponent {
 
@@ -30,6 +33,12 @@ export default class BuyersInfoItem extends BaseComponent {
      **/
     constructor(props) {
         super(props);
+        this.type = '';
+        this.checkedCarType = {
+            title: '',
+            brand_id: '',
+            series_id: ''
+        };
         this.childItems = [];
         this.childItems.push({name: '客户姓名', value: '', parameter: 'customerName'});
         this.childItems.push({name: '手机号码', value: '', parameter: 'customerPhone'});
@@ -41,6 +50,9 @@ export default class BuyersInfoItem extends BaseComponent {
         this.childItems.push({name: '7日内回访', value: '', parameter: 'customerRegion'});
         this.childItems.push({name: '购车之前车型', value: '', parameter: 'customerRegion'});
         this.childItems.push({name: '备注', value: '', parameter: 'customerRegion'});
+        this.state = {
+            isDateTimePickerVisible: false
+        }
     }
 
     /**
@@ -64,7 +76,6 @@ export default class BuyersInfoItem extends BaseComponent {
      **/
     render() {
         let items = [];
-        if (this.props.editState != 'look') {
             for (let i = 0; i < this.childItems.length; i++) {
                 if (i == 2) {
                     items.push(<ClientInfoSelected ref='selectsex' key={i + 'bo'} items={this.childItems[i]}
@@ -73,7 +84,7 @@ export default class BuyersInfoItem extends BaseComponent {
                                                            name: 'SelectScene',
                                                            component: SelectScene,
                                                            params: {
-                                                               regShowData: ['初次到店', '3日电话邀约-到店', '3日电话邀约-未到店', '7日电话邀约-到店', '7日电话邀约-未到店', '首次购买', '首次置换购买', '置换', '复购'],
+                                                               regShowData: ['先生', '女士'],
                                                                title: '客户状态',
                                                                callBack: (name, index) => {
                                                                    this.childItems[i].value = name + ',' + index;
@@ -83,34 +94,24 @@ export default class BuyersInfoItem extends BaseComponent {
                                                        })
                                                    }}/>);
                 } else if (i == 3) {
-                    items.push(<ClientInfoSelected ref="company" key={i + 'bo'} items={this.childItems[i]}
+                    items.push(<ClientInfoSelected ref="birthday" key={i + 'bo'} items={this.childItems[i]}
                                                    toSelect={() => {
-                                                       this.toNextPage({
-                                                           name: 'SelectScene',
-                                                           component: SelectScene,
-                                                           params: {
-                                                               regShowData: ['朋友介绍', '朋友圈', '58同城', '二手车之家', 'FM调频广播', '室外广告牌', '同行引荐', '文章引导', '自到店', '转介绍', '其他'],
-                                                               title: '信息来源',
-                                                               callBack: (name, index) => {
-                                                                   this.childItems[i].value = name + ',' + index;
-                                                                   this.refs.company.setValue(name);
-                                                               }
-                                                           }
-                                                       })
+                                                       this._showDateTimePicker('birthday');
                                                    }}/>);
-                } else if (i == 4) {
-                    items.push(<ClientInfoSelected ref='juese' key={i + 'bo'} items={this.childItems[i]}
+                } else if (i == 5) {
+                    items.push(<ClientInfoSelected ref="interview" key={i + 'bo'} items={this.childItems[i]}
+                                                   toSelect={() => {
+                                                       this._showDateTimePicker('interview');
+                                                   }}/>);
+                } else if (i == 8) {
+                    items.push(<ClientInfoSelected ref="models" key={i + 'bo'} items={this.childItems[i]}
                                                    toSelect={() => {
                                                        this.toNextPage({
-                                                           name: 'SelectScene',
-                                                           component: SelectScene,
+                                                           name: 'CarBrandSelectScene',
+                                                           component: CarBrandSelectScene,
                                                            params: {
-                                                               regShowData: ['本地', '非本地'],
-                                                               title: '地域',
-                                                               callBack: (name, index) => {
-                                                                   this.childItems[i].value = name + ',' + index;
-                                                                   this.refs.juese.setValue(name);
-                                                               }
+                                                               isHeadInteraction: true,
+                                                               checkedCarClick: this.checkedCarClick
                                                            }
                                                        })
                                                    }}/>);
@@ -120,8 +121,7 @@ export default class BuyersInfoItem extends BaseComponent {
                 }
 
             }
-        } else {
-            for (let i = 0; i < this.childItems.length; i++) {
+            /*for (let i = 0; i < this.childItems.length; i++) {
                 items.push(
                     <View
                         key={i + 'bo'}
@@ -156,8 +156,7 @@ export default class BuyersInfoItem extends BaseComponent {
                             backgroundColor: fontAndColor.COLORA3
                         }}/>
                     </View>)
-            }
-        }
+            }*/
         return (
             <View style={{
                 flex: 1,
@@ -179,21 +178,99 @@ export default class BuyersInfoItem extends BaseComponent {
                     backgroundColor: fontAndColor.COLORA3
                 }}/>
                 {items}
-                <ExplainModal ref={(ref) => {
-                    this.em = ref
-                }} title="提示" content="用户已经存在" text="确定"
-                              buttonStyle={styles.expButton}
-                              textStyle={styles.expText}/>
+                <DateTimePicker
+                    titleIOS="请选择时间"
+                    confirmTextIOS='确定'
+                    cancelTextIOS='取消'
+                    isVisible={this.state.isDateTimePickerVisible}
+                    onConfirm={this._handleDatePicked}
+                    onCancel={this._hideDateTimePicker}/>
             </View>
         )
     }
 
     /**
-     *  用户已经存在弹出提示框
+     *
      **/
-    userAireadyExist = () => {
-        this.em.changeShowType(true, "提示", "用户已经存在", "确定");
+    checkedCarClick = (carObject) => {
+        let title = carObject.series_id == 0 ? carObject.brand_name : carObject.series_name;
+        this.refs.models.setValue(title);
+        this.childItems[8].value = title;
+        this.checkedCarType.title = title;
+        this.checkedCarType.brand_id = carObject.brand_id;
+        this.checkedCarType.series_id = carObject.series_id;
+    }
+
+    /**
+     *  显示时间选择器
+     * @param type
+     * @private
+     **/
+    _showDateTimePicker = (type) => {
+        this.type = type;
+        this.setState({isDateTimePickerVisible: true})
     };
+
+    /**
+     * 隐藏时间选择器
+     * @private
+     **/
+    _hideDateTimePicker = () => this.setState({isDateTimePickerVisible: false});
+
+    /**
+     * 处理时间选择
+     * @private
+     **/
+    _handleDatePicked = (date) => {
+        let d = this.dateFormat(date, 'yyyy-MM-dd');
+        if (this.type === 'birthday') {
+            this.childItems[3].value = d;
+            this.refs.birthday.setValue(d);
+            this.setState({
+                isDateTimePickerVisible: false
+            });
+        } else if (this.type === 'interview') {
+            this.childItems[5].value = d;
+            this.refs.interview.setValue(d);
+            this.setState({
+                isDateTimePickerVisible: false
+            });
+        } else if (this.type === 'maintenance') {
+            this.childItems[3].value = d;
+            this.refs.maintenance.setValue(d);
+            this.setState({
+                isDateTimePickerVisible: false
+            });
+        } else if (this.type === 'quality') {
+            this.childItems[4].value = d;
+            this.refs.quality.setValue(d);
+            this.setState({
+                isDateTimePickerVisible: false
+            });
+        } else {
+
+        }
+        //this._hideDateTimePicker();
+    };
+
+    /**
+     *   日期格式化
+     **/
+    dateFormat = (date, fmt) => {
+        let o = {
+            "M+": date.getMonth() + 1, //月份
+            "d+": date.getDate(), //日
+            "h+": date.getHours(), //小时
+            "m+": date.getMinutes(), //分
+            "s+": date.getSeconds(), //秒
+            "q+": Math.floor((date.getMonth() + 3) / 3), //季度
+            "S": date.getMilliseconds() //毫秒
+        };
+        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (let k in o)
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+    }
 }
 
 const styles = StyleSheet.create({

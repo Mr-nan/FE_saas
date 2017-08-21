@@ -38,6 +38,16 @@ export default class SelectMonth extends BaseComponent {
 
     /**
      *
+     * @param nextProps
+     **/
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            date: nextProps.date
+        })
+    }
+
+    /**
+     *
      **/
     render() {
         return (
@@ -94,9 +104,7 @@ export default class SelectMonth extends BaseComponent {
             date: d,
             isDateTimePickerVisible: false
         });
-        //this.props.updateStartDate(d);
-
-        //this._hideDateTimePicker();
+        this.props.callBack(d);
     };
 
     /**

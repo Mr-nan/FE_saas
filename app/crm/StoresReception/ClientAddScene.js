@@ -150,10 +150,15 @@ export default class ClientAddScene extends BaseComponent {
      **/
     submitClientInfo = () => {
         if (this.checkInfo()) {
-            let maps = {
+            //console.log('this.clientInfo=====', this.clientInfo);
+            let maps = [];
+            for (let i = 0; i < this.clientInfo.length; i++) {
+                maps[this.clientInfo[i].parameter] = this.clientInfo[i].value;
+            }
+/*            let maps = {
                 outTime: "2017-08-01 10:25:00",
                 inTime: "2017-08-01 09:25:00",
-                mobiles: "15102373842",
+                mobiles: "18000000002",
                 intentionalVehicle: "阿斯顿·马丁 阿斯顿马丁DB11 2016款 阿斯顿・马丁DB11 5.2T 设计师定制版",
                 customerBudget: "10万以下",
                 peopleNum: 1,
@@ -161,12 +166,12 @@ export default class ClientAddScene extends BaseComponent {
                 customerStatus: 1,
                 informationSources: "自到店",
                 customerRegion: "本地",
-                customerPhone: "13401091922",
-                customerName: "ceshi111",
-                token: '5afa531b-4295-4c64-8d6c-ac436c619078'
-            };
+                customerPhone: "13401091926",
+                customerName: "ceshi444",
+                customerCome: 1
+            };*/
             let url = AppUrls.CUSTOMER_ADD_URL;
-            requestNoToken(url, 'post', maps).then((response) => {
+            request(url, 'post', maps).then((response) => {
 
             }, (error) => {
                 this.props.showModal(false);
@@ -198,7 +203,7 @@ export default class ClientAddScene extends BaseComponent {
         for (let key in communicationRecordItems) {
             this.clientInfo.push(communicationRecordItems[key]);
         }
-        console.log('this.clientInfo=====', this.clientInfo);
+        //console.log('this.clientInfo=====', this.clientInfo);
         for (let key in this.clientInfo) {
             //console.log('this.clientInfo=====', key + this.clientInfo[key]);
             if (this.clientInfo[key].value == '') {

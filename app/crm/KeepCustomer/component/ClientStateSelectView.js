@@ -75,10 +75,10 @@ export class ClientStateSelectView extends Component {
         return (
             <TouchableOpacity
                 onPress={() => {
-
+                    this.props.callBack(rowData);
                 }}>
                 <View style={styles.listItem}>
-                    <Text allowFontScaling={false} style={styles.describe}>{rowData}</Text>
+                    <Text allowFontScaling={false} style={rowData == this.props.currentSelect ? styles.selectedDescribe : styles.describe}>{rowData}</Text>
                 </View>
             </TouchableOpacity>
         )

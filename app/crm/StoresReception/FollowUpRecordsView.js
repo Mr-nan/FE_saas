@@ -42,11 +42,11 @@ export class FollowUpRecordsView extends BaseComponent {
      *
      **/
     initFinish = () => {
-/*        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.setState({
-            dataSource: ds.cloneWithRows(['', '', '']),
-            renderPlaceholderOnly: 'success'
-        });*/
+        /*        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+         this.setState({
+         dataSource: ds.cloneWithRows(['', '', '']),
+         renderPlaceholderOnly: 'success'
+         });*/
         this.loadData();
     };
 
@@ -56,21 +56,24 @@ export class FollowUpRecordsView extends BaseComponent {
     loadData = () => {
         let maps = {
             //pushTo: this.custPhone,
-            token: '5afa531b-4295-4c64-8d6c-ac436c619078',
+            //token: '5afa531b-4295-4c64-8d6c-ac436c619078',
             custI: this.props.rowData.id
             //createTime: '2017-08-09 15:18:47'
         };
         let url = AppUrls.SELECT_ALL_FLOW;
-        requestNoToken(url, 'post', maps).then((response) => {
-
-        }, (error) => {
-            //console.log('error===============', error);
+        request(url, 'post', maps).then((response) => {
             const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-            this.followUpRecordsList = error.mjson.maps;
+            this.followUpRecordsList = response.mjson.data.maps;
             this.setState({
                 dataSource: ds.cloneWithRows(this.followUpRecordsList),
                 isRefreshing: false,
                 renderPlaceholderOnly: 'success'
+            });
+        }, (error) => {
+            //console.log('error===============', error);
+            this.setState({
+                isRefreshing: false,
+                renderPlaceholderOnly: 'error'
             });
         });
     };
@@ -99,7 +102,7 @@ export class FollowUpRecordsView extends BaseComponent {
                             name: 'FollowUpTaskScene',
                             component: FollowUpTaskScene,
                             params: {
-
+                                rowData: this.props.rowData
                             }
                         });
                     }}>
