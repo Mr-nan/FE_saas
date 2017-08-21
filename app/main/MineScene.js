@@ -493,28 +493,28 @@ export default class MineScene extends BaseComponent {
 
     _navigator(rowData) {
         switch (rowData.id) {
-            case 36:
+            case 15:
                 this.toPage();
                 return
                 break;
-            case 38:
+            case 17:
                 this.props.toSelect();
                 return;
                 break;
-            case 39:
+            case 18:
                 this.navigatorParams.name = 'AdjustManageScene'
                 this.navigatorParams.component = AdjustManageScene
                 break;
             case '积分管理':
                 break;
-            case 40:
+            case 19:
                 this.navigatorParams.name = 'ContractManageScene'
                 this.navigatorParams.component = ContractManageScene
                 this.navigatorParams.params = {
                     from: 'xs'
                 }
                 break;
-            case 37:
+            case 16:
                 this.navigatorParams.name = 'EmployeeManageScene'
                 this.navigatorParams.component = EmployeeManageScene
                 break;
@@ -522,19 +522,19 @@ export default class MineScene extends BaseComponent {
                 this.navigatorParams.name = 'MycarScene'
                 this.navigatorParams.component = MycarScene
                 break;
-            case 41:
+            case 20:
                 this.navigatorParams.name = 'OrderTypeSelectScene'
                 this.navigatorParams.component = OrderTypeSelectScene
                 break;
-            case 42:
+            case 21:
                 this.navigatorParams.name = 'CarCollectSourceScene'
                 this.navigatorParams.component = CarCollectSourceScene
                 break;
-            case 43:
+            case 22:
                 this.navigatorParams.name = 'BrowsingHistoryScene'
                 this.navigatorParams.component = BrowsingHistoryScene
                 break;
-            case 44:
+            case 24:
                 this.navigatorParams.name = 'Setting'
                 this.navigatorParams.component = Setting
                 break;
