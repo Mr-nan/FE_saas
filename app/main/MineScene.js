@@ -123,60 +123,62 @@ export default class MineScene extends BaseComponent {
                 let user_list = [];
                 let datas = JSON.parse(data.result);
                 user_list.push(...Car);
-                let minList = GetPermission.getMineList();
-                for (let i = 0; i < minList.length; i++) {
-                    this.initData(minList[i].id, minList[i].name);
-                }
-                let jsonData = user_list;
-
-                //    定义变量
-                let dataBlob = {},
-                    sectionIDs = [],
-                    rowIDs = [];
-                for (let i = 0; i < jsonData.length; i++) {
-                    //    1.拿到所有的sectionId
-                    sectionIDs.push(i);
-
-                    //    2.把组中的内容放入dataBlob内容中
-                    dataBlob[i] = jsonData[i].title;
-
-                    //    3.设置改组中每条数据的结构
-                    rowIDs[i] = [];
-
-                    //    4.取出改组中所有的数据
-                    let cars = jsonData[i].cars;
-
-                    //    5.便利cars,设置每组的列表数据
-                    for (let j = 0; j < cars.length; j++) {
-                        //    改组中的每条对应的rowId
-                        rowIDs[i].push(j);
-
-                        // 把每一行中的内容放入dataBlob对象中
-                        dataBlob[i + ':' + j] = cars[j];
+                GetPermission.getMineList((minList) => {
+                    for (let i = 0; i < minList.length; i++) {
+                        this.initData(minList[i].id, minList[i].name);
                     }
-                }
-                let getSectionData = (dataBlob, sectionID) => {
-                    return dataBlob[sectionID];
-                };
+                    let jsonData = user_list;
 
-                let getRowData = (dataBlob, sectionID, rowID) => {
-                    return dataBlob[sectionID + ":" + rowID];
-                };
-                let ds = new ListView.DataSource({
-                        getSectionData: getSectionData,
-                        getRowData: getRowData,
-                        rowHasChanged: (r1, r2) => r1 !== r2,
-                        sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
+                    //    定义变量
+                    let dataBlob = {},
+                        sectionIDs = [],
+                        rowIDs = [];
+                    for (let i = 0; i < jsonData.length; i++) {
+                        //    1.拿到所有的sectionId
+                        sectionIDs.push(i);
+
+                        //    2.把组中的内容放入dataBlob内容中
+                        dataBlob[i] = jsonData[i].title;
+
+                        //    3.设置改组中每条数据的结构
+                        rowIDs[i] = [];
+
+                        //    4.取出改组中所有的数据
+                        let cars = jsonData[i].cars;
+
+                        //    5.便利cars,设置每组的列表数据
+                        for (let j = 0; j < cars.length; j++) {
+                            //    改组中的每条对应的rowId
+                            rowIDs[i].push(j);
+
+                            // 把每一行中的内容放入dataBlob对象中
+                            dataBlob[i + ':' + j] = cars[j];
+                        }
                     }
-                );
-                this.setState({
-                    source: ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
-                    name: datas.real_name,
-                    phone: datas.phone,
-                    headUrl: datas.head_portrait_url,
-                    renderPlaceholderOnly: 'success',
-                    isRefreshing: false
+                    let getSectionData = (dataBlob, sectionID) => {
+                        return dataBlob[sectionID];
+                    };
+
+                    let getRowData = (dataBlob, sectionID, rowID) => {
+                        return dataBlob[sectionID + ":" + rowID];
+                    };
+                    let ds = new ListView.DataSource({
+                            getSectionData: getSectionData,
+                            getRowData: getRowData,
+                            rowHasChanged: (r1, r2) => r1 !== r2,
+                            sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
+                        }
+                    );
+                    this.setState({
+                        source: ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs),
+                        name: datas.real_name,
+                        phone: datas.phone,
+                        headUrl: datas.head_portrait_url,
+                        renderPlaceholderOnly: 'success',
+                        isRefreshing: false
+                    });
                 });
+
             } else {
                 this.setState({
                     renderPlaceholderOnly: 'error',
@@ -187,55 +189,55 @@ export default class MineScene extends BaseComponent {
     }
 
     initData = (id, name) => {
-        if (id == 36) {
+        if (id == 15) {
             Car[0].cars.push({
                 "icon": require('../../images/mainImage/zhanghuguanli.png'),
                 "name": name
                 , "id": id
             },);
-        } else if (id == 37) {
+        } else if (id == 16) {
             Car[0].cars.push({
                 "icon": require('../../images/mainImage/yuangongguanli.png'),
                 "name": name
                 , "id": id
             },);
-        } else if (id == 38) {
+        } else if (id == 17) {
             Car[0].cars.push({
                 "icon": require('../../images/mainImage/switchcompony.png'),
                 "name": name
                 , "id": id
             },);
-        } else if (id == 41) {
+        } else if (id == 20) {
             Car[2].cars.push({
                 "icon": require('../../images/mainImage/my_order.png'),
                 "name": name
                 , "id": id
             },);
-        } else if (id == 39) {
+        } else if (id == 18) {
             Car[1].cars.push({
                 "icon": require('../../images/mainImage/youhuiquanguanli.png'),
                 "name": name
                 , "id": id
             },);
-        } else if (id == 40) {
+        } else if (id == 19) {
             Car[1].cars.push({
                 "icon": require('../../images/mainImage/hetongguanli.png'),
                 "name": name
                 , "id": id
             },);
-        } else if (id == 42) {
+        } else if (id == 21) {
             Car[2].cars.push({
                 "icon": require('../../images/mainImage/shoucangjilu.png'),
                 "name": name
                 , "id": id
             },);
-        } else if (id == 43) {
+        } else if (id == 22) {
             Car[2].cars.push({
                 "icon": require('../../images/mainImage/liulanlishi.png'),
                 "name": name
                 , "id": id
             },);
-        } else if (id == 44) {
+        } else if (id == 24) {
             Car[3].cars.push({
                 "icon": require('../../images/mainImage/shezhi.png'),
                 "name": name
@@ -594,48 +596,50 @@ export default class MineScene extends BaseComponent {
                     StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
                         if (data.code == 1) {
                             let datas = JSON.parse(data.result);
-                            let mineList = GetPermission.getMineList();
-                            for (let i = 0; i < mineList.length; i++) {
-                                if (mineList[i].id == 36) {
-                                    StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (datac) => {
-                                        if (datac.code == 1) {
-                                            let datasc = JSON.parse(datac.result);
-                                            let maps = {
-                                                enter_base_ids: datasc.company_base_id,
-                                                child_type: '1'
-                                            };
-                                            request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
-                                                .then((response) => {
-                                                        haveOrder = response.mjson.data.order.tradeing_count;
-                                                        lastType = response.mjson.data.account.status;
-                                                        if (lastType == '0') {
-                                                            this.refs.accountmodal.changeShowType(true,
-                                                                '您还未开通资金账户，为方便您使用金融产品及购物车，' +
-                                                                '请尽快开通！', '去开户', '看看再说', () => {
-                                                                    this.toPage();
-                                                                });
-                                                        } else if (lastType == '1') {
-                                                            this.refs.accountmodal.changeShowType(true,
-                                                                '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
-                                                                , '去绑卡', '看看再说', () => {
-                                                                    this.toPage();
-                                                                });
-                                                        } else if (lastType == '2') {
-                                                            this.refs.accountmodal.changeShowType(true,
-                                                                '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
-                                                                , '去激活', '看看再说', () => {
-                                                                    this.toPage();
-                                                                });
-                                                        }
-                                                        firstType = lastType;
-                                                    },
-                                                    (error) => {
+                            GetPermission.getMineList((mineList) => {
+                                for (let i = 0; i < mineList.length; i++) {
+                                    if (mineList[i].id == 15) {
+                                        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (datac) => {
+                                            if (datac.code == 1) {
+                                                let datasc = JSON.parse(datac.result);
+                                                let maps = {
+                                                    enter_base_ids: datasc.company_base_id,
+                                                    child_type: '1'
+                                                };
+                                                request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
+                                                    .then((response) => {
+                                                            haveOrder = response.mjson.data.order.tradeing_count;
+                                                            lastType = response.mjson.data.account.status;
+                                                            if (lastType == '0') {
+                                                                this.refs.accountmodal.changeShowType(true,
+                                                                    '您还未开通资金账户，为方便您使用金融产品及购物车，' +
+                                                                    '请尽快开通！', '去开户', '看看再说', () => {
+                                                                        this.toPage();
+                                                                    });
+                                                            } else if (lastType == '1') {
+                                                                this.refs.accountmodal.changeShowType(true,
+                                                                    '您的资金账户还未绑定银行卡，为方便您使用金融产品及购物车，请尽快绑定。'
+                                                                    , '去绑卡', '看看再说', () => {
+                                                                        this.toPage();
+                                                                    });
+                                                            } else if (lastType == '2') {
+                                                                this.refs.accountmodal.changeShowType(true,
+                                                                    '您的账户还未激活，为方便您使用金融产品及购物车，请尽快激活。'
+                                                                    , '去激活', '看看再说', () => {
+                                                                        this.toPage();
+                                                                    });
+                                                            }
+                                                            firstType = lastType;
+                                                        },
+                                                        (error) => {
 
-                                                    });
-                                        }
-                                    });
+                                                        });
+                                            }
+                                        });
+                                    }
                                 }
-                            }
+                            });
+
                         }
                     });
                 }
