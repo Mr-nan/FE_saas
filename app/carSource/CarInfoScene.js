@@ -47,7 +47,8 @@ import * as AppUrls from "../constant/appUrls";
 
 var ScreenWidth = Dimensions.get('window').width;
 let resolveAssetSource = require('resolveAssetSource');
-var  shareClass = NativeModules.ZNShareClass;
+const IS_ANDROID = Platform.OS === 'android';
+var shareClass = NativeModules.ZNShareClass;
 
 const carParameterViewColor = [
 
@@ -904,20 +905,35 @@ class SharedView extends Component {
 
     // 多图分享
     sharedMoreImage=(carData)=>{
-        let shareArray = [];
-        for (let i =0;i<carData.imgs.length;i++)
-        {
-            shareArray.push({image:carData.imgs[i].url});
+
+        if(IS_ANDROID == true){
+            let shareArray = [];
+            for (let i =0;i<carData.imgs.length;i++)
+            {
+                shareArray.push(carData.imgs[i].url);
+            }
+            NativeModules.ShareNative.share({image:shareArray,title:[carData.model_name]}).then((suc)=>{
+                this.props.showToast('分享成功');
+            }, (fail)=>{
+                this.props.showToast('分享已取消');
+            }
+            )
+        }else {
+            let shareArray = [];
+            for (let i =0;i<carData.imgs.length;i++)
+            {
+                shareArray.push({image:carData.imgs[i].url});
+            }
+
+            shareClass.shareAction([shareArray]).then((data) => {
+
+                this.props.showToast('分享成功');
+
+            }, (error) => {
+
+                this.props.showToast('分享已取消');
+            });
         }
-
-        shareClass.shareAction([shareArray]).then((data) => {
-
-            this.props.showToast('分享成功');
-
-        }, (error) => {
-
-            this.props.showToast('分享已取消');
-        });
     }
 
     // 分享好友

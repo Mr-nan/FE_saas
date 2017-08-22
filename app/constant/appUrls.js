@@ -243,6 +243,11 @@ export const GET_REGISTRANT = BASEURL + V + 'car.borrower/getRegistrants';
 export const ADD_REGISTRANT = BASEURL + V + 'car.borrower/addRegistrant';
 
 /**
+ * 验证车架号
+ */
+export const VIN_CHECK = BASEURL + V + 'car/checkVin';
+
+/**
  * 根据VIN获取车辆详情
  */
 export const VININFO = BASEURL + V + 'car/vininfo';

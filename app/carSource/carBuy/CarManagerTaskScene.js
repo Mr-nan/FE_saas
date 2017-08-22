@@ -348,7 +348,7 @@ export default class CarManagerTaskScene extends BaseComponent{
             [
                 {
                     title:'备注',
-                    isShowTag:this.props.type==1?true:false,
+                    isShowTag:false,
                     tailView:()=>{
                         return(
                             <TextInput

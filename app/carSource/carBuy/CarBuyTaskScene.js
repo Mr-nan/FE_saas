@@ -358,10 +358,10 @@ export default class CarBuyTaskScene extends BaseComponent{
     footBtnClick=()=>{
 
 
-        // if(this.carData.vin==''){
-        //     this.props.showToast('请输入车架号');
-        //     return;
-        // }
+        if(!this.carData.vin){
+            this.props.showToast('请输入车架号');
+            return;
+        }
 
         if(!this.carData.collectionType)
         {
@@ -889,54 +889,66 @@ export default class CarBuyTaskScene extends BaseComponent{
         if (text.length === 17) {
             this._showLoading();
             this.vinInput.blur();
-            Net.request(AppUrls.VININFO, 'post',{vin:text}).then(
+
+            Net.request(AppUrls.VIN_CHECK, 'post',{vin:text}).then(
                 (response) => {
-                    this._closeLoading();
                     if (response.mycode === 1) {
+                        this.titleData1[0][1].value = '请选择';
+                        this.titleData1[0][0].subTitle='';
+                        this.carData.vin = text;
+                        this.carData.brand = '';
+                        this.carData.collectionType = '';
 
-                        let rd = response.mjson.data;
+                        Net.request(AppUrls.VININFO, 'post',{vin:text}).then(
+                            (response) => {
+                                this._closeLoading();
+                                if (response.mycode === 1) {
 
-                        if (rd.length === 0) {
+                                    let rd = response.mjson.data;
+                                    if (rd.length === 1) {
+                                        // this.modelInfo['brand_id'] = rd[0].brand_id;
+                                        // this.modelInfo['model_id'] = rd[0].model_id;
+                                        // this.modelInfo['series_id'] = rd[0].series_id;
+                                        // this.modelInfo['model_year'] = rd[0].model_year;
+                                        // this.modelInfo['model_name'] = rd[0].model_name;
 
-                            this.titleData1[0][0].subTitle='校验失败';
-                            this.upTitleData();
-
-
-                        } else if (rd.length === 1) {
-                            // this.modelInfo['brand_id'] = rd[0].brand_id;
-                            // this.modelInfo['model_id'] = rd[0].model_id;
-                            // this.modelInfo['series_id'] = rd[0].series_id;
-                            // this.modelInfo['model_year'] = rd[0].model_year;
-                            // this.modelInfo['model_name'] = rd[0].model_name;
-
-                            this.titleData1[0][0].subTitle='';
-                            this.titleData1[0][1].value = rd[0].model_name;
-
-                            this.carData['vin'] = text;
-                            this.carData['brand'] = rd[0].brand_name;
-                            this.carData['collectionType'] = rd[0].model_name;
+                                        this.titleData1[0][1].value = rd[0].model_name;
+                                        this.carData.brand = rd[0].brand_name;
+                                        this.carData.collectionType = rd[0].model_name;
 
 
-                            this.upTitleData();
+                                    } else if (rd.length > 1) {
 
-                        } else if (rd.length > 1) {
+                                        this.modelData = response.mjson.data;
+                                        this.vinModal.refresh(this.modelData);
+                                        this.vinModal.openModal(0);
+                                    }
 
-                            this.modelData = response.mjson.data;
-                            this.vinModal.refresh(this.modelData);
-                            this.vinModal.openModal(0);
-                        }
+                                }
+                                this.upTitleData();
+                            },
+                            (error) => {
+                                this._closeLoading();
+                                this.props.showToast(error.mjson.msg);
+                            }
+                        );
 
                     } else {
+                        this._closeLoading();
                         this.titleData1[0][0].subTitle='校验失败';
+                        this.carData.vin='';
                         this.upTitleData();
                     }
                 },
                 (error) => {
                     this._closeLoading();
                     this.titleData1[0][0].subTitle='校验失败';
+                    this.carData.vin='';
                     this.upTitleData();
                 }
             );
+
+
         }
     };
     /**
