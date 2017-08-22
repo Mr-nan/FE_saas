@@ -36,7 +36,7 @@ import {request} from '../../utils/RequestUtil'
 import *as apis from '../../constant/appUrls'
 import {LendSuccessAlert} from './component/ModelComponent'
 const PostData = {
-    apply_type: '4',
+    apply_type: '8',
     loan_mny: '',
     loan_life: '',
     use_time: '',

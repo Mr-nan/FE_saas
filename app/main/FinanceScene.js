@@ -662,6 +662,7 @@ export default class FinanceSence extends BaseComponet {
                         purchase_archives_first_status: mnyData.purchase_archives_first_status,
                         purchase_status: mnyData.purchase_status,
                         customerName: this.state.customerName,
+                        car_loan_status:mnyData.car_loan_status,//是否可申请车抵贷
                         backRefresh: () => {
                             this.allRefresh()
                         }

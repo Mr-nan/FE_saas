@@ -94,7 +94,7 @@ export  default class LendMoneySence extends BaseComponent {
                     key: 'caigoudai'
                 })
             }
-            if (parseInt(this.props.inventory_financing_status) == 1) {
+            if (parseInt(this.props.car_loan_status ) == 1) {
                 this.dataSource.push({
                     backImage: require('../../../images/financeImages/chedidai_bg.png'),
                     imageSource: require('../../../images/financeImages/chedidai_icon.png'),

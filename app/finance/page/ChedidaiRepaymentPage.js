@@ -59,7 +59,7 @@ export  default class ChedidaiRepaymentPage extends BaseComponent {
     getData = () => {
         let maps = {
             api: Urls.REPAYMENT_GETLIST,
-            type: '4',
+            type: '8',
             p: page
         };
         request(Urls.FINANCE, 'Post', maps)
