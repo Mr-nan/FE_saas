@@ -1041,3 +1041,7 @@ export const SELECT_FLOW = BASEURL + "cheshang/customer/selectFlow";
  *  提交当前任务信息
  */
 export const CUSTOMER_FLOW = BASEURL + "cheshang/customer/customerFlow";
+/**
+ *  搜索潜在客户列表
+ */
+export const QUERY_CUSTOMER_BY_SEARCH_KEY = BASEURL + "cheshang/customer/querycustomerBysearchkey";

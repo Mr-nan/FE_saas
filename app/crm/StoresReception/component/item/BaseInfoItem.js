@@ -40,6 +40,7 @@ export default class BaseInfoItem extends BaseComponent {
         this.childItems.push({name: '当前客户状态', value: '', parameter: 'customerStatus'});
         this.childItems.push({name: '信息来源', value: '', parameter: 'informationSources'});
         this.childItems.push({name: '地域', value: '', parameter: 'customerRegion'});
+        this.childItems.push({name: '客户到店', value: '', parameter: 'customerCome'});
     }
 
     /**
@@ -76,17 +77,33 @@ export default class BaseInfoItem extends BaseComponent {
         let items = [];
         if (this.props.editState != 'look') {
             for (let i = 0; i < this.childItems.length; i++) {
-                if (i == 2) {
+                if (this.childItems[i].name == '客户到店') {
+                    continue;
+                } else if (i == 2) {
                     items.push(<ClientInfoSelected ref='selectsex' key={i + 'bo'} items={this.childItems[i]}
                                                    toSelect={() => {
                                                        this.toNextPage({
                                                            name: 'SelectScene',
                                                            component: SelectScene,
                                                            params: {
-                                                               regShowData: ['初次到店', '电话邀约', '已购买', '置换', '复购'],
+                                                               regShowData: ['初次到店', '电话邀约-到店', '电话邀约-未到店', '已购买', '置换', '复购'],
                                                                title: '客户状态',
                                                                callBack: (name, index) => {
-                                                                   this.childItems[i].value = name;
+                                                                   if (name === '初次到店') {
+                                                                       this.childItems[i].value = 1;
+                                                                   } else if (name === '电话邀约-到店') {
+                                                                       this.childItems[i].value = 1;
+                                                                       this.childItems[5].value = 1;
+                                                                   } else if (name === '电话邀约-未到店') {
+                                                                       this.childItems[i].value = 1;
+                                                                       this.childItems[5].value = 2;
+                                                                   } else if (name === '已购买') {
+                                                                       this.childItems[i].value = 2;
+                                                                   } else if (name === '置换') {
+                                                                       this.childItems[i].value = 4;
+                                                                   } else if (name === '复购') {
+                                                                       this.childItems[i].value = 5;
+                                                                   }
                                                                    this.refs.selectsex.setValue(name);
                                                                }
                                                            }
@@ -125,7 +142,13 @@ export default class BaseInfoItem extends BaseComponent {
                                                        })
                                                    }}/>);
                 } else {
-                    items.push(<CustomerInfoInput callBack={this.userAireadyExist} key={i + 'bo'}
+                    items.push(<CustomerInfoInput
+                        ref={(ref) => {
+                            if (ref != null && ref.props.items.name === '电话') {
+                                this.customerInfoInput = ref;
+                            }
+                        }}
+                        callBack={this.userAireadyExist} key={i + 'bo'}
                                                   items={this.childItems[i]}/>);
                 }
 
@@ -203,19 +226,28 @@ export default class BaseInfoItem extends BaseComponent {
      *  用户已经存在弹出提示框
      **/
     userAireadyExist = (customerPhone) => {
-        //this.em.changeShowType(true, "提示", "用户已经存在", "确定");
+        this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
             if (data.code == 1 && data.result != null) {
                 let maps = {
                     mobiles: data.result,
-                    customerPhone: customerPhone,
-                    token: '5afa531b-4295-4c64-8d6c-ac436c619078'
+                    customerPhone: customerPhone
                 };
                 let url = AppUrls.SELECT_CUST_IF_EXIST;
-                requestNoToken(url, 'post', maps).then((response) => {
-                    console.log('SELECT_CUST_IF_EXIST', 'succ');
+                request(url, 'post', maps).then((response) => {
+                    //this.props.showModal(false);
+                    this.props.showToast(response.mjson.msg);
+                    //console.log('SELECT_CUST_IF_EXIST', 'succ');
                 }, (error) => {
-                    console.log('SELECT_CUST_IF_EXIST', error);
+                    //this.props.showModal(false);
+                    if (error.mjson.code == '0004') {
+                        this.props.showToast(error.mjson.msg);
+                    } else {
+                        this.props.showToast('该客户已经存在');
+                        //this.backPage();
+                        this.customerInfoInput.clearInputText();
+                    }
+                    //console.log('SELECT_CUST_IF_EXIST', 'error');
                 });
             } else {
                 this.props.showToast('查询账户信息失败');

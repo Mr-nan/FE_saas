@@ -64,6 +64,14 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
     };
 
     /**
+     *   刷新页面数据
+     **/
+    refreshData = () => {
+        this.props.showModal(true);
+        this.loadData();
+    };
+
+    /**
      *   数据请求
      **/
     loadData = () => {
@@ -84,6 +92,7 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                 };
                 let url = AppUrls.POTENTIAL_CUSTOMER_LISTS;
                 request(url, 'post', maps).then((response) => {
+                    this.props.showModal(false);
                     this.potentialClientList = response.mjson.data.record.beanlist;
                     if (this.potentialClientList && this.potentialClientList.length > 0) {
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -99,13 +108,14 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                         });
                     }
                 }, (error) => {
+                    this.props.showModal(false);
                     this.setState({
                         isRefreshing: false,
                         renderPlaceholderOnly: 'error'
                     });
                 });
             } else {
-                //this.props.showToast('确认验收失败');
+                this.props.showToast('查询账户信息失败');
             }
         });
     };
@@ -294,7 +304,9 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                         this.toNextPage({
                             name: 'ClientAddScene',
                             component: CustomerAddScene,
-                            params: {}
+                            params: {
+                                callBack: this.refreshData
+                            }
                         })
                     }}>
                     <Image source={require('../../../images/employee_manage.png')}/>

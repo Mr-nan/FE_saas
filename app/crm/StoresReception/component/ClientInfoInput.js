@@ -39,6 +39,15 @@ export default class ClientInfoInput extends PureComponent {
     }
 
     /**
+     *   清空输入数据
+     **/
+    clearInputText = () => {
+        this.setState({
+            value: ''
+        });
+    };
+
+    /**
      *
      **/
     render() {
