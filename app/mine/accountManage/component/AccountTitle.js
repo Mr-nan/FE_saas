@@ -39,7 +39,7 @@ export  default class AccountTitle extends PureComponent {
         list.push(new listValue('修改交易密码', require('../../../../images/mainImage/changePwd.png'), this.props.changePwd));
         list.push(new listValue('重置交易密码', require('../../../../images/mainImage/resetPwd.png'), this.props.resetPwd));
         list.push(new listValue('修改银行预留手机号码', require('../../../../images/mainImage/changePhone.png'), this.props.changePhone));
-        //list.push(new listValue('账户设置',require('../../../../images/mainImage/accountSetting.png'),this.props.accountSetting));
+        list.push(new listValue('账户设置',require('../../../../images/mainImage/accountSetting.png'),this.props.accountSetting));
     }
 
     /**
@@ -98,7 +98,7 @@ export  default class AccountTitle extends PureComponent {
             </TouchableOpacity>
         </View>);
         return (
-            <View style={{width:width,height:Pixel.getPixel(540),backgroundColor:fontAndColor.COLORA3}}>
+            <View style={{width:width,height:Pixel.getPixel(584),backgroundColor:fontAndColor.COLORA3}}>
                 <View style={{width:width,height:Pixel.getPixel(211),backgroundColor:fontAndColor.COLORB0}}>
                     <View style={{width:width,height:Pixel.getPixel(35),backgroundColor:'rgba(105,105,105,0.1)',
                 justifyContent:'center'}}>
@@ -138,7 +138,7 @@ export  default class AccountTitle extends PureComponent {
                         </View>
                     </View>
                 </View>
-                <View style={{width:width,height:Pixel.getPixel(330),backgroundColor:fontAndColor.COLORA3}}>
+                <View style={{width:width,height:Pixel.getPixel(374),backgroundColor:fontAndColor.COLORA3}}>
                     {itemList}
                 </View>
             </View>
