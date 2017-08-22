@@ -84,16 +84,12 @@ export default class CarTrimScene extends BaseComponent {
                     this.roleTitle = '手续员';
                     this.roleValue = 'sxy';
                     break;
-
             }
 
         }else {
             this.roleTitle = '手续员';
             this.roleValue = 'sxy';
         }
-
-
-
 
 
         const ds = new ListView.DataSource({rowHasChanged:(r1,r2)=>r1==r2});

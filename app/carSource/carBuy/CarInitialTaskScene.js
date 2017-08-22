@@ -105,7 +105,6 @@ export default class CarInitialTaskScene extends BaseComponent{
 
     footBtnClick=()=>{
 
-        console.log(this.carData);
 
         this.toNextPage({
             name:'CarInitialTaskUpImagScene',
