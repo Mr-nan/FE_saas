@@ -79,6 +79,10 @@ export default class CarPublishFirstScene extends BaseComponent{
                 this.loadCarData();
 
             }else {
+
+                if(this.props.carData){
+                        this.carData = this.props.carData;
+                }
                 StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
                     if(data.code == 1 && data.result != '')
                     {
@@ -519,12 +523,17 @@ export default class CarPublishFirstScene extends BaseComponent{
     // 获取本地数据
     getLocalityCarData=()=>{
 
+
+        if(this.props.carData){
+            this.setCarData();
+            return;
+        }
+
         if(this.carData.show_shop_id){
             StorageUtil.mGetItem(String(this.carData.show_shop_id),(data) => {
                 if (data.code == 1) {
                     if (data.result) {
                         this.carData=JSON.parse(data.result);
-                        console.log(this.carData);
                         this.setCarData();
                     }
                 }
@@ -554,6 +563,11 @@ export default class CarPublishFirstScene extends BaseComponent{
             this.vinInput.setNativeProps({
                 text: this.carData.vin
             });
+
+            if(this.props.carData)
+            {
+                this._onVinChange(this.carData.vin);
+            }
         }
         this.titleData1[0][2].value = this.carData.model_name?this.carData.model_name:'请选择';
         this.titleData2[0][2].value = this.carData.model_name?this.carData.model_name:'请选择';
@@ -786,6 +800,8 @@ export default class CarPublishFirstScene extends BaseComponent{
             this.carData['series_id'] = this.modelData[index].series_id;
             this.carData['model_name'] = this.modelData[index].model_name;
             this.carData['brand_id'] = this.modelData[index].brand_id;
+            this.carData['brand_name'] = this.modelData[index].brand_name;
+            this.carData['series_name'] = this.modelData[index].series_name;
 
             if(this.carType=='二手车')
             {
@@ -861,8 +877,12 @@ export default class CarPublishFirstScene extends BaseComponent{
                             this.carData['model_id'] = rd[0].model_id;
                             this.carData['emission_standards'] = rd[0].model_emission_standard;
                             this.carData['series_id'] = rd[0].series_id;
-                            this.carData['model_name'] = rd[0].model_name;
                             this.carData['brand_id'] = rd[0].brand_id;
+                            this.carData['brand_name'] = rd[0].brand_name;
+                            this.carData['series_name'] = rd[0].series_name;
+                            this.carData['model_name'] = rd[0].model_name;
+
+
                             if(rd[0].model_liter){
                                 this.carData['displacement']=rd[0].model_liter;
                                 this.displacementInput.setNativeProps({
@@ -981,7 +1001,8 @@ export default class CarPublishFirstScene extends BaseComponent{
         this.carData['series_id'] = carObject.series_id;
         this.carData['model_name'] = carObject.model_name;
         this.carData['brand_id']=carObject.brand_id;
-
+        this.carData['brand_name'] = carObject.brand_name;
+        this.carData['series_name'] = carObject.series_name;
 
         this.upTitleData();
     }

@@ -41,7 +41,7 @@ export default class CarTrimCostView extends Component{
                 {
                     costObject.array.map((data,index)=>{
                         return(
-                            <TouchableOpacity activeOpacity={1} onPress={()=>{this.props.alterClilk(data,index)}} key={index}>
+                            <TouchableOpacity activeOpacity={1} onPress={()=>{this.props.alterClilk && this.props.alterClilk(data,index)}} key={index}>
                             <View style={styles.itemView} >
                                 <Text numberOfLines={2} style={styles.itemText}>【{data.typeTitle}】 {data.content}</Text>
                                 <View style={styles.titleFootView}>

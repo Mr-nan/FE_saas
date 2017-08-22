@@ -101,13 +101,20 @@ export default class CarDealInfoScene extends BaseComponent{
         }
 
         this.props.showModal(true);
-        let url = AppUrls.CAR_SALE;
-        request(url, 'post', this.carDealData).then((response) => {
+        request(AppUrls.CAR_SALE, 'post', this.carDealData).then((response) => {
 
-            this.props.showModal(false);
-            this.props.refreshDataAction();
-            this.props.showToast('提交成功');
-            this.backPage();
+            request(AppUrls.CAR_SASS_SALED, 'post', {id:this.carDealData.id}).then((response) => {
+
+                this.props.showModal(false);
+                this.props.refreshDataAction();
+                this.backPage();
+
+
+            }, (error) => {
+
+                this.props.showModal(false);
+                this.props.showToast(error.msg);
+            });
 
 
         }, (error) => {
@@ -117,6 +124,8 @@ export default class CarDealInfoScene extends BaseComponent{
         });
 
     }
+
+
 
     // 构造
     constructor(props) {

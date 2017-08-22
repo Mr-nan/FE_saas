@@ -96,7 +96,6 @@ export const CAR_HiSTORY = BASEURL + V + 'car/searchHistory';
  */
 export const CAR_SEARCH_TOP = BASEURL + V + 'car/searchTop';
 
-
 /**
  * 获取车辆详情
  */
@@ -159,14 +158,79 @@ export const CAR_STATUS = BASEURL + V + 'car/status';
 export const CAR_REFRESH_TIME = BASEURL + V + 'car/refreshPublisherTime';
 
 /**
+ * 我的车源-删除车辆
+ */
+export const CAR_DELETE = BASEURL + V + 'car/delete';
+
+/**
  * 我的车源-已售操作
  */
 export const CAR_SALE = BASEURL + V + 'car/sale';
 
 /**
+ * 我的车源-创建已售消息
+ */
+export const CAR_SASS_SALED = BASEURL + 'cheshang/sass/saled';
+
+/**
  * 获取我的车源-未审核
  */
 export const CAR_PERLIST = BASEURL + V + 'car/preList';
+
+/**
+ * 创建收车任务
+ */
+export const CAR_SASS_PUBLISH = BASEURL + 'cheshang/sass/publish';
+
+/**
+ * 创建收车管理列表
+ */
+export const CAR_SASS_SELECT_LIST= BASEURL + 'cheshang/sass/selectList';
+
+/**
+ * 收车任务详情
+ */
+export const CAR_SASS_SELECT_MSG= BASEURL + 'cheshang/sass/selectMsg';
+
+/**
+ * 整备车辆任务列表
+ */
+export const CAR_CHESHANG_TASKS= BASEURL + 'cheshang/sass/tasks';
+
+/**
+ * 创建整备任务
+ */
+export const CAR_CHESHANG_PUBLISHTASK= BASEURL + 'cheshang/sass/publishTask';
+
+/**
+ * saas-发布车辆
+ */
+export const CAR_CHESHANG_PUBLISHCAR= BASEURL + 'cheshang/sass/publishCar';
+
+/**
+ * 查看整备任务
+ */
+export const CAR_CHESHANG_TASKINFO= BASEURL + 'cheshang/sass/taskInfo';
+
+/**
+ * 整备任务 - 评估师提交任务
+ */
+export const CAR_CHESHANG_PGS_EDIT_TASK= BASEURL + 'cheshang/sass/pgsEditTask';
+
+/**
+ * 整备任务 - 整备员提交任务
+ */
+export const CAR_CHESHANG_ZBY_EDIT_TASK= BASEURL + 'cheshang/sass/zbyEditTask';
+
+/**
+ * 整备任务 - 经理提交任务
+ */
+export const CAR_CHESHANG_MANAGER_EDIT_TASK= BASEURL + 'cheshang/sass/managerEditTask';
+
+/**
+ * 整备任务 - 运营专员交任务
+ */
+export const CAR_CHESHANG_YYZY_EDIT_TASK= BASEURL + 'cheshang/sass/updateTaskByyyzy';
 
 /**
  * 获取登记人信息

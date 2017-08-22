@@ -30,16 +30,26 @@ export default class CarTrimHeaderView extends Component{
     // 构造
     constructor(props) {
         super(props);
+
+        let titleArray = [
+            {title:'手续员',value:'sxy',isSelected:false,img:require('../../../../images/carSourceImages/carTrim1.png')},
+            {title:'评估师',value:'pgs',isSelected:false,img:require('../../../../images/carSourceImages/carTrim2.png')},
+            {title:'整备员',value:'zby',isSelected:false,img:require('../../../../images/carSourceImages/carTrim3.png')},
+            {title:'经理',value:'manager',isSelected:false,img:require('../../../../images/carSourceImages/carTrim4.png')},
+            {title:'运营专员',value:'yyzy',isSelected:false,img:require('../../../../images/carSourceImages/carTrim5.png')}
+        ];
+
+        if(this.props.defaultIndex){
+            titleArray[this.props.defaultIndex].isSelected = true;
+        }else {
+            titleArray[0].isSelected = true;
+
+        }
+
         this.state = {
-            titleSource:[
-                {title:'手续员',isSelected:true,img:require('../../../../images/carSourceImages/carTrim1.png')},
-                {title:'评估师',isSelected:false,img:require('../../../../images/carSourceImages/carTrim2.png')},
-                {title:'整备员',isSelected:false,img:require('../../../../images/carSourceImages/carTrim3.png')},
-                {title:'经理',isSelected:false,img:require('../../../../images/carSourceImages/carTrim4.png')},
-                {title:'运营专员',isSelected:false,img:require('../../../../images/carSourceImages/carTrim5.png')}
-            ]
+            titleSource:titleArray,
         };
-        this.props.click('手续员');
+        // this.props.click('手续员');
     }
 
     /**
@@ -47,10 +57,10 @@ export default class CarTrimHeaderView extends Component{
      * 按钮点击
      * @param title
      */
-    click=(title)=>{
+    click=(title,value)=>{
 
         this.setTitleType(title);
-        this.props.click(title);
+        this.props.click(title,value);
 
     }
 
@@ -83,7 +93,7 @@ class HeadItemBtn extends Component{
     render(){
         const data = this.props.itemData;
         return(
-            <TouchableOpacity onPress={()=>{this.props.click(data.title)}}>
+            <TouchableOpacity onPress={()=>{this.props.click(data.title,data.value)}}>
                 <View style={[styles.itemBtn,data.isSelected && {borderBottomColor:'white'},!data.isSelected && {borderBottomColor:'transparent'}]}>
                     <Image style={styles.itemBtnImg} source={data.img} resizeMethod={'auto'}/>
                     <Text style={styles.itemBtnTitle}>{data.title}</Text>

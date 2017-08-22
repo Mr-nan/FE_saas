@@ -20,10 +20,8 @@ import {
 
 import BaseComponent from '../../component/BaseComponent';
 import AllNavigationView from  '../../component/AllNavigationView';
-import ScrollableTabView from 'react-native-scrollable-tab-view';
-import RepaymenyTabBar from '../../finance/repayment/component/RepaymenyTabBar';
 import CarTrimHeaderView from './View/CarTrimHeaderView';
-import CarBuyCell from './View/CarBuyCell';
+import CarTrimTaskCell from './View/CarTrimTaskCell';
 import *as fontAndColor from  '../../constant/fontAndColor';
 import PixelUtil from  '../../utils/PixelUtil';
 import CarInitialTaskScene from "./CarInitialTaskScene";
@@ -32,6 +30,8 @@ import CarManagerTaskScene from "./CarManagerTaskScene";
 import CarOperationScene from "./CarOperationScene";
 import EvaluateCarInfo from "../../mine/setting/EvaluateCarInfo";
 import WriteArrangeCostDetailTWO from "../../mine/setting/WriteArrangeCostDetailTWO";
+import * as AppUrls from "../../constant/appUrls";
+import  {request}           from '../../utils/RequestUtil';
 let Pixel = new  PixelUtil();
 
 const sceneWidth = Dimensions.get('window').width;
@@ -42,17 +42,12 @@ export default class CarTrimScene extends BaseComponent {
     render(){
         return(
             <View style={styles.rootContainer}>
-                {
-                  this.state.isShowHeadView &&  <CarTrimHeaderView click={this.headerViewItemClick}/>
-                }
-                <ScrollableTabView
-                    style={styles.ScrollableTabView}
-                    initialPage={0}
-                    locked={true}
-                    renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["未办任务(0)", "已办任务(0)"]}/>}>
-                    <CarTaskUnsettledView ref='CarTaskUnsettledView'   tabLabel="ios-paper1" isShowHeadView={this.isShowHeadView} cellBtnClick={this.cellBtnClick}/>
-                    <CarTaskTradedView   ref='CarTaskTradedView'  tabLabel="ios-paper2" isShowHeadView={this.isShowHeadView} cellBtnClick={this.cellBtnClick}/>
-                </ScrollableTabView>
+                <ListView
+                    enableEmptySections={true}
+                    dataSource={this.state.dataSource}
+                    renderHeader={()=>{return(<TrimTaskHeadView defaultIndex={this.props.defaultIndex} ref="headView" headerViewItemClick={this.headerViewItemClick} selectAction={this.selectAction}/>)}}
+                    renderRow={this.renderRow}
+                />
                 <AllNavigationView title='名车行' backIconClick={this.backPage} renderRihtFootView={this.renderRightView}/>
             </View>
         )
@@ -61,10 +56,70 @@ export default class CarTrimScene extends BaseComponent {
     // 构造
     constructor(props) {
         super(props);
-        // 初始状态
+
+        if(this.props.defaultIndex){
+
+            switch(this.props.defaultIndex){
+                case 0:
+                    this.roleTitle = '手续员';
+                    this.roleValue = 'sxy';
+                    break;
+                case 1:
+                    this.roleTitle = '评估师';
+                    this.roleValue = 'pgs';
+                    break;
+                case 2:
+                    this.roleTitle = '整备员';
+                    this.roleValue = 'zby';
+                    break;
+                case 3:
+                    this.roleTitle = '经理';
+                    this.roleValue = 'manager';
+                    break;
+                case 4:
+                    this.roleTitle = '运营专员';
+                    this.roleValue = 'yyzy';
+                    break;
+                default:
+                    this.roleTitle = '手续员';
+                    this.roleValue = 'sxy';
+                    break;
+
+            }
+
+        }else {
+            this.roleTitle = '手续员';
+            this.roleValue = 'sxy';
+        }
+
+
+
+
+
+        const ds = new ListView.DataSource({rowHasChanged:(r1,r2)=>r1==r2});
         this.state = {
-            isShowHeadView:true
+            isShowHeadView:true,
+            dataSource:ds,
+            taskType:1,
         };
+    }
+
+    renderRow=(rowData)=>{
+        return(
+            <CarTrimTaskCell cellData={rowData} btnTitle={this.state.taskType == 1? '跟进':'查看'} cellBtnClick={()=>{
+                if(this.state.taskType==1){
+                    this.cellBtnClick(1,rowData);
+                }else {
+                    this.cellBtnClick(2,rowData);
+                }
+            }}/>
+        )
+    }
+    renderFooter =()=> {
+        console.log('=========',this.state.dataSource.rowData);
+        return(
+            <View/>
+        )
     }
 
     /**
@@ -79,7 +134,9 @@ export default class CarTrimScene extends BaseComponent {
                     {
                         name: 'CarInitialTaskScene',
                         component: CarInitialTaskScene,
-                        params: {}
+                        params: {
+                            reloadTaskData:this.reloadData,
+                        }
                     }
                 );
             }}>
@@ -91,101 +148,188 @@ export default class CarTrimScene extends BaseComponent {
         )
     }
 
+    initFinish=()=>{
+        this.loadData(this.roleValue,this.state.taskType);
+    }
+
+    reloadData=()=>{
+        this.loadData(this.roleValue,this.state.taskType);
+    }
+
+
+
+    loadData=(roleValue,type)=>{
+
+        this.setState({
+            dataSource:this.state.dataSource.cloneWithRows([]),
+            taskType:type
+        });
+
+
+        if(roleValue=='sxy' && type==1)
+        {
+            return;
+        }
+        this.props.showModal(true);
+        request(AppUrls.CAR_CHESHANG_TASKS, 'post', {roleName:roleValue,type:type,}).then((response) => {
+            this.props.showModal(false);
+            this.setState({
+                dataSource:this.state.dataSource.cloneWithRows(response.mjson.data),
+                taskType:type
+            });
+
+        }, (error) => {
+            this.props.showModal(false);
+            this.props.showToast(error.mjson.msg);
+        });
+    }
+
     /**
      * from @zn
      * 角色切换事件
      * @param title
      */
-    headerViewItemClick=(title)=>{
-       this.roleType = title;
+    headerViewItemClick=(title,value)=>{
+       this.roleTitle = title;
+       this.roleValue = value;
+    }
 
+    /**
+     * 任务状态切换  1未办理，2已办理
+     * @param type
+     */
+    selectAction=(type)=>{
+       this.loadData(this.roleValue,type);
     }
 
 
-    isShowHeadView =(isShow)=>{
+    cellBtnClick=(type,carData)=>{
 
-        this.setState({
-            isShowHeadView:isShow,
-        });
-    }
-
-    cellBtnClick=(type)=>{
-
+        // 1 未办理 2，已办理
         if(type==1){
-            if(this.roleType == '整备员')
-            {
-                this.toNextPage(
-                    {
-                        name: 'CarTrimInformationScene',
-                        component: CarTrimInformationScene,
-                        params: {}
-                    }
-                );
-            }else if(this.roleType == '评估师'){
+            if(this.roleTitle == '评估师'){
 
                 this.toNextPage(
                     {
                         name: 'EvaluateCarInfo',
                         component: EvaluateCarInfo,
-                        params: {}
+                        params: {
+                            carData:carData,
+                            reloadTaskData:this.reloadData,
+                        }
                     }
                 );
 
-            }else if(this.roleType == '经理')
+            } else if(this.roleTitle == '整备员')
+            {
+                this.toNextPage(
+                    {
+                        name: 'CarTrimInformationScene',
+                        component: CarTrimInformationScene,
+                        params: {
+                            type:type,
+                            taskid:carData.id,
+                            roleName:this.roleValue,
+                            reloadTaskData:this.reloadData,
+                        }
+                    }
+                );
+            }else if(this.roleTitle == '经理')
             {
                 this.toNextPage(
                     {
                         name: 'CarManagerTaskScene',
                         component: CarManagerTaskScene,
-                        params: {}
+                        params: {
+                            type:type,
+                            taskid:carData.id,
+                            roleName:this.roleValue,
+                            reloadTaskData:this.reloadData,
+                        }
                     }
                 );
-            }else if(this.roleType == '运营专员')
+            }else if(this.roleTitle == '运营专员')
             {
-                this.props.toNextPage(
+                this.toNextPage(
                     {
                         name: 'CarOperationScene',
                         component: CarOperationScene,
-                        params: {}
+                        params: {
+                            type:type,
+                            taskid:carData.id,
+                            roleName:this.roleValue,
+                            reloadTaskData:this.reloadData,
+                        }
                     }
                 );
             }
         }else {
-            if(this.roleType == '整备员')
+            if(this.roleTitle =='手续员'){
+
+                this.toNextPage(
+                    {
+                        name: 'CarInitialTaskScene',
+                        component: CarInitialTaskScene,
+                        params: {
+                            type:type,
+                            taskid:carData.id,
+                            roleName:this.roleValue
+                        }
+                    }
+                );
+
+            }else if(this.roleTitle == '评估师'){
+
+                this.toNextPage(
+                    {
+                        name: 'WriteArrangeCostDetailTWO',
+                        component: WriteArrangeCostDetailTWO,
+                        params: {
+                            type:type,
+                            taskid:carData.id,
+                            roleName:this.roleValue
+                        }
+                    }
+                );
+
+            } else if(this.roleTitle == '整备员')
             {
                 this.toNextPage(
                     {
                         name: 'CarTrimInformationScene',
                         component: CarTrimInformationScene,
-                        params: {}
+                        params: {
+                            type:type,
+                            taskid:carData.id,
+                            roleName:this.roleValue,
+                            reloadTaskData:this.reloadData,
+                        }
                     }
                 );
-            }else if(this.roleType == '评估师'){
-
-                this.toNextPage(
-                    {
-                        name: 'EvaluateCarInfo',
-                        component: EvaluateCarInfo,
-                        params: {}
-                    }
-                );
-
-            }else if(this.roleType == '经理')
+            }else  if(this.roleTitle == '经理')
             {
                 this.toNextPage(
                     {
                         name: 'CarManagerTaskScene',
                         component: CarManagerTaskScene,
-                        params: {}
+                        params: {
+                            type:type,
+                            taskid:carData.id,
+                            roleName:this.roleValue,
+                        }
                     }
                 );
-            }else if(this.roleType == '运营专员')
+            }else if(this.roleTitle == '运营专员')
             {
                 this.toNextPage(
                     {
                         name: 'CarOperationScene',
                         component: CarOperationScene,
-                        params: {}
+                        params: {
+                            type:type,
+                            taskid:carData.id,
+                            roleName:this.roleValue,
+                        }
                     }
                 );
             }
@@ -195,87 +339,66 @@ export default class CarTrimScene extends BaseComponent {
 
 }
 
-/**
- * 未成交View
- */
+class TrimTaskHeadView extends Component{
+    render(){
+        return(
+            <View style={{marginBottom:Pixel.getPixel(10)}}>
+                <CarTrimHeaderView defaultIndex={this.props.defaultIndex} click={(title,value)=>{this.props.headerViewItemClick(title,value);this.setSelectType(1)}}/>
+                <TrimTaskSelectView ref="TrimTaskSelectView" selectAction={this.props.selectAction}/>
+            </View>
+        )
+    }
 
-class CarTaskUnsettledView extends BaseComponent {
+    setSelectType =(type)=>{
+        if(this.refs.TrimTaskSelectView)
+        {
+            this.refs.TrimTaskSelectView.setSelectType(type);
+        }
+    }
+}
+
+
+class TrimTaskSelectView extends Component {
 
     render(){
         return(
-            <ListView style={{marginTop:Pixel.getPixel(10)}}
-                      onScroll={(event)=>{
-                          if (event.nativeEvent.contentOffset.y > Pixel.getPixel(30)) {
-
-                             this.props.isShowHeadView(false);
-
-                          } else {
-                              this.props.isShowHeadView(true);
-                          }
-                      }}
-                      dataSource={this.state.dataSource}
-                      renderRow={this.renderRow}
-            />
+            <View style={styles.selectView}>
+                <TouchableOpacity onPress={()=>{
+                    this.setSelectType(1);
+                }}>
+                    <View style={[styles.selectContenView,this.state.currentSeletType==1&&{borderBottomColor:fontAndColor.COLORB0}]}>
+                        <Text style={styles.selectText}>未办任务</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={()=>{
+                    this.setSelectType(2);
+                }}>
+                    <View style={[styles.selectContenView,this.state.currentSeletType==2&&{borderBottomColor:fontAndColor.COLORB0}]}>
+                        <Text style={styles.selectText}>已办任务</Text>
+                    </View>
+                </TouchableOpacity>
+            </View>
         )
     }
 
     // 构造
-    constructor(props) {
+      constructor(props) {
         super(props);
-        const ds = new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2});
+        // 初始状态
         this.state = {
-            dataSource:ds.cloneWithRows(['1','2','3','4','5']),
+            currentSeletType:1,
         };
-    }
+      }
 
-    renderRow=(rowData)=>{
-        return(
-            <CarBuyCell btnTitle="跟进" cellBtnClick={()=>{this.props.cellBtnClick(1)}}/>
-        )
-    }
+      setSelectType=(type)=>{
+        this.setState({
+            currentSeletType:type,
+        });
+          this.props.selectAction(type);
 
-
+      }
 
 }
-
-/**
- * 已成交View
- */
-class CarTaskTradedView extends BaseComponent {
-    render(){
-        return(
-            <ListView style={{marginTop:Pixel.getPixel(10)}}
-                      onScroll={(event)=>{
-                          if (event.nativeEvent.contentOffset.y > Pixel.getPixel(30)) {
-                              this.props.isShowHeadView(false);
-                          } else {
-                              this.props.isShowHeadView(true);
-                          }
-                      }}
-                      dataSource={this.state.dataSource}
-                      renderRow={this.renderRow}
-            />
-        )
-    }
-
-    // 构造
-    constructor(props) {
-        super(props);
-        const ds = new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2});
-        this.state = {
-            dataSource:ds.cloneWithRows(['1','2','3','4','5']),
-        };
-    }
-
-    renderRow=(rowData)=>{
-        return(
-            <CarBuyCell btnTitle="查看" cellBtnClick={()=>{this.props.cellBtnClick(2)}}/>
-        )
-    }
-
-
-}
-
 
 
 
@@ -299,5 +422,26 @@ const styles = StyleSheet.create({
         textAlign:'center',
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
         color:'white',
+    },
+    selectView:{
+        height:Pixel.getPixel(44),
+        backgroundColor:'white',
+        flexDirection:'row',
+        alignItems:'center',
+        width:sceneWidth,
+    },
+    selectContenView:{
+        width:sceneWidth *0.5,
+        height:Pixel.getPixel(44),
+        justifyContent:'center',
+        alignItems:'center',
+        backgroundColor:'white',
+        borderBottomColor:'white',
+        borderBottomWidth:Pixel.getPixel(2),
+    },
+    selectText:{
+        color:fontAndColor.COLORA0,
+        fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+        textAlign:'center',
     }
 });

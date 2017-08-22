@@ -61,7 +61,7 @@ export default class MyCarCell extends Component {
         const date = new Date();
         date.setTime(time);
         if(isDay){
-            return (date.getFullYear() + '-' + (this.PrefixInteger(date.getMonth() + 1, 2))+'-'+(this.PrefixInteger(date.getDate() + 1, 2)));
+            return (date.getFullYear() + '-' + (this.PrefixInteger(date.getMonth() + 1, 2))+'-'+(this.PrefixInteger(date.getDate(), 2)));
 
         }
         return (date.getFullYear() + '-' + (this.PrefixInteger(date.getMonth() + 1, 2)));
@@ -135,8 +135,15 @@ export default class MyCarCell extends Component {
                                     {
                                         carType ==4 && (
                                             <View style={{flexDirection:'row',alignItems:'center'}}>
-                                                <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>售出:2017-07-10</Text>
-                                                <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>售价:25.05万元</Text>
+                                                {
+                                                    carCellData.sale_time &&(
+                                                        <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>售出:{this.dateReversal(carCellData.sale_time+'000',true)}</Text>)
+                                                }
+                                                {
+                                                    carCellData.current_rate &&(
+                                                        <Text style={{color:fontAndColor.COLORA1, fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),marginRight:Pixel.getFontPixel(15)}}>售价:{this.carMoneyChange(carCellData.current_rate)}万元</Text>
+                                                    )
+                                                }
                                             </View>
                                         )
                                     }

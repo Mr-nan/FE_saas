@@ -22,12 +22,13 @@ import BaseComponent from '../../component/BaseComponent';
 import AllNavigationView from  '../../component/AllNavigationView';
 import {CellView, CellSelectView} from '../znComponent/CarPublishCell';
 import VinInfo from '../../publish/component/VinInfo';
+import CarZoomImageScene from '../CarZoomImagScene';
 import *as fontAndColor from  '../../constant/fontAndColor';
 import PixelUtil from  '../../utils/PixelUtil';
 import CarBrandSelectScene from "../CarBrandSelectScene";
 import CarInfomationSourceScene from './CarInformationSourceScene';
 import * as AppUrls from "../../constant/appUrls";
-import * as Net from "../../utils/ImageUpload";
+import  {request}   from '../../utils/RequestUtil';
 import CarlicenseTagScene from "../carPublish/CarlicenseTagScene";
 import CarInitialTaskUpImagScene from "./CarInitialTaskUpImagScene";
 let Pixel = new  PixelUtil();
@@ -39,6 +40,13 @@ const IS_ANDROID = Platform.OS === 'android';
 export default class CarInitialTaskScene extends BaseComponent{
 
     render(){
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return (
+                <View style={{flex: 1, backgroundColor: 'white'}}>
+                    {this.loadView()}
+                    <AllNavigationView title="车辆信息" backIconClick={this.backPage}/>
+                </View>);
+        }
         return(
             <View style={styles.rootContaier}>
                 <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={this.state.keyboardOffset}>
@@ -60,17 +68,33 @@ export default class CarInitialTaskScene extends BaseComponent{
                                 )
                             })
                         }
-                        <View style={styles.footContainer}>
-                            <TouchableOpacity onPress={this.footBtnClick}>
-                                <View style={styles.footView}>
-                                    <Text allowFontScaling={false}  style={styles.footText}>下一步</Text>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
+                        {
+                            this.state.imageArray.map((data,index)=>{
+                                return(
+                                    <View style={{backgroundColor:'white',paddingVertical:Pixel.getPixel(15),paddingHorizontal:Pixel.getPixel(15)}} key={'imgkey'+index}>
+                                        <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>{data.title}</Text>
+                                        <TouchableOpacity activeOpacity={1} onPress={()=>{this.showPhotoView(index)}}>
+                                            <Image style={{width:sceneWidth-Pixel.getPixel(30),height:(sceneWidth-Pixel.getPixel(30))/Pixel.getPixel(1.5),backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getPixel(15)}} source={{uri:data.url}}/>
+                                        </TouchableOpacity>
+                                    </View>
+                                )
+                            })
+                        }
+                        {
+                            this.props.type != 2&&
+                            (<View style={styles.footContainer}>
+                                <TouchableOpacity onPress={this.footBtnClick}>
+                                    <View style={styles.footView}>
+                                        <Text allowFontScaling={false}  style={styles.footText}>下一步</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>)
+                        }
+
                     </ScrollView>
                 </KeyboardAvoidingView>
                 <VinInfo viewData={this.scanType} vinPress={this._vinPress} ref={(modal) => {this.vinModal = modal}}/>
-                <AllNavigationView title="录入车辆信息" backIconClick={this.backPage}/>
+                <AllNavigationView title= {this.props.taskid ? '车辆信息': "录入车辆信息"} backIconClick={this.backPage}/>
             </View>
         )
     }
@@ -80,18 +104,179 @@ export default class CarInitialTaskScene extends BaseComponent{
     }
 
     footBtnClick=()=>{
+
+        console.log(this.carData);
+
         this.toNextPage({
             name:'CarInitialTaskUpImagScene',
             component: CarInitialTaskUpImagScene,
             params: {
+                carData:this.carData,
+                reloadTaskData:this.props.reloadTaskData,
 
             }
         })
     }
 
+
+    initFinish=()=>{
+
+        if(this.props.taskid){
+            this.loadData();
+        }else {
+            this.setState({
+                renderPlaceholderOnly:'success'
+            });
+        }
+    }
+
+    /**
+     * 加载数据
+     */
+    loadData=()=>{
+
+        this.setState({
+            renderPlaceholderOnly:'loading'
+        });
+        request(AppUrls.CAR_CHESHANG_TASKINFO,'post',{
+            type:this.type,
+            roleName:this.roleName,
+            taskid:this.props.taskid,
+        }).then((response) => {
+
+            this.setData(response.mjson.data);
+        }, (error) => {
+
+        });
+    }
+
+    setData=(carData)=>{
+        this.titleData1[0][0].tailView='';
+        this.titleData1[1][0].tailView='';
+        this.titleData1[1][1].tailView='';
+        this.titleData1[2][2].tailView='';
+        this.titleData1[3][0].tailView='';
+        this.titleData1[3][1].tailView='';
+
+        this.titleData1[0][0].value = carData.vin;
+        this.titleData1[0][1].value = carData.carName;
+
+        this.titleData1[1][0].value = carData.infoName;
+        this.titleData1[1][1].value = carData.infoMobile;
+
+        let infoSourceStr = '';
+        switch(carData.infoSource){
+            case 1:{
+                infoSourceStr='本平台';
+                break;
+            }
+            case 2:{
+                infoSourceStr='其他网络平台';
+                break;
+            }
+            case 3:{
+                infoSourceStr='朋友圈';
+                break;
+            }
+            case 4:{
+                infoSourceStr='信息员介绍';
+                break;
+            }
+            case 5:{
+                infoSourceStr='友商合车';
+                break;
+            }
+            case 6:{
+                infoSourceStr='拍卖';
+                break;
+            }
+            case 7:{
+                infoSourceStr='自到店';
+                break;
+            }
+            case 8:{
+                infoSourceStr='客户转介绍';
+                break;
+            }
+            case 9:{
+                infoSourceStr='置换';
+                break;
+            }
+        }
+        this.titleData1[2][0].value = infoSourceStr;
+        this.titleData1[2][1].value = carData.carNum;
+        this.titleData1[2][2].value = carData.taskInfo.keysNum;
+
+        this.titleData1[3][0].value = carData.taskInfo.selfName;
+        this.titleData1[3][1].value = carData.taskInfo.selfMobile;
+
+        let imageArray = [];
+
+        if(carData.taskInfo.arcPath){
+            imageArray.push({title:'车辆图片',url:carData.taskInfo.arcPath})
+        }
+        if(carData.taskInfo.dlPath){
+            imageArray.push({title:'行驶证',url:carData.taskInfo.dlPath})
+
+        }
+         if(carData.taskInfo.policyPath){
+             imageArray.push({title:'保险单',url:carData.taskInfo.policyPath})
+
+        }
+         if(carData.taskInfo.policyPath){
+             imageArray.push({title:'身份证',url:carData.taskInfo.policyPath})
+
+        }
+
+        this.titleData1[3][2].tailView=()=>{
+            return(
+                <TextInput
+                    style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(60)}]}
+                    maxLength={200}
+                    value={carData.remark}
+                    editable={false}
+                    underlineColorAndroid='transparent'
+                    ref={(input) => {this.instructionsInput = input}}
+                    placeholderTextColor={fontAndColor.COLORA4}
+                    onChangeText={(text)=>{this.carData.remark = text}}
+                    placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
+                />
+            )
+        }
+
+
+
+        this.setState({
+            renderPlaceholderOnly:'success',
+            titleData:this.titleData1,
+            imageArray:imageArray,
+        });
+
+    }
+
     // 构造
     constructor(props) {
         super(props);
+
+        this.carData ={
+            dlPath:'',
+            policyPath:'',
+            arcPath:'',
+            idcardPath:'',
+            carName:'',
+            infoName:'',
+            vin:'',
+            selfName:'',
+            keysNum:'',
+            remark:'',
+            carNum:'',
+            infoMobile:'',
+            infoSource:1,
+            selfMobile:''
+        };
+
+        this.roleName = this.props.roleName;
+        this.type = this.props.type;
         this.scanType = [
             {model_name: '扫描前风挡'},
             {model_name: '扫描行驶证'}
@@ -100,7 +285,7 @@ export default class CarInitialTaskScene extends BaseComponent{
             [
                 {
                     title:'车架号',
-                    isShowTag:true,
+                    isShowTag:this.props.taskid?false:true,
                     subTitle:"",
                     tailView:()=>{
                         return(
@@ -110,7 +295,6 @@ export default class CarInitialTaskScene extends BaseComponent{
                                            placeholder='输入车架号'
                                            underlineColorAndroid='transparent'
                                            maxLength={17}
-                                           editable={this.props.carID?false:true}
                                            onChangeText={this._onVinChange}
                                            onFocus={()=>{
                                                this.setState({
@@ -138,9 +322,9 @@ export default class CarInitialTaskScene extends BaseComponent{
                 },
                 {
                     title:'车型',
-                    isShowTag:true,
+                    isShowTag:this.props.taskid?false:true,
                     value:'请选择',
-                    isShowTail:true,
+                    isShowTail:this.props.taskid?false:true,
                 },
 
             ],
@@ -149,7 +333,6 @@ export default class CarInitialTaskScene extends BaseComponent{
                     title:'信息员姓名',
                     isShowTag:false,
                     value:'请选择',
-                    isShowTail:true,
                     tailView: () => {
                         return (
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
@@ -158,15 +341,13 @@ export default class CarInitialTaskScene extends BaseComponent{
                                            keyboardType={'numeric'}
                                            maxLength={7}
                                            underlineColorAndroid='transparent'
-                                           onChangeText={(text)=>{
-                                           }}/>
+                                           onChangeText={(text)=>{this.carData.infoName = text}}/>
                             </View>)
                     }
                 },
                 {
                     title:'信息员电话',
                     isShowTag:false,
-                    isShowTail:true,
                     tailView: () => {
                         return (
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
@@ -175,9 +356,7 @@ export default class CarInitialTaskScene extends BaseComponent{
                                            keyboardType={'numeric'}
                                            maxLength={11}
                                            underlineColorAndroid='transparent'
-                                           onChangeText={(text)=>{
-
-                                           }}/>
+                                           onChangeText={(text)=>{this.carData.infoMobile = text}}/>
 
                             </View>)
                     }
@@ -189,18 +368,17 @@ export default class CarInitialTaskScene extends BaseComponent{
                     title:'信息来源',
                     isShowTag:false,
                     value:'请选择',
-                    isShowTail:true,
+                    isShowTail:this.props.taskid?false:true,
                 },
                 {
                     title:'原车牌号',
                     isShowTag:false,
                     value:'请选择',
-                    isShowTail:true,
+                    isShowTail:this.props.taskid?false:true,
                 },
                 {
                     title:'钥匙数',
                     isShowTag:false,
-                    isShowTail:true,
                     tailView: () => {
                         return (
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
@@ -209,9 +387,7 @@ export default class CarInitialTaskScene extends BaseComponent{
                                            keyboardType={'numeric'}
                                            maxLength={11}
                                            underlineColorAndroid='transparent'
-                                           onChangeText={(text)=>{
-
-                                           }}/>
+                                           onChangeText={(text)=>{this.carData.keysNum=text}}/>
 
                             </View>)
                     }
@@ -221,7 +397,6 @@ export default class CarInitialTaskScene extends BaseComponent{
                 {
                     title:'卖车人姓名',
                     isShowTag:false,
-                    isShowTail:true,
                     tailView: () => {
                         return (
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
@@ -230,9 +405,7 @@ export default class CarInitialTaskScene extends BaseComponent{
                                            keyboardType={'numeric'}
                                            maxLength={11}
                                            underlineColorAndroid='transparent'
-                                           onChangeText={(text)=>{
-
-                                           }}/>
+                                           onChangeText={(text)=>{this.carData.selfName = text}}/>
 
                             </View>)
                     }
@@ -240,7 +413,6 @@ export default class CarInitialTaskScene extends BaseComponent{
                 {
                     title:'卖车人电话',
                     isShowTag:false,
-                    isShowTail:true,
                     tailView: () => {
                         return (
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
@@ -249,9 +421,7 @@ export default class CarInitialTaskScene extends BaseComponent{
                                            keyboardType={'numeric'}
                                            maxLength={11}
                                            underlineColorAndroid='transparent'
-                                           onChangeText={(text)=>{
-
-                                           }}/>
+                                           onChangeText={(text)=>{this.carData.selfMobile = text}}/>
 
                             </View>)
                     }
@@ -260,7 +430,6 @@ export default class CarInitialTaskScene extends BaseComponent{
                     title:'备注',
                     isShowTag:false,
                     value:'请填写',
-                    isShowTail:false,
                     tailView:()=>{
                         return(
                             <TextInput
@@ -270,6 +439,7 @@ export default class CarInitialTaskScene extends BaseComponent{
                                 underlineColorAndroid='transparent'
                                 ref={(input) => {this.instructionsInput = input}}
                                 placeholderTextColor={fontAndColor.COLORA4}
+                                onChangeText={(text)=>{this.carData.remark = text}}
                                 placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
                             />
                         )
@@ -280,10 +450,25 @@ export default class CarInitialTaskScene extends BaseComponent{
         ];
         this.state = {
             titleData:this.titleData1,
+            imageArray:[],
             keyboardOffset:-Pixel.getPixel(64),
+            renderPlaceholderOnly:'success'
         };
     }
 
+    // 浏览图片
+    showPhotoView = (index) => {
+
+        let navigatorParams = {
+            name: "CarZoomImageScene",
+            component: CarZoomImageScene,
+            params: {
+                images: this.state.imageArray,
+                index: index,
+            }
+        }
+        this.toNextPage(navigatorParams);
+    }
 
     /**
      *  form @ZN
@@ -291,6 +476,11 @@ export default class CarInitialTaskScene extends BaseComponent{
      * 点击对应标题
      */
     cellCilck=(title)=>{
+
+        if(this.props.taskid)
+        {
+            return;
+        }
         if(title=='车型'){
 
             this.pushCarBrand();
@@ -331,7 +521,7 @@ export default class CarInitialTaskScene extends BaseComponent{
     _checkedCarClick=(carObject)=>{
 
         this.titleData1[0][1].value = carObject.model_name;
-        this.titleData1[2][3].value = carObject.model_year+'-06-01';
+        this.carData.carName = carObject.model_name;
         this.upTitleData();
     }
 
@@ -362,6 +552,7 @@ export default class CarInitialTaskScene extends BaseComponent{
      */
     carInformationSourceSelectAction =(selectObject)=>{
         this.titleData1[2][0].value = selectObject.title;
+        this.carData.infoSource = selectObject.value;
     }
 
     /**
@@ -389,15 +580,16 @@ export default class CarInitialTaskScene extends BaseComponent{
      **/
     _checkedCarlicenseTagClick = (title) => {
         this.titleData1[2][1].value = title;
+        this.carData.carNum = title;
         this.upTitleData();
     }
 
 
     upTitleData=()=>{
 
-        // this.setState({
-        //     titleData:this.titleData1,
-        // });
+        this.setState({
+            titleData:this.titleData1,
+        });
     };
 
     /**
@@ -442,8 +634,7 @@ export default class CarInitialTaskScene extends BaseComponent{
         }else if (type==0){
 
             this.titleData1[0][1].value = this.modelData[index].model_name;
-            this.titleData2[2][3].value = this.modelData[index].model_year+'-06-01';
-
+            this.carData.carName = this.modelData[index].model_name;
             this.upTitleData();
         }
 
@@ -456,14 +647,16 @@ export default class CarInitialTaskScene extends BaseComponent{
      */
     _onVinChange = (text) => {
 
+        this.carData.vin = '';
         if (text.length === 17) {
             this._showLoading();
             this.vinInput.blur();
-            Net.request(AppUrls.VININFO, 'post',{vin:text}).then(
+            request(AppUrls.VININFO, 'post',{vin:text}).then(
                 (response) => {
                     this._closeLoading();
                     if (response.mycode === 1) {
 
+                        this.carData.vin = text;
                         let rd = response.mjson.data;
 
                         if (rd.length === 0) {
@@ -481,7 +674,8 @@ export default class CarInitialTaskScene extends BaseComponent{
 
                             this.titleData1[0][0].subTitle='';
                             this.titleData1[0][1].value = rd[0].model_name;
-                            this.titleData1[2][3].value = rd[0].model_year+'-06-01';
+
+                            this.carData.carName = rd[0].model_name;
 
                             this.upTitleData();
 
