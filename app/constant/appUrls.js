@@ -168,6 +168,11 @@ export const CAR_DELETE = BASEURL + V + 'car/delete';
 export const CAR_SALE = BASEURL + V + 'car/sale';
 
 /**
+ * 我的车源-创建已售消息
+ */
+export const CAR_SASS_SALED = BASEURL + 'cheshang/sass/saled';
+
+/**
  * 获取我的车源-未审核
  */
 export const CAR_PERLIST = BASEURL + V + 'car/preList';
