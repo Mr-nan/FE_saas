@@ -10,8 +10,7 @@ import {
     InteractionManager,
     Dimensions,
     Modal,
-    NativeModules
-
+    NativeModules,
 
 } from 'react-native';
 
@@ -912,8 +911,20 @@ class SharedView extends Component {
             {
                 shareArray.push(carData.imgs[i].url);
             }
-            NativeModules.ShareNative.share({image:shareArray,title:[carData.model_name]}).then((suc)=>{
-                this.props.showToast('分享成功');
+            let carContent = carData.model_name;
+            if (carData.city_name != "") {
+
+                carContent += '\n'+carData.city_name + '\n';
+            }
+            if (carData.plate_number != "") {
+
+                carContent += carData.plate_number.substring(0, 2);
+            }
+            if (carData.carIconsContentData[0] != "") {
+
+                carContent += "\n" + carData.carIconsContentData[0] + '出厂';
+            }
+            NativeModules.ShareNative.share({image:[shareArray],title:[carContent]}).then((suc)=>{
             }, (fail)=>{
                 this.props.showToast('分享已取消');
             }
@@ -944,7 +955,6 @@ class SharedView extends Component {
 
                     let imageResource = require('../../images/carSourceImages/car_info_null.png');
                     let carContent = '';
-
                     if (carData.city_name != "") {
 
                         carContent = carData.city_name + ' | ';

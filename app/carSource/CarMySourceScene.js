@@ -40,7 +40,8 @@ import CarDealInfoScene from "./CarDealInfoScene";
 const Pixel = new PixelUtil();
 var ScreenWidth = Dimensions.get('window').width;
 var shareClass = NativeModules.ZNShareClass;
-
+let Platform = require('Platform');
+const IS_ANDROID = Platform.OS === 'android';
 
 
 
@@ -410,19 +411,46 @@ export default class CarMySourceScene extends BaceComponent {
 
     // 多图分享
     sharedMoreImage=(carData)=>{
-        let shareArray = [];
-        for (let i =0;i<carData.imgs.length;i++)
-        {
-            shareArray.push({image:carData.imgs[i].url});
+
+        if(IS_ANDROID == true){
+            let shareArray = [];
+            for (let i =0;i<carData.imgs.length;i++)
+            {
+                shareArray.push(carData.imgs[i].url);
+            }
+            let carContent = carData.model_name;
+            if (carData.city_name != "") {
+
+                carContent += '\n'+carData.city_name + '\n';
+            }
+            if (carData.plate_number != "") {
+
+                carContent += carData.plate_number.substring(0, 2);
+            }
+            if (carData.carIconsContentData[0] != "") {
+
+                carContent += "\n" + carData.carIconsContentData[0] + '出厂';
+            }
+            NativeModules.ShareNative.share({image:[shareArray],title:[carContent]}).then((suc)=>{
+                }, (fail)=>{
+                    this.props.showToast('分享已取消');
+                }
+            )
+        }else {
+            let shareArray = [];
+            for (let i =0;i<carData.imgs.length;i++)
+            {
+                shareArray.push({image:carData.imgs[i].url});
+            }
+            shareClass.shareAction([shareArray]).then((data) => {
+
+                this.props.showToast('分享成功');
+
+            }, (error) => {
+
+                this.props.showToast('分享已取消');
+            });
         }
-
-        shareClass.shareAction([shareArray]).then((data) => {
-
-            this.props.showToast('分享成功');
-
-        }, (error) => {
-            this.props.showToast('取消分享');
-        });
 
 
     }

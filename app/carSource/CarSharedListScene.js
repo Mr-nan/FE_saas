@@ -28,6 +28,8 @@ import CarInfoScene from "./CarInfoScene";
 const Pixel = new PixelUtil();
 var ScreenWidth = Dimensions.get('window').width;
 var shareClass = NativeModules.ZNShareClass;
+let Platform = require('Platform');
+const IS_ANDROID = Platform.OS === 'android';
 
 let carUpperFrameData = [];
 let carUpperFramePage = 1;
@@ -291,23 +293,58 @@ export default class CarSharedListScene extends BaceComponent{
 
         if(type==1){
 
-           let carShareItemArray = [];
-           for(let carData of carShareArray){
-               let imagArray = [];
-               for (let i =0;i<carData.imgs.length;i++)
-               {
-                   imagArray.push({image:carData.imgs[i].url});
+           if(IS_ANDROID == true)
+           {
+               let carShareItemArray = [];
+               let carShareItemTitle = [];
+               for(let carData of carShareArray){
+                   let imagArray = [];
+                   for (let i =0;i<carData.imgs.length;i++)
+                   {
+                       imagArray.push(carData.imgs[i].url);
+                   }
+                   carShareItemArray.push(imagArray);
+
+                   let carContent = carData.model_name;
+                   if (carData.city_name != "") {
+
+                       carContent += '\n'+carData.city_name + '\n';
+                   }
+                   if (carData.plate_number != "") {
+
+                       carContent += carData.plate_number.substring(0, 2);
+                   }
+                   if (carData.carIconsContentData[0] != "") {
+
+                       carContent += "\n" + carData.carIconsContentData[0] + '出厂';
+                   }
+                   carShareItemTitle.push(carContent);
                }
-               carShareItemArray.push(imagArray);
+               NativeModules.ShareNative.share({image:carShareItemArray,title:carShareItemTitle}).then((suc)=>{
+                   }, (fail)=>{
+                       this.props.showToast('分享已取消');
+                   }
+               );
+           }else {
+               let carShareItemArray = [];
+               for(let carData of carShareArray){
+                   let imagArray = [];
+                   for (let i =0;i<carData.imgs.length;i++)
+                   {
+                       imagArray.push({image:carData.imgs[i].url});
+                   }
+                   carShareItemArray.push(imagArray);
+               }
+               shareClass.shareAction(carShareItemArray).then((data) => {
+
+                   this.props.showToast(data);
+
+               }, (error) => {
+
+                   this.props.showToast('分享已取消');
+               });
            }
-           shareClass.shareAction(carShareItemArray).then((data) => {
 
-               this.props.showToast(data);
-
-           }, (error) => {
-
-               this.props.showToast('分享已取消');
-           });
        }
        else if(type==2)
        {
@@ -325,9 +362,7 @@ export default class CarSharedListScene extends BaceComponent{
 
            console.log(carInfoItemArray);
            shareClass.shareAction(carInfoItemArray).then((data) => {
-
                this.props.showToast(data);
-
            }, (error) => {
 
                this.props.showToast('分享已取消');
@@ -341,18 +376,47 @@ export default class CarSharedListScene extends BaceComponent{
                this.props.showToast('多车分享最多不能超过9辆');
                return;
            }
-           let carShareItemArray = [];
-           for(let carData of carShareArray){
-               carShareItemArray.push({image:carData.img});
+
+           if(IS_ANDROID ==true){
+               let carShareItemArray = [];
+               let carShareItemTitle = '';
+               for(let carData of carShareArray){
+                   carShareItemArray.push(carData.img);
+                   let carContent = carData.model_name;
+                   if (carData.city_name != "") {
+
+                       carContent += '\n'+carData.city_name + '\n';
+                   }
+                   if (carData.plate_number != "") {
+
+                       carContent += carData.plate_number.substring(0, 2);
+                   }
+                   if (carData.carIconsContentData[0] != "") {
+
+                       carContent += "\n" + carData.carIconsContentData[0] + '出厂';
+                   }
+                   carShareItemTitle+=(carShareItemTitle+'\n');
+               }
+               NativeModules.ShareNative.share({image:[carShareItemArray],title:[carShareItemTitle]}).then((suc)=>{
+                   }, (fail)=>{
+                       this.props.showToast('分享已取消');
+                   }
+               );
+
+           }else {
+               let carShareItemArray = [];
+               for(let carData of carShareArray){
+                   carShareItemArray.push({image:carData.img});
+               }
+               shareClass.shareAction([carShareItemArray]).then((data) => {
+
+                   this.props.showToast(data);
+
+               }, (error) => {
+
+                   this.props.showToast('分享已取消');
+               });
            }
-           shareClass.shareAction([carShareItemArray]).then((data) => {
-
-               this.props.showToast(data);
-
-           }, (error) => {
-
-               this.props.showToast('分享已取消');
-           });
        }
 
     }
