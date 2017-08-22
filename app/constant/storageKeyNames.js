@@ -1,5 +1,5 @@
-export const VERSON_NAME = "3.7.0"; // 版本名
-export const VERSON_CODE = "20"; // 版本号
+export const VERSON_NAME = "3.8.0"; // 版本名
+export const VERSON_CODE = "21"; // 版本号
 export const ISLOGIN = "islogin";//标识用户是否登录
 export const CAR_SEARCH = "car_search";
 export const CITY_SEARCH = "city_search";
@@ -24,3 +24,4 @@ export const NEED_GESTURE = "need_gesture"; //	是否需要手势解锁
 /* userinfo end */
 export const NEED_OPENBRAND = "need_openbrand"; //	需要打开车型列表
 export const NEED_CHECK_RECOMMEND = "checkRecommend";   // 取消推荐车源
+export const NEED_TOAST_ERROR = "need_toast_error";   // 登录界面是否需要弹出异常提示
