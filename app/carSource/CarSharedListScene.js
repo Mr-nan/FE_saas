@@ -490,7 +490,7 @@ export default class CarSharedListScene extends BaceComponent{
                         webpageUrl: sharData.url,
                         thumbImage: sharData.image,
 
-                    }).catch((resp)=>{
+                    }).then((resp)=>{
                         this.batchIndex++;
                         this.batchSharedData();
                         console.log('分享成功');
@@ -519,7 +519,7 @@ export default class CarSharedListScene extends BaceComponent{
                         webpageUrl: sharData.url,
                         thumbImage: sharData.image,
 
-                    }).catch((resp)=>{
+                    }).then((resp)=>{
 
                         this.batchIndex++;
                         this.batchSharedData();
