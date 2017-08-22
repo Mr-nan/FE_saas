@@ -151,11 +151,11 @@ export default class ClientAddScene extends BaseComponent {
     submitClientInfo = () => {
         if (this.checkInfo()) {
             //console.log('this.clientInfo=====', this.clientInfo);
-/*            let maps = [];
+            let maps = [];
             for (let i = 0; i < this.clientInfo.length; i++) {
                 maps[this.clientInfo[i].parameter] = this.clientInfo[i].value;
-            }*/
-            let maps = {
+            }
+/*            let maps = {
                 outTime: "2017-08-01 10:25:00",
                 inTime: "2017-08-01 09:25:00",
                 mobiles: "18000000002",
@@ -169,7 +169,7 @@ export default class ClientAddScene extends BaseComponent {
                 customerPhone: "13401091926",
                 customerName: "ceshi444",
                 customerCome: 1
-            };
+            };*/
             let url = AppUrls.CUSTOMER_ADD_URL;
             request(url, 'post', maps).then((response) => {
 

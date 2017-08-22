@@ -137,6 +137,10 @@ export default class KeepCustomerManageScene extends BaseComponent {
         this.selectMonth = '选择月份';
     };
 
+    /**
+     *
+     * @param newMonth
+     **/
     updateMonth = (newMonth) => {
         this.selectMonth = newMonth;
         this.selectAddTime();

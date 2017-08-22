@@ -39,6 +39,8 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
      **/
     constructor(props) {
         super(props);
+        this.timeSelect = '今天';
+        this.selectMonth = '选择月份';
         this.potentialClientList = [];
         this.state = {
             dataSource: [],
@@ -72,7 +74,7 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                     mobile: data.result,
                     //token: '5afa531b-4295-4c64-8d6c-ac436c619078',
                     xxly: '全部车源',
-                    khjb: '全部级别',
+                    khjb: '所有级别',
                     dfzp: '全部状态',
                     gmys: '所有预算',
                     pc: 1,
@@ -140,7 +142,9 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                         <View style={{flex: 1, alignItems: 'center'}}>
                             <ClientScreeningSelectButton
                                 style={{flex: 1}}
-                                ref="but1" title="今天" index={1} btnClick={this.selectAddTime}/>
+                                ref={(ref) => {
+                                    this.btn1 = ref
+                                }} title="今天" index={1} btnClick={this.selectAddTime}/>
                         </View>
                         <View style={styles.lineView}>
                             <View style={styles.line}/>
@@ -148,7 +152,9 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                         <View style={{flex: 1, alignItems: 'center'}}>
                             <ClientScreeningSelectButton
                                 style={{flex: 1}}
-                                ref="but2" title="筛选" index={2} btnClick={this.selectFilterItems}/>
+                                ref={(ref) => {
+                                    this.btn2 = ref
+                                }} title="筛选" index={2} btnClick={this.selectFilterItems}/>
                         </View>
                     </Image>
                     <ListView style={{backgroundColor: fontAndColor.COLORA3}}
@@ -157,7 +163,12 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                               renderRow={this._renderRow}
                               enableEmptySections={true}
                               renderSeparator={this._renderSeperator}/>
-                    {this.state.addTimeHide && <ClientAddTimeSelectView hideView={this.selectAddTime}/>}
+                    {this.state.addTimeHide && <ClientAddTimeSelectView hideView={this.selectAddTime}
+                                                                        selectMonth={this.selectMonth}
+                                                                        updateMonth={this.updateMonth}
+                                                                        currentSelect={this.timeSelect}
+                                                                        callBack={this.updateTimeSelect}/>}
+
                     {this.state.selectFilterHide && <ClientScreeningView hideView={this.selectFilterItems}/>}
                 </View>
             );
@@ -211,7 +222,28 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                 </View>
             </TouchableOpacity>
         )
-    }
+    };
+
+    /**
+     *
+     **/
+    updateTimeSelect = (newTime) => {
+        this.timeSelect = newTime;
+        this.selectAddTime();
+        this.btn1.setTitle(this.timeSelect);
+        this.selectMonth = '选择月份';
+    };
+
+    /**
+     *
+     * @param newMonth
+     **/
+    updateMonth = (newMonth) => {
+        this.selectMonth = newMonth;
+        this.selectAddTime();
+        this.btn1.setTitle(this.selectMonth);
+        this.timeSelect = '';
+    };
 
     /**
      *  筛选项选择
