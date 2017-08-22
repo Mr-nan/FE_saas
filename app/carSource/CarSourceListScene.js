@@ -428,7 +428,6 @@ export  default  class carSourceListScene extends BaseComponent {
 
                 let {checkedCarType,checkedCarAgeType,checkedCarKMType,checkedCarGenre,checkedCity,checkedCarPrice,checkedCarDischarge,checkedCarColor,checkedCarNature}= this.state;
                 let screeningObject = {
-
                     checkedCarType:{title:checkedCarType.title,brand_id:checkedCarType.brand_id,series_id:checkedCarType.series_id},
                     checkedCarAgeType:{title:checkedCarAgeType.title,value:checkedCarAgeType.value},
                     checkedCarKMType:{title:checkedCarKMType.title,value:checkedCarKMType.value},

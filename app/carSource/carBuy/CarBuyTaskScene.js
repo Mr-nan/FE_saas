@@ -683,7 +683,7 @@ export default class CarBuyTaskScene extends BaseComponent{
             titleData:this.titleData1,
             keyboardOffset:-Pixel.getPixel(64),
             isDateTimePickerVisible:false,
-            renderPlaceholderOnly:'success'
+            renderPlaceholderOnly:'loading'
         };
       }
 
