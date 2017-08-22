@@ -172,6 +172,7 @@ dependencies {
         compile project(':react-native-vin-scan')
         compile project(':react-native-qr-scan')
         compile project(':react-native-custom-camera')
+        compile project(':react-native-share-wechat')
         compile project(':react-native-wheel-picker')
         compile project(':RCTWeChat')
         compile project(':react-native-code-push')
