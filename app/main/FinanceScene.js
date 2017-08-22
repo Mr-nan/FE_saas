@@ -27,6 +27,7 @@ let allPage = 0;
 import  HomeHeaderItem from './component/HomeHeaderItem';
 import  PixelUtil from '../utils/PixelUtil'
 import KurongDetaileScene from '../finance/lend/KurongDetaileScene';
+import ChedidaiDetaileScene from '../finance/lend/ChedidaiDetaileScene';
 import DDDetailScene from '../finance/lend/DDDetailScene';
 import DDApplyLendScene from '../finance/lend/DDApplyLendScene';
 
@@ -484,7 +485,7 @@ export default class FinanceSence extends BaseComponet {
                 this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB4}];
                 this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB4}];
             }else if(movie.type == 8){
-                nextPage = KurongDetaileScene;
+                nextPage = ChedidaiDetaileScene;
                 this.buttonParams.content = '车抵贷';
                 this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB4}];
                 this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB4}];

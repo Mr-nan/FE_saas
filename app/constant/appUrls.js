@@ -582,6 +582,14 @@ export const GET_PAYMENT_SCHEDULE_ALL = 'api/v1/account/get_payment_schedule'
  * 修改借款金额
  **/
 export const SET_APPLY_MNY = 'api/v3/account/set_apply_mny'
+
+/**
+ * from 黄宁
+ *
+ * 车抵贷 修改借款金额
+ **/
+export const CARLOAN_SET_APPLY_MNY = 'api/v3/carloan/set_apply_mny'
+
 /**
  * from @lhc
  * 获取订单车辆列表
@@ -604,6 +612,11 @@ export const GET_CAR_INFO = 'api/v1/account/get_car_info'
  **/
 export const CANCEL_LOAN = 'api/v3/account/cancel_loan'
 
+/**
+ * from @huangning
+ * 取消借款
+ **/
+export const CARLOAN_CANCEL_LOAN = 'api/v3/carloan/cancel_loan'
 
 /**
  * from @zhaojian
@@ -753,6 +766,11 @@ export const APPLY_EXTENSION_CARLIST = 'api/v1/account/apply_extension_carlist';
  **/
 export const APPLY_LOAN = 'api/v3/account/apply_loan'
 
+/**
+ * from huangning
+ * 车抵贷申请借款
+ */
+export const CARLOAN_APPLY_LOAN = 'api/v3/carloan/apply_loan'
 
 /**
  * from @huagnning

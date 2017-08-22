@@ -215,7 +215,7 @@ export  default  class KurongDetaileScene extends BaseComponent {
 
         if (controlCode.changeMoney !== '') {
             let maps = {
-                api: apis.SET_APPLY_MNY,
+                api: apis.CARLOAN_SET_APPLY_MNY,
                 loan_code: this.props.loanNumber,
                 loan_mny: controlCode.changeMoney,
             };
@@ -343,7 +343,7 @@ export  default  class KurongDetaileScene extends BaseComponent {
         this.props.showModal(true);
 
         let maps = {
-            api: apis.CANCEL_LOAN,
+            api: apis.CARLOAN_CANCEL_LOAN,
             loan_code: this.props.loanNumber
         }
         request(apis.FINANCE, 'Post', maps)

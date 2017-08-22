@@ -167,7 +167,7 @@ export default class ChedidaiSence extends BaseComponent {
         if (infoComolete) {
 
             let maps = {
-                api: apis.APPLY_LOAN,
+                api: apis.CARLOAN_APPLY_LOAN,
                 apply_type: PostData.apply_type,
                 loan_mny: PostData.loan_mny,
                 remark: PostData.remark,
