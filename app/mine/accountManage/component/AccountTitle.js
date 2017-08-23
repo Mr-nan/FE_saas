@@ -11,7 +11,8 @@ import {
     Dimensions,
     TouchableOpacity,
     ListView,
-    InteractionManager
+    InteractionManager,
+	Clipboard,
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
@@ -102,11 +103,21 @@ export  default class AccountTitle extends PureComponent {
             <View style={{width:width,height:Pixel.getPixel(540),backgroundColor:fontAndColor.COLORA3}}>
                 <View style={{width:width,height:Pixel.getPixel(211),backgroundColor:fontAndColor.COLORB0}}>
                     <View style={{width:width,height:Pixel.getPixel(35),backgroundColor:'rgba(105,105,105,0.1)',
-                justifyContent:'center'}}>
+                    flexDirection: 'row',alignItems:'center'}}>
                         <Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(20),color: '#fff',
                      fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>
                             账户号码：{this.props.info.bank_card_no}
                         </Text>
+                        <View style={{flex:1}}></View>
+                        <TouchableOpacity onPress={()=>{  Clipboard.setString(this.props.info.bank_card_no);this.props.copy('复制成功');}} activeOpacity={0.9}
+                                          style = {{borderColor:'white',borderWidth:Pixel.getPixel(1),
+                                          marginRight:Pixel.getPixel(10),alignItems:'center',justifyContent:'center',
+                                          padding:Pixel.getPixel(5)}}>
+
+                            <Text allowFontScaling={false}
+                                  style={{color:fontAndColor.COLORA3,fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28)}}>复制</Text>
+                        </TouchableOpacity>
+
                     </View>
                     <View style={{width:width,height:Pixel.getPixel(175)}}>
                         <View

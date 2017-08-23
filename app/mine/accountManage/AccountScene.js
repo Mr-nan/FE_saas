@@ -264,6 +264,9 @@ export  default class AccountScene extends BaseComponent {
                           frozen={()=>{
                               {/*this.toNextPage({name:'FrozenScene',component:FrozenScene,params:{}})*/}
                           }}
+                          copy={(number)=>{
+                              this.props.showToast(number);
+                          }}
                           transfer={()=>{this.toNextPage({name:'TransferScene',
                           component:TransferScene,params:{money:this.state.info.balance,callBack:()=>{
                               this.allRefresh()}}})}}

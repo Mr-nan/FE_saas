@@ -34,7 +34,8 @@ export  default class WaitActivationAccountScene extends BaseComponent {
         // 初始状态
         this.state = {
             renderPlaceholderOnly: 'blank',
-            cardNumber:''
+            cardNumber:'',
+            type:''
         };
     }
 
@@ -54,7 +55,8 @@ export  default class WaitActivationAccountScene extends BaseComponent {
                     .then((response) => {
                         this.setState({
                             renderPlaceholderOnly:'success',
-                            cardNumber:response.mjson.data.account.bank_card_no
+                            cardNumber:response.mjson.data.account.bank_card_no,
+                            type:response.mjson.data.account.account_open_type,//1 企业   2 个人
                         });
                         },
                         (error) => {
@@ -83,19 +85,24 @@ export  default class WaitActivationAccountScene extends BaseComponent {
                         </View>
                         <View style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(1),justifyContent:'center',
                     alignItems: 'center',backgroundColor: fontAndColor.COLORA3}}></View>
-                        <View style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(102),justifyContent:'center',
+                        <View style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(136),justifyContent:'center',
                     }}>
                             <Text allowFontScaling={false} 
                                 style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(7)}}>
-                                您的企业账户已经绑定，请进行激活，激活方式如下：
+                                {this.state.type === 1} ? {'您以企业名义开通的企业账户已经绑定，请进行激活，激活方式如下：'}:
+                                {' 您以个人名义开通的企业账户已经绑定，请进行激活，激活方式如下：'}
                             </Text>
                             <Text allowFontScaling={false} 
                                 style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(7)}}>
-                                1.用您的企业绑定账户向现金账户转账随机金额(0.1~3)元
+                                1.请以恒丰银行发送短信告知的具体转账验证信息和金额（0.1-3元）为准；
+                            </Text>
+                            <Text allowFontScaling={false}
+                                  style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(7)}}>
+                                2.开户行的名称：恒丰银行股份有限公司北京分行长安街支行；
                             </Text>
                             <Text allowFontScaling={false} 
                                 style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(7)}}>
-                                2.恒丰银行对转账金额进行确认，确认无误账户激活
+                                3.恒丰银行对转账金额进行确认，确认无误账户激活。
                             </Text>
                         </View>
                     </View>
