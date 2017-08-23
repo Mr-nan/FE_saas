@@ -75,7 +75,7 @@ export  default  class KurongDetaileScene extends BaseComponent {
 
     getLendinfo = () => {
         let maps = {
-            api: apis.GET_APPLY_INFO,
+            api: apis.CARLOAN_LOAN_INFO,
             loan_code: this.props.loanNumber
         };
         request(apis.FINANCE, 'Post', maps)

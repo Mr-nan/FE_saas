@@ -569,6 +569,15 @@ export const GET_MNY = 'api/v3/account/get_mny';
  * 获取借款首页数据
  **/
 export const GET_APPLY_INFO = 'api/v3/account/get_apply_info';
+
+/**
+ * from @huangning
+ *
+ * 获取借款首页数据
+ * 获取借款详情
+ **/
+export const CARLOAN_LOAN_INFO = 'api/v3/carloan/loan_info';
+
 /**
  * from @lhc
  *

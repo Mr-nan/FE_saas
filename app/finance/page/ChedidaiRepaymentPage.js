@@ -162,7 +162,7 @@ export  default class ChedidaiRepaymentPage extends BaseComponent {
             }} activeOpacity={0.8} style={[styles.allBack]}>
                 <View style={[styles.rowViewStyle, styles.margin]}>
                     <View style={[styles.rowTopViewStyle, {justifyContent: 'flex-start', flex: 3,}]}>
-                        <MyButton {...this.buttonParams} content="车抵贷"/>
+                        <MyButton {...this.buttonParams} content="车抵"/>
                         <Text allowFontScaling={false}  style={styles.rowTopTextStyle}>{this.props.customerName}</Text>
                     </View>
                     <View style={[styles.rowTopViewStyle, {
