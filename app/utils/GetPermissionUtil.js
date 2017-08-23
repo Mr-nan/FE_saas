@@ -5,9 +5,9 @@ import {
 } from 'react-native';
 import StoreReceptionManageNewScene from "../crm/StoresReception/StoreReceptionManageNewScene";
 import KeepCustomerManageScene from "../crm/KeepCustomer/KeepCustomerManageScene";
-import BacklogListScene from "../message/backlog/BacklogListScene";
+import {BacklogListScene} from "../message/backlog/BacklogListScene";
 import DailyReminderScene from "../message/dailyReminder/DailyReminderScene";
-import HeadLineListScene from "../message/headLine/HeadLineListScene";
+import {HeadLineListScene} from "../message/headLine/HeadLineListScene";
 import Setting from "../mine/setting/Setting";
 import CarMySourceScene from "../carSource/CarMySourceScene";
 import CarPublishFirstScene from "../carSource/carPublish/CarPublishFirstScene";
@@ -15,162 +15,174 @@ import CarTrimScene from "../carSource/carBuy/CarTrimScene";
 import CarBuyScene from "../carSource/carBuy/CarBuyScene";
 import CollectionIntent from "../collectionIntent/CollectionIntent";
 import CarSharedListScene from "../carSource/CarSharedListScene";
-import StoreReceptionManageScene from "../crm/StoresReception/StoreReceptionManageScene";
-import MessageListScene from "../message/MessageListScene";
-import SysMessageListScene from "../message/sysMessage/SysMessageListScene";
-const data = require('./quanxian.json');
+import {SysMessageListScene} from "../message/sysMessage/SysMessageListScene";
+import  StorageUtil from './StorageUtil';
+import * as storageKeyNames from '../constant/storageKeyNames';
 const GetPermissionUtil = React.createClass({
 
     render(){
         return null;
+    }, getData(callBack){
+        StorageUtil.mGetItem(storageKeyNames.GET_USER_PERMISSION, (result) => {
+            if (result.code == 1) {
+                let data = JSON.parse(result.result);
+                callBack(data);
+            } else {
+            }
+        })
     },
     /**
      * from @zhaojian
      *
      * 获取底部导航栏权限列表
      **/
-    getFirstList(){
-        let list = [];
-        let image = {};
-        let unImage = {};
-        let ref = '';
-        data.data.response.sort(function (a, b) {
-            return a.sort_id - b.sort_id;
-        });
-        for (let i = 0; i < data.data.response.length; i++) {
-            if (data.data.response[i].id == 1) {
-                image = require('../../images/mainImage/homeSelect.png');
-                unImage = require('../../images/mainImage/homeUnSelect.png');
-                ref = 'firstpage';
-            } else if (data.data.response[i].id == 2) {
-                image = require('../../images/mainImage/carSelect.png');
-                unImage = require('../../images/mainImage/carUnSelect.png');
-                ref = 'carpage';
-            } else if (data.data.response[i].id == 3) {
-                image = require('../../images/workbench/gztxz.png');
-                unImage = require('../../images/workbench/gztwxz.png');
-                ref = 'sendpage';
-            } else if (data.data.response[i].id == 4) {
-                image = require('../../images/mainImage/moneySelect.png');
-                unImage = require('../../images/mainImage/moneyUnSelect.png');
-                ref = 'financePage';
-            } else if (data.data.response[i].id == 5) {
-                image = require('../../images/mainImage/mineSelect.png');
-                unImage = require('../../images/mainImage/mineUnSelect.png');
-                ref = 'mypage';
-            }
-            list.push({
-                name: data.data.response[i].name, id: data.data.response[i].id,
-                image: image, unImage: unImage, ref: ref, key: 'page' + data.data.response[i].id
-            });
-        }
-        return list;
-    }, getLastList(){
-        let list = [];
-        data.data.response.sort(function (a, b) {
-            return a.sort_id - b.sort_id;
-        });
-        for (let i = 0; i < data.data.response.length; i++) {
-            data.data.response[i].children.sort(function (a, b) {
+    getFirstList(callBack){
+        this.getData((data) => {
+            console.log(data);
+            let list = [];
+            let image = {};
+            let unImage = {};
+            let ref = '';
+            data.data.sort(function (a, b) {
                 return a.sort_id - b.sort_id;
             });
-            for (let j = 0; j < data.data.response[i].children.length; j++) {
-                data.data.response[i].children[j].children.sort(function (a, b) {
-                    return a.sort_id - b.sort_id;
+            for (let i = 0; i < data.data.length; i++) {
+                if (data.data[i].id == 1) {
+                    image = require('../../images/mainImage/homeSelect.png');
+                    unImage = require('../../images/mainImage/homeUnSelect.png');
+                    ref = 'firstpage';
+                } else if (data.data[i].id == 2) {
+                    image = require('../../images/mainImage/carSelect.png');
+                    unImage = require('../../images/mainImage/carUnSelect.png');
+                    ref = 'carpage';
+                } else if (data.data[i].id == 3) {
+                    image = require('../../images/workbench/gztxz.png');
+                    unImage = require('../../images/workbench/gztwxz.png');
+                    ref = 'sendpage';
+                } else if (data.data[i].id == 4) {
+                    image = require('../../images/mainImage/moneySelect.png');
+                    unImage = require('../../images/mainImage/moneyUnSelect.png');
+                    ref = 'financePage';
+                } else if (data.data[i].id == 5) {
+                    image = require('../../images/mainImage/mineSelect.png');
+                    unImage = require('../../images/mainImage/mineUnSelect.png');
+                    ref = 'mypage';
+                }
+                list.push({
+                    name: data.data[i].name, id: data.data[i].id,
+                    image: image, unImage: unImage, ref: ref, key: 'page' + data.data[i].id
                 });
             }
-        }
-        for (let i = 0; i < data.data.response.length; i++) {
-            if (data.data.response[i].id == 3) {
-                for (let j = 0; j < data.data.response[i].children.length; j++) {
-                    for (let k = 0; k < data.data.response[i].children[j].children.length; k++) {
-                        list.push(this.getInfoById(data.data.response[i].children[j].children[k].id,
-                            data.data.response[i].children[j].children[k].name));
+            callBack(list);
+        });
+    }, getLastList(callBack){
+        this.getData((data) => {
+            let list = [];
+            data.data.sort(function (a, b) {
+                return a.sort_id - b.sort_id;
+            });
+            for (let i = 0; i < data.data.length; i++) {
+                data.data[i].children.sort(function (a, b) {
+                    return a.sort_id - b.sort_id;
+                });
+                for (let j = 0; j < data.data[i].children.length; j++) {
+                    data.data[i].children[j].children.sort(function (a, b) {
+                        return a.sort_id - b.sort_id;
+                    });
+                }
+            }
+            for (let i = 0; i < data.data.length; i++) {
+                if (data.data[i].id == 3) {
+                    for (let j = 0; j < data.data[i].children.length; j++) {
+                        for (let k = 0; k < data.data[i].children[j].children.length; k++) {
+                            list.push(this.getInfoById(data.data[i].children[j].children[k].id,
+                                data.data[i].children[j].children[k].name));
+                        }
                     }
                 }
             }
-        }
-        return this.removal(list);
+            callBack(this.removal(list));
+        });
     }, getInfoById(id, name){
         let image = {};
         let names = '';
         let component = {};
         let componentName = '';
-        if (id == 20) {
+        if (id == 30) {
             image = require('../../images/workbench/fc.png');
             names = name;
             component = CarPublishFirstScene;
             componentName = 'carpublishfirstscene';
-        } else if (id == 21 || id == 22 || id == 23 || id == 24 || id == 25) {
+        } else if (id == 31 || id == 32 || id == 33 || id == 34 || id == 35) {
             image = require('../../images/workbench/zb.png');
             names = '整备';
             component = CarTrimScene;
             componentName = 'cartrimscene';
-        } else if (id == 19) {
+        } else if (id == 29) {
             image = require('../../images/workbench/kcgl.png');
             names = name;
             component = CarMySourceScene;
             componentName = 'carmysourcescene';
-        } else if (id == 26) {
+        } else if (id == 36) {
             image = require('../../images/workbench/sc.png');
             names = name;
             component = CarBuyScene;
             componentName = 'carbuyscene';
-        } else if (id == 28) {
+        } else if (id == 38) {
             image = require('../../images/workbench/mdjd.png');
             names = name;
             component = StoreReceptionManageNewScene;
             componentName = 'storereceptionmanagenewscene';
-        } else if (id == 29) {
+        } else if (id == 39) {
             image = require('../../images/workbench/khgl.png');
             names = name;
             component = KeepCustomerManageScene;
             componentName = 'keepcustomermanagescene';
-        } else if (id == 27) {
+        } else if (id == 37) {
             image = require('../../images/workbench/yxzx.png');
             names = name;
             component = Setting;
             componentName = 'setting';
-        } else if (id == 17) {
+        } else if (id == 27) {
             image = require('../../images/workbench/plfx.png');
             names = name;
             component = CarSharedListScene;
             componentName = 'carsharedlistscene';
-        } else if (id == 30) {
+        } else if (id == 41) {
             image = require('../../images/workbench/dbsx.png');
             names = name;
             component = BacklogListScene;
             componentName = 'backloglistscene';
-        } else if (id == 31) {
+        } else if (id == 42) {
             image = require('../../images/workbench/mrtx.png');
             names = name;
             component = DailyReminderScene;
             componentName = 'dailyreminderscene';
-        } else if (id == 33) {
+        } else if (id == 44) {
             image = require('../../images/workbench/hdxx.png');
             names = name;
-            component = MessageListScene;
-            componentName = 'messagelistscene';
-        } else if (id == 18) {
+            component = Setting;
+            componentName = 'setting';
+        } else if (id == 28) {
             image = require('../../images/workbench/dycy.png');
             names = name;
             component = CollectionIntent;
             componentName = 'collectionintent';
-        } else if (id == 32) {
+        } else if (id == 43) {
             image = require('../../images/workbench/cstt.png');
             names = name;
             component = HeadLineListScene;
             componentName = 'headlinelistscene';
-        } else if (id == 34) {
+        } else if (id == 45) {
             image = require('../../images/workbench/xtxx.png');
             names = name;
             component = SysMessageListScene;
             componentName = 'sysmessagelistscene';
-        }else if (id == 46) {
+        } else if (id == 40) {
             image = require('../../images/workbench/wd.png');
             names = name;
-            component = MessageListScene;
-            componentName = 'messagelistscene';
+            component = SysMessageListScene;
+            componentName = 'sysmessagelistscene';
         }
         return {name: names, id: id, image: image, component: component, componentName: componentName}
     }, removal(array){
@@ -181,72 +193,55 @@ const GetPermissionUtil = React.createClass({
             r.push(array[i]);
         }
         return r;
-    }, getAllList(){
-        let list = [];
-        data.data.response.sort(function (a, b) {
-            return a.sort_id - b.sort_id;
-        });
-        for (let i = 0; i < data.data.response.length; i++) {
-            data.data.response[i].children.sort(function (a, b) {
+    }, getAllList(callBack){
+        this.getData((data) => {
+            let list = [];
+            data.data.sort(function (a, b) {
                 return a.sort_id - b.sort_id;
             });
-            for (let j = 0; j < data.data.response[i].children.length; j++) {
-                data.data.response[i].children[j].children.sort(function (a, b) {
+            for (let i = 0; i < data.data.length; i++) {
+                data.data[i].children.sort(function (a, b) {
                     return a.sort_id - b.sort_id;
                 });
-            }
-        }
-        for (let i = 0; i < data.data.response.length; i++) {
-            if (data.data.response[i].id == 3) {
-                for (let j = 0; j < data.data.response[i].children.length; j++) {
-                    let childList = [];
-                    for (let k = 0; k < data.data.response[i].children[j].children.length; k++) {
-                        childList.push(this.getInfoById(data.data.response[i].children[j].children[k].id,
-                            data.data.response[i].children[j].children[k].name));
-                    }
-                    list.push({
-                        name: data.data.response[i].children[j].name,
-                        id: data.data.response[i].children[j].id,
-                        childList: this.removal(childList)
+                for (let j = 0; j < data.data[i].children.length; j++) {
+                    data.data[i].children[j].children.sort(function (a, b) {
+                        return a.sort_id - b.sort_id;
                     });
                 }
             }
-        }
-        return list;
-
-    }, getRoleList(){
-        let list = [];
-        for (let i = 0; i < data.data.response.length; i++) {
-            if (data.data.response[i].id == 3) {
-                for (let j = 0; j < data.data.response[i].children.length; j++) {
-                    for (let k = 0; k < data.data.response[i].children[j].children.length; k++) {
-                        let id = data.data.response[i].children[j].children[k].id;
-                        if (id == 21 || id == 22 || id == 23 || id == 24 || id == 25) {
-                            list.push({
-                                id: data.data.response[i].children[j].children[k].id,
-                                name: data.data.response[i].children[j].children[k].name
-                            });
+            for (let i = 0; i < data.data.length; i++) {
+                if (data.data[i].id == 3) {
+                    for (let j = 0; j < data.data[i].children.length; j++) {
+                        let childList = [];
+                        for (let k = 0; k < data.data[i].children[j].children.length; k++) {
+                            childList.push(this.getInfoById(data.data[i].children[j].children[k].id,
+                                data.data[i].children[j].children[k].name));
                         }
-                    }
-                }
-            }
-        }
-        return list;
-    }, getMineList(){
-        let list = [];
-        for (let i = 0; i < data.data.response.length; i++) {
-            if (data.data.response[i].id == 5) {
-                for (let j = 0; j < data.data.response[i].children.length; j++) {
-                    for (let k = 0; k < data.data.response[i].children[j].children.length; k++) {
                         list.push({
-                            id: data.data.response[i].children[j].children[k].id,
-                            name: data.data.response[i].children[j].children[k].name
+                            name: data.data[i].children[j].name,
+                            id: data.data[i].children[j].id,
+                            childList: this.removal(childList)
                         });
                     }
                 }
             }
-        }
-        return list;
+            callBack(list);
+        });
+    }, getMineList(callBack){
+        this.getData((data) => {
+            let list = [];
+            for (let i = 0; i < data.data.length; i++) {
+                if (data.data[i].id == 5) {
+                    for (let j = 0; j < data.data[i].children.length; j++) {
+                        list.push({
+                            id: data.data[i].children[j].id,
+                            name: data.data[i].children[j].name
+                        });
+                    }
+                }
+            }
+            callBack(list);
+        });
     }
 });
 

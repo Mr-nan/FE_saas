@@ -47,11 +47,13 @@ export default class NonCreditScene extends BaseComponent {
     }
 
     initFinish = () => {
-        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.setState({
-            renderPlaceholderOnly: 'success',
-            source: ds.cloneWithRows(GetPermission.getAllList())
-        });
+        GetPermission.getAllList((perList) => {
+            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+            this.setState({
+                renderPlaceholderOnly: 'success',
+                source: ds.cloneWithRows(perList)
+            });
+        })
     }
 
 

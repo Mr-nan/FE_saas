@@ -22,15 +22,22 @@ export default class HomeJobItem extends PureComponent {
         super(props);
         this.state = {
             width: 0,
-            height: 0
+            height: 0,
+            show: false
         }
     }
 
     componentWillMount() {
-        this.list = GetPermission.getLastList();
+        GetPermission.getLastList((preList) => {
+            this.list = preList;
+            this.setState({show: true});
+        });
     }
 
     render() {
+        if(this.state.show==false){
+            return <View></View>
+        }
         let firstChild = [];
         let lastChild = [];
         for (let i = 0; i < this.list.length; i++) {

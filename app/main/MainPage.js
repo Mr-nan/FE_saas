@@ -90,7 +90,7 @@ export default class MainPage extends BaseComponent {
             if (childdata.code == 1) {
                 let childdatas = JSON.parse(childdata.result);
                 this.is_done_credit = childdatas.is_done_credit;
-                this.getUserPermission();
+                this.getUserPermission(childdatas.company_base_id);
             } else {
                 this.setState({renderPlaceholderOnly: 'error'});
             }
@@ -103,45 +103,34 @@ export default class MainPage extends BaseComponent {
     }
 
     getUserPermission = (id) => {
-
-        let list = GetPermission.getFirstList();
-                                for (let i = 0; i < list.length; i++) {
-                                    tabArray.push(new tableItemInfo(list[i].ref, list[i].key, list[i].name, list[i].image,
-                                        list[i].unImage, this.getTopView(list[i].ref)));
-                                }
-                                this.setState({
-                                    selectedTab: tabArray[0].ref,
-                                    renderPlaceholderOnly: 'success'
+        let maps = {
+            enterprise_uid: id
+        };
+        request(Urls.GETFUNCTIONBYTOKENENTER, 'Post', maps)
+            .then((response) => {
+                    if (response.mjson.data == null || response.mjson.data.length <= 0) {
+                        this.setState({
+                            renderPlaceholderOnly: 'null',
+                        });
+                    } else {
+                        StorageUtil.mSetItem(storageKeyNames.GET_USER_PERMISSION,
+                            JSON.stringify(response.mjson), () => {
+                                GetPermission.getFirstList((list) => {
+                                    for (let i = 0; i < list.length; i++) {
+                                        tabArray.push(new tableItemInfo(list[i].ref, list[i].key, list[i].name, list[i].image,
+                                            list[i].unImage, this.getTopView(list[i].ref)));
+                                    }
+                                    this.setState({
+                                        selectedTab: tabArray[0].ref,
+                                        renderPlaceholderOnly: 'success'
+                                    });
                                 });
-
-
-        // let maps = {
-        //     enterprise_uid: id
-        // };
-        // request(Urls.GETFUNCTIONBYTOKENENTER, 'Post', maps)
-        //     .then((response) => {
-        //             if (response.mjson.data == null || response.mjson.data.length <= 0) {
-        //                 this.setState({
-        //                     renderPlaceholderOnly: 'null',
-        //                 });
-        //             } else {
-        //                 StorageUtil.mSetItem(storageKeyNames.GET_USER_PERMISSION,
-        //                     JSON.stringify(response.mjson.data), () => {
-        //                         let list = GetPermission.getFirstList();
-        //                         for (let i = 0; i < list.length; i++) {
-        //                             tabArray.push(new tableItemInfo(list[i].ref, list[i].key, list[i].name, list[i].image,
-        //                                 list[i].unImage, this.getTopView(list[i].ref)));
-        //                         }
-        //                         this.setState({
-        //                             selectedTab: tabArray[0].ref,
-        //                             renderPlaceholderOnly: 'success'
-        //                         });
-        //                     });
-        //             }
-        //         },
-        //         (error) => {
-        //             this.setState({renderPlaceholderOnly: 'error'});
-        //         });
+                            });
+                    }
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error'});
+                });
     }
 
     render() {

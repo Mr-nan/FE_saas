@@ -14,8 +14,6 @@ import  PixelUtil from '../../utils/PixelUtil'
 import  * as fontAndColor from '../../constant/fontAndColor'
 var Pixel = new PixelUtil();
 import HomeJobButton from './HomeJobButton';
-import GetPermissionUtil from '../../utils/GetPermissionUtil';
-const GetPermission = new GetPermissionUtil();
 export default class HomeJobItem extends PureComponent {
 
     constructor(props) {
