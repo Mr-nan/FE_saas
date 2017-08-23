@@ -5,9 +5,9 @@ import {
 } from 'react-native';
 import StoreReceptionManageNewScene from "../crm/StoresReception/StoreReceptionManageNewScene";
 import KeepCustomerManageScene from "../crm/KeepCustomer/KeepCustomerManageScene";
-import {BacklogListScene} from "../message/backlog/BacklogListScene";
+import BacklogListScene from "../message/backlog/BacklogListScene";
 import DailyReminderScene from "../message/dailyReminder/DailyReminderScene";
-import {HeadLineListScene} from "../message/headLine/HeadLineListScene";
+import HeadLineListScene from "../message/headLine/HeadLineListScene";
 import Setting from "../mine/setting/Setting";
 import CarMySourceScene from "../carSource/CarMySourceScene";
 import CarPublishFirstScene from "../carSource/carPublish/CarPublishFirstScene";
@@ -15,7 +15,7 @@ import CarTrimScene from "../carSource/carBuy/CarTrimScene";
 import CarBuyScene from "../carSource/carBuy/CarBuyScene";
 import CollectionIntent from "../collectionIntent/CollectionIntent";
 import CarSharedListScene from "../carSource/CarSharedListScene";
-import {SysMessageListScene} from "../message/sysMessage/SysMessageListScene";
+import SysMessageListScene from "../message/sysMessage/SysMessageListScene";
 import  StorageUtil from './StorageUtil';
 import * as storageKeyNames from '../constant/storageKeyNames';
 const GetPermissionUtil = React.createClass({

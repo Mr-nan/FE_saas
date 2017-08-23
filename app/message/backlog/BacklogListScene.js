@@ -20,10 +20,10 @@ import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import StorageUtil from "../../utils/StorageUtil";
-import GetPermissionUtil from '../../utils/GetPermissionUtil';
+import GetPermissionUtil from '../../utils/GetRoleUtil';
 import ClientInfoScene from "../../crm/StoresReception/ClientInfoScene";
 import CarTrimScene from "../../carSource/carBuy/CarTrimScene";
-//const GetPermission = new GetPermissionUtil();
+const GetRoleUtil = new GetPermissionUtil();
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 import * as AppUrls from "../../constant/appUrls";
 import {request, requestNoToken} from "../../utils/RequestUtil";
@@ -36,6 +36,7 @@ export default class BacklogListScene extends BaseComponent {
     constructor(props) {
         super(props);
         this.backlogListData = [];
+        this.contentTypes = [];
         this.state = {
             dataSource: [],
             isRefreshing: false,
@@ -55,7 +56,22 @@ export default class BacklogListScene extends BaseComponent {
         });*/
         //GetPermission.getFirstList();
         //console.log('this.currentTab=====', GetPermission.getRoleList());
-        this.loadData();
+        GetRoleUtil.getRoleList((list) => {
+            //console.log('listlistlist==-=-=-=-', list);
+            for (let i = 0; i < list.length; i++) {
+                if (list[i].id == 32) {
+                    this.contentTypes.push('taskPGS');
+                } else if (list[i].id == 33) {
+                    this.contentTypes.push('taskZBY');
+                } else if (list[i].id == 34) {
+                    this.contentTypes.push('taskManager');
+                } else if (list[i].id == 35) {
+                    this.contentTypes.push('taskYYZY');
+                }
+            }
+            //this.contentTypes = list;
+            this.loadData();
+        });
     };
 
     /**
@@ -70,6 +86,7 @@ export default class BacklogListScene extends BaseComponent {
                     pushTo: this.custPhone,
                     //token: '5afa531b-4295-4c64-8d6c-ac436c619078'
                     //createTime: '2017-08-09 15:18:47'
+                    contentTypes: this.contentTypes
                 };
                 let url = AppUrls.SELECT_MSG_BY_CONTENT_TYPE;
                 request(url, 'post', maps).then((response) => {

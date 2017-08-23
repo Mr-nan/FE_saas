@@ -31,8 +31,10 @@ import * as StorageKeyNames from "../constant/storageKeyNames";
 import DailyReminderScene from "./dailyReminder/DailyReminderScene";
 import BacklogListScene from "./backlog/BacklogListScene";
 import HeadLineListScene from "./headLine/HeadLineListScene";
-import {SysMessageListScene} from "./sysMessage/SysMessageListScene";
+import SysMessageListScene from "./sysMessage/SysMessageListScene";
 import SQLiteUtil from "../utils/SQLiteUtil";
+import GetPermissionUtil from '../utils/GetRoleUtil';
+const GetRoleUtil = new GetPermissionUtil();
 const SQLite = new SQLiteUtil();
 var Pixel = new PixelUtil();
 
@@ -48,6 +50,7 @@ export default class MessageListScene extends BaseComponent {
         this.backlogNum = 0;
         this.sysMessageNum = 0;
         this.headLineNum = 0;
+        this.contentTypes = [];
         this.state = {
             dataSource: [],
             renderPlaceholderOnly: 'blank'
@@ -68,7 +71,23 @@ export default class MessageListScene extends BaseComponent {
             if (data.code == 1 && data.result != null) {
                 this.custPhone = data.result;
                 //this.custPhone = '15102373842';
-                this.loadData();
+                GetRoleUtil.getRoleList((list) => {
+                    for (let i = 0; i < list.length; i++) {
+                        if (list[i].id == 32) {
+                            this.contentTypes.push('taskPGS');
+                        } else if (list[i].id == 33) {
+                            this.contentTypes.push('taskZBY');
+                        } else if (list[i].id == 34) {
+                            this.contentTypes.push('taskManager');
+                        } else if (list[i].id == 35) {
+                            this.contentTypes.push('taskYYZY');
+                        }
+                    }
+                    this.contentTypes.push('taskRemind');
+                    this.contentTypes.push('taskTenure');
+                    this.contentTypes.push('taskDC');
+                    this.loadData();
+                });
             } else {
                 this.props.showToast('查询账户信息失败');
             }
@@ -81,6 +100,7 @@ export default class MessageListScene extends BaseComponent {
     loadData = () => {
         let maps = {
             accountMobile: this.custPhone,
+            roleList: this.contentTypes
             //token: '5afa531b-4295-4c64-8d6c-ac436c619078'
         };
         let url = AppUrls.HANDLE_COUNT;
@@ -336,7 +356,7 @@ export default class MessageListScene extends BaseComponent {
                     }}>
                     <View style={styles.listItem}>
                         <View style={{marginLeft: Pixel.getPixel(15)}}>
-                            <Image source={require('../../images/mainImage/jiekuan.png')}/>
+                            <Image source={require('../../images/message/backlog.png')}/>
                             {this.backlogNum > 0 && <View style={{
                                 position: 'absolute',
                                 right: 0,
@@ -374,7 +394,7 @@ export default class MessageListScene extends BaseComponent {
                     }}>
                     <View style={styles.listItem}>
                         <View style={{marginLeft: Pixel.getPixel(15)}}>
-                            <Image source={require('../../images/mainImage/jiekuan.png')}/>
+                            <Image source={require('../../images/message/dailyReminder.png')}/>
                             {/*<View style={{
                              position: 'absolute',
                              right: 0,
@@ -446,7 +466,7 @@ export default class MessageListScene extends BaseComponent {
                     }}>
                     <View style={styles.listItem}>
                         <View style={{marginLeft: Pixel.getPixel(15)}}>
-                            <Image source={require('../../images/mainImage/jiekuan.png')}/>
+                            <Image source={require('../../images/message/sysMessage.png')}/>
                             {this.sysMessageNum > 0 && <View style={{
                                 position: 'absolute',
                                 right: 0,
@@ -484,7 +504,7 @@ export default class MessageListScene extends BaseComponent {
                     }}>
                     <View style={styles.listItem}>
                         <View style={{marginLeft: Pixel.getPixel(15)}}>
-                            <Image source={require('../../images/mainImage/jiekuan.png')}/>
+                            <Image source={require('../../images/message/headLine.png')}/>
                             {this.headLineNum > 0 && <View style={{
                                 position: 'absolute',
                                 right: 0,

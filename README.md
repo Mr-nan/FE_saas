@@ -205,3 +205,14 @@ return [
        ],
        "accountMobile":"15102373842"
    }
+
+                "contentTypes":[
+                            "taskPGS",
+                            "taskZBY",
+                            "taskManager",
+                            "taskYYZY",
+                            "taskZJL",
+                            "taskRemind",
+                            "taskTenure",
+                            "taskDC"
+                            ]
