@@ -24,7 +24,7 @@ export  default class AddEmployeeInput extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            value: ''
+            value: this.props.default?this.props.default:''
         }
     }
 

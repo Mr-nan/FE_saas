@@ -6,12 +6,12 @@ export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 /**
  * 测试地址
  */
-// export const BASEURL = 'http://api-gateway.test.dycd.com/';
+//export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 正式地址
  */
- // export const BASEURL = 'https://gatewayapi.dycd.com/';
+//export const BASEURL = 'https://gatewayapi.dycd.com/';
 
 /**
  * 预发布地址
@@ -356,6 +356,13 @@ export const USER_EMPLOYEE_SAVE = BASEURL + 'v1/user.employee/save';
 /**
  * from @zhaojian
  *
+ * 查看员工
+ **/
+export const USER_EMPLOYEE_VIEW = BASEURL + 'v1/user.employee/view';
+
+/**
+ * from @zhaojian
+ *
  * 开通个人账户
  **/
 export const USER_OPEN_ACCOUNT_PERSONAL = BASEURL + 'v1/user.open_account/personal';
@@ -419,6 +426,13 @@ export const USER_ACCOUNT_INFO = BASEURL + 'v1/user.account/info';
 /**
  * from @zhaojian
  *
+ * 获取用户功能权限
+ **/
+export const GETFUNCTIONBYTOKENENTER = BASEURL + 'v1/user/getFunctionByTokenEnter';
+
+/**
+ * from @zhaojian
+ *
  * 获取账户管理首页
  **/
 export const USER_ACCOUNT_INDEX = BASEURL + 'v1/user.account/index';
@@ -429,6 +443,13 @@ export const USER_ACCOUNT_INDEX = BASEURL + 'v1/user.account/index';
  * 获取交易流水
  **/
 export const USER_ACCOUNT_PAYLOG = BASEURL + 'v1/user.account/payLog';
+
+/**
+ * from @zhaojian
+ *
+ * 注销员工
+ **/
+export const USER_EMPLOYEE_DESTROY = BASEURL + 'v1/user.employee/destroy';
 
 /**
  * from @zhaojian
@@ -1038,4 +1059,23 @@ export const FIRST_PAYMENT_PAY = BASEURL + V + 'order_finance/firstPaymentPay';
  */
 export const FIRST_PAYMENT_PAY_CALLBACK = BASEURL + V + 'order_finance/firstPaymentPayCallback';
 
+<<<<<<< HEAD
 ///******
+=======
+
+//export const PRE = "http://192.168.1.160:8010/";
+export const PRE = "http://10.3.10.38:8080/";
+//CRM TEST
+/**
+ *  门店管理web页
+ */
+export const STORE_RECEPTION_MANAGE = PRE + "ceshi.do?mobile=15102373840";
+/**
+ *  添加潜在客户
+ */
+export const CUSTOMER_ADD_URL = PRE + "customer/customerInsert.do";
+/**
+ *  获取待办消息数量
+ */
+export const HANDLE_COUNT = BASEURL + V + "cheshang/sass/handleCount";
+>>>>>>> 0a426db09033b8060c895918b078981237b026f4

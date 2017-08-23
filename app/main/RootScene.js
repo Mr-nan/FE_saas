@@ -42,16 +42,15 @@ export default class RootScene extends BaseComponent {
         // });
 
 
-
         //如果获取模拟器错误日志，需将下面代码屏蔽！！！！！！！！！！！！！！！！！！！！！！！
 
 
         // ErrorUtils.setGlobalHandler((e) => {　//发生异常的处理方法,当然如果是打包好的话可能你找都找不到是哪段代码出问题了
-        //     this.props.showToast(''+JSON.stringify(e));
+        //     this.props.showToast('' + JSON.stringify(e));
         //     StorageUtil.mGetItem(KeyNames.PHONE, (data) => {
         //         let maps = {
         //             phone: data.result,
-        //             message: ''+JSON.stringify(e)
+        //             message: '' + JSON.stringify(e)
         //         };
         //         request(Urls.ADDACCOUNTMESSAGEINFO, 'Post', maps)
         //             .then((response) => {
@@ -66,40 +65,46 @@ export default class RootScene extends BaseComponent {
         //如果获取模拟器错误日志，需将上面代码屏蔽！！！！！！！！！！！！！！！！！！！！！！！
 
 
-        if (Platform.OS === 'android') {
-            deploymentKey = 'fSQnzvsEP5qb9jD_tr4k2QC9pKlie1b7b22b-ea3f-4c77-abcc-72586c814b3c';
-        } else {
-            deploymentKey = 'TXKA_1RB5rKvXMOuBTMqPoon2c5Pe1b7b22b-ea3f-4c77-abcc-72586c814b3c';
-        }
-        codePush.checkForUpdate(deploymentKey).then((update) => {
-            if (!update) {
-            } else {
-                codePush.sync({
-                    deploymentKey: deploymentKey,
-                    updateDialog: {
-                        optionalIgnoreButtonLabel: '稍后',
-                        optionalInstallButtonLabel: '立即更新',
-                        optionalUpdateMessage: '请更新到最新版本',
-                        title: '更新提示'
-                    },
-                    installMode: codePush.InstallMode.IMMEDIATE,
-                }, (status) => {
-                    switch (status) {
-                        case codePush.SyncStatus.DOWNLOADING_PACKAGE:
-                            break;
-                        case codePush.SyncStatus.INSTALLING_UPDATE:
-                            break;
-                    }
-                }, (progress) => {
-                });
-            }
-        });
+        // if (Platform.OS === 'android') {
+        //     deploymentKey = 'fSQnzvsEP5qb9jD_tr4k2QC9pKlie1b7b22b-ea3f-4c77-abcc-72586c814b3c';
+        // } else {
+        //     deploymentKey = 'TXKA_1RB5rKvXMOuBTMqPoon2c5Pe1b7b22b-ea3f-4c77-abcc-72586c814b3c';
+        // }
+        // codePush.checkForUpdate(deploymentKey).then((update) => {
+        //     if (!update) {
+        //     } else {
+        //         codePush.sync({
+        //             deploymentKey: deploymentKey,
+        //             updateDialog: {
+        //                 optionalIgnoreButtonLabel: '稍后',
+        //                 optionalInstallButtonLabel: '立即更新',
+        //                 optionalUpdateMessage: '请更新到最新版本',
+        //                 title: '更新提示'
+        //             },
+        //             installMode: codePush.InstallMode.IMMEDIATE,
+        //         }, (status) => {
+        //             switch (status) {
+        //                 case codePush.SyncStatus.DOWNLOADING_PACKAGE:
+        //                     break;
+        //                 case codePush.SyncStatus.INSTALLING_UPDATE:
+        //                     break;
+        //             }
+        //         }, (progress) => {
+        //         });
+        //     }
+        // });
+        try {
+            BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        } catch (e) {
 
-        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
-        InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: 'loading'});
-            this.initFinish();
-        });
+        } finally {
+            //InteractionManager.runAfterInteractions(() => {
+                this.setState({renderPlaceholderOnly: 'loading'});
+                this.initFinish();
+            //});
+        }
+
+
     }
 
     initFinish = () => {
@@ -129,167 +134,170 @@ export default class RootScene extends BaseComponent {
     toJump = () => {
         StorageUtil.mSetItem(KeyNames.NEED_GESTURE, 'true');
         let that = this;
-        setTimeout(
-            () => {
-                if (!canNext) {
-                    return;
-                }
-                StorageUtil.mGetItem(KeyNames.FIRST_INTO, (res) => {
-                    if (res.result == null) {
-                        that.navigatorParams.component = WelcomScene;
-                        that.toNextPage(that.navigatorParams);
-                    } else {
-                        StorageUtil.mGetItem(KeyNames.ISLOGIN, (res) => {
-                            if (res.result !== StorageUtil.ERRORCODE) {
-                                if (res.result == null) {
-                                    that.navigatorParams.component = LoginAndRegister;
-                                    that.toNextPage(that.navigatorParams);
-                                } else {
-                                    if (res.result == "true") {
+        StorageUtil.mGetItem(KeyNames.FIRST_INTO, (res) => {
+            if (res.result == null) {
+                that.navigatorParams.component = WelcomScene;
+                that.navigatorParams.name = 'WelcomScene';
+                that.toNextPage(that.navigatorParams);
+            } else {
+                StorageUtil.mGetItem(KeyNames.ISLOGIN, (res) => {
+                    if (res.result !== StorageUtil.ERRORCODE) {
+                        if (res.result == null) {
+                            that.navigatorParams.component = LoginAndRegister;
+                            that.navigatorParams.name = 'LoginAndRegister';
+                            that.toNextPage(that.navigatorParams);
+                        } else {
+                            if (res.result == "true") {
 
-                                        StorageUtil.mGetItem(KeyNames.USER_INFO, (data) => {
-                                            let datas = JSON.parse(data.result);
-                                            if (datas.user_level == 2) {
-                                                if (datas.enterprise_list == null || datas.enterprise_list.length <= 0) {
-                                                    that.navigatorParams.component = LoginAndRegister;
-                                                    that.toNextPage(that.navigatorParams);
-                                                } else {
-                                                    that.navigatorParams.component = LoginGesture;
-                                                    that.navigatorParams.params = {from: 'RootScene'}
-                                                    that.toNextPage(that.navigatorParams);
-                                                }
-                                            } else{
-                                                if (datas.enterprise_list == null || datas.enterprise_list.length <= 0) {
-                                                    that.navigatorParams.component = LoginAndRegister;
-                                                    that.toNextPage(that.navigatorParams);
-                                                } else {
-                                                    that.navigatorParams.component = LoginGesture;
-                                                    that.navigatorParams.params = {from: 'RootScene'}
-                                                    that.toNextPage(that.navigatorParams);
-                                                }
-                                            }
-                                        });
+                                StorageUtil.mGetItem(KeyNames.USER_INFO, (data) => {
+                                    let datas = JSON.parse(data.result);
+                                    if (datas.user_level == 2) {
+                                        if (datas.enterprise_list == null || datas.enterprise_list.length <= 0) {
+                                            that.navigatorParams.component = LoginAndRegister;
+                                            that.navigatorParams.name = 'LoginAndRegister';
+                                            that.toNextPage(that.navigatorParams);
+                                        } else {
+                                            that.navigatorParams.component = LoginGesture;
+                                            that.navigatorParams.name = 'LoginGesture';
+                                            that.navigatorParams.params = {from: 'RootScene'}
+                                            that.toNextPage(that.navigatorParams);
+                                        }
                                     } else {
-                                        that.navigatorParams.component = LoginAndRegister;
-                                        that.toNextPage(that.navigatorParams);
+                                        if (datas.enterprise_list == null || datas.enterprise_list.length <= 0) {
+                                            that.navigatorParams.component = LoginAndRegister;
+                                            that.navigatorParams.name = 'LoginAndRegister';
+                                            that.toNextPage(that.navigatorParams);
+                                        } else {
+                                            that.navigatorParams.component = LoginGesture;
+                                            that.navigatorParams.name = 'LoginGesture';
+                                            that.navigatorParams.params = {from: 'RootScene'}
+                                            that.toNextPage(that.navigatorParams);
+                                        }
                                     }
-                                }
+                                });
+                            } else {
+                                that.navigatorParams.component = LoginAndRegister;
+                                that.navigatorParams.name = 'LoginAndRegister';
+                                that.toNextPage(that.navigatorParams);
                             }
-                        });
+                        }
                     }
                 });
-            }, 2500
-        );
+            }
+        });
     }
 
 
-    //     onPress = () => {
-    //         if(canNext){
-    //             let that = this;
-    //             StorageUtil.mSetItem(KeyNames.NEED_GESTURE, 'true');
-    //             StorageUtil.mGetItem(KeyNames.FIRST_INTO, (res) => {
-    //                 if (res.result == null) {
-    //                     that.navigatorParams.component = WelcomScene;
-    //                     that.toNextPage(that.navigatorParams);
-    //                 } else {
-    //
-    //                     StorageUtil.mGetItem(KeyNames.ISLOGIN, (res) => {
-    //                         if (res.result !== StorageUtil.ERRORCODE) {
-    //                             if (res.result == null) {
-    //                                 that.navigatorParams.component = LoginAndRegister;
-    //                                 that.toNextPage(that.navigatorParams);
-    //                             } else {
-    //                                 if (res.result == "true") {
-    //
-    //                                     StorageUtil.mGetItem(KeyNames.USER_INFO, (data) => {
-    //                                         let datas = JSON.parse(data.result);
-    //                                         if (datas.user_level == 2) {
-    //                                             if (datas.enterprise_list == null || datas.enterprise_list.length <= 0) {
-    //                                                 that.navigatorParams.component = LoginAndRegister;
-    //                                                 that.toNextPage(that.navigatorParams);
-    //                                             } else {
-    //                                                 if (datas.enterprise_list[0].role_type == '2') {
-    //                                                     that.navigatorParams.component = LoginGesture;
-    //                                                     that.navigatorParams.params = {from: 'RootScene'}
-    //                                                     that.toNextPage(that.navigatorParams);
-    //                                                 } else {
-    //                                                     that.navigatorParams.component = MainPage;
-    //                                                     that.navigatorParams.params = {}
-    //                                                     that.toNextPage(that.navigatorParams);
-    //                                                 }
-    //                                             }
-    //                                         } else {
-    //                                             that.navigatorParams.component = MainPage;
-    //                                             that.navigatorParams.params = {}
-    //                                             that.toNextPage(that.navigatorParams);
-    //                                         }
-    //                                     });
-    //                                 } else {
-    //                                     that.navigatorParams.component = LoginAndRegister;
-    //                                     that.toNextPage(that.navigatorParams);
-    //                                 }
-    //                             }
-    //                         }
-    //                     });
-    //                 }
-    //             });
-    //             canNext=false;
-    //         }
-    //
-    //     // this.toNextPage(this.mProps)
-    // }
+//     onPress = () => {
+//         if(canNext){
+//             let that = this;
+//             StorageUtil.mSetItem(KeyNames.NEED_GESTURE, 'true');
+//             StorageUtil.mGetItem(KeyNames.FIRST_INTO, (res) => {
+//                 if (res.result == null) {
+//                     that.navigatorParams.component = WelcomScene;
+//                     that.toNextPage(that.navigatorParams);
+//                 } else {
+//
+//                     StorageUtil.mGetItem(KeyNames.ISLOGIN, (res) => {
+//                         if (res.result !== StorageUtil.ERRORCODE) {
+//                             if (res.result == null) {
+//                                 that.navigatorParams.component = LoginAndRegister;
+//                                 that.toNextPage(that.navigatorParams);
+//                             } else {
+//                                 if (res.result == "true") {
+//
+//                                     StorageUtil.mGetItem(KeyNames.USER_INFO, (data) => {
+//                                         let datas = JSON.parse(data.result);
+//                                         if (datas.user_level == 2) {
+//                                             if (datas.enterprise_list == null || datas.enterprise_list.length <= 0) {
+//                                                 that.navigatorParams.component = LoginAndRegister;
+//                                                 that.toNextPage(that.navigatorParams);
+//                                             } else {
+//                                                 if (datas.enterprise_list[0].role_type == '2') {
+//                                                     that.navigatorParams.component = LoginGesture;
+//                                                     that.navigatorParams.params = {from: 'RootScene'}
+//                                                     that.toNextPage(that.navigatorParams);
+//                                                 } else {
+//                                                     that.navigatorParams.component = MainPage;
+//                                                     that.navigatorParams.params = {}
+//                                                     that.toNextPage(that.navigatorParams);
+//                                                 }
+//                                             }
+//                                         } else {
+//                                             that.navigatorParams.component = MainPage;
+//                                             that.navigatorParams.params = {}
+//                                             that.toNextPage(that.navigatorParams);
+//                                         }
+//                                     });
+//                                 } else {
+//                                     that.navigatorParams.component = LoginAndRegister;
+//                                     that.toNextPage(that.navigatorParams);
+//                                 }
+//                             }
+//                         }
+//                     });
+//                 }
+//             });
+//             canNext=false;
+//         }
+//
+//     // this.toNextPage(this.mProps)
+// }
 
     onPress = () => {
-        if (canNext) {
-            let that = this;
-            StorageUtil.mSetItem(KeyNames.NEED_GESTURE, 'true');
-            StorageUtil.mGetItem(KeyNames.FIRST_INTO, (res) => {
-                if (res.result == null) {
-                    that.navigatorParams.component = WelcomScene;
-                    that.toNextPage(that.navigatorParams);
-                } else {
-                    StorageUtil.mGetItem(KeyNames.ISLOGIN, (res) => {
-                        if (res.result !== StorageUtil.ERRORCODE) {
-                            if (res.result == null) {
-                                that.navigatorParams.component = LoginAndRegister;
-                                that.toNextPage(that.navigatorParams);
-                            } else {
-                                if (res.result == "true") {
+        let that = this;
+        StorageUtil.mSetItem(KeyNames.NEED_GESTURE, 'true');
+        StorageUtil.mGetItem(KeyNames.FIRST_INTO, (res) => {
+            if (res.result == null) {
+                that.navigatorParams.component = WelcomScene;
+                that.navigatorParams.name = 'WelcomScene';
+                that.toNextPage(that.navigatorParams);
+            } else {
+                StorageUtil.mGetItem(KeyNames.ISLOGIN, (res) => {
+                    if (res.result !== StorageUtil.ERRORCODE) {
+                        if (res.result == null) {
+                            that.navigatorParams.component = LoginAndRegister;
+                            that.navigatorParams.name = 'LoginAndRegister';
+                            that.toNextPage(that.navigatorParams);
+                        } else {
+                            if (res.result == "true") {
 
-                                    StorageUtil.mGetItem(KeyNames.USER_INFO, (data) => {
-                                        let datas = JSON.parse(data.result);
-                                        if (datas.user_level == 2) {
-                                            if (datas.enterprise_list == null || datas.enterprise_list.length <= 0) {
-                                                that.navigatorParams.component = LoginAndRegister;
-                                                that.toNextPage(that.navigatorParams);
-                                            } else {
-                                                that.navigatorParams.component = LoginGesture;
-                                                that.navigatorParams.params = {from: 'RootScene'}
-                                                that.toNextPage(that.navigatorParams);
-                                            }
+                                StorageUtil.mGetItem(KeyNames.USER_INFO, (data) => {
+                                    let datas = JSON.parse(data.result);
+                                    if (datas.user_level == 2) {
+                                        if (datas.enterprise_list == null || datas.enterprise_list.length <= 0) {
+                                            that.navigatorParams.component = LoginAndRegister;
+                                            that.navigatorParams.name = 'LoginAndRegister';
+                                            that.toNextPage(that.navigatorParams);
                                         } else {
-                                            if (datas.enterprise_list == null || datas.enterprise_list.length <= 0) {
-                                                that.navigatorParams.component = LoginAndRegister;
-                                                that.toNextPage(that.navigatorParams);
-                                            } else {
-                                                that.navigatorParams.component = LoginGesture;
-                                                that.navigatorParams.params = {from: 'RootScene'}
-                                                that.toNextPage(that.navigatorParams);
-                                            }
+                                            that.navigatorParams.component = LoginGesture;
+                                            that.navigatorParams.name = 'LoginGesture';
+                                            that.navigatorParams.params = {from: 'RootScene'}
+                                            that.toNextPage(that.navigatorParams);
                                         }
-                                    });
-                                } else {
-                                    that.navigatorParams.component = LoginAndRegister;
-                                    that.toNextPage(that.navigatorParams);
-                                }
+                                    } else {
+                                        if (datas.enterprise_list == null || datas.enterprise_list.length <= 0) {
+                                            that.navigatorParams.component = LoginAndRegister;
+                                            that.navigatorParams.name = 'LoginAndRegister';
+                                            that.toNextPage(that.navigatorParams);
+                                        } else {
+                                            that.navigatorParams.component = LoginGesture;
+                                            that.navigatorParams.name = 'LoginGesture';
+                                            that.navigatorParams.params = {from: 'RootScene'}
+                                            that.toNextPage(that.navigatorParams);
+                                        }
+                                    }
+                                });
+                            } else {
+                                that.navigatorParams.component = LoginAndRegister;
+                                that.navigatorParams.name = 'LoginAndRegister';
+                                that.toNextPage(that.navigatorParams);
                             }
                         }
-                    });
-                }
-            });
-            canNext = false;
-        }
-
+                    }
+                });
+            }
+        });
         // this.toNextPage(this.mProps)
     }
 
@@ -323,7 +331,7 @@ export default class RootScene extends BaseComponent {
                 <TouchableOpacity onPress={()=>{this.onPress()}} activeOpacity={0.8} style={{width:Pixel.getPixel(30),height:Pixel.getPixel(30),borderRadius: 1000,justifyContent:'center',
                 alignItems: 'center',backgroundColor: 'rgba(0,0,0,0.2)',marginRight: Pixel.getPixel(15),
                 marginTop:Pixel.getTitlePixel(35)}}>
-                    <Text allowFontScaling={false}  style={{color:'#fff',fontSize:Pixel.getFontPixel(12)}}>取消</Text>
+                    <Text allowFontScaling={false} style={{color:'#fff',fontSize:Pixel.getFontPixel(12)}}>取消</Text>
                 </TouchableOpacity>
             </Image>
         );

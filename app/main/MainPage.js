@@ -12,7 +12,6 @@ import {
     PixelRatio,
     TouchableOpacity,
     NativeModules,
-    BackAndroid,
     InteractionManager
 } from 'react-native';
 
@@ -35,7 +34,12 @@ import NonCreditScene from './NonCreditScene';
 import LoginScene from '../login/LoginScene';
 import AllSelectCompanyScene from '../main/AllSelectCompanyScene';
 let tabArray = [];
-
+import CustomerServiceButton  from '../component/CustomerServiceButton';
+import WorkBenchScene from './WorkBenchScene';
+import GetPermissionUtil from '../utils/GetPermissionUtil';
+const GetPermission = new GetPermissionUtil();
+import {request} from '../utils/RequestUtil';
+import * as Urls from '../constant/appUrls';
 export class tableItemInfo {
     constructor(ref, key, title, selectedImg, defaultImg, topView) {
 
@@ -62,13 +66,10 @@ export default class MainPage extends BaseComponent {
     };
 
 
-    initFinish = () => {
-
-    }
-
     componentWillUnmount() {
         tabArray = [];
     }
+
     /**
      * 初始化,指定tab及页面被选中
      */
@@ -76,381 +77,65 @@ export default class MainPage extends BaseComponent {
         super(props);
         this.state = {
             // selectedTab: tabArray[0].ref,
-            canShow: false,
+            renderPlaceholderOnly: 'blank',
             openSelectBranch: false
 
         }
         tabArray = [];
-        const employerTabArray = [
-            new tableItemInfo('firstpage', 'page11', '首页', require('../../images/mainImage/homeSelect.png'), require('../../images/mainImage/homeUnSelect.png'),
-                <HomeSence backToLogin={()=>{
-                     this.backToLogin({name:'LoginScene',component:LoginScene});
-                }} showModal={(value)=>{
-                    this.props.showModal(value);
-                }} showToast={(content)=>{this.props.showToast(content)}} openModal={()=>{
-                     this.publishModal.openModal();
-                }} jumpScene={(ref,openSelectBranch)=>{
-                    if(openSelectBranch=='true'){
-                        this.setState({selectedTab: ref})
-                        StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'true');
-                    }else if(openSelectBranch == 'checkRecommend'){
-                        this.setState({selectedTab: ref})
-                        StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND,'true');
-                    }else{
-                     if(ref==='financePage'){
-                      StorageUtil.mGetItem(storageKeyNames.NEED_GESTURE,(datas)=>{
-                       if(datas.code==1){
-                             if(datas.result=='true'){
-                             this.toNextPage({name:'LoginGesture',component:LoginGesture,params:{
-                                callBack:()=>{
-                                    this.setState({selectedTab: ref})
-                               }
-                            }});
-                          }else{
-                                this.setState({selectedTab: ref})
-                          }
-                       }
-                  });
-                      }else{
-                            this.setState({selectedTab: ref})
-                        StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
-                      }
-                    }
-                }} callBack={(params)=> {
-                    this.toNextPage(params);
-                }}/>),
-            new tableItemInfo('carpage', 'page12', '车源', require('../../images/mainImage/carSelect.png'), require('../../images/mainImage/carUnSelect.png'),
-                <CarSourceSence backToLogin={()=>{
-                     this.backToLogin({name:'LoginScene',component:LoginScene});
-                }} showModal={(value)=>{
-                    this.props.showModal(value);
-                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
-                    this.toNextPage(params);
-                }}/>),
-            new tableItemInfo('sendpage', 'page13', '发布', require('../../images/mainImage/publishSelect.png'), require('../../images/mainImage/publishUnSelect.png'),
-                <PublishModal backToLogin={()=>{
-                     this.backToLogin({name:'LoginScene',component:LoginScene});
-                }} showModal={(value)=>{
-                    this.props.showModal(value);
-                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
-                    this.toNextPage(params);
-                }}/>),
-            new tableItemInfo('mypage', 'page14', '我的', require('../../images/mainImage/mineSelect.png'), require('../../images/mainImage/mineUnSelect.png'),
-                <MineSence backToLogin={()=>{
-                     this.backToLogin({name:'LoginScene',component:LoginScene});
-                }} showModal={(value)=>{
-                    this.props.showModal(value);
-                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
-                    this.toNextPage(params);
-                }} toSelect={()=>{
-                let mProps = {name: 'AllSelectCompanyScene', component: AllSelectCompanyScene, params: {}};
-                const navigator = this.props.navigator;
-                if (navigator) {
-                    navigator.immediatelyResetRouteStack([{
-                        ...mProps
-                    }])
-                }
-                }}/>)
-        ];
+    }
 
-        const touristTabArray = [
-            new tableItemInfo('firstpage', 'page11', '首页', require('../../images/mainImage/homeSelect.png'), require('../../images/mainImage/homeUnSelect.png'),
-                <HomeSence backToLogin={()=>{
-                     this.backToLogin({name:'LoginScene',component:LoginScene});
-                }} showModal={(value)=>{
-                    this.props.showModal(value);
-                }} showToast={(content)=>{this.props.showToast(content)}} openModal={()=>{
-                     this.publishModal.openModal();
-                }} jumpScene={(ref,openSelectBranch)=>{
-                    if(openSelectBranch=='true'){
-                        this.setState({selectedTab: ref})
-                        StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'true');
-                    } else if(openSelectBranch == 'checkRecommend'){
-                        this.setState({selectedTab: ref})
-                        StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND,'true');
-                    }else{
-                        if(ref==='financePage'){
-                             StorageUtil.mGetItem(storageKeyNames.NEED_GESTURE,(datas)=>{
-                       if(datas.code==1){
-                             if(datas.result=='true'){
-                             this.toNextPage({name:'LoginGesture',component:LoginGesture,params:{
-                                callBack:()=>{
-                                    this.setState({selectedTab: ref})
-                               }
-                            }});
-                          }else{
-                                this.setState({selectedTab: ref})
-                          }
-                       }
-                  });
-                      }else{
-                            this.setState({selectedTab: ref})
-                        StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
-                      }
-                    }
-                }} callBack={(params)=> {
-                    this.toNextPage(params);
-                }}/>),
-            new tableItemInfo('carpage', 'page12', '车源', require('../../images/mainImage/carSelect.png'), require('../../images/mainImage/carUnSelect.png'),
-                <CarSourceSence backToLogin={()=>{
-                     this.backToLogin({name:'LoginScene',component:LoginScene});
-                }} showModal={(value)=>{
-                    this.props.showModal(value);
-                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
-                    this.toNextPage(params);
-                }}/>),
-            new tableItemInfo('mypage', 'page14', '我的', require('../../images/mainImage/mineSelect.png'), require('../../images/mainImage/mineUnSelect.png'),
-                <MineSence backToLogin={()=>{
-                     this.backToLogin({name:'LoginScene',component:LoginScene});
-                }} showModal={(value)=>{
-                    this.props.showModal(value);
-                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
-                    this.toNextPage(params);
-                }} toSelect={()=>{
-                let mProps = {name: 'AllSelectCompanyScene', component: AllSelectCompanyScene, params: {}};
-                const navigator = this.props.navigator;
-                if (navigator) {
-                    navigator.immediatelyResetRouteStack([{
-                        ...mProps
-                    }])
-                }
-                }}/>)
-        ];
 
-        const bossTabArray = [
-            new tableItemInfo('firstpage', 'page1', '首页', require('../../images/mainImage/homeSelect.png'), require('../../images/mainImage/homeUnSelect.png'),
-                <HomeSence backToLogin={()=>{
-                     this.backToLogin({name:'LoginScene',component:LoginScene});
-                }} showModal={(value)=>{
-                    this.props.showModal(value);
-                }} showToast={(content)=>{this.props.showToast(content)}} openModal={()=>{
-                     this.publishModal.openModal();
-                }} jumpScene={(ref,openSelectBranch)=>{
-                    if(openSelectBranch=='true'){
-                        this.setState({selectedTab: ref})
-                        StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'true');
-
-                    }else if(openSelectBranch == 'checkRecommend'){
-
-                        this.setState({selectedTab: ref})
-                        StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND,'true');
-
-                    }else{
-                        if(ref==='financePage'){
-                             StorageUtil.mGetItem(storageKeyNames.NEED_GESTURE,(datas)=>{
-                       if(datas.code==1){
-                             if(datas.result=='true'){
-                             this.toNextPage({name:'LoginGesture',component:LoginGesture,params:{
-                                callBack:()=>{
-                                    this.setState({selectedTab: ref})
-                               }
-                            }});
-                          }else{
-                                this.setState({selectedTab: ref})
-                          }
-                       }
-                  });
-                      }else{
-                            this.setState({selectedTab: ref})
-                        StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
-                      }
-                    }
-                }} callBack={(params)=> {
-                    this.toNextPage(params);
-                }}/>),
-            new tableItemInfo('carpage', 'page2', '车源', require('../../images/mainImage/carSelect.png'), require('../../images/mainImage/carUnSelect.png'),
-                <CarSourceSence backToLogin={()=>{
-                     this.backToLogin({name:'LoginScene',component:LoginScene});
-                }} showModal={(value)=>{
-                    this.props.showModal(value);
-                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
-
-                    this.toNextPage(params);
-                }}/>),
-            new tableItemInfo('sendpage', 'page3', '发布', require('../../images/mainImage/sendButton.png'), require('../../images/mainImage/sendButton.png'),
-                <PublishModal backToLogin={()=>{
-                     this.backToLogin({name:'LoginScene',component:LoginScene});
-                }} showModal={(value)=>{
-                    this.props.showModal(value);
-                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
-                    this.toNextPage(params);
-                }}/>),
-            new tableItemInfo('financePage', 'page4', '金融', require('../../images/mainImage/moneySelect.png'), require('../../images/mainImage/moneyUnSelect.png'),
-                <FinanceSence backToLogin={()=>{
-                     this.backToLogin({name:'LoginScene',component:LoginScene});
-                }} showModal={(value)=>{
-                    this.props.showModal(value);
-                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params) => {
-                    this.toNextPage(params);
-                }}/>),
-            new tableItemInfo('mypage', 'page5', '我的', require('../../images/mainImage/mineSelect.png'), require('../../images/mainImage/mineUnSelect.png'),
-                <MineSence backToLogin={()=>{
-                     this.backToLogin({name:'LoginScene',component:LoginScene});
-                }} showModal={(value)=>{
-                    this.props.showModal(value);
-                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
-                    this.toNextPage(params);
-                }} toSelect={()=>{
-                let mProps = {name: 'AllSelectCompanyScene', component: AllSelectCompanyScene, params: {}};
-                const navigator = this.props.navigator;
-                if (navigator) {
-                    navigator.immediatelyResetRouteStack([{
-                        ...mProps
-                    }])
-                }
-                }}/>)
-        ];
-
-        const formalUserTabArray = [
-            new tableItemInfo('firstpage', 'page1', '首页', require('../../images/mainImage/homeSelect.png'), require('../../images/mainImage/homeUnSelect.png'),
-                <HomeSence backToLogin={()=>{
-                     this.backToLogin({name:'LoginScene',component:LoginScene});
-                }} showModal={(value)=>{
-                    this.props.showModal(value);
-                }} showToast={(content)=>{this.props.showToast(content)}} openModal={()=>{
-                     this.publishModal.openModal();
-                }} jumpScene={(ref,openSelectBranch)=>{
-                    if(openSelectBranch=='true'){
-                        this.setState({selectedTab: ref})
-                        StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'true');
-                    }else if(openSelectBranch == 'checkRecommend'){
-                        this.setState({selectedTab: ref})
-                        StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND,'true');
-                    }else{
-                        if(ref==='financePage'){
-                             StorageUtil.mGetItem(storageKeyNames.NEED_GESTURE,(datas)=>{
-                       if(datas.code==1){
-                             if(datas.result=='true'){
-                             this.toNextPage({name:'LoginGesture',component:LoginGesture,params:{
-                                callBack:()=>{
-                                    this.setState({selectedTab: ref})
-                               }
-                            }});
-                          }else{
-                                this.setState({selectedTab: ref})
-                          }
-                       }
-                  });
-                      }else{
-                            this.setState({selectedTab: ref})
-                        StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
-                      }
-                    }
-                }} callBack={(params)=> {
-                    this.toNextPage(params);
-                }}/>),
-            new tableItemInfo('carpage', 'page2', '车源', require('../../images/mainImage/carSelect.png'), require('../../images/mainImage/carUnSelect.png'),
-                <CarSourceSence backToLogin={()=>{
-                     this.backToLogin({name:'LoginScene',component:LoginScene});
-                }} showModal={(value)=>{
-                    this.props.showModal(value);
-                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
-
-                    this.toNextPage(params);
-                }}/>),
-            new tableItemInfo('sendpage', 'page3', '发布', require('../../images/mainImage/sendButton.png'), require('../../images/mainImage/sendButton.png'),
-                <PublishModal backToLogin={()=>{
-                     this.backToLogin({name:'LoginScene',component:LoginScene});
-                }} showModal={(value)=>{
-                    this.props.showModal(value);
-                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
-                    this.toNextPage(params);
-                }}/>),
-            new tableItemInfo('financePage', 'page4', '金融', require('../../images/mainImage/moneySelect.png'), require('../../images/mainImage/moneyUnSelect.png'),
-                <NonCreditScene/>),
-            new tableItemInfo('mypage', 'page5', '我的', require('../../images/mainImage/mineSelect.png'), require('../../images/mainImage/mineUnSelect.png'),
-                <MineSence backToLogin={()=>{
-                     this.backToLogin({name:'LoginScene',component:LoginScene});
-                }} showModal={(value)=>{
-                    this.props.showModal(value);
-                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
-                    this.toNextPage(params);
-                }} toSelect={()=>{
-                let mProps = {name: 'AllSelectCompanyScene', component: AllSelectCompanyScene, params: {}};
-                const navigator = this.props.navigator;
-                if (navigator) {
-                    navigator.immediatelyResetRouteStack([{
-                        ...mProps
-                    }])
-                }
-                }}/>)
-        ];
-
-        const financeTabArray = [
-            new tableItemInfo('financePage', 'page24', '金融', require('../../images/mainImage/moneySelect.png'), require('../../images/mainImage/moneyUnSelect.png'),
-                <FinanceSence backToLogin={()=>{
-                     this.backToLogin({name:'LoginScene',component:LoginScene});
-                }} showModal={(value)=>{
-                    this.props.showModal(value);
-                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params) => {
-                    this.toNextPage(params);
-                }}/>),
-            new tableItemInfo('mypage', 'page25', '我的', require('../../images/mainImage/mineSelect.png'), require('../../images/mainImage/mineUnSelect.png'),
-                <MineSence backToLogin={()=>{
-                     this.backToLogin({name:'LoginScene',component:LoginScene});
-                }} showModal={(value)=>{
-                    this.props.showModal(value);
-                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
-                    this.toNextPage(params);
-                }} toSelect={()=>{
-                let mProps = {name: 'AllSelectCompanyScene', component: AllSelectCompanyScene, params: {}};
-                const navigator = this.props.navigator;
-                if (navigator) {
-                    navigator.immediatelyResetRouteStack([{
-                        ...mProps
-                    }])
-                }
-                }}/>)
-        ];
-
-        StorageUtil.mGetItem(storageKeyNames.USER_INFO, (data) => {
-            if (data.code == 1) {
-                let datas = JSON.parse(data.result);
-                if (datas.user_level == 2) {
-                    if (datas.enterprise_list[0].role_type == '1' || datas.enterprise_list[0].role_type == '6') {
-                        StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (childdata) => {
-                            if (childdata.code == 1) {
-                                let childdatas = JSON.parse(childdata.result);
-                                console.log(childdatas);
-                                if (childdatas.is_done_credit == 0) {
-                                    tabArray = formalUserTabArray;
-                                } else {
-                                    tabArray = bossTabArray;
-                                }
-                                this.setState({
-                                    selectedTab: tabArray[0].ref,
-                                    canShow: true
-                                });
-
-                            }
-                        });
-                        return;
-                    } else if (datas.enterprise_list[0].role_type == '2') {
-                        tabArray = financeTabArray
-                    } else {
-                        tabArray = employerTabArray
-                    }
-                } else if (datas.user_level == 1) {
-                    tabArray = formalUserTabArray
-                } else {
-                    if (datas.audit_status == '2') {
-                        tabArray = formalUserTabArray
-                    } else {
-                        tabArray = touristTabArray
-                    }
-                }
-                this.setState({
-                    selectedTab: tabArray[0].ref,
-                    canShow: true
-                });
+    initFinish = () => {
+        StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (childdata) => {
+            if (childdata.code == 1) {
+                let childdatas = JSON.parse(childdata.result);
+                this.is_done_credit = childdatas.is_done_credit;
+                this.getUserPermission(childdatas.company_base_id);
+            } else {
+                this.setState({renderPlaceholderOnly: 'error'});
             }
         });
     }
 
+    allRefresh = () => {
+        this.setState({renderPlaceholderOnly: 'loading'});
+        this.initFinish();
+    }
+
+    getUserPermission = (id) => {
+        let maps = {
+            enterprise_uid: id
+        };
+        request(Urls.GETFUNCTIONBYTOKENENTER, 'Post', maps)
+            .then((response) => {
+                    if (response.mjson.data == null || response.mjson.data.length <= 0) {
+                        this.setState({
+                            renderPlaceholderOnly: 'null',
+                        });
+                    } else {
+                        StorageUtil.mSetItem(storageKeyNames.GET_USER_PERMISSION,
+                            JSON.stringify(response.mjson), () => {
+                                GetPermission.getFirstList((list) => {
+                                    for (let i = 0; i < list.length; i++) {
+                                        tabArray.push(new tableItemInfo(list[i].ref, list[i].key, list[i].name, list[i].image,
+                                            list[i].unImage, this.getTopView(list[i].ref)));
+                                    }
+                                    this.setState({
+                                        selectedTab: tabArray[0].ref,
+                                        renderPlaceholderOnly: 'success'
+                                    });
+                                });
+                            });
+                    }
+                },
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error'});
+                });
+    }
 
     render() {
-        if (!this.state.canShow) {
-            return (<View style={{width:width,height:height,backgroundColor:fontAndClolr.COLORA3}}/>);
+        if (this.state.renderPlaceholderOnly != 'success') {
+            return this.loadView();
         }
         let items = [];
 
@@ -460,30 +145,12 @@ export default class MainPage extends BaseComponent {
                 selected={this.state.selectedTab === data.ref}
                 key={data.key}
                 title={data.title}
-                renderSelectedIcon={() => <Image style={data.key === 'page3' ? styles.bigimg : styles.img}
+                renderSelectedIcon={() => <Image style={styles.img}
                                                  source={data.selectedImg}/>}
-                renderIcon={() => <Image style={data.key === 'page3' ? styles.bigimg : styles.img}
+                renderIcon={() => <Image style={styles.img}
                                          source={data.defaultImg}/>}
                 onPress={() => {
-                    if(data.ref==='sendpage'){
-                        this.publishModal.openModal();
-                    }else if(data.ref==='financePage'){
-                             StorageUtil.mGetItem(storageKeyNames.NEED_GESTURE,(datas)=>{
-                       if(datas.code==1){
-                             if(datas.result=='true'){
-                             this.toNextPage({name:'LoginGesture',component:LoginGesture,params:{
-                                callBack:()=>{
-                                    this.setState({selectedTab: data.ref})
-                               }
-                            }});
-                          }else{
-                                this.setState({selectedTab: data.ref})
-                                  }
-                       }
-                  });
-                      } else{
                         this.setState({selectedTab: data.ref})
-                        }
                     }
                 }
                 selectedTitleStyle={styles.selectedTitleStyle}
@@ -506,55 +173,142 @@ export default class MainPage extends BaseComponent {
                 <TabNavigator
                     sceneStyle={{backgroundColor: '#00000000'}}
                     tabBarShadowStyle={{backgroundColor: '#00000000'}}
-                    tabBarStyle={{overflow: 'visible', height: Pixel.getPixel(75), backgroundColor: '#00000000'}}
+                    tabBarStyle={{overflow: 'visible', height: Pixel.getPixel(60), backgroundColor: '#00000000'}}
                 >
                     {items}
                 </TabNavigator>
                 <View
                     style={[styles.imageStyle, this.props.identity == "finance" ? {width: Pixel.getPixel(1)} : {width: 0}]}></View>
-
+                {/*<CustomerServiceButton ref='customerservicebutton'/>*/}
             </View>
         );
     }
+
+    getTopView = (ref) => {
+        if (ref == 'firstpage') {
+            return <HomeSence backToLogin={()=>{
+                     this.backToLogin({name:'LoginScene',component:LoginScene});
+                }} showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} openModal={()=>{
+                     this.publishModal.openModal();
+                }} jumpScene={(ref,openSelectBranch)=>{
+                    if(openSelectBranch=='true'){
+                        this.setState({selectedTab: ref})
+                        StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'true');
+
+                    }else if(openSelectBranch == 'checkRecommend'){
+
+                        this.setState({selectedTab: ref})
+                        StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND,'true');
+
+                    }else{
+                        if(ref==='financePage'){
+                             StorageUtil.mGetItem(storageKeyNames.NEED_GESTURE,(datas)=>{
+                       if(datas.code==1){
+                             if(datas.result=='true'){
+                             this.toNextPage({name:'LoginGesture',component:LoginGesture,params:{
+                                callBack:()=>{
+                                    this.setState({selectedTab: ref})
+                               }
+                            }});
+                          }else{
+                                this.setState({selectedTab: ref})
+                          }
+                       }
+                  });
+                      }else{
+                            this.setState({selectedTab: ref})
+                        StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
+                      }
+                    }
+                }} callBack={(params)=> {
+                    this.toNextPage(params);
+                }}/>
+        } else if (ref == 'carpage') {
+            return <CarSourceSence backToLogin={()=>{
+                     this.backToLogin({name:'LoginScene',component:LoginScene});
+                }} showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
+
+                    this.toNextPage(params);
+                }}/>
+        } else if (ref == 'sendpage') {
+            return <WorkBenchScene backToLogin={()=>{
+                     this.backToLogin({name:'LoginScene',component:LoginScene});
+                }} showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
+                    this.toNextPage(params);
+                }}/>
+        } else if (ref == 'financePage') {
+            if (this.is_done_credit == 0) {
+                return <NonCreditScene/>
+            } else {
+                return <FinanceSence backToLogin={()=>{
+                            this.backToLogin({name:'LoginScene',component:LoginScene});
+                        }} showModal={(value)=>{
+                        this.props.showModal(value);
+                        }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params) => {
+                        this.toNextPage(params);
+                }}/>
+            }
+        } else {
+            return <MineSence backToLogin={()=>{
+                     this.backToLogin({name:'LoginScene',component:LoginScene});
+                }} showModal={(value)=>{
+                    this.props.showModal(value);
+                }} showToast={(content)=>{this.props.showToast(content)}} callBack={(params)=> {
+                    this.toNextPage(params);
+                }} toSelect={()=>{
+                let mProps = {name: 'AllSelectCompanyScene', component: AllSelectCompanyScene, params: {}};
+                const navigator = this.props.navigator;
+                if (navigator) {
+                    navigator.immediatelyResetRouteStack([{
+                        ...mProps
+                    }])
+                }
+                }}/>
+        }
+    }
 }
 
+const styles = StyleSheet.create({
 
-const
-    styles = StyleSheet.create({
+    flex: {
+        flex: 1,
+        backgroundColor: '#fff'
+    },
+    img: {
 
-        flex: {
-            flex: 1,
-            backgroundColor: '#fff'
-        },
-        img: {
+        width: Pixel.getPixel(26),
+        height: Pixel.getPixel(26),
 
-            width: Pixel.getPixel(26),
-            height: Pixel.getPixel(26),
+    },
+    center: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    bigimg: {
+        width: Pixel.getPixel(56),
+        height: Pixel.getPixel(56),
+    },
+    selectedTitleStyle: {
+        color: fontAndClolr.COLORB0
+    },
+    imageStyle: {
+        position: 'absolute',
+        bottom: Pixel.getPixel(10),
+        left: width / 2.0 - 0.5,
+        width: 1,
+        height: Pixel.getPixel(30),
+        backgroundColor: "lightgray",
+    },
+    outImageStyle: {
+        position: 'absolute',
 
-        },
-        center: {
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
-        bigimg: {
-            width: Pixel.getPixel(56),
-            height: Pixel.getPixel(56),
-        },
-        selectedTitleStyle: {
-            color: fontAndClolr.COLORB0
-        },
-        imageStyle: {
-            position: 'absolute',
-            bottom: Pixel.getPixel(10),
-            left: width / 2.0 - 0.5,
-            width: 1,
-            height: Pixel.getPixel(30),
-            backgroundColor: "lightgray",
-        },
-        outImageStyle: {
-            position: 'absolute',
-
-            bottom: Pixel.getPixel(16),
-            left: width / 2 - Pixel.getPixel(56) / 2
-        }
-    });
+        bottom: Pixel.getPixel(16),
+        left: width / 2 - Pixel.getPixel(56) / 2
+    }
+});

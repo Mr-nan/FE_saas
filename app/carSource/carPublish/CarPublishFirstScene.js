@@ -102,288 +102,288 @@ export default class CarPublishFirstScene extends BaseComponent{
     }
 
     // 构造
-      constructor(props) {
+    constructor(props) {
         super(props);
-          this.carType ='二手车';
-          this.enterpriseList = [];
-          this.scanType = [
-              {model_name: '扫描前风挡'},
-              {model_name: '扫描行驶证'}
-          ];
-          this.modelData = [];
-          this.modelInfo = {};
-          this.carData={'v_type':1};
-          this.titleData1=[
-              [
-                  {
-                      title:'车辆类型',
-                      isShowTag:false,
-                      isShowTail:true,
-                      selectDict:{current:this.carType,data:[{title:'二手车',value:1},{title:'新车',value:2},{title:'平行进口车',value:3}]},
-                  },
-                  {
-                      title:'车架号',
-                      isShowTag:true,
-                      subTitle:"",
-                      tailView:()=>{
-                          return(
-                              <View style={{flexDirection:'row', alignItems:'center'}}>
-                                  <TextInput style={styles.textInput}
-                                             ref={(input) => {this.vinInput = input}}
-                                             placeholder='输入车架号'
-                                             underlineColorAndroid='transparent'
-                                             maxLength={17}
-                                             editable={this.props.carID?false:true}
-                                             onChangeText={this._onVinChange}
-                                             onFocus={()=>{
+        this.carType ='二手车';
+        this.enterpriseList = [];
+        this.scanType = [
+            {model_name: '扫描前风挡'},
+            {model_name: '扫描行驶证'}
+        ];
+        this.modelData = [];
+        this.modelInfo = {};
+        this.carData={'v_type':1};
+        this.titleData1=[
+            [
+                {
+                    title:'车辆类型',
+                    isShowTag:false,
+                    isShowTail:true,
+                    selectDict:{current:this.carType,data:[{title:'二手车',value:1},{title:'新车',value:2},{title:'平行进口车',value:3}]},
+                },
+                {
+                    title:'车架号',
+                    isShowTag:true,
+                    subTitle:"",
+                    tailView:()=>{
+                        return(
+                            <View style={{flexDirection:'row', alignItems:'center'}}>
+                                <TextInput style={styles.textInput}
+                                           ref={(input) => {this.vinInput = input}}
+                                           placeholder='输入车架号'
+                                           underlineColorAndroid='transparent'
+                                           maxLength={17}
+                                           editable={this.props.carID?false:true}
+                                           onChangeText={this._onVinChange}
+                                           onFocus={()=>{
                                                 this.setCurrentPy('vinInput');
                                              }}
-                                             placeholderTextColor={fontAndColor.COLORA4}
-                                             keyboardType={'ascii-capable'}
-                                             placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
-                                  />
-                                  {
-                                      !this.props.carID &&(<TouchableOpacity onPress={this._onScanPress} style={{flexDirection:'row', alignItems:'center'}}>
-                                          <Image style={styles.scanImage} source={scanImg}/>
-                                          <Text allowFontScaling={false}  style={{color:fontAndColor.COLORA2, fontSize:fontAndColor.LITTLEFONT28,marginLeft:Pixel.getPixel(5)}}>扫描</Text>
-                                      </TouchableOpacity>)
-                                  }
-                              </View>
-                          )
-                      }
-                  },
-                  {
-                      title:'车型',
-                      isShowTag:true,
-                      value:'请选择',
-                      isShowTail:true,
-                  },
-                  {
-                      title:'排量',
-                      isShowTag:true,
-                      isShowTail:false,
-                      tailView:()=>{
-                          return(
-                              <TextInput
-                                  ref={(input) => {this.displacementInput = input}}
-                                  style={styles.textInput}
-                                  placeholder='请输入'
-                                  underlineColorAndroid='transparent'
-                                  onChangeText={(text)=>{this.carData['displacement']=text}}
-                                  onEndEditing={()=>{this.saveCarData();}}
-                                  onFocus={()=>{
+                                           placeholderTextColor={fontAndColor.COLORA4}
+                                           keyboardType={'ascii-capable'}
+                                           placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
+                                />
+                                {
+                                    !this.props.carID &&(<TouchableOpacity onPress={this._onScanPress} style={{flexDirection:'row', alignItems:'center'}}>
+                                        <Image style={styles.scanImage} source={scanImg}/>
+                                        <Text allowFontScaling={false}  style={{color:fontAndColor.COLORA2, fontSize:fontAndColor.LITTLEFONT28,marginLeft:Pixel.getPixel(5)}}>扫描</Text>
+                                    </TouchableOpacity>)
+                                }
+                            </View>
+                        )
+                    }
+                },
+                {
+                    title:'车型',
+                    isShowTag:true,
+                    value:'请选择',
+                    isShowTail:true,
+                },
+                {
+                    title:'排量',
+                    isShowTag:true,
+                    isShowTail:false,
+                    tailView:()=>{
+                        return(
+                            <TextInput
+                                ref={(input) => {this.displacementInput = input}}
+                                style={styles.textInput}
+                                placeholder='请输入'
+                                underlineColorAndroid='transparent'
+                                onChangeText={(text)=>{this.carData['displacement']=text}}
+                                onEndEditing={()=>{this.saveCarData();}}
+                                onFocus={()=>{
                                       this.setCurrentPy('displacementInput');
                                   }}
-                                  placeholderTextColor={fontAndColor.COLORA4}
-                                  placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
-                              />
-                          )
-                      }
-                  },
-                  {
-                      title:'排放标准',
-                      isShowTag:true,
-                      value:'请选择',
-                      isShowTail:true,
-                  },
-                  {
-                      title:'车身颜色',
-                      isShowTag:true,
-                      value:'请选择',
-                      isShowTail:true,
-                  },
-                  {
-                      title:'内饰颜色',
-                      isShowTag:true,
-                      value:'请选择',
-                      isShowTail:true,
-                  },
-              ],
-              [   {
-                  title:'出厂日期',
-                  isShowTag:true,
-                  value:'请选择',
-                  isShowTail:true,
-              },
-                  {
-                      title:'初登日期',
-                      isShowTag:true,
-                      value:'请选择',
-                      isShowTail:true,
-                  },
+                                placeholderTextColor={fontAndColor.COLORA4}
+                                placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
+                            />
+                        )
+                    }
+                },
+                {
+                    title:'排放标准',
+                    isShowTag:true,
+                    value:'请选择',
+                    isShowTail:true,
+                },
+                {
+                    title:'车身颜色',
+                    isShowTag:true,
+                    value:'请选择',
+                    isShowTail:true,
+                },
+                {
+                    title:'内饰颜色',
+                    isShowTag:true,
+                    value:'请选择',
+                    isShowTail:true,
+                },
+            ],
+            [   {
+                title:'出厂日期',
+                isShowTag:true,
+                value:'请选择',
+                isShowTail:true,
+            },
+                {
+                    title:'初登日期',
+                    isShowTag:true,
+                    value:'请选择',
+                    isShowTail:true,
+                },
 
-              ],
-              [   {
-                  title:'标准配置',
-                  isShowTag:false,
-                  value:'查看',
-                  isShowTail:true,
-              },
-                  {
-                      title:'配置改装说明',
-                      isShowTag:false,
-                      value:'请填写',
-                      isShowTail:false,
-                      tailView:()=>{
-                          return(
-                              <TextInput
-                                  style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(50)}]}
-                                  placeholder='请填写'
-                                  maxLength={50}
-                                  underlineColorAndroid='transparent'
-                                  onChangeText={(text)=>{this.carData['modification_instructions']=text}}
-                                  onEndEditing={()=>{this.saveCarData();}}
-                                  ref={(input) => {this.instructionsInput = input}}
-                                  onFocus={()=>{
+            ],
+            [   {
+                title:'标准配置',
+                isShowTag:false,
+                value:'查看',
+                isShowTail:true,
+            },
+                {
+                    title:'配置改装说明',
+                    isShowTag:false,
+                    value:'请填写',
+                    isShowTail:false,
+                    tailView:()=>{
+                        return(
+                            <TextInput
+                                style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(50)}]}
+                                placeholder='请填写'
+                                maxLength={50}
+                                underlineColorAndroid='transparent'
+                                onChangeText={(text)=>{this.carData['modification_instructions']=text}}
+                                onEndEditing={()=>{this.saveCarData();}}
+                                ref={(input) => {this.instructionsInput = input}}
+                                onFocus={()=>{
                                       this.setCurrentPy('instructionsInput');
                                   }}
-                                  placeholderTextColor={fontAndColor.COLORA4}
-                                  placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
-                              />
-                          )
-                      }
+                                placeholderTextColor={fontAndColor.COLORA4}
+                                placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
+                            />
+                        )
+                    }
 
-                  },
-              ]
+                },
+            ]
 
-          ];
-          this.titleData2 = [
-              [
-                  {
-                      title:'车辆类型',
-                      isShowTag:false,
-                      value:'扫描',
-                      isShowTail:true,
-                      selectDict:{current:this.carType,data:[{title:'二手车',value:1},{title:'新车',value:2},{title:'平行进口车',value:3}]},
-                  },
-                  {
-                      title:'车架号',
-                      subTitle:"",
-                      isShowTag:true,
-                      tailView:()=>{
-                          return(
-                              <View style={{flexDirection:'row', alignItems:'center'}}>
-                                  <TextInput style={styles.textInput}
-                                             ref={(input) => {this.vinInput = input}}
-                                             placeholder='输入车架号'
-                                             underlineColorAndroid='transparent'
-                                             maxLength={17}
-                                             editable={this.props.carID?false:true}
-                                             onChangeText={this._onVinChange}
-                                             onFocus={()=>{
+        ];
+        this.titleData2 = [
+            [
+                {
+                    title:'车辆类型',
+                    isShowTag:false,
+                    value:'扫描',
+                    isShowTail:true,
+                    selectDict:{current:this.carType,data:[{title:'二手车',value:1},{title:'新车',value:2},{title:'平行进口车',value:3}]},
+                },
+                {
+                    title:'车架号',
+                    subTitle:"",
+                    isShowTag:true,
+                    tailView:()=>{
+                        return(
+                            <View style={{flexDirection:'row', alignItems:'center'}}>
+                                <TextInput style={styles.textInput}
+                                           ref={(input) => {this.vinInput = input}}
+                                           placeholder='输入车架号'
+                                           underlineColorAndroid='transparent'
+                                           maxLength={17}
+                                           editable={this.props.carID?false:true}
+                                           onChangeText={this._onVinChange}
+                                           onFocus={()=>{
                                                  this.setCurrentPy('vinInput');
                                              }}
-                                             placeholderTextColor={fontAndColor.COLORA4}
-                                             keyboardType={'ascii-capable'}
-                                             placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
-                                  />
-                                  {
-                                      !this.props.carID &&(<TouchableOpacity onPress={this._onScanPress} style={{flexDirection:'row', alignItems:'center'}}>
-                                          <Image style={styles.scanImage} source={scanImg}/>
-                                          <Text allowFontScaling={false}  style={{color:fontAndColor.COLORA2, fontSize:fontAndColor.LITTLEFONT28,marginLeft:Pixel.getPixel(5)}}>扫描</Text>
-                                      </TouchableOpacity>)
-                                  }
-                              </View>
-                          )
-                      }
-                  },
-                  {
-                      title:'车型',
-                      isShowTag:true,
-                      value:'请选择',
-                      isShowTail:true,
-                  },
-                  {
-                      title:'排量',
-                      isShowTag:true,
-                      isShowTail:false,
-                      tailView:()=>{
-                          return(
-                              <TextInput
-                                  style={styles.textInput}
-                                  placeholder='请输入'
-                                  onChangeText={(text)=>{
+                                           placeholderTextColor={fontAndColor.COLORA4}
+                                           keyboardType={'ascii-capable'}
+                                           placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
+                                />
+                                {
+                                    !this.props.carID &&(<TouchableOpacity onPress={this._onScanPress} style={{flexDirection:'row', alignItems:'center'}}>
+                                        <Image style={styles.scanImage} source={scanImg}/>
+                                        <Text allowFontScaling={false}  style={{color:fontAndColor.COLORA2, fontSize:fontAndColor.LITTLEFONT28,marginLeft:Pixel.getPixel(5)}}>扫描</Text>
+                                    </TouchableOpacity>)
+                                }
+                            </View>
+                        )
+                    }
+                },
+                {
+                    title:'车型',
+                    isShowTag:true,
+                    value:'请选择',
+                    isShowTail:true,
+                },
+                {
+                    title:'排量',
+                    isShowTag:true,
+                    isShowTail:false,
+                    tailView:()=>{
+                        return(
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder='请输入'
+                                onChangeText={(text)=>{
                                       this.carData['displacement']=text}
                                   }
-                                  ref={(input) => {this.displacementInput = input}}
-                                  underlineColorAndroid='transparent'
-                                  onEndEditing={()=>{this.saveCarData();}}
-                                  onFocus={()=>{
+                                ref={(input) => {this.displacementInput = input}}
+                                underlineColorAndroid='transparent'
+                                onEndEditing={()=>{this.saveCarData();}}
+                                onFocus={()=>{
                                       this.setCurrentPy('displacementInput');
                                   }}
-                                  placeholderTextColor={fontAndColor.COLORA4}
-                                  placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
-                              />
-                          )
-                      }
-                  },
-                  {
-                      title:'排放标准',
-                      isShowTag:true,
-                      value:'请选择',
-                      isShowTail:true,
-                  },
-                  {
-                      title:'车身颜色',
-                      isShowTag:true,
-                      value:'请选择',
-                      isShowTail:true,
-                  },{
-                  title:'内饰颜色',
-                  isShowTag:true,
-                  value:'请选择',
-                  isShowTail:true,
-              },
-              ],
-              [
-                  {
-                      title:'出厂日期',
-                      isShowTag:true,
-                      value:'请选择',
-                      isShowTail:true,
-                  },
-              ],
-              [
-                  {
-                      title:'标准配置',
-                      isShowTag:false,
-                      value:'查看',
-                      isShowTail:true,
-                  },
-                  {
-                      title:'配置改装说明',
-                      isShowTag:false,
-                      tailView:()=>{
-                          return(
-                              <TextInput
-                                  style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(50)}]}
-                                  ref={(input) => {this.instructionsInput = input}}
-                                  placeholder='请填写'
-                                  maxLength={50}
-                                  underlineColorAndroid='transparent'
-                                  onChangeText={(text)=>{
+                                placeholderTextColor={fontAndColor.COLORA4}
+                                placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
+                            />
+                        )
+                    }
+                },
+                {
+                    title:'排放标准',
+                    isShowTag:true,
+                    value:'请选择',
+                    isShowTail:true,
+                },
+                {
+                    title:'车身颜色',
+                    isShowTag:true,
+                    value:'请选择',
+                    isShowTail:true,
+                },{
+                title:'内饰颜色',
+                isShowTag:true,
+                value:'请选择',
+                isShowTail:true,
+            },
+            ],
+            [
+                {
+                    title:'出厂日期',
+                    isShowTag:true,
+                    value:'请选择',
+                    isShowTail:true,
+                },
+            ],
+            [
+                {
+                    title:'标准配置',
+                    isShowTag:false,
+                    value:'查看',
+                    isShowTail:true,
+                },
+                {
+                    title:'配置改装说明',
+                    isShowTag:false,
+                    tailView:()=>{
+                        return(
+                            <TextInput
+                                style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(50)}]}
+                                ref={(input) => {this.instructionsInput = input}}
+                                placeholder='请填写'
+                                maxLength={50}
+                                underlineColorAndroid='transparent'
+                                onChangeText={(text)=>{
                                       this.carData['modification_instructions']=text}
                                   }
-                                  onEndEditing={()=>{this.saveCarData();}}
-                                  onFocus={()=>{
+                                onEndEditing={()=>{this.saveCarData();}}
+                                onFocus={()=>{
                                       this.setCurrentPy('instructionsInput');
                                   }}
-                                  placeholderTextColor={fontAndColor.COLORA4}
-                                  placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
-                              />
-                          )
-                      }
-                  },
-              ]
+                                placeholderTextColor={fontAndColor.COLORA4}
+                                placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
+                            />
+                        )
+                    }
+                },
+            ]
 
-          ];
+        ];
 
-          this.state = {
-              titleData:this.titleData1,
-              isDateTimePickerVisible:false,
-              renderPlaceholderOnly:'loading'
-          };
-      }
+        this.state = {
+            titleData:this.titleData1,
+            isDateTimePickerVisible:false,
+            renderPlaceholderOnly:'loading'
+        };
+    }
 
     // componentWillMount() {
     //
@@ -454,14 +454,14 @@ export default class CarPublishFirstScene extends BaseComponent{
                                                                 ref="cellSelectView"
                                                             />
                                                         </TouchableOpacity>):(
-                                                            <TouchableOpacity
-                                                                key={subIndex}
-                                                                onPress={
+                                                        <TouchableOpacity
+                                                            key={subIndex}
+                                                            onPress={
                                                                     ()=>{this.cellClick(rowData.title)}
                                                                 }
-                                                                activeOpacity={1}>
-                                                                <CellView cellData={rowData}/>
-                                                            </TouchableOpacity>))
+                                                            activeOpacity={1}>
+                                                            <CellView cellData={rowData}/>
+                                                        </TouchableOpacity>))
                                             })
                                         }
                                     </View>
@@ -545,9 +545,9 @@ export default class CarPublishFirstScene extends BaseComponent{
 
     saveCarData=()=>{
 
-            if(this.carData.show_shop_id && !this.carData.id){
-                StorageUtil.mSetItem(String(this.carData.show_shop_id),JSON.stringify(this.carData));
-            }
+        if(this.carData.show_shop_id && !this.carData.id){
+            StorageUtil.mSetItem(String(this.carData.show_shop_id),JSON.stringify(this.carData));
+        }
 
     }
 
@@ -740,7 +740,7 @@ export default class CarPublishFirstScene extends BaseComponent{
             this.carData['manufacture']=d;
 
         }else{
-           this.titleData1[1][1].value = d;
+            this.titleData1[1][1].value = d;
             this.carData['init_reg']=d;
         }
 
@@ -1029,16 +1029,16 @@ export default class CarPublishFirstScene extends BaseComponent{
     pushCarDischarge=()=>{
 
 
-            let brandParams = {
-                name: 'CarDischargeScene',
-                component: CarDischargeScene,
-                params: {
-                    checkedCarDischargeClick:this._checkedCarDischargeClick,
-                    currentChecked:this.titleData1[0][4].value,
-                    DischargeData:this.carConfigurationData.auto_es,
-                }
-            };
-            this.toNextPage(brandParams);
+        let brandParams = {
+            name: 'CarDischargeScene',
+            component: CarDischargeScene,
+            params: {
+                checkedCarDischargeClick:this._checkedCarDischargeClick,
+                currentChecked:this.titleData1[0][4].value,
+                DischargeData:this.carConfigurationData.auto_es,
+            }
+        };
+        this.toNextPage(brandParams);
 
 
     }
@@ -1052,16 +1052,16 @@ export default class CarPublishFirstScene extends BaseComponent{
 
     pushCarBodyColorScene=()=>{
 
-            let brandParams = {
-                name: 'CarBodyColorScene',
-                component:CarBodyColorScene,
-                params: {
-                    checkedCarBodyColorClick:this._checkedCarBodyColorClick,
-                    currentChecked:this.titleData1[0][5].value,
-                    carBodyColorData:this.carConfigurationData.auto_body_color,
-                }
-            };
-            this.toNextPage(brandParams);
+        let brandParams = {
+            name: 'CarBodyColorScene',
+            component:CarBodyColorScene,
+            params: {
+                checkedCarBodyColorClick:this._checkedCarBodyColorClick,
+                currentChecked:this.titleData1[0][5].value,
+                carBodyColorData:this.carConfigurationData.auto_body_color,
+            }
+        };
+        this.toNextPage(brandParams);
 
     }
 

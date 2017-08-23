@@ -24,3 +24,4 @@ export const NEED_GESTURE = "need_gesture"; //	是否需要手势解锁
 /* userinfo end */
 export const NEED_OPENBRAND = "need_openbrand"; //	需要打开车型列表
 export const NEED_CHECK_RECOMMEND = "checkRecommend";   // 取消推荐车源
+export const GET_USER_PERMISSION = "get_user_permission";   // 获取角色权限

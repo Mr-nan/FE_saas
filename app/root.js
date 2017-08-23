@@ -12,8 +12,8 @@ import {
 } from 'react-native';
 
 import MyNavigator  from './component/MyNavigator';
+
 import ShowToast from "./component/toast/ShowToast";
-import codePush from 'react-native-code-push'
 import * as weChat from 'react-native-wechat';
 
 export default class root extends Component {
@@ -25,9 +25,11 @@ export default class root extends Component {
                     this.showToast(content)
                 }} showModal={(value)=>{this.showModal(value)}}/>
                 <ShowToast ref='toast' msg={''}></ShowToast>
+
             </View>
         );
     }
+
 
     componentDidMount() {
         weChat.registerApp('wx6211535f6243c779');
