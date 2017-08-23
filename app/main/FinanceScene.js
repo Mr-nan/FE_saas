@@ -89,11 +89,16 @@ export default class FinanceSence extends BaseComponet {
     }
 
     componentDidMount() {
-        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
-        InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: 'loading'});
-            this.initFinish();
-        });
+        try {
+            BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        } catch (e) {
+
+        } finally {
+            //InteractionManager.runAfterInteractions(() => {
+                this.setState({renderPlaceholderOnly: 'loading'});
+                this.initFinish();
+            //});
+        }
     }
 
 

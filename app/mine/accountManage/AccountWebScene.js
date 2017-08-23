@@ -38,10 +38,15 @@ export  default class AccountWebScene extends BaseComponent {
 
     componentDidMount() {
         oldUrl = this.props.webUrl;
-        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
-        InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: 'success'});
-        });
+        try {
+            BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        } catch (e) {
+
+        } finally {
+            //InteractionManager.runAfterInteractions(() => {
+                this.setState({renderPlaceholderOnly: 'success'});
+            //});
+        }
     }
 
     handleBack = () => {

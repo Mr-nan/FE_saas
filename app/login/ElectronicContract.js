@@ -30,9 +30,9 @@ export default class ElectronicContract extends BaseComponent {
     }
 
     initFinish = () => {
-        InteractionManager.runAfterInteractions(() => {
+        //InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: false});
-        });
+        //});
     }
 
     render() {

@@ -6,12 +6,12 @@
 /**
  * 测试地址
  */
-export const BASEURL = 'http://api-gateway.test.dycd.com/';
+//export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 正式地址
  */
-// export const BASEURL = 'https://gatewayapi.dycd.com/';
+export const BASEURL = 'https://gatewayapi.dycd.com/';
 
 /**
  * 预发布地址
@@ -293,6 +293,13 @@ export const USER_ACCOUNT_SAVEPERSONAL = BASEURL + 'v1/user.account/savePersonal
  * 修改交易密码
  **/
 export const USER_ACCOUNT_EDITPAYPWD = BASEURL + 'v1/user.account/editPayPwd';
+
+/**
+ * from @zhaojian
+ *
+ * 通过商户ID获取财务是否有账户管理权限
+ **/
+export const GETACCOUNTSTATUSBYUID = BASEURL + 'v1/user.account/getAccountStatusByUID';
 
 /**
  * from @zhaojian
@@ -957,3 +964,13 @@ export const FIRST_PAYMENT_PAY = BASEURL + V + 'order_finance/firstPaymentPay';
  *  融资订单支付首付款回调
  */
 export const FIRST_PAYMENT_PAY_CALLBACK = BASEURL + V + 'order_finance/firstPaymentPayCallback';
+
+/**
+ *  扣款协议合同
+ */
+export const FIRST_REPAYMENT_CONTRACT = '/api/v1/Contract/see_electron_repayment_contract';
+
+/**
+ *  签署-扣款协议合同
+ */
+export const FIRST_REPAYMENT_CONTRACT_SIGN = '//api/v1/Contract/sign_electron_repayment_contract';

@@ -39,7 +39,7 @@ export  default class AccountTitle extends PureComponent {
         list.push(new listValue('修改交易密码', require('../../../../images/mainImage/changePwd.png'), this.props.changePwd));
         list.push(new listValue('重置交易密码', require('../../../../images/mainImage/resetPwd.png'), this.props.resetPwd));
         list.push(new listValue('修改银行预留手机号码', require('../../../../images/mainImage/changePhone.png'), this.props.changePhone));
-        // list.push(new listValue('账户设置',require('../../../../images/mainImage/accountSetting.png'),this.props.accountSetting));
+        //list.push(new listValue('账户设置',require('../../../../images/mainImage/accountSetting.png'),this.props.accountSetting));
     }
 
     /**
@@ -60,7 +60,7 @@ export  default class AccountTitle extends PureComponent {
         let itemList = [];
         itemList.push(<View key={'top'} style={{width:width,height:Pixel.getPixel(30),backgroundColor:fontAndColor.COLORA3,
         justifyContent:'center'}}>
-            <Text allowFontScaling={false}  style={{color:fontAndColor.COLORA1,fontSize: Pixel.getPixel(fontAndColor.CONTENTFONT24),
+            <Text allowFontScaling={false} style={{color:fontAndColor.COLORA1,fontSize: Pixel.getPixel(fontAndColor.CONTENTFONT24),
             marginLeft:Pixel.getPixel(15)}}>账户功能</Text>
         </View>);
         for (let i = 0; i < list.length; i++) {
@@ -73,7 +73,8 @@ export  default class AccountTitle extends PureComponent {
                            source={list[i].imageFile}/>
                 </View>
                 <View style={{flex:4,justifyContent:'center'}}>
-                    <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(14),color: '#000'}}>{list[i].key}</Text>
+                    <Text allowFontScaling={false}
+                          style={{fontSize: Pixel.getFontPixel(14),color: '#000'}}>{list[i].key}</Text>
                 </View>
                 <View style={{flex:1,justifyContent:'center',alignItems:'flex-end'}}>
                     <Image style={{width:Pixel.getPixel(14),height:Pixel.getPixel(14),marginRight:Pixel.getPixel(15)}}
@@ -84,15 +85,15 @@ export  default class AccountTitle extends PureComponent {
         itemList.push(<View key={'end'} style={{width:width,height:Pixel.getPixel(30),backgroundColor:fontAndColor.COLORA3,
         flexDirection: 'row'}}>
             <View style={{flex:1,justifyContent:'center'}}>
-                <Text allowFontScaling={false}  style={{color:fontAndColor.COLORA1,fontSize: Pixel.getPixel(fontAndColor.CONTENTFONT24),
+                <Text allowFontScaling={false} style={{color:fontAndColor.COLORA1,fontSize: Pixel.getPixel(fontAndColor.CONTENTFONT24),
             marginLeft:Pixel.getPixel(15)}}>最近流水</Text>
             </View>
             <TouchableOpacity onPress={()=>{
                     this.props.moreFlow();
             }} activeOpacity={0.9} style={{flex:1,flexDirection: 'row',justifyContent:'flex-end',alignItems:'center'}}>
 
-                <Text allowFontScaling={false} 
-                    style={{color:fontAndColor.COLORA2,fontSize: Pixel.getPixel(fontAndColor.CONTENTFONT24)}}>更多 </Text>
+                <Text allowFontScaling={false}
+                      style={{color:fontAndColor.COLORA2,fontSize: Pixel.getPixel(fontAndColor.CONTENTFONT24)}}>更多 </Text>
                 <Image style={{width:Pixel.getPixel(14),height:Pixel.getPixel(14),marginRight:Pixel.getPixel(15)}}
                        source={require('../../../../images/mainImage/celljiantou.png')}/>
             </TouchableOpacity>
@@ -102,7 +103,7 @@ export  default class AccountTitle extends PureComponent {
                 <View style={{width:width,height:Pixel.getPixel(211),backgroundColor:fontAndColor.COLORB0}}>
                     <View style={{width:width,height:Pixel.getPixel(35),backgroundColor:'rgba(105,105,105,0.1)',
                 justifyContent:'center'}}>
-                        <Text allowFontScaling={false}  style={{marginLeft:Pixel.getPixel(20),color: '#fff',
+                        <Text allowFontScaling={false} style={{marginLeft:Pixel.getPixel(20),color: '#fff',
                      fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>
                             账户号码：{this.props.info.bank_card_no}
                         </Text>
@@ -110,30 +111,31 @@ export  default class AccountTitle extends PureComponent {
                     <View style={{width:width,height:Pixel.getPixel(175)}}>
                         <View
                             style={{width:width,height:Pixel.getPixel(115),justifyContent:'center',alignItems:'center'}}>
-                            <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(14),color:'#fff'}}>账户总额(元)</Text>
-                            <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(18),color:'#fff',
+                            <Text allowFontScaling={false} style={{fontSize: Pixel.getFontPixel(14),color:'#fff'}}>账户总额(元)</Text>
+                            <Text allowFontScaling={false} style={{fontSize: Pixel.getFontPixel(18),color:'#fff',
                             fontWeight: 'bold',marginTop:Pixel.getPixel(5)}}>
                                 {/*{(parseFloat(this.props.info.balance) +*/}
                                 {/*parseFloat(this.props.info.frozen_balance)).toString().match(/^\d+(?:\.\d{0,2})?/)}*/}
-                                {this.toDecimal(parseFloat(this.props.info.balance)+parseFloat(this.props.info.frozen_balance))}
+                                {this.toDecimal(parseFloat(this.props.info.balance) + parseFloat(this.props.info.frozen_balance))}
 
-                                </Text>
+                            </Text>
                         </View>
                         <View style={{width:width,height:Pixel.getPixel(60),
                         backgroundColor:'rgba(1,54,188,0.1)',flexDirection: 'row'}}>
                             <View style={{flex:1,justifyContent:'center',paddingLeft:Pixel.getPixel(15)}}>
-                                <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(14),color:'#fff'}}>
+                                <Text allowFontScaling={false} style={{fontSize: Pixel.getFontPixel(14),color:'#fff'}}>
                                     可用余额(元)</Text>
-                                <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(18),color:'#fff',
+                                <Text allowFontScaling={false} style={{fontSize: Pixel.getFontPixel(18),color:'#fff',
                                 marginTop:Pixel.getPixel(2)}}>
-                                    {parseFloat(this.props.info.balance)}</Text>
+                                    {this.toDecimal(parseFloat(this.props.info.balance))}</Text>
                             </View>
                             <View style={{flex:1,justifyContent:'center',paddingLeft:Pixel.getPixel(30)}}>
-                                <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(14),color:'#fff'}}>
+                                <Text allowFontScaling={false} style={{fontSize: Pixel.getFontPixel(14),color:'#fff'}}>
                                     冻结金额(元)</Text>
-                                <Text allowFontScaling={false}  style={{fontSize: Pixel.getFontPixel(18),
+                                <Text allowFontScaling={false} style={{fontSize: Pixel.getFontPixel(18),
                                 color:'#fff',marginTop:Pixel.getPixel(2)}}>
-                                    {parseFloat(this.props.info.frozen_balance)}</Text>
+                                    {this.toDecimal(parseFloat(this.props.info.frozen_balance) +
+                                        parseFloat(this.props.info.pending_balance))}</Text>
                             </View>
                         </View>
                     </View>
