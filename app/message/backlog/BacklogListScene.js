@@ -23,6 +23,7 @@ import StorageUtil from "../../utils/StorageUtil";
 import GetPermissionUtil from '../../utils/GetRoleUtil';
 import ClientInfoScene from "../../crm/StoresReception/ClientInfoScene";
 import CarTrimScene from "../../carSource/carBuy/CarTrimScene";
+import StoreReceptionManageNewScene from "../../crm/StoresReception/StoreReceptionManageNewScene";
 const GetRoleUtil = new GetPermissionUtil();
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 import * as AppUrls from "../../constant/appUrls";
@@ -69,6 +70,9 @@ export default class BacklogListScene extends BaseComponent {
                     this.contentTypes.push('taskYYZY');
                 }
             }
+            this.contentTypes.push('taskRemind');
+            this.contentTypes.push('taskTenure');
+            this.contentTypes.push('taskDC');
             //this.contentTypes = list;
             this.loadData();
         });
@@ -180,7 +184,7 @@ export default class BacklogListScene extends BaseComponent {
                     }}>
                     <View style={styles.listItem}>
                         <Text allowFontScaling={false} style={styles.title}>车辆整备</Text>
-                        <Text allowFontScaling={false} style={styles.describe}>您有一辆车待整备，请及时处理。</Text>
+                        <Text allowFontScaling={false} style={styles.describe}>{rowData.content}</Text>
                         <View style={styles.separatedLine}/>
                         <View style={styles.subItem}>
                             <Text allowFontScaling={false} style={styles.subTitle}>查看详情</Text>
@@ -212,11 +216,17 @@ export default class BacklogListScene extends BaseComponent {
             return (
                 <TouchableOpacity
                     onPress={() => {
-
+                        this.toNextPage({
+                            name: 'StoreReceptionManageNewScene',
+                            component: StoreReceptionManageNewScene,
+                            params: {
+                                //defaultIndex: index
+                            }
+                        });
                     }}>
                     <View style={styles.listItem}>
                         <Text allowFontScaling={false} style={styles.title}>门店客户跟进</Text>
-                        <Text allowFontScaling={false} style={styles.describe}>测试测试测试测试测试测试测试测试测试</Text>
+                        <Text allowFontScaling={false} style={styles.describe}>{rowData.content}</Text>
                         <View style={styles.separatedLine}/>
                         <View style={styles.subItem}>
                             <Text allowFontScaling={false} style={styles.subTitle}>查看详情</Text>
