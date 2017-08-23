@@ -21,6 +21,8 @@ const Pixel = new PixelUtil();
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import StorageUtil from "../../utils/StorageUtil";
 import GetPermissionUtil from '../../utils/GetPermissionUtil';
+import ClientInfoScene from "../../crm/StoresReception/ClientInfoScene";
+import CarTrimScene from "../../carSource/carBuy/CarTrimScene";
 //const GetPermission = new GetPermissionUtil();
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 import * as AppUrls from "../../constant/appUrls";
@@ -136,11 +138,28 @@ export default class BacklogListScene extends BaseComponent {
      *
      **/
     _renderRow = (rowData, selectionID, rowID) => {
-        if (rowData.contentType == 'taskPGS') {
+        if (rowData.contentType == 'taskPGS' || rowData.contentType == 'taskZBY' || rowData.contentType == 'taskManager' ||
+            rowData.contentType == 'taskYYZY') {
+            let index = 0;
+            if (rowData.contentType == 'taskPGS') {
+                index = 1;
+            } else if (rowData.contentType == 'taskZBY') {
+                index = 2;
+            } else if (rowData.contentType == 'taskManager') {
+                index = 3;
+            } else if (rowData.contentType == 'taskYYZY') {
+                index = 4;
+            }
             return (
                 <TouchableOpacity
                     onPress={() => {
-
+                        this.toNextPage({
+                            name: 'CarTrimScene',
+                            component: CarTrimScene,
+                            params: {
+                                defaultIndex: index
+                            }
+                        });
                     }}>
                     <View style={styles.listItem}>
                         <Text allowFontScaling={false} style={styles.title}>车辆整备</Text>
@@ -154,7 +173,7 @@ export default class BacklogListScene extends BaseComponent {
                     </View>
                 </TouchableOpacity>
             )
-        } else if (rowData == '1') {
+        } else if (rowData.contentType == 'taskTenure') {
             return (
                 <TouchableOpacity
                     onPress={() => {
@@ -172,36 +191,21 @@ export default class BacklogListScene extends BaseComponent {
                     </View>
                 </TouchableOpacity>
             )
-        } else if (rowData == '2') {
+        } else if (rowData.contentType == 'taskRemind') {
             return (
                 <TouchableOpacity
                     onPress={() => {
 
                     }}>
                     <View style={styles.listItem}>
-
-                    </View>
-                </TouchableOpacity>
-            )
-        } else if (rowData == '3') {
-            return (
-                <TouchableOpacity
-                    onPress={() => {
-
-                    }}>
-                    <View style={styles.listItem}>
-
-                    </View>
-                </TouchableOpacity>
-            )
-        } else if (rowData == '4') {
-            return (
-                <TouchableOpacity
-                    onPress={() => {
-
-                    }}>
-                    <View style={styles.listItem}>
-
+                        <Text allowFontScaling={false} style={styles.title}>门店客户跟进</Text>
+                        <Text allowFontScaling={false} style={styles.describe}>测试测试测试测试测试测试测试测试测试</Text>
+                        <View style={styles.separatedLine}/>
+                        <View style={styles.subItem}>
+                            <Text allowFontScaling={false} style={styles.subTitle}>查看详情</Text>
+                            <View style={{flex: 1}}/>
+                            <Image source={cellJianTou} style={styles.image}/>
+                        </View>
                     </View>
                 </TouchableOpacity>
             )

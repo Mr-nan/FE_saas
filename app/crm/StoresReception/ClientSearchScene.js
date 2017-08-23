@@ -165,9 +165,9 @@ export default class ClientSearchScene extends BaseComponent {
                 };
                 let url = AppUrls.QUERY_CUSTOMER_BY_SEARCH_KEY;
                 request(url, 'post', maps).then((response) => {
-                    this.clientListData = response.mjson.data.items;
+                    this.clientListData = response.mjson.data.record.beanlist;
                     //this.allPage = response.mjson.data.total / response.mjson.data.rows;
-                    if (this.clientListData) {
+                    if (this.clientListData && this.clientListData.length > 0) {
                         this.setState({
                             dataSource: this.state.dataSource.cloneWithRows(this.clientListData),
                             isRefreshing: false,
@@ -325,7 +325,7 @@ export default class ClientSearchScene extends BaseComponent {
         return (
             <View
                 key={`${sectionID}-${rowID}`}
-                style={{backgroundColor: fontAndColor.COLORA3, height: Pixel.getPixel(10)}}/>
+                style={{backgroundColor: fontAndColor.COLORA3, height: Pixel.getPixel(1)}}/>
         )
     }
 
