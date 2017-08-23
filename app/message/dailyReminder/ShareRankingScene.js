@@ -37,19 +37,24 @@ export default class ShareRankingScene extends BaseComponent {
      *   初始化数据
      **/
     initFinish = () => {
-        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.setState({
-            dataSource: ds.cloneWithRows(['0', '0', '0', '0', '0']),
-            renderPlaceholderOnly: 'success'
-        });
-        //this.loadData();
+        /*        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+         this.setState({
+         dataSource: ds.cloneWithRows(['0', '0', '0', '0', '0']),
+         renderPlaceholderOnly: 'success'
+         });*/
+        this.loadData();
     };
 
     /**
      *   数据请求
      **/
     loadData = () => {
-
+        let data = this.props.info;
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.setState({
+            dataSource: ds.cloneWithRows(data),
+            renderPlaceholderOnly: 'success'
+        });
     };
 
     /**
@@ -91,30 +96,34 @@ export default class ShareRankingScene extends BaseComponent {
      *   listView item 数据
      **/
     _renderRow = (rowData, selectionID, rowID) => {
-        if (rowData == '0') {
-            return (
-                <View style={styles.listItem}>
-                    <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+        return (
+            <View style={styles.listItem}>
+                <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+                    <View
+                        style={{
+                            alignItems: 'center', justifyContent: 'center',
+                            width: Pixel.getPixel(55)
+                        }}>
                         {
-                            rowID == 0 && <Image source={require('../../../images/mainImage/individualaccount.png')}
+                            rowID == 0 && <Image source={require('../../../images/message/champion.png')}
                                                  style={{
-                                                     marginLeft: Pixel.getPixel(15),
+                                                     //marginLeft: Pixel.getPixel(15),
                                                      height: Pixel.getPixel(25),
                                                      width: Pixel.getPixel(25)
                                                  }}/>
                         }
                         {
-                            rowID == 1 && <Image source={require('../../../images/mainImage/individualaccount.png')}
+                            rowID == 1 && <Image source={require('../../../images/message/second.png')}
                                                  style={{
-                                                     marginLeft: Pixel.getPixel(15),
+                                                     //marginLeft: Pixel.getPixel(15),
                                                      height: Pixel.getPixel(25),
                                                      width: Pixel.getPixel(25)
                                                  }}/>
                         }
                         {
-                            rowID == 2 && <Image source={require('../../../images/mainImage/individualaccount.png')}
+                            rowID == 2 && <Image source={require('../../../images/message/third.png')}
                                                  style={{
-                                                     marginLeft: Pixel.getPixel(15),
+                                                     //marginLeft: Pixel.getPixel(15),
                                                      height: Pixel.getPixel(25),
                                                      width: Pixel.getPixel(25)
                                                  }}/>
@@ -124,31 +133,32 @@ export default class ShareRankingScene extends BaseComponent {
                                 allowFontScaling={false}
                                 style={{
                                     textAlign: 'center',
-                                    marginLeft: Pixel.getPixel(15),
+                                    //marginLeft: Pixel.getPixel(15),
                                     fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                     color: fontAndColor.COLORA1
                                 }}>{parseInt(rowID) + 1}</Text>
                         }
-                        <Text
-                            allowFontScaling={false}
-                            style={{
-                                position: 'absolute',
-                                marginLeft: Pixel.getPixel(55),
-                                fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                                color: fontAndColor.COLORA0
-                            }}>测试人员</Text>
-                        <View style={{flex: 1}}/>
-                        <Text
-                            allowFontScaling={false}
-                            style={{
-                                marginRight: Pixel.getPixel(15),
-                                fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                                color: rowID == 1 || rowID == 2 || rowID == 0 ? fontAndColor.COLORB2 : fontAndColor.COLORA1
-                            }}>分享38次</Text>
                     </View>
+                    <Text
+                        allowFontScaling={false}
+                        style={{
+                            //backgroundColor: fontAndColor.COLORB2,
+                            //position: 'absolute',
+                            //marginLeft: Pixel.getPixel(55),
+                            fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                            color: fontAndColor.COLORA0
+                        }}>{rowData.name}</Text>
+                    <View style={{flex: 1}}/>
+                    <Text
+                        allowFontScaling={false}
+                        style={{
+                            marginRight: Pixel.getPixel(15),
+                            fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                            color: rowID == 1 || rowID == 2 || rowID == 0 ? fontAndColor.COLORB2 : fontAndColor.COLORA1
+                        }}>分享{rowData.count}次</Text>
                 </View>
-            )
-        }
+            </View>
+        )
     }
 
 }

@@ -31,6 +31,7 @@ export class StatisticalListView extends BaseComponent {
     constructor(props) {
         super(props);
         this.statisticalListData = [];
+        this.timeType = 1;
         this.state = {
             dataSource: [],
             isRefreshing: false,
@@ -55,6 +56,7 @@ export class StatisticalListView extends BaseComponent {
      **/
     refreshData = (type) => {
         this.props.showModal(true);
+        this.timeType = type;
         this.statisticalListData = [];
         this.loadData(type);
     };
@@ -68,6 +70,7 @@ export class StatisticalListView extends BaseComponent {
             type: type,
             //token: '5afa531b-4295-4c64-8d6c-ac436c619078'
         }).then((response) => {
+            this.props.showModal(false);
             this.statisticalListData = response.mjson.data;
             if (this.statisticalListData && this.statisticalListData.length > 0) {
                 let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -83,6 +86,7 @@ export class StatisticalListView extends BaseComponent {
                 });
             }
         }, (error) => {
+            this.props.showModal(false);
             this.setState({
                 isRefreshing: false,
                 renderPlaceholderOnly: 'error'
@@ -127,12 +131,27 @@ export class StatisticalListView extends BaseComponent {
      *
      **/
     _renderRow = (rowData, selectionID, rowID) => {
+        let title = '';
+        let date = '';
+        //let name = '';
+        //let times = '';
+        if (this.timeType == 1) {   // 每日
+            title = rowID == 0 ? '今日统计' : '每日统计';
+            date = rowData.date;
+        } else if (this.timeType == 2) {  //每周
+            title = rowID == 0 ? '本周统计' : '每周统计';
+            let week = rowData.date.split('-');
+            date = week[0] + '年 第' + week[1] + '周';
+        } else if (this.timeType == 3) {  //每月
+            title = rowID == 0 ? '本月统计' : '每月统计';
+            date = rowData.date;
+        }
         return (
             <View style={styles.listItem}>
                 <View style={{flexDirection: 'row'}}>
-                    <Text allowFontScaling={false} style={styles.title}>本周统计</Text>
+                    <Text allowFontScaling={false} style={styles.title}>{title}</Text>
                     <View style={{flex: 1}}/>
-                    <Text allowFontScaling={false} style={styles.date}>{rowData.date}</Text>
+                    <Text allowFontScaling={false} style={styles.date}>{date}</Text>
                 </View>
                 <View style={styles.subItem}>
                     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
