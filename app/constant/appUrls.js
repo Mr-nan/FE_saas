@@ -1,12 +1,12 @@
 /**
  * 开发地址
  */
-export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
  */
-//export const BASEURL = 'http://api-gateway.test.dycd.com/';
+export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 正式地址
@@ -167,10 +167,15 @@ export const CAR_DELETE = BASEURL + V + 'car/delete';
  */
 export const CAR_SALE = BASEURL + V + 'car/sale';
 
+// /**
+//  * 我的车源-创建已售消息
+//  */
+// export const CAR_SASS_SALED = BASEURL + 'cheshang/sass/saled';
+
 /**
  * 我的车源-创建已售消息
  */
-export const CAR_SASS_SALED = BASEURL + 'cheshang/sass/saled';
+export const CAR_SASS_SALED = BASEURL + 'cheshang/sass/addsaledMessage';
 
 /**
  * 获取我的车源-未审核
