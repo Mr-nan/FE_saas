@@ -12,15 +12,15 @@ const GetPermissionUtil = React.createClass({
     }, getRoleList(callBack){
         this.getData((data) => {
             let list = [];
-            for (let i = 0; i < data.data.response.length; i++) {
-                if (data.data.response[i].id == 3) {
-                    for (let j = 0; j < data.data.response[i].children.length; j++) {
-                        for (let k = 0; k < data.data.response[i].children[j].children.length; k++) {
-                            let id = data.data.response[i].children[j].children[k].id;
+            for (let i = 0; i < data.data.length; i++) {
+                if (data.data[i].id == 3) {
+                    for (let j = 0; j < data.data[i].children.length; j++) {
+                        for (let k = 0; k < data.data[i].children[j].children.length; k++) {
+                            let id = data.data[i].children[j].children[k].id;
                             if (id == 31 || id == 32 || id == 33 || id == 34 || id == 35) {
                                 list.push({
-                                    id: data.data.response[i].children[j].children[k].id,
-                                    name: data.data.response[i].children[j].children[k].name
+                                    id: data.data[i].children[j].children[k].id,
+                                    name: data.data[i].children[j].children[k].name
                                 });
                             }
                         }

@@ -1059,9 +1059,6 @@ export const FIRST_PAYMENT_PAY = BASEURL + V + 'order_finance/firstPaymentPay';
  */
 export const FIRST_PAYMENT_PAY_CALLBACK = BASEURL + V + 'order_finance/firstPaymentPayCallback';
 
-<<<<<<< HEAD
-///******
-=======
 
 //export const PRE = "http://192.168.1.160:8010/";
 export const PRE = "http://10.3.10.38:8080/";
@@ -1078,4 +1075,3 @@ export const CUSTOMER_ADD_URL = PRE + "customer/customerInsert.do";
  *  获取待办消息数量
  */
 export const HANDLE_COUNT = BASEURL + V + "cheshang/sass/handleCount";
->>>>>>> 0a426db09033b8060c895918b078981237b026f4

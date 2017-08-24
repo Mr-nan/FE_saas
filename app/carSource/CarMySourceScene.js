@@ -570,6 +570,7 @@ export default class CarMySourceScene extends BaceComponent {
     }
 
     renderRightFootView = () => {
+        return null;
         return (
             <TouchableOpacity onPress={()=>{
                 let navigatorParams = {
