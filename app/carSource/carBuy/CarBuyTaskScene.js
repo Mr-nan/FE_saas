@@ -359,7 +359,7 @@ export default class CarBuyTaskScene extends BaseComponent{
 
 
         if(!this.carData.vin){
-            this.props.showToast('请输入车架号');
+            this.props.showToast('请输入正确的车架号');
             return;
         }
 
@@ -890,7 +890,7 @@ export default class CarBuyTaskScene extends BaseComponent{
             this._showLoading();
             this.vinInput.blur();
 
-            Net.request(AppUrls.VIN_CHECK, 'post',{vin:text}).then(
+            request(AppUrls.VIN_CHECK, 'post',{vin:text}).then(
                 (response) => {
                     if (response.mycode === 1) {
                         this.titleData1[0][1].value = '请选择';
@@ -899,7 +899,7 @@ export default class CarBuyTaskScene extends BaseComponent{
                         this.carData.brand = '';
                         this.carData.collectionType = '';
 
-                        Net.request(AppUrls.VININFO, 'post',{vin:text}).then(
+                        request(AppUrls.VININFO, 'post',{vin:text}).then(
                             (response) => {
                                 this._closeLoading();
                                 if (response.mycode === 1) {

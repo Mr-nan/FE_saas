@@ -107,7 +107,7 @@ export default class CarInitialTaskScene extends BaseComponent{
 
         if(!this.carData.vin)
         {
-            this.props.showToast('请输入车架号');
+            this.props.showToast('请输入正确的车架号');
             return;
         }
         if(!this.carData.carName)
