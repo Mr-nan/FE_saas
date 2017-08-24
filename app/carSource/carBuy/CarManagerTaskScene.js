@@ -44,7 +44,7 @@ export default class CarManagerTaskScene extends BaseComponent{
         return(
             <View style={styles.rootContaier}>
                 <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={-Pixel.getPixel(64)}>
-                    <ScrollView keyboardDismissMode={'on-drag'}>
+                    <ScrollView keyboardDismissMode={'on-drag'} >
                         {
                             this.state.titleData.map((data, index) => {
                                 return (
