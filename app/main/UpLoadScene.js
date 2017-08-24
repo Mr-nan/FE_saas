@@ -41,16 +41,21 @@ export  default class WebScene extends BaseComponent {
     }
 
     componentDidMount() {
-        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
-        InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: false});
-        });
-        if (Platform.OS === 'android') {
-            Linking.openURL(this.props.url);
-        } else {
-            NativeModules.SystomTools.openAppaleShop();
-        }
+        try {
+            BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        } catch (e) {
 
+        } finally {
+            //InteractionManager.runAfterInteractions(() => {
+                this.setState({renderPlaceholderOnly: false});
+            //});
+
+            if (Platform.OS === 'android') {
+                Linking.openURL(this.props.url);
+            } else {
+                NativeModules.SystomTools.openAppaleShop();
+            }
+        }
 
     }
 
@@ -76,7 +81,7 @@ export  default class WebScene extends BaseComponent {
                         backgroundColor:fontAndColor.COLORB0,
                         alignItems:'center',justifyContent:'center'
                     }}>
-                        <Text allowFontScaling={false}  style={{fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                        <Text allowFontScaling={false} style={{fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                             color:'#fff'}}>打开浏览器下载</Text>
                     </TouchableOpacity>
                 </View>

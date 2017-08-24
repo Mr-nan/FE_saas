@@ -38,7 +38,9 @@ import WaitActivationAccountScene from '../mine/accountManage/WaitActivationAcco
 import ProcurementOrderDetailScene from "../mine/myOrder/ProcurementOrderDetailScene";
 import ExplainModal from "../mine/myOrder/component/ExplainModal";
 import CarMyListScene from "./CarMyListScene";
+import GetPermissionUtil from '../utils/GetRoleUtil';
 let Platform = require('Platform');
+let getRole = new GetPermissionUtil();
 const Pixel = new PixelUtil();
 
 import {request} from "../utils/RequestUtil";
@@ -120,7 +122,10 @@ export default class CarInfoScene extends BaseComponent {
 
     initFinish = () => {
         carConfigurationData = [];
-        this.loadData();
+        getRole.getRoleList((data)=>{
+            this.roleList = data;
+            this.loadData();
+        });
     }
 
     allRefresh=()=>{
@@ -180,6 +185,15 @@ export default class CarInfoScene extends BaseComponent {
             if (carData.imgs.length <= 0) {
 
                 carData.imgs = [{require: require('../../images/carSourceImages/car_info_null.png')}];
+            }
+
+            for(let item of this.roleList)
+            {
+                if(item.name =='手续员'||item.name =='评估师'||item.name =='整备员'||item.name =='经理'||item.name =='运营专员')
+                {
+                    carData.show_order = 2;
+                    break;
+                }
             }
 
             this.setState({
@@ -360,13 +374,13 @@ export default class CarInfoScene extends BaseComponent {
                             </View>
                         )
                     }
-                    <TouchableOpacity style={styles.storeView} activeOpacity={1} onPress={this.pushStoreScene}>
-                        <Text style={styles.storeText}>所属店铺：金鸟二手车行</Text>
-                        <View style={{flexDirection:'row', alignItems:'center'}}>
-                            <Text style={styles.storeTailText}>进入</Text>
-                            <Image source={require('../../images/mainImage/celljiantou.png')}/>
-                        </View>
-                    </TouchableOpacity>
+                    {/*<TouchableOpacity style={styles.storeView} activeOpacity={1} onPress={this.pushStoreScene}>*/}
+                        {/*<Text style={styles.storeText}>所属店铺：金鸟二手车行</Text>*/}
+                        {/*<View style={{flexDirection:'row', alignItems:'center'}}>*/}
+                            {/*<Text style={styles.storeTailText}>进入</Text>*/}
+                            {/*<Image source={require('../../images/mainImage/celljiantou.png')}/>*/}
+                        {/*</View>*/}
+                    {/*</TouchableOpacity>*/}
                     <View style={styles.carIconsContainer}>
                         <View style={styles.carIconsView}>
                             {
@@ -456,7 +470,7 @@ export default class CarInfoScene extends BaseComponent {
                 </ScrollView>
                 <View style={styles.footView}>
                     {
-                        carData.status==3 ?
+                        (carData.status==3 || carData.del==1) ?
                             (
                             <View style={{flex:1, alignItems:'center',justifyContent:'center',backgroundColor:fontAndColor.COLORA4,height:Pixel.getPixel(44)}}>
                                 <Text style={{fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),color:'white',textAlign:'center'

@@ -38,10 +38,15 @@ export  default class WebScene extends BaseComponent {
 
     componentDidMount() {
         oldUrl = this.props.webUrl;
-        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
-        InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: false});
-        });
+        try {
+            BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        } catch (e) {
+
+        } finally {
+            //InteractionManager.runAfterInteractions(() => {
+                this.setState({renderPlaceholderOnly: false});
+            //});
+        }
     }
 
     handleBack = () => {

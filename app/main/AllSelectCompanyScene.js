@@ -45,6 +45,7 @@ export  default class AllSelectCompanyScene extends BaseComponent {
         this.setState({
             renderPlaceholderOnly:'loading'
         });
+
         this.getData();
     }
 

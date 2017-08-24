@@ -570,6 +570,7 @@ export default class CarMySourceScene extends BaceComponent {
     }
 
     renderRightFootView = () => {
+        return null;
         return (
             <TouchableOpacity onPress={()=>{
                 let navigatorParams = {
@@ -614,10 +615,10 @@ class MyCarSourceUpperFrameView extends BaceComponent {
     }
 
     componentDidMount() {
-        InteractionManager.runAfterInteractions(() => {
+        // InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: 'loading'});
             this.initFinish();
-        });
+        // });
     }
 
     initFinish = () => {
@@ -833,10 +834,10 @@ class MyCarSourceDropFrameView extends BaceComponent {
     }
 
     componentDidMount() {
-        InteractionManager.runAfterInteractions(() => {
+        // InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: 'loading'});
             this.initFinish();
-        });
+        // });
     }
 
 
@@ -1009,10 +1010,10 @@ class MyCarSourceAuditView extends BaceComponent {
     }
 
     componentDidMount() {
-        InteractionManager.runAfterInteractions(() => {
+        //InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: 'loading'});
             this.initFinish();
-        });
+        //});
     }
 
 

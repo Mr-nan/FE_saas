@@ -35,9 +35,9 @@ export  default class SelectCompanyScene extends Component {
     }
 
     componentDidMount() {
-        InteractionManager.runAfterInteractions(() => {
+        //InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: false});
-        });
+        //});
     }
 
 

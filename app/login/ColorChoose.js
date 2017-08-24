@@ -47,10 +47,10 @@ export default class ColorChoose extends BaseComponent {
     }
 
     initFinish = () => {
-        InteractionManager.runAfterInteractions(() => {
+        //InteractionManager.runAfterInteractions(() => {
             this.setState({renderPlaceholderOnly: false});
             // this.Verifycode();
-        });
+        //});
     }
 
     render() {
