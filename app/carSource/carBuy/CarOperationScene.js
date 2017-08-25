@@ -375,7 +375,9 @@ export default class CarOperationScene extends BaseComponent{
                 carData: {
                     vin:this.carParams.vin,
                     tid:this.carParams.id,
-                    v_type:1
+                    v_type:1,
+                    dealer_price:this.carParams.selfprice,
+                    low_price:this.carParams.overprice,
                 },
             }
         };
