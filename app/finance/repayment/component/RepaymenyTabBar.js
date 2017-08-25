@@ -33,6 +33,12 @@ export default class RepaymenyTabBar extends PureComponent {
             {tabChild}
         </View>;
     }
+
+    setTabName=(tabName)=>{
+        this.setState({
+            tabName: tabName,
+        });
+    }
 }
 
 const styles = StyleSheet.create({

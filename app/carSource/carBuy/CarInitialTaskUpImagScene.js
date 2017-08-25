@@ -41,34 +41,34 @@ export default class CarInitialTaskUpImagScene extends BaseComponent{
 
         this.titleData = [
             {
-                name: 'conformance_certificate',
-                title:'登记证',
-                subTitle:'请按1-2页，3-4页等拍全。至多5张',
-                number:5,
+                name: 'left_anterior',
+                title:'左前45度',
+                subTitle:'至多1张',
+                number:1,
                 imgArray:[],
-                explain:'1',
+                explain:'0',
             }, {
                 name: 'customs_declaration',
                 title:'行驶证',
-                subTitle:'至多5张',
-                number:5,
+                subTitle:'至多1张',
+                number:1,
                 imgArray:[],
-                explain:'1',
+                explain:'0',
             }, {
                 name: 'inspection_report',
                 title:'保单',
-                subTitle:'至多5张',
-                number:5,
+                subTitle:'至多1张',
+                number:1,
                 imgArray:[],
-                explain:'1',
+                explain:'0',
             },
             {
-                name: 'inspection_report',
+                name: 'idcardPath',
                 title:'身份证',
-                subTitle:'至多5张',
-                number:5,
+                subTitle:'至多1张',
+                number:1,
                 imgArray:[],
-                explain:'1',
+                explain:'0',
             },
         ];
 
@@ -157,82 +157,59 @@ export default class CarInitialTaskUpImagScene extends BaseComponent{
 
     footBtnClick=()=>{
 
-        this.props.showModal(true);
-        let errorTitle = '';
         for(let i=0;i<this.titleData.length;i++)
         {
             let item = this.titleData[i];
-            if(item.explain=='1')
-            {
-                let isNull = true;
+            let isNull = true;
                 for(let j=0;j<this.results.length;j++)
                 {
-                    if(this.results[j].name == item.name)
+                    let name = this.results[j].name;
+                    let url = this.results[j].url;
+                    if(name == 'left_anterior'){
+
+                        this.carData.arcPath = url; // 车辆图片
+
+                    }else if(name =='customs_declaration')
                     {
-                        isNull = false;
+                        this.carData.dlPath = url; // 行驶证
+
+                    }else if(name =='inspection_report')
+                    {
+                        this.carData.policyPath = url; // 保单
+
+                    }else if(name =='idcardPath')
+                    {
+                        this.carData.idcardPath = url; // 身份证
+
                     }
                 }
-                if(isNull)
-                {
-                    errorTitle = item.title;
+
+        }
+         this.props.showModal(true);
+            Net.request(AppUrls.CAR_CHESHANG_PUBLISHTASK,'post',this.carData).then((response) => {
+                this.props.showModal(false);
+
+                this.props.showToast('创建成功');
+                this.navigationBack();
+
+            }, (error) => {
+                this.props.showModal(false);
+
+            });
+
+
+    }
+
+    navigationBack=()=>{
+        const navigator = this.props.navigator;
+        if (navigator) {
+            for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
+                if (navigator.getCurrentRoutes()[i].name == 'CarTrimScene') {
+                  this.props.reloadTaskData && this.props.reloadTaskData();
+                    navigator.popToRoute(navigator.getCurrentRoutes()[i]);
                     break;
                 }
             }
-        }
-
-        if(errorTitle!='')
-        {
-            this.props.showModal(false);
-            this.props.showToast('请上传'+errorTitle+'图片');
-
-        }else {
-
-            Net.request(AppUrls.CAR_SAVE,'post',this.carData).then((response) => {
-
-                this.props.showModal(false);
-
-                if(response.mycode == 1 || response.mycode == 600010){
-                    if(this.carData.show_shop_id){
-                        StorageUtil.mRemoveItem(String(this.carData.show_shop_id));
-                    }
-                    if(IS_ANDROID === true){
-                        this.successModal.openModal();
-                    }else {
-                        this.timer = setTimeout(
-                            () => { this.successModal.openModal(); },
-                            500
-                        );
-                    }
-                }else {
-                    this.showToast('网络连接失败');
-
-                }
-
-            }, (error) => {
-
-                this.props.showModal(false);
-
-                if(error.mycode === -300 || error.mycode === -500){
-                    this.showToast('网络连接失败');
-
-                }else if(error.mycode == 600010){
-                    if(this.carData.show_shop_id){
-                        StorageUtil.mRemoveItem(String(this.carData.show_shop_id));
-                    }
-                    if(IS_ANDROID === true){
-                        this.successModal.openModal();
-                    }else {
-                        this.timer = setTimeout(
-                            () => { this.successModal.openModal();},
-                            500
-                        );
-                    }
-                }
-                else{
-                    this.showToast(error.mjson.msg);
-                }
-            });
-
         }
     }
 

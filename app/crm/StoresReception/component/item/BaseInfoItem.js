@@ -21,6 +21,10 @@ import ClientInfoSelected from "../ClientInfoSelected";
 import CustomerInfoInput from "../ClientInfoInput";
 import SelectScene from "../../SelectScene";
 import ExplainModal from "../../../../mine/myOrder/component/ExplainModal";
+import * as StorageKeyNames from "../../../../constant/storageKeyNames";
+import StorageUtil from "../../../../utils/StorageUtil";
+import {request, requestNoToken} from "../../../../utils/RequestUtil";
+import * as AppUrls from "../../../../constant/appUrls";
 const Pixel = new PixelUtil();
 
 export default class BaseInfoItem extends BaseComponent {
@@ -31,11 +35,12 @@ export default class BaseInfoItem extends BaseComponent {
     constructor(props) {
         super(props);
         this.childItems = [];
-        this.childItems.push({name: '客户姓名', value: ''});
-        this.childItems.push({name: '电话', value: ''});
-        this.childItems.push({name: '当前客户状态', value: ''});
-        this.childItems.push({name: '信息来源', value: ''});
-        this.childItems.push({name: '地域', value: ''});
+        this.childItems.push({name: '客户姓名', value: '', parameter: 'customerName'});
+        this.childItems.push({name: '电话', value: '', parameter: 'customerPhone'});
+        this.childItems.push({name: '当前客户状态', value: '', parameter: 'customerStatus'});
+        this.childItems.push({name: '信息来源', value: '', parameter: 'informationSources'});
+        this.childItems.push({name: '地域', value: '', parameter: 'customerRegion'});
+        this.childItems.push({name: '客户到店', value: '', parameter: 'customerCome'});
     }
 
     /**
@@ -55,23 +60,50 @@ export default class BaseInfoItem extends BaseComponent {
     };
 
     /**
+     *   将传入本页的数据解析
+     **/
+    parseData = () => {
+        let parameter = '';
+        for (let i = 0; i < this.childItems.length; i++) {
+            parameter = this.childItems[i].parameter;
+            this.childItems[i].value = this.props.rowData[parameter];
+        }
+    };
+
+    /**
      *
      **/
     render() {
         let items = [];
         if (this.props.editState != 'look') {
             for (let i = 0; i < this.childItems.length; i++) {
-                if (i == 2) {
+                if (this.childItems[i].name == '客户到店') {
+                    continue;
+                } else if (i == 2) {
                     items.push(<ClientInfoSelected ref='selectsex' key={i + 'bo'} items={this.childItems[i]}
                                                    toSelect={() => {
                                                        this.toNextPage({
                                                            name: 'SelectScene',
                                                            component: SelectScene,
                                                            params: {
-                                                               regShowData: ['初次到店', '3日电话邀约-到店', '3日电话邀约-未到店', '7日电话邀约-到店', '7日电话邀约-未到店', '首次购买', '首次置换购买', '置换', '复购'],
+                                                               regShowData: ['初次到店', '电话邀约-到店', '电话邀约-未到店', '已购买', '置换', '复购'],
                                                                title: '客户状态',
                                                                callBack: (name, index) => {
-                                                                   this.childItems[i].value = name + ',' + index;
+                                                                   if (name === '初次到店') {
+                                                                       this.childItems[i].value = 1;
+                                                                   } else if (name === '电话邀约-到店') {
+                                                                       this.childItems[i].value = 1;
+                                                                       this.childItems[5].value = 1;
+                                                                   } else if (name === '电话邀约-未到店') {
+                                                                       this.childItems[i].value = 1;
+                                                                       this.childItems[5].value = 2;
+                                                                   } else if (name === '已购买') {
+                                                                       this.childItems[i].value = 2;
+                                                                   } else if (name === '置换') {
+                                                                       this.childItems[i].value = 4;
+                                                                   } else if (name === '复购') {
+                                                                       this.childItems[i].value = 5;
+                                                                   }
                                                                    this.refs.selectsex.setValue(name);
                                                                }
                                                            }
@@ -87,7 +119,7 @@ export default class BaseInfoItem extends BaseComponent {
                                                                regShowData: ['朋友介绍', '朋友圈', '58同城', '二手车之家', 'FM调频广播', '室外广告牌', '同行引荐', '文章引导', '自到店', '转介绍', '其他'],
                                                                title: '信息来源',
                                                                callBack: (name, index) => {
-                                                                   this.childItems[i].value = name + ',' + index;
+                                                                   this.childItems[i].value = name;
                                                                    this.refs.company.setValue(name);
                                                                }
                                                            }
@@ -103,19 +135,26 @@ export default class BaseInfoItem extends BaseComponent {
                                                                regShowData: ['本地', '非本地'],
                                                                title: '地域',
                                                                callBack: (name, index) => {
-                                                                   this.childItems[i].value = name + ',' + index;
+                                                                   this.childItems[i].value = name;
                                                                    this.refs.juese.setValue(name);
                                                                }
                                                            }
                                                        })
                                                    }}/>);
                 } else {
-                    items.push(<CustomerInfoInput callBack={this.userAireadyExist} key={i + 'bo'}
+                    items.push(<CustomerInfoInput
+                        ref={(ref) => {
+                            if (ref != null && ref.props.items.name === '电话') {
+                                this.customerInfoInput = ref;
+                            }
+                        }}
+                        callBack={this.userAireadyExist} key={i + 'bo'}
                                                   items={this.childItems[i]}/>);
                 }
 
             }
         } else {
+            this.parseData();
             for (let i = 0; i < this.childItems.length; i++) {
                 items.push(
                     <View
@@ -143,7 +182,7 @@ export default class BaseInfoItem extends BaseComponent {
                                   style={{
                                       fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                       color: '#000'
-                                  }}>dasdadada</Text>
+                                  }}>{this.childItems[i].value}</Text>
                         </View>
                         <View style={{
                             width: width,
@@ -186,8 +225,34 @@ export default class BaseInfoItem extends BaseComponent {
     /**
      *  用户已经存在弹出提示框
      **/
-    userAireadyExist = () => {
-        this.em.changeShowType(true, "提示", "用户已经存在", "确定");
+    userAireadyExist = (customerPhone) => {
+        this.props.showModal(true);
+        StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let maps = {
+                    mobiles: data.result,
+                    customerPhone: customerPhone
+                };
+                let url = AppUrls.SELECT_CUST_IF_EXIST;
+                request(url, 'post', maps).then((response) => {
+                    //this.props.showModal(false);
+                    this.props.showToast(response.mjson.msg);
+                    //console.log('SELECT_CUST_IF_EXIST', 'succ');
+                }, (error) => {
+                    //this.props.showModal(false);
+                    if (error.mjson.code == '0004') {
+                        this.props.showToast(error.mjson.msg);
+                    } else {
+                        this.props.showToast('该客户已经存在');
+                        //this.backPage();
+                        this.customerInfoInput.clearInputText();
+                    }
+                    //console.log('SELECT_CUST_IF_EXIST', 'error');
+                });
+            } else {
+                this.props.showToast('查询账户信息失败');
+            }
+        });
     };
 }
 

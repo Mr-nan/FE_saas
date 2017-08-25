@@ -48,29 +48,30 @@ export class buttonItemInfo {
 export default class EvaluateCarInfo extends BaseComponent {
 	constructor(props) {
 		super(props);
+		this.withinArray = [];
 		this.state = {
 			SELECT: true,
 		}
 		buttonArray = [
-			new buttonItemInfo('8', '副仪表盘', true, 90, 85, false),
-			new buttonItemInfo('10', '安全气囊', true, 190, 95, false),
-			new buttonItemInfo('14', '副座椅', true, 185, 175, false),
-			new buttonItemInfo('1', '前排风出口', false, 245, 30, false),
-			new buttonItemInfo('9', '中控台', false, 150, 85, false),
-			new buttonItemInfo('7', '左前门内饰', false, 27, 117, false),
-			new buttonItemInfo('5', '安全带外观检查', false, 6, 327, false),
-			new buttonItemInfo('2', '右前门内饰', false, 245, 115, false),
-			new buttonItemInfo('4', '后排风出口', false, 245, 300, false),
-			new buttonItemInfo('12', '主座椅', false, 115, 175, false),
-			new buttonItemInfo('6', '左后门内饰', false, 28, 210, false),
-			new buttonItemInfo('3', '右后门内饰', false, 245, 210, false),
-			new buttonItemInfo('17', '右后座椅', false, 185, 260, false),
-			new buttonItemInfo('13', '扶手箱', false, 150, 145, false),
-			new buttonItemInfo('15', '顶衬', false, 155, 225, false),
-			new buttonItemInfo('18', '随车工具', false, 145, 327, false),
-			new buttonItemInfo('19', '备胎', false, 198, 390, false),
-			new buttonItemInfo('16', '左后座椅', false, 112, 260, false),
-			new buttonItemInfo('20', '后备箱盖板', false, 85, 410, false),
+            new buttonItemInfo('1', '前排风出口', false, 245, 30, false),
+            new buttonItemInfo('2', '右前门内饰', false, 245, 115, false),
+            new buttonItemInfo('3', '右后门内饰', false, 245, 210, false),
+            new buttonItemInfo('4', '后排风出口', false, 245, 300, false),
+            new buttonItemInfo('5', '安全带外观检查', false, 6, 327, false),
+            new buttonItemInfo('6', '左后门内饰', false, 28, 210, false),
+            new buttonItemInfo('7', '左前门内饰', false, 27, 117, false),
+            new buttonItemInfo('8', '副仪表盘', false, 90, 85, false),
+            new buttonItemInfo('9', '中控台', false, 150, 85, false),
+            new buttonItemInfo('10', '安全气囊', false, 190, 95, false),
+            new buttonItemInfo('11', '主座椅', false, 115, 175, false),
+            new buttonItemInfo('12', '扶手箱', false, 150, 145, false),
+            new buttonItemInfo('13', '副座椅', false, 185, 175, false),
+            new buttonItemInfo('14', '顶衬', false, 155, 225, false),
+            new buttonItemInfo('15', '左后座椅', false, 112, 260, false),
+            new buttonItemInfo('16', '右后座椅', false, 185, 260, false),
+            new buttonItemInfo('17', '随车工具', false, 145, 327, false),
+            new buttonItemInfo('18', '备胎', false, 198, 390, false),
+            new buttonItemInfo('19', '后备箱盖板', true, 85, 410, false),
 		];
 	}
 
@@ -83,11 +84,7 @@ export default class EvaluateCarInfo extends BaseComponent {
 					key = {dataSource.key} select = {dataSource.select}
 					UnableClick={dataSource.unableClick} PartTitle={dataSource.partTitle}
 					NumTitle={dataSource.numberTitle} MYLEFT={dataSource.leftDistance} MYTOP={dataSource.topDistance}
-					callBack={(partTitle)=>{
-					this._ONclick(partTitle);
-				}
-
-				}>
+					callBack={this._ONclick}>
 				</YJZButton>
 			items.push(tabItem);
 		})
@@ -103,8 +100,8 @@ export default class EvaluateCarInfo extends BaseComponent {
 				<ScrollView contentContainerStyle={{alignItems: 'center',backgroundColor:'white'}}>
 					<View style={[styles.itemStyle, {marginTop: Pixel.getPixel(15)}]}>
 
-						<Text allowFontScaling={false} style={styles.firstTextStyle}>2014款 斯柯达昊锐 1.8T自动贵雅版</Text>
-						<Text allowFontScaling={false} style={styles.secondTextStyle}>VVVF124325923423452ARe2</Text>
+						<Text allowFontScaling={false} style={styles.firstTextStyle}>{this.props.carData.carName}</Text>
+						<Text allowFontScaling={false} style={styles.secondTextStyle}>{this.props.carData.vin}</Text>
 						<Image
 							source={require('../../../images/mainImage/progressTWO.png')}
 							style={styles.progressImageStyle}
@@ -137,14 +134,32 @@ export default class EvaluateCarInfo extends BaseComponent {
 		);
 	}
 
-	_ONclick = (title) => {
-		alert(title);
+	_ONclick = (PartTitle,selectType,NumTitle) => {
+
+        if(selectType){
+            this.withinArray.push(NumTitle);
+        }else {
+            for(let i=0;i<this.withinArray.length;i++){
+                if(this.withinArray[i] == NumTitle){
+                    this.withinArray.splice(i,1);
+                }
+            }
+        }
+
 	}
 	loginOut = () => {
 		this.toNextPage({
 			name: 'EvaluateCarInfoTHREE',
 			component: EvaluateCarInfoTHREE,
-			params: {},
+			params: {
+                carData:this.props.carData,
+                roleName:this.props.roleValue,
+                type:this.props.type,
+                aspectSelectArray:this.props.aspectSelectArray,
+                withinArray:this.withinArray,
+                reloadTaskData:this.props.reloadTaskData,
+
+            },
 		})
 	}
 

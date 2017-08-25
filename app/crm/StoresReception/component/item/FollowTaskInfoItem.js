@@ -31,22 +31,26 @@ export default class FollowTaskInfoItem extends BaseComponent {
     constructor(props) {
         super(props);
         this.childItems = [];
-        this.childItems.push({name: '客户状态', value: ''});
-        this.childItems.push({name: '消息提醒日期', value: ''});
+        this.clientInfo = this.props.rowData;
+        this.clientState = [];
+        if (this.clientInfo.customerStatus == 1) {
+            this.clientState = ['电话邀约', '已购买', '置换', '复购'];
+        } else if (this.clientInfo.customerStatus == 2) {
+            this.clientState = ['已购买', '置换', '复购'];
+        } else if (this.clientInfo.customerStatus == 4) {
+            this.clientState = ['置换'];
+        } else if (this.clientInfo.customerStatus == 5) {
+            this.clientState = ['复购'];
+        }
+
+        this.childItems.push({name: '客户状态', value: '', parameter: 'customerStatus'});
+/*        this.childItems.push({name: '消息提醒日期', value: ''});
         this.childItems.push({name: '客户是否到店', value: ''});
-        this.childItems.push({name: '跟踪内容', value: ''});
+        this.childItems.push({name: '跟踪内容', value: ''});*/
         this.state = {
+            childItems: this.childItems,
             isDateTimePickerVisible: false
         }
-    }
-
-    /**
-     *
-     **/
-    initFinish = () => {
-        /*this.setState({
-         renderPlaceholderOnly: 'success'
-         });*/
     }
 
     /**
@@ -59,33 +63,65 @@ export default class FollowTaskInfoItem extends BaseComponent {
     /**
      *
      **/
+    showFollowTask = (str) => {
+        this.childItems.splice(1, 3);
+        //console.log('this.childItems=====111====', this.childItems);
+        if (str == '电话邀约') {
+            this.childItems.push({name: '消息提醒日期', value: '', parameter: 'remind'});
+            this.childItems.push({name: '客户是否到店', value: '', parameter: 'comeIf'});
+        }
+        this.childItems.push({name: '跟踪内容', value: '', parameter: 'custFlow'});
+        this.setState({
+            childItems: this.childItems
+        });
+    };
+
+    /**
+     *   获取表单内数据
+     **/
+    getItemData = () => {
+        return this.state.childItems;
+    };
+
+    /**
+     *
+     **/
     render() {
         let items = [];
         if (this.props.editState != 'look') {
-            for (let i = 0; i < this.childItems.length; i++) {
-                if (this.childItems[i].name == '客户状态') {
-                    items.push(<ClientInfoSelected ref='selectsex' key={i + 'bo'} items={this.childItems[i]}
+            for (let i = 0; i < this.state.childItems.length; i++) {
+                if (this.state.childItems[i].name == '客户状态') {
+                    items.push(<ClientInfoSelected ref='selectsex' key={i + 'bo'} items={this.state.childItems[i]}
                                                    toSelect={() => {
                                                        this.toNextPage({
                                                            name: 'SelectScene',
                                                            component: SelectScene,
                                                            params: {
-                                                               regShowData: ['初次到店', '3日电话邀约-到店', '3日电话邀约-未到店', '7日电话邀约-到店', '7日电话邀约-未到店', '首次购买', '首次置换购买', '置换', '复购'],
+                                                               regShowData: this.clientState,
                                                                title: '客户状态',
                                                                callBack: (name, index) => {
-                                                                   this.childItems[i].value = name + ',' + index;
+                                                                   if (name === '电话邀约') {
+                                                                       this.state.childItems[i].value = 1;
+                                                                   } else if (name === '已购买') {
+                                                                       this.state.childItems[i].value = 2;
+                                                                   } else if (name === '置换') {
+                                                                       this.state.childItems[i].value = 4;
+                                                                   } else if (name === '复购') {
+                                                                       this.state.childItems[i].value = 5;
+                                                                   }
                                                                    this.refs.selectsex.setValue(name);
+                                                                   this.showFollowTask(name);
                                                                }
                                                            }
                                                        })
                                                    }}/>);
-                } else if (this.childItems[i].name == '消息提醒日期') {
-                    items.push(<ClientInfoSelected ref="company" key={i + 'bo'} items={this.childItems[i]}
+                } else if (this.state.childItems[i].name == '消息提醒日期') {
+                    items.push(<ClientInfoSelected ref="company" key={i + 'bo'} items={this.state.childItems[i]}
                                                    toSelect={() => {
                                                        this._showDateTimePicker();
                                                    }}/>);
-                } else if (this.childItems[i].name == '客户是否到店') {
-                    items.push(<ClientInfoSelected ref='juese' key={i + 'bo'} items={this.childItems[i]}
+                } else if (this.state.childItems[i].name == '客户是否到店') {
+                    items.push(<ClientInfoSelected ref='juese' key={i + 'bo'} items={this.state.childItems[i]}
                                                    toSelect={() => {
                                                        this.toNextPage({
                                                            name: 'SelectScene',
@@ -94,14 +130,18 @@ export default class FollowTaskInfoItem extends BaseComponent {
                                                                regShowData: ['已到店', '未到店'],
                                                                title: '地域',
                                                                callBack: (name, index) => {
-                                                                   this.childItems[i].value = name + ',' + index;
+                                                                   if (name === '已到店') {
+                                                                       this.state.childItems[i].value = 'yes';
+                                                                   } else {
+                                                                       this.state.childItems[i].value = 'no';
+                                                                   }
                                                                    this.refs.juese.setValue(name);
                                                                }
                                                            }
                                                        })
                                                    }}/>);
-                } else if (this.childItems[i].name == '跟踪内容') {
-                    items.push(<CustomerInfoInput key={i + 'bo'} items={this.childItems[i]}/>);
+                } else if (this.state.childItems[i].name == '跟踪内容') {
+                    items.push(<CustomerInfoInput key={i + 'bo'} items={this.state.childItems[i]}/>);
                 }
 
             }
@@ -160,6 +200,7 @@ export default class FollowTaskInfoItem extends BaseComponent {
         //console.log('A date has been picked: ', date);
         let d = this.dateFormat(date, 'yyyy-MM-dd');
         this.refs.company.setValue(d);
+        this.state.childItems[1].value = d;
         this.setState({
             isDateTimePickerVisible: false
         });

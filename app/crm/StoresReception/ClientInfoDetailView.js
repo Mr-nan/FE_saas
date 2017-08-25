@@ -73,7 +73,7 @@ export default class ClientInfoDetailView extends BaseComponent {
                         height: Pixel.getPixel(1),
                         backgroundColor: fontAndColor.COLORA3
                     }}/>
-                    <TouchableOpacity
+                    {/*<TouchableOpacity
                         style={{bottom: 0}}
                         onPress={() => {
 
@@ -91,7 +91,7 @@ export default class ClientInfoDetailView extends BaseComponent {
                                     color: fontAndColor.COLORB0
                                 }}>编辑资料</Text>
                         </View>
-                    </TouchableOpacity>
+                    </TouchableOpacity>*/}
                 </View>
             );
         }
@@ -117,10 +117,12 @@ export default class ClientInfoDetailView extends BaseComponent {
      * @private
      **/
     _renderRow = (rowData, selectionID, rowID) => {
+        //console.log('rowData=========dddd====', this.props.rowData);
         if (rowData === '0') {
             return (
                 <BaseInfoItem
                     editState='look'
+                    rowData={this.props.rowData}
                     ref={(ref) => {
                         this.baseInfoItem = ref
                     }} navigator={this.props.navigator}/>
@@ -129,6 +131,7 @@ export default class ClientInfoDetailView extends BaseComponent {
             return (
                 <BuyerDemandItem
                     editState='look'
+                    rowData={this.props.rowData}
                     ref={(ref) => {
                         this.buyerDemandItem = ref
                     }} navigator={this.props.navigator}/>
@@ -137,6 +140,7 @@ export default class ClientInfoDetailView extends BaseComponent {
             return (
                 <CommunicationRecordItem
                     editState='look'
+                    rowData={this.props.rowData}
                     ref={(ref) => {
                         this.communicationRecordItem = ref
                     }} navigator={this.props.navigator}/>

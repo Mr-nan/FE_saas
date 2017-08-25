@@ -38,6 +38,7 @@ import BindCardScene from '../mine/accountManage/BindCardScene'
 import WaitActivationAccountScene from '../mine/accountManage/WaitActivationAccountScene'
 import ProcurementOrderDetailScene from "../mine/myOrder/ProcurementOrderDetailScene";
 import ExplainModal from "../mine/myOrder/component/ExplainModal";
+import CarMyListScene from "./CarMyListScene";
 let Platform = require('Platform');
 const Pixel = new PixelUtil();
 
@@ -358,8 +359,14 @@ export default class CarInfoScene extends BaseComponent {
                                 </View>
                             </View>
                         )
-
                     }
+                    <TouchableOpacity style={styles.storeView} activeOpacity={1} onPress={this.pushStoreScene}>
+                        <Text style={styles.storeText}>所属店铺：金鸟二手车行</Text>
+                        <View style={{flexDirection:'row', alignItems:'center'}}>
+                            <Text style={styles.storeTailText}>进入</Text>
+                            <Image source={require('../../images/mainImage/celljiantou.png')}/>
+                        </View>
+                    </TouchableOpacity>
                     <View style={styles.carIconsContainer}>
                         <View style={styles.carIconsView}>
                             {
@@ -519,7 +526,6 @@ export default class CarInfoScene extends BaseComponent {
 
     }
 
-
     backIconClick = () => {
 
         this.backPage();
@@ -677,6 +683,18 @@ export default class CarInfoScene extends BaseComponent {
         //  this.refs.photoView.show(carImageArray,this.state.currentImageIndex);
 
     };
+
+    //车辆微店
+    pushStoreScene=()=>{
+        let navigationParams = {
+            name: "CarMyListScene",
+            component: CarMyListScene,
+            params: {
+
+            }
+        }
+        this.toNextPage(navigationParams);
+    }
 
     // 车辆维修保养记录
     pushCarUpkeepScene = (vin) => {
@@ -1252,7 +1270,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginTop: Pixel.getPixel(10),
 
-
     },
     browseView: {
 
@@ -1564,4 +1581,22 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
         color: fontAndColor.COLORB0
     },
+    storeView:{
+        backgroundColor:'white',
+        paddingHorizontal:Pixel.getPixel(15),
+        flexDirection:'row',
+        alignItems:'center',
+        height:Pixel.getPixel(44),
+        marginTop:Pixel.getPixel(10),
+        justifyContent:'space-between'
+    },
+    storeText:{
+        color:fontAndColor.COLORA0,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+    },
+    storeTailText:{
+        color:fontAndColor.COLORA2,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+        marginRight:Pixel.getPixel(5),
+    }
 })

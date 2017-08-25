@@ -33,7 +33,7 @@ export default class FollowUpTaskScene extends BaseComponent {
      **/
     constructor(props) {
         super(props);
-        this.clientInfo = [];
+        this.taskInfo = {};
         this.state = {
             dataSource: [],
             renderPlaceholderOnly: 'blank'
@@ -44,10 +44,37 @@ export default class FollowUpTaskScene extends BaseComponent {
      *
      **/
     initFinish = () => {
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.setState({
-            dataSource: ds.cloneWithRows(['0', '1']),
-            renderPlaceholderOnly: 'success'
+        //console.log('this.taskInfo=====', this.props.rowData);
+        /*        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+         this.setState({
+         dataSource: ds.cloneWithRows(['0', '1']),
+         renderPlaceholderOnly: 'success'
+         });*/
+        this.loadData();
+    };
+
+
+    /**
+     *
+     **/
+    loadData = () => {
+        let maps = {
+            custI: this.props.rowData.id
+        };
+        let url = AppUrls.SELECT_FLOW;
+        request(url, 'post', maps).then((response) => {
+            this.taskInfo = response.mjson.data;
+            const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+            this.setState({
+                dataSource: ds.cloneWithRows(['0', '1']),
+                isRefreshing: false,
+                renderPlaceholderOnly: 'success'
+            });
+        }, (error) => {
+            this.setState({
+                isRefreshing: false,
+                renderPlaceholderOnly: 'error'
+            });
         });
     };
 
@@ -107,11 +134,21 @@ export default class FollowUpTaskScene extends BaseComponent {
     _renderRow = (rowData, selectionID, rowID) => {
         if (rowData === '0') {
             return (
-                <CurrentTaskInfoItem navigator={this.props.navigator}/>
+                <CurrentTaskInfoItem
+                    ref={(ref) => {
+                        this.currentTaskInfoItem = ref
+                    }}
+                    navigator={this.props.navigator}
+                    data={this.taskInfo} rowData={this.props.rowData}/>
             )
         } else if (rowData === '1') {
             return (
-                <FollowTaskInfoItem navigator={this.props.navigator}/>
+                <FollowTaskInfoItem
+                    ref={(ref) => {
+                        this.followTaskInfoItem = ref
+                    }}
+                    navigator={this.props.navigator}
+                    data={this.taskInfo} rowData={this.props.rowData}/>
             )
         }
     };
@@ -130,7 +167,7 @@ export default class FollowUpTaskScene extends BaseComponent {
                 }}
                 activeOpacity={0.8}
                 onPress={() => {
-                    //this.submitClientInfo();
+                    this.submitFlowInfo();
                 }}>
                 <Text style={{color: fontAndColor.COLORA3}}>保存</Text>
             </TouchableOpacity>
@@ -140,54 +177,43 @@ export default class FollowUpTaskScene extends BaseComponent {
     /**
      *
      **/
-    submitClientInfo = () => {
-        if (this.checkInfo()) {
-            let maps = {
-                outTime: "2017-08-01 10:25:00",
-                inTime: "2017-08-01 09:25:00",
-                mobiles: "15102373842",
-                intentionalVehicle: "阿斯顿·马丁 阿斯顿马丁DB11 2016款 阿斯顿・马丁DB11 5.2T 设计师定制版",
-                customerBudget: "10万以下",
-                peopleNum: 1,
-                customerLevel: "A",
-                customerStatus: 1,
-                informationSources: "自到店",
-                customerRegion: "本地",
-                customerPhone: "13401091922",
-                customerName: "ceshi"
-            };
-            let url = AppUrls.CUSTOMER_ADD_URL;
-            request(url, 'post', maps).then((response) => {
-                this.props.showModal(false);
-                this.orderListData = response.mjson.data.items;
-                this.allPage = response.mjson.data.total / response.mjson.data.rows;
-                //console.log('订单列表数据 = ', this.orderListData[0].car);
-                if (this.orderListData) {
-                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    this.setState({
-                        dataSource: ds.cloneWithRows(this.orderListData),
-                        isRefreshing: false,
-                        renderPlaceholderOnly: 'success'
-                    });
-                } else {
-                    this.setState({
-                        isRefreshing: false,
-                        renderPlaceholderOnly: 'null'
-                    });
-                }
-            }, (error) => {
-                this.props.showModal(false);
-                //console.log('请求错误 = ', error);
-                this.setState({
-                    isRefreshing: false,
-                    renderPlaceholderOnly: 'error'
-                });
-            });
+    submitFlowInfo = () => {
+        this.props.showModal(true);
+        let maps = [];
+        let clientInfo = [];
+        let inputData = this.followTaskInfoItem.getItemData();
+        for (let key in inputData) {
+            clientInfo.push(inputData[key]);
         }
+        for (let i = 0; i < clientInfo.length; i++) {
+            maps[clientInfo[i].parameter] = clientInfo[i].value;
+        }
+        maps['custI'] = this.props.rowData.id;
+        maps['custN'] = '';
+        maps['custP'] = '';
+        /*        let maps = {
+         custP: "",
+         custN: "",
+         custI: 4,
+         custFlow: "跟踪内容11111",
+         customerStatus: 4,
+         remind: "11112222", // 日期
+         comeIf: ""
+         };*/
+        let url = AppUrls.CUSTOMER_FLOW;
+        request(url, 'post', maps).then((response) => {
+            // 提交成功并刷新信息页数据
+            this.props.showModal(false);
+            this.props.callBack();
+            this.backPage();
+        }, (error) => {
+            this.props.showModal(false);
+            this.props.showToast("提交跟进任务失败");
+        });
     };
 
     /**
-     *
+     *  18131137998
      **/
     checkInfo = () => {
         this.clientInfo = [];

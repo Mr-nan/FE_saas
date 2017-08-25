@@ -17,6 +17,8 @@ import NavigatorView from '../../component/AllNavigationView';
 import BaseComponent from '../../component/BaseComponent';
 import * as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
+import * as AppUrls from "../../constant/appUrls";
+import {request, requestNoToken} from "../../utils/RequestUtil";
 import DailyReminderScene from "../dailyReminder/DailyReminderScene";
 import ShareRankingScene from "./ShareRankingScene";
 const Pixel = new PixelUtil();
@@ -29,8 +31,11 @@ export class ShareListView extends BaseComponent {
      **/
     constructor(props) {
         super(props);
+        this.shareListData = [];
+        this.timeType = 1;
         this.state = {
             dataSource: [],
+            isRefreshing: false,
             renderPlaceholderOnly: 'blank'
         };
     }
@@ -39,19 +44,55 @@ export class ShareListView extends BaseComponent {
      *
      **/
     initFinish = () => {
-        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.setState({
-            dataSource: ds.cloneWithRows(['0', '0', '0']),
-            renderPlaceholderOnly: 'success'
-        });
-        //this.loadData();
+        /*        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+         this.setState({
+         dataSource: ds.cloneWithRows(['0', '0', '0']),
+         renderPlaceholderOnly: 'success'
+         });*/
+        this.loadData(1);
+    };
+
+    /**
+     *  按筛选条件刷新数据
+     **/
+    refreshData = (type) => {
+        this.props.showModal(true);
+        this.timeType = type;
+        this.shareListData = [];
+        this.loadData(type);
     };
 
     /**
      *
      **/
-    loadData = () => {
-
+    loadData = (type) => {
+        let url = AppUrls.DAILY_REMINDER_RANK_LEVEL;
+        request(url, 'post', {
+            type: type,
+            //token: '5afa531b-4295-4c64-8d6c-ac436c619078'
+        }).then((response) => {
+            this.props.showModal(false);
+            this.shareListData = response.mjson.data;
+            if (this.shareListData && this.shareListData.length > 0) {
+                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                this.setState({
+                    dataSource: ds.cloneWithRows(this.shareListData),
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'success'
+                });
+            } else {
+                this.setState({
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'null'
+                });
+            }
+        }, (error) => {
+            this.props.showModal(false);
+            this.setState({
+                isRefreshing: false,
+                renderPlaceholderOnly: 'error'
+            });
+        });
     };
 
     /**
@@ -88,36 +129,87 @@ export class ShareListView extends BaseComponent {
     }
 
     /**
+     *   添加排行榜前三名数据
+     **/
+    addRankingData = (total, rankingData, timeType) => {
+        let items = [];
+        let name = '';
+        let count = '';
+        for (let i = 0; i < rankingData.length; i++) {
+            if (i > 2) {
+                break;
+            } else {
+                if (total > 0) {
+                    name = i + 1 +'.' + rankingData[i].name;
+                    count = '分享' + rankingData[i].count + '次';
+                } else {
+                    if (timeType == 1) {
+                        name = '本日无人分享';
+                    } else if (timeType == 2) {
+                        name = '本周无人分享';
+                    } else if (timeType == 3) {
+                        name = '本月无人分享';
+                    }
+                }
+                items.push(<View key={i} style={{flexDirection: 'row', marginTop: Pixel.getPixel(10)}}>
+                    <Text allowFontScaling={false} style={styles.describe}>{name}</Text>
+                    <View style={{flex: 1}}/>
+                    <Text allowFontScaling={false}
+                          style={[styles.describe, {marginRight: Pixel.getPixel(15)}]}>{count}</Text>
+                </View>);
+            }
+        }
+        return items;
+    };
+
+    /**
      *
      **/
     _renderRow = (rowData, selectionID, rowID) => {
-        if (rowData == '0') {
-            return (
-                <TouchableOpacity
-                    onPress={() => {
+        let title = '';
+        let days = '';
+        //let name = '';
+        //let times = '';
+        if (this.timeType == 1) {   // 每日
+            title = rowID == 0 ? '今日分享' : '每日分享';
+            days = rowData.days;
+        } else if (this.timeType == 2) {  //每周
+            title = rowID == 0 ? '本周分享' : '每周分享';
+            let week = rowData.week.split(' ');
+            days = week[0] + '年 第' + week[1] + '周';
+        } else if (this.timeType == 3) {  //每月
+            title = rowID == 0 ? '本月分享' : '每月分享';
+            days = rowData.date;
+        }
+        return (
+            <TouchableOpacity
+                onPress={() => {
+                    if (rowData.dayCounts > 0) {
                         this.toNextPage({
                             name: 'ShareRankingScene',
                             component: ShareRankingScene,
-                            params: {}
+                            params: {
+                                info: rowData.info
+                            }
                         });
-                    }}>
-                    <View style={styles.listItem}>
-                        <View style={{flexDirection: 'row'}}>
-                            <Text allowFontScaling={false} style={styles.title}>本周统计</Text>
-                            <View style={{flex: 1}}/>
-                            <Text allowFontScaling={false} style={styles.date}>本周统计</Text>
-                        </View>
-                        <Text allowFontScaling={false} style={styles.describe}>测试测试测试测试测试测试测试测试测试</Text>
-                        <View style={styles.separatedLine}/>
-                        <View style={styles.subItem}>
-                            <Text allowFontScaling={false} style={styles.subTitle}>查看详情</Text>
-                            <View style={{flex: 1}}/>
-                            <Image source={cellJianTou} style={styles.image}/>
-                        </View>
+                    }
+                }}>
+                <View style={styles.listItem}>
+                    <View style={{flexDirection: 'row'}}>
+                        <Text allowFontScaling={false} style={styles.title}>{title}</Text>
+                        <View style={{flex: 1}}/>
+                        <Text allowFontScaling={false} style={styles.date}>{days}</Text>
                     </View>
-                </TouchableOpacity>
-            )
-        }
+                    {this.addRankingData(rowData.dayCounts, rowData.info, this.timeType)}
+                    <View style={styles.separatedLine}/>
+                    <View style={styles.subItem}>
+                        <Text allowFontScaling={false} style={styles.subTitle}>查看详情</Text>
+                        <View style={{flex: 1}}/>
+                        <Image source={cellJianTou} style={styles.image}/>
+                    </View>
+                </View>
+            </TouchableOpacity>
+        )
     }
 
 }
@@ -150,7 +242,6 @@ const styles = StyleSheet.create({
     },
     describe: {
         marginLeft: Pixel.getPixel(15),
-        marginTop: Pixel.getPixel(10),
         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT),
         color: fontAndColor.COLORA1
     },
