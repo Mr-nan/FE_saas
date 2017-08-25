@@ -29,8 +29,8 @@ const {width, height} = Dimensions.get('window');
 
 
 export default class AccountDeductProtocolScene extends BaseComponent {
-    render(){
 
+    render(){
         return(
             <View style={styles.rootView}>
                 <ViewPager style={ this.props.protocolType!=1 && {marginBottom:Pixel.getPixel(64)}}
@@ -65,14 +65,9 @@ export default class AccountDeductProtocolScene extends BaseComponent {
 
 
     _renderPage = (data) => {
+        let nowdate = Date.parse(new Date());
         return (
-            <Image onLoadEnd={()=>{
-                this.props.showModal(false);
-            }} onLoadStart={()=>{
-                this.props.showModal(true);
-            }} style={{flex:1}}
-                   source={{uri:data}}
-            />
+            <Image  style={{flex:1}}  source={{uri: data+'?'+nowdate}}/>
         );
 
     }
@@ -86,7 +81,6 @@ export default class AccountDeductProtocolScene extends BaseComponent {
         this.props.showModal(true);
         request(Urls.FINANCE, 'Post', maps).then((response) => {
                 this.props.showModal(false);
-                this.props.showToast('已开通成功');
                 this.backToTop();
             },
             (error) => {

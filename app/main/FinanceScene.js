@@ -535,6 +535,7 @@ export default class FinanceSence extends BaseComponet {
                             this.navigatorParams.params = {
                                 financeNo: movie.loan_code,//借款单号
                                 orderNo: movie.order_number,//平台订单号
+                                FromScene:"FinanceScene",
 
                                 backRefresh: () => {
                                     this.allRefresh()

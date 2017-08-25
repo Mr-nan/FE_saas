@@ -86,14 +86,20 @@ export default class KurongSence extends BaseComponent {
                     if(loan_life!=''){
                         this.props.showModal(false);
                     }
-                    let tempjson =response.mjson.data
-                        ShowData.companyName=this.props.customerName,
-                        ShowData.lendType=tempjson.product_type,
-                        ShowData.maxMoney=changeToMillion(tempjson.min_loanmny)+'-'+changeToMillion(tempjson.max_loanmny)+'万',
-                        ShowData.rate=tempjson.rate,
-                        ShowData.type=tempjson.loantype_str,
-                        ShowData.tempMin=changeToMillion(tempjson.min_loanmny),
-                        ShowData.tempMax=changeToMillion(tempjson.max_loanmny),
+                    let tempjson =response.mjson.data;
+                        ShowData.companyName=this.props.customerName;
+                        ShowData.lendType=tempjson.product_type;
+                        if(tempjson.min_loanmny<3){
+                            ShowData.maxMoney='额度不足';
+                        }else if(tempjson.min_loanmny==3){
+                            ShowData.maxMoney='3万';
+                        }else {
+                            ShowData.maxMoney=changeToMillion(tempjson.min_loanmny)+'-'+changeToMillion(tempjson.single_loan_mny)+'万';
+                        }
+                        ShowData.rate=tempjson.rate;
+                        ShowData.type=tempjson.loantype_str;
+                        ShowData.tempMin=changeToMillion(tempjson.min_loanmny);
+                        ShowData.tempMax=changeToMillion(tempjson.single_loan_mny);
                     this.setState({
                         renderPlaceholderOnly:STATECODE.loadSuccess
                     })

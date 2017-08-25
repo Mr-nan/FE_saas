@@ -29,7 +29,7 @@ import ImagePageView from 'react-native-viewpager'
 import AmountConfirm from './AmountConfirm';
 import PurchaseLoanStatusScene from './PurchaseLoanStatusScene';
 import DDCarInfoCheckScene from "./DDCarInfoCheckScene";
-import {LendSuccessAlert, ModalAlert} from './component/ModelComponent'
+import {LendSuccessAlert, ModalAlert, DDModalAlert} from './component/ModelComponent'
 let ControlState = [];
 let loan_code;
 import ContractInfoScene from './ContractInfoScene';
@@ -133,17 +133,20 @@ export default class DDDetailScene extends BaseComponent {
 		request(apis.FINANCE, 'Post', maps)
 			.then((response) => {
 					let tempjson = response.mjson.data;
-					this.carData.base_id = tempjson.list[0].base_id;
-					this.carData.frame_number = tempjson.list[0].frame_number;
-					this.carData.obd_bind_status = tempjson.list[0].obd_bind_status;
-					this.carData.obd_audit_status = tempjson.list[0].obd_audit_status;
-					this.carData.obd_number = tempjson.list[0].obd_number;
-					this.carData.auto_ownership_status = tempjson.list[0].auto_ownership_status;
-					this.carData.order_ownership_status = tempjson.list[0].order_ownership_status;
-					this.carData.is_mortgagor = tempjson.list[0].is_mortgagor;
-					this.carData.is_new = tempjson.list[0].is_new;
-					this.carData.info_id = tempjson.list[0].info_id;
-					this.carData.obd_track_url = tempjson.list[0].obd_track_url;
+					if(tempjson.list.length > 0){
+                        this.carData.base_id = tempjson.list[0].base_id;
+                        this.carData.frame_number = tempjson.list[0].frame_number;
+                        this.carData.obd_bind_status = tempjson.list[0].obd_bind_status;
+                        this.carData.obd_audit_status = tempjson.list[0].obd_audit_status;
+                        this.carData.obd_number = tempjson.list[0].obd_number;
+                        this.carData.auto_ownership_status = tempjson.list[0].auto_ownership_status;
+                        this.carData.order_ownership_status = tempjson.list[0].order_ownership_status;
+                        this.carData.is_mortgagor = tempjson.list[0].is_mortgagor;
+                        this.carData.is_new = tempjson.list[0].is_new;
+                        this.carData.info_id = tempjson.list[0].info_id;
+                        this.carData.obd_track_url = tempjson.list[0].obd_track_url;
+					}
+
 					this.setState({
 						dataSource: this.state.dataSource.cloneWithRowsAndSections(this.titleNameBlob(lendInfo, tempjson.list)),
 						renderPlaceholderOnly: STATECODE.loadSuccess
@@ -213,7 +216,7 @@ export default class DDDetailScene extends BaseComponent {
 		dataSource['section1'] = section1
 		if (carData.length > 0) {
 			let section2 = [
-				{title: '借款单号', key: this.props.orderNo},
+				{title: '订单号', key: this.props.orderNo},
 			]
 			dataSource['section2'] = section2;
 
@@ -444,10 +447,10 @@ export default class DDDetailScene extends BaseComponent {
 				},
 			})
 		} else if (title == '签署合同') {
-			this.toNextPage({
-				name: 'ContractInfoScene', component: ContractInfoScene,
-				params: {loan_code: loan_code, showButton: true}
-			})
+
+
+			this.qianshuhetong.setModelVisible(true);
+
 		} else if (title == '查看合同') {
 			this.toNextPage({
 				name: 'ContractInfoScene', component: ContractInfoScene,
@@ -513,11 +516,31 @@ export default class DDDetailScene extends BaseComponent {
                 }} cancleClick={(setHide) => {
                     setHide(false)
                 }}/>
+
+
+				<DDModalAlert ref={(deleteCar) => {
+                    this.qianshuhetong = deleteCar
+                }} title='提示' subtitle='确认签署后，融资申请不可撤销，已付款项不可退款' sureTitle = '确认' cancelTitle = '再想想' confimClick={(setHide) => {
+                    setHide(false);
+                    this.toNextPage({
+                    	name: 'ContractInfoScene', component: ContractInfoScene,
+				        params: {loan_code: loan_code, showButton: true}
+			        })
+                }} cancleClick={(setHide) => {
+                    setHide(false)
+                }}/>
+
+
+
 				<LendSuccessAlert title="取消成功" subtitle='恭喜您取消成功' ref={(success) => {
                     this.cancleSuccess = success
                 }} confimClick={() => {
                     this.props.backRefresh();
-                    this.backToTop()
+                    if(this.props.FromScene == "FinanceScene"){
+                    	 this.backToTop();
+                    }else {
+                    	this.backPage();
+                    }
                 }}/>
 			</View>
 		)
