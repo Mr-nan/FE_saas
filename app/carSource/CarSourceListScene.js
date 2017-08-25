@@ -67,19 +67,19 @@ const APIParameter = {
     order_type: 0,
     coty: 0,
     mileage: 0,
-    dealer_price: 0,
-    emission_standards: 0,
-    nature_use: 0,
-    car_color: 0,
-    model_name: '',
-    prov_id: 0,
-    v_type: 0,
+    dealer_price:0,
+    emission_standards:0,
+    nature_use:0,
+    car_color:0,
+    model_name:'',
+    prov_id:0,
+    v_type:0,
     rows: 10,
     page: 1,
     start: 0,
     type: 1,
     status: 1,
-    no_cache: 1,
+    no_cache:1,
 
 };
 
@@ -92,16 +92,11 @@ export  default  class carSourceListScene extends BaseComponent {
     }
 
     componentDidMount() {
-        try {
-            BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
-        } catch (e) {
-
-        } finally {
-            //InteractionManager.runAfterInteractions(() => {
-                this.setState({renderPlaceholderOnly: 'loading'});
-                this.initFinish();
-            //});
-        }
+        BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
+        });
     }
 
     // 构造
@@ -133,28 +128,28 @@ export  default  class carSourceListScene extends BaseComponent {
                 title: '',
                 value: '',
             },
-            checkedCarGenre: {
+            checkedCarGenre:{
                 title: '',
                 value: '',
             },
-            checkedCity: {
+            checkedCity:{
                 title: '',
-                province_id: '',
-                city_id: ''
+                province_id:'',
+                city_id:''
             },
-            checkedCarPrice: {
-                title: '',
-                value: '',
-            },
-            checkedCarDischarge: {
+            checkedCarPrice:{
                 title: '',
                 value: '',
             },
-            checkedCarColor: {
+            checkedCarDischarge:{
                 title: '',
                 value: '',
             },
-            checkedCarNature: {
+            checkedCarColor:{
+                title: '',
+                value: '',
+            },
+            checkedCarNature:{
                 title: '',
                 value: '',
             },
@@ -165,37 +160,38 @@ export  default  class carSourceListScene extends BaseComponent {
     }
 
     componentWillReceiveProps(nextProps) {
-        StorageUtil.mGetItem(storageKeyNames.NEED_OPENBRAND, (data) => {
-            if (data.code == 1) {
-                if (data.result == 'true') {
+        StorageUtil.mGetItem(storageKeyNames.NEED_OPENBRAND,(data)=>{
+            if(data.code==1){
+               if(data.result=='true'){
 
                     this.presCarTypeScene();
 
-                }
+               }
             }
         });
 
-        StorageUtil.mGetItem(storageKeyNames.NEED_CHECK_RECOMMEND, (data) => {
+        StorageUtil.mGetItem(storageKeyNames.NEED_CHECK_RECOMMEND,(data)=>{
 
-            if (data.code == 1) {
-                if (data.result == 'true') {
-                    if (this.refs.headView.state.isCheckRecommend) {
+            if(data.code == 1){
+                if(data.result == 'true'){
+                    if (this.refs.headView.state.isCheckRecommend)
+                    {
                         this.refs.headView.setCheckRecommend(false);
                     }
                 }
             }
         });
 
-        StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND, 'false');
-        StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND, 'false');
+        StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
+        StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND,'false');
 
     }
 
     initFinish = () => {
 
-        StorageUtil.mGetItem(storageKeyNames.NEED_OPENBRAND, (data) => {
-            if (data.code == 1) {
-                if (data.result == 'true') {
+        StorageUtil.mGetItem(storageKeyNames.NEED_OPENBRAND,(data)=>{
+            if(data.code==1){
+                if(data.result=='true'){
                     this.presCarTypeScene();
                     return;
                 }
@@ -203,10 +199,10 @@ export  default  class carSourceListScene extends BaseComponent {
             }
         });
 
-        StorageUtil.mGetItem(storageKeyNames.NEED_CHECK_RECOMMEND, (data) => {
+        StorageUtil.mGetItem(storageKeyNames.NEED_CHECK_RECOMMEND,(data)=>{
 
-            if (data.code == 1) {
-                if (data.result == 'true') {
+            if(data.code == 1){
+                if(data.result == 'true'){
                     isCheckRecommend = false
                     APIParameter.type = 0;
                     APIParameter.prov_id = 0;
@@ -216,21 +212,24 @@ export  default  class carSourceListScene extends BaseComponent {
             }
         });
 
-        StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND, 'false');
-        StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND, 'false');
+        StorageUtil.mSetItem(storageKeyNames.NEED_OPENBRAND,'false');
+        StorageUtil.mSetItem(storageKeyNames.NEED_CHECK_RECOMMEND,'false');
 
 
         StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
-            if (data.code == 1 && data.result != '') {
+            if(data.code == 1 && data.result != '')
+            {
                 let enters = JSON.parse(data.result);
                 this.prov_id = enters.prov_id;
-                APIParameter.prov_id = enters.prov_id;
+                APIParameter.prov_id=enters.prov_id;
                 this.loadData();
 
-            } else {
+            }else{
                 this.loadData();
             }
         });
+
+
 
 
     };
@@ -248,12 +247,12 @@ export  default  class carSourceListScene extends BaseComponent {
     // 筛选数据刷新
     filterData = () => {
         carData = [];
-        this.setState({dataSource: this.state.dataSource.cloneWithRows(carData)});
+        this.setState({dataSource:this.state.dataSource.cloneWithRows(carData)});
         this.props.showModal(true);
         this.loadData();
 
     }
-    allRefresh = () => {
+    allRefresh=()=>{
         this.setState({renderPlaceholderOnly: 'loading'});
         this.loadData();
     }
@@ -263,7 +262,7 @@ export  default  class carSourceListScene extends BaseComponent {
 
         let url = AppUrls.CAR_INDEX;
         APIParameter.page = 1;
-        request(url, 'post', APIParameter, () => {
+        request(url, 'post', APIParameter,()=>{
             this.props.backToLogin();
         })
             .then((response) => {
@@ -308,7 +307,7 @@ export  default  class carSourceListScene extends BaseComponent {
         let url = AppUrls.CAR_INDEX;
         APIParameter.page += 1;
 
-        request(url, 'post', APIParameter, () => {
+        request(url, 'post', APIParameter,()=>{
             this.props.backToLogin();
         })
             .then((response) => {
@@ -350,23 +349,23 @@ export  default  class carSourceListScene extends BaseComponent {
 
 
     // 获取筛选数据
-    loadCarConfigData = (succeedAction) => {
+    loadCarConfigData=(succeedAction)=>{
 
 
-        CarDeployData.getCarDeployData(this.props.showModal, this.props.showToast, (dataSource) => {
+        CarDeployData.getCarDeployData(this.props.showModal,this.props.showToast,(dataSource)=>{
 
             succeedAction(dataSource);
 
         });
 
-        // this.props.showModal(true);
-        // request(AppUrls.CAR_CONFIG,'post',{}).then((response) => {
-        //     succeedAction(response.mjson.data);
-        //     this.props.showModal(false);
-        // }, (error) => {
-        //     this.props.showModal(false);
-        //     this.props.showToast(error.msg);
-        // });
+            // this.props.showModal(true);
+            // request(AppUrls.CAR_CONFIG,'post',{}).then((response) => {
+            //     succeedAction(response.mjson.data);
+            //     this.props.showModal(false);
+            // }, (error) => {
+            //     this.props.showModal(false);
+            //     this.props.showToast(error.msg);
+            // });
     }
 
     // 选择城市列表
@@ -382,6 +381,7 @@ export  default  class carSourceListScene extends BaseComponent {
         }
         this.props.callBack(navigatorParams);
     }
+
 
 
     presCarTypeScene = () => {
@@ -413,7 +413,6 @@ export  default  class carSourceListScene extends BaseComponent {
 
 
     }
-
 
     ScreeningClick=()=>{
 
@@ -461,18 +460,18 @@ export  default  class carSourceListScene extends BaseComponent {
     }
 
 
-    screeningCompleteClick = (screeningObject) => {
+    screeningCompleteClick=(screeningObject)=>{
 
         this.setState({
             checkedCarType: screeningObject.checkedCarType,
-            checkedCarAgeType: screeningObject.checkedCarAgeType,
-            checkedCarKMType: screeningObject.checkedCarKMType,
-            checkedCarGenre: screeningObject.checkedCarGenre,
-            checkedCity: screeningObject.checkedCity,
-            checkedCarPrice: screeningObject.checkedCarPrice,
-            checkedCarDischarge: screeningObject.checkedCarDischarge,
-            checkedCarColor: screeningObject.checkedCarColor,
-            checkedCarNature: screeningObject.checkedCarNature,
+            checkedCarAgeType:screeningObject.checkedCarAgeType,
+            checkedCarKMType:screeningObject.checkedCarKMType,
+            checkedCarGenre:screeningObject.checkedCarGenre,
+            checkedCity:screeningObject.checkedCity,
+            checkedCarPrice:screeningObject.checkedCarPrice,
+            checkedCarDischarge:screeningObject.checkedCarDischarge,
+            checkedCarColor:screeningObject.checkedCarColor,
+            checkedCarNature:screeningObject.checkedCarNature,
         });
 
         APIParameter.brand_id = screeningObject.checkedCarType.brand_id;
@@ -509,7 +508,7 @@ export  default  class carSourceListScene extends BaseComponent {
                     checkedCarClick: this.checkedCarClick,
                     status: 1,
                     isHeadInteraction: true,
-                    unlimitedAction: this.carTypeClick,
+                    unlimitedAction:this.carTypeClick,
                     // isCheckedCarModel:true,
 
                 }
@@ -525,9 +524,9 @@ export  default  class carSourceListScene extends BaseComponent {
         }
 
         if (!isHighlighted) {
-            if (carAgeSource.length <= 0 || carKMSource.length <= 0) {
+            if(carAgeSource.length<=0 || carKMSource.length<=0){
 
-                this.loadCarConfigData((configData) => {
+                this.loadCarConfigData((configData)=>{
                     carAgeSource = configData.auto_age;
                     carKMSource = configData.auto_mileage;
                     carTypeSource = configData.auto_type;
@@ -547,7 +546,7 @@ export  default  class carSourceListScene extends BaseComponent {
                     setImgHighlighted(!isHighlighted); // 回调按钮状态
                 });
 
-            } else {
+            }else {
 
                 switch (index) {
                     case 2:
@@ -565,7 +564,7 @@ export  default  class carSourceListScene extends BaseComponent {
                 setImgHighlighted(!isHighlighted); // 回调按钮状态
             }
 
-        } else {
+        }else {
             this.setState({
                 isHide: isHighlighted,
             });
@@ -579,13 +578,13 @@ export  default  class carSourceListScene extends BaseComponent {
 
         if (isCheck) {
             APIParameter.type = 1;
-            APIParameter.prov_id = this.prov_id;
+            APIParameter.prov_id=this.prov_id;
             this.allDelectClick();
 
 
         } else {
             APIParameter.type = 0;
-            APIParameter.prov_id = 0;
+            APIParameter.prov_id=0;
             this.filterData();
         }
 
@@ -597,10 +596,11 @@ export  default  class carSourceListScene extends BaseComponent {
         APIParameter.brand_id = carObject.brand_id;
         APIParameter.series_id = carObject.series_id;
 
-        if (carObject.brand_id == 0 && carObject.series_id == 0) {
+        if(carObject.brand_id == 0 && carObject.series_id ==0)
+        {
             APIParameter.model_name = carObject.brand_name;
 
-        } else {
+        }else {
 
             APIParameter.model_name = '';
 
@@ -768,11 +768,11 @@ export  default  class carSourceListScene extends BaseComponent {
         this.setState({
             checkedCity: {
                 title: '',
-                provice_id: '',
-                city_id: '',
+                provice_id:'',
+                city_id:'',
             },
         });
-        APIParameter.provice_id = 0;
+        APIParameter.provice_id =0;
         APIParameter.city_id = 0;
         if (this.refs.headView.state.isCheckRecommend) {
             this.refs.headView.setCheckRecommend(false)
@@ -782,9 +782,12 @@ export  default  class carSourceListScene extends BaseComponent {
     };
 
 
+
+
+
     carPriceClick = () => {
         this.setState({
-            checkedCarPrice: {
+            checkedCarPrice:{
                 title: '',
                 value: '',
             },
@@ -799,7 +802,7 @@ export  default  class carSourceListScene extends BaseComponent {
 
     carDischargeClick = () => {
         this.setState({
-            checkedCarDischarge: {
+            checkedCarDischarge:{
                 title: '',
                 value: '',
             },
@@ -814,7 +817,7 @@ export  default  class carSourceListScene extends BaseComponent {
 
     carColorClick = () => {
         this.setState({
-            checkedCarColor: {
+            checkedCarColor:{
                 title: '',
                 value: '',
             },
@@ -829,7 +832,7 @@ export  default  class carSourceListScene extends BaseComponent {
 
     carNatureClick = () => {
         this.setState({
-            checkedCarNature: {
+            checkedCarNature:{
                 title: '',
                 value: '',
             },
@@ -862,28 +865,28 @@ export  default  class carSourceListScene extends BaseComponent {
                 title: '',
                 value: '',
             },
-            checkedCarGenre: {
+            checkedCarGenre:{
                 title: '',
                 value: '',
             },
-            checkedCity: {
+            checkedCity:{
                 title: '',
-                provice_id: '',
-                city_id: '',
+                provice_id:'',
+                city_id:'',
             },
-            checkedCarPrice: {
-                title: '',
-                value: '',
-            },
-            checkedCarDischarge: {
+            checkedCarPrice:{
                 title: '',
                 value: '',
             },
-            checkedCarColor: {
+            checkedCarDischarge:{
                 title: '',
                 value: '',
             },
-            checkedCarNature: {
+            checkedCarColor:{
+                title: '',
+                value: '',
+            },
+            checkedCarNature:{
                 title: '',
                 value: '',
             },
@@ -894,9 +897,9 @@ export  default  class carSourceListScene extends BaseComponent {
         APIParameter.coty = 0;
         APIParameter.brand_id = 0;
         APIParameter.series_id = 0;
-        APIParameter.v_type = 0;
+        APIParameter.v_type=0;
         APIParameter.provice_id = 0;
-        APIParameter.city_id = 0;
+        APIParameter.city_id=0;
         APIParameter.dealer_price = 0;
         APIParameter.emission_standards = 0;
         APIParameter.car_color = 0;
@@ -919,7 +922,7 @@ export  default  class carSourceListScene extends BaseComponent {
     };
 
 
-    carCellOnPres = (carID, modelID, sectionID, rowID) => {
+    carCellOnPres = (carID, modelID,sectionID, rowID) => {
 
 
         let navigatorParams = {
@@ -951,8 +954,7 @@ export  default  class carSourceListScene extends BaseComponent {
                 && APIParameter.mileage == 0 && APIParameter.type == 0) {
                 isCarFoot = false;
 
-            }
-            ;
+            };
 
             return (<ListFooter isLoadAll={this.state.isFillData==1?false:true} isCarFoot={isCarFoot}
                                 footAllClick={this.allDelectClick}/>)
@@ -976,11 +978,10 @@ export  default  class carSourceListScene extends BaseComponent {
         return (
 
             <View style={styles.contaier}>
-                <CarListNavigatorView searchClick={this.presCarTypeScene} ScreeningClick={this.ScreeningClick}
-                                      loactionClick={this.loactionClick}/>
+                <CarListNavigatorView searchClick={this.presCarTypeScene}  ScreeningClick={this.ScreeningClick} loactionClick={this.loactionClick}/>
                 <CarSourceSelectHeadView ref="headView" onPres={this.headViewOnPres}
                                          checkRecommendClick={this.checkRecommendClick}
-                                         isCheckRecommend={isCheckRecommend}/>
+                                         isCheckRecommend = {isCheckRecommend}/>
                 {
 
                     (this.state.checkedCarKMType.title || this.state.checkedCarAgeType.title || this.state.checkedCarType.title || this.state.sequencingType.title || this.state.checkedCity.title || this.state.checkedCarGenre.title || this.state.checkedCarPrice.title || this.state.checkedCarDischarge.title || this.state.checkedCarColor.title || this.state.checkedCarNature.title) ?
@@ -991,20 +992,20 @@ export  default  class carSourceListScene extends BaseComponent {
                                 carKM={this.state.checkedCarKMType}
                                 carGenre={this.state.checkedCarGenre}
                                 carCity={this.state.checkedCity}
-                                carPrice={this.state.checkedCarPrice}
-                                carDischarge={this.state.checkedCarDischarge}
-                                carColor={this.state.checkedCarColor}
-                                carNature={this.state.checkedCarNature}
+                                carPrice = {this.state.checkedCarPrice}
+                                carDischarge = {this.state.checkedCarDischarge}
+                                carColor = {this.state.checkedCarColor}
+                                carNature = {this.state.checkedCarNature}
 
                                 sequencingClick={this.sequencingClick}
                                 carTypeClick={this.carTypeClick}
                                 carAgeClick={this.carAgeClick}
                                 carKMClick={this.carKMClick}
-                                carGenreClick={this.carGenreClick}
+                                carGenreClick = {this.carGenreClick}
                                 carCityClick={this.carCityClick}
                                 carPriceClick={this.carPriceClick}
                                 carDischargeClick={this.carDischargeClick}
-                                carColorClick={this.carColorClick}
+                                carColorClick = {this.carColorClick}
                                 carNatureClick={this.carNatureClick}
                                 allDelectClick={this.allDelectClick}
 
@@ -1065,7 +1066,7 @@ export  default  class carSourceListScene extends BaseComponent {
 class CheckedContentView extends Component {
 
     render() {
-        const {sequencingType, carType, carAge, carKM, carGenre, carCity, carPrice, carDischarge, carColor, carNature, sequencingClick, carTypeClick, carAgeClick, carKMClick, carGenreClick, carCityClick, allDelectClick, carPriceClick, carDischargeClick, carColorClick, carNatureClick} = this.props;
+        const {sequencingType, carType, carAge, carKM,carGenre,carCity, carPrice,carDischarge,carColor,carNature,sequencingClick, carTypeClick, carAgeClick, carKMClick, carGenreClick,carCityClick,allDelectClick,carPriceClick,carDischargeClick,carColorClick,carNatureClick} = this.props;
         return (
 
             <View style={styles.checkedContentView}>
@@ -1073,8 +1074,7 @@ class CheckedContentView extends Component {
                     carGenre.title ? (
                             <TouchableOpacity onPress={carGenreClick}>
                                 <View style={styles.checkedContentItem}>
-                                    <Text allowFontScaling={false}
-                                          style={styles.checkedItemText}>{carGenre.title}</Text>
+                                    <Text allowFontScaling={false}  style={styles.checkedItemText}>{carGenre.title}</Text>
                                     <Image style={styles.checkedDeleteImg}
                                            source={require('../../images/deleteIcon2x.png')}/>
                                 </View>
@@ -1085,7 +1085,7 @@ class CheckedContentView extends Component {
                     carCity.title ? (
                             <TouchableOpacity onPress={carCityClick}>
                                 <View style={styles.checkedContentItem}>
-                                    <Text allowFontScaling={false} style={styles.checkedItemText}>{carCity.title}</Text>
+                                    <Text allowFontScaling={false}  style={styles.checkedItemText}>{carCity.title}</Text>
                                     <Image style={styles.checkedDeleteImg}
                                            source={require('../../images/deleteIcon2x.png')}/>
                                 </View>
@@ -1096,8 +1096,7 @@ class CheckedContentView extends Component {
                     sequencingType.title ? (
                             <TouchableOpacity onPress={sequencingClick}>
                                 <View style={styles.checkedContentItem}>
-                                    <Text allowFontScaling={false}
-                                          style={styles.checkedItemText}>{sequencingType.title}</Text>
+                                    <Text allowFontScaling={false}  style={styles.checkedItemText}>{sequencingType.title}</Text>
                                     <Image style={styles.checkedDeleteImg}
                                            source={require('../../images/deleteIcon2x.png')}/>
                                 </View>
@@ -1108,7 +1107,7 @@ class CheckedContentView extends Component {
                     carType.title ? (
                             <TouchableOpacity onPress={carTypeClick}>
                                 <View style={styles.checkedContentItem}>
-                                    <Text allowFontScaling={false} style={styles.checkedItemText}>{carType.title}</Text>
+                                    <Text allowFontScaling={false}  style={styles.checkedItemText}>{carType.title}</Text>
                                     <Image style={styles.checkedDeleteImg}
                                            source={require('../../images/deleteIcon2x.png')}/>
                                 </View>
@@ -1119,7 +1118,7 @@ class CheckedContentView extends Component {
                     carAge.title ? (
                             <TouchableOpacity onPress={carAgeClick}>
                                 <View style={styles.checkedContentItem}>
-                                    <Text allowFontScaling={false} style={styles.checkedItemText}>{carAge.title}</Text>
+                                    <Text allowFontScaling={false}  style={styles.checkedItemText}>{carAge.title}</Text>
                                     <Image style={styles.checkedDeleteImg}
                                            source={require('../../images/deleteIcon2x.png')}/>
                                 </View>
@@ -1129,7 +1128,7 @@ class CheckedContentView extends Component {
                     carKM.title ? (
                             <TouchableOpacity onPress={carKMClick}>
                                 <View style={styles.checkedContentItem}>
-                                    <Text allowFontScaling={false} style={styles.checkedItemText}>{carKM.title}</Text>
+                                    <Text allowFontScaling={false}  style={styles.checkedItemText}>{carKM.title}</Text>
                                     <Image style={styles.checkedDeleteImg}
                                            source={require('../../images/deleteIcon2x.png')}/>
                                 </View>
@@ -1177,7 +1176,7 @@ class CheckedContentView extends Component {
                 }
                 <TouchableOpacity onPress={allDelectClick}>
                     <View style={styles.checkedDelectView}>
-                        <Text allowFontScaling={false} style={styles.checkedDelectText}>清空</Text>
+                        <Text allowFontScaling={false}  style={styles.checkedDelectText}>清空</Text>
                     </View>
                 </TouchableOpacity>
 
@@ -1203,14 +1202,13 @@ class CarListNavigatorView extends Component {
                         <View style={styles.navigatorSousuoView}>
                             <Image style={{marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(10)}}
                                    source={require('../../images/carSourceImages/sousuoicon.png')}/>
-                            <Text allowFontScaling={false} style={styles.navigatorSousuoText}>请输入车型关键词</Text>
+                            <Text allowFontScaling={false}  style={styles.navigatorSousuoText}>请输入车型关键词</Text>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={this.props.ScreeningClick}>
                         <View style={{marginLeft:Pixel.getPixel(20),width:Pixel.getPixel(50),height:Pixel.getPixel(40),justifyContent:'center',
                             alignItems:'center'}}>
-                            <Text allowFontScaling={false}
-                                  style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>筛选</Text>
+                            <Text allowFontScaling={false}  style={{color:'white', fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>筛选</Text>
                         </View>
                     </TouchableOpacity>
                 </View>

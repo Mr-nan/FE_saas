@@ -40,6 +40,7 @@ export default class CarBuyScene extends BaseComponent {
             return (
                 <View style={styles.loadView}>
                     {this.loadView()}
+                    <AllNavigationView title='收车管理' backIconClick={this.backPage}/>
                 </View>);
         }
         return(
@@ -48,7 +49,7 @@ export default class CarBuyScene extends BaseComponent {
                     style={styles.ScrollableTabView}
                     initialPage={0}
                     locked={true}
-                    renderTabBar={()=><RepaymenyTabBar refs={(ref)=>{this.tabBar =ref }} style={{backgroundColor:'white'}} tabName={["未成交", "已成交", "已放弃"]}/>}>
+                    renderTabBar={()=><RepaymenyTabBar refs={(ref)=>{this.tabBar =ref }} style={{backgroundColor:'white'}} tabName={["未成交("+this.state.dealN+')', "已成交("+this.state.dealY+')', "已放弃("+this.state.dealF+')']}/>}>
                     <CarBuyUnsettledView ref="CarBuyUnsettledView"  tabLabel="ios-paper1" updateHeadView ={this.updateHeadView} cellClick={this.cellClick}/>
                     <CarBuyTradedView   ref="CarBuyTradedView"  tabLabel="ios-paper2" updateHeadView ={this.updateHeadView} cellClick={this.cellClick}/>
                     <CarBuyAbandonView  ref="CarBuyAbandonView"   tabLabel="ios-paper3" updateHeadView ={this.updateHeadView} cellClick={this.cellClick}/>
@@ -56,7 +57,7 @@ export default class CarBuyScene extends BaseComponent {
                 <TouchableOpacity style={styles.footBtn} onPress={this.footBtnClick}>
                     <Text style={styles.footBtnText}>创建</Text>
                 </TouchableOpacity>
-                <AllNavigationView title='名车行' backIconClick={this.backPage}/>
+                <AllNavigationView title='收车管理' backIconClick={this.backPage}/>
             </View>
         )
     }
@@ -72,9 +73,7 @@ export default class CarBuyScene extends BaseComponent {
                 {
                     let userData = JSON.parse(data.result);
                     userPhone = userData.phone;
-                    this.setState({
-                        renderPlaceholderOnly:'success'
-                    });
+                    this.loadHeadNumberData();
 
                 }else {
                     this.setState({
@@ -90,6 +89,34 @@ export default class CarBuyScene extends BaseComponent {
         })
     }
 
+    loadHeadNumberData=(action)=>{
+
+        this.setState({
+            renderPlaceholderOnly:'loading'
+        });
+        request(AppUrls.CAR_SASS_SELECT_LIST, 'post', {
+            mobile:userPhone,
+            status:'2',
+            pc:1,
+            pr: 1,
+        }).then((response) => {
+            let data = response.mjson.data;
+            this.setState({
+                renderPlaceholderOnly:'success',
+                dealF:data.count.dealF,
+                dealN:data.count.dealN,
+                dealY:data.count.dealY
+            });
+
+            action && action();
+
+        }, (error) => {
+            this.setState({
+                renderPlaceholderOnly: 'error',
+            });
+        });
+    }
+
     allRefresh=()=>{
         this.loadData();
     }
@@ -101,7 +128,11 @@ export default class CarBuyScene extends BaseComponent {
         userPhone = '';
 
         this.state = {
-            renderPlaceholderOnly:'loading'
+            renderPlaceholderOnly:'loading',
+            dealF:0,
+            dealN:0,
+            dealY:0
+
         };
       }
     
@@ -136,9 +167,13 @@ export default class CarBuyScene extends BaseComponent {
     }
 
     reloadData=()=>{
-        this.refs.CarBuyUnsettledView && this.refs.CarBuyUnsettledView.allRefresh();
-        this.refs.CarBuyTradedView && this.refs.CarBuyTradedView.allRefresh();
-        this.refs.CarBuyAbandonView && this.refs.CarBuyAbandonView.allRefresh();
+
+        this.loadHeadNumberData(()=>{
+            this.refs.CarBuyUnsettledView && this.refs.CarBuyUnsettledView.allRefresh();
+            this.refs.CarBuyTradedView && this.refs.CarBuyTradedView.allRefresh();
+            this.refs.CarBuyAbandonView && this.refs.CarBuyAbandonView.allRefresh();
+        });
+
     }
 }
 

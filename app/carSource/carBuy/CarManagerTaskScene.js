@@ -44,7 +44,7 @@ export default class CarManagerTaskScene extends BaseComponent{
         return(
             <View style={styles.rootContaier}>
                 <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={-Pixel.getPixel(64)}>
-                    <ScrollView keyboardDismissMode={'on-drag'}>
+                    <ScrollView keyboardDismissMode={'on-drag'} >
                         {
                             this.state.titleData.map((data, index) => {
                                 return (
@@ -161,7 +161,7 @@ export default class CarManagerTaskScene extends BaseComponent{
                 return(
                     <TextInput
                         style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(60)}]}
-                        value={data.remark}
+                        defaultValue={data.remark}
                         editable={false}
                         underlineColorAndroid='transparent'
                         placeholderTextColor={fontAndColor.COLORA4}
@@ -196,17 +196,17 @@ export default class CarManagerTaskScene extends BaseComponent{
 
         }
 
-        if(parseFloat(this.buyprice)<=0)
+        if(parseFloat(this.buyprice)<=0 || !this.buyprice)
         {
             this.props.showToast('请输入正确的收车价');
             return;
         }
-        if(parseFloat(this.selfprice)<=0)
+        if(parseFloat(this.selfprice)<=0 ||!this.selfprice)
         {
             this.props.showToast('请输入正确的卖车标价');
             return;
         }
-        if(parseFloat(this.overprice)<=0)
+        if(parseFloat(this.overprice)<=0 || !this.overprice)
         {
             this.props.showToast('请输入正确的卖车底价');
             return;
@@ -348,7 +348,7 @@ export default class CarManagerTaskScene extends BaseComponent{
             [
                 {
                     title:'备注',
-                    isShowTag:this.props.type==1?true:false,
+                    isShowTag:false,
                     tailView:()=>{
                         return(
                             <TextInput

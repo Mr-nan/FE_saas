@@ -33,7 +33,7 @@ export default class CarDealInfoScene extends BaseComponent{
         return(
             <View style={styles.rootContaier}>
                 <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={-Pixel.getPixel(64)}>
-                    <ScrollView keyboardDismissMode={'on-drag'}>
+                    <ScrollView keyboardDismissMode={'on-drag'} >
                         {
                             this.state.titleData.map((data, index) => {
                                 return (
@@ -78,9 +78,7 @@ export default class CarDealInfoScene extends BaseComponent{
         )
     }
 
-    cellSelectAction=(selectDict)=>{
-        alert(selectDict.title,selectDict.value);
-    }
+
 
     footBtnClick=()=>{
 
@@ -100,10 +98,19 @@ export default class CarDealInfoScene extends BaseComponent{
             return;
         }
 
+
+
         this.props.showModal(true);
         request(AppUrls.CAR_SALE, 'post', this.carDealData).then((response) => {
 
-            request(AppUrls.CAR_SASS_SALED, 'post', {id:this.carDealData.id}).then((response) => {
+            request(AppUrls.CAR_SASS_SALED, 'post', {
+                id:this.carDealData.id,
+                saledPeople:this.carDealData.salesman,
+                saledPrice:this.carDealData.current_rate,
+                saledType:this.carDealData.paymentValue,
+                businessIf:this.carDealData.insuranceValue,
+
+            }).then((response) => {
 
                 this.props.showModal(false);
                 this.props.refreshDataAction();
@@ -136,7 +143,8 @@ export default class CarDealInfoScene extends BaseComponent{
             payment:'全款',
             insurance:'',
             salesman:'',
-            current_rate:''
+            current_rate:'',
+            paymentValue:1
 
         };
 
@@ -212,8 +220,10 @@ export default class CarDealInfoScene extends BaseComponent{
 
        if(selectDict.value>=3){
            this.carDealData.insurance = selectDict.title;
+           this.carDealData.insuranceValue = selectDict.value-2;
        }else {
            this.carDealData.payment = selectDict.title;
+           this.carDealData.paymentValue = selectDict.value;
        }
     }
 

@@ -32,14 +32,23 @@ import EvaluateCarInfo from "../../mine/setting/EvaluateCarInfo";
 import WriteArrangeCostDetailTWO from "../../mine/setting/WriteArrangeCostDetailTWO";
 import * as AppUrls from "../../constant/appUrls";
 import  {request}           from '../../utils/RequestUtil';
-let Pixel = new  PixelUtil();
+import  GetPermissionUtil from '../../utils/GetRoleUtil';
 
+let Pixel = new  PixelUtil();
+let getRole = new GetPermissionUtil();
 const sceneWidth = Dimensions.get('window').width;
 
 
 export default class CarTrimScene extends BaseComponent {
 
     render(){
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return (
+                <View style={{flex: 1, backgroundColor: 'white'}}>
+                    {this.loadView()}
+                    <AllNavigationView title='名车行' backIconClick={this.backPage}/>
+                </View>);
+        }
         return(
             <View style={styles.rootContainer}>
                 <ListView
@@ -53,9 +62,12 @@ export default class CarTrimScene extends BaseComponent {
         )
     }
 
+
+
     // 构造
     constructor(props) {
         super(props);
+
 
         if(this.props.defaultIndex){
 
@@ -84,7 +96,6 @@ export default class CarTrimScene extends BaseComponent {
                     this.roleTitle = '手续员';
                     this.roleValue = 'sxy';
                     break;
-
             }
 
         }else {
@@ -93,14 +104,12 @@ export default class CarTrimScene extends BaseComponent {
         }
 
 
-
-
-
         const ds = new ListView.DataSource({rowHasChanged:(r1,r2)=>r1==r2});
         this.state = {
             isShowHeadView:true,
             dataSource:ds,
             taskType:1,
+            renderPlaceholderOnly:'loading'
         };
     }
 
@@ -115,17 +124,26 @@ export default class CarTrimScene extends BaseComponent {
             }}/>
         )
     }
-    renderFooter =()=> {
-        console.log('=========',this.state.dataSource.rowData);
-        return(
-            <View/>
-        )
-    }
+
 
     /**
      * 导航右侧按钮
      */
     renderRightView=()=>{
+
+        let isRender = false;
+        for(let item of this.roleList)
+        {
+            if(item.name =='手续员')
+            {
+                isRender = true;
+                break;
+            }
+        }
+
+        if(!isRender){
+            return null;
+        }
 
         return(
             <TouchableOpacity onPress={()=>{
@@ -149,7 +167,14 @@ export default class CarTrimScene extends BaseComponent {
     }
 
     initFinish=()=>{
-        this.loadData(this.roleValue,this.state.taskType);
+        getRole.getRoleList((data)=>{
+            this.roleList = data;
+            this.setState({
+                renderPlaceholderOnly:'success'
+            });
+            this.loadData(this.roleValue,this.state.taskType);
+        });
+
     }
 
     reloadData=()=>{
@@ -165,11 +190,24 @@ export default class CarTrimScene extends BaseComponent {
             taskType:type
         });
 
-
-        if(roleValue=='sxy' && type==1)
+        let isRole = true;
+        for(let item of this.roleList)
         {
-            return;
+            if(item.name == this.roleTitle)
+            {
+                isRole = false;
+                break;
+            }
         }
+        if(type==1)
+        {
+            if(roleValue=='sxy' ||  isRole)
+            {
+                return;
+            }
+        }
+
+
         this.props.showModal(true);
         request(AppUrls.CAR_CHESHANG_TASKS, 'post', {roleName:roleValue,type:type,}).then((response) => {
             this.props.showModal(false);

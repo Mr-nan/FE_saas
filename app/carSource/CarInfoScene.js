@@ -10,8 +10,7 @@ import {
     InteractionManager,
     Dimensions,
     Modal,
-    NativeModules
-
+    NativeModules,
 
 } from 'react-native';
 
@@ -39,7 +38,9 @@ import WaitActivationAccountScene from '../mine/accountManage/WaitActivationAcco
 import ProcurementOrderDetailScene from "../mine/myOrder/ProcurementOrderDetailScene";
 import ExplainModal from "../mine/myOrder/component/ExplainModal";
 import CarMyListScene from "./CarMyListScene";
+import GetPermissionUtil from '../utils/GetRoleUtil';
 let Platform = require('Platform');
+let getRole = new GetPermissionUtil();
 const Pixel = new PixelUtil();
 
 import {request} from "../utils/RequestUtil";
@@ -47,7 +48,8 @@ import * as AppUrls from "../constant/appUrls";
 
 var ScreenWidth = Dimensions.get('window').width;
 let resolveAssetSource = require('resolveAssetSource');
-var  shareClass = NativeModules.ZNShareClass;
+const IS_ANDROID = Platform.OS === 'android';
+var shareClass = NativeModules.ZNShareClass;
 
 const carParameterViewColor = [
 
@@ -120,7 +122,10 @@ export default class CarInfoScene extends BaseComponent {
 
     initFinish = () => {
         carConfigurationData = [];
-        this.loadData();
+        getRole.getRoleList((data)=>{
+            this.roleList = data;
+            this.loadData();
+        });
     }
 
     allRefresh=()=>{
@@ -180,6 +185,15 @@ export default class CarInfoScene extends BaseComponent {
             if (carData.imgs.length <= 0) {
 
                 carData.imgs = [{require: require('../../images/carSourceImages/car_info_null.png')}];
+            }
+
+            for(let item of this.roleList)
+            {
+                if(item.name =='手续员'||item.name =='评估师'||item.name =='整备员'||item.name =='经理'||item.name =='运营专员')
+                {
+                    carData.show_order = 2;
+                    break;
+                }
             }
 
             this.setState({
@@ -360,13 +374,13 @@ export default class CarInfoScene extends BaseComponent {
                             </View>
                         )
                     }
-                    <TouchableOpacity style={styles.storeView} activeOpacity={1} onPress={this.pushStoreScene}>
-                        <Text style={styles.storeText}>所属店铺：金鸟二手车行</Text>
-                        <View style={{flexDirection:'row', alignItems:'center'}}>
-                            <Text style={styles.storeTailText}>进入</Text>
-                            <Image source={require('../../images/mainImage/celljiantou.png')}/>
-                        </View>
-                    </TouchableOpacity>
+                    {/*<TouchableOpacity style={styles.storeView} activeOpacity={1} onPress={this.pushStoreScene}>*/}
+                        {/*<Text style={styles.storeText}>所属店铺：金鸟二手车行</Text>*/}
+                        {/*<View style={{flexDirection:'row', alignItems:'center'}}>*/}
+                            {/*<Text style={styles.storeTailText}>进入</Text>*/}
+                            {/*<Image source={require('../../images/mainImage/celljiantou.png')}/>*/}
+                        {/*</View>*/}
+                    {/*</TouchableOpacity>*/}
                     <View style={styles.carIconsContainer}>
                         <View style={styles.carIconsView}>
                             {
@@ -456,7 +470,7 @@ export default class CarInfoScene extends BaseComponent {
                 </ScrollView>
                 <View style={styles.footView}>
                     {
-                        carData.status==3 ?
+                        (carData.status==3 || carData.del==1) ?
                             (
                             <View style={{flex:1, alignItems:'center',justifyContent:'center',backgroundColor:fontAndColor.COLORA4,height:Pixel.getPixel(44)}}>
                                 <Text style={{fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),color:'white',textAlign:'center'
@@ -904,20 +918,47 @@ class SharedView extends Component {
 
     // 多图分享
     sharedMoreImage=(carData)=>{
-        let shareArray = [];
-        for (let i =0;i<carData.imgs.length;i++)
-        {
-            shareArray.push({image:carData.imgs[i].url});
+
+        if(IS_ANDROID == true){
+            let shareArray = [];
+            for (let i =0;i<carData.imgs.length;i++)
+            {
+                shareArray.push(carData.imgs[i].url);
+            }
+            let carContent = carData.model_name;
+            if (carData.city_name != "") {
+
+                carContent += '\n'+carData.city_name + '\n';
+            }
+            if (carData.plate_number != "") {
+
+                carContent += carData.plate_number.substring(0, 2);
+            }
+            if (carData.carIconsContentData[0] != "") {
+
+                carContent += "\n" + carData.carIconsContentData[0] + '出厂';
+            }
+            NativeModules.ShareNative.share({image:[shareArray],title:[carContent]}).then((suc)=>{
+            }, (fail)=>{
+                this.props.showToast('分享已取消');
+            }
+            )
+        }else {
+            let shareArray = [];
+            for (let i =0;i<carData.imgs.length;i++)
+            {
+                shareArray.push({image:carData.imgs[i].url});
+            }
+
+            shareClass.shareAction([shareArray]).then((data) => {
+
+                this.props.showToast('分享成功');
+
+            }, (error) => {
+
+                this.props.showToast('分享已取消');
+            });
         }
-
-        shareClass.shareAction([shareArray]).then((data) => {
-
-            this.props.showToast('分享成功');
-
-        }, (error) => {
-
-            this.props.showToast('分享已取消');
-        });
     }
 
     // 分享好友
@@ -928,7 +969,6 @@ class SharedView extends Component {
 
                     let imageResource = require('../../images/carSourceImages/car_info_null.png');
                     let carContent = '';
-
                     if (carData.city_name != "") {
 
                         carContent = carData.city_name + ' | ';

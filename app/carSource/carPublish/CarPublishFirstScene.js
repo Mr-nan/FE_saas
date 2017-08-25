@@ -829,81 +829,99 @@ export default class CarPublishFirstScene extends BaseComponent{
         if (text.length === 17) {
             this._showLoading();
             this.vinInput.blur();
-            Net.request(AppUrls.VININFO, 'post',{vin:text}).then(
+            Net.request(AppUrls.VIN_CHECK, 'post',{vin:text}).then(
                 (response) => {
-                    this._closeLoading();
                     if (response.mycode === 1) {
+                        this.titleData1[0][1].subTitle='';
+                        this.titleData2[0][1].subTitle='';
+                        this.titleData1[0][2].value = '请选择';
+                        this.titleData1[0][4].value = '请选择';
+                        this.titleData1[1][0].value = '请选择';
+                        this.titleData1[1][1].value = '请选择';
 
-                        let rd = response.mjson.data;
+                        this.titleData2[0][2].value = '请选择';
+                        this.titleData2[0][4].value = '请选择';
+                        this.titleData2[1][0].value = '请选择';
 
-                        if (rd.length === 0) {
+                        this.carData['vin'] = text;
+                        this.carData['model_id'] = '';
+                        this.carData['emission_standards'] = '';
+                        this.carData['series_id'] = '';
+                        this.carData['brand_id'] = '';
+                        this.carData['brand_name'] = '';
+                        this.carData['series_name'] = '';
+                        this.carData['model_name'] = '';
 
-                            this.carData['vin'] = '';
-                            this.titleData1[0][1].subTitle='校验失败';
-                            this.titleData2[0][1].subTitle='校验失败';
-                            this.upTitleData();
+                        Net.request(AppUrls.VININFO, 'post',{vin:text}).then(
+                            (response) => {
+                                this._closeLoading();
+                                if (response.mycode === 1)
+                                {
+                                    let rd = response.mjson.data;
+                                    if (rd.length === 1) {
+                                        this.modelInfo['brand_id'] = rd[0].brand_id;
+                                        this.modelInfo['model_id'] = rd[0].model_id;
+                                        this.modelInfo['series_id'] = rd[0].series_id;
+                                        this.modelInfo['model_year'] = rd[0].model_year;
+                                        this.modelInfo['model_name'] = rd[0].model_name;
 
+                                        this.titleData1[0][2].value = rd[0].model_name;
+                                        this.titleData1[0][4].value = rd[0].model_emission_standard;
+                                        this.titleData1[1][0].value = rd[0].model_year+'-06-01';
+                                        this.titleData1[1][1].value = rd[0].model_year+'-06-01';
 
-                        } else if (rd.length === 1) {
-                            this.modelInfo['brand_id'] = rd[0].brand_id;
-                            this.modelInfo['model_id'] = rd[0].model_id;
-                            this.modelInfo['series_id'] = rd[0].series_id;
-                            this.modelInfo['model_year'] = rd[0].model_year;
-                            this.modelInfo['model_name'] = rd[0].model_name;
+                                        this.titleData2[0][2].value = rd[0].model_name;
+                                        this.titleData2[0][4].value = rd[0].model_emission_standard;
+                                        this.titleData2[1][0].value = rd[0].model_year+'-06-01';
 
-                            this.titleData1[0][1].subTitle='';
-                            this.titleData2[0][1].subTitle='';
+                                        this.carData['manufacture'] = rd[0].model_year+'-06-01';
+                                        if(this.carType=='二手车')
+                                        {
+                                            this.carData['init_reg'] = rd[0].model_year+'-06-01';
 
-                            this.titleData1[0][2].value = rd[0].model_name;
-                            this.titleData1[0][4].value = rd[0].model_emission_standard;
-                            this.titleData1[1][0].value = rd[0].model_year+'-06-01';
-                            this.titleData1[1][1].value = rd[0].model_year+'-06-01';
+                                        }else {
+                                            this.carData['init_reg'] = '';
+                                            this.titleData1[1][1].value = '请选择';
 
-                            this.titleData2[0][2].value = rd[0].model_name;
-                            this.titleData2[0][4].value = rd[0].model_emission_standard;
-                            this.titleData2[1][0].value = rd[0].model_year+'-06-01';
+                                        }
+                                        this.carData['model_id'] = rd[0].model_id;
+                                        this.carData['emission_standards'] = rd[0].model_emission_standard;
+                                        this.carData['series_id'] = rd[0].series_id;
+                                        this.carData['brand_id'] = rd[0].brand_id;
+                                        this.carData['brand_name'] = rd[0].brand_name;
+                                        this.carData['series_name'] = rd[0].series_name;
+                                        this.carData['model_name'] = rd[0].model_name;
 
-                            this.carData['manufacture'] = rd[0].model_year+'-06-01';
-                            if(this.carType=='二手车')
-                            {
-                                this.carData['init_reg'] = rd[0].model_year+'-06-01';
+                                        if(rd[0].model_liter){
+                                            this.carData['displacement']=rd[0].model_liter;
+                                            this.displacementInput.setNativeProps({
+                                                text:rd[0].model_liter
+                                            });
+                                        }
 
-                            }else {
-                                this.carData['init_reg'] = '';
-                                this.titleData1[1][1].value = '请选择';
+                                    } else if (rd.length > 1) {
 
+                                        this.carData['vin'] = text;
+                                        this.modelData = response.mjson.data;
+                                        this.vinModal.refresh(this.modelData);
+                                        this.vinModal.openModal(0);
+                                    }
+
+                                }
+                                this.upTitleData();
+
+                            },
+                            (error) => {
+                                this._closeLoading();
+                                this.props.showToast(error.mjson.msg);
                             }
-
-                            this.carData['model_id'] = rd[0].model_id;
-                            this.carData['emission_standards'] = rd[0].model_emission_standard;
-                            this.carData['series_id'] = rd[0].series_id;
-                            this.carData['brand_id'] = rd[0].brand_id;
-                            this.carData['brand_name'] = rd[0].brand_name;
-                            this.carData['series_name'] = rd[0].series_name;
-                            this.carData['model_name'] = rd[0].model_name;
-
-
-                            if(rd[0].model_liter){
-                                this.carData['displacement']=rd[0].model_liter;
-                                this.displacementInput.setNativeProps({
-                                    text:rd[0].model_liter
-                                });
-                            }
-
-                            this.carData['vin'] = text;
-                            this.upTitleData();
-
-                        } else if (rd.length > 1) {
-
-                            this.carData['vin'] = text;
-                            this.modelData = response.mjson.data;
-                            this.vinModal.refresh(this.modelData);
-                            this.vinModal.openModal(0);
-                        }
+                        );
 
                     } else {
+                        this._closeLoading();
                         this.titleData1[0][1].subTitle='校验失败';
                         this.titleData2[0][1].subTitle='校验失败';
+                        this.carData['vin'] = '';
                         this.upTitleData();
                     }
                 },
@@ -911,6 +929,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                     this._closeLoading();
                     this.titleData1[0][1].subTitle='校验失败';
                     this.titleData2[0][1].subTitle='校验失败';
+                    this.carData['vin'] = '';
                     this.upTitleData();
                 }
             );
