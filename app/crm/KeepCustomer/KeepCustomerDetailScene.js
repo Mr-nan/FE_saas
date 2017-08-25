@@ -35,8 +35,10 @@ export default class KeepCustomerDetailScene extends BaseComponent {
         super(props);
         this.buyerInfo = {};
         this.carInfo = {};
+        this.clientInfo = [];
         this.state = {
             dataSource: [],
+            isRefreshing: false,
             renderPlaceholderOnly: 'blank'
         };
     }
@@ -138,17 +140,73 @@ export default class KeepCustomerDetailScene extends BaseComponent {
     _renderRow = (rowData, selectionID, rowID) => {
         if (rowData === '0') {
             return (
-                <DealAmountItem data={this.carInfo}/>
+                <DealAmountItem ref={(ref) => {
+                    this.dealAmountItem = ref
+                }} data={this.carInfo}/>
             )
         } else if (rowData === '1') {
             return (
-                <CarInfoItem data={this.carInfo}/>
+                <CarInfoItem ref={(ref) => {
+                    this.carInfoItem = ref
+                }} data={this.carInfo}/>
             )
         } else if (rowData === '2') {
             return (
-                <BuyersInfoItem data={this.buyerInfo} navigator={this.props.navigator}/>
+                <BuyersInfoItem ref={(ref) => {
+                    this.buyersInfoItem = ref
+                }} data={this.buyerInfo} navigator={this.props.navigator}/>
             )
         }
+    };
+
+    /**
+     *
+     **/
+    submitClientInfo = () => {
+        this.props.showModal(true);
+        if (this.checkInfo()) {
+            StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
+                if (data.code == 1 && data.result != null) {
+                    //console.log('this.clientInfo=====', this.clientInfo);
+                    let maps = [];
+                    for (let i = 0; i < this.clientInfo.length; i++) {
+                        maps[this.clientInfo[i].parameter] = this.clientInfo[i].value;
+                    }
+                    maps['mobile'] = data.result;
+                    let url = AppUrls.UPDATE_CAR_WELFARE;
+                    request(url, 'post', maps).then((response) => {
+                        this.props.showModal(false);
+                        this.props.callBack();
+                        this.backPage();
+                        //console.log('请求正确 = ', response);
+                    }, (error) => {
+                        this.props.showModal(false);
+                        //console.log('请求错误 = ', error);
+                        this.props.showToast('完善客户信息失败');
+                    });
+                } else {
+                    this.props.showToast('查询账户信息失败');
+                }
+            });
+        }
+    };
+
+    /**
+     *
+     **/
+    checkInfo = () => {
+        this.clientInfo = [];
+        let carInfoItem = this.carInfoItem.getItemData();
+        for (let key in carInfoItem) {
+            this.clientInfo.push(carInfoItem[key]);
+        }
+
+        let buyersInfoItem = this.buyersInfoItem.getItemData();
+        for (let key in buyersInfoItem) {
+            this.clientInfo.push(buyersInfoItem[key]);
+        }
+
+        return true;
     };
 
     /**
@@ -165,7 +223,7 @@ export default class KeepCustomerDetailScene extends BaseComponent {
                 }}
                 activeOpacity={0.8}
                 onPress={() => {
-                    //this.submitClientInfo();
+                    this.submitClientInfo();
                 }}>
                 <Text style={{color: fontAndColor.COLORA3}}>保存</Text>
             </TouchableOpacity>
@@ -174,10 +232,9 @@ export default class KeepCustomerDetailScene extends BaseComponent {
 
 
 }
-const
-    styles = StyleSheet.create({
-        container: {
-            flex: 1,
-            backgroundColor: fontAndColor.COLORA3
-        }
-    })
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: fontAndColor.COLORA3
+    }
+});

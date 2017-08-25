@@ -65,6 +65,14 @@ export default class KeepCustomerManageScene extends BaseComponent {
     };
 
     /**
+     *   刷新页面数据
+     **/
+    refreshData = () => {
+        this.props.showModal(true);
+        this.loadData();
+    };
+
+    /**
      *   数据请求
      **/
     loadData = () => {
@@ -263,7 +271,8 @@ export default class KeepCustomerManageScene extends BaseComponent {
                         component: KeepCustomerDetailScene,
                         params: {
                             tid: rowData.tid,
-                            tcid: rowData.tcid
+                            tcid: rowData.tcid,
+                            callBack: this.refreshData
                         }
                     });
                 }}
@@ -296,14 +305,14 @@ export default class KeepCustomerManageScene extends BaseComponent {
                                 fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                                 color: fontAndColor.COLORA1
                             }}>成交时间:{rowData.saleTime}</Text>
-                        <View style={{flex: 1}}/>
+                        {/*<View style={{flex: 1}}/>
                         <Text
                             allowFontScaling={false}
                             style={{
                                 marginRight: Pixel.getPixel(15),
                                 fontSize: Pixel.getFontPixel(19),
                                 color: fontAndColor.COLORB2
-                            }}>14.8万</Text>
+                            }}>14.8万</Text>*/}
                     </View>
                     <View style={{flex: 1}}/>
                     <View style={{backgroundColor: fontAndColor.COLORA4, height: 1}}/>

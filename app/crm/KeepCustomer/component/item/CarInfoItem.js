@@ -34,11 +34,11 @@ export default class CarInfoItem extends BaseComponent {
         super(props);
         this.type = '';
         this.childItems = [];
-        this.childItems.push({name: '车辆号码', value: '', parameter: 'customerName'});
-        this.childItems.push({name: '交强险到期', value: '', parameter: 'customerPhone'});
-        this.childItems.push({name: '商业险到期', value: '', parameter: 'customerStatus'});
-        this.childItems.push({name: '保养到期', value: '', parameter: 'informationSources'});
-        this.childItems.push({name: '质保到期', value: '', parameter: 'customerRegion'});
+        this.childItems.push({name: '车辆号码', value: '', parameter: 'tenureCarnum'});
+        this.childItems.push({name: '交强险到期', value: '', parameter: 'tenureCompulsory'});
+        this.childItems.push({name: '商业险到期', value: '', parameter: 'tenureBusiness'});
+        this.childItems.push({name: '保养到期', value: '', parameter: 'tenureMaintain'});
+        this.childItems.push({name: '质保到期', value: '', parameter: 'tenureWarranty'});
         this.state = {
             isDateTimePickerVisible: false
         }
@@ -67,9 +67,11 @@ export default class CarInfoItem extends BaseComponent {
         let items = [];
         for (let i = 0; i < this.childItems.length; i++) {
             if (i == 0) {
+                this.childItems[i].value = this.props.data.tenureCarnum;
                 items.push(<CustomerInfoInput defValue={this.props.data.tenureCarnum} key={i + 'bo'}
                                               items={this.childItems[i]}/>);
             } else if (i == 1) {
+                this.childItems[i].value = this.props.data.tenureCompulsory;
                 items.push(<ClientInfoSelected
                     defValue={this.props.data.tenureCompulsory}
                     ref="insurance" key={i + 'bo'} items={this.childItems[i]}
@@ -77,6 +79,7 @@ export default class CarInfoItem extends BaseComponent {
                         this._showDateTimePicker('insurance');
                     }}/>);
             } else if (i == 2) {
+                this.childItems[i].value = this.props.data.tenureBusiness;
                 items.push(<ClientInfoSelected
                     defValue={this.props.data.tenureBusiness}
                     ref="business" key={i + 'bo'} items={this.childItems[i]}
@@ -84,6 +87,7 @@ export default class CarInfoItem extends BaseComponent {
                                                    this._showDateTimePicker('business');
                                                }}/>);
             } else if (i == 3) {
+                this.childItems[i].value = this.props.data.tenureMaintain;
                 items.push(<ClientInfoSelected
                     defValue={this.props.data.tenureMaintain}
                     ref="maintenance" key={i + 'bo'} items={this.childItems[i]}
@@ -91,6 +95,7 @@ export default class CarInfoItem extends BaseComponent {
                                                    this._showDateTimePicker('maintenance');
                                                }}/>);
             } else if (i == 4) {
+                this.childItems[i].value = this.props.data.tenureWarranty;
                 items.push(<ClientInfoSelected
                     defValue={this.props.data.tenureWarranty}
                     ref="quality" key={i + 'bo'} items={this.childItems[i]}

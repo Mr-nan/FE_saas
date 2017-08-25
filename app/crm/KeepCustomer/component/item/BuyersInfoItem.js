@@ -41,16 +41,16 @@ export default class BuyersInfoItem extends BaseComponent {
             model_id: ''
         };
         this.childItems = [];
-        this.childItems.push({name: '客户姓名', value: '', parameter: 'customerName'});
-        this.childItems.push({name: '手机号码', value: '', parameter: 'customerPhone'});
-        this.childItems.push({name: '称谓', value: '', parameter: 'customerStatus'});
-        this.childItems.push({name: '生日', value: '', parameter: 'informationSources'});
-        this.childItems.push({name: '年龄', value: '', parameter: 'customerRegion'});
-        this.childItems.push({name: '面访时间', value: '', parameter: 'customerRegion'});
-        this.childItems.push({name: '3日内回访', value: '', parameter: 'customerRegion'});
-        this.childItems.push({name: '7日内回访', value: '', parameter: 'customerRegion'});
-        this.childItems.push({name: '购车之前车型', value: '', parameter: 'customerRegion'});
-        this.childItems.push({name: '备注', value: '', parameter: 'customerRegion'});
+        this.childItems.push({name: '客户姓名', value: '', parameter: 'custName'});
+        this.childItems.push({name: '手机号码', value: '', parameter: 'custPhone'});
+        this.childItems.push({name: '称谓', value: '', parameter: 'custSex'});
+        this.childItems.push({name: '生日', value: '', parameter: 'custBirthday'});
+        this.childItems.push({name: '年龄', value: '', parameter: 'custAge'});
+        this.childItems.push({name: '面访时间', value: '', parameter: 'custVisittime'});
+        this.childItems.push({name: '3日内回访', value: '', parameter: 'custThreevisit'});
+        this.childItems.push({name: '7日内回访', value: '', parameter: 'custSevenvisit'});
+        this.childItems.push({name: '购车之前车型', value: '', parameter: 'custBeforecar'});
+        this.childItems.push({name: '备注', value: '', parameter: 'custRemark'});
         this.state = {
             isDateTimePickerVisible: false
         }
@@ -77,112 +77,122 @@ export default class BuyersInfoItem extends BaseComponent {
      **/
     render() {
         let items = [];
-            for (let i = 0; i < this.childItems.length; i++) {
-                if (i == 2) {
-                    let defValue = this.props.data.custSex;
-                    items.push(<ClientInfoSelected
-                        defValue={defValue == '女' ? '女士' : '先生'}
-                        ref='selectsex' key={i + 'bo'} items={this.childItems[i]}
-                                                   toSelect={() => {
-                                                       this.toNextPage({
-                                                           name: 'SelectScene',
-                                                           component: SelectScene,
-                                                           params: {
-                                                               regShowData: ['先生', '女士'],
-                                                               title: this.childItems[i].name,
-                                                               callBack: (name, index) => {
-                                                                   this.childItems[i].value = name + ',' + index;
-                                                                   this.refs.selectsex.setValue(name);
-                                                               }
-                                                           }
-                                                       })
-                                                   }}/>);
-                } else if (i == 3) {
-                    items.push(<ClientInfoSelected
-                        defValue={this.props.data.custBirthday}
-                        ref="birthday" key={i + 'bo'} items={this.childItems[i]}
-                                                   toSelect={() => {
-                                                       this._showDateTimePicker('birthday');
-                                                   }}/>);
-                } else if (i == 5) {
-                    items.push(<ClientInfoSelected
-                        defValue={this.props.data.custVisittime}
-                        ef="interview" key={i + 'bo'} items={this.childItems[i]}
-                                                   toSelect={() => {
-                                                       this._showDateTimePicker('interview');
-                                                   }}/>);
-                } else if (i == 8) {
-                    items.push(<ClientInfoSelected
-                        defValue={this.props.data.custBeforecar}
-                        ref="models" key={i + 'bo'} items={this.childItems[i]}
-                                                   toSelect={() => {
-                                                       this.toNextPage({
-                                                           name: 'CarBrandSelectScene',
-                                                           component: CarBrandSelectScene,
-                                                           params: {
-                                                               checkedCarClick: this.checkedCarClick,
-                                                               status: 0
-                                                           }
-                                                       })
-                                                   }}/>);
-                } else {
-                    let defValue = '';
-                    if (this.childItems[i].name == '客户姓名') {
-                        defValue = this.props.data.custName;
-                    } else if (this.childItems[i].name == '手机号码') {
-                        defValue = this.props.data.custPhone;
-                    } else if (this.childItems[i].name == '年龄') {
-                        defValue = this.props.data.custAge;
-                    } else if (this.childItems[i].name == '3日内回访') {
-                        defValue = this.props.data.custThreevisit;
-                    } else if (this.childItems[i].name == '7日内回访') {
-                        defValue = this.props.data.custSevenvisit;
-                    } else if (this.childItems[i].name == '备注') {
-                        defValue = this.props.data.custRemark;
-                    }
-                    items.push(<CustomerInfoInput
-                        defValue={defValue}
-                        callBack={this.userAireadyExist} key={i + 'bo'}
-                                                  items={this.childItems[i]}/>);
+        for (let i = 0; i < this.childItems.length; i++) {
+            if (i == 2) {
+                let defValue = this.props.data.custSex;
+                this.childItems[i].value = defValue == '女' ? '女士' : '先生';
+                items.push(<ClientInfoSelected
+                    defValue={defValue == '女' ? '女士' : '先生'}
+                    ref='selectsex' key={i + 'bo'} items={this.childItems[i]}
+                    toSelect={() => {
+                        this.toNextPage({
+                            name: 'SelectScene',
+                            component: SelectScene,
+                            params: {
+                                regShowData: ['先生', '女士'],
+                                title: this.childItems[i].name,
+                                callBack: (name, index) => {
+                                    this.childItems[i].value = name;
+                                    this.refs.selectsex.setValue(name);
+                                }
+                            }
+                        })
+                    }}/>);
+            } else if (i == 3) {
+                this.childItems[i].value = this.props.data.custBirthday;
+                items.push(<ClientInfoSelected
+                    defValue={this.props.data.custBirthday}
+                    ref="birthday" key={i + 'bo'} items={this.childItems[i]}
+                    toSelect={() => {
+                        this._showDateTimePicker('birthday');
+                    }}/>);
+            } else if (i == 5) {
+                this.childItems[i].value = this.props.data.custVisittime;
+                items.push(<ClientInfoSelected
+                    defValue={this.props.data.custVisittime}
+                    ref="interview" key={i + 'bo'} items={this.childItems[i]}
+                    toSelect={() => {
+                        this._showDateTimePicker('interview');
+                    }}/>);
+            } else if (i == 8) {
+                this.childItems[i].value = this.props.data.custBeforecar;
+                items.push(<ClientInfoSelected
+                    defValue={this.props.data.custBeforecar}
+                    ref="models" key={i + 'bo'} items={this.childItems[i]}
+                    toSelect={() => {
+                        this.toNextPage({
+                            name: 'CarBrandSelectScene',
+                            component: CarBrandSelectScene,
+                            params: {
+                                checkedCarClick: this.checkedCarClick,
+                                status: 0
+                            }
+                        })
+                    }}/>);
+            } else {
+                let defValue = '';
+                if (this.childItems[i].name == '客户姓名') {
+                    defValue = this.props.data.custName;
+                    this.childItems[i].value = this.props.data.custName;
+                } else if (this.childItems[i].name == '手机号码') {
+                    defValue = this.props.data.custPhone;
+                    this.childItems[i].value = this.props.data.custPhone;
+                } else if (this.childItems[i].name == '年龄') {
+                    defValue = this.props.data.custAge;
+                    this.childItems[i].value = this.props.data.custAge;
+                } else if (this.childItems[i].name == '3日内回访') {
+                    defValue = this.props.data.custThreevisit;
+                    this.childItems[i].value = this.props.data.custThreevisit;
+                } else if (this.childItems[i].name == '7日内回访') {
+                    defValue = this.props.data.custSevenvisit;
+                    this.childItems[i].value = this.props.data.custSevenvisit;
+                } else if (this.childItems[i].name == '备注') {
+                    defValue = this.props.data.custRemark;
+                    this.childItems[i].value = this.props.data.custRemark;
                 }
-
+                items.push(<CustomerInfoInput
+                    defValue={defValue}
+                    callBack={this.userAireadyExist} key={i + 'bo'}
+                    items={this.childItems[i]}/>);
             }
-            /*for (let i = 0; i < this.childItems.length; i++) {
-                items.push(
-                    <View
-                        key={i + 'bo'}
-                        style={{
-                            width: width,
-                            height: Pixel.getPixel(45),
-                            backgroundColor: '#fff'
-                        }}>
-                        <View style={{
-                            width: width,
-                            height: Pixel.getPixel(44),
-                            backgroundColor: '#00000000',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                        }}>
-                            <Text allowFontScaling={false}
-                                  style={{
-                                      marginLeft: Pixel.getPixel(15),
-                                      width: Pixel.getPixel(125),
-                                      fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                                      color: fontAndColor.COLORA1
-                                  }}>{this.childItems[i].name}</Text>
-                            <Text allowFontScaling={false}
-                                  style={{
-                                      fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                                      color: '#000'
-                                  }}>dasdadada</Text>
-                        </View>
-                        <View style={{
-                            width: width,
-                            height: Pixel.getPixel(1),
-                            backgroundColor: fontAndColor.COLORA3
-                        }}/>
-                    </View>)
-            }*/
+
+        }
+        /*for (let i = 0; i < this.childItems.length; i++) {
+         items.push(
+         <View
+         key={i + 'bo'}
+         style={{
+         width: width,
+         height: Pixel.getPixel(45),
+         backgroundColor: '#fff'
+         }}>
+         <View style={{
+         width: width,
+         height: Pixel.getPixel(44),
+         backgroundColor: '#00000000',
+         flexDirection: 'row',
+         alignItems: 'center',
+         }}>
+         <Text allowFontScaling={false}
+         style={{
+         marginLeft: Pixel.getPixel(15),
+         width: Pixel.getPixel(125),
+         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+         color: fontAndColor.COLORA1
+         }}>{this.childItems[i].name}</Text>
+         <Text allowFontScaling={false}
+         style={{
+         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+         color: '#000'
+         }}>dasdadada</Text>
+         </View>
+         <View style={{
+         width: width,
+         height: Pixel.getPixel(1),
+         backgroundColor: fontAndColor.COLORA3
+         }}/>
+         </View>)
+         }*/
         return (
             <View style={{
                 flex: 1,
