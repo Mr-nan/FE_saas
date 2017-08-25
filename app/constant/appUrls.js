@@ -1,7 +1,7 @@
 /**
  * 开发地址
  */
- export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
@@ -11,7 +11,7 @@
 /**
  * 正式地址
  */
-// export const BASEURL = 'https://gatewayapi.dycd.com/';
+export const BASEURL = 'https://gatewayapi.dycd.com/';
 
 /**
  * 预发布地址
@@ -974,3 +974,9 @@ export const FIRST_REPAYMENT_CONTRACT = '/api/v1/Contract/see_electron_repayment
  *  签署-扣款协议合同
  */
 export const FIRST_REPAYMENT_CONTRACT_SIGN = '//api/v1/Contract/sign_electron_repayment_contract';
+
+/**
+ *  from @dingyonggang
+ *  买家申请取消订单
+ */
+export const BUYER_CANCEL_ORDER = 'http://order-api.dev.dycd.com/order/flows/buyerCancelOrder';
