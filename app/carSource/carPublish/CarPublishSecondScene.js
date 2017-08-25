@@ -176,8 +176,8 @@ export default class CarPublishSecondScene extends BaseComponent {
                 {
                     title: '圈子内的分销批发价',
                     subTitle: '展示给其他圈友看',
-                    isShowTag: true,
-                    isShowTail: true,
+                    isShowTag: false,
+                    isShowTail: false,
                     tailView: () => {
                         return (
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
@@ -209,8 +209,8 @@ export default class CarPublishSecondScene extends BaseComponent {
                 {
                     title: '采购价',
                     subTitle: '仅供车商老板、采购、财务查看',
-                    isShowTag: true,
-                    isShowTail: true,
+                    isShowTag: false,
+                    isShowTail: false,
                     tailView: () => {
                         return (
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
@@ -461,8 +461,8 @@ export default class CarPublishSecondScene extends BaseComponent {
                 {
                     title: '圈子内的分销批发价',
                     subTitle: '展示给其他圈友看',
-                    isShowTag: true,
-                    isShowTail: true,
+                    isShowTag: false,
+                    isShowTail: false,
                     tailView: () => {
                         return (
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
@@ -494,8 +494,8 @@ export default class CarPublishSecondScene extends BaseComponent {
                 {
                     title: '采购价',
                     subTitle: '仅供车商老板、采购、财务查看',
-                    isShowTag: true,
-                    isShowTail: true,
+                    isShowTag: false,
+                    isShowTail: false,
                     tailView: () => {
                         return (
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
@@ -876,6 +876,16 @@ export default class CarPublishSecondScene extends BaseComponent {
 
         if (parseFloat(this.carData.dealer_price) <= 0) {
             this.props.showToast('分销批发价不能等于0');
+            return;
+        }
+
+        if (this.carData.online_retail_price == '' || !this.carData.online_retail_price) {
+            this.props.showToast('请输入网上零售价');
+            return;
+        }
+
+        if (parseFloat(this.carData.online_retail_price) <= 0) {
+            this.props.showToast('网上零售价不能等于0');
             return;
         }
         if (this.carData.city_id == '') {

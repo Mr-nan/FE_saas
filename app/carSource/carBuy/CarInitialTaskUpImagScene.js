@@ -75,27 +75,6 @@ export default class CarInitialTaskUpImagScene extends BaseComponent{
 
         this.results = [];
         this.carData = this.props.carData;
-        // if(this.carData.pictures){
-        //     let imgas = JSON.parse(this.carData.pictures);
-        //     this.results.push(...imgas);
-        //     this.titleData.map((data,index)=>{
-        //         imgas.map((imgData,subIndex)=>{
-        //             if(data.name == imgData.name){
-        //                 data.imgArray.push(imgData);
-        //             }
-        //         });
-        //     });
-        // }else if(this.carData.imgs){
-        //     this.results.push(...this.carData.imgs);
-        //     this.carData['pictures']=JSON.stringify(this.results);
-        //     this.titleData.map((data,index)=>{
-        //         this.carData.imgs.map((imgData,subIndex)=>{
-        //             if(data.name == imgData.name){
-        //                 data.imgArray.push(imgData);
-        //             }
-        //         });
-        //     });
-        // }
 
         const dataSource = new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2});
         this.state = {
@@ -188,8 +167,6 @@ export default class CarInitialTaskUpImagScene extends BaseComponent{
          this.props.showModal(true);
             Net.request(AppUrls.CAR_CHESHANG_PUBLISHTASK,'post',this.carData).then((response) => {
                 this.props.showModal(false);
-
-                this.props.showToast('创建成功');
                 this.navigationBack();
 
             }, (error) => {

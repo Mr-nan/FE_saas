@@ -40,7 +40,8 @@ import CarDealInfoScene from "./CarDealInfoScene";
 const Pixel = new PixelUtil();
 var ScreenWidth = Dimensions.get('window').width;
 var shareClass = NativeModules.ZNShareClass;
-
+let Platform = require('Platform');
+const IS_ANDROID = Platform.OS === 'android';
 
 
 
@@ -61,13 +62,20 @@ export default class CarMySourceScene extends BaceComponent {
 
 
     render() {
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return (
+                <View style={{backgroundColor:'white', flex:1}}>
+                    {this.loadView()}
+                    <NavigatorView title='我的车源' backIconClick={this.backToTop}/>
+                </View>);
+        }
         return (
             <View style={styles.rootContainer}>
                 <ScrollableTabView
                     style={styles.ScrollableTabView}
                     initialPage={this.props.page?this.props.page:0}
                     locked={true}
-                    renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["在售车源", "已售车源", "未上架车源"]}/>}>
+                    renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["在售车源("+this.state.shelves_count+")", "已售车源("+this.state.sold_count+')', "未上架车源("+this.state.audit_count+')']}/>}>
                     <MyCarSourceUpperFrameView ref="upperFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper1"/>
                     <MyCarSourceDropFrameView  ref="dropFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper2"/>
                     <MyCarSourceAuditView  ref="auditView"  carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper3"/>
@@ -95,8 +103,44 @@ export default class CarMySourceScene extends BaceComponent {
         this.state = {
             isShowManageView:false,
             isShowCarSharedView:false,
+            renderPlaceholderOnly:'blank',
+            shelves_count:0,
+            sold_count:0,
+            audit_count:0,
         };
       }
+
+    initFinish=()=>{
+        this.loadHeadData();
+    }
+
+    allRefresh=()=>{
+        this.loadHeadData();
+    }
+
+    loadHeadData=(action)=>{
+
+        this.setState({renderPlaceholderOnly:'loading'});
+        request(AppUrls.CAR_USER_CAR, 'post', {
+            car_status: '1',
+            page: 1,
+            row: 1,
+        }).then((response) => {
+            let data =response.mjson.data.total;
+            this.setState({
+                renderPlaceholderOnly: 'success',
+                shelves_count:data.shelves_count,
+                sold_count:data.sold_count,
+                audit_count:data.audit_count,
+            });
+            action && action();
+
+        }, (error) => {
+            this.setState({
+                renderPlaceholderOnly: 'error',
+            });
+        });
+    }
 
     carCellClick = (carData) => {
         let navigatorParams = {
@@ -109,6 +153,8 @@ export default class CarMySourceScene extends BaceComponent {
         this.toNextPage(navigatorParams);
 
     }
+
+
 
     footButtonClick = (typeStr,groupStr,carData) => {
 
@@ -173,7 +219,6 @@ export default class CarMySourceScene extends BaceComponent {
      */
     manageViewBtnClick=(type)=>{
 
-        console.log(this.carData);
         if(type == '分享'){
             this.setState({
                 isShowManageView:false,
@@ -244,23 +289,32 @@ export default class CarMySourceScene extends BaceComponent {
             this.props.showModal(false);
             if (type == 3) {
 
-                this.refs.upperFrameView.refreshingData();
-                if((typeof(this.refs.dropFrameView)!= "undefined")){
-                    this.refs.dropFrameView.refreshingData();
-                }
+                this.loadHeadData(()=>{
+                    this.refs.upperFrameView.refreshingData();
+                    if((typeof(this.refs.dropFrameView)!= "undefined"))
+                    {
+                        this.refs.dropFrameView.refreshingData();
+                    }
+                });
+
                 this.props.showToast('已成功下架');
 
             } else if (type == 2) {
 
                 if(groupStr==3){
 
-                    this.refs.auditView.refreshingData();
-                    this.refs.upperFrameView.refreshingData();
+                    this.loadHeadData(()=>{
+                        this.refs.auditView.refreshingData();
+                        this.refs.upperFrameView.refreshingData();
+                    });
+
 
                 }else if(groupStr == 2){
 
-                    this.refs.dropFrameView.refreshingData();
-                    this.refs.upperFrameView.refreshingData();
+                    this.loadHeadData(()=>{
+                        this.refs.dropFrameView.refreshingData();
+                        this.refs.upperFrameView.refreshingData();
+                    });
                 }
                 this.props.showToast('已成功上架');
 
@@ -283,14 +337,19 @@ export default class CarMySourceScene extends BaceComponent {
         }).then((response) => {
 
             this.props.showModal(false);
-            this.refs.upperFrameView.refreshingData();
-            if((typeof(this.refs.upperFrameView)!= "undefined")){
-                this.refs.upperFrameView.refreshingData();
-            }
 
-            if((typeof(this.refs.dropFrameView)!= "undefined")){
-                this.refs.dropFrameView.refreshingData();
-            }
+            this.loadHeadData(()=>{
+                this.refs.upperFrameView.refreshingData();
+                if((typeof(this.refs.upperFrameView)!= "undefined"))
+                {
+                    this.refs.upperFrameView.refreshingData();
+                }
+
+                if((typeof(this.refs.dropFrameView)!= "undefined"))
+                {
+                    this.refs.dropFrameView.refreshingData();
+                }
+            });
             this.props.showToast('已删除该车辆');
 
 
@@ -306,16 +365,17 @@ export default class CarMySourceScene extends BaceComponent {
         this.props.showModal(true);
         let url = AppUrls.CAR_REFRESH_TIME;
         request(url, 'post', {
-
             id: carID,
-
         }).then((response) => {
 
             this.props.showModal(false);
-            this.refs.upperFrameView.refreshingData();
-            if((typeof(this.refs.dropFrameView)!= "undefined")){
-                this.refs.dropFrameView.refreshingData();
-            }
+
+            this.loadHeadData(()=>{
+                this.refs.upperFrameView.refreshingData();
+                if((typeof(this.refs.dropFrameView)!= "undefined")){
+                    this.refs.dropFrameView.refreshingData();
+                }
+            });
             this.props.showToast('已刷新了该车的排名');
 
 
@@ -362,10 +422,14 @@ export default class CarMySourceScene extends BaceComponent {
             component: CarDealInfoScene,
             params: {
                 refreshDataAction:()=>{
-                    this.refs.upperFrameView.refreshingData();
-                    if((typeof(this.refs.dropFrameView)!= "undefined")){
-                        this.refs.dropFrameView.refreshingData();
-                    }
+
+                    this.loadHeadData(()=>{
+                        this.refs.upperFrameView.refreshingData();
+                        if((typeof(this.refs.dropFrameView)!= "undefined")){
+                            this.refs.dropFrameView.refreshingData();
+                        }
+                    });
+
                 },
                 carID:carID,
             }
@@ -410,19 +474,46 @@ export default class CarMySourceScene extends BaceComponent {
 
     // 多图分享
     sharedMoreImage=(carData)=>{
-        let shareArray = [];
-        for (let i =0;i<carData.imgs.length;i++)
-        {
-            shareArray.push({image:carData.imgs[i].url});
+
+        if(IS_ANDROID == true){
+            let shareArray = [];
+            for (let i =0;i<carData.imgs.length;i++)
+            {
+                shareArray.push(carData.imgs[i].url);
+            }
+            let carContent = carData.model_name;
+            if (carData.city_name != "") {
+
+                carContent += '\n'+carData.city_name + '\n';
+            }
+            if (carData.plate_number != "") {
+
+                carContent += carData.plate_number.substring(0, 2);
+            }
+            if (carData.carIconsContentData[0] != "") {
+
+                carContent += "\n" + carData.carIconsContentData[0] + '出厂';
+            }
+            NativeModules.ShareNative.share({image:[shareArray],title:[carContent]}).then((suc)=>{
+                }, (fail)=>{
+                    this.props.showToast('分享已取消');
+                }
+            )
+        }else {
+            let shareArray = [];
+            for (let i =0;i<carData.imgs.length;i++)
+            {
+                shareArray.push({image:carData.imgs[i].url});
+            }
+            shareClass.shareAction([shareArray]).then((data) => {
+
+                this.props.showToast('分享成功');
+
+            }, (error) => {
+
+                this.props.showToast('分享已取消');
+            });
         }
-
-        shareClass.shareAction([shareArray]).then((data) => {
-
-            this.props.showToast('分享成功');
-
-        }, (error) => {
-            this.props.showToast('取消分享');
-        });
 
 
     }
@@ -542,6 +633,7 @@ export default class CarMySourceScene extends BaceComponent {
     }
 
     renderRightFootView = () => {
+        return null;
         return (
             <TouchableOpacity onPress={()=>{
                 let navigatorParams = {

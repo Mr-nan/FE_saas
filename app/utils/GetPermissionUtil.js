@@ -117,7 +117,7 @@ const GetPermissionUtil = React.createClass({
             image = require('../../images/workbench/zb.png');
             names = '整备';
             component = CarTrimScene;
-            componentName = 'cartrimscene';
+            componentName = 'CarTrimScene';
         } else if (id == 29) {
             image = require('../../images/workbench/kcgl.png');
             names = name;

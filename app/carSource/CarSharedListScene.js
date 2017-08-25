@@ -23,11 +23,13 @@ import * as fontAndColor from '../constant/fontAndColor';
 import * as AppUrls from "../constant/appUrls";
 import  {request}           from '../utils/RequestUtil';
 import PixelUtil from '../utils/PixelUtil';
-import * as weChat from "react-native-wechat";
+import *as weChat from 'react-native-wechat';
 import CarInfoScene from "./CarInfoScene";
 const Pixel = new PixelUtil();
 var ScreenWidth = Dimensions.get('window').width;
 var shareClass = NativeModules.ZNShareClass;
+let Platform = require('Platform');
+const IS_ANDROID = Platform.OS === 'android';
 
 let carUpperFrameData = [];
 let carUpperFramePage = 1;
@@ -47,6 +49,7 @@ export default class CarSharedListScene extends BaceComponent{
             isRefreshing: true,
             renderPlaceholderOnly: 'blank',
             carUpperFrameStatus: carUpperFrameStatus,
+            isShowCarSharedView:false,
         };
     }
 
@@ -207,6 +210,9 @@ export default class CarSharedListScene extends BaceComponent{
                 }
                 <NavigatorView title="批量分享" backIconClick={this.backPage} />
                 <FootView ref="footView" allSelectClicl={this.allSelectBtnClick} carNumber={this.shareNumberSum} isSelect={this.isAllSelect} shareBtnClick={this.shareBtnClick}/>
+                {
+                    this.state.isShowCarSharedView && <CarSharedView offClick={()=>{this.setState({isShowCarSharedView:false})}} carSharedBtnClick={this.carSharedBtnClick} isShowMore={false}/>
+                }
             </View>
         )
     }
@@ -291,26 +297,85 @@ export default class CarSharedListScene extends BaceComponent{
 
         if(type==1){
 
-           let carShareItemArray = [];
-           for(let carData of carShareArray){
-               let imagArray = [];
-               for (let i =0;i<carData.imgs.length;i++)
-               {
-                   imagArray.push({image:carData.imgs[i].url});
+           if(IS_ANDROID == true)
+           {
+               let carShareItemArray = [];
+               let carShareItemTitle = [];
+               for(let carData of carShareArray){
+                   let imagArray = [];
+                   for (let i =0;i<carData.imgs.length;i++)
+                   {
+                       imagArray.push(carData.imgs[i].url);
+                   }
+                   carShareItemArray.push(imagArray);
+
+                   let carContent = carData.model_name;
+                   if (carData.city_name) {
+
+                       carContent +=( ' | '+carData.city_name);
+                   }
+                   if (carData.plate_number) {
+
+                       carContent +=(' | '+ carData.plate_number.substring(0, 2));
+                   }
+                   carShareItemTitle.push(carContent);
                }
-               carShareItemArray.push(imagArray);
+               NativeModules.ShareNative.share({image:carShareItemArray,title:carShareItemTitle}).then((suc)=>{
+                   }, (fail)=>{
+                       this.props.showToast('分享已取消');
+                   }
+               );
+           }else {
+               let carShareItemArray = [];
+               for(let carData of carShareArray){
+                   let imagArray = [];
+                   for (let i =0;i<carData.imgs.length;i++)
+                   {
+                       imagArray.push({image:carData.imgs[i].url});
+                   }
+                   carShareItemArray.push(imagArray);
+               }
+               shareClass.shareAction(carShareItemArray).then((data) => {
+
+                   this.props.showToast(data);
+
+               }, (error) => {
+
+                   this.props.showToast('分享已取消');
+               });
            }
-           shareClass.shareAction(carShareItemArray).then((data) => {
 
-               this.props.showToast(data);
-
-           }, (error) => {
-
-               this.props.showToast('分享已取消');
-           });
        }
        else if(type==2)
        {
+           // let carInfoItemArray = [];
+           // for(let carData of carShareArray){
+           //
+           //     let fenxiangUrl = '';
+           //     if (AppUrls.BASEURL == 'http://api-gateway.test.dycd.com/') {
+           //         fenxiangUrl = AppUrls.FENXIANGTEST;
+           //     } else {
+           //         fenxiangUrl = AppUrls.FENXIANGOPEN;
+           //     }
+           //
+           //     let carContent = carData.model_name;
+           //     if (carData.city_name) {
+           //         carContent +=( ' | '+carData.city_name);
+           //     }
+           //     if (carData.plate_number) {
+           //         carContent +=(' | '+ carData.plate_number.substring(0, 2));
+           //     }
+           //
+           //     carInfoItemArray.push([{url:fenxiangUrl + '?id=' + carData.id},{image:carData.img},{title:carContent}]);
+           // }
+           //
+           // console.log(carInfoItemArray);
+           // shareClass.shareAction(carInfoItemArray).then((data) => {
+           //     this.props.showToast(data);
+           // }, (error) => {
+           //
+           //     this.props.showToast('分享已取消');
+           // });
            let carInfoItemArray = [];
            for(let carData of carShareArray){
 
@@ -320,18 +385,27 @@ export default class CarSharedListScene extends BaceComponent{
                } else {
                    fenxiangUrl = AppUrls.FENXIANGOPEN;
                }
-               carInfoItemArray.push([{url:fenxiangUrl + '?id=' + carData.id},{image:carData.img},{title:carData.model_name}]);
+
+               let carContent = '';
+               if (carData.city_name) {
+                   carContent +=(carData.city_name);
+               }
+               if (carData.plate_number) {
+                   carContent +=(' | '+ carData.plate_number.substring(0, 2));
+               }
+               carInfoItemArray.push({url:fenxiangUrl + '?id=' + carData.id,image:carData.img,title:carData.model_name,content:carContent});
            }
-
+           this.batchSharedArray = carInfoItemArray;
+           this.batchIndex = 0;
            console.log(carInfoItemArray);
-           shareClass.shareAction(carInfoItemArray).then((data) => {
 
-               this.props.showToast(data);
-
-           }, (error) => {
-
-               this.props.showToast('分享已取消');
-           });
+           this.batchSharedData();
+           // shareClass.shareAction(carInfoItemArray).then((data) => {
+           //     this.props.showToast(data);
+           // }, (error) => {
+           //
+           //     this.props.showToast('分享已取消');
+           // });
 
        }
        else if(type==3)
@@ -341,21 +415,128 @@ export default class CarSharedListScene extends BaceComponent{
                this.props.showToast('多车分享最多不能超过9辆');
                return;
            }
-           let carShareItemArray = [];
-           for(let carData of carShareArray){
-               carShareItemArray.push({image:carData.img});
+
+           if(IS_ANDROID ==true){
+               let carShareItemArray = [];
+               let carShareItemTitle = '';
+               for(let carData of carShareArray){
+                   carShareItemArray.push(carData.img);
+                   let carContent = carData.model_name;
+                   if (carData.city_name) {
+
+                       carContent +=( ' | '+carData.city_name);
+                   }
+                   if (carData.plate_number) {
+
+                       carContent +=(' | '+ carData.plate_number.substring(0, 2));
+                   }
+                   carShareItemTitle+=(carContent+'\n');
+               }
+               NativeModules.ShareNative.share({image:[carShareItemArray],title:[carShareItemTitle]}).then((suc)=>{
+                   }, (fail)=>{
+                       this.props.showToast('分享已取消');
+                   }
+               );
+
+           }else {
+               let carShareItemArray = [];
+               for(let carData of carShareArray){
+                   carShareItemArray.push({image:carData.img});
+               }
+               shareClass.shareAction([carShareItemArray]).then((data) => {
+
+                   this.props.showToast(data);
+
+               }, (error) => {
+
+                   this.props.showToast('分享已取消');
+               });
            }
-           shareClass.shareAction([carShareItemArray]).then((data) => {
-
-               this.props.showToast(data);
-
-           }, (error) => {
-
-               this.props.showToast('分享已取消');
-           });
        }
+    }
+
+    batchSharedData=()=>{
+
+        if(this.batchIndex>=this.batchSharedArray.length)
+        {
+            return;
+        }
+
+        this.setState({
+            isShowCarSharedView:true,
+        });
+    }
+
+    carSharedBtnClick=(type)=>{
+        let shareData = this.batchSharedArray[this.batchIndex];
+        if(type == '微信好友'){
+            this.sharedWechatSession(shareData);
+        }else {
+            this.sharedWechatTimeline(shareData);
+        }
+    }
+
+    // 分享好友
+    sharedWechatSession = (sharData) => {
+        console.log(sharData);
+        weChat.isWXAppInstalled()
+            .then((isInstalled) => {
+                if (isInstalled) {
+
+                    weChat.shareToSession({
+                        type: 'news',
+                        title: sharData.title,
+                        description: sharData.content,
+                        webpageUrl: sharData.url,
+                        thumbImage: sharData.image,
+
+                    }).then((resp)=>{
+                        this.batchIndex++;
+                        this.batchSharedData();
+                        console.log('分享成功');
+                    },(error) => {
+                        console.log('分享失败');
+
+                    })
+                } else {
+                    this.isVisible(false);
+                }
+            });
+
 
     }
+
+    // 分享朋友圈
+    sharedWechatTimeline = (sharData) => {
+        console.log(sharData);
+        weChat.isWXAppInstalled()
+            .then((isInstalled) => {
+                if (isInstalled) {
+                    weChat.shareToTimeline({
+                        type: 'news',
+                        title: sharData.title,
+                        description: sharData.content,
+                        webpageUrl: sharData.url,
+                        thumbImage: sharData.image,
+
+                    }).then((resp)=>{
+
+                        this.batchIndex++;
+                        this.batchSharedData();
+                        console.log('分享成功');
+
+                    },(error) => {
+                        console.log('分享失败');
+
+                    })
+
+                } else {
+                    this.isVisible(false);
+                }
+            });
+
+    }
+
 }
 
 
@@ -382,6 +563,7 @@ class FootView extends Component{
                         <ShareBtn title={'多车分享'} shareBtnClick={()=>{this.props.shareBtnClick(3)}}/>
                     </View>
                 </View>
+
             </View>)
     }
     // 构造
@@ -402,6 +584,66 @@ class FootView extends Component{
             carNumber:carNumbser,
             imgSource:type?require('../../images/carSourceImages/carSelectImgHigh.png') : require('../../images/carSourceImages/carSelectImg.png'),
         });
+    }
+}
+
+class CarSharedView extends Component {
+
+    render(){
+        return(
+            <TouchableOpacity style={styles.manageView} activeOpacity={1} onPress={this.props.offClick}>
+                <View style={styles.sharedView}>
+                    <View style={{flexDirection: 'row',paddingVertical:Pixel.getPixel(15)}}>
+                        {
+                            this.state.isShowMoreImageBtn && (
+                                <TouchableOpacity style={styles.sharedItemView} onPress={() => {
+                                    this.btnClick('多图分享');
+                                }}>
+                                    <View style={styles.sharedImageBack}>
+                                        <Image source={require('../../images/carSourceImages/shareImgIcon.png')}/>
+                                    </View>
+                                    <Text allowFontScaling={false}  style={styles.sharedText}>多图分享</Text>
+                                </TouchableOpacity>
+                            )
+                        }
+                        <TouchableOpacity style={styles.sharedItemView} onPress={() => {
+                            this.btnClick('微信好友');
+                        }}>
+                            <View style={styles.sharedImageBack}>
+                                <Image source={require('../../images/carSourceImages/shared_wx.png')}/>
+                            </View>
+                            <Text allowFontScaling={false}  style={styles.sharedText}>微信好友</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.sharedItemView} onPress={() => {
+                            this.btnClick('朋友圈');
+                        }}>
+                            <View style={styles.sharedImageBack}>
+                                <Image source={require('../../images/carSourceImages/shared_friend.png')}/>
+                            </View>
+                            <Text allowFontScaling={false}  style={styles.sharedText}>朋友圈</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View  style={{justifyContent:'center',alignItems:'center',borderTopWidth:Pixel.getPixel(1),borderTopColor:fontAndColor.COLORA3,height:Pixel.getPixel(44),
+                        width:ScreenWidth
+                    }}>
+                        <Text style={styles.sharedViewHeadText}>取消</Text>
+                    </View>
+                </View>
+            </TouchableOpacity>
+        )
+    }
+    // 构造
+    constructor(props) {
+        super(props);
+        // 初始状态
+        this.state = {
+            isShowMoreImageBtn:this.props.isShowMore,
+        };
+    }
+
+    btnClick=(type)=>{
+        this.props.carSharedBtnClick(type);
+        this.props.offClick();
     }
 }
 
@@ -434,7 +676,7 @@ const styles = StyleSheet.create({
     },
     listView: {
         backgroundColor: fontAndColor.COLORA3,
-        marginBottom:Pixel.getPixel(88),
+        flex:1
     },
     footView:{
         left:0,
@@ -452,6 +694,57 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         alignItems:'center',
         justifyContent:'space-between'
+    },
+    manageView:{
+        left: 0,
+        right: 0,
+        bottom: 0,
+        top:0,
+        position: 'absolute',
+        backgroundColor: 'rgba(1,1,1,0.5)',
+    },
+    sharedView: {
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'white',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+
+    },
+    sharedViewHead: {
+        height: Pixel.getPixel(44),
+        backgroundColor: 'white',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: ScreenWidth
+    },
+    sharedViewHeadText: {
+        color: fontAndColor.COLORA1,
+        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+    },
+    sharedImageBack:{
+        backgroundColor:fontAndColor.COLORB9,
+        borderRadius:Pixel.getPixel(10),
+        width:Pixel.getPixel(50),
+        height:Pixel.getPixel(50),
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    sharedItemView: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: Pixel.getPixel(20),
+        marginRight: Pixel.getPixel(20),
+        marginTop: Pixel.getPixel(10),
+        marginBottom: Pixel.getPixel(10),
+    },
+    sharedText: {
+        color: fontAndColor.COLORA1,
+        textAlign: 'center',
+        marginTop: Pixel.getPixel(10),
+        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
     },
 
 })

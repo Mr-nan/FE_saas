@@ -12,7 +12,6 @@ const GetPermissionUtil = React.createClass({
     }, getRoleList(callBack){
         this.getData((data) => {
             let list = [];
-            //console.log('listlistlist==-=-=-=-', data);
             for (let i = 0; i < data.data.length; i++) {
                 if (data.data[i].id == 3) {
                     for (let j = 0; j < data.data[i].children.length; j++) {
