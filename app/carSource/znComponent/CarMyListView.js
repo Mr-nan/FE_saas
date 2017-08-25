@@ -36,17 +36,65 @@ let carDropFrameStatus = 1;
 export default class CarMyListView extends  BaceComponent{
 
     render(){
+        if (this.state.renderPlaceholderOnly !== 'success') {
+            return (
+                <View style={{backgroundColor:'white', flex:1}}>
+                    {this.loadView()}
+                </View>);
+        }
         return(
             <View style={{flex:1}}>
                 <ScrollableTabView
                     initialPage={0}
                     locked={true}
-                    renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["在售车源", "已售车源"]}/>}>
+                    renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["在售车源("+this.state.shelves_count+')', "已售车源("+this.state.sold_count+')']}/>}>
                     <MyCarSourceUpperFrameView ref="upperFrameView" carCellClick={this.props.carCellClick} renderFootView={this.props.renderFootView}  tabLabel="ios-paper1"/>
                     <MyCarSourceDropFrameView  ref="dropFrameView" carCellClick={this.props.carCellClick} renderFootView={this.props.renderFootView} tabLabel="ios-paper2"/>
                 </ScrollableTabView>
             </View>
         )
+    }
+
+    // 构造
+    constructor(props) {
+        super(props);
+        // 初始状态
+        this.state = {
+            renderPlaceholderOnly:'blank',
+            shelves_count:0,
+            sold_count:0,
+        };
+    }
+
+    initFinish=()=>{
+        this.loadHeadData();
+    }
+
+    allRefresh=()=>{
+        this.loadHeadData();
+    }
+
+    loadHeadData=(action)=>{
+
+        this.setState({renderPlaceholderOnly:'loading'});
+        request(AppUrls.CAR_USER_CAR, 'post', {
+            car_status: '1',
+            page: 1,
+            row: 1,
+        }).then((response) => {
+            let data =response.mjson.data.total;
+            this.setState({
+                renderPlaceholderOnly: 'success',
+                shelves_count:data.shelves_count,
+                sold_count:data.sold_count,
+            });
+            action && action();
+
+        }, (error) => {
+            this.setState({
+                renderPlaceholderOnly: 'error',
+            });
+        });
     }
 }
 class MyCarSourceUpperFrameView extends BaceComponent {
