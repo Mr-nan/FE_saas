@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
         borderColor: fontAndColor.COLORB0,
         borderRadius: 3,
         height: Pixel.getPixel(16),
-        width: Pixel.getPixel(44),
+        width: Pixel.getPixel(34),
         justifyContent: 'center',
         alignItems: 'center'
     },

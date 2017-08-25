@@ -81,7 +81,7 @@ export  default  class KurongDetaileScene extends BaseComponent {
         request(apis.FINANCE, 'Post', maps)
             .then((response) => {
 
-                    let tempjson = response.mjson.data
+                    let tempjson = response.mjson.data.info;
                     let carNum = parseInt(tempjson.car_count)
                     controlCode.stateCode = tempjson.status
                     controlCode.extendCode = tempjson.is_extend;
