@@ -67,24 +67,33 @@ export default class CarInfoItem extends BaseComponent {
         let items = [];
         for (let i = 0; i < this.childItems.length; i++) {
             if (i == 0) {
-                items.push(<CustomerInfoInput key={i + 'bo'} items={this.childItems[i]}/>);
+                items.push(<CustomerInfoInput defValue={this.props.data.tenureCarnum} key={i + 'bo'}
+                                              items={this.childItems[i]}/>);
             } else if (i == 1) {
-                items.push(<ClientInfoSelected ref="insurance" key={i + 'bo'} items={this.childItems[i]}
-                                               toSelect={() => {
-                                                   this._showDateTimePicker('insurance');
-                                               }}/>);
+                items.push(<ClientInfoSelected
+                    defValue={this.props.data.tenureCompulsory}
+                    ref="insurance" key={i + 'bo'} items={this.childItems[i]}
+                    toSelect={() => {
+                        this._showDateTimePicker('insurance');
+                    }}/>);
             } else if (i == 2) {
-                items.push(<ClientInfoSelected ref="business" key={i + 'bo'} items={this.childItems[i]}
+                items.push(<ClientInfoSelected
+                    defValue={this.props.data.tenureBusiness}
+                    ref="business" key={i + 'bo'} items={this.childItems[i]}
                                                toSelect={() => {
                                                    this._showDateTimePicker('business');
                                                }}/>);
             } else if (i == 3) {
-                items.push(<ClientInfoSelected ref="maintenance" key={i + 'bo'} items={this.childItems[i]}
+                items.push(<ClientInfoSelected
+                    defValue={this.props.data.tenureMaintain}
+                    ref="maintenance" key={i + 'bo'} items={this.childItems[i]}
                                                toSelect={() => {
                                                    this._showDateTimePicker('maintenance');
                                                }}/>);
             } else if (i == 4) {
-                items.push(<ClientInfoSelected ref="quality" key={i + 'bo'} items={this.childItems[i]}
+                items.push(<ClientInfoSelected
+                    defValue={this.props.data.tenureWarranty}
+                    ref="quality" key={i + 'bo'} items={this.childItems[i]}
                                                toSelect={() => {
                                                    this._showDateTimePicker('quality');
                                                }}/>);
@@ -122,7 +131,7 @@ export default class CarInfoItem extends BaseComponent {
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color: fontAndColor.COLORA0
                         }}
-                        allowFontScaling={false}>[北京]奔驰M级(进口) 2015款 ML 4MATIC 动感动感动感</Text>
+                        allowFontScaling={false}>{this.props.data.tenureCarname}</Text>
                     <Text
                         style={{
                             marginTop: Pixel.getPixel(12),
@@ -130,7 +139,7 @@ export default class CarInfoItem extends BaseComponent {
                             fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                             color: fontAndColor.COLORA1
                         }}
-                        allowFontScaling={false}>VIN:11111111</Text>
+                        allowFontScaling={false}>VIN:{this.props.data.tenureVin}</Text>
                     <Text
                         style={{
                             marginBottom: Pixel.getPixel(18),
@@ -139,7 +148,7 @@ export default class CarInfoItem extends BaseComponent {
                             fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                             color: fontAndColor.COLORA1
                         }}
-                        allowFontScaling={false}>里程:2222</Text>
+                        allowFontScaling={false}>里程:{this.props.data.carMales}</Text>
                 </View>
                 <View style={{
                     height: 1,

@@ -25,6 +25,8 @@ import ClientSearchScene from "../StoresReception/ClientSearchScene";
 import {ClientScreeningSelectButton} from "../StoresReception/component/ClientScreeningSelectButton";
 import {ClientStateSelectView} from "./component/ClientStateSelectView";
 import KeepCustomerDetailScene from "./KeepCustomerDetailScene";
+import StorageUtil from "../../utils/StorageUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 const {width, height} = Dimensions.get('window');
 
@@ -36,6 +38,7 @@ export default class KeepCustomerManageScene extends BaseComponent {
      **/
     constructor(props) {
         super(props);
+        this.keepCustomerList = [];
         this.timeSelect = '今天';
         this.stateSelect = '待完善客户';
         this.selectMonth = '选择月份';
@@ -44,7 +47,8 @@ export default class KeepCustomerManageScene extends BaseComponent {
             renderPlaceholderOnly: 'blank',
             isRefreshing: false,
             addTimeHide: false,
-            selectFilterHide: false
+            selectFilterHide: false,
+            loadingMarginTop: Pixel.getPixel(-30),
         };
     }
 
@@ -52,10 +56,54 @@ export default class KeepCustomerManageScene extends BaseComponent {
      *  页面初始化
      **/
     initFinish = () => {
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+/*        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.setState({
             dataSource: ds.cloneWithRows(['', '', '', '1', '', '1', '', '', '']),
             renderPlaceholderOnly: 'success'
+        });*/
+        this.loadData();
+    };
+
+    /**
+     *   数据请求
+     **/
+    loadData = () => {
+        StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let maps = {
+                    mobile: data.result,
+                    perfectStatus: 2,
+                    pc: 1,
+                    times: 3,
+                    mouth: ''
+                };
+                let url = AppUrls.TENURE_PERFECT_IF_LIST;
+                request(url, 'post', maps).then((response) => {
+                    this.props.showModal(false);
+                    this.keepCustomerList = response.mjson.data.record.beanlist;
+                    if (this.keepCustomerList && this.keepCustomerList.length > 0) {
+                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                        this.setState({
+                            dataSource: ds.cloneWithRows(this.keepCustomerList),
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'success'
+                        });
+                    } else {
+                        this.setState({
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'null'
+                        });
+                    }
+                }, (error) => {
+                    this.props.showModal(false);
+                    this.setState({
+                        isRefreshing: false,
+                        renderPlaceholderOnly: 'error'
+                    });
+                });
+            } else {
+                this.props.showToast('查询账户信息失败');
+            }
         });
     };
 
@@ -70,7 +118,42 @@ export default class KeepCustomerManageScene extends BaseComponent {
                         backIconClick={this.backPage}
                         title="保有客户管理"
                         renderRihtFootView={this._navigatorRightView}/>
+                    <Image style={{
+                        marginTop: Pixel.getTitlePixel(64),
+                        height: Pixel.getPixel(40),
+                        width: width,
+                        flexDirection: 'row'
+                    }}
+                           source={require('../../../images/carSourceImages/bottomShaow.png')}>
+                        <View style={{flex: 1, alignItems: 'center'}}>
+                            <ClientScreeningSelectButton
+                                style={{flex: 1}}
+                                ref={(ref) => {
+                                    this.btn1 = ref
+                                }} title={this.timeSelect} index={1} btnClick={this.selectAddTime}/>
+                        </View>
+                        <View style={styles.lineView}>
+                            <View style={styles.line}/>
+                        </View>
+                        <View style={{flex: 1, alignItems: 'center'}}>
+                            <ClientScreeningSelectButton
+                                style={{flex: 1}}
+                                ref={(ref) => {
+                                    this.btn2 = ref
+                                }} title={this.stateSelect} index={2} btnClick={this.selectFilterItems}/>
+                        </View>
+                    </Image>
                     {this.loadView()}
+                    {this.state.addTimeHide && <ClientAddTimeSelectView hideView={this.selectAddTime}
+                                                                        selectMonth={this.selectMonth}
+                                                                        updateMonth={this.updateMonth}
+                                                                        currentSelect={this.timeSelect}
+                                                                        callBack={this.updateTimeSelect}/>}
+
+                    {this.state.selectFilterHide &&
+                    <ClientStateSelectView hideView={this.selectFilterItems}
+                                           currentSelect={this.stateSelect}
+                                           callBack={this.updateStateSelect}/>}
                 </View>
             );
         } else {
@@ -178,7 +261,10 @@ export default class KeepCustomerManageScene extends BaseComponent {
                     this.toNextPage({
                         name: 'KeepCustomerDetailScene',
                         component: KeepCustomerDetailScene,
-                        params: {}
+                        params: {
+                            tid: rowData.tid,
+                            tcid: rowData.tcid
+                        }
                     });
                 }}
                 activeOpacity={0.9}
@@ -196,7 +282,7 @@ export default class KeepCustomerManageScene extends BaseComponent {
                             marginLeft: Pixel.getPixel(15),
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color: fontAndColor.COLORA0
-                        }}>[北京]奔驰M级(进口) 2015款 ML 4MATIC 动感动感动感</Text>
+                        }}>{rowData.tenureCarname}</Text>
                     <View
                         style={{
                             flexDirection: 'row',
@@ -209,7 +295,7 @@ export default class KeepCustomerManageScene extends BaseComponent {
                             style={{
                                 fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                                 color: fontAndColor.COLORA1
-                            }}>成交时间:2017-08-01</Text>
+                            }}>成交时间:{rowData.saleTime}</Text>
                         <View style={{flex: 1}}/>
                         <Text
                             allowFontScaling={false}
@@ -221,21 +307,21 @@ export default class KeepCustomerManageScene extends BaseComponent {
                     </View>
                     <View style={{flex: 1}}/>
                     <View style={{backgroundColor: fontAndColor.COLORA4, height: 1}}/>
-                    {rowData == '1' &&
+                    {rowData.custName != null && rowData.custPhone != null &&
                     <View style={{height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center'}}>
                         <Text allowFontScaling={false} style={{
                             marginLeft: Pixel.getPixel(15),
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color: fontAndColor.COLORA0
-                        }}>购车人:</Text>
+                        }}>购车人:{rowData.custName}</Text>
                         <View style={{flex: 1}}/>
                         <Text allowFontScaling={false} style={{
                             marginRight: Pixel.getPixel(15),
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color: fontAndColor.COLORA0
-                        }}>手机号:</Text>
+                        }}>手机号:{rowData.custPhone}</Text>
                     </View>}
-                    {rowData == '' &&
+                    {(rowData.custName == null || rowData.custPhone == null) &&
                     <View style={{
                         height: Pixel.getPixel(44),
                         flexDirection: 'row',
@@ -303,7 +389,6 @@ export default class KeepCustomerManageScene extends BaseComponent {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: Pixel.getPixel(0),
         backgroundColor: fontAndColor.COLORA3,
     },
     selectView: {

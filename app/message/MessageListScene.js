@@ -17,7 +17,8 @@ import {
     ListView,
     TouchableOpacity,
     Dimensions,
-    Image
+    Image,
+    RefreshControl
 } from  'react-native'
 const {width, height} = Dimensions.get('window');
 import BaseComponent from "../component/BaseComponent";
@@ -53,6 +54,7 @@ export default class MessageListScene extends BaseComponent {
         this.contentTypes = [];
         this.state = {
             dataSource: [],
+            isRefreshing: false,
             renderPlaceholderOnly: 'blank'
         };
     }
@@ -215,7 +217,7 @@ export default class MessageListScene extends BaseComponent {
                     for (let i = 0; i < data.result.rows.length; i++) {
                         //console.log('data.result.rows.item(i).isRead-=-=-=-', data.result.rows.item(i).isRead);
                         if (!data.result.rows.item(i).isRead) {
-                            dbCount ++;
+                            dbCount++;
                         }
                     }
                     StorageUtil.mGetItem(StorageKeyNames.ADVERTISEMENT_LAST_MESSAGE_TIME, (timeData) => {
@@ -297,12 +299,21 @@ export default class MessageListScene extends BaseComponent {
     /**
      *   加载listview数据
      **/
-    loadListData = () =>{
+    loadListData = () => {
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.setState({
             dataSource: ds.cloneWithRows(['0', '1', '3', '4']),
+            isRefreshing: false,
             renderPlaceholderOnly: 'success'
         });
+    };
+
+    /**
+     *   下拉刷新数据
+     **/
+    refreshingData = () => {
+        this.setState({isRefreshing: true});
+        this.loadData();
     };
 
     /**
@@ -323,7 +334,15 @@ export default class MessageListScene extends BaseComponent {
                           removeClippedSubviews={false}
                           renderRow={this._renderRow}
                           enableEmptySections={true}
-                          renderSeparator={this._renderSeperator}/>
+                          renderSeparator={this._renderSeperator}
+                          refreshControl={
+                              <RefreshControl
+                                  refreshing={this.state.isRefreshing}
+                                  onRefresh={this.refreshingData}
+                                  tintColor={[fontAndColor.COLORB0]}
+                                  colors={[fontAndColor.COLORB0]}
+                              />
+                          }/>
             </View>);
         }
 
@@ -376,9 +395,18 @@ export default class MessageListScene extends BaseComponent {
                                     }}>{this.backlogNum}</Text>
                             </View>}
                         </View>
-                        <Text
-                            style={{marginLeft: Pixel.getPixel(15)}}
-                            allowFontScaling={false}>待办事项</Text>
+                        <View>
+                            <Text
+                                style={{marginLeft: Pixel.getPixel(15)}}
+                                allowFontScaling={false}>待办事项</Text>
+                            <Text
+                                style={{
+                                    marginTop: Pixel.getPixel(8),
+                                    marginLeft: Pixel.getPixel(14),
+                                    color: fontAndColor.COLORA1
+                                }}
+                                allowFontScaling={false}>快速处理待办事项</Text>
+                        </View>
                     </View>
                 </TouchableOpacity>
             )
@@ -414,9 +442,18 @@ export default class MessageListScene extends BaseComponent {
                              }}>99</Text>
                              </View>*/}
                         </View>
-                        <Text
-                            style={{marginLeft: Pixel.getPixel(15)}}
-                            allowFontScaling={false}>每日提醒</Text>
+                        <View>
+                            <Text
+                                style={{marginLeft: Pixel.getPixel(15)}}
+                                allowFontScaling={false}>每日提醒</Text>
+                            <Text
+                                style={{
+                                    marginTop: Pixel.getPixel(8),
+                                    marginLeft: Pixel.getPixel(14),
+                                    color: fontAndColor.COLORA1
+                                }}
+                                allowFontScaling={false}>车辆分享和统计数据</Text>
+                        </View>
                     </View>
                 </TouchableOpacity>
             )
@@ -486,9 +523,18 @@ export default class MessageListScene extends BaseComponent {
                                     }}>{this.sysMessageNum}</Text>
                             </View>}
                         </View>
-                        <Text
-                            style={{marginLeft: Pixel.getPixel(15)}}
-                            allowFontScaling={false}>系统消息</Text>
+                        <View>
+                            <Text
+                                style={{marginLeft: Pixel.getPixel(15)}}
+                                allowFontScaling={false}>系统消息</Text>
+                            <Text
+                                style={{
+                                    marginTop: Pixel.getPixel(8),
+                                    marginLeft: Pixel.getPixel(14),
+                                    color: fontAndColor.COLORA1
+                                }}
+                                allowFontScaling={false}>版本升级通知和最新公告</Text>
+                        </View>
                     </View>
                 </TouchableOpacity>
             )
@@ -524,9 +570,18 @@ export default class MessageListScene extends BaseComponent {
                                     }}>{this.headLineNum}</Text>
                             </View>}
                         </View>
-                        <Text
-                            style={{marginLeft: Pixel.getPixel(15)}}
-                            allowFontScaling={false}>车市头条</Text>
+                        <View>
+                            <Text
+                                style={{marginLeft: Pixel.getPixel(15)}}
+                                allowFontScaling={false}>车市头条</Text>
+                            <Text
+                                style={{
+                                    marginTop: Pixel.getPixel(8),
+                                    marginLeft: Pixel.getPixel(14),
+                                    color: fontAndColor.COLORA1
+                                }}
+                                allowFontScaling={false}>时刻关注汽车行业动态</Text>
+                        </View>
                     </View>
                 </TouchableOpacity>
             )

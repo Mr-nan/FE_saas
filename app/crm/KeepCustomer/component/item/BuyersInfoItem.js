@@ -37,7 +37,8 @@ export default class BuyersInfoItem extends BaseComponent {
         this.checkedCarType = {
             title: '',
             brand_id: '',
-            series_id: ''
+            series_id: '',
+            model_id: ''
         };
         this.childItems = [];
         this.childItems.push({name: '客户姓名', value: '', parameter: 'customerName'});
@@ -78,14 +79,17 @@ export default class BuyersInfoItem extends BaseComponent {
         let items = [];
             for (let i = 0; i < this.childItems.length; i++) {
                 if (i == 2) {
-                    items.push(<ClientInfoSelected ref='selectsex' key={i + 'bo'} items={this.childItems[i]}
+                    let defValue = this.props.data.custSex;
+                    items.push(<ClientInfoSelected
+                        defValue={defValue == '女' ? '女士' : '先生'}
+                        ref='selectsex' key={i + 'bo'} items={this.childItems[i]}
                                                    toSelect={() => {
                                                        this.toNextPage({
                                                            name: 'SelectScene',
                                                            component: SelectScene,
                                                            params: {
                                                                regShowData: ['先生', '女士'],
-                                                               title: '客户状态',
+                                                               title: this.childItems[i].name,
                                                                callBack: (name, index) => {
                                                                    this.childItems[i].value = name + ',' + index;
                                                                    this.refs.selectsex.setValue(name);
@@ -94,29 +98,51 @@ export default class BuyersInfoItem extends BaseComponent {
                                                        })
                                                    }}/>);
                 } else if (i == 3) {
-                    items.push(<ClientInfoSelected ref="birthday" key={i + 'bo'} items={this.childItems[i]}
+                    items.push(<ClientInfoSelected
+                        defValue={this.props.data.custBirthday}
+                        ref="birthday" key={i + 'bo'} items={this.childItems[i]}
                                                    toSelect={() => {
                                                        this._showDateTimePicker('birthday');
                                                    }}/>);
                 } else if (i == 5) {
-                    items.push(<ClientInfoSelected ref="interview" key={i + 'bo'} items={this.childItems[i]}
+                    items.push(<ClientInfoSelected
+                        defValue={this.props.data.custVisittime}
+                        ef="interview" key={i + 'bo'} items={this.childItems[i]}
                                                    toSelect={() => {
                                                        this._showDateTimePicker('interview');
                                                    }}/>);
                 } else if (i == 8) {
-                    items.push(<ClientInfoSelected ref="models" key={i + 'bo'} items={this.childItems[i]}
+                    items.push(<ClientInfoSelected
+                        defValue={this.props.data.custBeforecar}
+                        ref="models" key={i + 'bo'} items={this.childItems[i]}
                                                    toSelect={() => {
                                                        this.toNextPage({
                                                            name: 'CarBrandSelectScene',
                                                            component: CarBrandSelectScene,
                                                            params: {
-                                                               isHeadInteraction: true,
-                                                               checkedCarClick: this.checkedCarClick
+                                                               checkedCarClick: this.checkedCarClick,
+                                                               status: 0
                                                            }
                                                        })
                                                    }}/>);
                 } else {
-                    items.push(<CustomerInfoInput callBack={this.userAireadyExist} key={i + 'bo'}
+                    let defValue = '';
+                    if (this.childItems[i].name == '客户姓名') {
+                        defValue = this.props.data.custName;
+                    } else if (this.childItems[i].name == '手机号码') {
+                        defValue = this.props.data.custPhone;
+                    } else if (this.childItems[i].name == '年龄') {
+                        defValue = this.props.data.custAge;
+                    } else if (this.childItems[i].name == '3日内回访') {
+                        defValue = this.props.data.custThreevisit;
+                    } else if (this.childItems[i].name == '7日内回访') {
+                        defValue = this.props.data.custSevenvisit;
+                    } else if (this.childItems[i].name == '备注') {
+                        defValue = this.props.data.custRemark;
+                    }
+                    items.push(<CustomerInfoInput
+                        defValue={defValue}
+                        callBack={this.userAireadyExist} key={i + 'bo'}
                                                   items={this.childItems[i]}/>);
                 }
 
@@ -193,12 +219,14 @@ export default class BuyersInfoItem extends BaseComponent {
      *
      **/
     checkedCarClick = (carObject) => {
-        let title = carObject.series_id == 0 ? carObject.brand_name : carObject.series_name;
+        //let title = carObject.series_id == 0 ? carObject.brand_name : carObject.series_name;
+        let title = carObject.model_name;
         this.refs.models.setValue(title);
         this.childItems[8].value = title;
         this.checkedCarType.title = title;
         this.checkedCarType.brand_id = carObject.brand_id;
         this.checkedCarType.series_id = carObject.series_id;
+        this.checkedCarType.model_id = carObject.model_id;
     }
 
     /**

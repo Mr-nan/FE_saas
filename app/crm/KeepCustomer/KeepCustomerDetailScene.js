@@ -22,6 +22,8 @@ import {request, requestNoToken} from "../../utils/RequestUtil";
 import DealAmountItem from "./component/item/DealAmountItem";
 import CarInfoItem from "./component/item/CarInfoItem";
 import BuyersInfoItem from "./component/item/BuyersInfoItem";
+import StorageUtil from "../../utils/StorageUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
 
 export default class KeepCustomerDetailScene extends BaseComponent {
 
@@ -31,7 +33,8 @@ export default class KeepCustomerDetailScene extends BaseComponent {
      **/
     constructor(props) {
         super(props);
-        this.clientInfo = [];
+        this.buyerInfo = {};
+        this.carInfo = {};
         this.state = {
             dataSource: [],
             renderPlaceholderOnly: 'blank'
@@ -42,12 +45,42 @@ export default class KeepCustomerDetailScene extends BaseComponent {
      *
      **/
     initFinish = () => {
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.setState({
-            dataSource: ds.cloneWithRows(['0', '1', '2']),
-            renderPlaceholderOnly: 'success'
-        });
+        /*        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+         this.setState({
+         dataSource: ds.cloneWithRows(['0', '1', '2']),
+         renderPlaceholderOnly: 'success'
+         });*/
+        this.loadData();
     };
+
+    /**
+     *   数据请求
+     **/
+    loadData = () => {
+        let maps = {
+            tid: this.props.tid,
+            tcid: this.props.tcid
+        };
+        let url = AppUrls.TENURE_CAR_PEOPLE_MSG;
+        request(url, 'post', maps).then((response) => {
+            console.log('succ', response);
+            this.buyerInfo = response.mjson.data.tenureMap;
+            this.carInfo = response.mjson.data.carMap;
+            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+            this.setState({
+                dataSource: ds.cloneWithRows(['0', '1', '2']),
+                isRefreshing: false,
+                renderPlaceholderOnly: 'success'
+            });
+        }, (error) => {
+            console.log('error', error);
+            this.setState({
+                isRefreshing: false,
+                renderPlaceholderOnly: 'error'
+            });
+        });
+
+    }
 
     /**
      *  render
@@ -105,15 +138,15 @@ export default class KeepCustomerDetailScene extends BaseComponent {
     _renderRow = (rowData, selectionID, rowID) => {
         if (rowData === '0') {
             return (
-                <DealAmountItem />
+                <DealAmountItem data={this.carInfo}/>
             )
         } else if (rowData === '1') {
             return (
-                <CarInfoItem />
+                <CarInfoItem data={this.carInfo}/>
             )
         } else if (rowData === '2') {
             return (
-                <BuyersInfoItem navigator={this.props.navigator}/>
+                <BuyersInfoItem data={this.buyerInfo} navigator={this.props.navigator}/>
             )
         }
     };
@@ -141,9 +174,10 @@ export default class KeepCustomerDetailScene extends BaseComponent {
 
 
 }
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: fontAndColor.COLORA3
-    }
-})
+const
+    styles = StyleSheet.create({
+        container: {
+            flex: 1,
+            backgroundColor: fontAndColor.COLORA3
+        }
+    })

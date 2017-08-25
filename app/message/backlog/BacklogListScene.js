@@ -202,7 +202,7 @@ export default class BacklogListScene extends BaseComponent {
                     }}>
                     <View style={styles.listItem}>
                         <Text allowFontScaling={false} style={styles.title}>保有客户跟进</Text>
-                        <Text allowFontScaling={false} style={styles.describe}>测试测试测试测试测试测试测试测试测试</Text>
+                        <Text allowFontScaling={false} style={styles.describe}>{rowData.content}</Text>
                         <View style={styles.separatedLine}/>
                         <View style={styles.subItem}>
                             <Text allowFontScaling={false} style={styles.subTitle}>查看详情</Text>

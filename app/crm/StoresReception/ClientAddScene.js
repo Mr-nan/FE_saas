@@ -8,7 +8,9 @@ import {
     View,
     Dimensions,
     TouchableOpacity,
-    ListView
+    ListView,
+    KeyboardAvoidingView,
+    ScrollView
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');

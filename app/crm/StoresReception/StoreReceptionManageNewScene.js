@@ -55,11 +55,11 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
      *
      **/
     initFinish = () => {
-/*        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.setState({
-            dataSource: ds.cloneWithRows(['', '', '', '', '', '', '', '', '']),
-            renderPlaceholderOnly: 'success'
-        });*/
+        /*        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+         this.setState({
+         dataSource: ds.cloneWithRows(['', '', '', '', '', '', '', '', '']),
+         renderPlaceholderOnly: 'success'
+         });*/
         this.loadData();
     };
 
@@ -131,7 +131,39 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                         backIconClick={this.backPage}
                         title="门店接待管理"
                         renderRihtFootView={this._navigatorRightView}/>
+                    <Image style={{
+                        marginTop: Pixel.getTitlePixel(64),
+                        height: Pixel.getPixel(40),
+                        width: width,
+                        flexDirection: 'row'
+                    }}
+                           source={require('../../../images/carSourceImages/bottomShaow.png')}>
+                        <View style={{flex: 1, alignItems: 'center'}}>
+                            <ClientScreeningSelectButton
+                                style={{flex: 1}}
+                                ref={(ref) => {
+                                    this.btn1 = ref
+                                }} title="今天" index={1} btnClick={this.selectAddTime}/>
+                        </View>
+                        <View style={styles.lineView}>
+                            <View style={styles.line}/>
+                        </View>
+                        <View style={{flex: 1, alignItems: 'center'}}>
+                            <ClientScreeningSelectButton
+                                style={{flex: 1}}
+                                ref={(ref) => {
+                                    this.btn2 = ref
+                                }} title="筛选" index={2} btnClick={this.selectFilterItems}/>
+                        </View>
+                    </Image>
                     {this.loadView()}
+                    {this.state.addTimeHide && <ClientAddTimeSelectView hideView={this.selectAddTime}
+                                                                        selectMonth={this.selectMonth}
+                                                                        updateMonth={this.updateMonth}
+                                                                        currentSelect={this.timeSelect}
+                                                                        callBack={this.updateTimeSelect}/>}
+
+                    {this.state.selectFilterHide && <ClientScreeningView hideView={this.selectFilterItems}/>}
                 </View>
             );
         } else {

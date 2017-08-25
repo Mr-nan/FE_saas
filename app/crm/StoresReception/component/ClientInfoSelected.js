@@ -26,8 +26,9 @@ export default class ClientInfoSelected extends PureComponent {
      **/
     constructor(props) {
         super(props);
+        let value = '请选择' + this.props.items.name;
         this.state = {
-            value: '请选择' + this.props.items.name
+            value: this.props.defValue ? this.props.defValue.substring(0, 10) : value
         }
     }
 

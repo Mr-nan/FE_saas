@@ -1109,3 +1109,11 @@ export const CUSTOMER_FLOW = BASEURL + "cheshang/customer/customerFlow";
  *  搜索潜在客户列表
  */
 export const QUERY_CUSTOMER_BY_SEARCH_KEY = BASEURL + "cheshang/customer/querycustomerBysearchkey";
+/**
+ *  获取保有客户数据列表
+ */
+export const TENURE_PERFECT_IF_LIST = BASEURL + "cheshang/tenure_customer/tenurePerfectIfList";
+/**
+ *  获取保有客户数据详情
+ */
+export const TENURE_CAR_PEOPLE_MSG = BASEURL + "cheshang/tenure_customer/tenureCarPeopleMsg";

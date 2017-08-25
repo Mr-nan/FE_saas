@@ -27,7 +27,7 @@ export default class ClientInfoInput extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            value: ''
+            value: this.props.defValue ? this.props.defValue : ''
         }
     }
 
@@ -58,7 +58,7 @@ export default class ClientInfoInput extends PureComponent {
             pwd = false;
         }
         return (<View style={{width: width, height: Pixel.getPixel(45), backgroundColor: '#fff'}}>
-            <KeyboardAvoidingView behavior={'height'} keyboardVerticalOffset={5}>
+            <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={-Pixel.getPixel(100)}>
                 <View style={{
                     width: width, height: Pixel.getPixel(44), backgroundColor: '#00000000', flexDirection: 'row',
                     paddingLeft: Pixel.getPixel(15), paddingRight: Pixel.getPixel(15)
@@ -80,15 +80,15 @@ export default class ClientInfoInput extends PureComponent {
                             paddingTop: 0,
                             paddingBottom: 0,
                         }}
+                                   //defaultValue={this.props.defValue ? this.props.defValue : ''}
+                                   keyboardType={this.props.items.name == '电话' || this.props.items.name == '进店人数' ? 'numeric' : 'default'}
                                    returnKeyType={"search"}
                                    secureTextEntry={pwd}
                                    placeholder={'请输入' + this.props.items.name}
                                    underlineColorAndroid={"#00000000"}
                                    value={this.state.value}
-                                   maxLength={this.props.items.name == '账号' ? 11 : 32}
+                                   maxLength={this.props.items.name == '电话' ? 11 : 32}
                                    onChangeText={this.goSearch}/>
-                        <Image style={{width: Pixel.getPixel(14), height: Pixel.getPixel(14)}}
-                               source={require('../../../../images/mainImage/celljiantou.png')}/>
                     </View>
                 </View>
                 <View style={{width: width, height: Pixel.getPixel(1), backgroundColor: fontAndColor.COLORA3}}>
