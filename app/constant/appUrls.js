@@ -1121,3 +1121,7 @@ export const TENURE_CAR_PEOPLE_MSG = BASEURL + "cheshang/tenure_customer/tenureC
  *  获取保有客户数据提交
  */
 export const UPDATE_CAR_WELFARE = BASEURL + "cheshang/tenure_customer/updateCarWelfare";
+/**
+ *  搜索保有客户数据
+ */
+export const SELECT_BY_SEARCH = BASEURL + "cheshang/tenure_customer/selectBySearch";

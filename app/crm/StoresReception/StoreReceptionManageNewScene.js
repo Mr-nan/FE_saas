@@ -320,8 +320,7 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                             name: 'ClientSearchScene',
                             component: ClientSearchScene,
                             params: {
-                                business: this.props.business,
-                                status: this.status,
+
                             }
                         });
                     }}

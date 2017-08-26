@@ -27,6 +27,7 @@ import {ClientStateSelectView} from "./component/ClientStateSelectView";
 import KeepCustomerDetailScene from "./KeepCustomerDetailScene";
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
+import KeepCustomerSearchScene from "./KeepCustomerSearchScene";
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 const {width, height} = Dimensions.get('window');
 
@@ -378,11 +379,10 @@ export default class KeepCustomerManageScene extends BaseComponent {
                 <TouchableOpacity
                     onPress={() => {
                         this.toNextPage({
-                            name: 'ClientSearchScene',
-                            component: ClientSearchScene,
+                            name: 'KeepCustomerSearchScene',
+                            component: KeepCustomerSearchScene,
                             params: {
-                                business: this.props.business,
-                                status: this.status,
+
                             }
                         });
                     }}

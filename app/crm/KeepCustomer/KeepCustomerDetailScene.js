@@ -173,6 +173,8 @@ export default class KeepCustomerDetailScene extends BaseComponent {
                         maps[this.clientInfo[i].parameter] = this.clientInfo[i].value;
                     }
                     maps['mobile'] = data.result;
+                    maps['tid'] = this.props.tid;
+                    maps['tcid'] = this.props.tcid;
                     let url = AppUrls.UPDATE_CAR_WELFARE;
                     request(url, 'post', maps).then((response) => {
                         this.props.showModal(false);
