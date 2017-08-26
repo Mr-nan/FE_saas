@@ -23,7 +23,7 @@ import CommunicationRecordItem from "./component/item/CommunicationRecordItem";
 import * as AppUrls from "../../constant/appUrls";
 import {request} from "../../utils/RequestUtil";
 
-export default class ClientInfoDetailView extends BaseComponent {
+export class ClientInfoDetailView extends BaseComponent {
 
     /**
      *  constructor
@@ -33,10 +33,28 @@ export default class ClientInfoDetailView extends BaseComponent {
         super(props);
         this.clientInfo = [];
         this.state = {
+            rowData: this.props.rowData,
             dataSource: [],
             renderPlaceholderOnly: 'blank'
         };
     }
+
+    componentWillReceiveProps(nextProps) {
+        //console.log('componentWillReceivePropsd==-=-componentWillReceiveProps');
+        this.setState({
+            rowData: nextProps.rowData
+        });
+    }
+
+    /**
+     *   刷新页面数据
+     **/
+    refreshData = (data) => {
+        this.setState({
+            rowData: data
+        });
+        //console.log('datadata====', data);
+    };
 
     /**
      *
@@ -117,12 +135,12 @@ export default class ClientInfoDetailView extends BaseComponent {
      * @private
      **/
     _renderRow = (rowData, selectionID, rowID) => {
-        //console.log('rowData=========dddd====', this.props.rowData);
+        //console.log('rowData=========dddd====', this.state.rowData);
         if (rowData === '0') {
             return (
                 <BaseInfoItem
                     editState='look'
-                    rowData={this.props.rowData}
+                    rowData={this.state.rowData}
                     ref={(ref) => {
                         this.baseInfoItem = ref
                     }} navigator={this.props.navigator}/>
@@ -131,7 +149,7 @@ export default class ClientInfoDetailView extends BaseComponent {
             return (
                 <BuyerDemandItem
                     editState='look'
-                    rowData={this.props.rowData}
+                    rowData={this.state.rowData}
                     ref={(ref) => {
                         this.buyerDemandItem = ref
                     }} navigator={this.props.navigator}/>
@@ -140,7 +158,7 @@ export default class ClientInfoDetailView extends BaseComponent {
             return (
                 <CommunicationRecordItem
                     editState='look'
-                    rowData={this.props.rowData}
+                    rowData={this.state.rowData}
                     ref={(ref) => {
                         this.communicationRecordItem = ref
                     }} navigator={this.props.navigator}/>

@@ -1094,6 +1094,11 @@ export const DAILY_REMINDER_STATISTICS = BASEURL + "cheshang/sass/statistics";
 export const POTENTIAL_CUSTOMER_LISTS = BASEURL + "cheshang/customer/lists";
 //export const POTENTIAL_CUSTOMER_LISTS = PRE + "customer/querycustomerList.do";
 /**
+ *  获取潜在客户详情
+ */
+export const POTENTIAL_CUSTOMER_DETAIL = "http://10.3.10.35:8080/customer/selectDetail.do";
+//export const POTENTIAL_CUSTOMER_DETAIL = BASEURL + "cheshang/customer/selectDetail";
+/**
  *  获取所有跟进信息
  */
 export const SELECT_ALL_FLOW = BASEURL + "cheshang/customer/selectAllFlow";
