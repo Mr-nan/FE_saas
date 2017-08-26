@@ -20,6 +20,7 @@ import {
 import BaseComponent from '../../component/BaseComponent';
 import AllNavigationView from  '../../component/AllNavigationView';
 import {CellView, CellSelectView} from '../znComponent/CarPublishCell';
+import AccountModal from '../../component/AccountModal'
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import VinInfo from '../../publish/component/VinInfo';
 import *as fontAndColor from  '../../constant/fontAndColor';
@@ -95,6 +96,7 @@ export default class CarBuyTaskScene extends BaseComponent{
                 <TouchableOpacity style={styles.footBtn} onPress={this.footBtnClick}>
                     <Text style={styles.footBtnText}>提交</Text>
                 </TouchableOpacity>
+                <AccountModal ref="accountmodal"/>
                 <AllNavigationView title="收车任务" backIconClick={this.backPage}/>
             </View>
         )
@@ -372,31 +374,38 @@ export default class CarBuyTaskScene extends BaseComponent{
     footBtnClick=()=>{
 
 
-        // if(!this.carData.vin){
-        //     this.props.showToast('请输入正确的车架号');
-        //     return;
-        // }
-        //
-        // if(!this.carData.collectionType)
-        // {
-        //     this.props.showToast('请输入车型');
-        //     return;
-        // }
+        if(!this.carData.vin){
+            this.props.showToast('请输入正确的车架号');
+            return;
+        }
 
+        if(!this.carData.collectionType)
+        {
+            this.props.showToast('请输入车型');
+            return;
+        }
+
+      this.upCarData();
+
+
+
+    }
+
+    upCarData =()=>{
         let carData = {...this.carData};
         let consultList =[];
         if(parseFloat(this.carData.consultPrice) >0)
         {
-               if(this.carData.consultList.length>0){
+            if(this.carData.consultList.length>0){
 
-                   consultList.push(...this.carData.consultList);
-                   consultList.push({consultPrice:this.carData.consultPrice, acquisitionId:0, id:0});
+                consultList.push(...this.carData.consultList);
+                consultList.push({consultPrice:this.carData.consultPrice, acquisitionId:0, id:0});
 
-               }else {
-                   consultList = [{id:0,consultPrice:this.carData.consultPrice}];
-               }
+            }else {
+                consultList = [{id:0,consultPrice:this.carData.consultPrice}];
+            }
 
-               carData.consultList = JSON.stringify(consultList);
+            carData.consultList = JSON.stringify(consultList);
         }
         this.props.showModal(true);
         request(AppUrls.CAR_SASS_PUBLISH, 'post', carData).then((response) => {
@@ -406,8 +415,8 @@ export default class CarBuyTaskScene extends BaseComponent{
         }, (error) => {
             this.props.showModal(false);
         });
-
     }
+
 
     // 构造
       constructor(props) {
