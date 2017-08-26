@@ -1064,19 +1064,70 @@ export const FIRST_PAYMENT_PAY = BASEURL + V + 'order_finance/firstPaymentPay';
  */
 export const FIRST_PAYMENT_PAY_CALLBACK = BASEURL + V + 'order_finance/firstPaymentPayCallback';
 
-
-//export const PRE = "http://192.168.1.160:8010/";
-export const PRE = "http://10.3.10.38:8080/";
 //CRM TEST
+export const PRE = "http://10.3.10.35:8080/";
 /**
  *  门店管理web页
  */
-export const STORE_RECEPTION_MANAGE = PRE + "ceshi.do?mobile=15102373840";
+export const STORE_RECEPTION_MANAGE = PRE + "ceshi.do?mobile=15102373842";
 /**
  *  添加潜在客户
  */
-export const CUSTOMER_ADD_URL = PRE + "customer/customerInsert.do";
+export const CUSTOMER_ADD_URL = BASEURL + "cheshang/customer/create";
 /**
  *  获取待办消息数量
  */
-export const HANDLE_COUNT = BASEURL + V + "cheshang/sass/handleCount";
+export const HANDLE_COUNT = BASEURL + "cheshang/sass/handleCount";
+/**
+ *  获取系统消息或车市头条消息数量
+ */
+export const SELECT_UNREAD_MESSAGE_COUNT = BASEURL + "cheshang/sass/selectUnReadMessageCount";
+/**
+ *  待办事项、系统消息、车市头条列表数据
+ */
+export const SELECT_MSG_BY_CONTENT_TYPE = BASEURL + "cheshang/sass/selectMsgByContentType";
+/**
+ *  门店查询当前人是否存在
+ */
+export const SELECT_CUST_IF_EXIST = BASEURL + "cheshang/customer/selectCustIfExist";
+/**
+ *  每日，周，月提醒
+ */
+export const DAILY_REMINDER_RANK_LEVEL = BASEURL + "cheshang/sass/rankLevel";
+/**
+ *  每日，周，月统计
+ */
+export const DAILY_REMINDER_STATISTICS = BASEURL + "cheshang/sass/statistics";
+/**
+ *  获取潜在客户列表
+ */
+export const POTENTIAL_CUSTOMER_LISTS = BASEURL + "cheshang/customer/lists";
+//export const POTENTIAL_CUSTOMER_LISTS = PRE + "customer/querycustomerList.do";
+/**
+ *  获取所有跟进信息
+ */
+export const SELECT_ALL_FLOW = BASEURL + "cheshang/customer/selectAllFlow";
+/**
+ *  获取当前任务信息
+ */
+export const SELECT_FLOW = BASEURL + "cheshang/customer/selectFlow";
+/**
+ *  提交当前任务信息
+ */
+export const CUSTOMER_FLOW = BASEURL + "cheshang/customer/customerFlow";
+/**
+ *  搜索潜在客户列表
+ */
+export const QUERY_CUSTOMER_BY_SEARCH_KEY = BASEURL + "cheshang/customer/querycustomerBysearchkey";
+/**
+ *  获取保有客户数据列表
+ */
+export const TENURE_PERFECT_IF_LIST = BASEURL + "cheshang/tenure_customer/tenurePerfectIfList";
+/**
+ *  获取保有客户数据详情
+ */
+export const TENURE_CAR_PEOPLE_MSG = BASEURL + "cheshang/tenure_customer/tenureCarPeopleMsg";
+/**
+ *  获取保有客户数据提交
+ */
+export const UPDATE_CAR_WELFARE = BASEURL + "cheshang/tenure_customer/updateCarWelfare";

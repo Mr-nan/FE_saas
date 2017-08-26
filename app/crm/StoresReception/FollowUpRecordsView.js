@@ -18,6 +18,8 @@ import BaseComponent from '../../component/BaseComponent';
 import * as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
 import FollowUpTaskScene from "./FollowUpTaskScene";
+import * as AppUrls from "../../constant/appUrls";
+import  {request, requestNoToken} from '../../utils/RequestUtil';
 const Pixel = new PixelUtil();
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 
@@ -28,9 +30,11 @@ export class FollowUpRecordsView extends BaseComponent {
      **/
     constructor(props) {
         super(props);
+        this.followUpRecordsList = [];
         this.state = {
             dataSource: [],
-            renderPlaceholderOnly: 'blank'
+            renderPlaceholderOnly: 'blank',
+            loadingMarginTop: Pixel.getPixel(70)
         };
     }
 
@@ -38,19 +42,50 @@ export class FollowUpRecordsView extends BaseComponent {
      *
      **/
     initFinish = () => {
-        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.setState({
-            dataSource: ds.cloneWithRows(['', '', '']),
-            renderPlaceholderOnly: 'success'
-        });
-        //this.loadData();
+        /*        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+         this.setState({
+         dataSource: ds.cloneWithRows(['', '', '']),
+         renderPlaceholderOnly: 'success'
+         });*/
+        this.loadData();
     };
 
     /**
      *
      **/
     loadData = () => {
+        let maps = {
+            //pushTo: this.custPhone,
+            //token: '5afa531b-4295-4c64-8d6c-ac436c619078',
+            custI: this.props.rowData.id
+            //createTime: '2017-08-09 15:18:47'
+        };
+        let url = AppUrls.SELECT_ALL_FLOW;
+        request(url, 'post', maps).then((response) => {
+            this.props.showModal(false);
+            const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+            this.followUpRecordsList = response.mjson.data.maps;
+            this.setState({
+                dataSource: ds.cloneWithRows(this.followUpRecordsList.reverse()),
+                isRefreshing: false,
+                renderPlaceholderOnly: 'success'
+            });
+        }, (error) => {
+            //console.log('error===============', error);
+            this.props.showModal(false);
+            this.setState({
+                isRefreshing: false,
+                renderPlaceholderOnly: 'error'
+            });
+        });
+    };
 
+    /**
+     *   刷新页面数据
+     **/
+    refreshData = () => {
+        this.props.showModal(true);
+        this.loadData();
     };
 
     /**
@@ -77,7 +112,8 @@ export class FollowUpRecordsView extends BaseComponent {
                             name: 'FollowUpTaskScene',
                             component: FollowUpTaskScene,
                             params: {
-
+                                rowData: this.props.rowData,
+                                callBack: this.refreshData
                             }
                         });
                     }}>
@@ -125,13 +161,13 @@ export class FollowUpRecordsView extends BaseComponent {
                     marginLeft: Pixel.getPixel(45),
                     fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                     color: fontAndColor.COLORA0
-                }}>电话邀约：dasdadadadad</Text>
+                }}>{rowData.customerFlowMessage}</Text>
                 <Text allowFontScaling={false} style={{
                     marginTop: Pixel.getPixel(10),
                     marginLeft: Pixel.getPixel(45),
                     fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                     color: fontAndColor.COLORA1
-                }}>2017-22-11 10:11</Text>
+                }}>{rowData.createTime}</Text>
             </View>
         )
     }

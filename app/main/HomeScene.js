@@ -39,7 +39,7 @@ import  CarMySourceScene from '../carSource/CarMySourceScene';
 import HomeJobItem from './component/HomeJobItem';
 import HomeRowButton from './component/HomeRowButton';
 import HomeAdvertisementButton from './component/HomeAdvertisementButton';
-import MessageList from "../message/MessageList";
+import MessageListScene from "../message/MessageListScene";
 
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 let allList = [];
@@ -93,7 +93,7 @@ export default class HomeScene extends BaseComponet {
                         }}> 搜索您要找的车</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=> {
-                        this.props.callBack({name:'messagelist',component:MessageList,params:{}});
+                        this.props.callBack({name:'messagelistscene',component:MessageListScene,params:{}});
                     }} activeOpacity={0.8} style={{
                         backgroundColor: '#00000000',
                         width: Pixel.getPixel(25),

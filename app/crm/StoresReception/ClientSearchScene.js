@@ -24,8 +24,10 @@ import {request} from "../../utils/RequestUtil";
 import LoadMoreFooter from "../../carSource/znComponent/LoadMoreFooter";
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
+import ClientInfoScene from "./ClientInfoScene";
 const Pixel = new PixelUtil();
 const {width, height} = Dimensions.get('window');
+const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 
 export default class ClientSearchScene extends BaseComponent {
 
@@ -36,8 +38,8 @@ export default class ClientSearchScene extends BaseComponent {
      **/
     constructor(props) {
         super(props);
-        this.pageNum = 1;
-        this.allPage = 1;
+        //this.pageNum = 1;
+        //this.allPage = 1;
         this.state = {
             dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
             renderPlaceholderOnly: 'blank',
@@ -155,7 +157,42 @@ export default class ClientSearchScene extends BaseComponent {
      * @returns {XML}
      **/
     loadData = () => {
-
+        StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let maps = {
+                    mobile: data.result,
+                    select: this.state.value
+                };
+                let url = AppUrls.QUERY_CUSTOMER_BY_SEARCH_KEY;
+                request(url, 'post', maps).then((response) => {
+                    this.clientListData = response.mjson.data.record.beanlist;
+                    //this.allPage = response.mjson.data.total / response.mjson.data.rows;
+                    if (this.clientListData && this.clientListData.length > 0) {
+                        this.setState({
+                            dataSource: this.state.dataSource.cloneWithRows(this.clientListData),
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'success'
+                        });
+                    } else {
+                        this.setState({
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'null'
+                        });
+                    }
+                }, (error) => {
+                    this.setState({
+                        isRefreshing: false,
+                        renderPlaceholderOnly: 'error'
+                    });
+                });
+            } else {
+                this.props.showToast('查询账户信息失败');
+                this.setState({
+                    isRefreshing: false,
+                    renderPlaceholderOnly: 'error'
+                });
+            }
+        });
     };
 
     /**
@@ -265,16 +302,16 @@ export default class ClientSearchScene extends BaseComponent {
                               removeClippedSubviews={false}
                               enableEmptySections={true}
                               renderSeparator={this._renderSeperator}
-                              renderFooter={this.state.startSearch === 0 ? null : this.renderListFooter}
-                              onEndReached={this.state.startSearch === 0 ? null : this.toEnd}
-                              refreshControl={this.state.startSearch === 0 ? null :
+                              //renderFooter={this.state.startSearch === 0 ? null : this.renderListFooter}
+                              //onEndReached={this.state.startSearch === 0 ? null : this.toEnd}
+                              /*refreshControl={this.state.startSearch === 0 ? null :
                                   <RefreshControl
                                       refreshing={this.state.isRefreshing}
                                       onRefresh={this.refreshingData}
                                       tintColor={[fontAndColor.COLORB0]}
                                       colors={[fontAndColor.COLORB0]}
                                   />
-                              }/>
+                              }*//>
                 </View>
             )
         }
@@ -288,7 +325,7 @@ export default class ClientSearchScene extends BaseComponent {
         return (
             <View
                 key={`${sectionID}-${rowID}`}
-                style={{backgroundColor: fontAndColor.COLORA3, height: Pixel.getPixel(10)}}/>
+                style={{backgroundColor: fontAndColor.COLORA3, height: Pixel.getPixel(1)}}/>
         )
     }
 
@@ -297,7 +334,38 @@ export default class ClientSearchScene extends BaseComponent {
      * @returns {XML}
      **/
     _renderRow = (rowData, selectionID, rowID) => {
-
+        return (
+            <TouchableOpacity
+                onPress={() => {
+                    this.toNextPage({
+                        name: 'ClientInfoScene',
+                        component: ClientInfoScene,
+                        params: {
+                            rowData: rowData
+                        }
+                    });
+                }}
+                activeOpacity={0.9}
+            >
+                <View style={{
+                    height: Pixel.getPixel(44),
+                    backgroundColor: '#ffffff',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}>
+                    <Text
+                        allowFontScaling={false}
+                        style={{
+                            marginLeft: Pixel.getPixel(15),
+                            fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                            color: fontAndColor.COLORA0
+                        }}>{rowData.customerName}</Text>
+                    <View style={{flex: 1}}/>
+                    <Image source={cellJianTou} style={{marginRight: Pixel.getPixel(15),}}/>
+                </View>
+            </TouchableOpacity>
+        )
     }
 }
 

@@ -35,11 +35,12 @@ export default class BuyerDemandItem extends BaseComponent {
         this.checkedCarType = {
             title: '',
             brand_id: '',
-            series_id: ''
+            series_id: '',
+            model_id: ''
         };
         this.childItems = [];
-        this.childItems.push({name: '购车预算', value: ''});
-        this.childItems.push({name: '意向车型', value: ''});
+        this.childItems.push({name: '购车预算', value: '', parameter: 'customerBudget'});
+        this.childItems.push({name: '意向车型', value: '', parameter: 'intentionalVehicle'});
     }
 
     /**
@@ -59,6 +60,17 @@ export default class BuyerDemandItem extends BaseComponent {
     };
 
     /**
+     *   将传入本页的数据解析
+     **/
+    parseData = () => {
+        let parameter = '';
+        for (let i = 0; i < this.childItems.length; i++) {
+            parameter = this.childItems[i].parameter;
+            this.childItems[i].value = this.props.rowData[parameter];
+        }
+    };
+
+    /**
      *
      **/
     render() {
@@ -75,7 +87,7 @@ export default class BuyerDemandItem extends BaseComponent {
                                                                regShowData: ['10万以下', '10-20万', '10-40万', '40-60万', '60万以上'],
                                                                title: '购车预算',
                                                                callBack: (name, index) => {
-                                                                   this.childItems[i].value = name + ',' + index;
+                                                                   this.childItems[i].value = name;
                                                                    this.refs.selectsex.setValue(name);
                                                                }
                                                            }
@@ -88,8 +100,8 @@ export default class BuyerDemandItem extends BaseComponent {
                                                            name: 'CarBrandSelectScene',
                                                            component: CarBrandSelectScene,
                                                            params: {
-                                                               isHeadInteraction: true,
-                                                               checkedCarClick: this.checkedCarClick
+                                                               checkedCarClick: this.checkedCarClick,
+                                                               status: 0
                                                            }
                                                        })
                                                    }}/>);
@@ -101,6 +113,7 @@ export default class BuyerDemandItem extends BaseComponent {
                 }
             }
         } else {
+            this.parseData();
             for (let i = 0; i < this.childItems.length; i++) {
                 items.push(
                     <View
@@ -128,7 +141,7 @@ export default class BuyerDemandItem extends BaseComponent {
                                   style={{
                                       fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                       color: '#000'
-                                  }}>dasdadada</Text>
+                                  }}>{this.childItems[i].value}</Text>
                         </View>
                         <View style={{
                             width: width,
@@ -184,12 +197,14 @@ export default class BuyerDemandItem extends BaseComponent {
      *
      **/
     checkedCarClick = (carObject) => {
-        let title = carObject.series_id == 0 ? carObject.brand_name : carObject.series_name;
+        //let title = carObject.series_id == 0 ? carObject.brand_name : carObject.series_name;
+        let title = carObject.model_name;
         this.refs.company.setValue(title);
         this.childItems[1].value = title;
         this.checkedCarType.title = title;
         this.checkedCarType.brand_id = carObject.brand_id;
         this.checkedCarType.series_id = carObject.series_id;
+        this.checkedCarType.model_id = carObject.model_id;
     }
 
 }

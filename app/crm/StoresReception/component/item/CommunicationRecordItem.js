@@ -32,10 +32,10 @@ export default class CommunicationRecordItem extends BaseComponent {
         super(props);
         this.type = '';
         this.childItems = [];
-        this.childItems.push({name: '客户级别', value: ''});
-        this.childItems.push({name: '进店时间', value: ''});
-        this.childItems.push({name: '离店时间', value: ''});
-        this.childItems.push({name: '进店人数', value: ''});
+        this.childItems.push({name: '客户级别', value: '', parameter: 'customerLevel'});
+        this.childItems.push({name: '进店时间', value: '', parameter: 'inTime'});
+        this.childItems.push({name: '离店时间', value: '', parameter: 'outTime'});
+        this.childItems.push({name: '进店人数', value: '', parameter: 'peopleNum'});
         this.state = {
             isDateTimePickerVisible: false
         }
@@ -58,6 +58,17 @@ export default class CommunicationRecordItem extends BaseComponent {
     };
 
     /**
+     *   将传入本页的数据解析
+     **/
+    parseData = () => {
+        let parameter = '';
+        for (let i = 0; i < this.childItems.length; i++) {
+            parameter = this.childItems[i].parameter;
+            this.childItems[i].value = this.props.rowData[parameter];
+        }
+    };
+
+    /**
      *
      **/
     render() {
@@ -74,7 +85,7 @@ export default class CommunicationRecordItem extends BaseComponent {
                                                                regShowData: ['A:一周以内(购买欲望特别强)', 'B:一月以内(准买车用户)', 'C:三个月以内(有购买意向)', 'D:闲逛(近期无意向)'],
                                                                title: '客户级别',
                                                                callBack: (name, index) => {
-                                                                   this.childItems[i].value = name + ',' + index;
+                                                                   this.childItems[i].value = name.charAt(0);
                                                                    this.refs.selectsex.setValue(name);
                                                                }
                                                            }
@@ -96,6 +107,7 @@ export default class CommunicationRecordItem extends BaseComponent {
 
             }
         } else {
+            this.parseData();
             for (let i = 0; i < this.childItems.length; i++) {
                 items.push(
                     <View
@@ -123,7 +135,7 @@ export default class CommunicationRecordItem extends BaseComponent {
                                   style={{
                                       fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                       color: '#000'
-                                  }}>dasdadada</Text>
+                                  }}>{this.childItems[i].value}</Text>
                         </View>
                         <View style={{
                             width: width,

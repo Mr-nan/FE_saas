@@ -191,3 +191,28 @@ return [
         23=>'融资单质押车辆提前还款成功',  //--3
         24=>'融资单确认验收失败',         //--3
     ],
+
+   {
+       "roleList":[
+           "taskPGS",
+           "taskZBY",
+           "taskManager",
+           "taskYYZY",
+           "taskZJL",
+           "taskRemind",
+           "taskTenure",
+           "taskDC"
+       ],
+       "accountMobile":"15102373842"
+   }
+
+                "contentTypes":[
+                            "taskPGS",
+                            "taskZBY",
+                            "taskManager",
+                            "taskYYZY",
+                            "taskZJL",
+                            "taskRemind",
+                            "taskTenure",
+                            "taskDC"
+                            ]

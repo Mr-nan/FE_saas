@@ -12,7 +12,7 @@ import  {
 
 import  PixelUtil from '../../utils/PixelUtil'
 var Pixel = new PixelUtil();
-import {request} from '../../utils/RequestUtil';
+import {request, requestNoToken} from '../../utils/RequestUtil';
 import * as fontAndColor from '../../constant/fontAndColor';
 import BaseComponent from "../../component/BaseComponent";
 import NavigationView from '../../component/AllNavigationView';
@@ -25,6 +25,8 @@ import {ClientScreeningSelectButton} from "./component/ClientScreeningSelectButt
 import ClientScreeningView from "./component/ClientScreeningView";
 import ClientInfoScene from "./ClientInfoScene";
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
+import StorageUtil from "../../utils/StorageUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
 /*
  * 获取屏幕的宽和高
  **/
@@ -37,6 +39,9 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
      **/
     constructor(props) {
         super(props);
+        this.timeSelect = '今天';
+        this.selectMonth = '选择月份';
+        this.potentialClientList = [];
         this.state = {
             dataSource: [],
             renderPlaceholderOnly: 'blank',
@@ -50,10 +55,68 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
      *
      **/
     initFinish = () => {
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.setState({
-            dataSource: ds.cloneWithRows(['', '', '', '', '', '', '', '', '']),
-            renderPlaceholderOnly: 'success'
+        /*        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+         this.setState({
+         dataSource: ds.cloneWithRows(['', '', '', '', '', '', '', '', '']),
+         renderPlaceholderOnly: 'success'
+         });*/
+        this.loadData();
+    };
+
+    /**
+     *   刷新页面数据
+     **/
+    refreshData = () => {
+        this.props.showModal(true);
+        this.loadData();
+    };
+
+    /**
+     *   数据请求
+     **/
+    loadData = () => {
+        StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let maps = {
+                    //mobile: '15102373842',
+                    mobile: data.result,
+                    //token: '5afa531b-4295-4c64-8d6c-ac436c619078',
+                    xxly: '全部车源',
+                    khjb: '所有级别',
+                    dfzp: '全部状态',
+                    gmys: '所有预算',
+                    pc: 1,
+                    times: 3,
+                    mouth: ''
+                    //createTime: '2017-08-09 15:18:47'
+                };
+                let url = AppUrls.POTENTIAL_CUSTOMER_LISTS;
+                request(url, 'post', maps).then((response) => {
+                    this.props.showModal(false);
+                    this.potentialClientList = response.mjson.data.record.beanlist;
+                    if (this.potentialClientList && this.potentialClientList.length > 0) {
+                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                        this.setState({
+                            dataSource: ds.cloneWithRows(this.potentialClientList),
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'success'
+                        });
+                    } else {
+                        this.setState({
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'null'
+                        });
+                    }
+                }, (error) => {
+                    this.props.showModal(false);
+                    this.setState({
+                        isRefreshing: false,
+                        renderPlaceholderOnly: 'error'
+                    });
+                });
+            } else {
+                this.props.showToast('查询账户信息失败');
+            }
         });
     };
 
@@ -68,7 +131,39 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                         backIconClick={this.backPage}
                         title="门店接待管理"
                         renderRihtFootView={this._navigatorRightView}/>
+                    <Image style={{
+                        marginTop: Pixel.getTitlePixel(64),
+                        height: Pixel.getPixel(40),
+                        width: width,
+                        flexDirection: 'row'
+                    }}
+                           source={require('../../../images/carSourceImages/bottomShaow.png')}>
+                        <View style={{flex: 1, alignItems: 'center'}}>
+                            <ClientScreeningSelectButton
+                                style={{flex: 1}}
+                                ref={(ref) => {
+                                    this.btn1 = ref
+                                }} title="今天" index={1} btnClick={this.selectAddTime}/>
+                        </View>
+                        <View style={styles.lineView}>
+                            <View style={styles.line}/>
+                        </View>
+                        <View style={{flex: 1, alignItems: 'center'}}>
+                            <ClientScreeningSelectButton
+                                style={{flex: 1}}
+                                ref={(ref) => {
+                                    this.btn2 = ref
+                                }} title="筛选" index={2} btnClick={this.selectFilterItems}/>
+                        </View>
+                    </Image>
                     {this.loadView()}
+                    {this.state.addTimeHide && <ClientAddTimeSelectView hideView={this.selectAddTime}
+                                                                        selectMonth={this.selectMonth}
+                                                                        updateMonth={this.updateMonth}
+                                                                        currentSelect={this.timeSelect}
+                                                                        callBack={this.updateTimeSelect}/>}
+
+                    {this.state.selectFilterHide && <ClientScreeningView hideView={this.selectFilterItems}/>}
                 </View>
             );
         } else {
@@ -89,7 +184,9 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                         <View style={{flex: 1, alignItems: 'center'}}>
                             <ClientScreeningSelectButton
                                 style={{flex: 1}}
-                                ref="but1" title="今天" index={1} btnClick={this.selectAddTime}/>
+                                ref={(ref) => {
+                                    this.btn1 = ref
+                                }} title="今天" index={1} btnClick={this.selectAddTime}/>
                         </View>
                         <View style={styles.lineView}>
                             <View style={styles.line}/>
@@ -97,7 +194,9 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                         <View style={{flex: 1, alignItems: 'center'}}>
                             <ClientScreeningSelectButton
                                 style={{flex: 1}}
-                                ref="but2" title="筛选" index={2} btnClick={this.selectFilterItems}/>
+                                ref={(ref) => {
+                                    this.btn2 = ref
+                                }} title="筛选" index={2} btnClick={this.selectFilterItems}/>
                         </View>
                     </Image>
                     <ListView style={{backgroundColor: fontAndColor.COLORA3}}
@@ -106,7 +205,12 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                               renderRow={this._renderRow}
                               enableEmptySections={true}
                               renderSeparator={this._renderSeperator}/>
-                    {this.state.addTimeHide && <ClientAddTimeSelectView hideView={this.selectAddTime}/>}
+                    {this.state.addTimeHide && <ClientAddTimeSelectView hideView={this.selectAddTime}
+                                                                        selectMonth={this.selectMonth}
+                                                                        updateMonth={this.updateMonth}
+                                                                        currentSelect={this.timeSelect}
+                                                                        callBack={this.updateTimeSelect}/>}
+
                     {this.state.selectFilterHide && <ClientScreeningView hideView={this.selectFilterItems}/>}
                 </View>
             );
@@ -135,7 +239,7 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                         name: 'ClientInfoScene',
                         component: ClientInfoScene,
                         params: {
-
+                            rowData: rowData
                         }
                     });
                 }}
@@ -154,13 +258,34 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                             marginLeft: Pixel.getPixel(15),
                             fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                             color: fontAndColor.COLORA0
-                        }}>测试人员</Text>
+                        }}>{rowData.customerName}</Text>
                     <View style={{flex: 1}}/>
                     <Image source={cellJianTou} style={{marginRight: Pixel.getPixel(15),}}/>
                 </View>
             </TouchableOpacity>
         )
-    }
+    };
+
+    /**
+     *
+     **/
+    updateTimeSelect = (newTime) => {
+        this.timeSelect = newTime;
+        this.selectAddTime();
+        this.btn1.setTitle(this.timeSelect);
+        this.selectMonth = '选择月份';
+    };
+
+    /**
+     *
+     * @param newMonth
+     **/
+    updateMonth = (newMonth) => {
+        this.selectMonth = newMonth;
+        this.selectAddTime();
+        this.btn1.setTitle(this.selectMonth);
+        this.timeSelect = '';
+    };
 
     /**
      *  筛选项选择
@@ -211,7 +336,9 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                         this.toNextPage({
                             name: 'ClientAddScene',
                             component: CustomerAddScene,
-                            params: {}
+                            params: {
+                                callBack: this.refreshData
+                            }
                         })
                     }}>
                     <Image source={require('../../../images/employee_manage.png')}/>

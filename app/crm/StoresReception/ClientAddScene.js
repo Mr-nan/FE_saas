@@ -8,7 +8,9 @@ import {
     View,
     Dimensions,
     TouchableOpacity,
-    ListView
+    ListView,
+    KeyboardAvoidingView,
+    ScrollView
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
@@ -21,7 +23,9 @@ import BaseInfoItem from "./component/item/BaseInfoItem";
 import BuyerDemandItem from "./component/item/BuyerDemandItem";
 import CommunicationRecordItem from "./component/item/CommunicationRecordItem";
 import * as AppUrls from "../../constant/appUrls";
-import {request} from "../../utils/RequestUtil";
+import {request, requestNoToken} from "../../utils/RequestUtil";
+import * as StorageKeyNames from "../../constant/storageKeyNames";
+import StorageUtil from "../../utils/StorageUtil";
 
 export default class ClientAddScene extends BaseComponent {
 
@@ -107,19 +111,28 @@ export default class ClientAddScene extends BaseComponent {
             return (
                 <BaseInfoItem ref={(ref) => {
                     this.baseInfoItem = ref
-                }} navigator={this.props.navigator}/>
+                }}
+                              showModal={this.props.showModal}
+                              showToast={this.props.showToast}
+                              navigator={this.props.navigator}/>
             )
         } else if (rowData === '1') {
             return (
                 <BuyerDemandItem ref={(ref) => {
                     this.buyerDemandItem = ref
-                }} navigator={this.props.navigator}/>
+                }}
+                                 showModal={this.props.showModal}
+                                 showToast={this.props.showToast}
+                                 navigator={this.props.navigator}/>
             )
         } else if (rowData === '2') {
             return (
                 <CommunicationRecordItem ref={(ref) => {
                     this.communicationRecordItem = ref
-                }} navigator={this.props.navigator}/>
+                }}
+                                         showModal={this.props.showModal}
+                                         showToast={this.props.showToast}
+                                         navigator={this.props.navigator}/>
             )
         }
     };
@@ -149,47 +162,47 @@ export default class ClientAddScene extends BaseComponent {
      *
      **/
     submitClientInfo = () => {
+        this.props.showModal(true);
         if (this.checkInfo()) {
-            let maps = {
-                outTime: "2017-08-01 10:25:00",
-                inTime: "2017-08-01 09:25:00",
-                mobiles: "15102373842",
-                intentionalVehicle: "阿斯顿·马丁 阿斯顿马丁DB11 2016款 阿斯顿・马丁DB11 5.2T 设计师定制版",
-                customerBudget: "10万以下",
-                peopleNum: 1,
-                customerLevel: "A",
-                customerStatus: 1,
-                informationSources: "自到店",
-                customerRegion: "本地",
-                customerPhone: "13401091922",
-                customerName: "ceshi"
-            };
-            let url = AppUrls.CUSTOMER_ADD_URL;
-            request(url, 'post', maps).then((response) => {
-                this.props.showModal(false);
-                this.orderListData = response.mjson.data.items;
-                this.allPage = response.mjson.data.total / response.mjson.data.rows;
-                //console.log('订单列表数据 = ', this.orderListData[0].car);
-                if (this.orderListData) {
-                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    this.setState({
-                        dataSource: ds.cloneWithRows(this.orderListData),
-                        isRefreshing: false,
-                        renderPlaceholderOnly: 'success'
+            StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
+                if (data.code == 1 && data.result != null) {
+                    //console.log('this.clientInfo=====', this.clientInfo);
+                    let maps = [];
+                    for (let i = 0; i < this.clientInfo.length; i++) {
+                        maps[this.clientInfo[i].parameter] = this.clientInfo[i].value;
+                    }
+                    maps['mobiles'] = data.result;
+                    /*            let maps = {
+                     outTime: "2017-08-01 10:25:00",
+                     inTime: "2017-08-01 09:25:00",
+                     mobiles: "18000000002",
+                     intentionalVehicle: "阿斯顿·马丁 阿斯顿马丁DB11 2016款 阿斯顿・马丁DB11 5.2T 设计师定制版",
+                     customerBudget: "10万以下",
+                     peopleNum: 1,
+                     customerLevel: "A",
+                     customerStatus: 1,
+                     informationSources: "自到店",
+                     customerRegion: "本地",
+                     customerPhone: "13401091926",
+                     customerName: "ceshi444",
+                     customerCome: 1
+                     };*/
+                    let url = AppUrls.CUSTOMER_ADD_URL;
+                    request(url, 'post', maps).then((response) => {
+                        this.props.showModal(false);
+                        this.props.callBack();
+                        this.backPage();
+                    }, (error) => {
+                        this.props.showModal(false);
+                        //console.log('请求错误 = ', error);
+                        this.setState({
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'error'
+                        });
                     });
                 } else {
-                    this.setState({
-                        isRefreshing: false,
-                        renderPlaceholderOnly: 'null'
-                    });
+                    this.props.showToast('查询账户信息失败');
                 }
-            }, (error) => {
-                this.props.showModal(false);
-                //console.log('请求错误 = ', error);
-                this.setState({
-                    isRefreshing: false,
-                    renderPlaceholderOnly: 'error'
-                });
             });
         }
     };
@@ -216,6 +229,10 @@ export default class ClientAddScene extends BaseComponent {
         //console.log('this.clientInfo=====', this.clientInfo);
         for (let key in this.clientInfo) {
             //console.log('this.clientInfo=====', key + this.clientInfo[key]);
+            if (this.clientInfo[key].name == '电话' && this.clientInfo[key].value.length !== 11) {
+                this.props.showToast(this.clientInfo[key].name + '输入不正确');
+                return false;
+            }
             if (this.clientInfo[key].value == '') {
                 this.props.showToast(this.clientInfo[key].name + '不能为空');
                 return false;
