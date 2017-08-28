@@ -574,7 +574,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                     this.cancelOrder);
                             }}>
                             <View style={styles.buttonCancel}>
-                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>申请取消订单</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity
@@ -614,7 +614,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                     this.cancelOrder);
                             }}>
                             <View style={styles.buttonCancel}>
-                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>申请取消订单</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity
@@ -668,7 +668,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 this.refs.expModal.changeShowType(true, '提示', '订单尾款已结清联系客服取消订单', '确定');
                             }}>
                             <View style={styles.buttonCancel}>
-                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>申请取消订单</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity
@@ -805,7 +805,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 this.refs.cancelModal.changeShowType(true, '提示', '已申请订单融资请联系客服取消订单', '确定');
                             }}>
                             <View style={styles.buttonCancel}>
-                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>申请取消订单</Text>
                             </View>
                         </TouchableOpacity>
                         <ExplainModal ref='cancelModal' title='提示' buttonStyle={styles.expButton}
@@ -823,7 +823,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                     this.cancelOrder);
                             }}>
                             <View style={styles.buttonCancel}>
-                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>申请取消订单</Text>
                             </View>
                         </TouchableOpacity>*/}
                         <TouchableOpacity
