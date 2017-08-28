@@ -156,7 +156,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
-                this.mList = ['0', '1', '3', '4', '6'];
+                this.mList = ['0', '1', '3', '6'];
                 this.contactData = {
                     layoutTitle: '已拍下',
                     layoutContent: '请先与卖家联系商议成交价，待卖家确认后支付订金。',
@@ -1711,7 +1711,7 @@ const styles = StyleSheet.create({
     },
     itemType4: {
         backgroundColor: '#ffffff',
-        height: Pixel.getPixel(151)
+        //height: Pixel.getPixel(151)
     },
     itemType6: {
         backgroundColor: '#ffffff',

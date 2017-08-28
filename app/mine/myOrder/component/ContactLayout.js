@@ -46,7 +46,7 @@ export default class ContactLayout extends Component {
     render() {
         return (
             <View style={this.props.layoutContent ? styles.itemType1 : styles.itemType1NoContent}>
-                <View style={{width: Pixel.getPixel(310)}}>
+                <View style={{width: Pixel.getPixel(280)}}>
                     <View style={this.props.layoutContent ? {
                         flexDirection: 'row',
                         alignItems: 'center',
@@ -82,7 +82,7 @@ export default class ContactLayout extends Component {
                 </TouchableOpacity>*/}
                 <TouchableOpacity onPress={() => {
                     this.callClick(this.showShopId);
-                }} activeOpacity={0.9} style={styles.negativeButtonStyle}>
+                }} activeOpacity={0.8} style={styles.negativeButtonStyle}>
                     <Text allowFontScaling={false}  style={styles.negativeTextStyle}>我要咨询</Text>
                 </TouchableOpacity>
 
