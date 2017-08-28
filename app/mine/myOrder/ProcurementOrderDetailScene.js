@@ -577,6 +577,14 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>取消订单</Text>
                             </View>
                         </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.refs.payModal.changeShowType(true, '提示', '请咨询卖家，确认成交价', '确定');
+                            }}>
+                            <View style={styles.buttonConfirm}>
+                                <Text allowFontScaling={false} style={{color: '#ffffff'}}>支付</Text>
+                            </View>
+                        </TouchableOpacity>
                         <ChooseModal ref='chooseModal' title='提示'
                                      negativeButtonStyle={styles.negativeButtonStyle}
                                      negativeTextStyle={styles.negativeTextStyle} negativeText='取消'
@@ -585,6 +593,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                      buttonsMargin={Pixel.getPixel(20)}
                                      positiveOperation={this.cancelOrder}
                                      content=''/>
+                        <ExplainModal ref='payModal' title='提示' buttonStyle={styles.expButton}
+                                      textStyle={styles.expText}
+                                      text='确定' content='请咨询卖家，确认成交价'/>
                     </View>
                 )
                 break;
