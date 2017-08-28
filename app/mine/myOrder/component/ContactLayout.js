@@ -72,13 +72,18 @@ export default class ContactLayout extends Component {
                         null}
                 </View>
                 <View style={{flex: 1}}/>
-                <TouchableOpacity
+                {/*<TouchableOpacity
                     style={{marginRight: Pixel.getPixel(15), alignSelf: 'center'}}
                     onPress={() => {
                         this.callClick(this.showShopId);
                     }}>
                     <Image
                         source={require('../../../../images/mainImage/making_call.png')}/>
+                </TouchableOpacity>*/}
+                <TouchableOpacity onPress={() => {
+                    this.callClick(this.showShopId);
+                }} activeOpacity={0.9} style={styles.negativeButtonStyle}>
+                    <Text allowFontScaling={false}  style={styles.negativeTextStyle}>我要咨询</Text>
                 </TouchableOpacity>
 
                 <ExplainModal ref='expModal' title={this.props.promptTitle} buttonStyle={styles.expButton}
@@ -125,6 +130,21 @@ const styles = StyleSheet.create({
         borderColor: fontAndColor.COLORB0
     },
     expText: {
+        fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
+        color: fontAndColor.COLORB0
+    },
+    negativeButtonStyle: {
+        alignSelf: 'center',
+        marginRight: Pixel.getPixel(15),
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: Pixel.getPixel(80),
+        height: Pixel.getPixel(32),
+        borderRadius: 3,
+        borderWidth: 1,
+        borderColor: fontAndColor.COLORB0
+    },
+    negativeTextStyle: {
         fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
         color: fontAndColor.COLORB0
     }
