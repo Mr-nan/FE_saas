@@ -41,17 +41,20 @@ export class ClientInfoDetailView extends BaseComponent {
 
     componentWillReceiveProps(nextProps) {
         //console.log('componentWillReceivePropsd==-=-componentWillReceiveProps');
-        this.setState({
+        /*this.setState({
             rowData: nextProps.rowData
-        });
+        });*/
     }
 
     /**
      *   刷新页面数据
      **/
     refreshData = (data) => {
+        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.setState({
-            rowData: data
+            rowData: data,
+            dataSource: ds.cloneWithRows(['0', '1', '2']),
+            renderPlaceholderOnly: 'success'
         });
         //console.log('datadata====', data);
     };
@@ -60,11 +63,11 @@ export class ClientInfoDetailView extends BaseComponent {
      *
      **/
     initFinish = () => {
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+/*        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.setState({
             dataSource: ds.cloneWithRows(['0', '1', '2']),
             renderPlaceholderOnly: 'success'
-        });
+        });*/
     };
 
     /**

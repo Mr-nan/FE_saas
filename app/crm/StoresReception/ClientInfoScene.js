@@ -66,10 +66,8 @@ export default class ClientInfoScene extends BaseComponent {
      *
      **/
     allRefresh = (i, ref) => {
-        //console.log('1111111111111', i);
-        //console.log('2222222222222', ref);
         if (i.i == 1) {
-            console.log('1111111111111', i);
+            //console.log('1111111111111', i);
             this.refs.clientInfoDetailView.refreshData(this.state.rowData);
         }
     };
