@@ -40,6 +40,7 @@ import ContractWebScene from "./ContractWebScene";
 import ContractScene from "./ContractScene";
 import LoanInfo from "./component/LoanInfo";
 import DDDetailScene from "../../finance/lend/DDDetailScene";
+import ProcurementInfo from "./component/ProcurementInfo";
 const Pixel = new PixelUtil();
 
 export default class ProcurementOrderDetailScene extends BaseComponent {
@@ -93,8 +94,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
 
         } finally {
             //InteractionManager.runAfterInteractions(() => {
-                this.setState({renderPlaceholderOnly: 'loading'});
-                this.initFinish();
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
             //});
         }
     }
@@ -246,7 +247,26 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 break;
             case 5: // 订单融资处理中
                 this.mList = [];
-                this.mList = ['3', '7'];
+                if (this.orderDetail.status === 16) {
+                    this.contactData = {};
+                    this.mList = ['1', '3', '7'];
+                    this.contactData = {
+                        layoutTitle: '订单融资处理中',
+                        layoutContent: '恭喜您首付已经支付成功，预计10分钟内生成合同，之后请您签署',
+                        setPrompt: false
+                    };
+                } else if (this.orderDetail.status === 17 || this.orderDetail.status === 19 || this.orderDetail.status === 20 || this.orderDetail.status === 21 || this.orderDetail.status === 22 ||
+                    this.orderDetail.status === 23 || this.orderDetail.status === 24) {
+                    this.contactData = {};
+                    this.mList = ['1', '3', '7'];
+                    this.contactData = {
+                        layoutTitle: '订单融资处理中',
+                        layoutContent: '您确认车辆无误，点击“验收确认”后，24小时内即可为您结放贷款。',
+                        setPrompt: false
+                    };
+                } else {
+                    this.mList = ['3', '7'];
+                }
                 break;
             case 6: // 待付首付款
                 this.mList = [];
@@ -818,14 +838,14 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 return (
                     <View style={styles.bottomBar}>
                         {/*<TouchableOpacity
-                            onPress={() => {
-                                this.refs.chooseModal.changeShowType(true, '取消', '确定', '卖家将在您发起取消申请24小时内回复，如已支付订金将与卖家协商退款。',
-                                    this.cancelOrder);
-                            }}>
-                            <View style={styles.buttonCancel}>
-                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>申请取消订单</Text>
-                            </View>
-                        </TouchableOpacity>*/}
+                         onPress={() => {
+                         this.refs.chooseModal.changeShowType(true, '取消', '确定', '卖家将在您发起取消申请24小时内回复，如已支付订金将与卖家协商退款。',
+                         this.cancelOrder);
+                         }}>
+                         <View style={styles.buttonCancel}>
+                         <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>申请取消订单</Text>
+                         </View>
+                         </TouchableOpacity>*/}
                         <TouchableOpacity
                             onPress={() => {
                                 if (this.orderState == 3) {
@@ -1073,7 +1093,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     this.orderState = 5;
                     this.topState = -1;
                     if (status === 17 || status === 19 || status === 20 || status === 21 || status === 22 ||
-                        status === 23 || status === 24 ) {
+                        status === 23 || status === 24) {
                         this.bottomState = -1;
                     } else {
                         this.bottomState = 0;
@@ -1496,37 +1516,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             )
         } else if (rowData === '4') {
             return (
-                <View style={styles.itemType4}>
-                    <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
-                        <Text allowFontScaling={false} style={{
-                            fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-                            marginLeft: Pixel.getPixel(15)
-                        }}>采购信息</Text>
-                    </View>
-                    <View style={styles.separatedLine}/>
-                    <View style={{
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        marginLeft: Pixel.getPixel(15),
-                        marginTop: Pixel.getPixel(20),
-                        marginRight: Pixel.getPixel(15)
-                    }}>
-                        <Text allowFontScaling={false} style={styles.orderInfo}>支付订金</Text>
-                        <View style={{flex: 1}}/>
-                        <Text allowFontScaling={false} style={styles.infoContent}>{this.orderDetail.done_deposit_amount}元</Text>
-                    </View>
-                    <View style={styles.infoItem}>
-                        <Text allowFontScaling={false} style={styles.orderInfo}>支付尾款</Text>
-                        <View style={{flex: 1}}/>
-                        <Text allowFontScaling={false} style={styles.infoContent}>{this.orderDetail.done_balance_amount}元</Text>
-                    </View>
-                    <View style={styles.infoItem}>
-                        <Text allowFontScaling={false} style={styles.orderInfo}>支付总计</Text>
-                        <View style={{flex: 1}}/>
-                        <Text allowFontScaling={false}
-                              style={styles.infoContent}>{this.orderDetail.done_total_amount}元</Text>
-                    </View>
-                </View>
+                <ProcurementInfo orderDetail={this.orderDetail} orderState={this.orderState}/>
             )
         } else if (rowData === '5') {
             return (
@@ -1590,8 +1580,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             params: {
                                 financeNo: this.orderDetail.finance_no,
                                 orderNo: this.orderDetail.order_no,
-                                FromScene:"DingDanXiangQingScene",
-                                  backRefresh: () => {
+                                FromScene: "DingDanXiangQingScene",
+                                backRefresh: () => {
                                     this.payCallBack();
                                 }
                             }
