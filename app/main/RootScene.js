@@ -26,7 +26,7 @@ import * as Urls from '../constant/appUrls';
 import  UpLoadScene from './UpLoadScene';
 import  PixelUtil from '../utils/PixelUtil'
 var Pixel = new PixelUtil();
-const versionCode = 21.0;
+const versionCode = 22.0;
 let canNext = true;
 let Platform = require('Platform');
 let deploymentKey = '';

@@ -281,6 +281,13 @@ export default class CheckStand extends BaseComponent {
                             content={'订单融资'}
                             parentStyle={styles.loginBtnStyle1}
                             childStyle={styles.loginButtonTextStyle}/>
+                        <Text allowFontScaling={false} style={{
+                            marginLeft: Pixel.getPixel(15),
+                            marginRight: Pixel.getPixel(15),
+                            fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                            color: fontAndColor.COLORA1,
+                            marginTop: Pixel.getPixel(10)
+                        }}>车辆交易背景下的，基于车辆买卖订单的，对买车人购车的融资业务</Text>
                     </View> }
                     <ExplainModal ref='expModal' title='提示' buttonStyle={styles.expButton} textStyle={styles.expText}
                                   text='确定' content='此车在质押中，需要卖方解除质押后可申请订单融资。'/>
