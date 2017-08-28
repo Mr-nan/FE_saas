@@ -134,24 +134,18 @@ export default class Setting extends BaseComponent {
     sequencingCheckedClick = (title, value) => {
         if (value == 1){ //分享给朋友
 
-
             this.refs.sharedView.isVisible(true);
 
-
         }else if(value==2){  //保存到相册
-
-                var promise = CameraRoll.saveToCameraRoll('https://www.baidu.com/img/bd_logo1.png');
-                promise.then(function(result) {
-                    alert('保存成功！地址如下：\n' + result);
-                }).catch(function(error) {
-                    alert('保存失败！\n' + error);
+                CameraRoll.saveToCameraRoll('http://dycd-static.img-cn-beijing.aliyuncs.com/Uploads/Oss/201708/26/c7c9c803e06a8e4d.jpg').then((response)=>{
+                    this.props.showToast('保存成功')
+                    console.log('保存成功')
+                },(reject)=>{
+                    this.props.showToast('保存失败，请重新尝试')
                 });
-
-
         }else {
-
+            // 取消
         }
-        console.log(title, value);
     };
 
 
@@ -206,7 +200,7 @@ class SharedView extends Component {
                     weChat.shareToSession({
                         type:'imageUrl',
 
-                        imageUrl:''
+                        imageUrl:'http://dycd-static.img-cn-beijing.aliyuncs.com/Uploads/Oss/201708/26/c7c9c803e06a8e4d.jpg'
 
                     }).catch((error) => {
                     })
@@ -225,7 +219,7 @@ class SharedView extends Component {
 
                     weChat.shareToTimeline({
                         type: 'imageUrl',
-                        imageUrl:''
+                        imageUrl:'http://dycd-static.img-cn-beijing.aliyuncs.com/Uploads/Oss/201708/26/c7c9c803e06a8e4d.jpg'
 
                     }).catch((error) => {
                     })
