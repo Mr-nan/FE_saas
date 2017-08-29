@@ -43,19 +43,19 @@ export default class ClientScreeningView extends BaseComponent {
         client_level = [];
         visit_state = [];
         purchase_budget = [];
-        this.infoSourceKey = 0;
-        this.infoSourceValue = '';
+        this.infoSourceKey = this.props.screeningItems.xxly.index;
+        this.infoSourceValue = this.props.screeningItems.xxly.value;
 
-        this.clientLevelKey = 0;
-        this.clientLevelValue = '';
+        this.clientLevelKey = this.props.screeningItems.khjb.index;
+        this.clientLevelValue = this.props.screeningItems.khjb.value;
 
-        this.visitStateKey = 0;
-        this.visitStateValue = '';
+        this.visitStateKey = this.props.screeningItems.dfzp.index;
+        this.visitStateValue = this.props.screeningItems.dfzp.value;
 
-        this.purchaseBudgetKey = 0;
-        this.purchaseBudgetValue = '';
+        this.purchaseBudgetKey = this.props.screeningItems.gmys.index;
+        this.purchaseBudgetValue = this.props.screeningItems.gmys.value;
 
-        info_source.push({title: '全部', isSelected: this.infoSourceKey === info_source.length, value: '', ref: 'type_child' + 0});
+        info_source.push({title: '全部', isSelected: this.infoSourceKey === info_source.length, value: '所有来源', ref: 'type_child' + 0});
         info_source.push({title: '朋友介绍', isSelected: this.infoSourceKey === info_source.length, value: '朋友介绍', ref: 'type_child' + 1});
         info_source.push({title: '朋友圈', isSelected: this.infoSourceKey === info_source.length, value: '朋友圈', ref: 'type_child' + 2});
         info_source.push({title: '58同城', isSelected: this.infoSourceKey === info_source.length, value: '58同城', ref: 'type_child' + 3});
@@ -68,20 +68,20 @@ export default class ClientScreeningView extends BaseComponent {
         info_source.push({title: '转介绍', isSelected: this.infoSourceKey === info_source.length, value: '转介绍', ref: 'type_child' + 10});
         info_source.push({title: '其他', isSelected: this.infoSourceKey === info_source.length, value: '其他', ref: 'type_child' + 11});
 
-        client_level.push({title: '全部', isSelected: this.clientLevelKey === client_level.length, value: '', ref: 'type_child1' + 0});
-        client_level.push({title: '一周以内',isSelected: this.clientLevelKey === client_level.length, value: '一周以内',ref: 'type_child1' + 1});
-        client_level.push({title: '一个月以内',isSelected: this.clientLevelKey === client_level.length, value: '一个月以内',ref: 'type_child1' + 2});
-        client_level.push({title: '三个月以内',isSelected: this.clientLevelKey === client_level.length, value: '三个月以内', ref: 'type_child1' + 3});
-        client_level.push({title: '一年以上',isSelected: this.clientLevelKey === client_level.length, value: '一年以上', ref: 'type_child1' + 4});
+        client_level.push({title: '全部', isSelected: this.clientLevelKey === client_level.length, value: '所有级别', ref: 'type_child1' + 0});
+        client_level.push({title: '一周以内',isSelected: this.clientLevelKey === client_level.length, value: 'A',ref: 'type_child1' + 1});
+        client_level.push({title: '一个月以内',isSelected: this.clientLevelKey === client_level.length, value: 'B',ref: 'type_child1' + 2});
+        client_level.push({title: '三个月以内',isSelected: this.clientLevelKey === client_level.length, value: 'C', ref: 'type_child1' + 3});
+        client_level.push({title: '一年以上',isSelected: this.clientLevelKey === client_level.length, value: 'D', ref: 'type_child1' + 4});
 
-        visit_state.push({title: '全部', isSelected: this.visitStateKey === visit_state.length, value: '', ref: 'type_child2' + 0});
+        visit_state.push({title: '全部', isSelected: this.visitStateKey === visit_state.length, value: '全部状态', ref: 'type_child2' + 0});
         visit_state.push({title: '初次',isSelected: this.visitStateKey === visit_state.length,value: '初次',ref: 'type_child2' + 1});
         visit_state.push({title: '电话邀约',isSelected: this.visitStateKey === visit_state.length,value: '电话邀约',ref: 'type_child2' + 2});
         visit_state.push({title: '已购买',isSelected: this.visitStateKey === visit_state.length,value: '已购买', ref: 'type_child2' + 3});
         visit_state.push({title: '置换',isSelected: this.visitStateKey === visit_state.length,value: '置换', ref: 'type_child2' + 4});
         visit_state.push({title: '复购',isSelected: this.visitStateKey === visit_state.length,value: '复购', ref: 'type_child2' + 5});
 
-        purchase_budget.push({title: '全部', isSelected: this.visitStateKey === purchase_budget.length, value: '', ref: 'type_child3' + 0});
+        purchase_budget.push({title: '全部', isSelected: this.visitStateKey === purchase_budget.length, value: '所有预算', ref: 'type_child3' + 0});
         purchase_budget.push({title: '10万以下',isSelected: this.visitStateKey === purchase_budget.length,value: '10万以下',ref: 'type_child3' + 1});
         purchase_budget.push({title: '10-20万',isSelected: this.visitStateKey === purchase_budget.length,value: '10-20万',ref: 'type_child3' + 2});
         purchase_budget.push({title: '20-40万',isSelected: this.visitStateKey === purchase_budget.length,value: '20-40万', ref: 'type_child3' + 3});
@@ -105,16 +105,20 @@ export default class ClientScreeningView extends BaseComponent {
 
     /**
      *   重置筛选项
+     *   xxly: {index: 0, value: '所有来源'},
+     *   khjb: {index: 0, value: '所有级别'},
+     *   dfzp: {index: 0, value: '全部状态'},
+     *   gmys: {index: 0, value: '所有预算'}
      **/
     resetSelection = () => {
         this.infoSourceKey = 0;
-        this.infoSourceValue = '';
+        this.infoSourceValue = '所有来源';
         this.clientLevelKey = 0;
-        this.clientLevelValue = '';
+        this.clientLevelValue = '所有级别';
         this.visitStateKey = 0;
-        this.visitStisateValue = '';
+        this.visitStisateValue = '全部状态';
         this.purchaseBudgetKey = 0;
-        this.purchaseBudgetValue = '';
+        this.purchaseBudgetValue = '所有预算';
         this.is.resetLabel(this.infoSourceKey, info_source);
         this.cl.resetLabel(this.clientLevelKey, client_level);
         this.vs.resetLabel(this.visitStateKey, visit_state);
@@ -125,7 +129,14 @@ export default class ClientScreeningView extends BaseComponent {
      *   确认筛选项
      **/
     confirmSelection = () => {
+        let newScreeningItems = {
+            xxly: {index: this.infoSourceKey, value: this.infoSourceValue},
+            khjb: {index: this.clientLevelKey, value: this.clientLevelValue},
+            dfzp: {index: this.visitStateKey, value: this.visitStisateValue},
+            gmys: {index: this.purchaseBudgetKey, value: this.purchaseBudgetValue}
+        };
         this.props.hideView();
+        this.props.updateScreeningItems(newScreeningItems);
     };
 
     /**

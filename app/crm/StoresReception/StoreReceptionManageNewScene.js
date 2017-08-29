@@ -43,10 +43,10 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
         this.selectMonth = '选择月份';
         this.potentialClientList = [];
         this.screeningItems = {
-            xxly: '所有来源',
-            khjb: '所有级别',
-            dfzp: '全部状态',
-            gmys: '所有预算'
+            xxly: {index: 0, value: '所有来源'},
+            khjb: {index: 0, value: '所有级别'},
+            dfzp: {index: 0, value: '全部状态'},
+            gmys: {index: 0, value: '所有预算'}
         };
         this.state = {
             dataSource: [],
@@ -102,10 +102,10 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                     //mobile: '15102373842',
                     mobile: data.result,
                     //token: '5afa531b-4295-4c64-8d6c-ac436c619078',
-                    xxly: this.screeningItems.xxly,
-                    khjb: this.screeningItems.khjb,
-                    dfzp: this.screeningItems.dfzp,
-                    gmys: this.screeningItems.gmys,
+                    xxly: this.screeningItems.xxly.value,
+                    khjb: this.screeningItems.khjb.value,
+                    dfzp: this.screeningItems.dfzp.value,
+                    gmys: this.screeningItems.gmys.value,
                     pc: 1,
                     times: this.timeSelectMapping(),
                     mouth: ''
@@ -186,6 +186,7 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
 
                     {this.state.selectFilterHide && <ClientScreeningView
                         updateScreeningItems={this.updateScreeningItems}
+                        screeningItems={this.screeningItems}
                         hideView={this.selectFilterItems}/>}
                 </View>
             );
@@ -234,7 +235,10 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                                                                         currentSelect={this.timeSelect}
                                                                         callBack={this.updateTimeSelect}/>}
 
-                    {this.state.selectFilterHide && <ClientScreeningView hideView={this.selectFilterItems}/>}
+                    {this.state.selectFilterHide && <ClientScreeningView
+                        updateScreeningItems={this.updateScreeningItems}
+                        screeningItems={this.screeningItems}
+                        hideView={this.selectFilterItems}/>}
                 </View>
             );
         }
@@ -318,6 +322,7 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
     updateScreeningItems = (newScreeningItems) => {
         this.screeningItems = newScreeningItems;
         this.selectFilterItems();
+        this.refreshData();
     };
 
 

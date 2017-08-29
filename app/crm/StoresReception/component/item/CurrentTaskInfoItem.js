@@ -33,8 +33,7 @@ export default class CurrentTaskInfoItem extends BaseComponent {
         this.clientInfo = this.props.rowData;
         this.currentTask = this.props.data.maps[this.props.data.maps.length - 1] ?
             this.props.data.maps[this.props.data.maps.length - 1] : '';
-        if (this.clientInfo.customerStatus == 1 &&
-            (this.clientInfo.customerCome == 1 || this.clientInfo.customerCome == 2)) {
+        if (this.clientInfo.customerStatus == 2) {
             this.childItems.push({name: '客户状态', value: ''});
             this.childItems.push({name: '跟进时间', value: ''});
             this.childItems.push({name: '消息提醒日期', value: ''});
@@ -70,11 +69,11 @@ export default class CurrentTaskInfoItem extends BaseComponent {
         let createTime = this.currentTask.createTime ? this.currentTask.createTime : '暂无记录';
         let customerFlowMessage = this.currentTask.customerFlowMessage ? this.currentTask.customerFlowMessage : '暂无记录';
         let pushTime = this.currentTask.pushTime ? this.currentTask.pushTime : '暂无记录';
-        if (status == 1 && (come == -1 || come == null)) {
+        if (status == 1) {
             this.childItems[0].value = '初次';
             this.childItems[1].value = '暂无记录';
             this.childItems[2].value = '暂无记录';
-        } else if (status == 1) {
+        } else if (status == 2) {
             this.childItems[0].value = '电话邀约';
             this.childItems[1].value = createTime;
             this.childItems[4].value = customerFlowMessage;
@@ -84,7 +83,7 @@ export default class CurrentTaskInfoItem extends BaseComponent {
             } else {
                 this.childItems[3].value = '未到店';
             }
-        } else if (status == 2) {
+        } else if (status == 3) {
             this.childItems[0].value = '已购买';
             this.childItems[1].value = createTime;
             this.childItems[2].value = customerFlowMessage;

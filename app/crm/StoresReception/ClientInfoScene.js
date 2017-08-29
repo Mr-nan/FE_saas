@@ -112,13 +112,13 @@ export default class ClientInfoScene extends BaseComponent {
      *   客户状态映射
      **/
     customerStatusMapping = (status, come) => {
-        if (status == 1 && come == 1) {
+        if (status == 2 && come == 1) {
             return '电话邀约-到店';
-        } else if (status == 1 && come == 2) {
+        } else if (status == 2) {
             return '电话邀约-未到店';
         } else if (status == 1) {
             return '初次到店';
-        } else if (status == 2) {
+        } else if (status == 3) {
             return '已购买';
         } else if (status == 4) {
             return '置换';
