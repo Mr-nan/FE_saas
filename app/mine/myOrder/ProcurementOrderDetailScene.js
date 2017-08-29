@@ -1463,7 +1463,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                               style={{color: fontAndColor.COLORA2}}>《买卖协议》</Text>
                     }
                     {/*<Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1}}>和</Text>
-                     <Text allowFontScaling={false} 
+                     <Text allowFontScaling={false}
                      onPress={() => {
                      this.getTypeContractInfo(2)
                      }}
