@@ -29,6 +29,9 @@ export default class HomeRowButton extends PureComponent {
     }
 
     render() {
+        if(this.props.list==null||this.props.list.length<=0){
+            return <View></View>
+        }
         return (
             <View style={{width:width,backgroundColor:fontAndColor.COLORA3}}>
                 <View style={{width:width,backgroundColor:'#fff',

@@ -216,12 +216,6 @@ export default class HomeScene extends BaseComponet {
                             } else {
 
                             }
-
-                            this.setState({
-                                renderPlaceholderOnly: 'success',
-                                source: ds.cloneWithRows(allList), isRefreshing: false,
-                                allData: response.mjson.data
-                            });
                             if (allList.length <= 0) {
                                 this.setState({
                                     renderPlaceholderOnly: 'success',
