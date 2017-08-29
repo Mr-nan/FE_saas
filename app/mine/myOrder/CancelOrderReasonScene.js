@@ -87,7 +87,7 @@ const options = {
     }
 }
 
-export default class CancelOrderReason extends BaseComponent {
+export default class CancelOrderReasonScene extends BaseComponent {
 
     constructor(props) {
         super(props)
@@ -134,7 +134,7 @@ export default class CancelOrderReason extends BaseComponent {
 
         return (
 
-            <View style={{flex: 1, backgroundColor: fontAndClolr.COLORA3}}>
+            <View style={{flex: 1, backgroundColor: fontAndColor.COLORA3}}>
 
                 <NavigationBar
                     centerText={'原因描述'}
@@ -143,15 +143,14 @@ export default class CancelOrderReason extends BaseComponent {
                 />
 
 
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    style={styles.style_scrollview_container}>
 
-                    <ScrollView
-                        showsVerticalScrollIndicator={false}
-                        style={styles.style_scrollview_container}>
-
-                        <KeyboardAvoidingView
-                            behavior={'position'}
-                            //1keyboardVerticalOffset={}
-                        >
+                    <KeyboardAvoidingView
+                        behavior={'position'}
+                        //1keyboardVerticalOffset={}
+                    >
 
                         {   // 取消原因选项
                             this.state.buyer_cancel_types.map((data, index) => {
@@ -187,7 +186,7 @@ export default class CancelOrderReason extends BaseComponent {
 
                         <View style={{marginTop: 15, backgroundColor: 'white',}}>
                             <TextInput
-                                fontSize={fontAndClolr.BUTTONFONT30}
+                                fontSize={fontAndColor.BUTTONFONT30}
                                 style={styles.style_text_input}
                                 maxLength={100}
                                 multiline={true}
@@ -302,50 +301,56 @@ export default class CancelOrderReason extends BaseComponent {
                         <TouchableOpacity
                             onPress={() => {
 
-                                if (this.state.selected_buyer_cancel_type == 0){
+                                if (this.state.selected_buyer_cancel_type == 0) {
                                     this.props.showToast('请选择原因');
                                     return;
                                 }
-                                if (this.state.buyer_cancel_desc == ''){
+                                if (this.state.buyer_cancel_desc == '') {
                                     this.props.showToast('请输入描述');
                                     return;
                                 }
 
-                                if (this.state.buyer_cancel_desc.length<10){
+                                if (this.state.buyer_cancel_desc.length < 10) {
                                     this.props.showToast('最少输入10个汉子描述');
                                     return;
                                 }
-                                if (cancelImages.length==1){
+                                if (cancelImages.length == 1) {
                                     this.props.showToast('请上传照片');
                                     return;
-                                };
+                                }
 
                                 //TODO  提交资料。。。
 
                                 cancelImages.pop();
                                 let urls = ''
-                                cancelImages.map((picture, i)=>{
-                                    urls += picture.url+';'
+                                cancelImages.map((picture, i) => {
+                                    urls += picture.url + ';'
                                 })
 
-                                param = {
-                                    buyer_cancel_desc:this.state.buyer_cancel_desc,
-                                    buyer_cancel_img:urls,
-                                    buyer_cancel_type:this.state.buyer_cancel_type,
-                                    company_id:this.props.company_id,
-                                    order_id:this.props.order_id,
-                                    node:1
-                                }
-
-                                //  取消订单， 现在是的地址是临时测试地址, 记得后续再改
-                                request(Urls.BUYER_CANCEL_ORDER, 'Post',param).then((response)=>{
-
-                                    console.log('response', response);
-
-                                }, (error)=>{
-
-                                })
-
+                                StoreageUtil.mGetItem(StoreageKeyNames.LOAN_SUBJECT, (data) => {
+                                    if (data.code == 1 && data.result != null) {
+                                        let datas = JSON.parse(data.result);
+                                        let param = {
+                                            buyer_cancel_desc: this.state.buyer_cancel_desc,
+                                            buyer_cancel_img: urls,
+                                            buyer_cancel_type: this.state.buyer_cancel_type,
+                                            company_id: datas.company_base_id,
+                                            order_id: this.props.order_id,
+                                            node: 1,
+                                            type: 1
+                                        };
+                                        //  取消订单， 现在是的地址是临时测试地址, 记得后续再改
+                                        request(Urls.ORDER_CANCEL, 'Post', param).then((response) => {
+                                            console.log('response', response);
+                                            this.props.refresh();
+                                            this.backPage();
+                                        }, (error) => {
+                                            this.props.showToast(error.mjson.msg);
+                                        })
+                                    } else {
+                                        this.props.showToast('取消订单申请失败');
+                                    }
+                                });
                             }}
                             style={styles.style_commite_container}>
 
@@ -356,9 +361,9 @@ export default class CancelOrderReason extends BaseComponent {
 
                         {this.loadingView()}
 
-                        </KeyboardAvoidingView>
+                    </KeyboardAvoidingView>
 
-                    </ScrollView>
+                </ScrollView>
 
             </View>
         )

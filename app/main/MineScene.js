@@ -40,7 +40,7 @@ import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
 import AccountModal from '../component/AccountModal';
 import OrderTypeSelectScene from  '../mine/myOrder/OrderTypeSelectScene';
-import CancelOrderReason from '../../app/mine/myOrder/CancelOrderReason';
+import CancelOrderReason from '../mine/myOrder/CancelOrderReasonScene';
 
 let Platform = require('Platform');
 import ImagePicker from "react-native-image-picker";

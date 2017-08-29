@@ -974,9 +974,3 @@ export const FIRST_REPAYMENT_CONTRACT = '/api/v1/Contract/see_electron_repayment
  *  签署-扣款协议合同
  */
 export const FIRST_REPAYMENT_CONTRACT_SIGN = '//api/v1/Contract/sign_electron_repayment_contract';
-
-/**
- *  from @dingyonggang
- *  买家申请取消订单
- */
-export const BUYER_CANCEL_ORDER = 'http://order-api.dev.dycd.com/order/flows/buyerCancelOrder';

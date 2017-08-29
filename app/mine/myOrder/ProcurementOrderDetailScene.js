@@ -41,6 +41,8 @@ import ContractScene from "./ContractScene";
 import LoanInfo from "./component/LoanInfo";
 import DDDetailScene from "../../finance/lend/DDDetailScene";
 import ProcurementInfo from "./component/ProcurementInfo";
+import AccountScene from "../accountManage/AccountScene";
+import CancelOrderReasonScene from "./CancelOrderReasonScene";
 const Pixel = new PixelUtil();
 
 export default class ProcurementOrderDetailScene extends BaseComponent {
@@ -685,7 +687,15 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
                             onPress={() => {
-                                this.refs.expModal.changeShowType(true, '提示', '订单尾款已结清联系客服取消订单', '确定');
+                                //this.refs.expModal.changeShowType(true, '提示', '订单尾款已结清联系客服取消订单', '确定');
+                                this.toNextPage({
+                                    name: 'CancelOrderReasonScene',
+                                    component: CancelOrderReasonScene,
+                                    params: {
+                                        order_id: this.orderDetail.id,
+                                        refresh: this.payCallBack
+                                    }
+                                });
                             }}>
                             <View style={styles.buttonCancel}>
                                 <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>申请取消订单</Text>
