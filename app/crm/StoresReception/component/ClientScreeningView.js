@@ -81,12 +81,12 @@ export default class ClientScreeningView extends BaseComponent {
         visit_state.push({title: '置换',isSelected: this.visitStateKey === visit_state.length,value: '置换', ref: 'type_child2' + 4});
         visit_state.push({title: '复购',isSelected: this.visitStateKey === visit_state.length,value: '复购', ref: 'type_child2' + 5});
 
-        purchase_budget.push({title: '全部', isSelected: this.visitStateKey === purchase_budget.length, value: '所有预算', ref: 'type_child3' + 0});
-        purchase_budget.push({title: '10万以下',isSelected: this.visitStateKey === purchase_budget.length,value: '10万以下',ref: 'type_child3' + 1});
-        purchase_budget.push({title: '10-20万',isSelected: this.visitStateKey === purchase_budget.length,value: '10-20万',ref: 'type_child3' + 2});
-        purchase_budget.push({title: '20-40万',isSelected: this.visitStateKey === purchase_budget.length,value: '20-40万', ref: 'type_child3' + 3});
-        purchase_budget.push({title: '40-60万',isSelected: this.visitStateKey === purchase_budget.length,value: '40-60万', ref: 'type_child3' + 4});
-        purchase_budget.push({title: '60万以上',isSelected: this.visitStateKey === purchase_budget.length,value: '60万以上', ref: 'type_child3' + 5});
+        purchase_budget.push({title: '全部', isSelected: this.purchaseBudgetKey === purchase_budget.length, value: '所有预算', ref: 'type_child3' + 0});
+        purchase_budget.push({title: '10万以下',isSelected: this.purchaseBudgetKey === purchase_budget.length,value: '10万以下',ref: 'type_child3' + 1});
+        purchase_budget.push({title: '10-20万',isSelected: this.purchaseBudgetKey === purchase_budget.length,value: '10-20万',ref: 'type_child3' + 2});
+        purchase_budget.push({title: '20-40万',isSelected: this.purchaseBudgetKey === purchase_budget.length,value: '20-40万', ref: 'type_child3' + 3});
+        purchase_budget.push({title: '40-60万',isSelected: this.purchaseBudgetKey === purchase_budget.length,value: '40-60万', ref: 'type_child3' + 4});
+        purchase_budget.push({title: '60万以上',isSelected: this.purchaseBudgetKey === purchase_budget.length,value: '60万以上', ref: 'type_child3' + 5});
 
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
@@ -116,7 +116,7 @@ export default class ClientScreeningView extends BaseComponent {
         this.clientLevelKey = 0;
         this.clientLevelValue = '所有级别';
         this.visitStateKey = 0;
-        this.visitStisateValue = '全部状态';
+        this.visitStateValue = '全部状态';
         this.purchaseBudgetKey = 0;
         this.purchaseBudgetValue = '所有预算';
         this.is.resetLabel(this.infoSourceKey, info_source);
@@ -132,7 +132,7 @@ export default class ClientScreeningView extends BaseComponent {
         let newScreeningItems = {
             xxly: {index: this.infoSourceKey, value: this.infoSourceValue},
             khjb: {index: this.clientLevelKey, value: this.clientLevelValue},
-            dfzp: {index: this.visitStateKey, value: this.visitStisateValue},
+            dfzp: {index: this.visitStateKey, value: this.visitStateValue},
             gmys: {index: this.purchaseBudgetKey, value: this.purchaseBudgetValue}
         };
         this.props.hideView();
