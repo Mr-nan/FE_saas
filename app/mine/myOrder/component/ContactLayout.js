@@ -22,11 +22,29 @@ const Pixel = new PixelUtil();
 
 export default class ContactLayout extends Component {
 
+    /**
+     *   初始化
+     **/
     constructor(props) {
         super(props);
         this.showShopId = this.props.showShopId;
+        this.state = {
+            layoutContent: this.props.layoutContent
+        };
     }
 
+    /**
+     *   更新文字内容
+     **/
+    setLayoutContent = (content) => {
+        this.setState({
+            layoutContent: content
+        });
+    };
+
+    /**
+     *   点击"我要咨询"
+     **/
     callClick = (show_shop_id) => {
         // this.props.showModal(true);
         request(AppUrls.CAR_CUSTOMER_PHONE_NUMBER, 'post', {'enterprise_uid': show_shop_id}).then((response) => {
@@ -43,6 +61,9 @@ export default class ContactLayout extends Component {
 
     };
 
+    /**
+     *   render
+     **/
     render() {
         return (
             <View style={this.props.layoutContent ? styles.itemType1 : styles.itemType1NoContent}>
@@ -68,7 +89,7 @@ export default class ContactLayout extends Component {
                         </TouchableOpacity> : null}
                     </View>
                     {this.props.layoutContent ?
-                        <Text allowFontScaling={false}  style={styles.itemType1Content}>{this.props.layoutContent}</Text> :
+                        <Text allowFontScaling={false}  style={styles.itemType1Content}>{this.state.layoutContent}</Text> :
                         null}
                 </View>
                 <View style={{flex: 1}}/>

@@ -275,9 +275,13 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.items = [];
                 this.contactData = {};
                 this.mList = ['0', '1', '3', '4', '5', '6'];
+                let amount = '';
+/*                if (this.applyLoanAmount === '请输入申请贷款金额') {
+                    amount = '';
+                }*/
                 this.contactData = {
                     layoutTitle: '付首付款',
-                    layoutContent: '请支付首付款，之后等待放款。',
+                    layoutContent: '恭喜您的' + amount + '元贷款已经授权，请尽快支付首付款以便尽快完成融资。',
                     setPrompt: true,
                     promptTitle: '首付款说明',
                     promptContent: '车贷房贷前您需先支付首付款，卖家可查看到账金额，但不可提现。如交易最终未完成，首付款可退回。'
@@ -1346,6 +1350,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
     updateLoanAmount = (newAmount) => {
         //this.props.showModal(true);
         this.applyLoanAmount = newAmount;
+        this.refs.cl.setLayoutContent('恭喜您的' + newAmount + '元贷款已经授权，请尽快支付首付款以便尽快完成融资。');
     };
 
     /**
@@ -1434,6 +1439,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         } else if (rowData === '1') {
             return (
                 <ContactLayout
+                    ref="cl"
                     layoutTitle={this.contactData.layoutTitle ? this.contactData.layoutTitle : ''}
                     layoutContent={this.contactData.layoutContent ? this.contactData.layoutContent : ''}
                     setPrompt={this.contactData.setPrompt ? this.contactData.setPrompt : false}
