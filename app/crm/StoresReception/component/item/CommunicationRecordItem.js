@@ -66,6 +66,15 @@ export default class CommunicationRecordItem extends BaseComponent {
             parameter = this.childItems[i].parameter;
             this.childItems[i].value = this.props.rowData[parameter];
         }
+        if (this.childItems[0].value == 'A') {
+            this.childItems[0].value = 'A:一周以内(购买欲望特别强)';
+        } else if (this.childItems[0].value == 'B') {
+            this.childItems[0].value = 'B:一月以内(准买车用户)';
+        } else if (this.childItems[0].value == 'C') {
+            this.childItems[0].value = 'C:三个月以内(有购买意向)';
+        } else if (this.childItems[0].value == 'D') {
+            this.childItems[0].value = 'D:闲逛(近期无意向)';
+        }
     };
 
     /**

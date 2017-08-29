@@ -34,6 +34,7 @@ export default class BaseInfoItem extends BaseComponent {
      **/
     constructor(props) {
         super(props);
+        this.rowData = this.props.rowData;
         this.childItems = [];
         this.childItems.push({name: '客户姓名', value: '', parameter: 'customerName'});
         this.childItems.push({name: '电话', value: '', parameter: 'customerPhone'});
@@ -41,6 +42,9 @@ export default class BaseInfoItem extends BaseComponent {
         this.childItems.push({name: '信息来源', value: '', parameter: 'informationSources'});
         this.childItems.push({name: '地域', value: '', parameter: 'customerRegion'});
         this.childItems.push({name: '客户到店', value: '', parameter: 'customerCome'});
+        this.state = {
+            refre: ''
+        };
     }
 
     /**
@@ -50,6 +54,13 @@ export default class BaseInfoItem extends BaseComponent {
         /*this.setState({
          renderPlaceholderOnly: 'success'
          });*/
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.rowData = nextProps.rowData;
+        this.setState({
+            refre: ''
+        });
     }
 
     /**
@@ -66,9 +77,29 @@ export default class BaseInfoItem extends BaseComponent {
         let parameter = '';
         for (let i = 0; i < this.childItems.length; i++) {
             parameter = this.childItems[i].parameter;
-            this.childItems[i].value = this.props.rowData[parameter];
+            this.childItems[i].value = this.rowData[parameter];
         }
+        if (this.childItems[2].value == 2 && this.childItems[5].value == 1) {
+            this.childItems[2].value = '电话邀约-到店';
+        } else if (this.childItems[2].value == 2) {
+            this.childItems[2].value = '电话邀约-未到店';
+        } else if (this.childItems[2].value == 1) {
+            this.childItems[2].value = '初次到店';
+        } else if (this.childItems[2].value == 3) {
+            this.childItems[2].value = '已购买';
+        } else if (this.childItems[2].value == 4) {
+            this.childItems[2].value = '置换';
+        } else if (this.childItems[2].value == 5) {
+            this.childItems[2].value = '复购';
+        }
+/*
+        if (this.childItems[5].value == 1) {
+            this.childItems[5].value = '到店';
+        } else {
+            this.childItems[5].value = '未到店';
+        }*/
     };
+
 
     /**
      *
@@ -92,13 +123,13 @@ export default class BaseInfoItem extends BaseComponent {
                                                                    if (name === '初次到店') {
                                                                        this.childItems[i].value = 1;
                                                                    } else if (name === '电话邀约-到店') {
-                                                                       this.childItems[i].value = 1;
+                                                                       this.childItems[i].value = 2;
                                                                        this.childItems[5].value = 1;
                                                                    } else if (name === '电话邀约-未到店') {
-                                                                       this.childItems[i].value = 1;
+                                                                       this.childItems[i].value = 2;
                                                                        this.childItems[5].value = 2;
                                                                    } else if (name === '已购买') {
-                                                                       this.childItems[i].value = 2;
+                                                                       this.childItems[i].value = 3;
                                                                    } else if (name === '置换') {
                                                                        this.childItems[i].value = 4;
                                                                    } else if (name === '复购') {
@@ -156,6 +187,9 @@ export default class BaseInfoItem extends BaseComponent {
         } else {
             this.parseData();
             for (let i = 0; i < this.childItems.length; i++) {
+                if (this.childItems[i].name == '客户到店') {
+                    continue;
+                }
                 items.push(
                     <View
                         key={i + 'bo'}
