@@ -27,6 +27,7 @@ import {ClientStateSelectView} from "./component/ClientStateSelectView";
 import KeepCustomerDetailScene from "./KeepCustomerDetailScene";
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
+import KeepCustomerSearchScene from "./KeepCustomerSearchScene";
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 const {width, height} = Dimensions.get('window');
 
@@ -73,6 +74,34 @@ export default class KeepCustomerManageScene extends BaseComponent {
     };
 
     /**
+     *   时间单位筛选映射
+     **/
+    timeSelectMapping = () => {
+        if (this.timeSelect === '今天') {
+            return 1;
+        } else if (this.timeSelect === '本周') {
+            return 2;
+        } else if (this.timeSelect === '本月') {
+            return 3;
+        } else {
+            return '';
+        }
+    };
+
+    /**
+     *   客户状态筛选映射
+     **/
+    stateSelectMapping = () => {
+        if (this.stateSelect === '待完善客户') {
+            return 1;
+        } else if (this.stateSelect === '已完善客户') {
+            return 2;
+        } else {
+            return 2;
+        }
+    };
+
+    /**
      *   数据请求
      **/
     loadData = () => {
@@ -80,9 +109,9 @@ export default class KeepCustomerManageScene extends BaseComponent {
             if (data.code == 1 && data.result != null) {
                 let maps = {
                     mobile: data.result,
-                    perfectStatus: 2,
+                    perfectStatus: this.stateSelectMapping(),
                     pc: 1,
-                    times: 3,
+                    times: this.timeSelectMapping(),
                     mouth: ''
                 };
                 let url = AppUrls.TENURE_PERFECT_IF_LIST;
@@ -226,6 +255,7 @@ export default class KeepCustomerManageScene extends BaseComponent {
         this.selectAddTime();
         this.btn1.setTitle(this.timeSelect);
         this.selectMonth = '选择月份';
+        this.refreshData();
     };
 
     /**
@@ -246,6 +276,7 @@ export default class KeepCustomerManageScene extends BaseComponent {
         this.stateSelect = newState;
         this.selectFilterItems();
         this.btn2.setTitle(this.stateSelect);
+        this.refreshData();
     };
 
     /**
@@ -378,11 +409,10 @@ export default class KeepCustomerManageScene extends BaseComponent {
                 <TouchableOpacity
                     onPress={() => {
                         this.toNextPage({
-                            name: 'ClientSearchScene',
-                            component: ClientSearchScene,
+                            name: 'KeepCustomerSearchScene',
+                            component: KeepCustomerSearchScene,
                             params: {
-                                business: this.props.business,
-                                status: this.status,
+
                             }
                         });
                     }}
