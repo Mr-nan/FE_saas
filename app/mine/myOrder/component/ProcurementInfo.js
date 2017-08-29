@@ -93,7 +93,7 @@ export default class ProcurementInfo extends BaseComponent {
             items = [{name: '待付总金额', value: this.state.orderDetail.transaction_amount},
                 {name: '融资待放款金额', value: this.state.orderDetail.balance_amount},
                 {name: '已付订金', value: this.state.orderDetail.deposit_amount},
-                {name: '已付首付', value: this.state.orderDetail.deposit_amount}];
+                {name: '已付首付', value: this.state.orderDetail.first_amount}];
         } else if (this.state.orderState === 8) {
             items = [{name: '已付金额', value: this.state.orderDetail.transaction_amount}];
         }
