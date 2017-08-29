@@ -174,9 +174,11 @@ export  default  class carSourceListScene extends BaseComponent {
 
             if(data.code == 1){
                 if(data.result == 'true'){
-                    if (this.refs.headView.state.isCheckRecommend)
-                    {
-                        this.refs.headView.setCheckRecommend(false);
+                    if(this.refs.HeadView){
+                        if (this.refs.HeadView.state.isCheckRecommend)
+                        {
+                            this.refs.HeadView.setCheckRecommend(false);
+                        }
                     }
                 }
             }
@@ -416,7 +418,6 @@ export  default  class carSourceListScene extends BaseComponent {
 
     ScreeningClick=()=>{
 
-
             this.loadCarConfigData((carConfigData)=>{
                 carAgeSource = carConfigData.auto_age;
                 carKMSource = carConfigData.auto_mileage;
@@ -485,17 +486,13 @@ export  default  class carSourceListScene extends BaseComponent {
         APIParameter.emission_standards = screeningObject.checkedCarDischarge.value;
         APIParameter.nature_use = screeningObject.checkedCarNature.value;
         APIParameter.dealer_price = screeningObject.checkedCarPrice.value;
-        if (this.refs.headView.state.isCheckRecommend) {
-            this.refs.headView.setCheckRecommend(false)
-        } else {
-            this.filterData();
-        }
+        this.setHeadViewType();
     }
 
     //  筛选条件事件
     headViewOnPres = (index, isHighlighted, setImgHighlighted) => {
 
-        this.refs.headView.checkSelect(currentCheckedIndex); // 取消之前选择按钮状态
+        this.refs.HeadView.checkSelect(currentCheckedIndex); // 取消之前选择按钮状态
         currentCheckedIndex = index;
 
         if (index === 1) {
@@ -613,18 +610,14 @@ export  default  class carSourceListScene extends BaseComponent {
             },
         });
 
-        if (this.refs.headView.state.isCheckRecommend) {
-            this.refs.headView.setCheckRecommend(false)
-        } else {
-            this.filterData();
-        }
+        this.setHeadViewType();
 
     };
 
     // 筛选车龄和里程
     checkCarAgeAnKMClick = (data, index) => {
 
-        this.refs.headView.checkSelect(currentCheckedIndex);
+        this.refs.HeadView.checkSelect(currentCheckedIndex);
 
         let {checkedCarAgeType, checkedCarKMType} = this.state;
 
@@ -653,16 +646,12 @@ export  default  class carSourceListScene extends BaseComponent {
 
         });
 
-        if (this.refs.headView.state.isCheckRecommend) {
-            this.refs.headView.setCheckRecommend(false)
-        } else {
-            this.filterData();
-        }
+        this.setHeadViewType();
 
     };
 
     hideCheckedView = () => {
-        this.refs.headView.checkSelect(currentCheckedIndex); // 取消之前选择按钮状态
+        this.refs.HeadView.checkSelect(currentCheckedIndex); // 取消之前选择按钮状态
         this.setState({
             isHide: true,
         });
@@ -680,11 +669,7 @@ export  default  class carSourceListScene extends BaseComponent {
             },
         });
         APIParameter.order_type = value;
-        if (this.refs.headView.state.isCheckRecommend) {
-            this.refs.headView.setCheckRecommend(false)
-        } else {
-            this.filterData();
-        }
+        this.setHeadViewType();
 
     };
 
@@ -710,12 +695,7 @@ export  default  class carSourceListScene extends BaseComponent {
         APIParameter.brand_id = 0;
         APIParameter.series_id = 0;
         APIParameter.model_name = '';
-
-        if (this.refs.headView.state.isCheckRecommend) {
-            this.refs.headView.setCheckRecommend(false)
-        } else {
-            this.filterData();
-        }
+        this.setHeadViewType();
     };
 
     carAgeClick = () => {
@@ -727,11 +707,7 @@ export  default  class carSourceListScene extends BaseComponent {
         });
 
         APIParameter.coty = 0;
-        if (this.refs.headView.state.isCheckRecommend) {
-            this.refs.headView.setCheckRecommend(false)
-        } else {
-            this.filterData();
-        }
+        this.setHeadViewType();
     };
 
     carKMClick = () => {
@@ -742,11 +718,7 @@ export  default  class carSourceListScene extends BaseComponent {
             },
         });
         APIParameter.mileage = 0;
-        if (this.refs.headView.state.isCheckRecommend) {
-            this.refs.headView.setCheckRecommend(false)
-        } else {
-            this.filterData();
-        }
+        this.setHeadViewType();
     };
 
     carGenreClick = () => {
@@ -757,11 +729,7 @@ export  default  class carSourceListScene extends BaseComponent {
             },
         });
         APIParameter.v_type = 0;
-        if (this.refs.headView.state.isCheckRecommend) {
-            this.refs.headView.setCheckRecommend(false)
-        } else {
-            this.filterData();
-        }
+        this.setHeadViewType();
     };
 
     carCityClick = () => {
@@ -774,11 +742,7 @@ export  default  class carSourceListScene extends BaseComponent {
         });
         APIParameter.provice_id =0;
         APIParameter.city_id = 0;
-        if (this.refs.headView.state.isCheckRecommend) {
-            this.refs.headView.setCheckRecommend(false)
-        } else {
-            this.filterData();
-        }
+        this.setHeadViewType();
     };
 
 
@@ -793,11 +757,7 @@ export  default  class carSourceListScene extends BaseComponent {
             },
         });
         APIParameter.dealer_price = 0;
-        if (this.refs.headView.state.isCheckRecommend) {
-            this.refs.headView.setCheckRecommend(false)
-        } else {
-            this.filterData();
-        }
+        this.setHeadViewType();
     };
 
     carDischargeClick = () => {
@@ -808,11 +768,7 @@ export  default  class carSourceListScene extends BaseComponent {
             },
         });
         APIParameter.emission_standards = 0;
-        if (this.refs.headView.state.isCheckRecommend) {
-            this.refs.headView.setCheckRecommend(false)
-        } else {
-            this.filterData();
-        }
+        this.setHeadViewType();
     };
 
     carColorClick = () => {
@@ -823,11 +779,7 @@ export  default  class carSourceListScene extends BaseComponent {
             },
         });
         APIParameter.car_color = 0;
-        if (this.refs.headView.state.isCheckRecommend) {
-            this.refs.headView.setCheckRecommend(false)
-        } else {
-            this.filterData();
-        }
+        this.setHeadViewType();
     };
 
     carNatureClick = () => {
@@ -838,11 +790,7 @@ export  default  class carSourceListScene extends BaseComponent {
             },
         });
         APIParameter.nature_use = 0;
-        if (this.refs.headView.state.isCheckRecommend) {
-            this.refs.headView.setCheckRecommend(false)
-        } else {
-            this.filterData();
-        }
+        this.setHeadViewType();
     };
 
     allDelectClick = () => {
@@ -905,15 +853,19 @@ export  default  class carSourceListScene extends BaseComponent {
         APIParameter.car_color = 0;
         APIParameter.nature_use = 0;
         APIParameter.model_name = '';
+        this.setHeadViewType();
 
-        if (this.refs.headView.state.isCheckRecommend) {
-            this.refs.headView.setCheckRecommend(false);
+
+    };
+
+    setHeadViewType =()=>{
+        if (this.refs.HeadView.state.isCheckRecommend) {
+            this.refs.HeadView.setCheckRecommend(false);
 
         } else {
             this.filterData();
         }
-
-    };
+    }
 
     showSequencingView = () => {
 
@@ -951,7 +903,8 @@ export  default  class carSourceListScene extends BaseComponent {
                 && APIParameter.city_id == 0
                 && APIParameter.order_type == 0
                 && APIParameter.coty == 0
-                && APIParameter.mileage == 0 && APIParameter.type == 0) {
+                && APIParameter.mileage == 0 && APIParameter.type == 0)
+            {
                 isCarFoot = false;
 
             };
@@ -979,7 +932,7 @@ export  default  class carSourceListScene extends BaseComponent {
 
             <View style={styles.contaier}>
                 <CarListNavigatorView searchClick={this.presCarTypeScene}  ScreeningClick={this.ScreeningClick} loactionClick={this.loactionClick}/>
-                <CarSourceSelectHeadView ref="headView" onPres={this.headViewOnPres}
+                <CarSourceSelectHeadView ref="HeadView" onPres={this.headViewOnPres}
                                          checkRecommendClick={this.checkRecommendClick}
                                          isCheckRecommend = {isCheckRecommend}/>
                 {

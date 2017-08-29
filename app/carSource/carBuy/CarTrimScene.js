@@ -58,7 +58,7 @@ export default class CarTrimScene extends BaseComponent {
                     renderHeader={()=>{return(<TrimTaskHeadView defaultIndex={this.props.defaultIndex} ref="headView" headerViewItemClick={this.headerViewItemClick} selectAction={this.selectAction}/>)}}
                     renderRow={this.renderRow}
                 />
-                <AllNavigationView title='名车行' backIconClick={this.backPage} renderRihtFootView={this.renderRightView}/>
+                <AllNavigationView title='车辆整备' backIconClick={this.backPage} renderRihtFootView={this.renderRightView}/>
             </View>
         )
     }

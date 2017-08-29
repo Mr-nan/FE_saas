@@ -131,14 +131,11 @@ export default class EvaluateCarInfo extends BaseComponent {
             tid:this.props.carData.id,
 		}).then((response) => {
             this.props.showModal(false);
-
-            console.log(response.mjson);
-            this.props.showToast('任务提交成功');
-            this.navigationBack();
+			this.navigationBack();
 
         }, (error) => {
             this.props.showModal(false);
-
+			this.props.showToast(error.mjson.msg);
         });
 
 

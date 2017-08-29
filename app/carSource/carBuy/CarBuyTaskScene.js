@@ -37,7 +37,6 @@ const scanImg = require('../../../images/financeImages/scan.png');
 const IS_ANDROID = Platform.OS === 'android';
 
 
-
 export default class CarBuyTaskScene extends BaseComponent{
 
     render(){
@@ -123,10 +122,11 @@ export default class CarBuyTaskScene extends BaseComponent{
         request(AppUrls.CAR_SASS_SELECT_MSG, 'post', {
             id:this.props.id,
         }).then((response) => {
-            this.props.showModal(false);
             this.setData(response.mjson.data.acquisitionCar);
         }, (error) => {
-            this.props.showModal(false);
+            this.setState({
+                renderPlaceholderOnly:'error'
+            });
         });
     }
 
@@ -851,7 +851,6 @@ export default class CarBuyTaskScene extends BaseComponent{
         this.setState({
             titleData:this.titleData1,
             renderPlaceholderOnly:'success'
-
         });
     };
 
