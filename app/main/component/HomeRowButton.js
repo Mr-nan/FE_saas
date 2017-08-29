@@ -20,7 +20,7 @@ export default class HomeRowButton extends PureComponent {
         super(props);
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            source: ds.cloneWithRows([1, 2, 3, 4, 5, 6, 7])
+            source: ds.cloneWithRows(this.props.list)
         }
     }
 
@@ -29,7 +29,7 @@ export default class HomeRowButton extends PureComponent {
     }
 
     render() {
-        if(this.props.list==null||this.props.list.length<=0){
+        if (this.props.list == null || this.props.list.length <= 0) {
             return <View></View>
         }
         return (
@@ -55,9 +55,23 @@ export default class HomeRowButton extends PureComponent {
     }
 
     _renderRow = (movie, sectionId, rowId) => {
+        let imageList = [];
+        for (let i = 0; i < movie.imgs.length; i++) {
+            if (movie.imgs[i].url) {
+                imageList.push(<Image key={'imgs'+i} source={{uri:movie.imgs[i].url}}
+                                      style={{flex:1,height:Pixel.getPixel(57),resizeMode: 'stretch',
+                           marginRight:Pixel.getPixel(8)}}/>);
+            }
+        }
         let left = 0;
         if (rowId == 0) {
             left = Pixel.getPixel(12);
+        }
+        let DIDIAN;
+        if (movie.city_name.length) {
+            DIDIAN = '[' + movie.city_name + ']'
+        } else {
+            DIDIAN = '';
         }
         return (
             <TouchableOpacity onPress={()=>{
@@ -66,13 +80,13 @@ export default class HomeRowButton extends PureComponent {
             backgroundColor:'#f5f5f5',marginLeft:left,
             paddingTop:Pixel.getPixel(15),paddingBottom: Pixel.getPixel(15),
             paddingLeft:Pixel.getPixel(12),paddingRight: Pixel.getPixel(12)}}>
-                <Text numberOfLines={1} allowFontScaling={false} style={{fontSize: Pixel.getFontPixel(14)}}>[北京]奥迪
-                A7(进口) 2014款 35 FSI 技术奥迪奥迪</Text>
+                <Text numberOfLines={1} allowFontScaling={false} style={{fontSize: Pixel.getFontPixel(14)}}>
+                    {DIDIAN+movie.model_name}</Text>
                 <View style={{marginTop:Pixel.getPixel(7),flexDirection:'row',alignItems:'center'}}>
-                    <View style={{flex:1}}>
+                    <View style={{flex:2}}>
                         <Text numberOfLines={1} allowFontScaling={false} style={{
                             fontSize: Pixel.getFontPixel(12),color:'#9b9b9b'}}>
-                            2016年06月/23万公里
+                            {this.dateReversal(movie.create_time + '000') + '/' + movie.mileage + '万公里'}
                         </Text>
                     </View>
                     <View style={{flex:1,alignItems:'flex-end'}}>
@@ -84,20 +98,18 @@ export default class HomeRowButton extends PureComponent {
                 </View>
                 <View style={{marginTop:Pixel.getPixel(10),
                 flexDirection:'row',alignItems:'center'}}>
-                    <Image source={require('../../../images/welcomFirst@2x.png')}
-                           style={{flex:1,height:Pixel.getPixel(57),resizeMode: 'stretch',
-                           marginRight:Pixel.getPixel(8)}}/>
-                    <Image source={require('../../../images/welcomFirst@2x.png')}
-                           style={{flex:1,height:Pixel.getPixel(57),resizeMode: 'stretch',
-                           marginLeft:Pixel.getPixel(4),marginRight:Pixel.getPixel(4)}}/>
-                    <Image source={require('../../../images/welcomFirst@2x.png')}
-                           style={{flex:1,height:Pixel.getPixel(57),resizeMode: 'stretch',
-                           marginLeft:Pixel.getPixel(8)}}/>
+                    {imageList}
                 </View>
             </TouchableOpacity>
 
         )
     }
+    dateReversal = (time) => {
+        const date = new Date();
+        date.setTime(time);
+        return (date.getFullYear() + "年" + (date.getMonth() + 1) + "月");
+
+    };
 
     _renderSeparator(sectionId, rowId) {
 
