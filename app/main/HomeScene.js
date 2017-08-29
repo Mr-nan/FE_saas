@@ -112,7 +112,9 @@ export default class HomeScene extends BaseComponet {
 
                 <HomeJobItem jumpScene={(ref,com)=>{this.props.jumpScene(ref,com)}}
                              callBack={(params)=>{this.props.callBack(params)}}/>
-                <HomeRowButton list={this.carData}/>
+                <HomeRowButton onPress={(id)=>{
+                    this.props.callBack({name: 'CarInfoScene', component: CarInfoScene, params: {carID:id}});
+                }} list={this.carData}/>
                 <HomeAdvertisementButton/>
 
 

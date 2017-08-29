@@ -75,13 +75,13 @@ export default class HomeRowButton extends PureComponent {
         }
         return (
             <TouchableOpacity onPress={()=>{
-
+                this.props.onPress(movie.id);
             }} activeOpacity={0.8} style={{width:width-width/8-width/8,height:Pixel.getPixel(134),
             backgroundColor:'#f5f5f5',marginLeft:left,
             paddingTop:Pixel.getPixel(15),paddingBottom: Pixel.getPixel(15),
             paddingLeft:Pixel.getPixel(12),paddingRight: Pixel.getPixel(12)}}>
                 <Text numberOfLines={1} allowFontScaling={false} style={{fontSize: Pixel.getFontPixel(14)}}>
-                    {DIDIAN+movie.model_name}</Text>
+                    {DIDIAN + movie.model_name}</Text>
                 <View style={{marginTop:Pixel.getPixel(7),flexDirection:'row',alignItems:'center'}}>
                     <View style={{flex:2}}>
                         <Text numberOfLines={1} allowFontScaling={false} style={{
@@ -92,7 +92,7 @@ export default class HomeRowButton extends PureComponent {
                     <View style={{flex:1,alignItems:'flex-end'}}>
                         <Text numberOfLines={1} allowFontScaling={false} style={{
                             fontSize: Pixel.getFontPixel(14),color:'#fa5741',fontWeight: 'bold'}}>
-                            21.0万
+                            {movie.dealer_price ? movie.dealer_price : ''}
                         </Text>
                     </View>
                 </View>
