@@ -487,8 +487,8 @@ export default class FinanceSence extends BaseComponet {
             }else if(movie.type == 8){
                 nextPage = ChedidaiDetaileScene;
                 this.buttonParams.content = '车抵';
-                this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB4}];
-                this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB4}];
+                this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB3}];
+                this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB3}];
             }
 
 

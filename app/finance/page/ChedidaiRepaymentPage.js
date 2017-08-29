@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
     },
     parentStyle: {
         borderWidth: 1,
-        borderColor: fontAndColor.COLORB0,
+        borderColor: fontAndColor.COLORB3,
         borderRadius: 3,
         height: Pixel.getPixel(16),
         width: Pixel.getPixel(34),
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
     },
     childStyle: {
         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-        color: fontAndColor.COLORB0,
+        color: fontAndColor.COLORB3,
     },
     allBack: {
         width: width, height: Pixel.getPixel(123), backgroundColor: '#ffffff', alignItems: 'center'
