@@ -22,6 +22,7 @@ export default class LabelParent extends PureComponent {
     constructor(props) {
         super(props);
         //this.clickitems = this.props.orderState;
+        this.firstRef = '';
         this.state = {
             clickitems: this.props.orderState,
             items: this.props.items
@@ -35,19 +36,12 @@ export default class LabelParent extends PureComponent {
         });
     }
 
-    resetLabel = (clickitems, items) => {
-        //console.log('this.state.item3=====', clickitems);
-        this.setState({
-            clickitems: clickitems,
-            //items: items
-        });
-    };
-
-    resetLabel1 = (clickitems) => {
-        //this.props.updateState(0);
-        //this.props.updateStatus(status);
-        this.state.items[clickitems].ref.unSelected();
-        //this.state.clickitems = item;
+    resetLabel = () => {
+/*        this.setState({
+         clickitems: clickitems,
+         //items: items
+         });*/
+        this.firstRef.setPressDown();
     };
 
     render() {
@@ -75,6 +69,9 @@ export default class LabelParent extends PureComponent {
                     }
                 }} ref={(modal) => {
                     items[j].ref = modal
+                    if (j === 0) {
+                        this.firstRef = modal;
+                    }
                 }} index={j} item={items[j]} key={j + 'child'}/>)
             }
             item.push(<View key={i + 'parent'} style={{
