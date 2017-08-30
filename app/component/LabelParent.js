@@ -36,7 +36,8 @@ export default class LabelParent extends PureComponent {
     }
 
     resetLabel = (clickitems, items) => {
-        //console.log('this.state.item3=====', clickitems);
+        // console.log('this.state.item3=====', clickitems);
+        console.log('this.state.item3=====', clickitems);
         this.setState({
             clickitems: clickitems,
             //items: items
@@ -66,7 +67,7 @@ export default class LabelParent extends PureComponent {
             for (let j = 3 * i - 3; j < allSize; j++) {
                 //console.log(items[j].title);
                 childitem.push(<LabelForOrderScreen callBack={(item, status) => {
-                    // console.log(items[j].ref);
+                     console.log(items[j].ref);
                     if (this.state.clickitems !== item) {
                         this.props.updateState(item);
                         this.props.updateStatus(status);

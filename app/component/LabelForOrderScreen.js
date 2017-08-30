@@ -54,6 +54,7 @@ export default class LabelForOrderScreen extends PureComponent {
     };
 
     render() {
+        console.log('rend+=======',this.state.enable,this.props.item.title);
         return (
             <TouchableOpacity
                 style={[Styles.selectedItem, this.state.enable && Styles.disableColor]}
