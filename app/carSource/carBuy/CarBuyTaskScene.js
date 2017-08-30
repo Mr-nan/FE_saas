@@ -176,10 +176,19 @@ export default class CarBuyTaskScene extends BaseComponent{
                 <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                     <TextInput style={styles.textInput}
                                placeholder='请输入'
-                               keyboardType={'numeric'}
                                maxLength={7}
                                defaultValue={data.customerName}
                                underlineColorAndroid='transparent'
+                               onFocus={()=>{
+                                   this.setState({
+                                       keyboardOffset:-Pixel.getPixel(200)
+                                   });
+                               }}
+                               onBlur={()=>{
+                                   this.setState({
+                                       keyboardOffset:-Pixel.getPixel(64)
+                                   });
+                               }}
                                onChangeText={(text)=>{
                                    this.carData['customerName'] = text;
                                }}/>
@@ -191,10 +200,20 @@ export default class CarBuyTaskScene extends BaseComponent{
                     <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                         <TextInput style={styles.textInput}
                                    placeholder='请输入'
-                                   keyboardType={'numeric'}
+                                   keyboardType={'phone-pad'}
                                    maxLength={11}
                                    defaultValue={data.contentNum}
                                    underlineColorAndroid='transparent'
+                                   onFocus={()=>{
+                                       this.setState({
+                                           keyboardOffset:-Pixel.getPixel(200)
+                                       });
+                                   }}
+                                   onBlur={()=>{
+                                       this.setState({
+                                           keyboardOffset:-Pixel.getPixel(64)
+                                       });
+                                   }}
                                    onChangeText={(text)=>{
                                        this.carData['contentNum'] = text;
                                    }}/>
@@ -518,9 +537,18 @@ export default class CarBuyTaskScene extends BaseComponent{
                               <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                                   <TextInput style={styles.textInput}
                                              placeholder='请输入'
-                                             keyboardType={'numeric'}
                                              maxLength={15}
                                              underlineColorAndroid='transparent'
+                                             onFocus={()=>{
+                                                 this.setState({
+                                                     keyboardOffset:-Pixel.getPixel(200)
+                                                 });
+                                             }}
+                                             onBlur={()=>{
+                                                 this.setState({
+                                                     keyboardOffset:-Pixel.getPixel(64)
+                                                 });
+                                             }}
                                              onChangeText={(text)=>{
                                                  this.carData['customerName'] = text;
                                              }}/>
@@ -537,9 +565,19 @@ export default class CarBuyTaskScene extends BaseComponent{
                               <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                                   <TextInput style={styles.textInput}
                                              placeholder='请输入'
-                                             keyboardType={'numeric'}
+                                             keyboardType={'phone-pad'}
                                              maxLength={11}
                                              underlineColorAndroid='transparent'
+                                             onFocus={()=>{
+                                                 this.setState({
+                                                     keyboardOffset:-Pixel.getPixel(200)
+                                                 });
+                                             }}
+                                             onBlur={()=>{
+                                                 this.setState({
+                                                     keyboardOffset:-Pixel.getPixel(64)
+                                                 });
+                                             }}
                                              onChangeText={(text)=>{
                                                 this.carData['contentNum'] = text;
                                              }}/>
@@ -679,7 +717,7 @@ export default class CarBuyTaskScene extends BaseComponent{
                                   underlineColorAndroid='transparent'
                                   onFocus={()=>{
                                       this.setState({
-                                          keyboardOffset:-Pixel.getPixel(0)
+                                          keyboardOffset:Pixel.getPixel(0)
                                       });
                                   }}
                                   onBlur={()=>{

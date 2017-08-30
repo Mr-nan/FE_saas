@@ -1,20 +1,14 @@
 /**
  * 开发地址
  */
-<<<<<<< HEAD
-export const BASEURL = 'http://dev.api-gateway.dycd.com/';
-=======
+
 // export const BASEURL = 'http://dev.api-gateway.dycd.com/';
->>>>>>> devSaas
 
 /**
  * 测试地址
  */
-<<<<<<< HEAD
-// export const BASEURL = 'http://api-gateway.test.dycd.com/';
-=======
+
 export const BASEURL = 'http://api-gateway.test.dycd.com/';
->>>>>>> devSaas
 
 /**
  * 正式地址
@@ -1137,8 +1131,5 @@ export const UPDATE_CAR_WELFARE = BASEURL + "cheshang/tenure_customer/updateCarW
 /**
  *  搜索保有客户数据
  */
-<<<<<<< HEAD
 export const SELECT_BY_SEARCH = BASEURL + "cheshang/tenure_customer/selectBySearch";
-=======
-export const SELECT_BY_SEARCH = BASEURL + "cheshang/tenure_customer/selectBySearch";
->>>>>>> devSaas
+
