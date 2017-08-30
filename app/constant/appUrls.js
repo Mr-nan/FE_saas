@@ -1,12 +1,14 @@
 /**
  * 开发地址
  */
-//export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+
+// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
  */
- export const BASEURL = 'http://api-gateway.test.dycd.com/';
+
+export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 正式地址
@@ -31,7 +33,7 @@ export const V = "v1/";
  /**
  * 版本号3
  */
-export const V3 = "v3/";
+// export const V3 = "v3/";
 
 /**
  * 分享测试地址
@@ -167,15 +169,10 @@ export const CAR_DELETE = BASEURL + V + 'car/delete';
  */
 export const CAR_SALE = BASEURL + V + 'car/sale';
 
-// /**
-//  * 我的车源-创建已售消息
-//  */
-// export const CAR_SASS_SALED = BASEURL + 'cheshang/sass/saled';
-
 /**
  * 我的车源-创建已售消息
  */
-export const CAR_SASS_SALED = BASEURL + 'cheshang/sass/addsaledMessage';
+export const CAR_SASS_SALED = BASEURL + 'cheshang/sass/saled';
 
 /**
  * 获取我的车源-未审核
@@ -246,11 +243,6 @@ export const GET_REGISTRANT = BASEURL + V + 'car.borrower/getRegistrants';
  * 添加登记人信息
  */
 export const ADD_REGISTRANT = BASEURL + V + 'car.borrower/addRegistrant';
-
-/**
- * 验证车架号
- */
-export const VIN_CHECK = BASEURL + V + 'car/checkVin';
 
 /**
  * 根据VIN获取车辆详情
@@ -1104,6 +1096,11 @@ export const DAILY_REMINDER_STATISTICS = BASEURL + "cheshang/sass/statistics";
 export const POTENTIAL_CUSTOMER_LISTS = BASEURL + "cheshang/customer/lists";
 //export const POTENTIAL_CUSTOMER_LISTS = PRE + "customer/querycustomerList.do";
 /**
+ *  获取潜在客户详情
+ */
+export const POTENTIAL_CUSTOMER_DETAIL = "http://10.3.10.35:8080/customer/selectDetail.do";
+//export const POTENTIAL_CUSTOMER_DETAIL = BASEURL + "cheshang/customer/selectDetail";
+/**
  *  获取所有跟进信息
  */
 export const SELECT_ALL_FLOW = BASEURL + "cheshang/customer/selectAllFlow";
@@ -1131,3 +1128,8 @@ export const TENURE_CAR_PEOPLE_MSG = BASEURL + "cheshang/tenure_customer/tenureC
  *  获取保有客户数据提交
  */
 export const UPDATE_CAR_WELFARE = BASEURL + "cheshang/tenure_customer/updateCarWelfare";
+/**
+ *  搜索保有客户数据
+ */
+export const SELECT_BY_SEARCH = BASEURL + "cheshang/tenure_customer/selectBySearch";
+

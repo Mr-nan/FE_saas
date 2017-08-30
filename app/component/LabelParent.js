@@ -22,6 +22,7 @@ export default class LabelParent extends PureComponent {
     constructor(props) {
         super(props);
         //this.clickitems = this.props.orderState;
+        this.firstRef = '';
         this.state = {
             clickitems: this.props.orderState,
             items: this.props.items
@@ -35,11 +36,12 @@ export default class LabelParent extends PureComponent {
         });
     }
 
-    resetLabel = (clickitems, items) => {
-        this.setState({
-            clickitems: clickitems,
-            items: items
-        });
+    resetLabel = () => {
+/*        this.setState({
+         clickitems: clickitems,
+         //items: items
+         });*/
+        this.firstRef.setPressDown();
     };
 
     render() {
@@ -57,21 +59,20 @@ export default class LabelParent extends PureComponent {
             }
             for (let j = 3 * i - 3; j < allSize; j++) {
                 //console.log(items[j].title);
-                childitem.push(<LabelForOrderScreen callBack={(item, status)=>{
+                childitem.push(<LabelForOrderScreen callBack={(item, status) => {
                     // console.log(items[j].ref);
-                    // this.refs.a10.unSelected();
                     if (this.state.clickitems !== item) {
-                        /*if(clickitems === ''){
-                            clickitems = item;
-                        }else{*/
                         this.props.updateState(item);
                         this.props.updateStatus(status);
                         items[this.state.clickitems].ref.unSelected();
                         this.state.clickitems = item;
-                        //}
                     }
-
-                }} ref={(modal)=>{items[j].ref = modal}} index={j} item={items[j]} key={j + 'child'} />)
+                }} ref={(modal) => {
+                    items[j].ref = modal
+                    if (j === 0) {
+                        this.firstRef = modal;
+                    }
+                }} index={j} item={items[j]} key={j + 'child'}/>)
             }
             item.push(<View key={i + 'parent'} style={{
                 width: width,

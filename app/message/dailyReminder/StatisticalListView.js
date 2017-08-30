@@ -216,10 +216,10 @@ const styles = StyleSheet.create({
         backgroundColor: fontAndColor.COLORA4
     },
     subItem: {
-        marginTop: Pixel.getPixel(20),
+        marginTop: Pixel.getPixel(10),
         alignItems: 'center',
         flexDirection: 'row',
-        height: Pixel.getPixel(35),
+        height: Pixel.getPixel(45),
         backgroundColor: '#ffffff'
     },
     subTitle: {

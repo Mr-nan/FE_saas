@@ -36,6 +36,8 @@ export default class FollowTaskInfoItem extends BaseComponent {
         if (this.clientInfo.customerStatus == 1) {
             this.clientState = ['电话邀约', '已购买', '置换', '复购'];
         } else if (this.clientInfo.customerStatus == 2) {
+            this.clientState = ['电话邀约', '已购买', '置换', '复购'];
+        } else if (this.clientInfo.customerStatus == 3) {
             this.clientState = ['已购买', '置换', '复购'];
         } else if (this.clientInfo.customerStatus == 4) {
             this.clientState = ['置换'];
@@ -101,9 +103,9 @@ export default class FollowTaskInfoItem extends BaseComponent {
                                                                title: '客户状态',
                                                                callBack: (name, index) => {
                                                                    if (name === '电话邀约') {
-                                                                       this.state.childItems[i].value = 1;
-                                                                   } else if (name === '已购买') {
                                                                        this.state.childItems[i].value = 2;
+                                                                   } else if (name === '已购买') {
+                                                                       this.state.childItems[i].value = 3;
                                                                    } else if (name === '置换') {
                                                                        this.state.childItems[i].value = 4;
                                                                    } else if (name === '复购') {

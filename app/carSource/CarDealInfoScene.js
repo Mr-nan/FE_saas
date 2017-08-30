@@ -120,14 +120,13 @@ export default class CarDealInfoScene extends BaseComponent{
             }, (error) => {
 
                 this.props.showModal(false);
-                this.props.showToast(error.msg);
+                this.props.showToast(error.mjson.msg);
             });
 
 
         }, (error) => {
-
             this.props.showModal(false);
-            this.props.showToast(error.msg);
+            this.props.showToast(error.mjson.msg);
         });
 
     }
@@ -172,7 +171,6 @@ export default class CarDealInfoScene extends BaseComponent{
                             <View style={{alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-end'}}>
                                 <TextInput style={styles.textInput}
                                            placeholder='请输入'
-                                           keyboardType={'numeric'}
                                            underlineColorAndroid='transparent'
                                            onChangeText={(text) => {
                                               this.carDealData.salesman = text;

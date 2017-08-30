@@ -34,7 +34,7 @@ export default class CarInfoItem extends BaseComponent {
         super(props);
         this.type = '';
         this.childItems = [];
-        this.childItems.push({name: '车辆号码', value: '', parameter: 'tenureCarnum'});
+        this.childItems.push({name: '车牌号码', value: '', parameter: 'tenureCarnum'});
         this.childItems.push({name: '交强险到期', value: '', parameter: 'tenureCompulsory'});
         this.childItems.push({name: '商业险到期', value: '', parameter: 'tenureBusiness'});
         this.childItems.push({name: '保养到期', value: '', parameter: 'tenureMaintain'});

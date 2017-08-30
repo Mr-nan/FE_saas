@@ -160,8 +160,8 @@ export default class CarManagerTaskScene extends BaseComponent{
             this.titleData1[2][0].tailView=()=>{
                 return(
                     <TextInput
-                        style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(60)}]}
-                        defaultValue={data.remark}
+                        style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(60),color:fontAndColor.COLORA2}]}
+                        defaultValue={data.remark?data.remark:'无'}
                         editable={false}
                         underlineColorAndroid='transparent'
                         placeholderTextColor={fontAndColor.COLORA4}
@@ -222,7 +222,6 @@ export default class CarManagerTaskScene extends BaseComponent{
         }).then((response) => {
 
             this.props.showModal(false);
-            this.props.showToast('任务提交成功');
             this.props.reloadTaskData();
             this.backPage();
 
@@ -279,6 +278,22 @@ export default class CarManagerTaskScene extends BaseComponent{
                                                this.buyPrice.setNativeProps({
                                                    text: moneyStr,
                                                });
+                                               if(this.normPrice){
+                                                   let normNumber = String((parseFloat(moneyStr) * 1.1).toFixed(2));
+                                                   this.selfprice = normNumber;
+                                                   this.normPrice.setNativeProps({
+                                                       text: text ? normNumber:'',
+                                                   });
+                                               }
+                                               if(this.dealPrice){
+                                                   let dealNumber = String((parseFloat(moneyStr) * 1.06).toFixed(2)) ;
+                                                   this.overprice = dealNumber;
+                                                   this.dealPrice.setNativeProps({
+                                                       text: text? dealNumber:'',
+                                                   });
+                                               }
+
+
                                            }}/>
                                 <Text allowFontScaling={false} style={styles.textInputTitle}>万元</Text>
                             </View>)
