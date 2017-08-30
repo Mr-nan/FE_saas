@@ -50,6 +50,7 @@ export default class HomeScene extends BaseComponet {
     constructor(props) {
         super(props);
         // 初始状态
+        this.carData = [];
         this.state = {
             source: [],
             renderPlaceholderOnly: 'blank',
@@ -111,7 +112,9 @@ export default class HomeScene extends BaseComponet {
 
                 <HomeJobItem jumpScene={(ref,com)=>{this.props.jumpScene(ref,com)}}
                              callBack={(params)=>{this.props.callBack(params)}}/>
-                <HomeRowButton/>
+                <HomeRowButton onPress={(id)=>{
+                    this.props.callBack({name: 'CarInfoScene', component: CarInfoScene, params: {carID:id}});
+                }} list={this.carData}/>
                 <HomeAdvertisementButton/>
 
 
@@ -168,8 +171,8 @@ export default class HomeScene extends BaseComponet {
 
         } finally {
             //InteractionManager.runAfterInteractions(() => {
-                this.setState({renderPlaceholderOnly: 'loading'});
-                this.initFinish();
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
             //});
         }
     }
@@ -216,25 +219,20 @@ export default class HomeScene extends BaseComponet {
                             } else {
 
                             }
-
-                            this.setState({
-                                renderPlaceholderOnly: 'success',
-                                source: ds.cloneWithRows(allList), isRefreshing: false,
-                                allData: response.mjson.data
-                            });
-                            if (allList.length <= 0) {
-                                this.setState({
-                                    renderPlaceholderOnly: 'success',
-                                    source: ds.cloneWithRows(['1']), isRefreshing: false,
-                                    allData: response.mjson.data
-                                });
-                            } else {
-                                this.setState({
-                                    renderPlaceholderOnly: 'success',
-                                    source: ds.cloneWithRows(allList), isRefreshing: false,
-                                    allData: response.mjson.data
-                                });
-                            }
+                            this.getCarData(response.mjson.data);
+                            // if (allList.length <= 0) {
+                            //     this.setState({
+                            //         renderPlaceholderOnly: 'success',
+                            //         source: ds.cloneWithRows(['1']), isRefreshing: false,
+                            //         allData: response.mjson.data
+                            //     });
+                            // } else {
+                            //     this.setState({
+                            //         renderPlaceholderOnly: 'success',
+                            //         source: ds.cloneWithRows(allList), isRefreshing: false,
+                            //         allData: response.mjson.data
+                            //     });
+                            // }
 
                         }
                     });
@@ -243,6 +241,56 @@ export default class HomeScene extends BaseComponet {
                 (error) => {
                     this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
                 });
+    }
+
+    getCarData(allData) {
+        let maps = {
+            brand_id: 0,
+            series_id: 0,
+            model_id: 0,
+            provice_id: 0,
+            city_id: 0,
+            order_type: 0,
+            coty: 0,
+            mileage: 0,
+            dealer_price: 0,
+            emission_standards: 0,
+            nature_use: 0,
+            car_color: 0,
+            model_name: '',
+            prov_id: 0,
+            v_type: 0,
+            rows: 5,
+            page: 1,
+            start: 0,
+            type: 2,
+            status: 1,
+            no_cache: 1,
+        };
+        request(Urls.CAR_INDEX, 'Post', maps)
+            .then((response) => {
+                    console.log(response);
+                    this.carData = response.mjson.data.list;
+                    if (allList.length <= 0) {
+                        this.setState({
+                            renderPlaceholderOnly: 'success',
+                            source: ds.cloneWithRows(['1']), isRefreshing: false,
+                            allData: allData
+                        });
+                    } else {
+                        this.setState({
+                            renderPlaceholderOnly: 'success',
+                            source: ds.cloneWithRows(allList), isRefreshing: false,
+                            allData: allData
+                        });
+                    }
+                }
+                ,
+                (error) => {
+                    this.setState({renderPlaceholderOnly: 'error', isRefreshing: false});
+                }
+            )
+        ;
     }
 
 

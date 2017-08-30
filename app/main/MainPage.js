@@ -133,9 +133,17 @@ export default class MainPage extends BaseComponent {
                 });
     }
 
+    _renderPlaceholderView() {
+        return (
+            <View style={{width: width, height: height,backgroundColor: fontAndClolr.COLORA3}}>
+                {this.loadView()}
+            </View>
+        );
+    }
+
     render() {
         if (this.state.renderPlaceholderOnly != 'success') {
-            return this.loadView();
+            return this._renderPlaceholderView();
         }
         let items = [];
 

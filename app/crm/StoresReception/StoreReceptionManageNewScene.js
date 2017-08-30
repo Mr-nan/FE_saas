@@ -42,6 +42,12 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
         this.timeSelect = '今天';
         this.selectMonth = '选择月份';
         this.potentialClientList = [];
+        this.screeningItems = {
+            xxly: {index: 0, value: '所有来源'},
+            khjb: {index: 0, value: '所有级别'},
+            dfzp: {index: 0, value: '全部状态'},
+            gmys: {index: 0, value: '所有预算'}
+        };
         this.state = {
             dataSource: [],
             renderPlaceholderOnly: 'blank',
@@ -72,6 +78,21 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
     };
 
     /**
+     *   时间单位筛选映射
+     **/
+    timeSelectMapping = () => {
+        if (this.timeSelect === '今天') {
+            return 1;
+        } else if (this.timeSelect === '本周') {
+            return 2;
+        } else if (this.timeSelect === '本月') {
+            return 3;
+        } else {
+            return '';
+        }
+    };
+
+    /**
      *   数据请求
      **/
     loadData = () => {
@@ -81,12 +102,12 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                     //mobile: '15102373842',
                     mobile: data.result,
                     //token: '5afa531b-4295-4c64-8d6c-ac436c619078',
-                    xxly: '全部车源',
-                    khjb: '所有级别',
-                    dfzp: '全部状态',
-                    gmys: '所有预算',
+                    xxly: this.screeningItems.xxly.value,
+                    khjb: this.screeningItems.khjb.value,
+                    dfzp: this.screeningItems.dfzp.value,
+                    gmys: this.screeningItems.gmys.value,
                     pc: 1,
-                    times: 3,
+                    times: this.timeSelectMapping(),
                     mouth: ''
                     //createTime: '2017-08-09 15:18:47'
                 };
@@ -163,7 +184,10 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                                                                         currentSelect={this.timeSelect}
                                                                         callBack={this.updateTimeSelect}/>}
 
-                    {this.state.selectFilterHide && <ClientScreeningView hideView={this.selectFilterItems}/>}
+                    {this.state.selectFilterHide && <ClientScreeningView
+                        updateScreeningItems={this.updateScreeningItems}
+                        screeningItems={this.screeningItems}
+                        hideView={this.selectFilterItems}/>}
                 </View>
             );
         } else {
@@ -211,7 +235,10 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                                                                         currentSelect={this.timeSelect}
                                                                         callBack={this.updateTimeSelect}/>}
 
-                    {this.state.selectFilterHide && <ClientScreeningView hideView={this.selectFilterItems}/>}
+                    {this.state.selectFilterHide && <ClientScreeningView
+                        updateScreeningItems={this.updateScreeningItems}
+                        screeningItems={this.screeningItems}
+                        hideView={this.selectFilterItems}/>}
                 </View>
             );
         }
@@ -274,6 +301,7 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
         this.selectAddTime();
         this.btn1.setTitle(this.timeSelect);
         this.selectMonth = '选择月份';
+        this.refreshData();
     };
 
     /**
@@ -286,6 +314,17 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
         this.btn1.setTitle(this.selectMonth);
         this.timeSelect = '';
     };
+
+    /**
+     *
+     * @param newMonth
+     **/
+    updateScreeningItems = (newScreeningItems) => {
+        this.screeningItems = newScreeningItems;
+        this.selectFilterItems();
+        this.refreshData();
+    };
+
 
     /**
      *  筛选项选择
@@ -319,10 +358,7 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                         this.toNextPage({
                             name: 'ClientSearchScene',
                             component: ClientSearchScene,
-                            params: {
-                                business: this.props.business,
-                                status: this.status,
-                            }
+                            params: {}
                         });
                     }}
                     activeOpacity={0.9}

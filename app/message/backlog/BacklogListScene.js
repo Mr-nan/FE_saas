@@ -24,6 +24,7 @@ import GetPermissionUtil from '../../utils/GetRoleUtil';
 import ClientInfoScene from "../../crm/StoresReception/ClientInfoScene";
 import CarTrimScene from "../../carSource/carBuy/CarTrimScene";
 import StoreReceptionManageNewScene from "../../crm/StoresReception/StoreReceptionManageNewScene";
+import KeepCustomerManageScene from "../../crm/KeepCustomer/KeepCustomerManageScene";
 const GetRoleUtil = new GetPermissionUtil();
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 import * as AppUrls from "../../constant/appUrls";
@@ -198,7 +199,13 @@ export default class BacklogListScene extends BaseComponent {
             return (
                 <TouchableOpacity
                     onPress={() => {
-
+                        this.toNextPage({
+                            name: 'KeepCustomerManageScene',
+                            component: KeepCustomerManageScene,
+                            params: {
+                                //defaultIndex: index
+                            }
+                        });
                     }}>
                     <View style={styles.listItem}>
                         <Text allowFontScaling={false} style={styles.title}>保有客户跟进</Text>

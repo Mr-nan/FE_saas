@@ -31,6 +31,7 @@ export class FollowUpRecordsView extends BaseComponent {
     constructor(props) {
         super(props);
         this.followUpRecordsList = [];
+        this.clientInfoDetail = {};
         this.state = {
             dataSource: [],
             renderPlaceholderOnly: 'blank',
@@ -42,11 +43,11 @@ export class FollowUpRecordsView extends BaseComponent {
      *
      **/
     initFinish = () => {
-        /*        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-         this.setState({
-         dataSource: ds.cloneWithRows(['', '', '']),
-         renderPlaceholderOnly: 'success'
-         });*/
+/*        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.setState({
+            dataSource: ds.cloneWithRows(this.props.rowData.reverse()),
+            renderPlaceholderOnly: 'success'
+        });*/
         this.loadData();
     };
 
@@ -63,8 +64,9 @@ export class FollowUpRecordsView extends BaseComponent {
         let url = AppUrls.SELECT_ALL_FLOW;
         request(url, 'post', maps).then((response) => {
             this.props.showModal(false);
-            const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             this.followUpRecordsList = response.mjson.data.maps;
+            this.loadDetailData();
+            const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             this.setState({
                 dataSource: ds.cloneWithRows(this.followUpRecordsList.reverse()),
                 isRefreshing: false,
@@ -77,6 +79,27 @@ export class FollowUpRecordsView extends BaseComponent {
                 isRefreshing: false,
                 renderPlaceholderOnly: 'error'
             });
+        });
+    };
+
+    /**
+     *   查询客户详情
+     **/
+    loadDetailData = () => {
+        let maps = {
+            listID: this.props.rowData.id
+        };
+        let url = AppUrls.POTENTIAL_CUSTOMER_DETAIL;
+        request(url, 'post', maps).then((response) => {
+            //console.log('response===============', response);
+            this.clientInfoDetail = response.mjson.data;
+            this.props.callBack(this.clientInfoDetail);
+        }, (error) => {
+            //this.props.showToast('查询客户详情失败');
+            //console.log('error===============', error);
+            //TODO test
+            this.clientInfoDetail = error.mjson.data;
+            this.props.callBack(this.clientInfoDetail);
         });
     };
 
