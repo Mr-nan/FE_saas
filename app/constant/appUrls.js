@@ -1,11 +1,7 @@
 /**
  * 开发地址
  */
-<<<<<<< HEAD
 // export const BASEURL = 'http://dev.api-gateway.dycd.com/';
-=======
-//export const BASEURL = 'http://dev.api-gateway.dycd.com/';
->>>>>>> 45a1699f0a6bcfd211f57a85c1f91726b92ae7e9
 
 /**
  * 测试地址
@@ -35,7 +31,7 @@ export const V = "v1/";
  /**
  * 版本号3
  */
-export const V3 = "v3/";
+// export const V3 = "v3/";
 
 /**
  * 分享测试地址
