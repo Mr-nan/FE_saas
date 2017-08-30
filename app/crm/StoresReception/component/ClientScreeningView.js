@@ -69,10 +69,10 @@ export default class ClientScreeningView extends BaseComponent {
         info_source.push({title: '其他', isSelected: this.infoSourceKey === info_source.length, value: '其他', ref: 'type_child' + 11});
 
         client_level.push({title: '全部', isSelected: this.clientLevelKey === client_level.length, value: '所有级别', ref: 'type_child1' + 0});
-        client_level.push({title: '一周以内',isSelected: this.clientLevelKey === client_level.length, value: 'A',ref: 'type_child1' + 1});
-        client_level.push({title: '一个月以内',isSelected: this.clientLevelKey === client_level.length, value: 'B',ref: 'type_child1' + 2});
-        client_level.push({title: '三个月以内',isSelected: this.clientLevelKey === client_level.length, value: 'C', ref: 'type_child1' + 3});
-        client_level.push({title: '一年以上',isSelected: this.clientLevelKey === client_level.length, value: 'D', ref: 'type_child1' + 4});
+        client_level.push({title: '一周以内',isSelected: this.clientLevelKey === client_level.length, value: 'A : 一周以内(购买欲望强)',ref: 'type_child1' + 1});
+        client_level.push({title: '一个月以内',isSelected: this.clientLevelKey === client_level.length, value: 'B : 一月以内(准买车用户)',ref: 'type_child1' + 2});
+        client_level.push({title: '三个月以内',isSelected: this.clientLevelKey === client_level.length, value: 'C : 三个月以内(有购买意向)', ref: 'type_child1' + 3});
+        client_level.push({title: '闲逛',isSelected: this.clientLevelKey === client_level.length, value: 'D : 闲逛(近期无意向)', ref: 'type_child1' + 4});
 
         visit_state.push({title: '全部', isSelected: this.visitStateKey === visit_state.length, value: '全部状态', ref: 'type_child2' + 0});
         visit_state.push({title: '初次',isSelected: this.visitStateKey === visit_state.length,value: '初次',ref: 'type_child2' + 1});
