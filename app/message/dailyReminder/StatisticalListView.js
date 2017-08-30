@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
         backgroundColor: fontAndColor.COLORA4
     },
     subItem: {
-        marginTop: Pixel.getPixel(10),
+        marginTop: Pixel.getPixel(15),
         alignItems: 'center',
         flexDirection: 'row',
         height: Pixel.getPixel(45),
