@@ -86,7 +86,7 @@ export default class CarTrimInformationScene extends BaseComponent{
                         }}>
                             <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>备注</Text>
                             <TextInput
-                                style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(60)}]}
+                                style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(60)},this.props.type && {color:fontAndColor.COLORA2}]}
                                 placeholder='请填写'
                                 maxLength={200}
                                 editable={this.props.type==2?false:true}
@@ -160,6 +160,23 @@ export default class CarTrimInformationScene extends BaseComponent{
                    content:item.detail,
                    typeTitle:item.classification,
                });
+            }
+        }else {
+            this.titleData1[1][2].tailView = () => {
+                return (
+                    <TextInput
+                        style={[styles.textInput, {
+                            width: sceneWidth - Pixel.getPixel(130),
+                            height: Pixel.getPixel(60),
+                            color:fontAndColor.COLORA2
+                        }]}
+                        defaultValue={data.remark ? data.remark : '无'}
+                        editable={false}
+                        underlineColorAndroid='transparent'
+                        placeholderTextColor={fontAndColor.COLORA4}
+                        placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
+                    />
+                )
             }
         }
 

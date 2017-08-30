@@ -20,6 +20,7 @@ import {
 import BaseComponent from '../../component/BaseComponent';
 import AllNavigationView from  '../../component/AllNavigationView';
 import {CellView, CellSelectView} from '../znComponent/CarPublishCell';
+import AccountModal from '../../component/AccountModal'
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import VinInfo from '../../publish/component/VinInfo';
 import *as fontAndColor from  '../../constant/fontAndColor';
@@ -34,7 +35,6 @@ let Pixel = new  PixelUtil();
 const sceneWidth = Dimensions.get('window').width;
 const scanImg = require('../../../images/financeImages/scan.png');
 const IS_ANDROID = Platform.OS === 'android';
-
 
 
 export default class CarBuyTaskScene extends BaseComponent{
@@ -95,6 +95,7 @@ export default class CarBuyTaskScene extends BaseComponent{
                 <TouchableOpacity style={styles.footBtn} onPress={this.footBtnClick}>
                     <Text style={styles.footBtnText}>提交</Text>
                 </TouchableOpacity>
+                <AccountModal ref="accountmodal"/>
                 <AllNavigationView title="收车任务" backIconClick={this.backPage}/>
             </View>
         )
@@ -121,10 +122,11 @@ export default class CarBuyTaskScene extends BaseComponent{
         request(AppUrls.CAR_SASS_SELECT_MSG, 'post', {
             id:this.props.id,
         }).then((response) => {
-            this.props.showModal(false);
             this.setData(response.mjson.data.acquisitionCar);
         }, (error) => {
-            this.props.showModal(false);
+            this.setState({
+                renderPlaceholderOnly:'error'
+            });
         });
     }
 
@@ -165,6 +167,7 @@ export default class CarBuyTaskScene extends BaseComponent{
             this.currentDealStr = '已放弃';
         }
 
+        this.titleData1[0][0].tailView='';
         this.titleData1[0][0].value = data.vin;
         this.titleData1[0][1].value = data.collectionType;
 
@@ -198,36 +201,40 @@ export default class CarBuyTaskScene extends BaseComponent{
                     </View>)
         }
 
+        if(this.props.isHideInfoRecourse){
+            this.titleData1[2][0].tailView='';
+            this.titleData1[2][0].value=data.preferPrice?String(data.preferPrice)+'万元':'';
+        }else {
+            this.titleData1[2][0].tailView=() => {
+                return (
+                    <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                        <TextInput style={styles.textInput}
+                                   ref={(ref)=>{this.preferPriceInput = ref}}
+                                   placeholder='请输入'
+                                   keyboardType={'numeric'}
+                                   maxLength={7}
+                                   underlineColorAndroid='transparent'
+                                   defaultValue={data.preferPrice?String(data.preferPrice):''}
+                                   onChangeText={(text)=>{
 
-
-        this.titleData1[2][0].tailView=() => {
-            return (
-                <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                    <TextInput style={styles.textInput}
-                               ref={(ref)=>{this.preferPriceInput = ref}}
-                               placeholder='请输入'
-                               keyboardType={'numeric'}
-                               maxLength={7}
-                               underlineColorAndroid='transparent'
-                               defaultValue={data.preferPrice?String(data.preferPrice):''}
-                               onChangeText={(text)=>{
-
-                                   if(text.length>4&&text.indexOf('.')==-1){
-                                       text = text.substring(0,text.length-1);
-                                   }
-                                   let moneyStr = this.chkPrice(text);
-                                   this.carData['preferPrice'] = moneyStr;
-                                   this.preferPriceInput.setNativeProps({
-                                       text: moneyStr,
-                                   });
-                               }}/>
-                    <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
-                </View>)
+                                       if(text.length>4&&text.indexOf('.')==-1){
+                                           text = text.substring(0,text.length-1);
+                                       }
+                                       let moneyStr = this.chkPrice(text);
+                                       this.carData['preferPrice'] = moneyStr;
+                                       this.preferPriceInput.setNativeProps({
+                                           text: moneyStr,
+                                       });
+                                   }}/>
+                        <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
+                    </View>)
+            }
         }
 
-        this.titleData1[2][1].value = data.infoRecourse==''?'请选择':data.infoRecourse;
-        this.titleData1[2][2].value = data.collectionArea ==''?'请选择':data.collectionArea;
-        this.titleData1[2][3].value = this.carData.firstUpTime ==undefined?'请选择':this.carData.firstUpTime;
+
+        this.titleData1[2][1].value = data.infoRecourse?data.infoRecourse:(this.props.isHideInfoRecourse?'':'请选择');
+        this.titleData1[2][2].value = data.collectionArea?data.collectionArea:(this.props.isHideInfoRecourse?'':'请选择');
+        this.titleData1[2][3].value = this.carData.firstUpTime?this.carData.firstUpTime:(this.props.isHideInfoRecourse?'':'请选择');
 
         if(data.consultList.length>0){
 
@@ -238,34 +245,36 @@ export default class CarBuyTaskScene extends BaseComponent{
                    value:String(item.consultPrice)+'万元',
                });
             }
-            this.titleData1[2].push({
-                title:'第'+String(data.consultList.length+1)+'次出价',
-                tailView:()=> {
-                    return (
-                        <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                            <TextInput style={styles.textInput}
-                                       ref={(ref)=>{this.consultPriceInput = ref}}
-                                       placeholder='请输入'
-                                       keyboardType={'numeric'}
-                                       maxLength={7}
-                                       underlineColorAndroid='transparent'
-                                       onChangeText={(text)=>{
+            if(!this.props.isHideInfoRecourse){
+                this.titleData1[2].push({
+                    title:'第'+String(data.consultList.length+1)+'次出价',
+                    tailView:()=> {
+                        return (
+                            <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                                <TextInput style={styles.textInput}
+                                           ref={(ref)=>{this.consultPriceInput = ref}}
+                                           placeholder='请输入'
+                                           keyboardType={'numeric'}
+                                           maxLength={7}
+                                           underlineColorAndroid='transparent'
+                                           onChangeText={(text)=>{
 
-                                           if(text.length>4&&text.indexOf('.')==-1){
-                                               text = text.substring(0,text.length-1);
-                                           }
-                                           let moneyStr = this.chkPrice(text);
-                                           this.carData['consultPrice'] = moneyStr;
-                                           this.consultPriceInput.setNativeProps({
-                                               text: moneyStr,
-                                           });
-                                       }}/>
-                            <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
-                        </View>)
-                }
-            });
+                                               if(text.length>4&&text.indexOf('.')==-1){
+                                                   text = text.substring(0,text.length-1);
+                                               }
+                                               let moneyStr = this.chkPrice(text);
+                                               this.carData['consultPrice'] = moneyStr;
+                                               this.consultPriceInput.setNativeProps({
+                                                   text: moneyStr,
+                                               });
+                                           }}/>
+                                <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
+                            </View>)
+                    }
+                });
+            }
 
-        }else {
+        }else if(!this.props.isHideInfoRecourse) {
             this.titleData1[2][4].tailView=()=> {
                 return (
                     <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
@@ -289,6 +298,8 @@ export default class CarBuyTaskScene extends BaseComponent{
                         <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
                     </View>)
             }
+        }else {
+            this.titleData1[2].splice(4,1);
         }
 
         if(this.props.isHideInfoRecourse){
@@ -297,31 +308,36 @@ export default class CarBuyTaskScene extends BaseComponent{
             this.titleData1[3][0].selectDict={current:this.currentDealStr,data:[{title:'尚未成交',value:2},{title:'已经成交',value:1},{title:'已放弃',value:3}]};
         }
 
+        if(this.props.isHideInfoRecourse){
+            this.titleData1[4][0].tailView='';
+            this.titleData1[4][0].value = data.closeingPrice? String(data.closeingPrice)+'万元' :'';
+        }else {
+            this.titleData1[4][0].tailView=() => {
+                return (
+                    <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
+                        <TextInput style={styles.textInput}
+                                   ref={(ref)=>{this.dealPrice = ref}}
+                                   placeholder='请输入'
+                                   keyboardType={'numeric'}
+                                   maxLength={7}
+                                   underlineColorAndroid='transparent'
+                                   defaultValue={data.closeingPrice? String(data.closeingPrice) :'' }
+                                   onChangeText={(text)=>{
 
-        this.titleData1[4][0].tailView=() => {
-            return (
-                <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
-                    <TextInput style={styles.textInput}
-                               ref={(ref)=>{this.dealPrice = ref}}
-                               placeholder='请输入'
-                               keyboardType={'numeric'}
-                               maxLength={7}
-                               underlineColorAndroid='transparent'
-                               defaultValue={data.closeingPrice? String(data.closeingPrice) :'' }
-                               onChangeText={(text)=>{
+                                       if(text.length>4&&text.indexOf('.')==-1){
+                                           text = text.substring(0,text.length-1);
+                                       }
+                                       let moneyStr = this.chkPrice(text);
+                                       this.carData['closeingPrice ']=moneyStr;
+                                       this.dealPrice.setNativeProps({
+                                           text: moneyStr,
+                                       });
+                                   }}/>
+                        <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
+                    </View>)
+            };
+        }
 
-                                   if(text.length>4&&text.indexOf('.')==-1){
-                                       text = text.substring(0,text.length-1);
-                                   }
-                                   let moneyStr = this.chkPrice(text);
-                                   this.carData['closeingPrice ']=moneyStr;
-                                   this.dealPrice.setNativeProps({
-                                       text: moneyStr,
-                                   });
-                               }}/>
-                    <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
-                </View>)
-        };
         this.titleData1[4][1].tailView=()=>{
             return(
                 <TextInput
@@ -369,20 +385,27 @@ export default class CarBuyTaskScene extends BaseComponent{
             return;
         }
 
+      this.upCarData();
+
+
+
+    }
+
+    upCarData =()=>{
         let carData = {...this.carData};
         let consultList =[];
         if(parseFloat(this.carData.consultPrice) >0)
         {
-               if(this.carData.consultList.length>0){
+            if(this.carData.consultList.length>0){
 
-                   consultList.push(...this.carData.consultList);
-                   consultList.push({consultPrice:this.carData.consultPrice, acquisitionId:0, id:0});
+                consultList.push(...this.carData.consultList);
+                consultList.push({consultPrice:this.carData.consultPrice, acquisitionId:0, id:0});
 
-               }else {
-                   consultList = [{id:0,consultPrice:this.carData.consultPrice}];
-               }
+            }else {
+                consultList = [{id:0,consultPrice:this.carData.consultPrice}];
+            }
 
-               carData.consultList = JSON.stringify(consultList);
+            carData.consultList = JSON.stringify(consultList);
         }
         this.props.showModal(true);
         request(AppUrls.CAR_SASS_PUBLISH, 'post', carData).then((response) => {
@@ -392,8 +415,8 @@ export default class CarBuyTaskScene extends BaseComponent{
         }, (error) => {
             this.props.showModal(false);
         });
-
     }
+
 
     // 构造
       constructor(props) {
@@ -480,7 +503,7 @@ export default class CarBuyTaskScene extends BaseComponent{
                       title:'车型',
                       isShowTag:this.props.id!=undefined?false:true,
                       value:'请选择',
-                      isShowTail:true,
+                      isShowTail:!this.props.isHideInfoRecourse,
                   },
 
               ],
@@ -496,7 +519,7 @@ export default class CarBuyTaskScene extends BaseComponent{
                                   <TextInput style={styles.textInput}
                                              placeholder='请输入'
                                              keyboardType={'numeric'}
-                                             maxLength={7}
+                                             maxLength={15}
                                              underlineColorAndroid='transparent'
                                              onChangeText={(text)=>{
                                                  this.carData['customerName'] = text;
@@ -531,7 +554,6 @@ export default class CarBuyTaskScene extends BaseComponent{
                       title:'意向价格',
                       isShowTag:false,
                       value:'请选择',
-                      isShowTail:true,
                       tailView: () => {
                           return (
                               <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
@@ -560,25 +582,24 @@ export default class CarBuyTaskScene extends BaseComponent{
                       title:'信息来源',
                       isShowTag:false,
                       value:'请选择',
-                      isShowTail:true,
+                      isShowTail:!this.props.isHideInfoRecourse,
                   },
                   {
                       title:'收车地区',
                       isShowTag:false,
                       value:'请选择',
-                      isShowTail:true,
+                      isShowTail:!this.props.isHideInfoRecourse,
                   },
                   {
                       title:'上牌时间',
                       isShowTag:false,
                       value:'请选择',
-                      isShowTail:true,
+                      isShowTail:!this.props.isHideInfoRecourse,
                   },
                   {
                       title:'第1次给价',
                       isShowTag:false,
                       value:'请选择',
-                      isShowTail:true,
                       tailView: () => {
                           return (
                               <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
@@ -620,7 +641,6 @@ export default class CarBuyTaskScene extends BaseComponent{
                       title:'成交价格',
                       isShowTag:false,
                       value:'查看',
-                      isShowTail:true,
                       tailView: () => {
                           return (
                               <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
@@ -694,6 +714,11 @@ export default class CarBuyTaskScene extends BaseComponent{
      * 点击对应标题
      */
     cellCilck=(title)=>{
+
+        if(this.props.isHideInfoRecourse){
+            return;
+        }
+
         if(title=='车型'){
 
             this.pushCarBrand();
@@ -826,7 +851,6 @@ export default class CarBuyTaskScene extends BaseComponent{
         this.setState({
             titleData:this.titleData1,
             renderPlaceholderOnly:'success'
-
         });
     };
 
@@ -1026,7 +1050,7 @@ const styles = StyleSheet.create({
     textInput: {
         height: Pixel.getPixel(30),
         borderColor: fontAndColor.COLORA0,
-        width: Pixel.getPixel(160),
+        width: Pixel.getPixel(170),
         textAlign: 'right',
         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
         paddingTop: 0,

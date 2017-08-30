@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
         flex:1,
         backgroundColor:fontAndColor.COLORA3,
         paddingBottom:Pixel.getPixel(10),
+        overflow:"hidden"
     },
     titleView:{
         height:Pixel.getPixel(44),
@@ -73,28 +74,31 @@ const styles = StyleSheet.create({
         fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
     },
     contentView:{
-        // borderBottomWidth:Pixel.getPixel(1),
-        borderTopWidth:Pixel.getPixel(1),
-        // borderBottomColor:fontAndColor.COLORA4,
-        borderTopColor:fontAndColor.COLORA4,
+
         backgroundColor:'white',
         paddingHorizontal:Pixel.getPixel(15),
         paddingTop:Pixel.getPixel(15),
         paddingBottom:Pixel.getPixel(10),
+        marginTop:Pixel.getPixel(1),
+
+
     },
     contentSubView:{
         flexDirection:'row',
         alignItems:'center',
         justifyContent:'space-between',
         marginBottom:Pixel.getPixel(10),
+        // backgroundColor:'red',
     },
     subTitleText:{
         color:fontAndColor.COLORA1,
         fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24) ,
+        // backgroundColor:'red',
+
+
     },
     footView:{
-        borderTopWidth:Pixel.getPixel(1),
-        borderTopColor:fontAndColor.COLORA4,
+        marginTop:Pixel.getPixel(1),
         height:Pixel.getPixel(44),
         justifyContent:'center',
         alignItems:'flex-end',

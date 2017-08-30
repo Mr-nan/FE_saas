@@ -29,7 +29,6 @@ export class CarSourceSelectHeadView extends Component{
         super(props);
         // 初始状态
         this.state = {
-
             isCheckRecommend:this.props.isCheckRecommend,
         };
       }
@@ -57,11 +56,13 @@ export class CarSourceSelectHeadView extends Component{
         this.setState({
 
             isCheckRecommend:isCheck,
-
         });
 
         this.props.checkRecommendClick(isCheck);
+    }
 
+    getCheckRecommend=()=>{
+        return this.state.isCheckRecommend;
     }
 
     render(){

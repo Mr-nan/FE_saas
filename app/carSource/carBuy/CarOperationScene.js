@@ -80,7 +80,18 @@ export default class CarOperationScene extends BaseComponent{
                                                         alignItems:'center',justifyContent:'space-between',borderTopColor:fontAndColor.COLORA3,borderTopWidth:Pixel.getPixel(0.5)
                                                     }}>
                                                         <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>备注</Text>
-                                                        <Text style={{color:fontAndColor.COLORA2, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),textAlign:'right'}}>{'无'}</Text>
+                                                        <TextInput
+                                                            style={[styles.textInput, {
+                                                                width: sceneWidth - Pixel.getPixel(130),
+                                                                height: Pixel.getPixel(60),
+                                                                color:fontAndColor.COLORA2
+                                                            }]}
+                                                            defaultValue={this.carData.taskInfo.managerzby.remark?this.carData.taskInfo.managerzby.remark:'无'}
+                                                            editable={false}
+                                                            underlineColorAndroid='transparent'
+                                                            placeholderTextColor={fontAndColor.COLORA4}
+                                                            placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
+                                                        />
                                                     </View>
                                                 </View>
                                             )
@@ -142,6 +153,9 @@ export default class CarOperationScene extends BaseComponent{
             carName:data.carName,
             managerInfoList:data.taskInfo.mList,
             lastCarNum:data.lastCarNum,
+            infoName:data.taskInfo.managersxy.infoName,
+            infoMobile:data.taskInfo.managersxy.infoMobile,
+            infoSource:data.taskInfo.managersxy.infoSource,
             selfprice:data.taskInfo.selfprice,
             selfName:data.taskInfo.managersxy.selfName,
             selfMobile:data.taskInfo.managersxy.selfMobile,
@@ -245,7 +259,22 @@ export default class CarOperationScene extends BaseComponent{
                                }}/>
                 </View>)
         };
-        this.titleData1[0][9].value = data.taskInfo.managersxy.remark?data.taskInfo.managersxy.remark:'无';
+        this.titleData1[0][9].tailView = () => {
+            return (
+                <TextInput
+                    style={[styles.textInput, {
+                        width: sceneWidth - Pixel.getPixel(130),
+                        height: Pixel.getPixel(60),
+                        color:fontAndColor.COLORA2
+                    }]}
+                    defaultValue={data.taskInfo.managersxy.remark?data.taskInfo.managersxy.remark:'无'}
+                    editable={false}
+                    underlineColorAndroid='transparent'
+                    placeholderTextColor={fontAndColor.COLORA4}
+                    placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
+                />
+            )
+        }
 
         this.titleData1[1][0].value = data.lastCarNum;
         this.costObject.sumNumber = parseFloat(data.taskInfo.managerzby.zbMoney);
@@ -260,7 +289,22 @@ export default class CarOperationScene extends BaseComponent{
 
         this.titleData1[2][0].value = data.taskInfo.selfprice;
         this.titleData1[2][1].value = data.taskInfo.overprice;
-        this.titleData1[2][2].value = data.remark?  data.remark:'无';
+        this.titleData1[2][2].tailView = () => {
+            return (
+                <TextInput
+                    style={[styles.textInput, {
+                        width: sceneWidth - Pixel.getPixel(130),
+                        height: Pixel.getPixel(60),
+                        color:fontAndColor.COLORA2
+                    }]}
+                    defaultValue={data.remark?  data.remark:'无'}
+                    editable={false}
+                    underlineColorAndroid='transparent'
+                    placeholderTextColor={fontAndColor.COLORA4}
+                    placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
+                />
+            )
+        }
 
         this.setState({
             renderPlaceholderOnly:'success',
@@ -378,6 +422,7 @@ export default class CarOperationScene extends BaseComponent{
                     v_type:1,
                     dealer_price:this.carParams.selfprice,
                     low_price:this.carParams.overprice,
+                    plate_number:this.carParams.lastCarNum ? this.carParams.lastCarNum:this.carParams.carNum,
                 },
             }
         };
