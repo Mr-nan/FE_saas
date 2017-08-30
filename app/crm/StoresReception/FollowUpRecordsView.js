@@ -95,11 +95,10 @@ export class FollowUpRecordsView extends BaseComponent {
             this.clientInfoDetail = response.mjson.data;
             this.props.callBack(this.clientInfoDetail);
         }, (error) => {
-            //this.props.showToast('查询客户详情失败');
+            this.props.showToast('查询客户详情失败');
             //console.log('error===============', error);
-            //TODO test
-            this.clientInfoDetail = error.mjson.data;
-            this.props.callBack(this.clientInfoDetail);
+            //this.clientInfoDetail = error.mjson.data;
+            //this.props.callBack(this.clientInfoDetail);
         });
     };
 
