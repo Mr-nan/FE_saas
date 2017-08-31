@@ -37,7 +37,7 @@ export default class ClientAddScene extends BaseComponent {
         super(props);
         this.clientInfo = [];
         this.state = {
-            dataSource: [],
+            //dataSource: [],
             renderPlaceholderOnly: 'blank'
         };
     }
@@ -46,9 +46,9 @@ export default class ClientAddScene extends BaseComponent {
      *
      **/
     initFinish = () => {
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        //const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.setState({
-            dataSource: ds.cloneWithRows(['0', '1', '2']),
+            //dataSource: ds.cloneWithRows(['0', '1', '2']),
             renderPlaceholderOnly: 'success'
         });
     };
@@ -76,12 +76,23 @@ export default class ClientAddScene extends BaseComponent {
                         backIconClick={this.backPage}
                         title="客户信息"
                         renderRihtFootView={this._navigatorRightView}/>
-                    <ListView
-                        removeClippedSubviews={false}
-                        style={{backgroundColor: fontAndColor.COLORA3, marginTop: Pixel.getTitlePixel(75)}}
-                        dataSource={this.state.dataSource}
-                        renderRow={this._renderRow}
-                        renderSeparator={this._renderSeperator}/>
+                    {/*<ListView
+                     removeClippedSubviews={false}
+                     style={{backgroundColor: fontAndColor.COLORA3, marginTop: Pixel.getTitlePixel(75)}}
+                     dataSource={this.state.dataSource}
+                     renderRow={this._renderRow}
+                     renderSeparator={this._renderSeperator}/>*/}
+
+                        <ScrollView
+                            style={{backgroundColor: fontAndColor.COLORA3, marginTop: Pixel.getTitlePixel(75)}}
+                            ref={(ref) => {
+                                this.scrollView = ref
+                            }} keyboardDismissMode={'on-drag'}>
+
+                            {this._renderRow()}
+
+                        </ScrollView>
+
                 </View>
             );
         }
@@ -93,48 +104,41 @@ export default class ClientAddScene extends BaseComponent {
     _renderSeperator = (sectionID: number, rowID: number, adjacentRowHighlighted: bool) => {
         return (
             <View
-                key={`${sectionID}-${rowID}`}
+                //key={`${sectionID}-${rowID}`}
                 style={{backgroundColor: fontAndColor.COLORA3, height: Pixel.getPixel(10)}}/>
         )
-    }
+    };
 
     /**
      *
-     * @param rowData
-     * @param selectionID
-     * @param rowID
-     * @returns {XML}
-     * @private
      **/
-    _renderRow = (rowData, selectionID, rowID) => {
-        if (rowData === '0') {
-            return (
+    _renderRow = () => {
+        return (
+
+            <View style={styles.container}>
                 <BaseInfoItem ref={(ref) => {
                     this.baseInfoItem = ref
                 }}
                               showModal={this.props.showModal}
                               showToast={this.props.showToast}
                               navigator={this.props.navigator}/>
-            )
-        } else if (rowData === '1') {
-            return (
+                <View style={{backgroundColor: fontAndColor.COLORA3, height: Pixel.getPixel(10)}}/>
                 <BuyerDemandItem ref={(ref) => {
                     this.buyerDemandItem = ref
                 }}
                                  showModal={this.props.showModal}
                                  showToast={this.props.showToast}
                                  navigator={this.props.navigator}/>
-            )
-        } else if (rowData === '2') {
-            return (
+                <View style={{backgroundColor: fontAndColor.COLORA3, height: Pixel.getPixel(10)}}/>
                 <CommunicationRecordItem ref={(ref) => {
                     this.communicationRecordItem = ref
                 }}
                                          showModal={this.props.showModal}
                                          showToast={this.props.showToast}
                                          navigator={this.props.navigator}/>
-            )
-        }
+            </View>
+
+        )
     };
 
     /**
@@ -156,7 +160,7 @@ export default class ClientAddScene extends BaseComponent {
                 <Text style={{color: fontAndColor.COLORA3}}>保存</Text>
             </TouchableOpacity>
         );
-    }
+    };
 
     /**
      *
