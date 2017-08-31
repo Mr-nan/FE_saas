@@ -31,7 +31,7 @@ export class ClientScreeningSelectButton extends Component {
         // 初始状态
         this.state = {
             imgSource: require('../../../../images/carSourceImages/btnIcon@2x.png'),
-            isHighlighted: false,
+            isHighlighted: styles.selectBtnText,
             title: this.props.title
         };
     }
@@ -51,18 +51,19 @@ export class ClientScreeningSelectButton extends Component {
      **/
     _btnClick = () => {
         // this._setImgHighlighted(!this.state.isHighlighted);
-        this.props.btnClick(this.props.index, this.state.isHighlighted, this._setImgHighlighted);
+        this.props.btnClick();
+        //this.props.btnClick(this.props.index, this.state.isHighlighted, this._setImgHighlighted);
     };
 
     /**
      *
      **/
     componentDidMount() {
-        /*if (this.props.title == '筛选') {
+        if (this.props.title == '筛选') {
             this._setImgHighlighted(false);
-        } else {*/
+        } else {
             this._setImgHighlighted(true);
-        //}
+        }
     }
 
     /**
@@ -70,10 +71,10 @@ export class ClientScreeningSelectButton extends Component {
      * @private
      **/
     _setImgHighlighted = (bool) => {
-        const {imgSource, isHighlighted} = this.state;
+        //const {imgSource, isHighlighted} = this.state;
         this.setState({
             imgSource: bool ? (require('../../../../images/carSourceImages/btnIconHigh@2x.png')) : (require('../../../../images/carSourceImages/btnIcon@2x.png')),
-            isHighlighted: bool,
+            isHighlighted: bool ? styles.selectedBtnText : styles.selectBtnText
         })
     }
 
@@ -87,7 +88,7 @@ export class ClientScreeningSelectButton extends Component {
                 onPress={this._btnClick}>
                 <View style={styles.selectBtn}>
                     <View>
-                        <Text allowFontScaling={false} style={styles.selectedBtnText}>{this.state.title}</Text>
+                        <Text allowFontScaling={false} style={this.state.isHighlighted}>{this.state.title}</Text>
                     </View>
                     <View style={{marginLeft: 5}}>
                         <Image source={this.state.imgSource}></Image>

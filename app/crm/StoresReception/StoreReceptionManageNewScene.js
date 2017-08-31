@@ -317,12 +317,23 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
     };
 
     /**
-     *
+     *           xxly: {index: 0, value: '所有来源'},
+     khjb: {index: 0, value: '所有级别'},
+     dfzp: {index: 0, value: '全部状态'},
+     gmys: {index: 0, value: '所有预算'}
      * @param newMonth
      **/
     updateScreeningItems = (newScreeningItems) => {
         this.screeningItems = newScreeningItems;
         this.selectFilterItems();
+        if (newScreeningItems.xxly.index === 0 &&
+            newScreeningItems.khjb.index === 0 &&
+            newScreeningItems.dfzp.index === 0 &&
+            newScreeningItems.gmys.index === 0 ) {
+            this.btn2._setImgHighlighted(false);
+        } else {
+            this.btn2._setImgHighlighted(true);
+        }
         this.refreshData();
     };
 
