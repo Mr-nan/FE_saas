@@ -259,7 +259,7 @@ export default class BaseInfoItem extends BaseComponent {
     /**
      *  用户已经存在弹出提示框
      **/
-    userAireadyExist = (customerPhone) => {
+    userAireadyExist1 = (customerPhone) => {
         this.props.showModal(true);
         StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
             if (data.code == 1 && data.result != null) {
@@ -287,6 +287,9 @@ export default class BaseInfoItem extends BaseComponent {
                 this.props.showToast('查询账户信息失败');
             }
         });
+    };
+
+    userAireadyExist = (customerPhone) => {
     };
 }
 

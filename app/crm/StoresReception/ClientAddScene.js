@@ -216,6 +216,8 @@ export default class ClientAddScene extends BaseComponent {
      **/
     checkInfo = () => {
         this.clientInfo = [];
+        let startTime = '';
+        let endTime = '';
         let baseInfoItems = this.baseInfoItem.getItemData();
         for (let key in baseInfoItems) {
             this.clientInfo.push(baseInfoItems[key]);
@@ -233,6 +235,9 @@ export default class ClientAddScene extends BaseComponent {
         //console.log('this.clientInfo=====', this.clientInfo);
         for (let key in this.clientInfo) {
             //console.log('this.clientInfo=====', key + this.clientInfo[key]);
+            if (this.clientInfo[key].name == '客户到店') {
+                continue;
+            }
             if (this.clientInfo[key].name == '电话' && this.clientInfo[key].value.length !== 11) {
                 this.props.showToast(this.clientInfo[key].name + '输入不正确');
                 return false;
@@ -241,6 +246,16 @@ export default class ClientAddScene extends BaseComponent {
                 this.props.showToast(this.clientInfo[key].name + '不能为空');
                 return false;
             }
+            if (this.clientInfo[key].name == '进店时间') {
+                startTime = this.clientInfo[key].value;
+            }
+            if (this.clientInfo[key].name == '离店时间') {
+                endTime = this.clientInfo[key].value;
+            }
+        }
+        if (endTime < startTime) {
+            this.props.showToast('离店时间不能早于进店时间');
+            return false;
         }
         return true;
     };
