@@ -40,6 +40,7 @@ import {request} from '../utils/RequestUtil';
 import * as Urls from '../constant/appUrls';
 import AccountModal from '../component/AccountModal';
 import OrderTypeSelectScene from  '../mine/myOrder/OrderTypeSelectScene';
+import CancelOrderReason from '../mine/myOrder/CancelOrderReasonScene';
 
 let Platform = require('Platform');
 import ImagePicker from "react-native-image-picker";
@@ -580,6 +581,8 @@ export default class MineScene extends BaseComponent {
             case '设置':
                 this.navigatorParams.name = 'Setting'
                 this.navigatorParams.component = Setting
+                // this.navigatorParams.name = 'CancelOrderReason'
+                // this.navigatorParams.component = CancelOrderReason
                 break;
 
         }

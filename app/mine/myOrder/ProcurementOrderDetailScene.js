@@ -40,6 +40,9 @@ import ContractWebScene from "./ContractWebScene";
 import ContractScene from "./ContractScene";
 import LoanInfo from "./component/LoanInfo";
 import DDDetailScene from "../../finance/lend/DDDetailScene";
+import ProcurementInfo from "./component/ProcurementInfo";
+import AccountScene from "../accountManage/AccountScene";
+import CancelOrderReasonScene from "./CancelOrderReasonScene";
 const Pixel = new PixelUtil();
 
 export default class ProcurementOrderDetailScene extends BaseComponent {
@@ -93,8 +96,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
 
         } finally {
             //InteractionManager.runAfterInteractions(() => {
-                this.setState({renderPlaceholderOnly: 'loading'});
-                this.initFinish();
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
             //});
         }
     }
@@ -156,7 +159,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
-                this.mList = ['0', '1', '3', '4', '6'];
+                this.mList = ['0', '1', '3', '6'];
                 this.contactData = {
                     layoutTitle: '已拍下',
                     layoutContent: '请先与卖家联系商议成交价，待卖家确认后支付订金。',
@@ -246,16 +249,39 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 break;
             case 5: // 订单融资处理中
                 this.mList = [];
-                this.mList = ['3', '7'];
+                if (this.orderDetail.status === 16) {
+                    this.contactData = {};
+                    this.mList = ['1', '3', '7'];
+                    this.contactData = {
+                        layoutTitle: '订单融资处理中',
+                        layoutContent: '恭喜您首付已经支付成功，预计10分钟内生成合同，之后请您签署',
+                        setPrompt: false
+                    };
+                } else if (this.orderDetail.status === 17 || this.orderDetail.status === 19 || this.orderDetail.status === 20 || this.orderDetail.status === 21 || this.orderDetail.status === 22 ||
+                    this.orderDetail.status === 23 || this.orderDetail.status === 24) {
+                    this.contactData = {};
+                    this.mList = ['1', '3', '7'];
+                    this.contactData = {
+                        layoutTitle: '订单融资处理中',
+                        layoutContent: '您确认车辆无误，点击“验收确认”后，24小时内即可为您结放贷款。',
+                        setPrompt: false
+                    };
+                } else {
+                    this.mList = ['3', '7'];
+                }
                 break;
             case 6: // 待付首付款
                 this.mList = [];
                 this.items = [];
                 this.contactData = {};
                 this.mList = ['0', '1', '3', '4', '5', '6'];
+                let amount = '  ';
+/*                if (this.applyLoanAmount === '请输入申请贷款金额') {
+                    amount = '';
+                }*/
                 this.contactData = {
                     layoutTitle: '付首付款',
-                    layoutContent: '请支付首付款，之后等待放款。',
+                    layoutContent: '恭喜您的' + amount + '元贷款已经授权，请尽快支付首付款以便尽快完成融资。',
                     setPrompt: true,
                     promptTitle: '首付款说明',
                     promptContent: '车贷房贷前您需先支付首付款，卖家可查看到账金额，但不可提现。如交易最终未完成，首付款可退回。'
@@ -574,7 +600,15 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                     this.cancelOrder);
                             }}>
                             <View style={styles.buttonCancel}>
-                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>申请取消订单</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.refs.payModal.changeShowType(true, '提示', '请咨询卖家，确认成交价', '确定');
+                            }}>
+                            <View style={styles.buttonConfirm}>
+                                <Text allowFontScaling={false} style={{color: '#ffffff'}}>支付</Text>
                             </View>
                         </TouchableOpacity>
                         <ChooseModal ref='chooseModal' title='提示'
@@ -585,6 +619,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                      buttonsMargin={Pixel.getPixel(20)}
                                      positiveOperation={this.cancelOrder}
                                      content=''/>
+                        <ExplainModal ref='payModal' title='提示' buttonStyle={styles.expButton}
+                                      textStyle={styles.expText}
+                                      text='确定' content='请咨询卖家，确认成交价'/>
                     </View>
                 )
                 break;
@@ -603,7 +640,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                     this.cancelOrder);
                             }}>
                             <View style={styles.buttonCancel}>
-                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>申请取消订单</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity
@@ -654,10 +691,18 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     <View style={styles.bottomBar}>
                         <TouchableOpacity
                             onPress={() => {
-                                this.refs.expModal.changeShowType(true, '提示', '订单尾款已结清联系客服取消订单', '确定');
+                                //this.refs.expModal.changeShowType(true, '提示', '订单尾款已结清联系客服取消订单', '确定');
+                                this.toNextPage({
+                                    name: 'CancelOrderReasonScene',
+                                    component: CancelOrderReasonScene,
+                                    params: {
+                                        order_id: this.orderDetail.id,
+                                        refresh: this.payCallBack
+                                    }
+                                });
                             }}>
                             <View style={styles.buttonCancel}>
-                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>申请取消订单</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity
@@ -794,7 +839,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 this.refs.cancelModal.changeShowType(true, '提示', '已申请订单融资请联系客服取消订单', '确定');
                             }}>
                             <View style={styles.buttonCancel}>
-                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>取消订单</Text>
+                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>申请取消订单</Text>
                             </View>
                         </TouchableOpacity>
                         <ExplainModal ref='cancelModal' title='提示' buttonStyle={styles.expButton}
@@ -807,14 +852,14 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 return (
                     <View style={styles.bottomBar}>
                         {/*<TouchableOpacity
-                            onPress={() => {
-                                this.refs.chooseModal.changeShowType(true, '取消', '确定', '卖家将在您发起取消申请24小时内回复，如已支付订金将与卖家协商退款。',
-                                    this.cancelOrder);
-                            }}>
-                            <View style={styles.buttonCancel}>
-                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>取消订单</Text>
-                            </View>
-                        </TouchableOpacity>*/}
+                         onPress={() => {
+                         this.refs.chooseModal.changeShowType(true, '取消', '确定', '卖家将在您发起取消申请24小时内回复，如已支付订金将与卖家协商退款。',
+                         this.cancelOrder);
+                         }}>
+                         <View style={styles.buttonCancel}>
+                         <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>申请取消订单</Text>
+                         </View>
+                         </TouchableOpacity>*/}
                         <TouchableOpacity
                             onPress={() => {
                                 if (this.orderState == 3) {
@@ -838,6 +883,29 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                      positiveTextStyle={styles.positiveTextStyle} positiveText='确定'
                                      buttonsMargin={Pixel.getPixel(20)}
                                      positiveOperation={this.confirmCar}
+                                     content=''/>
+                    </View>
+                )
+                break;
+            case 12:
+                return (
+                    <View style={styles.bottomBar}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.refs.chooseModal.changeShowType(true, '取消', '确定', '卖家将在您发起取消申请24小时内回复，如已支付订金将与卖家协商退款。',
+                                    this.cancelOrder);
+                            }}>
+                            <View style={styles.buttonCancel}>
+                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>申请取消订单</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <ChooseModal ref='chooseModal' title='提示'
+                                     negativeButtonStyle={styles.negativeButtonStyle}
+                                     negativeTextStyle={styles.negativeTextStyle} negativeText='取消'
+                                     positiveButtonStyle={styles.positiveButtonStyle}
+                                     positiveTextStyle={styles.positiveTextStyle} positiveText='确定'
+                                     buttonsMargin={Pixel.getPixel(20)}
+                                     positiveOperation={this.cancelOrder}
                                      content=''/>
                     </View>
                 )
@@ -1062,10 +1130,10 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     this.orderState = 5;
                     this.topState = -1;
                     if (status === 17 || status === 19 || status === 20 || status === 21 || status === 22 ||
-                        status === 23 || status === 24 ) {
+                        status === 23 || status === 24) {
                         this.bottomState = -1;
                     } else {
-                        this.bottomState = 0;
+                        this.bottomState = 12;
                     }
                 } else if (cancelStatus === 1) {
                     this.orderState = 5;
@@ -1305,6 +1373,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
     updateLoanAmount = (newAmount) => {
         //this.props.showModal(true);
         this.applyLoanAmount = newAmount;
+        this.cl.setLayoutContent('恭喜您的' + newAmount + '元贷款已经授权，请尽快支付首付款以便尽快完成融资。');
     };
 
     /**
@@ -1393,6 +1462,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         } else if (rowData === '1') {
             return (
                 <ContactLayout
+                    ref={(ref) => {this.cl = ref}}
                     layoutTitle={this.contactData.layoutTitle ? this.contactData.layoutTitle : ''}
                     layoutContent={this.contactData.layoutContent ? this.contactData.layoutContent : ''}
                     setPrompt={this.contactData.setPrompt ? this.contactData.setPrompt : false}
@@ -1416,7 +1486,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                               style={{color: fontAndColor.COLORA2}}>《买卖协议》</Text>
                     }
                     {/*<Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1}}>和</Text>
-                     <Text allowFontScaling={false} 
+                     <Text allowFontScaling={false}
                      onPress={() => {
                      this.getTypeContractInfo(2)
                      }}
@@ -1485,37 +1555,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
             )
         } else if (rowData === '4') {
             return (
-                <View style={styles.itemType4}>
-                    <View style={{height: Pixel.getPixel(40), alignItems: 'center', flexDirection: 'row'}}>
-                        <Text allowFontScaling={false} style={{
-                            fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-                            marginLeft: Pixel.getPixel(15)
-                        }}>采购信息</Text>
-                    </View>
-                    <View style={styles.separatedLine}/>
-                    <View style={{
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        marginLeft: Pixel.getPixel(15),
-                        marginTop: Pixel.getPixel(20),
-                        marginRight: Pixel.getPixel(15)
-                    }}>
-                        <Text allowFontScaling={false} style={styles.orderInfo}>支付订金</Text>
-                        <View style={{flex: 1}}/>
-                        <Text allowFontScaling={false} style={styles.infoContent}>{this.orderDetail.done_deposit_amount}元</Text>
-                    </View>
-                    <View style={styles.infoItem}>
-                        <Text allowFontScaling={false} style={styles.orderInfo}>支付尾款</Text>
-                        <View style={{flex: 1}}/>
-                        <Text allowFontScaling={false} style={styles.infoContent}>{this.orderDetail.done_balance_amount}元</Text>
-                    </View>
-                    <View style={styles.infoItem}>
-                        <Text allowFontScaling={false} style={styles.orderInfo}>支付总计</Text>
-                        <View style={{flex: 1}}/>
-                        <Text allowFontScaling={false}
-                              style={styles.infoContent}>{this.orderDetail.done_total_amount}元</Text>
-                    </View>
-                </View>
+                <ProcurementInfo orderDetail={this.orderDetail} orderState={this.orderState}/>
             )
         } else if (rowData === '5') {
             return (
@@ -1579,8 +1619,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             params: {
                                 financeNo: this.orderDetail.finance_no,
                                 orderNo: this.orderDetail.order_no,
-                                FromScene:"DingDanXiangQingScene",
-                                  backRefresh: () => {
+                                FromScene: "DingDanXiangQingScene",
+                                backRefresh: () => {
                                     this.payCallBack();
                                 }
                             }
@@ -1700,7 +1740,7 @@ const styles = StyleSheet.create({
     },
     itemType4: {
         backgroundColor: '#ffffff',
-        height: Pixel.getPixel(151)
+        //height: Pixel.getPixel(151)
     },
     itemType6: {
         backgroundColor: '#ffffff',
