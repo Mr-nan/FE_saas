@@ -32,43 +32,6 @@ let screen_width = Dimensions.get('window').width;
 
 let Pixel = new PixelUtil();
 
-// 取消类型选项数据源
-let cancelTypes = [
-    {
-        value: '车况不可接受',
-        check: false,
-        buyer_cancel_type: 1
-    },
-    {
-        value: '临时加价',
-        check: false,
-        buyer_cancel_type: 2
-    },
-    {
-        value: '车辆不可迁入落户地',
-        check: false,
-        buyer_cancel_type: 3
-    },
-    {
-        value: '对方态度恶略',
-        check: false,
-        buyer_cancel_type: 4
-    },
-    {
-        value: '其他',
-        check: false,
-        buyer_cancel_type: 5
-    },
-]
-
-let cancelImages = [
-    {
-        image: photo,
-        deletable: false,
-        url: ''
-    }
-]
-
 
 const options = {
     //弹出框选项
@@ -92,15 +55,56 @@ export default class CancelOrderReasonScene extends BaseComponent {
     constructor(props) {
         super(props)
 
+        cancelTypes = [
+            {
+                value: '车况不可接受',
+                check: false,
+                buyer_cancel_type: 1
+            },
+            {
+                value: '临时加价',
+                check: false,
+                buyer_cancel_type: 2
+            },
+            {
+                value: '车辆不可迁入落户地',
+                check: false,
+                buyer_cancel_type: 3
+            },
+            {
+                value: '对方态度恶劣',
+                check: false,
+                buyer_cancel_type: 4
+            },
+            {
+                value: '其他',
+                check: false,
+                buyer_cancel_type: 5
+            },
+        ]
+
+        cancelImages = [
+            {
+                image: photo,
+                deletable: false,
+                url: ''
+            }
+        ]
+
+
         this.state = {
             selected_buyer_cancel_type: 0,
             buyer_cancel_img: '',
             buyer_cancel_desc: '',
             node: 1,
-            pictures: cancelImages,
-            buyer_cancel_types: cancelTypes,
-
+            pictures: this.cancelImages,
+            buyer_cancel_types: this.cancelTypes,
         }
+    }
+
+    componentWillUnmount(){
+
+        console.log('12345678')
     }
 
     componentDidMount() {
@@ -311,7 +315,7 @@ export default class CancelOrderReasonScene extends BaseComponent {
                                 }
 
                                 if (this.state.buyer_cancel_desc.length < 10) {
-                                    this.props.showToast('最少输入10个汉子描述');
+                                    this.props.showToast('最少输入10个汉字描述');
                                     return;
                                 }
                                 if (cancelImages.length == 1) {
@@ -320,34 +324,52 @@ export default class CancelOrderReasonScene extends BaseComponent {
                                 }
 
                                 //TODO  提交资料。。。
-
-                                cancelImages.pop();
+                                //cancelImages.pop();
                                 let urls = ''
-                                cancelImages.map((picture, i) => {
-                                    urls += picture.url + ';'
-                                })
 
+                                for (let i=0 ; i<cancelImages.length; i++){
+                                    if (i == cancelImages.length-1) {
+                                        break
+                                    }
+                                    urls += cancelImages[i].url + ';'
+                                }
+
+                                this.setState({
+                                    loading: true,
+                                })
                                 StoreageUtil.mGetItem(StoreageKeyNames.LOAN_SUBJECT, (data) => {
                                     if (data.code == 1 && data.result != null) {
                                         let datas = JSON.parse(data.result);
                                         let param = {
                                             buyer_cancel_desc: this.state.buyer_cancel_desc,
                                             buyer_cancel_img: urls,
-                                            buyer_cancel_type: this.state.buyer_cancel_type,
+                                            buyer_cancel_type: this.state.selected_buyer_cancel_type,
                                             company_id: datas.company_base_id,
                                             order_id: this.props.order_id,
                                             node: 1,
                                             type: 1
                                         };
                                         //  取消订单， 现在是的地址是临时测试地址, 记得后续再改
+                                        console.log('params', param);
                                         request(Urls.ORDER_CANCEL, 'Post', param).then((response) => {
+                                            this.setState({
+                                                loading: false,
+                                            })
                                             console.log('response', response);
                                             this.props.refresh();
                                             this.backPage();
                                         }, (error) => {
+                                            this.setState({
+                                                loading: false,
+                                            })
+                                            console.log('error', error)
                                             this.props.showToast(error.mjson.msg);
+
                                         })
                                     } else {
+                                        this.setState({
+                                            loading: false,
+                                        })
                                         this.props.showToast('取消订单申请失败');
                                     }
                                 });
