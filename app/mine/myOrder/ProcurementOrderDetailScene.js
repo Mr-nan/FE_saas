@@ -275,7 +275,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.items = [];
                 this.contactData = {};
                 this.mList = ['0', '1', '3', '4', '5', '6'];
-                let amount = '';
+                let amount = '  ';
 /*                if (this.applyLoanAmount === '请输入申请贷款金额') {
                     amount = '';
                 }*/
@@ -887,6 +887,29 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     </View>
                 )
                 break;
+            case 12:
+                return (
+                    <View style={styles.bottomBar}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.refs.chooseModal.changeShowType(true, '取消', '确定', '卖家将在您发起取消申请24小时内回复，如已支付订金将与卖家协商退款。',
+                                    this.cancelOrder);
+                            }}>
+                            <View style={styles.buttonCancel}>
+                                <Text allowFontScaling={false} style={{color: fontAndColor.COLORA2}}>申请取消订单</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <ChooseModal ref='chooseModal' title='提示'
+                                     negativeButtonStyle={styles.negativeButtonStyle}
+                                     negativeTextStyle={styles.negativeTextStyle} negativeText='取消'
+                                     positiveButtonStyle={styles.positiveButtonStyle}
+                                     positiveTextStyle={styles.positiveTextStyle} positiveText='确定'
+                                     buttonsMargin={Pixel.getPixel(20)}
+                                     positiveOperation={this.cancelOrder}
+                                     content=''/>
+                    </View>
+                )
+                break;
             default:
                 return null;
                 break;
@@ -1110,7 +1133,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         status === 23 || status === 24) {
                         this.bottomState = -1;
                     } else {
-                        this.bottomState = 0;
+                        this.bottomState = 12;
                     }
                 } else if (cancelStatus === 1) {
                     this.orderState = 5;
@@ -1350,7 +1373,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
     updateLoanAmount = (newAmount) => {
         //this.props.showModal(true);
         this.applyLoanAmount = newAmount;
-        this.refs.cl.setLayoutContent('恭喜您的' + newAmount + '元贷款已经授权，请尽快支付首付款以便尽快完成融资。');
+        this.cl.setLayoutContent('恭喜您的' + newAmount + '元贷款已经授权，请尽快支付首付款以便尽快完成融资。');
     };
 
     /**
@@ -1439,7 +1462,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         } else if (rowData === '1') {
             return (
                 <ContactLayout
-                    ref="cl"
+                    ref={(ref) => {this.cl = ref}}
                     layoutTitle={this.contactData.layoutTitle ? this.contactData.layoutTitle : ''}
                     layoutContent={this.contactData.layoutContent ? this.contactData.layoutContent : ''}
                     setPrompt={this.contactData.setPrompt ? this.contactData.setPrompt : false}
