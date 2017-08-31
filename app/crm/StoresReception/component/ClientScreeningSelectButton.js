@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     selectBtn: {
-        width: Pixel.getPixel(80),
+        width: Pixel.getPixel(90),
         height: Pixel.getPixel(40),
         alignItems: 'center',
         justifyContent: 'center',
