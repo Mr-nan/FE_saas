@@ -108,7 +108,7 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                     gmys: this.screeningItems.gmys.value,
                     pc: 1,
                     times: this.timeSelectMapping(),
-                    mouth: ''
+                    mouth: this.selectMonth === '选择月份' ? '' : this.selectMonth
                     //createTime: '2017-08-09 15:18:47'
                 };
                 let url = AppUrls.POTENTIAL_CUSTOMER_LISTS;
@@ -313,6 +313,7 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
         this.selectAddTime();
         this.btn1.setTitle(this.selectMonth);
         this.timeSelect = '';
+        this.refreshData();
     };
 
     /**

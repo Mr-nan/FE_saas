@@ -112,7 +112,7 @@ export default class KeepCustomerManageScene extends BaseComponent {
                     perfectStatus: this.stateSelectMapping(),
                     pc: 1,
                     times: this.timeSelectMapping(),
-                    mouth: ''
+                    mouth: this.selectMonth === '选择月份' ? '' : this.selectMonth
                 };
                 let url = AppUrls.TENURE_PERFECT_IF_LIST;
                 request(url, 'post', maps).then((response) => {
@@ -267,6 +267,7 @@ export default class KeepCustomerManageScene extends BaseComponent {
         this.selectAddTime();
         this.btn1.setTitle(this.selectMonth);
         this.timeSelect = '';
+        this.refreshData();
     };
 
     /**
