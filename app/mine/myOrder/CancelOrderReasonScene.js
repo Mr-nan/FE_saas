@@ -97,8 +97,8 @@ export default class CancelOrderReasonScene extends BaseComponent {
             buyer_cancel_img: '',
             buyer_cancel_desc: '',
             node: 1,
-            pictures: this.cancelImages,
-            buyer_cancel_types: this.cancelTypes,
+            pictures: cancelImages,
+            buyer_cancel_types: cancelTypes,
         }
     }
 
