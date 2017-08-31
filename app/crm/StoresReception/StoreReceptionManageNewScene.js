@@ -317,11 +317,11 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
     };
 
     /**
-     *           xxly: {index: 0, value: '所有来源'},
-     khjb: {index: 0, value: '所有级别'},
-     dfzp: {index: 0, value: '全部状态'},
-     gmys: {index: 0, value: '所有预算'}
-     * @param newMonth
+     * xxly: {index: 0, value: '所有来源'},
+     * khjb: {index: 0, value: '所有级别'},
+     * dfzp: {index: 0, value: '全部状态'},
+     * gmys: {index: 0, value: '所有预算'}
+     * @param newScreeningItems
      **/
     updateScreeningItems = (newScreeningItems) => {
         this.screeningItems = newScreeningItems;
