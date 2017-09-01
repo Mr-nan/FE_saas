@@ -804,6 +804,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 交易已关闭(卖家不同意退款)
                             </Text>
                             <Text allowFontScaling={false} style={{
+                                marginTop: Pixel.getPixel(5),
                                 textAlign: 'center',
                                 fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                                 color: fontAndColor.COLORB0
@@ -947,6 +948,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 交易已关闭
                             </Text>
                             <Text allowFontScaling={false} style={{
+                                marginTop: Pixel.getPixel(5),
                                 textAlign: 'center',
                                 fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                                 color: fontAndColor.COLORB0
@@ -969,11 +971,35 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 交易已关闭
                             </Text>
                             <Text allowFontScaling={false} style={{
+                                marginTop: Pixel.getPixel(5),
                                 textAlign: 'center',
                                 fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                                 color: fontAndColor.COLORB0
                             }}>
                                 订金补偿卖家，其它款项已退
+                            </Text>
+                        </View>
+                    </View>
+                );
+                break;
+            case 15:
+                return (
+                    <View style={[styles.bottomBar, {justifyContent: 'center'}]}>
+                        <View style={[styles.bottomBar, {justifyContent: 'center', flexDirection: 'column'}]}>
+                            <Text allowFontScaling={false} style={{
+                                textAlign: 'center',
+                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                color: fontAndColor.COLORB0
+                            }}>
+                                交易已关闭
+                            </Text>
+                            <Text allowFontScaling={false} style={{
+                                marginTop: Pixel.getPixel(5),
+                                textAlign: 'center',
+                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                color: fontAndColor.COLORB0
+                            }}>
+                                退款处理中
                             </Text>
                         </View>
                     </View>
@@ -1069,6 +1095,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.bottomState = 14;
                     } else if (this.orderDetail.cancel_is_agree == 2) {
                         this.bottomState = 6;
+                    } else if (this.orderDetail.cancel_is_agree == 0 && this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 15;
                     } else {
                         this.bottomState = 4;
                     }
@@ -1087,6 +1115,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.bottomState = 14;
                     } else if (this.orderDetail.cancel_is_agree == 2) {
                         this.bottomState = 6;
+                    } else if (this.orderDetail.cancel_is_agree == 0 && this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 15;
                     } else {
                         this.bottomState = 4;
                     }
@@ -1124,6 +1154,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.bottomState = 14;
                     } else if (this.orderDetail.cancel_is_agree == 2) {
                         this.bottomState = 6;
+                    } else if (this.orderDetail.cancel_is_agree == 0 && this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 15;
                     } else {
                         this.bottomState = 4;
                     }
@@ -1142,6 +1174,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.bottomState = 14;
                     } else if (this.orderDetail.cancel_is_agree == 2) {
                         this.bottomState = 6;
+                    } else if (this.orderDetail.cancel_is_agree == 0 && this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 15;
                     } else {
                         this.bottomState = 4;
                     }
@@ -1171,6 +1205,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.bottomState = 14;
                     } else if (this.orderDetail.cancel_is_agree == 2) {
                         this.bottomState = 6;
+                    } else if (this.orderDetail.cancel_is_agree == 0 && this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 15;
                     } else {
                         this.bottomState = 4;
                     }
@@ -1189,6 +1225,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.bottomState = 14;
                     } else if (this.orderDetail.cancel_is_agree == 2) {
                         this.bottomState = 6;
+                    } else if (this.orderDetail.cancel_is_agree == 0 && this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 15;
                     } else {
                         this.bottomState = 4;
                     }
@@ -1231,6 +1269,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.bottomState = 14;
                     } else if (this.orderDetail.cancel_is_agree == 2) {
                         this.bottomState = 6;
+                    } else if (this.orderDetail.cancel_is_agree == 0 && this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 15;
                     } else {
                         this.bottomState = 4;
                     }
@@ -1249,6 +1289,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.bottomState = 14;
                     } else if (this.orderDetail.cancel_is_agree == 2) {
                         this.bottomState = 6;
+                    } else if (this.orderDetail.cancel_is_agree == 0 && this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 15;
                     } else {
                         this.bottomState = 4;
                     }
@@ -1284,6 +1326,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.bottomState = 14;
                     } else if (this.orderDetail.cancel_is_agree == 2) {
                         this.bottomState = 6;
+                    } else if (this.orderDetail.cancel_is_agree == 0 && this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 15;
                     } else {
                         this.bottomState = 4;
                     }
@@ -1302,6 +1346,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.bottomState = 14;
                     } else if (this.orderDetail.cancel_is_agree == 2) {
                         this.bottomState = 6;
+                    } else if (this.orderDetail.cancel_is_agree == 0 && this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 15;
                     } else {
                         this.bottomState = 4;
                     }
@@ -1333,6 +1379,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.bottomState = 14;
                     } else if (this.orderDetail.cancel_is_agree == 2) {
                         this.bottomState = 6;
+                    } else if (this.orderDetail.cancel_is_agree == 0 && this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 15;
                     } else {
                         this.bottomState = 4;
                     }
@@ -1351,6 +1399,8 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                         this.bottomState = 14;
                     } else if (this.orderDetail.cancel_is_agree == 2) {
                         this.bottomState = 6;
+                    } else if (this.orderDetail.cancel_is_agree == 0 && this.orderDetail.cancel_side == 3) {
+                        this.bottomState = 15;
                     } else {
                         this.bottomState = 4;
                     }
