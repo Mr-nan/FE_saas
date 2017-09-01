@@ -195,7 +195,7 @@ return [
 
     订单数据里：
     cancel_side为：1买家 2卖家 3系统后台
-    cancel_is_agree  1卖家同意 2卖家不同意
+    cancel_is_agree  1卖家同意 2卖家不同意 0后台强制取消
 
     refund_data为退款单数据
     is_who：1为买家，2为卖家
