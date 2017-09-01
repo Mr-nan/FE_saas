@@ -784,7 +784,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                             color: fontAndColor.COLORB0
                         }}>
-                            交易关闭(卖家同意退款)
+                            交易已关闭(卖家同意退款)
                         </Text>
                     </View>
                 );
@@ -801,7 +801,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                                 fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                                 color: fontAndColor.COLORB0
                             }}>
-                                交易关闭(卖家不同意退款)
+                                交易已关闭(卖家不同意退款)
                             </Text>
                             <Text allowFontScaling={false} style={{
                                 textAlign: 'center',
@@ -935,6 +935,50 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                     </View>
                 )
                 break;
+            case 13:
+                return (
+                    <View style={[styles.bottomBar, {justifyContent: 'center'}]}>
+                        <View style={[styles.bottomBar, {justifyContent: 'center', flexDirection: 'column'}]}>
+                            <Text allowFontScaling={false} style={{
+                                textAlign: 'center',
+                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                color: fontAndColor.COLORB0
+                            }}>
+                                交易已关闭
+                            </Text>
+                            <Text allowFontScaling={false} style={{
+                                textAlign: 'center',
+                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                color: fontAndColor.COLORB0
+                            }}>
+                                订金及其它款项已退
+                            </Text>
+                        </View>
+                    </View>
+                );
+                break;
+            case 14:
+                return (
+                    <View style={[styles.bottomBar, {justifyContent: 'center'}]}>
+                        <View style={[styles.bottomBar, {justifyContent: 'center', flexDirection: 'column'}]}>
+                            <Text allowFontScaling={false} style={{
+                                textAlign: 'center',
+                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                color: fontAndColor.COLORB0
+                            }}>
+                                交易已关闭
+                            </Text>
+                            <Text allowFontScaling={false} style={{
+                                textAlign: 'center',
+                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                color: fontAndColor.COLORB0
+                            }}>
+                                订金补偿卖家，其它款项已退
+                            </Text>
+                        </View>
+                    </View>
+                );
+                break;
             default:
                 return null;
                 break;
@@ -962,19 +1006,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 0;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_side == 3) {
-                        this.bottomState = 9;
-                    } else {
-                        this.bottomState = 4;
-                    }
+                    this.bottomState = 4;
                 } else if (cancelStatus === 3) {
                     this.orderState = 0;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_side == 3) {
-                        this.bottomState = 9;
-                    } else {
-                        this.bottomState = 4;
-                    }
+                    this.bottomState = 4;
                 }
                 break;
             case 2: // 待付订金  2=>'订单定价完成'
@@ -995,19 +1031,11 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 1;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_side == 3) {
-                        this.bottomState = 9;
-                    } else {
-                        this.bottomState = 4;
-                    }
+                    this.bottomState = 4;
                 } else if (cancelStatus === 3) {
                     this.orderState = 1;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_side == 3) {
-                        this.bottomState = 9;
-                    } else {
-                        this.bottomState = 4;
-                    }
+                    this.bottomState = 4;
                 }
 
                 break;
@@ -1029,30 +1057,38 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 2;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_side == 3) {
-                        this.bottomState = 9;
-                    } else if (this.orderDetail.cancel_side == 2) {
+                    if (this.orderDetail.cancel_is_agree == 1) {
                         this.bottomState = 5;
+                    } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                        this.orderDetail.refund_data.is_who == 1 &&
+                        this.orderDetail.refund_data.status == 2) {
+                        this.bottomState = 13;
+                    } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                        this.orderDetail.refund_data.is_who == 2 &&
+                        this.orderDetail.refund_data.status == 2) {
+                        this.bottomState = 14;
+                    } else if (this.orderDetail.cancel_is_agree == 2) {
+                        this.bottomState = 6;
                     } else {
-                        if (this.orderDetail.cancel_is_agree == 2) {
-                            this.bottomState = 6;
-                        } else {
-                            this.bottomState = 5;
-                        }
+                        this.bottomState = 4;
                     }
                 } else if (cancelStatus === 3) {
                     this.orderState = 2;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_side == 3) {
-                        this.bottomState = 9;
-                    } else if (this.orderDetail.cancel_side == 2) {
+                    if (this.orderDetail.cancel_is_agree == 1) {
                         this.bottomState = 5;
+                    } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                        this.orderDetail.refund_data.is_who == 1 &&
+                        this.orderDetail.refund_data.status == 2) {
+                        this.bottomState = 13;
+                    } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                        this.orderDetail.refund_data.is_who == 2 &&
+                        this.orderDetail.refund_data.status == 2) {
+                        this.bottomState = 14;
+                    } else if (this.orderDetail.cancel_is_agree == 2) {
+                        this.bottomState = 6;
                     } else {
-                        if (this.orderDetail.cancel_is_agree == 2) {
-                            this.bottomState = 6;
-                        } else {
-                            this.bottomState = 5;
-                        }
+                        this.bottomState = 4;
                     }
                 }
                 break;
@@ -1076,30 +1112,38 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 3;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_side == 3) {
-                        this.bottomState = 9;
-                    } else if (this.orderDetail.cancel_side == 2) {
+                    if (this.orderDetail.cancel_is_agree == 1) {
                         this.bottomState = 5;
+                    } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                        this.orderDetail.refund_data.is_who == 1 &&
+                        this.orderDetail.refund_data.status == 2) {
+                        this.bottomState = 13;
+                    } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                        this.orderDetail.refund_data.is_who == 2 &&
+                        this.orderDetail.refund_data.status == 2) {
+                        this.bottomState = 14;
+                    } else if (this.orderDetail.cancel_is_agree == 2) {
+                        this.bottomState = 6;
                     } else {
-                        if (this.orderDetail.cancel_is_agree == 2) {
-                            this.bottomState = 6;
-                        } else {
-                            this.bottomState = 5;
-                        }
+                        this.bottomState = 4;
                     }
                 } else if (cancelStatus === 3) {
                     this.orderState = 3;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_side == 3) {
-                        this.bottomState = 9;
-                    } else if (this.orderDetail.cancel_side == 2) {
+                    if (this.orderDetail.cancel_is_agree == 1) {
                         this.bottomState = 5;
+                    } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                        this.orderDetail.refund_data.is_who == 1 &&
+                        this.orderDetail.refund_data.status == 2) {
+                        this.bottomState = 13;
+                    } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                        this.orderDetail.refund_data.is_who == 2 &&
+                        this.orderDetail.refund_data.status == 2) {
+                        this.bottomState = 14;
+                    } else if (this.orderDetail.cancel_is_agree == 2) {
+                        this.bottomState = 6;
                     } else {
-                        if (this.orderDetail.cancel_is_agree == 2) {
-                            this.bottomState = 6;
-                        } else {
-                            this.bottomState = 5;
-                        }
+                        this.bottomState = 4;
                     }
                 }
                 break;
@@ -1115,30 +1159,38 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 4;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_side == 3) {
-                        this.bottomState = 9;
-                    } else if (this.orderDetail.cancel_side == 2) {
+                    if (this.orderDetail.cancel_is_agree == 1) {
                         this.bottomState = 5;
+                    } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                        this.orderDetail.refund_data.is_who == 1 &&
+                        this.orderDetail.refund_data.status == 2) {
+                        this.bottomState = 13;
+                    } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                        this.orderDetail.refund_data.is_who == 2 &&
+                        this.orderDetail.refund_data.status == 2) {
+                        this.bottomState = 14;
+                    } else if (this.orderDetail.cancel_is_agree == 2) {
+                        this.bottomState = 6;
                     } else {
-                        if (this.orderDetail.cancel_is_agree == 2) {
-                            this.bottomState = 6;
-                        } else {
-                            this.bottomState = 5;
-                        }
+                        this.bottomState = 4;
                     }
                 } else if (cancelStatus === 3) {
                     this.orderState = 4;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_side == 3) {
-                        this.bottomState = 9;
-                    } else if (this.orderDetail.cancel_side == 2) {
+                    if (this.orderDetail.cancel_is_agree == 1) {
                         this.bottomState = 5;
+                    } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                        this.orderDetail.refund_data.is_who == 1 &&
+                        this.orderDetail.refund_data.status == 2) {
+                        this.bottomState = 13;
+                    } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                        this.orderDetail.refund_data.is_who == 2 &&
+                        this.orderDetail.refund_data.status == 2) {
+                        this.bottomState = 14;
+                    } else if (this.orderDetail.cancel_is_agree == 2) {
+                        this.bottomState = 6;
                     } else {
-                        if (this.orderDetail.cancel_is_agree == 2) {
-                            this.bottomState = 6;
-                        } else {
-                            this.bottomState = 5;
-                        }
+                        this.bottomState = 4;
                     }
                 }
                 break;
@@ -1167,30 +1219,38 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 5;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_side == 3) {
-                        this.bottomState = 9;
-                    } else if (this.orderDetail.cancel_side == 2) {
+                    if (this.orderDetail.cancel_is_agree == 1) {
                         this.bottomState = 5;
+                    } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                        this.orderDetail.refund_data.is_who == 1 &&
+                        this.orderDetail.refund_data.status == 2) {
+                        this.bottomState = 13;
+                    } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                        this.orderDetail.refund_data.is_who == 2 &&
+                        this.orderDetail.refund_data.status == 2) {
+                        this.bottomState = 14;
+                    } else if (this.orderDetail.cancel_is_agree == 2) {
+                        this.bottomState = 6;
                     } else {
-                        if (this.orderDetail.cancel_is_agree == 2) {
-                            this.bottomState = 6;
-                        } else {
-                            this.bottomState = 5;
-                        }
+                        this.bottomState = 4;
                     }
                 } else if (cancelStatus === 3) {
                     this.orderState = 5;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_side == 3) {
-                        this.bottomState = 9;
-                    } else if (this.orderDetail.cancel_side == 2) {
+                    if (this.orderDetail.cancel_is_agree == 1) {
                         this.bottomState = 5;
+                    } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                        this.orderDetail.refund_data.is_who == 1 &&
+                        this.orderDetail.refund_data.status == 2) {
+                        this.bottomState = 13;
+                    } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                        this.orderDetail.refund_data.is_who == 2 &&
+                        this.orderDetail.refund_data.status == 2) {
+                        this.bottomState = 14;
+                    } else if (this.orderDetail.cancel_is_agree == 2) {
+                        this.bottomState = 6;
                     } else {
-                        if (this.orderDetail.cancel_is_agree == 2) {
-                            this.bottomState = 6;
-                        } else {
-                            this.bottomState = 5;
-                        }
+                        this.bottomState = 4;
                     }
                 }
                 break;
@@ -1212,30 +1272,38 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 6;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_side == 3) {
-                        this.bottomState = 9;
-                    } else if (this.orderDetail.cancel_side == 2) {
+                    if (this.orderDetail.cancel_is_agree == 1) {
                         this.bottomState = 5;
+                    } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                        this.orderDetail.refund_data.is_who == 1 &&
+                        this.orderDetail.refund_data.status == 2) {
+                        this.bottomState = 13;
+                    } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                        this.orderDetail.refund_data.is_who == 2 &&
+                        this.orderDetail.refund_data.status == 2) {
+                        this.bottomState = 14;
+                    } else if (this.orderDetail.cancel_is_agree == 2) {
+                        this.bottomState = 6;
                     } else {
-                        if (this.orderDetail.cancel_is_agree == 2) {
-                            this.bottomState = 6;
-                        } else {
-                            this.bottomState = 5;
-                        }
+                        this.bottomState = 4;
                     }
                 } else if (cancelStatus === 3) {
                     this.orderState = 6;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_side == 3) {
-                        this.bottomState = 9;
-                    } else if (this.orderDetail.cancel_side == 2) {
+                    if (this.orderDetail.cancel_is_agree == 1) {
                         this.bottomState = 5;
+                    } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                        this.orderDetail.refund_data.is_who == 1 &&
+                        this.orderDetail.refund_data.status == 2) {
+                        this.bottomState = 13;
+                    } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                        this.orderDetail.refund_data.is_who == 2 &&
+                        this.orderDetail.refund_data.status == 2) {
+                        this.bottomState = 14;
+                    } else if (this.orderDetail.cancel_is_agree == 2) {
+                        this.bottomState = 6;
                     } else {
-                        if (this.orderDetail.cancel_is_agree == 2) {
-                            this.bottomState = 6;
-                        } else {
-                            this.bottomState = 5;
-                        }
+                        this.bottomState = 4;
                     }
                 }
                 break;
@@ -1253,30 +1321,38 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 } else if (cancelStatus === 2) {
                     this.orderState = 7;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_side == 3) {
-                        this.bottomState = 9;
-                    } else if (this.orderDetail.cancel_side == 2) {
+                    if (this.orderDetail.cancel_is_agree == 1) {
                         this.bottomState = 5;
+                    } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                        this.orderDetail.refund_data.is_who == 1 &&
+                        this.orderDetail.refund_data.status == 2) {
+                        this.bottomState = 13;
+                    } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                        this.orderDetail.refund_data.is_who == 2 &&
+                        this.orderDetail.refund_data.status == 2) {
+                        this.bottomState = 14;
+                    } else if (this.orderDetail.cancel_is_agree == 2) {
+                        this.bottomState = 6;
                     } else {
-                        if (this.orderDetail.cancel_is_agree == 2) {
-                            this.bottomState = 6;
-                        } else {
-                            this.bottomState = 5;
-                        }
+                        this.bottomState = 4;
                     }
                 } else if (cancelStatus === 3) {
                     this.orderState = 7;
                     this.topState = -1;
-                    if (this.orderDetail.cancel_side == 3) {
-                        this.bottomState = 9;
-                    } else if (this.orderDetail.cancel_side == 2) {
+                    if (this.orderDetail.cancel_is_agree == 1) {
                         this.bottomState = 5;
+                    } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                        this.orderDetail.refund_data.is_who == 1 &&
+                        this.orderDetail.refund_data.status == 2) {
+                        this.bottomState = 13;
+                    } else if ((this.orderDetail.cancel_is_agree == 0 || this.orderDetail.cancel_is_agree == 2) &&
+                        this.orderDetail.refund_data.is_who == 2 &&
+                        this.orderDetail.refund_data.status == 2) {
+                        this.bottomState = 14;
+                    } else if (this.orderDetail.cancel_is_agree == 2) {
+                        this.bottomState = 6;
                     } else {
-                        if (this.orderDetail.cancel_is_agree == 2) {
-                            this.bottomState = 6;
-                        } else {
-                            this.bottomState = 5;
-                        }
+                        this.bottomState = 4;
                     }
                 }
                 break;
