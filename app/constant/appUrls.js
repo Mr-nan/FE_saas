@@ -2,13 +2,13 @@
  * 开发地址
  */
 
-// export const BASEURL = 'http://dev.api-gateway.dycd.com/';
+export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
  */
 
-export const BASEURL = 'http://api-gateway.test.dycd.com/';
+// export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 正式地址
@@ -169,10 +169,15 @@ export const CAR_DELETE = BASEURL + V + 'car/delete';
  */
 export const CAR_SALE = BASEURL + V + 'car/sale';
 
+// /**
+//  * 我的车源-创建已售消息
+//  */
+// export const CAR_SASS_SALED = BASEURL + 'cheshang/sass/saled';
+
 /**
  * 我的车源-创建已售消息
  */
-export const CAR_SASS_SALED = BASEURL + 'cheshang/sass/saled';
+export const CAR_SASS_SALED = BASEURL + 'cheshang/sass_php/addSaledMessage';
 
 /**
  * 获取我的车源-未审核
@@ -233,6 +238,11 @@ export const CAR_CHESHANG_MANAGER_EDIT_TASK= BASEURL + 'cheshang/sass/managerEdi
  * 整备任务 - 运营专员交任务
  */
 export const CAR_CHESHANG_YYZY_EDIT_TASK= BASEURL + 'cheshang/sass/updateTaskByyyzy';
+
+/**
+ * 获取销售员
+ */
+export const CAR_CHESHANG_GET_ALLCHILD= BASEURL + 'cheshang/sass_php/subAccountGetAllChild';
 
 /**
  * 获取登记人信息
@@ -298,6 +308,11 @@ export const USER_HISTORY_DELETE = BASEURL + V + "user.history/delete";//
  * 员工列表
  */
 export const USER_EMPLOYE = BASEURL + V + "user.employe/index";
+
+/**
+ * 选择的当前企业信息
+ */
+export const USER_GET_SELECT_ENTERPRISE_INFO = BASEURL + V + "user/getSelectEnterpriseInfo";
 
 /**
  * from @zhaojian

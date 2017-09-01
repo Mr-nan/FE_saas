@@ -1101,7 +1101,7 @@ class MyCarSourceAuditView extends BaceComponent {
         carAuditPage = 1;
         request(url, 'post', {
 
-            car_status: '3',
+            car_status: '5',
             page: carAuditPage,
             row: 10,
 
@@ -1142,7 +1142,7 @@ class MyCarSourceAuditView extends BaceComponent {
         let url = AppUrls.CAR_USER_CAR;
         carAuditPage += 1;
         request(url, 'post', {
-            car_status: '3',
+            car_status: '5',
             page: carAuditPage,
             row: 10,
 

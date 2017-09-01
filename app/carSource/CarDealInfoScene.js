@@ -23,6 +23,9 @@ import *as fontAndColor from  '../constant/fontAndColor';
 import PixelUtil from  '../utils/PixelUtil';
 import * as AppUrls from "../constant/appUrls";
 import  {request}   from '../utils/RequestUtil';
+import StorageUtil from "../utils/StorageUtil";
+import * as StorageKeyNames from "../constant/storageKeyNames";
+import CarSaledStaffListScene from "./CarSaledStaffListScene";
 
 let Pixel = new  PixelUtil();
 const sceneWidth = Dimensions.get('window').width;
@@ -98,14 +101,12 @@ export default class CarDealInfoScene extends BaseComponent{
             return;
         }
 
-
-
         this.props.showModal(true);
         request(AppUrls.CAR_SALE, 'post', this.carDealData).then((response) => {
-
             request(AppUrls.CAR_SASS_SALED, 'post', {
                 id:this.carDealData.id,
-                saledPeople:this.carDealData.salesman,
+                account_code:this.carDealData.account_code,
+                saledPeople:this.carDealData.saledPeople,
                 saledPrice:this.carDealData.current_rate,
                 saledType:this.carDealData.paymentValue,
                 businessIf:this.carDealData.insuranceValue,
@@ -116,22 +117,15 @@ export default class CarDealInfoScene extends BaseComponent{
                 this.props.refreshDataAction();
                 this.backPage();
 
-
             }, (error) => {
-
-                this.props.showModal(false);
                 this.props.showToast(error.mjson.msg);
             });
 
-
         }, (error) => {
-            this.props.showModal(false);
             this.props.showToast(error.mjson.msg);
         });
 
     }
-
-
 
     // 构造
     constructor(props) {
@@ -143,7 +137,9 @@ export default class CarDealInfoScene extends BaseComponent{
             insurance:'',
             salesman:'',
             current_rate:'',
-            paymentValue:1
+            paymentValue:1,
+            account_code:'',
+            saledPeople:'',
 
         };
 
@@ -166,17 +162,7 @@ export default class CarDealInfoScene extends BaseComponent{
                     title: '销售员姓名',
                     isShowTag: true,
                     isShowTail: true,
-                    tailView: () => {
-                        return (
-                            <View style={{alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-end'}}>
-                                <TextInput style={styles.textInput}
-                                           placeholder='请输入'
-                                           underlineColorAndroid='transparent'
-                                           onChangeText={(text) => {
-                                              this.carDealData.salesman = text;
-                                           }}/>
-                            </View>)
-                    }
+                    value:'请选择'
                 },{
                 title: '成交价',
                 isShowTag: true,
@@ -233,6 +219,25 @@ export default class CarDealInfoScene extends BaseComponent{
      */
     cellCilck=(title)=>{
 
+        if(title='销售员姓名')
+        {
+            this.toNextPage({
+                name: 'CarSaledStaffListScene',
+                component: CarSaledStaffListScene,
+                params: {
+                    clickSaledStaff:(staffData)=>{
+                        this.carDealData.saledPeople = staffData.mobile;
+                        this.carDealData.account_code = staffData.account_code;
+                        this.carDealData.salesman = staffData.real_name;
+                        this.titleData1[0][2].value = staffData.real_name;
+
+                        this.setState({
+                            titleData:this.titleData1,
+                        });
+                    }
+                }
+            });
+        }
     }
 
 

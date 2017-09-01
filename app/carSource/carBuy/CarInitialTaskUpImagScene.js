@@ -170,7 +170,7 @@ export default class CarInitialTaskUpImagScene extends BaseComponent{
                 this.navigationBack();
 
             }, (error) => {
-                this.props.showModal(false);
+                this.showToast(error.mjson.msg);
 
             });
 

@@ -226,8 +226,7 @@ export default class CarManagerTaskScene extends BaseComponent{
             this.backPage();
 
         }, (error) => {
-            this.props.showModal(false);
-
+            this.props.showToast(error.mjson.msg);
         });
     }
 

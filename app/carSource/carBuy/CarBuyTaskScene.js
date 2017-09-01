@@ -33,6 +33,7 @@ import  {request}           from '../../utils/RequestUtil';
 import * as Net from "../../utils/ImageUpload";
 let Pixel = new  PixelUtil();
 const sceneWidth = Dimensions.get('window').width;
+const sceneHeight = Dimensions.get('window').height;
 const scanImg = require('../../../images/financeImages/scan.png');
 const IS_ANDROID = Platform.OS === 'android';
 
@@ -49,8 +50,33 @@ export default class CarBuyTaskScene extends BaseComponent{
         }
         return(
             <View style={styles.rootContaier}>
-                <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={this.state.keyboardOffset}>
-                <ScrollView keyboardDismissMode={'on-drag'}>
+                {
+                    IS_ANDROID?(this.loadScrollView()):(
+                            <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={this.state.keyboardOffset}>
+                                {
+                                    this.loadScrollView()
+                                }
+                            </KeyboardAvoidingView>
+                        )
+                }
+                <VinInfo viewData={this.scanType} vinPress={this._vinPress} ref={(modal) => {this.vinModal = modal}}/>
+                <DateTimePicker
+                    titleIOS="请选择日期"
+                    confirmTextIOS='确定'
+                    cancelTextIOS='取消'
+                    isVisible={this.state.isDateTimePickerVisible}
+                    onConfirm={this._handleDatePicked}
+                    onCancel={this._hideDateTimePicker}
+                />
+                <AccountModal ref="accountmodal"/>
+                <AllNavigationView title="收车任务" backIconClick={this.backPage}/>
+            </View>
+        )
+    }
+
+    loadScrollView=()=>{
+        return(
+            <ScrollView keyboardDismissMode={IS_ANDROID?'none':'on-drag'}>
                 {
                     this.state.titleData.map((data, index) => {
                         return (
@@ -81,23 +107,14 @@ export default class CarBuyTaskScene extends BaseComponent{
                         )
                     })
                 }
-                </ScrollView>
-                </KeyboardAvoidingView>
-                <VinInfo viewData={this.scanType} vinPress={this._vinPress} ref={(modal) => {this.vinModal = modal}}/>
-                <DateTimePicker
-                    titleIOS="请选择日期"
-                    confirmTextIOS='确定'
-                    cancelTextIOS='取消'
-                    isVisible={this.state.isDateTimePickerVisible}
-                    onConfirm={this._handleDatePicked}
-                    onCancel={this._hideDateTimePicker}
-                />
-                <TouchableOpacity style={styles.footBtn} onPress={this.footBtnClick}>
-                    <Text style={styles.footBtnText}>提交</Text>
-                </TouchableOpacity>
-                <AccountModal ref="accountmodal"/>
-                <AllNavigationView title="收车任务" backIconClick={this.backPage}/>
-            </View>
+                <View style={styles.footContainer}>
+                    <TouchableOpacity onPress={this.footBtnClick}>
+                        <View style={styles.footView}>
+                            <Text allowFontScaling={false}  style={styles.footText}>提交</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            </ScrollView>
         )
     }
 
@@ -122,6 +139,9 @@ export default class CarBuyTaskScene extends BaseComponent{
         request(AppUrls.CAR_SASS_SELECT_MSG, 'post', {
             id:this.props.id,
         }).then((response) => {
+            this.setState({
+                renderPlaceholderOnly:'success'
+            });
             this.setData(response.mjson.data.acquisitionCar);
         }, (error) => {
             this.setState({
@@ -367,7 +387,7 @@ export default class CarBuyTaskScene extends BaseComponent{
                     defaultValue={data.remark}
                     onFocus={()=>{
                         this.setState({
-                            keyboardOffset:-Pixel.getPixel(0)
+                            keyboardOffset:Pixel.getPixel(0)
                         });
                     }}
                     onBlur={()=>{
@@ -405,8 +425,6 @@ export default class CarBuyTaskScene extends BaseComponent{
         }
 
       this.upCarData();
-
-
 
     }
 
@@ -1103,19 +1121,24 @@ const styles = StyleSheet.create({
         marginLeft: Pixel.getPixel(5),
         textAlign: 'right',
     },
-    footBtn:{
-        left:0,
-        bottom:0,
-        right:0,
-        backgroundColor:fontAndColor.COLORB0,
-        justifyContent:'center',
-        alignItems:'center',
-        position: 'absolute',
-        height:Pixel.getPixel(44),
+    footContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: Pixel.getPixel(20),
     },
-    footBtnText:{
-        textAlign:'center',
-        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT),
-        color:'white',
-    }
+    footView: {
+        backgroundColor: fontAndColor.COLORB0,
+        height: Pixel.getPixel(44),
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: sceneWidth - Pixel.getPixel(30),
+        borderRadius: Pixel.getPixel(3),
+        marginBottom: Pixel.getPixel(20),
+
+    },
+    footText: {
+        textAlign: 'center',
+        color: 'white',
+        fontSize: fontAndColor.BUTTONFONT30
+    },
 });

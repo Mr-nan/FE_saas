@@ -132,9 +132,7 @@ export default class EvaluateCarInfo extends BaseComponent {
 		}).then((response) => {
             this.props.showModal(false);
 			this.navigationBack();
-
         }, (error) => {
-            this.props.showModal(false);
 			this.props.showToast(error.mjson.msg);
         });
 

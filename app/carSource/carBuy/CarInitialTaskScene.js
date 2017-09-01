@@ -2,7 +2,6 @@
  * Created by zhengnan on 2017/7/28.
  */
 
-
 import React,{Component} from 'react';
 import {
     StyleSheet,
@@ -49,54 +48,67 @@ export default class CarInitialTaskScene extends BaseComponent{
         }
         return(
             <View style={styles.rootContaier}>
-                <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={this.state.keyboardOffset}>
-                    <ScrollView keyboardDismissMode={'on-drag'}>
-                        {
-                            this.state.titleData.map((data, index) => {
-                                return (
-                                    <View style={{marginTop:10,backgroundColor:'white',marginBottom:10}} key={index}>
-                                        {
-                                            data.map((rowData, subIndex) => {
-                                                return( <TouchableOpacity key={subIndex}
-                                                                          activeOpacity={1}
-                                                                          onPress={()=>this.cellCilck(rowData.title)}>
-                                                    <CellView cellData={rowData}/>
-                                                </TouchableOpacity>)
-                                            })
-                                        }
-                                    </View>
-                                )
-                            })
-                        }
-                        {
-                            this.state.imageArray.map((data,index)=>{
-                                return(
-                                    <View style={{backgroundColor:'white',paddingVertical:Pixel.getPixel(15),paddingHorizontal:Pixel.getPixel(15)}} key={'imgkey'+index}>
-                                        <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>{data.title}</Text>
-                                        <TouchableOpacity activeOpacity={1} onPress={()=>{this.showPhotoView(index)}}>
-                                            <Image style={{width:sceneWidth-Pixel.getPixel(30),height:(sceneWidth-Pixel.getPixel(30))/Pixel.getPixel(1.5),backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getPixel(15)}} source={{uri:data.url}}/>
-                                        </TouchableOpacity>
-                                    </View>
-                                )
-                            })
-                        }
-                        {
-                            this.props.type != 2&&
-                            (<View style={styles.footContainer}>
-                                <TouchableOpacity onPress={this.footBtnClick}>
-                                    <View style={styles.footView}>
-                                        <Text allowFontScaling={false}  style={styles.footText}>下一步</Text>
-                                    </View>
-                                </TouchableOpacity>
-                            </View>)
-                        }
+                {
+                    IS_ANDROID?(this.loadScrollView()):(
+                            <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={this.state.keyboardOffset}>
+                                {
+                                    this.loadScrollView()
+                                }
+                            </KeyboardAvoidingView>
+                        )
+                }
 
-                    </ScrollView>
-                </KeyboardAvoidingView>
                 <VinInfo viewData={this.scanType} vinPress={this._vinPress} ref={(modal) => {this.vinModal = modal}}/>
                 <AllNavigationView title= {this.props.taskid ? '车辆信息': "录入车辆信息"} backIconClick={this.backPage}/>
             </View>
         )
+    }
+
+    loadScrollView=()=>{
+        return(
+            <ScrollView  keyboardDismissMode={IS_ANDROID?'none':'on-drag'}>
+                {
+                    this.state.titleData.map((data, index) => {
+                        return (
+                            <View style={{marginTop:10,backgroundColor:'white',marginBottom:10}} key={index}>
+                                {
+                                    data.map((rowData, subIndex) => {
+                                        return( <TouchableOpacity key={subIndex}
+                                                                  activeOpacity={1}
+                                                                  onPress={()=>this.cellCilck(rowData.title)}>
+                                            <CellView cellData={rowData}/>
+                                        </TouchableOpacity>)
+                                    })
+                                }
+                            </View>
+                        )
+                    })
+                }
+                {
+                    this.state.imageArray.map((data,index)=>{
+                        return(
+                            <View style={{backgroundColor:'white',paddingVertical:Pixel.getPixel(15),paddingHorizontal:Pixel.getPixel(15)}} key={'imgkey'+index}>
+                                <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>{data.title}</Text>
+                                <TouchableOpacity activeOpacity={1} onPress={()=>{this.showPhotoView(index)}}>
+                                    <Image style={{width:sceneWidth-Pixel.getPixel(30),height:(sceneWidth-Pixel.getPixel(30))/Pixel.getPixel(1.5),backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getPixel(15)}} source={{uri:data.url}}/>
+                                </TouchableOpacity>
+                            </View>
+                        )
+                    })
+                }
+                {
+                    this.props.type != 2&&
+                    (<View style={styles.footContainer}>
+                        <TouchableOpacity onPress={this.footBtnClick}>
+                            <View style={styles.footView}>
+                                <Text allowFontScaling={false}  style={styles.footText}>下一步</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>)
+                }
+            </ScrollView>
+        )
+
     }
 
     cellSelectAction=(selectDict)=>{

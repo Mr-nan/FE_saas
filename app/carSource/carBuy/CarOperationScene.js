@@ -335,8 +335,7 @@ export default class CarOperationScene extends BaseComponent{
             this.props.reloadTaskData();
 
         }, (error) => {
-            this.props.showModal(false);
-
+            this.props.showToast(error.mjson.msg);
         });
     }
 
