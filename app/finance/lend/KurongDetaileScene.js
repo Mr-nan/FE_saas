@@ -247,7 +247,12 @@ export  default  class KurongDetaileScene extends BaseComponent {
             this.toNextPage({
                 name: 'ContractInfoScene',
                 component: ContractInfoScene,
-                params: {loan_code: this.props.loanNumber, showButton: true}
+                params: {
+                    loan_code: this.props.loanNumber, showButton: true, callbackfresh: () => {
+                        this.initFinish();
+                        this.props.backRefresh();
+                    }
+                }
             });
         } else if (title === '查看合同') {
             this.toNextPage({

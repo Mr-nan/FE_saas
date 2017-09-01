@@ -87,7 +87,8 @@ export  default  class KurongDetaileScene extends BaseComponent {
                     controlCode.extendCode = tempjson.is_extend;
                     controlCode.lendType = tempjson.type;
                     controlCode.minLend = changeToMillion(tempjson.min_loanmny);
-                    let Maxmum = parseFloat(tempjson.single_loan_mny) /*+ parseFloat(tempjson.payment_loanmny)*/
+                    let Maxmum = parseFloat(tempjson.single_loan_mny)
+                    /*+ parseFloat(tempjson.payment_loanmny)*/
                     controlCode.maxLend = changeToMillion(Maxmum)
                     if (carNum > 0) {
 
@@ -244,7 +245,12 @@ export  default  class KurongDetaileScene extends BaseComponent {
             this.toNextPage({
                 name: 'ContractInfoScene',
                 component: ContractInfoScene,
-                params: {loan_code: this.props.loanNumber, showButton: true}
+                params: {
+                    loan_code: this.props.loanNumber, showButton: true, callbackfresh: () => {
+                        this.initFinish();
+                        this.props.backRefresh();
+                    }
+                }
             });
         } else if (title === '查看合同') {
             this.toNextPage({

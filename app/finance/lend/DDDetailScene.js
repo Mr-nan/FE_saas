@@ -446,7 +446,9 @@ export default class DDDetailScene extends BaseComponent {
 		} else if (title == '签署合同') {
 			this.toNextPage({
 				name: 'ContractInfoScene', component: ContractInfoScene,
-				params: {loan_code: loan_code, showButton: true}
+				params: {loan_code: loan_code, showButton: true,callbackfresh: () => {
+                    this.initFinish();
+                }}
 			})
 		} else if (title == '查看合同') {
 			this.toNextPage({
