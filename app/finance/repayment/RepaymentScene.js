@@ -26,6 +26,7 @@ import * as fontAndColor from '../../constant/fontAndColor';
 import PlanListScene from './PlanListScene';
 import RepaymentInfoScene from '../repayment/NewRepaymentInfoScene';
 import InventoryPlanInfoScene from '../repayment/NewInventoryPlanInfoScene';
+import ChedidaiInventoryPlanInfoScene from '../repayment/ChedidaiInventoryPlanInfoScene';
 import ChedidaiRepaymentPage from '../page/ChedidaiRepaymentPage'
 import NewPurchaseRepaymentInfoScene from '../repayment/NewPurchaseRepaymentInfoScene';
 import PurchaseRepaymentPage from '../page/PurchaseRepaymentPage';
@@ -70,7 +71,7 @@ export  default class RepaymentScene extends BaseComponent {
                     }} tabLabel="ios-chatboxes"/>
 
                     <ChedidaiRepaymentPage customerName={this.props.customerName} callBack={(loan_id,loan_number,type,planid)=>{
-                      this.toNextPage({name:'InventoryPlanInfoScene',component:InventoryPlanInfoScene,
+                      this.toNextPage({name:'ChedidaiInventoryPlanInfoScene',component:ChedidaiInventoryPlanInfoScene,
                       params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'ChedidaiRepaymentPage',planid:planid}});
                     }} tabLabel="ios-peoplea"/>
 
