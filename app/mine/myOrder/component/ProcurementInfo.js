@@ -58,6 +58,9 @@ export default class ProcurementInfo extends BaseComponent {
             if (i === items.length - 1) {
                 itemStyle = [itemStyle, {marginBottom: Pixel.getPixel(20)}]
             }
+            if (this.state.orderState === 4 && this.state.orderDetail.first_amount > 0) {
+                itemStyle = [styles.infoItem, {marginTop: Pixel.getPixel(20)}];
+            }
             layouts.push(<View key={i} style={itemStyle}>
                 <Text allowFontScaling={false} style={styles.orderInfo}>{items[i].name}</Text>
                 <View style={{flex: 1}}/>
@@ -115,6 +118,16 @@ export default class ProcurementInfo extends BaseComponent {
                 </View>
                 <View style={styles.separatedLine}/>
                 {this.addItemData()}
+                {this.state.orderState === 4 && this.state.orderDetail.first_amount > 0 && <Text
+                    style={{
+                        width: width - Pixel.getPixel(15),
+                        marginTop: Pixel.getPixel(10),
+                        //marginRight: Pixel.getPixel(15),
+                        marginBottom: Pixel.getPixel(20),
+                        textAlign: 'right',
+                        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28)
+                    }}
+                >其中订单融资支付{this.state.orderDetail.balance_amount - this.state.orderDetail.first_amount}元</Text>}
                 {/*<View style={{
                  alignItems: 'center',
                  flexDirection: 'row',
