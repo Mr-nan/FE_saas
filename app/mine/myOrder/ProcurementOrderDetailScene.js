@@ -12,10 +12,11 @@ import {
     TouchableOpacity,
     Image,
     Dimensions,
-    TextInput,
     BackAndroid,
-    InteractionManager,
-    RefreshControl
+    RefreshControl,
+    Platform,
+    NativeModules,
+    Linking
 } from  'react-native'
 
 const {width, height} = Dimensions.get('window');
@@ -276,9 +277,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.contactData = {};
                 this.mList = ['0', '1', '3', '4', '5', '6'];
                 let amount = '  ';
-/*                if (this.applyLoanAmount === '请输入申请贷款金额') {
-                    amount = '';
-                }*/
+                /*                if (this.applyLoanAmount === '请输入申请贷款金额') {
+                 amount = '';
+                 }*/
                 this.contactData = {
                     layoutTitle: '付首付款',
                     layoutContent: '恭喜您的' + amount + '元贷款已经授权，请尽快支付首付款以便尽快完成融资。',
@@ -407,6 +408,18 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.listViewStyle = Pixel.getTitlePixel(65);
                 return null;
                 break;
+        }
+    };
+
+    /**
+     * 拨打客服
+     * @param phoneNumer
+     **/
+    callClick = (phoneNumer) => {
+        if (Platform.OS === 'android') {
+            NativeModules.VinScan.callPhone(phoneNumer);
+        } else {
+            Linking.openURL('tel:' + phoneNumer);
         }
     };
 
@@ -771,22 +784,34 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                             fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
                             color: fontAndColor.COLORB0
                         }}>
-                            交易关闭(同意退款)
+                            交易关闭(卖家同意退款)
                         </Text>
                     </View>
                 );
                 break;
             case 6:
                 return (
-                    <View style={[styles.bottomBar, {justifyContent: 'center'}]}>
-                        <Text allowFontScaling={false} style={{
-                            textAlign: 'center',
-                            fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-                            color: fontAndColor.COLORB0
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.callClick('4008365111');
                         }}>
-                            交易关闭(不同意退款)
-                        </Text>
-                    </View>
+                        <View style={[styles.bottomBar, {justifyContent: 'center', flexDirection: 'column'}]}>
+                            <Text allowFontScaling={false} style={{
+                                textAlign: 'center',
+                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                color: fontAndColor.COLORB0
+                            }}>
+                                交易关闭(卖家不同意退款)
+                            </Text>
+                            <Text allowFontScaling={false} style={{
+                                textAlign: 'center',
+                                fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
+                                color: fontAndColor.COLORB0
+                            }}>
+                                点击拨打客服退款
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
                 );
                 break;
             case 7:
@@ -1462,7 +1487,9 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
         } else if (rowData === '1') {
             return (
                 <ContactLayout
-                    ref={(ref) => {this.cl = ref}}
+                    ref={(ref) => {
+                        this.cl = ref
+                    }}
                     layoutTitle={this.contactData.layoutTitle ? this.contactData.layoutTitle : ''}
                     layoutContent={this.contactData.layoutContent ? this.contactData.layoutContent : ''}
                     setPrompt={this.contactData.setPrompt ? this.contactData.setPrompt : false}
