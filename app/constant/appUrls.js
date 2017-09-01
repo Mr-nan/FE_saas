@@ -8,7 +8,11 @@ export const BASEURL = 'http://dev.api-gateway.dycd.com/';
  * 测试地址
  */
 
+<<<<<<< HEAD
 // export const BASEURL = 'http://api-gateway.test.dycd.com/';
+=======
+//export const BASEURL = 'http://api-gateway.test.dycd.com/';
+>>>>>>> ea469da6695e4289586d72c450a968b0dd48c7cc
 
 /**
  * 正式地址
@@ -1082,6 +1086,10 @@ export const PRE = "http://10.3.10.35:8080/";
  *  门店管理web页
  */
 export const STORE_RECEPTION_MANAGE = PRE + "ceshi.do?mobile=15102373842";
+/**
+ *  软文中心web页
+ */
+export const SOFT_ARTICLES_CENTER = "http://saas-static.test.dycd.com/inc/carmarket/articleList.html";
 /**
  *  添加潜在客户
  */

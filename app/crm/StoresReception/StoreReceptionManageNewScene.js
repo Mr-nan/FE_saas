@@ -108,7 +108,7 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                     gmys: this.screeningItems.gmys.value,
                     pc: 1,
                     times: this.timeSelectMapping(),
-                    mouth: ''
+                    mouth: this.selectMonth === '选择月份' ? '' : this.selectMonth
                     //createTime: '2017-08-09 15:18:47'
                 };
                 let url = AppUrls.POTENTIAL_CUSTOMER_LISTS;
@@ -313,15 +313,27 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
         this.selectAddTime();
         this.btn1.setTitle(this.selectMonth);
         this.timeSelect = '';
+        this.refreshData();
     };
 
     /**
-     *
-     * @param newMonth
+     * xxly: {index: 0, value: '所有来源'},
+     * khjb: {index: 0, value: '所有级别'},
+     * dfzp: {index: 0, value: '全部状态'},
+     * gmys: {index: 0, value: '所有预算'}
+     * @param newScreeningItems
      **/
     updateScreeningItems = (newScreeningItems) => {
         this.screeningItems = newScreeningItems;
         this.selectFilterItems();
+        if (newScreeningItems.xxly.index === 0 &&
+            newScreeningItems.khjb.index === 0 &&
+            newScreeningItems.dfzp.index === 0 &&
+            newScreeningItems.gmys.index === 0 ) {
+            this.btn2._setImgHighlighted(false);
+        } else {
+            this.btn2._setImgHighlighted(true);
+        }
         this.refreshData();
     };
 

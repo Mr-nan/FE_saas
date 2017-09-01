@@ -18,6 +18,7 @@ import CarSharedListScene from "../carSource/CarSharedListScene";
 import SysMessageListScene from "../message/sysMessage/SysMessageListScene";
 import  StorageUtil from './StorageUtil';
 import * as storageKeyNames from '../constant/storageKeyNames';
+import SoftArticlesCenterScene from "../main/SoftArticlesCenterScene";
 const GetPermissionUtil = React.createClass({
 
     render(){
@@ -141,8 +142,8 @@ const GetPermissionUtil = React.createClass({
         } else if (id == 37) {
             image = require('../../images/workbench/yxzx.png');
             names = name;
-            component = Setting;
-            componentName = 'setting';
+            component = SoftArticlesCenterScene;
+            componentName = 'SoftArticlesCenterScene';
         } else if (id == 27) {
             image = require('../../images/workbench/plfx.png');
             names = name;
