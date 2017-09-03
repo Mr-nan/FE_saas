@@ -72,6 +72,7 @@ export default class CarBuyScene extends BaseComponent {
                 if (data.result != null && data.result != "")
                 {
                     let userData = JSON.parse(data.result);
+                    console.log(userData);
                     userPhone = userData.phone;
                     this.loadHeadNumberData();
 
