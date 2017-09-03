@@ -1096,7 +1096,6 @@ const styles = StyleSheet.create({
         backgroundColor:fontAndColor.COLORA3,
         flex:1,
         paddingTop:Pixel.getTitlePixel(64),
-        paddingBottom:Pixel.getPixel(44),
     },
     scanImage: {
         height: Pixel.getPixel(18),
