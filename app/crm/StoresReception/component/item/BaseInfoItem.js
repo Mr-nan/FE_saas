@@ -264,7 +264,7 @@ export default class BaseInfoItem extends BaseComponent {
         StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
             if (data.code == 1 && data.result != null) {
                 let maps = {
-                    mobiles: data.result,
+                    mobiles: data.result + this.props.companyId,
                     customerPhone: customerPhone
                 };
                 let url = AppUrls.SELECT_CUST_IF_EXIST;

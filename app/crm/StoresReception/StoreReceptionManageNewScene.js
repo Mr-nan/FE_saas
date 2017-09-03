@@ -42,10 +42,11 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
         this.timeSelect = '今天';
         this.selectMonth = '选择月份';
         this.potentialClientList = [];
+        this.companyId = '';
         this.screeningItems = {
             xxly: {index: 0, value: '所有来源'},
             khjb: {index: 0, value: '所有级别'},
-            dfzp: {index: 0, value: '全部状态'},
+            dfzt: {index: 0, value: '全部状态'},
             gmys: {index: 0, value: '所有预算'}
         };
         this.state = {
@@ -66,7 +67,13 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
          dataSource: ds.cloneWithRows(['', '', '', '', '', '', '', '', '']),
          renderPlaceholderOnly: 'success'
          });*/
-        this.loadData();
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                this.companyId = datas.company_base_id;
+                this.loadData();
+            }
+        });
     };
 
     /**
@@ -100,11 +107,11 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
             if (data.code == 1 && data.result != null) {
                 let maps = {
                     //mobile: '15102373842',
-                    mobile: data.result,
+                    mobile: data.result + this.companyId,
                     //token: '5afa531b-4295-4c64-8d6c-ac436c619078',
                     xxly: this.screeningItems.xxly.value,
                     khjb: this.screeningItems.khjb.value,
-                    dfzp: this.screeningItems.dfzp.value,
+                    dfzt: this.screeningItems.dfzt.value,
                     gmys: this.screeningItems.gmys.value,
                     pc: 1,
                     times: this.timeSelectMapping(),
@@ -319,7 +326,7 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
     /**
      * xxly: {index: 0, value: '所有来源'},
      * khjb: {index: 0, value: '所有级别'},
-     * dfzp: {index: 0, value: '全部状态'},
+     * dfzt: {index: 0, value: '全部状态'},
      * gmys: {index: 0, value: '所有预算'}
      * @param newScreeningItems
      **/
@@ -328,7 +335,7 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
         this.selectFilterItems();
         if (newScreeningItems.xxly.index === 0 &&
             newScreeningItems.khjb.index === 0 &&
-            newScreeningItems.dfzp.index === 0 &&
+            newScreeningItems.dfzt.index === 0 &&
             newScreeningItems.gmys.index === 0 ) {
             this.btn2._setImgHighlighted(false);
         } else {

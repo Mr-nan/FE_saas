@@ -36,6 +36,7 @@ export default class ClientAddScene extends BaseComponent {
     constructor(props) {
         super(props);
         this.clientInfo = [];
+        this.companyId = '';
         this.state = {
             //dataSource: [],
             renderPlaceholderOnly: 'blank'
@@ -47,9 +48,15 @@ export default class ClientAddScene extends BaseComponent {
      **/
     initFinish = () => {
         //const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.setState({
-            //dataSource: ds.cloneWithRows(['0', '1', '2']),
-            renderPlaceholderOnly: 'success'
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                this.companyId = datas.company_base_id;
+            }
+            this.setState({
+                //dataSource: ds.cloneWithRows(['0', '1', '2']),
+                renderPlaceholderOnly: 'success'
+            });
         });
     };
 
@@ -119,6 +126,7 @@ export default class ClientAddScene extends BaseComponent {
                 <BaseInfoItem ref={(ref) => {
                     this.baseInfoItem = ref
                 }}
+                              companyId={this.companyId}
                               showModal={this.props.showModal}
                               showToast={this.props.showToast}
                               navigator={this.props.navigator}/>
@@ -175,7 +183,7 @@ export default class ClientAddScene extends BaseComponent {
                     for (let i = 0; i < this.clientInfo.length; i++) {
                         maps[this.clientInfo[i].parameter] = this.clientInfo[i].value;
                     }
-                    maps['mobiles'] = data.result;
+                    maps['mobiles'] = data.result + this.companyId;
                     /*            let maps = {
                      outTime: "2017-08-01 10:25:00",
                      inTime: "2017-08-01 09:25:00",

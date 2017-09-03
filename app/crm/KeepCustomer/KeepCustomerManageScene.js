@@ -43,6 +43,7 @@ export default class KeepCustomerManageScene extends BaseComponent {
         this.timeSelect = '今天';
         this.stateSelect = '待完善客户';
         this.selectMonth = '选择月份';
+        this.companyId = '';
         this.state = {
             dataSource: [],
             renderPlaceholderOnly: 'blank',
@@ -62,7 +63,13 @@ export default class KeepCustomerManageScene extends BaseComponent {
             dataSource: ds.cloneWithRows(['', '', '', '1', '', '1', '', '', '']),
             renderPlaceholderOnly: 'success'
         });*/
-        this.loadData();
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                this.companyId = datas.company_base_id;
+                this.loadData();
+            }
+        });
     };
 
     /**
@@ -108,7 +115,7 @@ export default class KeepCustomerManageScene extends BaseComponent {
         StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
             if (data.code == 1 && data.result != null) {
                 let maps = {
-                    mobile: data.result,
+                    mobile: data.result + this.companyId,
                     perfectStatus: this.stateSelectMapping(),
                     pc: 1,
                     times: this.timeSelectMapping(),

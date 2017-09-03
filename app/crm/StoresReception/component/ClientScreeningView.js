@@ -49,8 +49,8 @@ export default class ClientScreeningView extends BaseComponent {
         this.clientLevelKey = this.props.screeningItems.khjb.index;
         this.clientLevelValue = this.props.screeningItems.khjb.value;
 
-        this.visitStateKey = this.props.screeningItems.dfzp.index;
-        this.visitStateValue = this.props.screeningItems.dfzp.value;
+        this.visitStateKey = this.props.screeningItems.dfzt.index;
+        this.visitStateValue = this.props.screeningItems.dfzt.value;
 
         this.purchaseBudgetKey = this.props.screeningItems.gmys.index;
         this.purchaseBudgetValue = this.props.screeningItems.gmys.value;
@@ -107,7 +107,7 @@ export default class ClientScreeningView extends BaseComponent {
      *   重置筛选项
      *   xxly: {index: 0, value: '所有来源'},
      *   khjb: {index: 0, value: '所有级别'},
-     *   dfzp: {index: 0, value: '全部状态'},
+     *   dfzt: {index: 0, value: '全部状态'},
      *   gmys: {index: 0, value: '所有预算'}
      **/
     resetSelection = () => {
@@ -132,7 +132,7 @@ export default class ClientScreeningView extends BaseComponent {
         let newScreeningItems = {
             xxly: {index: this.infoSourceKey, value: this.infoSourceValue},
             khjb: {index: this.clientLevelKey, value: this.clientLevelValue},
-            dfzp: {index: this.visitStateKey, value: this.visitStateValue},
+            dfzt: {index: this.visitStateKey, value: this.visitStateValue},
             gmys: {index: this.purchaseBudgetKey, value: this.purchaseBudgetValue}
         };
         this.props.hideView();
