@@ -97,7 +97,7 @@ export default class BacklogListScene extends BaseComponent {
                     pushTo: this.custPhone + this.companyId,
                     //token: '5afa531b-4295-4c64-8d6c-ac436c619078'
                     //createTime: '2017-08-09 15:18:47'
-                    contentTypes: this.contentTypes
+                    contentTypes: JSON.stringify(this.contentTypes)
                 };
                 let url = AppUrls.SELECT_MSG_BY_CONTENT_TYPE;
                 request(url, 'post', maps).then((response) => {

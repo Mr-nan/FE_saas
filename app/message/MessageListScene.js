@@ -51,6 +51,7 @@ export default class MessageListScene extends BaseComponent {
         this.backlogNum = 0;
         this.sysMessageNum = 0;
         this.headLineNum = 0;
+        this.companyId = '';
         this.contentTypes = [];
         this.state = {
             dataSource: [],
@@ -69,29 +70,35 @@ export default class MessageListScene extends BaseComponent {
          dataSource: ds.cloneWithRows(['0', '1', '3', '4']),
          renderPlaceholderOnly: 'success'
          });*/
-        StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
-                this.custPhone = data.result;
-                //this.custPhone = '15102373842';
-                GetRoleUtil.getRoleList((list) => {
-                    for (let i = 0; i < list.length; i++) {
-                        if (list[i].id == 32) {
-                            this.contentTypes.push('taskPGS');
-                        } else if (list[i].id == 33) {
-                            this.contentTypes.push('taskZBY');
-                        } else if (list[i].id == 34) {
-                            this.contentTypes.push('taskManager');
-                        } else if (list[i].id == 35) {
-                            this.contentTypes.push('taskYYZY');
-                        }
+                let datas = JSON.parse(data.result);
+                this.companyId = datas.company_base_id;
+                StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
+                    if (data.code == 1 && data.result != null) {
+                        this.custPhone = data.result;
+                        //this.custPhone = '15102373842';
+                        GetRoleUtil.getRoleList((list) => {
+                            for (let i = 0; i < list.length; i++) {
+                                if (list[i].id == 32) {
+                                    this.contentTypes.push('taskPGS');
+                                } else if (list[i].id == 33) {
+                                    this.contentTypes.push('taskZBY');
+                                } else if (list[i].id == 34) {
+                                    this.contentTypes.push('taskManager');
+                                } else if (list[i].id == 35) {
+                                    this.contentTypes.push('taskYYZY');
+                                }
+                            }
+                            this.contentTypes.push('taskRemind');
+                            this.contentTypes.push('taskTenure');
+                            this.contentTypes.push('taskDC');
+                            this.loadData();
+                        });
+                    } else {
+                        this.props.showToast('查询账户信息失败');
                     }
-                    this.contentTypes.push('taskRemind');
-                    this.contentTypes.push('taskTenure');
-                    this.contentTypes.push('taskDC');
-                    this.loadData();
                 });
-            } else {
-                this.props.showToast('查询账户信息失败');
             }
         });
     };
@@ -101,8 +108,8 @@ export default class MessageListScene extends BaseComponent {
      **/
     loadData = () => {
         let maps = {
-            accountMobile: this.custPhone,
-            roleList: this.contentTypes
+            accountMobile: this.custPhone + this.companyId,
+            roleList: JSON.stringify(this.contentTypes)
             //token: '5afa531b-4295-4c64-8d6c-ac436c619078'
         };
         let url = AppUrls.HANDLE_COUNT;
