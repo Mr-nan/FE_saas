@@ -218,7 +218,6 @@ export default class CarTrimScene extends BaseComponent {
             });
 
         }, (error) => {
-            this.props.showModal(false);
             this.props.showToast(error.mjson.msg);
         });
     }

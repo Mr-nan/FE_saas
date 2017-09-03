@@ -397,8 +397,6 @@ export default class CarSharedListScene extends BaceComponent{
            }
            this.batchSharedArray = carInfoItemArray;
            this.batchIndex = 0;
-           console.log(carInfoItemArray);
-
            this.batchSharedData();
            // shareClass.shareAction(carInfoItemArray).then((data) => {
            //     this.props.showToast(data);
@@ -493,6 +491,7 @@ export default class CarSharedListScene extends BaceComponent{
                     }).then((resp)=>{
                         this.batchIndex++;
                         this.batchSharedData();
+                        this.sharedSucceedAction();
                         console.log('分享成功');
                     },(error) => {
                         console.log('分享失败');
@@ -523,6 +522,7 @@ export default class CarSharedListScene extends BaceComponent{
 
                         this.batchIndex++;
                         this.batchSharedData();
+                        this.sharedSucceedAction();
                         console.log('分享成功');
 
                     },(error) => {
@@ -535,6 +535,16 @@ export default class CarSharedListScene extends BaceComponent{
                 }
             });
 
+    }
+
+    sharedSucceedAction=()=>{
+        request(AppUrls.CAR_CHESHANG_SHARE_MOMENT_COUNT,'POST',{
+            mobile:'18690700551'
+        }).then((response) => {
+            console.log(response);
+        }, (error) => {
+            console.log(error.mjson.msg);
+        });
     }
 
 }

@@ -8,11 +8,8 @@ export const BASEURL = 'http://dev.api-gateway.dycd.com/';
  * 测试地址
  */
 
-<<<<<<< HEAD
 // export const BASEURL = 'http://api-gateway.test.dycd.com/';
-=======
-//export const BASEURL = 'http://api-gateway.test.dycd.com/';
->>>>>>> ea469da6695e4289586d72c450a968b0dd48c7cc
+
 
 /**
  * 正式地址
@@ -247,6 +244,11 @@ export const CAR_CHESHANG_YYZY_EDIT_TASK= BASEURL + 'cheshang/sass/updateTaskByy
  * 获取销售员
  */
 export const CAR_CHESHANG_GET_ALLCHILD= BASEURL + 'cheshang/sass_php/subAccountGetAllChild';
+
+/**
+ * 分享成功回调
+ */
+export const CAR_CHESHANG_SHARE_MOMENT_COUNT= BASEURL + 'cheshang/sass/shareMomentCount';
 
 /**
  * 获取登记人信息
