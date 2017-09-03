@@ -39,6 +39,7 @@ export default class BacklogListScene extends BaseComponent {
         super(props);
         this.backlogListData = [];
         this.contentTypes = [];
+        this.companyId = '';
         this.state = {
             dataSource: [],
             isRefreshing: false,
@@ -56,27 +57,32 @@ export default class BacklogListScene extends BaseComponent {
             isRefreshing: false,
             renderPlaceholderOnly: 'success'
         });*/
-        //GetPermission.getFirstList();
-        //console.log('this.currentTab=====', GetPermission.getRoleList());
-        GetRoleUtil.getRoleList((list) => {
-            //console.log('listlistlist==-=-=-=-', list);
-            for (let i = 0; i < list.length; i++) {
-                if (list[i].id == 32) {
-                    this.contentTypes.push('taskPGS');
-                } else if (list[i].id == 33) {
-                    this.contentTypes.push('taskZBY');
-                } else if (list[i].id == 34) {
-                    this.contentTypes.push('taskManager');
-                } else if (list[i].id == 35) {
-                    this.contentTypes.push('taskYYZY');
-                }
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                this.companyId = datas.company_base_id;
+                GetRoleUtil.getRoleList((list) => {
+                    //console.log('listlistlist==-=-=-=-', list);
+                    for (let i = 0; i < list.length; i++) {
+                        if (list[i].id == 32) {
+                            this.contentTypes.push('taskPGS');
+                        } else if (list[i].id == 33) {
+                            this.contentTypes.push('taskZBY');
+                        } else if (list[i].id == 34) {
+                            this.contentTypes.push('taskManager');
+                        } else if (list[i].id == 35) {
+                            this.contentTypes.push('taskYYZY');
+                        }
+                    }
+                    this.contentTypes.push('taskRemind');
+                    this.contentTypes.push('taskTenure');
+                    this.contentTypes.push('taskDC');
+                    //this.contentTypes = list;
+                    this.loadData();
+                });
             }
-            this.contentTypes.push('taskRemind');
-            this.contentTypes.push('taskTenure');
-            this.contentTypes.push('taskDC');
-            //this.contentTypes = list;
-            this.loadData();
         });
+
     };
 
     /**
@@ -88,7 +94,7 @@ export default class BacklogListScene extends BaseComponent {
                 this.custPhone = data.result;
                 let maps = {
                     //pushTo: '15102373842',
-                    pushTo: this.custPhone,
+                    pushTo: this.custPhone + this.companyId,
                     //token: '5afa531b-4295-4c64-8d6c-ac436c619078'
                     //createTime: '2017-08-09 15:18:47'
                     contentTypes: this.contentTypes

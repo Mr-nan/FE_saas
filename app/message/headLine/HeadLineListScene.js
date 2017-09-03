@@ -87,57 +87,63 @@ export default class HeadLineListScene extends BaseComponent {
      *   加载数据
      **/
     loadHttpData = () => {
-        let maps = {
-            pushTo: this.custPhone,
-            //token: '5afa531b-4295-4c64-8d6c-ac436c619078',
-            contentType: 'advertisement',
-            //createTime: '2017-08-09 15:18:47'
-            createTime: this.createTime
-        };
-        let url = AppUrls.SELECT_MSG_BY_CONTENT_TYPE;
-        request(url, 'post', maps).then((response) => {
-            let listData = response.mjson.data;
-            if (listData && listData.length > 0) {
-                let batch = {sql: '', array: []};
-                let batches = [];
-                for (let i = 0; i < listData.length; i++) {
-                    //console.log('listData[i]===',listData[i]);
-                    this.headLineListData.unshift(listData[i]);
-                    listData[i].isRead = false;
-                    listData[i].tel = this.custPhone;
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                let companyId = datas.company_base_id;
+                let maps = {
+                    pushTo: this.custPhone + companyId,
+                    //token: '5afa531b-4295-4c64-8d6c-ac436c619078',
+                    contentType: 'advertisement',
+                    //createTime: '2017-08-09 15:18:47'
+                    createTime: this.createTime
+                };
+                let url = AppUrls.SELECT_MSG_BY_CONTENT_TYPE;
+                request(url, 'post', maps).then((response) => {
+                    let listData = response.mjson.data;
+                    if (listData && listData.length > 0) {
+                        let batch = {sql: '', array: []};
+                        let batches = [];
+                        for (let i = 0; i < listData.length; i++) {
+                            //console.log('listData[i]===',listData[i]);
+                            this.headLineListData.unshift(listData[i]);
+                            listData[i].isRead = false;
+                            listData[i].tel = this.custPhone;
 
-                    batch = {
-                        sql: 'INSERT INTO messageHeadLineModel (id,content,contentType,createTime,enable,pushFrom,pushStatus,pushTo,roleName,taskId,title,isRead,tel) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
-                        array: []
-                    };
-                    batch.array.push(listData[i].id, listData[i].content, listData[i].contentType, listData[i].createTime, listData[i].enable, listData[i].pushFrom,
-                        listData[i].pushStatus, listData[i].pushTo, listData[i].roleName, listData[i].taskId, listData[i].title, listData[i].isRead, listData[i].tel);
-                    batches.push(batch)
-                    /*SQLite.changeData('INSERT INTO messageHeadLineModel (id,content,contentType,createTime,enable,pushFrom,pushStatus,pushTo,roleName,taskId,title,isRead,tel) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
-                     [listData[i].id, listData[i].content, listData[i].contentType, listData[i].createTime, listData[i].enable, listData[i].pushFrom,
-                     listData[i].pushStatus, listData[i].pushTo, listData[i].roleName, listData[i].taskId, listData[i].title, listData[i].isRead, listData[i].tel]);*/
-                }
-                SQLite.changeDataBatch(batches);
-            }
-            if (this.headLineListData && this.headLineListData.length > 0) {
-                //console.log('this.headLineListData===',this.headLineListData);
-                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                this.setState({
-                    dataSource: ds.cloneWithRows(this.headLineListData),
-                    isRefreshing: false,
-                    renderPlaceholderOnly: 'success'
+                            batch = {
+                                sql: 'INSERT INTO messageHeadLineModel (id,content,contentType,createTime,enable,pushFrom,pushStatus,pushTo,roleName,taskId,title,isRead,tel) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                                array: []
+                            };
+                            batch.array.push(listData[i].id, listData[i].content, listData[i].contentType, listData[i].createTime, listData[i].enable, listData[i].pushFrom,
+                                listData[i].pushStatus, listData[i].pushTo, listData[i].roleName, listData[i].taskId, listData[i].title, listData[i].isRead, listData[i].tel);
+                            batches.push(batch)
+                            /*SQLite.changeData('INSERT INTO messageHeadLineModel (id,content,contentType,createTime,enable,pushFrom,pushStatus,pushTo,roleName,taskId,title,isRead,tel) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                             [listData[i].id, listData[i].content, listData[i].contentType, listData[i].createTime, listData[i].enable, listData[i].pushFrom,
+                             listData[i].pushStatus, listData[i].pushTo, listData[i].roleName, listData[i].taskId, listData[i].title, listData[i].isRead, listData[i].tel]);*/
+                        }
+                        SQLite.changeDataBatch(batches);
+                    }
+                    if (this.headLineListData && this.headLineListData.length > 0) {
+                        //console.log('this.headLineListData===',this.headLineListData);
+                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                        this.setState({
+                            dataSource: ds.cloneWithRows(this.headLineListData),
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'success'
+                        });
+                    } else {
+                        this.setState({
+                            isRefreshing: false,
+                            renderPlaceholderOnly: 'null'
+                        });
+                    }
+                }, (error) => {
+                    this.setState({
+                        isRefreshing: false,
+                        renderPlaceholderOnly: 'error'
+                    });
                 });
-            } else {
-                this.setState({
-                    isRefreshing: false,
-                    renderPlaceholderOnly: 'null'
-                });
             }
-        }, (error) => {
-            this.setState({
-                isRefreshing: false,
-                renderPlaceholderOnly: 'error'
-            });
         });
     };
 

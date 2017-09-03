@@ -39,6 +39,7 @@ export default class KeepCustomerSearchScene extends BaseComponent {
         super(props);
         //this.pageNum = 1;
         //this.allPage = 1;
+        this.companyId = '';
         this.state = {
             dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
             renderPlaceholderOnly: 'blank',
@@ -88,10 +89,16 @@ export default class KeepCustomerSearchScene extends BaseComponent {
      **/
     initFinish = () => {
         //this.loadData();
-        this.setState({
-            renderPlaceholderOnly: 'success'
+        StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
+            if (data.code == 1 && data.result != null) {
+                let datas = JSON.parse(data.result);
+                this.companyId = datas.company_base_id;
+            }
+            this.setState({
+                renderPlaceholderOnly: 'success'
+            });
         });
-    }
+    };
 
     /**
      *
@@ -159,7 +166,7 @@ export default class KeepCustomerSearchScene extends BaseComponent {
         StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
             if (data.code == 1 && data.result != null) {
                 let maps = {
-                    mobile: data.result,
+                    mobile: data.result + this.companyId,
                     select: this.state.value
                 };
                 let url = AppUrls.SELECT_BY_SEARCH;
