@@ -39,6 +39,11 @@ export default class CarInfoItem extends BaseComponent {
         this.childItems.push({name: '商业险到期', value: '', parameter: 'tenureBusiness'});
         this.childItems.push({name: '保养到期', value: '', parameter: 'tenureMaintain'});
         this.childItems.push({name: '质保到期', value: '', parameter: 'tenureWarranty'});
+        this.childItems[0].value = this.props.data.tenureCarnum ? this.props.data.tenureCarnum : '';
+        this.childItems[1].value = this.props.data.tenureCompulsory ? this.props.data.tenureCompulsory : '';
+        this.childItems[2].value = this.props.data.tenureBusiness ? this.props.data.tenureBusiness : '';
+        this.childItems[3].value = this.props.data.tenureMaintain ? this.props.data.tenureMaintain : '';
+        this.childItems[4].value = this.props.data.tenureWarranty ? this.props.data.tenureWarranty : '';
         this.state = {
             isDateTimePickerVisible: false
         }
@@ -67,11 +72,9 @@ export default class CarInfoItem extends BaseComponent {
         let items = [];
         for (let i = 0; i < this.childItems.length; i++) {
             if (i == 0) {
-                this.childItems[i].value = this.props.data.tenureCarnum;
                 items.push(<CustomerInfoInput defValue={this.props.data.tenureCarnum} key={i + 'bo'}
                                               items={this.childItems[i]}/>);
             } else if (i == 1) {
-                this.childItems[i].value = this.props.data.tenureCompulsory;
                 items.push(<ClientInfoSelected
                     defValue={this.props.data.tenureCompulsory}
                     ref="insurance" key={i + 'bo'} items={this.childItems[i]}
@@ -79,7 +82,6 @@ export default class CarInfoItem extends BaseComponent {
                         this._showDateTimePicker('insurance');
                     }}/>);
             } else if (i == 2) {
-                this.childItems[i].value = this.props.data.tenureBusiness;
                 items.push(<ClientInfoSelected
                     defValue={this.props.data.tenureBusiness}
                     ref="business" key={i + 'bo'} items={this.childItems[i]}
@@ -87,7 +89,6 @@ export default class CarInfoItem extends BaseComponent {
                                                    this._showDateTimePicker('business');
                                                }}/>);
             } else if (i == 3) {
-                this.childItems[i].value = this.props.data.tenureMaintain;
                 items.push(<ClientInfoSelected
                     defValue={this.props.data.tenureMaintain}
                     ref="maintenance" key={i + 'bo'} items={this.childItems[i]}
@@ -95,7 +96,6 @@ export default class CarInfoItem extends BaseComponent {
                                                    this._showDateTimePicker('maintenance');
                                                }}/>);
             } else if (i == 4) {
-                this.childItems[i].value = this.props.data.tenureWarranty;
                 items.push(<ClientInfoSelected
                     defValue={this.props.data.tenureWarranty}
                     ref="quality" key={i + 'bo'} items={this.childItems[i]}
@@ -193,25 +193,25 @@ export default class CarInfoItem extends BaseComponent {
      **/
     _handleDatePicked = (date) => {
         let d = this.dateFormat(date, 'yyyy-MM-dd');
-        if (this.type === 'insurance') {
+        if (this.type == 'insurance') {
             this.childItems[1].value = d;
             this.refs.insurance.setValue(d);
             this.setState({
                 isDateTimePickerVisible: false
             });
-        } else if (this.type === 'business') {
+        } else if (this.type == 'business') {
             this.childItems[2].value = d;
             this.refs.business.setValue(d);
             this.setState({
                 isDateTimePickerVisible: false
             });
-        } else if (this.type === 'maintenance') {
+        } else if (this.type == 'maintenance') {
             this.childItems[3].value = d;
             this.refs.maintenance.setValue(d);
             this.setState({
                 isDateTimePickerVisible: false
             });
-        } else if (this.type === 'quality') {
+        } else if (this.type == 'quality') {
             this.childItems[4].value = d;
             this.refs.quality.setValue(d);
             this.setState({

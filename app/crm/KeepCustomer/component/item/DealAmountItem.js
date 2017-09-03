@@ -54,7 +54,7 @@ export default class DealAmountItem extends BaseComponent {
                             fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                             color: fontAndColor.COLORB0
                         }}
-                        allowFontScaling={false}>{this.props.data.tenureCartype == 1 ? '全款' : '按揭'}</Text>
+                        allowFontScaling={false}>{this.props.data.tenureCartype == 1 ? '全款' : '贷款'}</Text>
                 </View>
                 <Text allowFontScaling={false} style={{
                     marginLeft: Pixel.getPixel(5),
@@ -65,7 +65,7 @@ export default class DealAmountItem extends BaseComponent {
                     marginLeft: Pixel.getPixel(5),
                     fontSize: Pixel.getFontPixel(19),
                     color: fontAndColor.COLORB2
-                }}>{this.props.data.tenureCarprice}</Text>
+                }}>{this.props.data.tenureCarprice}万</Text>
             </View>
         )
     }

@@ -309,6 +309,7 @@ export default class KeepCustomerManageScene extends BaseComponent {
                         name: 'KeepCustomerDetailScene',
                         component: KeepCustomerDetailScene,
                         params: {
+                            //tid: rowData.tid,
                             tid: rowData.tid,
                             tcid: rowData.tcid,
                             callBack: this.refreshData
@@ -355,7 +356,8 @@ export default class KeepCustomerManageScene extends BaseComponent {
                     </View>
                     <View style={{flex: 1}}/>
                     <View style={{backgroundColor: fontAndColor.COLORA4, height: 1}}/>
-                    {rowData.custName != null && rowData.custPhone != null &&
+                    {rowData.custName != null && rowData.custName != '' &&
+                    rowData.custPhone != null && rowData.custPhone != '' &&
                     <View style={{height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center'}}>
                         <Text allowFontScaling={false} style={{
                             marginLeft: Pixel.getPixel(15),
@@ -369,7 +371,8 @@ export default class KeepCustomerManageScene extends BaseComponent {
                             color: fontAndColor.COLORA0
                         }}>手机号:{rowData.custPhone}</Text>
                     </View>}
-                    {(rowData.custName == null || rowData.custPhone == null) &&
+                    {((rowData.custName == null || rowData.custName == '') ||
+                    (rowData.custPhone == null || rowData.custPhone == '')) &&
                     <View style={{
                         height: Pixel.getPixel(44),
                         flexDirection: 'row',
