@@ -239,9 +239,9 @@ export default class CancelOrderReasonScene extends BaseComponent {
                                                         return;
                                                     }  //如果是可删除的图片说明就不是加号图片 ，就没有添加功能
 
-                                                    if (Platform.OS == 'android') {
+                                                    //if (Platform.OS == 'android') {
                                                         this._rePhoto();
-                                                    } else {
+                                                    //} else {
                                                         ImagePicker.showImagePicker(options, (imageResponse) => {
                                                             if (imageResponse.didCancel) {
                                                             } else if (imageResponse.error) {
@@ -289,7 +289,7 @@ export default class CancelOrderReasonScene extends BaseComponent {
 
                                                             }
                                                         });
-                                                    }
+                                                    //}
 
                                                 }}
                                             />

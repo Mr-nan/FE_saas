@@ -804,7 +804,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 this.mList = ['0', '1', '5', '7', '9'];
                 this.contactData = {
                     layoutTitle: '查看到账',
-                    layoutContent: '您可以查看买家已支付到账的金额，但暂不可提现，请在交割车辆时要求买家点击“确认验收按钮"，否则将无法提现。',
+                    layoutContent: '您可以查看买家已支付到账的金额，但暂不可提现，请在交割车辆时要求买家点击"确认验收"按钮，否则将无法提现。',
                     setPrompt: false,
                     MerchantNum: merchantNum,
                     CustomerServiceNum: customerServiceNum
@@ -821,7 +821,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 this.mList = ['0', '1', '5', '7', '9'];
                 this.contactData = {
                     layoutTitle: '查看到账',
-                    layoutContent: '您可以查看买家已支付到账的金额，但暂不可提现，请在交割车辆时要求买家点击“确认验收按钮"，否则将无法提现。',
+                    layoutContent: '您可以查看买家已支付到账的金额，但暂不可提现，请在交割车辆时要求买家点击"确认验收"按钮，否则将无法提现。',
                     setPrompt: false,
                     MerchantNum: merchantNum,
                     CustomerServiceNum: customerServiceNum
@@ -838,7 +838,7 @@ export default class SalesOrderDetailScene extends BaseComponent {
                 this.mList = ['0', '1', '5', '7', '9'];
                 this.contactData = {
                     layoutTitle: '查看到账',
-                    layoutContent: '您可以查看买家已支付到账的金额，但暂不可提现，请在交割车辆时要求买家点击“确认验收按钮"，否则将无法提现。',
+                    layoutContent: '您可以查看买家已支付到账的金额，但暂不可提现，请在交割车辆时要求买家点击"确认验收"按钮，否则将无法提现。',
                     setPrompt: false,
                     MerchantNum: merchantNum,
                     CustomerServiceNum: customerServiceNum

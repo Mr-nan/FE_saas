@@ -81,7 +81,7 @@ export default class ProcurementInfo extends BaseComponent {
                 {name: '待付订金', value: this.state.orderDetail.deposit_amount},
                 {name: '待付尾款', value: this.state.orderDetail.balance_amount}];
         } else if (this.state.orderState === 2) {
-            items = [{name: '待付总金额', value: this.state.orderDetail.transaction_amount},
+            items = [{name: '待付总金额', value: parseFloat(this.state.orderDetail.transaction_amount - this.state.orderDetail.deposit_amount).toFixed(2)},
                 {name: '待付尾款', value: this.state.orderDetail.balance_amount},
                 {name: '已付订金', value: this.state.orderDetail.deposit_amount}];
         } else if (this.state.orderState === 3) {
@@ -89,12 +89,12 @@ export default class ProcurementInfo extends BaseComponent {
         } else if (this.state.orderState === 4) {
             items = [{name: '已付金额', value: this.state.orderDetail.transaction_amount}];
         } else if (this.state.orderState === 6) {
-            items = [{name: '待付总金额', value: this.state.orderDetail.transaction_amount},
+            items = [{name: '待付总金额', value: parseFloat(this.state.orderDetail.transaction_amount - this.state.orderDetail.deposit_amount).toFixed(2)},
                 {name: '待付金额', value: this.state.orderDetail.balance_amount},
                 {name: '已付订金', value: this.state.orderDetail.deposit_amount}];
         } else if (this.state.orderState === 7) {
-            items = [{name: '待付总金额', value: this.state.orderDetail.transaction_amount},
-                {name: '融资待放款金额', value: this.state.orderDetail.balance_amount},
+            items = [{name: '待付总金额', value: parseFloat(this.state.orderDetail.transaction_amount - this.state.orderDetail.deposit_amount - this.state.orderDetail.first_amount).toFixed(2)},
+                {name: '融资待放款金额', value: parseFloat(this.state.orderDetail.balance_amount - this.state.orderDetail.first_amount).toFixed(2)},
                 {name: '已付订金', value: this.state.orderDetail.deposit_amount},
                 {name: '已付首付', value: this.state.orderDetail.first_amount}];
         } else if (this.state.orderState === 8) {
