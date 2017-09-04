@@ -61,6 +61,7 @@
 		7D1A53A91F30981800EDD9CB /* ZNShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D1A53A81F30981800EDD9CB /* ZNShareViewController.m */; };
 		7D1A53CC1F30995600EDD9CB /* ZNShareClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D1A53CB1F30995600EDD9CB /* ZNShareClass.m */; };
 		7D4BDE2A1ECAD84A002DD5E1 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D4BDE291ECAD84A002DD5E1 /* AdSupport.framework */; };
+		7D5A48CF1F5D282000203706 /* 4D39F52BD46AC7CD8470.lic in Resources */ = {isa = PBXBuildFile; fileRef = 7D5A48CE1F5D282000203706 /* 4D39F52BD46AC7CD8470.lic */; };
 		7D5D8B681EE5565900892F2E /* (null) in Resources */ = {isa = PBXBuildFile; };
 		7D769E2E1E602A800039526C /* libc++abi.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D769E2D1E602A800039526C /* libc++abi.tbd */; };
 		7DB2CBB21E779CB400DE146C /* libbz2.1.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DB2CBB11E779CB400DE146C /* libbz2.1.0.tbd */; };
@@ -95,7 +96,6 @@
 		E3B817081E613EB600279287 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3B817071E613EB600279287 /* CoreTelephony.framework */; };
 		E3B817091E613ECF00279287 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D769E2B1E602A630039526C /* libc++.tbd */; };
 		E3B8170B1E613ED600279287 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E3B8170A1E613ED600279287 /* libz.tbd */; };
-		EE4350601EFBC0F900C12625 /* 4D39F52BD46AC7CD8470.lic in Resources */ = {isa = PBXBuildFile; fileRef = EE43505F1EFBC0F900C12625 /* 4D39F52BD46AC7CD8470.lic */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -397,6 +397,7 @@
 		7D1A53CA1F30995600EDD9CB /* ZNShareClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZNShareClass.h; sourceTree = "<group>"; };
 		7D1A53CB1F30995600EDD9CB /* ZNShareClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZNShareClass.m; sourceTree = "<group>"; };
 		7D4BDE291ECAD84A002DD5E1 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		7D5A48CE1F5D282000203706 /* 4D39F52BD46AC7CD8470.lic */ = {isa = PBXFileReference; lastKnownFileType = file; path = 4D39F52BD46AC7CD8470.lic; sourceTree = "<group>"; };
 		7D769E2B1E602A630039526C /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		7D769E2D1E602A800039526C /* libc++abi.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++abi.tbd"; path = "usr/lib/libc++abi.tbd"; sourceTree = SDKROOT; };
 		7DB2CBB11E779CB400DE146C /* libbz2.1.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.1.0.tbd; path = usr/lib/libbz2.1.0.tbd; sourceTree = SDKROOT; };
@@ -444,7 +445,6 @@
 		E3B817051E613EAC00279287 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		E3B817071E613EB600279287 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		E3B8170A1E613ED600279287 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
-		EE43505F1EFBC0F900C12625 /* 4D39F52BD46AC7CD8470.lic */ = {isa = PBXFileReference; lastKnownFileType = file; path = 4D39F52BD46AC7CD8470.lic; sourceTree = "<group>"; };
 		F0FC9342AFCC48C188DD558A /* CodePush.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		F9DEF7E783804F5BB00F2C8B /* RNSpinkit.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSpinkit.xcodeproj; path = "../node_modules/react-native-spinkit/ios/RNSpinkit.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -720,7 +720,7 @@
 		7DB2CBB31E779DDF00DE146C /* OCRSCancer */ = {
 			isa = PBXGroup;
 			children = (
-				EE43505F1EFBC0F900C12625 /* 4D39F52BD46AC7CD8470.lic */,
+				7D5A48CE1F5D282000203706 /* 4D39F52BD46AC7CD8470.lic */,
 				7DB2CBB51E779DDF00DE146C /* libSVehicleLicense.a */,
 				7DB2CBB61E779DDF00DE146C /* libvinTyper.a */,
 				7DB2CBB71E779DDF00DE146C /* Resources */,
@@ -1315,7 +1315,6 @@
 			files = (
 				7DB2CBD91E779DDF00DE146C /* flash_on@2x.png in Resources */,
 				7DB2CBD31E779DDF00DE146C /* back_btn@2x.png in Resources */,
-				EE4350601EFBC0F900C12625 /* 4D39F52BD46AC7CD8470.lic in Resources */,
 				124A591F1E9CACA3007C1C15 /* shift.png in Resources */,
 				124A59111E9C8B1A007C1C15 /* Icon_SaoLineOn@2x.png in Resources */,
 				7DB2CBDE1E779DDF00DE146C /* take_pic_btn@3x.png in Resources */,
@@ -1328,6 +1327,7 @@
 				7DB2CBDD1E779DDF00DE146C /* take_pic_btn@2x.png in Resources */,
 				7D5D8B681EE5565900892F2E /* (null) in Resources */,
 				7DB2CBDB1E779DDF00DE146C /* scan_line@2x.png in Resources */,
+				7D5A48CF1F5D282000203706 /* 4D39F52BD46AC7CD8470.lic in Resources */,
 				7DB2CBDA1E779DDF00DE146C /* flash_on@3x.png in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				7DB2CBD51E779DDF00DE146C /* change_btn@2x.png in Resources */,
