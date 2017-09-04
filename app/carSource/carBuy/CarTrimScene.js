@@ -15,6 +15,7 @@ import {
     Image,
     ListView,
     Dimensions,
+    DeviceEventEmitter,
 
 } from 'react-native';
 
@@ -58,7 +59,15 @@ export default class CarTrimScene extends BaseComponent {
                     renderHeader={()=>{return(<TrimTaskHeadView defaultIndex={this.props.defaultIndex} ref="headView" headerViewItemClick={this.headerViewItemClick} selectAction={this.selectAction}/>)}}
                     renderRow={this.renderRow}
                 />
+                {
+                    this.state.isLoading && (
+                        <View style={styles.loadingView}>
+                            <Image style={{width:60,height:60}} source={require('../../../images/setDataLoading.gif')}/>
+                        </View>
+                    )
+                }
                 <AllNavigationView title='车辆整备' backIconClick={this.backPage} renderRihtFootView={this.renderRightView}/>
+
             </View>
         )
     }
@@ -110,7 +119,9 @@ export default class CarTrimScene extends BaseComponent {
             isShowHeadView:true,
             dataSource:ds,
             taskType:1,
-            renderPlaceholderOnly:'loading'
+            renderPlaceholderOnly:'loading',
+            isLoading:false,
+
         };
     }
 
@@ -154,7 +165,7 @@ export default class CarTrimScene extends BaseComponent {
                         name: 'CarInitialTaskScene',
                         component: CarInitialTaskScene,
                         params: {
-                            reloadTaskData:this.reloadData,
+
                         }
                     }
                 );
@@ -178,9 +189,15 @@ export default class CarTrimScene extends BaseComponent {
 
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillMount() {
+        this.subscription = DeviceEventEmitter.addListener('carTrimUpdate',()=>{
+            console.log('=======开始更新了');
+            this.loadData(this.roleValue,this.state.taskType);
+        });
+    }
 
-        console.log('==================');
+    componentWillUnMount() {
+        this.subscription.remove();
     }
 
     reloadData=()=>{
@@ -214,16 +231,16 @@ export default class CarTrimScene extends BaseComponent {
         }
 
 
-        this.props.showModal(true);
+        this.setState({isLoading:true});
         request(AppUrls.CAR_CHESHANG_TASKS, 'post', {roleName:roleValue,type:type,}).then((response) => {
-            this.props.showModal(false);
             this.setState({
                 dataSource:this.state.dataSource.cloneWithRows(response.mjson.data),
-                taskType:type
+                taskType:type,
+                isLoading:false
             });
 
         }, (error) => {
-            this.props.showModal(false);
+            this.setState({isLoading:false});
             this.props.showToast(error.mjson.msg);
         });
     }
@@ -487,5 +504,14 @@ const styles = StyleSheet.create({
         color:fontAndColor.COLORA0,
         fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
         textAlign:'center',
-    }
+    },
+    loadingView:{
+        left:0,
+        bottom:0,
+        right:0,
+        top:0,
+        justifyContent:'center',
+        alignItems:'center',
+        position: 'absolute',
+    },
 });

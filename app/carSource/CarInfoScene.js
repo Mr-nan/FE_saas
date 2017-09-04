@@ -122,11 +122,25 @@ export default class CarInfoScene extends BaseComponent {
 
     initFinish = () => {
         carConfigurationData = [];
-        getRole.getRoleList((data)=>{
-            this.roleList = data;
-            console.log(data);
-            this.loadData();
+        this.isUserBoss = false;
+
+        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+            if (data.code == 1 && data.result != '') {
+                let enters = JSON.parse(data.result);
+                for (let item of enters.enterprise_list[0].role_type){
+                    if(item ==1){
+                        this.isUserBoss = true;
+                        break;
+                    }
+                }
+            }
+            getRole.getRoleList((data)=>{
+                this.roleList = data;
+                this.loadData();
+            });
         });
+
+
     }
 
     allRefresh=()=>{
@@ -145,6 +159,9 @@ export default class CarInfoScene extends BaseComponent {
          this.loadCarData('');
          }
          });*/
+
+
+
         StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST, (data) => {
             if (data.code == 1 && data.result != '') {
                 let enters = JSON.parse(data.result);
@@ -190,7 +207,7 @@ export default class CarInfoScene extends BaseComponent {
 
             for(let item of this.roleList)
             {
-                if(item.name =='手续员'||item.name =='评估师'||item.name =='整备员'||item.name =='经理'||item.name =='运营专员')
+                if((item.name =='手续员'||item.name =='评估师'||item.name =='整备员'||item.name =='经理'||item.name =='运营专员'||item.name =='合同专员'||item.name =='车管专员') && !this.isUserBoss)
                 {
                     carData.show_order = 2;
                     break;
@@ -229,6 +246,8 @@ export default class CarInfoScene extends BaseComponent {
         }, (error) => {
         });
     }
+
+
 
 
     render() {
@@ -920,6 +939,7 @@ class SharedView extends Component {
     // 多图分享
     sharedMoreImage=(carData)=>{
 
+
         if(IS_ANDROID == true){
             let shareArray = [];
             for (let i =0;i<carData.imgs.length;i++)
@@ -940,7 +960,9 @@ class SharedView extends Component {
                 carContent += "\n" + carData.carIconsContentData[0] + '出厂';
             }
             NativeModules.ShareNative.share({image:[shareArray],title:[carContent]}).then((suc)=>{
-            }, (fail)=>{
+                    this.sharedSucceedAction();
+
+                }, (fail)=>{
                 this.props.showToast('分享已取消');
             }
             )
@@ -954,6 +976,8 @@ class SharedView extends Component {
             shareClass.shareAction([shareArray]).then((data) => {
 
                 this.props.showToast('分享成功');
+                this.sharedSucceedAction();
+
 
             }, (error) => {
 
@@ -997,7 +1021,13 @@ class SharedView extends Component {
                         webpageUrl: fenxiangUrl + '?id=' + carData.id,
                         thumbImage: carImage,
 
-                    }).catch((error) => {
+                    }).then((resp)=>{
+
+                        this.sharedSucceedAction();
+                        console.log('分享成功');
+
+                    },(error) => {
+                        console.log('分享失败');
 
                     })
                 } else {
@@ -1034,7 +1064,14 @@ class SharedView extends Component {
                         webpageUrl: 'http://finance.test.dycd.com/platform/car_detail.html?id=' + carData.id,
                         thumbImage: carImage,
 
-                    }).catch((error) => {
+                    }).then((resp)=>{
+
+                        this.sharedSucceedAction();
+                        console.log('分享成功');
+
+                    },(error) => {
+                        console.log('分享失败');
+
                     })
 
                 } else {
@@ -1042,6 +1079,33 @@ class SharedView extends Component {
                 }
             });
 
+    }
+
+    sharedSucceedAction=()=> {
+
+        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+            if (data.code == 1) {
+                if (data.result != null && data.result != "") {
+                    let userData = JSON.parse(data.result);
+                    let userPhone = userData.phone + global.companyBaseID;
+                    request(AppUrls.CAR_CHESHANG_SHARE_MOMENT_COUNT, 'POST', {
+                        mobile: userPhone
+                    }).then((response) => {
+                    }, (error) => {
+                    });
+
+                } else {
+                    this.setState({
+                        renderPlaceholderOnly: 'error'
+                    });
+                }
+
+            } else {
+                this.setState({
+                    renderPlaceholderOnly: 'error'
+                });
+            }
+        })
     }
 
 

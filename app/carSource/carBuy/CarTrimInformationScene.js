@@ -207,8 +207,8 @@ export default class CarTrimInformationScene extends BaseComponent{
         request(AppUrls.CAR_CHESHANG_ZBY_EDIT_TASK,'post',params).then((response) => {
 
             this.props.showModal(false);
-            this.props.reloadTaskData();
             this.backPage();
+            this.props.reloadTaskData();
 
         }, (error) => {
 

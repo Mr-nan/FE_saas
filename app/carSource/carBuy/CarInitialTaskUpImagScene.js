@@ -11,6 +11,7 @@ import {
     Dimensions,
     Platform,
     Image,
+    DeviceEventEmitter,
 }   from 'react-native';
 
 import BaseComponent from '../../component/BaseComponent';
@@ -181,9 +182,10 @@ export default class CarInitialTaskUpImagScene extends BaseComponent{
         const navigator = this.props.navigator;
         if (navigator) {
             for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
-                if (navigator.getCurrentRoutes()[i].name == 'CarTrimScene') {
-                  this.props.reloadTaskData && this.props.reloadTaskData();
+                if (navigator.getCurrentRoutes()[i].name == 'CarTrimScene')
+                {
                     navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                    this.props.reloadTaskData && this.props.reloadTaskData();
                     break;
                 }
             }

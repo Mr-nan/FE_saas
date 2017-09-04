@@ -35,7 +35,7 @@ var Platform = require('Platform');
 export default class EvaluateCarInfo extends BaseComponent {
 	constructor(props) {
 		super(props);
-		this.remark = '  ';
+		this.remark = '';
 
     }
 
@@ -144,8 +144,8 @@ export default class EvaluateCarInfo extends BaseComponent {
         if (navigator) {
             for (let i = 0; i < navigator.getCurrentRoutes().length; i++) {
                 if (navigator.getCurrentRoutes()[i].name == 'CarTrimScene') {
-                    this.props.reloadTaskData && this.props.reloadTaskData();
                     navigator.popToRoute(navigator.getCurrentRoutes()[i]);
+                    this.props.reloadTaskData && this.props.reloadTaskData();
                     break;
                 }
             }

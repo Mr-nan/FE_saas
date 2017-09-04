@@ -497,6 +497,7 @@ export default class CarMySourceScene extends BaceComponent {
                 carContent += "\n" + carData.carIconsContentData[0] + '出厂';
             }
             NativeModules.ShareNative.share({image:[shareArray],title:[carContent]}).then((suc)=>{
+                    this.sharedSucceedAction();
                 }, (fail)=>{
                     this.props.showToast('分享已取消');
                 }

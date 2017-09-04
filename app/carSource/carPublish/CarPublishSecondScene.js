@@ -721,53 +721,65 @@ export default class CarPublishSecondScene extends BaseComponent {
     render() {
         return (
             <View style={styles.rootContainer}>
-                <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={-Pixel.getPixel(100)}>
-                    <ScrollView ref={(ref)=>{this.scrollView = ref}} keyboardDismissMode={'on-drag'}>
-                        <View style={{width:sceneWidth,paddingVertical:Pixel.getPixel(25),backgroundColor:'white'}}>
-                            <Image style={{width:sceneWidth}} resizeMode={'contain'}
-                                   source={require('../../../images/carSourceImages/publishCarperpos2.png')}/>
-                        </View>
-                        {
-                            this.state.titleData.map((data, index) => {
-                                return (
-                                    <View style={{marginTop:10,backgroundColor:'white'}} key={index}>
-                                        {
-                                            data.map((rowData, subIndex) => {
-                                                return ( rowData.selectDict ?
-                                                        (
-                                                            <TouchableOpacity
-                                                                key={subIndex}
-                                                                activeOpacity={1}
-                                                                onPress={()=>this.cellCilck(rowData.title)}>
-                                                                <CellSelectView
-                                                                    currentTitle={rowData.selectDict.current}
-                                                                    cellData={rowData}
-                                                                    cellSelectAction={this.cellSelectAction}/>
-                                                            </TouchableOpacity>) :
-                                                        (
-                                                            <TouchableOpacity key={subIndex}
-                                                                              activeOpacity={1}
-                                                                              onPress={()=>this.cellCilck(rowData.title)}>
-                                                                <CellView cellData={rowData}/>
-                                                            </TouchableOpacity>)
-                                                )
-                                            })
-                                        }
-                                    </View>
-                                )
-                            })
-                        }
-                        <View style={styles.footContainer}>
-                            <TouchableOpacity onPress={this.nextAction}>
-                                <View style={styles.footView}>
-                                    <Text allowFontScaling={false}  style={styles.footText}>下一步</Text>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-                    </ScrollView>
-                </KeyboardAvoidingView>
+                {
+                    IS_ANDROID?(this.loadScrollView()):(
+                            <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={-Pixel.getPixel(100)}>
+                                {
+                                    this.loadScrollView()
+                                }
+                            </KeyboardAvoidingView>
+                        )
+                }
                 <AllNavigationView title="车辆基本信息" backIconClick={this.backPage}/>
             </View>
+        )
+    }
+
+    loadScrollView=()=>{
+        return(
+            <ScrollView ref={(ref)=>{this.scrollView = ref}}    keyboardDismissMode={IS_ANDROID?'none':'on-drag'}>
+                <View style={{width:sceneWidth,paddingVertical:Pixel.getPixel(25),backgroundColor:'white'}}>
+                    <Image style={{width:sceneWidth}} resizeMode={'contain'}
+                           source={require('../../../images/carSourceImages/publishCarperpos2.png')}/>
+                </View>
+                {
+                    this.state.titleData.map((data, index) => {
+                        return (
+                            <View style={{marginTop:10,backgroundColor:'white'}} key={index}>
+                                {
+                                    data.map((rowData, subIndex) => {
+                                        return ( rowData.selectDict ?
+                                                (
+                                                    <TouchableOpacity
+                                                        key={subIndex}
+                                                        activeOpacity={1}
+                                                        onPress={()=>this.cellCilck(rowData.title)}>
+                                                        <CellSelectView
+                                                            currentTitle={rowData.selectDict.current}
+                                                            cellData={rowData}
+                                                            cellSelectAction={this.cellSelectAction}/>
+                                                    </TouchableOpacity>) :
+                                                (
+                                                    <TouchableOpacity key={subIndex}
+                                                                      activeOpacity={1}
+                                                                      onPress={()=>this.cellCilck(rowData.title)}>
+                                                        <CellView cellData={rowData}/>
+                                                    </TouchableOpacity>)
+                                        )
+                                    })
+                                }
+                            </View>
+                        )
+                    })
+                }
+                <View style={styles.footContainer}>
+                    <TouchableOpacity onPress={this.nextAction}>
+                        <View style={styles.footView}>
+                            <Text allowFontScaling={false}  style={styles.footText}>下一步</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            </ScrollView>
         )
     }
 
