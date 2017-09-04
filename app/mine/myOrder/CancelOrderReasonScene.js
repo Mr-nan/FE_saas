@@ -305,26 +305,41 @@ export default class CancelOrderReasonScene extends BaseComponent {
                         <TouchableOpacity
                             onPress={() => {
 
-                                if (this.state.selected_buyer_cancel_type == 0) {
+                                if (this.state.selected_buyer_cancel_type == 0) {  //取消原因必选
                                     this.props.showToast('请选择原因');
                                     return;
                                 }
-                                if (this.state.buyer_cancel_desc == '') {
-                                    this.props.showToast('请输入描述');
-                                    return;
+
+                                if (this.state.selected_buyer_cancel_type == 1){  //取消原因是车况，需要描述原因和上传照片
+
+                                    if (this.state.buyer_cancel_desc == '') {
+                                        this.props.showToast('请输入描述');
+                                        return;
+                                    }
+                                    if (this.state.buyer_cancel_desc.length < 10) {
+                                        this.props.showToast('最少输入10个汉字描述');
+                                        return;
+                                    }
+                                    if (cancelImages.length == 1) {
+                                        this.props.showToast('请上传照片');
+                                        return;
+                                    }
+
                                 }
 
-                                if (this.state.buyer_cancel_desc.length < 10) {
-                                    this.props.showToast('最少输入10个汉字描述');
-                                    return;
-                                }
-                                if (cancelImages.length == 1) {
-                                    this.props.showToast('请上传照片');
-                                    return;
+                                if(this.state.selected_buyer_cancel_type == 5){  // 取消原因是其他， 需要描述原因，照片非必选
+                                    if (this.state.buyer_cancel_desc == '') {
+                                        this.props.showToast('请输入描述');
+                                        return;
+                                    }
+
+                                    if (this.state.buyer_cancel_desc.length < 10) {
+                                        this.props.showToast('最少输入10个汉字描述');
+                                        return;
+                                    }
                                 }
 
                                 //TODO  提交资料。。。
-                                //cancelImages.pop();
                                 let urls = ''
 
                                 for (let i=0 ; i<cancelImages.length; i++){

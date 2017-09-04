@@ -89,8 +89,9 @@ export  default class WaitActivationAccountScene extends BaseComponent {
                     }}>
                             <Text allowFontScaling={false} 
                                 style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(7)}}>
-                                {this.state.type === 1} ? {'您以企业名义开通的企业账户已经绑定，请进行激活，激活方式如下：'}:
-                                {' 您以个人名义开通的企业账户已经绑定，请进行激活，激活方式如下：'}
+
+                                {this.state.type === 1 ? '您以企业名义开通的企业账户已经绑定，请进行激活，激活方式如下：':' 您以个人名义开通的企业账户已经绑定，请进行激活，激活方式如下：'}
+
                             </Text>
                             <Text allowFontScaling={false} 
                                 style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(7)}}>
