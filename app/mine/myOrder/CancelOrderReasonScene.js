@@ -246,7 +246,7 @@ export default class CancelOrderReasonScene extends BaseComponent {
                                                             if (imageResponse.didCancel) {
                                                             } else if (imageResponse.error) {
                                                             } else if (imageResponse.customButton) {
-                                                            } else {   //上传照片啦。。。  层次太多，可读性差，如果再没啥注释，简直是崩溃，自己看着都费劲
+                                                            } else {   //上传照片。。。  层次太多，可读性差，如果再没啥注释，简直是崩溃，自己看着都费劲
 
                                                                 let params = {
                                                                     file: 'data:image/jpeg;base64,' + encodeURI(imageResponse.data).replace(/\+/g, '%2B')
@@ -464,9 +464,9 @@ const styles = StyleSheet.create({
         height: Pixel.getPixel(44),
         borderRadius: Pixel.getPixel(3),
     }
-
 })
 
+// 上传的照片组件
 class SelectedImage extends Component {
 
     constructor(props) {
@@ -493,7 +493,6 @@ class SelectedImage extends Component {
                     </TouchableOpacity>
 
                 </TouchableOpacity>
-
 
             </View>
 
