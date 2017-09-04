@@ -25,6 +25,8 @@ import  {request}           from '../utils/RequestUtil';
 import PixelUtil from '../utils/PixelUtil';
 import *as weChat from 'react-native-wechat';
 import CarInfoScene from "./CarInfoScene";
+import StorageUtil from "../utils/StorageUtil";
+import * as StorageKeyNames from "../constant/storageKeyNames";
 const Pixel = new PixelUtil();
 var ScreenWidth = Dimensions.get('window').width;
 var shareClass = NativeModules.ZNShareClass;
@@ -319,6 +321,7 @@ export default class CarSharedListScene extends BaceComponent{
                        carContent +=(' | '+ carData.plate_number.substring(0, 2));
                    }
                    carShareItemTitle.push(carContent);
+                   this.sharedSucceedAction();
                }
                NativeModules.ShareNative.share({image:carShareItemArray,title:carShareItemTitle}).then((suc)=>{
                    }, (fail)=>{
@@ -334,6 +337,7 @@ export default class CarSharedListScene extends BaceComponent{
                        imagArray.push({image:carData.imgs[i].url});
                    }
                    carShareItemArray.push(imagArray);
+                   this.sharedSucceedAction();
                }
                shareClass.shareAction(carShareItemArray).then((data) => {
 
@@ -429,6 +433,7 @@ export default class CarSharedListScene extends BaceComponent{
                        carContent +=(' | '+ carData.plate_number.substring(0, 2));
                    }
                    carShareItemTitle+=(carContent+'\n');
+                   this.sharedSucceedAction();
                }
                NativeModules.ShareNative.share({image:[carShareItemArray],title:[carShareItemTitle]}).then((suc)=>{
                    }, (fail)=>{
@@ -440,6 +445,7 @@ export default class CarSharedListScene extends BaceComponent{
                let carShareItemArray = [];
                for(let carData of carShareArray){
                    carShareItemArray.push({image:carData.img});
+                   this.sharedSucceedAction();
                }
                shareClass.shareAction([carShareItemArray]).then((data) => {
 
@@ -476,11 +482,9 @@ export default class CarSharedListScene extends BaceComponent{
 
     // 分享好友
     sharedWechatSession = (sharData) => {
-        console.log(sharData);
         weChat.isWXAppInstalled()
             .then((isInstalled) => {
                 if (isInstalled) {
-
                     weChat.shareToSession({
                         type: 'news',
                         title: sharData.title,
@@ -538,13 +542,33 @@ export default class CarSharedListScene extends BaceComponent{
     }
 
     sharedSucceedAction=()=>{
-        request(AppUrls.CAR_CHESHANG_SHARE_MOMENT_COUNT,'POST',{
-            mobile:'18690700551'
-        }).then((response) => {
-            console.log(response);
-        }, (error) => {
-            console.log(error.mjson.msg);
-        });
+
+        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+            if (data.code == 1) {
+                if (data.result != null && data.result != "")
+                {
+                    let userData = JSON.parse(data.result);
+                    let userPhone = userData.phone+global.companyBaseID;
+                    request(AppUrls.CAR_CHESHANG_SHARE_MOMENT_COUNT,'POST',{
+                        mobile:userPhone
+                    }).then((response) => {
+                    }, (error) => {
+                    });
+
+                }else {
+                    this.setState({
+                        renderPlaceholderOnly:'error'
+                    });
+                }
+
+            }else {
+                this.setState({
+                    renderPlaceholderOnly:'error'
+                });
+            }
+        })
+
+
     }
 
 }

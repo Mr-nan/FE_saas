@@ -37,6 +37,8 @@ import PixelUtil from '../utils/PixelUtil';
 import * as weChat from "react-native-wechat";
 import CarSharedListScene from "./CarSharedListScene";
 import CarDealInfoScene from "./CarDealInfoScene";
+import StorageUtil from "../utils/StorageUtil";
+import * as StorageKeyNames from "../constant/storageKeyNames";
 const Pixel = new PixelUtil();
 var ScreenWidth = Dimensions.get('window').width;
 var shareClass = NativeModules.ZNShareClass;
@@ -508,6 +510,7 @@ export default class CarMySourceScene extends BaceComponent {
             shareClass.shareAction([shareArray]).then((data) => {
 
                 this.props.showToast('分享成功');
+                this.sharedSucceedAction();
 
             }, (error) => {
 
@@ -551,8 +554,13 @@ export default class CarMySourceScene extends BaceComponent {
                         webpageUrl: fenxiangUrl + '?id=' + carData.id,
                         thumbImage: carImage,
 
-                    }).catch((error) => {
-                        this.props.showToast('分享失败');
+                    }).then((resp)=>{
+
+                        this.sharedSucceedAction();
+                        console.log('分享成功');
+
+                    },(error) => {
+                        console.log('分享失败');
 
                     })
                 } else {
@@ -589,14 +597,50 @@ export default class CarMySourceScene extends BaceComponent {
                         webpageUrl: 'http://finance.test.dycd.com/platform/car_detail.html?id=' + carData.id,
                         thumbImage: carImage,
 
-                    }).catch((error) => {
-                        this.props.showToast('分享失败');
+                    }).then((resp)=>{
+
+                       this.sharedSucceedAction();
+                        console.log('分享成功');
+
+                    },(error) => {
+                        console.log('分享失败');
+
                     })
 
                 } else {
                     this.props.showToast('请安装微信');
                 }
             });
+    }
+
+    sharedSucceedAction=()=>{
+
+        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+            if (data.code == 1) {
+                if (data.result != null && data.result != "")
+                {
+                    let userData = JSON.parse(data.result);
+                    let userPhone = userData.phone+global.companyBaseID;
+                    request(AppUrls.CAR_CHESHANG_SHARE_MOMENT_COUNT,'POST',{
+                        mobile:userPhone
+                    }).then((response) => {
+                    }, (error) => {
+                    });
+
+                }else {
+                    this.setState({
+                        renderPlaceholderOnly:'error'
+                    });
+                }
+
+            }else {
+                this.setState({
+                    renderPlaceholderOnly:'error'
+                });
+            }
+        })
+
+
     }
 
     dateReversal = (time) => {

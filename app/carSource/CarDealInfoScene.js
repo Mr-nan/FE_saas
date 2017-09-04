@@ -230,7 +230,6 @@ export default class CarDealInfoScene extends BaseComponent{
                         this.carDealData.account_code = staffData.account_code;
                         this.carDealData.salesman = staffData.real_name;
                         this.titleData1[0][2].value = staffData.real_name;
-
                         this.setState({
                             titleData:this.titleData1,
                         });

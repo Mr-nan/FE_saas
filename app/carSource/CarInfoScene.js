@@ -124,6 +124,7 @@ export default class CarInfoScene extends BaseComponent {
         carConfigurationData = [];
         getRole.getRoleList((data)=>{
             this.roleList = data;
+            console.log(data);
             this.loadData();
         });
     }

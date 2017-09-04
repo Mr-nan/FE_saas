@@ -178,6 +178,11 @@ export default class CarTrimScene extends BaseComponent {
 
     }
 
+    componentWillReceiveProps(nextProps) {
+
+        console.log('==================');
+    }
+
     reloadData=()=>{
         this.loadData(this.roleValue,this.state.taskType);
     }
@@ -218,6 +223,7 @@ export default class CarTrimScene extends BaseComponent {
             });
 
         }, (error) => {
+            this.props.showModal(false);
             this.props.showToast(error.mjson.msg);
         });
     }
