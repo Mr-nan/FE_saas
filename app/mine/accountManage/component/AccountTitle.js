@@ -110,7 +110,7 @@ export  default class AccountTitle extends PureComponent {
                         </Text>
                         <View style={{flex:1}}></View>
                         <TouchableOpacity onPress={()=>{  Clipboard.setString(this.props.info.bank_card_no);this.props.copy('复制成功');}} activeOpacity={0.9}
-                                          style = {{borderColor:'white',borderWidth:Pixel.getPixel(1),
+                                          style = {{borderColor:'white',borderWidth:1,
                                           marginRight:Pixel.getPixel(10),alignItems:'center',justifyContent:'center',
                                           padding:Pixel.getPixel(5)}}>
 
