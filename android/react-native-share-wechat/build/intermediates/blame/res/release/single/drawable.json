@@ -1,0 +1,142 @@
+[
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/abc_edit_text_material.xml",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/drawable/abc_edit_text_material.xml"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/abc_btn_check_material.xml",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/drawable/abc_btn_check_material.xml"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/abc_tab_indicator_material.xml",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/drawable/abc_tab_indicator_material.xml"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/help.png",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/src/main/res/drawable/help.png"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/imageselector_select_album.png",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/src/main/res/drawable/imageselector_select_album.png"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/abc_item_background_holo_light.xml",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/drawable/abc_item_background_holo_light.xml"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/abc_btn_radio_material.xml",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/drawable/abc_btn_radio_material.xml"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/abc_list_selector_background_transition_holo_dark.xml",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/drawable/abc_list_selector_background_transition_holo_dark.xml"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/imageselector_back.png",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/src/main/res/drawable/imageselector_back.png"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/abc_list_selector_holo_light.xml",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/drawable/abc_list_selector_holo_light.xml"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/abc_ratingbar_full_material.xml",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/drawable/abc_ratingbar_full_material.xml"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/abc_btn_borderless_material.xml",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/drawable/abc_btn_borderless_material.xml"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/abc_cab_background_internal_bg.xml",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/drawable/abc_cab_background_internal_bg.xml"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/imageselector_select_checked.png",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/src/main/res/drawable/imageselector_select_checked.png"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/imageselector_selected.png",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/src/main/res/drawable/imageselector_selected.png"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/son_esc.png",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/src/main/res/drawable/son_esc.png"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/abc_text_cursor_material.xml",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/drawable/abc_text_cursor_material.xml"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/abc_list_selector_holo_dark.xml",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/drawable/abc_list_selector_holo_dark.xml"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/abc_spinner_textfield_background_material.xml",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/drawable/abc_spinner_textfield_background_material.xml"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/abc_dialog_material_background_dark.xml",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/drawable/abc_dialog_material_background_dark.xml"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/abc_cab_background_top_material.xml",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/drawable/abc_cab_background_top_material.xml"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/backbutton3x.png",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/src/main/res/drawable/backbutton3x.png"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/abc_btn_colored_material.xml",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/drawable/abc_btn_colored_material.xml"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/abc_btn_default_mtrl_shape.xml",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/drawable/abc_btn_default_mtrl_shape.xml"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/cha_new.png",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/src/main/res/drawable/cha_new.png"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/navigatorback.png",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/src/main/res/drawable/navigatorback.png"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/imageselector_select_photo.png",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/src/main/res/drawable/imageselector_select_photo.png"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/abc_switch_thumb_material.xml",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/drawable/abc_switch_thumb_material.xml"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/home_nav_wutong_logow.png",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/src/main/res/drawable/home_nav_wutong_logow.png"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/abc_dialog_material_background_light.xml",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/drawable/abc_dialog_material_background_light.xml"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/abc_item_background_holo_dark.xml",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/drawable/abc_item_background_holo_dark.xml"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/imageselector_select_uncheck.png",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/src/main/res/drawable/imageselector_select_uncheck.png"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/abc_list_selector_background_transition_holo_light.xml",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/drawable/abc_list_selector_background_transition_holo_light.xml"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/imageselector_photo.png",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/src/main/res/drawable/imageselector_photo.png"
+    },
+    {
+        "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable/abc_textfield_search_material.xml",
+        "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/drawable/abc_textfield_search_material.xml"
+    }
+]

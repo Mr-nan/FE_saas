@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/src/main/assets"/><source path="/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/generated/assets/shaders/release"/></dataSet><dataSet config="release"><source path="/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/src/release/assets"/></dataSet></merger>
