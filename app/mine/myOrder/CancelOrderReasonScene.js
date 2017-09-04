@@ -190,6 +190,7 @@ export default class CancelOrderReasonScene extends BaseComponent {
 
                         <View style={{marginTop: 15, backgroundColor: 'white',}}>
                             <TextInput
+                                underlineColorAndroid='transparent'
                                 fontSize={fontAndColor.BUTTONFONT30}
                                 style={styles.style_text_input}
                                 maxLength={100}
@@ -240,7 +241,7 @@ export default class CancelOrderReasonScene extends BaseComponent {
                                                     }  //如果是可删除的图片说明就不是加号图片 ，就没有添加功能
 
                                                     //if (Platform.OS == 'android') {
-                                                        this._rePhoto();
+                                                        //this._rePhoto();
                                                     //} else {
                                                         ImagePicker.showImagePicker(options, (imageResponse) => {
                                                             if (imageResponse.didCancel) {

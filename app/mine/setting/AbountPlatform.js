@@ -138,9 +138,11 @@ export default class Setting extends BaseComponent {
 
         }else if(value==2){  //保存到相册
                 CameraRoll.saveToCameraRoll('http://dycd-static.img-cn-beijing.aliyuncs.com/Uploads/Oss/201708/26/c7c9c803e06a8e4d.jpg').then((response)=>{
+                //CameraRoll.saveToCameraRoll('file:///assets/images/erweima.png').then((response)=>{
                     this.props.showToast('保存成功')
                     console.log('保存成功')
                 },(reject)=>{
+                    console.log('保存失败', reject)
                     this.props.showToast('保存失败，请重新尝试')
                 });
         }else {
