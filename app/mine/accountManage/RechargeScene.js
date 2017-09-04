@@ -88,7 +88,7 @@ export  default class RechargeScene extends BaseComponent {
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
                 <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
 
-                    <View style={{width:width,height:Pixel.getPixel(329),backgroundColor: '#fff',
+                    <View style={{width:width,backgroundColor: '#fff',
                 paddingLeft: Pixel.getPixel(15),paddingRight: Pixel.getPixel(15),marginTop:Pixel.getTitlePixel(79)}}>
                         <View style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(15),flexDirection: 'row',
                       }}>
@@ -111,7 +111,7 @@ export  default class RechargeScene extends BaseComponent {
                         <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getPixel(14)}}>
                             您可以使用您的银行卡，通过线下转账（柜台、网银、手机银行）的方式将资金充值到您的恒丰银行账户下。
                         </Text>
-                        <View style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(120),marginTop:Pixel.getPixel(15),
+                        <View style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(120),marginTop:Pixel.getPixel(15),marginBottom:Pixel.getPixel(15),
                     borderRadius: Pixel.getPixel(4),backgroundColor:fontAndColor.COLORA3,justifyContent:'center',paddingLeft:
                     Pixel.getPixel(15)}}>
                             <Text allowFontScaling={false}  style={{color: '#000',fontSize: Pixel.getPixel(14)}}>转账时填写的信息如下：</Text>
