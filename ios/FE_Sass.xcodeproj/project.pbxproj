@@ -92,8 +92,10 @@
 		E3B817081E613EB600279287 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3B817071E613EB600279287 /* CoreTelephony.framework */; };
 		E3B817091E613ECF00279287 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D769E2B1E602A630039526C /* libc++.tbd */; };
 		E3B8170B1E613ED600279287 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E3B8170A1E613ED600279287 /* libz.tbd */; };
-		EA9D8A2E1F502E3600233CC5 /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA9D8A0C1F502DE900233CC5 /* libRCTCameraRoll.a */; };
 		EE4350601EFBC0F900C12625 /* 4D39F52BD46AC7CD8470.lic in Resources */ = {isa = PBXBuildFile; fileRef = EE43505F1EFBC0F900C12625 /* 4D39F52BD46AC7CD8470.lic */; };
+		EE8EF4D41F5C0BCD0002D11E /* ZNShareClass.m in Sources */ = {isa = PBXBuildFile; fileRef = EE8EF4D11F5C0BCD0002D11E /* ZNShareClass.m */; };
+		EE8EF4D51F5C0BCD0002D11E /* ZNShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE8EF4D31F5C0BCD0002D11E /* ZNShareViewController.m */; };
+		EE8EF4DE1F5C0EA20002D11E /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = EE8EF4DD1F5C0EA20002D11E /* MBProgressHUD.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -335,21 +337,14 @@
 			remoteGlobalIDString = 014A3B5C1C6CF33500B6D375;
 			remoteInfo = RNImagePicker;
 		};
-		EA9D8A0B1F502DE900233CC5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EA9D8A021F502DE900233CC5 /* RCTCameraRoll.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 58B5115D1A9E6B3D00147676;
-			remoteInfo = RCTCameraRoll;
-		};
-		EA9D8A1E1F502DE900233CC5 /* PBXContainerItemProxy */ = {
+		EE297FF91F59573200C5A9D8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A08B9B7AF08C41A082FB247D /* RCTWeChat.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 10D6D7A41F160C250066F0F3;
 			remoteInfo = RCTWeChatTests;
 		};
-		EA9D8A2B1F502DE900233CC5 /* PBXContainerItemProxy */ = {
+		EE2980061F59573200C5A9D8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F9DEF7E783804F5BB00F2C8B /* RNSpinkit.xcodeproj */;
 			proxyType = 2;
@@ -457,8 +452,13 @@
 		E3B817051E613EAC00279287 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		E3B817071E613EB600279287 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		E3B8170A1E613ED600279287 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
-		EA9D8A021F502DE900233CC5 /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
 		EE43505F1EFBC0F900C12625 /* 4D39F52BD46AC7CD8470.lic */ = {isa = PBXFileReference; lastKnownFileType = file; path = 4D39F52BD46AC7CD8470.lic; sourceTree = "<group>"; };
+		EE8EF4D01F5C0BCD0002D11E /* ZNShareClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZNShareClass.h; path = FE_Sass/ZNShareClass.h; sourceTree = "<group>"; };
+		EE8EF4D11F5C0BCD0002D11E /* ZNShareClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZNShareClass.m; path = FE_Sass/ZNShareClass.m; sourceTree = "<group>"; };
+		EE8EF4D21F5C0BCD0002D11E /* ZNShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZNShareViewController.h; path = FE_Sass/ZNShareViewController.h; sourceTree = "<group>"; };
+		EE8EF4D31F5C0BCD0002D11E /* ZNShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZNShareViewController.m; path = FE_Sass/ZNShareViewController.m; sourceTree = "<group>"; };
+		EE8EF4DC1F5C0EA20002D11E /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = FE_Sass/MBProgressHUD.h; sourceTree = "<group>"; };
+		EE8EF4DD1F5C0EA20002D11E /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = FE_Sass/MBProgressHUD.m; sourceTree = "<group>"; };
 		F0FC9342AFCC48C188DD558A /* CodePush.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		F9DEF7E783804F5BB00F2C8B /* RNSpinkit.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSpinkit.xcodeproj; path = "../node_modules/react-native-spinkit/ios/RNSpinkit.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -477,7 +477,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EA9D8A2E1F502E3600233CC5 /* libRCTCameraRoll.a in Frameworks */,
 				E3B817061E613EAC00279287 /* SystemConfiguration.framework in Frameworks */,
 				E36AEB881E6ABF35000F4E11 /* Foundation.framework in Frameworks */,
 				1510B5491F2058080046BBD8 /* Security.framework in Frameworks */,
@@ -655,6 +654,13 @@
 		13B07FAE1A68108700A75B9A /* FE_Sass */ = {
 			isa = PBXGroup;
 			children = (
+				EE8EF4DC1F5C0EA20002D11E /* MBProgressHUD.h */,
+				EE8EF4DD1F5C0EA20002D11E /* MBProgressHUD.m */,
+				EE8EF4D01F5C0BCD0002D11E /* ZNShareClass.h */,
+				EE8EF4D11F5C0BCD0002D11E /* ZNShareClass.m */,
+				EE8EF4D21F5C0BCD0002D11E /* ZNShareViewController.h */,
+				EE8EF4D31F5C0BCD0002D11E /* ZNShareViewController.m */,
+				7D04BA771F31DCA5002B354A /* MBProgressHUD */,
 				1510B54F1F2067570046BBD8 /* GrowingIO-iOS-SDK */,
 				7DB2CBB31E779DDF00DE146C /* OCRSCancer */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -710,11 +716,18 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		7D04BA771F31DCA5002B354A /* MBProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = MBProgressHUD;
+			sourceTree = "<group>";
+		};
 		7D769EEE1E6572180039526C /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				7D769F0F1E6572180039526C /* libRNSpinkit.a */,
-				EA9D8A2C1F502DE900233CC5 /* libRNSpinkit.a */,
+				EE2980071F59573200C5A9D8 /* libRNSpinkit.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -780,7 +793,6 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				EA9D8A021F502DE900233CC5 /* RCTCameraRoll.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -872,15 +884,7 @@
 			isa = PBXGroup;
 			children = (
 				E3B816F81E613DD400279287 /* libRCTWeChat.a */,
-				EA9D8A1F1F502DE900233CC5 /* RCTWeChatTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		EA9D8A031F502DE900233CC5 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				EA9D8A0C1F502DE900233CC5 /* libRCTCameraRoll.a */,
+				EE297FFA1F59573200C5A9D8 /* RCTWeChatTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -976,7 +980,11 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
+
 						ProvisioningStyle = Manual;
+
+						DevelopmentTeam = 8RXU2MG5MH;
+						ProvisioningStyle = Automatic;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1017,10 +1025,6 @@
 				{
 					ProductGroup = E3B816D91E613DD300279287 /* Products */;
 					ProjectRef = 1F2A351FE20A472BABAB3F42 /* RCTBEEPickerManager.xcodeproj */;
-				},
-				{
-					ProductGroup = EA9D8A031F502DE900233CC5 /* Products */;
-					ProjectRef = EA9D8A021F502DE900233CC5 /* RCTCameraRoll.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302B61ABCB90400DB3ED1 /* Products */;
@@ -1314,25 +1318,18 @@
 			remoteRef = E3B817021E613DD400279287 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		EA9D8A0C1F502DE900233CC5 /* libRCTCameraRoll.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRCTCameraRoll.a;
-			remoteRef = EA9D8A0B1F502DE900233CC5 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		EA9D8A1F1F502DE900233CC5 /* RCTWeChatTests.xctest */ = {
+		EE297FFA1F59573200C5A9D8 /* RCTWeChatTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = RCTWeChatTests.xctest;
-			remoteRef = EA9D8A1E1F502DE900233CC5 /* PBXContainerItemProxy */;
+			remoteRef = EE297FF91F59573200C5A9D8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		EA9D8A2C1F502DE900233CC5 /* libRNSpinkit.a */ = {
+		EE2980071F59573200C5A9D8 /* libRNSpinkit.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRNSpinkit.a;
-			remoteRef = EA9D8A2B1F502DE900233CC5 /* PBXContainerItemProxy */;
+			remoteRef = EE2980061F59573200C5A9D8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1438,8 +1435,11 @@
 				124A59191E9C8B90007C1C15 /* CameraController.m in Sources */,
 				7DB2CBDF1E779DDF00DE146C /* TopView.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				EE8EF4D51F5C0BCD0002D11E /* ZNShareViewController.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				EE8EF4D41F5C0BCD0002D11E /* ZNShareClass.m in Sources */,
 				16FB421C1EF23352006C6077 /* SystomTools.m in Sources */,
+				EE8EF4DE1F5C0EA20002D11E /* MBProgressHUD.m in Sources */,
 				124A590B1E9C700F007C1C15 /* OBDScanController.m in Sources */,
 				124A58E81E9C6D48007C1C15 /* QrScan.m in Sources */,
 				124A59161E9C8B4A007C1C15 /* CustomCamera.m in Sources */,
@@ -1555,7 +1555,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = Y9REFNCU7C;
+				DEVELOPMENT_TEAM = 8RXU2MG5MH;
 				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
@@ -1594,7 +1594,11 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
+
 				DEVELOPMENT_TEAM = "";
+
+				DEVELOPMENT_TEAM = 8RXU2MG5MH;
+
 				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
@@ -1670,7 +1674,11 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
+
 				DEVELOPMENT_TEAM = "";
+
+				DEVELOPMENT_TEAM = 8RXU2MG5MH;
+
 				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
