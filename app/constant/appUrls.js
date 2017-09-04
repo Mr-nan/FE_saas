@@ -31,7 +31,7 @@ export const V = "v1/";
  /**
  * 版本号3
  */
-export const V3 = "v3/";
+// export const V3 = "v3/";
 
 /**
  * 分享测试地址
