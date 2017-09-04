@@ -60,12 +60,11 @@ export default class KeepCustomerDetailScene extends BaseComponent {
      **/
     loadData = () => {
         let maps = {
-            tid: this.props.tid,
+            tid: this.props.tid ? this.props.tid : '',
             tcid: this.props.tcid
         };
         let url = AppUrls.TENURE_CAR_PEOPLE_MSG;
         request(url, 'post', maps).then((response) => {
-            console.log('succ', response);
             this.buyerInfo = response.mjson.data.tenureMap;
             this.carInfo = response.mjson.data.carMap;
             let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -75,7 +74,6 @@ export default class KeepCustomerDetailScene extends BaseComponent {
                 renderPlaceholderOnly: 'success'
             });
         }, (error) => {
-            console.log('error', error);
             this.setState({
                 isRefreshing: false,
                 renderPlaceholderOnly: 'error'
@@ -173,7 +171,8 @@ export default class KeepCustomerDetailScene extends BaseComponent {
                         maps[this.clientInfo[i].parameter] = this.clientInfo[i].value;
                     }
                     maps['mobile'] = data.result;
-                    maps['tid'] = this.props.tid;
+                    //maps['tid'] = this.props.tid;
+                    maps['tid'] = this.props.tid ? this.props.tid : '';
                     maps['tcid'] = this.props.tcid;
                     let url = AppUrls.UPDATE_CAR_WELFARE;
                     request(url, 'post', maps).then((response) => {
@@ -207,16 +206,14 @@ export default class KeepCustomerDetailScene extends BaseComponent {
         for (let key in buyersInfoItem) {
             this.clientInfo.push(buyersInfoItem[key]);
         }
-
+        console.log('this.clientInfo=====', this.clientInfo);
         for (let key in this.clientInfo) {
-            //console.log('this.clientInfo=====', key + this.clientInfo[key]);
             if (this.clientInfo[key].name == '手机号码' && this.clientInfo[key].value.length !== 11) {
                 this.props.showToast(this.clientInfo[key].name + '输入不正确');
                 return false;
             }
             if ((this.clientInfo[key].name == '交强险到期' || this.clientInfo[key].name == '商业险到期' || this.clientInfo[key].name == '保养到期' ||
-                this.clientInfo[key].name == '质保到期' || this.clientInfo[key].name == '车辆号码' || this.clientInfo[key].name == '车牌号码' ||
-                this.clientInfo[key].name == '客户姓名') &&
+                this.clientInfo[key].name == '质保到期' || this.clientInfo[key].name == '车牌号码' || this.clientInfo[key].name == '客户姓名') &&
                 this.clientInfo[key].value == '') {
                 this.props.showToast(this.clientInfo[key].name + '不能为空');
                 return false;

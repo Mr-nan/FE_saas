@@ -51,6 +51,16 @@ export default class BuyersInfoItem extends BaseComponent {
         this.childItems.push({name: '7日内回访', value: '', parameter: 'custSevenvisit'});
         this.childItems.push({name: '购车之前车型', value: '', parameter: 'custBeforecar'});
         this.childItems.push({name: '备注', value: '', parameter: 'custRemark'});
+        this.childItems[0].value = this.props.data.custName ? this.props.data.custName : '';
+        this.childItems[1].value = this.props.data.custPhone ? this.props.data.custPhone : '';
+        this.childItems[2].value = this.props.data.custSex ? this.props.data.custSex : '';
+        this.childItems[3].value = this.props.data.custBirthday ? this.props.data.custBirthday : '';
+        this.childItems[4].value = this.props.data.custAge ? this.props.data.custAge : '';
+        this.childItems[5].value = this.props.data.custVisittime ? this.props.data.custVisittime : '';
+        this.childItems[6].value = this.props.data.custThreevisit ? this.props.data.custThreevisit : '';
+        this.childItems[7].value = this.props.data.custSevenvisit ? this.props.data.custSevenvisit : '';
+        this.childItems[8].value = this.props.data.custBeforecar ? this.props.data.custBeforecar : '';
+        this.childItems[9].value = this.props.data.custRemark ? this.props.data.custRemark : '';
         this.state = {
             isDateTimePickerVisible: false
         }
@@ -80,9 +90,9 @@ export default class BuyersInfoItem extends BaseComponent {
         for (let i = 0; i < this.childItems.length; i++) {
             if (i == 2) {
                 let defValue = this.props.data.custSex;
-                this.childItems[i].value = defValue == '女' ? '女士' : '先生';
+                //this.childItems[i].value = defValue == '女' ? '女士' : '先生';
                 items.push(<ClientInfoSelected
-                    defValue={defValue == '女' ? '女士' : '先生'}
+                    defValue={defValue}
                     ref='selectsex' key={i + 'bo'} items={this.childItems[i]}
                     toSelect={() => {
                         this.toNextPage({
@@ -99,7 +109,7 @@ export default class BuyersInfoItem extends BaseComponent {
                         })
                     }}/>);
             } else if (i == 3) {
-                this.childItems[i].value = this.props.data.custBirthday;
+                //this.childItems[i].value = this.props.data.custBirthday ? this.props.data.custBirthday : '';
                 items.push(<ClientInfoSelected
                     defValue={this.props.data.custBirthday}
                     ref="birthday" key={i + 'bo'} items={this.childItems[i]}
@@ -107,7 +117,7 @@ export default class BuyersInfoItem extends BaseComponent {
                         this._showDateTimePicker('birthday');
                     }}/>);
             } else if (i == 5) {
-                this.childItems[i].value = this.props.data.custVisittime;
+                //this.childItems[i].value = this.props.data.custVisittime ? this.props.data.custVisittime : '';
                 items.push(<ClientInfoSelected
                     defValue={this.props.data.custVisittime}
                     ref="interview" key={i + 'bo'} items={this.childItems[i]}
@@ -115,7 +125,7 @@ export default class BuyersInfoItem extends BaseComponent {
                         this._showDateTimePicker('interview');
                     }}/>);
             } else if (i == 8) {
-                this.childItems[i].value = this.props.data.custBeforecar;
+                //this.childItems[i].value = this.props.data.custBeforecar ? this.props.data.custBeforecar : '';
                 items.push(<ClientInfoSelected
                     defValue={this.props.data.custBeforecar}
                     ref="models" key={i + 'bo'} items={this.childItems[i]}
@@ -132,23 +142,22 @@ export default class BuyersInfoItem extends BaseComponent {
             } else {
                 let defValue = '';
                 if (this.childItems[i].name == '客户姓名') {
-                    defValue = this.props.data.custName;
-                    this.childItems[i].value = this.props.data.custName;
+                    defValue = this.props.data.custName ? this.props.data.custName : '';
                 } else if (this.childItems[i].name == '手机号码') {
-                    defValue = this.props.data.custPhone;
-                    this.childItems[i].value = this.props.data.custPhone;
+                    defValue = this.props.data.custPhone ? this.props.data.custPhone : '';
+                    //this.childItems[i].value = defValue;
                 } else if (this.childItems[i].name == '年龄') {
-                    defValue = this.props.data.custAge;
-                    this.childItems[i].value = this.props.data.custAge;
+                    defValue = this.props.data.custAge ? this.props.data.custAge : '';
+                    //this.childItems[i].value = defValue;
                 } else if (this.childItems[i].name == '3日内回访') {
-                    defValue = this.props.data.custThreevisit;
-                    this.childItems[i].value = this.props.data.custThreevisit;
+                    defValue = this.props.data.custThreevisit ? this.props.data.custThreevisit : '';
+                    //this.childItems[i].value = defValue;
                 } else if (this.childItems[i].name == '7日内回访') {
-                    defValue = this.props.data.custSevenvisit;
-                    this.childItems[i].value = this.props.data.custSevenvisit;
+                    defValue = this.props.data.custSevenvisit ? this.props.data.custSevenvisit : '';
+                    //this.childItems[i].value = defValue;
                 } else if (this.childItems[i].name == '备注') {
-                    defValue = this.props.data.custRemark;
-                    this.childItems[i].value = this.props.data.custRemark;
+                    defValue = this.props.data.custRemark ? this.props.data.custRemark : '';
+                    //this.childItems[i].value = defValue;
                 }
                 items.push(<CustomerInfoInput
                     defValue={defValue}
@@ -270,18 +279,6 @@ export default class BuyersInfoItem extends BaseComponent {
         } else if (this.type === 'interview') {
             this.childItems[5].value = d;
             this.refs.interview.setValue(d);
-            this.setState({
-                isDateTimePickerVisible: false
-            });
-        } else if (this.type === 'maintenance') {
-            this.childItems[3].value = d;
-            this.refs.maintenance.setValue(d);
-            this.setState({
-                isDateTimePickerVisible: false
-            });
-        } else if (this.type === 'quality') {
-            this.childItems[4].value = d;
-            this.refs.quality.setValue(d);
             this.setState({
                 isDateTimePickerVisible: false
             });

@@ -103,6 +103,7 @@ export default class ClientInfoInput extends PureComponent {
      **/
     goSearch = (text) => {
         this.props.items.value = text;
+        //console.log('this.props.items.value=====', this.props.items.value);
         this.setState({
             value: text
         });
