@@ -300,7 +300,7 @@ export default class ProcurementOrderDetailScene extends BaseComponent {
                 this.mList = ['0', '1', '2', '3', '4', '7', '6'];
                 this.contactData = {
                     layoutTitle: '确认验收车辆',
-                    layoutContent: '确认验收后，请等待贷款放款。',
+                    layoutContent: '您确认车辆无误，点击"验收确认"后，24小时内即可为您结放贷款。',
                     setPrompt: false
                 };
                 this.items.push({title: '创建订单', nodeState: 0, isLast: false, isFirst: true});

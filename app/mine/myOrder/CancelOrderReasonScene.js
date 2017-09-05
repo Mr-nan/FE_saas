@@ -102,7 +102,7 @@ export default class CancelOrderReasonScene extends BaseComponent {
         }
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
 
         console.log('12345678')
     }
@@ -220,10 +220,15 @@ export default class CancelOrderReasonScene extends BaseComponent {
                                         }
                                         return (
                                             <SelectedImage
+                                                key={index}
                                                 source={picture.image}
                                                 deletable={picture.deletable}
 
                                                 onPressDelete={() => {
+
+                                                    if (!picture.deletable) { //如果是不可以删除的图片说明就是加号图片 ，这个不能删
+                                                        return;
+                                                    }
 
                                                     cancelImages.splice(picture, 1);
                                                     this.setState({
@@ -234,72 +239,69 @@ export default class CancelOrderReasonScene extends BaseComponent {
 
                                                 onPressAdd={() => {
 
-                                                    console.log('picture', picture);
-
-                                                    if (picture.deletable) {
+                                                    if (picture.deletable) { //如果是可删除的图片说明就不是加号图片 ，就没有添加功能
                                                         return;
-                                                    }  //如果是可删除的图片说明就不是加号图片 ，就没有添加功能
 
-                                                    //if (Platform.OS == 'android') {
-                                                        //this._rePhoto();
-                                                    //} else {
-                                                        ImagePicker.showImagePicker(options, (imageResponse) => {
-                                                            if (imageResponse.didCancel) {
-                                                            } else if (imageResponse.error) {
-                                                            } else if (imageResponse.customButton) {
-                                                            } else {   //上传照片。。。  层次太多，可读性差，如果再没啥注释，简直是崩溃，自己看着都费劲
+                                                    }
 
-                                                                let params = {
-                                                                    file: 'data:image/jpeg;base64,' + encodeURI(imageResponse.data).replace(/\+/g, '%2B')
-                                                                };
+                                                    ImagePicker.showImagePicker(options, (imageResponse) => {
+                                                        if (imageResponse.didCancel) {
+                                                        } else if (imageResponse.error) {
+                                                        } else if (imageResponse.customButton) {
+                                                        } else {   //上传照片。。。  层次太多，可读性差，如果再没啥注释，简直是崩溃，自己看着都费劲
 
-                                                                this.setState({
-                                                                    loading: true,
-                                                                });
-                                                                ImageUpload.request(Urls.INDEX_UPLOAD, 'Post', params).then(
-                                                                    (netResponse) => {
+                                                            let params = {
+                                                                file: 'data:image/jpeg;base64,' + encodeURI(imageResponse.data).replace(/\+/g, '%2B')
+                                                            };
 
-                                                                        if (netResponse.mycode === 1) {  // 上传成功
+                                                            this.setState({
+                                                                loading: true,
+                                                            });
+                                                            ImageUpload.request(Urls.INDEX_UPLOAD, 'Post', params).then(
+                                                                (netResponse) => {
 
-                                                                            this.setState({   // 关闭loading
-                                                                                loading: false,
-                                                                            });
+                                                                    if (netResponse.mycode === 1) {  // 上传成功
 
-                                                                            // 储存imageURL 并更新数据源，
+                                                                        this.setState({   // 关闭loading
+                                                                            loading: false,
+                                                                        });
 
-                                                                            pictureToBeStored = {
-                                                                                image: {uri: imageResponse.uri},
-                                                                                url: netResponse.mjson.data.url,
-                                                                                deletable: true
-                                                                            }
-                                                                            cancelImages.splice(cancelImages.length - 1, 0, pictureToBeStored);
+                                                                        // 储存imageURL 并更新数据源，
 
-                                                                            this.setState({
-                                                                                pictures: cancelImages,
-                                                                            })
-
-                                                                        } else {
-                                                                            this.setState({
-                                                                                loading: false,
-                                                                            });
-                                                                            this.props.showToast('上传失败')
+                                                                        pictureToBeStored = {
+                                                                            image: {uri: imageResponse.uri},
+                                                                            url: netResponse.mjson.data.url,
+                                                                            deletable: true
                                                                         }
-                                                                    }, (error) => {
-                                                                        this.props.showToast('上传失败');
-                                                                    });
+                                                                        cancelImages.splice(cancelImages.length - 1, 0, pictureToBeStored);
 
-                                                            }
-                                                        });
-                                                    //}
+                                                                        this.setState({
+                                                                            pictures: cancelImages,
+                                                                        })
 
-                                                }}
+                                                                    } else {
+                                                                        this.setState({
+                                                                            loading: false,
+                                                                        });
+                                                                        this.props.showToast('上传失败')
+                                                                    }
+                                                                }, (error) => {
+                                                                    this.props.showToast('上传失败');
+                                                                });
+
+                                                        }
+                                                    });
+
+
+                                                }
+
+                                                }
+
                                             />
                                         )
                                     })
                                 }
                             </View>
-
-
                         </View>
 
 
@@ -311,7 +313,7 @@ export default class CancelOrderReasonScene extends BaseComponent {
                                     return;
                                 }
 
-                                if (this.state.selected_buyer_cancel_type == 1){  //取消原因是车况，需要描述原因和上传照片
+                                if (this.state.selected_buyer_cancel_type == 1) {  //取消原因是车况，需要描述原因和上传照片
 
                                     if (this.state.buyer_cancel_desc == '') {
                                         this.props.showToast('请输入描述');
@@ -328,7 +330,7 @@ export default class CancelOrderReasonScene extends BaseComponent {
 
                                 }
 
-                                if(this.state.selected_buyer_cancel_type == 5){  // 取消原因是其他， 需要描述原因，照片非必选
+                                if (this.state.selected_buyer_cancel_type == 5) {  // 取消原因是其他， 需要描述原因，照片非必选
                                     if (this.state.buyer_cancel_desc == '') {
                                         this.props.showToast('请输入描述');
                                         return;
@@ -343,8 +345,8 @@ export default class CancelOrderReasonScene extends BaseComponent {
                                 //TODO  提交资料。。。
                                 let urls = ''
 
-                                for (let i=0 ; i<cancelImages.length; i++){
-                                    if (i == cancelImages.length-1) {
+                                for (let i = 0; i < cancelImages.length; i++) {
+                                    if (i == cancelImages.length - 1) {
                                         break
                                     }
                                     urls += cancelImages[i].url + ';'
@@ -439,7 +441,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: Pixel.getPixel(10),
         width: screen_width,
         height: Pixel.getPixel(110),
-
+        textAlignVertical: 'top'
     },
 
     style_text_number: {
@@ -490,13 +492,12 @@ class SelectedImage extends Component {
                         onPress={this.props.onPressDelete}
                         style={selectedImageStyle.style_deleget_image_container}
                     >
-                        <Image source={this.props.deletable ? require('../../../images/delete.png') : ''}/>
+                        <Image opacity={this.props.deletable ? 1 : 0} source={require('../../../images/delete.png')}/>
                     </TouchableOpacity>
 
                 </TouchableOpacity>
 
             </View>
-
         )
     }
 }
@@ -504,9 +505,9 @@ class SelectedImage extends Component {
 const selectedImageStyle = StyleSheet.create({
 
     style_container: {
-        width: Pixel.getPixel(80),
+        width: Pixel.getPixel(83),
         height: Pixel.getPixel(60),
-        marginRight: Pixel.getPixel(20)
+        marginRight: Pixel.getPixel(20),
         //backgroundColor:'blue',
     },
 
@@ -524,7 +525,7 @@ const selectedImageStyle = StyleSheet.create({
         marginBottom: Pixel.getPixel(0),
         marginRight: Pixel.getPixel(0),
         resizeMode: 'center',
-        width: 75,
+        width: 74,
         height: 55
 
     }

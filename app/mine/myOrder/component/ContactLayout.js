@@ -67,7 +67,7 @@ export default class ContactLayout extends Component {
     render() {
         return (
             <View style={this.props.layoutContent ? styles.itemType1 : styles.itemType1NoContent}>
-                <View style={{width: Pixel.getPixel(280)}}>
+                <View style={{width: Pixel.getPixel(270)}}>
                     <View style={this.props.layoutContent ? {
                         flexDirection: 'row',
                         alignItems: 'center',
