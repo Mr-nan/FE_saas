@@ -93,6 +93,7 @@
 		E3B817091E613ECF00279287 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D769E2B1E602A630039526C /* libc++.tbd */; };
 		E3B8170B1E613ED600279287 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E3B8170A1E613ED600279287 /* libz.tbd */; };
 		EE4350601EFBC0F900C12625 /* 4D39F52BD46AC7CD8470.lic in Resources */ = {isa = PBXBuildFile; fileRef = EE43505F1EFBC0F900C12625 /* 4D39F52BD46AC7CD8470.lic */; };
+		EE822B291F5D57E200E4249A /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE822B071F5D57D000E4249A /* libRCTCameraRoll.a */; };
 		EE8EF4D41F5C0BCD0002D11E /* ZNShareClass.m in Sources */ = {isa = PBXBuildFile; fileRef = EE8EF4D11F5C0BCD0002D11E /* ZNShareClass.m */; };
 		EE8EF4D51F5C0BCD0002D11E /* ZNShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE8EF4D31F5C0BCD0002D11E /* ZNShareViewController.m */; };
 		EE8EF4DE1F5C0EA20002D11E /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = EE8EF4DD1F5C0EA20002D11E /* MBProgressHUD.m */; };
@@ -337,6 +338,27 @@
 			remoteGlobalIDString = 014A3B5C1C6CF33500B6D375;
 			remoteInfo = RNImagePicker;
 		};
+		EE822B061F5D57D000E4249A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EE822AFD1F5D57D000E4249A /* RCTCameraRoll.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 58B5115D1A9E6B3D00147676;
+			remoteInfo = RCTCameraRoll;
+		};
+		EE822B191F5D57D000E4249A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A08B9B7AF08C41A082FB247D /* RCTWeChat.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 10D6D7A41F160C250066F0F3;
+			remoteInfo = RCTWeChatTests;
+		};
+		EE822B261F5D57D000E4249A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F9DEF7E783804F5BB00F2C8B /* RNSpinkit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 641194871EC9FD4A00D4FC03;
+			remoteInfo = "RNSpinkit-tvOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -439,6 +461,7 @@
 		E3B817071E613EB600279287 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		E3B8170A1E613ED600279287 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		EE43505F1EFBC0F900C12625 /* 4D39F52BD46AC7CD8470.lic */ = {isa = PBXFileReference; lastKnownFileType = file; path = 4D39F52BD46AC7CD8470.lic; sourceTree = "<group>"; };
+		EE822AFD1F5D57D000E4249A /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
 		EE8EF4D01F5C0BCD0002D11E /* ZNShareClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZNShareClass.h; path = FE_Sass/ZNShareClass.h; sourceTree = "<group>"; };
 		EE8EF4D11F5C0BCD0002D11E /* ZNShareClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZNShareClass.m; path = FE_Sass/ZNShareClass.m; sourceTree = "<group>"; };
 		EE8EF4D21F5C0BCD0002D11E /* ZNShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZNShareViewController.h; path = FE_Sass/ZNShareViewController.h; sourceTree = "<group>"; };
@@ -463,6 +486,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EE822B291F5D57E200E4249A /* libRCTCameraRoll.a in Frameworks */,
 				E3B817061E613EAC00279287 /* SystemConfiguration.framework in Frameworks */,
 				E36AEB881E6ABF35000F4E11 /* Foundation.framework in Frameworks */,
 				1510B5491F2058080046BBD8 /* Security.framework in Frameworks */,
@@ -713,6 +737,7 @@
 			isa = PBXGroup;
 			children = (
 				7D769F0F1E6572180039526C /* libRNSpinkit.a */,
+				EE822B271F5D57D000E4249A /* libRNSpinkit.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -778,6 +803,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				EE822AFD1F5D57D000E4249A /* RCTCameraRoll.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -869,6 +895,15 @@
 			isa = PBXGroup;
 			children = (
 				E3B816F81E613DD400279287 /* libRCTWeChat.a */,
+				EE822B1A1F5D57D000E4249A /* RCTWeChatTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EE822AFE1F5D57D000E4249A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EE822B071F5D57D000E4249A /* libRCTCameraRoll.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1006,6 +1041,10 @@
 				{
 					ProductGroup = E3B816D91E613DD300279287 /* Products */;
 					ProjectRef = 1F2A351FE20A472BABAB3F42 /* RCTBEEPickerManager.xcodeproj */;
+				},
+				{
+					ProductGroup = EE822AFE1F5D57D000E4249A /* Products */;
+					ProjectRef = EE822AFD1F5D57D000E4249A /* RCTCameraRoll.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302B61ABCB90400DB3ED1 /* Products */;
@@ -1297,6 +1336,27 @@
 			fileType = archive.ar;
 			path = libRNImagePicker.a;
 			remoteRef = E3B817021E613DD400279287 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		EE822B071F5D57D000E4249A /* libRCTCameraRoll.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTCameraRoll.a;
+			remoteRef = EE822B061F5D57D000E4249A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		EE822B1A1F5D57D000E4249A /* RCTWeChatTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = RCTWeChatTests.xctest;
+			remoteRef = EE822B191F5D57D000E4249A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		EE822B271F5D57D000E4249A /* libRNSpinkit.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNSpinkit.a;
+			remoteRef = EE822B261F5D57D000E4249A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */

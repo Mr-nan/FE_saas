@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {
-    AppRegistry,
+    NativeModules,
     View,
     Text,
     StyleSheet,
@@ -8,7 +8,7 @@ import {
     Dimensions,
     PixelRatio,
     TouchableOpacity,
-    InteractionManager,
+    Platform,
     TouchableWithoutFeedback,
     Modal,
     CameraRoll
@@ -130,6 +130,13 @@ export default class Setting extends BaseComponent {
         );
     }
 
+    callClick = (phoneNumer) => {
+        if (Platform.OS === 'android') {
+            NativeModules.VinScan.callPhone(phoneNumer);
+        } else {
+            Linking.openURL('tel:' + phoneNumer);
+        }
+    };
 
     sequencingCheckedClick = (title, value) => {
         if (value == 1){ //分享给朋友
@@ -137,12 +144,26 @@ export default class Setting extends BaseComponent {
             this.refs.sharedView.isVisible(true);
 
         }else if(value==2){  //保存到相册
-                CameraRoll.saveToCameraRoll('http://dycd-static.img-cn-beijing.aliyuncs.com/Uploads/Oss/201708/26/c7c9c803e06a8e4d.jpg').then((response)=>{
+            if (Platform.OS === 'android') {
+                NativeModules.VinScan.getPicture((path) => {
+                    //console.log('保存path', path)
+                    CameraRoll.saveToCameraRoll(path).then((response) => {
+                        this.props.showToast('保存成功')
+                    }, (reject) => {
+                        //console.log('保存失败', reject)
+                        this.props.showToast('保存失败，请重新尝试')
+                    });
+                });
+            } else {
+                CameraRoll.saveToCameraRoll('http://dycd-static.img-cn-beijing.aliyuncs.com/Uploads/Oss/201708/26/c7c9c803e06a8e4d.jpg').then((response) => {
+                    //CameraRoll.saveToCameraRoll('file:///assets/images/erweima.png').then((response)=>{
                     this.props.showToast('保存成功')
-                    console.log('保存成功')
-                },(reject)=>{
+                    //console.log('保存成功')
+                }, (reject) => {
+                    //console.log('保存失败', reject)
                     this.props.showToast('保存失败，请重新尝试')
                 });
+            }
         }else {
             // 取消
         }
