@@ -18,7 +18,8 @@ import {
     Animated,
     Image,
     Modal,
-    Easing
+    Easing,
+    TouchableOpacity
 } from 'react-native';
 
 //定义各种提示的图标，类型有success(成功)、warning(警告)、wrong(错误)、help(帮助信息)、info(提示信息)
@@ -28,6 +29,7 @@ const _wrong = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaX
 const _help = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAGf0lEQVR4Xt2bj3EdNRDGpQrAFZBUQFIBcQXgCiAVkFQAqYBQAUkFSSoAV4BTAUkFJBUs87tZefb26U7SSXo20cwbv+e700nffvtXUgyTm4h8HUL4LoTwSD/8fqAf+/YPIQQ+n0IIN/q5jjHye1qLM3oWESb7YwjhiU665zWA8VcI4XWMke9D2zAAVNJM+llGuqMGDUNeKhhDmNENgE78Z5049M61j4bWSHFr8DyfVIW/32z0x/MA8XuvinQBICJInIHkJn4dQngFfWOMSK65iQi2AjX6Se2I7wMgnsUYXzd3rg8cAkAH9ocOzr77swLy6uiktyai7wQIVOwrdx824umRdzYDICI/hBCYvJV6mvjLXkqWJKkqBwgeCNgACG9LfdjrTQCIyG/6YtvHOyg6e+J+UsoI1O97dw0hPK8FoRoAEUHqUDA1pM7EmxCvHVjtfcpIbI1VC1TwaU0fVQCIyJsQAtRP7T2/j+hczaBa71E2IIhvzbNvY4xXpb6KAGQkfyeUL01EbQMgEHWmVmTCLgAigo7h41MjGrNqUBrX2a+LCOqAe06NWAGDmW2bAKhuQf3UiMvxyfe+iQhu0TLhastWZQFQnfrbuDp0/sm5Lf1RpFUdACHZBFzk45zN2gLgTxPkYO0f3ReDVwuKCpGwO3kHItJL//wJACKCjuPyUtukT+1gcvdpxsjgCKj4EC5/HAl0Ro0JlLARt20FgFLnH0P9dzFG6/565hxUKr+oS91KnACCQXYnOgxWRPAMKVhCFR5aVfYA/BpCYIC0odTPMKsEJoO97K0BZFThRYyReS7tFoCM9Fc3lka7d/3A5FN3o0Cwgl2xwAKAryTWT9J/MMLqZzxKmhwBFUYqlcFwsaibrwF8iDE+7BRAsjHJID6PMRLjrBiA7pN/00ZK3wdTuFRyiGx5S0SstNK8T4xXKyCu31tQFwaoRcbvp4ahOFTE8AMTESiXkK+yK5lortsYKxMRcmrEBTcJACulYRFfBtjdsDSNTO3Rv2awn2KMF61SzwjDRojLWBIASJ8aHK2bbmYi1q7wb6w6gyg2x5wQYywmbqVOnTG+iTE+jhm0R9J/pc8tk8jE8xe9RjmjBhcAgOVNSQ+RWDKEJUCL171BqwUgI5QhDFB7h21LnuYKAKyUuo2NRUVErApUg5sxgsPScBcZvgAAGyoOc3/ODuCHqdAUV3ZEhHiAZMy2attRouWJwJ2uTUl8SoMyYKF+Ng3nUpXnaHiHTfauYYANgIYhXTsg5/qQfPJGXHofY7S/W7s9ud8x7AYAxNx1JwCo0TuZ/IwijFcxD8ASHXXD3NhBxuhNq0CVADg7A5ynWGg/Q/JG1VZG9k5VIJMpVuUKjQRb3e4Y8BkAbGBwVgZkMr/bNLVnknvPOgAWL2AThLO6QRfvVwdKPeC4fGABYGogtDXYTLg7XfoaCq8j35mhcAMVufUs6ucYv4TCNhnqLj/V0jMT8p4LAOoMqSJ9OTUdLjCAsNdWaIal4Ttqt3on2WkqiBD8pGWkYQWREhuUBfhlihPT9xm4mGMJs3MlsewSUmky/4frImIrX6uSGAnHlKLofQEmUw1aVM6uC9iAaHhdIAeEukLWItBNih6rdbuR4Lm9DrdZ5tbCyMka2sjBmLjcb2aYkoxlVr2yCyN+9WQ6CzKFzynvdLEO+cbtqtfe4ujmpoJRbHBRKN0OD8Uzup9fHNUw0bOgaqfVUUB04QT3R5V2WOHTjsfp/km+cWcbJI6C1vqcK7bsb5AwxslmiNNVoXVSLferASQBIsxfVoRt29skZffX8J1Yfcge/ZYJzL63ZZvcFxkhtm6ULO68nC2x0f0XV1wzFVvsA+7qi1CHIgDqHm3ViH9hEwBhyCaKXqmqryekRihEedXCqQJAQfBh66EDCr2T9c+LCHuZsfKpyNFUWqsGQEHw+334N+zgpWdlw86xnabKUhMACgIlNH9AYdgprhJDdk6pHTrA0QyAgkD6Cgh2RzaXEhCEtUMZYXaZ5rbrc0KNnWfN7zwEgIkYGQxq4U9xcQveApDYdNU8MAWaQg3bXGFdbpUYqXNs7nAdoQsAk0DlTnFZNgNAOg+czgjn2J7OIzBZvm/tJx52Sq0bAMMGBpvO9W2d+CypeOk6J1BhHAFZtavb63QYAPYlmuYCBlK0B5lKE8xdZ7V4UacZS/dTAHBgwIx0ihxqp+PzniXQOp0rTupC/jFE0lvI/wciQVA9ffrXEQAAAABJRU5ErkJggg==';
 const _info = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAFhUlEQVR4XuWbi5EUNxCG1RGAIzBEwBGBuQjgIjBEYIjAJgLjCAwRABHYF4GPCIAIbCJo1zfV2urRamak2ZFmqVXV1j12Ro+//36o1ZLQuKnq/RDCTyGEK/vw9wP7+NG/hBD4/BdCuLPPrYjwd7MmLXpWVRb7cwjhiS36lGEA4+8QwjsR4fdN22YAmKRZ9MuMdLeaNAx5Y2BswoyTAbCF/2ILh9659tXRGilOTZ73o6rw88eJ/ngfIP44VUVOAkBVkTgTyS38NoTwFvqKCJKrbqqKrUCNnpsdSfsAiJci8q66c3thFQA2sT9tcn7sbwbI27WLnlqIjQkQqNi95DlsxIs1Y1YDoKrPQggs3ks9LvzNqZRckqSpHCCkQMAGQPiw1If/vgoAVf3dBvZ9fISirReeLsoYgfo9Tb5DCK9KQSgGQFWROhSMDamz8CrESydW+pwxElvj1QIVfFHSRxEAqvo+hAD1Y/vE32t0rmRStc8YGxDEI/fuBxG5WeprEYCM5Heh/NJCzDYAAlFnbItMmAVAVdExfHxsRGNeDZbm1f17VUUdcM+xEStgMLNtEgDTLagfG3E5Pvnsm6riFj0TbqZsVRYA06l/nKtD55/0tvRrkTZ1AIRoE3CRj3M2awqAv1yQg7W/OheDVwqKCZGwO3oHItLr9P0jAFQVHcflxTZJn9LJzD2nqqjVlxYAZ9SYQAkbcWgjAIw6nx31P4qId39brPnQR2JkHzYCAc8QgyVUgXEOm7EUgN9CCL/aDJtTPzFW1yKC3m7aMqrwWkRY59AOAGSkP3pw01lZZz0AYChV9YIdscADgK8k1qch/QetrX5HANi4sSWPBvGViBDjjBiA7rP/pjWXvknGBy24qc1TXpG5CQswug8PAFgOD78fWxODlKqRqR1e566F/vvxzBYg5NgGwAcVSKzxdxPx1dqlROWGEDkCgPTJwdGOfGXtQOf6fBLjwLrHYjT8tzf99wApowY/AACBTtz0fBWRaAibz9FJBONHHLBJqntu4qqKN4jZ5hsA8D6yaeSXMYJ+19YkEMqM6SPD1wAw/oeLklpToFcckHiDscCTSTTd+JwJA/xm7xYG+ACoCw1dcLKHCrD7ZLtPuwMAdZK5NABCCkDTcPRMVMAz4AiAi2fApQHwDRXwgcGlATB4AW+JL9INXnwgdGmhsGf8EAr7zdAhU9I6DLY8xB6BEDvfWNtwvet2uPdeIN0OC80kwXY0HiN1S4jsAIBP/H4SkatcSix7hNRCJXYAwGe+Rikx0mF7JEW72YBMNmhI/PpzAR8Q9UqL9wTA1zoM9IfVUwcjR2do37MKZE69sgcj6elJcxb0sgFJ2m906jV3ODpZVLAVG3oAkNH9/OGoucOUBUWVVmsBcSVu2J8mFSjJoc9R1nv3Aom14JW+lxRNzRdITOTqmqtC6WLWPGcGkP0OYf5wIuzbXJGUr6/pdnCxZpGnvFNTJtctQjxlQbXv1hZKLlZe1k5g7+dLSmXTykuiNzJHzc/xeoCzCIC5R581Gg4UDIRVN0G2Xpj5esp7EApRXrFwigAwEFImrLqg0GDx1DJj5WOS4xDmloxVDICBkBZP82/YwaBd2TBzbacqs10FgIFACi29oLDZLa4lqc3cUlt1gaMaAAOBIgpA8BXZfBWBoKx+U0aYxCnizJXrc0ON2yvVY64CwEWMTAa1SG9x8QjeApAouqqemAHNnp0yV1gXa5g8SZA61+ZG9b9LLFqMBGs6mLnF5bsBgHgfON4Rzg0T7yOwWH6fuoi52S21kxjgV+Bq/kg8Tt34rME29yw3UGEcAVmxq5sbdDMAEjCQIOqBFP1FpjUAcFljUKcWlaRNAMgwI94iB5h4fT5lCbSO94qjurD/2ETSU8j/DysOGj3Jqj6HAAAAAElFTkSuQmCC';
 const _iconArray = [_success, _info, _help, _warning, _wrong];
+const {width, height} = Dimensions.get('window');
 class Toast extends Component {
     constructor(props) {
         super(props);
@@ -69,6 +71,7 @@ class Toast extends Component {
                 flag: false,
                 modal: false
             });
+            this.props.hide();
         }, this.props.timeout);
     }
 
@@ -90,20 +93,17 @@ class Toast extends Component {
 
     render() {
         return (
-            <Modal
-                animationType={"fade"}
-                transparent={true}
-                visible={this.state.flag}
-                onRequestClose={() => {}}
+            <View
+                style={{flex:1}}
             >
                 {this.state.modal ? <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
                         <Image style={{width:60,height:60}} source={require('../../../images/setDataLoading.gif')}/>
                     </View> : <View style={styles.taostModal}>
                         <View style={[styles.toast]}>
-                            <Text allowFontScaling={false}  style={styles.text}>{this.props.msg}</Text>
+                            <Text allowFontScaling={false} style={styles.text}>{this.props.msg}</Text>
                         </View>
                     </View>}
-            </Modal>
+            </View>
         );
     }
 }

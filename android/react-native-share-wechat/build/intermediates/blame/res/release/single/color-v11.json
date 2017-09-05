@@ -1,10 +1,19 @@
 [
     {
+<<<<<<< HEAD
         "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/color-v11/abc_background_cache_hint_selector_material_dark.xml",
         "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/color-v11/abc_background_cache_hint_selector_material_dark.xml"
     },
     {
         "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/color-v11/abc_background_cache_hint_selector_material_light.xml",
         "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/color-v11/abc_background_cache_hint_selector_material_light.xml"
+=======
+        "merged": "/Users/zhaojian/Desktop/react/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/color-v11/abc_background_cache_hint_selector_material_dark.xml",
+        "source": "/Users/zhaojian/Desktop/react/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/color-v11/abc_background_cache_hint_selector_material_dark.xml"
+    },
+    {
+        "merged": "/Users/zhaojian/Desktop/react/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/color-v11/abc_background_cache_hint_selector_material_light.xml",
+        "source": "/Users/zhaojian/Desktop/react/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/color-v11/abc_background_cache_hint_selector_material_light.xml"
+>>>>>>> 5adb5a3b1de458526be114501c58da5675f4f2a8
     }
 ]

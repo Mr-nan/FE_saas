@@ -1,5 +1,6 @@
 [
     {
+<<<<<<< HEAD
         "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable-ldrtl-xxhdpi-v17/abc_spinner_mtrl_am_alpha.9.png",
         "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/drawable-ldrtl-xxhdpi/abc_spinner_mtrl_am_alpha.9.png"
     },
@@ -14,5 +15,21 @@
     {
         "merged": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable-ldrtl-xxhdpi-v17/abc_ic_ab_back_mtrl_am_alpha.png",
         "source": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/drawable-ldrtl-xxhdpi/abc_ic_ab_back_mtrl_am_alpha.png"
+=======
+        "merged": "/Users/zhaojian/Desktop/react/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable-ldrtl-xxhdpi-v17/abc_ic_menu_copy_mtrl_am_alpha.png",
+        "source": "/Users/zhaojian/Desktop/react/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/drawable-ldrtl-xxhdpi/abc_ic_menu_copy_mtrl_am_alpha.png"
+    },
+    {
+        "merged": "/Users/zhaojian/Desktop/react/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable-ldrtl-xxhdpi-v17/abc_spinner_mtrl_am_alpha.9.png",
+        "source": "/Users/zhaojian/Desktop/react/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/drawable-ldrtl-xxhdpi/abc_spinner_mtrl_am_alpha.9.png"
+    },
+    {
+        "merged": "/Users/zhaojian/Desktop/react/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable-ldrtl-xxhdpi-v17/abc_ic_ab_back_mtrl_am_alpha.png",
+        "source": "/Users/zhaojian/Desktop/react/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/drawable-ldrtl-xxhdpi/abc_ic_ab_back_mtrl_am_alpha.png"
+    },
+    {
+        "merged": "/Users/zhaojian/Desktop/react/FE_Saas/android/react-native-share-wechat/build/intermediates/res/merged/release/drawable-ldrtl-xxhdpi-v17/abc_ic_menu_cut_mtrl_alpha.png",
+        "source": "/Users/zhaojian/Desktop/react/FE_Saas/android/react-native-share-wechat/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/drawable-ldrtl-xxhdpi/abc_ic_menu_cut_mtrl_alpha.png"
+>>>>>>> 5adb5a3b1de458526be114501c58da5675f4f2a8
     }
 ]
