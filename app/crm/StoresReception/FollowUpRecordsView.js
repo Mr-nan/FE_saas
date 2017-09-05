@@ -19,7 +19,7 @@ import * as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
 import FollowUpTaskScene from "./FollowUpTaskScene";
 import * as AppUrls from "../../constant/appUrls";
-import  {request, requestNoToken} from '../../utils/RequestUtil';
+import  {request} from '../../utils/RequestUtil';
 const Pixel = new PixelUtil();
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 

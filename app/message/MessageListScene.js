@@ -26,7 +26,7 @@ import * as fontAndColor from '../constant/fontAndColor';
 import NavigatorView from '../component/AllNavigationView';
 import PixelUtil from '../utils/PixelUtil'
 import * as AppUrls from "../constant/appUrls";
-import {request, requestNoToken} from "../utils/RequestUtil";
+import {request} from "../utils/RequestUtil";
 import StorageUtil from "../utils/StorageUtil";
 import * as StorageKeyNames from "../constant/storageKeyNames";
 import DailyReminderScene from "./dailyReminder/DailyReminderScene";

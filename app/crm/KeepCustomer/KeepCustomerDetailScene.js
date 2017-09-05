@@ -18,7 +18,7 @@ import NavigationView from '../../component/AllNavigationView';
 import * as fontAndColor from '../../constant/fontAndColor';
 import BaseComponent from '../../component/BaseComponent';
 import * as AppUrls from "../../constant/appUrls";
-import {request, requestNoToken} from "../../utils/RequestUtil";
+import {request} from "../../utils/RequestUtil";
 import DealAmountItem from "./component/item/DealAmountItem";
 import CarInfoItem from "./component/item/CarInfoItem";
 import BuyersInfoItem from "./component/item/BuyersInfoItem";

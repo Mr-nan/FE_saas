@@ -18,7 +18,7 @@ import BaseComponent from '../../component/BaseComponent';
 import * as fontAndColor from '../../constant/fontAndColor';
 import PixelUtil from '../../utils/PixelUtil';
 import * as AppUrls from "../../constant/appUrls";
-import {request, requestNoToken} from "../../utils/RequestUtil";
+import {request} from "../../utils/RequestUtil";
 import DailyReminderScene from "../dailyReminder/DailyReminderScene";
 import ShareRankingScene from "./ShareRankingScene";
 const Pixel = new PixelUtil();

@@ -28,7 +28,7 @@ import KeepCustomerManageScene from "../../crm/KeepCustomer/KeepCustomerManageSc
 const GetRoleUtil = new GetPermissionUtil();
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 import * as AppUrls from "../../constant/appUrls";
-import {request, requestNoToken} from "../../utils/RequestUtil";
+import {request} from "../../utils/RequestUtil";
 
 export default class BacklogListScene extends BaseComponent {
 

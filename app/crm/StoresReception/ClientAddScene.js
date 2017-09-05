@@ -23,7 +23,7 @@ import BaseInfoItem from "./component/item/BaseInfoItem";
 import BuyerDemandItem from "./component/item/BuyerDemandItem";
 import CommunicationRecordItem from "./component/item/CommunicationRecordItem";
 import * as AppUrls from "../../constant/appUrls";
-import {request, requestNoToken} from "../../utils/RequestUtil";
+import {request} from "../../utils/RequestUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import StorageUtil from "../../utils/StorageUtil";
 

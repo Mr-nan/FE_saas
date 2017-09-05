@@ -8,9 +8,9 @@ import {
     View,
     TouchableOpacity,
     Text,
-    Dimensions,
-    ListView,
-    ScrollView,
+    Platform,
+    NativeModules,
+    Linking,
     RefreshControl,
     InteractionManager,
     Image,
@@ -22,7 +22,7 @@ import ScrollableTabView from 'react-native-scrollable-tab-view';
 import RepaymenyTabBar from '../../finance/repayment/component/RepaymenyTabBar';
 import * as fontAndColor from '../../constant/fontAndColor';
 import * as AppUrls from "../../constant/appUrls";
-import  {request}           from '../../utils/RequestUtil';
+import {request} from '../../utils/RequestUtil';
 import PixelUtil from '../../utils/PixelUtil';
 import {FollowUpRecordsView} from "./FollowUpRecordsView";
 import {ClientInfoDetailView} from "./ClientInfoDetailView";
@@ -130,6 +130,18 @@ export default class ClientInfoScene extends BaseComponent {
     };
 
     /**
+     *  拨打客户电话
+     * @param phoneNumer
+     **/
+    callClick = (phoneNumer) => {
+        if (Platform.OS === 'android') {
+            NativeModules.VinScan.callPhone(phoneNumer);
+        } else {
+            Linking.openURL('tel:' + phoneNumer);
+        }
+    };
+
+    /**
      *
      **/
     render() {
@@ -182,7 +194,7 @@ export default class ClientInfoScene extends BaseComponent {
                         <View style={{flex: 1}}/>
                         <TouchableOpacity
                             onPress={() => {
-
+                                this.callClick(this.state.rowData.customerPhone);
                             }}>
                             <Image
                                 style={{marginRight: Pixel.getPixel(20)}}

@@ -12,7 +12,7 @@ import  {
 
 import  PixelUtil from '../../utils/PixelUtil'
 var Pixel = new PixelUtil();
-import {request, requestNoToken} from '../../utils/RequestUtil';
+import {request} from '../../utils/RequestUtil';
 import * as fontAndColor from '../../constant/fontAndColor';
 import BaseComponent from "../../component/BaseComponent";
 import NavigationView from '../../component/AllNavigationView';
