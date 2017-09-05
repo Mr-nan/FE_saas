@@ -75,7 +75,7 @@ export  default class WaitActivationAccountScene extends BaseComponent {
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
                 <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
-                    <View style={{width:width,height:Pixel.getPixel(146),backgroundColor: '#fff',paddingLeft:Pixel.getPixel(15),
+                    <View style={{width:width,backgroundColor: '#fff',paddingLeft:Pixel.getPixel(15),
                 paddingRight:Pixel.getPixel(15),marginTop:Pixel.getTitlePixel(79)}}>
                         <View style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(44),justifyContent:'center',
                     }}>
@@ -85,7 +85,7 @@ export  default class WaitActivationAccountScene extends BaseComponent {
                         </View>
                         <View style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(1),justifyContent:'center',
                     alignItems: 'center',backgroundColor: fontAndColor.COLORA3}}></View>
-                        <View style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(136),justifyContent:'center',
+                        <View style={{width:width-Pixel.getPixel(30),justifyContent:'center',marginBottom:Pixel.getPixel(15)
                     }}>
                             <Text allowFontScaling={false} 
                                 style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(7)}}>
