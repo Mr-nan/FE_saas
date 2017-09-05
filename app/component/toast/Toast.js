@@ -78,7 +78,7 @@ class Toast extends Component {
     openLoading = (value) => {
         this.setState({
             flag: value,
-            modal: true
+            modal: value
         });
         this.timer && clearTimeout(this.timer);
     }
