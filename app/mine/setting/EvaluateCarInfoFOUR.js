@@ -107,20 +107,26 @@ export default class EvaluateCarInfo extends BaseComponent {
 		let selectStr = '';
 		if(aspectSelectArray.length>0){
 			selectStr+='1:';
-			for (let [index, NumTitle]of aspectSelectArray.entries()){
+			for (let index=0;index<aspectSelectArray.length;index++)
+			{
+				let NumTitle = aspectSelectArray[index];
 				selectStr+=(NumTitle + (index==aspectSelectArray.length-1?';':','));
 			}
 		}
 		if(withinArray.length>0){
 			selectStr+='2:';
-			for (let [index, NumTitle]of withinArray.entries()){
-				selectStr+=(NumTitle + (index==withinArray.length-1?';':','));
+			for (let index=0;index<withinArray.length;index++)
+			{
+                let NumTitle = withinArray[index];
+                selectStr+=(NumTitle + (index==withinArray.length-1?';':','));
 			}
 		}
 		if(paintArray.length>0){
 			selectStr+='3:';
-			for (let [index, NumTitle]of paintArray.entries()){
-				selectStr+=(NumTitle + (index==paintArray.length-1?'':','));
+			for (let index=0;index<paintArray.length;index++)
+			{
+                let NumTitle = paintArray[index];
+                selectStr+=(NumTitle + (index==paintArray.length-1?'':','));
 			}
 		}
 

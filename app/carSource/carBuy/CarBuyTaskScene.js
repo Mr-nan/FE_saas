@@ -171,8 +171,10 @@ export default class CarBuyTaskScene extends BaseComponent{
         };
 
         if(data.firstUpTime){
-            let date = new Date(data.firstUpTime.replace(/-/g,"/"));
-            this.carData.firstUpTime = this.dateFormat(date,'yyyy-MM-dd');
+            // console.log(data.firstUpTime);
+            // let date = new Date(data.firstUpTime.replace(/-/g,"/"));
+            // this.carData.firstUpTime = this.dateFormat(date,'yyyy-MM-dd');
+            this.carData.firstUpTime = data.firstUpTime;
         }
 
         if(this.carData.isDeal == 2)
@@ -240,6 +242,8 @@ export default class CarBuyTaskScene extends BaseComponent{
                     </View>)
         }
 
+
+
         if(this.props.isHideInfoRecourse){
             this.titleData1[2][0].tailView='';
             this.titleData1[2][0].value=data.preferPrice?String(data.preferPrice)+'万元':'';
@@ -275,14 +279,26 @@ export default class CarBuyTaskScene extends BaseComponent{
         this.titleData1[2][2].value = data.collectionArea?data.collectionArea:(this.props.isHideInfoRecourse?'':'请选择');
         this.titleData1[2][3].value = this.carData.firstUpTime?this.carData.firstUpTime:(this.props.isHideInfoRecourse?'':'请选择');
 
-        if(data.consultList.length>0){
 
-            this.titleData1[2].splice(4,1);
-            for(let [index,item] of data.consultList.entries()){
-               this.titleData1[2].push({
-                   title:'第'+String(index+1)+'次给价',
-                   value:String(item.consultPrice)+'万元',
-               });
+
+        if(data.consultList.length>0)
+        {
+
+            for(let index =0 ;index<data.consultList.length;index++){
+                let item = data.consultList[index];
+                if(index==0){
+                    this.titleData1[2][4].tailView='';
+                    this.titleData1[2][4].title = '第'+String(index+1)+'次给价';
+                    this.titleData1[2][4].value = String(item.consultPrice)+'万元';
+
+                }else {
+                    this.titleData1[2].push({
+                        title:'第'+String(index+1)+'次给价',
+                        value:String(item.consultPrice)+'万元',
+                    });
+                }
+
+
             }
             if(!this.props.isHideInfoRecourse){
                 this.titleData1[2].push({
@@ -313,7 +329,9 @@ export default class CarBuyTaskScene extends BaseComponent{
                 });
             }
 
-        }else if(!this.props.isHideInfoRecourse) {
+        }
+        else if(!this.props.isHideInfoRecourse)
+        {
             this.titleData1[2][4].tailView=()=> {
                 return (
                     <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
@@ -337,9 +355,12 @@ export default class CarBuyTaskScene extends BaseComponent{
                         <Text allowFontScaling={false}  style={styles.textInputTitle}>万元</Text>
                     </View>)
             }
-        }else {
+        }
+        else{
             this.titleData1[2].splice(4,1);
         }
+
+
 
         if(this.props.isHideInfoRecourse){
             this.titleData1[3].splice(0,1);

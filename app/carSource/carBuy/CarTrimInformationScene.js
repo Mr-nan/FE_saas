@@ -13,6 +13,7 @@ import {
     Dimensions,
     Image,
     KeyboardAvoidingView,
+    Platform
 } from 'react-native';
 
 import BaseComponent from '../../component/BaseComponent';
@@ -29,6 +30,7 @@ import CarAddTrimCostScene from "./CarAddTrimCostScene";
 import WriteArrangeCostDetailTWO from "../../mine/setting/WriteArrangeCostDetailTWO";
 let Pixel = new  PixelUtil();
 const sceneWidth = Dimensions.get('window').width;
+const IS_ANDROID = Platform.OS === 'android';
 
 
 
@@ -44,75 +46,87 @@ export default class CarTrimInformationScene extends BaseComponent{
         }
         return(
             <View style={styles.rootContaier}>
-                <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={-Pixel.getPixel(200)}>
-                    <ScrollView keyboardDismissMode={'on-drag'}>
-                        {
-                            this.state.titleData.map((data, index) => {
-                                return (
-                                    <View style={{marginTop:10,backgroundColor:'white',marginBottom:10}} key={index}>
-                                        {
-                                            data.map((rowData, subIndex) => {
-                                                return ( rowData.selectDict ?
-                                                        (
-                                                            <TouchableOpacity
-                                                                key={subIndex}
-                                                                activeOpacity={1}
-                                                                onPress={()=>this.cellCilck(rowData.title)}>
-                                                                <CellSelectView
-                                                                    currentTitle={rowData.selectDict.current}
-                                                                    cellData={rowData}
-                                                                    cellSelectAction={this.cellSelectAction}/>
-                                                            </TouchableOpacity>) :
-                                                        (
-                                                            <TouchableOpacity key={subIndex}
-                                                                              activeOpacity={1}
-                                                                              onPress={()=>this.cellCilck(rowData.title)}>
-                                                                <CellView cellData={rowData}/>
-                                                            </TouchableOpacity>)
-                                                )
-                                            })
-                                        }
-                                    </View>
-                                )
-                            })
-                        }
-                        <CarTrimCostView ref={(ref)=>{this.CarTrimCostView = ref}}
-                                         costObject={this.costObject}
-                                         addClick={this.props.type!==2 && this.addClick}
-                                         moverClick={this.props.type!==2&& this.moverCostAction}
-                                         alterClilk={this.props.type!==2 && this.alterClilk}/>
-                        <View style={{flexDirection:'row',backgroundColor:'white',paddingHorizontal:Pixel.getPixel(15),paddingVertical:Pixel.getPixel(10),
-                            alignItems:'center',justifyContent:'space-between'
-                        }}>
-                            <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>备注</Text>
-                            <TextInput
-                                style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(60)},this.props.type && {color:fontAndColor.COLORA2}]}
-                                placeholder='请填写'
-                                maxLength={200}
-                                editable={this.props.type==2?false:true}
-                                defaultValue={this.props.type!==2?"":this.carData.remark}
-                                onChangeText={(text)=>{this.remark = text}}
-                                underlineColorAndroid='transparent'
-                                placeholderTextColor={fontAndColor.COLORA4}
-                                placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
-                            />
-                        </View>
-                        {
-                            this.props.type ==1 && (
-                                <View style={styles.footContainer}>
-                                    <TouchableOpacity onPress={this.footBtnClick}>
-                                        <View style={styles.footView}>
-                                            <Text allowFontScaling={false}  style={styles.footText}>提交</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                </View>
-                            )
-                        }
-
-                    </ScrollView>
-                </KeyboardAvoidingView>
+                {
+                    IS_ANDROID?(this.loadScrollView()):(
+                            <KeyboardAvoidingView behavior={'position'} >
+                                {
+                                    this.loadScrollView()
+                                }
+                            </KeyboardAvoidingView>
+                        )
+                }
                 <AllNavigationView title={this.props.type==2?"整备信息":"填写整备信息"}  backIconClick={this.backPage}/>
             </View>
+        )
+    }
+
+    loadScrollView=()=>{
+
+        return(
+            <ScrollView keyboardDismissMode={IS_ANDROID?'none':'on-drag'}>
+                {
+                    this.state.titleData.map((data, index) => {
+                        return (
+                            <View style={{marginTop:10,backgroundColor:'white',marginBottom:10}} key={index}>
+                                {
+                                    data.map((rowData, subIndex) => {
+                                        return ( rowData.selectDict ?
+                                                (
+                                                    <TouchableOpacity
+                                                        key={subIndex}
+                                                        activeOpacity={1}
+                                                        onPress={()=>this.cellCilck(rowData.title)}>
+                                                        <CellSelectView
+                                                            currentTitle={rowData.selectDict.current}
+                                                            cellData={rowData}
+                                                            cellSelectAction={this.cellSelectAction}/>
+                                                    </TouchableOpacity>) :
+                                                (
+                                                    <TouchableOpacity key={subIndex}
+                                                                      activeOpacity={1}
+                                                                      onPress={()=>this.cellCilck(rowData.title)}>
+                                                        <CellView cellData={rowData}/>
+                                                    </TouchableOpacity>)
+                                        )
+                                    })
+                                }
+                            </View>
+                        )
+                    })
+                }
+                <CarTrimCostView ref={(ref)=>{this.CarTrimCostView = ref}}
+                                 costObject={this.costObject}
+                                 addClick={this.props.type!==2 && this.addClick}
+                                 moverClick={this.props.type!==2&& this.moverCostAction}
+                                 alterClilk={this.props.type!==2 && this.alterClilk}/>
+                <View style={{flexDirection:'row',backgroundColor:'white',paddingHorizontal:Pixel.getPixel(15),paddingVertical:Pixel.getPixel(10),
+                    alignItems:'center',justifyContent:'space-between'
+                }}>
+                    <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}}>备注</Text>
+                    <TextInput
+                        style={[styles.textInput,{width:sceneWidth-Pixel.getPixel(130),height:Pixel.getPixel(60)},this.props.type && {color:fontAndColor.COLORA2}]}
+                        placeholder='请填写'
+                        maxLength={200}
+                        editable={this.props.type==2?false:true}
+                        defaultValue={this.props.type!==2?"":this.carData.remark}
+                        onChangeText={(text)=>{this.remark = text}}
+                        underlineColorAndroid='transparent'
+                        placeholderTextColor={fontAndColor.COLORA4}
+                        placheolderFontSize={Pixel.getFontPixel(fontAndColor.LITTLEFONT28)}
+                    />
+                </View>
+                {
+                    this.props.type ==1 && (
+                        <View style={styles.footContainer}>
+                            <TouchableOpacity onPress={this.footBtnClick}>
+                                <View style={styles.footView}>
+                                    <Text allowFontScaling={false}  style={styles.footText}>提交</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                    )
+                }
+            </ScrollView>
         )
     }
 

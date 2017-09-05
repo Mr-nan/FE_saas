@@ -14,7 +14,8 @@ import {
     Keyboard,
     ScrollView,
     DeviceEventEmitter,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    Platform
 }   from 'react-native';
 
 import BaseComponent from '../../component/BaseComponent';
@@ -32,6 +33,7 @@ import CarReferencePriceScene from '../CarReferencePriceScene';
 const Pixel = new PixelUtil();
 const sceneWidth = Dimensions.get('window').width;
 const sceneHeight = Dimensions.get('window').height;
+const IS_ANDROID = Platform.OS === 'android';
 
 
 export default class CarPublishSecondScene extends BaseComponent {

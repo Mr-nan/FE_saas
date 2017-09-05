@@ -17,6 +17,7 @@ import {
     Dimensions,
     Image,
     KeyboardAvoidingView,
+    Platform,
 } from 'react-native';
 
 import BaseComponent from '../../component/BaseComponent';
@@ -30,6 +31,8 @@ import  {request}   from '../../utils/RequestUtil';
 import CarInitialTaskUpImagScene from "./CarInitialTaskUpImagScene";
 let Pixel = new  PixelUtil();
 const sceneWidth = Dimensions.get('window').width;
+const IS_ANDROID = Platform.OS === 'android';
+
 
 export default class CarManagerTaskScene extends BaseComponent{
 
@@ -43,56 +46,66 @@ export default class CarManagerTaskScene extends BaseComponent{
         }
         return(
             <View style={styles.rootContaier}>
-                <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={-Pixel.getPixel(64)}>
-                    <ScrollView keyboardDismissMode={'on-drag'} >
-                        {
-                            this.state.titleData.map((data, index) => {
-                                return (
-                                    <View style={{marginTop:10,backgroundColor:'white',marginBottom:10}} key={index}>
-                                        {
-                                            data.map((rowData, subIndex) => {
-                                                return ( rowData.selectDict ?
-                                                        (
-                                                            <TouchableOpacity
-                                                                key={subIndex}
-                                                                activeOpacity={1}
-                                                                onPress={()=>this.cellCilck(rowData.title)}>
-                                                                <CellSelectView
-                                                                    currentTitle={rowData.selectDict.current}
-                                                                    cellData={rowData}
-                                                                    cellSelectAction={this.cellSelectAction}/>
-                                                            </TouchableOpacity>) :
-                                                        (
-                                                            <TouchableOpacity key={subIndex}
-                                                                              activeOpacity={1}
-                                                                              onPress={()=>this.cellCilck(rowData.title)}>
-                                                                <CellView cellData={rowData}/>
-                                                            </TouchableOpacity>)
-                                                )
-                                            })
-                                        }
-                                    </View>
-                                )
-                            })
-                        }
-                        {
-                            this.props.type == 1 && (
-                                <View style={styles.footContainer}>
-                                    <TouchableOpacity onPress={this.footBtnClick}>
-                                        <View style={styles.footView}>
-                                            <Text allowFontScaling={false} style={styles.footText}>提交</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                </View>
-                            )
-                        }
-                    </ScrollView>
-                </KeyboardAvoidingView>
+                {
+                    IS_ANDROID?(this.loadScrollView()):(
+                            <KeyboardAvoidingView behavior={'position'}>
+                                {
+                                    this.loadScrollView()
+                                }
+                            </KeyboardAvoidingView>
+                        )
+                }
                 <AllNavigationView title={this.props.type==1?"录入车辆信息":'查看价格信息'} backIconClick={this.backPage}/>
             </View>
         )
     }
-
+    loadScrollView=()=>{
+       return(
+           <ScrollView keyboardDismissMode={IS_ANDROID?'none':'on-drag'}>
+               {
+                   this.state.titleData.map((data, index) => {
+                       return (
+                           <View style={{marginTop:10,backgroundColor:'white',marginBottom:10}} key={index}>
+                               {
+                                   data.map((rowData, subIndex) => {
+                                       return ( rowData.selectDict ?
+                                               (
+                                                   <TouchableOpacity
+                                                       key={subIndex}
+                                                       activeOpacity={1}
+                                                       onPress={()=>this.cellCilck(rowData.title)}>
+                                                       <CellSelectView
+                                                           currentTitle={rowData.selectDict.current}
+                                                           cellData={rowData}
+                                                           cellSelectAction={this.cellSelectAction}/>
+                                                   </TouchableOpacity>) :
+                                               (
+                                                   <TouchableOpacity key={subIndex}
+                                                                     activeOpacity={1}
+                                                                     onPress={()=>this.cellCilck(rowData.title)}>
+                                                       <CellView cellData={rowData}/>
+                                                   </TouchableOpacity>)
+                                       )
+                                   })
+                               }
+                           </View>
+                       )
+                   })
+               }
+               {
+                   this.props.type == 1 && (
+                       <View style={styles.footContainer}>
+                           <TouchableOpacity onPress={this.footBtnClick}>
+                               <View style={styles.footView}>
+                                   <Text allowFontScaling={false} style={styles.footText}>提交</Text>
+                               </View>
+                           </TouchableOpacity>
+                       </View>
+                   )
+               }
+           </ScrollView>
+       )
+    }
 
     initFinish=()=>{
         this.loadData();
