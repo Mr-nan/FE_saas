@@ -190,6 +190,7 @@ export default class CancelOrderReasonScene extends BaseComponent {
 
                         <View style={{marginTop: 15, backgroundColor: 'white',}}>
                             <TextInput
+                                underlineColorAndroid='transparent'
                                 fontSize={fontAndColor.BUTTONFONT30}
                                 style={styles.style_text_input}
                                 maxLength={100}
@@ -239,14 +240,14 @@ export default class CancelOrderReasonScene extends BaseComponent {
                                                         return;
                                                     }  //如果是可删除的图片说明就不是加号图片 ，就没有添加功能
 
-                                                    if (Platform.OS == 'android') {
-                                                        this._rePhoto();
-                                                    } else {
+                                                    //if (Platform.OS == 'android') {
+                                                        //this._rePhoto();
+                                                    //} else {
                                                         ImagePicker.showImagePicker(options, (imageResponse) => {
                                                             if (imageResponse.didCancel) {
                                                             } else if (imageResponse.error) {
                                                             } else if (imageResponse.customButton) {
-                                                            } else {   //上传照片啦。。。  层次太多，可读性差，如果再没啥注释，简直是崩溃，自己看着都费劲
+                                                            } else {   //上传照片。。。  层次太多，可读性差，如果再没啥注释，简直是崩溃，自己看着都费劲
 
                                                                 let params = {
                                                                     file: 'data:image/jpeg;base64,' + encodeURI(imageResponse.data).replace(/\+/g, '%2B')
@@ -289,7 +290,7 @@ export default class CancelOrderReasonScene extends BaseComponent {
 
                                                             }
                                                         });
-                                                    }
+                                                    //}
 
                                                 }}
                                             />
@@ -464,9 +465,9 @@ const styles = StyleSheet.create({
         height: Pixel.getPixel(44),
         borderRadius: Pixel.getPixel(3),
     }
-
 })
 
+// 上传的照片组件
 class SelectedImage extends Component {
 
     constructor(props) {
@@ -493,7 +494,6 @@ class SelectedImage extends Component {
                     </TouchableOpacity>
 
                 </TouchableOpacity>
-
 
             </View>
 
