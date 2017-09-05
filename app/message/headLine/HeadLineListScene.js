@@ -29,7 +29,7 @@ import PixelUtil from '../../utils/PixelUtil';
 import DailyReminderScene from "../dailyReminder/DailyReminderScene";
 const Pixel = new PixelUtil();
 import * as AppUrls from "../../constant/appUrls";
-import {request, requestNoToken} from "../../utils/RequestUtil";
+import {request} from "../../utils/RequestUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import HeadLineDetailScene from "./HeadLineDetailScene";
 import StorageUtil from "../../utils/StorageUtil";
