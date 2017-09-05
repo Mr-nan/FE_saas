@@ -94,9 +94,9 @@ class Toast extends Component {
     render() {
         return (
             <View
-                style={{flex:1}}
+                style={{flex:1,overflow:'hidden'}}
             >
-                {this.state.modal ? <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+                {this.state.modal ? <View style={{flex:1,overflow:'hidden',justifyContent:'center',alignItems:'center'}}>
                         <Image style={{width:60,height:60}} source={require('../../../images/setDataLoading.gif')}/>
                     </View> : <View style={styles.taostModal}>
                         <View style={[styles.toast]}>
@@ -114,6 +114,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-end',
         flexDirection: 'column',
+        overflow:'hidden'
     },
     toast: {
         height: 45,
