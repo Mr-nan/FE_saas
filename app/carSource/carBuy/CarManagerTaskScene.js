@@ -153,23 +153,40 @@ export default class CarManagerTaskScene extends BaseComponent{
             this.titleData1[1][0].tailView=()=> {
                 return (
                     <View style={{alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-end'}}>
-                        <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),textAlign:'right'}}>{String(data.taskInfo.managerInfo.buyprice)}</Text>
-                        <Text allowFontScaling={false} style={styles.textInputTitle}>元</Text>
-                    </View>)
-            };this.titleData1[1][2].tailView=()=> {
-                return (
-                    <View style={{alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-end'}}>
-                        <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),textAlign:'right'}}>{String(data.taskInfo.managerInfo.selfprice)}</Text>
-                        <Text allowFontScaling={false} style={styles.textInputTitle}>元</Text>
-                    </View>)
-            };this.titleData1[1][3].tailView=()=> {
-                return (
-                    <View style={{alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-end'}}>
-                        <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),textAlign:'right'}}>{String(data.taskInfo.managerInfo.selfprice)}</Text>
-                        <Text allowFontScaling={false} style={styles.textInputTitle}>元</Text>
+                        <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),textAlign:'right'}}>{String(data.taskInfo.managerInfo.buyprice.toFixed(2))}</Text>
+                        <Text allowFontScaling={false} style={styles.textInputTitle}>万元</Text>
                     </View>)
             };
 
+            let price =0;
+            if(data.taskInfo.mlist){
+                if(data.taskInfo.mlist.length>0){
+                    for(let item of data.taskInfo.mlist){
+                        price+=item.amount;
+                    }
+                }
+            }
+
+            this.titleData1[1][1].tailView=()=> {
+                return (
+                    <View style={{alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-end'}}>
+                        <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),textAlign:'right'}}>{String(price.toFixed(2))}</Text>
+                        <Text allowFontScaling={false} style={styles.textInputTitle}>元</Text>
+                    </View>)
+            }; this.titleData1[1][2].tailView=()=> {
+                return (
+                    <View style={{alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-end'}}>
+                        <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),textAlign:'right'}}>{String(data.taskInfo.managerInfo.selfprice.toFixed(2))}</Text>
+                        <Text allowFontScaling={false} style={styles.textInputTitle}>万元</Text>
+                    </View>)
+            };
+            this.titleData1[1][3].tailView=()=> {
+                return (
+                    <View style={{alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-end'}}>
+                        <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),textAlign:'right'}}>{String(data.taskInfo.managerInfo.selfprice.toFixed(2))}</Text>
+                        <Text allowFontScaling={false} style={styles.textInputTitle}>万元</Text>
+                    </View>)
+            };
             this.titleData1[2][0].tailView=()=>{
                 return(
                     <TextInput
@@ -183,7 +200,7 @@ export default class CarManagerTaskScene extends BaseComponent{
                 )
             };
 
-            this.titleData1[1].splice(1,1);
+            // this.titleData1[1].splice(1,1);
         }
 
         this.setState({
@@ -247,6 +264,7 @@ export default class CarManagerTaskScene extends BaseComponent{
     constructor(props) {
         super(props);
 
+        this.remark='';
         this.titleData1=[
             [
                 {

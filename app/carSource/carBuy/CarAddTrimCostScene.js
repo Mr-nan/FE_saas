@@ -153,14 +153,13 @@ export default class CarAddTrimCostScene extends BaseComponent{
                                            ref={(ref)=>{this.priceInput = ref}}
                                            placeholder='请输入'
                                            keyboardType={'numeric'}
-                                           maxLength={7}
                                            defaultValue={ this.costObject.price ? String(this.costObject.price):''}
                                            underlineColorAndroid='transparent'
                                            onChangeText={(text)=>{
 
-                                               if(text.length>4&&text.indexOf('.')==-1){
-                                                   text = text.substring(0,text.length-1);
-                                               }
+                                               {/*if(text.indexOf('.')==-1){*/}
+                                                   {/*text = text.substring(0,text.length-1);*/}
+                                               {/*}*/}
                                                let moneyStr = this.chkPrice(text);
                                                this.costObject['price'] = parseFloat(moneyStr);
                                                this.priceInput.setNativeProps({

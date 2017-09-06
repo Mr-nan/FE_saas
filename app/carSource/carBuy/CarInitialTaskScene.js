@@ -183,11 +183,11 @@ export default class CarInitialTaskScene extends BaseComponent{
         this.titleData1[0][0].value = carData.vin;
         this.titleData1[0][1].value = carData.carName;
 
-        this.titleData1[1][0].value = carData.infoName;
-        this.titleData1[1][1].value = carData.infoMobile;
+        this.titleData1[1][0].value = carData.taskInfo.infoName;
+        this.titleData1[1][1].value = carData.taskInfo.infoMobile;
 
         let infoSourceStr = '';
-        switch(carData.infoSource){
+        switch(carData.taskInfo.infoSource){
             case 1:{
                 infoSourceStr='本平台';
                 break;

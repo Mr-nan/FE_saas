@@ -28,7 +28,7 @@ export default class CarTrimCostView extends Component{
                 <View style={styles.titleView}>
                     <Text style={styles.titleText}>整备费用明细</Text>
                     <View style={styles.titleFootView}>
-                        <Text style={[styles.titleText,{textAlign:'center'}]}>合计: {String(costObject.sumNumber)} 元</Text>
+                        <Text style={[styles.titleText,{textAlign:'center'}]}>合计: {String(costObject.sumNumber.toFixed(2))} 元</Text>
                         {
                             this.props.addClick && (
                                 <TouchableOpacity onPress={this.props.addClick}>
@@ -46,7 +46,7 @@ export default class CarTrimCostView extends Component{
                                 <Text numberOfLines={2} style={styles.itemText}>【{data.typeTitle}】 {data.content}</Text>
                                 <View style={styles.titleFootView}>
                                     <Text style={{color:fontAndColor.COLORA0,
-                                        fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),textAlign:'right'}}>{String(data.price)}元</Text>
+                                        fontSize:Pixel.getFontPixel(fontAndColor.CONTENTFONT24),textAlign:'right'}}>{String(data.price.toFixed(2))}元</Text>
                                     {
                                         this.props.moverClick && (
                                             <TouchableOpacity onPress={()=>{this.props.moverClick(data,index)}}>

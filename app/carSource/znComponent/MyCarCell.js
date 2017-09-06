@@ -149,7 +149,8 @@ export default class MyCarCell extends Component {
                                     }
                                     </View>
                             {
-                            (carCellData.in_valid_order && carCellData.in_valid_order==1)?(null): <View style={{flexDirection:'row'}}>
+                            (carCellData.in_valid_order && carCellData.in_valid_order==1)?(null):
+                                <View style={{flexDirection:'row'}}>
                                     {
                                         (carType==1&&carCellData.review_status==2) &&
                                         <TouchableOpacity onPress={()=>{this.footButtonClick('查看退回原因',this.props.type,carCellData)}}>
@@ -190,7 +191,7 @@ export default class MyCarCell extends Component {
                                         </TouchableOpacity>
                                     }
                                     {
-                                        (carType == 4 || carType == 3)&&
+                                        (carType == 4 || carType == 3 ||  (carType==1&&carCellData.review_status==2))&&
                                         <TouchableOpacity onPress={()=>{this.footButtonClick('删除',this.props.type,carCellData)}}>
                                             <View style={styles.cellFoot}>
                                                 <Text allowFontScaling={false}  style={styles.cellFootText}>  删除  </Text>
@@ -207,8 +208,6 @@ export default class MyCarCell extends Component {
                                         </TouchableOpacity>
 
                                     }
-
-
                                 </View>
                          }
                         </View>
@@ -289,6 +288,7 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         borderRadius:2,
         overflow:'hidden',
+        marginLeft:Pixel.getPixel(15)
     },
     cellFootText:{
 

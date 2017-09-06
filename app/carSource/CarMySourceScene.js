@@ -78,7 +78,7 @@ export default class CarMySourceScene extends BaceComponent {
                     initialPage={this.props.page?this.props.page:0}
                     locked={true}
                     renderTabBar={() =><RepaymenyTabBar style={{backgroundColor:'white'}} tabName={["在售车源("+this.state.shelves_count+")", "已售车源("+this.state.sold_count+')', "未上架车源("+this.state.no_shelves_count+')']}/>}>
-                    <MyCarSourceUpperFrameView ref="upperFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper1"/>
+                    <MyCarSourceUpperFrameView ref="upperFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper1" />
                     <MyCarSourceDropFrameView  ref="dropFrameView" carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper2"/>
                     <MyCarSourceAuditView  ref="auditView"  carCellClick={this.carCellClick} footButtonClick={this.footButtonClick} tabLabel="ios-paper3"/>
                 </ScrollableTabView>
@@ -324,8 +324,8 @@ export default class CarMySourceScene extends BaceComponent {
 
         }, (error) => {
 
-            this.props.showModal(false);
-            this.props.showToast(error.msg);
+            this.props.showToast(error.mjson.msg);
+
         });
     }
 
@@ -356,9 +356,7 @@ export default class CarMySourceScene extends BaceComponent {
 
 
         }, (error) => {
-
-            this.props.showModal(false);
-            this.props.showToast(error.msg);
+            this.props.showToast(error.mjson.msg);
         });
     }
 
@@ -383,8 +381,8 @@ export default class CarMySourceScene extends BaceComponent {
 
         }, (error) => {
 
-            this.props.showModal(false);
-            this.props.showToast(error.msg);
+            this.props.showToast(error.mjson.msg);
+
         });
     }
 
@@ -1336,14 +1334,14 @@ class ManageView extends  Component {
                             </View>
                             <Text allowFontScaling={false}  style={styles.sharedText}>已售</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.sharedItemView} onPress={() => {
-                            this.btnClick('删除');
-                        }}>
-                            <View style={styles.sharedImageBack}>
-                                <Image source={require('../../images/carSourceImages/carShanChu.png')}/>
-                            </View>
-                            <Text allowFontScaling={false}  style={styles.sharedText}>删除</Text>
-                        </TouchableOpacity>
+                        {/*<TouchableOpacity style={styles.sharedItemView} onPress={() => {*/}
+                            {/*this.btnClick('删除');*/}
+                        {/*}}>*/}
+                            {/*<View style={styles.sharedImageBack}>*/}
+                                {/*<Image source={require('../../images/carSourceImages/carShanChu.png')}/>*/}
+                            {/*</View>*/}
+                            {/*<Text allowFontScaling={false}  style={styles.sharedText}>删除</Text>*/}
+                        {/*</TouchableOpacity>*/}
                     </View>
                     <View style={{width:ScreenWidth,height:Pixel.getPixel(1),backgroundColor:fontAndColor.COLORA3}}/>
                     <View style={{flexDirection: 'row',paddingVertical:Pixel.getPixel(15)}}>

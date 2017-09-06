@@ -171,10 +171,13 @@ export default class CarBuyTaskScene extends BaseComponent{
         };
 
         if(data.firstUpTime){
-            // console.log(data.firstUpTime);
-            // let date = new Date(data.firstUpTime.replace(/-/g,"/"));
-            // this.carData.firstUpTime = this.dateFormat(date,'yyyy-MM-dd');
-            this.carData.firstUpTime = data.firstUpTime;
+            console.log(data.firstUpTime);
+            // let dateStr = data.firstUpTime.replace(/-/g,"/");
+            let dateStr = data.firstUpTime;
+            let date = new Date(dateStr);
+            this.carData.firstUpTime = this.dateFormat(date,'yyyy-MM-dd');
+            console.log(dateStr,date,this.carData.firstUpTime);
+            // this.carData.firstUpTime = data.firstUpTime;
         }
 
         if(this.carData.isDeal == 2)
