@@ -87,7 +87,7 @@ export  default  class KurongDetaileScene extends BaseComponent {
                     controlCode.extendCode = tempjson.is_extend;
                     controlCode.lendType = tempjson.type;
                     controlCode.minLend = changeToMillion(tempjson.min_loanmny);
-                    let Maxmum = parseFloat(tempjson.single_loan_mny)
+                    let Maxmum = parseFloat(tempjson.max_loanmny)
                     /*+ parseFloat(tempjson.payment_loanmny)*/
                     controlCode.maxLend = changeToMillion(Maxmum)
                     if (carNum > 0) {

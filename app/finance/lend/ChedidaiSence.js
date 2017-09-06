@@ -99,11 +99,11 @@ export default class ChedidaiSence extends BaseComponent {
                     let tempjson = response.mjson.data
                     ShowData.companyName = this.props.customerName,
                         ShowData.lendType = tempjson.product_type,
-                        ShowData.maxMoney = changeToMillion(tempjson.min_loanmny) + '-' + changeToMillion(tempjson.single_loan_mny) + '万',
+                        ShowData.maxMoney = changeToMillion(tempjson.min_loanmny) + '-' + changeToMillion(tempjson.max_loanmny) + '万',
                         ShowData.rate = tempjson.rate,
                         ShowData.type = tempjson.loantype_str,
                         ShowData.tempMin = changeToMillion(tempjson.min_loanmny),
-                        ShowData.tempMax = changeToMillion(tempjson.single_loan_mny),
+                        ShowData.tempMax = changeToMillion(tempjson.max_loanmny),
                         this.setState({
                             renderPlaceholderOnly: STATECODE.loadSuccess
                         })
