@@ -122,6 +122,7 @@ export default class HeadLineListScene extends BaseComponent {
                              listData[i].pushStatus, listData[i].pushTo, listData[i].roleName, listData[i].taskId, listData[i].title, listData[i].isRead, listData[i].tel]);*/
                         }
                         SQLite.changeDataBatch(batches);
+                        StorageUtil.mSetItem(StorageKeyNames.ADVERTISEMENT_LAST_MESSAGE_TIME, listData[0].createTime);
                     }
                     if (this.headLineListData && this.headLineListData.length > 0) {
                         //console.log('this.headLineListData===',this.headLineListData);
@@ -169,7 +170,6 @@ export default class HeadLineListScene extends BaseComponent {
                         } else {
                             this.createTime = dbCreateTime;
                             StorageUtil.mSetItem(StorageKeyNames.ADVERTISEMENT_LAST_MESSAGE_TIME, dbCreateTime);
-                            //console.log('333333333this.createTime=======', this.createTime);
                         }
                         for (let i = 0; i < count; i++) {
                             //console.log(data.result.rows.item(i));
@@ -180,20 +180,8 @@ export default class HeadLineListScene extends BaseComponent {
                 } else {
                     StorageUtil.mGetItem(StorageKeyNames.ADVERTISEMENT_LAST_MESSAGE_TIME, (timeData) => {
                         if (timeData.code == 1 && timeData.result != null) {
-                            StorageUtil.mGetItem(StorageKeyNames.INTO_TIME, (intoTimeData) => {
-                                if (intoTimeData.code == 1 && intoTimeData.result != null) {
-                                    if (timeData.result > intoTimeData.result) {
-                                        this.createTime = timeData.result;
-                                        this.loadHttpData();
-                                    } else {
-                                        this.createTime = intoTimeData.result;
-                                        StorageUtil.mSetItem(StorageKeyNames.ADVERTISEMENT_LAST_MESSAGE_TIME, intoTimeData.result);
-                                        this.loadHttpData();
-                                    }
-                                } else {
-                                    //this.props.showToast('确认验收失败');
-                                }
-                            });
+                            this.createTime = timeData.result;
+                            this.loadHttpData();
                         } else {
                             StorageUtil.mGetItem(StorageKeyNames.INTO_TIME, (intoTimeData) => {
                                 if (intoTimeData.code == 1 && intoTimeData.result != null) {

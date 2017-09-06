@@ -8,7 +8,9 @@ import {
     View,
     Dimensions,
     TouchableOpacity,
-    ListView
+    Platform,
+    ScrollView,
+    KeyboardAvoidingView
 } from 'react-native';
 //图片加文字
 const {width, height} = Dimensions.get('window');
@@ -35,7 +37,7 @@ export default class FollowUpTaskScene extends BaseComponent {
         super(props);
         this.taskInfo = {};
         this.state = {
-            dataSource: [],
+            //dataSource: [],
             renderPlaceholderOnly: 'blank'
         };
     }
@@ -64,15 +66,15 @@ export default class FollowUpTaskScene extends BaseComponent {
         let url = AppUrls.SELECT_FLOW;
         request(url, 'post', maps).then((response) => {
             this.taskInfo = response.mjson.data;
-            const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+            //const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             this.setState({
-                dataSource: ds.cloneWithRows(['0', '1']),
-                isRefreshing: false,
+                //dataSource: ds.cloneWithRows(['0', '1']),
+                //isRefreshing: false,
                 renderPlaceholderOnly: 'success'
             });
         }, (error) => {
             this.setState({
-                isRefreshing: false,
+                //isRefreshing: false,
                 renderPlaceholderOnly: 'error'
             });
         });
@@ -101,56 +103,62 @@ export default class FollowUpTaskScene extends BaseComponent {
                         backIconClick={this.backPage}
                         title="跟进任务"
                         renderRihtFootView={this._navigatorRightView}/>
-                    <ListView
-                        removeClippedSubviews={false}
-                        style={{backgroundColor: fontAndColor.COLORA3, marginTop: Pixel.getTitlePixel(75)}}
-                        dataSource={this.state.dataSource}
-                        renderRow={this._renderRow}
-                        renderSeparator={this._renderSeperator}/>
+                    {/*                    <ListView
+                     removeClippedSubviews={false}
+                     style={{backgroundColor: fontAndColor.COLORA3, marginTop: Pixel.getTitlePixel(75)}}
+                     dataSource={this.state.dataSource}
+                     renderRow={this._renderRow}
+                     renderSeparator={this._renderSeperator}/>*/}
+                    {Platform.OS === 'android' ?
+                        <ScrollView
+                            style={{backgroundColor: fontAndColor.COLORA3, marginTop: Pixel.getTitlePixel(75)}}
+                            ref={(ref) => {
+                                this.scrollView = ref
+                            }} keyboardDismissMode='none'>
+
+                            {this._renderRow()}
+
+                        </ScrollView> :
+                        <KeyboardAvoidingView behavior={'position'}>
+                            <ScrollView
+                                style={{backgroundColor: fontAndColor.COLORA3, marginTop: Pixel.getTitlePixel(75)}}
+                                ref={(ref) => {
+                                    this.scrollView = ref
+                                }} keyboardDismissMode='on-drag'>
+
+                                {this._renderRow()}
+
+                            </ScrollView>
+                        </KeyboardAvoidingView>}
                 </View>
             );
         }
     }
 
-    /**
-     *
-     **/
-    _renderSeperator = (sectionID: number, rowID: number, adjacentRowHighlighted: bool) => {
-        return (
-            <View
-                key={`${sectionID}-${rowID}`}
-                style={{backgroundColor: fontAndColor.COLORA3, height: Pixel.getPixel(10)}}/>
-        )
-    }
 
     /**
      *
-     * @param rowData
-     * @param selectionID
-     * @param rowID
      * @returns {XML}
      * @private
      **/
-    _renderRow = (rowData, selectionID, rowID) => {
-        if (rowData === '0') {
-            return (
+    _renderRow = () => {
+        return (
+            <View style={styles.container}>
                 <CurrentTaskInfoItem
                     ref={(ref) => {
                         this.currentTaskInfoItem = ref
                     }}
                     navigator={this.props.navigator}
                     data={this.taskInfo} rowData={this.props.rowData}/>
-            )
-        } else if (rowData === '1') {
-            return (
+                <View style={{backgroundColor: fontAndColor.COLORA3, height: Pixel.getPixel(10)}}/>
                 <FollowTaskInfoItem
                     ref={(ref) => {
                         this.followTaskInfoItem = ref
                     }}
                     navigator={this.props.navigator}
                     data={this.taskInfo} rowData={this.props.rowData}/>
-            )
-        }
+            </View>
+        )
     };
 
     /**
