@@ -119,9 +119,9 @@ export default class FollowUpTaskScene extends BaseComponent {
                             {this._renderRow()}
 
                         </ScrollView> :
-                        <KeyboardAvoidingView behavior={'position'}>
+                        <KeyboardAvoidingView behavior={'position'} style={{marginTop: Pixel.getTitlePixel(75)}}>
                             <ScrollView
-                                style={{backgroundColor: fontAndColor.COLORA3, marginTop: Pixel.getTitlePixel(75)}}
+                                style={{backgroundColor: fontAndColor.COLORA3}}
                                 ref={(ref) => {
                                     this.scrollView = ref
                                 }} keyboardDismissMode='on-drag'>
@@ -215,7 +215,7 @@ export default class FollowUpTaskScene extends BaseComponent {
             this.props.callBack();
             this.backPage();
         }, (error) => {
-            this.props.showModal(false);
+            //this.props.showModal(false);
             this.props.showToast("提交跟进任务失败");
         });
     };

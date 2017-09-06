@@ -75,15 +75,9 @@ export  default class SelectScene extends BaseComponent {
      *
      **/
     _renderRow = (movie, sectionId, rowId) => {
-        let value = '';
-        if (rowId == 0) {
-            value = 'B';
-        } else {
-            value = 'C';
-        }
         return (
             <TouchableOpacity onPress={() => {
-                this.props.callBack(movie, value);
+                this.props.callBack(movie);
                 this.backPage();
             }} activeOpacity={0.8} style={{
                 width: width,
@@ -93,7 +87,7 @@ export  default class SelectScene extends BaseComponent {
                 backgroundColor: '#fff',
                 flexDirection: 'row'
             }}>
-                <View style={{flex: 1, justifyContent: 'center'}}>
+                <View style={{flex: 2, justifyContent: 'center'}}>
                     <Text allowFontScaling={false}
                           style={{color: '#000', fontSize: Pixel.getFontPixel(14)}}>{movie}</Text>
                 </View>

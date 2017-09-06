@@ -119,7 +119,7 @@ export default class BaseInfoItem extends BaseComponent {
                                                            params: {
                                                                regShowData: ['初次到店', '电话邀约-到店', '电话邀约-未到店', '已购买', '置换', '复购'],
                                                                title: '客户状态',
-                                                               callBack: (name, index) => {
+                                                               callBack: (name) => {
                                                                    if (name === '初次到店') {
                                                                        this.childItems[i].value = 1;
                                                                    } else if (name === '电话邀约-到店') {
@@ -149,7 +149,7 @@ export default class BaseInfoItem extends BaseComponent {
                                                            params: {
                                                                regShowData: ['朋友介绍', '朋友圈', '58同城', '二手车之家', 'FM调频广播', '室外广告牌', '同行引荐', '文章引导', '自到店', '转介绍', '其他'],
                                                                title: '信息来源',
-                                                               callBack: (name, index) => {
+                                                               callBack: (name) => {
                                                                    this.childItems[i].value = name;
                                                                    this.refs.company.setValue(name);
                                                                }
@@ -165,7 +165,7 @@ export default class BaseInfoItem extends BaseComponent {
                                                            params: {
                                                                regShowData: ['本地', '非本地'],
                                                                title: '地域',
-                                                               callBack: (name, index) => {
+                                                               callBack: (name) => {
                                                                    this.childItems[i].value = name;
                                                                    this.refs.juese.setValue(name);
                                                                }

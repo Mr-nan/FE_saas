@@ -93,7 +93,7 @@ export default class CommunicationRecordItem extends BaseComponent {
                                                            params: {
                                                                regShowData: ['A:一周以内(购买欲望特别强)', 'B:一月以内(准买车用户)', 'C:三个月以内(有购买意向)', 'D:闲逛(近期无意向)'],
                                                                title: '客户级别',
-                                                               callBack: (name, index) => {
+                                                               callBack: (name) => {
                                                                    this.childItems[i].value = name.charAt(0);
                                                                    this.refs.selectsex.setValue(name);
                                                                }

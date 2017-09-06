@@ -101,7 +101,7 @@ export default class BuyersInfoItem extends BaseComponent {
                             params: {
                                 regShowData: ['先生', '女士'],
                                 title: this.childItems[i].name,
-                                callBack: (name, index) => {
+                                callBack: (name) => {
                                     this.childItems[i].value = name;
                                     this.refs.selectsex.setValue(name);
                                 }

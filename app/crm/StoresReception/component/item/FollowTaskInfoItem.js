@@ -101,7 +101,7 @@ export default class FollowTaskInfoItem extends BaseComponent {
                                                            params: {
                                                                regShowData: this.clientState,
                                                                title: '客户状态',
-                                                               callBack: (name, index) => {
+                                                               callBack: (name) => {
                                                                    if (name === '电话邀约') {
                                                                        this.state.childItems[i].value = 2;
                                                                    } else if (name === '已购买') {
@@ -131,7 +131,7 @@ export default class FollowTaskInfoItem extends BaseComponent {
                                                            params: {
                                                                regShowData: ['已到店', '未到店'],
                                                                title: '地域',
-                                                               callBack: (name, index) => {
+                                                               callBack: (name) => {
                                                                    if (name === '已到店') {
                                                                        this.state.childItems[i].value = 'yes';
                                                                    } else {

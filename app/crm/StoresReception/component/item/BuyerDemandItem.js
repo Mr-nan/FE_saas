@@ -86,7 +86,7 @@ export default class BuyerDemandItem extends BaseComponent {
                                                            params: {
                                                                regShowData: ['10万以下', '10-20万', '10-40万', '40-60万', '60万以上'],
                                                                title: '购车预算',
-                                                               callBack: (name, index) => {
+                                                               callBack: (name) => {
                                                                    this.childItems[i].value = name;
                                                                    this.refs.selectsex.setValue(name);
                                                                }
