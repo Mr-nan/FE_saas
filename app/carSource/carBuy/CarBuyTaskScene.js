@@ -123,6 +123,8 @@ export default class CarBuyTaskScene extends BaseComponent{
     }
 
     initFinish=()=>{
+        console.log(this.props.userPhone);
+
         if(this.props.id){
             this.loadData();
         }else {
@@ -172,12 +174,12 @@ export default class CarBuyTaskScene extends BaseComponent{
 
         if(data.firstUpTime){
             console.log(data.firstUpTime);
-            // let dateStr = data.firstUpTime.replace(/-/g,"/");
-            let dateStr = data.firstUpTime;
-            let date = new Date(dateStr);
-            this.carData.firstUpTime = this.dateFormat(date,'yyyy-MM-dd');
-            console.log(dateStr,date,this.carData.firstUpTime);
-            // this.carData.firstUpTime = data.firstUpTime;
+            let dateStr = data.firstUpTime.replace(/-/g,"-");
+            // let dateStr = data.firstUpTime;
+            // let date = new Date(dateStr);
+            // this.carData.firstUpTime = this.dateFormat(date,'yyyy-MM-dd');
+            // console.log(dateStr,date,this.carData.firstUpTime);
+            this.carData.firstUpTime =dateStr.substring(0,10);
         }
 
         if(this.carData.isDeal == 2)
@@ -391,7 +393,7 @@ export default class CarBuyTaskScene extends BaseComponent{
                                            text = text.substring(0,text.length-1);
                                        }
                                        let moneyStr = this.chkPrice(text);
-                                       this.carData['closeingPrice ']=moneyStr;
+                                       this.carData['closeingPrice']=moneyStr;
                                        this.dealPrice.setNativeProps({
                                            text: moneyStr,
                                        });
@@ -458,6 +460,7 @@ export default class CarBuyTaskScene extends BaseComponent{
         if(parseFloat(this.carData.consultPrice) >0)
         {
             if(this.carData.consultList.length>0){
+
 
                 consultList.push(...this.carData.consultList);
                 consultList.push({consultPrice:this.carData.consultPrice, acquisitionId:0, id:0});

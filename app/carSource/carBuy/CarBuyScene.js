@@ -160,8 +160,10 @@ export default class CarBuyScene extends BaseComponent {
             component: CarBuyTaskScene,
             params: {
                 id:data.id,
+                userPhone:userPhone,
                 isHideInfoRecourse:isHideInfoRecourse,
                 reloadData:this.reloadData,
+
             }
         })
     }
