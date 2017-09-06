@@ -1,22 +1,13 @@
 /**
  * 开发地址
  */
-<<<<<<< HEAD
-
-=======
->>>>>>> 9e7d51936680b1954ac2c374df786756c228af27
 // export const BASEURL = 'http://dev.api-gateway.dycd.com/';
 
 /**
  * 测试地址
  */
-<<<<<<< HEAD
 
 export const BASEURL = 'http://api-gateway.test.dycd.com/';
-
-=======
-export const BASEURL = 'http://api-gateway.test.dycd.com/';
->>>>>>> 9e7d51936680b1954ac2c374df786756c228af27
 
 /**
  * 正式地址
