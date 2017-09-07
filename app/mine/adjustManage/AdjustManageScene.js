@@ -136,6 +136,7 @@ export default class AdjustManageScene extends BaseComponent {
 
     // 每一行中的数据
     _renderRow = (rowData, rowID, selectionID) => {
+        let name = rowData.companyname == '' ? rowData.name : rowData.companyname;
         return (
             <TouchableOpacity
                 onPress={()=>{
@@ -151,7 +152,7 @@ export default class AdjustManageScene extends BaseComponent {
                 },
             })}}>
                 <View style={styles.rowView} >
-                    <Text allowFontScaling={false}  style={styles.rowLeftTitle}>{rowData.companyname}</Text>
+                    <Text allowFontScaling={false}  style={styles.rowLeftTitle}>{name}</Text>
                     <Text allowFontScaling={false}  style={styles.rowRightTitle} ></Text>
                     <Image source={cellJianTou} style={styles.image}></Image>
 
