@@ -142,21 +142,42 @@ export class ShareListView extends BaseComponent {
                 if (total > 0) {
                     name = i + 1 +'.' + rankingData[i].name;
                     count = '分享' + rankingData[i].count + '次';
+                    items.push(<View key={i} style={{flexDirection: 'row', marginTop: Pixel.getPixel(10)}}>
+                        <Text allowFontScaling={false} style={styles.describe}>{name}</Text>
+                        <View style={{flex: 1}}/>
+                        <Text allowFontScaling={false}
+                              style={[styles.describe, {marginRight: Pixel.getPixel(15)}]}>{count}</Text>
+                    </View>);
                 } else {
                     if (timeType == 1) {
                         name = '本日无人分享';
+                        items.push(<View key={i} style={{flexDirection: 'row', marginTop: Pixel.getPixel(10)}}>
+                            <Text allowFontScaling={false} style={styles.describe}>{name}</Text>
+                            <View style={{flex: 1}}/>
+                            <Text allowFontScaling={false}
+                                  style={[styles.describe, {marginRight: Pixel.getPixel(15)}]}>{count}</Text>
+                        </View>);
+                        break;
                     } else if (timeType == 2) {
                         name = '本周无人分享';
+                        items.push(<View key={i} style={{flexDirection: 'row', marginTop: Pixel.getPixel(10)}}>
+                            <Text allowFontScaling={false} style={styles.describe}>{name}</Text>
+                            <View style={{flex: 1}}/>
+                            <Text allowFontScaling={false}
+                                  style={[styles.describe, {marginRight: Pixel.getPixel(15)}]}>{count}</Text>
+                        </View>);
+                        break;
                     } else if (timeType == 3) {
                         name = '本月无人分享';
+                        items.push(<View key={i} style={{flexDirection: 'row', marginTop: Pixel.getPixel(10)}}>
+                            <Text allowFontScaling={false} style={styles.describe}>{name}</Text>
+                            <View style={{flex: 1}}/>
+                            <Text allowFontScaling={false}
+                                  style={[styles.describe, {marginRight: Pixel.getPixel(15)}]}>{count}</Text>
+                        </View>);
+                        break;
                     }
                 }
-                items.push(<View key={i} style={{flexDirection: 'row', marginTop: Pixel.getPixel(10)}}>
-                    <Text allowFontScaling={false} style={styles.describe}>{name}</Text>
-                    <View style={{flex: 1}}/>
-                    <Text allowFontScaling={false}
-                          style={[styles.describe, {marginRight: Pixel.getPixel(15)}]}>{count}</Text>
-                </View>);
             }
         }
         return items;
