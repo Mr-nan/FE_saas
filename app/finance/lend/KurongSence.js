@@ -94,12 +94,12 @@ export default class KurongSence extends BaseComponent {
                         }else if(tempjson.min_loanmny==3){
                             ShowData.maxMoney='3万';
                         }else {
-                            ShowData.maxMoney=changeToMillion(tempjson.min_loanmny)+'-'+changeToMillion(tempjson.single_loan_mny)+'万';
+                            ShowData.maxMoney=changeToMillion(tempjson.min_loanmny)+'-'+changeToMillion(tempjson.max_loanmny)+'万';
                         }
                         ShowData.rate=tempjson.rate;
                         ShowData.type=tempjson.loantype_str;
                         ShowData.tempMin=changeToMillion(tempjson.min_loanmny);
-                        ShowData.tempMax=changeToMillion(tempjson.single_loan_mny);
+                        ShowData.tempMax=changeToMillion(tempjson.max_loanmny);
                     this.setState({
                         renderPlaceholderOnly:STATECODE.loadSuccess
                     })
