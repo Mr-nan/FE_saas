@@ -39,7 +39,7 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
      **/
     constructor(props) {
         super(props);
-        this.timeSelect = '今天';
+        this.timeSelect = this.props.timeSelect ? this.props.timeSelect : '今天';
         this.selectMonth = '选择月份';
         this.potentialClientList = [];
         this.companyId = '';
@@ -171,7 +171,7 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                                 style={{flex: 1}}
                                 ref={(ref) => {
                                     this.btn1 = ref
-                                }} title="今天" index={1} btnClick={this.selectAddTime}/>
+                                }} title={this.timeSelect} index={1} btnClick={this.selectAddTime}/>
                         </View>
                         <View style={styles.lineView}>
                             <View style={styles.line}/>

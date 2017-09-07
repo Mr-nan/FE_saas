@@ -233,7 +233,7 @@ export default class BacklogListScene extends BaseComponent {
                             name: 'StoreReceptionManageNewScene',
                             component: StoreReceptionManageNewScene,
                             params: {
-                                //defaultIndex: index
+                                timeSelect: '本月'
                             }
                         });
                     }}>
