@@ -57,7 +57,7 @@ export default class ClientInfoSelected extends PureComponent {
                 <TouchableOpacity onPress={() => {
                     this.props.toSelect();
                 }} activeOpacity={0.8} style={{
-                    flex: 1,
+                    flex: 2,
                     justifyContent: 'flex-end',
                     alignItems: 'center',
                     flexDirection: 'row'
