@@ -72,7 +72,8 @@ export default class CarDischargeScene extends  BaseComponent{
                         <Image style={styles.proContainer} source={proBg}>
                             <TextInput ref={(input)=>{this.firstInput = input}}
                                        style={IS_ANDROID ? styles.fontAndroidBold: styles.fontIOSBold} underlineColorAndroid='transparent'
-                                       defaultValue={this.initValue[1]} maxLength={1}
+                                       defaultValue={this.initValue[1]}
+                                       maxLength={1}
                                        onChangeText={(text)=>
                                        {
                                            let number = this.chkNumber(text);

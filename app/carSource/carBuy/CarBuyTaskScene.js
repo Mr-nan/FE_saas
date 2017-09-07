@@ -271,7 +271,7 @@ export default class CarBuyTaskScene extends BaseComponent{
                                    onChangeText={(text)=>{
 
                                        if(text.length>4&&text.indexOf('.')==-1){
-                                           text = text.substring(0,text.length-1);
+                                           text = text.substring(0,4);
                                        }
                                        let moneyStr = this.chkPrice(text);
                                        this.carData['preferPrice'] = moneyStr;
@@ -325,7 +325,7 @@ export default class CarBuyTaskScene extends BaseComponent{
                                            onChangeText={(text)=>{
 
                                                if(text.length>4&&text.indexOf('.')==-1){
-                                                   text = text.substring(0,text.length-1);
+                                                   text = text.substring(0,4);
                                                }
                                                let moneyStr = this.chkPrice(text);
                                                this.carData['consultPrice'] = moneyStr;
@@ -354,7 +354,7 @@ export default class CarBuyTaskScene extends BaseComponent{
                                    onChangeText={(text)=>{
 
                                        if(text.length>4&&text.indexOf('.')==-1){
-                                           text = text.substring(0,text.length-1);
+                                           text = text.substring(0,4);
                                        }
                                        let moneyStr = this.chkPrice(text);
                                        this.carData['consultPrice'] = moneyStr;
@@ -395,7 +395,7 @@ export default class CarBuyTaskScene extends BaseComponent{
                                    onChangeText={(text)=>{
 
                                        if(text.length>4&&text.indexOf('.')==-1){
-                                           text = text.substring(0,text.length-1);
+                                           text = text.substring(0,4);
                                        }
                                        let moneyStr = this.chkPrice(text);
                                        this.carData['closeingPrice']=moneyStr;
@@ -658,7 +658,7 @@ export default class CarBuyTaskScene extends BaseComponent{
                                              onChangeText={(text)=>{
 
                                                  if(text.length>4&&text.indexOf('.')==-1){
-                                                     text = text.substring(0,text.length-1);
+                                                     text = text.substring(0,4);
                                                  }
                                                  let moneyStr = this.chkPrice(text);
                                                  this.carData['preferPrice'] = moneyStr;
@@ -683,7 +683,7 @@ export default class CarBuyTaskScene extends BaseComponent{
                       isShowTail:!this.props.isHideInfoRecourse,
                   },
                   {
-                      title:'上牌时间',
+                      title:'初登日期',
                       isShowTag:false,
                       value:'请选择',
                       isShowTail:!this.props.isHideInfoRecourse,
@@ -704,7 +704,7 @@ export default class CarBuyTaskScene extends BaseComponent{
                                              onChangeText={(text)=>{
 
                                                  if(text.length>4&&text.indexOf('.')==-1){
-                                                     text = text.substring(0,text.length-1);
+                                                     text = text.substring(0,4);
                                                  }
                                                  let moneyStr = this.chkPrice(text);
                                                  this.carData['consultPrice'] = moneyStr;
@@ -745,7 +745,7 @@ export default class CarBuyTaskScene extends BaseComponent{
                                              onChangeText={(text)=>{
 
                                                  if(text.length>4&&text.indexOf('.')==-1){
-                                                     text = text.substring(0,text.length-1);
+                                                     text = text.substring(0,4);
                                                  }
                                                  let moneyStr = this.chkPrice(text);
                                                  this.carData['closeingPrice']=moneyStr;
