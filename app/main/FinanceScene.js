@@ -27,6 +27,7 @@ let allPage = 0;
 import  HomeHeaderItem from './component/HomeHeaderItem';
 import  PixelUtil from '../utils/PixelUtil'
 import KurongDetaileScene from '../finance/lend/KurongDetaileScene';
+import ChedidaiDetaileScene from '../finance/lend/ChedidaiDetaileScene';
 import DDDetailScene from '../finance/lend/DDDetailScene';
 import DDApplyLendScene from '../finance/lend/DDApplyLendScene';
 
@@ -61,7 +62,6 @@ import WaitActivationAccountScene from '../mine/accountManage/WaitActivationAcco
 import BindCardScene from '../mine/accountManage/BindCardScene'
 let firstType = '-1';
 let lastType = '-1';
-
 
 
 export class HomeHeaderItemInfo {
@@ -109,6 +109,9 @@ export default class FinanceSence extends BaseComponet {
     }
 
 
+    /**
+     * 获取金融首页顶部信息
+     */
     getMnyData = () => {
         let that = this;
         let maps = {
@@ -156,6 +159,9 @@ export default class FinanceSence extends BaseComponet {
 
     };
 
+    /**
+     * 获取借款记录
+     */
     getApplyData = () => {
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         let maps = {
@@ -216,6 +222,9 @@ export default class FinanceSence extends BaseComponet {
         this.getMnyData();
     }
 
+    /**
+     * 获取账号信息
+     */
     getAccountInfo = () => {
         StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1) {
@@ -455,7 +464,7 @@ export default class FinanceSence extends BaseComponet {
                 this.buttonParams.content = '库融';
                 this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB4}];
                 this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB4}];
-            } else if (movie.type == 5){
+            } else if (movie.type == 5) {
                 if (movie.product_type_change_status == 0) {
                     nextPage = CGDDetailSence;
                     this.buttonParams.content = '采购';
@@ -475,12 +484,18 @@ export default class FinanceSence extends BaseComponet {
                     this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB0}];
                     this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB0}];
                 }
-            }else if (movie.type == 6) {
+            } else if (movie.type == 6) {
                 nextPage = DDDetailScene;
                 this.buttonParams.content = '订单';
                 this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB4}];
                 this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB4}];
+            }else if(movie.type == 8){
+                nextPage = ChedidaiDetaileScene;
+                this.buttonParams.content = '车抵';
+                this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB3}];
+                this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB3}];
             }
+
 
             if (movie.status == 1) {
                 this.typeButtonParams.childStyle = [cellSheet.typeChildStyle, {color: fontAndColor.COLORB3}];
@@ -543,10 +558,6 @@ export default class FinanceSence extends BaseComponet {
                             }
                         }
                     }
-
-
-
-
                     else {
                         this.navigatorParams.name = 'DetaileSence';
                         this.navigatorParams.component = nextPage;
@@ -568,7 +579,8 @@ export default class FinanceSence extends BaseComponet {
                             alignItems: 'center'
                         }]}>
                             <MyButton {...this.buttonParams}/>
-                            <Text allowFontScaling={false}  numberOfLines={1} style={cellSheet.rowTopTextStyle}>{this.state.customerName}</Text>
+                            <Text allowFontScaling={false} numberOfLines={1}
+                                  style={cellSheet.rowTopTextStyle}>{this.state.customerName}</Text>
                         </View>
                         <View style={[{
                             height: Pixel.getPixel(40),
@@ -576,20 +588,21 @@ export default class FinanceSence extends BaseComponet {
                             justifyContent: 'center',
                             alignItems: 'flex-end'
                         }]}>
-                            <Text allowFontScaling={false}  style={cellSheet.rowTopGrayTextStyle}>{movie.loan_code}</Text>
+                            <Text allowFontScaling={false}
+                                  style={cellSheet.rowTopGrayTextStyle}>{movie.loan_code}</Text>
                         </View>
                     </View>
                     <View style={{height: 0.5, backgroundColor: fontAndColor.COLORA4}}></View>
                     <View style={cellSheet.rowBottomViewStyle}>
                         <View style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-start'}]}>
-                            <Text allowFontScaling={false}  style={cellSheet.rowBottomLittleStyle}>借款金额</Text>
-                            <Text allowFontScaling={false} 
-                                style={[cellSheet.rowBottomBigStyle, {color: fontAndColor.COLORB2}]}>{movie.loan_mny}</Text>
+                            <Text allowFontScaling={false} style={cellSheet.rowBottomLittleStyle}>借款金额</Text>
+                            <Text allowFontScaling={false}
+                                  style={[cellSheet.rowBottomBigStyle, {color: fontAndColor.COLORB2}]}>{movie.loan_mny}</Text>
                         </View>
                         <View style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-start'}]}>
-                            <Text allowFontScaling={false}  style={cellSheet.rowBottomLittleStyle}>借款期限</Text>
-                            <Text allowFontScaling={false} 
-                                style={[cellSheet.rowBottomBigStyle, {color: fontAndColor.COLORA0}]}>{movie.loan_life}</Text>
+                            <Text allowFontScaling={false} style={cellSheet.rowBottomLittleStyle}>借款期限</Text>
+                            <Text allowFontScaling={false}
+                                  style={[cellSheet.rowBottomBigStyle, {color: fontAndColor.COLORA0}]}>{movie.loan_life}</Text>
                         </View>
                         <View
                             style={[cellSheet.rowBottomChildStyle, {alignItems: 'flex-end', justifyContent: 'center'}]}>
@@ -602,7 +615,7 @@ export default class FinanceSence extends BaseComponet {
                                 justifyContent: 'center',
                                 alignItems: 'center',
                             }}>
-                                <Text allowFontScaling={false}  style={{
+                                <Text allowFontScaling={false} style={{
                                     fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                     color: fontAndColor.COLORB3,
                                 }}>{movie.status_str}</Text>
@@ -656,6 +669,7 @@ export default class FinanceSence extends BaseComponet {
                         purchase_archives_first_status: mnyData.purchase_archives_first_status,
                         purchase_status: mnyData.purchase_status,
                         customerName: this.state.customerName,
+                        car_loan_status:mnyData.car_loan_status,//是否可申请车抵贷
                         backRefresh: () => {
                             this.allRefresh()
                         }
@@ -675,7 +689,7 @@ export default class FinanceSence extends BaseComponet {
                 };
                 this.props.callBack(this.navigatorParams);
             }
-        }catch (error){
+        } catch (error) {
             this.props.showToast('数据错误');
         }
 
@@ -707,7 +721,7 @@ export default class FinanceSence extends BaseComponet {
                     <View style={{width: width, flexDirection: 'row',}}>
                         <View style={{flex: 1}}></View>
                         <View style={{flex: 3, alignItems: 'center'}}>
-                            <Text allowFontScaling={false}  numberOfLines={1}
+                            <Text allowFontScaling={false} numberOfLines={1}
                                   style={{
                                       fontSize: Pixel.getFontPixel(fontAndColor.NAVIGATORFONT34),
                                       color: '#fff', marginTop: Pixel.getTitlePixel(25), backgroundColor: '#00000000'
@@ -722,14 +736,14 @@ export default class FinanceSence extends BaseComponet {
                         <View
                             style={{width: width, height: Pixel.getBottomPixel(65), flexDirection: 'row',marginTop:Pixel.getPixel(30),justifyContent:'space-between'}}>
                             <View style={{flex: 1, alignItems: 'center',}}>
-                                <Text allowFontScaling={false} 
-                                    style={{
+                                <Text allowFontScaling={false}
+                                      style={{
                                         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                                         color: '#fff',
                                         backgroundColor: '#00000000'
                                     }}>{this.state.mnyData.is_microchinese_mny == 3 && '综合'}可用额度(万)</Text>
-                                <Text allowFontScaling={false} 
-                                    style={{
+                                <Text allowFontScaling={false}
+                                      style={{
                                         fontSize: Pixel.getFontPixel(28),
                                         color: '#fff',
                                         marginTop: Pixel.getPixel(7),
@@ -744,8 +758,8 @@ export default class FinanceSence extends BaseComponet {
                                     <View style={{flex: 1, alignItems: 'center',}}>
                                         <TouchableOpacity style={{flexDirection:'row'}} activeOpacity={1}
                                                           onPress={()=>{this.refs.showTitleAlert.setModelVisible(true)}}>
-                                            <Text allowFontScaling={false} 
-                                                style={{
+                                            <Text allowFontScaling={false}
+                                                  style={{
                                                 fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                                                 color: '#fff',
                                                 backgroundColor: '#00000000'
@@ -753,8 +767,8 @@ export default class FinanceSence extends BaseComponet {
                                             <Image source={require('../../images/financeImages/titleAlert.png')}
                                                    style={{marginLeft:5}}/>
                                         </TouchableOpacity>
-                                        <Text allowFontScaling={false} 
-                                            style={{
+                                        <Text allowFontScaling={false}
+                                              style={{
                                             fontSize: Pixel.getFontPixel(28),
                                             color: '#fff',
                                             marginTop: Pixel.getPixel(7),
@@ -767,14 +781,14 @@ export default class FinanceSence extends BaseComponet {
                             }
                             <View
                                 style={{flex: 1, alignItems: 'center',borderLeftColor:'white',borderLeftWidth:StyleSheet.hairlineWidth}}>
-                                <Text allowFontScaling={false} 
-                                    style={{
+                                <Text allowFontScaling={false}
+                                      style={{
                                         fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
                                         color: '#fff',
                                         backgroundColor: '#00000000'
                                     }}>贷款余额(万)</Text>
-                                <Text allowFontScaling={false} 
-                                    style={{
+                                <Text allowFontScaling={false}
+                                      style={{
                                         fontSize: Pixel.getFontPixel(28),
                                         color: '#fff',
                                         marginTop: Pixel.getPixel(7),
@@ -811,7 +825,7 @@ export default class FinanceSence extends BaseComponet {
                                         justifyContent:'center',overflow:'hidden',
                                             paddingHorizontal:Pixel.getPixel(20),
                                         }}>
-                                            <Text allowFontScaling={false}  style={{color:'white', fontSize:Pixel.getFontPixel(14),
+                                            <Text allowFontScaling={false} style={{color:'white', fontSize:Pixel.getFontPixel(14),
                                                 backgroundColor:'#00000000',fontWeight: 'bold',}}>  {this.state.allData.microchineseTitle}  </Text>
                                         </View>
                                     </TouchableOpacity>
@@ -826,14 +840,14 @@ export default class FinanceSence extends BaseComponet {
                         }}>
                         <View
                             style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start'}}>
-                            <Text allowFontScaling={false} 
-                                style={{
+                            <Text allowFontScaling={false}
+                                  style={{
                                     fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                     color: '#fff',
                                     backgroundColor: '#00000000'
                                 }}>保证金额度:</Text>
-                            <Text allowFontScaling={false} 
-                                style={{
+                            <Text allowFontScaling={false}
+                                  style={{
                                     fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                     color: '#fff',
                                     backgroundColor: '#00000000',
@@ -841,14 +855,14 @@ export default class FinanceSence extends BaseComponet {
                                 }}>{this.state.allData.baozhengjinedu}万</Text>
                         </View>
                         <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end'}}>
-                            <Text allowFontScaling={false} 
-                                style={{
+                            <Text allowFontScaling={false}
+                                  style={{
                                     fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                     color: '#fff',
                                     backgroundColor: '#00000000'
                                 }}>保证金余额:</Text>
-                            <Text allowFontScaling={false} 
-                                style={{
+                            <Text allowFontScaling={false}
+                                  style={{
                                     fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                     color: '#fff',
                                     backgroundColor: '#00000000',
