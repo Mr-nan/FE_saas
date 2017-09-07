@@ -227,6 +227,7 @@ export default class CarBuyTaskScene extends BaseComponent{
                     <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                         <TextInput style={styles.textInput}
                                    placeholder='请输入'
+                                   ref={(ref)=>{this.contentNumInput=ref}}
                                    keyboardType={'phone-pad'}
                                    maxLength={11}
                                    defaultValue={data.contentNum}
@@ -242,6 +243,10 @@ export default class CarBuyTaskScene extends BaseComponent{
                                        });
                                    }}
                                    onChangeText={(text)=>{
+                                       let number = this.phoneNumber(text);
+                                       this.contentNumInput.setNativeProps({
+                                           text: number,
+                                       });
                                        this.carData['contentNum'] = text;
                                    }}/>
                     </View>)
@@ -461,7 +466,6 @@ export default class CarBuyTaskScene extends BaseComponent{
         {
             if(this.carData.consultList.length>0){
 
-
                 consultList.push(...this.carData.consultList);
                 consultList.push({consultPrice:this.carData.consultPrice, acquisitionId:0, id:0});
 
@@ -477,7 +481,7 @@ export default class CarBuyTaskScene extends BaseComponent{
             this.props.reloadData();
             this.backPage();
         }, (error) => {
-            this.props.showModal(false);
+            this.props.showToast(error.mjson.msg);
         });
     }
 
@@ -609,6 +613,7 @@ export default class CarBuyTaskScene extends BaseComponent{
                           return (
                               <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                                   <TextInput style={styles.textInput}
+                                             ref={(ref)=>{this.contentNumInput=ref}}
                                              placeholder='请输入'
                                              keyboardType={'phone-pad'}
                                              maxLength={11}
@@ -624,6 +629,10 @@ export default class CarBuyTaskScene extends BaseComponent{
                                                  });
                                              }}
                                              onChangeText={(text)=>{
+                                                 let number = this.phoneNumber(text);
+                                                 this.contentNumInput.setNativeProps({
+                                                     text: number,
+                                                 });
                                                 this.carData['contentNum'] = text;
                                              }}/>
 
@@ -1076,6 +1085,16 @@ export default class CarBuyTaskScene extends BaseComponent{
         }
 
         return obj;
+    }
+
+    /**
+     *  限制手机号输入数字
+     * @param obj
+     * @returns {string}
+     */
+    phoneNumber=(obj)=> {
+        obj = obj.toUpperCase();
+        return obj.replace(/[^\d]/g,'');
     }
 
     /**

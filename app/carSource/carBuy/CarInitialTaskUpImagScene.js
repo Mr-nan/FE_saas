@@ -42,8 +42,8 @@ export default class CarInitialTaskUpImagScene extends BaseComponent{
 
         this.titleData = [
             {
-                name: 'left_anterior',
-                title:'左前45度',
+                name: 'registration_card',
+                title:'登记证',
                 subTitle:'至多1张',
                 number:1,
                 imgArray:[],
@@ -145,7 +145,7 @@ export default class CarInitialTaskUpImagScene extends BaseComponent{
                 {
                     let name = this.results[j].name;
                     let url = this.results[j].url;
-                    if(name == 'left_anterior'){
+                    if(name == 'registration_card'){
 
                         this.carData.arcPath = url; // 车辆图片
 

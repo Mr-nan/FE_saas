@@ -48,7 +48,9 @@ export default class EmployeeManageScene extends BaseComponent {
 
     getData = () => {
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        request(AppUrls.BASEURL + 'v1/user.employee/index', 'Post', {})
+        request(AppUrls.BASEURL + 'v1/user.employee/index', 'Post', {
+            enterprise_uid:global.companyBaseID
+        })
             .then((response) => {
                     if (response.mjson.data == null || response.mjson.data.length <= 0) {
                         this.setState({renderPlaceholderOnly: 'null'});

@@ -90,7 +90,8 @@ export default class CarInitialTaskScene extends BaseComponent{
                             <View style={{backgroundColor:'white',paddingVertical:Pixel.getPixel(15),paddingHorizontal:Pixel.getPixel(15)}} key={'imgkey'+index}>
                                 <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30)}}>{data.title}</Text>
                                 <TouchableOpacity activeOpacity={1} onPress={()=>{this.showPhotoView(index)}}>
-                                    <Image style={{width:sceneWidth-Pixel.getPixel(30),height:(sceneWidth-Pixel.getPixel(30))/Pixel.getPixel(1.5),backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getPixel(15)}} source={{uri:data.url}}/>
+                                    <Image style={{width:sceneWidth-Pixel.getPixel(30),height:(sceneWidth-Pixel.getPixel(30))/Pixel.getPixel(1.5),backgroundColor:fontAndColor.COLORA3,marginTop:Pixel.getPixel(15)}}
+                                           source={{uri:data.url}}/>
                                 </TouchableOpacity>
                             </View>
                         )
