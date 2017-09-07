@@ -8,7 +8,7 @@ import {
     View,
     Dimensions,
     TouchableOpacity,
-    ListView,
+    Platform,
     KeyboardAvoidingView,
     ScrollView
 } from 'react-native';
@@ -94,7 +94,7 @@ export default class ClientAddScene extends BaseComponent {
                             style={{backgroundColor: fontAndColor.COLORA3, marginTop: Pixel.getTitlePixel(75)}}
                             ref={(ref) => {
                                 this.scrollView = ref
-                            }} keyboardDismissMode={'on-drag'}>
+                            }} keyboardDismissMode={Platform.OS === 'android' ? 'none' : 'on-drag'}>
 
                             {this._renderRow()}
 

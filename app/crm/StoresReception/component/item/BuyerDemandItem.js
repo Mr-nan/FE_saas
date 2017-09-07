@@ -119,10 +119,10 @@ export default class BuyerDemandItem extends BaseComponent {
                     <View
                         key={i + 'bo'}
                         style={{
-                        width: width,
-                        height: Pixel.getPixel(45),
-                        backgroundColor: '#fff'
-                    }}>
+                            width: width,
+                            height: Pixel.getPixel(45),
+                            backgroundColor: '#fff'
+                        }}>
                         <View style={{
                             width: width,
                             height: Pixel.getPixel(44),
@@ -137,11 +137,14 @@ export default class BuyerDemandItem extends BaseComponent {
                                       fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
                                       color: fontAndColor.COLORA1
                                   }}>{this.childItems[i].name}</Text>
-                            <Text allowFontScaling={false}
-                                  style={{
-                                      fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-                                      color: '#000'
-                                  }}>{this.childItems[i].value}</Text>
+                            <View style={{width: width - Pixel.getPixel(140)}}>
+                                <Text allowFontScaling={false}
+                                      numberOfLines={2}
+                                      style={{
+                                          fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+                                          color: '#000'
+                                      }}>{this.childItems[i].value}</Text>
+                            </View>
                         </View>
                         <View style={{
                             width: width,

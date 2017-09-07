@@ -64,8 +64,8 @@ export default class SysMessageDetailScene extends BaseComponent {
                 </View>
             );
         } else {
-            let url = "<html><style type=\"text/css\">img{ width: 100%% }</style><body>" + this.props.url +
-                "</body></html>";
+            //let url = "<html><style type=\"text/css\">img{ width: 100%% }</style><body>" + this.props.url + "</body></html>";
+            let url = this.props.url;
             return (
                 <View style={styles.container}>
                     <WebViewTitle ref="webviewtitle"/>
@@ -80,7 +80,7 @@ export default class SysMessageDetailScene extends BaseComponent {
                             this.refs.webviewtitle.lastProgress();
                         }}
                         onLoadEnd={() => {
-                            //this.refs.webviewtitle.lastProgress();
+                            this.refs.webviewtitle.lastProgress();
                         }}
                         //onNavigationStateChange={this.onNavigationStateChange.bind(this)}
                     />
