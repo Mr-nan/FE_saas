@@ -72,7 +72,7 @@ export default class SysMessageDetailScene extends BaseComponent {
                     <WebView
                         ref="www"
                         style={{width: width, height: height, backgroundColor: fontAndColor.COLORA3}}
-                        source={{html: url, method: 'GET'}}
+                        source={{uri: url, method: 'GET'}}
                         javaScriptEnabled={true}
                         domStorageEnabled={true}
                         scalesPageToFit={false}
