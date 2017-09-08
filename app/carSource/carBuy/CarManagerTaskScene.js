@@ -183,7 +183,7 @@ export default class CarManagerTaskScene extends BaseComponent{
             this.titleData1[1][3].tailView=()=> {
                 return (
                     <View style={{alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-end'}}>
-                        <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),textAlign:'right'}}>{String(data.taskInfo.managerInfo.selfprice.toFixed(2))}</Text>
+                        <Text style={{color:fontAndColor.COLORA0, fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),textAlign:'right'}}>{String(data.taskInfo.managerInfo.overprice.toFixed(2))}</Text>
                         <Text allowFontScaling={false} style={styles.textInputTitle}>万元</Text>
                     </View>)
             };

@@ -236,7 +236,7 @@ export default class CarInitialTaskScene extends BaseComponent{
         let imageArray = [];
 
         if(carData.taskInfo.arcPath){
-            imageArray.push({title:'车辆图片',url:carData.taskInfo.arcPath})
+            imageArray.push({title:'登记证',url:carData.taskInfo.arcPath})
         }
         if(carData.taskInfo.dlPath){
             imageArray.push({title:'行驶证',url:carData.taskInfo.dlPath})
@@ -246,8 +246,8 @@ export default class CarInitialTaskScene extends BaseComponent{
              imageArray.push({title:'保险单',url:carData.taskInfo.policyPath})
 
         }
-         if(carData.taskInfo.policyPath){
-             imageArray.push({title:'身份证',url:carData.taskInfo.policyPath})
+         if(carData.taskInfo.idcardPath){
+             imageArray.push({title:'身份证',url:carData.taskInfo.idcardPath})
 
         }
 
@@ -426,7 +426,7 @@ export default class CarInitialTaskScene extends BaseComponent{
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                                 <TextInput style={styles.textInput}
                                            placeholder='请输入'
-                                           keyboardType={'number-pad'}
+                                           keyboardType={'numeric'}
                                            maxLength={11}
                                            underlineColorAndroid='transparent'
                                            onChangeText={(text)=>{this.carData.keysNum=text}}/>

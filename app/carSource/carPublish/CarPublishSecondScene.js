@@ -163,7 +163,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                            onEndEditing={()=>{this.saveCarData();}}
                                            onChangeText={(text)=>{
                                             if(text.length>4&&text.indexOf('.')==-1){
-                                               text = text.substring(0,text.length-1);
+                                               text = text.substring(0,4);
                                             }
                                            let moneyStr = this.chkPrice(text);
                                            this.carData['dealer_price']= moneyStr;
@@ -196,7 +196,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                            onEndEditing={()=>{this.saveCarData();}}
                                            onChangeText={(text)=>{
                                             if(text.length>4&&text.indexOf('.')==-1){
-                                               text = text.substring(0,text.length-1);
+                                               text = text.substring(0,4);
                                             }
                                            let moneyStr = this.chkPrice(text);
                                            this.carData['dealer_price_circle']= moneyStr;
@@ -229,7 +229,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                            onEndEditing={()=>{this.saveCarData();}}
                                            onChangeText={(text)=>{
                                             if(text.length>4&&text.indexOf('.')==-1){
-                                               text = text.substring(0,text.length-1);
+                                               text = text.substring(0,4);
                                             }
                                            let moneyStr = this.chkPrice(text);
                                            this.carData['buying_price']= moneyStr;
@@ -263,7 +263,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                            onChangeText={(text)=>{
 
                                            if(text.length>4&&text.indexOf('.')==-1){
-                                               text = text.substring(0,text.length-1);
+                                               text = text.substring(0,4);
                                             }
                                            let moneyStr = this.chkPrice(text);
                                            this.carData['online_retail_price']= moneyStr;
@@ -296,7 +296,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                            onEndEditing={()=>{this.saveCarData();}}
                                            onChangeText={(text)=>{
                                                if(text.length>4&&text.indexOf('.')==-1){
-                                               text = text.substring(0,text.length-1);
+                                               text = text.substring(0,4);
                                             }
                                            let moneyStr = this.chkPrice(text);
                                            this.carData['low_price']= moneyStr;
@@ -329,7 +329,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                            onEndEditing={()=>{this.saveCarData();}}
                                            onChangeText={(text)=>{
                                                if(text.length>4&&text.indexOf('.')==-1){
-                                               text = text.substring(0,text.length-1);
+                                               text = text.substring(0,4);
                                             }
                                            let moneyStr = this.chkPrice(text);
                                            this.carData['retail_price_store']= moneyStr;
@@ -448,7 +448,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                            onEndEditing={()=>{this.saveCarData();}}
                                            onChangeText={(text)=>{
                                             if(text.length>4&&text.indexOf('.')==-1){
-                                               text = text.substring(0,text.length-1);
+                                               text = text.substring(0,4);
                                             }
                                            let moneyStr = this.chkPrice(text);
                                            this.carData['dealer_price']= moneyStr;
@@ -481,7 +481,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                            onEndEditing={()=>{this.saveCarData();}}
                                            onChangeText={(text)=>{
                                             if(text.length>4&&text.indexOf('.')==-1){
-                                               text = text.substring(0,text.length-1);
+                                               text = text.substring(0,4);
                                             }
                                            let moneyStr = this.chkPrice(text);
                                            this.carData['dealer_price_circle']= moneyStr;
@@ -514,7 +514,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                            onEndEditing={()=>{this.saveCarData();}}
                                            onChangeText={(text)=>{
                                             if(text.length>4&&text.indexOf('.')==-1){
-                                               text = text.substring(0,text.length-1);
+                                               text = text.substring(0,4);
                                             }
                                            let moneyStr = this.chkPrice(text);
                                            this.carData['buying_price']= moneyStr;
@@ -548,7 +548,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                            onChangeText={(text)=>{
 
                                            if(text.length>4&&text.indexOf('.')==-1){
-                                               text = text.substring(0,text.length-1);
+                                               text = text.substring(0,4);
                                             }
                                            let moneyStr = this.chkPrice(text);
                                            this.carData['online_retail_price']= moneyStr;
@@ -581,7 +581,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                            onEndEditing={()=>{this.saveCarData();}}
                                            onChangeText={(text)=>{
                                                if(text.length>4&&text.indexOf('.')==-1){
-                                               text = text.substring(0,text.length-1);
+                                               text = text.substring(0,4);
                                             }
                                            let moneyStr = this.chkPrice(text);
                                            this.carData['low_price']= moneyStr;
@@ -614,7 +614,7 @@ export default class CarPublishSecondScene extends BaseComponent {
                                            onEndEditing={()=>{this.saveCarData();}}
                                            onChangeText={(text)=>{
                                                if(text.length>4&&text.indexOf('.')==-1){
-                                               text = text.substring(0,text.length-1);
+                                               text = text.substring(0,4);
                                             }
                                            let moneyStr = this.chkPrice(text);
                                            this.carData['retail_price_store']= moneyStr;
