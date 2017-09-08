@@ -19,6 +19,7 @@ import AllNavigationView from '../../component/AllNavigationView'
 import BaseComponent from '../../component/BaseComponent';
 import SingelCarScene from './SingelCarScene';
 import KurongSence from './KurongSence';
+import ChedidaiSence from './ChedidaiSence'
 import PixelUtil from '../../utils/PixelUtil';
 const Pixel = new PixelUtil();
 import {confimCarcell} from './ConfimCGDPriceSence'
@@ -33,7 +34,7 @@ class TitleImage extends PureComponent {
 
             <View style={styles.titleImage}>
                 <Image style={styles.image} source={imageSource}/>
-                <Text allowFontScaling={false}  style={styles.text}>{title}</Text>
+                <Text allowFontScaling={false} style={styles.text}>{title}</Text>
             </View>
         )
     }
@@ -72,19 +73,20 @@ export  default class LendMoneySence extends BaseComponent {
             key: 'single'
         },
     ]
-    componentWillMount(){
 
-        try{
-            if (parseInt(this.props.inventory_financing_status)==1){
+    componentWillMount() {
 
-                this.dataSource.push( {
+        try {
+            if (parseInt(this.props.inventory_financing_status) == 1) {
+
+                this.dataSource.push({
                     backImage: require('../../../images/financeImages/backkurong.png'),
                     imageSource: require('../../../images/financeImages/kurongIcon.png'),
                     title: '库融融资',
                     key: 'kurong'
                 })
             }
-            if (parseInt(this.props.purchase_status)==1){
+            if (parseInt(this.props.purchase_status) == 1) {
                 this.dataSource.push({
                     backImage: require('../../../images/financeImages/backcaigou.png'),
                     imageSource: require('../../../images/financeImages/caigouIcon.png'),
@@ -92,8 +94,16 @@ export  default class LendMoneySence extends BaseComponent {
                     key: 'caigoudai'
                 })
             }
-        }catch (e){
-            this.dataSource.push( {
+            if (parseInt(this.props.car_loan_status ) == 1) {
+                this.dataSource.push({
+                    backImage: require('../../../images/financeImages/chedidai_bg.png'),
+                    imageSource: require('../../../images/financeImages/chedidai_icon.png'),
+                    title: '车抵贷',
+                    key: 'chedidai'
+                })
+            }
+        } catch (e) {
+            this.dataSource.push({
                 backImage: require('../../../images/financeImages/backkurong.png'),
                 imageSource: require('../../../images/financeImages/kurongIcon.png'),
                 title: '库融融资',
@@ -117,9 +127,11 @@ export  default class LendMoneySence extends BaseComponent {
     navigatorParams = {
         name: 'SingelCarScene',
         component: SingelCarScene,
-        params: {customerName:this.props.customerName,backRefresh:()=>{
-            this.props.backRefresh();
-        }}
+        params: {
+            customerName: this.props.customerName, backRefresh: () => {
+                this.props.backRefresh();
+            }
+        }
     }
 
     onPress = (key) => {
@@ -133,7 +145,7 @@ export  default class LendMoneySence extends BaseComponent {
             this.navigatorParams.component = KurongSence;
             this.toNextPage(this.navigatorParams);
         }
-        else {
+        else if (key == 'caigoudai') {
 
             this.navigatorParams.name = "CGDSelectPatternScene";
             this.navigatorParams.component = CGDSelectPatternScene;
@@ -141,8 +153,14 @@ export  default class LendMoneySence extends BaseComponent {
 
             // this.cgdMessage.setModelVisible(true)
         }
+        else if (key == 'chedidai') {
+            this.navigatorParams.name = "ChedidaiSence";
+            this.navigatorParams.component = ChedidaiSence;
+            this.toNextPage(this.navigatorParams);
+        }
 
     }
+
     render() {
 
 
@@ -170,7 +188,8 @@ export  default class LendMoneySence extends BaseComponent {
                     {viewBlob}
 
                 </ScrollView>
-                <LendSuccessAlert title="提示" subtitle="采购融资功能正在维护中，请您移步BMS系统申请采购融资" ref={(message)=>{this.cgdMessage=message}}confimClick={()=>{}}/>
+                <LendSuccessAlert title="提示" subtitle="采购融资功能正在维护中，请您移步BMS系统申请采购融资"
+                                  ref={(message)=>{this.cgdMessage=message}} confimClick={()=>{}}/>
 
                 <AllNavigationView title="借款" backIconClick={()=> {
 

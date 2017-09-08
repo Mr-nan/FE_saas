@@ -27,6 +27,8 @@ export default class PlanItem extends PureComponent {
             typeName='库融';
         } else if (movie.type == '5') {
             typeName='采购';
+        }else if(movie.type == '8'){
+            typeName='车抵';
         }
         if (this.props.index === 0) {
             movieItems.push(<View key="top" style={{
