@@ -4,7 +4,7 @@
 import  React, {Component, PropTypes} from  'react'
 import  {
     View,
-    TextInput,
+    RefreshControl,
     ListView,
     StyleSheet,
     Dimensions,
@@ -28,6 +28,7 @@ import KeepCustomerDetailScene from "./KeepCustomerDetailScene";
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
 import KeepCustomerSearchScene from "./KeepCustomerSearchScene";
+import LoadMoreFooter from "../../carSource/znComponent/LoadMoreFooter";
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 const {width, height} = Dimensions.get('window');
 
@@ -44,6 +45,8 @@ export default class KeepCustomerManageScene extends BaseComponent {
         this.stateSelect = '待完善客户';
         this.selectMonth = '选择月份';
         this.companyId = '';
+        this.pageNum = 1;
+        this.allPage = 1;
         this.state = {
             dataSource: [],
             renderPlaceholderOnly: 'blank',
@@ -81,6 +84,15 @@ export default class KeepCustomerManageScene extends BaseComponent {
     };
 
     /**
+     *  下拉刷新数据
+     **/
+    refreshingData = () => {
+        this.keepCustomerList = [];
+        this.setState({isRefreshing: true});
+        this.loadData();
+    };
+
+    /**
      *   时间单位筛选映射
      **/
     timeSelectMapping = () => {
@@ -108,6 +120,27 @@ export default class KeepCustomerManageScene extends BaseComponent {
         }
     };
 
+
+    /**
+     *
+     **/
+    renderListFooter = () => {
+        if (this.state.isRefreshing) {
+            return null;
+        } else {
+            return (<LoadMoreFooter isLoadAll={this.pageNum >= this.allPage} isCarFoot={false}/>)
+        }
+    };
+
+    /**
+     *
+     **/
+    toEnd = () => {
+        if (this.pageNum < this.allPage && !this.state.isRefreshing) {
+            this.loadMoreData();
+        }
+    };
+
     /**
      *   数据请求
      **/
@@ -122,9 +155,11 @@ export default class KeepCustomerManageScene extends BaseComponent {
                     month: this.selectMonth === '选择月份' ? '' : this.selectMonth
                 };
                 let url = AppUrls.TENURE_PERFECT_IF_LIST;
+                this.pageNum = 1;
                 request(url, 'post', maps).then((response) => {
                     this.props.showModal(false);
                     this.keepCustomerList = response.mjson.data.record.beanlist;
+                    this.allPage = response.mjson.data.record.tp;
                     if (this.keepCustomerList && this.keepCustomerList.length > 0) {
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
@@ -140,6 +175,43 @@ export default class KeepCustomerManageScene extends BaseComponent {
                     }
                 }, (error) => {
                     this.props.showModal(false);
+                    this.setState({
+                        isRefreshing: false,
+                        renderPlaceholderOnly: 'error'
+                    });
+                });
+            } else {
+                this.props.showToast('查询账户信息失败');
+            }
+        });
+    };
+
+    /**
+     *   数据请求
+     **/
+    loadMoreData = () => {
+        StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
+            if (data.code == 1 && data.result != null) {
+                this.pageNum += 1;
+                let maps = {
+                    mobile: data.result + this.companyId,
+                    perfectStatus: this.stateSelectMapping(),
+                    pc: this.pageNum,
+                    times: this.timeSelectMapping(),
+                    month: this.selectMonth === '选择月份' ? '' : this.selectMonth
+                };
+                let url = AppUrls.TENURE_PERFECT_IF_LIST;
+                request(url, 'post', maps).then((response) => {
+                    let data = response.mjson.data.record.beanlist;
+                    for (let i = 0; i < data.length; i++) {
+                        this.keepCustomerList.push(data[i]);
+                    }
+                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                    this.setState({
+                        isRefreshing: false,
+                        dataSource: ds.cloneWithRows(this.keepCustomerList)
+                    });
+                }, (error) => {
                     this.setState({
                         isRefreshing: false,
                         renderPlaceholderOnly: 'error'
@@ -238,7 +310,17 @@ export default class KeepCustomerManageScene extends BaseComponent {
                               removeClippedSubviews={false}
                               renderRow={this._renderRow}
                               enableEmptySections={true}
-                              renderSeparator={this._renderSeperator}/>
+                              renderFooter={this.renderListFooter}
+                              onEndReached={this.toEnd}
+                              renderSeparator={this._renderSeperator}
+                              refreshControl={
+                                  <RefreshControl
+                                      refreshing={this.state.isRefreshing}
+                                      onRefresh={this.refreshingData}
+                                      tintColor={[fontAndColor.COLORB0]}
+                                      colors={[fontAndColor.COLORB0]}
+                                  />
+                              }/>
                     {this.state.addTimeHide && <ClientAddTimeSelectView hideView={this.selectAddTime}
                                                                         selectMonth={this.selectMonth}
                                                                         updateMonth={this.updateMonth}

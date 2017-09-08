@@ -37,8 +37,9 @@ export default class KeepCustomerSearchScene extends BaseComponent {
      **/
     constructor(props) {
         super(props);
-        //this.pageNum = 1;
-        //this.allPage = 1;
+        this.pageNum = 1;
+        this.allPage = 1;
+        this.clientListData = [];
         this.companyId = '';
         this.state = {
             dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
@@ -124,7 +125,7 @@ export default class KeepCustomerSearchScene extends BaseComponent {
      * @returns {XML}
      **/
     refreshingData = () => {
-        this.orderListData = [];
+        this.clientListData = [];
         this.setState({isRefreshing: true});
         this.loadData();
     };
@@ -160,6 +161,15 @@ export default class KeepCustomerSearchScene extends BaseComponent {
 
     /**
      *
+     **/
+    toEnd = () => {
+        if (this.pageNum < this.allPage && !this.state.isRefreshing) {
+            this.loadMoreData();
+        }
+    };
+
+    /**
+     *
      * @returns {XML}
      **/
     loadData = () => {
@@ -167,12 +177,14 @@ export default class KeepCustomerSearchScene extends BaseComponent {
             if (data.code == 1 && data.result != null) {
                 let maps = {
                     mobile: data.result + this.companyId,
-                    select: this.state.value
+                    select: this.state.value,
+                    pc: 1
                 };
                 let url = AppUrls.SELECT_BY_SEARCH;
+                this.pageNum = 1;
                 request(url, 'post', maps).then((response) => {
                     this.clientListData = response.mjson.data.record.beanlist;
-                    //this.allPage = response.mjson.data.total / response.mjson.data.rows;
+                    this.allPage = response.mjson.data.record.tp;
                     if (this.clientListData && this.clientListData.length > 0) {
                         this.setState({
                             dataSource: this.state.dataSource.cloneWithRows(this.clientListData),
@@ -185,6 +197,42 @@ export default class KeepCustomerSearchScene extends BaseComponent {
                             renderPlaceholderOnly: 'null'
                         });
                     }
+                }, (error) => {
+                    this.setState({
+                        isRefreshing: false,
+                        renderPlaceholderOnly: 'error'
+                    });
+                });
+            } else {
+                this.props.showToast('查询账户信息失败');
+            }
+        });
+    };
+
+    /**
+     *
+     * @returns {XML}
+     **/
+    loadMoreData = () => {
+        StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
+            if (data.code == 1 && data.result != null) {
+                this.pageNum += 1;
+                let maps = {
+                    mobile: data.result + this.companyId,
+                    select: this.state.value,
+                    pc: this.pageNum
+                };
+                let url = AppUrls.SELECT_BY_SEARCH;
+                request(url, 'post', maps).then((response) => {
+                    let data = response.mjson.data.record.beanlist;
+                    for (let i = 0; i < data.length; i++) {
+                        this.clientListData.push(data[i]);
+                    }
+                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                    this.setState({
+                        isRefreshing: false,
+                        dataSource: ds.cloneWithRows(this.clientListData)
+                    });
                 }, (error) => {
                     this.setState({
                         isRefreshing: false,
@@ -231,7 +279,7 @@ export default class KeepCustomerSearchScene extends BaseComponent {
                                 justifyContent: 'center',
                                 alignItems: 'center'
                             }}>
-                                <Text allowFontScaling={false}  style={{
+                                <Text allowFontScaling={false} style={{
                                     color: 'white',
                                     fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30)
                                 }}>搜索</Text>
@@ -243,16 +291,6 @@ export default class KeepCustomerSearchScene extends BaseComponent {
             </View>
         );
     }
-
-    /**
-     *
-     * @returns {XML}
-     **/
-    toEnd = () => {
-        if (this.orderListData.length && !this.state.isRefreshing) {
-            //this.loadMoreData();
-        }
-    };
 
     /**
      *
@@ -290,7 +328,7 @@ export default class KeepCustomerSearchScene extends BaseComponent {
                                     justifyContent: 'center',
                                     alignItems: 'center'
                                 }}>
-                                    <Text allowFontScaling={false}  style={{
+                                    <Text allowFontScaling={false} style={{
                                         color: 'white',
                                         fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30)
                                     }}>搜索</Text>
@@ -304,16 +342,16 @@ export default class KeepCustomerSearchScene extends BaseComponent {
                               removeClippedSubviews={false}
                               enableEmptySections={true}
                               renderSeparator={this._renderSeperator}
-                        //renderFooter={this.state.startSearch === 0 ? null : this.renderListFooter}
-                        //onEndReached={this.state.startSearch === 0 ? null : this.toEnd}
-                        /*refreshControl={this.state.startSearch === 0 ? null :
-                         <RefreshControl
-                         refreshing={this.state.isRefreshing}
-                         onRefresh={this.refreshingData}
-                         tintColor={[fontAndColor.COLORB0]}
-                         colors={[fontAndColor.COLORB0]}
-                         />
-                         }*//>
+                              renderFooter={this.state.startSearch === 0 ? null : this.renderListFooter}
+                              onEndReached={this.state.startSearch === 0 ? null : this.toEnd}
+                              refreshControl={this.state.startSearch === 0 ? null :
+                                  <RefreshControl
+                                      refreshing={this.state.isRefreshing}
+                                      onRefresh={this.refreshingData}
+                                      tintColor={[fontAndColor.COLORB0]}
+                                      colors={[fontAndColor.COLORB0]}
+                                  />
+                              }/>
                 </View>
             )
         }
@@ -327,7 +365,7 @@ export default class KeepCustomerSearchScene extends BaseComponent {
         return (
             <View
                 key={`${sectionID}-${rowID}`}
-                style={{backgroundColor: fontAndColor.COLORA3, height: Pixel.getPixel(1)}}/>
+                style={{backgroundColor: fontAndColor.COLORA3, height: Pixel.getPixel(10)}}/>
         )
     }
 
@@ -389,7 +427,8 @@ export default class KeepCustomerSearchScene extends BaseComponent {
                     </View>
                     <View style={{flex: 1}}/>
                     <View style={{backgroundColor: fontAndColor.COLORA4, height: 1}}/>
-                    {rowData.custName != null && rowData.custPhone != null &&
+                    {rowData.custName != null && rowData.custName != '' &&
+                    rowData.custPhone != null && rowData.custPhone != '' &&
                     <View style={{height: Pixel.getPixel(44), flexDirection: 'row', alignItems: 'center'}}>
                         <Text allowFontScaling={false} style={{
                             marginLeft: Pixel.getPixel(15),
@@ -403,7 +442,8 @@ export default class KeepCustomerSearchScene extends BaseComponent {
                             color: fontAndColor.COLORA0
                         }}>手机号:{rowData.custPhone}</Text>
                     </View>}
-                    {(rowData.custName == null || rowData.custPhone == null) &&
+                    {((rowData.custName == null || rowData.custName == '') ||
+                    (rowData.custPhone == null || rowData.custPhone == '')) &&
                     <View style={{
                         height: Pixel.getPixel(44),
                         flexDirection: 'row',
@@ -424,66 +464,14 @@ export default class KeepCustomerSearchScene extends BaseComponent {
 }
 
 const styles = StyleSheet.create({
-
     container: {
         flex: 1,
         backgroundColor: fontAndColor.COLORA3
     },
     backIcon: {
-
         marginLeft: Pixel.getPixel(12),
         height: Pixel.getPixel(20),
         width: Pixel.getPixel(20),
-    },
-    checkedContentView: {
-
-        backgroundColor: fontAndColor.COLORA3,
-        flexDirection: 'row',
-        alignItems: 'center',
-        // justifyContent:'space-between',
-        flexWrap: 'wrap',
-    },
-
-    checkedContentItem: {
-
-        backgroundColor: '#FFFFFF',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: Pixel.getPixel(20),
-        paddingHorizontal: Pixel.getPixel(5),
-        marginLeft: Pixel.getPixel(15),
-        marginTop: Pixel.getPixel(5),
-        marginBottom: Pixel.getPixel(5),
-        borderRadius: 4,
-    },
-    checkedItemText: {
-        color: fontAndColor.COLORA0,
-        fontSize: fontAndColor.CONTENTFONT,
-    },
-    checkedDeleteImg: {
-        width: Pixel.getPixel(10),
-        height: Pixel.getPixel(10),
-        marginLeft: Pixel.getPixel(5),
-    },
-    checkedDelectView: {
-        height: Pixel.getPixel(20),
-        width: Pixel.getPixel(50),
-        borderRadius: 4,
-        borderWidth: StyleSheet.hairlineWidth,
-        borderColor: fontAndColor.COLORA2,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: Pixel.getPixel(10),
-        marginLeft: Pixel.getPixel(15),
-        marginTop: Pixel.getPixel(10),
-    },
-    checkedDelectText: {
-        color: fontAndColor.COLORA2,
-        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT),
-    },
-    carCell: {
-        height: Pixel.getPixel(110),
     },
     navigatorView: {
         top: 0,
@@ -500,11 +488,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: fontAndColor.COLORB0
     },
-    navigatorLoactionView: {
-        flexDirection: 'row',
-        width: Pixel.getPixel(85),
-        alignItems: 'center'
-    },
     navigatorSousuoView: {
         height: Pixel.getPixel(27),
         borderRadius: 5,
@@ -513,59 +496,11 @@ const styles = StyleSheet.create({
         width: width - Pixel.getPixel(100),
         flexDirection: 'row'
     },
-    navigatorText: {
-        marginLeft: Pixel.getPixel(6),
-        color: 'white',
-        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT),
-
-    },
-    navigatorSousuoText: {
-
-        color: fontAndColor.COLORA1,
-        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT),
-
-    },
-    separatedLine: {
-        marginRight: Pixel.getPixel(15),
-        marginLeft: Pixel.getPixel(15),
-        height: 1,
-        backgroundColor: fontAndColor.COLORA4
-    },
     image: {
         marginLeft: Pixel.getPixel(15),
         width: Pixel.getPixel(120),
         height: Pixel.getPixel(80),
         resizeMode: 'stretch'
-    },
-    carDescribeTitle: {
-        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-        color: fontAndColor.COLORA1
-    },
-    carDescribe: {
-        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-        color: fontAndColor.COLORA0
-    },
-    rowTitleLine: {
-        alignItems: 'center',
-        height: Pixel.getPixel(40),
-        justifyContent: 'flex-start',
-        flexDirection: 'row',
-        //marginTop: Pixel.getPixel(15),
-        marginLeft: Pixel.getPixel(15)
-    },
-    rowView: {
-        height: Pixel.getPixel(186),
-        backgroundColor: 'white'
-    },
-    rowTitleText: {
-        fontSize: Pixel.getFontPixel(fontAndColor.BUTTONFONT30),
-        color: fontAndColor.COLORA0,
-    },
-    rowTitleState: {
-        alignItems: 'flex-end',
-        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
-        color: fontAndColor.COLORB2,
-        marginRight: Pixel.getPixel(15)
     },
     inputStyle: {
         flex: 1,
@@ -575,5 +510,15 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
         color: fontAndColor.COLORA2,
         padding: 0
+    },
+    expButton: {
+        width: Pixel.getPixel(88),
+        height: Pixel.getPixel(27),
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 3,
+        borderWidth: 1,
+        borderColor: fontAndColor.COLORB0
     }
 });
