@@ -81,15 +81,25 @@ export default class SoftArticlesCenterScene extends BaseComponent {
                         onLoadEnd={() => {
                             this.refs.webviewtitle.lastProgress();
                         }}
-                        //onNavigationStateChange={this.onNavigationStateChange.bind(this)}
+                        onNavigationStateChange={this.onNavigationStateChange.bind(this)}
                     />
                     <NavigationView
-                        backIconClick={this.backPage}
+                        backIconClick={()=>{
+                            if(oldUrl==AppUrls.SOFT_ARTICLES_CENTER){
+                                this.backPage();
+                            }else {
+                                this.refs.www.goBack();
+                            }
+                        }}
                         title="软文中心"
                     />
                 </View>
             );
         }
+    }
+
+    onNavigationStateChange = (navState) => {
+       oldUrl = navState.url;
     }
 
 }
