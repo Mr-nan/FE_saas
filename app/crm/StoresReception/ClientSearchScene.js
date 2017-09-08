@@ -38,9 +38,10 @@ export default class ClientSearchScene extends BaseComponent {
      **/
     constructor(props) {
         super(props);
-        //this.pageNum = 1;
-        //this.allPage = 1;
+        this.pageNum = 1;
+        this.allPage = 1;
         this.companyId = '';
+        this.potentialClientList = [];
         this.state = {
             dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
             renderPlaceholderOnly: 'blank',
@@ -124,16 +125,6 @@ export default class ClientSearchScene extends BaseComponent {
      *
      * @returns {XML}
      **/
-    refreshingData = () => {
-        this.orderListData = [];
-        this.setState({isRefreshing: true});
-        this.loadData();
-    };
-
-    /**
-     *
-     * @returns {XML}
-     **/
     startSearch = () => {
         Keyboard.dismiss();
         if (this.state.value === '') {
@@ -145,6 +136,15 @@ export default class ClientSearchScene extends BaseComponent {
             });
             this.loadData();
         }
+    };
+
+    /**
+     *  下拉刷新数据
+     **/
+    refreshingData = () => {
+        this.potentialClientList = [];
+        this.setState({isRefreshing: true});
+        this.loadData();
     };
 
     /**
@@ -168,15 +168,18 @@ export default class ClientSearchScene extends BaseComponent {
             if (data.code == 1 && data.result != null) {
                 let maps = {
                     mobile: data.result + this.companyId,
-                    select: this.state.value
+                    select: this.state.value,
+                    pc: 1
                 };
                 let url = AppUrls.QUERY_CUSTOMER_BY_SEARCH_KEY;
+                this.pageNum = 1;
                 request(url, 'post', maps).then((response) => {
-                    this.clientListData = response.mjson.data.record.beanlist;
-                    //this.allPage = response.mjson.data.total / response.mjson.data.rows;
-                    if (this.clientListData && this.clientListData.length > 0) {
+                    this.props.showModal(false);
+                    this.potentialClientList = response.mjson.data.record.beanlist;
+                    this.allPage = response.mjson.data.record.tp;
+                    if (this.potentialClientList && this.potentialClientList.length > 0) {
                         this.setState({
-                            dataSource: this.state.dataSource.cloneWithRows(this.clientListData),
+                            dataSource: this.state.dataSource.cloneWithRows(this.potentialClientList),
                             isRefreshing: false,
                             renderPlaceholderOnly: 'success'
                         });
@@ -187,6 +190,7 @@ export default class ClientSearchScene extends BaseComponent {
                         });
                     }
                 }, (error) => {
+                    this.props.showModal(false);
                     this.setState({
                         isRefreshing: false,
                         renderPlaceholderOnly: 'error'
@@ -198,6 +202,42 @@ export default class ClientSearchScene extends BaseComponent {
                     isRefreshing: false,
                     renderPlaceholderOnly: 'error'
                 });
+            }
+        });
+    };
+
+    /**
+     *
+     * @returns {XML}
+     **/
+    loadMoreData = () => {
+        StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
+            if (data.code == 1 && data.result != null) {
+                this.pageNum += 1;
+                let maps = {
+                    mobile: data.result + this.companyId,
+                    select: this.state.value,
+                    pc: this.pageNum
+                };
+                let url = AppUrls.QUERY_CUSTOMER_BY_SEARCH_KEY;
+                request(url, 'post', maps).then((response) => {
+                    let data = response.mjson.data.record.beanlist;
+                    for (let i = 0; i < data.length; i++) {
+                        this.potentialClientList.push(data[i]);
+                    }
+                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                    this.setState({
+                        isRefreshing: false,
+                        dataSource: ds.cloneWithRows(this.potentialClientList)
+                    });
+                }, (error) => {
+                    this.setState({
+                        isRefreshing: false,
+                        renderPlaceholderOnly: 'error'
+                    });
+                });
+            } else {
+                this.props.showToast('查询账户信息失败');
             }
         });
     };
@@ -251,11 +291,10 @@ export default class ClientSearchScene extends BaseComponent {
 
     /**
      *
-     * @returns {XML}
      **/
     toEnd = () => {
-        if (this.orderListData.length && !this.state.isRefreshing) {
-            //this.loadMoreData();
+        if (this.pageNum < this.allPage && !this.state.isRefreshing) {
+            this.loadMoreData();
         }
     };
 
@@ -309,16 +348,16 @@ export default class ClientSearchScene extends BaseComponent {
                               removeClippedSubviews={false}
                               enableEmptySections={true}
                               renderSeparator={this._renderSeperator}
-                              //renderFooter={this.state.startSearch === 0 ? null : this.renderListFooter}
-                              //onEndReached={this.state.startSearch === 0 ? null : this.toEnd}
-                              /*refreshControl={this.state.startSearch === 0 ? null :
+                              renderFooter={this.state.startSearch === 0 ? null : this.renderListFooter}
+                              onEndReached={this.state.startSearch === 0 ? null : this.toEnd}
+                              refreshControl={this.state.startSearch === 0 ? null :
                                   <RefreshControl
                                       refreshing={this.state.isRefreshing}
                                       onRefresh={this.refreshingData}
                                       tintColor={[fontAndColor.COLORB0]}
                                       colors={[fontAndColor.COLORB0]}
                                   />
-                              }*//>
+                              }/>
                 </View>
             )
         }

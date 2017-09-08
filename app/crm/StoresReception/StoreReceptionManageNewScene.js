@@ -1,7 +1,7 @@
 import  React, {Component, PropTypes} from  'react'
 import  {
     View,
-    TextInput,
+    RefreshControl,
     ListView,
     StyleSheet,
     Dimensions,
@@ -24,6 +24,7 @@ import {ClientAddTimeSelectView} from "./component/ClientAddTimeSelectView";
 import {ClientScreeningSelectButton} from "./component/ClientScreeningSelectButton";
 import ClientScreeningView from "./component/ClientScreeningView";
 import ClientInfoScene from "./ClientInfoScene";
+import LoadMoreFooter from "../../carSource/znComponent/LoadMoreFooter";
 const cellJianTou = require('../../../images/mainImage/celljiantou.png');
 import StorageUtil from "../../utils/StorageUtil";
 import * as StorageKeyNames from "../../constant/storageKeyNames";
@@ -43,6 +44,8 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
         this.selectMonth = '选择月份';
         this.potentialClientList = [];
         this.companyId = '';
+        this.pageNum = 1;
+        this.allPage = 1;
         this.screeningItems = {
             xxly: {index: 0, value: '所有来源'},
             khjb: {index: 0, value: '所有级别'},
@@ -100,6 +103,15 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
     };
 
     /**
+     *  下拉刷新数据
+     **/
+    refreshingData = () => {
+        this.potentialClientList = [];
+        this.setState({isRefreshing: true});
+        this.loadData();
+    };
+
+    /**
      *   数据请求
      **/
     loadData = () => {
@@ -119,9 +131,11 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                     //createTime: '2017-08-09 15:18:47'
                 };
                 let url = AppUrls.POTENTIAL_CUSTOMER_LISTS;
+                this.pageNum = 1;
                 request(url, 'post', maps).then((response) => {
                     this.props.showModal(false);
                     this.potentialClientList = response.mjson.data.record.beanlist;
+                    this.allPage = response.mjson.data.record.tp;
                     if (this.potentialClientList && this.potentialClientList.length > 0) {
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
@@ -137,6 +151,49 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                     }
                 }, (error) => {
                     this.props.showModal(false);
+                    this.setState({
+                        isRefreshing: false,
+                        renderPlaceholderOnly: 'error'
+                    });
+                });
+            } else {
+                this.props.showToast('查询账户信息失败');
+            }
+        });
+    };
+
+    /**
+     *   上拉加载
+     **/
+    loadMoreData = () => {
+        StorageUtil.mGetItem(StorageKeyNames.PHONE, (data) => {
+            if (data.code == 1 && data.result != null) {
+                this.pageNum += 1;
+                let maps = {
+                    //mobile: '15102373842',
+                    mobile: data.result + this.companyId,
+                    //token: '5afa531b-4295-4c64-8d6c-ac436c619078',
+                    xxly: this.screeningItems.xxly.value,
+                    khjb: this.screeningItems.khjb.value,
+                    dfzt: this.screeningItems.dfzt.value,
+                    gmys: this.screeningItems.gmys.value,
+                    pc: this.pageNum,
+                    times: this.timeSelectMapping(),
+                    month: this.selectMonth === '选择月份' ? '' : this.selectMonth
+                    //createTime: '2017-08-09 15:18:47'
+                };
+                let url = AppUrls.POTENTIAL_CUSTOMER_LISTS;
+                request(url, 'post', maps).then((response) => {
+                    let data = response.mjson.data.record.beanlist;
+                    for (let i = 0; i < data.length; i++) {
+                        this.potentialClientList.push(data[i]);
+                    }
+                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                    this.setState({
+                        isRefreshing: false,
+                        dataSource: ds.cloneWithRows(this.potentialClientList)
+                    });
+                }, (error) => {
                     this.setState({
                         isRefreshing: false,
                         renderPlaceholderOnly: 'error'
@@ -235,7 +292,17 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                               removeClippedSubviews={false}
                               renderRow={this._renderRow}
                               enableEmptySections={true}
-                              renderSeparator={this._renderSeperator}/>
+                              renderFooter={this.renderListFooter}
+                              onEndReached={this.toEnd}
+                              renderSeparator={this._renderSeperator}
+                              refreshControl={
+                                  <RefreshControl
+                                      refreshing={this.state.isRefreshing}
+                                      onRefresh={this.refreshingData}
+                                      tintColor={[fontAndColor.COLORB0]}
+                                      colors={[fontAndColor.COLORB0]}
+                                  />
+                              }/>
                     {this.state.addTimeHide && <ClientAddTimeSelectView hideView={this.selectAddTime}
                                                                         selectMonth={this.selectMonth}
                                                                         updateMonth={this.updateMonth}
@@ -250,6 +317,26 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
             );
         }
     }
+
+    /**
+     *
+     **/
+    renderListFooter = () => {
+        if (this.state.isRefreshing) {
+            return null;
+        } else {
+            return (<LoadMoreFooter isLoadAll={this.pageNum >= this.allPage} isCarFoot={false}/>)
+        }
+    };
+
+    /**
+     *
+     **/
+    toEnd = () => {
+        if (this.pageNum < this.allPage && !this.state.isRefreshing) {
+            this.loadMoreData();
+        }
+    };
 
     /**
      *  listView间隔线

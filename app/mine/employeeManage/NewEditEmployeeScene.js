@@ -84,15 +84,19 @@ export  default class BankCardScene extends BaseComponent {
         request(Urls.USER_ROLE, 'Post', maps)
             .then((response) => {
                     let newComps = [];
-                    for (let i = 0; i < data.company.ids.length; i++) {
+                    let role_ids = [];
+                    for (let i = 0; i < data.company.length; i++) {
                         for (let j = 0; j < comps.length; j++) {
-                            if (data.company.ids[i] == comps[j].enterprise_uid) {
+                            if (data.company[i].company_id == comps[j].enterprise_uid) {
                                 newComps.push(comps[j]);
                             }
                         }
+                        if (i === 0) {
+                            role_ids = data.company[i].role_ids;
+                        }
                     }
                     let newRole = [];
-                    let role_ids = (data.company.role_id + '').split(',');
+                    //let role_ids = (data.company.role_id + '').split(',');
                     for (let i = 0; i < role_ids.length; i++) {
                         for (let j = 0; j < response.mjson.data.length; j++) {
                             if (role_ids[i] == response.mjson.data[j].role_id) {
@@ -230,6 +234,9 @@ export  default class BankCardScene extends BaseComponent {
 
     checkEmpty = () => {
         for (let i = 0; i < childItems.length; i++) {
+            if (childItems[i].name == '注销') {
+                continue;
+            }
             if (i == 2) {
                 if (childItems[i].value.length <= 0) {
                     this.props.showToast(childItems[i].name + '不能为空');
@@ -266,7 +273,8 @@ export  default class BankCardScene extends BaseComponent {
             password: md5.hex_md5(childItems[5].value),
             repassword: md5.hex_md5(childItems[6].value),
             role_id: new_role_id,
-            sex: childItems[1].value.split(',')[1],
+            //sex: childItems[1].value.split(',')[1],
+            sex: childItems[1].value,
             username: childItems[0].value,
             staff_id: this.props.id
         };
