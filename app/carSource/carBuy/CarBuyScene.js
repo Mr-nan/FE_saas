@@ -690,6 +690,5 @@ const styles = StyleSheet.create({
     loadView: {
         flex: 1,
         backgroundColor: 'white',
-        marginTop: Pixel.getPixel(5),
     },
 });

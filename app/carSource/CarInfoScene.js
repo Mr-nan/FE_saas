@@ -128,7 +128,7 @@ export default class CarInfoScene extends BaseComponent {
             if (data.code == 1 && data.result != '') {
                 let enters = JSON.parse(data.result);
                 for (let item of enters.enterprise_list[0].role_type){
-                    if(item ==1){
+                    if(item ==1 || item==6){
                         this.isUserBoss = true;
                         break;
                     }
