@@ -793,6 +793,9 @@ export default class FinanceSence extends BaseComponet {
                                         if(this.state.mnyData.is_microchinese_mny==4){
                                             this.refs.showAlert.setModelVisible(true)
                                         }else if (this.state.mnyData.is_microchinese_mny == 1){
+
+
+
                                             let navigationParams={
                                                 name: "QuotaApplication",
                                                 component: QuotaApplication,
@@ -802,6 +805,7 @@ export default class FinanceSence extends BaseComponet {
                                                     }
                                                 }
                                             }
+
                                             this.props.callBack(navigationParams);
                                         }
 
