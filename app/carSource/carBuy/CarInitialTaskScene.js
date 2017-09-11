@@ -386,6 +386,7 @@ export default class CarInitialTaskScene extends BaseComponent{
                                 <TextInput style={styles.textInput}
                                            placeholder='请输入'
                                            keyboardType={'phone-pad'}
+                                           ref={(ref)=>{this.infoMobileInput = ref}}
                                            maxLength={11}
                                            underlineColorAndroid='transparent'
                                            onFocus={()=>{
@@ -398,7 +399,13 @@ export default class CarInitialTaskScene extends BaseComponent{
                                                    keyboardOffset:-Pixel.getPixel(64)
                                                });
                                            }}
-                                           onChangeText={(text)=>{this.carData.infoMobile = text}}/>
+                                           onChangeText={(text)=>{
+                                               let number = this.phoneNumber(text);
+                                               this.infoMobileInput.setNativeProps({
+                                                   text: number,
+                                               });
+                                               this.carData.infoMobile = text
+                                           }}/>
 
                             </View>)
                     }
@@ -458,11 +465,18 @@ export default class CarInitialTaskScene extends BaseComponent{
                         return (
                             <View style={{alignItems:'center', flexDirection:'row',justifyContent:'flex-end'}}>
                                 <TextInput style={styles.textInput}
+                                           ref={(ref)=>{this.selfMobileInput=ref}}
                                            placeholder='请输入'
                                            keyboardType={'phone-pad'}
                                            maxLength={11}
                                            underlineColorAndroid='transparent'
-                                           onChangeText={(text)=>{this.carData.selfMobile = text}}/>
+                                           onChangeText={(text)=>{
+                                               let number = this.phoneNumber(text);
+                                               this.selfMobileInput.setNativeProps({
+                                                   text: number,
+                                               });
+                                               this.carData.selfMobile = text
+                                           }}/>
 
                             </View>)
                     }
@@ -751,6 +765,16 @@ export default class CarInitialTaskScene extends BaseComponent{
 
         }
     };
+
+    /**
+     *  限制手机号输入数字
+     * @param obj
+     * @returns {string}
+     */
+    phoneNumber=(obj)=> {
+        return obj.replace(/[^\d]/g,'');
+    }
+
 
     /**
      * 开始加载

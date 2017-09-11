@@ -823,7 +823,7 @@ export default class CarBuyTaskScene extends BaseComponent{
 
             this.pushCityListScene();
 
-        }else if(title == '上牌时间'){
+        }else if(title == '初登日期'){
 
             this._labelPress('register');
 
@@ -1093,7 +1093,6 @@ export default class CarBuyTaskScene extends BaseComponent{
      * @returns {string}
      */
     phoneNumber=(obj)=> {
-        obj = obj.toUpperCase();
         return obj.replace(/[^\d]/g,'');
     }
 

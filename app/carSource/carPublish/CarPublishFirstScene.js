@@ -522,7 +522,7 @@ export default class CarPublishFirstScene extends BaseComponent{
                 this.carData = response.mjson.data;
                 this.carData.manufacture= response.mjson.data.manufacture!=''?  this.dateReversal(response.mjson.data.manufacture+'000'):'';
                 this.carData.init_reg=response.mjson.data.init_reg!=''? this.dateReversal(response.mjson.data.init_reg+'000'):'';
-                this.carData.emission_standards = response.mjson.data.emission_standards_en;
+                this.carData.emission_standards = response.mjson.data.emission_standards;
                 this.setCarData();
             }
 

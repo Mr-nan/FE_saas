@@ -45,8 +45,6 @@ var shareClass = NativeModules.ZNShareClass;
 let Platform = require('Platform');
 const IS_ANDROID = Platform.OS === 'android';
 
-
-
 let carUpperFrameData = [];
 let carDropFrameData = [];
 let carAuditData = [];
@@ -68,7 +66,7 @@ export default class CarMySourceScene extends BaceComponent {
             return (
                 <View style={{backgroundColor:'white', flex:1}}>
                     {this.loadView()}
-                    <NavigatorView title='我的车源' backIconClick={this.backToTop}/>
+                    <NavigatorView title='库存车辆' backIconClick={this.backToTop}/>
                 </View>);
         }
         return (
@@ -93,7 +91,7 @@ export default class CarMySourceScene extends BaceComponent {
                     this.state.isShowCarSharedView && <CarSharedView offClick={()=>{this.setState({isShowCarSharedView:false})}} carSharedBtnClick={this.carSharedBtnClick} isShowMore={this.carData.img!=''?true:false}/>
                 }
                 <AccountModal ref="accountmodal"/>
-                <NavigatorView title='我的车源' backIconClick={this.backToTop} renderRihtFootView={this.renderRightFootView}/>
+                <NavigatorView title='库存车辆' backIconClick={this.backToTop} renderRihtFootView={this.renderRightFootView}/>
             </View>)
 
     }
@@ -122,6 +120,7 @@ export default class CarMySourceScene extends BaceComponent {
 
     loadHeadData=(action)=>{
 
+        console.log('===========刷新head');
         this.setState({renderPlaceholderOnly:'loading'});
         request(AppUrls.CAR_USER_CAR, 'post', {
             car_status: '1',
@@ -305,18 +304,12 @@ export default class CarMySourceScene extends BaceComponent {
 
                 if(groupStr==3){
 
-                    this.loadHeadData(()=>{
-                        this.refs.auditView.refreshingData();
-                        this.refs.upperFrameView.refreshingData();
-                    });
-
+                    this.upAllData();
 
                 }else if(groupStr == 2){
 
-                    this.loadHeadData(()=>{
-                        this.refs.dropFrameView.refreshingData();
-                        this.refs.upperFrameView.refreshingData();
-                    });
+                    this.upAllData();
+
                 }
                 this.props.showToast('已成功上架');
 
@@ -339,21 +332,8 @@ export default class CarMySourceScene extends BaceComponent {
         }).then((response) => {
 
             this.props.showModal(false);
-
-            this.loadHeadData(()=>{
-                this.refs.upperFrameView.refreshingData();
-                if((typeof(this.refs.upperFrameView)!= "undefined"))
-                {
-                    this.refs.upperFrameView.refreshingData();
-                }
-
-                if((typeof(this.refs.dropFrameView)!= "undefined"))
-                {
-                    this.refs.dropFrameView.refreshingData();
-                }
-            });
+            this.upAllData();
             this.props.showToast('已删除该车辆');
-
 
         }, (error) => {
             this.props.showToast(error.mjson.msg);
@@ -421,20 +401,25 @@ export default class CarMySourceScene extends BaceComponent {
             name: "CarDealInfoScene",
             component: CarDealInfoScene,
             params: {
-                refreshDataAction:()=>{
-
-                    this.loadHeadData(()=>{
-                        this.refs.upperFrameView.refreshingData();
-                        if((typeof(this.refs.dropFrameView)!= "undefined")){
-                            this.refs.dropFrameView.refreshingData();
-                        }
-                    });
-
-                },
+                refreshDataAction:this.upAllData,
                 carID:carID,
             }
         };
         this.toNextPage(navigatorParams);
+    }
+
+    upAllData=()=>{
+        this.loadHeadData(()=>{
+            this.refs.upperFrameView.refreshingData();
+            if((typeof(this.refs.dropFrameView)!= "undefined"))
+            {
+                this.refs.dropFrameView.refreshingData();
+            }
+            if((typeof(this.refs.auditView)!= "undefined"))
+            {
+                this.refs.auditView.refreshingData();
+            }
+        });
     }
 
     loadCarShareData = (shareType,carID) => {

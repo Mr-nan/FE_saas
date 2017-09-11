@@ -292,7 +292,6 @@ export default class CarUpImageScene extends BaseComponent{
                 }
             }
         }
-
         if(errorTitle!='')
         {
             this.props.showModal(false);

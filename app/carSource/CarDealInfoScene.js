@@ -110,9 +110,7 @@ export default class CarDealInfoScene extends BaseComponent{
                 saledPrice:this.carDealData.current_rate,
                 saledType:this.carDealData.paymentValue,
                 businessIf:this.carDealData.insuranceValue,
-
             }).then((response) => {
-
                 this.props.showModal(false);
                 this.props.refreshDataAction();
                 this.backPage();
