@@ -198,6 +198,10 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                             height:Pixel.getPixel(44),justifyContent:'center',alignItems: 'center'}}>
                             <Text allowFontScaling={false}  style={{color:'#fff',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28)}}>{this.props.buttonText}</Text>
                         </TouchableOpacity>
+                        <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.MARKFONT22),
+                marginTop:Pixel.getPixel(50),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15)}}>
+                            注:每天9：00～17：00为实时注册时间，其他时间银行会先记录下信息，在工作时间处理后返回给您处理结果
+                        </Text>
                     </KeyboardAvoidingView>
 
 
