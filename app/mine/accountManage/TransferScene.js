@@ -88,10 +88,11 @@ export  default class TransferScene extends BaseComponent {
                         this.backPage();
                 }}/>
 
-                <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.MARKFONT22),
-                marginTop:Pixel.getPixel(50),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),lineHeight:Pixel.getPixel(13)}}>
-                    注:转账可能由于某些不可抗拒因素造成无法实时到账或账户余额对应不上等问题，原因如下:{'\n'}1.转账过程中异常操作，如中途取消，网络异常等，
-                    当出现异常操作时为保证您的资金安全我们将对转账金额进行短暂冻结{'\n'}2.转账成功后银行返回的转账成功结果延迟
+                <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                              marginTop:Pixel.getPixel(20),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),lineHeight:Pixel.getPixel(18)}}>
+                    转账可能由于某些不可抗拒因素造成无法实时到账或账户余额对应不上等问题，原因如下:{'\n'}
+                    1.转账过程中异常操作，如中途取消，网络异常等，当出现异常操作时为保证您的资金安全我们将对转账金额进行短暂冻结{'\n'}
+                    2.转账成功后银行返回的转账成功结果延迟
                 </Text>
                 <NavigationView
                     title="转账"

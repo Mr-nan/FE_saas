@@ -99,9 +99,15 @@ export  default class OpenIndividualAccountScene extends BaseComponent {
                     <Text allowFontScaling={false}  style={{color:'#fff',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28)}}>{this.props.buttonText}</Text>
                 </TouchableOpacity>
 
-                <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.MARKFONT22),
-                marginTop:Pixel.getPixel(50),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15)}}>
-                    注:每天9：00～17：00为实时注册时间，其他时间银行会先记录下信息，在工作时间处理后返回给您处理结果
+                <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                marginTop:Pixel.getPixel(20),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),lineHeight:Pixel.getPixel(18)}}>
+                    每天
+                    <Text style={{color: fontAndColor.COLORB2,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                }}>
+                    9:00～17:00
+                    </Text>
+                    为实时注册时间，其他时间银行会先记录下信息，在工作时间处理后返回给您处理结果。
+
                 </Text>
                 <NavigationView
                     title={this.props.title}

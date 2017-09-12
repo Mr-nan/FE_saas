@@ -122,11 +122,13 @@ export  default class RechargeScene extends BaseComponent {
                             <Text allowFontScaling={false}  style={{fontWeight: 'bold',color: '#000',fontSize: Pixel.getPixel(14),marginTop:Pixel.getPixel(5)}}>
                                 收款银行：恒丰银行</Text>
                         </View>
-                        <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.MARKFONT22),
-                marginTop:Pixel.getPixel(1),marginBottom:Pixel.getPixel(15),lineHeight:Pixel.getPixel(13)}}>
-                            注:{'\n'}5万元以上金额充值由于需要审核无法做到实时到账，如急需账户用款请选择5万元以下的小额实时到账充值
-                        </Text>
+
+
                     </View>
+                    <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                              marginTop:Pixel.getPixel(20),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),lineHeight:Pixel.getPixel(18)}}>
+                        5万元以上金额充值由于需要审核无法做到实时到账，如急需账户用款请选择5万元以下的小额实时到账充值。
+                    </Text>
 
                 </View>
                 <NavigationView

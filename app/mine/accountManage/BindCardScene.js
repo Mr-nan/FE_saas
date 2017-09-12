@@ -145,33 +145,14 @@ export  default class BindCardScene extends BaseComponent {
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
 
-                <View style={{marginTop: Pixel.getTitlePixel(79),height:Pixel.getPixel(100)}}>
-                    <ListView
-                        removeClippedSubviews={false}
-
-                        dataSource={this.state.source}
-                        renderRow={this._renderRow}
-                        renderSeparator={this._renderSeparator}
-                    />
-                </View>
-
-
-                <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.MARKFONT22),
-                marginTop:Pixel.getPixel(50),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),lineHeight:Pixel.getPixel(13)}}>
-                    注:
-                </Text>
-                <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.MARKFONT22),
-                marginTop:Pixel.getPixel(1),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),lineHeight:Pixel.getPixel(13)}}>
-                    1.绑定银行卡时请注意，如果提醒绑定信息错误，超过三次，银行将对银行卡进行锁定，请谨慎操作
-                </Text>
-                <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.MARKFONT22),
-                marginTop:Pixel.getPixel(1),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),lineHeight:Pixel.getPixel(13)}}>
-                    2.请输入您名下正确的卡号及银行预留信息，否则可能造成绑卡失败
-                </Text>
-                <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.MARKFONT22),
-                marginTop:Pixel.getPixel(1),marginBottom:Pixel.getPixel(30),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),lineHeight:Pixel.getPixel(13)}}>
-                    3.银行反馈绑卡结果可能会有延迟，请耐心等待
-                </Text>
+                <ListView
+                    removeClippedSubviews={false}
+                    style={{marginTop: Pixel.getTitlePixel(79)}}
+                    dataSource={this.state.source}
+                    renderRow={this._renderRow}
+                    renderSeparator={this._renderSeparator}
+                    renderFooter={this._renderFooter}
+                />
                 <NavigationView
                     title="绑定银行卡"
                     backIconClick={this.backPage}
@@ -179,7 +160,23 @@ export  default class BindCardScene extends BaseComponent {
             </View>
         );
     }
+	_renderFooter() {
 
+		return (
+            <View >
+                <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
+                              marginTop:Pixel.getPixel(20),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),lineHeight:Pixel.getPixel(18)}}>
+                    1.绑定银行卡时请注意，如果提醒绑定信息错误，超过三次，银行将对银行卡进行锁定，请谨慎操作。{"\n"}
+                    2.请输入您名下正确的卡号及银行预留信息，否则可能造成绑卡失败。{"\n"}
+                    3.银行反馈绑卡结果可能会有延迟，请耐心等待。
+
+                </Text>
+            </View>
+
+
+
+		)
+	}
     _renderRow = (movie, sectionId, rowId) => {
         return (
             <TouchableOpacity onPress={()=>{
