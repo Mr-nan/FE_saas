@@ -6,10 +6,6 @@
 /**
  * 测试地址
  */
-<<<<<<< HEAD
-=======
-
->>>>>>> c2eae67b2d110652f64ea0a79a42d65ecdad07db
 export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
