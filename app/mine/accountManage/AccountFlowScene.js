@@ -61,26 +61,38 @@ export  default class AccountFlowScene extends BaseComponent {
                             index = obj.i;
                         }
                     }
-                    renderTabBar={() => <RepaymenyTabBar tabName={["全部", "充值",'提现','转账']}/>}
+                    renderTabBar={() => <RepaymenyTabBar tabName={['全部','充值', "转账",'提现','还款','交易']}/>}
                 >
-                    <FlowAllPage ref="flowallpage" tabLabel="ios-paper1"/>
-                    <FlowRechargePage ref="flowrechargepage" tabLabel="ios-paper2"/>
+                    {/*全部*/}
+                    <FlowAllPage ref="flowallpage" tabLabel="ios-paper0" transfer_type="all"/>
+                    {/*充值*/}
+                    <FlowRechargePage ref="flowrechargepage" tabLabel="ios-paper1"/>
+                    {/*转账*/}
+                    <FlowTransactionPage ref="flowtransactionpage" tabLabel="ios-paper2"/>
+                    {/*提现*/}
                     <FlowWithdrawalsPage ref="flowwithdrawalspage" tabLabel="ios-paper3"/>
-                    <FlowTransactionPage ref="flowtransactionpage" tabLabel="ios-paper4"/>
+                    {/*还款*/}
+                    <FlowWithdrawalsPage ref="flowrepaymentpage" tabLabel="ios-paper4"/>
+                    {/*交易*/}
+                    <FlowAllPage ref="flowtransactionpage" tabLabel="ios-paper5" transfer_type="0,3,4,104,105"/>
 
                 </ScrollableTabView>
                 <SelectDate ref="selectdate" callBack={(time)=>{
                     console.log(time+'----------'+index);
-                       if(index==0){
-                            this.refs.flowallpage.changeTime(time);
-                       }else if(index==1){
+                       if(index==1){
                             this.refs.flowrechargepage.changeTime(time);
                        }else if(index==2){
-                            this.refs.flowwithdrawalspage.changeTime(time);
-                       }
-                       else if(index==3){
                             this.refs.flowtransactionpage.changeTime(time);
+                       }else if(index==3){
+                            this.refs.flowwithdrawalspage.changeTime(time);
+                       } else if(index==4){
+                            this.refs.flowrepaymentpage.changeTime(time);
+                       } else if(index==5){
+                            this.refs.flowtransactionpage.changeTime(time);
+                       }else if (index==0){
+                             this.refs.flowallpage.changeTime(time);
                        }
+
                 }}/>
                 <NavigationView
                     title="账户流水"
