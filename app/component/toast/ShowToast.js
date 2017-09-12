@@ -47,7 +47,8 @@ export default  class ShowToast extends PureComponent {
     changeType = (_type, msg) => {
         if (_type === ShowToast.TOAST) {
             this.setState({
-                msg: msg
+                msg: msg,
+                height: height
             });
             this._toastOnPress();
         } else if (_type === ShowToast.CONFIRM) {
