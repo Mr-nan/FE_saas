@@ -77,7 +77,7 @@ export  default class FlowAllPage extends BaseComponent {
         let maps = {
             create_time:this.state.time,
             enter_base_id:id,
-            transfer_type:'0,3,4,104',
+            transfer_type:this.props.transfer_type,
             user_type:type
         };
         request(Urls.USER_ACCOUNT_PAYLOG, 'Post', maps)
