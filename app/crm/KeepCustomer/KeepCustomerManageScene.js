@@ -136,6 +136,7 @@ export default class KeepCustomerManageScene extends BaseComponent {
      *
      **/
     toEnd = () => {
+        console.log('this.pageNum=====', this.pageNum);
         if (this.pageNum < this.allPage && !this.state.isRefreshing) {
             this.loadMoreData();
         }
@@ -203,14 +204,20 @@ export default class KeepCustomerManageScene extends BaseComponent {
                 let url = AppUrls.TENURE_PERFECT_IF_LIST;
                 request(url, 'post', maps).then((response) => {
                     let data = response.mjson.data.record.beanlist;
-                    for (let i = 0; i < data.length; i++) {
-                        this.keepCustomerList.push(data[i]);
+                    if (data.length > 0) {
+                        for (let i = 0; i < data.length; i++) {
+                            this.keepCustomerList.push(data[i]);
+                        }
+                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                        this.setState({
+                            isRefreshing: false,
+                            dataSource: ds.cloneWithRows(this.keepCustomerList)
+                        });
+                    } else {
+                        this.setState({
+                            isRefreshing: false
+                        });
                     }
-                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    this.setState({
-                        isRefreshing: false,
-                        dataSource: ds.cloneWithRows(this.keepCustomerList)
-                    });
                 }, (error) => {
                     this.setState({
                         isRefreshing: false,

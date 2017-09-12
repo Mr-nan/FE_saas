@@ -185,14 +185,20 @@ export default class StoreReceptionManageNewScene extends BaseComponent {
                 let url = AppUrls.POTENTIAL_CUSTOMER_LISTS;
                 request(url, 'post', maps).then((response) => {
                     let data = response.mjson.data.record.beanlist;
-                    for (let i = 0; i < data.length; i++) {
-                        this.potentialClientList.push(data[i]);
+                    if (data.length > 0) {
+                        for (let i = 0; i < data.length; i++) {
+                            this.potentialClientList.push(data[i]);
+                        }
+                        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                        this.setState({
+                            isRefreshing: false,
+                            dataSource: ds.cloneWithRows(this.potentialClientList)
+                        });
+                    } else {
+                        this.setState({
+                            isRefreshing: false
+                        });
                     }
-                    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-                    this.setState({
-                        isRefreshing: false,
-                        dataSource: ds.cloneWithRows(this.potentialClientList)
-                    });
                 }, (error) => {
                     this.setState({
                         isRefreshing: false,
