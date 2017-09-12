@@ -32,33 +32,33 @@ export  default class FlowAllPage extends BaseComponent {
         this.state = {
             renderPlaceholderOnly: 'blank',
             source: [],
-            time:''
+            time: ''
         };
     }
 
     componentDidMount() {
         //InteractionManager.runAfterInteractions(() => {
-            this.setState({renderPlaceholderOnly: 'loading'});
-            this.initFinish();
-       // });
+        this.setState({renderPlaceholderOnly: 'loading'});
+        this.initFinish();
+        // });
     }
 
     initFinish = () => {
         this.getData();
     }
 
-    getData=()=>{
+    getData = () => {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
-                let datas=JSON.parse(data.result);
+                let datas = JSON.parse(data.result);
                 let maps = {
-                    enter_base_ids:datas.company_base_id,
-                    child_type:'1',
+                    enter_base_ids: datas.company_base_id,
+                    child_type: '1',
 
                 };
                 request(Urls.USER_ACCOUNT_INFO, 'Post', maps)
                     .then((response) => {
-                            this.getFlowData(datas.company_base_id,response.mjson.data.account.account_open_type);
+                            this.getFlowData(datas.company_base_id, response.mjson.data.account.account_open_type);
                         },
                         (error) => {
                             this.setState({
@@ -73,33 +73,33 @@ export  default class FlowAllPage extends BaseComponent {
         })
     }
 
-    getFlowData=(id,type)=>{
+    getFlowData = (id, type) => {
         let maps = {
-            create_time:this.state.time,
-            enter_base_id:id,
-            transfer_type:this.props.transfer_type,
-            user_type:type
+            create_time: this.state.time,
+            enter_base_id: id,
+            transfer_type: this.props.transfer_type,
+            user_type: type
         };
         request(Urls.USER_ACCOUNT_PAYLOG, 'Post', maps)
             .then((response) => {
-                    if(response.mjson.data==null||response.mjson.data.length<=0){
+                    if (response.mjson.data == null || response.mjson.data.length <= 0) {
                         this.setState({
                             renderPlaceholderOnly: 'null',
                         });
-                    }else{
+                    } else {
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
                             renderPlaceholderOnly: 'success',
-                            source:ds.cloneWithRows(response.mjson.data)
+                            source: ds.cloneWithRows(response.mjson.data)
                         });
                     }
                 },
                 (error) => {
-                    if(error.mycode=='-2100045'){
+                    if (error.mycode == '-2100045') {
                         this.setState({
                             renderPlaceholderOnly: 'null',
                         });
-                    }else{
+                    } else {
                         this.setState({
                             renderPlaceholderOnly: 'error',
                         });
@@ -107,10 +107,10 @@ export  default class FlowAllPage extends BaseComponent {
                 });
     }
 
-    changeTime=(time)=>{
+    changeTime = (time) => {
         this.setState({
-            time:time,
-            renderPlaceholderOnly:'loading'
+            time: time,
+            renderPlaceholderOnly: 'loading'
         });
         this.getData();
     }
@@ -133,28 +133,36 @@ export  default class FlowAllPage extends BaseComponent {
     }
 
     _renderRow = (movie, sectionId, rowId) => {
-            return (
-                <View style={{
-                    flex:1, height: Pixel.getPixel(73),
-                    backgroundColor: '#fff', flexDirection: 'row',paddingLeft: Pixel.getPixel(15),
-                    paddingRight:Pixel.getPixel(15)
+        return (
+            <View style={{
+                    flex:1,
+                    flexDirection:'column',
+                    backgroundColor:'#ffffff',
+                    paddingLeft:Pixel.getPixel(15),
+                    paddingRight:Pixel.getPixel(15),
+                    height:Pixel.getPixel(74),
                 }}>
-                    <View style={{flex:1,justifyContent:'center'}}>
-                        <Text allowFontScaling={false}  style={{color: '#000',fontSize: Pixel.getFontPixel(14)}}>{movie.operate_name}</Text>
-                        <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(12)}}>
-                            {movie.create_time}</Text>
-                    </View>
-                    <View style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>
-                        <Text allowFontScaling={false}  style={{color: '#000',fontSize: Pixel.getFontPixel(20)}}>{movie.amount}</Text>
-                    </View>
+                <View
+                    style={{flex:1,flexDirection:'row',height:Pixel.getPixel(37),alignItems:'center',paddingTop:Pixel.getPixel(5)}}>
+                    <Text allowFontScaling={false} style={styles.leftText}>{movie.operate_name}</Text>
+                    <Text allowFontScaling={false} style={styles.text}>{movie.amount}</Text>
+                    <Text allowFontScaling={false} style={styles.rightText}>{movie.create_time}</Text>
                 </View>
-            )
+                <View
+                    style={{flex:1,flexDirection:'row',height:Pixel.getPixel(37),alignItems:'center',paddingBottom:Pixel.getPixel(5)}}>
+                    <Text allowFontScaling={false} style={styles.leftText}>{'向"锋之行"账户'}</Text>
+                    <Text allowFontScaling={false} style={styles.text}>{"转账"}</Text>
+                    <Text allowFontScaling={false} style={[styles.rightText,{color:'#fa5741'}]}>{''}</Text>
+                </View>
+            </View>
+        )
     }
 
     _renderSeparator(sectionId, rowId) {
 
         return (
-            <View style={{width:width,height:Pixel.getPixel(1),backgroundColor:fontAndColor.COLORA3}} key={sectionId + rowId}>
+            <View style={{width:width,height:Pixel.getPixel(1),backgroundColor:fontAndColor.COLORA3}}
+                  key={sectionId + rowId}>
             </View>
         )
     }
@@ -171,20 +179,20 @@ export  default class FlowAllPage extends BaseComponent {
 
 }
 const styles = StyleSheet.create({
-
-    image: {
-        width: 43,
-        height: 43,
+    leftText: {
+        color: '#000',
+        fontSize: Pixel.getFontPixel(14),
+        minWidth: Pixel.getPixel(100),
     },
-    Separator: {
-        backgroundColor: fontAndColor.COLORA3,
-        height: Pixel.getPixel(10),
-
+    text: {
+        color: '#000',
+        fontSize: Pixel.getFontPixel(14),
+        marginLeft: Pixel.getPixel(10)
     },
-    margin: {
-        marginRight: Pixel.getPixel(15),
-        marginLeft: Pixel.getPixel(15)
-
+    rightText: {
+        color: '#000',
+        fontSize: Pixel.getFontPixel(14),
+        flex: 1,
+        textAlign: 'right',
     },
-    topViewStyle: {flex: 1, height: Pixel.getPixel(44), justifyContent: 'center'}
 })
