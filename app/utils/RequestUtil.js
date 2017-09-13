@@ -36,9 +36,11 @@ const request = (url, method, params, backToLogin) => {
                 device_code = 'dycd_platform_ios';
             }
 
-            console.log(url + '?token=' + token + '&device_code=' + device_code + '&' + body);
+            console.log(url + '?token=' + token + '&device_code=' + device_code+
+                '&version='+StorageKeyNames.VERSON_CODE+'&'+body);
 
-            fetch(url + '?token=' + token + '&device_code=' + device_code + '&' + body, {
+            fetch(url + '?token=' + token + '&device_code=' + device_code +
+                '&version=' + StorageKeyNames.VERSON_CODE + '&' + body, {
                 method,
                 body
             })
@@ -61,7 +63,7 @@ const request = (url, method, params, backToLogin) => {
                             resolve({mjson: responseData, mycode: 1});
                         } else {
                             if (responseData.code == 7040011 || responseData.code == 7040020) {
-                                StorageUtil.mSetItem(StorageKeyNames.ISLOGIN,'');
+                                StorageUtil.mSetItem(StorageKeyNames.ISLOGIN, '');
                                 StorageUtil.mSetItem(StorageKeyNames.NEED_TOAST_ERROR, responseData.msg + '');
                                 if (all) {
                                     all.immediatelyResetRouteStack([{
