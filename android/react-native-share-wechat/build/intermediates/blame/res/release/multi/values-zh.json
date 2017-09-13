@@ -1,6 +1,10 @@
 [
     {
+<<<<<<< HEAD
+        "outputFile": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-zh/values-zh.xml",
+=======
         "outputFile": "/Users/zhaojian/Desktop/react/FE_Saas/android/react-native-share-wechat/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-zh/values-zh.xml",
+>>>>>>> 5adb5a3b1de458526be114501c58da5675f4f2a8
         "map": [
             {
                 "to": {
@@ -11,7 +15,11 @@
                     "endOffset": 94
                 },
                 "from": {
+<<<<<<< HEAD
+                    "file": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/src/main/res/values-zh/values.xml",
+=======
                     "file": "/Users/zhaojian/Desktop/react/FE_Saas/android/react-native-share-wechat/src/main/res/values-zh/values.xml",
+>>>>>>> 5adb5a3b1de458526be114501c58da5675f4f2a8
                     "position": {
                         "startLine": 2,
                         "startColumn": 4,
@@ -30,7 +38,11 @@
                     "endOffset": 138
                 },
                 "from": {
+<<<<<<< HEAD
+                    "file": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/src/main/res/values-zh/values.xml",
+=======
                     "file": "/Users/zhaojian/Desktop/react/FE_Saas/android/react-native-share-wechat/src/main/res/values-zh/values.xml",
+>>>>>>> 5adb5a3b1de458526be114501c58da5675f4f2a8
                     "position": {
                         "startLine": 15,
                         "startColumn": 4,
@@ -49,7 +61,11 @@
                     "endOffset": 185
                 },
                 "from": {
+<<<<<<< HEAD
+                    "file": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/src/main/res/values-zh/values.xml",
+=======
                     "file": "/Users/zhaojian/Desktop/react/FE_Saas/android/react-native-share-wechat/src/main/res/values-zh/values.xml",
+>>>>>>> 5adb5a3b1de458526be114501c58da5675f4f2a8
                     "position": {
                         "startLine": 3,
                         "startColumn": 4,
@@ -68,7 +84,11 @@
                     "endOffset": 223
                 },
                 "from": {
+<<<<<<< HEAD
+                    "file": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/src/main/res/values-zh/values.xml",
+=======
                     "file": "/Users/zhaojian/Desktop/react/FE_Saas/android/react-native-share-wechat/src/main/res/values-zh/values.xml",
+>>>>>>> 5adb5a3b1de458526be114501c58da5675f4f2a8
                     "position": {
                         "startLine": 4,
                         "startColumn": 4,
@@ -87,7 +107,11 @@
                     "endOffset": 267
                 },
                 "from": {
+<<<<<<< HEAD
+                    "file": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/src/main/res/values-zh/values.xml",
+=======
                     "file": "/Users/zhaojian/Desktop/react/FE_Saas/android/react-native-share-wechat/src/main/res/values-zh/values.xml",
+>>>>>>> 5adb5a3b1de458526be114501c58da5675f4f2a8
                     "position": {
                         "startLine": 5,
                         "startColumn": 4,
@@ -106,7 +130,11 @@
                     "endOffset": 310
                 },
                 "from": {
+<<<<<<< HEAD
+                    "file": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/src/main/res/values-zh/values.xml",
+=======
                     "file": "/Users/zhaojian/Desktop/react/FE_Saas/android/react-native-share-wechat/src/main/res/values-zh/values.xml",
+>>>>>>> 5adb5a3b1de458526be114501c58da5675f4f2a8
                     "position": {
                         "startLine": 6,
                         "startColumn": 4,
@@ -125,7 +153,11 @@
                     "endOffset": 366
                 },
                 "from": {
+<<<<<<< HEAD
+                    "file": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/src/main/res/values-zh/values.xml",
+=======
                     "file": "/Users/zhaojian/Desktop/react/FE_Saas/android/react-native-share-wechat/src/main/res/values-zh/values.xml",
+>>>>>>> 5adb5a3b1de458526be114501c58da5675f4f2a8
                     "position": {
                         "startLine": 7,
                         "startColumn": 4,
@@ -144,7 +176,11 @@
                     "endOffset": 415
                 },
                 "from": {
+<<<<<<< HEAD
+                    "file": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/src/main/res/values-zh/values.xml",
+=======
                     "file": "/Users/zhaojian/Desktop/react/FE_Saas/android/react-native-share-wechat/src/main/res/values-zh/values.xml",
+>>>>>>> 5adb5a3b1de458526be114501c58da5675f4f2a8
                     "position": {
                         "startLine": 8,
                         "startColumn": 4,
@@ -163,7 +199,11 @@
                     "endOffset": 469
                 },
                 "from": {
+<<<<<<< HEAD
+                    "file": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/src/main/res/values-zh/values.xml",
+=======
                     "file": "/Users/zhaojian/Desktop/react/FE_Saas/android/react-native-share-wechat/src/main/res/values-zh/values.xml",
+>>>>>>> 5adb5a3b1de458526be114501c58da5675f4f2a8
                     "position": {
                         "startLine": 9,
                         "startColumn": 4,
@@ -182,7 +222,11 @@
                     "endOffset": 510
                 },
                 "from": {
+<<<<<<< HEAD
+                    "file": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/src/main/res/values-zh/values.xml",
+=======
                     "file": "/Users/zhaojian/Desktop/react/FE_Saas/android/react-native-share-wechat/src/main/res/values-zh/values.xml",
+>>>>>>> 5adb5a3b1de458526be114501c58da5675f4f2a8
                     "position": {
                         "startLine": 10,
                         "startColumn": 4,
@@ -201,7 +245,11 @@
                     "endOffset": 546
                 },
                 "from": {
+<<<<<<< HEAD
+                    "file": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/src/main/res/values-zh/values.xml",
+=======
                     "file": "/Users/zhaojian/Desktop/react/FE_Saas/android/react-native-share-wechat/src/main/res/values-zh/values.xml",
+>>>>>>> 5adb5a3b1de458526be114501c58da5675f4f2a8
                     "position": {
                         "startLine": 11,
                         "startColumn": 4,
@@ -220,7 +268,11 @@
                     "endOffset": 585
                 },
                 "from": {
+<<<<<<< HEAD
+                    "file": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/src/main/res/values-zh/values.xml",
+=======
                     "file": "/Users/zhaojian/Desktop/react/FE_Saas/android/react-native-share-wechat/src/main/res/values-zh/values.xml",
+>>>>>>> 5adb5a3b1de458526be114501c58da5675f4f2a8
                     "position": {
                         "startLine": 12,
                         "startColumn": 4,
@@ -239,7 +291,11 @@
                     "endOffset": 634
                 },
                 "from": {
+<<<<<<< HEAD
+                    "file": "/Users/zhengnan/Desktop/dycd-FE_saas_git/FE_Saas/android/react-native-share-wechat/src/main/res/values-zh/values.xml",
+=======
                     "file": "/Users/zhaojian/Desktop/react/FE_Saas/android/react-native-share-wechat/src/main/res/values-zh/values.xml",
+>>>>>>> 5adb5a3b1de458526be114501c58da5675f4f2a8
                     "position": {
                         "startLine": 13,
                         "startColumn": 4,

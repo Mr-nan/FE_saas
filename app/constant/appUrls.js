@@ -6,13 +6,13 @@
 /**
  * 测试地址
  */
+
 export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 测试地址2
  */
 //export const BASEURL = 'http://10.3.11.99:80/';
-
 
 /**
  * 正式地址
@@ -37,7 +37,7 @@ export const V = "v1/";
  /**
  * 版本号3
  */
-export const V3 = "v3/";
+// export const V3 = "v3/";
 
 /**
  * 分享测试地址
