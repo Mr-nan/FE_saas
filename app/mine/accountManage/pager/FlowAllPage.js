@@ -76,13 +76,13 @@ export  default class FlowAllPage extends BaseComponent {
     getFlowData = (id, type) => {
         let maps = {
             create_time: this.state.time,
-            enter_base_id: id,
+            enter_base_id: /*id*/"10556",
             transfer_type: this.props.transfer_type,
             user_type: type
         };
         request(Urls.ACCOUNT_PAYLOG, 'Post', maps)
             .then((response) => {
-                    if (response.mjson.data == null || response.mjson.data.length <= 0) {
+                    if (response.mjson.data.data == null || response.mjson.data.data.length <= 0) {
                         this.setState({
                             renderPlaceholderOnly: 'null',
                         });
@@ -136,7 +136,7 @@ export  default class FlowAllPage extends BaseComponent {
         let viewColor = '#ffbd2f';
         if ('0' == movie.operate_type) {
             //转账
-            viewColor = '#ffbd2f';
+            viewColor = '#05c5c2';
         } else if ('3' == movie.operate_type) {
             //充值
             viewColor = '#3ac87e';
@@ -151,7 +151,7 @@ export  default class FlowAllPage extends BaseComponent {
             viewColor = '#2f9bfa';
         } else if ('104' == movie.operate_type) {
             //交易
-            viewColor = '#f5deb3';
+            viewColor = '#fa5741';
         }
         return (
             <View style={{
@@ -180,14 +180,15 @@ export  default class FlowAllPage extends BaseComponent {
                 }}>
                     <View
                         style={{flex:1,flexDirection:'column',height:Pixel.getPixel(37),justifyContent:'center'}}>
-                        <Text allowFontScaling={false}
-                              style={[styles.leftText,{  fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),}]}>{'向"锋之行"账户'}</Text>
+                        <Text numberOfLines={1} allowFontScaling={false}
+                              style={[styles.leftText,{  fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),}]}>{movie.show}</Text>
                         <Text allowFontScaling={false}
                               style={[styles.leftText,{color:'#9e9e9e'}]}>{movie.create_time}</Text>
                     </View>
                     <View
                         style={{flex:1,flexDirection:'column',height:Pixel.getPixel(37),justifyContent:'center'}}>
-                        {('3' == movie.operate_type ||'4' == movie.operate_type||'0' == movie.operate_type )? <View style={{height:Pixel.getPixel(10)}}></View>
+                        {('3' == movie.operate_type || '4' == movie.operate_type || '0' == movie.operate_type ) ?
+                            <View style={{height:Pixel.getPixel(10)}}></View>
                             : <Text allowFontScaling={false}
                                     style={[styles.rightText,{color:'#9e9e9e'}]}>{movie.fee_type_name}</Text>}
                         <Text allowFontScaling={false}

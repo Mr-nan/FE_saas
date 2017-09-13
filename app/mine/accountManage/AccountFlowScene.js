@@ -63,18 +63,30 @@ export  default class AccountFlowScene extends BaseComponent {
                     }
                     renderTabBar={() => <RepaymenyTabBar tabName={['全部','充值', "转账",'提现','还款','交易']}/>}
                 >
+                    {/*/!*全部*!/*/}
+                    {/*<FlowAllPage ref="flowallpage" tabLabel="ios-paper0" transfer_type="all"/>*/}
+                    {/*/!*充值*!/*/}
+                    {/*<FlowRechargePage ref="flowrechargepage" tabLabel="ios-paper1"/>*/}
+                    {/*/!*转账*!/*/}
+                    {/*<FlowTransactionPage ref="flowtransactionpage" tabLabel="ios-paper2"/>*/}
+                    {/*/!*提现*!/*/}
+                    {/*<FlowWithdrawalsPage ref="flowwithdrawalspage" tabLabel="ios-paper3"/>*/}
+                    {/*/!*还款*!/*/}
+                    {/*<FlowWithdrawalsPage ref="flowrepaymentpage" tabLabel="ios-paper4"/>*/}
+                    {/*/!*交易*!/*/}
+                    {/*<FlowAllPage ref="flowtransactionpage" tabLabel="ios-paper5" transfer_type="0,3,4,104,105"/>*/}
                     {/*全部*/}
                     <FlowAllPage ref="flowallpage" tabLabel="ios-paper0" transfer_type="all"/>
                     {/*充值*/}
-                    <FlowRechargePage ref="flowrechargepage" tabLabel="ios-paper1"/>
+                    <FlowAllPage ref="flowrechargepage" tabLabel="ios-paper1" transfer_type="3"/>
                     {/*转账*/}
-                    <FlowTransactionPage ref="flowtransactionpage" tabLabel="ios-paper2"/>
+                    <FlowAllPage ref="flowtransactionpage" tabLabel="ios-paper2" transfer_type="0"/>
                     {/*提现*/}
-                    <FlowWithdrawalsPage ref="flowwithdrawalspage" tabLabel="ios-paper3"/>
+                    <FlowAllPage ref="flowwithdrawalspage" tabLabel="ios-paper3" transfer_type="4"/>
                     {/*还款*/}
-                    <FlowWithdrawalsPage ref="flowrepaymentpage" tabLabel="ios-paper4"/>
+                    <FlowAllPage ref="flowrepaymentpage" tabLabel="ios-paper4" transfer_type="100，101"/>
                     {/*交易*/}
-                    <FlowAllPage ref="flowtransactionpage" tabLabel="ios-paper5" transfer_type="0,3,4,104,105"/>
+                    <FlowAllPage ref="flowtransactionpage" tabLabel="ios-paper5" transfer_type="104"/>
 
                 </ScrollableTabView>
                 <SelectDate ref="selectdate" callBack={(time)=>{
