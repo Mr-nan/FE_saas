@@ -163,11 +163,11 @@ export class StatisticalListView extends BaseComponent {
                         <Text allowFontScaling={false} style={styles.contentTitle}>库存车辆</Text>
                         <Text allowFontScaling={false} style={styles.contentvalue}>{rowData.repertory}</Text>
                     </View>
-                    <Image source={dashed}/>
+{/*                    <Image source={dashed}/>
                     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                         <Text allowFontScaling={false} style={styles.contentTitle}>采购车辆</Text>
                         <Text allowFontScaling={false} style={styles.contentvalue}>{rowData.sold}</Text>
-                    </View>
+                    </View>*/}
                 </View>
             </View>
         )

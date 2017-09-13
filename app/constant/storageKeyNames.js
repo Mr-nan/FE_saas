@@ -1,4 +1,4 @@
-export const VERSON_NAME = "3.7.0"; // 版本名
+export const VERSON_NAME = "4.1.0"; // 版本名
 export const VERSON_CODE = "24"; // 版本号
 export const ISLOGIN = "islogin";//标识用户是否登录
 export const CAR_SEARCH = "car_search";
