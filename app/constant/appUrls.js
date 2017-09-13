@@ -6,17 +6,13 @@
 /**
  * 测试地址
  */
-<<<<<<< HEAD
-export const BASEURL = 'http://api-gateway.test.dycd.com/';
-=======
-
 export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 测试地址2
  */
 //export const BASEURL = 'http://10.3.11.99:80/';
->>>>>>> 9a7e76769522fb660d26987379d74cc35f2381e3
+
 
 /**
  * 正式地址
