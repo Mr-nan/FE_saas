@@ -143,7 +143,7 @@ export  default class BankCardScene extends BaseComponent {
                 let sex = '';
                 if (childItems[i].value == 1) {
                     sex = '男';
-                } else if (childItems[i].value == 0) {
+                } else if (childItems[i].value == 2) {
                     sex = '女';
                 } else {
                     sex = childItems[i].value;
