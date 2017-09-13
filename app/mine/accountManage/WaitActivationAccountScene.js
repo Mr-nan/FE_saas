@@ -88,21 +88,21 @@ export  default class WaitActivationAccountScene extends BaseComponent {
                         <View style={{width:width-Pixel.getPixel(30),justifyContent:'center',marginBottom:Pixel.getPixel(7)
                     }}>
                             <Text allowFontScaling={false} 
-                                style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(7),lineHeight:Pixel.getPixel(21)}}>
+                                style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(7),lineHeight:21}}>
 
                                 {this.state.type === 1 ?'您以企业名义开通的企业账户已经绑定，请进行激活，激活方式如下：':'您以个人名义开通的企业账户已经绑定，请进行激活，激活方式如下：'}
 
                             </Text>
                             <Text allowFontScaling={false}
-                                style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(3),lineHeight:Pixel.getPixel(21)}}>
+                                style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(3),lineHeight:21}}>
                                 1.请以恒丰银行发送短信告知的具体转账验证信息和金额（0.1-3元）为准；
                             </Text>
                             <Text allowFontScaling={false}
-                                  style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(3),lineHeight:Pixel.getPixel(21)}}>
+                                  style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(3),lineHeight:21}}>
                                 2.开户行的名称：恒丰银行股份有限公司北京分行长安街支行；
                             </Text>
                             <Text allowFontScaling={false}
-                                style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(3),lineHeight:Pixel.getPixel(21)}}>
+                                style={{color: '#000',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),marginTop:Pixel.getPixel(3),lineHeight:21}}>
                                 3.恒丰银行对转账金额进行确认，确认无误账户激活。
                             </Text>
                         </View>
@@ -110,7 +110,7 @@ export  default class WaitActivationAccountScene extends BaseComponent {
 
 
                     <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                              marginTop:Pixel.getPixel(20),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),lineHeight:Pixel.getPixel(18)}}>
+                              marginTop:Pixel.getPixel(20),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),lineHeight:18}}>
                         1.请用您名下绑定第一车贷账户的银行卡去做小额认证，并且按照短信金额进行打款。{'\n'}
                         2.银行反馈认证结果可能会有延迟，请耐心等待。{'\n'}
                         3.工商银行不支持快捷支付方式小额打款认证给恒，请绑定工商银行卡的商户选择其他方式进行认证。

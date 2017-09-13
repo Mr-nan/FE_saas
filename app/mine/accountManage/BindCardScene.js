@@ -165,7 +165,7 @@ export  default class BindCardScene extends BaseComponent {
 		return (
             <View >
                 <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                              marginTop:Pixel.getPixel(20),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),lineHeight:Pixel.getPixel(18)}}>
+                              marginTop:Pixel.getPixel(20),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),lineHeight:18}}>
                     1.绑定银行卡时请注意，如果提醒绑定信息错误，超过三次，银行将对银行卡进行锁定，请谨慎操作。{"\n"}
                     2.请输入您名下正确的卡号及银行预留信息，否则可能造成绑卡失败。{"\n"}
                     3.银行反馈绑卡结果可能会有延迟，请耐心等待。

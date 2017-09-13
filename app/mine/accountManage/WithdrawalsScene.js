@@ -139,7 +139,7 @@ export  default class WithdrawalsScene extends BaseComponent {
                             银行受理及到账时间 ></Text>
                     </TouchableOpacity>
                     <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                              marginTop:Pixel.getPixel(20),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),lineHeight:Pixel.getPixel(18)}}>
+                              marginTop:Pixel.getPixel(20),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),lineHeight:18}}>
                         提现可能由于某些不可抗拒因素造成无法实时到账或账户余额对应不上等问题，原因如下:{"\n"}
                         1.提现过程中异常操作，如中途取消，网络异常等，当出现异常操作时为保证您的资金安全我们将对提现金额进行短暂冻结{"\n"}
                         2.提现成功后银行返回的提现成功结果延迟

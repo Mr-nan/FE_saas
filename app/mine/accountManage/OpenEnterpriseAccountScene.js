@@ -199,7 +199,7 @@ export  default class OpenEnterpriseAccountScene extends BaseComponent {
                             <Text allowFontScaling={false}  style={{color:'#fff',fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28)}}>{this.props.buttonText}</Text>
                         </TouchableOpacity>
                         <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                              marginTop:Pixel.getPixel(20),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),lineHeight:Pixel.getPixel(18)}}>
+                              marginTop:Pixel.getPixel(20),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),lineHeight:18}}>
                             每天
                             <Text style={{color: fontAndColor.COLORB2,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24)
                             }}>

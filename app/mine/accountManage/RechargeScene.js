@@ -108,7 +108,7 @@ export  default class RechargeScene extends BaseComponent {
                                 {/*<Text allowFontScaling={false}  style={{color: '#000',fontSize: Pixel.getPixel(14),marginTop:Pixel.getPixel(5)}}>手机银行</Text>*/}
                             {/*</View>*/}
                         </View>
-                        <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getPixel(14),lineHeight:Pixel.getPixel(21)}}>
+                        <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getPixel(14),lineHeight:21}}>
                             您可以使用您的银行卡，通过线下转账（柜台、网银、手机银行）的方式将资金充值到您的恒丰银行账户下。
                         </Text>
                         <View style={{width:width-Pixel.getPixel(30),height:Pixel.getPixel(120),marginTop:Pixel.getPixel(15),marginBottom:Pixel.getPixel(15),
@@ -126,7 +126,7 @@ export  default class RechargeScene extends BaseComponent {
 
                     </View>
                     <Text allowFontScaling={false}  style={{color: fontAndColor.COLORA1,fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
-                              marginTop:Pixel.getPixel(20),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),lineHeight:Pixel.getPixel(18)}}>
+                              marginTop:Pixel.getPixel(20),marginLeft:Pixel.getPixel(15),marginRight:Pixel.getPixel(15),lineHeight:18}}>
                         5万元以上金额充值由于需要审核无法做到实时到账，如急需账户用款请选择5万元以下的小额实时到账充值。
                     </Text>
 
