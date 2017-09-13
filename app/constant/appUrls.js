@@ -6,12 +6,12 @@
 /**
  * 测试地址
  */
-export const BASEURL = 'http://api-gateway.test.dycd.com/';
+// export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
  * 正式地址
  */
-// export const BASEURL = 'https://gatewayapi.dycd.com/';
+export const BASEURL = 'https://gatewayapi.dycd.com/';
 
 /**
  * 预发布地址
@@ -356,6 +356,13 @@ export const USER_ACCOUNT_INDEX = BASEURL + 'v1/user.account/index';
  * 获取交易流水
  **/
 export const USER_ACCOUNT_PAYLOG = BASEURL + 'v1/user.account/payLog';
+
+/**
+ * from @huangning
+ *
+ * 获取交易流水
+ **/
+export const ACCOUNT_PAYLOG = BASEURL + 'v2/user.account/payLog';
 
 /**
  * from @zhaojian
