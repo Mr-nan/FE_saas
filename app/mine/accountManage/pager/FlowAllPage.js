@@ -90,7 +90,7 @@ export  default class FlowAllPage extends BaseComponent {
                         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                         this.setState({
                             renderPlaceholderOnly: 'success',
-                            source: ds.cloneWithRows(response.mjson.data)
+                            source: ds.cloneWithRows(response.mjson.data.data)
                         });
                     }
                 },
@@ -133,30 +133,71 @@ export  default class FlowAllPage extends BaseComponent {
     }
 
     _renderRow = (movie, sectionId, rowId) => {
+        let viewColor = '#ffbd2f';
+        if ('0' == movie.operate_type) {
+            //转账
+            viewColor = '#ffbd2f';
+        } else if ('3' == movie.operate_type) {
+            //充值
+            viewColor = '#3ac87e';
+        } else if ('4' == movie.operate_type) {
+            //提现
+            viewColor = '#90a1b5';
+        } else if ('100' == movie.operate_type) {
+            //还款
+            viewColor = '#ffbd2f';
+        } else if ('101' == movie.operate_type) {
+            //放款
+            viewColor = '#2f9bfa';
+        } else if ('104' == movie.operate_type) {
+            //交易
+            viewColor = '#f5deb3';
+        }
         return (
             <View style={{
                     flex:1,
-                    flexDirection:'column',
+                    flexDirection:'row',
                     backgroundColor:'#ffffff',
                     paddingLeft:Pixel.getPixel(15),
                     paddingRight:Pixel.getPixel(15),
                     height:Pixel.getPixel(74),
+                    justifyContent:'center',
+                    alignItems:'center'
+
                 }}>
+
                 <View
-                    style={{flex:1,flexDirection:'row',height:Pixel.getPixel(37),alignItems:'center',paddingTop:Pixel.getPixel(5)}}>
-                    <Text allowFontScaling={false} style={styles.leftText}>{movie.operate_name}</Text>
-                    <Text allowFontScaling={false} style={styles.text}>{movie.amount}</Text>
-                    <Text allowFontScaling={false} style={styles.rightText}>{movie.create_time}</Text>
+                    style={{borderRadius:Pixel.getPixel(20),backgroundColor:viewColor,
+                    width:Pixel.getPixel(40),height:Pixel.getPixel(40),justifyContent:'center',alignItems:'center'}}>
+                    <Text allowFontScaling={false} style={styles.text}>{movie.operate_type_name}</Text>
                 </View>
-                <View
-                    style={{flex:1,flexDirection:'row',height:Pixel.getPixel(37),alignItems:'center',paddingBottom:Pixel.getPixel(5)}}>
-                    <Text allowFontScaling={false} style={styles.leftText}>{'向"锋之行"账户'}</Text>
-                    <Text allowFontScaling={false} style={styles.text}>{"转账"}</Text>
-                    <Text allowFontScaling={false} style={[styles.rightText,{color:'#fa5741'}]}>{''}</Text>
+
+                <View style={{
+                    flex:1,
+                    flexDirection:'row',
+                    backgroundColor:'#ffffff',
+                    paddingLeft:Pixel.getPixel(15)
+                }}>
+                    <View
+                        style={{flex:1,flexDirection:'column',height:Pixel.getPixel(37),justifyContent:'center'}}>
+                        <Text allowFontScaling={false}
+                              style={[styles.leftText,{  fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),}]}>{'向"锋之行"账户'}</Text>
+                        <Text allowFontScaling={false}
+                              style={[styles.leftText,{color:'#9e9e9e'}]}>{movie.create_time}</Text>
+                    </View>
+                    <View
+                        style={{flex:1,flexDirection:'column',height:Pixel.getPixel(37),justifyContent:'center'}}>
+                        {('3' == movie.operate_type ||'4' == movie.operate_type||'0' == movie.operate_type )? <View style={{height:Pixel.getPixel(10)}}></View>
+                            : <Text allowFontScaling={false}
+                                    style={[styles.rightText,{color:'#9e9e9e'}]}>{movie.fee_type_name}</Text>}
+                        <Text allowFontScaling={false}
+                              style={[styles.rightText,{color:'#fa5741',fontSize:Pixel.getFontPixel(17)}]}>{movie.amount}</Text>
+                    </View>
                 </View>
             </View>
         )
     }
+
 
     _renderSeparator(sectionId, rowId) {
 
@@ -181,17 +222,18 @@ export  default class FlowAllPage extends BaseComponent {
 const styles = StyleSheet.create({
     leftText: {
         color: '#000',
-        fontSize: Pixel.getFontPixel(14),
+        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
         minWidth: Pixel.getPixel(100),
+        maxWidth: Pixel.getPixel(150),
     },
     text: {
-        color: '#000',
-        fontSize: Pixel.getFontPixel(14),
-        marginLeft: Pixel.getPixel(10)
+        color: '#ffffff',
+        fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+        textAlign: 'center',
     },
     rightText: {
         color: '#000',
-        fontSize: Pixel.getFontPixel(14),
+        fontSize: Pixel.getFontPixel(fontAndColor.CONTENTFONT24),
         flex: 1,
         textAlign: 'right',
     },
