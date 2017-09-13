@@ -80,7 +80,7 @@ export  default class FlowAllPage extends BaseComponent {
             transfer_type: this.props.transfer_type,
             user_type: type
         };
-        request(Urls.USER_ACCOUNT_PAYLOG, 'Post', maps)
+        request(Urls.ACCOUNT_PAYLOG, 'Post', maps)
             .then((response) => {
                     if (response.mjson.data == null || response.mjson.data.length <= 0) {
                         this.setState({
