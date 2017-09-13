@@ -125,6 +125,7 @@ export default class CarInfoScene extends BaseComponent {
         this.isUserBoss = false;
 
         StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+            console.log(data);
             if (data.code == 1 && data.result != '') {
                 let enters = JSON.parse(data.result);
                 for (let item of enters.enterprise_list[0].role_type){
@@ -140,7 +141,6 @@ export default class CarInfoScene extends BaseComponent {
                 this.loadData();
             });
         });
-
 
     }
 

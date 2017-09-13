@@ -101,6 +101,7 @@ export default class CarDealInfoScene extends BaseComponent{
             return;
         }
 
+
         this.props.showModal(true);
         request(AppUrls.CAR_SALE, 'post', this.carDealData).then((response) => {
             request(AppUrls.CAR_SASS_SALED, 'post', {
