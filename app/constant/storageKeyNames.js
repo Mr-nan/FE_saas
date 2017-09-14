@@ -25,6 +25,7 @@ export const NEED_GESTURE = "need_gesture"; //	是否需要手势解锁
 /* userinfo end */
 export const NEED_OPENBRAND = "need_openbrand"; //	需要打开车型列表
 export const NEED_CHECK_RECOMMEND = "checkRecommend";   // 取消推荐车源
+export const NEED_TOAST_ERROR = "need_toast_error";   // 登录界面是否需要弹出异常提示
 /* message start*/
 export const ADVERTISEMENT_LAST_MESSAGE_TIME = "advertisement_last_message_time"; //车市头条数据库中缓存的最近一条数据的时间
 export const SYSTEMS_LAST_MESSAGE_TIME = "systems_last_message_time"; //系统消息数据库中缓存的最近一条数据的时间

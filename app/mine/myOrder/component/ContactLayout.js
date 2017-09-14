@@ -22,11 +22,29 @@ const Pixel = new PixelUtil();
 
 export default class ContactLayout extends Component {
 
+    /**
+     *   初始化
+     **/
     constructor(props) {
         super(props);
         this.showShopId = this.props.showShopId;
+        this.state = {
+            layoutContent: this.props.layoutContent
+        };
     }
 
+    /**
+     *   更新文字内容
+     **/
+    setLayoutContent = (content) => {
+        this.setState({
+            layoutContent: content
+        });
+    };
+
+    /**
+     *   点击"我要咨询"
+     **/
     callClick = (show_shop_id) => {
         // this.props.showModal(true);
         request(AppUrls.CAR_CUSTOMER_PHONE_NUMBER, 'post', {'enterprise_uid': show_shop_id}).then((response) => {
@@ -43,10 +61,13 @@ export default class ContactLayout extends Component {
 
     };
 
+    /**
+     *   render
+     **/
     render() {
         return (
             <View style={this.props.layoutContent ? styles.itemType1 : styles.itemType1NoContent}>
-                <View style={{width: Pixel.getPixel(310)}}>
+                <View style={{width: Pixel.getPixel(270)}}>
                     <View style={this.props.layoutContent ? {
                         flexDirection: 'row',
                         alignItems: 'center',
@@ -68,17 +89,22 @@ export default class ContactLayout extends Component {
                         </TouchableOpacity> : null}
                     </View>
                     {this.props.layoutContent ?
-                        <Text allowFontScaling={false}  style={styles.itemType1Content}>{this.props.layoutContent}</Text> :
+                        <Text allowFontScaling={false}  style={styles.itemType1Content}>{this.state.layoutContent}</Text> :
                         null}
                 </View>
                 <View style={{flex: 1}}/>
-                <TouchableOpacity
+                {/*<TouchableOpacity
                     style={{marginRight: Pixel.getPixel(15), alignSelf: 'center'}}
                     onPress={() => {
                         this.callClick(this.showShopId);
                     }}>
                     <Image
                         source={require('../../../../images/mainImage/making_call.png')}/>
+                </TouchableOpacity>*/}
+                <TouchableOpacity onPress={() => {
+                    this.callClick(this.showShopId);
+                }} activeOpacity={0.8} style={styles.negativeButtonStyle}>
+                    <Text allowFontScaling={false}  style={styles.negativeTextStyle}>我要咨询</Text>
                 </TouchableOpacity>
 
                 <ExplainModal ref='expModal' title={this.props.promptTitle} buttonStyle={styles.expButton}
@@ -125,6 +151,21 @@ const styles = StyleSheet.create({
         borderColor: fontAndColor.COLORB0
     },
     expText: {
+        fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
+        color: fontAndColor.COLORB0
+    },
+    negativeButtonStyle: {
+        alignSelf: 'center',
+        marginRight: Pixel.getPixel(15),
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: Pixel.getPixel(80),
+        height: Pixel.getPixel(32),
+        borderRadius: 3,
+        borderWidth: 1,
+        borderColor: fontAndColor.COLORB0
+    },
+    negativeTextStyle: {
         fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
         color: fontAndColor.COLORB0
     }

@@ -44,6 +44,7 @@ export default class RootScene extends BaseComponent {
         // });
 
 
+        StorageUtil.mSetItem(KeyNames.NEED_TOAST_ERROR, '');
         //如果获取模拟器错误日志，需将下面代码屏蔽！！！！！！！！！！！！！！！！！！！！！！！
 
 
@@ -101,8 +102,8 @@ export default class RootScene extends BaseComponent {
 
         } finally {
             //InteractionManager.runAfterInteractions(() => {
-                this.setState({renderPlaceholderOnly: 'loading'});
-                this.initFinish();
+            this.setState({renderPlaceholderOnly: 'loading'});
+            this.initFinish();
             //});
         }
 

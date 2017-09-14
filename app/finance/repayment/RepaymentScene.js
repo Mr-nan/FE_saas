@@ -26,6 +26,8 @@ import * as fontAndColor from '../../constant/fontAndColor';
 import PlanListScene from './PlanListScene';
 import RepaymentInfoScene from '../repayment/NewRepaymentInfoScene';
 import InventoryPlanInfoScene from '../repayment/NewInventoryPlanInfoScene';
+import ChedidaiInventoryPlanInfoScene from '../repayment/ChedidaiInventoryPlanInfoScene';
+import ChedidaiRepaymentPage from '../page/ChedidaiRepaymentPage'
 import NewPurchaseRepaymentInfoScene from '../repayment/NewPurchaseRepaymentInfoScene';
 import PurchaseRepaymentPage from '../page/PurchaseRepaymentPage';
 
@@ -51,7 +53,7 @@ export  default class RepaymentScene extends BaseComponent {
                     style={{marginTop: Pixel.getTitlePixel(64), flex: 1}}
                     initialPage={0}
                     locked={true}
-                    renderTabBar={() => <RepaymenyTabBar tabName={["单车融资", "库存融资",'采购融资']}/>}
+                    renderTabBar={() => <RepaymenyTabBar tabName={["单车融资", "库存融资",'采购融资','车抵贷']}/>}
                 >
                     <SingleRepaymentPage customerName={this.props.customerName} callBack={(loan_id,loan_number,type)=>{
                       this.toNextPage({name:'RepaymentInfoScene',component:RepaymentInfoScene,
@@ -67,6 +69,11 @@ export  default class RepaymentScene extends BaseComponent {
                       this.toNextPage({name:'NewPurchaseRepaymentInfoScene',component:NewPurchaseRepaymentInfoScene,
                       params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'PurchaseRepaymentPage'}});
                     }} tabLabel="ios-chatboxes"/>
+
+                    <ChedidaiRepaymentPage customerName={this.props.customerName} callBack={(loan_id,loan_number,type,planid)=>{
+                      this.toNextPage({name:'ChedidaiInventoryPlanInfoScene',component:ChedidaiInventoryPlanInfoScene,
+                      params:{loan_id:loan_id,loan_number:loan_number,type:type,from:'ChedidaiRepaymentPage',planid:planid}});
+                    }} tabLabel="ios-peoplea"/>
 
                 </ScrollableTabView>
                 <NavigationView

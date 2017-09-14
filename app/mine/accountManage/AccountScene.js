@@ -69,6 +69,7 @@ export  default class AccountScene extends BaseComponent {
         StorageUtil.mGetItem(StorageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1 && data.result != null) {
                 let datas = JSON.parse(data.result);
+                this.isOpenContract = datas.is_open_electron_repayment_contract;
                 let maps = {
                     enter_base_ids: datas.company_base_id,
                     child_type: '1'
@@ -255,11 +256,16 @@ export  default class AccountScene extends BaseComponent {
                               webBackUrl.CHANGEPHONE);
                           }}
                           accountSetting={()=>{this.toNextPage({name:'AccountSettingScene',
-                          component:AccountSettingScene,params:{}})}}
+                          component:AccountSettingScene,params:{
+                                  protocolType:this.isOpenContract,
+                              }})}}
                           moreFlow={()=>{this.toNextPage({name:'AccountFlowScene',
                           component:AccountFlowScene,params:{}})}}
                           frozen={()=>{
                               {/*this.toNextPage({name:'FrozenScene',component:FrozenScene,params:{}})*/}
+                          }}
+                          copy={(number)=>{
+                              this.props.showToast(number);
                           }}
                           transfer={()=>{this.toNextPage({name:'TransferScene',
                           component:TransferScene,params:{money:this.state.info.balance,callBack:()=>{

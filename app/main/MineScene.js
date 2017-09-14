@@ -414,13 +414,13 @@ export default class MineScene extends BaseComponent {
                     renderSectionHeader={this._renderSectionHeader}
                     renderHeader={this._renderHeader}
                     refreshControl={
-                                    <RefreshControl
-                                        refreshing={this.state.isRefreshing}
-                                        onRefresh={this.refreshingData}
-                                        tintColor={[fontAndClolr.COLORB0]}
-                                        colors={[fontAndClolr.COLORB0]}
-                                    />
-                                }
+                        <RefreshControl
+                            refreshing={this.state.isRefreshing}
+                            onRefresh={this.refreshingData}
+                            tintColor={[fontAndClolr.COLORB0]}
+                            colors={[fontAndClolr.COLORB0]}
+                        />
+                    }
                 />
                 <AccountModal ref="accountmodal"/>
             </View>
@@ -565,8 +565,8 @@ export default class MineScene extends BaseComponent {
 
                     <Text allowFontScaling={false} style={styles.rowTitle}>{rowData.name}</Text>
                     {rowData.id == 36 ? <Text allowFontScaling={false} style={{ marginRight: Pixel.getPixel(15),
-                    backgroundColor: '#00000000',color:fontAndClolr.COLORB2,fontSize:
-                    Pixel.getFontPixel(fontAndClolr.LITTLEFONT28)}}>{showName}</Text> :
+                        backgroundColor: '#00000000',color:fontAndClolr.COLORB2,fontSize:
+                            Pixel.getFontPixel(fontAndClolr.LITTLEFONT28)}}>{showName}</Text> :
                         <View/>}
                     {rowData.name == '我的订单' && haveOrder != 0 ?
                         <View style={{

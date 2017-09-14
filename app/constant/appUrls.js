@@ -10,6 +10,11 @@
 export const BASEURL = 'http://api-gateway.test.dycd.com/';
 
 /**
+ * 测试地址2
+ */
+//export const BASEURL = 'http://10.3.11.99:80/';
+
+/**
  * 正式地址
  */
 // export const BASEURL = 'https://gatewayapi.dycd.com/';
@@ -405,6 +410,13 @@ export const USER_ACCOUNT_EDITPAYPWD = BASEURL + 'v1/user.account/editPayPwd';
 /**
  * from @zhaojian
  *
+ * 通过商户ID获取财务是否有账户管理权限
+ **/
+export const GETACCOUNTSTATUSBYUID = BASEURL + 'v1/user.account/getAccountStatusByUID';
+
+/**
+ * from @zhaojian
+ *
  * 重置交易密码
  **/
 export const USER_ACCOUNT_RESETPAYPWD = BASEURL + 'v1/user.account/resetPayPwd';
@@ -691,6 +703,15 @@ export const GET_MNY = 'api/v3/account/get_mny';
  * 获取借款首页数据
  **/
 export const GET_APPLY_INFO = 'api/v3/account/get_apply_info';
+
+/**
+ * from @huangning
+ *
+ * 获取借款首页数据
+ * 获取借款详情
+ **/
+export const CARLOAN_LOAN_INFO = 'api/v3/carloan/loan_info';
+
 /**
  * from @lhc
  *
@@ -704,6 +725,14 @@ export const GET_PAYMENT_SCHEDULE_ALL = 'api/v1/account/get_payment_schedule'
  * 修改借款金额
  **/
 export const SET_APPLY_MNY = 'api/v3/account/set_apply_mny'
+
+/**
+ * from 黄宁
+ *
+ * 车抵贷 修改借款金额
+ **/
+export const CARLOAN_SET_APPLY_MNY = 'api/v3/carloan/set_apply_mny'
+
 /**
  * from @lhc
  * 获取订单车辆列表
@@ -726,6 +755,11 @@ export const GET_CAR_INFO = 'api/v1/account/get_car_info'
  **/
 export const CANCEL_LOAN = 'api/v3/account/cancel_loan'
 
+/**
+ * from @huangning
+ * 取消借款
+ **/
+export const CARLOAN_CANCEL_LOAN = 'api/v3/carloan/cancel_loan'
 
 /**
  * from @zhaojian
@@ -875,6 +909,11 @@ export const APPLY_EXTENSION_CARLIST = 'api/v1/account/apply_extension_carlist';
  **/
 export const APPLY_LOAN = 'api/v3/account/apply_loan'
 
+/**
+ * from huangning
+ * 车抵贷申请借款
+ */
+export const CARLOAN_APPLY_LOAN = 'api/v3/carloan/apply_loan'
 
 /**
  * from @huagnning
@@ -1080,6 +1119,15 @@ export const FIRST_PAYMENT_PAY = BASEURL + V + 'order_finance/firstPaymentPay';
  */
 export const FIRST_PAYMENT_PAY_CALLBACK = BASEURL + V + 'order_finance/firstPaymentPayCallback';
 
+/**
+ *  扣款协议合同
+ */
+export const FIRST_REPAYMENT_CONTRACT = '/api/v1/Contract/see_electron_repayment_contract';
+
+/**
+ *  签署-扣款协议合同
+ */
+export const FIRST_REPAYMENT_CONTRACT_SIGN = '//api/v1/Contract/sign_electron_repayment_contract';
 //CRM TEST
 export const PRE = "http://10.3.10.35:8080/";
 /**
