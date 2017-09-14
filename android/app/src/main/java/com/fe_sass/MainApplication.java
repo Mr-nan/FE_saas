@@ -26,6 +26,7 @@ import com.fe_sass.react_native_umeng_push.UmengPushApplication;
 import com.fe_sass.react_native_umeng_push.UmengPushPackage;
 import com.theweflex.react.WeChatPackage;
 import com.react.rnspinkit.RNSpinkitPackage;
+import com.share.wechat.ShareWechatPackage;
 
 
 public class MainApplication extends UmengPushApplication implements ReactApplication {
@@ -58,7 +59,8 @@ public class MainApplication extends UmengPushApplication implements ReactApplic
           new CustomCameraPackage(),
           new RNSpinkitPackage(),
           new CodePush("xmOhd_I_phLbpA3a4AKSbAMFaN5DVJvFYEdiG", getApplicationContext(), BuildConfig.DEBUG),
-          new GrowingIOPackage()
+          new GrowingIOPackage(),
+          new ShareWechatPackage()
       );
     }
   };

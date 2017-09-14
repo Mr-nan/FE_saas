@@ -29,7 +29,6 @@ export class CarSourceSelectHeadView extends Component{
         super(props);
         // 初始状态
         this.state = {
-
             isCheckRecommend:this.props.isCheckRecommend,
         };
       }
@@ -57,11 +56,13 @@ export class CarSourceSelectHeadView extends Component{
         this.setState({
 
             isCheckRecommend:isCheck,
-
         });
 
         this.props.checkRecommendClick(isCheck);
+    }
 
+    getCheckRecommend=()=>{
+        return this.state.isCheckRecommend;
     }
 
     render(){
@@ -83,7 +84,7 @@ export class CarSourceSelectHeadView extends Component{
 
                 }}>
                     <Image style={{marginLeft:10}} source={this.state.isCheckRecommend ? (require('../../../images/carSourceImages/checkIcone.png')):(require('../../../images/carSourceImages/checkIcone_nil.png'))}/>
-                    <Text allowFontScaling={false}  style={styles.unitsText}>意向</Text>
+                    <Text allowFontScaling={false}  style={styles.unitsText}>已订阅</Text>
                 </TouchableOpacity>
             </Image>
         )

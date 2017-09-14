@@ -21,7 +21,7 @@ import * as fontAndColor from '../constant/fontAndColor';
 import  PixelUtil from '../utils/PixelUtil';
 import BaseComponent from '../component/BaseComponent';
 import NewCarScene from '../publish/NewCarScene';
-import CarPublishFirstScene from '../carSource/CarPublishFirstScene';
+import CarPublishFirstScene from '../carSource/carPublish/CarPublishFirstScene';
 
 const  publishReceive = require('../../images/mainImage/publishReceive.png');
 const publishNew = require('../../images/mainImage/publishNew.png');
@@ -128,7 +128,7 @@ export default class PublishModal extends BaseComponent {
                                 onPress={()=>{this._receivePress()}}>
                                 <View style={styles.rowCenter}>
                                     <Image style={styles.img} source={publishReceive}/>
-                                    <Text allowFontScaling={false}  style={styles.fontMain}>发布收车意向</Text>
+                                    <Text allowFontScaling={false}  style={styles.fontMain}>订阅车源</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>

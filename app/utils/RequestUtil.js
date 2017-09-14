@@ -39,8 +39,7 @@ const request = (url, method, params, backToLogin) => {
             console.log(url + '?token=' + token + '&device_code=' + device_code+
                 '&version='+StorageKeyNames.VERSON_CODE+'&'+body);
 
-            fetch(url + '?token=' + token + '&device_code=' + device_code +
-                '&version=' + StorageKeyNames.VERSON_CODE + '&' + body, {
+            fetch(url + '?token=' + token + '&device_code=' + device_code+'&version='+StorageKeyNames.VERSON_CODE+'&'+body, {
                 method,
                 body
             })

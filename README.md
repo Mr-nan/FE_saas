@@ -214,3 +214,28 @@ return [
     退买家：  (cancel_is_agree == 0 || cancel_is_agree == 2) && refund_data.is_who == 1 && refund_data.status == 2
     退卖家：  (cancel_is_agree == 0 || cancel_is_agree == 2) && refund_data.is_who == 2 && refund_data.status == 2
     卖家不同意：cancel_is_agree == 2
+
+   {
+       "roleList":[
+           "taskPGS",
+           "taskZBY",
+           "taskManager",
+           "taskYYZY",
+           "taskZJL",
+           "taskRemind",
+           "taskTenure",
+           "taskDC"
+       ],
+       "accountMobile":"15102373842"
+   }
+
+                "contentTypes":[
+                            "taskPGS",
+                            "taskZBY",
+                            "taskManager",
+                            "taskYYZY",
+                            "taskZJL",
+                            "taskRemind",
+                            "taskTenure",
+                            "taskDC"
+                            ]

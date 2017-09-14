@@ -45,7 +45,7 @@ export  default class CompanyItem extends PureComponent {
             <View style={{flex:1,justifyContent:'center'}}>
                 <Text allowFontScaling={false}  style={[{color: '#000',fontSize: Pixel.getFontPixel(14)},this.state.value?
                     {color: fontAndColor.COLORB0}:{}]}>
-                    {this.props.movie.enterprise_name}</Text>
+                    {this.props.name}</Text>
             </View>
             <View style={{flex:1,justifyContent:'center',alignItems: 'flex-end'}}>
                 <Image style={{width:Pixel.getPixel(14),height:Pixel.getPixel(14)}}

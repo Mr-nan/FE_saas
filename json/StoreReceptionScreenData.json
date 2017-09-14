@@ -1,0 +1,61 @@
+{
+  "info_source": [
+    {
+      "title": "全部",
+      "value": ""
+    },
+    {
+      "title": "朋友介绍",
+      "value": "朋友介绍"
+    },
+    {
+      "title": "朋友圈",
+      "value": "朋友圈"
+    },
+    {
+      "title": "58同城",
+      "value": "58同城"
+    },
+    {
+      "title": "二手车之家",
+      "value": "二手车之家"
+    },
+    {
+      "title": "FM调频广播",
+      "value": "FM调频广播"
+    },
+    {
+      "title": "室外广告牌",
+      "value": "室外广告牌"
+    },
+    {
+      "title": "同行引荐",
+      "value": "同行引荐"
+    },
+    {
+      "title": "文章引导",
+      "value": "文章引导"
+    },
+    {
+      "title": "自到店",
+      "value": "自到店"
+    },
+    {
+      "title": "转介绍",
+      "value": "转介绍"
+    },
+    {
+      "title": "其他",
+      "value": "其他"
+    }
+  ],
+  "client_level": [
+
+  ],
+  "visit_state": [
+
+  ],
+  "purchase_budget": [
+
+  ]
+}

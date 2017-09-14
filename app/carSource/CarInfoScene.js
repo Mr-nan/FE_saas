@@ -10,8 +10,7 @@ import {
     InteractionManager,
     Dimensions,
     Modal,
-    NativeModules
-
+    NativeModules,
 
 } from 'react-native';
 
@@ -38,7 +37,10 @@ import BindCardScene from '../mine/accountManage/BindCardScene'
 import WaitActivationAccountScene from '../mine/accountManage/WaitActivationAccountScene'
 import ProcurementOrderDetailScene from "../mine/myOrder/ProcurementOrderDetailScene";
 import ExplainModal from "../mine/myOrder/component/ExplainModal";
+import CarMyListScene from "./CarMyListScene";
+import GetPermissionUtil from '../utils/GetRoleUtil';
 let Platform = require('Platform');
+let getRole = new GetPermissionUtil();
 const Pixel = new PixelUtil();
 
 import {request} from "../utils/RequestUtil";
@@ -46,7 +48,8 @@ import * as AppUrls from "../constant/appUrls";
 
 var ScreenWidth = Dimensions.get('window').width;
 let resolveAssetSource = require('resolveAssetSource');
-
+const IS_ANDROID = Platform.OS === 'android';
+var shareClass = NativeModules.ZNShareClass;
 
 const carParameterViewColor = [
 
@@ -119,7 +122,26 @@ export default class CarInfoScene extends BaseComponent {
 
     initFinish = () => {
         carConfigurationData = [];
-        this.loadData();
+        this.isUserBoss = false;
+
+        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+            console.log(data);
+            if (data.code == 1 && data.result != '') {
+                let enters = JSON.parse(data.result);
+                for (let item of enters.enterprise_list[0].role_type){
+                    if(item ==1 || item==6){
+                        this.isUserBoss = true;
+                        break;
+                    }
+                }
+            }
+            getRole.getRoleList((data)=>{
+                console.log(data);
+                this.roleList = data;
+                this.loadData();
+            });
+        });
+
     }
 
     allRefresh=()=>{
@@ -138,6 +160,9 @@ export default class CarInfoScene extends BaseComponent {
          this.loadCarData('');
          }
          });*/
+
+
+
         StorageUtil.mGetItem(StorageKeyNames.ENTERPRISE_LIST, (data) => {
             if (data.code == 1 && data.result != '') {
                 let enters = JSON.parse(data.result);
@@ -181,6 +206,15 @@ export default class CarInfoScene extends BaseComponent {
                 carData.imgs = [{require: require('../../images/carSourceImages/car_info_null.png')}];
             }
 
+            for(let item of this.roleList)
+            {
+                if((item.name =='手续员'||item.name =='评估师'||item.name =='整备员'||item.name =='经理'||item.name =='运营专员'||item.name =='合同专员'||item.name =='车管专员') && !this.isUserBoss)
+                {
+                    carData.show_order = 2;
+                    break;
+                }
+            }
+
             this.setState({
                 carData: carData,
                 imageArray: this.state.imageArray.cloneWithPages(carData.imgs),
@@ -213,6 +247,8 @@ export default class CarInfoScene extends BaseComponent {
         }, (error) => {
         });
     }
+
+
 
 
     render() {
@@ -358,8 +394,14 @@ export default class CarInfoScene extends BaseComponent {
                                 </View>
                             </View>
                         )
-
                     }
+                    {/*<TouchableOpacity style={styles.storeView} activeOpacity={1} onPress={this.pushStoreScene}>*/}
+                        {/*<Text style={styles.storeText}>所属店铺：金鸟二手车行</Text>*/}
+                        {/*<View style={{flexDirection:'row', alignItems:'center'}}>*/}
+                            {/*<Text style={styles.storeTailText}>进入</Text>*/}
+                            {/*<Image source={require('../../images/mainImage/celljiantou.png')}/>*/}
+                        {/*</View>*/}
+                    {/*</TouchableOpacity>*/}
                     <View style={styles.carIconsContainer}>
                         <View style={styles.carIconsView}>
                             {
@@ -448,26 +490,39 @@ export default class CarInfoScene extends BaseComponent {
                     }
                 </ScrollView>
                 <View style={styles.footView}>
-                    <View style={[styles.carNumberView, carData.show_order == 2 && {width: ScreenWidth / 2}]}>
-                        <Text allowFontScaling={false}  style={styles.carNumberText}>车源编号</Text>
-                        <Text allowFontScaling={false}  style={styles.carNumberText}>{carData.serial_num}</Text>
-                    </View>
-                    <TouchableOpacity onPress={() => {
-                        this.callClick(carData.show_shop_id)
-                    }}>
-                        <View style={[styles.callView, carData.show_order == 2 && {width: ScreenWidth / 2}]}>
-                            <Image source={require('../../images/carSourceImages/phoneIcon.png')}/>
-                            <Text allowFontScaling={false}  style={styles.callText}>电话咨询</Text>
-                        </View>
-                    </TouchableOpacity>
                     {
-                        carData.show_order !== 2 && (
-                            <TouchableOpacity style={styles.orderView} onPress={() => {
-                                this.orderClick(carData)
-                            }}>
-                                <Text allowFontScaling={false}  style={styles.orderText}>订购</Text>
-                            </TouchableOpacity>
-                        )
+                        (carData.status==3 || carData.del==1) ?
+                            (
+                            <View style={{flex:1, alignItems:'center',justifyContent:'center',backgroundColor:fontAndColor.COLORA4,height:Pixel.getPixel(44)}}>
+                                <Text style={{fontSize:Pixel.getFontPixel(fontAndColor.BUTTONFONT30),color:'white',textAlign:'center'
+                                }}>该车辆已经下架啦~</Text>
+                            </View>
+                                ):
+                            (
+                                <View style={{flex:1,justifyContent:'center', alignItems:'center', flexDirection:'row'}}>
+                                    <View style={[styles.carNumberView, carData.show_order == 2 && {width: ScreenWidth / 2}]}>
+                                        <Text allowFontScaling={false}  style={styles.carNumberText}>车源编号</Text>
+                                        <Text allowFontScaling={false}  style={styles.carNumberText}>{carData.serial_num}</Text>
+                                    </View>
+                                    <TouchableOpacity onPress={() => {
+                                        this.callClick(carData.show_shop_id)
+                                    }}>
+                                        <View style={[styles.callView, carData.show_order == 2 && {width: ScreenWidth / 2}]}>
+                                            <Image source={require('../../images/carSourceImages/phoneIcon.png')}/>
+                                            <Text allowFontScaling={false}  style={styles.callText}>电话咨询</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    {
+                                        carData.show_order !== 2 && (
+                                            <TouchableOpacity style={styles.orderView} onPress={() => {
+                                                this.orderClick(carData)
+                                            }}>
+                                                <Text allowFontScaling={false}  style={styles.orderText}>订购</Text>
+                                            </TouchableOpacity>
+                                        )
+                                    }
+                                </View>
+                            )
                     }
                 </View>
                 <NavigationView
@@ -505,7 +560,6 @@ export default class CarInfoScene extends BaseComponent {
         return (Array(length).join('0') + num).slice(-length);
 
     }
-
 
     backIconClick = () => {
 
@@ -664,6 +718,18 @@ export default class CarInfoScene extends BaseComponent {
         //  this.refs.photoView.show(carImageArray,this.state.currentImageIndex);
 
     };
+
+    //车辆微店
+    pushStoreScene=()=>{
+        let navigationParams = {
+            name: "CarMyListScene",
+            component: CarMyListScene,
+            params: {
+
+            }
+        }
+        this.toNextPage(navigationParams);
+    }
 
     // 车辆维修保养记录
     pushCarUpkeepScene = (vin) => {
@@ -871,6 +937,56 @@ class SharedView extends Component {
         });
     }
 
+    // 多图分享
+    sharedMoreImage=(carData)=>{
+
+
+        if(IS_ANDROID == true){
+            let shareArray = [];
+            for (let i =0;i<carData.imgs.length;i++)
+            {
+                shareArray.push(carData.imgs[i].url);
+            }
+            let carContent = carData.model_name;
+            if (carData.city_name != "") {
+
+                carContent += '\n'+carData.city_name + '\n';
+            }
+            if (carData.plate_number != "") {
+
+                carContent += carData.plate_number.substring(0, 2);
+            }
+            if (carData.carIconsContentData[0] != "") {
+
+                carContent += "\n" + carData.carIconsContentData[0] + '出厂';
+            }
+            NativeModules.ShareNative.share({image:[shareArray],title:[carContent]}).then((suc)=>{
+                    this.sharedSucceedAction();
+
+                }, (fail)=>{
+                this.props.showToast('分享已取消');
+            }
+            )
+        }else {
+            let shareArray = [];
+            for (let i =0;i<carData.imgs.length;i++)
+            {
+                shareArray.push({image:carData.imgs[i].url});
+            }
+
+            shareClass.shareAction([shareArray]).then((data) => {
+
+                this.props.showToast('分享成功');
+                this.sharedSucceedAction();
+
+
+            }, (error) => {
+
+                this.props.showToast('分享已取消');
+            });
+        }
+    }
+
     // 分享好友
     sharedWechatSession = (carData) => {
         weChat.isWXAppInstalled()
@@ -879,7 +995,6 @@ class SharedView extends Component {
 
                     let imageResource = require('../../images/carSourceImages/car_info_null.png');
                     let carContent = '';
-
                     if (carData.city_name != "") {
 
                         carContent = carData.city_name + ' | ';
@@ -907,12 +1022,21 @@ class SharedView extends Component {
                         webpageUrl: fenxiangUrl + '?id=' + carData.id,
                         thumbImage: carImage,
 
-                    }).catch((error) => {
+                    }).then((resp)=>{
+
+                        this.sharedSucceedAction();
+                        console.log('分享成功');
+
+                    },(error) => {
+                        console.log('分享失败');
+
                     })
                 } else {
                     this.isVisible(false);
                 }
             });
+
+
     }
 
     // 分享朋友圈
@@ -941,12 +1065,48 @@ class SharedView extends Component {
                         webpageUrl: 'http://finance.test.dycd.com/platform/car_detail.html?id=' + carData.id,
                         thumbImage: carImage,
 
-                    }).catch((error) => {
+                    }).then((resp)=>{
+
+                        this.sharedSucceedAction();
+                        console.log('分享成功');
+
+                    },(error) => {
+                        console.log('分享失败');
+
                     })
+
                 } else {
                     this.isVisible(false);
                 }
             });
+
+    }
+
+    sharedSucceedAction=()=> {
+
+        StorageUtil.mGetItem(StorageKeyNames.USER_INFO, (data) => {
+            if (data.code == 1) {
+                if (data.result != null && data.result != "") {
+                    let userData = JSON.parse(data.result);
+                    let userPhone = userData.phone + global.companyBaseID;
+                    request(AppUrls.CAR_CHESHANG_SHARE_MOMENT_COUNT, 'POST', {
+                        mobile: userPhone
+                    }).then((response) => {
+                    }, (error) => {
+                    });
+
+                } else {
+                    this.setState({
+                        renderPlaceholderOnly: 'error'
+                    });
+                }
+
+            } else {
+                this.setState({
+                    renderPlaceholderOnly: 'error'
+                });
+            }
+        })
     }
 
 
@@ -965,24 +1125,43 @@ class SharedView extends Component {
                     this.isVisible(false)
                 }}>
                     <View style={styles.sharedView}>
-                        <View style={styles.sharedViewHead}>
-                            <Text allowFontScaling={false}  style={styles.sharedViewHeadText}>分享到</Text>
-                        </View>
-                        <View style={{flexDirection: 'row'}}>
+                        {/*<View style={styles.sharedViewHead}>*/}
+                        {/*<Text allowFontScaling={false}  style={styles.sharedViewHeadText}>分享到</Text>*/}
+                        {/*</View>*/}
+                        <View style={{flexDirection: 'row',paddingVertical:Pixel.getPixel(15)}}>
+                            <TouchableOpacity style={styles.sharedItemView} onPress={() => {
+                                this.sharedMoreImage(this.props.carData);
+                                this.isVisible(false);
+                            }}>
+                                <View style={styles.sharedImageBack}>
+                                    <Image source={require('../../images/carSourceImages/shareImgIcon.png')}/>
+                                </View>
+                                <Text allowFontScaling={false}  style={styles.sharedText}>多图分享</Text>
+                            </TouchableOpacity>
+
                             <TouchableOpacity style={styles.sharedItemView} onPress={() => {
                                 this.sharedWechatSession(this.props.carData);
                                 this.isVisible(false);
                             }}>
-                                <Image source={require('../../images/carSourceImages/shared_ wx.png')}/>
+                                <View style={styles.sharedImageBack}>
+                                    <Image source={require('../../images/carSourceImages/shared_wx.png')}/>
+                                </View>
                                 <Text allowFontScaling={false}  style={styles.sharedText}>微信好友</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.sharedItemView} onPress={() => {
                                 this.sharedWechatTimeline(this.props.carData);
                                 this.isVisible(false);
                             }}>
-                                <Image source={require('../../images/carSourceImages/shared_ friend.png')}/>
+                                <View style={styles.sharedImageBack}>
+                                    <Image source={require('../../images/carSourceImages/shared_friend.png')}/>
+                                </View>
                                 <Text allowFontScaling={false}  style={styles.sharedText}>朋友圈</Text>
                             </TouchableOpacity>
+                        </View>
+                        <View  style={{justifyContent:'center',alignItems:'center',borderTopWidth:Pixel.getPixel(1),borderTopColor:fontAndColor.COLORA3,height:Pixel.getPixel(44),
+                            width:ScreenWidth
+                        }}>
+                            <Text style={styles.sharedViewHeadText}>取消</Text>
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -1196,7 +1375,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         marginTop: Pixel.getPixel(10),
-
 
     },
     browseView: {
@@ -1428,11 +1606,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(1,1,1,0.5)',
     },
     sharedView: {
-
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: fontAndColor.COLORA3,
+        backgroundColor: 'white',
         justifyContent: 'center',
         alignItems: 'center',
         position: 'absolute',
@@ -1447,8 +1624,16 @@ const styles = StyleSheet.create({
     },
     sharedViewHeadText: {
 
-        color: fontAndColor.COLORA0,
+        color: fontAndColor.COLORA1,
         fontSize: Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+    },
+    sharedImageBack:{
+        backgroundColor:fontAndColor.COLORB9,
+        borderRadius:Pixel.getPixel(10),
+        width:Pixel.getPixel(50),
+        height:Pixel.getPixel(50),
+        justifyContent:'center',
+        alignItems:'center'
     },
     sharedItemView: {
 
@@ -1502,4 +1687,22 @@ const styles = StyleSheet.create({
         fontSize: Pixel.getPixel(fontAndColor.LITTLEFONT28),
         color: fontAndColor.COLORB0
     },
+    storeView:{
+        backgroundColor:'white',
+        paddingHorizontal:Pixel.getPixel(15),
+        flexDirection:'row',
+        alignItems:'center',
+        height:Pixel.getPixel(44),
+        marginTop:Pixel.getPixel(10),
+        justifyContent:'space-between'
+    },
+    storeText:{
+        color:fontAndColor.COLORA0,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+    },
+    storeTailText:{
+        color:fontAndColor.COLORA2,
+        fontSize:Pixel.getFontPixel(fontAndColor.LITTLEFONT28),
+        marginRight:Pixel.getPixel(5),
+    }
 })

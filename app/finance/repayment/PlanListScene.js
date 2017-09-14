@@ -89,11 +89,7 @@ export  default class PlanListScene extends BaseComponent {
         }
         return (
             <View style={{backgroundColor: fontAndColor.COLORA3, flex: 1}}>
-                <NavigationView
-                    title="还款计划"
-                    backIconClick={this.backPage}
-                    renderRihtFootView={this._navigatorRightView}
-                />
+
                 <ListView
                     removeClippedSubviews={false}
                     style={{marginTop: Pixel.getTitlePixel(79)}}
@@ -108,6 +104,11 @@ export  default class PlanListScene extends BaseComponent {
                                         colors={[fontAndColor.COLORB0]}
                                     />
                                 }
+                />
+                <NavigationView
+                    title="还款计划"
+                    backIconClick={this.backPage}
+                    renderRihtFootView={this._navigatorRightView}
                 />
             </View>
         );

@@ -1,5 +1,5 @@
-export const VERSON_NAME = "4.0.0"; // 版本名
-export const VERSON_CODE = "23"; // 版本号
+export const VERSON_NAME = "4.1.0"; // 版本名
+export const VERSON_CODE = "24"; // 版本号
 export const ISLOGIN = "islogin";//标识用户是否登录
 export const CAR_SEARCH = "car_search";
 export const CITY_SEARCH = "city_search";
@@ -8,6 +8,7 @@ export const GESTURE = "gesture";
 export const USERNAME = "username";
 export const LOGIN_TYPE = "login_type"
 export const FIRST_INTO = "first_into"
+export const INTO_TIME = "into_time";
 export const CAR_TYPE_FOOTMARK = "car_type_footmark"; // 车品牌足迹
 export const CAR_SEEK_DATA = 'car_seek_data';       //  车辆历史搜索
 /* userinfo start */
@@ -25,3 +26,8 @@ export const NEED_GESTURE = "need_gesture"; //	是否需要手势解锁
 export const NEED_OPENBRAND = "need_openbrand"; //	需要打开车型列表
 export const NEED_CHECK_RECOMMEND = "checkRecommend";   // 取消推荐车源
 export const NEED_TOAST_ERROR = "need_toast_error";   // 登录界面是否需要弹出异常提示
+/* message start*/
+export const ADVERTISEMENT_LAST_MESSAGE_TIME = "advertisement_last_message_time"; //车市头条数据库中缓存的最近一条数据的时间
+export const SYSTEMS_LAST_MESSAGE_TIME = "systems_last_message_time"; //系统消息数据库中缓存的最近一条数据的时间
+/* message end */
+export const GET_USER_PERMISSION = "get_user_permission";   // 获取角色权限

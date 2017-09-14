@@ -147,7 +147,6 @@ const styles = StyleSheet.create({
         fontSize:fontAndColor.LITTLEFONT28,
     },
     checkedItemView:{
-
         borderColor:fontAndColor.COLORA2,
         borderWidth:StyleSheet.hairlineWidth,
         marginRight:Pixel.getPixel(15),
