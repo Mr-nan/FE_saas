@@ -200,7 +200,7 @@ export default class MyCarCell extends Component {
 
                                     }
                                     {
-                                        carType == 1 &&
+                                        (carType == 1 || carType == 3) &&
                                         <TouchableOpacity onPress={()=>{this.footButtonClick('编辑',this.props.type,carCellData)}}>
                                             <View style={styles.cellFoot}>
                                                 <Text allowFontScaling={false}  style={styles.cellFootText}>  编辑  </Text>
