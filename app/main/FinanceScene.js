@@ -27,6 +27,7 @@ let allPage = 0;
 import  HomeHeaderItem from './component/HomeHeaderItem';
 import  PixelUtil from '../utils/PixelUtil'
 import KurongDetaileScene from '../finance/lend/KurongDetaileScene';
+import ChedidaiDetaileScene from '../finance/lend/ChedidaiDetaileScene';
 import DDDetailScene from '../finance/lend/DDDetailScene';
 import DDApplyLendScene from '../finance/lend/DDApplyLendScene';
 
@@ -110,6 +111,9 @@ export default class FinanceSence extends BaseComponet {
     }
 
 
+    /**
+     * 获取金融首页顶部信息
+     */
     getMnyData = () => {
         let that = this;
         let maps = {
@@ -157,6 +161,9 @@ export default class FinanceSence extends BaseComponet {
 
     };
 
+    /**
+     * 获取借款记录
+     */
     getApplyData = () => {
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         let maps = {
@@ -217,6 +224,9 @@ export default class FinanceSence extends BaseComponet {
         this.getMnyData();
     }
 
+    /**
+     * 获取账号信息
+     */
     getAccountInfo = () => {
         StorageUtil.mGetItem(storageKeyNames.LOAN_SUBJECT, (data) => {
             if (data.code == 1) {
@@ -485,7 +495,13 @@ export default class FinanceSence extends BaseComponet {
                 this.buttonParams.content = '订单';
                 this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB4}];
                 this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB4}];
+            }else if(movie.type == 8){
+                nextPage = ChedidaiDetaileScene;
+                this.buttonParams.content = '车抵';
+                this.buttonParams.parentStyle = [cellSheet.parentStyle, {borderColor: fontAndColor.COLORB3}];
+                this.buttonParams.childStyle = [cellSheet.childStyle, {color: fontAndColor.COLORB3}];
             }
+
 
             if (movie.status == 1) {
                 this.typeButtonParams.childStyle = [cellSheet.typeChildStyle, {color: fontAndColor.COLORB3}];
@@ -540,6 +556,7 @@ export default class FinanceSence extends BaseComponet {
                             this.navigatorParams.params = {
                                 financeNo: movie.loan_code,//借款单号
                                 orderNo: movie.order_number,//平台订单号
+                                FromScene:"FinanceScene",
 
                                 backRefresh: () => {
                                     this.allRefresh()
@@ -547,10 +564,6 @@ export default class FinanceSence extends BaseComponet {
                             }
                         }
                     }
-
-
-
-
                     else {
                         this.navigatorParams.name = 'DetaileSence';
                         this.navigatorParams.component = nextPage;
@@ -662,6 +675,7 @@ export default class FinanceSence extends BaseComponet {
                         purchase_archives_first_status: mnyData.purchase_archives_first_status,
                         purchase_status: mnyData.purchase_status,
                         customerName: this.state.customerName,
+                        car_loan_status:mnyData.car_loan_status,//是否可申请车抵贷
                         backRefresh: () => {
                             this.allRefresh()
                         }
